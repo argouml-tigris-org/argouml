@@ -262,6 +262,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcGroup.calcBounds();
     _destGroup.calcBounds();
     _middleGroup.calcBounds();
+    this.computeRoute();
   }
 
   static ArrowHead _NAV_AGGREGATE =
