@@ -36,12 +36,20 @@ import org.argouml.util.*;
 
 public class ArgoDiagram extends Diagram implements VetoablePropertyChange {
 
+
+  // hack to use vetocheck in constructing names
+  protected static ArgoDiagram TheInstance = new ArgoDiagram(); 
+  
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public ArgoDiagram() { }
+  public ArgoDiagram() { 
+  	super();
+  }
 
   public ArgoDiagram(String diagramName ) {
+  	// next line patch to issue 596 (hopefully)
+  	super(diagramName);
     try { setName(diagramName); }
     catch (PropertyVetoException pve) { }
   }
