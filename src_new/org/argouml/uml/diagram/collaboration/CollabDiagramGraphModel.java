@@ -64,14 +64,14 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     /**
      * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getNamespace()
      */
-    public Object getNamespace() { return collab; }
+    public Object getNamespace() { return ModelFacade.getNamespace(collab); }
     
     /**
-     * @param m the namespace to be set for this diagram
+     * @param m the collaboration to be set for this diagram
      */
-    public void setNamespace(Object m) {
+    public void setCollaboration(Object m) {
         if (!(ModelFacade.isACollaboration(m))) {
-            throw new IllegalArgumentException("invalid namespace");
+            throw new IllegalArgumentException("invalid collaboration");
         }
         collab = /*(MCollaboration)*/ m;
     }

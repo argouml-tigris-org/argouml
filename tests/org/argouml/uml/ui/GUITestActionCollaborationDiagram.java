@@ -27,7 +27,10 @@ package org.argouml.uml.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.novosoft.uml.behavior.collaborations.MCollaborationImpl;
+import org.argouml.ui.targetmanager.TargetManager;
+
+import ru.novosoft.uml.foundation.core.MClassImpl;
+import ru.novosoft.uml.foundation.core.MClassifierImpl;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
@@ -58,7 +61,10 @@ public class GUITestActionCollaborationDiagram
      * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
      */
     protected MNamespace getNamespace() {
-        return new MCollaborationImpl();
+        //return new MCollaborationImpl();
+        MNamespace c = new MClassImpl();
+        TargetManager.getInstance().setTarget(c);
+        return c;
     }
 
     /**
@@ -66,7 +72,7 @@ public class GUITestActionCollaborationDiagram
      */
     protected List getValidNamespaceClasses() {
         List rl = new ArrayList();
-        rl.add(MCollaborationImpl.class);
+        rl.add(MClassifierImpl.class);
         return rl;
     }
 

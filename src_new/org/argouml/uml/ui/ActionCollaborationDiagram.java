@@ -87,7 +87,8 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
 //                Model.getUmlFactory().getCollaborations().buildCollaboration(
 //                    namespace);
         }
-        UMLCollaborationDiagram d = new UMLCollaborationDiagram(collaboration);
+        UMLCollaborationDiagram d = 
+            new UMLCollaborationDiagram(namespace, collaboration);
         return d;
     }
 
