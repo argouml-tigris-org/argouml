@@ -36,6 +36,9 @@ import org.argouml.uml.ui.UMLChangeAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.kernel.ProjectManager;
+
 
 /** deletes an modelelement from the diagram, but not from the model.
  *  @stereotype singleton
@@ -68,12 +71,25 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
 
     /**
      * Tells if this action shall be enabled or not.
+     * 
+     * Remove from diagram is not allowed when the diagram 
+     * is a statechart. This because the diagram = the
+     * statemachine according UML. Use a submachinestate 
+     * to split a big diagram in parts instead.
+     * And because it leads to unsolvable problems with 
+     * concurrency. 
      *
      * @return true if it shall be enabled.
      */
     public boolean shouldBeEnabled() {
         super.shouldBeEnabled();
         int size = 0;
+        // return false if current diagram is a statechart diagram 
+        Object targetP = ProjectManager.getManager()
+            .getCurrentProject().getActiveDiagram();
+        if (targetP instanceof UMLStateDiagram)
+                return false;
+
         try {
             Editor ce = Globals.curEditor();
 	    if (ce == null) {
