@@ -55,7 +55,7 @@ public class ActionSetSourcePath extends UMLAction {
   // constructors
 
   protected ActionSetSourcePath() {
-    super("Set Source Path...", NO_ICON);
+    super("action.set-source-path", NO_ICON);
   }
 
 
@@ -108,7 +108,7 @@ public class ActionSetSourcePath extends UMLAction {
       chooser.setSelectedFile(f);
     }
 
-    String sChooserTitle = Translator.localize("CoreMenu","Set Source Path...");
+    String sChooserTitle = Translator.localize("CoreMenu","action.set-source-path");
     if (type != null)
       sChooserTitle += ' '+type;
     if (name != null)

@@ -52,7 +52,7 @@ public class ActionAddMessage extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionAddMessage() { super("Add Message"); }
+    public ActionAddMessage() { super("action.add-message"); }
 
 
     ////////////////////////////////////////////////////////////////
