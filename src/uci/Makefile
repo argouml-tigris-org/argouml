@@ -69,6 +69,7 @@ argoumlClasses:
 	cd .. ; \
 	cd uml ; \
 	cd ui; make classes; cd .. ; \
+	cd xmi; make classes; cd .. ; \
 	cd visual; make classes; cd .. ; \
 	cd .. ; \
 	fi
