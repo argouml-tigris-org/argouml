@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
@@ -629,6 +630,7 @@ public class FigClass extends FigNodeModelElement
         }
         int i = new Vector(getAttributesFig().getFigs()).indexOf(ft);
         if (i != -1) {
+            String msg = "statusmsg.bar.error.parsing.attribute";
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
             try {
@@ -639,13 +641,16 @@ public class FigClass extends FigNodeModelElement
 				       highlightedFigText.getText().trim());
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
             } catch (ParseException pe) {
-                ProjectBrowser.getInstance().getStatusBar()
-		    .showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+                Object[] args = {pe.getLocalizedMessage(), 
+                    new Integer(pe.getErrorOffset())};
+                ProjectBrowser.getInstance().getStatusBar().showStatus(
+                        Translator.messageFormat(msg, args));
             }
             return;
         }
         i = new Vector(getOperationsFig().getFigs()).indexOf(ft);
         if (i != -1) {
+            String msg = "statusmsg.bar.error.parsing.operation";
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
             try {
@@ -656,8 +661,10 @@ public class FigClass extends FigNodeModelElement
 				       highlightedFigText.getText().trim());
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
             } catch (ParseException pe) {
-                ProjectBrowser.getInstance().getStatusBar()
-		    .showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+                Object[] args = {pe.getLocalizedMessage(), 
+                    new Integer(pe.getErrorOffset())};
+                ProjectBrowser.getInstance().getStatusBar().showStatus(
+                        Translator.messageFormat(msg, args));
             }
             return;
         }
