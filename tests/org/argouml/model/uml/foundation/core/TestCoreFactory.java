@@ -60,7 +60,10 @@ import org.argouml.util.*;
 
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespaceImpl;
 import ru.novosoft.uml.model_management.MModel;
 
 
@@ -300,6 +303,23 @@ public class TestCoreFactory extends TestCase {
         assertNull("class not removed", class1wr.get());
         assertNotNull("dependency removed", depwr.get());
     }
+    
+    public void testBuildConstraint() {
+        try {
+            CoreFactory.getFactory().buildConstraint(null);
+            fail("IllegalArgumentException should be thrown");
+        }
+        catch (IllegalArgumentException i) {}
+        MModelElement elem = ModelManagementFactory.getFactory().createModel();
+        MConstraint con = CoreFactory.getFactory().buildConstraint(elem);
+        assertNull("Namespace is unexpectly set", con.getNamespace());
+        assert("Constrained element is not set", !con.getConstrainedElements().isEmpty());
+        assert("Constraint is not set", !elem.getConstraints().isEmpty());
+        elem.setNamespace(CoreFactory.getFactory().createNamespace());
+        con = CoreFactory.getFactory().buildConstraint(elem);
+        assertNotNull("Namespace is not set", con.getNamespace());
+    }
+        
         
         
     
