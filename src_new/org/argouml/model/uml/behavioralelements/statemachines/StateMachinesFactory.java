@@ -459,6 +459,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     public MCallEvent buildCallEvent() {
         MCallEvent event = createCallEvent();
         event.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+        event.setName("");
         return event;
     }
 
@@ -470,6 +471,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     public MSignalEvent buildSignalEvent() {
         MSignalEvent event = createSignalEvent();
         event.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+        event.setName("");
         return event;
     }
 
@@ -481,6 +483,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     public MTimeEvent buildTimeEvent() {
         MTimeEvent event = createTimeEvent();
         event.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+        event.setName("");
         return event;
     }
 
@@ -492,6 +495,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     public MChangeEvent buildChangeEvent() {
         MChangeEvent event = createChangeEvent();
         event.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+        event.setName("");
         return event;
     }
     
