@@ -259,6 +259,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     	if (statemachine != null ) {
 	    MCompositeState state = createCompositeState();
 	    state.setStateMachine(statemachine);
+	    state.setName("top");
 	    return state;
     	} else
 	    throw new IllegalArgumentException("In buildCompositeState: "
@@ -269,24 +270,24 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * Builds a state machine owned by the given context.
      *
      * @param oContext
-     * @return MActivityGraph
+     * @return MStateMachine
      */
     public MStateMachine buildStateMachine(Object oContext) {
     	if (oContext != null
 	    && (StateMachinesHelper.getHelper()
 		.isAddingStatemachineAllowed(oContext))) {
 
-	    MStateMachine graph = createStateMachine();
+	    MStateMachine machine = createStateMachine();
             MModelElement context = (MModelElement) oContext;
-	    graph.setContext(context);
+	    machine.setContext(context);
 	    if (context instanceof MNamespace) {
-		graph.setNamespace((MNamespace) context);
+		machine.setNamespace((MNamespace) context);
 	    } else if (context instanceof MFeature) {
 		MFeature feature = (MFeature) context;
-		graph.setNamespace(feature.getOwner());
+		machine.setNamespace(feature.getOwner());
     	    }
-	    StateMachinesFactory.getFactory().buildCompositeState(graph);
-	    return graph;
+	    StateMachinesFactory.getFactory().buildCompositeState(machine);
+	    return machine;
 
     	} else {
 	    throw new IllegalArgumentException("In buildStateMachine: "
