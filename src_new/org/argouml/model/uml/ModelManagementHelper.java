@@ -202,7 +202,8 @@ public class ModelManagementHelper {
      * @param kind is the class kind
      * @return Collection
      */
-    public Collection getAllModelElementsOfKind(Object nsa, Class kind) {
+    public Collection getAllModelElementsOfKind(Object nsa, Object type) {
+        Class kind = (Class)type;
         if (nsa == null || kind == null)
             return Collections.EMPTY_LIST;
         
