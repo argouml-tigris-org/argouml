@@ -23,69 +23,27 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Collection;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.ui.AbstractGoRule;
 
-import org.argouml.ui.*;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
 public class GoStateToDownstream extends AbstractGoRule {
 
   public String getRuleName() { return "State->Following States"; }
   
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof MStateVertex) {
-      Vector outgoing = new Vector(((MStateVertex)parent).getOutgoings());
-      if (outgoing == null) return null;
-      return ((MTransition)outgoing.elementAt(index)).getTarget();
-    }
-    throw 
-	new UnsupportedOperationException("getChild should never be get here");
-  }
-
   public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
-  }
-
-  // TODO: should be a set
-  public int getChildCount(Object parent) {
-    if (parent instanceof MStateVertex) {
-      Collection outgoing = ((MStateVertex)parent).getOutgoings();
-      return (outgoing == null) ? 0 : outgoing.size();
-    }
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof MStateVertex) {
-      Vector outgoing = new Vector(((MStateVertex)parent).getOutgoings());
-      if (outgoing == null) return -1;
-      int size = outgoing.size();
-      for (int i = 0; i < size; i++)
-	if (child == ((MTransition)outgoing.elementAt(i)).getTarget())
-	  return i;
-    }
-    return -1;
+      if (ModelFacade.isAStateVertex(parent)) {
+          return StateMachinesHelper.getHelper().getOutgoingStates(parent);
+      }
+      return null;
   }
 
   public boolean isLeaf(Object node) {
     return !(node instanceof MStateVertex && getChildCount(node) > 0);
   }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
 
 } /* end class GoStateToDownstream */

@@ -23,69 +23,27 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Collection;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.ui.AbstractGoRule;
 
-import org.argouml.ui.*;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 
 public class GoMachineToTrans extends AbstractGoRule {
 
   public String getRuleName() { return "State Machine->Transition"; }
   
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof MStateMachine) {
-      MStateMachine sm = (MStateMachine)parent;
-      if (sm == null) return null;
-      Vector trans = new Vector(sm.getTransitions());
-      return (trans == null) ? null : trans.elementAt(index);
-    }
-    throw
-	new UnsupportedOperationException("getChild should never be get here");
-  }
-
   public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
+      if (ModelFacade.isAStateMachine(parent)) {
+          return ModelFacade.getTransitions(parent);
+      }
+      return null;
   }
 
-  public int getChildCount(Object parent) {
-    if (parent instanceof MStateMachine) {
-      MStateMachine sm = (MStateMachine)parent;
-      if (sm == null) return 0;
-      Vector trans = new Vector(sm.getTransitions());
-      return (trans == null) ? 0 : trans.size();
-    }
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof MStateMachine) {
-      MStateMachine sm = (MStateMachine)parent;
-      if (sm == null) return -1;
-      Vector trans = new Vector(sm.getTransitions());
-      return (trans == null) ? -1 : trans.indexOf(child);
-    }
-    return -1;
-  }
-
+  
   public boolean isLeaf(Object node) {
     return !(node instanceof MStateMachine && getChildCount(node) > 0);
   }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
 
 }

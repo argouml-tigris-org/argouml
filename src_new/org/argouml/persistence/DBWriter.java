@@ -266,7 +266,7 @@ public class DBWriter
 		store((MGeneralizableElement)cls, stmt);
 
 		// in case the Classifier has attributes or operations, store these.
-		Vector attributes = new Vector(UmlHelper.getHelper().getCore().getAttributes(cls));
+		Vector attributes = new Vector(UmlHelper.getHelper().getCore().getStructuralFeatures(cls));
 		for ( int i = 0; i < attributes.size(); i++) store((MAttribute)attributes.elementAt(i),stmt);
 
 		Vector operations = new Vector(UmlHelper.getHelper().getCore().getOperations(cls));

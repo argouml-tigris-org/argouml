@@ -21,32 +21,37 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
+package org.argouml.uml.diagram.collaboration.ui;
 
-package org.argouml.uml.diagram.ui;
-
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
-import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.AbstractGoRule;
 
-public class GoProjectModel extends AbstractGoRule {
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 
-  public String getRuleName() {
-    return Argo.localize ("Tree", "misc.project.package");
-  }
- 
-  public Collection getChildren(Object parent) { 
+public class GoProjectToCollaboration extends AbstractGoRule {
+
+  
+  public String getRuleName() { return "Project->MCollaboration"; }
+
+
+  public Collection getChildren(Object parent) {
+      Collection col = new ArrayList();
       if (parent instanceof Project) {
-          return ((Project)parent).getUserDefinedModels();
+          Iterator it = ((Project)parent).getUserDefinedModels().iterator();
+          while (it.hasNext()) {
+              col.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(it.next(), MCollaboration.class));
+          }
       }
-      return null;
+      return col;
   }
   
   public boolean isLeaf(Object node) {
     return !(node instanceof Project && getChildCount(node) > 0);
   }
-
 
 }

@@ -23,47 +23,16 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Collection;
+import java.util.Vector;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.collaborations.*;
+import org.argouml.ui.AbstractGoRule;
 
-import org.argouml.ui.*;
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 
 public class GoCollaborationInteraction extends AbstractGoRule {
 
   public String getRuleName() { return "Collaboration->Interaction"; }
-
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    Vector children = new Vector(getChildren(parent));
-    if (children != null) return children.elementAt(index);
-    throw
-	new UnsupportedOperationException("getChild should never be get here");
-  }
-
-  public int getChildCount(Object parent) {
-    Collection children = getChildren(parent);
-    if (children != null) return children.size();
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    if (!(parent instanceof MCollaboration)) return -1;
-    Vector children = new Vector(getChildren(parent));
-    if (children != null && children.contains(child))
-      return children.indexOf(child);
-    return -1;
-  }
 
   public Collection getChildren(Object parent) {
     if (!(parent instanceof MCollaboration)) return null;
@@ -76,8 +45,6 @@ public class GoCollaborationInteraction extends AbstractGoRule {
     return !(node instanceof MCollaboration && getChildCount(node) > 0);
   }
 
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
+ 
 
 }

@@ -73,7 +73,7 @@ public class CrUtilityViolated extends CrUML {
 	private Collection getInheritedStructuralFeatures(MClassifier cls,int depth)
 	{     
 		Collection res = new Vector();
-		res.addAll(UmlHelper.getHelper().getCore().getAttributes(cls));
+		res.addAll(UmlHelper.getHelper().getCore().getStructuralFeatures(cls));
 
 		Collection inh = cls.getGeneralizations();
 		for (Iterator iter = inh.iterator(); iter.hasNext();) {

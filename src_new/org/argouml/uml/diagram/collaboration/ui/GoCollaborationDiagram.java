@@ -26,9 +26,6 @@ package org.argouml.uml.diagram.collaboration.ui;
 import java.util.Collection;
 import java.util.Vector;
 
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreePath;
-
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.AbstractGoRule;
@@ -38,30 +35,6 @@ import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 public class GoCollaborationDiagram extends AbstractGoRule {
 
   public String getRuleName() { return "Collaboration->Diagram"; }
-
-  public Object getRoot() {
-      throw new UnsupportedOperationException("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    Vector children = new Vector(getChildren(parent));
-    if (children != null) return children.elementAt(index);
-    throw new UnsupportedOperationException("getChild should never be get here GoCollaborationDiagram");
-  }
-
-  public int getChildCount(Object parent) {
-    Collection children = getChildren(parent);
-    if (children != null) return children.size();
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    Vector children = new Vector(getChildren(parent));
-    if (children != null && children.contains(child))
-      return children.indexOf(child);
-    return -1;
-  }
 
   public Collection getChildren(Object parent) {
     Project p = ProjectManager.getManager().getCurrentProject();
@@ -84,8 +57,5 @@ public class GoCollaborationDiagram extends AbstractGoRule {
     return !(node instanceof MCollaboration && getChildCount(node) > 0);
   }
 
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
 
 }

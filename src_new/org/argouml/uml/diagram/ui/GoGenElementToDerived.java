@@ -23,66 +23,30 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
+import java.util.Collection;
 
 import org.argouml.application.api.Argo;
-import org.argouml.ui.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.ui.AbstractGoRule;
+
+import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 
 public class GoGenElementToDerived extends AbstractGoRule {
 
   public String getRuleName() {
     return Argo.localize ("Tree", "misc.class.subclass");
   }
-  
-  public Object getRoot() {
-    throw
-	new UnsupportedOperationException("getRoot should never be called");
-  } 
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof MGeneralizableElement) {
-      MGeneralizableElement p = (MGeneralizableElement) parent;
-      return ((List)p.getChildren()).get(index);
-    }
-    throw
-	new UnsupportedOperationException("getChild should never be get here");
-  }
 
   public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
+      if (ModelFacade.isAGeneralizableElement(parent)) {
+          return ModelFacade.getChildren(parent);
+      }
+      return null;
   }
   
-  public int getChildCount(Object parent) {
-    if (parent instanceof MGeneralizableElement) {
-      MGeneralizableElement p = (MGeneralizableElement) parent;
-      List specs = p.getChildren();
-      return (specs == null) ? 0 : specs.size();
-    }
-    return 0;
-  }
-  
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof MGeneralizableElement) {
-      MGeneralizableElement p = (MGeneralizableElement) parent;
-	  return ((List)p.getChildren()).indexOf(child);
-	}
-	return -1;
-  }
-
   public boolean isLeaf(Object node) {
     return !(node instanceof MGeneralizableElement && getChildCount(node) > 0);
   }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
 
 } /* end class GoGenElementToDerived */
 

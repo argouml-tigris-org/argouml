@@ -23,63 +23,27 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Collection;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-
+import org.argouml.ui.AbstractGoRule;
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.graph.*;
-
-import org.argouml.ui.*;
 
 public class GoDiagramToNode extends AbstractGoRule {
 
   public String getRuleName() { return "Diagram->Node"; }
 
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  }
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof Diagram) {
-      Vector nodes = ((Diagram)parent).getNodes();
-      return nodes.elementAt(index);
-    }
-    throw new UnsupportedOperationException("getChild should never get here");
-  }
-
-  public int getChildCount(Object parent) {
-    if (parent instanceof Diagram) {
-      Vector nodes = ((Diagram) parent).getNodes();
-      return (nodes == null) ? 0 : nodes.size();
-    }
-    return 0;
-  }
-
   public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
+      if (parent instanceof Diagram) {
+          return ((Diagram)parent).getNodes();
+      }
+      return null;
   }  
 
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof Diagram) {
-      Vector nodes = ((Diagram)parent).getNodes();
-      if (nodes.contains(child)) return nodes.indexOf(child);
-    }
-    return -1;
-  }
-
+ 
   public boolean isLeaf(Object node) {
     return !(node instanceof Diagram && getChildCount(node) > 0);
   }
 
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
+ 
 
 }

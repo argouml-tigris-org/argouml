@@ -23,17 +23,15 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
+import java.util.Collection;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
-import org.argouml.ui.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.ui.AbstractGoRule;
+
+import ru.novosoft.uml.model_management.MPackage;
 
 public class GoModelToBaseElements extends AbstractGoRule {
     protected static Category cat = Category.getInstance(GoModelToBaseElements.class);
@@ -42,75 +40,15 @@ public class GoModelToBaseElements extends AbstractGoRule {
     return Argo.localize ("Tree", "misc.package.base-class");
   }
   
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  } 
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof MPackage) {
-      Vector eos = new Vector(((MPackage)parent).getOwnedElements());
-      java.util.Enumeration eoEnum = eos.elements();
-      while (eoEnum.hasMoreElements()) {
-	MModelElement me = (MModelElement)eoEnum.nextElement();
-	if (me instanceof MGeneralizableElement) {
-	  Collection gens = ((MGeneralizableElement)me).getGeneralizations();
-	  if (gens == null || gens.size() == 0) index--;
-	  if (index == -1) return me;
-	}
-      }
-      cat.warn("getChild not enough base elements found!");
-    }
-    throw new UnsupportedOperationException("getChild should not get here");
-  }
-
   public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
-  }
-  
-  public int getChildCount(Object parent) {
-    if (parent instanceof MPackage) {
-      int count = 0;
-      Vector eos = new Vector(((MPackage)parent).getOwnedElements());
-      java.util.Enumeration eoEnum = eos.elements();
-      while (eoEnum.hasMoreElements()) {
-	MModelElement me =(MModelElement) eoEnum.nextElement();
-	if (me instanceof MGeneralizableElement) {
-	  Collection gens = ((MGeneralizableElement)me).getGeneralizations();
-	  if (gens == null || gens.size() == 0) count++;
-	}
+      if (ModelFacade.isAPackage(parent)) {
+          return CoreHelper.getHelper().getBaseClasses(parent);
       }
-      return count;
-    }
-    return 0;
-  }
-  
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof MPackage) {
-      int count = 0;
-      Vector eos = new Vector(((MPackage)parent).getOwnedElements());
-      java.util.Enumeration eoEnum = eos.elements();
-      while (eoEnum.hasMoreElements()) {
-	MModelElement me = (MModelElement) eoEnum.nextElement();
-	if (me instanceof MGeneralizableElement) {
-	  Collection gens = ((MGeneralizableElement)me).getGeneralizations();
-	  if (gens == null || gens.size() == 0) return count;
-	  count++;
-	}
-      }
-      return count;
-    }
-    return -1;
+      return null;
   }
 
   public boolean isLeaf(Object node) {
     return !(node instanceof MPackage && getChildCount(node) > 0);
   }
-  
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
 
 }

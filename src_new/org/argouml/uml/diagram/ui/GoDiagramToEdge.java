@@ -23,18 +23,11 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-
-import org.tigris.gef.base.Diagram;
+import java.util.Collection;
 
 import org.argouml.application.api.Argo;
-import org.argouml.ui.*;
+import org.argouml.ui.AbstractGoRule;
+import org.tigris.gef.base.Diagram;
 
 public class GoDiagramToEdge extends AbstractGoRule {
 
@@ -42,47 +35,16 @@ public class GoDiagramToEdge extends AbstractGoRule {
     return Argo.localize ("Tree", "misc.diagram.edge");
   }
 
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  }
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof Diagram) {
-      Vector edges = ((Diagram)parent).getEdges();
-      return edges.elementAt(index);
-    }
-    throw
-	new UnsupportedOperationException("getChild should never be get here");
-  }
-
   public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
+      if (parent instanceof Diagram) {
+          return ((Diagram)parent).getEdges();
+      }
+      return null;
   }
 
-  public int getChildCount(Object parent) {
-    if (parent instanceof Diagram) {
-      Vector edges = ((Diagram) parent).getEdges();
-      return (edges == null) ? 0 : edges.size();
-    }
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof Diagram) {
-      Vector edges = ((Diagram)parent).getEdges();
-      if (edges.contains(child)) return edges.indexOf(child);
-    }
-    return -1;
-  }
+ 
 
   public boolean isLeaf(Object node) {
     return !(node instanceof Diagram && getChildCount(node) > 0);
   }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
-
 }

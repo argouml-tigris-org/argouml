@@ -376,7 +376,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         //     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
         s += "{\n";
 
-        Collection strs = UmlHelper.getHelper().getCore().getAttributes(cls);
+        Collection strs = UmlHelper.getHelper().getCore().getStructuralFeatures(cls);
         if (strs != null) {
             s += "\n";
             //s += "////////////////////////////////////////////////////////////////\n";
