@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,6 +45,7 @@ implements SettingsTabPanel {
     JCheckBox _preload = null;
     JCheckBox _edem = null;
     JCheckBox _profile = null;
+    JCheckBox _reloadRecent = null;
 
     public SettingsTabPreferences() {
         super();
@@ -98,6 +99,10 @@ implements SettingsTabPanel {
         _profile = createCheckBox("label_profile");
  	top.add(_profile, checkConstraints);
 
+	checkConstraints.gridy = 4;
+        _reloadRecent = createCheckBox("label_reload_recent");
+ 	top.add(_reloadRecent, checkConstraints);
+
 	add(top, BorderLayout.NORTH);
     }
 
@@ -106,6 +111,7 @@ implements SettingsTabPanel {
         _preload.setSelected(Configuration.getBoolean(Argo.KEY_PRELOAD, true));
         _edem.setSelected(Configuration.getBoolean(Argo.KEY_EDEM, true));
         _profile.setSelected(Configuration.getBoolean(Argo.KEY_PROFILE, false));
+        _reloadRecent.setSelected(Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT, false));
     }
 
     public void handleSettingsTabSave() {
@@ -113,6 +119,7 @@ implements SettingsTabPanel {
         Configuration.setBoolean(Argo.KEY_PRELOAD, _preload.isSelected());
         Configuration.setBoolean(Argo.KEY_EDEM, _edem.isSelected());
         Configuration.setBoolean(Argo.KEY_PROFILE, _profile.isSelected());
+        Configuration.setBoolean(Argo.KEY_RELOAD_RECENT_PROJECT, _reloadRecent.isSelected());
     }
 
     public void handleSettingsTabCancel() {

@@ -104,6 +104,8 @@ public class ActionSaveProject extends UMLAction {
           new Object[] {p.getURL()}
         );
       pb.showStatus (sStatus);
+      System.out.println ("setting most recent project file");
+      Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, file.getCanonicalPath());
       
       return true;
     }

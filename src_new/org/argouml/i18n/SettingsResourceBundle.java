@@ -46,6 +46,7 @@ public class SettingsResourceBundle extends ListResourceBundle {
         {"label_preload", "Preload Common Classes" },  
         {"label_edem", "Report Usage Statistics" },  
         {"label_profile", "Report on Load Times" },  
+        {"label_reload_recent", "Reload last saved project on startup" },  
         {"tab_preferences", "Preferences" },  
         {"tab_environment", "Environment" },  
 
