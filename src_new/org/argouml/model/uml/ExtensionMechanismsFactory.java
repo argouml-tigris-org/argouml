@@ -24,6 +24,8 @@
 
 package org.argouml.model.uml;
 
+import java.util.Collection;
+
 import org.argouml.kernel.ProjectManager;
 
 import ru.novosoft.uml.MFactory;
@@ -159,8 +161,10 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
         stereo.setName(theName);
         stereo.setBaseClass(ExtensionMechanismsHelper.getHelper()
 			    .getMetaModelName(me));
+        Collection models =
+            ProjectManager.getManager().getCurrentProject().getModels();
         MStereotype stereo2 =
-	    ExtensionMechanismsHelper.getHelper().getStereotype(stereo);
+	    ExtensionMechanismsHelper.getHelper().getStereotype(models, stereo);
         if (stereo2 != null) {
             stereo2.addExtendedElement(me);
             UmlFactory.getFactory().delete(stereo);

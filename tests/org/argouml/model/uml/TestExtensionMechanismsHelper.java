@@ -28,6 +28,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -61,9 +62,11 @@ public class TestExtensionMechanismsHelper extends TestCase {
         MStereotype stereo2 =
 	    ExtensionMechanismsFactory.getFactory().buildStereotype(clazz,
 								    "test2");
+        Collection models =
+            ProjectManager.getManager().getCurrentProject().getModels();
         Collection col =
 	    ExtensionMechanismsHelper.getHelper()
-	        .getAllPossibleStereotypes(clazz);
+	        .getAllPossibleStereotypes(models, clazz);
         assertTrue("stereotype not in list of possible stereotypes",
 		   col.contains(stereo1));
         assertTrue("stereotype not in list of possible stereotypes",

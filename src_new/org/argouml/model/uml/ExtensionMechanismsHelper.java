@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -154,16 +153,16 @@ public class ExtensionMechanismsHelper {
      * and be independent of the ProjectManager. 
      * Or should it not even know what a project is?
      *
+     * @param models a collection of models
      * @param stereo is the given stereotype
      * @return MStereotype
      */
-    public MStereotype getStereotype(MStereotype stereo) {
+    public MStereotype getStereotype(Collection models, MStereotype stereo) {
         if (stereo == null) return null;
         String name = stereo.getName();
         String baseClass = stereo.getBaseClass();
         if (name == null || baseClass == null) return null;
-        Iterator it2 = ProjectManager.getManager().getCurrentProject()
-	        .getModels().iterator();
+        Iterator it2 = models.iterator();
         while (it2.hasNext()) {
             MModel model = (MModel) it2.next();
             Iterator it = getStereotypes(model).iterator();
@@ -214,11 +213,11 @@ public class ExtensionMechanismsHelper {
      * @param modelElement is the model element
      * @return Collection
      */
-    public Collection getAllPossibleStereotypes(Object modelElement) {
+    public Collection getAllPossibleStereotypes(Collection models, Object modelElement) {
         MModelElement m = (MModelElement) modelElement;
         List ret = new ArrayList();
         if (m == null) return ret;
-        Iterator it = getStereotypes().iterator();
+        Iterator it = getStereotypes(models).iterator();
         String baseClass = getMetaModelName(m);
         while (it.hasNext()) {
             MStereotype stereo = (MStereotype) it.next();
@@ -272,10 +271,9 @@ public class ExtensionMechanismsHelper {
      * @return the collection of stereotypes in all models 
      *         in the current project
      */
-    public Collection getStereotypes() {
+    public Collection getStereotypes(Collection models) {
         List ret = new ArrayList();
-        Iterator it = ProjectManager.getManager().getCurrentProject()
-            .getModels().iterator();
+        Iterator it = models.iterator();
         while (it.hasNext()) {
             MModel model = (MModel) it.next();
             ret.addAll(getStereotypes(model));

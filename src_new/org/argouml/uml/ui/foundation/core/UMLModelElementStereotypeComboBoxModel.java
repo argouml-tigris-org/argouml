@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.ExtensionMechanismsHelper;
 import org.argouml.model.uml.ModelManagementHelper;
@@ -110,13 +111,15 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
                 }
 	    }
 	});
+        Collection models =
+            ProjectManager.getManager().getCurrentProject().getModels();
 	addAllUniqueModelElementsFrom(
 	    elements,
 	    paths,
 	    ExtensionMechanismsHelper.getHelper()
-	        .getAllPossibleStereotypes(elem));
+	        .getAllPossibleStereotypes(models, elem));
         setElements( ExtensionMechanismsHelper.getHelper()
-	        .getAllPossibleStereotypes(elem));
+	        .getAllPossibleStereotypes(models, elem));
     }   
 
     /**
