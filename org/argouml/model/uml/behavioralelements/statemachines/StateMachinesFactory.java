@@ -440,10 +440,10 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * @return MTransition The resulting transition between source an state
      */
     public MTransition buildTransition(Object source, Object target) {
-        if (source instanceof MState && target instanceof MState) {
+        if (source instanceof MStateVertex && target instanceof MStateVertex) {
             MTransition trans = createTransition();
-            trans.setSource((MState)source);
-            trans.setTarget((MState)target);
+            trans.setSource((MStateVertex)source);
+            trans.setTarget((MStateVertex)target);
             trans.setStateMachine(StateMachinesHelper.getHelper().getStateMachine(source));
             return trans;
         }
