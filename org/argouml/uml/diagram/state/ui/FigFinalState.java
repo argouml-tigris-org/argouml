@@ -43,7 +43,6 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
-import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /** Class to display graphics for a UML MState in a diagram. */
@@ -63,7 +62,7 @@ public class FigFinalState extends FigStateVertex {
     // instance variables
 
     private FigCircle inCircle;
-    private FigCircle outCircle;
+    //private FigCircle outCircle;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -76,12 +75,11 @@ public class FigFinalState extends FigStateVertex {
         Color handleColor = Globals.getPrefs().getHandleColor();
         x = 45;
         y = 0;
-        FigRect bigPort = new FigRect(x, y, width, height);
-        bigPort.setLineWidth(0);
-        bigPort.setFilled(false);
-        setBigPort(bigPort);
+        //FigRect bigPort = new FigRect(x, y, width, height);
+        //bigPort.setLineWidth(0);
+        //bigPort.setFilled(false);
         
-        outCircle =
+        FigCircle bigPort =
             new FigCircle(x, y, width, height, Color.black, Color.white);
         inCircle =
             new FigCircle(
@@ -92,7 +90,7 @@ public class FigFinalState extends FigStateVertex {
         		  handleColor,
         		  Color.black);
         
-        outCircle.setLineWidth(1);
+        bigPort.setLineWidth(1);
         inCircle.setLineWidth(0);
         
         setNameFig(new FigText(x + 10, y + 22, 0, 21, true));
@@ -105,9 +103,9 @@ public class FigFinalState extends FigStateVertex {
         getNameFig().setJustificationByName("center");
         	
         addFig(bigPort);
-        addFig(outCircle);
         addFig(inCircle);
         addFig(getNameFig());
+        setBigPort(bigPort);
         
         setBlinkPorts(false); //make port invisble unless mouse enters
         Rectangle r = getBounds();
@@ -129,9 +127,10 @@ public class FigFinalState extends FigStateVertex {
     public Object clone() {
         FigFinalState figClone = (FigFinalState) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone.setBigPort((FigRect) it.next());
-        figClone.outCircle = (FigCircle) it.next();
+        //figClone.setBigPort((FigRect) it.next());
+        figClone.setBigPort((FigCircle) it.next());
         figClone.inCircle = (FigCircle) it.next();
+        
         return figClone;
     }
 
@@ -173,14 +172,14 @@ public class FigFinalState extends FigStateVertex {
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
-        outCircle.setLineColor(col);
+        getBigPort().setLineColor(col);
     }
     
     /**
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
-        return outCircle.getLineColor();
+        return getBigPort().getLineColor();
     }
 
     /**
@@ -214,14 +213,14 @@ public class FigFinalState extends FigStateVertex {
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
-        outCircle.setLineWidth(w);
+        getBigPort().setLineWidth(w);
     }
     
     /**
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
-	return outCircle.getLineWidth();
+	return getBigPort().getLineWidth();
     }
 
     ////////////////////////////////////////////////////////////////
@@ -250,20 +249,8 @@ public class FigFinalState extends FigStateVertex {
         _y = boundY;
         getBigPort().setX(boundX);
         getBigPort().setY(boundY);
-        outCircle.setX(boundX);
-        outCircle.setY(boundY);
         inCircle.setX(boundX + 5);
         inCircle.setY(boundY + 5);
-        // bigPort.setBounds(boundX, boundY, boundW, boundH);
-        // outCircle.setBounds(boundX, boundY, boundW, boundH);
-    }
-
-    /**
-     * Returns the outCircle.
-     * @return FigCircle
-     */
-    public FigCircle getOutCircle() {
-	return outCircle;
     }
 
     /**
@@ -273,15 +260,16 @@ public class FigFinalState extends FigStateVertex {
      */
     public Vector getGravityPoints() {
         Vector ret = new Vector();
-        int cx = outCircle.center().x;
-        int cy = outCircle.center().y;
-        int radius = Math.round(outCircle.getWidth() / 2) + 1;
+        int cx = getBigPort().center().x;
+        int cy = getBigPort().center().y;
+        int radius = Math.round(getBigPort().getWidth() / 2) + 1;
         final int maxPoints = 20;
         Point point = null;
+        final double pi2 = Math.PI * 2;
         for (int i = 0; i < maxPoints; i++) {
-            int x = (int) (cx + Math.cos(2 * Math.PI / maxPoints * i) * radius);
-            int y = (int) (cy + Math.sin(2 * Math.PI / maxPoints * i) * radius);
-            point = new Point(x, y);
+            int px = (int) (cx + Math.cos(pi2 / maxPoints * i) * radius);
+            int py = (int) (cy + Math.sin(pi2 / maxPoints * i) * radius);
+            point = new Point(px, py);
             ret.add(point);
         }
         return ret;
