@@ -538,6 +538,69 @@ the javadoc documentation is generated and put into
 <filename class="directory">argouml/build/javadocs</filename>.
 </para>
 	</sect3>
+        <sect3>
+          <title>Building one of the modules</title>
+          <para>
+If you want to run ArgoUML with modules enabled the 
+<filename>build.xml</filename>s are set up to do this in two ways:
+            <orderedlist>
+              <listitem>
+                <para>Test just one module</para>
+                <orderedlist>
+                  <listitem>
+                    <para>Build argouml, the package</para>
+                    <para>
+This is done with <command>ant package</command>
+in the <filename class="directory">argouml/src_new</filename>-directory.
+</para>
+                  </listitem>
+                  <listitem>
+                    <para>Run the module</para>
+                    <para>
+This is done with <command>ant run</command>-command 
+in the 
+<filename class="directory">
+argouml/modules/<replacable>whatever</replacable>
+</filename>-directory.
+</para>
+                  </listitem>
+                </orderedlist>
+              </listitem>
+              <listitem>
+                <para>Test several modules together</para>
+                <orderedlist>
+                  <listitem>
+                    <para>Build argouml, the package</para>
+                    <para>
+This is done with <command>ant package</command>
+in the <filename class="directory">argouml/src_new</filename>-directory.
+</para>
+                  </listitem>
+                  <listitem>
+                    <para>Compile and install the modules</para>
+                    <para>
+This is done with <command>ant install</command>-command
+in each of the 
+<filename class="directory">
+argouml/modules/<replacable>whatever</replacable>
+</filename>-directories.
+</para>
+                  </listitem>
+                  <listitem>
+                    <para>Start argouml</para>
+                    <para>
+This is done with <command>ant run</command>
+in the <filename class="directory">argouml/src_new</filename>-directory.
+</para>
+                  </listitem>
+                </orderedlist>
+                <para>
+This will start ArgoUML with all modules available.
+</para>
+              </listitem>
+            </orderedlist>         
+</para>
+        </sect3>
       </sect2>
       <sect2>
 	<title>How documentation is presented</title>
