@@ -79,24 +79,14 @@ public class FigClass extends FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // constants
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     //These are the positions of child figs inside this fig
     //They mst be added in the constructor in this order.
     private static final int BLINDER_POSN = 3;
     private static final int OPERATIONS_POSN = 4;
     private static final int ATTRIBUTES_POSN = 5;
 
-    /**
-     * Manages residency of a class within a component on a deployment
-     * diagram. Not clear why it is public, or even why it is an instance
-     * variable (rather than local to the method).<p>
-     *
-     * not currently used. should be lazily instantiated in future.
-     */
-//    public Object resident =
-//	UmlFactory.getFactory().getCore().createElementResidence();
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
     /**
      * Text highlighted by mouse actions on the diagram.<p>
@@ -116,6 +106,7 @@ public class FigClass extends FigNodeModelElement
      */
     private Object resident =
             Model.getCoreFactory().createElementResidence();
+
     ////////////////////////////////////////////////////////////////
     // constructors
 
