@@ -77,6 +77,19 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     setNamespace(m);
   }
 
+    /** method to perform a number of important initializations of a <I>Deployment Diagram</I>. 
+     * 
+     * @see      each diagram type has a similar <I>UMLxxxDiagram</I> class.
+     *
+     * @param m  MNamespace from the model in NSUML...
+     *
+     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to <I>LayerPerspectiveMutable</I>. 
+     *           This class is a child of <I>LayerPerspective</I> and was implemented 
+     *           to correct some difficulties in changing the model. <I>lay</I> is used 
+     *           mainly in <I>LayerManager</I>(GEF) to control the adding, changing and 
+     *           deleting layers on the diagram...
+     *           psager@tigris.org   Jan. 24, 2oo2
+     */        
   public void setNamespace(MNamespace m) {
     super.setNamespace(m);
     DeploymentDiagramGraphModel gm = new DeploymentDiagramGraphModel(); 

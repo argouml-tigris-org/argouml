@@ -133,19 +133,36 @@ public class UMLActivityDiagram extends UMLDiagram {
 		else
 			System.out.println("ActivityGraph without context not yet possible :-(");
 	}
-
-  public void setup(MNamespace m, MActivityGraph agraph) {
-    super.setNamespace(m);
-    StateDiagramGraphModel gm = new StateDiagramGraphModel();
-    gm.setNamespace(m);
-	if (agraph != null) gm.setMachine(agraph);
-    setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
-    setLayer(lay);
-    StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
-    lay.setGraphNodeRenderer(rend);
-    lay.setGraphEdgeRenderer(rend);
-  }
+        
+    /** method to perform a number of important initializations of an <I>Activity Diagram</I>. 
+     * 
+     * @see      each diagram type has a similar <I>UMLxxxDiagram</I> class.
+     *
+     * @param m  MNamespace from the model in NSUML...
+     *
+     * @param agraph MActivityGraph from the model in NSUML...
+     *
+     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to <I>LayerPerspectiveMutable</I>. 
+     *           This class is a child of <I>LayerPerspective</I> and was implemented 
+     *           to correct some difficulties in changing the model. <I>lay</I> is used 
+     *           mainly in <I>LayerManager</I>(GEF) to control the adding, changing and 
+     *           deleting layers on the diagram...
+     *           psager@tigris.org   Jan. 24, 2oo2
+     */                
+        public void setup(MNamespace m, MActivityGraph agraph) {
+            super.setNamespace(m);
+            StateDiagramGraphModel gm = new StateDiagramGraphModel();
+            gm.setNamespace(m);
+            if (agraph != null) {
+                gm.setMachine(agraph);
+            }
+            setGraphModel(gm);
+            LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
+            setLayer(lay);
+            StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
+            lay.setGraphNodeRenderer(rend);
+            lay.setGraphEdgeRenderer(rend);
+        }
 
     public MModelElement getOwner() {
 	StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
