@@ -32,12 +32,16 @@
 
 <h2>Package Specification</h2>
 
- (none)
-
-
+ 
 <h2>Related Documentation </h2>
 
- (none)
+ (antlr.jar is the runtime library of the Antlr (see antlr.org) parser generator.
+It generates a Java parser from the java.g Java grammar. It's used in the Argo
+reverse engineering. antlr.jar is only the runtime lib, that you need to run a
+parser generated with Antlr, while antlrall.jar allows you to build the parser
+from the grammar. So build generateparser should only work with antlrall.jar ,
+while you could run Argo with antlr.jar only.
+contributed by Andreas R.
 
 </body>
 </html>
