@@ -295,10 +295,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-    <zip zipfile="${Name}-${version}.zip" basedir="${build.dir}" includes="*.jar"/>
-    <tar tarfile="${Name}-${version}.tar" basedir="${build.dir}" includes="*.jar"/>
-    <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar" />
-    <delete file="${Name}-${version}.tar"/>
+    <zip zipfile="../${Name}-${version}.zip" basedir="${build.dir}" includes="gef.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar"/>
+    <tar tarfile="../${Name}-${version}.tar" basedir="${build.dir}" includes="gef.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar"/>
+    <gzip zipfile="../${Name}-${version}.tar.gz" src="../${Name}-${version}.tar" />
+    <delete file="../${Name}-${version}.tar"/>
   </target>
 
   <!-- =================================================================== -->
@@ -307,11 +307,26 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <target name="dist-src" depends="init">
     <echo message="Building the source distribution files (zip,tar)"/>
     <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
-    <zip zipfile="${Name}-${version}-src.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak"/>
-    <tar tarfile="${Name}-${version}-src.tar" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak"/>
-    <gzip zipfile="${Name}-${version}-src.tar.gz" src="${Name}-${version}-src.tar" />
-    <delete file="${Name}-${version}-src.tar"/>
+    <zip zipfile="../${Name}-${version}-src.zip" basedir="${src.dir}/.." excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak" includes="src_new/**"/>
+    <tar tarfile="../${Name}-${version}-src.tar" basedir="${src.dir}/.." excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak" includes="src_new/**"/>
+    <gzip zipfile="../${Name}-${version}-src.tar.gz" src="../${Name}-${version}-src.tar" />
+    <delete file="../${Name}-${version}-src.tar"/>
   </target>                                                                                                                                                                    
+
+  <!-- =================================================================== -->
+  <!-- Creates the lib distribution                                            -->
+  <!-- =================================================================== -->
+  <target name="dist-lib" depends="init">
+    <echo message="Building the library distribution files (zip,tar)"/>
+    <zip zipfile="../${Name}-${version}-libs.zip" basedir="${lib.dir}/.." includes="lib/gef.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <tar tarfile="../${Name}-${version}-libs.tar" basedir="${lib.dir}/.." includes="lib/gef.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <gzip zipfile="../${Name}-${version}-libs.tar.gz" src="../${Name}-${version}-libs.tar" />
+    <delete file="../${Name}-${version}-libs.tar"/>
+  </target>                                                                                                                   
+  <!-- =================================================================== -->
+  <!-- Creates the whole distribution                                            -->
+  <!-- =================================================================== -->
+  <target name="dist-all" depends="dist,dist-src,dist-lib"/>
 
 
   <!-- =================================================================== -->
@@ -323,8 +338,9 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
   <target name="distclean" depends="clean">
     <delete dir="${dist.dir}"/>
-    <delete file="${Name}-${version}.zip"/>    
-    <delete file="${Name}-${version}.tar.gz"/>    
+    <delete>
+       <fileset dir=".." includes="${Name}-${version}*" />
+    </delete>
   </target>
 
 
