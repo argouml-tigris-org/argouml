@@ -24,6 +24,7 @@
 package uci.uml.critics;
 
 import uci.argo.kernel.*;
+import uci.uml.Foundation.Core.*;
 
 /** "Abstract" Critic subclass that captures commonalities among all
  *  critics in the UML domain. */

@@ -1,20 +1,30 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
+
 
 // File: CrNoInstanceVariables.java
 // Classes: CrNoInstanceVariables
@@ -26,6 +36,7 @@ package uci.uml.critics;
 import java.util.*;
 import uci.argo.kernel.*;
 import uci.util.*;
+import uci.uml.Foundation.Core.*;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -49,8 +60,8 @@ public class CrNoInstanceVariables extends CrUML {
   protected void sd(String s) { setDescription(s); }
   
   public boolean predicate(Object dm, Designer dsgr) {
-    if (!(dm instanceof uci.uml.Foundation.Core.Class)) return NO_PROBLEM;
-    uci.uml.Foundation.Core.Class cls = (uci.uml.Foundation.Core.Class) dm;
+    if (!(dm instanceof MMClass)) return NO_PROBLEM;
+    MMClass cls = (MMClass) dm;
     Vector str = cls.getStructuralFeature();
     if (str == null || str.size() == 0) return PROBLEM_FOUND;
     else return NO_PROBLEM;

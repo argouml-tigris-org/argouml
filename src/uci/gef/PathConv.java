@@ -28,20 +28,25 @@ import java.awt.*;
 import java.io.*;
 import java.util.*;
 
-public abstract class PathConv
-{
-	Fig pathFigure; 	// The intermediate path figure
-	
-	public PathConv(Fig theFig)
-	{
-		pathFigure = theFig;
-	}
+/** Abstract class that defines a common interface to all of
+ *  path-to-coord mapping objects.  These objects store some
+ *  information about a point that is defined relative to a path
+ *  (e.g., along a FigEdige) and provide methods to get the
+ *  coordinates (x, y) for that point.  This allows us to place labels
+ *  along a FigEdge and have the label stay in the right place, even
+ *  if the FigEdge moves. */
 
-	abstract public Point getPoint();
-	abstract public void setClosestPoint(Point newPoint);
+public abstract class PathConv {
+  protected Fig _pathFigure; 	// The intermediate path figure
 
-  protected Point getOffsetAmount(Point p1, Point p2, int offset)
-  {
+  public PathConv(Fig theFig) {
+    _pathFigure = theFig;
+  }
+
+  abstract public Point getPoint();
+  abstract public void setClosestPoint(Point newPoint);
+
+  protected Point getOffsetAmount(Point p1, Point p2, int offset) {
     // slope of the line we're finding the normal to
     // is slope, and the normal is the negative reciprocal
     // slope is (p1.y - p2.y) / (p1.x - p2.x)
@@ -53,12 +58,15 @@ public abstract class PathConv
     // find the point offset on the line that gives a 
     // correct offset
 
-    double a = offset / Math.sqrt(recipnumerator * recipnumerator+ recipdenominator * recipdenominator);
-    Point newPoint = new Point((int) (recipdenominator * a), (int) (recipnumerator * a));
+    double a = offset / Math.sqrt(recipnumerator * recipnumerator +
+				  recipdenominator * recipdenominator);
+    Point newPoint = new Point((int) (recipdenominator * a),
+			       (int) (recipnumerator * a));
 
-    System.out.println("p1=" + p1 + " p2=" + p2 + " off=" + offset);
-    System.out.println("a=" + a + " rn=" + recipnumerator + " rd=" + recipdenominator + " nP=" + newPoint);
+    //System.out.println("p1=" + p1 + " p2=" + p2 + " off=" + offset);
+    //System.out.println("a=" + a + " rn=" + recipnumerator +
+    //" rd=" + recipdenominator + " nP=" + newPoint);
 
     return newPoint;
   }
-}
+} /* end class PathConv */

@@ -126,15 +126,15 @@ public class ModePlace extends Mode {
     GraphModel gm = _editor.getGraphModel();
     if (!(gm instanceof MutableGraphModel)) return;
 
-    _editor.add(_pers);
-
     MutableGraphModel mgm = (MutableGraphModel) gm;
-    mgm.addNode(_node);
-    
-    if (_node instanceof GraphNodeHooks)
-      ((GraphNodeHooks)_node).postPlacement(_editor);
+    if (mgm.canAddNode(_node)) {
+      _editor.add(_pers);
+      mgm.addNode(_node);
+      if (_node instanceof GraphNodeHooks)
+	((GraphNodeHooks)_node).postPlacement(_editor);
+      _editor.getSelectionManager().select(_pers);
+    }
     done();
-    _editor.getSelectionManager().select(_pers);
     me.consume();
   }
 

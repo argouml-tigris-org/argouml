@@ -1,3 +1,35 @@
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
+// File: ClassDiagramGraphModel.java
+// Classes: ClassDiagramGraphModel
+// Original Author: jrobbins@ics.uci.edu
+// $Id$
+
+
 package uci.uml.visual;
 
 import java.util.*;
@@ -7,6 +39,10 @@ import uci.graph.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
 
+
+/** This class defines a bridge between the UML meta-model
+ *  representation of the design and the GraphModel interface used by
+ *  GEF.  This class handles only UML Class digrams.  */
 
 public class ClassDiagramGraphModel extends MutableGraphSupport
 implements MutableGraphModel, VetoableChangeListener {
@@ -20,7 +56,7 @@ implements MutableGraphModel, VetoableChangeListener {
    *  already have a model, they are placed in the "home model".
    *  Also, elements from other models will have their FigNodes add a
    *  line to say what their model is. */
-   
+
   protected Model _model;
 
   ////////////////////////////////////////////////////////////////
@@ -35,7 +71,7 @@ implements MutableGraphModel, VetoableChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // GraphModel implementation
-  
+
   /** Return all nodes in the graph */
   public Vector getNodes() { return _nodes; }
 
@@ -45,10 +81,8 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Return all ports on node or edge */
   public Vector getPorts(Object nodeOrEdge) {
     Vector res = new Vector();  //wasteful!
-    if (isUMLClass(nodeOrEdge))
-      res.addElement(nodeOrEdge);
-    if (isUMLInterface(nodeOrEdge))
-      res.addElement(nodeOrEdge);
+    if (nodeOrEdge instanceof MMClass) res.addElement(nodeOrEdge);
+    if (nodeOrEdge instanceof Interface) res.addElement(nodeOrEdge);
     return res;
   }
 
@@ -60,8 +94,8 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Return all edges going to given port */
   public Vector getInEdges(Object port) {
     Vector res = new Vector(); //wasteful!
-    if (isUMLClass(port)) {
-      uci.uml.Foundation.Core.Class cls = (uci.uml.Foundation.Core.Class) port;
+    if (port instanceof MMClass) {
+      MMClass cls = (MMClass) port;
       Vector ends = cls.getAssociationEnd();
       if (ends == null) return res; // empty Vector 
       java.util.Enumeration endEnum = ends.elements();
@@ -70,7 +104,7 @@ implements MutableGraphModel, VetoableChangeListener {
 	res.addElement(ae.getAssociation());
       }
     }
-    if (isUMLInterface(port)) {
+    if (port instanceof Interface) {
       // needs-more-work
     }
     return res;
@@ -102,16 +136,20 @@ implements MutableGraphModel, VetoableChangeListener {
     System.out.println("needs-more-work getDestPort");
     return null;
   }
-    
+
 
   ////////////////////////////////////////////////////////////////
   // MutableGraphModel implementation
-  
+
   /** Return true if the given object is a valid node in this graph */
-  public boolean canAddNode(Object node) { return true; }
+  public boolean canAddNode(Object node) {
+    return (node instanceof MMClass) || (node instanceof Interface);
+  }
 
   /** Return true if the given object is a valid edge in this graph */
-  public boolean canAddEdge(Object edge)  { return true; }
+  public boolean canAddEdge(Object edge)  {
+    return (edge instanceof Association) || (edge instanceof Generalization);
+  }
 
   /** Remove the given node from the graph. */
   public void removeNode(Object node) {
@@ -179,27 +217,24 @@ implements MutableGraphModel, VetoableChangeListener {
   public Object connect(Object fromPort, Object toPort,
 			java.lang.Class edgeClass) {
     try {
-    if (isUMLClass(fromPort) && isUMLClass(toPort)) {
-      uci.uml.Foundation.Core.Class fromCls =
-	(uci.uml.Foundation.Core.Class) fromPort;
-      uci.uml.Foundation.Core.Class toCls =
-	(uci.uml.Foundation.Core.Class) toPort;
-
-      if (edgeClass == Generalization.class) {
-	Generalization gen = new Generalization(fromCls, toCls);
-	addEdge(gen);
-	return gen;
+      if ((fromPort instanceof MMClass) && (toPort instanceof MMClass)) {
+	MMClass fromCls = (MMClass) fromPort;
+	MMClass toCls = (MMClass) toPort;
+	if (edgeClass == Generalization.class) {
+	  Generalization gen = new Generalization(fromCls, toCls);
+	  addEdge(gen);
+	  return gen;
+	}
+	else if (edgeClass == Association.class) {
+	  Association asc = new Association(fromCls, toCls);
+	  addEdge(asc);
+	  return asc;
+	}
+	else {
+	  System.out.println("asdwwads");
+	  return null;
+	}
       }
-      else if (edgeClass == Association.class) {
-	Association asc = new Association(fromCls, toCls);
-	addEdge(asc);
-	return asc;
-      }
-      else {
-	System.out.println("asdwwads");
-	return null;
-      }
-    }
     }
     catch (java.beans.PropertyVetoException ex) { }
     System.out.println("should not enter here! connect3");
@@ -230,27 +265,5 @@ implements MutableGraphModel, VetoableChangeListener {
     }
   }
 
-
-  ////////////////////////////////////////////////////////////////
-  // utility methods
-
-  protected boolean isUMLClass(Object o) {
-    return (o instanceof uci.uml.Foundation.Core.Class);
-  }
-
-  protected boolean isUMLInterface(Object o) {
-    return (o instanceof uci.uml.Foundation.Core.Interface);
-  }
-
-  
 } /* end class ClassDiagramGraphModel */
 
-
-//   protected Model _model;
-  
-//   ////////////////////////////////////////////////////////////////
-//   // contructors
-
-//   public ClassDiagramGraphModel(Model m) {
-//     _model = m;
-//   }

@@ -1,3 +1,30 @@
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
+
 package uci.uml.ui;
 
 //import jargo.kernel.*;
@@ -60,8 +87,6 @@ implements DocumentListener, ItemListener, ChangeListener {
 
   SpacerPanel _spacer = new SpacerPanel();
 
-  boolean _ignoreEvents = false;
-  
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelAssoc() {
@@ -220,7 +245,6 @@ implements DocumentListener, ItemListener, ChangeListener {
     boolean navA = endA.getIsNavigable();
     boolean navB = endB.getIsNavigable();
 
-    _ignoreEvents = true;
     _roleAField.setText(roleAStr);
     _roleBField.setText(roleBStr);
     _multAField.setSelectedItem(mA);
@@ -229,7 +253,7 @@ implements DocumentListener, ItemListener, ChangeListener {
     _aggBField.setSelectedItem(akB);
     _navAField.getModel().setSelected(navA);
     _navBField.getModel().setSelected(navB);
-    _ignoreEvents = false;
+    
   }
 
 
@@ -237,8 +261,7 @@ implements DocumentListener, ItemListener, ChangeListener {
   public void setTargetVisibility() {
     if (_target == null) return;
 //     VisibilityKind vk = (VisibilityKind) _visField.getSelectedItem();
-//     uci.uml.Foundation.Core.Attribute attr =
-//       (uci.uml.Foundation.Core.Attribute) _target;
+//     Attribute attr = (Attribute) _target;
 //     attr.setVisibility(vk);
   }
 
@@ -279,8 +302,7 @@ implements DocumentListener, ItemListener, ChangeListener {
     if (_target == null) return;
     AggregationKind aggA = (AggregationKind) _aggAField.getSelectedItem();
     AggregationKind aggB = (AggregationKind) _aggBField.getSelectedItem();
-    if (aggA == null) { System.out.println("null A!!!"); return;}
-    if (aggB == null) { System.out.println("null B!!!" + aggB.getClass()); return;} 
+    //if (aggA == null || aggB == null) return;
     Association asc = (Association) _target;
     Vector conns = asc.getConnection();
     if (conns == null || conns.size() != 2) return;
@@ -365,7 +387,6 @@ implements DocumentListener, ItemListener, ChangeListener {
   }
 
   public void itemStateChanged(ItemEvent e) {
-    if (_ignoreEvents) return;
     Object src = e.getSource();
 //     if (src == _visAField) {
 //       System.out.println("assoc vis A now is " +
@@ -387,7 +408,7 @@ implements DocumentListener, ItemListener, ChangeListener {
 			 _multBField.getSelectedItem());
       setMult();
     }
-    else if (src == _aggAField) {
+    if (src == _aggAField) {
       System.out.println("assoc agg A now is " +
 			 _aggAField.getSelectedItem());
       setAgg();
@@ -397,6 +418,7 @@ implements DocumentListener, ItemListener, ChangeListener {
 			 _aggBField.getSelectedItem());
       setAgg();
     }
+    
   }
 
 

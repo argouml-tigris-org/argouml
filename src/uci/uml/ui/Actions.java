@@ -1,3 +1,30 @@
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
+
 package uci.uml.ui;
 
 import java.util.*;
@@ -11,6 +38,9 @@ import uci.util.*;
 import uci.argo.kernel.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
+import uci.uml.Behavioral_Elements.Use_Cases.*;
 import uci.uml.Model_Management.*;
 import uci.uml.visual.*;
 
@@ -46,14 +76,22 @@ public class Actions {
   
   public static UMLAction CreateMultiple = new ActionCreateMultiple();
   public static UMLAction ClassWizard = new ActionClassWizard();
-  public static UMLAction Class = new ActionClass();
-  public static UMLAction Interface = new ActionInterface();
-  public static UMLAction Attr = new ActionAttr();
-  public static UMLAction Oper = new ActionOper();
 
   public static UMLAction Model = new ActionModel();
   public static UMLAction ClassDiagram = new ActionClassDiagram();
+  public static UMLAction UseCaseDiagram = new ActionUseCaseDiagram();
+  public static UMLAction StateDiagram = new ActionStateDiagram();
 
+  public static UMLAction Class = new ActionClass();
+  public static UMLAction Interface = new ActionInterface();
+  public static UMLAction Actor = new ActionActor();
+  public static UMLAction UseCase = new ActionUseCase();
+  public static UMLAction State = new ActionState();
+  public static UMLAction Pseudostate = new ActionPseudostate();
+  public static UMLAction Package = new ActionPackage();
+  public static UMLAction Instance = new ActionInstance();
+  public static UMLAction Attr = new ActionAttr();
+  public static UMLAction Oper = new ActionOper();
 
   public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
   
@@ -141,9 +179,10 @@ class UMLAction extends AbstractAction {
     }
     return res;
   }
-  
 } /* end class UMLAction */
 
+////////////////////////////////////////////////////////////////
+// file menu actions
 
 class ActionNew extends UMLAction {
   public ActionNew() { super("New..."); }
@@ -192,9 +231,10 @@ class ActionExit extends UMLAction {
     //needs-more-work: are you sure you want to quit?
     System.exit(0);
   }
-
 } /* end class ActionExit */
 
+////////////////////////////////////////////////////////////////
+// generic editing actions
 
 class ActionUndo extends UMLAction {
   public ActionUndo() { super("Undo"); }
@@ -216,6 +256,9 @@ class ActionPaste extends UMLAction {
   public ActionPaste() { super("Paste"); }
 } /* end class ActionPaste */
 
+
+////////////////////////////////////////////////////////////////
+// navigation actions
 
 class ActionNavUp extends UMLAction {
   public ActionNavUp() { super("Navigate Up"); }
@@ -298,10 +341,70 @@ class ActionClassWizard extends UMLAction {
   }
 } /* end class ActionClassWizard */
 
+////////////////////////////////////////////////////////////////
+// diagram creation actions
+
+class ActionClassDiagram extends UMLAction {
+  public ActionClassDiagram() { super("ClassDiagram"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("making class diagram...");
+    //_cmdCreateNode.doIt();
+    Project p = ProjectBrowser.TheInstance.getProject();
+    try {
+      p.addDiagram(new UMLClassDiagram(p.getCurrentModel()));
+    }
+    catch (PropertyVetoException pve) { }
+  }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionClassDiagram */
+
+class ActionUseCaseDiagram extends UMLAction {
+  public ActionUseCaseDiagram() { super("UseCaseDiagram"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("making use case diagram...");
+    //_cmdCreateNode.doIt();
+    Project p = ProjectBrowser.TheInstance.getProject();
+    try {
+      p.addDiagram(new UMLUseCaseDiagram(p.getCurrentModel()));
+    }
+    catch (PropertyVetoException pve) { }
+  }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionUseCaseDiagram */
+
+class ActionStateDiagram extends UMLAction {
+  public ActionStateDiagram() { super("StateDiagram"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("making state diagram...");
+    //_cmdCreateNode.doIt();
+    Project p = ProjectBrowser.TheInstance.getProject();
+    try {
+      p.addDiagram(new UMLStateDiagram(p.getCurrentModel()));
+    }
+    catch (PropertyVetoException pve) { }
+  }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionStateDiagram */
+
+
+////////////////////////////////////////////////////////////////
+// model element creation actions
 
 class ActionClass extends UMLAction {
   uci.gef.Cmd _cmdCreateNode = new
-  uci.gef.CmdCreateNode(uci.uml.Foundation.Core.Class.class, "Class");
+  uci.gef.CmdCreateNode(MMClass.class, "Class");
   
   public ActionClass() { super("Class"); }
 
@@ -313,13 +416,12 @@ class ActionClass extends UMLAction {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
   }
-  
 } /* end class ActionClass */
 
 class ActionInterface extends UMLAction {
   uci.gef.Cmd _cmdCreateNode = new
-  uci.gef.CmdCreateNode(uci.uml.Foundation.Core.Interface.class, "Interface");
-  
+  uci.gef.CmdCreateNode(Interface.class, "Interface");
+
   public ActionInterface() { super("Interface"); }
 
   public void actionPerformed(ActionEvent e) {
@@ -330,8 +432,103 @@ class ActionInterface extends UMLAction {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
   }
-  
 } /* end class ActionInterface */
+
+class ActionActor extends UMLAction {
+  uci.gef.Cmd _cmdCreateNode = new
+  uci.gef.CmdCreateNode(Actor.class, "Actor");
+
+  public ActionActor() { super("Actor"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("making actor...");
+    _cmdCreateNode.doIt();
+  }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionActor */
+
+class ActionUseCase extends UMLAction {
+  uci.gef.Cmd _cmdCreateNode = new
+  uci.gef.CmdCreateNode(UseCase.class, "UseCase");
+
+  public ActionUseCase() { super("UseCase"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("making Use Case...");
+    _cmdCreateNode.doIt();
+  }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionUseCase */
+
+class ActionState extends UMLAction {
+  uci.gef.Cmd _cmdCreateNode = new
+  uci.gef.CmdCreateNode(State.class, "State");
+
+  public ActionState() { super("State"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("making state...");
+    _cmdCreateNode.doIt();
+  }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionState */
+
+class ActionPseudostate extends UMLAction {
+  uci.gef.Cmd _cmdCreateNode = new
+  uci.gef.CmdCreateNode(Pseudostate.class, "Pseudostate");
+
+  public ActionPseudostate() { super("Pseudostate"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("making Pseudostate...");
+    _cmdCreateNode.doIt();
+  }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionPseudostate */
+
+class ActionPackage extends UMLAction {
+  uci.gef.Cmd _cmdCreateNode = new
+  uci.gef.CmdCreateNode(Subsystem.class, "Package");
+
+  public ActionPackage() { super("Package"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("making Package...");
+    _cmdCreateNode.doIt();
+  }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionPackage */
+
+class ActionInstance extends UMLAction {
+  uci.gef.Cmd _cmdCreateNode = new
+  uci.gef.CmdCreateNode(Instance.class, "Instance");
+
+  public ActionInstance() { super("Instance"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("making Instance...");
+    _cmdCreateNode.doIt();
+  }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionInstance */
 
 class ActionAttr extends UMLAction {
   // needs-more-work: should be part of java binding or common elements
@@ -359,13 +556,12 @@ class ActionAttr extends UMLAction {
     Object target = pb.getTarget();
     return super.shouldBeEnabled() && target instanceof Classifier;
   }
-  
 } /* end class ActionAttr */
 
 class ActionOper extends UMLAction {
   // needs-more-work: should be part of java binding or common elements
   public static DataType VOID_TYPE = new DataType("void");
-  
+
   public ActionOper() { super("Operation"); }
 
   public void actionPerformed(ActionEvent e) {
@@ -387,7 +583,6 @@ class ActionOper extends UMLAction {
     Object target = pb.getTarget();
     return super.shouldBeEnabled() && target instanceof Classifier;
   }
-  
 } /* end class ActionOper */
 
 
@@ -395,7 +590,6 @@ class ActionModel extends UMLAction {
   //uci.gef.Cmd _cmdCreateNode = new
   //uci.gef.CmdCreateNode(uci.uml.Model_Management.Model.class, "Model");
   // needs-more-work: need FigModel and UMLPackageDiagram
-  
   public ActionModel() { super("Model"); }
 
   public void actionPerformed(ActionEvent e) {
@@ -405,39 +599,17 @@ class ActionModel extends UMLAction {
     try {
       p.addModel(new Model());
     }
-    catch (PropertyVetoException pve) { }    
-  }
-  
-  public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null;
-  }
-  
-} /* end class ActionModel */
-
-
-class ActionClassDiagram extends UMLAction {
-  public ActionClassDiagram() { super("ClassDiagram"); }
-
-  public void actionPerformed(ActionEvent e) {
-    System.out.println("making class diagram...");
-    //_cmdCreateNode.doIt();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    try {
-      p.addDiagram(new UMLClassDiagram(p.getCurrentModel()));
-    }
     catch (PropertyVetoException pve) { }
   }
+
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
   }
-  
 } /* end class ActionModel */
 
-
 ////////////////////////////////////////////////////////////////
-
+// general user interface actions
 
 class ActionAboutArgoUML extends UMLAction {
   public ActionAboutArgoUML() { super("About Argo/UML"); }
@@ -447,12 +619,11 @@ class ActionAboutArgoUML extends UMLAction {
     Project p = ProjectBrowser.TheInstance.getProject();
   }
   public boolean shouldBeEnabled() { return true; }
-  
 } /* end class ActionAboutArgoUML */
 
 
 ////////////////////////////////////////////////////////////////
-
+// critiquing related actions
 
 class ActionAutoCritique extends UMLAction {
   public ActionAutoCritique() { super("Toggle Auto-Critique"); }
@@ -461,8 +632,8 @@ class ActionAutoCritique extends UMLAction {
     Designer d = Designer.TheDesigner;
     boolean b = d.getAutoCritique();
     d.setAutoCritique(!b);
-    System.out.println("setting autoCritique to " + !b);    
-  }  
+    System.out.println("setting autoCritique to " + !b);
+  }
 } /* end class ActionAutoCritique */
 
 class ActionOpenDecisions extends UMLAction {
@@ -470,7 +641,7 @@ class ActionOpenDecisions extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.TheInstance);
     d.show();
-  }  
+  }
 } /* end class ActionOpenDecisions */
 
 class ActionOpenGoals extends UMLAction {

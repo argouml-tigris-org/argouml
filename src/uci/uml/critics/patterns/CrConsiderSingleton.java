@@ -66,8 +66,8 @@ public class CrConsiderSingleton extends CrUML {
   protected void sd(String s) { setDescription(s); }
   
   public boolean predicate(Object dm, Designer dsgr) {
-    if (!(dm instanceof uci.uml.Foundation.Core.Class)) return NO_PROBLEM;
-    uci.uml.Foundation.Core.Class cls = (uci.uml.Foundation.Core.Class) dm;
+    if (!(dm instanceof MMClass)) return NO_PROBLEM;
+    MMClass cls = (MMClass) dm;
     Vector str = cls.getStructuralFeature();
     Vector ends = cls.getAssociationEnd();
 

@@ -49,14 +49,14 @@ public class CrUselessAbstract extends CrUML {
   }
 
   public boolean predicate(Object dm, Designer dsgr) {
-    uci.uml.Foundation.Core.Class cls, c;
-    if (!(dm instanceof uci.uml.Foundation.Core.Class)) return false;
-    cls = (uci.uml.Foundation.Core.Class) dm;
+    MMClass cls, c;
+    if (!(dm instanceof MMClass)) return false;
+    cls = (MMClass) dm;
     if (!cls.isAbstract()) return false;  // original class was not abstract
     Set derived = (new Set(cls)).reachable(new ChildGenDerivedClasses());
     Enumeration enum = derived.elements();
     while (enum.hasMoreElements()) {
-      c = (uci.uml.Foundation.Core.Class) enum.nextElement();
+      c = (MMClass) enum.nextElement();
       if (!c.isAbstract()) return false;  // found a concrete subclass
     }
     return true; // no concrete subclasses defined, this class is "useless"
@@ -68,7 +68,7 @@ public class CrUselessAbstract extends CrUML {
 
 class ChildGenDerivedClasses implements ChildGenerator {
   public Enumeration gen(Object o) {
-    uci.uml.Foundation.Core.Class c = (uci.uml.Foundation.Core.Class) o;
+    MMClass c = (MMClass) o;
     Vector specs = c.getSpecialization();
     if (specs == null) {
       return EnumerationEmpty.theInstance();

@@ -27,6 +27,7 @@ import java.util.*;
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.critics.*;
+import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
 
 public class CrSingletonViolated extends CrUML {
@@ -62,8 +63,8 @@ public class CrSingletonViolated extends CrUML {
   protected void sd(String s) { setDescription(s); }
   
   public boolean predicate(Object dm, Designer dsgr) {
-    if (!(dm instanceof uci.uml.Foundation.Core.Class)) return NO_PROBLEM;
-    uci.uml.Foundation.Core.Class cls = (uci.uml.Foundation.Core.Class) dm;
+    if (!(dm instanceof MMClass)) return NO_PROBLEM;
+    MMClass cls = (MMClass) dm;
     Vector str = cls.getStructuralFeature();
     Vector ends = cls.getAssociationEnd();
 

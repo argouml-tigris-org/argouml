@@ -1,3 +1,30 @@
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
+
 package uci.uml.ui;
 
 import uci.argo.kernel.*;
@@ -69,10 +96,16 @@ implements IStatusBar {
   protected static Action _actionCreateMultiple = Actions.CreateMultiple;
   // ----- diagrams
   protected static Action _actionClassDiagram = Actions.ClassDiagram;
+  protected static Action _actionUseCaseDiagram = Actions.UseCaseDiagram;
+  protected static Action _actionStateDiagram = Actions.StateDiagram;
   // ----- model elements
   protected static Action _actionModel = Actions.Model;
   protected static Action _actionClass = Actions.Class;
   protected static Action _actionInterface = Actions.Interface;
+  protected static Action _actionActor = Actions.Actor;
+  protected static Action _actionUseCase = Actions.UseCase;
+  protected static Action _actionState = Actions.State;
+  protected static Action _actionPseudostate = Actions.Pseudostate;
   protected static Action _actionAttr = Actions.Attr;
   protected static Action _actionOper = Actions.Oper;
   // -----  shapes
@@ -213,11 +246,17 @@ implements IStatusBar {
 
     JMenu createDiagrams = (JMenu) create.add(new JMenu("Diagrams"));
     createDiagrams.add(_actionClassDiagram);
+    createDiagrams.add(_actionUseCaseDiagram);
+    createDiagrams.add(_actionStateDiagram);
 
     JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
     createModelElements.add(_actionModel);
     createModelElements.add(_actionClass);
     createModelElements.add(_actionInterface);
+    createModelElements.add(_actionActor);
+    createModelElements.add(_actionUseCase);
+    createModelElements.add(_actionState);
+    createModelElements.add(_actionPseudostate);
     createModelElements.add(_actionAttr);
     createModelElements.add(_actionOper);
 

@@ -52,7 +52,7 @@ public class Init {
   public static void init() {
 //     try {
       java.lang.Class modelCls = Model.class;
-      java.lang.Class classCls = uci.uml.Foundation.Core.Class.class;
+      java.lang.Class classCls = MMClass.class;
       java.lang.Class classifierCls = Classifier.class;
       java.lang.Class interfaceCls = Interface.class;
       java.lang.Class attrCls = Attribute.class;
