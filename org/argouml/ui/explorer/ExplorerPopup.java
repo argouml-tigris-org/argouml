@@ -139,10 +139,6 @@ public class ExplorerPopup extends JPopupMenu{
             if (ModelFacade.isAPackage(selectedItem) || ModelFacade.isAModel(selectedItem)) {
                 this.add(ActionAddPackage.SINGLETON);
             }
-            if (selectedItem != null) {
-                this.add(new ActionGoToDetails(
-                menuLocalize("action.properties")));
-            }
         }
     }
     
