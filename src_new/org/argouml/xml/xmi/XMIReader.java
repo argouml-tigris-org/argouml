@@ -57,8 +57,9 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
 
     /**
      * Constructor for XMIReader.
-     * @throws SAXException
-     * @throws ParserConfigurationException
+     * @throws SAXException when there is a XML problem
+     * @throws ParserConfigurationException if a parser cannot
+     * be created which satisfies the requested configuration
      */
     public XMIReader() throws SAXException, ParserConfigurationException {
         super();
@@ -76,9 +77,10 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
 
     /**
      * Constructor for XMIReader.
-     * @param pFactory
-     * @throws SAXException
-     * @throws ParserConfigurationException
+     * @param pFactory the factory
+     * @throws SAXException if there is a XML problem
+     * @throws ParserConfigurationException if a parser cannot
+     * be created which satisfies the requested configuration
      */
     public XMIReader(MFactory pFactory)
         throws SAXException, ParserConfigurationException {
@@ -200,10 +202,10 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
     /**
      * Parses a given inputsource to a model. Does not override the novosoft 
      * parse method since that does not have the right signature.
-     * @param pIs
-     * @return MModel
-     * @throws SAXException
-     * @throws IOException
+     * @param pIs the input source for parsing
+     * @return MModel the UML model
+     * @throws SAXException if there is an XML problem
+     * @throws IOException if there is a file I/O problem
      */
     public MModel parseToModel(InputSource pIs) 
         throws SAXException, IOException
@@ -213,18 +215,30 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
         
     }
 
+    /**
+     * @param e true if there are errors
+     */
     public void setErrors(boolean e) {
         errors = e;
     }
 
+    /**
+     * @return true if there were errors
+     */
     public boolean getErrors() {
         return errors;
     }
 
+    /**
+     * @param parser the parser
+     */
     public void setParser(org.xml.sax.Parser parser) {
         theParser = parser;
     }
 
+    /**
+     * @return the parser
+     */
     public org.xml.sax.Parser getParser() {
         return theParser;
     }
