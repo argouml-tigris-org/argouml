@@ -1118,7 +1118,7 @@ public abstract class CriticUtils {
     public static boolean isPrimaryObject(MModelElement element) {
 	for(Iterator i = element.getTaggedValues().iterator(); i.hasNext(); ) {
 	    MTaggedValue tv = (MTaggedValue)i.next();
-	    if (tv.getTag().equals(MMUtil.GENERATED_TAG)) {
+	    if ((MMUtil.GENERATED_TAG).equals(tv.getTag())) {
 		return false;
 	    }
 	}
