@@ -37,7 +37,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -61,7 +60,6 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
-import org.argouml.util.Trash;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.Util;
@@ -146,6 +144,8 @@ public class Project implements java.io.Serializable, TargetListener {
      * Cache for the default model.
      */
     private HashMap defaultModelCache;
+    
+    private Collection trashcan = new ArrayList();
 
     /**
      * Constructor.
@@ -625,22 +625,50 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Returns a list with all figs for some UML object on all diagrams.
      *
-     * @param o the given UML object
+     * @param obj the given UML object
      * @return List the list of figs
      */
-    public List findPresentationsFor(Object o) {
-        List returnList = new ArrayList();
+    public Collection findAllPresentationsFor(Object obj) {
+        Collection figs = new ArrayList();
         Iterator it = diagrams.iterator();
         while (it.hasNext()) {
             Diagram diagram = (Diagram) it.next();
-            Fig aFig = diagram.presentationFor(o);
+            Fig aFig = diagram.presentationFor(obj);
             if (aFig != null)
-                returnList.add(aFig);
+                figs.add(aFig);
         }
-        return returnList;
+        return figs;
     }
 
-    
+    /**
+     * Get all figs from all diagrams (+ enclosed ones recursively) 
+     * for some object obj. <p>
+     * 
+     * See issue 3042 for an explanation of the 2nd parameter. 
+     *
+     * @param obj the given object
+     * @param includeEnclosedOnes true to return also enclosed figs
+     * @return the figs
+     */
+    private Collection findAllPresentationsFor(Object obj, 
+            boolean includeEnclosedOnes) {
+        Collection figs = new ArrayList();
+        Iterator it = diagrams.iterator();
+        while (it.hasNext()) {
+            Diagram diagram = (Diagram) it.next();
+            Fig aFig = diagram.presentationFor(obj);
+            if (aFig != null) {
+                if (aFig.getOwner() == obj) {
+                    if (includeEnclosedOnes) {
+                        figs.addAll(collectAllEnclosedFigsRecursively(aFig));
+                    }
+                    figs.add(aFig);
+                }
+            }
+        }
+        return figs;
+    }
+
     /**
      * Finds a classifier with a certain name.<p>
      *
@@ -898,21 +926,14 @@ public class Project implements java.io.Serializable, TargetListener {
      * @see org.argouml.kernel.Project#trashInternal(Object)
      */
     public void moveToTrash(Object obj) {
-        if (Trash.SINGLETON.contains(obj)) {
+        if (trashcan.contains(obj)) {
             return;
         }
         trashInternal(obj);
     }
 
     /**
-     * Removes some object from the project. Does not update GUI since
-     * this method only handles project management.<p>
-     *
-     * Attention: whole Trash mechanism should be rethought concerning nsuml<p>
-     *
-     * Note that at present these are all if, not
-     * else-if. Rather than make a big change, I've just explicitly dealt with
-     * the case where we have a use case that is not classifier.<p>
+     * Removes some object from the project. 
      *
      * @param obj the object to be thrown away
      */
@@ -921,10 +942,10 @@ public class Project implements java.io.Serializable, TargetListener {
         if (obj != null) {
             TargetManager.getInstance().removeTarget(obj);
             TargetManager.getInstance().removeHistoryElement(obj);
-            Trash.SINGLETON.addItemFrom(obj, null);
+            trashcan.add(obj);
         }
         if (ModelFacade.isABase(obj)) { // an object that can be represented
-            Collection allFigs = getAllPresentationsFor(obj, true); 
+            Collection allFigs = findAllPresentationsFor(obj, true); 
             removeAllFigs(allFigs);
             
             Model.getUmlFactory().delete(obj);
@@ -968,40 +989,11 @@ public class Project implements java.io.Serializable, TargetListener {
                 obj = ((Fig) obj).getOwner();
             }
             if (obj instanceof CommentEdge) {
-                removeAllFigs(getAllPresentationsFor(obj, false));
+                removeAllFigs(findAllPresentationsFor(obj, false));
                 ((CommentEdge) obj).delete();
             }
         }
         ProjectManager.getManager().setNeedsSave(needSave);
-    }
-
-    /**
-     * Get all figs from all diagrams (+ enclosed ones recursively) 
-     * for some object obj. <p>
-     * 
-     * See issue 3042 for an explanation of the 2nd parameter. 
-     *
-     * @param obj the given object
-     * @param includeEnclosedOnes true to return also enclosed figs
-     * @return the figs
-     */
-    private Collection getAllPresentationsFor(Object obj, 
-            boolean includeEnclosedOnes) {
-        Collection c = new ArrayList();
-        Iterator it = diagrams.iterator();
-        while (it.hasNext()) {
-            Diagram diagram = (Diagram) it.next();
-            Fig aFig = diagram.presentationFor(obj);
-            if (aFig != null) {
-                if (aFig.getOwner() == obj) {
-                    if (includeEnclosedOnes) {
-                        c.addAll(collectAllEnclosedFigsRecursively(aFig));
-                    }
-                    c.add(aFig);
-                }
-            }
-        }
-        return c;
     }
     
     private Collection collectAllEnclosedFigsRecursively(Fig f) {
@@ -1043,11 +1035,11 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * @param dm the object
+     * @param obj the object
      * @return true if the object is trashed
      */
-    public boolean isInTrash(Object dm) {
-        return Trash.SINGLETON.contains(dm);
+    public boolean isInTrash(Object obj) {
+        return trashcan.contains(obj);
     }
 
     /**
@@ -1313,6 +1305,7 @@ public class Project implements java.io.Serializable, TargetListener {
         defaultModelCache = null;
 
         TargetManager.getInstance().removeTargetListener(this);
+        trashcan.clear();
     }
 
     /**
