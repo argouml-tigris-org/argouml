@@ -25,7 +25,6 @@
 package org.argouml.model.uml.foundation.core;
 
 import org.argouml.model.uml.AbstractWellformednessRule;
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MNamespace;

@@ -25,7 +25,6 @@
 package org.argouml.ui;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -34,9 +33,7 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.event.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.tree.*;
 import org.argouml.application.api.AboutTabPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggableAboutTab;

@@ -30,6 +30,8 @@
 
 package org.argouml.ui;
 
+import java.awt.Font;
+
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -52,10 +54,12 @@ import org.argouml.application.api.Configuration;
  * @author Jeremy Jones
  */
 public class LookAndFeelMgr {
+    /**
+     * @deprecated in version 0.15.2. Use getInstance() instead.
+     */
     public static final LookAndFeelMgr	SINGLETON = new LookAndFeelMgr();
 
-    private static Logger                     cat =
-	Logger.getLogger(LookAndFeelMgr.class);
+    private static Logger cat = Logger.getLogger(LookAndFeelMgr.class);
 
     // The Metal look and feel class name
     private static final String                 METAL_LAF =
@@ -78,10 +82,6 @@ public class LookAndFeelMgr {
         BIG_THEME,
         HUGE_THEME,
         new DefaultMetalTheme()
-        //new MetalThemes.Green(),
-        //new MetalThemes.BlueGreen(),
-        //new MetalThemes.Khaki(),
-        //new MetalThemes.Presentation()
     };
 
     /**
@@ -90,6 +90,14 @@ public class LookAndFeelMgr {
      **/
     private String				_defaultLafClass;
 
+    /**
+     * get the single instance of the LookAndFeelMgr
+     * @return the single instance of the LookAndFeelMgr
+     */
+    public static LookAndFeelMgr getInstance() {
+        return SINGLETON;
+    }
+    
     /** Creates a new instance of LookAndFeelMgr. */
     private LookAndFeelMgr() {
         LookAndFeel laf = UIManager.getLookAndFeel();
@@ -348,7 +356,16 @@ public class LookAndFeelMgr {
         }
         Configuration.setString(Argo.KEY_THEME_CLASS, themeValue);
     }
+    
+    public Font getStandardFont() {
+        return UIManager.getDefaults().getFont("TextField.font");
+    }
 
+    public Font getSmallFont() {
+        Font font = UIManager.getDefaults().getFont("TextField.font");
+        return font.deriveFont(font.getSize2D() - 2f);
+    }
+    
     /**
      * Sets the look and feel in the GUI by calling UIManager.setLookAndFeel().
      * 

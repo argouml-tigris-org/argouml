@@ -32,6 +32,8 @@ import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+
+import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
@@ -60,7 +62,7 @@ public class DiagramInfo extends JComponent {
     public JComponent getJComponent() {
 	_name = new JLabel("");
 	setLayout(new BorderLayout());
-	_name.setFont(MetalLookAndFeel.getSubTextFont());
+	_name.setFont(LookAndFeelMgr.getInstance().getSmallFont());
 	add(_name, BorderLayout.CENTER);
 	updateName();
 	return this;
@@ -87,7 +89,7 @@ public class DiagramInfo extends JComponent {
 	    type = "Sequence Diagram";
 	if (_diagram instanceof UMLDeploymentDiagram)
 	    type = "Deployment Diagram";
-    
+
 	_name.setText(type + ": " + _diagram.getName());
     }
 

@@ -23,7 +23,6 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.ocl;
-import org.tigris.gef.ocl.*;
 import java.util.*;
 
 public class OCLExpander extends org.tigris.gef.ocl.OCLExpander {

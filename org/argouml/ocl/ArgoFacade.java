@@ -36,7 +36,6 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.*;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.ui.*;
 
 /**
  * Provides a facade of the argoUml uml model for the OCL compiler.
