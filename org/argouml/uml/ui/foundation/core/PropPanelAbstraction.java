@@ -61,10 +61,9 @@ public class PropPanelAbstraction extends PropPanelDependency {
                 getClientScroll());
 
         // TODO: add Mapping
-        new PropPanelButton(this, buttonPanel, navUpIcon, Translator.localize(
+        new PropPanelButton(this, getButtonPanel(), navUpIcon, Translator.localize(
                 "UMLMenu", "button.go-up"), "navigateUp", null);
-        buttonPanel
-        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
 } /* end class PropPanelAbstraction */

@@ -61,9 +61,9 @@ public class PropPanelUsage extends PropPanelDependency {
                 getClientScroll());
 
         // TODO: add Mapping
-        buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionRemoveFromModel()));    
     }
 

@@ -89,13 +89,12 @@ public class PropPanelParameter extends PropPanelModelElement {
         add(new UMLParameterDirectionKindRadioButtonPanel("ParameterKind:", 
                 true));
 
-        buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, buttonPanel, parameterIcon, 
+        new PropPanelButton(this, getButtonPanel(), parameterIcon, 
                 Translator.localize("UMLMenu", "button.new-parameter"), 
                 "addParameter", null);
-	buttonPanel
-        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     /**

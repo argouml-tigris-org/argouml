@@ -98,19 +98,18 @@ public class PropPanelDataType extends PropPanelClassifier {
         addField(Translator.localize("UMLMenu", "label.literals"),
                 getAttributeScroll());
 
-        buttonPanel.add(new PropPanelButton2(this,
+        addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, buttonPanel, dataTypeIcon, Translator
+        new PropPanelButton(this, getButtonPanel(), dataTypeIcon, Translator
                 .localize("UMLMenu", "button.new-datatype"), "newDataType",
                 null);
-        new PropPanelButton(this, buttonPanel, addAttrIcon, Translator
+        new PropPanelButton(this, getButtonPanel(), addAttrIcon, Translator
                 .localize("UMLMenu", "button.new-enumeration-literal"),
                 "addAttribute", null);
 
-        new PropPanelButton(this, buttonPanel, addOpIcon, Translator.localize(
+        new PropPanelButton(this, getButtonPanel(), addOpIcon, Translator.localize(
                 "UMLMenu", "button.new-operation"), "addOperation", null);
-        buttonPanel
-                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     /**

@@ -124,14 +124,13 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         // Add the toolbar.
 
-        buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        new PropPanelButton(this, buttonPanel, extensionPointIcon,
+        new PropPanelButton(this, getButtonPanel(), extensionPointIcon,
                             localize("New Extension Point"),
                             "newExtensionPoint",
                             null);
-        buttonPanel
-        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
 

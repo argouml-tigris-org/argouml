@@ -100,16 +100,15 @@ public class PropPanelActor extends PropPanelClassifier {
             getAssociationEndScroll());
         // The toolbar buttons that go at the top.
 
-        buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, buttonPanel, actorIcon,
+        new PropPanelButton(this, getButtonPanel(), actorIcon,
                 Translator.localize("UMLMenu", "button.new-actor"), "newActor",
                             null);
-        new PropPanelButton(this, buttonPanel, receptionIcon, 
+        new PropPanelButton(this, getButtonPanel(), receptionIcon, 
                 Translator.localize("UMLMenu", "button.new-reception"), 
                 getActionNewReception());
-        buttonPanel
-        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
 

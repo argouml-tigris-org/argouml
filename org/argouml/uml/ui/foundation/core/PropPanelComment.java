@@ -60,10 +60,9 @@ public class PropPanelComment extends PropPanelModelElement {
         text.setRows(5);
         JScrollPane pane = new JScrollPane(text);
         addField("Text: ", pane);
-        buttonPanel.add(new PropPanelButton2(this,
+        addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
-        buttonPanel
-                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
 }

@@ -128,12 +128,12 @@ public class PropPanelPackage extends PropPanelNamespace  {
         addField(Translator.localize("UMLMenu", "label.owned-elements"), 
                 getOwnedElementsScroll());
 
-        buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        new PropPanelButton(this, buttonPanel, packageIcon, 
+        new PropPanelButton(this, getButtonPanel(), packageIcon, 
                 Translator.localize("UMLMenu", "button.new-package"), 
                 "addPackage", null);
-	buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
             new ActionRemoveFromModel()));
     }
 

@@ -104,12 +104,12 @@ public class PropPanelStereotype extends PropPanelModelElement {
         addField(Translator.localize("UMLMenu", "label.specializations"),
                 getSpecializationScroll());
 
-        buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        new PropPanelButton(this, buttonPanel, stereotypeIcon, Translator
+        new PropPanelButton(this, getButtonPanel(), stereotypeIcon, Translator
                 .localize("UMLMenu", "button.new-stereotype"), "newStereotype",
                 null);
-	buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
             new ActionRemoveFromModel()));
     }
 

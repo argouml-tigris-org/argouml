@@ -81,7 +81,7 @@ public class PropPanelInstance extends PropPanelModelElement {
         addField(Translator.localize("UMLMenu", "label.namespace"),
                 getNamespaceComboBox());
 
-        buttonPanel.add(new PropPanelButton2(this,
+        addButton(new PropPanelButton2(this,
                 new ActionNavigateNamespace()));
     }
 

@@ -78,10 +78,9 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
         addField(Translator.localize("UMLMenu", "label.messages"),
 		 new JScrollPane(messageList));
 
-        buttonPanel.add(new PropPanelButton2(this,
+        addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
-        buttonPanel
-                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
 } /* end class PropPanelAssociationRole */

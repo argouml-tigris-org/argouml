@@ -71,9 +71,9 @@ public class PropPanelInteraction extends PropPanelModelElement {
         addField(Translator.localize("UMLMenu", "label.messages"), 
                 messagesScroll);
 
-        buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionNavigateContext()));
-    	buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionRemoveFromModel()));
     }
 

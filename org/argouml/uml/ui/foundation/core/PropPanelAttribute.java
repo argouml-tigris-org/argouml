@@ -90,11 +90,10 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         add(getChangeabilityRadioButtonPanel());
         add(getOwnerScopeCheckbox());
 
-        buttonPanel.add(new PropPanelButton2(this,
+        addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
-        buttonPanel.add(new PropPanelButton2(this, new ActionAddAttribute()));
-        buttonPanel
-                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        addButton(new PropPanelButton2(this, new ActionAddAttribute()));
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     /**

@@ -77,13 +77,12 @@ public class PropPanelComponent extends PropPanelClassifier {
 	addField(Translator.localize("UMLMenu", "label.supplier-dependencies"), 
             getSupplierDependencyScroll());
 
-        buttonPanel.add(new PropPanelButton2(this, 
+        addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-	new PropPanelButton(this, buttonPanel, receptionIcon, 
+	new PropPanelButton(this, getButtonPanel(), receptionIcon, 
             Translator.localize("UMLMenu", "button.new-reception"), 
             getActionNewReception());
-	buttonPanel
-        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+	addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
 
 	//    addCaption(Translator.localize("UMLMenu", "label.name"),1,0,0);
 	//    addField(getNameTextField(),1,0,0);
