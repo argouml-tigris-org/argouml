@@ -170,7 +170,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
             if (link == null) {
                 link = stimulus.getFactory().createLink();
                 if (link != null) {
-                    ((MLink)link).addStimulus(stimulus);
+                    ModelFacade.addStimulus(link, stimulus);
                     stimulus.setCommunicationLink((MLink)link);
                 }
             }

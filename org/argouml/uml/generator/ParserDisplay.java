@@ -2819,7 +2819,7 @@ public class ParserDisplay extends Parser {
 		    MMessage pre = (MMessage) it.next();
 		    mes.removePredecessor(pre);
 		    while (it2.hasNext()) {
-			((MMessage) it2.next()).addPredecessor(pre);
+			ModelFacade.addPredecessor(it2.next(), pre);
 		    }
 		}
 

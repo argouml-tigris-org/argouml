@@ -141,7 +141,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
                     _attributes.remove(index);
                 }
 
-                ((MClassifier) target).removeFeature((MAttribute) attribute);
+                ModelFacade.removeFeature(target, attribute);
                 resetSize();
                 fireIntervalRemoved(this, index, index);
             }
@@ -211,6 +211,5 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
         return true;
     }
 }
-
 
 
