@@ -28,9 +28,14 @@ import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.reveng.*;
 import org.argouml.util.osdep.*;
+import org.argouml.util.FileFilters;
+import org.argouml.util.SuffixFilter;
+
 import org.tigris.gef.base.*;
+
 import java.awt.event.*;
 import java.io.*;
+
 import javax.swing.*;
 
 
@@ -72,9 +77,9 @@ public class ActionImportFromSources extends UMLAction {
 
             chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
             chooser.setDialogTitle("Import sources");
-            //      FileFilter filter = FileFilters.ArgoFilter;
-            //chooser.addChoosableFileFilter(filter);
-            //chooser.setFileFilter(filter);
+            SuffixFilter filter = FileFilters.JavaFilter;
+            chooser.addChoosableFileFilter(filter);
+            // chooser.setFileFilter(filter);
 	    
 	    chooser.setAccessory(Import.getConfigPanel());
 
