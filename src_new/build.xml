@@ -160,8 +160,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="src.dir" value="../src_new"/>
     <property name="lib.dir" value="../lib"/>
-    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/gef.jar:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar:${lib.dir}/junit.jar"/>
-    <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>
+    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/gef.jar:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar"/>
+    <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp_1_1.jar:${ANT_HOME}/lib/crimson.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
     <property name="manifest" value="${src.dir}/org/argouml.mf"/>
@@ -185,9 +185,6 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <available classname="antlr.ANTLRException"
 	       classpath="${classpath}"
                property="has.antlr" />
-    <available classname="junit.framework.Test"
-	       classpath="${classpath}"
-               property="has.junit" />
 
     <!-- This does not appear to do anything anymore -->
     <!-- exec executable="set user.home=C:\" os="windows" /-->
@@ -293,8 +290,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 	           check.gef.localizer,
 		   check.gef,
 		   check.log4j,
-		   check.antlr,
-		   check.junit">
+		   check.antlr">
   </target>
 
   <target name="check.gef"
@@ -319,12 +315,6 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
           depends="prepare"
 	  unless="has.antlr">
     <fail message="antlrall library does not appear to be in the classpath."/>
-  </target>
-
-  <target name="check.junit"
-          depends="prepare"
-	  unless="has.junit">
-    <fail message="junit library does not appear to be in the classpath."/>
   </target>
 
   <!-- =================================================================== -->
@@ -417,8 +407,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-    <zip zipfile="../${Name}-${version}.zip" basedir="${build.dir}" includes="gef.jar lib/junit.jar lib/log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
-    <tar tarfile="../${Name}-${version}.tar" basedir="${build.dir}" includes="gef.jar lib/junit.jar lib/log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
+    <zip zipfile="../${Name}-${version}.zip" basedir="${build.dir}" includes="gef.jar lib/log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
+    <tar tarfile="../${Name}-${version}.tar" basedir="${build.dir}" includes="gef.jar lib/log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
     <gzip zipfile="../${Name}-${version}.tar.gz" src="../${Name}-${version}.tar" />
     <delete file="../${Name}-${version}.tar"/>
   </target>
@@ -440,8 +430,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist-lib" depends="init">
     <echo message="Building the library distribution files (zip,tar)"/>
-    <zip zipfile="../${Name}-${version}-libs.zip" basedir="${lib.dir}/.." includes="lib/gef.jar lib/junit.jar lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
-    <tar tarfile="../${Name}-${version}-libs.tar" basedir="${lib.dir}/.." includes="lib/gef.jar lib/junit.jar lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <zip zipfile="../${Name}-${version}-libs.zip" basedir="${lib.dir}/.." includes="lib/gef.jar lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <tar tarfile="../${Name}-${version}-libs.tar" basedir="${lib.dir}/.." includes="lib/gef.jar lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
     <gzip zipfile="../${Name}-${version}-libs.tar.gz" src="../${Name}-${version}-libs.tar" />
     <delete file="../${Name}-${version}-libs.tar"/>
   </target>
