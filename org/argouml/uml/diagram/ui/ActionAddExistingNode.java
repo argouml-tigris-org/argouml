@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -43,9 +43,8 @@ public class ActionAddExistingNode extends UMLAction implements GraphFactory
 	_object = o;
     }
 
-    public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-        Object target = pb.getTarget();
+    public boolean shouldBeEnabled() {	
+        Object target = TargetManager.getInstance().getTarget();
         MutableGraphModel gm = (MutableGraphModel)ProjectManager.getManager().getCurrentProject().getActiveDiagram().getGraphModel();
         return gm.canAddNode(target);
     }

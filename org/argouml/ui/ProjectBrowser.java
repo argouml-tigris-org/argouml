@@ -762,8 +762,7 @@ public class ProjectBrowser
             .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
             Project p = (Project) evt.getNewValue();
             if (p != null) {
-                setTitle(p.getName());
-                Actions.updateAllEnabled();
+                setTitle(p.getName());             
                 //Designer.TheDesigner.getToDoList().removeAllElements();
                 Designer.TheDesigner.setCritiquingRoot(p);
                 // update all panes
