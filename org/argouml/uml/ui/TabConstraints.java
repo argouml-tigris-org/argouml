@@ -202,7 +202,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         *     OCL type rules.
         */
       public void setData(String sData, EditingUtilities euHelper)
-          throws IllegalStateException, OclParserException, OclTypeException {
+          throws OclParserException, OclTypeException {
         // Parse and check specified constraint.
         OclTree tree = null;
 
@@ -290,7 +290,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         */
       public void setName (final String sName,
                            final EditingUtilities euHelper)
-          throws IllegalStateException, IllegalArgumentException {
+         {
         if (m_mcConstraint != null) {
           // Check name for consistency with spec
           if (!euHelper.isValidConstraintName (sName)) {
