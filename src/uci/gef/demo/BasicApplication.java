@@ -39,7 +39,6 @@ public class BasicApplication {
 
   private JGraphFrame _gf;
   private Frame _palFrame;
-  private PaletteTop _pal;
 
   ////////////////////////////////////////////////////////////////
   // constructors
