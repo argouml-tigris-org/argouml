@@ -24,8 +24,11 @@
 package org.argouml.uml.ui;
 
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.sequence.ui.*;
 import org.argouml.ui.*;
+
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 import java.awt.event.*;
@@ -54,8 +57,23 @@ public class ActionSequenceDiagram extends UMLChangeAction {
 	try {
 	    Object target = ProjectBrowser.TheInstance.getDetailsTarget();
 	    MNamespace ns = p.getCurrentNamespace();
-	    if (target instanceof MModel) ns = (MNamespace) target;
-	    ArgoDiagram d  = new UMLSequenceDiagram(ns);
+	    MCollaboration collab = null;
+	    if (target instanceof MClassifier) {
+	    	collab = UmlFactory.getFactory().getCollaborations().buildCollaboration((MClassifier)target);
+	    } else { 
+		    if (target instanceof MCollaboration) {
+		    	collab = (MCollaboration)target;
+		    }
+	     	else {
+	     		if (!(target instanceof UMLSequenceDiagram)) { 
+	    			collab = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+	     		} else {
+	     			collab = UmlFactory.getFactory().getCollaborations().buildCollaboration(p.getModel());
+	     		}
+	     		
+	    	}
+	    }
+	    ArgoDiagram d  = new UMLSequenceDiagram(collab);
 	    p.addMember(d);
 	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
 	    ProjectBrowser.TheInstance.setTarget(d);
