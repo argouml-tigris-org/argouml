@@ -215,6 +215,12 @@
         </module>
 
         <module name="GenericIllegalRegexp">
+            <!-- Make sure <p> is last on a line. -->
+            <property name="format" value="^\s*\*\s*&lt;p&gt;"/>            
+            <property name="message" value="&lt;p&gt; should be at the end of a line to improve readability of the non-formatted comment."/>
+        </module>
+
+        <module name="GenericIllegalRegexp">
             <!-- Allow: a, code, em, img, li, ol, p, pre, strong, ul -->
             <!-- The following HTML tags are among others forbidden by this: 
                  Fonts: basefont, font, b, i, s, strike, u, tt, big, small, sub, sup, blink.
