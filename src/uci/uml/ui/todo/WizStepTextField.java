@@ -23,35 +23,53 @@
 
 
 
-// File: CCNetwork.java
-// Classes: CCNetwork
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
 
-package uci.argo.kernel;
+package uci.uml.ui.todo;
 
+import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
+import com.sun.java.swing.*;
+import com.sun.java.swing.event.*;
+import com.sun.java.swing.border.*;
+
 import uci.util.*;
-
-/** */
-
-public class CCNetwork implements java.io.Serializable {
+import uci.argo.kernel.*;
 
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+/** A simple non-modal wizard step that shows instructions and prompts
+ *  the user to enter a string. 
+ *
+ * @see uci.argo.kernel.Critic
+ * @see uci.argo.kernel.Wizard
+ */
 
-  /**  */
-  protected CCNodeStart _start = new CCNodeStart();
+public class WizStepTextField extends WizStep {
+  JTextArea _instructions = new JTextArea();
+  JLabel _label = new JLabel("Value:");
+  JTextField _field = new JTextField(20);
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+  public WizStepTextField() {
+    _mainPanel.setBorder(new EtchedBorder());
+    _instructions.setEditable(false);
+    _instructions.setBorder(null);
+    _instructions.setBackground(_mainPanel.getBackground());
+    _mainPanel.setLayout(new BorderLayout());
+    _mainPanel.add(_instructions, BorderLayout.NORTH);
+    JPanel center = new JPanel();
+    center.add(_label);
+    center.add(_field);
+    _mainPanel.add(center, BorderLayout.CENTER);
+  }
 
-  public CCNetwork() { }
+  public WizStepTextField(Wizard w, String instr, String lab, String val) {
+    this();
+    // store wizard?
+    _instructions.setText(instr);
+    _label.setText(lab);
+    _field.setText(val);
+  }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public CCNodeStart getStart() { return _start; }
-
-} /* end class CCNetwork */
+  public String getText() { return _field.getText(); }
+  
+} /* end class WizStepTextField */

@@ -71,5 +71,18 @@ public class CrUnconventionalClassName extends CrUML {
     return ClClassName.TheInstance;
   }
 
+  public Wizard makeWizard(ToDoItem item) {
+    WizMEName w = (WizMEName) super.makeWizard(item);
+    if (w != null) {
+      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
+      String sug = me.getName().getBody();
+      sug = sug.substring(0,1).toUpperCase() + sug.substring(1);
+      System.out.println("sug=" + sug);
+      w.setSuggestion(sug);
+    }
+    return w;
+  }
+  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+
 } /* end class CrUnconventionalClassName */
 

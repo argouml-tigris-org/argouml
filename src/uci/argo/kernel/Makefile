@@ -57,7 +57,8 @@ CLASSES = \
 	ToDoItem.class \
 	ToDoList.class \
 	ToDoListEvent.class \
-	ToDoListListener.class 
+	ToDoListListener.class \
+	Wizard.class
 
 
 all: $(GEN) $(CLASSES)

@@ -67,6 +67,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
   //JButton _snoozeButton = new JButton("Snooze");
   //JTextArea _description = new JTextArea();
   WizDescription _description = new WizDescription();
+  JPanel _lastPanel = null;
   
 
   ////////////////////////////////////////////////////////////////
@@ -121,11 +122,33 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     //Font userFont = MetalLookAndFeel.getUserTextFont();
     //_description.setFont(userFont);
     //add(new JScrollPane(_description), BorderLayout.CENTER);
-    add(_description, BorderLayout.CENTER);
+    //@ add(_description, BorderLayout.CENTER);
     setTarget(null);
   }
 
+  public void showDescription() {
+    if (_lastPanel != null) remove(_lastPanel);
+    add(_description, BorderLayout.CENTER);
+    _lastPanel = _description;
+    validate();
+    repaint();
+  }
 
+  public void showStep(JPanel ws) {
+    if (_lastPanel != null) remove(_lastPanel);
+    if (ws != null) {
+      add(ws, BorderLayout.CENTER);
+      _lastPanel = ws;
+    }
+    else {
+      add(_description, BorderLayout.CENTER);
+      _lastPanel = _description;
+    }
+    validate();
+    repaint();
+  }
+
+  
   // needs-more-work: change this to use Actions
 //   protected void addTool(JToolBar tb, String name) {
 //     ImageIcon icon = loadImageIcon("images/" + name + ".gif",name);
@@ -145,6 +168,10 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     _target = item;
     updateActionsEnabled();
     _description.setTarget(_target);
+    Wizard w = null;
+    if (_target instanceof ToDoItem) w = ((ToDoItem)_target).getWizard();
+    if (w != null) showStep(w.getCurrentPanel());
+    else { showDescription(); }
 //     if (_target == null) {
 //       //_description.setEnabled(false);
 //       _description.setText("No ToDoItem selected");

@@ -43,7 +43,10 @@ CLASSES = \
 	GoListToOffenderToItem.class \
 	GoListToPosterToItem.class \
 	GoListToPriorityToItem.class \
-	GoListToTypeToItem.class 
+	GoListToTypeToItem.class \
+	WizStep.class \
+	WizStepTextField.class \
+	WizDescription.class 
 
 
 all: $(GEN) $(CLASSES)

@@ -178,9 +178,42 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
-    return (edge instanceof Association) || (edge instanceof Generalization) ||
-      (edge instanceof Dependency) || (edge instanceof Link) ||
-      (edge instanceof Realization);
+    Object end0 = null, end1 = null;
+    if (edge instanceof Association) {
+      Vector conns = ((Association)edge).getConnection();
+      AssociationEnd ae0 = (AssociationEnd) conns.elementAt(0);
+      AssociationEnd ae1 = (AssociationEnd) conns.elementAt(1);
+      if (ae0 == null || ae1 == null) return false;
+      end0 = ae0.getType();
+      end1 = ae1.getType();
+    }
+    else if (edge instanceof Generalization) {
+      end0 = ((Generalization)edge).getSubtype();
+      end1 = ((Generalization)edge).getSupertype();
+    }
+    else if (edge instanceof Dependency) {
+      Vector clients = ((Dependency)edge).getClient();
+      Vector suppliers = ((Dependency)edge).getSupplier();
+      if (clients == null || suppliers == null) return false;
+      end0 = clients.elementAt(0);
+      end1 = suppliers.elementAt(0);
+    }
+    else if (edge instanceof Link) {
+      Vector roles = ((Link)edge).getLinkRole();
+      LinkEnd le0 = (LinkEnd) roles.elementAt(0);
+      LinkEnd le1 = (LinkEnd) roles.elementAt(1);
+      if (le0 == null || le1 == null) return false;
+      end0 = le0.getInstance();
+      end1 = le1.getInstance();
+    }
+    else if (edge instanceof Realization) {
+      end0 = ((Generalization)edge).getSubtype();
+      end1 = ((Generalization)edge).getSupertype();
+    }
+    if (end0 == null || end1 == null) return false;
+    if (!_nodes.contains(end0)) return false;
+    if (!_nodes.contains(end1)) return false;
+    return true;
   }
 
   /** Remove the given node from the graph. */

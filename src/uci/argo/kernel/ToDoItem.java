@@ -81,7 +81,7 @@ public class ToDoItem implements java.io.Serializable {
 
   private Icon _clarifier = null;
 
-  private int _progress = 0; //(int) (Math.random()*100); // 0-100%
+  private Wizard _wizard = null;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -103,6 +103,7 @@ public class ToDoItem implements java.io.Serializable {
     _priority = c.getPriority(_offenders, dsgr);
     _description = c.getDescription(_offenders, dsgr);
     _moreInfoURL = c.getMoreInfoURL(_offenders, dsgr);
+    _wizard = c.makeWizard(this);
   }
 
   public ToDoItem(Critic c, Set offs, Designer dsgr) {
@@ -112,6 +113,7 @@ public class ToDoItem implements java.io.Serializable {
     _priority = c.getPriority(_offenders, dsgr);
     _description = c.getDescription(_offenders, dsgr);
     _moreInfoURL = c.getMoreInfoURL(_offenders, dsgr);
+    _wizard = c.makeWizard(this);
   }
 
   public ToDoItem(Critic c) {
@@ -121,6 +123,7 @@ public class ToDoItem implements java.io.Serializable {
     _priority = c.getPriority(null, null);
     _description = c.getDescription(null, null);
     _moreInfoURL = c.getMoreInfoURL(null, null);
+    _wizard = c.makeWizard(this);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -142,9 +145,14 @@ public class ToDoItem implements java.io.Serializable {
   public int getPriority() { return _priority; }
   public void setPriority(int p) { _priority = p; }
 
-  public int getProgress() { return _progress; }
-  public void setProgress(int p) { _progress = p; }
-
+  public int getProgress() {
+    if (_wizard != null) return _wizard.getProgress();
+    return 0;
+  }
+//   public void setProgress(int p) { 
+//     if (_wizard != null) return _wizard.setProgress(p);
+//   }
+  
   /** Reply a Set of design material's that are the subject of this
    * ToDoItem. */
   public Set getOffenders() { return _offenders; }
@@ -163,6 +171,8 @@ public class ToDoItem implements java.io.Serializable {
     if (posterClarifier != null) return posterClarifier;
     return null;
   }
+
+  public Wizard getWizard() { return _wizard; }
 
   public boolean containsKnowledgeType(String type) {
     return getPoster().containsKnowledgeType(type);
@@ -191,7 +201,7 @@ public class ToDoItem implements java.io.Serializable {
   // user interface
 
   /** When a ToDoItem is selected in the UiToDoList window, highlight
-   * the "offending" design material's. */
+   *  the "offending" design material's. */
   public void select() {
     Enumeration offs = getOffenders().elements();
     while (offs.hasMoreElements()) {
@@ -202,7 +212,7 @@ public class ToDoItem implements java.io.Serializable {
   }
 
   /** When a ToDoItem is deselected in the UiToDoList window,
-   * unhighlight the "offending" design material's. */
+   *  unhighlight the "offending" design material's. */
   public void deselect() {
     Enumeration offs = getOffenders().elements();
     while (offs.hasMoreElements()) {
@@ -213,9 +223,9 @@ public class ToDoItem implements java.io.Serializable {
   }
 
    /** The user has double-clicked or otherwise indicated that they
-    * want to do something active with this item. By default, just
-    * re-select it, subclasses may choose to do more (e.g., navigate to
-    * the offending item if it is not visible). */
+    *  want to do something active with this item. By default, just
+    *  re-select it, subclasses may choose to do more (e.g., navigate to
+    *  the offending item if it is not visible). */
    public void action() { deselect(); select(); }
 
 
@@ -238,11 +248,13 @@ public class ToDoItem implements java.io.Serializable {
 //   }
 
   /** Reply true iff this ToDoItem should be kept on the Designer's
-   * ToDoList. This should return false if the poster has been
-   * deactivated, or if it can be determined that the problem that
-   * raised this issue is no longer present. */
+   *  ToDoList. This should return false if the poster has been
+   *  deactivated, or if it can be determined that the problem that
+   *  raised this issue is no longer present. */
   public boolean stillValid(Designer d) {
     if (_poster == null) return true;
+    if (_wizard != null && _wizard.isStarted() && !_wizard.isFinsished())
+      return true;
     return _poster.stillValid(this, d);
   }
 

@@ -393,9 +393,9 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
       int hInt = (h == null || h.equals("")) ? 20 : Integer.parseInt(h);
       f.setBounds(xInt, yInt, wInt, hInt);
     }
-    String linewidth = e.getAttribute("linewidth");
-    if (linewidth != null && !linewidth.equals(""))
-      f.setLineWidth(Integer.parseInt(linewidth));
+    String stroke = e.getAttribute("stroke");
+    if (stroke != null && !stroke.equals(""))
+      f.setLineWidth(Integer.parseInt(stroke));
     String strokecolor = e.getAttribute("strokecolor");
     if (strokecolor != null && !strokecolor.equals(""))
       f.setLineColor(colorByName(strokecolor, Color.blue));

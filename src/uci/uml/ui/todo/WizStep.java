@@ -39,12 +39,14 @@ import uci.argo.kernel.*;
 import uci.uml.ui.*;
 
 
-/** In a future release, each Critic will also provide a wizard to
- * help fix the problem it identifies.  The "Next>" button will
- * advance through the steps of the wizard, and increase the blue
- * progress bar on the ToDoItem "sticky note" icon in ToDo tree pane.
+/** Each Critic may provide a Wizard to help fix the problem it
+ *  identifies.  The "Next>" button will advance through the steps of
+ *  the wizard, and increase the blue progress bar on the ToDoItem
+ *  "sticky note" icon in ToDo tree pane.
  *
- * @see uci.argo.kernel.CriticCC */
+ * @see uci.argo.kernel.Critic
+ * @see uci.argo.kernel.Wizard
+ */
 
 public class WizStep extends JPanel
 implements TabToDoTarget, ActionListener {
@@ -108,11 +110,11 @@ implements TabToDoTarget, ActionListener {
     }
     else if (_target instanceof ToDoItem) {
       ToDoItem tdi = (ToDoItem) _target;
-      // needs-more-work: these should be set based on the item
-      _backButton.setEnabled(false);
-      _nextButton.setEnabled(false);
-      _finishButton.setEnabled(false);
-      _helpButton.setEnabled(false);
+      Wizard w = getWizard();
+      _backButton.setEnabled(w != null ? w.canGoBack() : false);
+      _nextButton.setEnabled(w != null ? w.canGoNext() : false);
+      _finishButton.setEnabled(w != null ? w.canFinish() : false);
+      _helpButton.setEnabled(true);
     }
     else {
       //_description.setText("needs-more-work");
@@ -124,14 +126,53 @@ implements TabToDoTarget, ActionListener {
 
   public void refresh() { setTarget(_target); }
 
+  public Wizard getWizard() {
+    if (_target instanceof ToDoItem) {
+      return ((ToDoItem)_target).getWizard();
+    }
+    return null;
+  }
+  
   ////////////////////////////////////////////////////////////////
   // actions
 
-  public void doBack() { }
-  public void doNext() { }
-  public void doFinsh() { }
-  public void doHelp() { }
+  public void doBack() {
+    System.out.println("back");
+    Wizard w = getWizard();
+    if (w != null) {
+      w.back();
+      updateTabToDo();
+    }
+  }
+  public void doNext() {
+    System.out.println("next");
+    Wizard w = getWizard();
+    if (w != null) {
+      w.next();
+      updateTabToDo();
+    }
+  }
+  public void doFinsh() {
+    System.out.println("finish");
+    Wizard w = getWizard();
+    if (w != null) {
+      w.finish();
+      updateTabToDo();
+    }
+  }
+  public void doHelp() {
+    System.out.println("needs-more-work: display critic/wizard help");
+  }
 
+  protected void updateTabToDo() {
+    // awkward: relying on getParent() is fragile.
+    TabToDo ttd = (TabToDo) getParent(); //???
+    JPanel ws = getWizard().getCurrentPanel();
+    if (ws instanceof WizStep) ((WizStep)ws).setTarget(_target);
+    ttd.showStep(ws);
+    System.out.println("showed " + ws);
+  }
+  
   ////////////////////////////////////////////////////////////////
   // event handlers
 

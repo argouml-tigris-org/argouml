@@ -33,6 +33,7 @@ CLASSES = \
 	ClAttributeCompartment.class \
 	ClClassName.class \
 	ClOperationCompartment.class \
+	WizMEName.class \
 	CrAlreadyRealizes.class \
 	CrAssocNameConflict.class \
 	CrAttrNameConflict.class \
