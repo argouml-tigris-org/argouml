@@ -38,6 +38,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsHelper;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
@@ -3638,9 +3639,17 @@ public class ParserDisplay extends Parser {
     public void parseObjectFlowState2(String s, Object objectFlowState) 
         throws ParseException {
         
-        Object c = ModelFacade.getType(objectFlowState);
+        Object c = ModelFacade.getType(objectFlowState); // get the classifier
         if (c != null) {
             if (ModelFacade.isAClassifierInState(c)) {
+                if ((s == "") || (s == null)) {
+                    // the State of a ClassifierInState is removed, 
+                    // so let's reduce it to a Classifier.
+                    ModelFacade.setType(objectFlowState, 
+                            ModelFacade.getType(c));
+                    UmlFactory.getFactory().delete(c);
+                    return; // the model is changed - our job is done
+                }
                 Collection states = ModelFacade.getInStates(c);
                 Iterator i = states.iterator();
                 while (i.hasNext()) { 
@@ -3650,13 +3659,36 @@ public class ParserDisplay extends Parser {
                         return;
                     }
                 }
-                /* Now we have to see if any state in any statemachine 
-                of c is named s. 
-                If so, then we only have to link the state to c. */
-            } else { // then it is a "normal" Classifier
-                
+                /* Now we have to see if any state in any statemachine of c is
+                named s. If so, then we only have to link the state to c. */
+                Object state = 
+                    ActivityGraphsHelper.getHelper().findStateByName(c, s);
+                if (state != null) {
+                    ModelFacade.addInState(c, state); 
+                    // the model is changed - our job is done
+                } else {
+                    // no state named s is found, so we have to 
+                    // reject the user's input
+                    throw new ParseException("State not found", 0);
+                }
+            } else { // then c is a "normal" Classifier
+                // let's create a new ClassifierInState with the correct links
+                Object state = 
+                    ActivityGraphsHelper.getHelper().findStateByName(c, s);
+                if (state != null) {
+                    ActivityGraphsFactory.getFactory()
+                                    .buildClassifierInState(c, state);
+                    // the model is changed - our job is done
+                } else {
+                    // no state named s is found, so we have to 
+                    // reject the user's input
+                    throw new ParseException("State not found", 0);
+                }
             }
+        } else {
+            // if no classifier has been set, then entering a state is 
+            // not useful, so the user's input has to be rejected.
+            throw new ParseException("Classifier not found", 0);
         }
-        //...
     }
 } /* end class ParserDisplay */

@@ -31,15 +31,19 @@ package org.argouml.uml.diagram.activity.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+import org.argouml.application.api.Notation;
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
@@ -54,6 +58,8 @@ import org.argouml.uml.generator.ParserDisplay;
  *       [approved]
  * i.e. in 2 lines. The first line is underlined, 
  * to indicate that it is an instance (object).
+ * 
+ * @author mvw
  */
 public class FigObjectFlowState extends FigNodeModelElement {
    
@@ -101,9 +107,12 @@ public class FigObjectFlowState extends FigNodeModelElement {
         addFig(classifier);
         addFig(state);
         
+        enableSizeChecking(false);
         setReadyToEdit(false);
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
+        
+        setNameFig(null); // DEBUG only!
         
         ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
@@ -117,6 +126,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     public FigObjectFlowState(GraphModel gm, Object node) {
         this();
         setOwner(node);
+        enableSizeChecking(true);
     }
     
     /**
@@ -135,6 +145,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         figClone.setBigPort((FigRect) it.next());
         figClone.cover = (FigRect) it.next();
         figClone.classifier = (FigText) it.next();
+        figClone.state = (FigText) it.next();
         return figClone;
     }
 
@@ -156,7 +167,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
 
     /**
      * Override setBounds to keep shapes looking right.
-     * The nameFig is nicely centered vertically, 
+     * The classifier and state Figs are nicely centered vertically, 
      * and stretched out over the full width, 
      * to allow easy selection with the mouse.
      * The Fig can only be shrinked to half its original size - so that 
@@ -189,11 +200,76 @@ public class FigObjectFlowState extends FigNodeModelElement {
         firePropChange("bounds", oldBounds, getBounds());
     }
 
-
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
+     */
+    public void renderingChanged() {
+        updateClassifierText();
+        updateStateText();
+        updateBounds();
+        damage();
+    }
+    
+    /**
+     * Updates the text of the classifier FigText.
+     */
+    private void updateClassifierText() {
+        if (isReadyToEdit()) {
+            if (getOwner() == null)
+                return;
+            String theNewText =
+                Notation.generate(this, getOwner()); // the ObjectFlowState
+            classifier.setText(theNewText);
+        }
+    }
+    
+    /**
+     * Updates the text of the state FigText.
+     * 
+     * TODO: generate the text with the Notation.generate function.
+     */
+    private void updateStateText() {
+        if (isReadyToEdit()) {
+            if (getOwner() == null)
+                return;
+            String theNewText = "";
+            if (ModelFacade.isAClassifierInState(
+                    ModelFacade.getType(getOwner()))) {
+                Collection c = 
+                    ModelFacade.getInStates(ModelFacade.getType(getOwner()));
+                Iterator i = c.iterator();
+                if (i.hasNext()) {
+                    theNewText = ModelFacade.getName(i.next());
+                }
+            } 
+            state.setText(theNewText);
+        }
+    }
     
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#getNameFig()
+     */
+    public FigText getNameFig() {
+        return null;
+    }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#getName()
+     */
+    public String getName() {
+        return null;
+    }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#setName(java.lang.String)
+     */
+    public void setName(String n) {
+        
+    }
+    
     /**
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
@@ -242,6 +318,24 @@ public class FigObjectFlowState extends FigNodeModelElement {
         return cover.getLineWidth();
     }
 
+    /**
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
+    public void keyPressed(KeyEvent ke) {
+        if (!isReadyToEdit()) {
+            if (ModelFacade.isAModelElement(getOwner())) {
+                ModelFacade.setName(getOwner(), "");
+                setReadyToEdit(true);
+            } else {
+                //LOG.debug("not ready to edit name");
+                return;
+            }
+        }
+        if (ke.isConsumed() || getOwner() == null) {
+            return;
+        }
+        classifier.keyPressed(ke);
+    }
     
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
@@ -256,12 +350,12 @@ public class FigObjectFlowState extends FigNodeModelElement {
                         this.getOwner());
             }
             ProjectBrowser.getInstance().getStatusBar().showStatus("");
-            //updateNameText();
         } catch (ParseException pe) {
-            ProjectBrowser.getInstance().getStatusBar()
-                .showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+            ProjectBrowser.getInstance().getStatusBar().showStatus(
+                    "Input rejected: " + pe.getMessage());
+            updateClassifierText();
+            updateStateText();
         }
-        //super.textEdited(ft);
     } 
 
 } /* end class FigObjectFlowState */
