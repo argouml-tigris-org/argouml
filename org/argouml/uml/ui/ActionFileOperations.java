@@ -162,7 +162,7 @@ public abstract class ActionFileOperations extends UMLAction {
                     throw new IllegalStateException("Filename " + url.getFile() 
                             + " is not of a known file type");
                 }
-                p = persister.loadProject(url);
+                p = persister.doLoad(url);
                 
                 ProjectBrowser.getInstance().showStatus(
                         MessageFormat.format(Translator.localize(

@@ -29,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.List;
@@ -198,7 +199,7 @@ public class UmlFilePersister extends AbstractFilePersister {
     /**
      * @see org.argouml.persistence.ProjectFilePersister#loadProject(java.net.URL)
      */
-    public Project loadProject(URL url) throws OpenException {
+    public Project doLoad(URL url) throws OpenException {
         try {
             XmlInputStream inputStream =
                         new XmlInputStream(url.openStream(), "argo");

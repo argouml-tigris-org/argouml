@@ -43,9 +43,17 @@ public interface ProjectFilePersister {
     public void save(Project project, File file) throws SaveException;
     
     /**
+     * @param file the file of the project to load
+     * @return the Project 
+     * @throws OpenException when we fail to open from this url
+     */
+    public Project doLoad(File file) throws OpenException;
+    
+    /**
      * @param url the url of the project to load
      * @return the Project 
      * @throws OpenException when we fail to open from this url
      */
-    public Project loadProject(URL url) throws OpenException;
+    public Project doLoad(URL url) throws OpenException;
+    
 }
