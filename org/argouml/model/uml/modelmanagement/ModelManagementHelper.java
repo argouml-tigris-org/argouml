@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.Vector;
 
 import org.apache.log4j.Category;
 
@@ -188,6 +189,31 @@ public class ModelManagementHelper {
             set.addAll(getAllSurroundingNamespaces(ns.getNamespace()));
         }
         return set;
+    }
+
+    public MModelElement getElement(Vector path, MModelElement root) {
+	Object name;
+	int i;
+
+	for (i = 0; i < path.size(); i++) {
+	    if (root == null || !(root instanceof MNamespace))
+		return null;
+
+	    name = path.get(i);
+	    Iterator it = ((MNamespace)root).getOwnedElements().iterator();
+	    root = null;
+	    while (it.hasNext()) {
+		MModelElement me = (MModelElement) it.next();
+		if (i < path.size() - 1 &&
+		    !(me instanceof MNamespace))
+		    continue;
+		if (name.equals(me.getName())) {
+		    root = me;
+		    break;
+		}
+	    }
+	}
+	return root;
     }
 
     /**

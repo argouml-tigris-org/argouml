@@ -53,6 +53,7 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
@@ -458,14 +459,17 @@ public class ParserDisplay extends Parser {
 		me.setStereotype(null);
 	}
 
-//	if (path != null) {
-//	    MNamespace nsp = ;
-//
-//	    if (nsp == null)
-//		throw new ParseException("Unable to resolve namespace", 0);
-//
-//	    me.setNamespace(nsp);
-//	}
+	if (path != null) {
+	    MModelElement nspe = ModelManagementHelper.getHelper()
+					.getElement(path, me.getModel());
+
+	    if (nspe == null || !(nspe instanceof MNamespace))
+		throw new ParseException("Unable to resolve namespace", 0);
+	    if (!CoreHelper.getHelper().getAllPossibleNamespaces(me).contains(nspe))
+		throw new ParseException("Invalid namespace for element", 0);
+
+	    ((MNamespace)nspe).addOwnedElement(me);
+	}
     }
 
 
