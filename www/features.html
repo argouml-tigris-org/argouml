@@ -4,18 +4,22 @@
 <HEAD>
 	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
 	<META NAME="GENERATOR" Content="Visual Page 1.1a for Windows">
-	<TITLE>Argo/UML Features</TITLE>
+	<TITLE>ArgoUML Features</TITLE>
 </HEAD>
 
 <BODY BGCOLOR="#FFFFFF">
 
-<H2><FONT COLOR="#008080" FACE="Tahoma">Argo/UML Features</FONT></H2>
-<P><FONT SIZE="2" FACE="Tahoma">Argo/UML prvoides the following features. Each feature is described breifly below.</FONT></P>
+<H2><FONT COLOR="#008080" FACE="Tahoma">ArgoUML Features</FONT></H2>
+<P><FONT SIZE="2" FACE="Tahoma">ArgoUML provides the following features. Each feature is described briefly below.</FONT></P>
 
 <UL>
-	<LI><A HREF="#crossplatform"><FONT SIZE="2" FACE="Tahoma">Runs on any platform with Java 1.1</FONT></A>
+	<LI><A HREF="#crossplatform"><FONT SIZE="2" FACE="Tahoma">Runs on any platform with Java 1.2</FONT></A>
 	<LI><A HREF="#Standard"><FONT SIZE="2" FACE="Tahoma">Standard UML Meta-Model</FONT></A>
-	<LI><A HREF="#Editing"><FONT SIZE="2" FACE="Tahoma">UML Design Editing (partially implemented)</FONT></A>
+	<LI><A HREF="#XMI"><FONT SIZE="2" FACE="Tahoma">XMI-Support</FONT></A>
+	<LI><A HREF="#Editing"><FONT SIZE="2" FACE="Tahoma">UML Design Editing</FONT></A>
+	<LI><A HREF="#OCL"><FONT SIZE="2" FACE="Tahoma">OCL Support</FONT></A>
+	<LI><A HREF="#Database"><FONT SIZE="2" FACE="Tahoma">Database Support</FONT></A>
+	<LI><A HREF="#Export"><FONT SIZE="2" FACE="Tahoma">Several diagram export formats</FONT></A>
 	<LI><A HREF="#codegen"><FONT SIZE="2" FACE="Tahoma">Code Generation (partially implemented)</FONT></A>
 	<LI><FONT SIZE="2" FACE="Tahoma">Cognitive Support</FONT>
 	<UL>
@@ -33,7 +37,7 @@
 			<LI><A HREF="#checklists"><FONT SIZE="2" FACE="Tahoma">Checklists</FONT></A>
 			<LI><A HREF="#wbs"><FONT SIZE="2" FACE="Tahoma">Work Breakdown Structure (future)</FONT></A>
 		</UL>
-		<LI><FONT SIZE="2" FACE="Tahoma">Comprehension and Problem Sovling</FONT>
+		<LI><FONT SIZE="2" FACE="Tahoma">Comprehension and Problem Solving</FONT>
 		<UL>
 			<LI><A HREF="#navigation"><FONT SIZE="2" FACE="Tahoma">Navigational Perspectives</FONT></A>
 			<LI><A HREF="#views"><FONT SIZE="2" FACE="Tahoma">Multiple, Overlapping Views</FONT></A>
@@ -63,21 +67,15 @@ X-SAS-UseImageHeight></P>
 <TABLE BORDER="0" CELLSPACING="0" WIDTH="650">
 	<TR>
 		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
-		<TD COLSPAN="3"><A NAME="crossplatform"></A><FONT SIZE="2" FACE="Tahoma"><B>Runs on any platform with Java 1.1</B></FONT></TD>
+		<TD COLSPAN="3"><A NAME="crossplatform"></A><FONT SIZE="2" FACE="Tahoma"><B>Runs on any platform with Java 1.2</B></FONT></TD>
 	</TR>
 	<TR>
 		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
 		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
 		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
 		<TD>
-			<P><FONT SIZE="2" FACE="Tahoma">Argo/UML is coded entirely in Java and uses the Java Foundation Classes. This allows
-			Argo/UML to run on virtually any platform. Argo/UML has been tested in the following environments:</FONT></P>
-			<UL>
-				<LI><FONT SIZE="2" FACE="Tahoma">Windows NT 4.0 SP3. Symantec Visual Cafe 2.1 and 2.5.</FONT>
-				<LI><FONT SIZE="2" FACE="Tahoma">Windows NT 4.0 SP3. Sun JDK 1.1.5.</FONT>
-				<LI><FONT SIZE="2" FACE="Tahoma">Sun Solaris 5.5.1. Sun JDK 1.1.5.</FONT>
-				<LI><FONT SIZE="2" FACE="Tahoma">Linux with Blackdown JDK.</FONT>
-			</UL>
+			<P><FONT SIZE="2" FACE="Tahoma">ArgoUML is coded entirely in Java and uses the Java Foundation Classes. This allows
+			ArgoUML to run on virtually any platform.</FONT></P>
 		</TD>
 	</TR>
 	<TR>
@@ -93,10 +91,45 @@ X-SAS-UseImageHeight></P>
 	<TR>
 		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
 		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+	<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+	<TD><FONT SIZE="2" FACE="Tahoma">ArgoUML is compliant with the OMG Standard
+	    for UML in its latest version 1.3. The code for the internal representation of an
+	    UML model is completely generated from the specification and, thus, follows it
+	    very closely.
+	    To achieve this, a special metamodel library (<a
+	      href="http://nsuml.sourceforge.net">NSUML</a>) was developed by <a
+	      href="http://www.novosoft.ru">Novosofts</a> and made available under LGPL.
+	    This makes ArgoUML extremely flexible, new versions of the UML standard can
+	    be adopted within days.
+	    Some advanced features of UML are not yet available
+	    in the diagrams, but the foundation to completely fulfill all of UML
+	    is laid.</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
 		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
-		<TD><FONT SIZE="2" FACE="Tahoma">Argo/UML represents designs using a Java version of the UML 1.1 meta-model as described
-			in the UML Semantics specification. We have made extensive efforts to keep this meta-model implementation true
-			to the standard. For more information, see the uci.uml home page.</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+	</TR>	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD COLSPAN="3"><A NAME="XMI"></A><FONT SIZE="2" FACE="Tahoma"><B>XMI-Support</B></FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD>
+	  <P><FONT SIZE="2" FACE="Tahoma">XMI is an XML based exchange format between UML tools. ArgoUML uses this
+	      as standard saving mechanism so that easy interchange with other tools and
+	      compliance with open standards are secured. XMI version 1.0 for UML 1.3 is
+	      used. To convert older models in XMI (Argo 0.7 used XMI 1.0 for UML1.1) to the
+	      latest version, <a href="http://www.metaintegration.net/">Meta Integration</a>
+	      provides a free key to their <a
+		href="http://www.metaintegration.net/Products/Downloads">Model Bridge</a>. This
+	      also permits you to convert Rational Rose models to ArgoUML! This currently only
+	      includes model information, but no graphical information (like layout of diagrams).
+	    </FONT></P>
+	</TD>
 	</TR>
 	<TR>
 		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
@@ -113,15 +146,84 @@ X-SAS-UseImageHeight></P>
 		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
 		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
 		<TD>
-			<P><FONT SIZE="2" FACE="Tahoma">Argo/UML uses </FONT><A HREF="http://www.ics.uci.edu/pub/arch/gef"><FONT SIZE="2"
+			<P><FONT SIZE="2" FACE="Tahoma">ArgoUML uses </FONT><A HREF="http://www.ics.uci.edu/pub/arch/gef"><FONT SIZE="2"
 			FACE="Tahoma">GEF</FONT></A><FONT SIZE="2" FACE="Tahoma">, the UCI Graph Editing Framework to edit UML diagrams.
 			The following diagram types are supported:</FONT></P>
 			<UL>
 				<LI><FONT SIZE="2" FACE="Tahoma">Class diagrams</FONT>
-				<LI><FONT SIZE="2" FACE="Tahoma">State machine diagrams (near future)</FONT>
-				<LI><FONT SIZE="2" FACE="Tahoma">Use case diagrams (near future)</FONT>
-				<LI><FONT SIZE="2" FACE="Tahoma">Other diagram types will be available in the future</FONT>
+	                        <LI><FONT SIZE="2" FACE="Tahoma">State machine diagrams</FONT>
+                                <LI><FONT SIZE="2" FACE="Tahoma">Activity diagrams</FONT>
+	                        <LI><FONT SIZE="2" FACE="Tahoma">Use case diagrams</FONT>
+	                        <LI><FONT SIZE="2" FACE="Tahoma">Collaboration diagrams</FONT>
+	                        <LI><FONT SIZE="2" FACE="Tahoma">Object/Component/Deployment diagrams (this is basically one diagram type in ArgoUML)</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">Sequence diagrams (in the near future)</FONT>
 			</UL>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD COLSPAN="3"><A NAME="OCL"></A><FONT SIZE="2" FACE="Tahoma"><B>OCL Support</B></FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD>
+  	  <P><FONT SIZE="2" FACE="Tahoma">As the first UML-Tool at all ArgoUML provides full OCL syntax and type checking.
+	      This is based on an <a href="http://dresden-ocl.sourceforge.net">OCL-Compiler
+	      </a> developed at the Technical University of Dresden. It also is
+	      able to generate Java-code from OCL-Constraints.</FONT></P>
+	</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD COLSPAN="3"><A NAME="Database"></A><FONT SIZE="2" FACE="Tahoma"><B>Database Support</B></FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD>
+	  <P><FONT SIZE="2" FACE="Tahoma">Model information for static structure and use
+	      case diagrams can now be stored to a mySQL database. The adaption to any
+	      other JDBC capable database should be easy by adjusting the DB-scheme, since
+	      ArgoUML contains clean JDBC code. Graphical information is not supported yet.
+	    </FONT></P>
+		</TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD COLSPAN="3"><A NAME="Export"></A><FONT SIZE="2" FACE="Tahoma"><B>Several diagram export formats</B></FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFFFF"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD>
+	  <P><FONT SIZE="2" FACE="Tahoma">
+	      Diagrams can now be exported to gif, PostScript, eps, PGML and svg.
+	      The standard saving format for diagrams is still PGML,
+	      but it will be changed to the upcoming standard for Scalable Vector
+	      Graphics (svg) of the W3C consortium.
+	    </FONT></P>
 		</TD>
 	</TR>
 	<TR>
@@ -479,7 +581,7 @@ X-SAS-UseImageHeight></P>
 		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
 		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
 		<TD WIDTH="10"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
-		<TD><FONT SIZE="2" FACE="Tahoma">The current version of Argo/UML provides over a dozen different navigational perspectives
+		<TD><FONT SIZE="2" FACE="Tahoma">The current version of ArgoUML provides over a dozen different navigational perspectives
 			and a simple editor to customize these perspectives or author new ones. Each navigational perspective is made up
 			of a set of rules. Each rule defines the possible children of a given design element. When rules are combined they
 			yield the union of the children produced by each rule. About 20 rules are available for designers to use in navigational
@@ -496,7 +598,7 @@ X-SAS-UseImageHeight></P>
 <P><FONT SIZE="2" FACE="Tahoma"><BR>
 </FONT>
 <HR ALIGN="CENTER">
-<FONT SIZE="2" FACE="Tahoma">Back to </FONT><A HREF="index.html"><FONT SIZE="2" FACE="Tahoma">Argo/UML Home</FONT></A></P>
+<FONT SIZE="2" FACE="Tahoma">Back to </FONT><A HREF="index.html"><FONT SIZE="2" FACE="Tahoma">ArgoUML Home</FONT></A></P>
 <P>&nbsp;</P>
 <P>&nbsp;</P>
 <P>&nbsp;</P>
