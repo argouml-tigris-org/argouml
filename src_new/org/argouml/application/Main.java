@@ -75,14 +75,6 @@ public class Main {
 
     private static Vector postLoadActions = new Vector();
 
-    /**
-     * Splashscreen to be shown on startup. Null if splashscreen not wanted
-     */
-    private static SplashScreen splash;
-    
-    public static SplashScreen getSplashScreen() {
-        return splash;
-    }
     
     ////////////////////////////////////////////////////////////////
     // main
@@ -225,38 +217,8 @@ public class Main {
         //
 	st.mark("locales");
         //String lookAndFeelClassName = LookAndFeelMgr.SINGLETON.determineLookAndFeel();
-        String lookAndFeelClassName;
-        if ("true".equals(System.getProperty("force.nativelaf","false"))) {
-            lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-        }
-        else {
-            lookAndFeelClassName = "javax.swing.plaf.metal.MetalLookAndFeel";
-        }
-
-        String lookAndFeelGeneralImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/general";
-        String lookAndFeelNavigationImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/navigation";
-        String lookAndFeelDiagramImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml/diagrams";
-        String lookAndFeelElementImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml/elements";
-        String lookAndFeelArgoUmlImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml";
-        ResourceLoader.addResourceExtension("gif");
-        ResourceLoader.addResourceLocation(lookAndFeelGeneralImagePath);
-        ResourceLoader.addResourceLocation(lookAndFeelNavigationImagePath);
-        ResourceLoader.addResourceLocation(lookAndFeelDiagramImagePath);
-        ResourceLoader.addResourceLocation(lookAndFeelElementImagePath);
-        ResourceLoader.addResourceLocation(lookAndFeelArgoUmlImagePath);
-        ResourceLoader.addResourceLocation("/org/argouml/Images");
-        ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
 
         Translator.init();
-
-	st.mark("splash");
-    if (doSplash) {
-        splash = new SplashScreen("Loading ArgoUML...", "Splash");
-        splash.getStatusBar().showStatus("Making Project Browser");
-        splash.getStatusBar().showProgress(10);
-
-        splash.setVisible(true);
-    }
 
 	st.mark("projectbrowser");
 
@@ -269,24 +231,8 @@ public class Main {
         LookAndFeelMgr.SINGLETON.setCurrentTheme(themeMemory);
         
         // make the projectbrowser
-        ProjectBrowser pb = new ProjectBrowser("ArgoUML");
-        
-        
-        
-        // create the navpane
-        if (doSplash) {
-            splash.getStatusBar().showStatus("Making Project Browser: Navigator Pane");
-            splash.getStatusBar().incProgress(5);
-        }
-        NavigatorPane.getNavigatorPane();
-
-        // create the todopane
-        if (doSplash) {
-            splash.getStatusBar().showStatus("Making Project Browser: To Do Pane");
-            splash.getStatusBar().incProgress(5);
-        }
-        ToDoPane.getToDoPane();    
-        
+        ProjectBrowser pb = new ProjectBrowser("ArgoUML", doSplash);
+                 
         JOptionPane.setRootFrame(pb);
 
         // Set the screen layout to what the user left it before, or
@@ -301,7 +247,8 @@ public class Main {
         pb.setLocation(x, y);
         pb.setSize(w, h);
 
-        if (splash != null) {
+        if (doSplash) {
+            SplashScreen splash = pb.getSplashScreen();
             if (urlToOpen == null)
                 splash.getStatusBar().showStatus("Making Default Project");
             else
@@ -367,21 +314,13 @@ public class Main {
 
         if (urlToOpen == null) pb.setTitle("Untitled");
 
-        if (splash != null) {
-            splash.getStatusBar().showStatus("Setting Perspectives");
-            splash.getStatusBar().showProgress(50);
-        }
-
-
-        NavigatorPane.getNavigatorPane().setPerspectives(NavPerspective.getRegisteredPerspectives());
-        ToDoPane.getToDoPane().setPerspectives(ToDoPerspective.getRegisteredPerspectives());
-
-        pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+        
         //pb.validate();
         //pb.repaint();
         //pb.requestDefaultFocus();
 
-        if (splash != null) {
+        if (doSplash) {
+            SplashScreen splash = pb.getSplashScreen();
             splash.getStatusBar().showStatus("Loading modules");
             splash.getStatusBar().showProgress(75);
         }
@@ -392,7 +331,8 @@ public class Main {
 
 	st.mark("open window");
 
-        if (splash != null) {
+        if (doSplash) {
+            SplashScreen splash = pb.getSplashScreen();
             splash.getStatusBar().showStatus("Opening Project Browser");
             splash.getStatusBar().showProgress(95);
         }
@@ -401,10 +341,11 @@ public class Main {
         Object model = p.getUserDefinedModels().elementAt(0);
         Object diag = p.getDiagrams().elementAt(0);
         //pb.setTarget(diag);
-        NavigatorPane.getNavigatorPane().setSelection(model, diag);
+        pb.getNavigatorPane().setSelection(model, diag);
 
 	st.mark("close splash");
-        if (splash != null) {
+        if (doSplash) {
+            SplashScreen splash = pb.getSplashScreen();
             splash.setVisible(false);
             splash.dispose();
             splash = null;
@@ -478,20 +419,17 @@ public class Main {
             Argo.log.info("");
         }
 	st = null;
+        pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
         //ToolTipManager.sharedInstance().setInitialDelay(500);
         ToolTipManager.sharedInstance().setDismissDelay(50000000);
     }
 
 
-    //   private static void defineMockHistory() {
-    //     History h = History.TheHistory;
-    //     h.addItem("In the beginning there was Argo");
-    //     h.addItem("And then I wrote a bunch of papers");
-    //     h.addItem("Now there is ArgoUML!");
-    //   }
+    
 
 
+    
     public static void  addPostLoadAction(Runnable r) {
         postLoadActions.addElement(r);
     }

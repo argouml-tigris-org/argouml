@@ -83,7 +83,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     	ProjectBrowser pb = ProjectBrowser.TheInstance;
     	Object target = pb.getDetailsTarget();
     	if (target == null) { // nothing selected on detailspane
-    		target = NavigatorPane.getNavigatorPane().getSelectedObject();
+    		target = pb.getNavigatorPane().getSelectedObject();
     	}
     	return target;
     }
@@ -120,7 +120,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                 // Argo.log.info("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
                 // move the pointer to the target in the NavPane to some other target (up)
                 ProjectBrowser pb = ProjectBrowser.TheInstance;
-                TreePath path = NavigatorPane.getNavigatorPane().getParentPath();
+                TreePath path = pb.getNavigatorPane().getParentPath();
                 if (path != null) {
                     Object o = path.getLastPathComponent();
                     Project pr = ProjectManager.getManager().getCurrentProject();

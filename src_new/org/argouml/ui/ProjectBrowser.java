@@ -25,6 +25,7 @@ package org.argouml.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
@@ -125,15 +126,35 @@ public class ProjectBrowser extends JFrame
      */
     private ArgoDiagram _activeDiagram;
 
+    /**
+     * The splash screen shown at startup
+     */
+    private SplashScreen _splash;
+    
+    /**
+     * The navigator pane containing the modelstructure
+     */
+    private NavigatorPane _navPane;
+    
+    /**
+     * The todopane (lower left corner of screen)
+     */
+    private ToDoPane _todoPane;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
    
 
-    public ProjectBrowser(String appName) {
+    public ProjectBrowser(String appName, boolean doSplash) {
         super(appName);
-        
+        TheInstance = this;
+        if (doSplash) {
+            _splash = new SplashScreen("Loading ArgoUML...", "Splash");
+            _splash.getStatusBar().showStatus("Making Project Browser");
+            _splash.getStatusBar().showProgress(10);
+            _splash.setVisible(true);
+        }
         _menuBar = new GenericArgoMenuBar();
         
             
@@ -157,11 +178,11 @@ public class ProjectBrowser extends JFrame
         getDetailsPane().getTabProps().addNavigationListener(this);
 
         setAppName(appName);
-        if (TheInstance == null) TheInstance = this;
+
         getContentPane().setFont(defaultFont);
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(_menuBar, BorderLayout.NORTH);
-        getContentPane().add(createPanels(), BorderLayout.CENTER);
+        getContentPane().add(createPanels(doSplash), BorderLayout.CENTER);
         getContentPane().add(_statusBar, BorderLayout.SOUTH);
 
         // allows me to ask "Do you want to save first?"
@@ -169,6 +190,7 @@ public class ProjectBrowser extends JFrame
         addWindowListener(new WindowCloser());
         ImageIcon argoImage = ResourceLoader.lookupIconResource("Model");
         this.setIconImage(argoImage.getImage());
+        // 
         
         // adds this as listener to projectmanager so it gets updated when the 
         // project changes
@@ -200,7 +222,7 @@ public class ProjectBrowser extends JFrame
      * Creates the panels in the working area
      * @return Component
      */
-    protected Component createPanels() {
+    protected Component createPanels(boolean doSplash) {
         // Set preferred sizes from config file
         if (_southPane != null) {
             _southPane.setPreferredSize(new Dimension(
@@ -212,8 +234,20 @@ public class ProjectBrowser extends JFrame
         // Workarea is layed out as a BorderSplitPane where the various components that make
         // up the argo application can be positioned.
         _workarea = new BorderSplitPane();
-        _workarea.add(ToDoPane.getToDoPane(), BorderSplitPane.SOUTHWEST);
-        _workarea.add(NavigatorPane.getNavigatorPane(), BorderSplitPane.WEST);
+        // create the todopane
+        if (doSplash) {
+            _splash.getStatusBar().showStatus("Making Project Browser: To Do Pane");
+            _splash.getStatusBar().incProgress(5);
+        }
+        _todoPane = new ToDoPane(doSplash);
+        _workarea.add(_todoPane, BorderSplitPane.SOUTHWEST);
+        // create the navpane
+        if (doSplash) {
+            _splash.getStatusBar().showStatus("Making Project Browser: Navigator Pane");
+            _splash.getStatusBar().incProgress(5);
+        }
+        _navPane = new NavigatorPane(doSplash);
+        _workarea.add(_navPane, BorderSplitPane.WEST);
         //_workarea.add(_northPane, BorderSplitPane.NORTH);
     
         Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
@@ -479,8 +513,8 @@ public class ProjectBrowser extends JFrame
      * Save the positions of the screen spliters in the properties file
      */
     public void saveScreenConfiguration() {
-        Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, NavigatorPane.getNavigatorPane().getWidth());
-        Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, ToDoPane.getToDoPane().getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, getNavigatorPane().getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, getTodoPane().getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, _southPane.getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());
@@ -539,6 +573,42 @@ public class ProjectBrowser extends JFrame
             return;
         }
     }
+    
+    /**
+     * Returns the todopane. 
+     * @return ToDoPane
+     */
+    public ToDoPane getTodoPane() {
+        return _todoPane;    
+    }
+    
+    /**
+     * Returns the navigatorpane. 
+     * @return NavigatorPane The navigatorpane
+     */
+    public NavigatorPane getNavigatorPane() {
+        return _navPane;    
+    }
+    
+    /**
+     * Returns the splashscreen shown at startup. 
+     * @return SplashScreen
+     */
+    public SplashScreen getSplashScreen() {
+        return _splash;
+    }
+    
+    /**
+     * Sets the splashscreen. Sets the current splashscreen to invisible
+     * @param splash
+     */
+    public void setSplashScreen(SplashScreen splash) {
+        if (_splash != null && _splash != splash) {
+            _splash.setVisible(false);
+        }                    
+        _splash = splash;
+    }
+    
 
 } /* end class ProjectBrowser */
 

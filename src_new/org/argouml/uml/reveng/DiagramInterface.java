@@ -218,7 +218,7 @@ public class DiagramInterface {
 	    ArgoDiagram d = new UMLClassDiagram(ns);
 	    d.setName(getDiagramName(name));
 	    p.addMember(d);
-	    NavigatorPane.getNavigatorPane().addToHistory(d);
+	    ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(d);
 	    ProjectBrowser.TheInstance.setTarget(d);
 
 	    // This is sorta hack, since we don't know yet if anything will

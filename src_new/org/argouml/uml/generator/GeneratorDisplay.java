@@ -72,9 +72,14 @@ import org.argouml.uml.MMUtil;
 public class GeneratorDisplay extends Generator
 implements PluggableNotation {
 
-  private static GeneratorDisplay SINGLETON = new GeneratorDisplay();
+  private static GeneratorDisplay SINGLETON;
 
-  public static GeneratorDisplay getInstance() { return SINGLETON; }
+  public static GeneratorDisplay getInstance() { 
+    if (SINGLETON == null) {
+        SINGLETON = new GeneratorDisplay();
+    }
+    return SINGLETON; 
+  }
 
 
   private GeneratorDisplay() {

@@ -177,7 +177,7 @@ public class FigPackage extends FigNodeModelElement {
 								{
 								me.consume();
 								super.mouseClicked(me);
-								NavigatorPane.getNavigatorPane().addToHistory(lDiagram);
+								ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(lDiagram);
 								lPB.setTarget(lDiagram);
 								return;
 								}
@@ -190,7 +190,7 @@ public class FigPackage extends FigNodeModelElement {
 						me.consume();
 						super.mouseClicked(me);
 
-						NavigatorPane.getNavigatorPane().addToHistory(lFirst);
+						ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(lFirst);
 						lPB.setTarget(lFirst);
 						return;
 						}
@@ -221,7 +221,7 @@ public class FigPackage extends FigNodeModelElement {
 
 								lP.addMember(lNew);
 								
-								NavigatorPane.getNavigatorPane().addToHistory(lNew);
+								ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(lNew);
 								lPB.setTarget(lNew);								
 								/* change prefix */
 								lNew.setName(diagramName);

@@ -224,7 +224,7 @@ class ActionNavBack extends UMLAction {
     if (ProjectBrowser.TheInstance != null) {
         Project p = ProjectManager.getManager().getCurrentProject();
         if (!(super.shouldBeEnabled() && p != null)) return false;
-        NavigatorPane np = NavigatorPane.getNavigatorPane();
+        NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
 	if ((np == null)) return false;
 	boolean b = np.canNavBack();
         return b;
@@ -233,7 +233,7 @@ class ActionNavBack extends UMLAction {
         return false;
   }
   public void actionPerformed(ActionEvent ae) {
-    NavigatorPane np = NavigatorPane.getNavigatorPane();
+    NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
     np.navBack();
   }
 } /* end class ActionNavBack */
@@ -244,13 +244,13 @@ class ActionNavForw extends UMLAction {
     if (ProjectBrowser.TheInstance != null) {
         Project p = ProjectManager.getManager().getCurrentProject();
         if (!(super.shouldBeEnabled() && p != null)) return false;
-        NavigatorPane np = NavigatorPane.getNavigatorPane();
+        NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
         return np.canNavForw();
     } else
         return false;
   }
   public void actionPerformed(ActionEvent ae) {
-    NavigatorPane np = NavigatorPane.getNavigatorPane();
+    NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
     np.navForw();
   }
 } /* end class ActionNavForw */
@@ -267,7 +267,7 @@ class ActionNavConfig extends UMLAction {
   public ActionNavConfig() { super("NavConfig"); }
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    NavigatorPane nav = NavigatorPane.getNavigatorPane();
+    NavigatorPane nav = pb.getNavigatorPane();
     NavigatorConfigDialog ncd = new NavigatorConfigDialog(pb);
     ncd.setVisible(true);
   }
@@ -383,7 +383,7 @@ class ActionOpenCritics extends UMLAction {
 class ActionFlatToDo extends UMLAction {
   public ActionFlatToDo() { super("Toggle Flat View", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
-    ToDoPane.getToDoPane().toggleFlat();
+    ProjectBrowser.TheInstance.getTodoPane().toggleFlat();
   }
 } /* end class ActionFlatToDo */
 

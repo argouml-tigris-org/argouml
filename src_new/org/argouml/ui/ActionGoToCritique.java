@@ -44,7 +44,7 @@ public class ActionGoToCritique extends UMLAction {
   }
 
   public void actionPerformed(ActionEvent ae) {
-    ToDoPane.getToDoPane().selectItem(_item);
+    ProjectBrowser.TheInstance.getTodoPane().selectItem(_item);
   }
 
   public boolean shouldBeEnabled() { return true; }

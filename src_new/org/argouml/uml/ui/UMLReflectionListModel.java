@@ -232,7 +232,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 Collection oldCollection = (Collection) _getMethod.invoke(getContainer(),_noArgs);
                 Collection newCollection = moveUpUtil(oldCollection,index);
                 _setMethod.invoke(getContainer(),new Object[] { newCollection });
-                NavigatorPane.getNavigatorPane().forceUpdate();
+                ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
             }
 	    catch(InvocationTargetException ex) {
                 cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveUp()", ex);
@@ -249,7 +249,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 Collection oldCollection = (Collection) _getMethod.invoke(getContainer(),_noArgs);
                 Collection newCollection = moveDownUtil(oldCollection,index);
                 _setMethod.invoke(getContainer(), new Object[] { newCollection });
-                NavigatorPane.getNavigatorPane().forceUpdate();
+                ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
             }
 	    catch(InvocationTargetException ex) {
                 cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveDown() ", ex.getTargetException());
@@ -265,7 +265,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
         if(_deleteMethod != null) {
             try {
                 _deleteMethod.invoke(getContainer(),new Object[] { new Integer(index) });
-                NavigatorPane.getNavigatorPane().forceUpdate();
+                ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
             }
 	    catch(InvocationTargetException ex) {
                 cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.delete()", ex);

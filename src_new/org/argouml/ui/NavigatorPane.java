@@ -88,20 +88,7 @@ import ru.novosoft.uml.model_management.MPackage;
 public class NavigatorPane extends JPanel
 implements ItemListener, TreeSelectionListener, PropertyChangeListener, QuadrantPanel {
     protected static Category cat = Category.getInstance(NavigatorPane.class);
-    
-    /**
-     * The singleton implementation
-     */
-    
-    private static NavigatorPane _navPane;
-    
-    public static NavigatorPane getNavigatorPane() {
-        if (_navPane == null) {
-            _navPane = new NavigatorPane();
-        }
-        return _navPane;
-    }
-    
+        
   //, CellEditorListener
 
   ////////////////////////////////////////////////////////////////
@@ -131,7 +118,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public NavigatorPane() {
+  public NavigatorPane(boolean doSplash) {
     setLayout(new BorderLayout());
     JPanel toolbarPanel = new JPanel(new BorderLayout());
     toolbarPanel.add(_toolbar, BorderLayout.WEST);
@@ -155,7 +142,14 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
     setPreferredSize(new Dimension(
                                   Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, ProjectBrowser.DEFAULT_COMPONENTWIDTH),0
                                   ));
-    ProjectManager.getManager().addPropertyChangeListener(this);                                  
+    ProjectManager.getManager().addPropertyChangeListener(this); 
+    
+    if (doSplash) {
+        SplashScreen splash = ProjectBrowser.TheInstance.getSplashScreen();
+        splash.getStatusBar().showStatus("Making NavigatorPane: Setting Perspectives");
+        splash.getStatusBar().showProgress(25);
+    }    
+    setPerspectives(NavPerspective.getRegisteredPerspectives());                             
   }
 
   ////////////////////////////////////////////////////////////////
