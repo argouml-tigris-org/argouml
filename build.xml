@@ -137,6 +137,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
 
   <target name="setversion">
+    <!-- These cannot be changed in .ant.properties -->
     <property name="nextversion" value="0.9.4"/>
     <property name="lastversion" value="0.9.3"/>
   </target>
@@ -156,10 +157,6 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="year" value="2001"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
-
-    <property name="debug" value="off"/>
-    <property name="optimize" value="on"/>
-    <property name="deprecation" value="off"/>
 
     <property name="src.dir" value="../src_new"/>
     <property name="lib.dir" value="../lib"/>
@@ -192,8 +189,21 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 	       classpath="${classpath}"
                property="has.junit" />
 
-    <exec executable="set user.home=C:\" os="windows" />
+    <!-- This does not appear to do anything anymore -->
+    <!-- exec executable="set user.home=C:\" os="windows" /-->
+
+    <!-- Load user properties.  Any property set before this cannot be changed -->
     <property file="${user.home}/.ant.properties"/>
+
+    <!-- The following can be set in .ant.properties to some other value -->
+    <property name="debug" value="off"/>
+    <property name="optimize" value="on"/>
+    <property name="deprecation" value="off"/>
+
+    <property name="log4j.javadoc.link"
+              value="http://jakarta.apache.org/log4j/docs/api"/>
+    <property name="jdk.javadoc.link"
+              value="http://java.sun.com/products/jdk/1.2/docs/api"/>
 
   </target>
 
@@ -375,10 +385,26 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="prepare-docs" depends="init">
     <mkdir dir="${docs.dir}"/>
+
+    <!-- Links allow reference to external classes from within Argo javadocs -->
     <javadoc sourcepath="${build.src}"
              destdir="${docs.dir}"
              classpath="${classpath}"
-             packagenames="${packages}"/>
+             packagenames="${packages}"
+	     use="true"
+	     private="true"
+	     splitindex="true"
+	     windowtitle="ArgoUML API Documentation"
+	     >
+      <link offline="true"
+            href="${jdk.javadoc.link}"
+            packagelistLoc="${jdk.javadoc.link}"/>
+      <link offline="true"
+            href="${log4j.javadoc.link}"
+            packagelistLoc="${log4j.javadoc.link}"/>
+
+    </javadoc>
+
   </target>
 
   <!-- =================================================================== -->
