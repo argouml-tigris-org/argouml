@@ -194,9 +194,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Package</literal> within the UML
-            metamodel.</para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2138,12 +2136,10 @@ Lists any specialized package (i.e. for
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
-        <!--varlistentry>
+        <varlistentry>
           <term><literal>Constraints</literal></term>
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Parameter</literal> within the UML
-            metamodel.</para></listitem>
-        </varlistentry-->
+          <listitem><para>&constraints_support;</para></listitem>
+        </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
 
@@ -2458,6 +2454,14 @@ Lists any specialized package (i.e. for
 
           <listitem><para>Standard tab. There is nothing generated for a
             signal.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Constraints tab -->
+
+        <varlistentry>
+          <term><literal>Constraints</literal></term>
+
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2983,9 +2987,15 @@ Lists any specialized package (i.e. for
     </sect2>
   </sect1>
 
-  <!-- TODO: Where are the Receptions discussed? -->
-  
-  
+  <!-- Reception artifact (subsidiary of Operation). -->
+
+  <sect1 id="s1.ref.reception">
+    <title>Reception (to be written)</title>
+
+    <para>A reception is ...</para>
+
+  </sect1>
+
   <!-- Association artifact. Has Association End as sub-artifact. Reference
        back to Use Case -->
 
@@ -3112,24 +3122,7 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
-            <literal>Association</literal> has the following standard
-            constraint defined.</para>
-
-            <itemizedlist>
-              <listitem><para><literal>xor</literal>. Applied to a set of
-                associations, indicating that over that set, exactly one
-                association is manifest for any particular association
-                instance.</para></listitem>
-            </itemizedlist>
-            <warning>
-              <para>
-                &argouml; does not have the <quote>Constraints</quote> tab
-                enabled for associations for implementation reasons.
-                <!-- TODO: See cookbook chapter ... 
-                See enhancement issue ... -->
-              </para>
-            </warning>
+          <listitem><para>&constraints_support;</para>
           </listitem>
         </varlistentry>
 
@@ -3523,6 +3516,14 @@ Lists any specialized package (i.e. for
             artifact to which it is connected.
             </para>
           </listitem>
+        </varlistentry>
+
+        <!-- Entry for Constraints tab -->
+
+        <varlistentry>
+          <term><literal>Constraints</literal></term>
+
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -3979,6 +3980,14 @@ In the UML metamodel it is a sub-class of
             associated interfaces.</para></listitem>
         </varlistentry>
 
+        <!-- Entry for Constraints tab -->
+
+        <varlistentry>
+          <term><literal>Constraints</literal></term>
+
+          <listitem><para>&constraints_support;</para></listitem>
+        </varlistentry>
+
         <!-- Entry for Tagged Values tab -->
 
         <varlistentry>
@@ -4357,6 +4366,14 @@ In the UML metamodel it is a sub-class of
               <literal>N/A</literal>.
             </para>
           </listitem>
+        </varlistentry>
+
+        <!-- Entry for Constraints tab -->
+
+        <varlistentry>
+          <term><literal>Constraints</literal></term>
+
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->

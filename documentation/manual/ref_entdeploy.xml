@@ -180,13 +180,11 @@ ArgoUML.
 
         <!-- Entry for Constraints tab -->
 
-        <!--varlistentry>
+        <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Node</literal> within the &argouml;
-            metamodel.</para></listitem>
-        </varlistentry-->
+          <listitem><para>&constraints_support;</para></listitem>
+        </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
 
@@ -595,10 +593,7 @@ How do I create a generalisation between nodes? See issue ... -->
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. 
-This tab is downlighted, since constraints are not defined for an 
-<literal>NodeInstance</literal> within the &argouml; metamodel.
-          </para>
+          <listitem><para>&constraints_support;</para>
           </listitem>
         </varlistentry>
 
@@ -851,10 +846,7 @@ This tab is downlighted, since constraints are not defined for an
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. 
-            This tab is downlighted, since constraints are not defined for an 
-            <literal>Component</literal> within the &argouml; metamodel.
-          </para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1224,10 +1216,7 @@ This tab is downlighted, since constraints are not defined for an
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. 
-This tab is downlighted, since constraints are not defined for an 
-<literal>NodeInstance</literal> within the &argouml; metamodel.
-            </para>
+          <listitem><para>&constraints_support;</para>
           </listitem>
         </varlistentry>
 

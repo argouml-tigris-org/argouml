@@ -115,10 +115,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. 
-This tab is downlighted, since constraints are not defined for a 
-<literal>Model</literal> within the &argouml; metamodel.
-          </para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -667,10 +664,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. 
-This tab is downlighted, since constraints are not defined for an 
-<literal>Event</literal> within the &argouml; metamodel.
-          </para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1390,21 +1384,8 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. 
-This tab is downlighted, since constraints are not defined for an 
-<literal>Stereotype</literal> within the &argouml; metamodel.
-            </para>
-
-<!-- TODO: check Issue 1805 -->
-<!--            <caution>
-              <para>
-It is currently not possible to create constraints for Stereotypes
-so the Constraints tab is not active.
-</para>
-            </caution>
--->
+          <listitem><para>&constraints_support;</para>
           </listitem>
-
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->

@@ -161,9 +161,7 @@ an exit action and a Do activity are not permitted for action states.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>ActionState</literal> within the UML
-            metamodel.</para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->

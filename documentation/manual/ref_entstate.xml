@@ -177,10 +177,7 @@ some external event to occur, or some dynamic activity
           <term><literal>Constraints</literal></term>
 
           <listitem>
-            <para>Standard tab.
-This tab is downlighted, since constraints are not defined for 
-<literal>State</literal> within the &argouml; metamodel.
-</para>
+            <para>&constraints_support;</para>
           </listitem>
         </varlistentry>
 
@@ -614,11 +611,7 @@ An action is represented on the diagram by the text of its expression.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. 
-This tab is downlighted, since constraints are not
-defined for <literal>Action</literal> within the UML
-metamodel.
-          </para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -950,10 +943,7 @@ followed by the expression of the action.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab.
-This tab is downlighted, since constraints are not defined for an 
-<literal>Transition</literal> within the &argouml; metamodel.
-          </para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1367,10 +1357,7 @@ This is not implemented in the V0.14 release of &argouml;.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. 
-This tab is downlighted, since constraints are not defined for an 
-<literal>Event</literal> within the &argouml; metamodel.
-          </para></listitem>
+          <listitem><para>S&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1650,10 +1637,7 @@ brackets (<literal>[]</literal>).
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. 
-This tab is downlighted, since constraints are not defined for an 
-<literal>Guard</literal> within the &argouml; metamodel.
-          </para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1944,10 +1928,7 @@ below (see
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. 
-This tab is downlighted, since constraints are not defined for an 
-<literal>Pseudostate</literal> within the &argouml; metamodel.
-          </para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2285,10 +2266,7 @@ Standard tab, containing just the name of the final state.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. 
-This tab is downlighted, since constraints are not defined for an 
-<literal>Final State</literal> within the &argouml; metamodel.
-          </para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->

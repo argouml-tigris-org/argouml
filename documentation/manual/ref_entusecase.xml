@@ -167,10 +167,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Actor</literal> within the UML
-metamodel so this is greyed out.
-</para>
+          <listitem><para>&constraints_support;</para>
           </listitem>
         </varlistentry>
 
@@ -631,9 +628,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>UseCase</literal> within the UML
-            metamodel.</para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1329,19 +1324,7 @@ The source tab content can be changed, but this has no effect.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
-            <literal>ExtensionPoint</literal> has no standard
-constraints defined.
-</para>
-
-            <note>
-              <para>
-<!-- Issue: 1805 -->
-In the current implementation of ArgoUML
-it is not possible to set constraints on extension points.
-For this reason this tab is greyed out.
-</para>
-            </note>
+          <listitem><para>&constraints_support;</para>
           </listitem>
         </varlistentry>
 
@@ -1668,10 +1651,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Dependency</literal> within
-the UML metamodel so this is greyed out.
-</para>
+          <listitem><para>&constraints_support;</para>
           </listitem>
         </varlistentry>
 
@@ -2010,63 +1990,8 @@ code for an association end so this is empty.
           <term><literal>Constraints</literal></term>
 
           <listitem>
-            <para>Standard tab.
-<!-- Issue: 1805 -->
-&argouml; does not support constraints on Generalizations
-so this is greyed out.
-</para>
-            <para>
-In the UML metamodel,
-            <literal>Generalization</literal> has the following standard
-            constraints defined.</para>
-
-            <itemizedlist>
-              <listitem><para><literal>complete</literal>. Applied to a set of
-                generalizations with the same discriminator (described in <xref
-                linkend="s2.ref.generalization_property_fields"/>) and same
-                parent, indicating that an instance of the parent must be an
-                instance of one of those children.</para>
-
-              <para>Where there is only one discriminator, this implies the
-                parent must be abstract.</para>
-
-              <tip><para>The point of this constraint is to indicate that
-                within the design, no more children are expected to be
-                created for this parent. If more are created, the
-                implication is that there will be significant rework
-                required within the design.</para></tip></listitem>
-
-              <listitem><para><literal>disjoint</literal>. Applied to a set
-                of generalizations indicates an instance of the parent
-                must be an instance of no more than one of the children
-                within the set.</para>
-
-              <note><para>This is the default semantics of
-                generalization</para></note></listitem> 
-
-              <listitem><para><literal>incomplete</literal>. The converse
-                of <literal>complete</literal> indicating that within a set
-                of generalizations of the same parent sharing the same
-                discriminator, an instance of the parent need not be an
-                instance of a child within the set (there is no guarantee
-                such an instance exists)</para>
-
-              <para>This implies the parent must be concrete.</para>
-
-              <tip><para>The point of this constraint is to indicate that
-                within the design, more children may be created for this
-                parent. If more are created, the implication is that there
-                should be no significant rework required within the
-                design.</para></tip></listitem>
-
-              <listitem><para><literal>overlapping</literal>. The inverse of
-                <literal>disjoint</literal>. Applied to a set of
-                generalizations indicates an instance of one child in the
-                set may simultaneously be an instance of another child
-                within the set (although this is not
-                guaranteed).</para></listitem>
-
-            </itemizedlist>
+            <para>&constraints_support;
+            </para>
           </listitem>
         </varlistentry>
 
@@ -2477,10 +2402,9 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
-            <literal>Extend</literal> has no standard
-constraints defined so this is greyed out.
-</para>
+          <listitem>
+            <para>&constraints_support;
+            </para>
           </listitem>
         </varlistentry>
 
@@ -2902,9 +2826,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
-            <literal>Include</literal> has no standard
-            constraints defined.</para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->

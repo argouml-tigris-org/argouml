@@ -172,16 +172,8 @@ Argo/UML.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>ClassifierRole</literal> within the UML
-            metamodel.</para>
-
-          <note><para>This is an important distinction from
-            <literal>Instance</literal> used in sequence diagrams, which is
-            able to talk about creation and destruction. Where a
-            collaboration is being used at instance level, it may be
-            appropriate to create these constraints for use on
-            collaboration diagrams.</para></note></listitem>
+          <listitem><para>&constraints_support;</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -588,10 +580,7 @@ Argo/UML.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. In the &argouml; metamodel,
-            <literal>AssociationEnd</literal> does not have any
-            constraints defined.</para>
-
+          <listitem><para>&constraints_support;</para>
           </listitem>
         </varlistentry>
 
@@ -893,9 +882,7 @@ Argo/UML.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>AssociationEndRole</literal> within the UML
-            metamodel.</para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1234,9 +1221,7 @@ Argo/UML.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no  constraints
-            for <literal>Message</literal> within the &argouml;
-            metamodel.</para></listitem>
+          <listitem><para>&constraints_support;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->

@@ -651,6 +651,40 @@ Initially this
       the <emphasis>Object Constraint Language (OCL)</emphasis> defined in the
       UML&nbsp;1.3 standard.</para>
 
+    <caution>
+      <para>
+        The OCL editor implementation for &argouml; V0.14
+        doesn't support OCL constraints for elements other than
+        Classes and Features.
+        <!-- See issue 1805 -->
+      </para>
+      <para>
+        This is something of a general restriction of OCL. Although the UML
+        specification claims that there may be a constraint for every model
+        element, the OCL specification only defines classes/interfaces and
+        operations as allowable contexts. 
+      </para>
+      <para>
+        It is not before OCL 2.0 that a more general definition of allowable
+        contexts is introduced. The key issue is that for each context
+        definition you need to define what is the contextualClassifier, i.e.,
+        the classifier that will be associated with the self keyword. The
+        creators of the OCL specification claim that this is not an issue for
+        the OCL specification, but rather for UML or some integration task
+        force. Conversely, it seems that the UML specification people seem to
+        expect this to be defined in the OCL specification (which is why we
+        did a first step in that direction in OCL 2.0).
+      </para>
+      <para>
+        So, to cut a long story short, it appeared that the simplest solution
+        for &argouml; at the moment
+        would be to enable the OCL property panel only for those
+        model elements for which there actually exists a definition of the
+        contextualClassifier in OCL 1.4. These are (s. above) Class/Interface
+        and Feature.
+      </para>
+    </caution>
+
     <para>The standard pre-defines a small number of constraints (for example
       the <literal>xor</literal> constraint over a set of associations
       indicating that only one may be manifest for any particular

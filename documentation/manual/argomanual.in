@@ -51,6 +51,11 @@ in the 0.16 version.
 </para>
     </caution>">
 <!ENTITY minimumjavaversion "1.3">
+<!ENTITY constraints_support "Standard tab.
+&argouml; only supports constraints on Classes and Features (Attributes,
+Operations, Receptions, and Methods),
+<!-- According issue 1805 -->
+so this tab is greyed out.">
 ]>
 
 <book>
