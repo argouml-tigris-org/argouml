@@ -519,7 +519,14 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 
 	public void propertySet(MElementEvent mee) {
 	    //if (_group != null) _group.propertySet(mee);
-	    modelChanged();
+            if (mee.getName().equals("name")) {
+                if (_readyToEdit) {
+                    MModelElement me = (MModelElement) getOwner();
+                    String nameStr = Notation.generate(this, me.getName());
+                     _name.setText(nameStr);
+                }
+            } else
+	       modelChanged();
 	    damage();
 	}
 	public void listRoleItemSet(MElementEvent mee) {

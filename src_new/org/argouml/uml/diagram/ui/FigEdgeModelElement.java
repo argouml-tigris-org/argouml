@@ -421,7 +421,10 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	public void propertySet(MElementEvent mee) {
 	    //if (_group != null) _group.propertySet(mee);
 	    if (mee.getOldValue() != mee.getNewValue()) {
-	    	modelChanged();
+                if (mee.getName().equals("name")) {
+                    updateNameText();
+                } else
+        	    	modelChanged();
 	    	damage();
 	    }
 	}
