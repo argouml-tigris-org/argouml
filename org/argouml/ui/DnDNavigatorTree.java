@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -40,6 +39,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
@@ -100,7 +100,8 @@ public class DnDNavigatorTree extends ExplorerTree
         //Get the selected node from the JTree
         _selectedTreePath = getSelectionPath();
         if (_selectedTreePath == null) return;
-        Object dragNode = _selectedTreePath.getLastPathComponent();
+        Object dragNode = ((DefaultMutableTreeNode)_selectedTreePath
+                                .getLastPathComponent()).getUserObject();
         if (dragNode != null) {
             
             //Get the Transferable Object
@@ -205,12 +206,12 @@ public class DnDNavigatorTree extends ExplorerTree
                     return;
                 }
                 
-                Object destinationModelElement =
-		    destinationPath.getLastPathComponent();
+                Object destinationModelElement = ((DefaultMutableTreeNode)destinationPath
+                                .getLastPathComponent()).getUserObject();
                 
                 //get old parent node
-                Object oldParentME = _selectedTreePath.getParentPath()
-		    .getLastPathComponent();
+                Object oldParentME = ((DefaultMutableTreeNode)_selectedTreePath.getParentPath()
+		    .getLastPathComponent()).getUserObject();
                 
                 int action = dropTargetDropEvent.getDropAction();
                 boolean copyAction = (action == DnDConstants.ACTION_COPY);
@@ -263,8 +264,10 @@ public class DnDNavigatorTree extends ExplorerTree
                 return null;
             }
             
-            Object dest = destinationPath.getLastPathComponent();
-            Object src = sourceTreePath.getLastPathComponent();
+            Object dest = ((DefaultMutableTreeNode)destinationPath
+                                .getLastPathComponent()).getUserObject();
+            Object src = ((DefaultMutableTreeNode)sourceTreePath
+                                .getLastPathComponent()).getUserObject();
             
             boolean isValid = UmlHelper.getHelper().getCore()
 		.isValidNamespace(src, dest);
