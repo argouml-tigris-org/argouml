@@ -27,10 +27,15 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import org.argouml.application.api.Configuration;
 
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.kernel.Wizard;
+import org.argouml.swingext.BorderSplitPane;
+import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.Toolbar;
+import org.argouml.swingext.Vertical;
 import org.argouml.ui.Actions;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -64,13 +69,20 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     //JTextArea _description = new JTextArea();
     WizDescription _description = new WizDescription();
     JPanel _lastPanel = null;
-    
+    private JPanel _itemPanel;
+    private JPanel _treePanel;
+    private BorderSplitPane _splitPane;
     private Object _target;
 
     ////////////////////////////////////////////////////////////////
     // constructor
     public TabToDo() {
         super("tab.todo-item");
+        String position = Configuration.getString(Configuration.makeKey("layout", "tabtodo"));
+        orientation = 
+            ((position.equals("West") || position.equals("East"))
+             ? Vertical.getInstance() : Horizontal.getInstance());
+        
         setLayout(new BorderLayout());
         //     JPanel buttonPane = new JPanel();
         //     buttonPane.setFont(new Font("Dialog", Font.PLAIN, 9));
@@ -120,26 +132,37 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         //_description.setFont(userFont);
         //add(new JScrollPane(_description), BorderLayout.CENTER);
         //@ add(_description, BorderLayout.CENTER);
+        _splitPane = new BorderSplitPane();
+        add(_splitPane, BorderLayout.CENTER);
         setTarget(null);
     }
 
     public void showDescription() {
-        if (_lastPanel != null)
-            remove(_lastPanel);
-        add(_description, BorderLayout.CENTER);
+        if (_lastPanel != null) {
+            _splitPane.remove(_lastPanel);
+        }
+        _splitPane.add(_description, BorderSplitPane.CENTER);
         _lastPanel = _description;
         validate();
         repaint();
     }
+    
+    public void setTree(ToDoPane tdp) {
+        if (orientation.equals(Horizontal.getInstance())) {
+            _splitPane.add(tdp, BorderSplitPane.WEST);
+        } else {
+            _splitPane.add(tdp, BorderSplitPane.NORTH);
+        }
+    }
 
     public void showStep(JPanel ws) {
         if (_lastPanel != null)
-            remove(_lastPanel);
+            _splitPane.remove(_lastPanel);
         if (ws != null) {
-            add(ws, BorderLayout.CENTER);
+            _splitPane.add(ws, BorderSplitPane.CENTER);
             _lastPanel = ws;
         } else {
-            add(_description, BorderLayout.CENTER);
+            _splitPane.add(_description, BorderSplitPane.CENTER);
             _lastPanel = _description;
         }
         validate();
@@ -161,14 +184,12 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         Wizard w = null;
         if (target instanceof ToDoItem)
             w = ((ToDoItem) target).getWizard();
-        if (w != null)
+        if (w != null) {
             showStep(w.getCurrentPanel());
-        else {
+        } else {
             showDescription();
         }
         updateActionsEnabled(item);
-        
-        
     }
 
    /**
@@ -196,7 +217,6 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         // we can neglect this, the todopane allways selects the first target
         // in a set of targets. The first target can only be 
         // changed in a targetRemoved or a TargetSet event
-
     }
 
     /**
@@ -206,7 +226,6 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         // how to handle empty target lists?
         // probably the TabTodo should only show an empty pane in that case
         setTarget(e.getNewTargets()[0]);
-
     }
 
     /**
