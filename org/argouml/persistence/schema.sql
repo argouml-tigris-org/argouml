@@ -2,6 +2,16 @@
 #----------------
 # data types
 #----------------
+
+# IMPORTANT:
+# all the REFERENCES are wrong, the field name should always be
+# "uuid"
+# and not
+# "XxxId"!
+# when ever anyone wants to include these REFERENCES, make sure you fix this.
+#
+
+
 DROP TABLE tAggregationKind;
 CREATE TABLE tAggregationKind(
     uuid VARCHAR(50) NOT NULL,
@@ -200,7 +210,7 @@ CREATE TABLE tModelElement(
     PRIMARY KEY(uuid),
     name VARCHAR(100),
     namespace INTEGER(5), # REFERENCES tNamespace(NamespaceId),
-    mconstraint INTEGER(5), # REFERENCES tConstraint(ConstraintId),
+    stereotype INTEGER(5), # REFERENCES tStereotype(StereotypeId),
     PackageId INTEGER(5)); # REFERENCES tPackage(PackageId));
 
 DROP TABLE tAssociation;

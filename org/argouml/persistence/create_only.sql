@@ -171,7 +171,7 @@ CREATE TABLE tModelElement(
     PRIMARY KEY(uuid),
     name VARCHAR(100),
     namespace INTEGER(5), # REFERENCES tNamespace(NamespaceId),
-    mconstraint INTEGER(5), # REFERENCES tConstraint(ConstraintId),
+    stereotype INTEGER(5), # REFERENCES tStereotype(StereotypeId),
     PackageId INTEGER(5)); # REFERENCES tPackage(PackageId));
 
 CREATE TABLE tAssociation(
