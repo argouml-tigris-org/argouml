@@ -66,11 +66,11 @@ User of ArgoUML
 
 	  <listitem id="REQ2">
 	    <para>
-As soon as the model element changes then all views shall update.
-For text fields, this can be at every key stroke.
+All views of a model element shall be update 
+as soon as the model element is updated.
 </para>
 	    <para>
-REQ2 REVa
+REQ2 REVb
 </para>
 	    <para>
 <emphasis>Rationale:</emphasis>
@@ -81,6 +81,102 @@ might help him to get it right.
 	    <para>
 <emphasis>Stakeholder:</emphasis>
 User of ArgoUML
+</para>
+	  </listitem>
+
+	  <listitem id="REQ11">
+	    <para>
+Editable views of the model should update the model
+on each keystroke and mouse click.
+</para>
+	    <para>
+REQ11 REVa
+</para>
+	    <para>
+<emphasis>Rationale:</emphasis>
+If a user makes an update of a part of the model,
+an immediate feedback in all other parts that are currently showing
+might help him to get it right.
+</para>
+	    <para>
+<emphasis>Stakeholder:</emphasis>
+User of ArgoUML
+</para>
+	  </listitem>
+
+	  <listitem id="REQ12">
+	    <para>
+Any text fields that require validation
+should not be editable directly from a view.
+</para>
+	    <para>
+REQ12 REVa
+</para>
+	    <para>
+<emphasis>Rationale:</emphasis>
+If a text field requires validation there exists, by definition,
+a possibility that the validation turns out that it is not valid.
+For this reason there is a need to use the modal approach for these
+fields, forcing the users to exit the field
+either with "OK" with a valid contents
+or with "Cancel" throwing the work in the field away.
+TODO: Is this the correct motivation for this?
+</para>
+	    <para>
+<emphasis>Stakeholder:</emphasis>
+User of ArgoUML.
+TODO: Is this the correct stakeholder?
+</para>
+	  </listitem>
+
+	  <listitem id="REQ13">
+	    <para>
+With dialogs, the model is not updated until the dialog
+is accepted by the user
+with valid fields.
+</para>
+	    <para>
+REQ13 REVa
+</para>
+	    <para>
+<emphasis>Rationale:</emphasis>
+If some part of the edits within the dialog are valid and some others 
+are not, the whole dialog is not valid and the user shall be able to
+press "Cancel" and all the changes made throughout the dialog shall be
+ignored.
+TODO: Is this the correct motivation for this?
+</para>
+	    <para>
+<emphasis>Stakeholder:</emphasis>
+User of ArgoUML.
+</para>
+	  </listitem>
+
+	  <listitem id="REQ14">
+	    <para>
+The user shall receive some visual feedback during
+the edit process of textual UML to indicate whether
+the text represents valid UML syntax.
+</para>
+	    <para>
+REQ14 REVa
+</para>
+	    <para>
+<emphasis>Rationale:</emphasis>
+Writing a correct syntax of anything is complicated.
+Good compilers are helpful in pinpointing where the problem is
+(what line and what token is in error).
+The text fields in ArgoUML are
+not developed in the same way as source code and
+we have no compiler step to verify it all.
+Instead this validation needs to be done while editing meaning that
+the user needs all the help he can get to as quickly as possible,
+get the syntax right.
+TODO: Is this the correct motivation for this?
+</para>
+	    <para>
+<emphasis>Stakeholder:</emphasis>
+User of ArgoUML.
 </para>
 	  </listitem>
 
