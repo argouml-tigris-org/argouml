@@ -36,6 +36,7 @@ import org.tigris.gef.base.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.util.*;
 
 import org.argouml.ui.*;
@@ -83,58 +84,71 @@ public class Import {
     private static Category cat = Category.getInstance(org.argouml.uml.reveng.Import.class);
 
 	public static final String separator = "/"; //System.getProperty("file.separator");
-
+	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	Project p = ProjectManager.getManager().getCurrentProject();
+	JDialog dialog;
+	
+	/**
+	 * Creates dialog window with chooser and configuration panel.
+	 *
+	 */
 	public Import() {
-		ProjectBrowser pb = ProjectBrowser.TheInstance;
-		Project p = ProjectManager.getManager().getCurrentProject();
+			JComponent chooser = getChooser();
+			dialog = new JDialog(pb, "Import sources");
+			dialog.getContentPane().add(chooser, BorderLayout.WEST);			
+			dialog.getContentPane().add(Import.getConfigPanel(), BorderLayout.EAST);
+			dialog.pack();
+			int x = (pb.getSize().width-dialog.getSize().width)/2;
+			int y = (pb.getSize().height-dialog.getSize().height)/2;
+			dialog.setLocation(x > 0?x:0, y>0?y:0);
+			dialog.setVisible(true);			
+	}
+	
+	/**
+	 * Create chooser for objects we are to import.
+	 * Default implemented chooser is JFileChooser.
+	 */
+	private JComponent getChooser() {
+		String directory = Globals.getLastDirectory();
+		JFileChooser ch = OsUtil.getFileChooser(directory);
+		if (ch == null) ch = OsUtil.getFileChooser();
 
-		try {
-			String directory = Globals.getLastDirectory();
-			JFileChooser chooser = OsUtil.getFileChooser(directory);
-
-			if (chooser == null) chooser = OsUtil.getFileChooser();
-
-			chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-			chooser.setDialogTitle("Import sources");
-			SuffixFilter filter = FileFilters.JavaFilter;
-			chooser.addChoosableFileFilter(filter);
-			// chooser.setFileFilter(filter);
-	    
-		chooser.setAccessory(Import.getConfigPanel());
-
-			int retval = chooser.showOpenDialog(pb);
-
-			if (retval == 0) {
-				File theFile = chooser.getSelectedFile();
-				if (theFile != null) {
-					String path = chooser.getSelectedFile().getParent();
-					String filename = chooser.getSelectedFile().getName();
-					filename = path + separator + filename;
-					Globals.setLastDirectory(path);
-					if (filename != null) {
-						pb.showStatus("Parsing " + filename + "...");
-						Import.doFile(p, theFile);
-
-//						  p.postLoad();
-//
-//			// Check if any diagrams where modified and the project
-//			// should be saved before exiting.
-//			if(Import.needsSave()) {
-//				p.setNeedsSave(true);
-//			}
-//
-//						  ProjectManager.getManager().setCurrentProject(p);
-//						  pb.showStatus("Parsed " + filename);
-
-
-						return;
+		final JFileChooser chooser = ch; 
+		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		SuffixFilter filter = FileFilters.JavaFilter;
+		chooser.addChoosableFileFilter(filter);
+		chooser.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				if (e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION)) {
+					File theFile = chooser.getSelectedFile();
+					if (theFile != null) {
+						String path = chooser.getSelectedFile().getParent();
+						String filename = chooser.getSelectedFile().getName();
+						filename = path + separator + filename;
+						Globals.setLastDirectory(path);
+						if (filename != null) {
+							disposeDialog();
+							pb.showStatus("Parsing " + filename + "...");
+							Import.doFile(p, theFile);
+							return;
+						}
 					}
+				} else if (e.getActionCommand().equals(JFileChooser.CANCEL_SELECTION)) {
+					disposeDialog();
 				}
 			}
-		} catch (Exception exception) {
-			cat.error("got an Exception in ActionImportFromSources", exception);
-		}
+		});
+		return chooser;
 	}
+	
+	/**
+	 * Close dialog window.
+	 *
+	 */
+	public void disposeDialog() {
+		dialog.dispose();
+	}
+
     /**
      * Get the panel that lets the user set reverse engineering
      * parameters.
@@ -200,95 +214,6 @@ public class Import {
 	SwingUtilities.invokeLater(new ImportRun(iss, p, _diagram, files, b));
 
 	iss.show();
-    }
-
-    /**
-     * <p>This method is no longer used.
-     *
-     * <p>old notes [This method does all the actual importing. Normally it runs in another
-     * thread.]
-     *
-     * @param iss is the status screen that is called for updates.
-     * @param p is the project
-     * @param files is a Vector of the files to be imported.
-     */
-    public static void realDoFile(ImportStatusScreen iss,
-				  Project p, Vector files) {
-
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-
-	int countFiles = files.size();
-
-	SimpleTimer st = new SimpleTimer("realDoFile");
-	st.mark("start");
-
-	while (files.size() > 0) { // Passes
-	    int countFilesThisPass = files.size();
-
-	    Vector nextPassFiles = new Vector();
-
-	    for (int i = 0; i < files.size(); i++) {
-		File curFile = (File)files.elementAt(i);
-
-		try {
-		    st.mark(curFile.getName());
-		    pb.showStatus("Importing " + curFile.getName()
-				  + " (in " + curFile.getParent());
-		    parseFile(p, curFile);       // Try to parse this file.
-
-		    int tot;
-		    iss.setMaximum(tot = countFiles
-				   + _diagram.getModifiedDiagrams().size()/10);
-		    int act;
-		    iss.setValue(act = countFiles - countFilesThisPass
-				 + i + 1 - nextPassFiles.size());
-		    pb.getStatusBar().showProgress(100 * act/tot);
-		}
-		catch(Exception e1) {
-		    Argo.log.debug(e1);
-		    nextPassFiles.addElement(curFile);
-                    
-                    // RuntimeExceptions should be reported here!
-                    if(e1 instanceof RuntimeException)
-                        cat.error("program bug encountered in reverese engineering\n"
-                              +e1);
-                    else
-                        cat.warn("exception encountered in reverese engineering\n"
-                              +e1);
-		}
-	    }
-
-	    // Now one sweep is done, set up everything for the next one.
-	    if (files.size() == nextPassFiles.size())
-		break;
-	    files = nextPassFiles;
-	}
-
-	if (files.size() > 0) {
-	    Argo.log.info("There are unparseable files:");
-	    for (int i = 0; i < files.size(); i++) {
-		Argo.log.info("Unparseable file: "
-			      + ((File)files.elementAt(i)).getName());
-	    }
-	}
-
-	st.mark("layout");
-	// Layout the modified diagrams.
-	for(int i=0; i < _diagram.getModifiedDiagrams().size(); i++) {
-	    ClassdiagramLayouter layouter =
-		new ClassdiagramLayouter((UMLDiagram)
-					 (_diagram.getModifiedDiagrams()
-					  .elementAt(i)));
-	    layouter.layout();
-
-	    // Resize the diagram???
-	    iss.setValue(countFiles + (i + 1)/10);
-	}
-
-	iss.done();
-
-	Argo.log.info(st);
-	pb.getStatusBar().showProgress(0);
     }
 
 	/**
