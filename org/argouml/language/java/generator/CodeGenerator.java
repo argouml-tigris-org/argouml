@@ -36,6 +36,9 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
 import java.util.*;
 
+// Added 2001-10-05 STEFFEN ZSCHALER
+import org.argouml.uml.DocumentationManager;
+
 /**
    This class generates or updates code.
 */
@@ -244,6 +247,11 @@ class CodeGenerator
 	writer.write(";\n\n");
     }
 
+    /* 
+     * Changed 2001-10-05 STEFFEN ZSCHALER
+     *
+     * Was:
+     *
     /**
        Generate the javadoc comment found in the tagged value
        "javadocs".
@@ -251,11 +259,25 @@ class CodeGenerator
        @param element The element to generate the doc for.
        @param writer The writer to write to.
        @returns True if comment exists, false otherwise.
-    */
+     *
+     */
+    /**
+     * Generate the javadoc comment associated with the specified model element
+     * as defined by org.argouml.uml.DocumentationManager.
+     *
+     * @param element the element to generate the doc for
+     * @param writer the writer to write to
+     * @returns true if comment exists, false otherwise
+     */
     public boolean generateJavadoc(MModelElement element,
                                    Writer writer)
 	throws Exception
     {
+      /*
+       * Changed 2001-10-05 STEFFEN ZSCHALER
+       *
+       * Was:
+       *
 	for(Iterator i = element.getTaggedValues().iterator(); i.hasNext(); ) {
 	    MTaggedValue tv = (MTaggedValue)i.next();
 	    if(tv.getTag().equals("javadocs")) {
@@ -265,6 +287,132 @@ class CodeGenerator
 	    }
 	}
 	return false;
+    }
+       *
+       */
+
+      String sDocComment = null;
+      if (DocumentationManager.hasDocs (element)) {
+        sDocComment = DocumentationManager.getDocs (element);
+      }
+
+      /*
+      if (sDocComment != null) {
+        // Fix Bug in documentation manager.defaultFor --> look for current INDENT
+        // and use it
+        for (int i = sDocComment.indexOf ('\n');
+             i >= 0 && i < sDocComment.length();
+             i = sDocComment.indexOf ('\n', i + 1)) {
+          sDocComment = sDocComment.substring (0, i + 1) + 
+                        INDENT + sDocComment.substring (i + 1);
+        }
+      }*/
+
+      // Extract constraints
+      Collection cConstraints = element.getConstraints();
+
+      if (cConstraints.size() != 0) {
+        // Prepare doccomment
+        if (sDocComment != null) {
+          // Just remove closing */
+          sDocComment = sDocComment.substring (0, sDocComment.indexOf ("*/") + 1);
+        }
+        else {
+          sDocComment = "/**\n" +
+                        " * \n" +
+                        " *";
+        }
+    
+        // Add each constraint
+
+        class TagExtractor extends tudresden.ocl.parser.analysis.DepthFirstAdapter {
+          private LinkedList m_llsTags = new LinkedList();
+          private String m_sConstraintName;
+          private int m_nConstraintID = 0;
+
+          public TagExtractor (String sConstraintName) {
+            super();
+
+            m_sConstraintName = sConstraintName;
+          }
+
+          public Iterator getTags() {
+            return m_llsTags.iterator();
+          }
+
+          public void caseAConstraintBody (tudresden.ocl.parser.node.AConstraintBody node) {
+            // We don't care for anything below this node, so we do not use apply anymore.
+            String sKind = (node.getStereotype() != null)?
+                           (node.getStereotype().toString()):
+                           (null);
+            String sExpression = (node.getExpression() != null)?
+                                 (node.getExpression().toString()):
+                                 (null);
+            String sName = (node.getName() != null)?
+                           (node.getName().getText()):
+                           (m_sConstraintName + "_" + (m_nConstraintID++));
+
+            if ((sKind == null) ||
+                (sExpression == null)) {
+              return;
+            }
+
+            String sTag;
+            if (sKind.equals ("inv ")) {
+              sTag = "@invariant ";
+            }
+            else if (sKind.equals ("post ")) {
+              sTag = "@post-condition ";
+            }
+            else if (sKind.equals ("pre ")) {
+              sTag = "@pre-condition ";
+            }
+            else {
+              return;
+            }
+
+            sTag += sName + ": " + sExpression;
+            m_llsTags.addLast (sTag);
+          }
+        }
+
+        tudresden.ocl.check.types.ModelFacade mf =
+            new org.argouml.ocl.ArgoFacade (element);
+        
+        for (Iterator i = cConstraints.iterator(); i.hasNext();) {
+          MConstraint mc = (MConstraint) i.next();
+
+          try {
+            tudresden.ocl.OclTree otParsed = tudresden.ocl.OclTree.createTree (
+                mc.getBody().getBody(),
+                mf
+              );
+
+            TagExtractor te = new TagExtractor (mc.getName());
+            otParsed.apply (te);
+
+            for (Iterator j = te.getTags(); j.hasNext();) {
+              sDocComment += " " + j.next() + "\n" +
+                             " *";
+            }
+          }
+          catch (java.io.IOException ioe) {
+            // Nothing to be done, should not happen anyway ;-)
+          }
+        }
+    
+        sDocComment += "/";
+      }
+    
+
+      if (sDocComment != null) {
+        writer.write (sDocComment);
+        writer.write ("\n");
+        return true;
+      }
+      else {
+        return false;
+      }
     }
 
     /**

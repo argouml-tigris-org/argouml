@@ -318,11 +318,20 @@ public class Modeller
 
 	setVisibility(mClassifier, modifiers);
 
-	if((javadoc == null) || "".equals(javadoc)) {
-	    javadoc = "/** */";
+  /*
+   * Changed 2001-10-05 STEFFEN ZSCHALER
+   *
+   * Was (space added below!):
+   *
+  if((javadoc == null) || "".equals(javadoc)) {
+	    javadoc = "/** * /";
 	}
 	getTaggedValue(mClassifier, "documentation").setValue(javadoc);
-
+   *
+   */
+  
+  addDocumentationTag (mClassifier, javadoc);
+  
 	return mClassifier;
     }
 
@@ -371,10 +380,20 @@ public class Modeller
 	MOperation mOperation = getOperation(name);
 	parseState.feature(mOperation);
 
+  /*
+   * Changed 2001-10-05 STEFFEN ZSCHALER.
+   *
+   * Was (space added below!):
+   *
 	if((javadoc == null) || "".equals(javadoc)) {
-	    javadoc = "/** */";
+	    javadoc = "/** * /";
 	}
 	getTaggedValue(mOperation, "documentation").setValue(javadoc);
+   *
+   */
+  
+  addDocumentationTag (mOperation, javadoc);
+
 
 	mOperation.setAbstract((modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
 	mOperation.setLeaf((modifiers & JavaRecognizer.ACC_FINAL) > 0);
@@ -501,10 +520,19 @@ public class Modeller
 	    if(mAttribute != null) {
 		parseState.feature(mAttribute);
 		
+    /*
+     * Changed 2001-10-05 STEFFEN ZSCHALER
+     *
+     * Was (added space below!):
+     *
 		if((javadoc==null) || "".equals(javadoc)) {
-		    javadoc = "/** */";
+		    javadoc = "/** * /";
 		}
 		getTaggedValue(mAttribute, "documentation").setValue(javadoc);
+     *
+     */
+    
+    addDocumentationTag (mAttribute, javadoc);
 		
 		setScope(mAttribute, modifiers);
 		setVisibility(mAttribute, modifiers);
@@ -531,11 +559,19 @@ public class Modeller
 		MAssociationEnd mAssociationEnd =
 		    getAssociationEnd(name, mClassifier);
 		
+    /*
+     * Changed 2001-10-05 STEFFEN ZSCHALER
+     *
+     * Was (space added below!):
+     *
 		if((javadoc==null) || "".equals(javadoc)) {
-		    javadoc = "/** */";
+		    javadoc = "/** * /";
 		}
 		getTaggedValue(mAssociationEnd, "documentation")
 		    .setValue(javadoc);
+     *
+     */
+    addDocumentationTag (mAssociationEnd, javadoc);
 		
 		setScope(mAssociationEnd, modifiers);
 		setVisibility(mAssociationEnd, modifiers);
@@ -946,5 +982,79 @@ public class Modeller
 	return context;
     }
 
+
     
+  /**
+   * Add the javadocs as a tagged value 'documentation' to the model element. All
+   * comment delimiters are removed prior to adding the comment.
+   *
+   * Added 2001-10-05 STEFFEN ZSCHALER.
+   *
+   * @param me the model element to which to add the documentation
+   * @param sJavaDocs the documentation comment to add ("" or null if no java docs)
+   */
+  private void addDocumentationTag (MModelElement me,
+                                    String sJavaDocs) {
+    if ((sJavaDocs != null) &&
+        (! "".equals (sJavaDocs))) {
+          
+      //System.out.println ("Modeller.addDocumentationTag: sJavaDocs = \"" + sJavaDocs + "\"");  
+        
+      StringBuffer sbPureDocs = new StringBuffer(80);
+      
+      int nStartPos = 3; // skip the leading /**
+      boolean fHadAsterisk = true;
+      
+      while (nStartPos < sJavaDocs.length()) {
+        switch (sJavaDocs.charAt (nStartPos)) {
+          case '*':
+            fHadAsterisk = true;
+            nStartPos++;
+            break;
+            
+          case ' ':   // all white space, hope I didn't miss any ;-)
+          case '\t':
+            if (! fHadAsterisk) {
+              // forget every white space before the first asterisk
+              nStartPos++;
+              break;
+            }
+            
+          default:
+            int nTemp = sJavaDocs.indexOf ('\n', nStartPos);
+            if (nTemp == -1) {
+              nTemp = sJavaDocs.length();
+            }
+            else {
+              nTemp++;
+            }
+            
+            //System.out.println ("Modeller.addDocumentationTag: nTemp = " + nTemp + ", nStartPos = " + nStartPos);
+            sbPureDocs.append (sJavaDocs.substring (nStartPos, nTemp));
+              
+            nStartPos = nTemp;
+            fHadAsterisk = false;
+        }
+      }
+      
+      /*
+       * After this, we have the documentation text, but unfortunately, there's
+       * still a trailing '/' left. If this is even the only thing on it's line,
+       * we want to remove the complete line, otherwise we remove just the '/'.
+       */
+      sJavaDocs = sbPureDocs.toString();
+      //System.out.println (
+      //    "Modeller.addDocumentationTag: sJavaDocs = \"" + sJavaDocs + "\", " + 
+      //    "'/' idx = " + sJavaDocs.lastIndexOf ('/')
+      //  );
+      sJavaDocs = sJavaDocs.substring (0, sJavaDocs.lastIndexOf ('/') - 1);
+      
+      if (sJavaDocs.charAt (sJavaDocs.length() - 1) == '\n') {
+        sJavaDocs = sJavaDocs.substring (0, sJavaDocs.length() - 2);
+      }
+      
+      // Now set the tagged value
+      getTaggedValue (me, "documentation").setValue (sJavaDocs);
+    }
+  }
 }
