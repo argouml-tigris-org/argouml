@@ -30,10 +30,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.*;
 
 import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
@@ -92,9 +89,9 @@ public class FigComponentInstance extends FigNodeModelElement {
         this();
         setOwner(node);
         if (Model.getFacade().isAClassifier(node)
-	        && (Model.getFacade().getName(node) != null)) {
+                && (Model.getFacade().getName(node) != null)) {
             getNameFig().setText(Model.getFacade().getName(node));
-	}
+        }
         updateBounds();
     }
 
@@ -163,7 +160,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     public void setBounds(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
-	}
+        }
 
         Rectangle oldBounds = getBounds();
         getBigPort().setBounds(x, y, w, h);
@@ -182,9 +179,9 @@ public class FigComponentInstance extends FigNodeModelElement {
 
         getStereotypeFig().setBounds(x + 1, y + 1, w - 2, stereoDim.height);
         getNameFig().setBounds(x + 1,
-			       y + stereoDim.height - OVERLAP + 1,
-			       w - 2,
-			       nameDim.height);
+                y + stereoDim.height - OVERLAP + 1,
+                w - 2,
+                nameDim.height);
         _x = x;
         _y = y;
         _w = w;
@@ -212,7 +209,7 @@ public class FigComponentInstance extends FigNodeModelElement {
         Editor ce = Globals.curEditor();
         Selection sel = ce.getSelectionManager().findSelectionFor(this);
         if (sel instanceof SelectionComponentInstance)
-	    ((SelectionComponentInstance) sel).hideButtons();
+            ((SelectionComponentInstance) sel).hideButtons();
     }
 
     /**
@@ -220,94 +217,62 @@ public class FigComponentInstance extends FigNodeModelElement {
      */
     public void setEnclosingFig(Fig encloser) {
 
-        if (encloser != null
-            && Model.getFacade().isANodeInstance(encloser.getOwner())
-            && getOwner() != null) {
-
-            Object node = /*(MNodeInstance)*/ encloser.getOwner();
-            Object comp = /*(MComponentInstance)*/ getOwner();
-            if (Model.getFacade().getNodeInstance(comp) != node) {
-                Model.getCommonBehaviorHelper().setNodeInstance(comp, node);
-            }
-            super.setEnclosingFig(encloser);
-
-            // Vector figures = getEnclosedFigs();
-            if (getLayer() != null) {
-                // elementOrdering(figures);
-                Collection contents = getLayer().getContents(null);
-                Collection bringToFrontList = new ArrayList();
-                Iterator it = contents.iterator();
-                while (it.hasNext()) {
-                    Object o = it.next();
-                    if (o instanceof FigEdgeModelElement) {
-                        bringToFrontList.add(o);
-
+        if (getOwner() != null) {
+            Object comp = getOwner();
+            if (encloser != null) {
+                Object nodeOrComp = encloser.getOwner();
+                if (Model.getFacade().isANodeInstance(nodeOrComp)) {
+                    if (Model.getFacade()
+                            .getNodeInstance(comp) != nodeOrComp) {
+                        Model.getCommonBehaviorHelper()
+                                .setNodeInstance(comp, nodeOrComp);
+                        super.setEnclosingFig(encloser);
                     }
                 }
-                Iterator bringToFrontIter = bringToFrontList.iterator();
-                while (bringToFrontIter.hasNext()) {
-                    FigEdgeModelElement figEdge =
-                        (FigEdgeModelElement) bringToFrontIter.next();
-                    figEdge.getLayer().bringToFront(figEdge);
+                else if (Model.getFacade().isAComponentInstance(nodeOrComp)) {
+                    if (Model.getFacade()
+                            .getComponentInstance(comp) != nodeOrComp) {
+                        Model.getCommonBehaviorHelper()
+                                .setComponentInstance(comp, nodeOrComp);
+                        super.setEnclosingFig(encloser);
+                    }
                 }
-            }
-        } else if (encloser == null && getEnclosingFig() != null) {
-            if (getEnclosingFig() instanceof FigNodeModelElement)
+                else if (Model.getFacade().isANode(nodeOrComp)) {
+                    super.setEnclosingFig(encloser);
+                }
+                Vector figures = getEnclosedFigs();
+
+                if (getLayer() != null) {
+                    // elementOrdering(figures);
+                    List contents = getLayer().getContents();
+                    Iterator it = contents.iterator();
+                    while (it.hasNext()) {
+                        Object o = it.next();
+                        if (o instanceof FigEdgeModelElement) {
+                            FigEdgeModelElement figedge =
+                                    (FigEdgeModelElement) o;
+                            figedge.getLayer().bringToFront(figedge);
+                        }
+                    }
+                }
+            } else if (encloser == null && getEnclosingFig() != null) {
+                if (Model.getFacade().getNodeInstance(comp) != null) {
+                    Model.getCommonBehaviorHelper()
+                            .setNodeInstance(comp, null);
+                }
+                if (Model.getFacade().getComponentInstance(comp) != null) {
+                    Model.getCommonBehaviorHelper()
+                            .setComponentInstance(comp, null);
+                }
+                super.setEnclosingFig(encloser);
+                /*if (getEnclosingFig() instanceof FigNodeModelElement)
                 ((FigNodeModelElement) getEnclosingFig())
-                    .getEnclosedFigs()
-                    .removeElement(
-				   this);
-            setEncloser(null);
+                .getEnclosedFigs()
+                .removeElement(
+                this);
+                _encloser = null;*/
+            }
         }
-        /*
-	  super.setEnclosingFig(encloser);
-
-	  Vector figures = getEnclosedFigs();
-
-	  if (getLayer() != null) {
-          // elementOrdering(figures);
-          Vector contents = getLayer().getContents();
-          int contentsSize = contents.size();
-          for (int j=0; j<contentsSize; j++) {
-	  Object o = contents.elementAt(j);
-	  if (o instanceof FigEdgeModelElement) {
-	  FigEdgeModelElement figedge = (FigEdgeModelElement) o;
-	  figedge.getLayer().bringToFront(figedge);
-	  }
-          }
-	  }
-
-	  if (!(getOwner() instanceof MModelElement)) return;
-	  if (getOwner() instanceof MComponentInstance) {
-          MComponentInstance me = (MComponentInstance) getOwner();
-          MNodeInstance mnode = null;
-
-          if (encloser != null
-	  && (encloser.getOwner() instanceof MNodeInstance)) {
-	  mnode = (MNodeInstance) encloser.getOwner();
-          }
-          if (encloser != null
-	  && (encloser.getOwner() instanceof MComponentInstance)) {
-	  MComponentInstance comp = (MComponentInstance) encloser.getOwner();
-	  mnode = (MNodeInstance) comp.getNodeInstance();
-          }
-          try {
-	  if(mnode != null) {
-	  me.setNodeInstance(mnode);
-	  }
-	  else {
-	  if (me.getNodeInstance() != null) {
-	  me.setNodeInstance(null);
-	  }
-	  }
-	  setNode(figures);
-          }
-          catch (Exception e) {
-	  cat.error("could not set package", e);
-
-          }
-	  }
-        */
     }
 
     /**
@@ -360,17 +325,17 @@ public class FigComponentInstance extends FigNodeModelElement {
         Object me = /*(MModelElement)*/ getOwner();
         if (me == null)
             return;
-	Object stereo = null;
-	if (Model.getFacade().getStereotypes(me).size() > 0) {
+        Object stereo = null;
+        if (Model.getFacade().getStereotypes(me).size() > 0) {
             stereo = Model.getFacade().getStereotypes(me).iterator().next();
         }
         if (stereo == null
-            || Model.getFacade().getName(stereo) == null
-            || Model.getFacade().getName(stereo).length() == 0) {
+                || Model.getFacade().getName(stereo) == null
+                || Model.getFacade().getName(stereo).length() == 0) {
 
             setStereotype("");
 
-	} else {
+        } else {
 
             setStereotype(Notation.generateStereotype(this, stereo));
 

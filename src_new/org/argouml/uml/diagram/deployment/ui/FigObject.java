@@ -52,7 +52,7 @@ public class FigObject extends FigNodeModelElement {
 
     private FigRect cover;
     private Object resident =
-	Model.getCoreFactory().createElementResidence();
+            Model.getCoreFactory().createElementResidence();
 
 
     ////////////////////////////////////////////////////////////////
@@ -62,21 +62,21 @@ public class FigObject extends FigNodeModelElement {
      * Main constructor.
      */
     public FigObject() {
-	setBigPort(new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan));
-	cover = new FigRect(10, 10, 90, 50, Color.black, Color.white);
-	getNameFig().setLineWidth(0);
-	getNameFig().setFilled(false);
-	getNameFig().setUnderline(true);
-	Dimension nameMin = getNameFig().getMinimumSize();
-	getNameFig().setBounds(10, 10, nameMin.width + 20, nameMin.height);
+        setBigPort(new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan));
+        cover = new FigRect(10, 10, 90, 50, Color.black, Color.white);
+        getNameFig().setLineWidth(0);
+        getNameFig().setFilled(false);
+        getNameFig().setUnderline(true);
+        Dimension nameMin = getNameFig().getMinimumSize();
+        getNameFig().setBounds(10, 10, nameMin.width + 20, nameMin.height);
 
-	// add Figs to the FigNode in back-to-front order
-	addFig(getBigPort());
-	addFig(cover);
-	addFig(getNameFig());
+        // add Figs to the FigNode in back-to-front order
+        addFig(getBigPort());
+        addFig(cover);
+        addFig(getNameFig());
 
-	Rectangle r = getBounds();
-	setBounds(r.x, r.y, nameMin.width, nameMin.height);
+        Rectangle r = getBounds();
+        setBounds(r.x, r.y, nameMin.width, nameMin.height);
     }
 
     /**
@@ -86,8 +86,8 @@ public class FigObject extends FigNodeModelElement {
      * @param node the UML element
      */
     public FigObject(GraphModel gm, Object node) {
-	this();
-	setOwner(node);
+        this();
+        setOwner(node);
     }
 
     /**
@@ -99,12 +99,12 @@ public class FigObject extends FigNodeModelElement {
      * @see java.lang.Object#clone()
      */
     public Object clone() {
-	FigObject figClone = (FigObject) super.clone();
-	Iterator it = figClone.getFigs().iterator();
-	figClone.setBigPort((FigRect) it.next());
-	figClone.cover = (FigRect) it.next();
-	figClone.setNameFig((FigText) it.next());
-	return figClone;
+        FigObject figClone = (FigObject) super.clone();
+        Iterator it = figClone.getFigs().iterator();
+        figClone.setBigPort((FigRect) it.next());
+        figClone.cover = (FigRect) it.next();
+        figClone.setNameFig((FigText) it.next());
+        return figClone;
     }
 
 
@@ -155,20 +155,20 @@ public class FigObject extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
     public Selection makeSelection() {
-	return new SelectionObject(this);
+        return new SelectionObject(this);
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
-	Dimension bigPortMin = getBigPort().getMinimumSize();
-	Dimension coverMin = cover.getMinimumSize();
-	Dimension nameMin = getNameFig().getMinimumSize();
+        Dimension bigPortMin = getBigPort().getMinimumSize();
+        Dimension coverMin = cover.getMinimumSize();
+        Dimension nameMin = getNameFig().getMinimumSize();
 
-	int w = nameMin.width + 10;
-	int h = nameMin.height + 5;
-	return new Dimension(w, h);
+        int w = nameMin.width + 10;
+        int h = nameMin.height + 5;
+        return new Dimension(w, h);
     }
 
     /**
@@ -177,24 +177,24 @@ public class FigObject extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     public void setBounds(int x, int y, int w, int h) {
-	if (getNameFig() == null) {
-	    return;
-	}
+        if (getNameFig() == null) {
+            return;
+        }
 
-	Rectangle oldBounds = getBounds();
+        Rectangle oldBounds = getBounds();
 
-	Dimension nameMin = getNameFig().getMinimumSize();
+        Dimension nameMin = getNameFig().getMinimumSize();
 
-	getBigPort().setBounds(x, y, w, h);
-	cover.setBounds(x, y, w, h);
-	getNameFig().setBounds(x, y, nameMin.width + 10, nameMin.height + 4);
+        getBigPort().setBounds(x, y, w, h);
+        cover.setBounds(x, y, w, h);
+        getNameFig().setBounds(x, y, nameMin.width + 10, nameMin.height + 4);
 
-	//_bigPort.setBounds(x+1, y+1, w-2, h-2);
-	_x = x; _y = y; _w = w; _h = h;
+        //_bigPort.setBounds(x+1, y+1, w-2, h-2);
+        _x = x; _y = y; _w = w; _h = h;
 
-	firePropChange("bounds", oldBounds, getBounds());
-	calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-	updateEdges();
+        firePropChange("bounds", oldBounds, getBounds());
+        calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+        updateEdges();
     }
 
 
@@ -205,14 +205,14 @@ public class FigObject extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-	Object obj = /*(MObject)*/ getOwner();
-	if (ft == getNameFig()) {
-	    String s = ft.getText().trim();
-	    if (s.length() > 0 && (s.endsWith(":"))) {
-		s = s.substring(0, (s.length() - 1));
-	    }
-	    ParserDisplay.SINGLETON.parseObject(obj, s);
-	}
+        Object obj = /*(MObject)*/ getOwner();
+        if (ft == getNameFig()) {
+            String s = ft.getText().trim();
+            if (s.length() > 0 && (s.endsWith(":"))) {
+                s = s.substring(0, (s.length() - 1));
+            }
+            ParserDisplay.SINGLETON.parseObject(obj, s);
+        }
     }
 
 
@@ -220,47 +220,50 @@ public class FigObject extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig encloser) {
-	// super.setEnclosingFig(encloser);
+        // super.setEnclosingFig(encloser);
 
-	if (Model.getFacade().isAObject(getOwner())) {
-	    Object me = /*(MObject)*/ getOwner();
-	    Object mcompInst = null;
-	    Object mcomp = null;
+        if (Model.getFacade().isAObject(getOwner())) {
+            Object me = /*(MObject)*/ getOwner();
+            Object mcompInst = null;
+            Object mcomp = null;
 
-	    if (encloser != null
-		&& (Model.getFacade().isAComponentInstance(encloser.getOwner()))) {
+            if (encloser != null
+                    && (Model.getFacade()
+                            .isAComponentInstance(encloser.getOwner()))) {
 
-		mcompInst = /*(MComponentInstance)*/ encloser.getOwner();
-		Model.getCommonBehaviorHelper().setComponentInstance(me, mcompInst);
+                mcompInst = /*(MComponentInstance)*/ encloser.getOwner();
+                Model.getCommonBehaviorHelper()
+                        .setComponentInstance(me, mcompInst);
+                super.setEnclosingFig(encloser);
 
-	    } else if (Model.getFacade().getComponentInstance(me) != null) {
+            } else if (Model.getFacade().getComponentInstance(me) != null) {
                 Model.getCommonBehaviorHelper().setComponentInstance(me, null);
-	    }
-	    if (encloser != null
-		&& (Model.getFacade().isAComponent(encloser.getOwner()))) {
-
-		mcomp = /*(MComponent)*/ encloser.getOwner();
-		Object obj = /*(MObject)*/ getOwner();
-		Model.getCoreHelper().setImplementationLocation(resident, mcomp);
-		Model.getCoreHelper().setResident(resident, obj);
-
-	    } else {
-		if (Model.getFacade().getImplementationLocation(resident) != null) {
-		    Model.getCoreHelper().setImplementationLocation(resident, null);
-		    Model.getCoreHelper().setResident(resident, null);
-		}
-	    }
-	}
-
-	if (encloser != getEncloser()) {
-	    if (getEncloser() instanceof FigNodeModelElement) {
-		((FigNodeModelElement) getEncloser()).removeEnclosedFig(this);
+                super.setEnclosingFig(null);
             }
-	    if (encloser instanceof FigNodeModelElement) {
-		((FigNodeModelElement) encloser).addEnclosedFig(this);
+            if (encloser != null
+                    && (Model.getFacade()
+                            .isAComponent(encloser.getOwner()))) {
+
+                mcomp = /*(MComponent)*/ encloser.getOwner();
+                Object obj = /*(MObject)*/ getOwner();
+                Model.getCoreHelper()
+                        .setImplementationLocation(resident, mcomp);
+                Model.getCoreHelper().setResident(resident, obj);
+                super.setEnclosingFig(encloser);
+            } else if (encloser != null
+                    && Model.getFacade().isANode(encloser.getOwner())) {
+                super.setEnclosingFig(encloser);
+            } else {
+                if (Model.getFacade()
+                        .getImplementationLocation(resident) != null) {
+                    Model.getCoreHelper()
+                            .setImplementationLocation(resident, null);
+                    Model.getCoreHelper().setResident(resident, null);
+                    super.setEnclosingFig(null);
+                }
             }
-	}
-        setEncloser(encloser);
+        }
+
     }
 
     static final long serialVersionUID = -185736690375678962L;
@@ -270,38 +273,38 @@ public class FigObject extends FigNodeModelElement {
      */
     protected void updateNameText() {
         Object obj = /*(MObject)*/ getOwner();
-	if (obj == null) {
-	    return;
-	}
-	String nameStr = "";
-	if (Model.getFacade().getName(obj) != null) {
-	    nameStr = Model.getFacade().getName(obj).trim();
-	}
+        if (obj == null) {
+            return;
+        }
+        String nameStr = "";
+        if (Model.getFacade().getName(obj) != null) {
+            nameStr = Model.getFacade().getName(obj).trim();
+        }
 
-	Vector bases = new Vector(Model.getFacade().getClassifiers(obj));
+        Vector bases = new Vector(Model.getFacade().getClassifiers(obj));
 
-	String baseString = "";
+        String baseString = "";
 
-	if (Model.getFacade().getClassifiers(obj) != null
-	        && Model.getFacade().getClassifiers(obj).size() > 0) {
+        if (Model.getFacade().getClassifiers(obj) != null
+                && Model.getFacade().getClassifiers(obj).size() > 0) {
 
-	    baseString += Model.getFacade().getName(bases.elementAt(0));
-	    for (int i = 1; i < bases.size(); i++) {
-		baseString +=
-		    ", "  + Model.getFacade().getName(bases.elementAt(i));
-	    }
-	}
+            baseString += Model.getFacade().getName(bases.elementAt(0));
+            for (int i = 1; i < bases.size(); i++) {
+                baseString +=
+                        ", "  + Model.getFacade().getName(bases.elementAt(i));
+            }
+        }
 
-	if (isReadyToEdit()) {
-	    if ((nameStr.length() == 0) && (baseString.length() == 0)) {
-		getNameFig().setText("");
-	    } else {
-		getNameFig().setText(nameStr.trim() + " : " + baseString);
-	    }
-	}
-	Dimension nameMin = getNameFig().getMinimumSize();
-	Rectangle r = getBounds();
-	setBounds(r.x, r.y, nameMin.width + 10, nameMin.height + 4);
+        if (isReadyToEdit()) {
+            if ((nameStr.length() == 0) && (baseString.length() == 0)) {
+                getNameFig().setText("");
+            } else {
+                getNameFig().setText(nameStr.trim() + " : " + baseString);
+            }
+        }
+        Dimension nameMin = getNameFig().getMinimumSize();
+        Rectangle r = getBounds();
+        setBounds(r.x, r.y, nameMin.width + 10, nameMin.height + 4);
     }
 
 } /* end class FigObject */

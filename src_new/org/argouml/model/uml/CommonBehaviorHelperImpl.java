@@ -364,9 +364,15 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
         if (handle instanceof MComponentInstance
                 && nodeInstance instanceof MNodeInstance) {
             ((MComponentInstance) handle).setNodeInstance(
-                (MNodeInstance) nodeInstance);
+                    (MNodeInstance) nodeInstance);
             return;
         }
+        else if (handle instanceof MComponentInstance
+                && nodeInstance == null) {
+            ((MComponentInstance) handle).setNodeInstance(null);
+            return;
+        }
+
         throw new IllegalArgumentException("handle: " + handle
                 + " or nodeInstance: " + nodeInstance);
     }

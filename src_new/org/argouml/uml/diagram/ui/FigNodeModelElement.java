@@ -1525,6 +1525,10 @@ public abstract class FigNodeModelElement
             Model.getPump().removeModelEventListener(this, own);
         }
         shadowSize = 0;
+        
+        this.getLayer().remove(this);
+        Globals.curEditor().remove(this);
+        
         super.removeFromDiagram();
     }
 

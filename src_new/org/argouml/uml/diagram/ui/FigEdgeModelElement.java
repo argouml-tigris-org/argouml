@@ -762,6 +762,9 @@ public abstract class FigEdgeModelElement
             diagram.damage();
         }
         super.removeFromDiagram();
+        
+        this.getLayer().remove(this);
+        Globals.curEditor().remove(this);
     }
 
     /**

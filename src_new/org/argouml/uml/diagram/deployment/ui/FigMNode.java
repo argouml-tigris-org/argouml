@@ -203,11 +203,14 @@ public class FigMNode extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig encloser) {
-	super.setEnclosingFig(encloser);
+        if (encloser == null
+                || (encloser != null
+                && Model.getFacade().isANode(encloser.getOwner()))) {
+            super.setEnclosingFig(encloser);
+        }
+        Vector figures = getEnclosedFigs();
 
-	Vector figures = getEnclosedFigs();
-
-	if (getLayer() != null) {
+        if (getLayer() != null) {
             // elementOrdering(figures);
             Collection contents = getLayer().getContents(null);
             Collection bringToFrontList = new ArrayList();
@@ -222,7 +225,7 @@ public class FigMNode extends FigNodeModelElement {
             Iterator bringToFrontIter = bringToFrontList.iterator();
             while (bringToFrontIter.hasNext()) {
                 FigEdgeModelElement figEdge =
-                    (FigEdgeModelElement) bringToFrontIter.next();
+                        (FigEdgeModelElement) bringToFrontIter.next();
                 figEdge.getLayer().bringToFront(figEdge);
             }
         }
