@@ -421,6 +421,9 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     if (_help.getItemCount() > 0) {
         _help.insertSeparator(0);
     }
+    _help.add(Actions.Manual);
+    _help.add(Actions.Quickguide);
+    _help.add(Actions.FAQ);
     _help.add(Actions.AboutArgoUML);
     //_menuBar.setHelpMenu(help);
     _menuBar.add(_help);
