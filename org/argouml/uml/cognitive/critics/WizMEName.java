@@ -88,7 +88,7 @@ public class WizMEName extends UMLWizard {
      */
     public void setSuggestion(String s) {
         origSuggest = s;
-        setSuggestion(s);
+        super.setSuggestion(s);
     }
 
 
@@ -121,7 +121,9 @@ public class WizMEName extends UMLWizard {
 	switch (oldStep) {
 	case 1:
 	    String newName = getSuggestion();
-	    if (step1 != null) newName = step1.getText();
+	    if (step1 != null) {
+	        newName = step1.getText();
+	    }
 	    try {
 		Object me = getModelElement();
 		Model.getCoreHelper().setName(me, newName);
