@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -40,7 +41,7 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLExtendExtensionComboBoxModel() {
         super("extension", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
+        
     }
 
     /**
@@ -72,5 +73,22 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
     protected boolean isValidElement(Object element) {
         return org.argouml.model.ModelFacade.isAUseCase(element);
     }
+    
+    
 
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        // if (e.getNewTarget() != getTarget())
+            UmlModelEventPump.getPump().removeClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
+        super.targetRemoved(e);
+    }
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        UmlModelEventPump.getPump().addClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
+        super.targetSet(e);
+    }
 }

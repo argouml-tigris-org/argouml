@@ -24,6 +24,8 @@
 
 package org.argouml.model.uml.behavioralelements.usecases;
 
+import java.util.Iterator;
+
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
@@ -334,7 +336,9 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
 	UmlHelper.getHelper().deleteCollection(elem.getExtensionPoints());
     }
      
-    public void deleteExtensionPoint(MExtensionPoint elem) { }
+    public void deleteExtensionPoint(MExtensionPoint elem) {
+        
+    }
      
     public void deleteInclude(MInclude elem) { }
      

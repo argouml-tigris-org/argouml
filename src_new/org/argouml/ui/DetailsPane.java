@@ -580,10 +580,7 @@ public class DetailsPane
     /**
      * @see TargetListener#targetRemoved(TargetEvent)
      */
-    public void targetRemoved(TargetEvent e) {
-        // how to handle empty target lists?
-        // probably the detailspane should only show an empty pane in that case
-        setTarget(e.getNewTarget());
+    public void targetRemoved(TargetEvent e) {        
         fireTargetRemoved(e);
     }
 
