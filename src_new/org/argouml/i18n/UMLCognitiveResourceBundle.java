@@ -103,6 +103,25 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
         {"todopane.label.item", " {0} Item "},
         {"todopane.label.items", " {0} Items "},
 
+        {"docpane.label.documentation", "Documentation"},
+        {"docpane.label.author", "Author"},
+        {"docpane.label.version", "Version"},
+        {"docpane.label.since", "Since"},
+        {"docpane.label.deprecated", "Deprecated"},
+        {"docpane.label.see", "See"},
+
+        {"stylepane.label.bounds", "Bounds"},
+        {"stylepane.label.fill", "Fill"},
+        {"stylepane.label.no-fill", "No Fill"},
+        {"stylepane.label.line", "Line"},
+        {"stylepane.label.no-line", "No Line"},
+        {"stylepane.label.shadow", "Shadow"},
+        {"stylepane.label.no-shadow", "No Shadow"},
+        {"stylepane.label.custom", "Custom"},
+
+        {"taggedvaluespane.label.tag", "Tag"},
+        {"taggedvaluespane.label.value", "Value"},
+
         {"button.ok", "OK"},
         {"button.cancel", "Cancel"},
         {"button.open", "Open"},

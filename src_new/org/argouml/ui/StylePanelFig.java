@@ -48,6 +48,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.tigris.gef.ui.*;
 
+import org.argouml.application.api.*;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
@@ -56,16 +57,17 @@ implements ItemListener, DocumentListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
+  private static final String BUNDLE = "Cognitive";
 
   ////////////////////////////////////////////////////////////////
   // instance vars
-  protected JLabel _bboxLabel = new JLabel("Bounds: ");
+  protected JLabel _bboxLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.bounds") + ": ");
   protected JTextField _bboxField = new JTextField();
-  protected JLabel _fillLabel = new JLabel("Fill: ");
+  protected JLabel _fillLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.fill") + ": ");
   protected JComboBox _fillField = new JComboBox();
-  protected JLabel _lineLabel = new JLabel("Line: ");
+  protected JLabel _lineLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.line") + ": ");
   protected JComboBox _lineField = new JComboBox();
-  protected JLabel _shadowLabel = new JLabel("Shadow: ");
+  protected JLabel _shadowLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.shadow") + ": ");
   protected JComboBox _shadowField = new JComboBox();
   //protected JLabel _dashedLabel = new JLabel("Dashed: ");
   //protected JComboBox _dashedField = new JComboBox(Fig.DASHED_CHOICES);
@@ -151,7 +153,7 @@ implements ItemListener, DocumentListener {
   }
 
   protected void initChoices() {
-    _fillField.addItem("No Fill");
+    _fillField.addItem(Argo.localize(BUNDLE, "stylepane.label.no-fill"));
     _fillField.addItem(Color.black);
     _fillField.addItem(Color.white);
     _fillField.addItem(Color.gray);
@@ -172,9 +174,9 @@ implements ItemListener, DocumentListener {
     _fillField.addItem(Color.green);
     _fillField.addItem(Color.orange);
     _fillField.addItem(Color.pink);
-    _fillField.addItem("Custom...");
+    _fillField.addItem(Argo.localize(BUNDLE, "stylepane.label.custom"));
 
-    _lineField.addItem("No Line");
+    _lineField.addItem(Argo.localize(BUNDLE, "stylepane.label.no-line"));
     _lineField.addItem(Color.black);
     _lineField.addItem(Color.white);
     _lineField.addItem(Color.gray);
@@ -191,9 +193,9 @@ implements ItemListener, DocumentListener {
     _lineField.addItem(Color.green);
     _lineField.addItem(Color.orange);
     _lineField.addItem(Color.pink);
-    _lineField.addItem("Custom...");
+    _lineField.addItem(Argo.localize(BUNDLE, "stylepane.label.custom"));
 
-    _shadowField.addItem("No Shadow");
+    _shadowField.addItem(Argo.localize(BUNDLE, "stylepane.label.no-shadow"));
     _shadowField.addItem("1");
     _shadowField.addItem("2");
     _shadowField.addItem("3");
@@ -247,7 +249,7 @@ implements ItemListener, DocumentListener {
             _fillField.setSelectedItem(_target.getFillColor());
         }
         else {
-            _fillField.setSelectedItem("No Fill");
+            _fillField.setSelectedIndex(0);
         }
 
         // Change the line width
@@ -256,7 +258,7 @@ implements ItemListener, DocumentListener {
             _lineField.setSelectedItem(_target.getLineColor());
         }
         else {
-            _lineField.setSelectedItem("No Line");
+            _lineField.setSelectedIndex(0);
         }
 
         // Change the shadow size if appropriate
