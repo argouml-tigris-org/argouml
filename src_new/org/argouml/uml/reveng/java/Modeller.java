@@ -548,7 +548,7 @@ public class Modeller
                                      Object parent,
                                      Object child)
     {
-        String name = ModelFacade.getName(parent) + "<-" + ModelFacade.getName(child);
+        String name = ModelFacade.getName(child) + " -> " + ModelFacade.getName(parent);
         Object mGeneralization = null;
         mGeneralization = ModelFacade.getGeneralization(child, parent);
         if(mGeneralization == null) {
@@ -573,7 +573,7 @@ public class Modeller
                                   Object parent,
                                   Object child)
     {
-        String name = ModelFacade.getName(parent) + "<-" + ModelFacade.getName(child);
+        String name = ModelFacade.getName(child) + " -> " + ModelFacade.getName(parent);
         Object mAbstraction = null;
         for(Iterator i = ModelFacade.getClientDependencies(child); i.hasNext(); ) {
             mAbstraction = i.next();
@@ -999,6 +999,7 @@ public class Modeller
 
             // check ahead for tag
             int j = nStartPos;
+
             while ((j < sJavaDocs.length()) &&
                    ((sJavaDocs.charAt (j) == ' ') ||
                     (sJavaDocs.charAt (j) == '\t'))) {
