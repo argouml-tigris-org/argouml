@@ -1,5 +1,6 @@
 
 
+
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -30,6 +31,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 import java.util.*;
+import org.argouml.model.ModelFacade;
 
 /**
  * Helper methods for OCL support.
@@ -66,15 +68,15 @@ public final class OCLUtil extends Object {
 	MNamespace mnsContext =
 	    getInnerMostEnclosingNamespace ((MModelElement) me);
 
-	if (org.argouml.model.ModelFacade.isABehavioralFeature(me)) {
+	if (ModelFacade.isABehavioralFeature(me)) {
 	    StringBuffer sbContext =
 		new StringBuffer ("context ")
 		.append (mnsContext.getName())
 		.append ("::")
-		.append (((MModelElement) me).getName())
+		.append (ModelFacade.getName(me))
 		.append (" (");
 
-	    List lParams = ((MBehavioralFeature) me).getParameters();
+	    Collection lParams = ModelFacade.getParameters(me);
 	    String sReturnType = null;
 	    boolean fFirstParam = true;
 

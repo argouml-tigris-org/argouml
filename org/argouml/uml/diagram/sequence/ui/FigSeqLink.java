@@ -1,5 +1,6 @@
 
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -120,7 +121,7 @@ public class FigSeqLink
 
 
     public String ownerName() {
-	if (getOwner() != null) { return ( (MLink) getOwner()).getName(); }
+	if (getOwner() != null) { return org.argouml.model.ModelFacade.getName(getOwner()); }
 	else return "null";
     }
 

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -155,7 +156,7 @@ public class FigSeqStimulus extends FigNodeModelElement {
     }
 
     public String ownerName() {
-	if (getOwner() != null) { return ( (MStimulus) getOwner()).getName(); }
+	if (getOwner() != null) { return org.argouml.model.ModelFacade.getName(getOwner()); }
 	else return "null";
     }
 

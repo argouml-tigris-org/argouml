@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -82,8 +83,8 @@ public class FigMNode extends FigNodeModelElement {
 	this();
 	setOwner(node);
 	if (org.argouml.model.ModelFacade.isAClassifier(node)
-	    && (((MClassifier) node).getName() != null))
-	    _name.setText(((MModelElement) node).getName());
+	    && (org.argouml.model.ModelFacade.getName(node) != null))
+	    _name.setText(org.argouml.model.ModelFacade.getName(node));
     }
 
     public String placeString() { return "new Node"; }

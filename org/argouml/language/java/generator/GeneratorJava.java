@@ -1,6 +1,7 @@
 
 
 
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -261,18 +262,16 @@ public class GeneratorJava
             // now check packages of all feature types
             for (j = c.iterator(); j.hasNext();) {
                 MFeature mFeature = (MFeature) j.next();
-                if (org.argouml.model.ModelFacade.isAAttribute(mFeature)) {
+                if (ModelFacade.isAAttribute(mFeature)) {
                     if ((ftype =
-			 generateImportType(
-					    ((MAttribute) mFeature).getType(),
-					    packagePath))
-                        != null) {
+                            generateImportType(ModelFacade.getType(mFeature),
+                                               packagePath))
+                            != null) {
                         importSet.add(ftype);
                     }
-                } else if (org.argouml.model.ModelFacade.isAOperation(mFeature)) {
+                } else if (ModelFacade.isAOperation(mFeature)) {
                     // check the parameter types
-                    Iterator it =
-                        ((MOperation) mFeature).getParameters().iterator();
+                    Iterator it = ModelFacade.getParameters(mFeature).iterator();
                     while (it.hasNext()) {
                         MParameter p = (MParameter) it.next();
                         if ((ftype =
@@ -339,12 +338,12 @@ public class GeneratorJava
         return sb.toString();
     }
 
-    public String generateImportType(MClassifier type, String exclude) {
+    public String generateImportType(Object type, String exclude) {
         String ret = null;
-        if (type != null && type.getNamespace() != null) {
-            String p = getPackageName(type.getNamespace());
+        if (type != null && ModelFacade.getNamespace(type) != null) {
+            String p = getPackageName(ModelFacade.getNamespace(type));
             if (p.length() > 0 && !p.equals(exclude))
-                ret = p + '.' + type.getName();
+                ret = p + '.' + ModelFacade.getName(type);
         }
         return ret;
     }

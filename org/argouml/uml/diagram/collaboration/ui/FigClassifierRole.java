@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -475,11 +476,11 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         if (cr.getBases() != null && cr.getBases().size() > 0) {
             Vector bases = new Vector(cr.getBases());
-            baseString += ((MClassifier) bases.elementAt(0)).getName();
+            baseString += org.argouml.model.ModelFacade.getName(bases.elementAt(0));
 
             for (int i = 1; i < bases.size(); i++)
                 baseString += ", "  +
-                              ((MClassifier) bases.elementAt(i)).getName();
+                              org.argouml.model.ModelFacade.getName(bases.elementAt(i));
         }
 
         // Build the final string and set it as the name text.

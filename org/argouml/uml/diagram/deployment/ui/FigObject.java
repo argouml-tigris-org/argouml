@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -223,10 +224,10 @@ public class FigObject extends FigNodeModelElement {
 
 	if (obj.getClassifiers() != null && obj.getClassifiers().size() > 0) {
 
-	    baseString += ((MClassifier) bases.elementAt(0)).getName();
+	    baseString += org.argouml.model.ModelFacade.getName(bases.elementAt(0));
 	    for (int i = 1; i < bases.size(); i++)
 		baseString +=
-		    ", "  + ((MClassifier) bases.elementAt(i)).getName();
+		    ", "  + org.argouml.model.ModelFacade.getName(bases.elementAt(i));
 	}
 
 	if (_readyToEdit) {

@@ -1,5 +1,6 @@
 
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -117,13 +118,13 @@ public class PropPanelParameter extends PropPanelModelElement {
 
     }
 
-    public MClassifier getType() {
+    public Object getType() {
         MClassifier type = null;
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAParameter(target)) {
-            type = ((MParameter) target).getType();
+            return org.argouml.model.ModelFacade.getType(target);
         }
-        return type;
+        return null;
     }
 
     public void setType(MClassifier type) {

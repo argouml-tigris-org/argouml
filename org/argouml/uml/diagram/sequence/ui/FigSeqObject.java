@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -161,7 +162,7 @@ public class FigSeqObject extends FigNodeModelElement
     }
 
     public String ownerName() {
-	if (getOwner() != null) { return ( (MObject) getOwner()).getName(); }
+	if (getOwner() != null) { return org.argouml.model.ModelFacade.getName(getOwner()); }
 	else return "null";
     }
 
@@ -546,7 +547,7 @@ public class FigSeqObject extends FigNodeModelElement
 	String baseString = "";
 	Vector bases = new Vector(obj.getClassifiers());
 	if (bases.size() == 1)
-	    baseString = ((MClassifier) bases.elementAt(0)).getName();
+	    baseString = org.argouml.model.ModelFacade.getName(bases.elementAt(0));
 	else if (bases.size() > 1)
 	    baseString = "(multiple)";
 

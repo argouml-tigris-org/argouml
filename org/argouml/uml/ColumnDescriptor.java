@@ -6,6 +6,7 @@
 
 
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -197,7 +198,7 @@ class ColumnName extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (org.argouml.model.ModelFacade.isAModelElement(target)) {
-	    String res = ((MModelElement) target).getName();
+	    String res = org.argouml.model.ModelFacade.getName(target);
 	    String ocl = "";
 	    if (org.argouml.model.ModelFacade.isAElement(target))
 		ocl = ((MElement) target).getUMLClassName();

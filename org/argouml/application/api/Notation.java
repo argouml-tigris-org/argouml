@@ -2,6 +2,7 @@
 
 
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -560,7 +561,7 @@ public final class Notation implements PropertyChangeListener {
             return SINGLETON.generateMessage(nn, (MMessage) o);
 
         if (org.argouml.model.ModelFacade.isAModelElement(o))
-            return SINGLETON.generateName(nn, ((MModelElement) o).getName());
+            return SINGLETON.generateName(nn, org.argouml.model.ModelFacade.getName(o));
 
         return o.toString();
     }

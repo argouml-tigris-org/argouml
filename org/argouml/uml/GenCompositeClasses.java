@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -58,9 +59,7 @@ public class GenCompositeClasses implements ChildGenerator {
 		if (conn == null || conn.size() != 2) continue;
 		Object otherEnd = (ae == conn.get(0)) ?
 		    conn.get(1) : conn.get(0);
-		MClassifier componentClass =
-		    ((MAssociationEnd) otherEnd).getType();
-		res.add(componentClass);
+		res.add(org.argouml.model.ModelFacade.getType(otherEnd));
 	    }
 	}
 	return res.elements();

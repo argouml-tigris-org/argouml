@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -50,7 +51,7 @@ public class UMLClassifierParameterListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(((MClassifier) getTarget()).getParameters());
+            setAllElements(org.argouml.model.ModelFacade.getParameters(getTarget()));
         }
     }
 
@@ -58,7 +59,7 @@ public class UMLClassifierParameterListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return ((MClassifier) getTarget()).getParameters().contains(element);
+        return org.argouml.model.ModelFacade.getParameters(getTarget()).contains(element);
     }
 
 }
