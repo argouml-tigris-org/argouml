@@ -25,6 +25,8 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Component;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.util.Enumeration;
 
@@ -35,8 +37,8 @@ import javax.swing.JToolBar;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
@@ -57,9 +59,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBarFactory;
 import org.tigris.toolbar.toolbutton.ToolButton;
 
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
-
 /**
  * This class provides support for writing a UML diagram for argo using
  * the GEF framework.
@@ -77,7 +76,7 @@ import ru.novosoft.uml.MElementListener;
  */
 public abstract class UMLDiagram
     extends ArgoDiagram
-    implements MElementListener {
+    implements PropertyChangeListener {
 
     private static final Logger LOG = Logger.getLogger(UMLDiagram.class);
 
@@ -156,14 +155,14 @@ public abstract class UMLDiagram
     // constructors
 
     /**
-     * constructor
+     * The constructor.
      */
     public UMLDiagram() {
         super();
     }
 
     /**
-     * @param ns the UML namespace
+     * @param ns the UML namespace of this diagram
      */
     public UMLDiagram(Object ns) {
         this();
@@ -176,7 +175,7 @@ public abstract class UMLDiagram
 
     /**
      * @param name the name of the diagram
-     * @param ns the UML namespace
+     * @param ns the UML namespace of this diagram
      */
     public UMLDiagram(String name, Object ns) {
         this(ns);
@@ -209,11 +208,11 @@ public abstract class UMLDiagram
     }
 
     /**
-     * sets the namespace of the Diagram, and
-     * adds the diagram as a listener of its namspace in the UML model.
+     * Sets the namespace of the Diagram, and
+     * adds the diagram as a listener of its namespace in the UML model
      * (so that it can delete itself when the model element is deleted).
      *
-     * @param ns the namespace
+     * @param ns the namespace for the diagram
      */
     public void setNamespace(Object ns) {
         if (!ModelFacade.isANamespace(ns)) {
@@ -223,11 +222,8 @@ public abstract class UMLDiagram
         }
         namespace = ns;
         // add the diagram as a listener to the namspace so
-        // that when the namespace is remove()d the diagram is deleted also.
-        UmlModelEventPump.getPump().addModelEventListener(
-            this,
-            namespace,
-            UmlModelEventPump.REMOVE);
+        // that when the namespace is removed the diagram is deleted also.
+        Model.getPump().addModelEventListener(this, namespace, "remove");
     }
 
     /**
@@ -253,7 +249,7 @@ public abstract class UMLDiagram
     static final long serialVersionUID = -401219134410459387L;
 
     /**
-     * Get the toolbar for the diagram
+     * Get the toolbar for the diagram.
      * @return the diagram toolbar
      */
     public JToolBar getJToolBar() {
@@ -380,92 +376,48 @@ public abstract class UMLDiagram
 
     /**
      * This diagram listens to events from is namespace ModelElement;
-     * When the modelelement is removed, we also want to delete this
-     * diagram too.  <p>
+     * when the modelelement is removed, we also want to delete this
+     * diagram.  <p>
      *
      * There is also a risk that if this diagram was the one shown in
      * the diagram panel, then it will remain after it has been
-     * deleted. so we need to deselect this diagram.
+     * deleted. So we need to deselect this diagram.
      *
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
-    public void removed(MElementEvent e) {
-        Object newTarget =
-            ProjectManager.getManager().getCurrentProject().getDiagrams().get(
-                0);
-        TargetManager.getInstance().setTarget(newTarget);
-        UmlModelEventPump.getPump().removeModelEventListener(
-            this,
-            namespace,
-            UmlModelEventPump.REMOVE);
-        ProjectManager.getManager().getCurrentProject().moveToTrash(this);
-
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("remove")) {
+            Object newTarget = ProjectManager.getManager().getCurrentProject()
+                .getDiagrams().get(0);
+            TargetManager.getInstance().setTarget(newTarget);
+            
+            Model.getPump().removeModelEventListener(this, namespace, "remove");
+            
+            ProjectManager.getManager().getCurrentProject().moveToTrash(this);
+        }
     }
-
-    /**
-     * not used the UMLDiagram is only interested in the removed() event.
-     *
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
-     */
-    public void propertySet(MElementEvent e) {
-    }
-
-    /**
-     * not used the UMLDiagram is only interested in the removed() event.
-     *
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(MElementEvent e) {
-    }
-
-    /**
-     * not used the UMLDiagram is only interested in the removed() event.
-     *
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(MElementEvent e) {
-    }
-
-    /**
-     * not used the UMLDiagram is only interested in the removed() event.
-     *
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
-     */
-    public void listRoleItemSet(MElementEvent e) {
-    }
-
-    /**
-     * not used the UMLDiagram is only interested in the removed() event.
-     *
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(MElementEvent e) {
-    }
-
+    
     /**
      * Removes the UMLDiagram and all the figs on it as listener to 
-     * UmlModelEventPump. Is called by setTarget in TabDiagram to improve 
+     * UML Events. Is called by setTarget in TabDiagram to improve 
      * performance. 
-     *
      */
     public void removeAsTarget() {
         Enumeration elems = elements();
-        UmlModelEventPump pump = UmlModelEventPump.getPump();
         while (elems.hasMoreElements()) {
             Object o = elems.nextElement();
-            if (ModelFacade.isAElementListener(o)) {
-                MElementListener listener = (MElementListener) o;
-                Fig fig = (Fig) o;
-                pump.removeModelEventListener(listener, fig.getOwner());
+            if (o instanceof PropertyChangeListener) {
+                PropertyChangeListener listener = (PropertyChangeListener) o;
+                Object figowner = ((Fig) o).getOwner();
+                Model.getPump().removeModelEventListener(listener, figowner);
             }
         }
-        pump.removeModelEventListener(this, getNamespace());
-
+        Model.getPump().removeModelEventListener(this, getNamespace());
     }
 
     /**
      * Adds the UMLDiagram and all the figs on it as listener to
-     * UmlModelEventPump.  Together with removeAsModelListener this is
+     * UML Events.  Together with removeAsModelListener this is
      * a performance improvement.
      *
      */
@@ -473,10 +425,13 @@ public abstract class UMLDiagram
         Enumeration elems = elements();
         while (elems.hasMoreElements()) {
             Fig fig = (Fig) elems.nextElement();
-            if (org.argouml.model.ModelFacade.isAElementListener(fig)) {
+            if (fig instanceof PropertyChangeListener) {
                 Object owner = fig.getOwner();
-                // pump.addModelEventListener((MElementListener)fig, owner);
-                // this will make sure all the correct event listeners are set. 
+                /* pump.addModelEventListener(
+                 *      (PropertyChangeListener)fig, owner);
+                 * Instead, this will make sure all the correct 
+                 * event listeners are set: 
+                 * */ 
                 fig.setOwner(null);
                 fig.setOwner(owner);
             }
