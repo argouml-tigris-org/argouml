@@ -30,6 +30,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
+import org.argouml.application.api.*;
 import org.argouml.cognitive.ui.*;
 
 import org.tigris.gef.ui.*;
@@ -43,7 +44,7 @@ import org.argouml.ui.*;
  *  condsider. */
 
 public class ToDoPane extends JPanel
-implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener {
+implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener, QuadrantPanel {
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -316,6 +317,8 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
       _tree.setVisible(true); // blinks?
     }
   }
+
+  public int getQuadrant() { return Q_BOTTOM_LEFT; }
 
 
 } /* end class ToDoPane */

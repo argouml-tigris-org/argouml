@@ -40,6 +40,7 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.*;
 import org.tigris.gef.util.*;            
 
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.ui.*;
 
@@ -50,7 +51,7 @@ import org.argouml.uml.diagram.ui.*;
 
 
 public class NavigatorPane extends JPanel
-implements ItemListener, TreeSelectionListener {
+implements ItemListener, TreeSelectionListener, QuadrantPanel {
   //, CellEditorListener
 
   ////////////////////////////////////////////////////////////////
@@ -365,5 +366,6 @@ implements ItemListener, TreeSelectionListener {
     }
   }
 
+  public int getQuadrant() { return Q_TOP_LEFT; }
 
 } /* end class NavigatorPane */

@@ -46,7 +46,7 @@ import org.argouml.cognitive.ui.*;
  *  MultiEditorPane. */
 
 public class DetailsPane extends JPanel
-implements ChangeListener, MouseListener {
+implements ChangeListener, MouseListener, QuadrantPanel {
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -316,6 +316,8 @@ implements ChangeListener, MouseListener {
 
   protected Icon _leftArrowIcon = new LeftArrowIcon();
   
+  public int getQuadrant() { return Q_BOTTOM_RIGHT; }
+
 } /* end class DetailsPane */
 
 
@@ -349,4 +351,5 @@ class LeftArrowIcon implements Icon {
   }
   public int getIconWidth() { return 9; }
   public int getIconHeight() { return 9; }
+
 }
