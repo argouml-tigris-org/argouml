@@ -268,12 +268,17 @@ public class FigClass extends FigNodeWithCompartments {
     MModelElement me = (MModelElement) getOwner();
     MNamespace m = null;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    if (encloser != null && (encloser.getOwner() instanceof MModel)) {
-      m = (MNamespace) encloser.getOwner();
-    }
-    else {
-      if (pb.getTarget() instanceof UMLDiagram) {
+    if ((encloser == null && me.getNamespace() == null )
+    ||  (encloser != null && encloser.getOwner() instanceof MPackage)) {
+      if (encloser != null && (encloser.getOwner() instanceof MPackage)) {
+        m = (MNamespace) encloser.getOwner();
+      } else if ( pb.getTarget() instanceof UMLDiagram ) {
 	m = (MNamespace) ((UMLDiagram)pb.getTarget()).getNamespace();
+      }
+      try {
+        me.setNamespace(m);
+      } catch (Exception e) {
+        System.out.println("could not set package");
       }
     }
 
@@ -291,12 +296,6 @@ public class FigClass extends FigNodeWithCompartments {
       resident.setResident(null);
     }     
 
-    try {
-      me.setNamespace(m);
-    }
-    catch (Exception e) {
-      System.out.println("could not set package");
-    }
   }
 
 
