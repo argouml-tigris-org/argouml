@@ -259,6 +259,7 @@ A description of all the toolbar entries
                 It should get the focus inmediately. See issue 2421 -->
               </para>
               <!-- TODO: Investigate and describe keyboard functionality -->
+              <!-- Also PageUp and PageDown have a function. -->
             </listitem>
           </itemizedlist>
         </listitem>
