@@ -59,12 +59,6 @@ public class FigActionState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /**
-     * UML does not really use ports, so just define one big one so that users
-     * can drag edges to or from any point in the icon.
-     */
-    private FigRRect bigPort;
-
     private FigRRect cover;
 
     ////////////////////////////////////////////////////////////////
@@ -74,20 +68,20 @@ public class FigActionState extends FigStateVertex {
      * Constructor FigActionState
      */
     public FigActionState() {
-        bigPort = new FigRRect(10 + 1, 10 + 1, 90 - 2, 25 - 2, Color.cyan,
-                Color.cyan);
-        bigPort.setCornerRadius(bigPort.getHalfHeight());
+        setBigPort(new FigRRect(10 + 1, 10 + 1, 90 - 2, 25 - 2, Color.cyan,
+                Color.cyan));
+        ((FigRRect) getBigPort()).setCornerRadius(getBigPort().getHalfHeight());
         cover = new FigRRect(10, 10, 90, 25, Color.black, Color.white);
         cover.setCornerRadius(getHalfHeight());
 
-        bigPort.setLineWidth(0);
+        getBigPort().setLineWidth(0);
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(10 + PADDING, 10, 90 - PADDING * 2, 25);
         getNameFig().setFilled(false);
         getNameFig().setMultiLine(true);
 
         // add Figs to the FigNode in back-to-front order
-        addFig(bigPort);
+        addFig(getBigPort());
         addFig(cover);
         addFig(getNameFig());
 
@@ -119,7 +113,7 @@ public class FigActionState extends FigStateVertex {
     public Object clone() {
         FigActionState figClone = (FigActionState) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone.bigPort = (FigRRect) it.next();
+        figClone.setBigPort((FigRRect) it.next());
         figClone.cover = (FigRRect) it.next();
         figClone.setNameFig((FigText) it.next());
         return figClone;
@@ -147,9 +141,9 @@ public class FigActionState extends FigStateVertex {
         Rectangle oldBounds = getBounds();
 
         getNameFig().setBounds(x + PADDING, y, w - PADDING * 2, h - PADDING);
-        bigPort.setBounds(x + 1, y + 1, w - 2, h - 2);
+        getBigPort().setBounds(x + 1, y + 1, w - 2, h - 2);
         cover.setBounds(x, y, w, h);
-        bigPort.setCornerRadius(h);
+        ((FigRRect) getBigPort()).setCornerRadius(h);
         cover.setCornerRadius(h);
 
         calcBounds(); 
