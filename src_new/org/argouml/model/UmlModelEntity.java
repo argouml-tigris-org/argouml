@@ -47,13 +47,23 @@ public class UmlModelEntity extends AbstractModelEntity {
      * @param isCreatable true if UmlFactory can create it using create()
      * @param isFacade if the entity can be identified using ModelFacade
      * @deprecated as of 0.15.3. facade is to be removed.
-     * TODO: Why? What is it replaced by?
+     * Replaced by public UmlModelEntity(String string, boolean isCreatable)
      */
     public UmlModelEntity(String string,
                           boolean isCreatable,
                           boolean isFacade) {
         super(string);
         _availableInFacade = isFacade;
+        _creatable = isCreatable;
+    }
+
+    /**
+     * @param string the entity name
+     * @param isCreatable true if UmlFactory can create it using create()
+     */
+    public UmlModelEntity(String string,
+                          boolean isCreatable) {
+        super(string);
         _creatable = isCreatable;
     }
 

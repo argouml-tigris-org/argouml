@@ -285,11 +285,11 @@ public final class Uml {
         ACTION                  = new UmlModelEntity("Action");
         ACTION_EXPRESSION       = new UmlModelEntity("ActionExpression");
         ACTION_SEQUENCE         = new UmlModelEntity("ActionSequence",
-                                                      false, true);
+                                                      false);
         ACTION_STATE            = new UmlModelEntity("ActionState",
-                                                     false, true);
+                                                     false);
         ACTIVITY_GRAPH          = new UmlModelEntity("ActivityGraph",
-                                                     false, true);
+                                                     false);
         ACTOR                   = new UmlModelEntity("Actor");
         ARG_LISTS_EXPRESSION    = new UmlModelEntity("ArgListsExpression");
         ARGUMENT                = new UmlModelEntity("Argument");
@@ -297,70 +297,70 @@ public final class Uml {
         ASSOCIATION_CLASS       = new UmlModelEntity("AssociationClass");
         ASSOCIATION_END         = new UmlModelEntity("AssociationEnd");
         ASSOCIATION_END_ROLE    = new UmlModelEntity("AssociationEndRole",
-                                                     false, true);
+                                                     false);
         ASSOCIATION_ROLE        = new UmlModelEntity("AssociationRole");
         ATTRIBUTE               = new UmlModelEntity("Attribute");
         ATTRIBUTE_LINK          = new UmlModelEntity("AttributeLink");
         BEHAVIORAL_FEATURE      = new UmlModelEntity("BehavioralFeature",
-                                                     false, true);
+                                                     false);
         BINDING                 = new UmlModelEntity("Binding");
         BOOLEAN_EXPRESSION      = new UmlModelEntity("BooleanExpression");
         CALL_ACTION             = new UmlModelEntity("CallAction");
         CALL_EVENT              = new UmlModelEntity("CallEvent",
-                                                     false, true);
+                                                     false);
         CALL_STATE              = new UmlModelEntity("CallState");
         CHANGE_EVENT            = new UmlModelEntity("ChangeEvent",
-                                                     false, true);
+                                                     false);
         CLASS                   = new UmlModelEntity("Class");
         CLASSIFIER              = new UmlModelEntity("Classifier");
         CLASSIFIER_IN_STATE     = new UmlModelEntity("ClassifierInState");
         CLASSIFIER_ROLE         = new UmlModelEntity("ClassifierRole");
         COLLABORATION           = new UmlModelEntity("Collaboration",
-                                                     false, true);
+                                                     false);
         COMMENT                 = new UmlModelEntity("Comment",
-                                                     false, true);
+                                                     false);
         COMPONENT               = new UmlModelEntity("Component");
         COMPONENT_INSTANCE      = new UmlModelEntity("ComponentInstance");
         COMPOSITE_STATE         = new UmlModelEntity("CompositeState");
         CONSTRAINT              = new UmlModelEntity("Constraint",
-                                                     false, true);
+                                                     false);
         CREATE_ACTION           = new UmlModelEntity("CreateAction",
-                                                     false, true);
+                                                     false);
         DATA_VALUE              = new UmlModelEntity("DataValue",
-                                                     false, true);
+                                                     false);
         DATATYPE                = new UmlModelEntity("DataType");
         DEPENDENCY              = new UmlModelEntity("Dependency");
         DESTROY_ACTION          = new UmlModelEntity("DestroyAction",
-                                                     false, true);
+                                                     false);
         ELEMENT                 = new UmlModelEntity("Element",
-                                                     false, true);
+                                                     false);
         ELEMENT_IMPORT          = new UmlModelEntity("ElementImport",
-                                                     false, true);
+                                                     false);
         ELEMENT_RESIDENCE       = new UmlModelEntity("ElementResidence",
-                                                     false, true);
+                                                     false);
         EVENT                   = new UmlModelEntity("Event",
-                                                     false, true);
+                                                     false);
         EXCEPTION               = new UmlModelEntity("Exception");
         EXPRESSION              = new UmlModelEntity("Expression",
-                                                     false, true);
+                                                     false);
         EXTEND                  = new UmlModelEntity("Extend");
         EXTENSION_POINT         = new UmlModelEntity("ExtensionPoint",
-                                                     false, true);
+                                                     false);
         FEATURE                 = new UmlModelEntity("Feature",
-                                                     false, true);
+                                                     false);
         FINAL_STATE             = new UmlModelEntity("FinalState",
-                                                     false, true);
+                                                     false);
         FLOW                    = new UmlModelEntity("Flow",
-                                                     false, true);
+                                                     false);
         GENERALIZABLE_ELEMENT   = new UmlModelEntity("GeneralizableElement",
-                                                     false, true);
+                                                     false);
         GENERALIZATION          = new UmlModelEntity("Generalization");
         GUARD                   = new UmlModelEntity("Guard",
-                                                     false, true);
+                                                     false);
         INCLUDE                 = new UmlModelEntity("Include");
         INSTANCE                = new UmlModelEntity("Instance");
         INTERACTION             = new UmlModelEntity("Interaction",
-                                                     false, true);
+                                                     false);
         INTERFACE               = new UmlModelEntity("Interface");
         ITERATION_EXPRESSION    = new UmlModelEntity("IterationExpression");
         LINK                    = new UmlModelEntity("Link");
@@ -368,14 +368,14 @@ public final class Uml {
         LINK_OBJECT             = new UmlModelEntity("LinkObject");
         MAPPING_EXPRESSION      = new UmlModelEntity("MappingExpression");
         MESSAGE                 = new UmlModelEntity("Message",
-                                                     false, true);
+                                                     false);
         METHOD                  = new UmlModelEntity("Method",
-                                                     false, true);
+                                                     false);
         MODEL                   = new UmlModelEntity("Model");
         MODEL_ELEMENT           = new UmlModelEntity("ModelElement",
-                                                     false, true);
+                                                     false);
         MULTIPLICITY            = new UmlModelEntity("Multiplicity",
-                                                     false, true);
+                                                     false);
         MULTIPLICITY_RANGE      = new UmlModelEntity("MultiplicityRange");
         NAMESPACE               = new UmlModelEntity("Namespace");
         NODE                    = new UmlModelEntity("Node");
@@ -386,7 +386,7 @@ public final class Uml {
         OPERATION               = new UmlModelEntity("Operation");
         PACKAGE                 = new UmlModelEntity("Package");
         PARAMETER               = new UmlModelEntity("Parameter",
-                                                     false, true);
+                                                     false);
         PARTITION               = new UmlModelEntity("Partition");
         PERMISSION              = new UmlModelEntity("Permission");
         PRESENTATION_ELEMENT    = new UmlModelEntity("PresentationElement");
@@ -394,38 +394,38 @@ public final class Uml {
         PSEUDOSTATE             = new UmlModelEntity("Pseudostate");
         RECEPTION               = new UmlModelEntity("Reception");
         RELATIONSHIP            = new UmlModelEntity("Relationship",
-                                                     false, true);
+                                                     false);
         RETURN_ACTION           = new UmlModelEntity("ReturnAction",
-                                                     false, true);
+                                                     false);
         SEND_ACTION             = new UmlModelEntity("SendAction",
-                                                     false, true);
+                                                     false);
         SIGNAL                  = new UmlModelEntity("Signal",
-                                                     false, true);
+                                                     false);
         SIGNAL_EVENT            = new UmlModelEntity("SignalEvent",
-                                                     false, true);
+                                                     false);
         SIMPLE_STATE            = new UmlModelEntity("SimpleState");
         STATE                   = new UmlModelEntity("State");
         STATE_MACHINE           = new UmlModelEntity("StateMachine",
-                                                     false, true);
+                                                     false);
         STATE_VERTEX            = new UmlModelEntity("StateVertex",
-                                                     false, true);
+                                                     false);
         STEREOTYPE              = new UmlModelEntity("Stereotype");
         STIMULUS                = new UmlModelEntity("Stimulus",
-                                                     false, true);
+                                                     false);
         STRUCTURAL_FEATURE      = new UmlModelEntity("StructuralFeature",
-                                                     false, true);
+                                                     false);
         STUB_STATE              = new UmlModelEntity("StubState");
         SUBACTIVITY_STATE       = new UmlModelEntity("SubactivityState");
         SUBMACHINE_STATE        = new UmlModelEntity("SubmachineState");
         SUBSYSTEM               = new UmlModelEntity("Subsystem",
-                                                     false, true);
+                                                     false);
         SYNCH_STATE             = new UmlModelEntity("SynchState");
         TAGGED_VALUE            = new UmlModelEntity("TaggedValue",
-                                                     false, true);
+                                                     false);
         TEMPLATE_PARAMETER      = new UmlModelEntity("TemplateParameter");
         TERMINATE_ACTION        = new UmlModelEntity("TerminateAction");
         TIME_EVENT              = new UmlModelEntity("TimeEvent",
-                                                     false, true);
+                                                     false);
         TIME_EXPRESSION         = new UmlModelEntity("TimeExpression");
         TRANSITION              = new UmlModelEntity("Transition");
         TYPE_EXPRESSION         = new UmlModelEntity("TypeExpression");
