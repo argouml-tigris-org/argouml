@@ -23,6 +23,8 @@
 
 package org.argouml.model.uml.behavioralelements.usecases;
 
+import java.util.Iterator;
+
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
@@ -159,8 +161,28 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
     
     /** Remove an  instance of a UML UseCase.
      */
-    public void  removeUseCase(MUseCase modelelement) {
-        modelelement.remove();
+    public void  removeUseCase(MUseCase modelelement) {     
+        // Get rid of extends
+        Iterator extendIterator = (modelelement.getExtends()).iterator();
+        while (extendIterator.hasNext()) {
+            ((MExtend) extendIterator.next()).remove();
+        }
+        extendIterator = (modelelement.getExtends2()).iterator();
+        while (extendIterator.hasNext()) {
+            ((MExtend) extendIterator.next()).remove();
+        }
+        // Get rid of includes
+        Iterator includeIterator = (modelelement.getIncludes()).iterator();
+        while (includeIterator.hasNext()) {
+            ((MInclude) includeIterator.next()).remove();
+        }
+        includeIterator = (modelelement.getIncludes2()).iterator();
+        while (includeIterator.hasNext()) {
+            ((MInclude) includeIterator.next()).remove();
+        }
+        // Use the classifier version to get rid of everything else (including
+        // our very own good selves).
+        UmlFactory.getFactory().getCore().removeClassifier(modelelement);
     }
     
     /** Remove an  instance of a UML UseCaseInstance.

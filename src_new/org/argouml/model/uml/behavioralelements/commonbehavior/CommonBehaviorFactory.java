@@ -23,6 +23,8 @@
 
 package org.argouml.model.uml.behavioralelements.commonbehavior;
 
+import java.util.Iterator;
+
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
@@ -414,6 +416,15 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     /** Remove an instance of a UML Object.
      */
     public void  removeObject(MObject modelelement) {
+    	Iterator linkEndIterator = (modelelement.getLinkEnds()).iterator();
+		while (linkEndIterator.hasNext()) {
+		    MLinkEnd le = (MLinkEnd)linkEndIterator.next();
+		    MLink link = le.getLink();
+		    if ((link.getConnections()).size() < 3)
+			link.remove();
+		    else
+			le.remove();
+		}
         modelelement.remove();
     }
 
@@ -441,9 +452,14 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         modelelement.remove();
     }
 
-    /** Remove an instance of a UML Stimulus.
+    /** Remove an instance of a UML Stimulus including the communication link
+     * if there is one.
      */
     public void  removeStimulus(MStimulus modelelement) {
+    	MLink link = modelelement.getCommunicationLink();
+    	if (link != null) {
+			removeLink(link);
+    	}
         modelelement.remove();
     }
 

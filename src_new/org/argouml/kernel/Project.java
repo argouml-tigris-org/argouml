@@ -1055,7 +1055,7 @@ public class Project implements java.io.Serializable {
     	
     	if (obj instanceof MModelElement) { // an object that can be represented
     		ProjectBrowser.TheInstance.getEditorPane().removePresentationFor(obj, getDiagrams());
-    		MMUtil.SINGLETON.remove((MModelElement)obj); // let MMUtil do the job instead of this method
+    		UmlFactory.getFactory().remove((MModelElement)obj); // let MMUtil do the job instead of this method
     		if (_members.contains(obj)) {
     			_members.remove(obj);
     		}
