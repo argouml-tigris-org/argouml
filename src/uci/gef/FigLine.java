@@ -126,7 +126,6 @@ public class FigLine extends Fig {
     return ys;
   }
 
-  
   /** return the approximate arc length of the path in pixel units */
   public int getPerimeterLength() {
     int dxdx = (_x2 - _x1) * (_x2 - _x1);
@@ -138,7 +137,7 @@ public class FigLine extends Fig {
   public Point pointAlongPerimeter(int dist) {
     int len = getPerimeterLength();
     int p = Math.min(dist, len);
-    return new Point(_x1 + (_x2 * p) / len, _y1 + (_y2 * p) / len);
+    return new Point(_x1 + ((_x2 - _x1) * p) / len, _y1 + ((_y2 - _y1) * p) / len);
   }
 
   public void setBounds(int x, int y, int w, int h) {
@@ -171,6 +170,7 @@ public class FigLine extends Fig {
     if (_lineWidth > 0) {
       g.setColor(_lineColor);
       g.drawLine(_x1, _y1, _x2, _y2);
+	  drawArrowHead(g);
     }
   }
 
@@ -205,6 +205,16 @@ public class FigLine extends Fig {
     _y2 = snapY;
     calcBounds();
   }
+
+  ArrowHead ArrowHeadStart = new ArrowHeadTriangle();
+  ArrowHead ArrowHeadEnd = new ArrowHeadTriangle();
+
+	protected void drawArrowHead(Graphics g) {
+		ArrowHeadStart.setFillColor(Color.white);
+		//System.out.println("pointalongat0 = " + pointAlongPerimeter(0) + " pointAtEnd = " + getPerimeterLength() + " pointatEnd = " + pointAlongPerimeter(getPerimeterLength()));
+		ArrowHeadStart.paint(g, pointAlongPerimeter(0), pointAlongPerimeter(getPerimeterLength()));
+		ArrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength()), pointAlongPerimeter(0));
+	}
 
 } /* end class FigLine */
 
