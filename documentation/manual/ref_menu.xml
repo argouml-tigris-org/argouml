@@ -1080,13 +1080,17 @@ on to the current diagram in the drawing pane.
 
     <!-- Empty trash (what does this actually do?) -->
 
-    <sect2>
+    <!-- Removed this useless menu item. See issue 2471. -->
+    <!--sect2>
       <title>Empty trash</title>
-
-      <para>This menu function has no discernible effect. It is believed to
-        invoke a garbage collection in the Java system.</para>
-      <!-- TODO: remove this useless menu item. See issue 2471. -->
-    </sect2>
+      <para>This menu function has no discernible effect yet. 
+        In the future this will be a trash can icon in the project
+        browser.  Deleting an object moves it to the trash.  You can move
+        things back out of the trash if you like.  Eventually you empty the
+        trash.  Critics check for relationships between things that will
+        break when the trash is empty.  E.g., Class X's superclass is in
+        the trash, you must fix this before you empty the trash."</para>
+    </sect2-->
 
     <!-- Settings for ArgoUML -->
 
