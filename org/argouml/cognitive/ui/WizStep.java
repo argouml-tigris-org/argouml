@@ -23,22 +23,26 @@
 
 package org.argouml.cognitive.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import org.tigris.gef.ui.*;
-import org.tigris.gef.util.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.cognitive.*;
-import org.argouml.util.osdep.*;
+import org.argouml.application.api.Argo;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.kernel.Wizard;
+import org.argouml.ui.SpacerPanel;
+import org.argouml.util.osdep.StartBrowser;
 
 /** Each Critic may provide a Wizard to help fix the problem it
  *  identifies.  The "Next>" button will advance through the steps of
@@ -56,7 +60,7 @@ implements TabToDoTarget, ActionListener, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // constants
   private static final String BUNDLE = "Cognitive";
-  public static final ImageIcon WIZ_ICON = ResourceLoader.lookupIconResource("Wiz", "Wiz");
+  public static final ImageIcon WIZ_ICON = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Wiz", "Wiz");
 
   ////////////////////////////////////////////////////////////////
   // instance variables

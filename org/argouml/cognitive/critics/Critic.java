@@ -29,18 +29,26 @@
 
 package org.argouml.cognitive.critics;
 
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
+import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
-import org.tigris.gef.util.*;
+import javax.swing.Icon;
 
-import org.argouml.kernel.*;
-import org.argouml.cognitive.*;
-import org.argouml.util.*;
-import org.argouml.application.api.*;
-
-import org.apache.log4j.*;
+import org.apache.log4j.Category;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
+import org.argouml.application.api.ConfigurationKey;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.cognitive.Decision;
+import org.argouml.cognitive.DesignMaterial;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Goal;
+import org.argouml.cognitive.Poster;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.kernel.Wizard;
+import org.tigris.gef.util.VectorSet;
 
 /** "Abstract" base class for design critics.  Each subclass should define
  *  its own predicate method and define its own relevance tags. <p>
@@ -140,7 +148,7 @@ public class Critic implements Poster, Serializable {
 
   /** The icon representing the resource.
    */
-  public static Icon DEFAULT_CLARIFIER = ResourceLoader.lookupIconResource("PostIt0");
+  public static Icon DEFAULT_CLARIFIER = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt0");
   protected Icon _clarifier = DEFAULT_CLARIFIER;
 
   /** The decision category that this critic is relevant to. The idea

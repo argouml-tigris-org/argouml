@@ -22,28 +22,26 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.ui;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
+
 import org.argouml.application.ArgoVersion;
-
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.*;
-
-import org.tigris.gef.util.ResourceLoader;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 
 class SplashPanel extends JPanel {
 
   ImageIcon splashImage = null;
   public SplashPanel(String iconName) {
     super();
-    splashImage = ResourceLoader.lookupIconResource(iconName);
-
-    //
-    // JWindow does not allow setting title or icon.
-    //
-    // ImageIcon argoImage = ResourceLoader.lookupIconResource("Model");
-    // this.setIconImage(argoImage.getImage());
-    // if (title != null) setTitle(title);
+    splashImage = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(iconName);
 
     JPanel topNorth = new JPanel(new BorderLayout());
     topNorth.setPreferredSize(new Dimension(6,6));

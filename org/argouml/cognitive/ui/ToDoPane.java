@@ -23,22 +23,45 @@
 
 package org.argouml.cognitive.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.text.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.text.MessageFormat;
+import java.util.Vector;
+
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JToggleButton;
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-
-import org.tigris.gef.ui.*;
-import org.tigris.gef.util.*;
-
-import org.argouml.cognitive.*;
-import org.argouml.ui.*;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
+import org.argouml.application.api.QuadrantPanel;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoList;
+import org.argouml.cognitive.ToDoListEvent;
+import org.argouml.cognitive.ToDoListListener;
+import org.argouml.ui.Actions;
+import org.argouml.ui.DisplayTextTree;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.SplashScreen;
+import org.tigris.gef.ui.ToolBar;
+import org.tigris.gef.util.VectorSet;
 
 /** The lower-left pane of the main Argo/UML window. This ane shows
  *  a list or tree of all the "to do" items that the designer should
@@ -102,8 +125,8 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
     _flatButton = _toolbar.addToggle(_flatView, "Flat", "Hierarchical", "Flat");
     _toolbar.add(_countLabel);
     ImageIcon hierarchicalIcon =
-		ResourceLoader.lookupIconResource("Hierarchical", "Hierarchical");
-    ImageIcon flatIcon = ResourceLoader.lookupIconResource("Flat", "Flat");
+		ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Hierarchical", "Hierarchical");
+    ImageIcon flatIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Flat", "Flat");
     _flatButton.setIcon(hierarchicalIcon);
     _flatButton.setSelectedIcon(flatIcon);
     add(toolbarPanel, BorderLayout.NORTH);
