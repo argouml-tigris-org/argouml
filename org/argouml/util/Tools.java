@@ -89,21 +89,25 @@ String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.
 	    sb.append("Error determining SAX Parser Factory\n.");
 	}
 
-
-
 	for(int i=0;i<packageList.length;i++) {
 	    getComponentVersionInfo(sb, packageList[i]);
 	}
 
 	if (saxObject != null) {
-	    getComponentVersionInfo(sb, saxObject.getClass().getPackage().getName());
+	    // ...getPackage() can return null's, so we have to cater for this:
+	    Package pckg = saxObject.getClass().getPackage();
+	    if (pckg != null) {
+	    	getComponentVersionInfo(sb, pckg.getName());
+            }
 	}
+      
+
 
 	sb.append("\n");
-	sb.append("Operation System is: ");
+	sb.append("Operating System is: ");
 	sb.append(System.getProperty("os.name", "unknown"));
 	sb.append('\n');
-	sb.append("Operation System Version: ");
+	sb.append("Operating System Version: ");
 	sb.append(System.getProperty("os.version", "unknown"));
 	sb.append('\n');
 	sb.append("Language: ");
