@@ -21,9 +21,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.application.api;
+package org.argouml.application.events;
+import org.argouml.application.api.*;
 import org.argouml.application.modules.*;
-import org.argouml.application.events.*;
 
 /** An interface that objects interested in ModuleEvent
  *  notifications must extend.
