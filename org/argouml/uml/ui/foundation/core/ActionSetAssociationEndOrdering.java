@@ -39,7 +39,7 @@ import org.argouml.uml.ui.UMLCheckBox2;
  */
 public class ActionSetAssociationEndOrdering extends UMLChangeAction {
 
-    public static final ActionSetAssociationEndOrdering SINGLETON = 
+    private static final ActionSetAssociationEndOrdering SINGLETON = 
 	new ActionSetAssociationEndOrdering();
 
     /**
@@ -60,12 +60,21 @@ public class ActionSetAssociationEndOrdering extends UMLChangeAction {
             if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
                 Object m = /*(MAssociationEnd)*/ target;
                 if (source.isSelected()) {
-                    ModelFacade.setOrdering(m, ModelFacade.ORDERED_ORDERINGKIND); 
+                    ModelFacade.setOrdering(m, 
+                            ModelFacade.ORDERED_ORDERINGKIND); 
                 } else {
-                    ModelFacade.setOrdering(m, ModelFacade.UNORDERED_ORDERINGKIND); 
+                    ModelFacade.setOrdering(m, 
+                            ModelFacade.UNORDERED_ORDERINGKIND); 
                 }
             }
         }
+    }
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static ActionSetAssociationEndOrdering getInstance() {
+        return SINGLETON;
     }
 
 }

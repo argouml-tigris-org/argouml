@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,23 +37,32 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 4, 2003
  */
-public class UMLModelElementVisibilityRadioButtonPanel extends UMLRadioButtonPanel {
+public class UMLModelElementVisibilityRadioButtonPanel 
+    extends UMLRadioButtonPanel {
 
     private static Map labelTextsAndActionCommands = new HashMap();
 
     static {
-        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.visibility-public"), ActionSetModelElementVisibility.PUBLIC_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.visibility-protected"), ActionSetModelElementVisibility.PROTECTED_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.visibility-private"), ActionSetModelElementVisibility.PRIVATE_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", 
+                "label.visibility-public"), 
+                ActionSetModelElementVisibility.PUBLIC_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", 
+                "label.visibility-protected"), 
+                ActionSetModelElementVisibility.PROTECTED_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", 
+                "label.visibility-private"), 
+                ActionSetModelElementVisibility.PRIVATE_COMMAND);
     }
 
     /**
      * Constructor for UMLAssociationEndChangeabilityRadioButtonPanel.
-     * @param title
-     * @param horizontal
+     * @param title the title for the panel
+     * @param horizontal determines the orientation
      */
-    public UMLModelElementVisibilityRadioButtonPanel(String title, boolean horizontal) {
-        super(title, labelTextsAndActionCommands, "visibility", ActionSetModelElementVisibility.SINGLETON, horizontal);
+    public UMLModelElementVisibilityRadioButtonPanel(
+            String title, boolean horizontal) {
+        super(title, labelTextsAndActionCommands, "visibility", 
+                ActionSetModelElementVisibility.getInstance(), horizontal);
     }
 
     /**
@@ -63,7 +72,8 @@ public class UMLModelElementVisibilityRadioButtonPanel extends UMLRadioButtonPan
         if (getTarget() != null) {
             Object target = /*(MModelElement)*/ getTarget();
             Object kind = ModelFacade.getVisibility(target);
-            if (kind == null || kind.equals(ModelFacade.PUBLIC_VISIBILITYKIND)) {
+            if (kind == null 
+                    || kind.equals(ModelFacade.PUBLIC_VISIBILITYKIND)) {
                 setSelected(ActionSetModelElementVisibility.PUBLIC_COMMAND);
             } else if (kind.equals(ModelFacade.PROTECTED_VISIBILITYKIND)) {
                 setSelected(ActionSetModelElementVisibility.PROTECTED_COMMAND); 

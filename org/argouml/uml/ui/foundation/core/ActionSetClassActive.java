@@ -37,7 +37,8 @@ import org.argouml.uml.ui.UMLCheckBox2;
  */
 public class ActionSetClassActive extends UMLChangeAction {
 
-    public static final ActionSetClassActive SINGLETON = new ActionSetClassActive();
+    private static final ActionSetClassActive SINGLETON = 
+        new ActionSetClassActive();
 
     /**
      * Constructor.
@@ -59,5 +60,12 @@ public class ActionSetClassActive extends UMLChangeAction {
                 ModelFacade.setActive(m, source.isSelected());                
             }
         }
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetClassActive getInstance() {
+        return SINGLETON;
     }
 }

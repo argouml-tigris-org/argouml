@@ -37,7 +37,8 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetAssociationEndType extends UMLChangeAction {
 
-    public static final ActionSetAssociationEndType SINGLETON = new ActionSetAssociationEndType();
+    private static final ActionSetAssociationEndType SINGLETON = 
+        new ActionSetAssociationEndType();
     
     /**
      * Constructor for ActionSetStructuralFeatureType.
@@ -68,10 +69,20 @@ public class ActionSetAssociationEndType extends UMLChangeAction {
                 newClassifier = /*(MClassifier)*/ o;
             }
         }
-        if (newClassifier != oldClassifier && end != null && newClassifier != null) {
+        if (newClassifier != oldClassifier && end != null 
+                && newClassifier != null) {
             ModelFacade.setType(end, newClassifier);
             super.actionPerformed(e);
         }
         
+    }
+
+
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetAssociationEndType getInstance() {
+        return SINGLETON;
     }
 }

@@ -38,7 +38,7 @@ public class UMLBehavioralFeatureQueryCheckBox extends UMLCheckBox2 {
      */
     public UMLBehavioralFeatureQueryCheckBox() {
         super(Translator.localize("UMLMenu", "label.query"),
-                ActionSetBehavioralFeatureQuery.SINGLETON, "isQuery");
+                ActionSetBehavioralFeatureQuery.getInstance(), "isQuery");
     }
 
     /**

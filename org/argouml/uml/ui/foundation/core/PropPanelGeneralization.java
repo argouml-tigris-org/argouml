@@ -100,7 +100,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
         addField(Translator.localize("UMLMenu", "label.powertype"),
                 new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(),
-                        ActionSetGeneralizationPowertype.SINGLETON));
+                        ActionSetGeneralizationPowertype.getInstance()));
 
         addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));

@@ -38,7 +38,8 @@ import org.argouml.uml.ui.UMLCheckBox2;
  */
 public class ActionSetFeatureOwnerScope extends UMLChangeAction {
 
-    public static final ActionSetFeatureOwnerScope SINGLETON = new ActionSetFeatureOwnerScope();
+    private static final ActionSetFeatureOwnerScope SINGLETON = 
+        new ActionSetFeatureOwnerScope();
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
@@ -58,12 +59,21 @@ public class ActionSetFeatureOwnerScope extends UMLChangeAction {
             if (org.argouml.model.ModelFacade.isAFeature(target)) {
                 Object m = /*(MFeature)*/ target;
                 if (source.isSelected()) {
-                    ModelFacade.setOwnerScope(m, ModelFacade.CLASSIFIER_SCOPEKIND);
+                    ModelFacade.setOwnerScope(m, 
+                            ModelFacade.CLASSIFIER_SCOPEKIND);
                 } else {
-                    ModelFacade.setOwnerScope(m, ModelFacade.INSTANCE_SCOPEKIND);
+                    ModelFacade.setOwnerScope(m, 
+                            ModelFacade.INSTANCE_SCOPEKIND);
                 }
             }
         }
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetFeatureOwnerScope getInstance() {
+        return SINGLETON;
     }
 
 }

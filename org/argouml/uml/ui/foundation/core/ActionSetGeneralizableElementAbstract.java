@@ -38,7 +38,8 @@ import org.argouml.uml.ui.UMLCheckBox2;
  */
 public class ActionSetGeneralizableElementAbstract extends UMLChangeAction {
 
-    public static final ActionSetGeneralizableElementAbstract SINGLETON = new ActionSetGeneralizableElementAbstract();
+    private static final ActionSetGeneralizableElementAbstract SINGLETON = 
+        new ActionSetGeneralizableElementAbstract();
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
@@ -60,5 +61,12 @@ public class ActionSetGeneralizableElementAbstract extends UMLChangeAction {
                 ModelFacade.setAbstract(target, source.isSelected());
             }
         }
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetGeneralizableElementAbstract getInstance() {
+        return SINGLETON;
     }
 }

@@ -39,7 +39,8 @@ import org.argouml.uml.ui.UMLCheckBox2;
  */
 public class ActionSetGeneralizableElementLeaf extends UMLChangeAction {
 
-    public static final ActionSetGeneralizableElementLeaf SINGLETON = new ActionSetGeneralizableElementLeaf();
+    private static final ActionSetGeneralizableElementLeaf SINGLETON = 
+        new ActionSetGeneralizableElementLeaf();
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
@@ -56,11 +57,18 @@ public class ActionSetGeneralizableElementLeaf extends UMLChangeAction {
         if (e.getSource() instanceof UMLCheckBox2) {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
-            if (org.argouml.model.ModelFacade.isAGeneralizableElement(target) ||
-                    ModelFacade.isAOperation(target)) {
-                ModelFacade.setLeaf(target, source.isSelected());                
+            if (org.argouml.model.ModelFacade.isAGeneralizableElement(target) 
+                    || ModelFacade.isAOperation(target)) {
+                ModelFacade.setLeaf(target, source.isSelected());
             }
         }
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetGeneralizableElementLeaf getInstance() {
+        return SINGLETON;
     }
 
 }

@@ -81,7 +81,7 @@ public class PropPanelParameter extends PropPanelModelElement {
 
         addField(Translator.localize("UMLMenu", "label.type"), 
                 new UMLComboBox2(new UMLParameterTypeComboBoxModel(), 
-                        ActionSetParameterType.SINGLETON));
+                        ActionSetParameterType.getInstance()));
 
         addField("Initial Value:", new UMLInitialValueComboBox(this));
         

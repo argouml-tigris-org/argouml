@@ -37,7 +37,7 @@ import org.argouml.uml.ui.UMLCheckBox2;
  */
 public class ActionSetStructuralFeatureTargetScope extends UMLChangeAction {
 
-    public static final ActionSetStructuralFeatureTargetScope SINGLETON =
+    private static final ActionSetStructuralFeatureTargetScope SINGLETON =
 	new ActionSetStructuralFeatureTargetScope();
 
     /**
@@ -62,6 +62,13 @@ public class ActionSetStructuralFeatureTargetScope extends UMLChangeAction {
                                         : ModelFacade.INSTANCE_SCOPEKIND);
 	    }
 	}
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetStructuralFeatureTargetScope getInstance() {
+        return SINGLETON;
     }
 
 }

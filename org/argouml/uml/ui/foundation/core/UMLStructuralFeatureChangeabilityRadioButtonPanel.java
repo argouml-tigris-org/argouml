@@ -42,18 +42,26 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
     private static Map labelTextsAndActionCommands = new HashMap();
 
     static {
-        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.changeability-addonly"), ActionSetChangeability.ADDONLY_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.changeability-changeable"), ActionSetChangeability.CHANGEABLE_COMMAND);
-        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.changeability-frozen"), ActionSetChangeability.FROZEN_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", 
+                "label.changeability-addonly"), 
+                ActionSetChangeability.ADDONLY_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", 
+                "label.changeability-changeable"), 
+                ActionSetChangeability.CHANGEABLE_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", 
+                "label.changeability-frozen"), 
+                ActionSetChangeability.FROZEN_COMMAND);
     }
 
     /**
      * Constructor for UMLAssociationEndChangeabilityRadioButtonPanel.
-     * @param title
-     * @param horizontal
+     * @param title the title for the panel
+     * @param horizontal determines the orientation
      */
-    public UMLStructuralFeatureChangeabilityRadioButtonPanel(String title, boolean horizontal) {
-        super(title, labelTextsAndActionCommands, "changeability", ActionSetChangeability.SINGLETON, horizontal);
+    public UMLStructuralFeatureChangeabilityRadioButtonPanel(
+            String title, boolean horizontal) {
+        super(title, labelTextsAndActionCommands, "changeability", 
+                ActionSetChangeability.getInstance(), horizontal);
     }
 
     /**
@@ -62,8 +70,10 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
     public void buildModel() {
         if (getTarget() != null) {
             Object target = /*(MStructuralFeature)*/ getTarget();
-            Object/*MChangeableKind*/ kind = ModelFacade.getChangeability(target);
-            if (kind == null || kind.equals(ModelFacade.ADD_ONLY_CHANGEABLEKIND)) {
+            Object/*MChangeableKind*/ kind = 
+                ModelFacade.getChangeability(target);
+            if (kind == null 
+                    || kind.equals(ModelFacade.ADD_ONLY_CHANGEABLEKIND)) {
                 setSelected(ActionSetChangeability.ADDONLY_COMMAND);
             } else if (kind.equals(ModelFacade.CHANGEABLE_CHANGEABLEKIND)) {
                 setSelected(ActionSetChangeability.CHANGEABLE_COMMAND); 

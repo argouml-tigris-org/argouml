@@ -56,14 +56,14 @@ public class UMLParameterDirectionKindRadioButtonPanel extends
     /**
      * Constructor.
      * 
-     * @param title
-     * @param horizontal
+     * @param title the title of the panel
+     * @param horizontal determines the orientation
      */
     public UMLParameterDirectionKindRadioButtonPanel(String title,
             boolean horizontal) {
         // TODO: i18n
         super(title, labelTextsAndActionCommands, "ParameterKind:",
-                ActionSetParameterDirectionKind.SINGLETON, horizontal);
+                ActionSetParameterDirectionKind.getInstance(), horizontal);
     }
 
     /**

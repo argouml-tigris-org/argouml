@@ -40,7 +40,8 @@ public class UMLAssociationEndOrderingCheckBox extends UMLCheckBox2 {
      * Constructor for UMLAssociationEndOrderingCheckBox.
      */
     public UMLAssociationEndOrderingCheckBox() {
-        super(Translator.localize("UMLMenu", "label.ordering"), ActionSetAssociationEndOrdering.SINGLETON, "ordering");
+        super(Translator.localize("UMLMenu", "label.ordering"), 
+                ActionSetAssociationEndOrdering.getInstance(), "ordering");
     }
 
     /**
@@ -49,7 +50,8 @@ public class UMLAssociationEndOrderingCheckBox extends UMLCheckBox2 {
     public void buildModel() {
         if (getTarget() != null) {
             Object associationEnd = /*(MAssociationEnd)*/ getTarget();
-            setSelected(ModelFacade.ORDERED_ORDERINGKIND.equals(ModelFacade.getOrdering(associationEnd)));
+            setSelected(ModelFacade.ORDERED_ORDERINGKIND.equals(ModelFacade
+                    .getOrdering(associationEnd)));
         }
     }
 }

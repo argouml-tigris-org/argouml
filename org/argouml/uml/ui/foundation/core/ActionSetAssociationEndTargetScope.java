@@ -38,7 +38,8 @@ import org.argouml.uml.ui.UMLCheckBox2;
  */
 public class ActionSetAssociationEndTargetScope extends UMLChangeAction {
 
-    public static final ActionSetAssociationEndTargetScope SINGLETON = new ActionSetAssociationEndTargetScope();
+    private static final ActionSetAssociationEndTargetScope SINGLETON = 
+        new ActionSetAssociationEndTargetScope();
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
@@ -58,11 +59,20 @@ public class ActionSetAssociationEndTargetScope extends UMLChangeAction {
             if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
                 Object m = /*(MAssociationEnd)*/ target;
                 if (source.isSelected()) {
-                    ModelFacade.setTargetScope(m, ModelFacade.CLASSIFIER_SCOPEKIND);
+                    ModelFacade.setTargetScope(m, 
+                            ModelFacade.CLASSIFIER_SCOPEKIND);
                 } else {
-                    ModelFacade.setTargetScope(m, ModelFacade.INSTANCE_SCOPEKIND);
+                    ModelFacade.setTargetScope(m, 
+                            ModelFacade.INSTANCE_SCOPEKIND);
                 }
             }
         }
+    }
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static ActionSetAssociationEndTargetScope getInstance() {
+        return SINGLETON;
     }
 }

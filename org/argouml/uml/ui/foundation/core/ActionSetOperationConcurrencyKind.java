@@ -41,13 +41,23 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
  */
 public class ActionSetOperationConcurrencyKind extends UMLChangeAction {
 
-    public static final ActionSetOperationConcurrencyKind SINGLETON = new ActionSetOperationConcurrencyKind();
+    private static final ActionSetOperationConcurrencyKind SINGLETON = 
+        new ActionSetOperationConcurrencyKind();
 
-    public final static String SEQUENTIAL_COMMAND = "sequential";
+    /**
+     * SEQUENTIAL_COMMAND determines the kind of concurrency.
+     */
+    public static final String SEQUENTIAL_COMMAND = "sequential";
 
-    public final static String GUARDED_COMMAND = "guarded";
+    /**
+     * GUARDED_COMMAND determines the kind of concurrency.
+     */
+    public static final String GUARDED_COMMAND = "guarded";
 
-    public final static String CONCURRENT_COMMAND = "concurrent";
+    /**
+     * CONCURRENT_COMMAND determines the kind of concurrency.
+     */
+    public static final String CONCURRENT_COMMAND = "concurrent";
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
@@ -79,5 +89,12 @@ public class ActionSetOperationConcurrencyKind extends UMLChangeAction {
                 ModelFacade.setConcurrency(m, kind);
             }
         }
+    }
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static ActionSetOperationConcurrencyKind getInstance() {
+        return SINGLETON;
     }
 }

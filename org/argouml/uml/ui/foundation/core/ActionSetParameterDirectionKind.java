@@ -41,15 +41,28 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
  */
 public class ActionSetParameterDirectionKind extends UMLChangeAction {
 
-    public static final ActionSetParameterDirectionKind SINGLETON = new ActionSetParameterDirectionKind();
+    private static final ActionSetParameterDirectionKind SINGLETON = 
+        new ActionSetParameterDirectionKind();
 
-    public final static String IN_COMMAND = "in";
+    /**
+     * IN_COMMAND determines the kind of direction.
+     */
+    public static final String IN_COMMAND = "in";
 
-    public final static String OUT_COMMAND = "out";
+    /**
+     * OUT_COMMAND determines the kind of direction.
+     */
+    public static final String OUT_COMMAND = "out";
 
-    public final static String INOUT_COMMAND = "inout";
+    /**
+     * INOUT_COMMAND determines the kind of direction.
+     */
+    public static final String INOUT_COMMAND = "inout";
 
-    public final static String RETURN_COMMAND = "return";
+    /**
+     * RETURN_COMMAND determines the kind of direction.
+     */
+    public static final String RETURN_COMMAND = "return";
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
@@ -83,5 +96,12 @@ public class ActionSetParameterDirectionKind extends UMLChangeAction {
                 ModelFacade.setKind(m, kind);
             }
         }
+    }
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static ActionSetParameterDirectionKind getInstance() {
+        return SINGLETON;
     }
 }

@@ -36,7 +36,7 @@ import org.argouml.uml.ui.ActionSetMultiplicity;
 public class ActionSetStructuralFeatureMultiplicity
     extends ActionSetMultiplicity {
 
-    public static final ActionSetStructuralFeatureMultiplicity SINGLETON =
+    private static final ActionSetStructuralFeatureMultiplicity SINGLETON =
         new ActionSetStructuralFeatureMultiplicity();
 
     /**
@@ -47,16 +47,25 @@ public class ActionSetStructuralFeatureMultiplicity
     }
 
     /**
-     * @see org.argouml.uml.ui.ActionSetMultiplicity#setSelectedItem(java.lang.Object, java.lang.Object)
+     * @see org.argouml.uml.ui.ActionSetMultiplicity#setSelectedItem(
+     * java.lang.Object, java.lang.Object)
      */
     public void setSelectedItem(Object item, Object target) {
-        if (target != null && org.argouml.model.ModelFacade.isAStructuralFeature(target)) {
+        if (target != null 
+                && org.argouml.model.ModelFacade.isAStructuralFeature(target)) {
             if (org.argouml.model.ModelFacade.isAMultiplicity(item)) {
                 ModelFacade.setMultiplicity(target, item);
             } else
                  ModelFacade.setMultiplicity(target, null);
 
         }
+    }
+
+    /**
+     * @return Returns the sINGLETON.
+     */
+    public static ActionSetStructuralFeatureMultiplicity getInstance() {
+        return SINGLETON;
     }
 
 }

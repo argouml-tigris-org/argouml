@@ -87,7 +87,7 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
                 ownerComboBoxModel = new UMLFeatureOwnerComboBoxModel();
             }
             ownerComboBox = new UMLComboBox2(ownerComboBoxModel,
-                    ActionSetFeatureOwner.SINGLETON);
+                    ActionSetFeatureOwner.getInstance());
         }
         return ownerComboBox;
     }

@@ -37,7 +37,8 @@ import org.argouml.uml.ui.ActionSetMultiplicity;
 public class ActionSetAssociationEndMultiplicity extends ActionSetMultiplicity {
 
 
-    public static final ActionSetAssociationEndMultiplicity SINGLETON = new ActionSetAssociationEndMultiplicity();
+    private static final ActionSetAssociationEndMultiplicity SINGLETON = 
+        new ActionSetAssociationEndMultiplicity();
 
     /**
      * Constructor.
@@ -47,7 +48,8 @@ public class ActionSetAssociationEndMultiplicity extends ActionSetMultiplicity {
     }
 
     /**
-     * @see org.argouml.uml.ui.ActionSetMultiplicity#setSelectedItem(java.lang.Object, java.lang.Object)
+     * @see org.argouml.uml.ui.ActionSetMultiplicity#setSelectedItem(
+     * java.lang.Object, java.lang.Object)
      */
     public void setSelectedItem(Object item, Object target) {
         if (target != null
@@ -59,5 +61,12 @@ public class ActionSetAssociationEndMultiplicity extends ActionSetMultiplicity {
 
         }
 
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetAssociationEndMultiplicity getInstance() {
+        return SINGLETON;
     }
 }

@@ -38,7 +38,7 @@ import org.argouml.uml.ui.UMLCheckBox2;
  */
 public class ActionSetAssociationEndNavigable extends UMLChangeAction {
 
-    public static final ActionSetAssociationEndNavigable SINGLETON = 
+    private static final ActionSetAssociationEndNavigable SINGLETON = 
 	new ActionSetAssociationEndNavigable();
 
     /**
@@ -58,8 +58,15 @@ public class ActionSetAssociationEndNavigable extends UMLChangeAction {
             Object target = source.getTarget();
             if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
                 Object m = /*(MAssociationEnd)*/ target;
-                ModelFacade.setNavigable(m, source.isSelected());                
+                ModelFacade.setNavigable(m, source.isSelected());
             }
         }
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetAssociationEndNavigable getInstance() {
+        return SINGLETON;
     }
 }
