@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,7 +24,6 @@
 // File: CrUtilityViolated.java
 // Classes: CrUtilityViolated
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.cognitive.critics;
 
@@ -36,7 +36,10 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 
 /** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
+ *  itself of any subclasses). This is done by checking that there
+ *  are no instance operations or attributes in the class itself
+ *  or in any of the realized interfaces or inherited classes.
+ */
 public class CrUtilityViolated extends CrUML {
     
     public CrUtilityViolated() {
@@ -49,44 +52,37 @@ public class CrUtilityViolated extends CrUML {
     }
     
     public boolean predicate2(Object dm, Designer dsgr) {
-        boolean problem = NO_PROBLEM;
-        // we could check for base class of the stereotype but the condition normally covers it all.
-        if (ModelFacade.isAClassifier(dm)
-            && ModelFacade.getStereoType(dm) != null && ModelFacade.getName(ModelFacade.getStereoType(dm)).equals(
-                "utility")) {
-            Collection classesToCheck = new ArrayList();
-            classesToCheck.addAll(CoreHelper.getHelper().getSupertypes(dm));
-            classesToCheck.addAll(
-                CoreHelper.getHelper().getAllRealizedInterfaces(dm));
-            classesToCheck.add(dm);
-            Iterator it = classesToCheck.iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
-                if (!ModelFacade.isAInterface(o)) {
-                    Iterator it2 = ModelFacade.getAttributes(o).iterator();
-                    while (it2.hasNext()) {
-                        if (ModelFacade.isInstanceScope(it2.next())) {
-                            problem = PROBLEM_FOUND;
-                            break;
-                        }
-                    }
-                    if (problem) {
-                        break;
-                    }
-                }
-                Iterator it2 = ModelFacade.getOperations(o).iterator();
-                while (it2.hasNext()) {
-                    if (ModelFacade.isInstanceScope(it2.next())) {
-                        problem = PROBLEM_FOUND;
-                        break;
-                    }
-                }
-                if (problem) {
-                    break;
-                }
-            }
-        }
-        return problem;
+        // we could check for base class of the stereotype but the 
+	// condition normally covers it all.
+        if (!(ModelFacade.isAClassifier(dm)))
+	    return NO_PROBLEM;
+	if (!(ModelFacade.isUtility(dm)))
+	    return NO_PROBLEM;
+
+	Collection classesToCheck = new ArrayList();
+	classesToCheck.addAll(CoreHelper.getHelper().getSupertypes(dm));
+	classesToCheck.addAll(
+	    CoreHelper.getHelper().getAllRealizedInterfaces(dm));
+	classesToCheck.add(dm);
+	Iterator it = classesToCheck.iterator();
+	while (it.hasNext()) {
+	    Object o = it.next();
+	    if (!ModelFacade.isAInterface(o)) {
+		Iterator it2 = ModelFacade.getAttributes(o).iterator();
+		while (it2.hasNext()) {
+		    if (ModelFacade.isInstanceScope(it2.next())) {
+			return PROBLEM_FOUND;
+		    }
+		}
+	    }
+	    Iterator it2 = ModelFacade.getOperations(o).iterator();
+	    while (it2.hasNext()) {
+		if (ModelFacade.isInstanceScope(it2.next())) {
+		    return PROBLEM_FOUND;
+		}
+	    }
+	}
+        return NO_PROBLEM;
     }
     
 } /* end class CrUtilityViolated */
