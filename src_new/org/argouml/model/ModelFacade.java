@@ -51,6 +51,7 @@ import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
@@ -131,6 +132,7 @@ public class ModelFacade {
     public static final Object LINK             = MLink.class;
     public static final Object PERMISSION       = MPermission.class;
     public static final Object USAGE            = MUsage.class;
+    public static final Object TRANSITION       = MTransition.class;
 
     // Types of node
     public static final Object ACTOR              = MActor.class;
@@ -146,6 +148,9 @@ public class ModelFacade {
     public static final Object OBJECT             = MObject.class;
     public static final Object PACKAGE            = MPackage.class;
     public static final Object STATE              = MState.class;
+    public static final Object COMPOSITESTATE     = MCompositeState.class;
+    public static final Object STATEVERTEX        = MStateVertex.class;
+    public static final Object PSEUDOSTATE        = MPseudostate.class;
     public static final Object USE_CASE           = MUseCase.class;
     
     // Invisible model elements
@@ -156,6 +161,10 @@ public class ModelFacade {
     public static final Object NAMESPACE          = MNamespace.class;
     public static final Object RECEPTION          = MReception.class;
     public static final Object STEREOTYPE         = MStereotype.class;
+
+
+    public static final Object ATTRIBUTE          = MAttribute.class;
+    public static final Object OPERATION          = MOperation.class;
     
     /** Constructor that forbids instantiation.
      */
