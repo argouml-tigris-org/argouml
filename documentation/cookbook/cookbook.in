@@ -2055,6 +2055,121 @@ Also notice that the Specification-Title and Vendor must be specified
 correctly for this to work.
 </para>
       </sect2>
+
+      <sect2>
+        <title>Design of a new Module Loader</title>
+        <para>
+In an attempt to improve the Module Loader to make it more flexible a
+new design is suggested.
+This section describes the plan and will become the design documentation
+once some code is developed.
+</para>
+        <para>
+The plan is to implement this new Module Loader, then have them both
+working side by side for several releases (two stable releases),
+and if all are happy with it, then remove the old module loader.
+</para>
+        <para>
+Design:
+          <itemizedlist>
+            <listitem>
+	      <para>
+We use a Loadable Proxy Pattern(?) for the modules.
+Each module is required to have one (1) class that implements 
+the module loader interface.
+That class (and all other classes that constitute the module)
+needs to be made available for some classloader, either by including
+it in the classpath or by letting the module loader hunt for it in the
+same manner as the old class loader does.
+</para>
+</listitem>
+            <listitem>
+	      <para>
+The modules are allowed to use all the APIs available from all
+the subsystems within ArgoUML and from other modules.
+</para>
+	      <para>
+This is the big improvement in that:
+                <itemizedlist>
+                  <listitem>
+		    <para>
+We can use the same APIs for the modules that we use within ArgoUML.
+We don't need to have a special Pluggable class for every possible
+point where ArgoUML can be augmented.
+</para>
+                  </listitem>
+                  <listitem>
+		    <para>
+We can have the module have different classes to register at different
+parts of ArgoUML.
+</para>
+                  </listitem>
+                  <listitem>
+		    <para>
+We can have dynamic registrations that the module add and remove over time
+depending on some criteria that the module decides.
+</para>
+                  </listitem>
+                  <listitem>
+		    <para>
+We don't need to search through all modules at every possible point
+where ArgoUML can be augmented.
+</para>
+                  </listitem>
+                </itemizedlist>
+But it means that whenever a module needs to do something to ArgoUML,
+there needs to be implemented an API,
+possibly with registration/deregistration and callbacks.
+</para>
+              </listitem>
+
+              <listitem>
+                <para>
+The new Module loader will be in located in
+<classname>org.argouml.moduleloader</classname>.
+</para>
+              </listitem>
+
+              <listitem>
+                <para>
+All modules that can be found are examined at startup.
+They can be enabled and disabled individually from a special 
+available modules window but have a default state that applies if 
+the user hasn't taken action.
+</para>
+              </listitem>
+
+              <listitem>
+                <para>
+Dependency between modules!
+</para>
+                <para>
+If a module cannot be enabled
+because some other module needs to be enabled first or
+because some part of ArgoUML needs to be initialized first
+this is a problem since the plan is not to have any register of dependencies.
+</para>
+                <para>
+The suggested solution is that the module loader persists 
+in it's attempts to enable a module so that the order is not important.
+For this to work the modules needs to signal when they fail. 
+This is done by returning false or throwing a Exception from 
+the module enabling method.
+</para>
+                <para>
+The module loader also provides an API that the well-behaving modules can
+use to test if the modules they depend on are enabled.
+The less well-behaving module can just throw an exception when they fail
+to enable themselves properly.
+</para>
+                <para>
+If a module cannot be disabled, because some other module depends on it
+then this is signaled by returning false from the disabling method.
+</para>
+              </listitem>
+</itemizedlist>
+</para>
+      </sect2>
     </sect1>
 
 
