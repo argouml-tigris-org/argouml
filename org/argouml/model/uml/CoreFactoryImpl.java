@@ -1515,6 +1515,9 @@ public class CoreFactoryImpl
      * @return MComment
      */
     public Object buildComment(Object element, Object model) {
+        if (model == null) {
+            throw new IllegalArgumentException("A namespace must be supplied.");
+        }
         MModelElement elementToAnnotate = (MModelElement) element;
         MComment comment = (MComment) createComment();
         
@@ -1525,6 +1528,7 @@ public class CoreFactoryImpl
         } else {
             commentsModel = (MNamespace) model;
         }
+        
         comment.setNamespace(commentsModel);
         
         return comment;
