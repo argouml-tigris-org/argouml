@@ -252,14 +252,33 @@ A description of all the toolbar entries
             </listitem>
             <listitem>
               <para>
-                Clicking with &button1; or &button2; anywhere outside the 
-                slider panel closes the panel.
-                <!-- TODO: Clicking on the icon does not close the panel 
-                if it did not get the focus. 
-                It should get the focus inmediately. See issue 2421 -->
+                Clicking with &button1; or &button2; 
+                on the <literal>Zoom</literal> tool, or
+                anywhere outside the slider panel 
+                closes the panel.
               </para>
-              <!-- TODO: Investigate and describe keyboard functionality -->
-              <!-- Also PageUp and PageDown have a function. -->
+            </listitem>
+            <listitem>
+              <para>
+                The keyboard can be used to operate the Zoom Slider as follows: 
+                When the <literal>Zoom</literal> icon in the toolbar has the
+                focus (indicated by the thin blue box around it), then
+                pressing the <keycap>spacebar</keycap> 
+                opens the zoon slider panel. 
+                Use the <keycap>arrow</keycap> keys to 
+                increase and decrease the percentage 1 by 1. 
+                Use <keycap>Shift-Tab</keycap> to 
+                set the focus to the percentage box, where you can 
+                edit the given value directly. 
+                Pressing <keycap>Enter</keycap> 
+                activates the changed value. 
+                When the "knob" has the focus, pressing 
+                <keycap>PageUp</keycap>/<keycap>PageDown</keycap> 
+                increases/decreases the percentage by 50.
+                Pressing <keycap>Home</keycap> 
+                sets the percentage to 500%, and 
+                <keycap>End</keycap> sets it to 0%.
+              </para>
             </listitem>
           </itemizedlist>
         </listitem>
@@ -285,7 +304,7 @@ A description of all the toolbar entries
                 </imageobject>
               </inlinemediaobject>
             </guiicon>
-            <literal>Class Diagram</literal> See for a full description
+            <literal>New Class Diagram</literal> See for a full description
             <xref linkend="s2.ref.create.diagram.class_diagram"/>.
           </para>
         </listitem>
@@ -299,7 +318,7 @@ A description of all the toolbar entries
                 </imageobject>
               </inlinemediaobject>
             </guiicon>
-            <literal>Use Case Diagram</literal> See for a full description
+            <literal>New Use Case Diagram</literal> See for a full description
             <xref linkend="s2.ref.create.diagram.use_case_diagram"/>.
           </para>
         </listitem>
@@ -313,7 +332,7 @@ A description of all the toolbar entries
                 </imageobject>
               </inlinemediaobject>
             </guiicon>
-            <literal>Statechart Diagram</literal> See for a full description
+            <literal>New Statechart Diagram</literal> See for a full description
             <xref linkend="s2.ref.create.diagram.state_diagram"/>.
           </para>
         </listitem>
@@ -327,7 +346,7 @@ A description of all the toolbar entries
                 </imageobject>
               </inlinemediaobject>
             </guiicon>
-            <literal>Class Diagram</literal> See for a full description
+            <literal>New Class Diagram</literal> See for a full description
             <xref linkend="s2.ref.create.diagram.class_diagram"/>.
           </para>
         </listitem>
@@ -341,7 +360,7 @@ A description of all the toolbar entries
                 </imageobject>
               </inlinemediaobject>
             </guiicon>
-            <literal>Activity Diagram</literal> See for a full description
+            <literal>New Activity Diagram</literal> See for a full description
             <xref linkend="s2.ref.create.diagram.activity_diagram"/>.
           </para>
         </listitem>
@@ -355,7 +374,7 @@ A description of all the toolbar entries
                 </imageobject>
               </inlinemediaobject>
             </guiicon>
-            <literal>Collaboration Diagram</literal> See for a full description
+            <literal>New Collaboration Diagram</literal> See for a full description
             <xref linkend="s2.ref.create.diagram.collaboration_diagram"/>.
           </para>
         </listitem>
@@ -369,7 +388,7 @@ A description of all the toolbar entries
                 </imageobject>
               </inlinemediaobject>
             </guiicon>
-            <literal>Deployment Diagram</literal> See for a full description
+            <literal>New Deployment Diagram</literal> See for a full description
             <xref linkend="s2.ref.create.diagram.deployment_diagram"/>.
           </para>
         </listitem>

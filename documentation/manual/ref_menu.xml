@@ -57,7 +57,7 @@ Also navigational functions belong here, e.g. "Find" and "Goto Diagram...".
 All changes of settings in this menu apply to all diagrams (e.g. zoom).
         </para></listitem>
         <listitem><para>
-The <emphasis>Create Diagram</emphasis> menu contains all possible diagrams that can be
+The <emphasis>Create</emphasis> menu contains all possible diagrams that can be
 created. 
 Downlighting is context dependend, since these functions work on the selected modelelement.
         </para></listitem>
@@ -100,7 +100,7 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
 
     <!-- Button1 click -->
 
-    <sect2>
+<!--    <sect2>
       <title>&Button1; Click</title>
 
       <para>Over a top level drop down menu this will expose the menu. If the
@@ -113,18 +113,18 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
       <para>Within menu dialog boxes this will generally select a text item,
         and invoke a button action.</para>
     </sect2>
-
+-->
     <!-- Button1 double click -->
-
+<!--
     <sect2>
       <title>&Button1; Double Click</title>
 
       <para>This has no effect other than that of &button1; single
         click.</para>
     </sect2>
-
+-->
     <!-- Button1 Motion -->
-
+<!--
     <sect2>
       <title>&Button1; Motion</title>
 
@@ -134,34 +134,36 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
       <para>If the button is released (thereby completing a click) over a menu
         entry that entry will be invoked.</para>
     </sect2>
-
+-->
     <!-- Button2 click -->
-
+<!--
     <sect2>
       <title>&Button2; Actions</title>
 
       <para>In general &button2; click behaves as &button1; click with the menu
         bar.</para>
     </sect2>
-
+-->
     <!-- Button2 double click -->
-
+<!--
     <sect2>
       <title>&Button2; Double Click</title>
 
       <para>In general &button2; double click behaves as &button1; click with
         the menu bar.</para>
     </sect2>
-
+-->
     <!-- Button2 Motion -->
-
+<!--
     <sect2>
       <title>&Button2; Motion</title>
 
       <para>In general &button2; motion behaves as &button1; click with the
         menu bar.</para>
     </sect2>
+-->
   </sect1>
+
 
   <!-- The File menu entries -->
 
@@ -202,7 +204,9 @@ So, who is right? - the critic, or the description here? -->
         linkend="s1.ref.model"/> for a discussion of this.</para></caution>
         
       <para>
-        If the model has been altered, then activating the "New" function is
+        If the model has been altered
+        (as indicated by the "*" in the titlebar of &argouml;'s window), 
+        then activating the "New" function is
         potentionally not the user's intention, since it will erase the changes.
         Hence a confirmation dialog appears to allow the user to save his work
         first, or cancel the operation completely.
@@ -352,20 +356,26 @@ So, who is right? - the critic, or the description here? -->
       <note><para>In certain circumstances, there is nothing to save,
         and this menuitem is downlighted.
         E.g. when the user did not yet alter a loaded project. 
-        <!-- TODO: add tip for 0.15.1: How can you see that the file is altered. -->
+        The presence of a "*" in the titlebar of &argouml;'s window indicates
+        that the current project is <quote>dirty</quote> (has been altered),
+        and can be saved.
       </para></note>
     </sect2>
 
     <!-- Save project under different name -->
 
     <sect2 id="s2.ref.menu_save_project_as">
-      <title>Save Project As&hellip;</title>
+    
+      <title><guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center" fileref="images/icons/save_project_as.gif"/>
+        </imageobject></inlinemediaobject></guiicon> 
+        Save Project As&hellip;</title>
 
       <para>This opens a dialog allowing you to save the project under a
         different file name (or to specify a file name for the first time if
         the project is a new project).</para>
 
-      <para>The dialog box is identical to that for
+      <para>The dialog box is almost identical to that for
         <literal>Open&nbsp;Project</literal> (see 
         <xref linkend="fig.ref.menu_open_project"/>). 
         The  <literal>Files&nbsp;of&nbsp;type:</literal> drop down selector 
@@ -486,9 +496,10 @@ Selecting <literal>Yes</literal> reloads the last saved file.
           </listitem>
           <listitem>
             <para>
-              <literal>Minimise Class icons in diagrams</literal>. If selected,
-              then attributes and operations will not be shown in the generated
-              class diagrams.
+              <literal>Minimise Class icons in diagrams</literal>. If enabled,
+              then the attributes and operations compartiments 
+              will not be shown in the classes on the 
+              generated class diagrams.
             </para>
           </listitem>
           <listitem>
@@ -498,13 +509,15 @@ Selecting <literal>Yes</literal> reloads the last saved file.
           </listitem>
         </itemizedlist>
           
+        <!-- TODO: Describe the new radio buttons in VPRE0.15.3 -->
+        
         <para>The second of the two tabs is labeled <literal>Java</literal>
           and is selected by &button1; click on its tab. It provides two pairs
           of radio boxes.</para>
         <!-- TODO: Should be drawn in a box to clearly seperate the pairs. 
-        See issue ... -->
+        See issue 2460 -->
         <!-- TODO: The 2nd pair should be labeled "Arrays modelled as", 
-        to be conform with the 1st. See issue ... -->
+        to be conform with the 1st. See issue 2460 -->
         
         <itemizedlist>
           <listitem>
@@ -578,14 +591,14 @@ Selecting <literal>Yes</literal> reloads the last saved file.
       <para>Shortcut Ctrl-P.</para>
 
       <para>This brings up the standard dialog box provided 
-        by the operating system allowing the &argouml; model to be
+        by the operating system allowing the current diagram to be
         printed out.</para>
 
-      <warning><para>In the V0.12 release of &argouml; this function behaves
-      <!-- TODO: check if this is still true. 
+      <!-- TODO: check if the following is still true. 
       Is this ArgoUML related? If not better not mention it at all. -->
+      <!--warning><para>In the V0.12 release of &argouml; this function behaves
         strangely if you have no printer configured under Linux. A small dialog
-        box appears, but it has no functionality.</para></warning>
+        box appears, but it has no functionality.</para></warning-->
         
       <para>
         In some cases, when the printing is started, the dialog box of 
@@ -599,7 +612,13 @@ Selecting <literal>Yes</literal> reloads the last saved file.
         on as many pages as needed.
         Pressing the close button of the dialog does the former option.
 <!-- TODO: It should better cancel the printing process completely, isn't it? 
-Or should this be offered as a 3rd choice? -->
+Or should this be offered as a 3rd choice? See issue 2467. -->
+<!-- TODO: Violation of usability: this dialog does not have a cancel button, 
+which should cancel the whole printing process. See issue 2466. -->
+<!-- TODO: The title of this dialog is "Printing Selection". 
+According to usability documentation, 
+("GUI Bloopers, by Jeff Johnson, blooper  nr. 42) 
+it should match the invoking command, in casu: "Print".  See issue 2465. -->
       </para>
 
       <figure id="fig.ref.menu_diagram_exceeds_page" float="1">
@@ -616,17 +635,20 @@ Or should this be offered as a 3rd choice? -->
         </screenshot>
       </figure>
       
-      <caution>
+      <warning>
         <para>
-          If the diagram contains no selected artifacts, then the whole diagram
+          If the current diagram contains no selected artifacts, 
+          then the whole diagram
           is printed. However, if one or more artifacts are selected, then only
           the area they cover is printed! If scaling is selected (by the "Fit to
           page" choice in the dialog box descibed above), then the scaling is
           done on  basis of the selected artifacts only. If scaling is not
           chosen (or in case it is not needed), then all pages containing a
           selected artifact are printed.
+          <!-- TODO: This "feature" should better be removed, or not made the
+          default at least. See issue 2468. -->
         </para>
-      </caution>
+      </warning>
       
     </sect2>
 
@@ -679,8 +701,12 @@ Or should this be offered as a 3rd choice? -->
         <literal>Edit</literal> menu (see
         <xref linkend="s2.ref.menu_settings"/>) and directly on the various
         panes. This menu entry saves the information in the file
-        <literal>argo.user.properties</literal> in the users home
-        directory.</para>
+        <literal>argo.user.properties</literal>.
+        The location of this file is in the "users home directory", 
+        which is defined as <literal>${user.home}</literal>,
+        and can be determined as described in 
+        <xref linkend="s3.ref.menu.environment"/>.
+      </para>
 
       <tip><para>This is a text file, which you can edit to configure
         &argouml;.</para></tip>
@@ -719,7 +745,7 @@ Or should this be offered as a 3rd choice? -->
           <para>The dialog box can also be closed by clicking in the
             close button in the window border. The effect is the same as selecting
             "No".
-            <!-- TODO: This is unexpected! See issue ... -->
+            <!-- TODO: This is unexpected! See issue 2469. -->
           </para>
         </listitem>
       </itemizedlist>
@@ -835,6 +861,8 @@ Or should this be offered as a 3rd choice? -->
           and <literal>Select Previous</literal> menu functions can be very
           strange, selecting items that do not appear to be on any
           diagram. It is probably best avoided.
+          <!-- TODO: This feature should best be removed from the menu. See
+          issue 2470. -->
         </para>
       </caution>
 
@@ -889,6 +917,7 @@ Or should this be offered as a 3rd choice? -->
       <warning><para>In the V0.14 implementation of &argouml; there are
         some difficulties with clipboard based functions. This menu option is
         best avoided.</para></warning>
+        <!-- TODO: See issue ... -->
     </sect2>
 
     <!-- Copy selection -->
@@ -913,6 +942,7 @@ Or should this be offered as a 3rd choice? -->
       <warning><para>In the V0.14 implementation of &argouml; there are
         some difficulties with clipboard based functions. This menu option is
         best avoided.</para></warning>
+        <!-- TODO: See issue ... -->
     </sect2>
 
     <!-- Paste selection -->
@@ -938,6 +968,7 @@ on to the current diagram in the drawing pane.
       <warning><para>In the V0.14 implementation of &argouml; there are
         some difficulties with clipboard based functions. This menu option is
         best avoided.</para></warning>
+        <!-- TODO: See issue ... -->
     </sect2>
 
     <!-- Remove artifact from the diagram -->
@@ -957,7 +988,12 @@ on to the current diagram in the drawing pane.
       <para>Shortcut Delete.</para>
 
       <para>This removes the currently selected item(s) from the diagram, but
-        not from the model.</para>
+        not from the model.
+      </para>
+
+      <para>The modelelement can be re-added to the diagram by &button2;
+        click on the modelelement in the explorer.
+      </para>
 
     </sect2>
 
@@ -1003,13 +1039,16 @@ on to the current diagram in the drawing pane.
 
       <para>This menu function has no discernible effect. It is believed to
         invoke a garbage collection in the Java system.</para>
-      <!-- TODO: enter an issue to remove this useless menu item ... -->
+      <!-- TODO: remove this useless menu item. See issue 2471. -->
     </sect2>
 
     <!-- Settings for ArgoUML -->
 
     <sect2 id="s2.ref.menu_settings">
-      <title>Settings&hellip;</title>
+      <title><guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center" fileref="images/icons/settings.gif"/>
+        </imageobject></inlinemediaobject></guiicon>
+        Settings&hellip;</title>
 
       <para>This menu entry brings up a dialog box, which allows the user to
         set various options that control the behavior of &argouml; (see
@@ -1098,7 +1137,7 @@ on to the current diagram in the drawing pane.
 
       <!-- Environment -->
 
-      <sect3>
+      <sect3 id="s3.ref.menu.environment">
         <title>Environment Tab</title>
 
         <para>Selecting the <literal>Environment</literal> tab (&button1; click

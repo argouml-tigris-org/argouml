@@ -53,7 +53,8 @@ own chapters.
       <listitem>
         <para>
           An asterisk (*). This item is only present if the current project file
-          is dirty, i.e. it is altered, but not yet saved. In other words, if
+          is <quote>dirty</quote>, i.e. it is altered, but not yet saved. 
+          In other words, if
           the asterisk is absent, then the current file has not been altered.
         </para>
       </listitem>
@@ -239,7 +240,6 @@ own chapters.
           keyboard focus. This because keyboard commands usually work on
           the artifact that has the focus.
           The focus is indicated by a (hardly visible) box 
-          <!-- TODO: not present in the explorer, see issue ... -->
           around the artifact, or for a text entry box, by a flashing cursor.
         </para>
       </sect3>
@@ -324,9 +324,10 @@ own chapters.
         <title>General Behavior When Editing Text</title>
 
         <para>In a number of places in &argouml; text may be directly edited
-          (for example the constraint editor&mdash;see
-          <!-- TODO: a better example wouldbe a comment/note -->
-          <xref linkend="s2.ref.details_constraint_editor"/>). Here SHIFT
+          (for example
+          when naming a model&mdash;element in the properties pane, 
+          or when typing a UML note / comment).
+          Here SHIFT
           &button1; is used to select a range of text from the previously
           selected point. Subsequent operations (text entry and deletion) will
           replace the selected text.</para>
