@@ -26,14 +26,153 @@ package org.argouml.model;
 
 /**
  * The interface that the ModelImplementation must implement. This is the
- * class for all helpers and factories.
+ * class finding all helpers and factories.
  */
 public interface ModelImplementation {
     /**
-     * Method to find the implementation object.
+     * Get the event pump.
      *
-     * @param intf The interface to find the implementation for.
-     * @return The object.
+     * @return the current ModelEventPump.
      */
-    Object find(Class intf);
+    ModelEventPump getModelEventPump();
+
+    /**
+     * Getter for ActivityGraphsFactory.
+     *
+     * @return the factory
+     */
+    ActivityGraphsFactory getActivityGraphsFactory();
+
+    /**
+     * Getter for the ActivityGraphsHelper.
+     *
+     * @return the instance of the helper
+     */
+    ActivityGraphsHelper getActivityGraphsHelper();
+
+    /**
+     * Getter for CollaborationsFactory.
+     *
+     * @return the factory
+     */
+    CollaborationsFactory getCollaborationsFactory();
+
+    /**
+     * Getter for CollaborationsHelper.
+     *
+     * @return the helper
+     */
+    CollaborationsHelper getCollaborationsHelper();
+
+    /**
+     * Getter for CommonBehaviorFactory.
+     *
+     * @return the factory
+     */
+    CommonBehaviorFactory getCommonBehaviorFactory();
+
+    /**
+     * Getter for CommonBehaviorHelper.
+     *
+     * @return the helper
+     */
+    CommonBehaviorHelper getCommonBehaviorHelper();
+
+    /**
+     * Getter for CoreFactory.
+     *
+     * @return the factory
+     */
+    CoreFactory getCoreFactory();
+
+    /**
+     * Getter for CoreHelper.
+     *
+     * @return The helper.
+     */
+    CoreHelper getCoreHelper();
+
+    /**
+     * Getter for DataTypesFactory.
+     *
+     * @return the factory
+     */
+    DataTypesFactory getDataTypesFactory();
+
+    /**
+     * Getter for DataTypesHelper.
+     *
+     * @return the helper.
+     */
+    DataTypesHelper getDataTypesHelper();
+
+    /**
+     * Getter for ExtensionMechanismsFactory.
+     *
+     * @return the factory instance.
+     */
+    ExtensionMechanismsFactory getExtensionMechanismsFactory();
+
+    /**
+     * Getter for ExtensionMechanismsHelper.
+     *
+     * @return the helper
+     */
+    ExtensionMechanismsHelper getExtensionMechanismsHelper();
+
+    /**
+     * Getter for ModelManagementFactory.
+     *
+     * @return the factory
+     */
+    ModelManagementFactory getModelManagementFactory();
+
+    /**
+     * Getter for ModelManagementHelper.
+     *
+     * @return The model management helper.
+     */
+    ModelManagementHelper getModelManagementHelper();
+
+    /**
+     * Getter for StateMachinesFactory.
+     *
+     * @return the factory
+     */
+    StateMachinesFactory getStateMachinesFactory();
+
+    /**
+     * Getter for StateMachinesHelper.
+     *
+     * @return the helper
+     */
+    StateMachinesHelper getStateMachinesHelper();
+
+    /**
+     * Getter for UmlFactory.
+     *
+     * @return the factory
+     */
+    UmlFactory getUmlFactory();
+
+    /**
+     * Getter for UmlHelper.
+     *
+     * @return the helper
+     */
+    UmlHelper getUmlHelper();
+
+    /**
+     * Getter for UseCasesFactory.
+     *
+     * @return the factory
+     */
+    UseCasesFactory getUseCasesFactory();
+
+    /**
+     * Getter for UseCasesHelper.
+     *
+     * @return the helper
+     */
+    UseCasesHelper getUseCasesHelper();
 }
