@@ -32,7 +32,6 @@ import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Hashtable;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -44,8 +43,6 @@ import org.argouml.application.ArgoVersion;
 import org.argouml.util.FileConstants;
 import org.argouml.xml.argo.ArgoParser;
 import org.tigris.gef.ocl.ExpansionException;
-import org.tigris.gef.ocl.OCLExpander;
-import org.tigris.gef.ocl.TemplateReader;
 import org.xml.sax.SAXException;
 
 /**
@@ -60,10 +57,8 @@ public class ZargoFilePersister extends AbstractFilePersister {
     
     /**
      * The constructor.
-     * Sets the extensionname and the description. 
      */
     public ZargoFilePersister() {
-        desc = "Argo compressed project file";
     }
 
     /**
@@ -71,6 +66,13 @@ public class ZargoFilePersister extends AbstractFilePersister {
      */
     public String getExtension() {
         return "zargo";
+    }
+    
+    /**
+     * @see org.argouml.kernel.AbstractFilePersister#getDesc()
+     */
+    protected String getDesc() {
+        return "Argo compressed project file";
     }
     
     /**
@@ -86,7 +88,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
      * org.argouml.kernel.Project, java.io.File)
      */
     public void save(Project project, File file)
-            throws SaveException {
+        throws SaveException {
         
         project.setFile(file);
         project.setVersion(ArgoVersion.getVersion());
@@ -204,13 +206,8 @@ public class ZargoFilePersister extends AbstractFilePersister {
     }
 
     private void expand(Writer writer, Object project) throws SaveException {
-        if (expander == null) {
-            Hashtable templates = TemplateReader.readFile(ARGO_TEE);
-            expander = new OCLExpander(templates);
-        }
-        
         try {
-            expander.expand(writer, project, "", "");
+            getExpander(getArgoTee2Template()).expand(writer, project, "", "");
         } catch (ExpansionException e) {
             throw new SaveException(e);
         }
