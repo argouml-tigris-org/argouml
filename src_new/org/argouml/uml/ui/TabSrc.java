@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,54 +36,84 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 
 import org.tigris.gef.presentation.*;
 
+import org.argouml.application.api.*;
+import org.argouml.application.events.*;
 import org.argouml.ui.*;
 import org.argouml.language.java.generator.*;
+import org.argouml.language.ui.*;
 
-public class TabSrc extends TabText {
+import org.apache.log4j.*;
+
+public class TabSrc extends TabText
+implements NotationContext {
   ////////////////////////////////////////////////////////////////
   // constructor
+  private final Category cat = Category.getInstance(TabSrc.class);
+
+  private NotationName _notationName = null;
+
+  /** Create a tab that contains a toolbar.
+   *  Then add a notation selector onto it.
+   */
   public TabSrc() {
-    super("Source");
+    super("Source", true);
+    _notationName = null;
+    _toolbar.add(NotationComboBox.getInstance());
+    _toolbar.addSeparator();
   }
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
   protected String genText() {
-    //System.out.println("TabSrc getting src for " + _target);
+
+    cat.debug("TabSrc getting src for " + _target);
     Object modelObject = _target;
     if (_target instanceof FigNode)
       modelObject = ((FigNode)_target).getOwner();
     if (_target instanceof FigEdge)
       modelObject = ((FigEdge)_target).getOwner();
     if (modelObject == null) return null;
-    //System.out.println("TabSrc getting src for " + modelObject);
-    return GeneratorJava.Generate(modelObject);
+    cat.debug("TabSrc getting src for " + modelObject);
+    return Notation.generate(this, modelObject);
   }
 
   protected void parseText(String s) {
-    //System.out.println("TabSrc   setting src for "+ _target);
+    cat.debug("TabSrc   setting src for "+ _target);
     Object modelObject = _target;
     if (_target instanceof FigNode)
       modelObject = ((FigNode)_target).getOwner();
     if (_target instanceof FigEdge)
       modelObject = ((FigEdge)_target).getOwner();
     if (modelObject == null) return;
-    //System.out.println("TabSrc   setting src for " + modelObject);
+    cat.debug("TabSrc   setting src for " + modelObject);
     //Parser.ParseAndUpdate(modelObject, s);
   }
 
   public void setTarget(Object t) {
     super.setTarget(t);
 
+    _notationName = null;
     _shouldBeEnabled = false;
     if (t instanceof MModelElement) _shouldBeEnabled = true;
     if (t instanceof Fig) {
       if (((Fig)t).getOwner() instanceof MModelElement)
 	_shouldBeEnabled = true;
     }
+    // If the target is a notation context, use its notation.
+    if (t instanceof NotationContext) {
+        _notationName = ((NotationContext)t).getContextNotation();
+    }
+    else {
+        // needs-more-work:  Get it from the combo box
+	_notationName = null;
+    }
   }
 
   public void refresh() { setTarget(_target); }
+
+  public NotationName getContextNotation() {
+      return _notationName;
+  }
 
 } /* end class TabSrc */
