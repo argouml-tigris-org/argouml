@@ -12,24 +12,28 @@ Modifications
 
 24 Jan 2002:  Jeremy Bennett. Generic mouse stuff removed, chapter completed.
 
+29 Jan 2002:  Jeremy Bennett. Updated to reflect bug fix to Remove from Diagram
+              function.
+
+ 1 Feb 2002:  Jeremy Bennett. Comments from Linus Tolke incorporated.
 -->
 
 <chapter id="ch.ref.navpane">
-  <title>The Navigator Pane</title>
+  <title>The Navigation Pane</title>
 
   <sect1>
     <title>Introduction</title>
 
-    <para><xref linkend="fig.ref.navoverview"/> shows the navigator
-      pane.</para>
+    <para><xref linkend="fig.ref.navigation_pane"/> shows the &argouml; window,
+      with the navigation pane highlighted.</para>
 
     <!-- This diagram shows the navigation overview. It is a complete ArgoUML
          window, but with all except the navigation pane grayed out. This was
          done using GIMP with selected areas using filter color range 0.5 to
          0.7.-->
 
-    <figure id="fig.ref.navoverview" float="1">
-      <title>Overview of the Navigator Pane</title>
+    <figure id="fig.ref.navigation_pane" float="1">
+      <title>Overview of the navigation pane</title>
 
       <screenshot><mediaobject>
         <imageobject>
@@ -38,7 +42,7 @@ Modifications
         </imageobject>
 
         <textobject>
-          <para>The ArgoUML navigator pane. A rectangular pane, with a bar at
+          <para>The ArgoUML navigation pane. A rectangular pane, with a bar at
             the top, in which a drop down selection indicates this is a
             <literal>Package-centric</literal> view. To the right of this are
             three buttons with icons for <literal>Go Back</literal>,
@@ -48,6 +52,97 @@ Modifications
         </textobject>
       </mediaobject></screenshot>
     </figure>
+
+    <para>The navigation pane allows the user to view the structure of the
+      model from a number of predefined perspectives. It also allows the user
+      to define their own perspetives for custom navigation of the
+      model.</para>
+
+    <para>An important feature, related to the cognitive psychology ideas
+      behind &argouml; is that not all artifacts are necessarily shown in all
+      perspectives. Rather, the perspectives are used to implement hiding of
+      uninteresting parts of the model.</para>
+  </sect1>
+
+  <!-- How the mouse behaves in this pane -->
+
+  <sect1 id="s1.ref.nav_mouse">
+    <title>Mouse Behavior in the Navigation Pane</title>
+
+    <para>Behaviour of the mouse in general, and the naming of the buttons is
+      covered in the chapter on the overall user interface (see
+      <xref linkend="ch.ref.ui"/>).</para>
+
+    <!-- Button1 click -->
+
+    <sect2>
+      <title>&Button1; Click</title>
+
+      <para>Within the hierarchical display, elements which have
+        sub-hierarchies are indicated by
+        <guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center"
+          fileref="images/icons/hierarchy_closed.gif"/>
+        </imageobject></inlinemediaobject></guiicon> when the hierarchy is
+        hidden and 
+        <guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center"
+          fileref="images/icons/hierarchy_open.gif"/>
+        </imageobject></inlinemediaobject></guiicon> when the hierarchy is
+        open.</para>
+
+      <para>&Button1; click over the name of any diagram artifact will cause
+        the diagram to be selected and displayed in the editing pane. Its
+        details will also be displayed in the details pane.</para>
+
+      <para>&Button1; click over the name of any artifact other than a diagram
+        in the main area of the navigation pane will cause it to be selected,
+        and its details shown in the details pane. If the artifact is part of a
+        diagram currently displayed in the editing pane, it will be highlighted
+        there.</para>
+
+      <note><para>If the artifact is part of a diagram other than that
+        currently displayed in the Editing Pane, there will be
+        <emphasis>no</emphasis> change of diagram in the Editing
+        Pane.</para></note>
+
+      <para>Where &button2; click has been used to bring up a context sensitive
+        pop-up menu (see below), &button1; click is used to select the menu
+        entry required. &button1; click outside the menu area will remove
+        it.</para>
+    </sect2>
+
+    <!-- Button1 double click -->
+
+    <sect2>
+      <title>&Button1; Double Click</title>
+
+      <para>This has no effect other than that of &button1; single
+        click.</para>
+    </sect2>
+
+    <!-- Button2 click -->
+
+    <sect2>
+      <title>&Button2; Actions</title>
+
+      <para>When used over text items in the the navigation pane, this will
+        display a context dependent pop-up menu. Menu entries are highlighted
+        (but not selected) and sub-menus exposed by subsequent mouse motion
+        (without any buttons). Menu entry selection is with &button1;</para>
+
+      <para>If the artifact generating the menu has not yet been selected it
+        will also be selected.</para>
+    </sect2>
+
+    <!-- Button2 double click -->
+
+    <sect2>
+      <title>&Button2; Double Click</title>
+
+      <para>This has no effect other than that of &button2; single
+        click.</para>
+    </sect2>
   </sect1>
 
   <!-- Selecting different perspectives with the drop down menu -->
@@ -159,34 +254,33 @@ Modifications
   <sect1>
     <title>Navigating Back and Forward</title>
 
-    <!-- Entry for navigate back button -->
+    <para>Two buttons are provided allowing the user to navigate back and
+      forward through diagrams in the model.</para>
 
-    <sect2>
-      <title><guiicon><inlinemediaobject><imageobject><imagedata
+    <itemizedlist>
+      <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/navigate_back.gif"/>
-        </imageobject></inlinemediaobject></guiicon> Navigate Back</title>
+        </imageobject></inlinemediaobject></guiicon>
+        <literal>Navigate Back</literal>. &argouml; keeps a record of the
+        diagrams that you have been viewing whilst navigating the model. This
+        button moves you back to the previous one viewed. If there are no more
+        previous diagrams, the button is grayed out.</para></listitem>
 
-      <para>&argouml; keeps a record of the diagrams that you have been viewing
-        whilst navigating the model. This button moves you back to the previous
-        one viewed. If there are no more previous diagrams, the button is
-        grayed out.</para>
-    </sect2>
-
-    <!-- Entry for navigate forward button -->
-
-    <sect2>
-      <title><guiicon><inlinemediaobject><imageobject><imagedata
+      <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/navigate_forward.gif"/>
-        </imageobject></inlinemediaobject></guiicon> Navigate Forward</title>
+        </imageobject></inlinemediaobject></guiicon>
+        <literal>Navigate Forward</literal>. &argouml; keeps a record of the
+          diagrams that you have been viewing whilst navigating the model. This
+          button moves you forward to the next one viewed (after you have used
+          the Navigate Back button to move back). If there are no more next
+          diagrams, the button is grayed out.</para></listitem>
+    </itemizedlist>
 
-      <para>&argouml; keeps a record of the diagrams that you have been viewing
-        whilst navigating the model. This button moves you forward to the next
-        one viewed (after you have used the Navigate Back button to move
-        back). If there are no more next diagrams, the button is grayed
-        out.</para>
-    </sect2>
+    <warning><para>In the current release of &argouml; there is believed to be
+      a problem, where the same diagram appears several times in a row so that
+      Navigate Back/Forward does not appear to work.</para></warning>
   </sect1>
 
   <!-- Button for configuring perspectives-->
@@ -209,10 +303,10 @@ Modifications
         perspectives dialog (see
         <xref linkend="fig.ref.navigator_pane_perspectives"/>).</para>
 
-      <!-- The navigator pane perspectives dialog. -->
+      <!-- The navigation pane perspectives dialog. -->
 
       <figure id="fig.ref.navigator_pane_perspectives" float="1">
-        <title>Navigator pane perspectives dialog box</title>
+        <title>Navigation pane perspectives dialog box</title>
 
         <screenshot><mediaobject>
           <imageobject>
@@ -221,7 +315,7 @@ Modifications
           </imageobject>
 
           <textobject>
-            <para>The ArgoUML navigator pane perspectives dialog. A rectangular
+            <para>The ArgoUML navigation pane perspectives dialog. A rectangular
               pane with two tabs labeled <literal>Perspectives</literal>
               (currently selected) and <literal>Panes</literal>. The top half
               contains a text area with a list of all the currently defined
@@ -286,7 +380,8 @@ Modifications
         and so on until no further expansion is possible.</para>
 
       <para>At the very bottom right is a button labeled <literal>OK</literal>
-        to indicate that all changes are complete.</para>
+        to indicate that all changes are complete. &button1; click on this
+        button will close the dialog window.</para>
 
       <note><para>There is no <literal>Cancel</literal> button, because all
         changes take immediate effect.</para></note>
@@ -305,10 +400,10 @@ Modifications
         navigation perspectives dialog (see <xref
         linkend="fig.ref.navigator_pane_panes"/>).</para>
 
-      <!-- The navigator pane perspectives dialog. -->
+      <!-- The navigation pane perspectives dialog. -->
 
       <figure id="fig.ref.navigator_pane_panes" float="1">
-        <title>Navigator panes dialog box</title>
+        <title>Navigation panes dialog box</title>
 
         <screenshot><mediaobject>
           <imageobject>
@@ -317,7 +412,7 @@ Modifications
           </imageobject>
 
           <textobject>
-            <para>The ArgoUML navigator pane panes dialog. A rectangular pane
+            <para>The ArgoUML navigation pane panes dialog. A rectangular pane
               with two tabs labeled <literal>Perspectives</literal> and
               <literal>Panes</literal> (currently selected). The dialog is
               divided into three boxes stacked vertically. The top box is
@@ -338,7 +433,7 @@ Modifications
         </mediaobject></screenshot>
       </figure>
 
-      <para>The navigator panes was conceived as being able to offer multiple
+      <para>The navigation pane was conceived as being able to offer multiple
         views simultaneously, with up to three panels of hierarchy. This dialog
         offers control of these panels, with an option to show or not show each
         panel, and the option of the second and third panels to be rooted at
@@ -435,23 +530,34 @@ Modifications
       <title>Add to Diagram</title>
 
       <para>This entry on the pop-up menu appears for any artifact that could
-        be added to the diagram currently displayed in the editing
-        pane. The item can be placed in the diagram by moving the cursor to
-        the editing pane (where it will appear as a cross) and clicking
-        &button1;.</para>
+        be added to a diagram in the editing
+        pane. This could be the diagram currently displayed in editing pane, or
+        it could be a diagram in a <quote>spawned</quote> window (see
+        <xref linkend="s2.ref.edit_button1_double_click"/> for an explantion of
+        how to do this).</para>
 
-      <caution><para>In the current version of &argouml; this menu entry
-        appears and is not grayed out, even for some artifacts that can not be
-        placed on the currently selected diagram.</para>
+      <para>The item can be placed in a diagram by moving the cursor to the
+        editing pane or a spawned editing pane window (where it will appear as
+        a cross) and clicking &button1;.</para>
 
-      <para>Sometimes this is because they are not permitted on the diagram by
-        the UML standard, but sometimes it is because as yet &argouml; does not
-        yet support placing them on the diagram. The only way to find out is to
-        try the operation and see if the item is placed.</para>
+      <caution><para>This menu entry appears and is not grayed out, even for
+        some artifacts that can not be placed on the currently selected diagram
+        in the editing pane.</para>
 
-      <para>A specific known limitation is that &argouml; will not let you
-        place more than one copy of any particular artifact on a
-        diagram.</para></caution>
+      <para>This is because there may be separate spawned editing pane windows
+        on which the artifact can validly be placed. &argouml; cannot track
+        which windows are available, and can only know if an artifact can be
+        validly placed, until a window is selected with the cursor
+        <emphasis>after</emphasis> the
+        <literal>Add&nbsp;to&nbsp;Diagram</literal> is chosen.</para>
+
+      <para>The only way to find out if an artifact can be placed in a
+        particular window is to try the operation and see if the artifact is
+        placed.</para></caution>
+
+      <caution><para>A separate known limitation is that the current release of
+        &argouml; will not let you place more than one copy of any particular
+        artifact on a diagram.</para></caution>
     </sect2>
 
     <!-- Delete From Model -->
@@ -465,9 +571,7 @@ Modifications
       <warning><para>This deletes the artifact from the model completely, not
         just from the diagram. To remove just from the diagram use the edit
         menu (see
-        <xref linkend="s2.menu_edit_remove_from_diagram"/>), but note that
-        there are problems in the current version of &argouml; with this
-        function.</para></warning>
+        <xref linkend="s2.menu_edit_remove_from_diagram"/>).</para></warning>
 
       <caution><para>You cannot delete a diagram from the model. This function
         will just delete all the items on the diagram.</para>

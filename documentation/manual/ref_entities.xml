@@ -13,6 +13,9 @@ Modifications
 13 Dec 2001:  Jeremy Bennett. Contents written and moved to use of tables to
               capture information.
 
+29 Jan 2002:  Jeremy Bennett. Updated to reflect bug fix preventing attributes
+              being added to classes.
+
 -->
 
 <chapter id="ch.ref.entities">
@@ -32,12 +35,6 @@ Modifications
       properties tab of the details pane (see 
       <xref linkend="s1.ref.proptab"/>). That section covers properties in
       general, in this chapter they are linked to specific artifacts.</para>
-
-    <para>Of particular importance are the sections on property tool bars (see
-      <xref linkend="s2.ref.proptoolbar"/>) and common property sheet features
-      (see <xref linkend="s2.ref.propcommonfeat"/>). These document the tool
-      bar buttons and key features that are common to most property
-      sheets.</para>
   </sect1>
 
   <!-- Top level artifacts. Model -->
@@ -1519,7 +1516,7 @@ Modifications
 
               <entry><guiicon><inlinemediaobject><imageobject><imagedata
                 format="GIF" align="center"
-                fileref="images/icons/interface.gif"/>
+                fileref="images/icons/stereotype.gif"/>
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>This creates a new stereotype (see <xref

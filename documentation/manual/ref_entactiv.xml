@@ -28,11 +28,6 @@ Modifications
       <xref linkend="s1.ref.proptab"/>). That section covers Properties in
       general, in this chapter they are linked to specific artifacts.</para>
 
-    <para>Of particular importance are the sections on property tool bars (see
-      <xref linkend="s2.ref.proptoolbar"/>) and Common Property Sheet Features
-      (see <xref linkend="s2.ref.propcommonfeat"/>). These document the tool bar
-      buttons and key features that are common to most Property Sheets.</para>
-
     <!-- A diagram to show all things visible on the diagram -->
 
     <para><xref linkend="fig.ref.entactivity"/> shows an Activity Diagram with

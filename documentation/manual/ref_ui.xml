@@ -12,9 +12,11 @@ Modifications
  5 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
               original manual by Alejandro, Phillipe and Andreas.
 
-23 Jan 2002:  Jeremy Bennett. Moved all discussion of menu buttons in to this
+23 Jan 2002:  Jeremy Bennett. Moved all discussion of mouse buttons in to this
               section to avoid duplication and completed the chapter.
 
+ 1 Feb 2002:  Jeremy Bennett. Realised mouse stuff largely relates to panes or
+              the menu, so most broken back out again.
 -->
 
 <chapter id="ch.ref.ui">
@@ -66,9 +68,9 @@ Modifications
       are the <emphasis>navigator pane</emphasis> (see <xref
       linkend="ch.ref.navpane"/>), <emphasis>editing pane</emphasis> (see <xref
       linkend="ch.ref.editpane"/>), <emphasis>details pane</emphasis> (see
-      <xref linkend="ch.ref.navpane"/>) and <emphasis>to-do pane</emphasis>
-      (see <xref linkend="ch.ref.navpane"/>). At the top of the editing pane is
-      a <emphasis>tool bar</emphasis>. An overview of the panes is given in
+      <xref linkend="ch.ref.detpane"/>) and <emphasis>to-do pane</emphasis>
+      (see <xref linkend="ch.ref.todopane"/>). At the top of the editing pane
+      is a <emphasis>tool bar</emphasis>. An overview of the panes is given in
       <xref linkend="s1.ref.panes"/>. Finally at the bottom of the window is a
       <emphasis>status bar</emphasis> described in <xref
       linkend="s1.ref.status"/>.</para>
@@ -77,15 +79,37 @@ Modifications
 
   <!-- The central explanation of how the mouse behaves -->
 
-  <sect1>
+  <sect1 id="s1.ref.mouse">
     <title>General Mouse Behavior in &argouml;</title>
 
-    <para>&argouml; assumes a two button mouse. We will refer to the buttons as
-      <quote>&button1;</quote> and <quote>&button2;</quote>. &Button1; is the
-      leftmost button on a right-handed mouse, and sometimes referred to as the
-      <emphasis>select</emphasis> button. &Button2; is the rightmost button on
-      a right-handed mouse, and is sometimes referred to as the
-      <emphasis>adjust</emphasis> button.</para>
+    <para>Mouse behaviour that is specific to the various panes of &argouml;
+      (see <xref linkend="s1.ref.panes"/>) or the menu bar, is discussed in the
+      chapters covering those panes and the menu bar. In this section we cover
+      behaviour that is general across all of &argouml;.</para>
+
+    <para>In a number of places in &argouml; text may be directly edited
+      (for example the constraint editor&mdash;see
+      <xref linkend="s2.ref.details_constraint_editor"/>). The behaviour of the
+      mouse when handling text is discussed in the sections that follow.</para>
+
+    <sect2>
+      <title>Mouse Button Terminology</title>
+
+      <para>&argouml; assumes a two button mouse. We will refer to the buttons
+        as <quote>&button1;</quote> and <quote>&button2;</quote>. &Button1; is
+        the leftmost button on a right-handed mouse, and sometimes referred to
+        as the <emphasis>select</emphasis> button. &Button2; is the rightmost
+        button on a right-handed mouse, and is sometimes referred to as the
+        <emphasis>adjust</emphasis> button.</para>
+
+      <para>A single depress and release of a mouse button whilst the mouse
+        is still is referred to as a <emphasis>click</emphasis>. Two clicks in
+        quick succession is referred to as a <emphasis>double
+        click</emphasis>. Moving the mouse while holding a button down is
+        referred to as <emphasis>button motion</emphasis> with the starting
+        point being at <emphasis>button down</emphasis> and the end point at
+        <emphasis>button up</emphasis>.</para>
+    </sect2>
 
     <!-- Button1 click -->
 
@@ -96,67 +120,13 @@ Modifications
         operations. If the item is an artifact in the navigation pane or the
         editing pane it will be highlighted.</para>
 
-      <!-- Within the navigation pane -->
+      <!-- General behaviour when editing text -->
 
       <sect3>
-        <title>Within the Navigation Pane</title>
+        <title>General Behaviour When Editing Text</title>
 
-        <para>Within the hierarchical display elements which have
-        sub-hierarchies are indicated by
-        <guiicon><inlinemediaobject><imageobject><imagedata
-          format="GIF" align="center"
-          fileref="images/icons/hierarchy_closed.gif"/>
-        </imageobject></inlinemediaobject></guiicon> when the hierarchy is
-        hidden and 
-        <guiicon><inlinemediaobject><imageobject><imagedata
-          format="GIF" align="center"
-          fileref="images/icons/hierarchy_open.gif"/>
-        </imageobject></inlinemediaobject></guiicon> when the hierarchy is
-        open.</para>
-
-        <para>&Button1; click over the name of any diagram artifact will cause
-          the diagram to be selected and displayed in the editing pane. Its
-          details will also be displayed in the details pane.</para>
-
-        <para>&Button1; click over the name of any artifact other than a
-          diagram in the main area of the navigation pane will cause it to be
-          selected, and its details shown in the details pane. If the artifact
-          is part of a diagram currently displayed in the editing pane, it will
-          be highlighted there.</para>
-
-        <note><para>If the artifact is part of a diagram other than that
-          currently displayed in the Editing Pane, there will be
-          <emphasis>no</emphasis> change of diagram in the Editing
-          Pane.</para></note>
-      </sect3>
-
-      <!-- Within the editing pane -->
-
-      <sect3>
-        <title>Within the Editing Pane</title>
-
-        <para>In the tool bar of the editing pane, &button1; click is used to
-          select the next tool for adding artifacts to the diagram (but only
-          once&mdash;see double clicking for adding multiple artifacts).
-          Adding to the diagram is achieved by moving the mouse to the editing
-          area and clicking again.</para>
-
-        <para>There are various more detailed effects, which are discussed
-          under the descriptions of the various tools (see
-          <xref linkend="s1.ref.edit_pane_tool_bar"/>).</para>
-      </sect3>
-
-      <!-- Behavior within menus -->
-
-      <sect3>
-        <title>Within the Menu Bar</title>
-
-        <para>Over a top level drop down menu this will expose the menu.</para>
-
-        <para>Over a menu entry this will invoke the action of the menu.</para>
-
-        <para>Within menu dialog boxes this will generally select a text item,
-          and invoke a button action.</para>
+        <para>Here &button1; is used to select the point within the text at
+          which operations (text entry and deletion) will take place.</para>
       </sect3>
     </sect2>
 
@@ -165,43 +135,17 @@ Modifications
     <sect2>
       <title>&Button1; Double Click</title>
 
-      <para>In general this action is identical to a single click
-        <emphasis>except</emphasis>, when it is used with the editing pane
-        tool bar, in the to-do pane, or in dialog boxes (which are mostly
-        associated with menu actions).</para>
+      <para>The behaviour of &button1; double click varies betweens panes and
+        is discussed in their chapters.</para>
 
-      <!-- Behavior within the editing pane -->
+      <!-- General behaviour when editing text -->
 
       <sect3>
-        <title>Within the Editing Pane</title>
+        <title>General Behaviour When Editing Text</title>
 
-        <para>When used on the tool bar with a tool to add an artifact, the
-        selected artifact will be added multiple times to the drawing area,
-        once for each further button click, until the tool is again selected or
-        another tool chosen.</para>
-      </sect3>
-
-      <!-- Behavior within the to-do pane -->
-
-      <sect3>
-        <title>Within the To-Do Pane</title>
-
-        <para>Within the to-do pane this will select the diagram for the
-          associated artifact in the editing pane and highlight the artifact
-          that is affected using an appropriate clarifier (the artifact may be
-          highlighted, underlined with a wavy line or surrounded by a colored
-          box as appropriate).</para>
-      </sect3>
-
-      <!-- Behavior within dialogs -->
-
-      <sect3>
-        <title>Within Dialog Boxes</title>
-
-        <para>Within dialog boxes this will cause an action associated
-          with a text item to be invoked. For example double clicking on a
-          filename during the <literal>Open&nbsp;Project&hellip;</literal>
-          dialog will cause the file to be selected and opened.</para>
+        <para>Here &button1; double click is used to select a complete word, or
+          other syntactic unit within the text. Subsequent operations (text
+          entry and deletion) will replace the selected text.</para>
       </sect3>
     </sect2>
 
@@ -210,80 +154,13 @@ Modifications
     <sect2>
       <title>&Button1; Motion</title>
 
-      <!-- Within the editing pane -->
-
       <sect3>
-        <title>Within the Editing Pane</title>
+        <title>General Behaviour When Editing Text</title>
 
-        <para>When adding an artifact using the toolbar, &button1; motion can
-          generally be used to define the size of the new artifact. Its
-          dimensions (line ends, diagonal corners of a rectangular artifact
-          etc) are defined by &button1; down and &button1; up.</para>
-
-        <para>Over graphical artifacts &button1; motion will move the artifact
-          to a new position. Graphical artifacts that are selected show
-          handles, and these can be used for re-sizing.</para>
-
-        <para>Some artifacts (e.g. actor, class) show special handles at the
-          sides, top and bottom, which can be dragged to form types of
-          relationship with other artifacts.</para>
-
-        <para>Where the artifact is some form of connector between other items,
-          &button1; motion other than at a handle will cause a new handle to be
-          created, allowing the connector to be articulated at that point. Such
-          new handles can be removed by moving them to the end of the
-          connector.</para>
-
-        <para>There are various more detailed effects, which are discussed
-          under the descriptions of the various tools (see
-          <xref linkend="s1.ref.edit_pane_tool_bar"/>).</para>
+        <para>Here &button1; motion is used to select a range of
+          text. Subsequent operations (text entry and deletion) will replace
+          the selected text.</para>
       </sect3>
-
-      <!-- Behavior within menus -->
-
-      <sect3>
-        <title>Within the Menu Bar</title>
-
-        <para>Moving over a top level menu, or a sub-menu will cause that menu
-          to be exposed.</para>
-
-        <para>If the button is released (thereby completing a click) over a
-          menu entry that entry will be invoked.</para>
-      </sect3>
-    </sect2>
-
-    <!-- Button2 click -->
-
-    <sect2>
-      <title>&Button2; Actions</title>
-
-      <para>When used over text items in the the navigation or details panes,
-        or graphical artifacts in the editing pane, this will display a context
-        dependent pop-up menu.</para>
-
-      <para>If the item or artifact has not yet been selected it will also be
-        selected.</para>
-
-      <para>In general there are no &button2; actions associated with
-        menus.</para>
-    </sect2>
-
-    <!-- Button2 double click -->
-
-    <sect2>
-      <title>&Button2; Double Click</title>
-
-      <para>This has no effect other than that of &button2; single
-        click.</para>
-    </sect2>
-
-    <!-- Button2 Motion -->
-
-    <sect2>
-      <title>&Button2; Motion</title>
-
-      <para>This is used to select items in a context sensitive menu popped up
-        by use of &button2; click.</para>
     </sect2>
 
     <!-- Shift and control keys -->
@@ -308,25 +185,52 @@ Modifications
           individual items to the current selection. Where Ctrl-&button1; is
           used on an item already selected, that item is removed from the
           selection.</para>
+
+        <caution><para>Users of Microsoft Windows will be familiar with the use
+          SHIFT and CONTROL together to add sub-lists to an existing
+          selection. &argouml; does not support this. SHIFT-CONTROL will behave
+          as CONTROL.</para></caution>
       </sect3>
 
-      <!-- Within diagrams -->
+      <!-- General behaviour when editing text -->
 
       <sect3>
-        <title>Within Diagrams</title>
+        <title>General Behaviour When Editing Text</title>
 
-        <para>This behavior applies to diagrams within the editing
-          pane.</para>
-
-        <para>Where selections are to be made, the SHIFT key is used to with
-          &button1; to <emphasis>add</emphasis> unselected artifacts to the
-          current selection. Where an artifact is already selected, it is
-          removed from the current selection.</para>
-
-        <para>The CONTROL key is effective where selected artifacts are being
-          moved. Using the CONTROL key will cause them to be moved with the
-          broom (see <xref linkend="ch.ref.editpane"/>).</para>
+        <para>In a number of places in &argouml; text may be directly edited
+          (for example the constraint editor&mdash;see
+          <xref linkend="s2.ref.details_constraint_editor"/>). Here SHIFT
+          &button1; is used to select a range of text from the previously
+          selected point. Subsequent operations (text entry and deletion) will
+          replace the selected text.</para>
       </sect3>
+    </sect2>
+
+    <!-- Button2 click -->
+
+    <sect2>
+      <title>&Button2; Actions</title>
+
+      <para>&Button2; actions are all dependent on the pane or menu bar, and
+        discussed in their various chapters.</para>
+    </sect2>
+
+    <!-- Button2 double click -->
+
+    <sect2>
+      <title>&Button2; Double Click</title>
+
+      <para>&Button2; actions are all dependent on the pane or menu bar, and
+        discussed in their various chapters.</para>
+    </sect2>
+
+    <!-- Button2 Motion -->
+
+    <sect2>
+      <title>&Button2; Motion</title>
+
+      <para>&Button2; actions are all dependent on the pane or menu bar, and
+        discussed in their various chapters.</para>
     </sect2>
   </sect1>
 
@@ -340,27 +244,29 @@ Modifications
       <emphasis>navigator pane</emphasis> (see <xref
       linkend="ch.ref.navpane"/>), <emphasis>editing pane</emphasis> (see <xref
       linkend="ch.ref.editpane"/>), <emphasis>details pane</emphasis> (see
-      <xref linkend="ch.ref.navpane"/>) and <emphasis>to-do pane</emphasis>
-      (see <xref linkend="ch.ref.navpane"/>). At the top the editing pane is a
+      <xref linkend="ch.ref.detpane"/>) and <emphasis>to-do pane</emphasis>
+      (see <xref linkend="ch.ref.todopane"/>). At the top the editing pane is a
       <emphasis>tool bar</emphasis>.</para>
 
     <sect2>
       <title>Re-sizing Panes</title>
 
       <para>You can re-size panes by dragging on the divider bars between
-        them.</para>
+        them. The mouse cursor changes to a vertical or horizontal bar with an
+        arrow at right-angles when over the divider bars.</para>
     </sect2>
 
     <sect2 id="s2.ref.spawn">
       <title>Looking at Different Diagrams Simultaneously</title>
 
-      <para>You can <quote>spawn</quote> a copy of the editing pane by
-        double-clicking on the <literal>As Diagram</literal> tab at the bottom
-        of the pane. It will then show as an individual window and you can put
-        it where you will on the screen.</para>
+      <para>&argouml; provides the ability to spawn copies of key windows. This
+        is possible for the editing pane and for the tabs of the details
+        pane. These can then be manipulated as separate windows and placed as
+        desired on the screen.</para>
 
-      <para>The same effect is achievable with the tabs of the details
-        pane.</para>
+      <para>This is achieved through use of &button1; double click as described
+        in sections <xref linkend="s1.ref.edit_mouse"/> and
+        <xref linkend="s1.ref.details_mouse"/>.</para>
 
       <note><para>There is no equivalent function for the navigation or to-do
         panes.</para></note>
@@ -381,20 +287,9 @@ Modifications
     <title>The status bar</title>
 
     <para>The status bar is at the very bottom of the &argouml; window and is
-      used to display short advisory messages.</para>
-
-    <para>In the current release of &argouml; the only messages are those
-      associated with &button1; motion in the editing pane. Where &button1; is
-      held down over a 2-D artifact, the message
-      <literal>Move&nbsp;object(s)</literal> will appear. Where &button1; is
-      held down over a connector, the message
-      <literal>Add&nbsp;a&nbsp;point</literal> will appear.</para>
-
-    <note><para>&argouml; is a system in development, and occasionally other
-      messages will appear. In particular clicking on the background on the
-      editing pane will cause a message of the form
-      <literal>[&lt;n&gt;]</literal> to appear where &lt;n&gt; is a small
-      integer.</para></note>
+      used to display short advisory messages. In general such messages are
+      self explanatory. It is also used for debugging messages for the system
+      in development&mdash;these messages can be ignored.</para>
   </sect1>
 
 </chapter>

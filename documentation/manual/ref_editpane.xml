@@ -14,6 +14,8 @@ Modifications
 25 Jan 2001:  Jeremy Bennett. General mouse behavior moved to User Interface
               chapter. Chapter completed.
 
+29 Jan 2001:  Jeremy Bennett. Updated info on interfaces to reflect bug fix.
+
 -->
 
 <chapter id="ch.ref.editpane">
@@ -22,8 +24,8 @@ Modifications
   <sect1>
     <title>Introduction</title>
 
-    <para><xref linkend="fig.ref.editing_pane"/> shows the editing
-      pane.</para>
+    <para><xref linkend="fig.ref.editing_pane"/> shows the &argouml; window
+      with the editing pane highlighted.</para>
 
     <!-- An example of the editing pane in action. -->
 
@@ -62,6 +64,140 @@ Modifications
       right corner at the end of the tool bar.</para>
   </sect1>
 
+  <!-- How the mouse behaves in the editing pane -->
+
+  <sect1 id="s1.ref.edit_mouse">
+    <title>Mouse Behavior in the Editing Pane</title>
+
+    <para>Behaviour of the mouse in general, and the naming of the buttons is
+      covered in the chapter on the overall user interface (see
+      <xref linkend="ch.ref.ui"/>).</para>
+
+    <!-- Button1 click -->
+
+    <sect2>
+      <title>&Button1; Click</title>
+
+      <para>In the tool bar of the editing pane, &button1; click is used to
+        select the next tool for adding artifacts to the diagram (but only
+        once&mdash;see double clicking for adding multiple artifacts).  Adding
+        to the diagram is achieved by moving the mouse to the editing area and
+        clicking again.</para>
+
+      <para>In the main editing area &button1; click is used to select an
+        individual artifact.</para>
+
+      <para>Where &button2; click has been used to bring up a context sensitive
+        pop-up menu (see below), &button1; click is used to select the menu
+        entry required. &button1; click outside the menu area will remove
+        it.</para>
+
+      <para>There are various more detailed effects, which are discussed under
+        the descriptions of the various tools (see <xref
+        linkend="s1.ref.edit_pane_tool_bar"/>).</para>
+    </sect2>
+
+    <!-- Button1 double click -->
+
+    <sect2 id="s2.ref.edit_button1_double_click">
+      <title>&Button1; Double Click</title>
+
+      <para>When used on the tool bar with a tool to add an artifact, the
+        selected artifact will be added multiple times to the drawing area,
+        once for each further button click, until the tool is again selected or
+        another tool chosen.</para>
+
+      <para>When used within the drawing area on an artifact that has
+        sub-components, double click will select the sub-component (creating
+        it if necessary).</para> 
+
+      <para>For example double clicking over an operation compartment of a
+        class will select the operation. Or create one if there is not one
+        there.</para>
+
+      <para>You can <quote>spawn</quote> a copy of the editing pane by
+        double-clicking on the <literal>As Diagram</literal> tab at the bottom
+        of the pane. It will then show as an individual window and you can put
+        it where you will on the screen.</para>
+    </sect2>
+
+    <!-- Button1 Motion -->
+
+    <sect2>
+      <title>&Button1; Motion</title>
+
+      <para>When adding an artifact using the toolbar, &button1; motion can
+        generally be used to define the size of the new artifact. Its
+        dimensions (line ends, diagonal corners of a rectangular artifact etc)
+        are defined by &button1; down and &button1; up.</para>
+
+      <para>Over graphical artifacts &button1; motion will move the artifact to
+        a new position. Graphical artifacts that are selected show handles, and
+        these can be used for re-sizing.</para>
+
+      <para>Some artifacts (e.g. actor, class) show special handles at the
+        sides, top and bottom, which can be dragged to form types of
+        relationship with other artifacts.</para>
+
+      <para>Where the artifact is some form of connector between other items,
+        &button1; motion other than at a handle will cause a new handle to be
+        created, allowing the connector to be articulated at that point. Such
+        new handles can be removed by moving them to the end of the
+        connector.</para>
+
+      <para>There are various more detailed effects, which are discussed under
+        the descriptions of the various tools (see <xref
+        linkend="s1.ref.edit_pane_tool_bar"/>).</para>
+    </sect2>
+
+    <!-- Shift and control keys -->
+
+    <sect2>
+      <title>Shift and Control with &Button1;</title>
+
+      <para>Where selections are to be made, the SHIFT key is used to with
+        &button1; to <emphasis>add</emphasis> unselected artifacts to the
+        current selection. Where an artifact is already selected, it is removed
+        from the current selection.</para>
+
+      <para>Using the CONTROL key invokes the broom tool, causing the selected
+        artifacts (and any others swept up with them) to be moved with the
+        broom tool (see <xref linkend="s2.ref.edit_layout"/>).</para>
+    </sect2>
+
+    <!-- Button2 click -->
+
+    <sect2>
+      <title>&Button2; Actions</title>
+
+      <para>When used over artifacts in the the editing pane, this will display
+        a context dependent pop-up menu. Menu entries are highlighted (but not
+        selected) and sub-menus exposed by subsequent mouse motion (without any
+        buttons). Menu entry selection is with &button1;</para>
+
+      <para>If the artifact generating the menu has not yet been selected it
+        will also be selected.</para>
+    </sect2>
+
+    <!-- Button2 double click -->
+
+    <sect2>
+      <title>&Button2; Double Click</title>
+
+      <para>This has no effect other than that of &button2; single
+        click.</para>
+    </sect2>
+
+    <!-- Button2 Motion -->
+
+    <sect2>
+      <title>&Button2; Motion</title>
+
+      <para>This is used to select items in a context sensitive menu popped up
+        by use of &button2; click.</para>
+    </sect2>
+  </sect1>
+
   <!-- The Tool Bar -->
 
   <sect1 id="s1.ref.edit_pane_tool_bar">
@@ -95,7 +231,7 @@ Modifications
 
     <!-- Tools for organizing layout -->
 
-    <sect2>
+    <sect2 id="s2.ref.edit_layout">
       <title>Layout Tools</title>
 
       <para>Two tools are provided in all diagrams in this category.</para>
@@ -390,7 +526,7 @@ Modifications
                      fileref="images/icons/attribute.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
           <literal>Add Attribute</literal>. Add an attribute to the
-          currently selected class. The class is given the default name
+          currently selected class. The attribute is given the default name
           <literal>newAttr</literal> of type <literal>int</literal> and may be
           edited by &button1; double click and using the keyboard, or by
           selecting with &button1; click (after the class has been selected)
@@ -399,21 +535,22 @@ Modifications
         <note><para>This tool is grayed out except when a class or interface is
           selected.</para></note>
 
-        <warning><para>In the current release of &argouml; this tool will allow
-          you to add attributes to interfaces, which is not permitted in the
-          UML 1.3 standard. If you do this, a critic will warn you of the
-          problem.</para></warning></listitem>
+        <caution><para>In the current release of &argouml; this tool is not
+          grayed out for intefaces as it should be (attributes are not
+          permitted for interfaces in the UML 1.3 standard). However the tool
+          has no effect if selected for an
+          interface.</para></caution></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
                      fileref="images/icons/operation.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
           <literal>Add Operation</literal>. Add an operation to the
-          currently selected class. The class is given the default name
-          <literal>newOperation</literal> with no arguments and return type
-          <literal>void</literal> and may be edited by &button1; double
-          click and using the keyboard, or by selecting with &button1; click
-          (after the class has been selected) and using the property
+          currently selected class or interface. The operation is given the
+          default name <literal>newOperation</literal> with no arguments and
+          return type <literal>void</literal> and may be edited by &button1;
+          double click and using the keyboard, or by selecting with &button1;
+          click (after the class has been selected) and using the property
           tab.</para>
 
         <note><para>This tool is grayed out except when a class or interface is
@@ -619,17 +756,9 @@ Modifications
                      fileref="images/icons/message.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
           <literal>Add Message</literal>. Add a message to the selected
-          association role.</para></listitem>
+          association role.</para>
 
-        <listitem><para><guiicon><inlinemediaobject><imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/icons/transition.gif"/> 
-          </imageobject></inlinemediaobject></guiicon>
-          <literal>Transition</literal>. Add a transition between two states
-          selected using &button1; motion (from the originating state to the
-          receiving state).</para>
-
-        <note><para>This tool is grayed out except when a class or interface is
+        <note><para>This tool is grayed out except when an association role is
           selected.</para></note></listitem>
       </itemizedlist>
     </sect2>
@@ -990,12 +1119,7 @@ Modifications
           </imageobject></inlinemediaobject></guiicon>
           <literal>Add Attribute</literal>. Only appears where the selected
             artifact is a class or interface. Adds an attribute to the
-            artifact</para>
-
-        <warning><para>In the current release of &argouml; this tool will allow
-          you to add attributes to interfaces, which is not permitted in the
-          UML 1.3 standard. If you do this, a critic will warn you of the
-          problem.</para></warning></listitem>
+            artifact</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
@@ -1019,10 +1143,10 @@ Modifications
     <sect2>
       <title>Show</title>
 
-      <para>This sub-menu only appears with class, interface or object
-        artifacts. It is used to control whether the attribute and operation
-        compartments of the artifact are displayed. There are six possible
-        entries, but at most three show at any one time.</para>
+      <para>This sub-menu only appears with class or object artifacts. It is
+        used to control whether the attribute and operation compartments of the
+        artifact are displayed. There are six possible entries, but at most
+        three show at any one time.</para>
 
       <itemizedlist>
         <listitem><para><literal>Hide All Compartments</literal>. Only appears

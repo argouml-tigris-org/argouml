@@ -16,6 +16,10 @@ Modifications
 
 18 Dec 2001:  Jeremy Bennett. Started to specify all the entities on this
               diagram
+
+29 Jan 2002:  Jeremy Bennett. Updated to reflect bug fix preventing attributes
+              being added to classes.
+
 -->
 
 <chapter id="ch.ref.entclass">
@@ -39,11 +43,6 @@ Modifications
       Properties Tab of the Details Pane (see
       <xref linkend="s1.ref.proptab"/>). That section covers Properties in
       general, in this chapter they are linked to specific artifacts.</para>
-
-    <para>Of particular importance are the sections on property tool bars (see
-      <xref linkend="s2.ref.proptoolbar"/>) and Common Property Sheet Features
-      (see <xref linkend="s2.ref.propcommonfeat"/>). These document the tool bar
-      buttons and key features that are common to most Property Sheets.</para>
 
     <!-- A diagram to show all things visible on the class diagram -->
 
@@ -3810,8 +3809,11 @@ Modifications
       UML&nbsp;1.3 specifies they must only be navigable toward the
       interface&mdash;in other words the interface cannot see the class.</para>
 
-    <caution><para>&argouml; will not enforce this, and by default creates an
-      association that is navigable in both directions.</para></caution>
+    <caution><para>The current release of &argouml; does not enforce this. In
+      particular if an association is created where the class end is selected
+      before the interface end, &argouml; will create an association that is
+      navigable in both directions. A critic will trigger to complain about
+      this.</para></caution>
 
     <para>As with use case diagrams, associations with the tag
       <literal>derived</literal> have their value in analysis to introduce
@@ -4165,8 +4167,8 @@ Modifications
                 interface has a leading capital letter, with words separated by
                 <quote>bumpy caps</quote>.</para>
 
-              <note><para>The &argouml; critics will complain about interface
-                names that do not have an initial
+              <note><para>Unlike classes, the &argouml; critics will not
+                complain about interface names that do not have an initial
                 capital.</para></note></entry>
             </row>
 
@@ -4320,12 +4322,15 @@ Modifications
 
               <warning><para>Associations between classes and interfaces
                 <emphasis>must</emphasis> be navigable
-                <emphasis>only</emphasis> from the class to the
-                interface. There is currently a bug in &argouml; which means
-                that if an association is drawn from the interface to the class
-                (rather than the reverse) on the editing pane, the interface is
-                created navigable in both directions (although a critic
-                complains about this).</para></warning>
+                <emphasis>only</emphasis> from the class to the interface. The
+                current version of &argouml; has a known defect where it
+                creates an association between a class and interface that is
+                either navigable in both directions, or navigable only from the
+                interface to the class. The fix is to remove the navigation
+                from the class end of the association and if necessary add
+                navigation to the interface end (navigation refers to
+                navigability <emphasis>towards</emphasis> the
+                end).</para></warning>
 
               <para>&Button1; click takes you to the selected entry, &button2;
                 gives a pop up menu with five entries.</para>
@@ -4444,44 +4449,6 @@ Modifications
               <caution><para>All operations on an interface
                 <emphasis>must</emphasis> be public. The &argouml; critics will
                 complain if this is not the case.</para></caution></entry>
-            </row>
-
-            <!-- Entry for attributes -->
-
-            <row>
-              <entry>Attributes</entry>
-
-              <entry><para>Text area. Lists all the attributes (see <xref
-                  linkend="s1.ref.attribute"/>) defined for this
-                interface. &Button1; click takes you to the selected attribute,
-                &button2; click brings up a pop up menu with five
-                entries.</para>
-
-              <itemizedlist>
-                <listitem><para><literal>Open</literal>. Navigate to the
-                  selected attribute.</para></listitem>
-
-                <listitem><para><literal>Add</literal>. Add a new
-                  attribute and navigate to it.</para></listitem>
-
-                <listitem><para><literal>Delete</literal>. Removes the selected
-                  attribute from the model.</para></listitem>
-
-                <listitem><para><literal>Move Up</literal>. Only available
-                  where there are two or more attributes, and the attribute
-                  selected is not at the top. It is moved one up the
-                  list.</para></listitem>
-
-                <listitem><para><literal>Move Down</literal>. Only available
-                  where there are two or more attributes listed, and the
-                  attribute selected is not at the bottom. It is moved
-                  one down the list.</para></listitem>
-              </itemizedlist>
-
-              <warning><para>Attributes <emphasis>must not</emphasis> be
-                defined for interfaces. The &argouml; critics will complain if
-                this is done. However &argouml; should really not provide the
-                option.</para></warning></entry>
             </row>
           </tbody>
         </tgroup>

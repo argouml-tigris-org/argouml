@@ -11,6 +11,10 @@ Modifications
               original manual by Alejandro, Phillipe and Andreas.
 
 10 Jan 2002:  Jeremy Bennett. New material added.
+
+29 Jan 2002:  Jeremy Bennett. Updated to reflect bug fix preventing attributes
+              being added to classes and fix to Remove from Diagram function.
+
 -->
 
 <chapter id="ch.ref.menu">
@@ -33,6 +37,80 @@ Modifications
       while holding down the ALT key should select the entry. In the current
       version of &argouml; this functionality is only available when running
       under Microsoft Windows.</para></warning>
+  </sect1>
+
+  <!-- How the mouse behaves in the menu bar -->
+
+  <sect1 id="s1.ref.menu_mouse">
+    <title>Mouse Behavior in the Menu Bar</title>
+
+    <para>Behaviour of the mouse in general, and the naming of the buttons is
+      covered in the chapter on the overall user interface (see
+      <xref linkend="ch.ref.ui"/>).</para>
+
+    <!-- Button1 click -->
+
+    <sect2>
+      <title>&Button1; Click</title>
+
+      <para>Over a top level drop down menu this will expose the menu. If the
+        button is help down and moved, the behaviour of &button1; motion (see
+        below) will follow.</para>
+
+      <para>Over an exposed menu entry this will invoke the action of the
+        menu.</para>
+
+      <para>Within menu dialog boxes this will generally select a text item,
+        and invoke a button action.</para>
+    </sect2>
+
+    <!-- Button1 double click -->
+
+    <sect2>
+      <title>&Button1; Double Click</title>
+
+      <para>This has no effect other than that of &button1; single
+        click.</para>
+    </sect2>
+
+    <!-- Button1 Motion -->
+
+    <sect2>
+      <title>&Button1; Motion</title>
+
+      <para>Moving over a top level menu, or a sub-menu will cause that menu to
+        be exposed.</para>
+
+      <para>If the button is released (thereby completing a click) over a menu
+        entry that entry will be invoked.</para>
+    </sect2>
+
+    <!-- Button2 click -->
+
+    <sect2>
+      <title>&Button2; Actions</title>
+
+      <para>In general &button2; click behaves as &button1; click with the menu
+        bar.</para>
+    </sect2>
+
+    <!-- Button2 double click -->
+
+    <sect2>
+      <title>&Button2; Double Click</title>
+
+      <para>In general &button2; double click behaves as &button1; click with
+        the menu bar.</para>
+    </sect2>
+
+    <!-- Button2 Motion -->
+
+    <sect2>
+      <title>&Button2; Motion</title>
+
+      <para>In general &button2; motion behaves as &button1; click with the
+        menu bar.</para>
+    </sect2>
   </sect1>
 
   <!-- The File menu entries -->
@@ -495,7 +573,7 @@ v           new datatypes in their own right (the default) or as their base
 
     <!-- Cut selection -->
 
-    <sect2>
+    <sect2 id="s2.ref.menu_cut">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center" fileref="images/icons/cut.gif"/>
         </imageobject></inlinemediaobject></guiicon> Cut</title>
@@ -512,7 +590,7 @@ v           new datatypes in their own right (the default) or as their base
 
     <!-- Copy selection -->
 
-    <sect2>
+    <sect2 id="s2.ref.menu_copy">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center" fileref="images/icons/copy.gif"/>
         </imageobject></inlinemediaobject></guiicon> Copy</title>
@@ -535,7 +613,7 @@ v           new datatypes in their own right (the default) or as their base
 
     <!-- Paste selection -->
 
-    <sect2>
+    <sect2 id="s2.ref.menu_paste">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center" fileref="images/icons/paste.gif"/>
         </imageobject></inlinemediaobject></guiicon> Paste</title>
@@ -563,15 +641,16 @@ v           new datatypes in their own right (the default) or as their base
 
       <para>Shortcut Ctrl-R.</para>
 
-      <para>This function should remove the currently selected item(s) from the
-        diagram, but not from the model.</para>
+      <para>This removes the currently selected item(s) from the diagram, but
+        not from the model.</para>
 
-      <warning><para>In the current version of &argouml; there is a known
-        problem with this function. In some circumstances the item(s) are
-        deleted from the model completely, not just from the diagram.</para>
+      <caution><para>In previous versions of &argouml; there was a problem
+        where, in some circumstances, the item(s) were deleted from the model
+        completely, not just from the diagram.</para>
 
-        <para><emphasis>You are strongly advised to save your diagram prior to
-          using this function.</emphasis></para></warning>
+      <para><emphasis>This is now believed to be fixed, but you should consider
+        saving your model prior to using this
+        function.</emphasis></para></caution>
     </sect2>
 
     <!-- Remove artifact from the model -->
@@ -587,7 +666,8 @@ v           new datatypes in their own right (the default) or as their base
       <caution><para>In the current version of &argouml; the item(s) may not
         disappear from diagrams other than the current one. However the copies
         on other diagrams will have no associated properties. They should be
-        deleted.</para></caution>
+        deleted, or will disappear after the model is saved and
+        reloaded.</para></caution>
     </sect2>
 
     <!-- Empty trash (what does this actually do?) -->
@@ -1805,7 +1885,7 @@ v           new datatypes in their own right (the default) or as their base
 
   <!-- The Critique menu entries -->
 
-  <sect1>
+  <sect1 id="s1.ref.menu_critique">
     <title>The Critique Menu</title>
 
     <para>This menu controls one of &argouml;'s unique features&mdash;the use
@@ -1877,61 +1957,91 @@ v           new datatypes in their own right (the default) or as their base
       </figure>
 
       <para>&argouml; categorizes critics according the the design issue they
-      address. At present there are 16 such categories.</para>
+      address. At present there are 16 such categories. The critics in each
+      category are discussed in detail in the chapter on critics
+      (<xref linkend="ch.ref.critics"/>).</para>
 
       <itemizedlist>
         <listitem><para><literal>Uncategorized</literal>.
-          Unused.</para></listitem>
+          Unused (see
+          <xref linkend="s1.ref.design_issues_uncategorized"/>.
+        </para></listitem>
 
         <listitem><para><literal>Class Selection</literal>. Three
-          critics.</para></listitem>
+          critics (see
+          <xref linkend="s1.ref.design_issues_class_selection"/>.
+        </para></listitem>
 
         <listitem><para><literal>Naming</literal>. Eighteen
-          critics.</para></listitem>
+          critics (see
+          <xref linkend="s1.ref.design_issues_naming"/>.
+        </para></listitem>
 
         <listitem><para><literal>Storage</literal>. Four
-          critics.</para></listitem>
+          critics (see
+          <xref linkend="s1.ref.design_issues_storage"/>.
+        </para></listitem>
 
         <listitem><para><literal>Planned Extensions</literal>. Three
-          critics.</para></listitem>
+          critics (see
+          <xref linkend="s1.ref.design_issues_planned_extensions"/>.
+        </para></listitem>
 
         <listitem><para><literal>MState Machines</literal>. Fourteen
-          critics.</para></listitem>
+          critics (see
+          <xref linkend="s1.ref.design_issues_state_machines"/>.
+        </para></listitem>
 
         <listitem><para><literal>Design Patterns</literal>. Sixteen
-          critics.</para></listitem>
+          critics (see
+          <xref linkend="s1.ref.design_issues_design_patterns"/>.
+        </para></listitem>
 
         <listitem><para><literal>Relationships</literal>. Seven
-          critics.</para></listitem>
+          critics (see
+          <xref linkend="s1.ref.design_issues_relationships"/>.
+        </para></listitem>
 
         <listitem><para><literal>Instantiation</literal>.
-          Unused.</para></listitem>
+          Unused (see
+          <xref linkend="s1.ref.design_issues_instantiation"/>.
+        </para></listitem>
 
         <listitem><para><literal>Modularity</literal>. Two
-          critics.</para></listitem>
+          critics (see
+          <xref linkend="s1.ref.design_issues_modularity"/>.
+        </para></listitem>
 
         <listitem><para><literal>Expected Usage</literal>.One
-          critic.</para></listitem>
+          critic (see
+          <xref linkend="s1.ref.design_issues_expected_usage"/>.
+        </para></listitem>
 
         <listitem><para><literal>Methods</literal>. Four
-          critics.</para></listitem>
+          critics (see
+          <xref linkend="s1.ref.design_issues_methods"/>.
+        </para></listitem>
 
         <listitem><para><literal>Code Generation</literal>. One
-          critic.</para></listitem>
+          critic (see
+          <xref linkend="s1.ref.design_issues_code_generation"/>.
+        </para></listitem>
 
         <listitem><para><literal>Stereotypes</literal>.
-          Unused.</para></listitem>
+          Unused (see
+          <xref linkend="s1.ref.design_issues_stereotypes"/>.
+        </para></listitem>
 
         <listitem><para><literal>Inheritance</literal>. Ten
-          critics.</para></listitem>
+          critics (see
+          <xref linkend="s1.ref.design_issues_inheritance"/>.
+        </para></listitem>
 
         <listitem><para><literal>Containment</literal>. Six
-          critics.</para></listitem>
+          critics (see
+          <xref linkend="s1.ref.design_issues_containment"/>.
+        </para></listitem>
       </itemizedlist>
-
-      <para>The critics in each category are detailed below (see
-        <xref linkend="s3.ref.menu_design_issues_uncategorized"/> through
-        <xref linkend="s3.ref.menu_design_issues_containment"/>).</para>
 
       <para>The sliders may be set for each category to control the critics
         that trigger for that category. Setting a slider to zero will disable
@@ -1949,796 +2059,6 @@ v           new datatypes in their own right (the default) or as their base
       <caution><para>In the current release of &argouml; all critics trigger at
         priority 1, so any higher values of the slider make no
         difference.</para></caution>
-
-      <sect3 id="s3.ref.menu_design_issues_uncategorized">
-        <title>Uncategorized</title>
-
-        <para>These are critics that do
-          not fit into any other category.</para>
-
-        <para>The current version of &argouml; has no critics in this
-          category.</para>
-
-      </sect3>
-
-      <!-- Critics about choice & number of classes -->
-
-      <sect3>
-        <title>Class Selection</title>
-
-        <para>These are critics concerning how classes are chosen and
-          used.</para>
-
-        <para>The current version of &argouml; has three critics in this
-          category.</para>
-
-        <itemizedlist>
-          <listitem><para><literal>Wrap DataType</literal>. Suggestion that a
-            datatype actually be a full-blown class.</para></listitem>
-
-          <listitem><para><literal>Reduce Classes in diagram
-            &lt;diagram&gt;</literal>. Suggestion to
-            improve readability by having fewer classes on a
-            diagram.</para></listitem>
-
-          <listitem><para><literal>Clean Up Diagram</literal>. Suggestion
-            that the diagram could be improved by moving artifacts that are
-            overlapping.</para></listitem>
-        </itemizedlist>
-      </sect3>
-
-        <!-- Critics about how things are named -->
-
-      <sect3>
-        <title>Naming</title>
-
-        <para>These are critics concerning the naming of artifacts. The current
-          version of &argouml; has 18 critics in this category.</para>
-
-        <itemizedlist>
-          <listitem><para><literal>Resolve Association Name
-            Conflict</literal>. Suggestion that two association names in the
-            same namespace have the same name. This is not permitted in
-            UML.</para></listitem>
-
-          <listitem><para><literal>Revise Attribute Names to Avoid
-            Conflict</literal>. Suggestion that two attribute names of a
-            class have the same name. This is not permitted in UML.</para>
-            
-          <note><para>This may be caused by inheritance of an attribute
-            through a generalization relationship.</para></note></listitem>
-
-          <listitem><para><literal>Change Names or Signatures in
-            &lt;artifact&gt;</literal>. Suggestion that
-            two or more operations in the specified class or interface have
-            the same signature, which will prevent valid code
-            generation.</para></listitem>
-
-          <listitem><para><literal>Role name conflicts with
-            member</literal>. A suggestions that good design avoids role
-            names for associations that clash with attributes or operations
-            of the source class. Roles may be realized in the code as
-            attributes or operations, causing code generation
-            problems.</para></listitem>
-
-          <listitem><para><literal>Choose a Name</literal> (classes and
-            interfaces). The class or interface concerned has been given no
-            name (it will appear in the model as
-            <literal>anon</literal>). Suggestion that good design requires
-            that all interfaces and classes are named.</para></listitem>
-
-          <listitem><para><literal>Chose a Unique Name for
-            &lt;artifact&gt;</literal> (classes and
-            interfaces). Suggestion that the class or interface specified has
-            the same name as another (in the namespace), which is bad design
-            and will prevent valid code generation.</para></listitem>
-
-          <listitem><para><literal>Choose a name</literal> (attributes). The
-            attribute concerned has been given no name (it will appear in the
-            model as <literal>anon</literal>). Suggestion that good design
-            requires that all attributes are named.</para></listitem>
-
-          <listitem><para><literal>Choose a name</literal> (operations). The
-            operation concerned has been given no name (it will appear in the
-            model as <literal>anon</literal>). Suggestion that good design
-            requires that all operations are named.</para></listitem>
-
-          <listitem><para><literal>Choose a Name</literal> (states). The
-            state concerned has been given no name (it will appear in the
-            model as <literal>anon</literal>). Suggestion that good design
-            requires that all states are named.</para></listitem>
-
-          <listitem><para><literal>Choose a Unique Name for
-            &lt;artifact&gt;</literal>
-            (states). Suggestion that the state specified has the same name
-            as another (in the current state diagram), which is bad design
-            and will prevent valid code generation.</para></listitem>
-
-          <listitem><para><literal>Revise Name to Avoid
-            Confusion</literal>. Two names in the same namespace have very
-            similar names (differing only by one character). Suggestion this
-            could potentially lead to confusion.</para>
-
-          <caution><para>This critic can be particularly annoying, since at
-            times it is useful and good design to have a series of artifacts
-            <literal>var1</literal>, <literal>var2</literal> etc.</para>
-
-          <para>It is important to remember that critics offer guidance, and
-            are not always correct. &argouml; lets you dismiss the resulting
-            to-do items through the to-do pane (see
-            <xref linkend="ch.ref.todopane"/>).</para></caution></listitem>
-
-          <listitem><para><literal>Choose a Legal Name</literal>. All
-            artifact names in &argouml; must use only letters, digits and
-            underscore characters. This critic suggests an entity has not met
-            this requirement.</para></listitem>
-
-          <listitem><para><literal>Change
-            &lt;artifact&gt; to a Non-Reserved
-            Word</literal>. Suggestion that this artifact's name is the same
-            as a reserved word in UML (or within one character of one), which
-            is not permitted.</para></listitem>
-
-          <listitem><para><literal>Choose a Better Operation
-            Name</literal>. Suggestion that an operation has not followed the
-            naming convention that operation names begin with lower case
-            letters.</para>
-
-          <caution><para>Following the Java and C++ convention most designers
-            give their constructors the same name as the class, which begins
-            with an upper case character and so triggers this critic.</para>
-
-          <para>It is important to remember that critics offer guidance, and
-            are not always correct. &argouml; lets you dismiss the resulting
-            to-do items through the to-do pane (see
-            <xref linkend="ch.ref.todopane"/>).</para></caution></listitem>
-
-          <listitem><para><literal>Choose a Better Attribute
-            Name</literal>. Suggestion that an attribute has not followed the
-            naming convention that attribute names begin with lower case
-            letters.</para></listitem>
-
-          <listitem><para><literal>Capitalize Class Name
-            &lt;class&gt;</literal>. Suggestion that a
-            class has not followed the naming convention that classes begin
-            with upper case letters.</para>
-
-          <note><para>Although not triggering this critic, the same
-            convention should apply to interfaces.</para></note></listitem>
-
-          <listitem><para><literal>Revise Package Name
-            &lt;artifact&gt;</literal>. Suggestion that
-            a package has not followed the naming convention of using lower
-            case letters with periods used to indicated
-            sub-packages.</para></listitem>
-        </itemizedlist>
-      </sect3>
-
-      <!-- Critics about the attributes of classes -->
-
-      <sect3>
-        <title>Storage</title>
-
-        <para>Critics concerning attributes of classes.</para>
-
-        <para>The current version of &argouml; has four critics in this
-          category.</para>
-
-        <itemizedlist>
-          <listitem><para><literal>Revise Attribute Names to Avoid
-            Conflict</literal>. Suggestion that two attribute names of a
-            class have the same name. This is not permitted in UML.</para>
-            
-          <note><para>This may be caused by inheritance of an attribute
-            through a generalization relationship.</para></note></listitem>
-
-          <listitem><para><literal>Add Instance Variables to
-            &lt;class&gt;</literal>. Suggestion that no
-            instance variables have been specified for the given class. Such
-            classes may be created to specify static attributes and methods,
-            but by convention should be given the stereotype
-            <literal>&laquo;utility&raquo;</literal>.</para>
-
-          <warning><para>In the current version of &argouml; this critic
-            triggers for all classes whether or not they have attributes, so
-            should be treated with caution.</para>
-
-          <para>It is important to remember that critics offer guidance, and
-            are not always correct. &argouml; lets you dismiss the resulting
-            to-do items through the to-do pane (see
-            <xref linkend="ch.ref.todopane"/>).</para></warning></listitem>
-
-          <listitem><para><literal>Add Constructor to
-            &lt;class&gt;</literal>. Suggestion that you have not
-            yet added a constructor to this class. This critic assumes a
-            constructor is an operation of the class, with the same name as
-            the class, in the same namespace as the class, with a return type
-            of <literal>void</literal>.</para>
-
-          <note><para>Good practice would also suggest that constructors
-            ought to have the stereotype
-            <literal>&laquo;create&raquo;</literal>, but this critic does not
-            check for this.</para></note>
-
-          <caution><para>The current release of &argouml; has a known defect in
-            this critic, whereby a constructor will only be recognised if it
-            has no return parameter at all. This will be fixed in the near
-            future to accept return paramters with no type or type
-            <literal>void</literal></para></caution></listitem>
-
-          <listitem><para><literal>Reduce Attributes on
-            &lt;class&gt;</literal>. Suggestion that the
-            class has too many attributes for a good design, and is at risk
-            of becoming a design bottleneck.</para></listitem>
-        </itemizedlist>
-      </sect3>
-
-      <!-- Critics associated with planned extensions of the UML standard (not
-           really sure if this is what is meant -->
-
-      <sect3>
-        <title>Planned Extensions</title>
-
-        <para>Critics concerning interfaces and subclasses.</para>
-
-        <para>The current version of &argouml; has three critics in this
-          category.</para>
-
-        <itemizedlist>
-          <listitem><para><literal>Operations in Interfaces must be
-            public</literal>. Suggestion that there is no point in having
-            non-public operations in Interfaces, since they must be visible
-            to be realized by a class.</para></listitem>
-
-          <listitem><para><literal>Interfaces may only have
-            operations</literal>. Suggestion that an interfaces has
-            attributes defined. The UML standard defines interfaces to have
-            operations.</para>
-
-          <caution><para>It is really a limitation of the current version of
-            &argouml; that it allows you to add attributes to an
-            interface in the first place.</para></caution></listitem>
-
-          <listitem><para><literal>Remove Reference to Specific
-            Subclass</literal>. Suggestion that in a good design, a class
-            should not reference its subclasses directly through attributes,
-            operations or associations.</para></listitem>
-        </itemizedlist>
-
-        <note><para>It is not clear why this category has the name
-          <quote>Planned Extensions</quote>.</para></note>
-      </sect3>
-
-      <!-- Critics associated with state machines -->
-
-      <sect3>
-        <title>MState Machines</title>
-
-        <para>Critics concerning state machines.</para>
-
-        <para>The current version of &argouml; has 14 critics in this
-          category.</para>
-
-        <itemizedlist>
-          <listitem><para><literal>Reduce Transitions on
-            &lt;state&gt;</literal>. Suggestion given state is involved in
-            so many transitions it may be a maintenance
-            bottleneck.</para></listitem>
-
-          <listitem><para><literal>Reduce States in machine
-            &lt;machine&gt;</literal>. Suggestion that the given state
-            machine has so many states as to be confusing and should be
-            simplified (perhaps by breaking into several machines, or using a
-            hierarchy).</para></listitem>
-
-          <listitem><para><literal>Add Transitions to
-            &lt;state&gt;</literal>. Suggestion that the given state requires
-            both incoming and outgoing transitions.</para></listitem>
-
-          <listitem><para><literal>Add Incoming Transitions to
-            &lt;artifact&gt;</literal>. Suggestion that the given state
-            requires incoming transitions.</para></listitem>
-
-          <listitem><para><literal>Add Outgoing Transitions from
-            &lt;artifact&gt;</literal>. Suggestion that the given state
-            requires outgoing transitions.</para></listitem>
-
-          <listitem><para><literal>Remove Extra Initial
-            States</literal>. Suggestion that there is more than one initial
-            state in the state machine or composite state, which is not
-            permitted in UML.</para></listitem>
-
-          <listitem><para><literal>Place an Initial
-            State</literal>. Suggestion that there is no initial state in the
-            state machine or composite state.</para></listitem>
-
-          <listitem><para><literal>Add Trigger or Guard to
-            Transition</literal>. Suggestion that a transition is missing
-            either a trigger or guard, one at least of which is required for
-            it to be taken.</para></listitem>
-
-          <listitem><para><literal>Change Join
-            Transitions</literal>. Suggestion that the join pseudostate has
-            an invalid number of transitions. Normally there should be one
-            outgoing and two or more incoming.</para></listitem>
-
-          <listitem><para><literal>Change Fork
-            Transitions</literal>. Suggestion that the fork pseudostate has
-            an invalid number of transitions. Normally there should be one
-            incoming and two or more outgoing.</para></listitem>
-
-          <listitem><para><literal>Change Branch
-            Transitions</literal>. Suggestion that the branch pseudostate has
-            an invalid number of transitions. Normally there should be one
-            incoming and two or more outgoing.</para></listitem>
-
-          <listitem><para><literal>Add Guard to
-            Transition</literal>. Suggestion that the transition requires a
-            guard.</para>
-
-          <caution><para>It is not clear that this is a valid critic. It is
-            perfectly acceptable to have a transition without a
-            guard&mdash;the transition is always taken when the trigger is
-            invoked.</para></caution></listitem>
-
-          <listitem><para><literal>Clean Up Diagram</literal>. Suggestion
-            that the diagram could be improved by moving artifacts that are
-            overlapping.</para></listitem>
-
-          <listitem><para><literal>Make Edge More Visible</literal>. Suggestion
-            that an edge artifact such as an association or abstraction is so
-            short it may be missed. Move the connected artifacts apart to make
-            the edge more visible.</para></listitem>
-        </itemizedlist>
-
-        <note><para>The correct title for this category should be
-          <literal>State Machines</literal>.</para></note>
-      </sect3>
-
-      <!-- Design Patterns (in the GOF sense) and stuff associated with
-           deployment and sequence diagrams. -->
-
-      <sect3>
-        <title>Design Patterns</title>
-
-        <para>Critics concerning design pattern usage in &argouml;.</para>
-
-
-        <para>These relate to the use of patterns as described by the so called
-          <quote>Gang of Four</quote>. &argouml; also uses this category for
-          critics associated with deployment and sequence diagrams. The current
-          version of &argouml; has 16 critics in this category.</para>
-
-        <itemizedlist>
-
-          <listitem><para><literal>Consider using Singleton Pattern for
-            &lt;artifact&gt;</literal>. Suggestion that the class has many of
-            the characteristics of a singleton class (i.e. only private
-            constructors, static attribute to hold the instance, at least one
-            constructor). Good design practice would suggest making this
-            explicit by stereotyping with the
-            <literal>&laquo;singleton&raquo;</literal> stereotype.</para>
-
-          <caution><para>By default &argouml; does not define the
-            <literal>&laquo;singleton&raquo;</literal>. You will need to
-            define the stereotype before use (see
-            <xref linkend="s1.ref.stereotype"/>).</para></caution></listitem>
-
-          <listitem><para><literal>Singleton Stereotype Violated in
-            &lt;artifact&gt;</literal>. Suggestion that the specified class,
-            although declared with stereotype
-            <literal>&laquo;singleton&raquo;</literal>, does not have all the
-            characteristics of a singleton class (i.e. only private
-            constructors, static attribute to hold the instance, at least one
-            constructor).</para>
-
-          <warning><para>In the current version of &argouml; this critic is
-            always triggered for classes declared as
-            <literal>&laquo;singleton&raquo;</literal>, even if they meet all
-            the required criteria. This is a known defect in the
-            code.</para></warning></listitem>
-
-          <listitem><para><literal>Nodes normally have no
-            enclosers</literal>. A suggestion that nodes should not be drawn
-            inside other artifacts on the deployment diagram, since they
-            represent an autonomous physical object.</para></listitem>
-
-          <listitem><para><literal>NodeInstances normally have no
-            enclosers</literal>. A suggestion that node instances should not
-            be drawn inside other artifacts on the deployment diagram, since
-            they represent an autonomous physical object.</para></listitem>
-
-          <listitem><para><literal>Components normally are inside
-            nodes</literal>. A suggestion that components represent the
-            logical entities within physical nodes, and so should be drawn
-            within a node, where nodes are shown on the deployment
-            diagram.</para></listitem>
-
-          <listitem><para><literal>ComponentInstances normally are inside
-            nodes</literal>. A suggestion that component instances represent
-            the logical entities within physical nodes, and so should be
-            drawn within a node instance, where node instances are shown on
-            the deployment diagram.</para></listitem>
-
-          <listitem><para><literal>Classes normally are inside
-            components</literal>. A suggestion that classes, as artifacts
-            making up components, should be drawn within components on the
-            deployment diagram.</para></listitem>
-
-          <listitem><para><literal>Interfaces normally are inside
-            components</literal>. A suggestion that interfaces, as artifacts
-            making up components, should be drawn within components on the
-            deployment diagram.</para></listitem>
-
-          <listitem><para><literal>Objects normally are inside
-            components</literal>. A suggestion that objects, as instances of
-            artifacts making up components, should be drawn within components
-            or component instances on the deployment
-            diagram.</para></listitem>
-
-          <listitem><para><literal>LinkEnds have not the same
-            locations</literal>. A suggestion that a link (e.g. association)
-            connecting objects on a deployment diagram has one end in a
-            component and the other in a component instance (since objects
-            can be in either). This makes no sense.</para></listitem>
-
-          <listitem><para><literal>Set classifier</literal> (deployment
-            diagram). Suggestion that there is an instance (object) without
-            an associated classifier (class, datatype) on a deployment
-            diagram.</para></listitem>
-
-          <listitem><para><literal>Missing
-            return-actions</literal>. Suggestion that a sequence diagram has
-            a send or call action without a corresponding return
-            action.</para></listitem>
-
-          <listitem><para><literal>Missing
-            call(send)-action</literal>. Suggestion that a sequence diagram has
-            a return action, but no preceding call or send
-            action.</para></listitem>
-
-          <listitem><para><literal>No Stimuli on these
-            links</literal>. Suggestion that a sequence diagram has a link
-            connecting objects without an associated stimulus (without which
-            the link is meaningless).</para>
-
-          <warning><para>Triggering this critic indicates a serious problem,
-            since &argouml; provides no mechanism for creating a link without a
-            stimulus. It probably indicates that the diagram was created by
-            loading a corrupt project, with an XMI file describing a link
-            without a stimulus, possibly created by a tool other than
-            &argouml;.</para></warning></listitem>
-
-          <listitem><para><literal>Set classifier</literal> (sequence
-            diagram). Suggestion that there is an object without
-            an associated classifier (class, datatype) on a sequence
-            diagram.</para></listitem>
-
-          <listitem><para><literal>Wrong position of these
-            stimuli</literal>. Suggestion that the initiation of
-            send/call-return message exchanges in a sequence diagram does not
-            properly initiate from left to right.</para></listitem>
-        </itemizedlist>
-      </sect3>
-
-      <!-- Critics associated with associations -->
-
-      <sect3>
-        <title>Relationships</title>
-
-        <para>Critics concerning
-          associations in &argouml;.</para>
-
-        <para>The current version of &argouml; has seven critics in this
-          category.</para>
-
-        <itemizedlist>
-          <listitem><para><literal>Circular
-            Association</literal>. Suggestion that an association class has
-            roles that refer back directly to itself, which is not
-            permitted.</para>
-
-          <warning><para>This critic is meaningless in the current version of
-            &argouml; which does not support association classes. In addition
-            the current code would never trigger, even if an association
-            class were created.</para></warning></listitem>
-
-          <listitem><para><literal>Make &lt;association&gt;
-            Navigable</literal>. Suggestion that the association referred to
-            is not navigable in either direction. This is permitted in the
-            UML standard, but has no obvious meaning in any practical
-            design.</para></listitem> 
-
-          <listitem><para><literal>Remove Navigation from Interface
-            &lt;interface&gt;</literal>. Suggestion that the interface
-            referred to, which connected by an association to a class, is
-            navigable from the interface. This is not permitted in the UML
-            standard.</para>
-
-          <caution><para>The current version of &argouml; has a known defect
-            where it may create an association between a class and interface
-            that is navigable from the interface, depending on the order in
-            which the two ends are selected at the time of creation. The fix
-            is to remove the navigation from the class end of the association
-            if this critic is triggered.</para></caution></listitem>
-
-          <listitem><para><literal>Add Associations to
-            &lt;artifact&gt;</literal>. Suggestion that the specified
-            artifact (actor, use case or class) has no associations
-            connecting it to other artifacts. This is required for the
-            artifact to be useful in a design.</para></listitem>
-
-          <listitem><para><literal>Remove Reference to Specific
-            Subclass</literal>. Suggestion that in a good design, a class
-            should not reference its subclasses directly through attributes,
-            operations or associations.</para></listitem>
-
-          <listitem><para><literal>Reduce Associations on &lt;artifact&gt;
-            </literal>. Suggestion that the given artifact (actor, use case,
-            class or interface) has so many associations it may be a
-            maintenance bottleneck.</para></listitem>
-
-          <listitem><para><literal>Make Edge More Visible</literal>. Suggestion
-            that an edge artifact such as an association or abstraction is so
-            short it may be missed. Move the connected artifacts apart to make
-            the edge more visible.</para></listitem>
-        </itemizedlist>
-      </sect3>
-
-      <!-- Critics concerning instantiation of classifiers -->
-
-      <sect3>
-        <title>Instantiation</title>
-
-        <para>Critics concerning instantiation of classifiers in
-          &argouml;.</para>
-
-        <para>The current version of &argouml; has no critics in this
-          category.</para>
-      </sect3>
-
-      <!-- Critics concerning modular code development -->
-
-      <sect3>
-        <title>Modularity</title>
-
-        <para>Critics concerning modular development in &argouml;.</para>
-
-        <para>The current version of &argouml; has two critics in this
-          category.</para>
-
-        <itemizedlist>
-          <listitem><para><literal>Aggregate Role in N-way
-            Association</literal>. Suggestion that aggregation may not be
-            used for associations with more than two ends.</para>
-
-          <warning><para>Whilst it is possible to create N-way associations
-            in the current release of &argouml;, it is not supported
-            graphically, and of little use. It is a known limitation of the
-            current release that if you do create such associations, they
-            will always trigger this critic, even if there is no aggregation
-            on any end.</para></warning></listitem>
-
-          <listitem><para><literal>Add Elements to Package
-            &lt;package&gt;</literal>. Suggestion that the specified package
-            has no content. Good design suggests packages are created to put
-            things in.</para>
-
-          <note><para>This will always trigger when you first create a package,
-            since you cannot create one that is not
-            empty!</para></note></listitem>
-        </itemizedlist>
-      </sect3>
-
-      <!-- Critics that hint at common practice -->
-
-      <sect3>
-        <title>Expected Usage</title>
-
-        <para>Critics concerning generally accepted good practice in
-          &argouml;.</para>
-
-        <para>The current version of &argouml; has one critic in this
-          category.</para>
-
-        <itemizedlist>
-          <listitem><para><literal>Clean Up Diagram</literal>. Suggestion
-            that the diagram could be improved by moving artifacts that are
-            overlapping.</para></listitem>
-        </itemizedlist>
-      </sect3>
-
-      <!-- Critics relating to methods (operations) in classes and
-           interfaces -->
-
-      <sect3>
-        <title>Methods</title>
-
-        <para>Critics concerning operations in &argouml;.</para>
-
-        <para>The current version of &argouml; has four critics in this
-          category.</para>
-
-        <itemizedlist>
-          <listitem><para><literal>Change Names or Signatures in
-            &lt;artifact&gt;</literal>. Suggestion that
-            two or more operations in the specified class or interface have
-            the same signature, which will prevent valid code
-            generation.</para></listitem>
-
-          <listitem><para><literal>Class Must be
-            Abstract</literal>. Suggestion that a class that inherits or
-            defines abstract operations must be marked
-            abstract.</para></listitem>
-
-          <listitem><para><literal>Resolve Signature
-            Conflict</literal>. Suggestion that two or more operations in the
-            specified class or interface have the same signature, which will
-            prevent valid code generation.</para></listitem>
-
-          <listitem><para><literal>Reduce Operations on
-            &lt;artifact&gt;</literal>.  Suggestion that the artifact (class
-            or interface) has too many operations for a good design, and is
-            at risk of becoming a design bottleneck.</para></listitem>
-        </itemizedlist>
-      </sect3>
-
-      <!-- Critics concerning code generation -->
-
-      <sect3>
-        <title>Code Generation</title>
-
-        <para>Critics concerning code generation in &argouml;.</para>
-
-        <para>The current version of &argouml; has one critic in this
-          category.</para>
-
-        <itemizedlist>
-          <listitem><para><literal>Change Multiple Inheritance to
-            interfaces</literal>. Suggestion that a class has multiple
-            generalizations, which is permitted by UML, but cannot be
-            generated into Java code, because Java does not support multiple
-            inheritance.</para></listitem>
-        </itemizedlist>
-      </sect3>
-
-      <!-- Critics concerning stereotypes -->
-
-      <sect3>
-        <title>Stereotypes</title>
-
-        <para>Critics concerning stereotypes in &argouml;.</para>
-
-        <para>The current version of &argouml; has no critics in this
-          category.</para>
-      </sect3>
-
-      <!-- Critics concerning inheritance -->
-
-      <sect3>
-        <title>Inheritance</title>
-
-        <para>Critics concerning generalization and specialization in
-          &argouml;.</para>
-
-        <para>The current version of &argouml; has ten critics in this
-          category.</para>
-
-        <itemizedlist>
-          <listitem><para><literal>Revise Attribute Names to Avoid
-            Conflict</literal>. Suggestion that two attribute names of a
-            class have the same name. This is not permitted in UML.</para>
-            
-          <note><para>This may be caused by inheritance of an attribute
-            through a generalization relationship.</para></note></listitem>
-
-          <listitem><para><literal>Remove &lt;class&gt;'s Circular
-            Inheritance</literal>. Suggestion that a class inherits from
-            itself, through a chain of generalizations, which is not
-            permitted.</para>
-
-          <caution><para>This critic is marked inactive by default in the
-            current release of &argouml; (the only one so marked). It will not
-            trigger unless made active.</para></caution></listitem>
-
-          <listitem><para><literal>Class Must be
-            Abstract</literal>. Suggestion that a class that inherits or
-            defines abstract operations must be marked
-            abstract.</para></listitem>
-
-          <listitem><para><literal>Remove final keyword or remove
-            subclasses</literal>. Suggestion that a class that is final has
-            specializations, which is not permitted in UML.</para></listitem>
-
-          <listitem><para><literal>Illegal
-            Generalization</literal>. Suggestion that there is a
-            generalization between artifacts of different UML metaclasses,
-            which is not permitted.</para>
-
-          <caution><para>It is not clear that such a generalization can be
-            created within &argouml;. It probably indicates that the diagram
-            was created by loading a corrupt project, with an XMI file
-            describing such a generalization, possibly created by a tool
-            other than &argouml;.</para></caution></listitem>
-
-          <listitem><para><literal>Remove Unneeded Realizes from
-            &lt;class&gt;</literal>. Suggestion that the specified class has a
-            realization relationship both directly and indirectly to the same
-            interface (by realization from two interfaces, one of which is a
-            generalization of the other for example). Good design deprecates
-            such duplication.</para></listitem>
-
-          <listitem><para><literal>Define Concrete
-            (Sub)Class</literal>. Suggestion that a class is abstract with no
-            concrete subclasses, and so can never be
-            realized.</para></listitem>
-
-          <listitem><para><literal>Define Class to Implement
-            &lt;interface&gt;</literal>. Suggestion that the interface
-            referred to has no influence on the running system, since it is
-            never implemented by a class.</para></listitem>
-
-          <listitem><para><literal>Change Multiple Inheritance to
-            interfaces</literal>. Suggestion that a class has multiple
-            generalizations, which is permitted by UML, but cannot be
-            generated into Java code, because Java does not support multiple
-            inheritance.</para></listitem>
-
-          <listitem><para><literal>Make Edge More Visible</literal>. Suggestion
-            that an edge artifact such as an association or abstraction is so
-            short it may be missed. Move the connected artifacts apart to make
-            the edge more visible.</para></listitem>
-        </itemizedlist>
-      </sect3>
-
-      <!-- Critics concerning containment -->
-
-      <sect3 id="s3.ref.menu_design_issues_containment">
-        <title>Containment</title>
-
-        <para>Critics concerning containment in &argouml;, that is where one
-          artifact forms a component part of another.</para>
-
-        <para>The current version of &argouml; has six critics in this
-          category.</para>
-
-        <itemizedlist>
-          <listitem><para><literal>Remove Circular
-            Composition</literal>. Suggestion that there is a series of
-            composition relationships (associations with black diagrams) that
-            form a cycle, which is not permitted.</para></listitem>
-
-          <listitem><para><literal>Duplicate Parameter
-            Name</literal>. Suggestion that a parameter list to an operation
-            or event has two or more parameters with the same name, which is
-            not permitted.</para></listitem>
-
-          <listitem><para><literal>Multiple Aggregate
-            Roles</literal>. Suggestion that more than one end of an
-            association is aggregate or composite. At most one end should
-            have multiplicity of any sort.</para></listitem>
-
-          <listitem><para><literal>Aggregate Role in N-way
-            Association</literal>. Suggestion that more than one end of an
-            association is aggregate or composite. At most one end should
-            have multiplicity of any sort.</para>
-
-          <caution><para>This appears to duplicate the critic
-            <literal>Multiple Aggregate Roles</literal> within this design
-            category.</para></caution></listitem>
-
-          <listitem><para><literal>Wrap DataType</literal>. Suggestion that a
-            datatype actually be a full-blown class.</para></listitem>
-
-          <listitem><para><literal>Import Parameter Type into
-            Class</literal>. Suggestion that the type of a parameter used
-            within an operation of a class is not visible.</para>
-
-          <warning><para>It is not clear how this can ever be caused within
-            &argouml;. In any case this critic can never trigger in the
-            current implementation of &argouml;.</para></warning></listitem>
-        </itemizedlist>
-      </sect3>
     </sect2>
 
     <!-- Critics for design goals -->
@@ -2804,7 +2124,7 @@ v           new datatypes in their own right (the default) or as their base
 
     <!-- Browse critics -->
 
-    <sect2>
+    <sect2 id="s2.ref.menu_browse_critics">
       <title>Browse Critics&hellip;</title>
 
       <para>This menu entry brings up a dialog box controlling the individual
@@ -2872,242 +2192,394 @@ v           new datatypes in their own right (the default) or as their base
         <literal>Remove&nbsp;&lt;class&gt;'s&nbsp;Circular&nbsp;Inheritance</literal>.</para></note>
 
       <para>The current version of &argouml; has a total of 78 critics. They
-        are described in detail by design issue category in the section on the
-        <literal>Design&nbsp;Issues&hellip;</literal> menu (see
-        <xref linkend="s2.ref.menu_design_issues"/>).</para>
+        are described in detail by design issue category in the chapter on
+        critics (see <xref linkend="ch.ref.critics"/>).</para>
 
       <itemizedlist>
         <listitem><para><literal>Resolve Association Name
-          Conflict</literal></para></listitem>
+          Conflict</literal>. See
+          <xref linkend="s2.ref.critics_assoc_name_conflict"/>
+        </para></listitem>
 
         <listitem><para><literal>Revise Attribute Names to Avoid
-          Conflict</literal></para></listitem>
+          Conflict</literal>. See
+          <xref linkend="s2.ref.critics_attr_name_conflict"/>
+        </para></listitem>
 
         <listitem><para><literal>Change Names or Signatures in
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;artifact&gt;</literal>. See
+          <xref linkend="s2.ref.critics_oper_name_conflict"/>
+        </para></listitem>
 
         <listitem><para><literal>Circular
-          Association</literal></para></listitem>
+          Association</literal>. See
+          <xref linkend="s2.ref.critics_circular_assoc_class"/>
+        </para></listitem>
 
-        <listitem><para><literal>*Remove &lt;artifact&gt;'s Circular
-          Inheritance</literal></para></listitem>
+        <listitem><para><literal>Remove &lt;artifact&gt;'s Circular
+          Inheritance</literal>. See
+          <xref linkend="s2.ref.critics_circular_inheritance"/>
+        </para></listitem>
 
         <listitem><para><literal>Remove Circular
-          Composition</literal></para></listitem>
+          Composition</literal>. See
+          <xref linkend="s2.ref.critics_circular_composition"/>
+        </para></listitem>
 
         <listitem><para><literal>Class Must be
-          Abstract</literal></para></listitem>
+          Abstract</literal>. See
+          <xref linkend="s2.ref.critics_class_must_be_abstract"/>
+        </para></listitem>
 
         <listitem><para><literal>Aggregate Role in N-way
-          Association</literal></para></listitem>
+          Association</literal> (first version). See
+          <xref linkend="s2.ref.critics_cross_namespace_assoc"/>
+        </para></listitem>
 
         <listitem><para><literal>Duplicate Parameter
-          Name</literal></para></listitem>
+          Name</literal>. See
+          <xref linkend="s2.ref.critics_dup_param_name"/>
+        </para></listitem>
 
         <listitem><para><literal>Remove final keyword or remove
-          subclasses</literal></para></listitem>
+          subclasses</literal>. See
+          <xref linkend="s2.ref.critics_final_subclassed"/>
+        </para></listitem>
 
         <listitem><para><literal>Illegal Generalization
-          </literal></para></listitem>
+          </literal>. See
+          <xref linkend="s2.ref.critics_illegal_generalization"/>
+        </para></listitem>
 
         <listitem><para><literal>Remove Unneeded Realizes from
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;class&gt;</literal>. See
+          <xref linkend="s2.ref.critics_already_realizes"/>
+        </para></listitem>
 
         <listitem><para><literal>Operations in Interfaces must be
-          public</literal></para></listitem>
+          public</literal>. See
+          <xref linkend="s2.ref.critics_inteface_all_public"/>
+        </para></listitem>
 
         <listitem><para><literal>Interfaces may only have
-          operations</literal></para></listitem>
+          operations</literal>. See
+          <xref linkend="s2.ref.critics_interface_oper_only"/>
+        </para></listitem>
 
         <listitem><para><literal>Multiple Aggregate
-          Roles</literal></para></listitem>
+          Roles</literal>. See
+          <xref linkend="s2.ref.critics_multiple_agg"/>
+        </para></listitem>
 
-        <listitem><para><literal>Make &lt;artifact&gt;
-          Navigable</literal></para></listitem>
+        <listitem><para><literal>Make &lt;association&gt;
+          Navigable</literal>. See
+          <xref linkend="s2.ref.critics_unnavigable_assoc"/>
+        </para></listitem>
 
         <listitem><para><literal>Aggregate Role in N-way
-          Association</literal></para></listitem>
+          Association</literal> (second version). See
+          <xref linkend="s2.ref.critics_n_way_agg"/>
+        </para></listitem>
 
         <listitem><para><literal>Remove Navigation from Interface
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;association&gt;</literal>. See
+          <xref linkend="s2.ref.critics_nav_from_interface"/>
+        </para></listitem>
 
         <listitem><para><literal>Role name conflicts with
-          member</literal></para></listitem>
+          member</literal>. See
+          <xref linkend="s2.ref.critics_name_conflict_a_c"/>
+        </para></listitem>
 
-        <listitem><para><literal>Choose a Name</literal> (class and
-          interfaces)</para></listitem>
+        <listitem><para><literal>Choose a Name</literal> (classes and
+          interfaces). See
+          <xref linkend="s2.ref.critics_missing_class_name"/>
+        </para></listitem>
 
         <listitem><para><literal>Chose a Unique Name for
-          &lt;artifact&gt;</literal> (class and interface)</para></listitem>
+          &lt;artifact&gt;</literal> (classes and interfaces). See
+          <xref linkend="s2.ref.critics_disambig_class_name"/>
+        </para></listitem>
 
-        <listitem><para><literal>Choose a name</literal>
-          (attribute)</para></listitem>
+        <listitem><para><literal>Choose a name</literal> (attributes). See
+          <xref linkend="s2.ref.critics_missing_attr_name"/>
+        </para></listitem>
 
-        <listitem><para><literal>Choose a name</literal>
-          (operation)</para></listitem>
+        <listitem><para><literal>Choose a name</literal> (operations). See
+          <xref linkend="s2.ref.critics_missing_oper_name"/>
+        </para></listitem>
 
-        <listitem><para><literal>Choose a Name</literal>
-          (state)</para></listitem>
+        <listitem><para><literal>Choose a Name</literal> (states). See
+          <xref linkend="s2.ref.critics_missing_state_name"/>
+        </para></listitem>
 
         <listitem><para><literal>Add Instance Variables to
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;class&gt;</literal>. See
+          <xref linkend="s2.ref.critics_no_instance_variables"/>
+        </para></listitem>
 
         <listitem><para><literal>Add Associations to
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;artifact&gt;</literal>. See
+          <xref linkend="s2.ref.critics_no_associations"/>
+        </para></listitem>
 
         <listitem><para><literal>Add Operations to
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;artifact&gt;</literal>. See
+          <xref linkend="s2.ref.critics_no_operations"/>
+        </para></listitem>
 
         <listitem><para><literal>Add Constructor to
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;class&gt;</literal>. See
+          <xref linkend="s2.ref.critics_constructor_needed"/>
+        </para></listitem>
 
         <listitem><para><literal>Add Elements to Package
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;package&gt;</literal>. See
+          <xref linkend="s2.ref.critics_empty_package"/>
+        </para></listitem>
 
-        <listitem><para><literal>Wrap DataType</literal></para></listitem>
+        <listitem><para><literal>Wrap DataType</literal>. See
+          <xref linkend="s2.ref.critics_non_agg_data_type"/>
+        </para></listitem>
 
         <listitem><para><literal>Import Parameter Type into
-          Class</literal></para></listitem>
+          Class</literal>. See
+          <xref linkend="s2.ref.critics_param_type_not_imported"/>
+        </para></listitem>
 
         <listitem><para><literal>Resolve Signature
-          Conflict</literal></para></listitem>
+          Conflict</literal>. See
+          <xref linkend="s2.ref.critics_signature_conflict"/>
+        </para></listitem>
 
         <listitem><para><literal>Define Concrete
-          (Sub)Class</literal></para></listitem>
+          (Sub)Class</literal>. See
+          <xref linkend="s2.ref.critics_useless_abstract"/>
+        </para></listitem>
 
         <listitem><para><literal>Define Class to Implement
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;interface&gt;</literal>. See
+          <xref linkend="s2.ref.critics_useless_interface"/>
+        </para></listitem>
 
         <listitem><para><literal>Choose a Unique Name for
-          &lt;artifact&gt;</literal> (state)</para></listitem>
+          &lt;state&gt;</literal> (states). See
+          <xref linkend="s2.ref.critics_disambig_state_name"/>
+        </para></listitem>
 
         <listitem><para><literal>Revise Name to Avoid
-          Confusion</literal></para></listitem>
+          Confusion</literal>. See
+          <xref linkend="s2.ref.critics_name_confusion"/>
+        </para></listitem>
 
         <listitem><para><literal>Remove Reference to Specific
-          Subclass</literal></para></listitem>
+          Subclass</literal>. See
+          <xref linkend="s2.ref.critics_subclass_reference"/>
+        </para></listitem>
 
         <listitem><para><literal>Choose a Legal
-          Name</literal></para></listitem>
+          Name</literal>. See
+          <xref linkend="s2.ref.critics_illegal_name"/>
+        </para></listitem>
 
         <listitem><para><literal>Change &lt;artifact&gt; to a Non-Reserved
-          Word</literal></para></listitem>
+          Word</literal>. See
+          <xref linkend="s2.ref.critics_reserved_name"/>
+        </para></listitem>
 
         <listitem><para><literal>Change Multiple Inheritance to
-          interfaces</literal></para></listitem>
+          interfaces</literal>. See
+          <xref linkend="s2.ref.critics_multiple_inheritance"/>
+        </para></listitem>
 
         <listitem><para><literal>Reduce Associations on
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;artifact&gt;</literal>. See
+          <xref linkend="s2.ref.critics_too_many_assoc"/>
+        </para></listitem>
 
         <listitem><para><literal>Reduce Attributes on
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;class&gt;</literal>. See
+          <xref linkend="s2.ref.critics_too_many_attr"/>
+        </para></listitem>
 
         <listitem><para><literal>Reduce Operations on
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;artifact&gt;</literal>. See
+          <xref linkend="s2.ref.critics_too_many_oper"/>
+        </para></listitem>
 
         <listitem><para><literal>Reduce Transitions on
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;state&gt;</literal>. See
+          <xref linkend="s2.ref.critics_too_many_transitions"/>
+        </para></listitem>
 
         <listitem><para><literal>Reduce States in machine
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;diagram&gt;</literal>. See
+          <xref linkend="s2.ref.critics_too_many_states"/>
+        </para></listitem>
 
         <listitem><para><literal>Reduce Classes in diagram
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;diagram&gt;</literal>. See
+          <xref linkend="s2.ref.critics_too_many_classes"/>
+        </para></listitem>
 
         <listitem><para><literal>Add Transitions to
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;state&gt;</literal>. See
+          <xref linkend="s2.ref.critics_no_transitions"/>
+        </para></listitem>
 
         <listitem><para><literal>Add Incoming Transitions to
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;state&gt;</literal>. See
+          <xref linkend="s2.ref.critics_no_incoming_transitions"/>
+        </para></listitem>
 
         <listitem><para><literal>Add Outgoing Transitions from
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;state&gt;</literal>. See
+          <xref linkend="s2.ref.critics_no_outgoing_transitions"/>
+        </para></listitem>
 
         <listitem><para><literal>Remove Extra Initial
-          States</literal></para></listitem>
+          States</literal>. See
+          <xref linkend="s2.ref.critics_multiple_initial_states"/>
+        </para></listitem>
 
         <listitem><para><literal>Place an Initial
-          State</literal></para></listitem>
+          State</literal>. See
+          <xref linkend="s2.ref.critics_no_initial_state"/>
+        </para></listitem>
 
         <listitem><para><literal>Add Trigger or Guard to
-          Transition</literal></para></listitem>
+          Transition</literal>. See
+          <xref linkend="s2.ref.critics_no_trigger_or_guard"/>
+        </para></listitem>
 
         <listitem><para><literal>Change Join
-          Transitions</literal></para></listitem>
+          Transitions</literal>. See
+          <xref linkend="s2.ref.critics_invalid_join"/>
+        </para></listitem>
 
         <listitem><para><literal>Change Fork
-          Transitions</literal></para></listitem>
+          Transitions</literal>. See
+          <xref linkend="s2.ref.critics_invalid_fork"/>
+        </para></listitem>
 
         <listitem><para><literal>Change Branch
-          Transitions</literal></para></listitem>
+          Transitions</literal>. See
+          <xref linkend="s2.ref.critics_invalid_branch"/>
+        </para></listitem>
 
         <listitem><para><literal>Add Guard to
-          Transition</literal></para></listitem>
+          Transition</literal>. See
+          <xref linkend="s2.ref.critics_no_guard"/>
+        </para></listitem>
 
         <listitem><para><literal>Choose a Better Operation
-          Name</literal></para></listitem>
+          Name</literal>. See
+          <xref linkend="s2.ref.critics_unconventional_oper_name"/>
+        </para></listitem>
 
         <listitem><para><literal>Choose a Better Attribute
-          Name</literal></para></listitem>
+          Name</literal>. See
+          <xref linkend="s2.ref.critics_unconventional_attr_name"/>
+        </para></listitem>
 
         <listitem><para><literal>Capitalise Class Name
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;class&gt;</literal>. See
+          <xref linkend="s2.ref.critics_unconventional_class_name"/>
+        </para></listitem>
 
         <listitem><para><literal>Revise Package Name
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;package&gt;</literal>. See
+          <xref linkend="s2.ref.critics_unconventional_pack_name"/>
+        </para></listitem>
 
         <listitem><para><literal>Consider using Singleton Pattern for
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;class&gt;</literal>. See
+          <xref linkend="s2.ref.critics_consider_singleton"/>
+        </para></listitem>
 
         <listitem><para><literal>Singleton Stereotype Violated in
-          &lt;artifact&gt;</literal></para></listitem>
+          &lt;class&gt;</literal>. See
+          <xref linkend="s2.ref.critics_singleton_violated"/>
+        </para></listitem>
 
         <listitem><para><literal>Nodes normally have no
-          enclosers</literal></para></listitem>
+          enclosers</literal>. See
+          <xref linkend="s2.ref.critics_node_inside_element"/>
+        </para></listitem>
 
         <listitem><para><literal>NodeInstances normally have no
-          enclosers</literal></para></listitem>
+          enclosers</literal>. See
+          <xref linkend="s2.ref.critics_node_instance_inside_element"/>
+        </para></listitem>
 
         <listitem><para><literal>Components normally are inside
-          nodes</literal></para></listitem>
+          nodes</literal>. See
+          <xref linkend="s2.ref.critics_component_without_node"/>
+        </para></listitem>
 
         <listitem><para><literal>ComponentInstances normally are inside
-          nodes</literal></para></listitem>
+          nodes</literal>. See
+          <xref linkend="s2.ref.critics_comp_instance_without_node"/>
+        </para></listitem>
 
         <listitem><para><literal>Classes normally are inside
-          components</literal></para></listitem>
+          components</literal>. See
+          <xref linkend="s2.ref.critics_class_without_component"/>
+        </para></listitem>
 
         <listitem><para><literal>Interfaces normally are inside
-          components</literal></para></listitem>
+          components</literal>. See
+          <xref linkend="s2.ref.critics_interface_without_component"/>
+        </para></listitem>
 
         <listitem><para><literal>Objects normally are inside
-          components</literal></para></listitem>
+          components</literal>. See
+          <xref linkend="s2.ref.critics_object_without_component"/>
+        </para></listitem>
 
         <listitem><para><literal>LinkEnds have not the same
-          locations</literal></para></listitem>
+          locations</literal>. See
+          <xref linkend="s2.ref.critics_wrong_link_ends"/>
+        </para></listitem>
 
         <listitem><para><literal>Set classifier</literal> (deployment
-          diagram)</para></listitem>
+          diagram). See
+          <xref linkend="s2.ref.critics_instance_without_classifier"/>
+        </para></listitem>
 
         <listitem><para><literal>Missing
-          return-actions</literal></para></listitem>
+          return-actions</literal>. See
+          <xref linkend="s2.ref.critics_call_without_return"/>
+        </para></listitem>
 
         <listitem><para><literal>Missing
-          call(send)-action</literal></para></listitem>
+          call(send)-action</literal>. See
+          <xref linkend="s2.ref.critics_return_without_call"/>
+        </para></listitem>
 
         <listitem><para><literal>No Stimuli on these
-          links</literal></para></listitem>
+          links</literal>. See
+          <xref linkend="s2.ref.critics_link_without_stimulus"/>
+        </para></listitem>
 
         <listitem><para><literal>Set classifier</literal> (sequence
-          diagram)</para></listitem>
+          diagram). See
+          <xref linkend="s2.ref.critics_seq_instance_without_classifier"/>
+        </para></listitem>
 
         <listitem><para><literal>Wrong position of these
-          stimuli</literal></para></listitem>
+          stimuli</literal>. See
+          <xref linkend="s2.ref.critics_stimulus_with_wrong_position"/>
+        </para></listitem>
 
-        <listitem><para><literal>Clean Up Diagram</literal></para></listitem>
+        <listitem><para><literal>Clean Up Diagram</literal>. See
+          <xref linkend="s2.ref.critics_nodes_overlap"/>
+        </para></listitem>
 
         <listitem><para><literal>Make Edge More
-          Visible</literal></para></listitem>
+          Visible</literal>. See
+          <xref linkend="s2.ref.critics_zero_length_edge"/>
+        </para></listitem>
       </itemizedlist>
 
       <para>To the right of the list are a series of fields giving detailed

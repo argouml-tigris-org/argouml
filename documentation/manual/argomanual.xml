@@ -15,6 +15,8 @@ Modifications
 
 11 Dec 2001:  Jeremy Bennett. Added chapter on built in classes
 
+ 1 Feb 2002:  Jeremy Bennett. Broke critics out into separate chapter
+
 -->
 
   <!-- File inclusion ENTITIES -->
@@ -35,6 +37,7 @@ Modifications
   <!ENTITY refdetpane    SYSTEM "ref_detpane.xml">
   <!ENTITY reftodopane   SYSTEM "ref_todopane.xml">
   <!ENTITY refmenu       SYSTEM "ref_menu.xml">
+  <!ENTITY refcritics    SYSTEM "ref_critics.xml">
 
   <!ENTITY refentities   SYSTEM "ref_entities.xml">
   <!ENTITY refentusecase SYSTEM "ref_entusecase.xml">
@@ -106,6 +109,7 @@ Modifications
     &refdetpane;
     &reftodopane;
     &refmenu;
+    &refcritics;
 
     <!-- The reference chapters on the diagrams and artifacts -->
 
