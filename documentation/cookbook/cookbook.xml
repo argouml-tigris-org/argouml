@@ -4336,7 +4336,8 @@ the documentation from the XML-source to HTML and PDF.
 	  <para><filename class="directory">lib</filename></para>
 	  <para>A set of jar files.</para>
 	  <para>
-Currently this directory contains both the jar files of products used
+Currently (June 2002) 
+this directory contains both the jar files of products used
 by the ArgoUML
 (such as log4j, nsuml)
 and jar files of tools used in the building of ArgoUML and the 
@@ -4347,6 +4348,16 @@ documentation
 There is an ambition to move the jar files of the tools to the
 <filename class="directory">tools</filename>-directory
 eventually but when this is written (March 2002) this is not yet in effect.
+</para>
+	  <para>
+Things that after this move are left in
+<filename class="directory">lib</filename>
+are distributed with argouml and have licenses that allow this.
+For clairity the readmy files and licenses and other distribution
+details of each used jar will also be stored in this directory.
+(Quick summary: BSD License, Apache License are LGPL are OK, GPL is not.)
+Don't forget to arrange for the modules version and license information
+to appear when starting ArgoUML and in the About box.
 </para>
 	</listitem>
 	<listitem>
@@ -4392,7 +4403,7 @@ Language generating, Notation and reverse engineering for PHP.
 	<listitem>
 	  <para><filename class="directory">src</filename></para>
 	  <para>
-Old and no longer used source code.
+Old source code. Empty.
 </para>
 	</listitem>
 	<listitem>
@@ -4404,7 +4415,18 @@ All source code for ArgoUML including pictures of icons.
 	<listitem>
 	  <para><filename class="directory">tools</filename></para>
 	  <para>
-Currently empty. Will contain all tools used during the build process.
+Currently (June 2002) empty.
+Will contain all tools used during the build process.
+</para>
+	  <para>
+Tools also have the readme files, licenses and other distribution files
+stored in this directory in much the same way as the libraries in
+<filename class="directory">lib</filename>.
+However the requirement on the license is different.
+The tools are never distributed with argouml but merely used in the
+development of argouml so it is enough to have a license that does not
+allow distribution.
+(Quick summary: BSD License, Apache license, LGPL, GPL, Freeware are OK.)
 </para>
 	</listitem>
 	<listitem>
