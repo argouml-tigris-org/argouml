@@ -498,14 +498,19 @@ public class ExplorerTreeModel extends DefaultTreeModel
     private void mergeChildren(ExplorerTreeNode node, List children,
 			       List newChildren) {
 	Set removeObjects = prepareAddRemoveSets(children, newChildren);
+	// Remember that children are not TreeNodes but UserObjects
+	Vector actualNodes = new Vector();
+	Enumeration childrenEnum = node.children();
+	while (childrenEnum.hasMoreElements()) {
+	    actualNodes.add(childrenEnum.nextElement());
+	}
 
 	int position = 0;
-	// Remember that children are not TreeNodes but UserObjects
-	Enumeration childNodes = node.children();
+	Iterator childNodes = actualNodes.iterator();
 	Iterator newNodes = newChildren.iterator();
 	Object firstNew = newNodes.hasNext() ? newNodes.next() : null;
-	while (childNodes.hasMoreElements()) {
-	    Object childObj = childNodes.nextElement();
+	while (childNodes.hasNext()) {
+	    Object childObj = childNodes.next();
 	    if (!(childObj instanceof DefaultMutableTreeNode)) {
 		continue;
 	    }
