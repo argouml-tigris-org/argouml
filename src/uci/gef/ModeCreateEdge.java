@@ -92,8 +92,6 @@ public class ModeCreateEdge extends ModeCreate {
   /** On mousePressed determine what port the user is dragging from.
    *  The mousePressed event is sent via ModeSelect. */
   public void mousePressed(MouseEvent me) {
-    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
-    //if (me.getModifiers() != InputEvent.BUTTON1_MASK) return;
     if (me.isConsumed()) return;
     int x = me.getX(), y = me.getY();
     Editor ce = Globals.curEditor();

@@ -688,7 +688,7 @@ class ActionSaveProjectAs extends UMLAction {
 	  if (!name.endsWith(".argo")) name += ".argo";
 	  if (!path.endsWith(separator)) path += separator;
 	  pb.showStatus("Writing " + path + name + "...");
-	  p.setName(name);
+	  p.setFile(chooser.getSelectedFile());
 	  //p.setPathname(path);
 	  File f = new File(path + name);
 	  p.setURL(Util.fileToURL(f));

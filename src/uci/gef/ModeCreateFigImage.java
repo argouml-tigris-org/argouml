@@ -101,8 +101,6 @@ public class ModeCreateFigImage extends ModeCreate {
 
   /** On mouse down, do nothing. */
   public void mousePressed(MouseEvent me) {
-    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
-    //if (me.getModifiers() != InputEvent.BUTTON1_MASK) return;
     me.consume();
   }
 

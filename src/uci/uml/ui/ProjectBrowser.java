@@ -509,6 +509,7 @@ implements IStatusBar {
     Designer.TheDesigner.setCritiquingRoot(_project);
     // update all panes
     setTarget(_project.getInitialTarget());
+    _navPane.forceUpdate();
   }
   public Project getProject() { return _project; }
 

@@ -45,7 +45,7 @@ public class AboutBox extends JFrame {
   // instance varaibles
 
   JTabbedPane _tabs = new JTabbedPane();
-  JButton _splashButton = new JButton("");
+  JLabel _splashButton = new JLabel("");
   JTextArea _version = new JTextArea();
   JTextArea _credits = new JTextArea();
   JTextArea _contact = new JTextArea();
@@ -65,7 +65,7 @@ public class AboutBox extends JFrame {
     //setSize(new Dimension(imgWidth + 10, imgHeight + 40));
     getContentPane().setLayout(new BorderLayout(0, 0));
 
-    _splashButton.setMargin(new Insets(0, 0, 0, 0));
+    //_splashButton.setMargin(new Insets(0, 0, 0, 0));
     _splashButton.setIcon(splashImage);
 
 
@@ -75,17 +75,17 @@ public class AboutBox extends JFrame {
 //     _legal.setFont(ctrlFont);
 //     _contact.setFont(ctrlFont);
 
-    _version.setText("Argo/UML Version 0.6\n"+
-		     "Built on Feburary 14, 1999\n"+
+    _version.setText("Argo/UML Version 0.6.1\n"+
+		     "Built on March 17, 1999\n"+
 		     "\n"+
 		     "Includes:\n"+
-		     "  GEF v0.6 beta 5\n"+
-		     "  Argo v0.8\n"+
-		     "  uci.uml v0.5\n"+
+		     "  GEF v0.6.1\n"+
+		     "  Argo v0.8.1\n"+
+		     "  uci.uml v0.5.1\n"+
 		     "\n"+
 		     "Intended for use with:\n"+
-		     "  Sun's Swing 1.0.3\n"+
-		     "  IBM's XML4J 1.1.14\n"
+		     "  Sun's Swing 1.1.1 beta 1\n"+
+		     "  IBM's XML4J 2.0.4\n"
 		     );
 
     _credits.setText("Argo/UML was developed by the following:\n"+
@@ -103,7 +103,10 @@ public class AboutBox extends JFrame {
 		     "  ICS 125 team Spring 1996\n"+
 		     "  ICS 125 teams Spring 1998\n"+
 		     "\nSpecial Thanks To:\n"+
-		     "  (names of people who submitted bug reports)"
+		     "  Scott Guyer\n"+
+		     "  Piotr Kaminski\n"+
+		     "  Nick Santucci\n"+
+		     "  Sean Chen\n"
 		     );
 
     _contact.setText("For more information on the Argo project:\n"+
@@ -114,7 +117,7 @@ public class AboutBox extends JFrame {
 		     " + Read our conference and journal papers:\n"+
 		     "   (list of publications: KBSE'96, IUI'98, ICSE'98, etc.)"
 		     );
-    
+
     String s = "";
     s+="Copyright (c) 1996-99 The Regents of the University of California.\n";
     s+="All Rights Reserved.  Permission to use, copy, modify, and distribute\n";

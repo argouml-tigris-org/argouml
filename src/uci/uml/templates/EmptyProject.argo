@@ -9,9 +9,9 @@
 
   <searchpath href="PROJECT_DIR"/>
 
-  <member type="xmi"  name="EmptyModel.xmi"          />
-  <member type="pgml" name="EmptyClassDiagram.pgml"  />
-  <member type="pgml" name="EmptyUseCaseDiagram.pgml"/>
+  <member type="xmi"  name="EmptyProject.xmi"          />
+  <member type="pgml" name="EmptyCD.pgml"  />
+  <member type="pgml" name="EmptyUCD.pgml"/>
 
   <historyfile name="Empty.hist"/>
 </argo>

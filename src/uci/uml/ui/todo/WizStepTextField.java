@@ -67,8 +67,8 @@ public class WizStepTextField extends WizStep {
     c.anchor = GridBagConstraints.EAST;
 
     // needs-more-work: should have an image of a wizard or some logo
-    JButton image = new JButton("");
-    image.setMargin(new Insets(0, 0, 0, 0));
+    JLabel image = new JLabel("");
+    //image.setMargin(new Insets(0, 0, 0, 0));
     image.setIcon(WIZ_ICON);
     image.setBorder(null);
     c.gridx = 0;

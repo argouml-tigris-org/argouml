@@ -101,9 +101,7 @@ public class ModeDragScroll extends Mode implements ActionListener {
    * @param me 
    */
   public void mousePressed(MouseEvent me) {
-    //if (me.getModifiers() != InputEvent.BUTTON2_MASK) return;
     dragScrolling = (me.getModifiers() == InputEvent.BUTTON2_MASK);
-    //if (dragScrolling) System.out.println("dragScrolling");
 
     // get the component and the view
     component = (JComponent) _editor.getAwtComponent();
@@ -139,8 +137,6 @@ public class ModeDragScroll extends Mode implements ActionListener {
    * @param me 
    */
   public void mouseDragged(MouseEvent me) {
-    //if (me.getModifiers() != InputEvent.BUTTON2_MASK) return;
-
     int x = me.getX(), y = me.getY();
     recentX = x; recentY = y;
     // are we out of this component? if so, don't do anything
@@ -254,7 +250,6 @@ public class ModeDragScroll extends Mode implements ActionListener {
    * @param me 
    */
   public void mouseReleased(MouseEvent me) {
-    //if (me.getModifiers() != InputEvent.BUTTON2_MASK) return;
     currentView = null;
     if (dragScrolling) component.setCursor(oldCursor);
     component = null;

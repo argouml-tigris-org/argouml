@@ -120,7 +120,7 @@ public class ModeModify extends Mode {
    *  handle around the drawing area and the Fig reacts to that.  */
   public void mouseDragged(MouseEvent me) {
     if (me.isConsumed()) return;
-    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) {
+    if ((me.getModifiers() & InputEvent.BUTTON1_MASK) == 0) {
       //System.out.println("wrong button in ModeModify mouseDragged");
       return;
     }
@@ -186,8 +186,6 @@ public class ModeModify extends Mode {
    *  starts preparing for future drag events by finding if a handle
    *  was clicked on.  This event is passed from ModeSelect. */
   public void mousePressed(MouseEvent me) {
-    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
-    //if (me.getModifiers() != InputEvent.BUTTON1_MASK) return;
     if (me.isConsumed()) return;
     int x = me.getX(), y = me.getY();
     start();
@@ -216,7 +214,6 @@ public class ModeModify extends Mode {
   /** On mouse up the modification interaction is done. */
   public void mouseReleased(MouseEvent me) {
     if (me.isConsumed()) return;
-    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
     done();
     me.consume();
     SelectionManager sm = getEditor().getSelectionManager();

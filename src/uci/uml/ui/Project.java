@@ -186,6 +186,30 @@ public class Project implements java.io.Serializable {
     _url = url;
   }
 
+//   public void setFilename(String path, String name) throws PropertyVetoException {
+//     if (!(name.endsWith(FILE_EXT))) name += FILE_EXT;
+//     if (!(path.endsWith("/"))) path += "/";
+//     URL url = new URL("file://" + path + name);
+//     getVetoSupport().fireVetoableChange("url", _url, url);
+//     _url = url;
+//   }
+
+  public void setFile(File file) throws PropertyVetoException {
+    try {
+      URL url = Util.fileToURL(file);
+      getVetoSupport().fireVetoableChange("url", _url, url);
+      _url = url;
+    }
+    catch (MalformedURLException murle) {
+      System.out.println("problem in setFile:" + file);
+      murle.printStackTrace();
+    }
+    catch (IOException ex) {
+      System.out.println("problem in setFile:" + file);
+      ex.printStackTrace();
+    }
+  }
+
 //   public String getFilename() { return _filename; }
 //   public void setFilename(String n) throws PropertyVetoException {
 //     getVetoSupport().fireVetoableChange("Filename", _filename, n);
@@ -211,7 +235,8 @@ public class Project implements java.io.Serializable {
     URL url = null;
     try { url = new URL(u + name); }
     catch (MalformedURLException murle) {
-      System.out.println("MalformedURLException in findMemberURLInSearchPath");
+      System.out.println("MalformedURLException in findMemberURLInSearchPath:" + u + name);
+      murle.printStackTrace();
     }
     return url;
   }

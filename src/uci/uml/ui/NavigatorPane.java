@@ -65,7 +65,7 @@ implements ItemListener, TreeSelectionListener {
   protected Vector _navHistory = new Vector();
   protected int _historyIndex = 0;
   protected NavPerspective _curPerspective = null;
-  protected JTree _tree = new DisplayTextTree();
+  protected DisplayTextTree _tree = new DisplayTextTree();
 //   protected Action _navBack = Actions.NavBack;
 //   protected Action _navForw = Actions.NavForw;
 //   protected Action _navConfig = Actions.NavConfig;
@@ -139,6 +139,8 @@ implements ItemListener, TreeSelectionListener {
   public Object getSelectedObject() {
     return _tree.getLastSelectedPathComponent();
   }
+
+  public void forceUpdate() { _tree.forceUpdate(); }
 
   /** This is pretty limited, it is really only useful for selecting
    *  the default diagram when the user does New.  A general function

@@ -107,10 +107,6 @@ public class ModeBroom extends Mode {
    *  the shift key is not down, then go to ModeModify. If the mouse
    *  down event happens on a port, to to ModeCreateEdge.   */
   public void mousePressed(MouseEvent me) {
-    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) {
-      //System.out.println("wrong button");
-      return;
-    }
     if (me.isConsumed()) return;
     _touched = new Fig[MAX_TOUCHED];
     _origX = new int[MAX_TOUCHED];

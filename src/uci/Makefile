@@ -41,7 +41,8 @@ GEF_DIRS= util           \
 	beans/editors    \
 	ui               \
 	gef/demo	 \
-	xml/pgml	 \
+	xml 	 	 \
+	xml/pgml	 
 
 UML_DIRS= uml/Foundation/Core                   \
 	uml/Foundation/Data_Types               \
@@ -52,6 +53,7 @@ UML_DIRS= uml/Foundation/Core                   \
 	uml/Behavioral_Elements/Use_Cases       \
 	uml/Behavioral_Elements/Collaborations  \
 	uml/util                                \
+	uml/ocl                                 \
 	uml/test/omg                            \
 	uml/generate
 
@@ -63,11 +65,12 @@ ARGOUML_DIRS= argo/kernel        \
 	uml/ui/props             \
 	uml/ui/table             \
 	uml/ui/style             \
-	uml/ui/colorize          \
 	uml/visual               \
 	xml/xmi                  \
 	xml/argo                 \
 	uml                      
+
+#	uml/ui/colorize       
 
 CRITICS_DIRS= uml/checklist       \
 	uml/critics               \

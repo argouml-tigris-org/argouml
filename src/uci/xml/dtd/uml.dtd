@@ -2799,10 +2799,10 @@
                               %deferredEvent;*' >
 
 <!ENTITY % entry 'entry' >
-<!ELEMENT entry (ActionSequence?) >
+<!ELEMENT entry (#PCDATA | ActionSequence)* >
 
 <!ENTITY % exit 'exit' >
-<!ELEMENT exit (ActionSequence?) >
+<!ELEMENT exit (#PCDATA | ActionSequence)* >
 
 <!ENTITY % internalTransition 'internalTransition' >
 <!ELEMENT internalTransition (Transition*) >

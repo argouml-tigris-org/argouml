@@ -98,9 +98,7 @@ public abstract class ModeCreate extends Mode {
 
   /** On mouse down, make a new Fig in memory. */
   public void mousePressed(MouseEvent me) {
-    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
     if (me.isConsumed()) return;
-    //if (me.getModifiers() == InputEvent.BUTTON3_MASK) return;
     start();
     synchronized (snapPt) {
       snapPt.setLocation(me.getX(), me.getY());

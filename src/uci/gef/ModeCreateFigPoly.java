@@ -72,8 +72,6 @@ public class ModeCreateFigPoly extends ModeCreate {
   // Event handlers
 
   public void mousePressed(MouseEvent me) {
-    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
-    //if (me.getModifiers() != InputEvent.BUTTON1_MASK) return;
     if (me.isConsumed()) return;
     int x = me.getX(), y = me.getY();
     if (_npoints == 0) { super.mousePressed(me); }

@@ -71,8 +71,8 @@ public class WizStepChoice extends WizStep {
     c.weightx = 0.0; c.weighty = 0.0;
     c.anchor = GridBagConstraints.EAST;
 
-    JButton image = new JButton("");
-    image.setMargin(new Insets(0, 0, 0, 0));
+    JLabel image = new JLabel("");
+    //image.setMargin(new Insets(0, 0, 0, 0));
     image.setIcon(WIZ_ICON);
     image.setBorder(null);
     c.gridx = 0;

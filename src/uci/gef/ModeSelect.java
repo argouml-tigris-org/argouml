@@ -94,10 +94,6 @@ public class ModeSelect extends Mode {
    *  the shift key is not down, then go to ModeModify. If the mouse
    *  down event happens on a port, to to ModeCreateEdge.   */
   public void mousePressed(MouseEvent me) {
-    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) {
-      //System.out.println("ModeSelect wrong button:" + me.getModifiers());
-      return;
-    }
     if (me.isConsumed()) {
       //System.out.println("ModeSelect consumed");
       return;
@@ -129,8 +125,7 @@ public class ModeSelect extends Mode {
   /** On mouse dragging, stretch the selection rectangle. */
   public void mouseDragged(MouseEvent me) {
     if (me.isConsumed()) return;
-    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
-    //if (me.getModifiers() != InputEvent.BUTTON1_MASK) return;
+    if ((me.getModifiers() & InputEvent.BUTTON1_MASK) == 0) return;
     int x = me.getX(), y = me.getY();
     _showSelectRect = true;
     int bound_x = Math.min(_selectAnchor.x, x);
@@ -149,8 +144,6 @@ public class ModeSelect extends Mode {
   /** On mouse up, select or toggle the selection of items under the
    *  mouse or in the selection rectangle. */
   public void mouseReleased(MouseEvent me) {
-    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
-    //if (me.getModifiers() != InputEvent.BUTTON1_MASK) return;
     if (me.isConsumed()) return;
     int x = me.getX(), y = me.getY();
     _showSelectRect = false;
@@ -177,7 +170,7 @@ public class ModeSelect extends Mode {
 
     _selectRect.grow(1,1); /* make sure it is not empty for redraw */
     _editor.damaged(_selectRect);
-    //if (me.getModifiers() == InputEvent.BUTTON3_MASK) return;
+    if (me.getModifiers() == InputEvent.BUTTON3_MASK) return;
     me.consume();
   }
 

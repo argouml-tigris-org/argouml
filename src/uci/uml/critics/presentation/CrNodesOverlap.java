@@ -36,6 +36,7 @@ import uci.argo.kernel.*;
 import uci.util.*;
 import uci.gef.*;
 import uci.uml.critics.*;
+import uci.uml.visual.FigNodeModelElement;
 
 
 /** A critic to detect when a class can never have instances (of
@@ -59,7 +60,7 @@ public class CrNodesOverlap extends CrUML {
     addSupportedDecision(CrUML.decCLASS_SELECTION);
     addSupportedDecision(CrUML.decEXPECTED_USAGE);
     addSupportedDecision(CrUML.decSTATE_MACHINES);
-    setKnowledgeTypes(Critic.KT_PRESENTATION);    
+    setKnowledgeTypes(Critic.KT_PRESENTATION);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -90,29 +91,36 @@ public class CrNodesOverlap extends CrUML {
     boolean res = offs.equals(newOffs);
     return res;
   }
-  
+
   public Set computeOffenders(Diagram d) {
     //needs-more-work: algorithm is n^2 in number of nodes
     Vector figs = d.getLayer().getContents();
     int numFigs = figs.size();
     int numRects = 0;
     Set offs = null;
-    synchronized (nodeRects) {
-      for (int i = 0; i < numFigs; i++) {
-	Object o = figs.elementAt(i);
-	if (o instanceof FigNode) {
-	  FigNode fn = (FigNode) o;
-	  for (int j = 0; j < numRects; j++)
-	    if (fn.intersects(nodeRects[j])) {
-	      if (offs == null) {
-		offs = new Set();
-		offs.addElement(d);
-	      }
-	      offs.addElement(fn);
-	      break;
+    for (int i = 0; i < numFigs-1; i++) {
+      Object o_i = figs.elementAt(i);
+      if (!(o_i instanceof FigNode)) continue;
+      FigNode fn_i = (FigNode) o_i;
+      Rectangle bounds_i = fn_i.getBounds();
+      for (int j = i+1; j < numFigs; j++) {
+	Object o_j = figs.elementAt(j);
+	if (!(o_j instanceof FigNode)) continue;
+	FigNode fn_j = (FigNode) o_j;
+	if (fn_j.intersects(bounds_i)) {
+	  if (fn_i instanceof FigNodeModelElement) {
+	    if (((FigNodeModelElement)fn_i).getEnclosingFig() == fn_j) continue;
 	  }
-	  nodeRects[numRects++] = fn.getBounds();
-	  if (numRects > 99) numRects = 99;
+	  if (fn_j instanceof FigNodeModelElement) {
+	    if (((FigNodeModelElement)fn_j).getEnclosingFig() == fn_i) continue;
+	  }
+	  if (offs == null) {
+	    offs = new Set();
+	    offs.addElement(d);
+	  }
+	  offs.addElement(fn_i);
+	  offs.addElement(fn_j);
+	  break;
 	}
       }
     }

@@ -167,6 +167,22 @@ implements VetoableChangeListener {
   public static final int REMOVE = 3;
   //public static Object path[] = new Object[DEPTH_LIMIT];
 
+  public void forceUpdate() {
+    int n = 0;
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    NavPerspective np = pb.getNavPane().getCurPerspective();
+    Vector pers = pb.getNavPane().getPerspectives();
+    NavPerspective curPerspective = pb.getNavPane().getCurPerspective();
+    if (curPerspective == null) return;
+    if (curPerspective.equals(np))
+      n = pers.indexOf(curPerspective) + 1;
+    else
+	n = 0;
+    NavPerspective npX = (NavPerspective) pers.elementAt(n);
+    pb.getNavPane().setCurPerspective(npX);
+    pb.getNavPane().setCurPerspective(np);
+  }
+
   public void reexpand() {
     if (_expandedPathsInModel == null) return;
     _reexpanding = true;
@@ -174,6 +190,7 @@ implements VetoableChangeListener {
     path2[0] = getModel().getRoot();
     TreeModelEvent tme = new TreeModelEvent(this, path2, null, null);
     treeModelListener.treeStructureChanged(tme);
+    treeDidChange();
     //((AbstractTreeUI)getUI()).rebuild();
     //In Swing 1.1.1 try: treeDidChange();
     //In Swing 1.1.1 try: fireTreeStructureChanged();
@@ -225,29 +242,8 @@ implements VetoableChangeListener {
 class UpdateTreeHack implements Runnable {
   DisplayTextTree _tree;
 
-  public UpdateTreeHack(DisplayTextTree t) {
-    _tree = t;
-  }
+  public UpdateTreeHack(DisplayTextTree t) { _tree = t; }
 
-  public void run() {
-      int n = 0;
-      ProjectBrowser pb = ProjectBrowser.TheInstance;
-      NavPerspective np = pb.getNavPane().getCurPerspective();
-      Vector pers = pb.getNavPane().getPerspectives();
-      NavPerspective curPerspective = pb.getNavPane().getCurPerspective();
-      if ( curPerspective.equals(np))
-	n = pers.indexOf(curPerspective) + 1;
-      else
-	n = 0;
-      NavPerspective npX = (NavPerspective) pers.elementAt(n);
-      pb.getNavPane().setCurPerspective(npX);
-      pb.getNavPane().setCurPerspective(np);
-      //pb.getNavPane().updateTree();
-      //_tree.resetModel();
-      //_tree.reexpand();
-  }
+  public void run() { _tree.forceUpdate(); }
 
-//   public void run() {
-//     _tree.reexpand();
-//   }
 } /* end class UpdateTreeHack */

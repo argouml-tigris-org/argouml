@@ -54,7 +54,7 @@ public abstract class ProjectMember {
   // constructors
 
   public ProjectMember(String name, Project project) {
-    _name = name;
+    setName(name);
     _project = project;
   }
 
@@ -63,11 +63,14 @@ public abstract class ProjectMember {
   // accessors
 
 
-  public String getName() { return _name; }
-  public void setName(String s) {
-    if (!s.endsWith(getFileExtension())) s += getFileExtension();
-    _name = _project.getBaseName() + "_" + s;
+  public String getName() {
+    String s = _name;
+    if (!(s.startsWith(_project.getBaseName() + "_")))
+      s = _project.getBaseName() + "_" + s;
+    if (!(s.endsWith(getFileExtension()))) s += getFileExtension();
+    return s;
   }
+  public void setName(String s) { _name = s; }
 
   public Project getProject() { return _project; }
 
