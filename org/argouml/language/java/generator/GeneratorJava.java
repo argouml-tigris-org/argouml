@@ -61,6 +61,9 @@ import org.argouml.uml.generator.*;
 
 public class GeneratorJava extends Generator implements PluggableNotation {
 
+  private static final boolean VERBOSE_DOCS = false; // TODO: make it configurable
+  private static final boolean LF_BEFORE_CURLY = false; // TODO: make it configurable
+
   private static GeneratorJava SINGLETON = new GeneratorJava();
 
   public static GeneratorJava getInstance() { return SINGLETON; }
@@ -148,8 +151,8 @@ public class GeneratorJava extends Generator implements PluggableNotation {
         if (fos != null) fos.close();
       }
       catch (IOException exp) {
-		Argo.log.error("FAILED: " + f.getPath());
-	  }
+        Argo.log.error("FAILED: " + f.getPath());
+      }
     }
 
 	//Argo.log.info("----- end updating -----");
@@ -161,9 +164,9 @@ public class GeneratorJava extends Generator implements PluggableNotation {
                                 String packagePath) {
     StringBuffer sb = new StringBuffer(80);
     //needs-more-work: add user-defined copyright
-    sb.append("// FILE: ").append(pathname.replace('\\','/')).append("\n\n");
+    if (VERBOSE_DOCS) sb.append("// FILE: ").append(pathname.replace('\\','/')).append("\n\n");
     if (packagePath.length() > 0) sb.append("package ").append(packagePath).append(";\n");
-    sb.append("import java.util.*;\n\n");
+    sb.append("import java.util.*;\n");
     return sb.toString();
   }
 
@@ -191,8 +194,10 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     String nameStr = generateName (op.getName());
     String clsName = generateName (op.getOwner().getName());
 
+    sb.append ('\n')
+      .append (DocumentationManager.getComments(op));
     if (documented)
-      sb.append(generateConstraintEnrichedDocComment(op)).append("\n").append(INDENT);
+      sb.append(generateConstraintEnrichedDocComment(op)).append(INDENT);
 
     sb.append(generateAbstractness(op));
     sb.append(generateChangeability(op));
@@ -239,8 +244,10 @@ public class GeneratorJava extends Generator implements PluggableNotation {
   public String generateAttribute (MAttribute attr, boolean documented) {
     StringBuffer sb = new StringBuffer(80);
 
+    sb.append ('\n')
+      .append (DocumentationManager.getComments(attr));
     if (documented)
-      sb.append(generateConstraintEnrichedDocComment(attr)).append('\n').append(INDENT);
+      sb.append(generateConstraintEnrichedDocComment(attr)).append(INDENT);
 
     sb.append(generateVisibility(attr));
     sb.append(generateScope(attr));
@@ -316,9 +323,9 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     StringBuffer sb = new StringBuffer (80);
 
     // Add the comments for this classifier first.
-    sb.append (DocumentationManager.getComments (cls))
-      .append (generateConstraintEnrichedDocComment (cls))
-      .append ("\n");
+    sb.append ('\n')
+      .append (DocumentationManager.getComments(cls))
+      .append (generateConstraintEnrichedDocComment(cls));
 
     // Now add visibility
     sb.append (generateVisibility (cls.getVisibility()));
@@ -357,7 +364,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     }
 
     // add opening brace
-	  sb.append (" {");
+	  sb.append(LF_BEFORE_CURLY ? "\n{" : " {");
 
     // list tagged values for documentation
     String tv = generateTaggedValues (cls);
@@ -400,11 +407,15 @@ public class GeneratorJava extends Generator implements PluggableNotation {
       else if (cls instanceof MInterface) sClassifierKeyword = "interface";
       else return null; // actors, use cases etc.
 
-      sbPrefix.append ("\n} /* end of ")
-              .append (sClassifierKeyword)
-              .append (" ")
-              .append (generateName (cls.getName()))
-              .append (" */\n");
+      sbPrefix.append ("\n}");
+      if (VERBOSE_DOCS) {
+        sbPrefix.append (" /* end of ")
+                .append (sClassifierKeyword)
+                .append (" ")
+                .append (generateName (cls.getName()))
+                .append (" */");
+      }
+      sbPrefix.append ('\n');
 
       return sbPrefix;
     }
@@ -420,8 +431,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     Collection strs = MMUtil.SINGLETON.getAttributes(cls);
     if (strs != null) {
       sb.append ('\n');
-
-      if (cls instanceof MClassImpl) {
+      if (VERBOSE_DOCS && cls instanceof MClassImpl) {
         sb.append (INDENT)
           .append("// Attributes\n");
       }
@@ -430,15 +440,13 @@ public class GeneratorJava extends Generator implements PluggableNotation {
       while (strEnum.hasNext()) {
         MStructuralFeature sf = (MStructuralFeature) strEnum.next();
 
-        sb.append ('\n')
-          .append (INDENT)
+        sb.append (INDENT)
           .append (generate (sf));
 
         tv = generateTaggedValues (sf);
         if (tv != null && tv.length() > 0) {
           sb.append (INDENT)
-            .append (tv)
-            .append ('\n');
+            .append (tv);
         }
       }
     }
@@ -447,8 +455,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     Collection ends = cls.getAssociationEnds();
     if (ends != null) {
       sb.append ('\n');
-
-      if (cls instanceof MClassImpl) {
+      if (VERBOSE_DOCS && cls instanceof MClassImpl) {
         sb.append (INDENT)
           .append ("// Associations\n");
       }
@@ -458,8 +465,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
         MAssociationEnd ae = (MAssociationEnd) endEnum.next();
         MAssociation a = ae.getAssociation();
 
-        sb.append ('\n')
-          .append (INDENT)
+        sb.append (INDENT)
           .append (generateAssociationFrom (a, ae));
 
         tv = generateTaggedValues (a);
@@ -474,17 +480,17 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     // needs-more-work: constructors
     Collection behs = MMUtil.SINGLETON.getOperations(cls);
     if (behs != null) {
-      sb.append ('\n')
-        .append (INDENT)
-        .append ("// Operations\n");
-
+      sb.append ('\n');
+      if (VERBOSE_DOCS) {
+        sb.append (INDENT)
+          .append ("// Operations\n");
+      }
       Iterator behEnum = behs.iterator();
 
       while (behEnum.hasNext()) {
         MBehavioralFeature bf = (MBehavioralFeature) behEnum.next();
 
-        sb.append ('\n')
-          .append (INDENT)
+        sb.append (INDENT)
           .append (generate (bf));
 
         tv = generateTaggedValues ((MModelElement)bf);
@@ -492,20 +498,23 @@ public class GeneratorJava extends Generator implements PluggableNotation {
         if ((cls instanceof MClassImpl) &&
             (bf instanceof MOperation) &&
             (! ((MOperation) bf).isAbstract())) {
-          sb.append ("\n")
-            .append (INDENT)
-            .append ("{");
+          if (LF_BEFORE_CURLY)
+            sb.append ('\n').append (INDENT);
+          else
+            sb.append (' ');
+          sb.append ('{');
 
           if (tv.length() > 0) {
-            sb.append (INDENT)
+            sb.append ('\n')
+              .append (INDENT)
               .append (tv);
           }
 
           // there is no ReturnType in behavioral feature (nsuml)
-          sb.append (generateMethodBody ((MOperation) bf))
-            .append ('\n')
+          sb.append ('\n')
+            .append (generateMethodBody ((MOperation) bf))
             .append (INDENT)
-            .append ("}");
+            .append ("}\n");
         }
         else {
           sb.append (";\n");
@@ -623,7 +632,9 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     if (tv == null) return "";
     String s=generateUninterpreted(tv.getValue());
     if (s == null || s.length() == 0 || s.equals("/** */")) return "";
-    return generateName(tv.getTag()) + "=" + s;
+    String t = tv.getTag();
+    if (t.equals("documentation")) return "";
+    return generateName(t) + "=" + s;
   }
 
   /**
@@ -659,7 +670,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
 
       // Prepare doccomment
       if (s != null) {
-        // Just remove closing */
+        // Just remove closing "*/"
         sDocComment.append(s.substring(0,s.indexOf("*/")+1));
       }
       else {
@@ -676,7 +687,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
           // REMOVED: 2002-03-11 STEFFEN ZSCHALER: element type unknown is not recognized by the OCL injector...
           //sDocComment += " @element-type unknown";
       }
-      sDocComment.append('\n').append(INDENT).append(" */");
+      sDocComment.append('\n').append(INDENT).append(" */\n");
 
       return sDocComment.toString();
     }
@@ -704,10 +715,10 @@ public class GeneratorJava extends Generator implements PluggableNotation {
    */
   static public String generateConstraintEnrichedDocComment (MModelElement me) {
     // Retrieve any existing doccomment
-    String s = DocumentationManager.getDocs(me);
+    String s = (VERBOSE_DOCS || DocumentationManager.hasDocs(me)) ? DocumentationManager.getDocs(me) : null;
     StringBuffer sDocComment = new StringBuffer(80);
 
-    if (s != null) {
+    if (s != null && s.trim().length() > 0) {
       // Fix Bug in documentation manager.defaultFor --> look for current INDENT
       // and use it
       int i1 =0;
@@ -717,7 +728,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
         i1 = i2+1;
         i2 = s.indexOf('\n',i1);
       }
-      sDocComment.append(s.substring(i1));
+      sDocComment.append(s.substring(i1)).append('\n');
     }
 
     // Extract constraints
@@ -814,7 +825,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
       }
     }
 
-    sDocComment.append('/');
+    sDocComment.append("/\n");
 
     return sDocComment.toString();
   }
@@ -825,7 +836,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     Collection cs = me.getConstraints();
     if (cs == null || cs.size() == 0) return "";
     StringBuffer sb = new StringBuffer(80);
-    sb.append(INDENT).append("// constraints\n");
+    if (VERBOSE_DOCS) sb.append(INDENT).append("// constraints\n");
     int size = cs.size();
     // MConstraint[] csarray = (MConstraint[])cs.toArray();
     // Argo.log.debug("Got " + csarray.size() + " constraints.");
@@ -873,7 +884,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
          * Added generation of doccomment 2001-09-26 STEFFEN ZSCHALER
          *
          */
-        sb.append(generateConstraintEnrichedDocComment(a,ae2)).append('\n');
+        sb.append(generateConstraintEnrichedDocComment(a,ae2));
         sb.append(generateAssociationEnd(ae2));
       }
     }
