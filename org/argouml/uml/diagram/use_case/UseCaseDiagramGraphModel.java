@@ -41,6 +41,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java.util.Hashtable;
 
 import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
@@ -59,7 +60,13 @@ import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MRelationship;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.model_management.MElementImport;
+
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Mode;
+import org.tigris.gef.base.ModeManager;
 
 /**
  * <p>This class defines a bridge between the UML meta-model representation of
@@ -540,6 +547,12 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
         fireEdgeAdded(edge);
     }
 
+    /** Add the given edge to the graph, if valid. */
+    protected MModelElement addEdge(MModelElement edge) {
+        addEdge((Object)edge);
+        return edge;
+    }
+
 
     /**
      * <p>Add the various types of edge that may be connected with the given
@@ -735,14 +748,7 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
         // an association between pairs of use cases.
 
         if (edgeClass == MAssociation.class) {
-            MClassifier fromCls = (MClassifier)fromPort;
-            MClassifier toCls   = (MClassifier)toPort;
-
-            MAssociation asc =
-                UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
-
-            addEdge(asc);
-            return asc;
+            return connectAssociation((MModelElement)fromPort, (MModelElement)toPort);
         }
 
         // Generalizations, but only between two actors or two use cases
@@ -759,8 +765,7 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
             MGeneralization gen =
                 UmlFactory.getFactory().getCore().buildGeneralization(parent, child);
 
-            addEdge(gen);
-            return gen;
+            return addEdge(gen);
         }
 
         // Extend, but only between two use cases. Remember we draw from the
@@ -776,8 +781,7 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
             MExtend ext =
                 UmlFactory.getFactory().getUseCases().buildExtend(base, extension);
 
-            addEdge(ext);
-            return ext;
+            return addEdge(ext);
         }
 
         // Include, but only between two use cases
@@ -792,8 +796,7 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
             MInclude inc =
                 UmlFactory.getFactory().getUseCases().buildInclude(base, addition);
 
-            addEdge(inc);
-            return inc;
+            return addEdge(inc);
         }
 
         // Dependencies ought to be between anything. The restriction here is
@@ -810,8 +813,7 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
             MDependency dep =
                 UmlFactory.getFactory().getCore().buildDependency(client, supplier);
 
-            addEdge(dep);
-            return dep;
+            return addEdge(dep);
         }
 
         // We shouldn't be asked for any other sort of edge
@@ -826,6 +828,31 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
         }
     }
 
+    /** Contruct and add a new association and connect to
+     * the given ports.
+     */
+    private Object connectAssociation(MModelElement fromPort, MModelElement toPort) {
+        if (fromPort instanceof MClassifier && toPort instanceof MClassifier) {
+            Editor curEditor = Globals.curEditor();
+            ModeManager modeManager = curEditor.getModeManager();
+            Mode mode = (Mode)modeManager.top();
+            Hashtable args = mode.getArgs();
+            MAggregationKind aggregation = (MAggregationKind)args.get("aggregation");
+            MAssociation asc;
+            MClassifier fromCls = (MClassifier)fromPort;
+            MClassifier toCls = (MClassifier)toPort;
+            if (aggregation != null) {
+                boolean unidirectional = ((Boolean)args.get("unidirectional")).booleanValue();
+                asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, !unidirectional, aggregation, toCls, true, MAggregationKind.NONE);
+            } else {
+                asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
+            }
+            return addEdge(asc);
+        }
+        
+        return null;
+    }
+    
   
 
     ///////////////////////////////////////////////////////////////////////////
