@@ -93,16 +93,16 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
                     else {
                         _setMethod.invoke(element, _falseArg);
                     }
+                    
+                    // Having set a property, mark as needing saving
+
+                    Project p = ProjectManager.getManager().getCurrentProject();
+                    p.setNeedsSave(true);
                 }
             }
             catch (Exception e) {
                 cat.error(e.toString() + " in UMLReflectionBooleanProperty.setMethod()", e);
             }
-
-            // Having set a property, mark as needing saving
-
-            Project p = ProjectManager.getManager().getCurrentProject();
-            p.setNeedsSave(true);
         }
     }
     
