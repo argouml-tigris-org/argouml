@@ -24,6 +24,7 @@
 package org.argouml.ui.targetmanager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -123,13 +124,14 @@ public class TestTargetManager extends TestCase {
 	assertEquals(test, TargetManager.getInstance().getTarget());
 	TargetManager.getInstance().setTarget(null);
 	assertEquals(null, TargetManager.getInstance().getTarget());
+
 	TargetListener listener = new TestTargetListener();
+	TargetManager.getInstance().addTargetListener(listener);
 	targetSetCalled = false;
 	targetSetObjects = null;
-	TargetManager.getInstance().addTargetListener(listener);
 	TargetManager.getInstance().setTarget(test);
 	assertTrue(targetSetCalled);
-	assertEquals(new Object[] {test}, targetSetObjects);
+	assertTrue(Arrays.equals(new Object[] {test}, targetSetObjects));
 	targetSetCalled = false;
 	TargetManager.getInstance().setTarget(test);
 	assertTrue(!targetSetCalled);
@@ -247,10 +249,10 @@ public class TestTargetManager extends TestCase {
 	    test.add(new Object());
 	}
 	TargetManager.getInstance().setTargets(test);
-	assertEquals(test.toArray(), TargetManager.getInstance().getTargets().toArray());
+	assertTrue(Arrays.equals(test.toArray(), TargetManager.getInstance().getTargets().toArray()));
 	TargetManager.getInstance().setTargets(null);
         List expectedValue = new ArrayList();
-	assertEquals(expectedValue, TargetManager.getInstance().getTargets());
+	assertTrue(Arrays.equals(expectedValue.toArray(), TargetManager.getInstance().getTargets().toArray()));
 
 	TargetListener listener = new TestTargetListener();
 	TargetManager.getInstance().addTargetListener(listener);
@@ -260,7 +262,7 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().setTargets(test);
 	assertTrue(targetSetCalled);
 	assertEquals(test.get(0), targetSetTarget);
-	assertEquals(test.toArray(), targetSetObjects);
+	assertTrue(Arrays.equals(test.toArray(), targetSetObjects));
 	targetSetCalled = false;
 	TargetManager.getInstance().setTargets(test);
 	assertTrue(!targetSetCalled);
@@ -298,7 +300,7 @@ public class TestTargetManager extends TestCase {
 	targetAddedObjects = null;
 	TargetManager.getInstance().addTarget(testObject);
 	assertTrue(targetAddedCalled);
-	assertEquals(newList.toArray(), targetAddedObjects);
+	assertTrue(Arrays.equals(newList.toArray(), targetAddedObjects));
 	assertEquals(oldTarget, targetAddedTarget);
 	assertEquals(oldTarget, TargetManager.getInstance().getTarget());
 	targetAddedCalled = false;
@@ -346,7 +348,7 @@ public class TestTargetManager extends TestCase {
 	targetRemovedObjects = null;
 	TargetManager.getInstance().removeTarget(testObject);
 	assertEquals(null, targetRemovedTarget);
-	assertEquals(new Object[] {}, targetRemovedObjects);
+	assertTrue(Arrays.equals(new Object[] {}, targetRemovedObjects));
 
 	List testList2 = new ArrayList();
 	testList2.add(new Object());
@@ -356,7 +358,7 @@ public class TestTargetManager extends TestCase {
 	targetRemovedObjects = null;
 	TargetManager.getInstance().removeTarget(testObject);
 	assertEquals(testList2.get(0), targetRemovedTarget);
-	assertEquals(new Object[] {testList2.get(0)}, targetRemovedObjects);
+	assertTrue(Arrays.equals(new Object[] {testList2.get(0)}, targetRemovedObjects));
 	targetRemovedCalled = false;
 	TargetManager.getInstance().removeTarget(testObject);
 	assertTrue(!targetRemovedCalled);
