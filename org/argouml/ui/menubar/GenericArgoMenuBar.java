@@ -69,6 +69,7 @@ import org.argouml.uml.ui.ActionNew;
 import org.argouml.uml.ui.ActionOpenProject;
 import org.argouml.uml.ui.ActionPaste;
 import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.ActionRevertToSaved;
 import org.argouml.uml.ui.ActionSaveGraphics;
 import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.uml.ui.ActionSaveProjectAs;
@@ -307,6 +308,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(openProjectItem, "Open", 'O');
         setAccelerator(openProjectItem, ctrlO);
         _fileToolbar.add((ActionOpenProject.SINGLETON));
+        _file.addSeparator();
 
         JMenuItem saveProjectItem = _file.add(ActionSaveProject.SINGLETON);
         setMnemonic(saveProjectItem, "Save", 'S');
@@ -314,6 +316,8 @@ public class GenericArgoMenuBar extends JMenuBar
         _fileToolbar.add((ActionSaveProject.SINGLETON));
         JMenuItem saveProjectAsItem = _file.add(ActionSaveProjectAs.SINGLETON);
         setMnemonic(saveProjectAsItem, "SaveAs", 'A');
+        JMenuItem revertToSavedItem = _file.add(ActionRevertToSaved.SINGLETON);
+        setMnemonic(revertToSavedItem, "RevertToSaved", 'R');
         _file.addSeparator();
 
         //_import = new JMenu(menuLocalize("action.import"));
@@ -324,11 +328,11 @@ public class GenericArgoMenuBar extends JMenuBar
         _file.add(ActionImportFromSources.SINGLETON);
         _file.addSeparator();
     
+        JMenuItem pageSetupItem = _file.add(Actions.PageSetup);
         JMenuItem printItem = _file.add(Actions.Print);
         setMnemonic(printItem, "Print", 'P');
         setAccelerator(printItem, ctrlP);
         _fileToolbar.add((Actions.Print));
-        JMenuItem pageSetupItem = _file.add(Actions.PageSetup);
         JMenuItem saveGraphicsItem = _file.add(ActionSaveGraphics.SINGLETON);
         setMnemonic(saveGraphicsItem, "SaveGraphics", 'G');
         _file.addSeparator();
