@@ -471,7 +471,8 @@ public class GeneratorDisplay extends Generator {
      * @param m A MMessage to generate the number for.
      * @return A String with the message number of m.
      */
-    public String generateMessageNumber(MMessage m) {
+    public String generateMessageNumber(Object/*MMessage*/ message) {
+        MMessage m = (MMessage)message;
         MsgPtr ptr = new MsgPtr();
         int pos = recCountPredecessors(m, ptr) + 1;
         return generateMessageNumber(m, (MMessage)ptr.message, pos);

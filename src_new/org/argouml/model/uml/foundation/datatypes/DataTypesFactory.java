@@ -116,9 +116,8 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML IterationExpression instance.
      */
-    public MIterationExpression createIterationExpression(String language,
-							  String body)
-    {
+    public Object/*MIterationExpression*/ createIterationExpression(String language,
+							  String body) {
         MIterationExpression expression =
 	    new MIterationExpression(language, body);
 	super.initialize(expression);
