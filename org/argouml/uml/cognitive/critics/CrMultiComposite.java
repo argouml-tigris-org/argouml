@@ -20,52 +20,44 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-
-
 // File: CrMultiComposite.java
 // Classes: CrMultiComposite
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
 package org.argouml.uml.cognitive.critics;
-
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.ModelFacade;
 
 /** Well-formedness rule [2] for MAssociationEnd. See page 28 of UML
- *  1.1 Semantics. OMG document ad/97-08-04. This Critic is currently
- *  not used.  It is not registered in Init.java. */
+ *  1.1 Semantics. OMG document ad/97-08-04.  */
 
 public class CrMultiComposite extends CrUML {
-
-  public CrMultiComposite() {
-    setHeadline("Composite Role with MMultiplicity > 1");
-    addSupportedDecision(CrUML.decCONTAINMENT);
-    setKnowledgeTypes(Critic.KT_SEMANTICS);
-    addTrigger("aggregation");
-    addTrigger("multiplicity");
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MAssociationEnd)) return NO_PROBLEM;
-    MAssociationEnd ae = (MAssociationEnd) dm;
-    MAggregationKind ak = ae.getAggregation();
-    MMultiplicity m = ae.getMultiplicity();
-    if (ak != MAggregationKind.COMPOSITE) return NO_PROBLEM;
-    if (m.getUpper() <= 1) return NO_PROBLEM;
-    return PROBLEM_FOUND;
-  }
-
-  public Class getWizardClass(ToDoItem item) {
-    return WizAssocComposite.class;
-  }
-
-
+    
+    public CrMultiComposite() {
+        setHeadline("Composite Role with MMultiplicity > 1");
+        addSupportedDecision(CrUML.decCONTAINMENT);
+        setKnowledgeTypes(Critic.KT_SEMANTICS);
+        addTrigger("aggregation");
+        addTrigger("multiplicity");
+    }
+    
+    public boolean predicate2(Object dm, Designer dsgr) {
+        boolean problem = NO_PROBLEM;
+        if (ModelFacade.isAAssociationEnd(dm)) {
+            if (ModelFacade.isComposite(dm)) {
+                if (ModelFacade.getUpper(dm) > 1) {
+                    problem = PROBLEM_FOUND;
+                }
+            }
+        }
+        return problem;
+    }
+    
+    public Class getWizardClass(ToDoItem item) {
+        return WizAssocComposite.class;
+    }
+    
 } /* end class CrMultiComposite */
-

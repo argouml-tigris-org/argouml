@@ -35,21 +35,48 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.use_cases.*;
+import org.argouml.cognitive.critics.Agency;
+import org.argouml.cognitive.critics.CompoundCritic;
+import org.argouml.cognitive.critics.CrNodesOverlap;
+import org.argouml.cognitive.critics.CrZeroLengthEdge;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.language.java.cognitive.critics.CrMultipleInheritance;
+import org.argouml.language.java.cognitive.critics.CrMultipleRealization;
+import org.argouml.pattern.cognitive.critics.CrConsiderSingleton;
+import org.argouml.pattern.cognitive.critics.CrSingletonViolatedMissingStaticAttr;
+import org.argouml.pattern.cognitive.critics.CrSingletonViolatedOnlyPrivateConstructors;
+import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
-import org.argouml.cognitive.critics.*;
-import org.argouml.language.java.cognitive.critics.*;
-import org.argouml.pattern.cognitive.critics.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.deployment.ui.*;
-import org.argouml.uml.diagram.state.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.uml.diagram.use_case.ui.*;
-import org.argouml.uml.diagram.sequence.ui.*;
+import ru.novosoft.uml.behavior.state_machines.MCompositeStateImpl;
+import ru.novosoft.uml.behavior.state_machines.MPseudostateImpl;
+import ru.novosoft.uml.behavior.state_machines.MStateImpl;
+import ru.novosoft.uml.behavior.state_machines.MStateVertexImpl;
+import ru.novosoft.uml.behavior.state_machines.MTransitionImpl;
+import ru.novosoft.uml.behavior.use_cases.MActorImpl;
+import ru.novosoft.uml.behavior.use_cases.MUseCaseImpl;
+import ru.novosoft.uml.foundation.core.MAssociationClassImpl;
+import ru.novosoft.uml.foundation.core.MAssociationEndImpl;
+import ru.novosoft.uml.foundation.core.MAssociationImpl;
+import ru.novosoft.uml.foundation.core.MAttributeImpl;
+import ru.novosoft.uml.foundation.core.MClassImpl;
+import ru.novosoft.uml.foundation.core.MClassifierImpl;
+import ru.novosoft.uml.foundation.core.MDataTypeImpl;
+import ru.novosoft.uml.foundation.core.MGeneralizableElementImpl;
+import ru.novosoft.uml.foundation.core.MGeneralizationImpl;
+import ru.novosoft.uml.foundation.core.MInterfaceImpl;
+import ru.novosoft.uml.foundation.core.MModelElementImpl;
+import ru.novosoft.uml.foundation.core.MNamespaceImpl;
+import ru.novosoft.uml.foundation.core.MOperationImpl;
+import ru.novosoft.uml.foundation.core.MParameterImpl;
+import ru.novosoft.uml.model_management.MModelImpl;
+import ru.novosoft.uml.model_management.MPackageImpl;
 
 /** Registers critics for use in Argo/UML.  This class is called at
  *  system startup time. If you add a new critic, you need to add a
@@ -348,6 +375,7 @@ public class Init {
       Agency.register(crZeroLengthEdge, edgeCls);
       
       Agency.register(crOppEndConflict, assocEndCls);
+      Agency.register(new CrMultiComposite(), assocEndCls);
 
       // under testing
       // Agency.register(crConsiderFacade, packageCls);
