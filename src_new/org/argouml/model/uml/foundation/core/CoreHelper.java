@@ -29,6 +29,7 @@ import java.util.Iterator;
 
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
+import ru.novosoft.uml.foundation.core.MGeneralization;
 
 /**
  * Helper class for UML Foundation::Core Package.
@@ -87,6 +88,26 @@ public class CoreHelper {
 		}
 		while (! add.isEmpty());
 		
+		return result;
+	}
+	
+	/** This method returns all Classifiers of which this class is a 
+	 *	direct subtype.
+	 *
+	 * @param cls  the class you want to have the parents for
+	 * @return a collection of the parents, each of which is a 
+	 *					{@link MGeneralizableElement MGeneralizableElement}
+	 */
+	public Collection getSupertypes(MClassifier cls) {
+
+		Collection result = new HashSet();
+		Collection gens = cls.getGeneralizations();
+		Iterator genIterator = gens.iterator();
+
+		while (genIterator.hasNext()) {
+			MGeneralization next = (MGeneralization) genIterator.next();
+			result.add(next.getParent());
+		}
 		return result;
 	}
 	

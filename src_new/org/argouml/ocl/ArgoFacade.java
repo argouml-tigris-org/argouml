@@ -9,6 +9,8 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.*;
 import org.argouml.uml.MMUtil;
 
@@ -207,7 +209,7 @@ class ArgoAny implements Any, Type2 {
 			if (type instanceof ArgoAny)
 			{
 				ArgoAny other = (ArgoAny) type;
-				return equals(type) || MMUtil.SINGLETON.getAllSupertypes(classifier).contains(other.classifier);
+				return equals(type) || UmlHelper.getHelper().getCore().getAllSupertypes(classifier).contains(other.classifier);
 			}
 			else
 			{
