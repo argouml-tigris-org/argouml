@@ -43,6 +43,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Category;
+
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.QuadrantPanel;
 import org.argouml.cognitive.ui.TabToDoTarget;
@@ -52,17 +53,22 @@ import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.TabModelTarget;
 import org.argouml.uml.ui.TabProps;
 import org.argouml.util.ConfigLoader;
+
 import org.tigris.gef.presentation.Fig;
 
-/** The lower-right pane of the main Argo/UML window.  This panel has
- * several tabs that show details of the selected ToDoItem, or the
+/**
+ * The lower-right pane of the main Argo/UML window, which shows
+ * the details of a selected model element. 
+ * 
+ * This panel has several tabs that show details of the selected ToDoItem, or the
  * selected model element in the NavigationPane, or the
  * MultiEditorPane.
  *
  * There are requests to have the cursor automatically
  * be set to the primary field.
+ *
+ * $Id$
  */
-
 public class DetailsPane
     extends JPanel
     implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
@@ -79,23 +85,52 @@ public class DetailsPane
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** Target is the currently selected object from the UML MModel,
-     *  usually selected from a Fig in the diagram or from the
-     *  navigation panel. */
+    /** The currently selected Fig in the visible diagram.
+     */
     protected Fig _figTarget = null;
+    
+    /** The currently selected object from the UML MModel,
+     *  selected from a Fig in the diagram or from the
+     *  navigation panel.
+     */
     protected Object _modelTarget = null;
+    
+    /**
+     * The currently selected TODO item.
+     */
     protected Object _item = null;
 
-    // vector of TreeModels
+    /**
+     * The top level pane, which is a tabbed pane.
+     */
     protected JTabbedPane _tabs = new JTabbedPane();
+    
+    /**
+     * a list of all the tabs, which are JPanels, in the JTabbedPane _tabs.
+     */
     protected Vector _tabPanels = new Vector();
+    
+    /**
+     * index of the selected tab in the JTabbedPane.
+     */
     protected int _lastNonNullTab = 0;
 
+    /**
+     *
+     */
     private Orientation orientation;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Gets all of the _tabPanels from the ConfigLoader, then 
+     * adds them to the JTabbedPane.
+     *
+     * sets the target to null.
+     *
+     * registers listeners.
+     */
     public DetailsPane(String pane, Orientation orientation) {
         Argo.log.info("making DetailsPane(" + pane + ")");
         this.orientation = orientation;
@@ -131,11 +166,16 @@ public class DetailsPane
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * returns the JTabbedPane that contains all details panels.
+     */
     public JTabbedPane getTabs() {
         return _tabs;
     }
 
-    // TODO: ToDoItem
+    /**
+     * selects the TODO tab, and sets the target of that tab.
+     */
     public boolean setToDoItem(Object item) {
         _item = item;
         for (int i = 0; i < _tabPanels.size(); i++) {
@@ -149,6 +189,13 @@ public class DetailsPane
         return false;
     }
 
+    /**
+     * Sets the target of the Details pane to either be a
+     * selected model element or
+     * the owner(model element) of a selected fig.
+     *
+     * Decides which panels to enable.
+     */
     public void setTarget(Object target) {
         if (target == _modelTarget
             || ((target instanceof Fig)
@@ -227,6 +274,12 @@ public class DetailsPane
     ////////////////////////////////////////////////////////////////
     // actions
 
+    /**
+     * Get the index of the tab with the given name
+     *
+     * @param tabName the name of the required tab
+     * @return index of the tab of the given name
+     */
     public int getIndexOfNamedTab(String tabName) {
         for (int i = 0; i < _tabPanels.size(); i++) {
             String title = _tabs.getTitleAt(i);
@@ -238,6 +291,7 @@ public class DetailsPane
 
     /**
      * Get the JPanel of the tab with the given name
+     *
      * @param tabName the name of the required tab
      * @return the tab of the given name
      */
@@ -251,7 +305,8 @@ public class DetailsPane
     }
 
     /**
-     * Get the number of tab pages
+     * Get the number of tabs
+     *
      * @return the number of tab pages
      */
     public int getTabCount() {
@@ -269,6 +324,9 @@ public class DetailsPane
         return false;
     }
 
+    /**
+     * Heper method to add a Property panel for a given class.
+     */
     public void addToPropTab(Class c, PropPanel p) {
         for (int i = 0; i < _tabPanels.size(); i++) {
             if (_tabPanels.elementAt(i) instanceof TabProps) {
@@ -276,22 +334,10 @@ public class DetailsPane
             }
         }
     }
-
-    //public void selectNextTab() {
-    //  ProjectBrowser pb = ProjectBrowser.TheInstance;
-    //  pb.setDetailsPaneVisible(true); // Added BobTarling 7-Jan-2002
-
-    //  int size = _tabPanels.size();
-    //  int currentTab = _tabs.getSelectedIndex();
-    //  for (int i = 1; i < _tabPanels.size(); i++) {
-    //    int newTab = (currentTab + i) % size;
-    //    if (_tabs.isEnabledAt(newTab)) {
-    //	_tabs.setSelectedIndex(newTab);
-    //	return;
-    //    }
-    //  }
-    //}
-
+    
+    /**
+     * returns the Property panel in the Details Pane.
+     */
     public TabProps getTabProps() {
         Iterator iter = _tabPanels.iterator();
         Object o;
@@ -304,6 +350,9 @@ public class DetailsPane
         return null;
     }
 
+    /**
+     * only added to the TabProps instance.
+     */
     public void addNavigationListener(NavigationListener navListener) {
         Iterator iter = _tabPanels.iterator();
         Object panel;
@@ -315,6 +364,9 @@ public class DetailsPane
         }
     }
 
+    /**
+     * only removed from the TabProps instance.
+     */
     public void removeNavigationListener(NavigationListener navListener) {
         Iterator iter = _tabPanels.iterator();
         Object panel;
@@ -329,8 +381,14 @@ public class DetailsPane
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    /** called when the user selects a new tab, by clicking or
-     *  otherwise. */
+    /**
+     * Reacts to a change in the selected tab by calling refresh()
+     * on that tab (a TabToDoTarget, TabModelTarget or TabFigTarget
+     * instance).
+     * 
+     * old notes: called when the user selects a new tab, by clicking or
+     *  otherwise.
+     */
     public void stateChanged(ChangeEvent e) {
         cat.debug("DetailsPane state changed");
         Component sel = _tabs.getSelectedComponent();
@@ -345,14 +403,20 @@ public class DetailsPane
             _lastNonNullTab = _tabs.getSelectedIndex();
     }
 
-    /** called when the user clicks once on a tab. */
+    /**
+     * no action currently executed here.
+     * called when the user clicks once on a tab.
+     */
     public void mySingleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
         cat.debug("single: " + _tabs.getComponentAt(tab).toString());
     }
 
-    /** called when the user clicks twice on a tab. */
+    /**
+     * Spawns a new tab.
+     * called when the user clicks twice on a tab.
+     */
     public void myDoubleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
@@ -362,14 +426,31 @@ public class DetailsPane
              ((TabSpawnable)t).spawn();
     }
 
+    /**
+     * empty, no action taken.
+     */
     public void mousePressed(MouseEvent me) {
     }
+    /**
+     * empty, no action taken.
+     */
     public void mouseReleased(MouseEvent me) {
     }
+    /**
+     * empty, no action taken.
+     */
     public void mouseEntered(MouseEvent me) {
     }
+    /**
+     * empty, no action taken.
+     */
     public void mouseExited(MouseEvent me) {
     }
+    
+    /**
+     * if(the mouse click is not in the bounds of the tabbed panel)
+     *      then call mySingleClick() or myDoubleClick()
+     */
     public void mouseClicked(MouseEvent me) {
         int tab = _tabs.getSelectedIndex();
         if (tab != -1) {
@@ -383,8 +464,14 @@ public class DetailsPane
         }
     }
 
+    /**
+     * graphic that goes on the tab label
+     */
     protected Icon _upArrowIcon = new UpArrowIcon();
 
+    /**
+     * graphic that goes on the tab label
+     */
     protected Icon _leftArrowIcon = new LeftArrowIcon();
 
     public int getQuadrant() {
@@ -411,6 +498,9 @@ public class DetailsPane
 ////////////////////////////////////////////////////////////////
 // related classes
 
+    /**
+     * class defining a graphic that goes on the tab label
+     */
 class UpArrowIcon implements Icon {
     public void paintIcon(Component c, Graphics g, int x, int y) {
         int w = getIconWidth(), h = getIconHeight();
@@ -429,6 +519,9 @@ class UpArrowIcon implements Icon {
     }
 }
 
+    /**
+     * class defining a graphic that goes on the tab label
+     */
 class LeftArrowIcon implements Icon {
     public void paintIcon(Component c, Graphics g, int x, int y) {
         int w = getIconWidth(), h = getIconHeight();
