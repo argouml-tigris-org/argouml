@@ -60,7 +60,7 @@ public class PropPanelDiagram extends PropPanel  {
             //    set new target to the model
             //
             Object newTarget = project.getModel();
-            project.removeDiagram(diagram);
+            project.moveToTrash(diagram);
             navigateTo(newTarget);
           }
           catch(Exception e) {

@@ -487,7 +487,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	public void removed(MElementEvent mee) {
 		//System.out.println("deleting: "+this + mee);
 	    //if (_group != null) _group.removed(mee);
-	    this.delete();
+	    // this.delete();
+	    this.dispose();
 	}
 	public void roleAdded(MElementEvent mee) {
 	    //if (_group != null) _group.roleAdded(mee);
@@ -507,9 +508,17 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
      */
     public void delete() {
 	if(getOwner() != null) {
+		ProjectBrowser.TheInstance.getProject().findFigsForMember(getOwner());
 	    Trash.SINGLETON.addItemFrom( getOwner(), null);
 	}
 	super.delete();
+    }
+    
+    public void dispose() {
+	if(getOwner() != null) {
+	    Trash.SINGLETON.addItemFrom( getOwner(), null);
+	}
+	super.dispose();
     }
 
     /**
