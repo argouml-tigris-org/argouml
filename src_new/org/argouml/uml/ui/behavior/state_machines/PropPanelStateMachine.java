@@ -53,11 +53,11 @@ public class PropPanelStateMachine extends PropPanelModelElement {
         
         // the context in which the statemachine resides
         JList contextList = new UMLLinkedList(new UMLStateMachineContextListModel());
-        addField(Argo.localize("UMLMenu", "label.representedModelelement"), new JScrollPane(contextList));
+        addField(Argo.localize("UMLMenu", "label.represented-modelelement"), new JScrollPane(contextList));
         
         // the top state
         JList topList = new UMLLinkedList(new UMLStateMachineTopListModel());
-        addField(Argo.localize("UMLMenu", "label.topState"), new JScrollPane(topList));
+        addField(Argo.localize("UMLMenu", "label.top-state"), new JScrollPane(topList));
         
         add(LabelledLayout.getSeperator());
         
