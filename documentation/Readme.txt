@@ -173,7 +173,7 @@ HISTORY
 
 2001/12/05  Dennis Daniels
 
-2001/03/07  Jeremy Bennett (mail@jeremybennet.com). Updated prior to upgrading
+2002/03/07  Jeremy Bennett (mail@jeremybennet.com). Updated prior to upgrading
             to XSL 1.49 stylesheets
 
 Have fun!
