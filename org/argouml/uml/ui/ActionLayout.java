@@ -97,7 +97,6 @@ public class ActionLayout extends UMLAction {
             // Select all the figures in the diagram.
         }
 
-        sm.startTrans();
         // Notify the selection manager that selected figures will be moved now.
         layouter.layout(); // Compute a new layout.
         sm.endTrans(); // Finish the transition.

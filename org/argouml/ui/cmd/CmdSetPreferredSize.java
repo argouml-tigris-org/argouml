@@ -104,7 +104,6 @@ public class CmdSetPreferredSize extends Cmd {
     
         for (int i = 0; i < size; i++) {
             Fig fi = (Fig) figs.elementAt(i);
-            fi.startTrans();
             // only resize elements which the user would also be able 
             // to resize.
             if (fi.isResizable() == true

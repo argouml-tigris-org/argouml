@@ -28,7 +28,6 @@ import java.beans.PropertyVetoException;
 import java.util.Vector;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
@@ -165,7 +164,7 @@ public class DiagramInterface {
 	if (currentDiagram == null)
             return false;
         else
-            return currentDiagram.getNodes().contains(p);
+            return currentDiagram.getNodes(null).contains(p);
     }
     
     /**
