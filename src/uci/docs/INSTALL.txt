@@ -1,26 +1,34 @@
 Notes on how to install and compile the UCI Graph Editing Framework
-source code.
+source code version 0.6 beta 1.
 
-This file prepared: 7/30/96.
+This file prepared: 98/04/17.
 
 Basic steps:
+
+0. Make sure you have JDK 1.1.5 and Swing 1.0.1.  You can download
+these from www.javasoft.com.
 
 1. Unzip or untar the source code archive and you will have the
 following directory structure:
 
 <somepath>
-        |--uci
+        |-- uci
              |-- util
              |-- ui
-             |-- graphedit
-                 |-- contrib
+             |-- graph
+             |-- beans
+             |   |-- editors
+             |
+             |-- gef
+                 |-- event
                  |-- demo
 
 Where <somepath> is the place in your directory structure where you
 unpacked the files.
 
 2. In your development environment set the CLASSPATH environment
-variable so that it includes <somepath>.
+variable so that it includes <somepath>.  Your CLASSPATH should also
+include swing.jar or swingall.jar.
 
 3. If you are using Cafe, add all the .java files to your project.
 
@@ -30,16 +38,21 @@ variable so that it includes <somepath>.
 no options. You may have to edit uci/Makefile.config to
 set the proper paths for your java executables.
 
+6. Run the main program, uci.gef.demo.BasicApplication.  Or run the
+applet viewer on one of the .html files.
+
+7. To run GEF in a browser, you still will Swing.  See the javasoft
+website for instructions on how to do that.
 
 
-The UCI Graph Editing Framework has been successfully compiled on
-+ Sun's JDK 1.0.2 on SunOS 5.5 on a Sperc 4.
-+ Sun's JDK 1.1.1 on SunOS 5.5 on a Sperc 4.
-+ Sun's JDK 1.0.2 on a PC under Windows95.
-+ Sun's JDK 1.1.1 on a PC under Windows95.
-+ Symantec's Cafe on a PC under Windows95.
-+ Symantec's VisualCafe on a PC under Windows95.
-+ Microsoft's J++ on a PC under Windows95. (a long time ago)
+
+
+
+The UCI Graph Editing Framework v0.6 has been successfully compiled on
++ Sun's JDK 1.1.5 on an Ultra Sparc.
++ Sun's JDK 1.1.5 on a PC under WindowsNT.
++ Symantec's Cafe 2.1 on a PC under WindowsNT.
+
 
 
 

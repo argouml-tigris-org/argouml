@@ -1,18 +1,13 @@
 <HTML>
-<TITLE>Bugs in GEF v05</TITLE>
+<TITLE>Bugs in GEF v0.6 beta 1</TITLE>
 <BODY>
 
-<H1>Bugs in GEF v05</H1>
+<H1>Bugs in GEF v0.6 beta 1</H1>
 
-This file prepared on 5/30/97.
+This file prepared on 98/04/18.
 
 <p>Each bug is named with a unique string (e.g.,
-"save_memory_hog"). For some bugs there are comments in the code that
-indicate where the bug is manifested. Also there are references in the
-feature list to these bugs. You can follow the references by using a
-multi-file search command (e.g., grep) or you can use tags if you use
-emacs. A tag file with entries for bugs and features can (soon) be
-downloaded from the GEF web site.
+"save_memory_hog"). 
 
 <p>When sending a new bug report please check the GEF home page for
 specific instructions and existing bugs that describe your problem. 
@@ -22,24 +17,14 @@ specific instructions and existing bugs that describe your problem.
 <H2>Bugs observed on all platforms:</H2>
 
 <UL>
-<LI> <A NAME="shift_click">
-<TT>BUG:shift_click </TT><br>
-Shift-click when selecting does not always do the right thing.  It
-should deselect an item that is already selected, but it does
-not. Shift-drag seems to work.
 
 <LI><A NAME="rectilinear_arc_constraints">
 <TT>BUG:rectilinear_arc_constraints </TT><br>
-ArcPerspective does not draw properly. It looks pretty bad and
+FigEdgeRectilinear does not draw properly. It looks pretty bad and
 sometimes the lines make a "T" intersection when it should make a
 right anngle turn. I know that there are missing cases to the logic
 that decides how to draw the arc. This really needs to be totally
 redone.
-
-<LI><A NAME="focus_for_redraw">
-<TT>BUG:focus_for_redraw </TT><br>
-Undersome browsers the applet frames will not be redrawn until you
-move your mouse into the frame.
 
 <LI><A NAME="save_memory_hog">
 <TT> BUG:save_memory_hog </TT><br>
@@ -57,7 +42,7 @@ load files saved with the old class definitions.
 
 <LI> <A NAME="arc_translate">
 <TT>BUG:arc_translate </TT><br>
-ArcPerzRectilinear should move when both their end points move at
+FigEdgeRectilinear should move when both their end points move at
 the same time. To see what I mean: place two nodes, connect the nodes,
 select all objects, move the nodes all around. You will see that some
 points on the arc stay put.
@@ -71,21 +56,63 @@ followed properly, so it is possible to get diaganol lines if you drag
 some handles around. Also, self-arcs (arcs that go from a port on a
 node to another port on the same node), are not routed properly.
 
-<LI><A NAME="save_under_jdk1">
-<TT>BUG:save_under_jdk1_0_2 </TT><br>
-I updated my version of Sun's ObjectSerialization libary, and much
-to my dispare I found that saving and loading no longer work under
-jdk1.0.2. The problem is that classes such as java.util.Hashtable must
-implement java.io.Serializable, but they do not in jdk1.0.2. So there
-is really nothing I can do, other than stop using Hashtables and
-Vectors. Instead I just use jdk1.1.1 for building applications.
-(Applets cannot currently load or save anyway, but adding the ability
-to use a URL would be a good project).
-
 <LI><A NAME="switch_tabs_without_apply">
 <TT>BUG:switch_tabs_without_apply </TT><br>
 When auto-apply is off, users can loose changes if the switch tabs
 before pressing the "Apply" button.
+
+<LI><A NAME="limited_popups">
+<TT>BUG:limited_popups </TT><br>
+This version includes ModePopup that displays a popup menu on Figs.
+However this menu is not customized to the particular Fig.
+
+<LI><A NAME="prop_sheet_no_model">
+<TT>BUG:prop_sheet_no_model </TT><br>
+The property sheet window is intended to allow the user to edit the
+graphical properties of Figs, and the application-specific properties
+of the nodes and edges of the underlying connected graph.  This is not
+implemented yet.  One workaround is to define get/set methods in your
+own subclasses of FigNode and FigEdge that expose the properties of
+their owner.
+
+<LI><A NAME="no_bean_info">
+<TT>BUG:no_bean_info </TT><br>
+JavaBeans(tm) can work by analyzing the byte codes of classes to
+determine their properties.  However, it works much better if BeanInfo
+classes are defined that give more information about properties.  For
+example, the justification of FigText can be "Left", "Right", or
+"Center". But the byte code analysis only knows that it is a String.
+GEF should have FigBeanInfo, FigTextBeanInfo, etc.
+
+<LI><A NAME="no_default_properties">
+<TT>BUG:no_default_properties </TT><br>
+In previous versions, Editor has maintained a set of default graphical
+properties that are used in the creation of new Figs. For example, if
+you set the fill color to blue when nothing is selected, then future
+new Figs would have blue fills instead of white.  This functionality
+has been temporarily removed.
+
+<LI><A NAME="too_few_demos">
+<TT>BUG:too_few_demos </TT><br>
+A lot of new features have been added to GEF v0.6, but few of them are
+shown in the demos.  GEF needs new demos that test and demonstrate its
+new features.  I realize that many GEF users begin by modifying
+existing demos, which makes this very important.
+
+<LI><A NAME="docs_out_of_date">
+<TT>BUG:docs_out_of_date </TT><br>
+
+Some documentation is now out of date. I will work to incrementally
+update all the documentation.  Right now, all the javadocs should be
+up-to-date. But the design documents and other docs need work.
+
+<LI><A NAME="no_make_files">
+<TT>BUG:no_make_files </TT><br>
+
+I have not provided Makefiles in this release, so you will have to
+rely on your IDE, or doing 'javac *.java'.  I plan to fix this before
+the full v0.6 release.
+
 </UL>
 
 <HR>
@@ -107,10 +134,6 @@ commands for GEF and you cannot type text into a FigText.
 
 <H2>Bugs observed under Win95:</H2>
 <UL>
-<LI><A NAME="win_no_button_background">
-<TT>BUG:win_no_button_background  </TT><br>
-Button colors cannot be changed to highlight which command is "stuck"
-when you set the "sticky" check box.
 
 <LI> <A NAME="win_list_double_click">
 <TT> BUG:win_list_double_click </TT><br>

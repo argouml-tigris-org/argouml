@@ -1,28 +1,38 @@
-This file shows a few metrics on GEF, just odd and ends of data. I
-suppose that a better analysis of the source code or run-time behavior
-would be a good project for someone.
+This file shows a few metrics on GEF v0.6 beta 1, just odd and ends of
+data. I suppose that a better analysis of the source code or run-time
+behavior would be a good project for someone.
 
-This file was last updated 1/16/97.
+This file was last updated 98/04/17.
 
 ////////////////////////////////////////////////////////////////
 // Source code metrics
 
-LINES OF SOURCE CODE IN PACKAGE GRAPHEDIT
-Total lines:		11647
-Comment lines:		 4272	found via egrep -c '^ *(//|\*|/\*)'
-Blank lines:		 2072	found via egrep -c '^[ \t]*$'
-Total code lines:	 5303   found by subtraction (- 11647 4272 2072)
+LINES OF SOURCE CODE IN PACKAGE UCI.GEF
+Total lines:		15212
+Comment lines:		 6126	found via egrep -c '^ *(//|\*|/\*)'
+Blank lines:		 2375	found via egrep -c '^[ \t]*$'
+Total code lines:	 6711   found by subtraction (- 15212 6126 2375)
 
 
 NUMBER OF CLASSES
-Package uci.graphedit:		 93
-Package uci.util:		  5 (most not used)
-Package uci.graphedit.demo:	  2
-Package uci.graphedit.contrib:	  0
-Total casses:			100
+Package uci.util:         13
+Package uci.ui:           15
+Package uci.graph:        15
+Package uci.gef:         103
+Package uci.gef.demo:     19
+Package uci.gef.event:     2
+Package uci.beans.editors: 4
+
+Total casses:            171
 
 
-NUMBER OF METHODS AND CONSTRUCTORS IN UCI.GRAPHEDIT
+
+
+
+The follow has not been updated yet
+================================================================
+
+NUMBER OF METHODS AND CONSTRUCTORS IN UCI.GEF
 Total methods:			764
    found via egrep -c '^ *(public |private |protected).*\(*\) {'
 One liners:			240    31% of total
@@ -36,7 +46,7 @@ Private methods:		  7     1% of total
 Methods needing javadoc:        757
 
 
-VARIABLES IN UCI.GRAPHEDIT
+VARIABLES IN UCI.GEF
 Public variables:		86     28% of total
     found via egrep -c '^ *public +[azAZ_ ]*[^{]*$' \
 	      /tmp/allcode | egrep -v 'abstract|final'
@@ -51,22 +61,6 @@ Total variables:	       301 found via addition (+ 86 49 166)
 Variables needing javadoc:     135 found via addition (+ 86 49)
 
 
-NUMBER OF JAVADOC COMMENTS IN UCI.GRAPHEDIT
-Total # of javadoc comments:	776
-    found via egrep -c '/\*\*' /tmp/allcode
-# of needed comments:		892 found via addition (+ 757 135)
-# of missing comments:		116 found via subtraction (- 892 776)
-% of missing comments:		13% found via division (/ 116.0 892.0)
 
 
 
-////////////////////////////////////////////////////////////////
-// Performance metrics
-
-TIME TAKEN TO SAVE DIAGRAMS
-(all times on a lightly loaded sparc 4)
-35 nodes	50 seconds
-28 nodes	35 seconds
-21 nodes	20 seconds
-14 nodes	11 seconds
- 7 nodes	 7 seconds
