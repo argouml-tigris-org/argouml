@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -72,20 +72,21 @@ import org.apache.log4j.Logger;
  */
 public class ItemUID
 {
-    protected static Logger cat = Logger.getLogger(ItemUID.class);
+    /** The logger */
+    private static final Logger LOG = Logger.getLogger(ItemUID.class);
 
     /** Keeps a reference to the Class object of this class */
-    protected static final Class _myclass = (new ItemUID()).getClass();
+    protected static final Class myClass = (new ItemUID()).getClass();
 
     /** This actual ID of this instance. */
-    protected String _id;
+    protected String id;
 
     /**
      * Constructs a new ItemUID and creates a new ID for it.
      */
     public ItemUID()
     {
-	_id = generateID();
+	id = generateID();
     }
 
     /**
@@ -97,7 +98,7 @@ public class ItemUID
      */
     public ItemUID(String param)
     {
-	_id = param;
+	id = param;
     }
 
     /**
@@ -110,7 +111,7 @@ public class ItemUID
      */
     public String toString()
     {
-	return _id;
+	return id;
     }
 
     /**
@@ -130,6 +131,8 @@ public class ItemUID
      * canCreate is true it will try to create a new ID for the object
      * if it has none.
      *
+     * @param obj the Object to get the ID of.
+     * @param canCreate If an ID can be created, should object not have one.
      * @return	The ID of the object, or null.
      */
     public static String getIDOfObject(Object obj, boolean canCreate)
@@ -147,6 +150,7 @@ public class ItemUID
      * properties of java to access a method named getItemUID of the
      * object which is expected to return an ItemUID.
      *
+     * @param obj The object whose ID to read.
      * @return	The ID of the object, or null.
      */
     protected static String readObjectID(Object obj)
@@ -160,7 +164,7 @@ public class ItemUID
 	if (obj instanceof MModelElement)
 	{
 	String id = ((MModelElement)obj).getTaggedValue("org.argouml.uid");
-	//cat.debug("Read UID " + id + " from an object!");
+	//LOG.debug("Read UID " + id + " from an object!");
 	return id;
 	}
 	*/
@@ -184,8 +188,7 @@ public class ItemUID
 	}
 	catch (InvocationTargetException tie)
 	{
-	    cat.error("getItemUID for " + obj.getClass() +
-		      " threw: ",
+	    LOG.error("getItemUID for " + obj.getClass() + " threw: ",
 		      tie);
 	    return null;
 	}
@@ -197,15 +200,15 @@ public class ItemUID
 	}
 	catch (IllegalArgumentException iare)
 	{
-	    cat.error("getItemUID for " + obj.getClass() +
-		      " takes strange parameter: ",
+	    LOG.error("getItemUID for " + obj.getClass()
+		      + " takes strange parameter: ",
 		      iare);
 	    return null;
 	}
 	catch (ExceptionInInitializerError eiie)
 	{
-	    cat.error("getItemUID for " + obj.getClass() +
-		      " exception: ",
+	    LOG.error("getItemUID for " + obj.getClass()
+		      + " exception: ",
 		      eiie);
 	    return null;
 	}
@@ -215,8 +218,8 @@ public class ItemUID
 
 	if (!(rv instanceof ItemUID))
 	{
-	    cat.error("getItemUID for " + obj.getClass() +
-		      " returns strange value: " + rv.getClass());
+	    LOG.error("getItemUID for " + obj.getClass()
+		      + " returns strange value: " + rv.getClass());
 	    return null;
 	}
 
@@ -230,31 +233,17 @@ public class ItemUID
      * is assumed to have been successful and the object is responsible
      * for remembering the ID.
      *
+     * @param obj The object to assign a new ID.
      * @return	The new ID of the object, or null.
      */
     protected static String createObjectID(Object obj)
     {
 	if (org.argouml.model.ModelFacade.isABase(obj))
 	    return null;
-	/*
-	// Want to use the "built in" UID of the MXxx instances
-	// d00mst 2002-10-08
-	if (obj instanceof MModelElement)
-	{
-	MTaggedValue mtv =
-	ExtensionMechanismsFactory.getFactory().createTaggedValue();;
-	String id = generateID();
-	mtv.setTag("org.argouml.uid");
-	mtv.setValue(id);
-	mtv.setModelElement((MModelElement)obj);
-	//cat.debug("Added UID " + id + " to an object");
-	return id;
-	}
-	*/
 
 	Class params[] = new Class[1];
 	Object mparam[];
-	params[0] = _myclass;
+	params[0] = myClass;
 	try {
 	    Method m = obj.getClass().getMethod("setItemUID", params);
 	    mparam = new Object[1];
@@ -274,8 +263,7 @@ public class ItemUID
 	}
 	catch (InvocationTargetException tie)
 	{
-	    cat.error("setItemUID for " + obj.getClass() +
-		      " threw",
+	    LOG.error("setItemUID for " + obj.getClass() + " threw",
 		      tie);
 	    return null;
 	}
@@ -287,15 +275,14 @@ public class ItemUID
 	}
 	catch (IllegalArgumentException iare)
 	{
-	    cat.error("setItemUID for " + obj.getClass() +
-		      " takes strange parameter",
+	    LOG.error("setItemUID for " + obj.getClass()
+		      + " takes strange parameter",
 		      iare);
 	    return null;
 	}
 	catch (ExceptionInInitializerError eiie)
 	{
-	    cat.error("setItemUID for " + obj.getClass() +
-		      " threw",
+	    LOG.error("setItemUID for " + obj.getClass() + " threw",
 		      eiie);
 	    return null;
 	}
@@ -303,3 +290,4 @@ public class ItemUID
 	return mparam[0].toString();
     }
 }
+
