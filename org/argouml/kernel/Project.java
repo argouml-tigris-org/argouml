@@ -911,7 +911,11 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         // issue 1725: the root is not set, which leads to problems
         // with displaying prop panels
-        setRoot(getModel());
+        Object model = getModel();
+        
+        LOG.info("Setting root model to " + model);
+
+        setRoot(model);
 
         ProjectManager.getManager().setNeedsSave(false);
         // we don't need this HashMap anymore so free up the memory
@@ -1306,7 +1310,6 @@ public class Project implements java.io.Serializable, TargetListener {
         currentNamespace = null;
         cgPrefs = null;
         vetoSupport = null;
-        Model.getModelManagementFactory().setRootModel(null);
         activeDiagram = null;
         defaultModelCache = null;
 
