@@ -41,8 +41,8 @@ public class UMLMessageActivatorComboBox extends UMLComboBox2 {
 
     /**
      * Constructor for UMLMessageActivatorComboBox.
-     * @param container
-     * @param arg0
+     * @param container the UI container
+     * @param arg0 the model
      */
     public UMLMessageActivatorComboBox(
         UMLUserInterfaceContainer container,

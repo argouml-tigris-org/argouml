@@ -55,8 +55,8 @@ public class UMLCollaborationRepresentedClassifierListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {         
-        return org.argouml.model.ModelFacade.isAClassifier(elem) && 
-            ModelFacade.getRepresentedClassifier(getTarget()) == elem;
+        return org.argouml.model.ModelFacade.isAClassifier(elem)  
+            && ModelFacade.getRepresentedClassifier(getTarget()) == elem;
     }
 
 }

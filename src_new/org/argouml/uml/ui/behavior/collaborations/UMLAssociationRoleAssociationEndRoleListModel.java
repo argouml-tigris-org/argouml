@@ -54,7 +54,8 @@ public class UMLAssociationRoleAssociationEndRoleListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return org.argouml.model.ModelFacade.isAAssociationEndRole(o) && ModelFacade.getConnections(getTarget()).contains(o);
+        return org.argouml.model.ModelFacade.isAAssociationEndRole(o) 
+            && ModelFacade.getConnections(getTarget()).contains(o);
     }
 
 }

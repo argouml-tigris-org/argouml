@@ -49,7 +49,7 @@ public class UMLStateVertexIncomingListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         ArrayList c = new ArrayList(ModelFacade.getIncomings(getTarget()));
-        if (ModelFacade.isAState(getTarget())){
+        if (ModelFacade.isAState(getTarget())) {
             ArrayList i = new ArrayList(ModelFacade
                 .getInternalTransitions(getTarget()));
             c.removeAll(i);
@@ -62,7 +62,7 @@ public class UMLStateVertexIncomingListModel extends UMLModelElementListModel2 {
      */
     protected boolean isValidElement(Object/* MBase */element) {
         ArrayList c = new ArrayList(ModelFacade.getIncomings(getTarget()));
-        if (ModelFacade.isAState(getTarget())){
+        if (ModelFacade.isAState(getTarget())) {
             ArrayList i = new ArrayList(ModelFacade
                 .getInternalTransitions(getTarget()));
             c.removeAll(i);

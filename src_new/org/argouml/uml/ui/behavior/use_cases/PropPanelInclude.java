@@ -64,7 +64,8 @@ public class PropPanelInclude extends PropPanelModelElement {
 //					      "UMLMenu",
 //					      "tooltip.nav-stereo"),
 //					  getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.namespace"),
 		 getNamespaceScroll());
 
@@ -84,7 +85,8 @@ public class PropPanelInclude extends PropPanelModelElement {
 
    /*
         // TODO:
-        // FIXME - Why is this code commented out - is there work to do here - Bob Tarling
+        // FIXME - Why is this code commented out - 
+        // is there work to do here - Bob Tarling
     *
         // The addition use case (reuse earlier variables). Note that because
         // of the NSUML bug we look for the "base" event, rather than the

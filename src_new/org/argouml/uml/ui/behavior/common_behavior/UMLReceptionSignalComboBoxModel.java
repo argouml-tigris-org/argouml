@@ -39,7 +39,8 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLReceptionSignalComboBoxModel() {
         super("signal", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
+        UmlModelEventPump.getPump().addClassModelEventListener(this, 
+                (Class) ModelFacade.NAMESPACE, "ownedElement");
     }
 
     /**
@@ -50,7 +51,8 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
         if (org.argouml.model.ModelFacade.isAReception(target)) {
             Object rec = /*(MReception)*/ target;
             removeAllElements();
-            setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind((Class)ModelFacade.SIGNAL));
+            setElements(ModelManagementHelper.getHelper()
+                    .getAllModelElementsOfKind((Class) ModelFacade.SIGNAL));
             setSelectedItem(ModelFacade.getSignal(rec));      
         }
          

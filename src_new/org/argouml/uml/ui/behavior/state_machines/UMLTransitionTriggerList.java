@@ -38,7 +38,7 @@ public class UMLTransitionTriggerList extends UMLMutableLinkedList {
 
     /**
      * Constructor for UMLTransitionTriggerList.
-     * @param dataModel
+     * @param dataModel the model
      */
     public UMLTransitionTriggerList(
         UMLModelElementListModel2 dataModel) {

@@ -60,9 +60,11 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return org.argouml.model.ModelFacade.isAMessage(elem) && 
-            ModelFacade.getInteraction(elem) == ModelFacade.getInteraction(getTarget()) &&
-            ModelFacade.getActivator(elem) == ModelFacade.getActivator(getTarget());
+        return org.argouml.model.ModelFacade.isAMessage(elem) 
+            && ModelFacade.getInteraction(elem) == ModelFacade.getInteraction(
+                    getTarget()) 
+            && ModelFacade.getActivator(elem) == ModelFacade.getActivator(
+                    getTarget());
     }
 
 }

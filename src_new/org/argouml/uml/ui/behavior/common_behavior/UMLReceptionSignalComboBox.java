@@ -38,8 +38,8 @@ public class UMLReceptionSignalComboBox extends UMLComboBox2 {
 
     /**
      * Constructor for UMLSignalComboBox.
-     * @param container
-     * @param arg0
+     * @param container the containing UI element
+     * @param arg0 the model
      */
     public UMLReceptionSignalComboBox(
         UMLUserInterfaceContainer container,

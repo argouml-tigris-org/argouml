@@ -31,7 +31,8 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLExtensionPointUseCaseListModel extends UMLModelElementListModel2 {
+public class UMLExtensionPointUseCaseListModel 
+    extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLExtensionPointUseCaseListModel.
@@ -51,7 +52,8 @@ public class UMLExtensionPointUseCaseListModel extends UMLModelElementListModel2
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return org.argouml.model.ModelFacade.isAUseCase(o) && ModelFacade.getUseCase(getTarget()) == o;
+        return org.argouml.model.ModelFacade.isAUseCase(o) 
+            && ModelFacade.getUseCase(getTarget()) == o;
     }
 
 }
