@@ -40,12 +40,12 @@ import javax.swing.ListCellRenderer;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
-import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.util.VectorSet;
+import org.tigris.swidgets.LabelledLayout;
 
 /**
  * The dialog to enter a new ToDoItem.

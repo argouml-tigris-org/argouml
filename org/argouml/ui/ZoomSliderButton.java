@@ -45,7 +45,7 @@ import javax.swing.event.ChangeListener;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.swingext.PopupButton;
+import org.tigris.swidgets.PopupButton;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 

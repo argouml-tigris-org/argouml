@@ -34,12 +34,13 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.swingext.GridLayout2;
-import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewReception;
+
+import org.tigris.swidgets.GridLayout2;
+import org.tigris.swidgets.Orientation;
 
 /**
  * The abstract properties panel for Classifiers.

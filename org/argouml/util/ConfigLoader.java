@@ -37,7 +37,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.i18n.Translator;
-import org.argouml.swingext.Orientation;
+import org.tigris.swidgets.Orientation;
 import org.argouml.ui.SplashScreen;
 
 /**

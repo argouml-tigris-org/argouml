@@ -31,9 +31,6 @@ import javax.swing.JToolBar;
 
 import org.argouml.application.api.Configuration;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.swingext.BorderSplitPane;
-import org.argouml.swingext.Horizontal;
-import org.argouml.swingext.Vertical;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.cmd.ActionEmailExpert;
 import org.argouml.ui.cmd.ActionNewToDoItem;
@@ -42,6 +39,9 @@ import org.argouml.ui.cmd.ActionSnooze;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
+import org.tigris.swidgets.BorderSplitPane;
+import org.tigris.swidgets.Horizontal;
+import org.tigris.swidgets.Vertical;
 import org.tigris.toolbar.ToolBar;
 
 /**

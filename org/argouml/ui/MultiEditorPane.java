@@ -42,7 +42,7 @@ import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.QuadrantPanel;
-import org.argouml.swingext.Horizontal;
+import org.tigris.swidgets.Horizontal;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;

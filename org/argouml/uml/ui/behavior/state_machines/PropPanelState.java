@@ -35,9 +35,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.tigris.swidgets.Orientation;
 
 /**
  * The abstract properties panel for a State.

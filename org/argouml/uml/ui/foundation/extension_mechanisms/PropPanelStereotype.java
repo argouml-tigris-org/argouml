@@ -32,7 +32,6 @@ import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.uml.ExtensionMechanismsFactory;
-import org.argouml.swingext.GridLayout2;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -47,6 +46,8 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationListModel;
 import org.argouml.util.ConfigLoader;
+
+import org.tigris.swidgets.FlexiGridLayout;
 
 /**
  * TODO: this property panel needs refactoring to remove dependency on old gui
@@ -85,7 +86,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
         
 
         JPanel modifiersPanel =
-            new JPanel(new GridLayout2(0, 2, GridLayout2.ROWCOLPREFERRED));
+            new JPanel(new FlexiGridLayout(0, 2, FlexiGridLayout.ROWCOLPREFERRED));
         modifiersPanel.setBorder(new TitledBorder(
                 Translator.localize("label.modifiers")));
         modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());

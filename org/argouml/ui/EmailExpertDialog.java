@@ -38,7 +38,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.i18n.Translator;
-import org.argouml.swingext.LabelledLayout;
+import org.tigris.swidgets.LabelledLayout;
 
 /** The email expert dialog does not work and is in
  * desperate need of some attention.

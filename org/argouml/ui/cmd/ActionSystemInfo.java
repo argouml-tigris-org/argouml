@@ -29,7 +29,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 
-import org.argouml.swingext.ActionUtilities;
+import org.tigris.swidgets.ActionUtilities;
 import org.argouml.ui.SystemInfoDialog;
 import org.argouml.uml.ui.UMLAction;
 

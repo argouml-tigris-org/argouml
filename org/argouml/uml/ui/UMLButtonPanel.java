@@ -30,7 +30,7 @@ import java.util.Enumeration;
 
 import javax.swing.JPanel;
 
-import org.argouml.swingext.*;
+import org.tigris.swidgets.SerialLayout;
 
 import ru.novosoft.uml.MElementEvent;
 
