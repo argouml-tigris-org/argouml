@@ -498,6 +498,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	}
 
     /**
+     * Deletes this object including its owner.
      * Add the owner of this element to the trash, so other Argo components (i.e. critics)
      * realize, that it is deleted.
      */
@@ -505,6 +506,14 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	if(getOwner() != null) {
 	    Trash.SINGLETON.addItemFrom( getOwner(), null);
 	}
+	super.delete();
+    }
+
+    /**
+     * Deletes just this object.
+     * The owner is preserved.
+     */
+    public void remove() {
 	super.delete();
     }
 
