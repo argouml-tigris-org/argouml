@@ -14,48 +14,81 @@
     <note>
         <para>
             <application>ArgoUML</application> currently uses 
-            <ulink url="http://jakarta.apache.org/log4j/">log4j</ulink>
-            version 1.1.3.
-            An update to
-            <ulink url="http://jakarta.apache.org/log4j/">log4j</ulink>
-            version 1.2.x is planned for
-            <application>ArgoUML</application> release 0.11.x.
+            log4j version 1.1.3.
+            An update to log4j version 1.2.x is planned for
+            <application>ArgoUML</application> release 0.13.x.
             Instructions in the following sections deal with
-            <ulink url="http://jakarta.apache.org/log4j/">log4j</ulink>
-            version 1.2.x.
+            log4j version 1.1.3.
         </para>
     </note>
     
     <sect2>
         <title>What to Log</title>
         <para>
-            Logging entries in
-            <ulink url="http://jakarta.apache.org/log4j/">log4j</ulink>
-            belong to exactly <emphasis>one</emphasis> level:
+            Logging entries in log4j
+            belong to exactly <emphasis>one</emphasis> level.
+            From the log4j website:
             <itemizedlist>
-                <listitem>FATAL</listitem>
-                <listitem>ERROR</listitem>
-                <listitem>WARN</listitem>
-                <listitem>INFO</listitem>
-                <listitem>DEBUG</listitem>
+                <listitem>
+                The FATAL level designates very severe error events that 
+                will presumably lead the application to abort.
+                </listitem>
+                <listitem>
+                The ERROR level designates error events that might still 
+                allow the application to continue running.
+                </listitem>
+                <listitem>
+                The WARN level designates potentially harmful situations.
+                </listitem>
+                <listitem>
+                The INFO level designates informational messages that 
+                highlight the progress of the application at coarse-grained 
+                level.
+                </listitem>
+                <listitem>
+                The DEBUG Level designates fine-grained informational 
+                events that are most useful to debug an application.
+                </listitem>
             </itemizedlist>
 
             This list is ordered according to the priority of these
-            logging entries i.e.  if logging on level WARN is enabled,
+            logging entries i.e. if logging on level WARN is enabled
+            for a particular class/package,
             all logging entries that belong to the above levels ERROR
             and FATAL are logged as well.
         </para>
+        <para>
+            Where as the levels FATAL and ERROR are explained reasonably well,
+            the use of the remaining levels within <application>ArgoUML</application>
+            is outlined below. This is not an exhaustive list but should give some
+            guidelines to follow.
+        </para>
         <itemizedlist>
             <listitem>
-                General rules for logging in <application>ArgoUML</application>
-                <para>TBD</para>
+                The WARN level shall be used for
+                <itemizedlist>
+                    <listitem>if CG can't find all the information required 
+                        and has to make something up.</listitem>
+                </itemizedlist>
             </listitem>
             <listitem>
-                Rules for assigning levels to logging entries 
-                (DEBUG, INFO, WARN, ERROR, FATAL)
-                <para>TBD</para>
+                The INFO level shall be used for 
+                <itemizedlist>
+                    <listitem>module and plugin load messages</listitem>
+                    <listitem>CG and RE status messages</listitem>
+                    <listitem>file open and file close messages</listitem>
+                </itemizedlist>
+            </listitem>
+            <listitem>
+                The DEBUG level shall be used for
+                <itemizedlist>
+                    <listitem>messages that serve for debugging and solving 
+                        of an issue/defect.</listitem>
+                </itemizedlist>
             </listitem>
         </itemizedlist>
+        For performance reasons, it is advised to do a check before all DEBUG
+        and INFO log4j messages (see <xref linkend="example.log4j.speed.113"/>).
     </sect2>
     
     <sect2>
@@ -63,7 +96,8 @@
         <important>
             <para>
                 You should <emphasis>not</emphasis> use
-                <function>System.out.println</function> in your own
+                <function>System.out.println</function> in 
+                <application>ArgoUML</application> 
                 Java Code. The only exception of this rule shall be to
                 print the usage of <application>ArgoUML</application>
                 in <classname>main.java</classname>.
@@ -74,12 +108,12 @@
             To make log entries from within your own classes, you just
             need to follow the three steps below:
             <orderedlist>
-                <listitem>Import the org.apache.log4j.Logger package</listitem>
-                <listitem>Get a Logger</listitem>
+                <listitem>Import the org.apache.log4j.Category package</listitem>
+                <listitem>Get a Category</listitem>
                 <listitem>Start Logging...</listitem>
             </orderedlist>
         </para>
-        <example>
+        <!-- <example>
             <title>For log4j version 1.2.x</title>
             <programlisting>
 import org.apache.log4j.Logger;
@@ -96,6 +130,39 @@ public void anExample() {
     _logger.fatal("This is fatal. The program stops now working...");
 }
             </programlisting>
+        </example> -->
+        <example id="example.log4j.general.113">
+            <title>For log4j version 1.1.3</title>
+            <programlisting>
+import org.apache.log4j.Category;
+
+Category _cat = Category.getInstance(<emphasis>theClass</emphasis>.class.getName());
+
+...
+
+public void anExample() {
+    _cat.debug("This is a debug message.");
+    _cat.info("This is a info message.");
+    _cat.warn("This is a warning.");
+    _cat.error("This is an error.");
+    _cat.fatal("This is fatal. The program stops now working...");
+}
+            </programlisting>
+        </example>
+        For performance reasons, a check before the actual logging statement 
+        saves the overhead of all the concatenations, data conversions and
+        temporary objects that would be created otherwise. Even if logging 
+        is turned off for DEBUG and/or INFO level.
+        <example id="example.log4j.speed.113">
+            <title>Improving on speed/performance (log4j version 1.1.3)</title>
+            <programlisting>
+    if (_cat.isDebugEnabled()) {
+        _cat.debug("Entry number: " + i + " is " + String.valueOf(entry[i]));
+    }
+    if (_cat.isInfoEnabled()) {
+        _cat.info("Entry number: " + i + " is " + String.valueOf(entry[i]));
+    }
+            </programlisting>
         </example>
         <para>
             For more information go to the log4j homepage at
@@ -106,8 +173,7 @@ public void anExample() {
     <sect2>
         <title>How to Enable Logging...</title>
         <para>
-            <ulink url="http://jakarta.apache.org/log4j/">log4j</ulink>
-            uses the command line parameter
+            log4j uses the command line parameter
             <parameter>-Dlog4j.configuration = URL</parameter>
             to configure itself where URL points to the location of
             your log4j configuration file.
@@ -205,13 +271,25 @@ file://home/username/<emphasis>filename.lcf</emphasis>              <co id="ex.u
 it is currently not possible to choose log4j configuration
 when running ArgoUML from Java Web Start.
             </para>
-        </sect3>
+</sect3>
         
         <sect3>
             <title>...when running ArgoUML from NetBeans</title>
             <para>
-                TBD
+                At the time of writing this paragraph, it is not possible to 
+                set the logging configuration file on a per project basis in
+                NetBeans.
+                Instead, the Global Options of 
+                [Debbuging and Execution/Execution Types/External 
+                Execution/External Process] need to be changed.
             </para>
+            <example>
+                <title>External Execution Property (Arguments)</title>
+                <programlisting>
+-cp {filesystems}{:}{classpath}{:}{library} <emphasis>-Dlog4j.configuration=URL</emphasis>
+    {classname} {arguments}
+                </programlisting>
+            </example>
         </sect3>
     </sect2>
     
@@ -221,6 +299,8 @@ when running ArgoUML from Java Web Start.
             There are some sample configuration files provided in 
             <parameter>org.argouml.resource</parameter>. Modify these according
             to your needs.
+            Or alternatively, you can try <ulink url="http://www.japhy.de/configLog4j">
+            configLog4j</ulink> to assist yourself in creating a log4j configuration file.
         </para>    
     </sect2>
     
@@ -230,6 +310,10 @@ when running ArgoUML from Java Web Start.
             <listitem>
                 The log4j project homepage at 
                     <ulink url="http://jakarta.apache.org/log4j/">http://jakarta.apache.org/log4j</ulink>
+            </listitem>
+            <listitem>
+                The configlog4j homepage at
+                    <ulink url="http://www.japhy.de/configLog4j/">http://www.japhy.de/configLog4j</ulink>
             </listitem>
             <!-- TO DO
                 ... add links to other log4j tutorials etc.
@@ -247,3 +331,4 @@ sgml-parent-document: ("cookbook.xml" "sect1" nil)
 End:
 
 -->
+
