@@ -41,11 +41,12 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 public abstract class AbstractTestActionAddDiagram extends TestCase {
 
     /**
-     * The action to be tested
+     * The action to be tested.
      */
     private ActionAddDiagram action;
+
     /**
-     * The namespace a created diagram should have
+     * The namespace a created diagram should have.
      */
     private MNamespace ns;
 
@@ -105,19 +106,21 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
     protected abstract List getValidNamespaceClasses();
 
     /**
-     * Tests if a created diagram complies to the following conditions:
-     * - Has a valid namespace
-     * - Has a MutableGraphModel
-     * - Has a proper name
+     * Tests if a created diagram complies to the following conditions.<ul>
+     * <li>Has a valid namespace
+     * <li>Has a MutableGraphModel
+     * <li>Has a proper name
+     * </ul>
      */
     public void testCreateDiagram() {
+	assertTrue("The test case has a non-valid namespace",
+		   action.isValidNamespace(ns));
+
 	UMLDiagram diagram = action.createDiagram(ns);
 	assertNotNull(
 		      "The diagram has no namespace",
 		      diagram.getNamespace());
-	assertTrue(
-		   "The diagram has a non-valid namespace",
-		   action.isValidNamespace(diagram.getNamespace()));
+	checkNamespace(diagram);
 	assertNotNull(
 		      "The diagram has no graphmodel",
 		      diagram.getGraphModel());
@@ -128,7 +131,22 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
     }
 
     /**
-     * Tests if two diagrams created have different names
+     * Test if the namespace is correct for the diagram.<p>
+     *
+     * This is the default implementation if the namespace of the
+     * created diagram is the same as the one where the diagram is
+     * created. If not, the specialized test will override this.
+     *
+     * @param diagram The diagram to check the namespace for.
+     */
+    protected void checkNamespace(UMLDiagram diagram) {
+        assertTrue(
+        	   "The diagram has a non-valid namespace",
+        	   action.isValidNamespace(diagram.getNamespace()));
+    }
+
+    /**
+     * Tests if two diagrams created have different names.
      */
     public void testDifferentNames() {
 	UMLDiagram diagram1 = action.createDiagram(ns);
@@ -165,8 +183,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      *                                @see java.lang.Class#newInstance()
      */
     public void testValidNamespaces()
-	throws InstantiationException, IllegalAccessException
-    {
+	throws InstantiationException, IllegalAccessException {
 	Iterator it = validNamespaces.iterator();
 	while (it.hasNext()) {
 	    Class clazz = (Class) it.next();
@@ -175,7 +192,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
 	    assertTrue(
 		       clazz.getName()
 		       + " is no valid namespace for the diagram",
-		       action.isValidNamespace((MNamespace) o));
+		       action.isValidNamespace(o));
 	}
     }
 
