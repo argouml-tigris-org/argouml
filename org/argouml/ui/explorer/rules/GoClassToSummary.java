@@ -78,6 +78,13 @@ public class GoClassToSummary extends AbstractPerspectiveRule{
         if (ModelFacade.isAClass(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
+	    set.addAll(ModelFacade.getAttributes(parent));
+	    set.addAll(ModelFacade.getOperations(parent));
+	    set.addAll(ModelFacade.getAssociationEnds(parent));
+	    set.addAll(ModelFacade.getSupplierDependencies(parent));
+	    set.addAll(ModelFacade.getClientDependencies(parent));
+	    set.addAll(ModelFacade.getGeneralizations(parent));
+	    set.addAll(ModelFacade.getSpecializations(parent));
 	    return set;
 	}
 
