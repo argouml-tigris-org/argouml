@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 2001-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,7 +50,7 @@ public class GeneratorDummy extends Generator implements PluggableNotation {
     public static GeneratorDummy getInstance() { return SINGLETON; }
 
     private GeneratorDummy() {
-	super(Notation.makeNotation("Dummy"));
+	super(Notation.makeNotation("Dummy", "1.0", null));
     }
 
     /**
@@ -92,6 +92,9 @@ public class GeneratorDummy extends Generator implements PluggableNotation {
     }
     public String generateAssociationEnd(MAssociationEnd ae) {
 	return "AssociationEnd(" + ae.getName() + ")";
+    }
+    public String generateAssociationRole(MAssociationRole ar) {
+	return "AssociationRole(" + ar.getName() + ")";
     }
     public String generateMultiplicity(MMultiplicity m) {
 	return "Multiplicity(" + m + ")";
