@@ -70,25 +70,25 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   protected static Action _actionCreateMultiple = Actions.CreateMultiple;
   // ----- diagrams
   /** this fires the Class Diagram view
-   */  
+   */
   protected static Action _actionClassDiagram = ActionClassDiagram.SINGLETON;
   /** this fires the use case Diagram view
-   */  
+   */
   protected static Action _actionUseCaseDiagram = ActionUseCaseDiagram.SINGLETON;
   /** this fires the state Diagram view
-   */  
+   */
   protected static Action _actionStateDiagram = ActionStateDiagram.SINGLETON;
   /** this fires the activity view
-   */  
+   */
   protected static Action _actionActivityDiagram = ActionActivityDiagram.SINGLETON;
   /** this fires the Collaboration Diagram view
-   */  
+   */
   protected static Action _actionCollaborationDiagram = ActionCollaborationDiagram.SINGLETON;
   /** this fires the deployment Diagram view
-   */  
+   */
   protected static Action _actionDeploymentDiagram = ActionDeploymentDiagram.SINGLETON;
   /** this fires the sequence Diagram view
-   */  
+   */
   protected static Action _actionSequenceDiagram = ActionSequenceDiagram.SINGLETON;
 
   // ----- model elements
@@ -105,7 +105,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   /** The toDoPane currently does not remember todos
    * nor is there a way of exporting todos to anothter
    * format
-   */  
+   */
   public ToDoPane _toDoPane;
   protected MultiEditorPane _multiPane;
   protected DetailsPane _detailsPane;
@@ -119,39 +119,43 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
    */
   protected JMenu _edit = null;
   /** unknown where this appears in the UI
-   */  
+   */
   protected JMenu _select = null;
   /** toobar: view under which is the goto diagram/ find
    * zoom!!! this should be activated as a right click command.
    * editor tabs/details tabs/ adjust grid etc.*
-   */  
+   */
   protected ArgoJMenu _view = null;
   /** Toolbar:create diagram
-   */  
+   */
   protected JMenu _createDiagrams = null;
   /** currently disactivated
-   */  
+   */
   protected JMenu _tools = null;
   /** currently supports rudimentary java generation,
    * new modules for php and html/javadocs are planned
    * feel free to contribute here!
-   */  
+   */
   protected JMenu _generate = null;
   /** this should be invoked automatically when
    * importing sources.
-   */  
+   */
   protected JMenu _arrange = null;
   /** currently undergoing significant testing
-   */  
+   */
   protected ArgoJMenu _critique = null;
   /** It needs it. Currently there is only an
    * about text. hyperlinking to online docs at
    * argouml.org considered basic improvement.
-   */  
+   */
   protected JMenu _help = null;
+  /**
+   * The menu item for hiding/showing the Details pane.
+   */
+  protected JCheckBoxMenuItem _showDetailsMenuItem = null;
   /** partially implemented. needs work to display
    * import of source and saving of zargo
-   */  
+   */
   protected StatusBar _statusBar = new StatusBar();
   //protected JToolBar _toolBar = new JToolBar();
 
@@ -159,7 +163,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
   /** this needs work so that users can set the font
    * size through a gui preference window
-   */  
+   */
   public Font defaultFont = new Font("Dialog", Font.PLAIN, 10);
   //  public static JFrame _Frame;
 
@@ -171,8 +175,8 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
    * The diagram which the user is currently working on.
    */
   private ArgoDiagram _activeDiagram;
-  
-  
+
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -212,9 +216,9 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     addWindowListener(new WindowCloser());
     if (_componentResizer == null) _componentResizer = new ComponentResizer();
     addComponentListener(_componentResizer);
-     ImageIcon argoImage = ResourceLoader.lookupIconResource("Model");
-     this.setIconImage(argoImage.getImage());
- }
+    ImageIcon argoImage = ResourceLoader.lookupIconResource("Model");
+    this.setIconImage(argoImage.getImage());
+  }
 
 
 //   void loadImages() {
@@ -237,12 +241,12 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
    * mouse require software developers in US to
    * make all components of User interface accessible
    * through keyboard
-   */  
+   */
   static final protected void setMnemonic(JMenuItem item,String key,char defMnemonic) {
     String localMnemonic = Localizer.localize("CoreMenu","Mnemonic_" + key);
     char mnemonic = defMnemonic;
     if(localMnemonic != null && localMnemonic.length() == 1) {
-        mnemonic = localMnemonic.charAt(0);
+      mnemonic = localMnemonic.charAt(0);
     }
     item.setMnemonic(mnemonic);
   }
@@ -253,7 +257,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
   static final protected void setAccelerator(JMenuItem item,KeyStroke keystroke) {
     if(keystroke != null) {
-        item.setAccelerator(keystroke);
+      item.setAccelerator(keystroke);
     }
   }
 
@@ -262,9 +266,9 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     ArrayList arraylist = Argo.getPlugins(PluggableMenu.class, context);
     ListIterator iterator = arraylist.listIterator();
     while (iterator.hasNext()) {
-        PluggableMenu module = (PluggableMenu)iterator.next();
-	menuitem.add(module.getMenuItem(menuitem, key));
-	menuitem.setEnabled(true);
+      PluggableMenu module = (PluggableMenu)iterator.next();
+	    menuitem.add(module.getMenuItem(menuitem, key));
+	    menuitem.setEnabled(true);
     }
   }
 
@@ -311,7 +315,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     appendPluggableMenus(_import, "File:Import");
     file.add(_import);
 
-    file.addSeparator();    
+    file.addSeparator();
     JMenuItem loadModelFromDBItem = file.add(ActionLoadModelFromDB.SINGLETON);
     JMenuItem storeModelToDBItem = file.add(ActionStoreModelToDB.SINGLETON);
     file.addSeparator();
@@ -385,7 +389,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
     _view.addSeparator();
 
-    JMenu zoom = (JMenu) _view.add(new JMenu(menuLocalize("Zoom")));   
+    JMenu zoom = (JMenu) _view.add(new JMenu(menuLocalize("Zoom")));
     zoom.add(new ActionZoom(25));
     zoom.add(new ActionZoom(50));
     zoom.add(new ActionZoom(75));
@@ -406,12 +410,15 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     _view.add(new CmdAdjustGuide());
     _view.add(new CmdAdjustPageBreaks());
     _view.addCheckItem(Actions.ShowRapidButtons);
+    _view.addCheckItem(Actions.ShowDiagramList);
+    _view.addCheckItem(Actions.ShowToDoList);
+    _showDetailsMenuItem = _view.addCheckItem(Actions.ShowDetails);
 
     _view.addSeparator();
     _view.add(org.argouml.language.ui.ActionNotation.getInstance().getMenu());
 
     appendPluggableMenus(_view, "View");
- 
+
     //JMenu create = (JMenu) _menuBar.add(new JMenu(menuLocalize("Create")));
     //setMnemonic(create,"Create",'C');
     //create.add(Actions.CreateMultiple);
@@ -489,7 +496,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     // Help Menu
     _help = new JMenu(menuLocalize("Help"));
     setMnemonic(_help,"Help",'H');
-    appendPluggableMenus(_help, "Help"); 
+    appendPluggableMenus(_help, "Help");
     if (_help.getItemCount() > 0) {
         _help.insertSeparator(0);
     }
@@ -503,8 +510,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
   protected Component createPanels() {
     _topSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _navPane, _multiPane);
-    _botSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-			       _toDoPane, _detailsPane);
+    _botSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _toDoPane, _detailsPane);
     _mainSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _topSplit, _botSplit);
     _topSplit.setDividerSize(2);
     _topSplit.setDividerLocation(Configuration.getInteger(Argo.KEY_SCREEN_VSPLITTOP, DEFAULT_VSPLIT));
@@ -518,7 +524,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     //_botSplit.setOneTouchExpandable(true);
 
     // Enable the property listeners after all changes are done
-    // (includes component listeners) 
+    // (includes component listeners)
     if (_componentResizer == null) _componentResizer = new ComponentResizer();
     _navPane.addComponentListener(_componentResizer);
     _toDoPane.addComponentListener(_componentResizer);
@@ -631,14 +637,14 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     _activeDiagram = ad;
     System.out.println ("Active diagram set to " + ad.getName());
   }
-  
+
   /**
    * Return the diagram, the user is currently working on.
    */
   public ArgoDiagram getActiveDiagram() {
     return _activeDiagram;
   }
-  
+
   public void setToDoItem(Object o) {
     _detailsPane.setToDoItem(o);
   }
@@ -676,8 +682,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     }
     Vector diagrams = getProject().getDiagrams();
     Object target = _multiPane.getTarget();
-    if ((target instanceof Diagram) &&
-	((Diagram)target).countContained(dms) == dms.size()) {
+    if ((target instanceof Diagram) && ((Diagram)target).countContained(dms) == dms.size()) {
       select(first);
       return;
     }
@@ -688,8 +693,8 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
       Diagram d = (Diagram) diagrams.elementAt(i);
       int nc = d.countContained(dms);
       if (nc > bestNumContained) {
-	bestNumContained = nc;
-	bestDiagram = d;
+	      bestNumContained = nc;
+	      bestDiagram = d;
       }
       if (nc == dms.size()) break;
     }
@@ -711,99 +716,208 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   // IStatusBar
   public void showStatus(String s) { _statusBar.showStatus(s); }
 
-    /**    Called by a user interface element when a request to
-     *    navigate to a model element has been received.
-     */
-    public void navigateTo(Object element) {
-        _history.navigateTo(element);
-        setTarget(element);
-    }
+  /**    Called by a user interface element when a request to
+   *    navigate to a model element has been received.
+   */
+  public void navigateTo(Object element) {
+    _history.navigateTo(element);
+    setTarget(element);
+  }
 
-    /**   Called by a user interface element when a request to
-     *   open a model element in a new window has been recieved.
-     */
-    public void open(Object element) {
-    }
+  /**   Called by a user interface element when a request to
+   *   open a model element in a new window has been recieved.
+   */
+  public void open(Object element) {
+  }
 
-    public boolean navigateBack(boolean attempt) {
-        boolean navigated = false;
-        if(attempt) {
-            Object target = _history.navigateBack(attempt);
-            if(target != null) {
-                navigated = true;
-                setTarget(target);
-            }
-        }
-        return navigated;
+  public boolean navigateBack(boolean attempt) {
+    boolean navigated = false;
+    if(attempt) {
+      Object target = _history.navigateBack(attempt);
+      if(target != null) {
+        navigated = true;
+        setTarget(target);
+      }
     }
+    return navigated;
+  }
 
-    public boolean navigateForward(boolean attempt) {
-        boolean navigated = false;
-        if(attempt) {
-            Object target = _history.navigateForward(attempt);
-            if(target != null) {
-                navigated = true;
-                setTarget(target);
-            }
-        }
-        return navigated;
+  public boolean navigateForward(boolean attempt) {
+    boolean navigated = false;
+    if(attempt) {
+      Object target = _history.navigateForward(attempt);
+      if(target != null) {
+        navigated = true;
+        setTarget(target);
+      }
     }
+    return navigated;
+  }
 
-    public boolean isNavigateBackEnabled() {
-        return _history.isNavigateBackEnabled();
-    }
+  public boolean isNavigateBackEnabled() {
+    return _history.isNavigateBackEnabled();
+  }
 
-    public boolean isNavigateForwardEnabled() {
-        return _history.isNavigateForwardEnabled();
-    }
+  public boolean isNavigateForwardEnabled() {
+    return _history.isNavigateForwardEnabled();
+  }
 
-    public void moduleLoaded(ArgoModuleEvent event) {
-	if (event.getSource() instanceof PluggableMenu) {
+  public void moduleLoaded(ArgoModuleEvent event) {
+  	if (event.getSource() instanceof PluggableMenu) {
 	    PluggableMenu module = (PluggableMenu)event.getSource();
 	    if (module.inContext(module.buildContext(_tools, "Tools"))) {
-		_tools.add(module.getMenuItem(_tools, "Tools"));
-	        _tools.setEnabled(true);
+		    _tools.add(module.getMenuItem(_tools, "Tools"));
+	      _tools.setEnabled(true);
 	    }
 	    if (module.inContext(module.buildContext(_import, "File:Import"))) {
-		_import.add(module.getMenuItem(_import, "File:Import"));
+       _import.add(module.getMenuItem(_import, "File:Import"));
 	    }
 	    if (module.inContext(module.buildContext(_generate, "Generate"))) {
-		_generate.add(module.getMenuItem(_generate, "Generate"));
+        _generate.add(module.getMenuItem(_generate, "Generate"));
 	    }
 	    if (module.inContext(module.buildContext(_edit, "Edit"))) {
-		_edit.add(module.getMenuItem(_edit, "Edit"));
+        _edit.add(module.getMenuItem(_edit, "Edit"));
 	    }
 	    if (module.inContext(module.buildContext(_view, "View"))) {
-		_view.add(module.getMenuItem(_view, "View"));
+      	_view.add(module.getMenuItem(_view, "View"));
 	    }
-	    if (module.inContext(module.buildContext(_createDiagrams,
-                                                       "Create Diagrams"))) {
-		_createDiagrams.add(module.getMenuItem(_createDiagrams,
-                                                       "Create Diagrams"));
+	    if (module.inContext(module.buildContext(_createDiagrams, "Create Diagrams"))) {
+       	_createDiagrams.add(module.getMenuItem(_createDiagrams, "Create Diagrams"));
 	    }
 	    if (module.inContext(module.buildContext(_arrange, "Arrange"))) {
-		_arrange.add(module.getMenuItem(_arrange, "Arrange"));
+       	_arrange.add(module.getMenuItem(_arrange, "Arrange"));
 	    }
 	    if (module.inContext(module.buildContext(_help, "Help"))) {
-               if (_help.getItemCount() == 1) {
-		    _help.insertSeparator(0);
-               }
-		_help.insert(module.getMenuItem(_help, "Help"), 0);
+        if (_help.getItemCount() == 1) {
+		      _help.insertSeparator(0);
+        }
+		    _help.insert(module.getMenuItem(_help, "Help"), 0);
 	    }
+    }
 	}
-    }
+	/**
+	  * Makes the navigator pane visible or invisible
+	  * @param     visible  true to make the navigator pane visible.
+	  */
+	public void setNavigatorPaneVisible(boolean visible) {
+		if (_navPane.isVisible() != visible) {
+			if (!visible) {
+				_topSplit.setLastDividerLocation(_topSplit.getDividerLocation());
+				_topSplit.setDividerSize(0);
+			}
+			else {
+				_topSplit.setDividerSize(2);
+			}
 
-    public void moduleUnloaded(ArgoModuleEvent event) {
+			_navPane.setVisible(visible);
+			if (visible) {
+				_topSplit.setDividerLocation(_topSplit.getLastDividerLocation());
+			}
+		}
+	}
+
+	/**
+	  * Makes the todo pane visible or invisible
+	  * @param     visible  true to make the todo pane visible.
+	  */
+	public void setToDoPaneVisible(boolean visible) {
+	  setLowerPaneVisible(_toDoPane, visible);
+	}
+
+	/**
+	  * Makes the details pane visible or invisible
+	  * @param     visible  true to make the details pane visible.
+	  */
+	public void setDetailsPaneVisible(boolean visible) {
+		_showDetailsMenuItem.setSelected(visible);
+		setLowerPaneVisible(_detailsPane, visible);
+	}
+
+	/**
+	  * Makes one of the lower panes (either the details pane or the todo list pane) visible or invisible.
+	  * If both panes become invisible then the entire lower pane is removed from view.
+	  * @param     pane     The <code>JPanel</code> object to hide/show
+	  * @param     visible  true to make the <code>pane</code> visible.
+	  */
+	private void setLowerPaneVisible(JPanel pane, boolean visible) {
+		// Only process if the visible state is changing from its existing state.
+		if (pane.isVisible() == visible) return;
+
+		// Determine which pane to change and which is the other.
+		JPanel otherPane = null;
+		if (pane.equals(_toDoPane)) otherPane = _detailsPane;
+		else if (pane.equals(_detailsPane)) otherPane = _toDoPane;
+		else return;
+
+		if (!visible && otherPane.isVisible()) {
+			// If the pane is being made invisible with the other pane left behind
+			// then remember the lower divider location and hide the divider.
+			_botSplit.setLastDividerLocation(_botSplit.getDividerLocation());
+			_botSplit.setDividerSize(0);
+		}
+
+		// Show/Hide the required pane.
+		pane.setVisible(visible);
+
+		if (visible && otherPane.isVisible()) {
+			// If both panes have now become visible, restore the lower divider location and make it visible.
+			_botSplit.setDividerSize(2);
+			_botSplit.setDividerLocation(_botSplit.getLastDividerLocation());
+		}
+		else if (!otherPane.isVisible() && !visible) {
+			// If both of the lower panes are now invisible make the bottom pane invisible and make
+			// the top pane take the entire space available. The position of the main divider is stored
+			// before it is removed.
+			_mainSplit.setLastDividerLocation(_mainSplit.getDividerLocation());
+			_botSplit.setVisible(false);
+			_mainSplit.setDividerLocation(_mainSplit.getHeight());
+			_mainSplit.setDividerSize(0);
+		}
+		else if ((otherPane.isVisible() || visible) && !_botSplit.isVisible()) {
+			// If either of the lower panes is visible but the bottom pane that encloses them is invisible
+			// then show the bottom pane and restore the main divider.
+			_botSplit.setVisible(true);
+			_mainSplit.setDividerSize(2);
+			_mainSplit.setDividerLocation(_mainSplit.getLastDividerLocation());
+		}
+	}
+
+	/**
+	  * test if the navigator pane is visible
+	  * @returns     true if visible
+	  */
+	public boolean isNavigatorPaneVisible() {
+	  return _navPane.isVisible();
+	}
+
+	/**
+	  * test if the details pane is visible
+	  * @returns     true if visible
+	  */
+	public boolean isDetailsPaneVisible() {
+	  return _detailsPane.isVisible();
+	}
+
+	/**
+	  * test if the todo pane is visible
+	  * @returns     true if visible
+	  */
+	public boolean isToDoPaneVisible() {
+	  return _toDoPane.isVisible();
+  }
+
+
+  public void moduleUnloaded(ArgoModuleEvent event) {
+      // needs-more-work:  Disable menu
+  }
+
+  public void moduleEnabled(ArgoModuleEvent event) {
+      // needs-more-work:  Enable menu
+  }
+
+  public void moduleDisabled(ArgoModuleEvent event) {
         // needs-more-work:  Disable menu
-    }
-
-    public void moduleEnabled(ArgoModuleEvent event) {
-        // needs-more-work:  Enable menu
-    }
-
-    public void moduleDisabled(ArgoModuleEvent event) {
-        // needs-more-work:  Disable menu
-    }
+  }
 
 
 } /* end class ProjectBrowser */
@@ -819,7 +933,7 @@ class ComponentResizer extends ComponentAdapter {
   public ComponentResizer() { }
 
   public void componentResized(ComponentEvent ce) {
-    Component c = ce.getComponent(); 
+    Component c = ce.getComponent();
     if (c instanceof NavigatorPane) {
 
 	// Got the 2 and the 4 by experimentation.  This is equivalent
@@ -838,16 +952,16 @@ class ComponentResizer extends ComponentAdapter {
 	Configuration.setInteger(Argo.KEY_SCREEN_VSPLITBOTTOM, c.getWidth() + 2);
     }
     else if (c instanceof ProjectBrowser) {
-        Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, c.getWidth());
-        Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, c.getHeight());
+      Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, c.getWidth());
+      Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, c.getHeight());
     }
   }
 
   public void componentMoved(ComponentEvent ce) {
-    Component c = ce.getComponent(); 
+    Component c = ce.getComponent();
     if (c instanceof ProjectBrowser) {
-        Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, c.getX());
-        Configuration.setInteger(Argo.KEY_SCREEN_TOP_Y, c.getY());
+      Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, c.getX());
+      Configuration.setInteger(Argo.KEY_SCREEN_TOP_Y, c.getY());
     }
   }
 } /* end class ComponentResizer */
@@ -857,8 +971,7 @@ class InitMenusLater implements Runnable {
   JMenu align, distribute, reorder, nudge, layout;
   JMenu editTabs, detailsTabs;
 
-  public InitMenusLater(JMenu a, JMenu d, JMenu r, JMenu n, JMenu l,
-			JMenu et, JMenu dt) {
+  public InitMenusLater(JMenu a, JMenu d, JMenu r, JMenu n, JMenu l, JMenu et, JMenu dt) {
     align = a;
     distribute = d;
     reorder = r;
@@ -927,7 +1040,7 @@ class InitMenusLater implements Runnable {
     JMenuItem autoLayout = layout.add(new ActionLayout("Automatic"));
     JMenuItem incrLayout = layout.add(new ActionLayout("Incremental"));
     /** incremental layout is currently not implemented */
-    incrLayout.setEnabled(false);    
+    incrLayout.setEnabled(false);
 
     JMenuItem nextEditItem = editTabs.add(Actions.NextEditTab);
     nextEditItem.setAccelerator(F6);
