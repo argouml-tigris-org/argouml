@@ -181,6 +181,8 @@ public class ModelFacade {
 
     public static final Object ATTRIBUTE          = MAttribute.class;
     public static final Object OPERATION          = MOperation.class;
+
+    public static final Object VISIBILITYKIND     = MVisibilityKind.class;
     
     public static final Object MODELELEMENT       = MModelElement.class;
 
@@ -196,6 +198,13 @@ public class ModelFacade {
         MPseudostateKind.JOIN;
     public static final Object BRANCH_PSEUDOSTATEKIND = 
         MPseudostateKind.BRANCH;
+
+    public static final Object PUBLIC_VISIBILITYKIND =
+        MVisibilityKind.PUBLIC;
+    public static final Object PRIVATE_VISIBILITYKIND =
+        MVisibilityKind.PRIVATE;
+    public static final Object PROTECTED_VISIBILITYKIND =
+        MVisibilityKind.PROTECTED;
 
 
     /** Constructor that forbids instantiation.
@@ -2523,12 +2532,12 @@ public class ModelFacade {
 
     /** getUMLClassName returns the name of the UML Model class, e.g. it 
      *  it will return Class for an object of type MClass.
-     * @param handle Modelelement
+     * @param handle MBase
      * @return classname of modelelement
      */
     public static String getUMLClassName(Object handle) {
-        if (handle instanceof MModelElement) {
-            return ((MModelElement) handle).getUMLClassName();
+        if (handle instanceof MBase) {
+            return ((MBase) handle).getUMLClassName();
         }
         return null;
     }
