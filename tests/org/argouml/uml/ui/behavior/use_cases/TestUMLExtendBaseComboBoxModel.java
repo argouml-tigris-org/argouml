@@ -31,6 +31,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
@@ -74,7 +75,7 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
             bases[i] = UseCasesFactory.getFactory().createUseCase();
             m.addOwnedElement(bases[i]);
         }
-        model.targetChanged(elem);
+        model.targetSet(new TargetEvent(this, "set", new Object[0], new Object[] {elem}));
     }
 
     /**

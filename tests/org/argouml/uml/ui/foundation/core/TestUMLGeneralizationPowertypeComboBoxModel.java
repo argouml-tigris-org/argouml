@@ -31,6 +31,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -67,7 +68,7 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLGeneralizationPowertypeComboBoxModel();
-        model.targetChanged(elem);
+        model.targetSet(new TargetEvent(this, "set", new Object[0], new Object[] {elem}));
         types = new MClassifier[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);

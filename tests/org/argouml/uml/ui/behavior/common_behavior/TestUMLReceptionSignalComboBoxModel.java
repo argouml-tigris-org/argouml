@@ -32,6 +32,8 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.ui.targetmanager.TargetEvent;
+
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
@@ -76,7 +78,7 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
             m.addOwnedElement(signals[i]);
         }      
         model = new UMLReceptionSignalComboBoxModel();
-        model.targetChanged(elem);
+        model.targetSet(new TargetEvent(this, "set", new Object[0], new Object[] {elem}));
     }
 
     /**

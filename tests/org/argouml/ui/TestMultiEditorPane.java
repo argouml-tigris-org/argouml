@@ -61,8 +61,7 @@ public class TestMultiEditorPane extends TestCase {
      public void testConstruction() {
          try {
             MultiEditorPane pane = new MultiEditorPane();
-             assertNotNull(pane);
-             assertNull(pane.getTarget());
+             assertNotNull(pane);             
              assertEquals(pane.getComponents().length, 1);
          } catch (Exception ex) {
              // on a headless system (without display) this will crash

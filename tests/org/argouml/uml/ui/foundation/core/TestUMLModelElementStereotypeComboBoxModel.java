@@ -33,6 +33,7 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClass;
@@ -77,7 +78,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         }
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);   
-        model.targetChanged(elem);
+        model.targetSet(new TargetEvent(this, "set", new Object[0], new Object[] {elem}));  
     }
     
     /**

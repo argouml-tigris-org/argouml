@@ -31,6 +31,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
@@ -69,7 +70,7 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLIncludeBaseComboBoxModel();
-        model.targetChanged(elem);
+        model.targetSet(new TargetEvent(this, "set", new Object[0], new Object[] {elem}));
         bases = new MUseCase[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);

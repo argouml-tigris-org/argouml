@@ -30,6 +30,7 @@ import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
@@ -78,7 +79,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
             inter.addMessage(activators[i]);
         }  
         model = new UMLMessageActivatorComboBoxModel(); 
-        model.targetChanged(elem);   
+        model.targetSet(new TargetEvent(this, "set", new Object[0], new Object[] {elem})); 
     }
 
     /**

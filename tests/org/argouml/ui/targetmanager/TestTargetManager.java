@@ -26,6 +26,9 @@ package org.argouml.ui.targetmanager;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.model.uml.UmlFactory;
+
 import junit.framework.TestCase;
 
 /**
@@ -127,7 +130,9 @@ public class TestTargetManager extends TestCase {
 		TargetManager.getInstance().setTargets(test);
 		assertEquals(test, TargetManager.getInstance().getTargets());
 		TargetManager.getInstance().setTargets(null);
-		assertEquals(null, TargetManager.getInstance().getTargets());
+        List expectedValue = new ArrayList();
+        expectedValue.add(null);
+		assertEquals(expectedValue, TargetManager.getInstance().getTargets());
 		TargetListener listener = new TestTargetListener();
 		targetSetCalled = false;
 		TargetManager.getInstance().addTargetListener(listener);
@@ -252,9 +257,68 @@ public class TestTargetManager extends TestCase {
 		TargetManager.getInstance().removeTarget(list.get(0));
 		assertEquals(1, listener.counter);
 	}
+    
+    public void testNavigate() {
+        TargetManager.getInstance().cleanHistory();
+        int numtargets = 10;
+        Object[] targets = new Object[numtargets];
+        for (int i = 0; i < numtargets; i++) {
+            targets[i] = new Object();
+            TargetManager.getInstance().setTarget(targets[i]);
+        }
+        assertTrue(TargetManager.getInstance().navigateBackPossible());
+        assertEquals(false, TargetManager.getInstance().navigateForwardPossible());
+        try {        
+            TargetManager.getInstance().navigateForward();
+            fail();
+        }
+        catch (IllegalStateException e) {
+        }
+        TargetManager.getInstance().navigateBackward();
+        assertEquals(targets[8], TargetManager.getInstance().getTarget());
+        assertTrue(TargetManager.getInstance().navigateBackPossible());
+        assertTrue(TargetManager.getInstance().navigateForwardPossible());
+        for (int i = 7 ; i > 0; i--) {
+            TargetManager.getInstance().navigateBackward();
+            assertEquals(targets[i], TargetManager.getInstance().getTarget());
+            assertTrue(TargetManager.getInstance().navigateBackPossible());
+            assertTrue(TargetManager.getInstance().navigateForwardPossible());
+        }
+        TargetManager.getInstance().navigateBackward();
+        assertTrue(TargetManager.getInstance().navigateForwardPossible());
+        assertEquals(false, TargetManager.getInstance().navigateBackPossible());
+        try {
+            TargetManager.getInstance().navigateBackward();
+            fail(); 
+        } catch (IllegalStateException e) {
+        }
+        TargetManager.getInstance().navigateForward();
+        assertEquals(targets[1], TargetManager.getInstance().getTarget());
+        assertTrue(TargetManager.getInstance().navigateBackPossible());
+        assertTrue(TargetManager.getInstance().navigateForwardPossible());
+        TargetManager.getInstance().setTarget(targets[9]);
+        assertTrue(TargetManager.getInstance().navigateBackPossible());
+        assertEquals(false, TargetManager.getInstance().navigateForwardPossible());
+        try {
+            TargetManager.getInstance().navigateForward();
+            fail();
+        } catch (IllegalStateException e) {
+        }
+        TargetManager.getInstance().navigateBackward();
+        assertTrue(TargetManager.getInstance().navigateBackPossible());
+        assertTrue(TargetManager.getInstance().navigateForwardPossible());
+        TargetManager.getInstance().navigateBackward();
+        assertTrue(TargetManager.getInstance().navigateForwardPossible());
+        assertEquals(false, TargetManager.getInstance().navigateBackPossible());
+        
+        
+    }
 
 	protected void setUp() {
+        ArgoSecurityManager.getInstance().setAllowExit(true);
+        UmlFactory.getFactory().setGuiEnabled(false);
 		TargetManager.getInstance().setTarget(null);
+        
 	}
 
 	protected void tearDown() {
