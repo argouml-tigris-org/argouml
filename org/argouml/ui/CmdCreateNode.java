@@ -87,6 +87,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 	
 
 	/**
+	 * Creates a modelelement using the uml model factories.
 	 * @see org.tigris.gef.graph.GraphFactory#makeNode()
 	 */
 	public Object makeNode() {
@@ -127,10 +128,16 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 		return super.makeNode();
 	}
 	
+	/**
+	 * returns the name of the uml modelelement without impl, M or the fullname
+	 * @return String
+	 */
 	private String getCreateClassName() {
 		String name = ((Class)_args.get("className")).getName();
-		name = name.substring(name.lastIndexOf('.')+1, name.length());
-		name = name.substring(1, name.lastIndexOf("Impl"));
+		name = name.substring(name.lastIndexOf('.')+2, name.length());
+		if (name.endsWith("Impl")) {
+			name = name.substring(0, name.lastIndexOf("Impl"));
+		}
 		return name;
 	}
 
