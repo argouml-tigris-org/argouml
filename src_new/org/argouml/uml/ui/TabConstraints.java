@@ -500,8 +500,9 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
     setLayout (new BorderLayout (0, 0));
     
     m_ocleEditor = new OCLEditor();
-    m_ocleEditor.setOptionMask (OCLEditor.OPTIONMASK_TYPECHECK |
-                                  OCLEditor.OPTIONMASK_AUTOSPLIT);
+    m_ocleEditor.setOptionMask (OCLEditor.OPTIONMASK_TYPECHECK /*|  //removed to workaround problems with autosplit
+                                  OCLEditor.OPTIONMASK_AUTOSPLIT*/);
+    m_ocleEditor.setDoAutoSplit (false);
     add (m_ocleEditor);
   }
   
