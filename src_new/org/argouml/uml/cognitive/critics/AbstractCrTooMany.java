@@ -25,6 +25,8 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import org.argouml.cognitive.ToDoItem;
+
 
 /**
  * An abstract helper class for classes which require to set a threshold
@@ -42,6 +44,15 @@ public abstract class AbstractCrTooMany extends CrUML {
     
     public int getThreshold() {
         return ((Integer) getArg(THRESHOLD)).intValue();
+    }
+    
+    /**
+     * Provide a default wizard to adjust the threshold.
+     *
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
+    public Class getWizardClass(ToDoItem item) { 
+        return WizTooMany.class; 
     }
     
 
