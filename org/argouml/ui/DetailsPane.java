@@ -156,8 +156,6 @@ implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
 
 
 	public void setTarget(Object target) {
-		//System.out.println("details target set to:" + target);
-		long start = System.currentTimeMillis();
 		if (target == null) {
 			_figTarget = null;
 			_modelTarget = null;
@@ -166,14 +164,12 @@ implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
 		if (target instanceof Fig && ((Fig)target).getOwner() != null)
 			_modelTarget = ((Fig)target).getOwner();
 		else _modelTarget = target;
-		//System.out.println("Fig: "+_figTarget+" mElement: "+_modelTarget);
 
 		int firstEnabled = -1;
 		boolean jumpToFirstEnabledTab = false;
 		boolean jumpToPrevEnabled = false;
 		int currentTab = _tabs.getSelectedIndex();
 		for (int i = 0; i < _tabPanels.size(); i++) {
-			//long tabstart = System.currentTimeMillis();
 			JPanel tab = (JPanel) _tabPanels.elementAt(i);
 			if (tab instanceof TabModelTarget) {
 				TabModelTarget tabMT = (TabModelTarget) tab;
@@ -201,8 +197,6 @@ implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
 					jumpToFirstEnabledTab = true;
 				}
 			}
-			//long tabnow = System.currentTimeMillis();
-			//System.out.println(tab.getClass().getName() + ": " + (tabnow - tabstart));
 		}
 		if (jumpToPrevEnabled) {
 			_tabs.setSelectedIndex(_lastNonNullTab);
@@ -213,8 +207,6 @@ implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
 		if (jumpToFirstEnabledTab && firstEnabled == -1)
 			_tabs.setSelectedIndex(0);
 		if (target != null) _lastNonNullTab = _tabs.getSelectedIndex();
-		long now = System.currentTimeMillis();
-		Globals.showStatus("[" + (now - start) + "]");
 	}
 
   public Object getTarget() { return _modelTarget; }
