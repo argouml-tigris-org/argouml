@@ -33,8 +33,6 @@ package org.argouml.language.java.generator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.util.Stack;
-import ru.novosoft.uml.foundation.core.MClass;
-
 
 /**
    This code piece represents a class declaration.
@@ -114,7 +112,7 @@ public class ClassCodePiece extends NamedCodePiece
 	if (mClass != null) {
 	    parseStateStack.push(new ParseState(mClass));
 	    StringBuffer sbText =
-		GeneratorJava.getInstance().generateClassifierStart((MClass)mClass);
+		GeneratorJava.getInstance().generateClassifierStart(mClass);
 	    if (sbText != null) {
 		writer.write (sbText.toString());
 	    }

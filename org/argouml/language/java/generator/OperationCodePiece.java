@@ -37,8 +37,6 @@ import java.util.Vector;
 import java.util.Iterator;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.core.MOperation;
-
 /**
    This code piece represents an operation declaration.
 */
@@ -137,7 +135,7 @@ public class OperationCodePiece extends NamedCodePiece
                 parseState.newFeature(feature);
                 Object mOperation = /*(MOperation)*/ feature;
                 writer.write(GeneratorJava.getInstance()
-			     .generateOperation((MOperation)mOperation, true));
+			     .generateOperation(mOperation, true));
             }
         }
         if (found) {

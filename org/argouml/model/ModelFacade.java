@@ -130,6 +130,7 @@ import ru.novosoft.uml.foundation.data_types.MExpressionEditor;
 import ru.novosoft.uml.foundation.data_types.MIterationExpression;
 import ru.novosoft.uml.foundation.data_types.MMessageDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MMultiplicityRange;
 import ru.novosoft.uml.foundation.data_types.MObjectSetExpression;
 import ru.novosoft.uml.foundation.data_types.MOperationDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MOrderingKind;
@@ -244,7 +245,7 @@ public class ModelFacade {
     public static final Object CALLCONCURRENCYKIND = MCallConcurrencyKind.class;
     public static final Object CREATE_ACTION = MCreateAction.class;
     public static final Object DESTROY_ACTION = MDestroyAction.class;
-    public static final Object TERMINATE_ACTION = MTerminateAction.class;   
+    public static final Object TERMINATE_ACTION = MTerminateAction.class;
     public static final Object NAMESPACE = MNamespace.class;
     public static final Object RECEPTION = MReception.class;
     public static final Object RETURN_ACTION = MReturnAction.class;
@@ -354,10 +355,10 @@ public class ModelFacade {
 
     /**
      * Create a model object from the implementation.<P>
-     * 
+     *
      * This will allow abstraction of the create mechanism at a single point.
-     * 
-     * @param entity Class to create - 
+     *
+     * @param entity Class to create -
      * must implement {@link org.argouml.model.UmlModelEntity}
      * @return the created object or null if it cannot create the class.
      */
@@ -515,11 +516,13 @@ public class ModelFacade {
             return ((MOperation) handle).isAbstract();
         if (handle instanceof MGeneralizableElement)
             return ((MGeneralizableElement) handle).isAbstract();
+        if (handle instanceof MAssociation)
+            return ((MAssociation) handle).isAbstract();
         // ...
 	return illegalArgumentBoolean(handle);
     }
-    
-    
+
+
 
     /**
      * Recognizer for ActivityGraph
@@ -541,10 +544,10 @@ public class ModelFacade {
     public static boolean isABase(Object handle) {
         return handle instanceof MBase;
     }
-    
+
 
     /**
-     * Recognizer for behavioral features. 
+     * Recognizer for behavioral features.
      *
      * @param handle candidate
      * @return true if handle is a behavioral feature
@@ -961,6 +964,16 @@ public class ModelFacade {
     }
 
     /**
+     * Recognizer for MultiplicityRange
+     *
+     * @param handle candidate
+     * @return true if handle is a MultiplicityRange
+     */
+    public static boolean isAMultiplicityRange(Object handle) {
+        return handle instanceof MMultiplicityRange;
+    }
+    
+    /**
      * Recognizer for Namespace
      *
      * @param handle candidate
@@ -1291,9 +1304,9 @@ public class ModelFacade {
      * @return true if handle is changeable
      */
     public static boolean isChangeable(Object handle) {
-        if (handle != null && handle instanceof MAttribute) {
+        if (handle != null && handle instanceof MStructuralFeature) {
             MChangeableKind changeability =
-                ((MAttribute) handle).getChangeability();
+                ((MStructuralFeature) handle).getChangeability();
             return MChangeableKind.CHANGEABLE.equals(changeability);
 
         } else if (handle != null && handle instanceof MAssociationEnd) {
@@ -1315,6 +1328,10 @@ public class ModelFacade {
         if (handle instanceof MAttribute) {
             MAttribute a = (MAttribute) handle;
             return MScopeKind.CLASSIFIER.equals(a.getOwnerScope());
+        }
+        if (handle instanceof MFeature) {
+            MFeature f = (MFeature) handle;
+            return MScopeKind.CLASSIFIER.equals(f.getOwnerScope());
         }
         // ...
 	return illegalArgumentBoolean(handle);
@@ -1706,7 +1723,7 @@ public class ModelFacade {
     // Getters for the UML model (in alphabetic order)
 
     /**
-     * Returns the association connected to an association end or 
+     * Returns the association connected to an association end or
      * the association belonging to the given link.
      *
      * @param handle is the link
@@ -1931,7 +1948,7 @@ public class ModelFacade {
         }
         if (handle instanceof MClassifier) {
             return ((MClassifier) handle).getClassifierRoles();
-        }       
+        }
 	return illegalArgumentCollection(handle);
     }
 
@@ -2063,7 +2080,7 @@ public class ModelFacade {
      *
      * @param handle to the association.
      * @return an Iterator with all connections.
-     * @deprecated by Linus Tolke as of 0.15.5. Use 
+     * @deprecated by Linus Tolke as of 0.15.5. Use
      * {@link #getConnections(Object)}.size() instead.
      */
     public static int getConnectionCount(Object handle) {
@@ -2518,6 +2535,23 @@ public class ModelFacade {
     }
 
     /**
+     * Get the Ranges from a Multiplicity.
+     *
+     * @param handle multiplicity to retrieve from.
+     * @return iterator containing ranges
+     */
+    public static Iterator getRanges(Object handle) {
+        if ((handle instanceof MMultiplicity)) {
+           Collection c = ((MMultiplicity) handle).getRanges();
+           if (c == null)
+               return null;
+           return c.iterator();
+        }
+        illegalArgument(handle);
+        return null;
+    }
+
+    /**
      * Get the comments of an element.
      *
      * @param handle the model element that we are getting the comments of
@@ -2784,6 +2818,19 @@ public class ModelFacade {
             return ((MExtensionPoint) handle).getLocation();
         }
 	return illegalArgumentString(handle);
+    }
+
+    /**
+     * Get the methods of an operation.
+     *
+     * @param handle the operation that we are getting the methods of
+     * @return methods collection (or null)
+     */
+    public static Collection getMethods(Object handle) {
+        if (handle instanceof MOperation)
+            return ((MOperation) handle).getMethods();
+        // ...
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3089,7 +3136,7 @@ public class ModelFacade {
 
     /**
      * Returns the raised signals of an operation.
-     * 
+     *
      * @param handle is the operation
      * @return raised signals
      */
@@ -3549,11 +3596,15 @@ public class ModelFacade {
                 upper = end.getMultiplicity().getUpper();
             return upper;
         }
-	if (isAMultiplicity(handle)) {
-	    MMultiplicity up = (MMultiplicity) handle;
-	    return up.getUpper();
-	}
-	illegalArgument(handle);
+        if (isAMultiplicity(handle)) {
+            MMultiplicity up = (MMultiplicity) handle;
+            return up.getUpper();
+        }
+        if (isAMultiplicityRange(handle)) {
+            MMultiplicityRange up = (MMultiplicityRange) handle;
+            return up.getUpper();
+        }
+        illegalArgument(handle);
 	return 0;
     }
 
@@ -3585,12 +3636,16 @@ public class ModelFacade {
                 lower = end.getMultiplicity().getLower();
             return lower;
         }
-	if (isAMultiplicity(handle)) {
-	    MMultiplicity low = (MMultiplicity) handle;
-	    return low.getLower();
-	}
-	illegalArgument(handle);
-	return 0; 
+        if (isAMultiplicity(handle)) {
+            MMultiplicity low = (MMultiplicity) handle;
+            return low.getLower();
+        }
+        if (isAMultiplicityRange(handle)) {
+            MMultiplicityRange low = (MMultiplicityRange) handle;
+            return low.getLower();
+        }
+        illegalArgument(handle);
+	return 0;
     }
 
     /**
@@ -3810,7 +3865,10 @@ public class ModelFacade {
         if (handle instanceof MAggregationKind) {
             return ((MAggregationKind) handle).getName();
         }
-	illegalArgument(handle);
+        if (handle instanceof MCallConcurrencyKind) {
+            return ((MCallConcurrencyKind) handle).getName();
+        }
+        illegalArgument(handle);
 	return "";
     }
 
@@ -4016,7 +4074,7 @@ public class ModelFacade {
         }
 	illegalArgument(handle);
     }
-    
+
     /**
      * Adds an instance to a classifier role.
      *
@@ -4048,7 +4106,7 @@ public class ModelFacade {
         }
 	illegalArgument(handle, f);
     }
-    
+
     public static void addLink(Object handle, Object link) {
 	if (handle instanceof MAssociation && link instanceof MLink) {
 	    ((MAssociation) handle).addLink((MLink) link);
@@ -4159,7 +4217,7 @@ public class ModelFacade {
     public static void addRaisedSignal(Object handle, Object sig) {
         if (sig instanceof MSignal) {
             if (handle instanceof MMessage) {
-                ((MBehavioralFeature) handle).addRaisedSignal((MSignal) sig);  
+                ((MBehavioralFeature) handle).addRaisedSignal((MSignal) sig);
                 return;
             }
             if (handle instanceof MOperation) {
@@ -4464,7 +4522,7 @@ public class ModelFacade {
         }
 	illegalArgument(handle, subvertex);
     }
-    
+
     /**
      * Set the base of some model element.
      *
@@ -4526,17 +4584,17 @@ public class ModelFacade {
             return;
         }
 
-        /* TODO: MVW: The next part is fooling the user of setBody() 
-         * in thinking that the body of the object is changed. 
-         * Instead, a new object is created as a side-effect. 
-         * There is no other way: a MExpression can not be altered, 
+        /* TODO: MVW: The next part is fooling the user of setBody()
+         * in thinking that the body of the object is changed.
+         * Instead, a new object is created as a side-effect.
+         * There is no other way: a MExpression can not be altered,
          * once created! */
         if (handle instanceof MExpression) {
             MExpressionEditor expressionEditor =
 		(MExpressionEditor) UmlFactory.getFactory().getDataTypes()
 		    .createExpressionEditor(handle);
             expressionEditor.setBody((String) expr);
-            handle = (Object) expressionEditor.toExpression(); 
+            handle = (Object) expressionEditor.toExpression();
             // this last step creates a new MExpression
             return;
         }
@@ -4546,12 +4604,12 @@ public class ModelFacade {
     /**
      * Sets the language of an expression.
      *
-     * TODO: This operation is fooling the user  
-     * in thinking that the body of the object is changed. 
-     * Instead, a new object is created as a side-effect. 
-     * There is no other way: a MExpression can not be altered, 
+     * TODO: This operation is fooling the user
+     * in thinking that the body of the object is changed.
+     * Instead, a new object is created as a side-effect.
+     * There is no other way: a MExpression can not be altered,
      * once created!
-     * So, this operation should return the created object instead! 
+     * So, this operation should return the created object instead!
      *
      * @param handle is the expression
      * @param expr is the lang
@@ -4566,15 +4624,15 @@ public class ModelFacade {
                     createExpressionEditor(handle);
             expressionEditor.setLanguage(expr);
             handle = expressionEditor.toExpression();
-           
+
             return;
         }
 	illegalArgument(handle, expr);
     }
-    
+
     /**
      * Gets the language attribute of an Expression.
-     * 
+     *
      * @param handle is the Expression of which the language is retrieved
      */
     public static String getLanguage(Object handle) {
@@ -5156,7 +5214,7 @@ public class ModelFacade {
         }
 	illegalArgument(handle, c);
     }
-    
+
     /**
      * Sets the communicationLink between a link c and a stimulus handle.
      *
@@ -5482,7 +5540,7 @@ public class ModelFacade {
      * @param flag is true if it should be abstract
      */
     public static void setAbstract(Object handle, boolean flag) {
-        
+
 	if (handle instanceof MGeneralizableElement) {
 	    ((MGeneralizableElement) handle).setAbstract(flag);
 	    return;
@@ -5944,7 +6002,7 @@ public class ModelFacade {
 		((MStructuralFeature) handle).setType((MClassifier) type);
 		return;
 	    }
-	    
+
         }
 	illegalArgument(handle, type);
     }
@@ -5959,7 +6017,7 @@ public class ModelFacade {
         if (isABase(handle)) {
             ((MBase) handle).setUUID(uuid);
             return;
-        } 
+        }
 	illegalArgument(handle);
     }
 
@@ -6064,7 +6122,7 @@ public class ModelFacade {
         }
 	illegalArgument(handle, subvertices);
     }
-    
+
     public static void addConnection(Object handle, Object connection) {
         if (handle instanceof MAssociation
             && connection instanceof MAssociationEnd) {
