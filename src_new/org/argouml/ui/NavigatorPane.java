@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,7 +55,7 @@ import org.tigris.toolbar.ToolBar;
  *
  * <p>Perspectives are now built in the Perspective Manager.
  *
- * $Id$
+ * @stereotype singleton
  */
 public class NavigatorPane
     extends JPanel
@@ -71,7 +71,11 @@ public class NavigatorPane
     /** for collecting user statistics */
     public static int _navPerspectivesChanged = 0;
 
-    /** to be romved once forceUpdate() is also removed */
+    /**
+     * to be removed once forceUpdate() is also removed
+     *
+     * @deprecated from 0.15.3.
+     */
     ExplorerTree tree;
     
     ////////////////////////////////////////////////////////////////
@@ -126,13 +130,13 @@ public class NavigatorPane
      * and a configuration dialog to tailor the perspectives (but this
      * is not saved).
      * @deprecated 0.15 delete in 0.16 use NavigatorPane.getInstance()
-     * instead.
+     * instead making this private.
      */
     public NavigatorPane(boolean doSplash) {
         
         JComboBox combo = new PerspectiveComboBox();
         JComboBox orderByCombo = new JComboBox();
-        tree = new ExportExplorer();//DnDExplorerTree();
+        tree = new ExportExplorer(); //DnDExplorerTree();
         ToolBar toolbar = new ToolBar();
         
         toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
@@ -144,10 +148,11 @@ public class NavigatorPane
         
         toolbar2.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         toolbar2.setFloatable(false);
-        toolbar2.add(orderByCombo);
         
         orderByCombo.addItem(new TypeThenNameOrder());
         orderByCombo.addItem(new NameOrder());
+
+        toolbar2.add(orderByCombo);
 
         JPanel toolbarpanel = new JPanel();
         toolbarpanel.setLayout(new BorderLayout());
@@ -166,8 +171,8 @@ public class NavigatorPane
             splash.getStatusBar().showProgress(25);
         }
         
-        combo.addItemListener((ExplorerTreeModel)tree.getModel());
-        orderByCombo.addItemListener((ExplorerTreeModel)tree.getModel());
+        combo.addItemListener((ExplorerTreeModel) tree.getModel());
+        orderByCombo.addItemListener((ExplorerTreeModel) tree.getModel());
         PerspectiveManager.getInstance().loadDefaultPerspectives();
     }
 
@@ -203,12 +208,14 @@ public class NavigatorPane
     
     class ActionPerspectiveConfig extends UMLAction {
         
-        public ActionPerspectiveConfig() { super("action.configure-perspectives"); }
+        public ActionPerspectiveConfig() {
+	    super("action.configure-perspectives");
+	}
         
         public void actionPerformed(ActionEvent ae) {
             
             PerspectiveConfigurator ncd =
-            new PerspectiveConfigurator(ProjectBrowser.getInstance());
+		new PerspectiveConfigurator(ProjectBrowser.getInstance());
             ncd.setVisible(true);
         }
     }
