@@ -6811,17 +6811,6 @@ ambitious or overworked, please raise the issue of simplifying
 them on the 
 <ulink url="mailto:dev@argouml.tigris.org">developers' mailing list</ulink>.
 </para>
-    <para>
-Currently all of the processes regards how to handle the
-Issues when the problems are already solved.
-
-That is because the author of these processes (Linus Tolke)
-feels that the biggest need for processes is around those parts.
-
-Hopefully this process will give use the means to Close with good
-quality most of the 270 issues that are currently RESOLVED 
-(end February 2002).
-</para>
     <sect1>
       <title>The big picture for Issues</title>
       <indexterm>
@@ -6972,6 +6961,7 @@ will fit in.
 Accept the Issue (setting it to Status STARTED), 
 setting Target Milestone to the release you have
 chosen.
+You should also assign the issue to yourself.
 </para>
 	</listitem>
 	<listitem>
@@ -7017,6 +7007,9 @@ change the Issue back to "NEW" with your experiences sofar
 stated in the comment. Remember not to commit your changes.
 This means that you are giving up and giving the Issue back to
 anyone.
+You should also assign it back to issues@argouml or if you know
+someone else in the ArgoUML team that will continue the work,
+assign it to him.
 </para>
 	</listitem>
 	<listitem>
@@ -7189,7 +7182,7 @@ put the Issue in Status VERIFIED.
 If you are allowed to do this directly in Issuezilla or not
 depends on your current role in the project.
 If you are not, then get in contact with someone who is
-and let him do the actual resetting of status.
+and convince him to do the actual resetting of status.
 </para>
 	    </listitem>
 	    <listitem>
@@ -7207,6 +7200,7 @@ Do this as many times as you like until there are no Issues left.
 	</listitem>
       </orderedlist>
     </sect1>
+
     <sect1 id="close_verified_issue">
       <title>How to Close an Issue</title>
       <indexterm>
@@ -7269,6 +7263,107 @@ with.
 	</listitem>
       </orderedlist>
     </sect1>
+
+    <sect1>
+      <title>How to relate issues to problems in subproducts</title>
+      <indexterm>
+        <primary>subproducts</primary>
+      </indexterm>
+      <para>
+ArgoUML uses some product internally and is to some respect very 
+dependant on the well functioning of these products.
+This is products like GEF, NS-UML, ocl, log4j, xerces, jre, ...
+</para>
+      <para>
+Occasionally a bug found in ArgoUML is found to be a problem in one
+of these subproducts and cannot or is extremely complicated to fix
+within ArgoUML.
+</para>
+      <para>
+If this happens this is the way to register that Issue in Issuezilla.
+</para>
+      <para>
+This can be performed by anyone.
+There might be special skills involved depending on the nature of the Issue.
+</para>
+      <para>
+Do the following:
+</para>
+      <orderedlist>
+        <listitem>
+          <para>
+During your examination of an issue you find that it is a problem
+in one of the ArgoUML subproducts (GEF, NS-UML, ocl, jre, ...).
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Write a comment in the issue stating which one of the subprojects
+that is the problem (and what the problem is).
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Post a bug in that subproducts bug reporting tool (or find the bug
+already registered).
+</para>
+	  <para>
+I am assuming that there is such a tool for all the subproducts.
+If there isn't for the product in question, then explain the problem
+to the responsible person for this product so that we are sure
+that the problem is communicated.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Set the Issue in Issuezilla to RESOLVED/WONTFIX and
+enter the reference from the subproducts bug reporting tool and
+if possible the URL to the bug reporting tool or to the bug in question.
+</para>
+	</listitem>
+      </orderedlist>
+      <para>
+The person responsible for the sourceing of the subtool in question
+(Currently (December 2002) the subproduct responsible role 
+is not explicitly pointed out 
+but could be anyone that feels that something must be done.)
+does the following for each new release of a subproduct.
+</para>
+      <orderedlist>
+	<listitem>
+	  <para>
+Looks at the new release of that subproduct to see
+if any of the outstanding issues against that subproduct are in fact
+fixed in the release.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+If any of the issues are fixed, then he weights together
+the importance of the issues fixed,
+the amount of work needed to fit the new version of the subproduct
+instead of the old one,
+the planned releases of the subproduct with other issues promised
+to be fixed,
+and
+the current release plan of ArgoUML.
+From this he decides wether it is time to do the update of 
+the subproduct within ArgoUML or to wait.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+If he decides that it is time to update,
+he adds the new version of the subproduct,
+does all the needed work within ArgoUML,
+tests and commits everything,
+puts the issues indeed fixed in VERIFIED/WONTFIX,
+and also closes the bugs registered in the subproducts bug reporting tool.
+</para>
+	</listitem>
+      </orderedlist>
+    </sect1>
+
   </chapter>
 
  <chapter>
