@@ -481,18 +481,6 @@ public interface UmlModelFacade {
      */
     public boolean isSingleton(Object handle);
 
-    /** Recognizer for a specific stereotype.
-     *
-     * @param handle candidate
-     * @param stereotype a string that is the stereotype name.
-     * @return true if handle is a singleton.
-     * @deprecated As of ArgoUml version 0.13.5, 
-     *             {@link org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper#isStereotype(Object,String,String)} should be used
-     *	instead. Since this should only ever be used together with predefined
-     *	stereotypes the base class can be found in the UML 1.3 specification.
-     */
-    public boolean isStereotype(Object handle, String stereotypename);
-
     public boolean isTop(Object handle);
 
     /** Recognizer for type.
