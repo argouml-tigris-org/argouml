@@ -129,6 +129,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
  * Generates an operation accordin to the UML 1.3 notation:
  * stereotype visibility name (parameter-list) : return-type-expression {property-string}
  * For the return-type-expression: only the types of the return parameters are shown.
+ * Depending on settings in Notation visibility and properties are shown/not shown.
  * @author jaap.branderhorst@xs4all.nl
  * @see org.argouml.application.api.NotationProvider#generateOperation(MOperation, boolean)
  */
@@ -209,7 +210,8 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   	if ((stereoStr != null) && (stereoStr.length() > 0)) {
   		genStr.append(stereoStr).append(" ");
   	}
-  	if ((visStr != null) && (visStr.length() > 0)) {
+  	if ((visStr != null) && (visStr.length() > 0) &&
+        Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY)) {
   		genStr.append(visStr).append(" ");
   	}
   	if ((nameStr != null) && (nameStr.length() > 0)) {
@@ -219,7 +221,8 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   	if ((returnParasStr != null) && (returnParasStr.length() > 0)) {
   		genStr.append(returnParasStr).append(" ");
   	}
-  	if ((propertiesStr != null) && (propertiesStr.length() > 0)) {
+  	if ((propertiesStr != null) && (propertiesStr.length() > 0) &&
+        Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES)) {
   		genStr.append(propertiesStr);
   	}
   	return genStr.toString().trim();	
@@ -244,6 +247,14 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   }
 	
 	
+/**
+ * Generates a string representation for the provided attribute. The string 
+ * representation will be of the form:
+ * visibility name [multiplicity] : type-expression = initial-value {property-string}
+ * Depending on settings in Notation visibility,
+ * multiplicity, initial value and properties are shown/not shown.
+ * @see org.argouml.application.api.NotationProvider#generateAttribute(MAttribute, boolean)
+ */
   public String generateAttribute(MAttribute attr, boolean documented) { 
   	String visibility = generateVisibility(attr.getVisibility());
   	String stereo = generateStereotype(attr.getStereotype());
@@ -260,7 +271,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
     }   
     String finall = "";
     if (attr.getChangeability() != null) {
-        finall = attr.getChangeability().equals(MChangeableKind.FROZEN) ? "final" : "";
+        finall = attr.getChangeability().equals(MChangeableKind.FROZEN) ? "frozen" : "";
     }
     String properties = "";
     if (finall.length() > 0) {
@@ -269,7 +280,8 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
    
  
   	StringBuffer sb = new StringBuffer();
-  	if ((visibility != null) && (visibility.length() > 0)) {
+  	if ((visibility != null) && (visibility.length() > 0) &&
+        Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY)) {
   		sb.append(visibility).append(" ");
   	}
   	if ((stereo != null) && (stereo.length() > 0)) {
@@ -278,16 +290,19 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   	if ((name != null) && (name.length() > 0)) {
   		sb.append(name).append(" ");
   	}
-  	if ((multiplicity != null) && (multiplicity.length() > 0)) {
+  	if ((multiplicity != null) && (multiplicity.length() > 0) &&
+        Configuration.getBoolean(Notation.KEY_SHOW_MULTIPLICITY)) {
   		sb.append(multiplicity).append(" ");
   	}
   	if ((type != null) && (type.length() > 0)) {
   		sb.append(": ").append(type).append(" ");
   	}
-  	if ((initialValue != null) && (initialValue.length() > 0)) {
-  		sb.append(initialValue).append(" ");
+  	if ((initialValue != null) && (initialValue.length() > 0) &&
+        Configuration.getBoolean(Notation.KEY_SHOW_INITIAL_VALUE)) {
+  		sb.append(" = ").append(initialValue).append(" ");
   	}
-  	if (properties.length() > 0) {
+  	if ((properties.length() > 0) &&
+        Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES)) {
   		sb.append(properties);
   	}
   	return sb.toString().trim();
