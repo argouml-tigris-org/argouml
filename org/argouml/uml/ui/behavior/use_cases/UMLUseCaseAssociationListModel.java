@@ -28,36 +28,33 @@ package org.argouml.uml.ui.behavior.use_cases;
 import java.util.Collection;
 import java.util.Vector;
 
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
+import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLBinaryRelationListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.MutableGraphModel;
 
-import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.model_management.MSubsystem;
 
 /**
- * Binary relation list model for associations with actors
+ * Binary relation list model for associations with usecases
  * 
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLActorAssociationListModel extends UMLBinaryRelationListModel {
+public class UMLUseCaseAssociationListModel
+	extends UMLBinaryRelationListModel {
 
 	/**
-	 * Constructor for UMLActorAssociationListModel.
+	 * Constructor for UMLUseCaseAssociationListModel.
 	 * @param container
 	 * @param property
 	 * @param showNone
 	 */
-	public UMLActorAssociationListModel(
+	public UMLUseCaseAssociationListModel(
 		UMLUserInterfaceContainer container,
 		String property,
 		boolean showNone) {
@@ -68,10 +65,8 @@ public class UMLActorAssociationListModel extends UMLBinaryRelationListModel {
 	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
 	 */
 	protected Collection getChoices() {
-		Vector choices = new Vector();
-		choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
-		choices.addAll(CoreHelper.getHelper().getAllClasses());
-		choices.addAll(ModelManagementHelper.getHelper().getAllSubSystems());
+		Vector choices = new Vector();	
+		choices.addAll(CoreHelper.getHelper().getAllClassifiers());
 		return choices;
 	}
 
@@ -89,7 +84,7 @@ public class UMLActorAssociationListModel extends UMLBinaryRelationListModel {
 	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
 	 */
 	protected String getAddDialogTitle() {
-		return "";
+		return Argo.localize("UMLMenu", "dialog.title.add-realized-interfaces");
 	}
 
 	/**
@@ -106,8 +101,7 @@ public class UMLActorAssociationListModel extends UMLBinaryRelationListModel {
 	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
 	 */
 	protected void build(MModelElement from, MModelElement to) {
-		if (from != null && to != null && from instanceof MActor && 
-			(to instanceof MUseCase || to instanceof MSubsystem || to instanceof MClass)) {
+		if (from != null && to != null && from instanceof MUseCase && to instanceof MClassifier) {
 			CoreFactory.getFactory().buildAssociation((MClassifier)from, (MClassifier)to);
 		}
 	}

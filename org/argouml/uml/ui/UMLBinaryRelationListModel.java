@@ -184,6 +184,7 @@ abstract public class UMLBinaryRelationListModel extends UMLModelElementListMode
         	if (counter == index) {
         		return (MModelElement)o;
         	}
+        	counter++;
         }
         throw new IndexOutOfBoundsException();
              
