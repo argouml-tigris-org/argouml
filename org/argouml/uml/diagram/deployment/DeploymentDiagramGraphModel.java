@@ -371,6 +371,12 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	    	addEdge(dep);
 	    	return dep;
 	  	}
+	  	else {
+	      	System.out.println("Cannot make a "+ edgeClass.getName() +
+			     " between a " + fromPort.getClass().getName() +
+			     " and a " + toPort.getClass().getName());
+	      	return null;
+	    }
       }
       else if ((fromPort instanceof MClass) && (toPort instanceof MClass)) {
 	    MClass fromCls = (MClass) fromPort;
@@ -474,6 +480,51 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       else if ((fromPort instanceof MComponent) && (toPort instanceof MNode)) {
       	MComponent fromObj = (MComponent)fromPort;
       	MNode toObj = (MNode)toPort;
+      	if (edgeClass == MDependency.class) {
+    	  	MDependency dep = CoreHelper.getHelper().buildSupportDependency(fromObj, toObj);
+	  		addEdge(dep);
+	  		return dep;
+    	}
+    	else {
+	  		System.out.println("Cannot make a "+ edgeClass.getName() +
+			     " between a " + fromPort.getClass().getName() +
+			     " and a " + toPort.getClass().getName());
+	  		return null;
+		}
+      }
+      else if ((fromPort instanceof MObject) && (toPort instanceof MComponent)) {
+      	MObject fromObj = (MObject)fromPort;
+      	MComponent toObj = (MComponent)toPort;
+      	if (edgeClass == MDependency.class) {
+    	  	MDependency dep = CoreHelper.getHelper().buildSupportDependency(fromObj, toObj);
+	  		addEdge(dep);
+	  		return dep;
+    	}
+    	else {
+	  		System.out.println("Cannot make a "+ edgeClass.getName() +
+			     " between a " + fromPort.getClass().getName() +
+			     " and a " + toPort.getClass().getName());
+	  		return null;
+		}
+      }
+      else if ((fromPort instanceof MComponentInstance) && (toPort instanceof MNodeInstance)) {
+      	MComponentInstance fromObj = (MComponentInstance)fromPort;
+      	MNodeInstance toObj = (MNodeInstance)toPort;
+      	if (edgeClass == MDependency.class) {
+    	  	MDependency dep = CoreHelper.getHelper().buildSupportDependency(fromObj, toObj);
+	  		addEdge(dep);
+	  		return dep;
+    	}
+    	else {
+	  		System.out.println("Cannot make a "+ edgeClass.getName() +
+			     " between a " + fromPort.getClass().getName() +
+			     " and a " + toPort.getClass().getName());
+	  		return null;
+		}
+      }
+      else if ((fromPort instanceof MObject) && (toPort instanceof MComponentInstance)) {
+      	MObject fromObj = (MObject)fromPort;
+      	MComponentInstance toObj = (MComponentInstance)toPort;
       	if (edgeClass == MDependency.class) {
     	  	MDependency dep = CoreHelper.getHelper().buildSupportDependency(fromObj, toObj);
 	  		addEdge(dep);
