@@ -34,7 +34,7 @@ import java.util.Iterator;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLClassifierComboBoxModel;
 import org.argouml.uml.ui.UMLComboBox;
@@ -59,7 +59,7 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
 
         Class mclass = (Class)ModelFacade.COMPONENT_INSTANCE;
 
-        Class[] namesToWatch = 
+        Class[] namesToWatch =
         {(Class)ModelFacade.STEREOTYPE, (Class)ModelFacade.NAMESPACE, MClassifier.class};
 
         setNameEventListening(namesToWatch);
@@ -73,17 +73,17 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
         addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);   
+        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
         new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
     }
 
     public boolean isAcceptibleClassifier(MModelElement classifier) {
         return classifier instanceof MClassifier;
     }
-    
+
     public void setClassifier(MClassifier element) {
         Object target = getTarget();
-	
+
         if(target instanceof MInstance) {
 	    MInstance inst = (MInstance)target;
 //            ((MInstance) target).setClassifier((MClassifier) element);
@@ -115,7 +115,7 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
                     classifier = (MClassifier)iter.next();
                 }
             }
-		    
+
         }
         return classifier;
     }

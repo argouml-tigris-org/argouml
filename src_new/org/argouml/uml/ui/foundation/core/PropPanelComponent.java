@@ -31,7 +31,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.util.ConfigLoader;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 
@@ -58,21 +58,21 @@ public class PropPanelComponent extends PropPanelClassifier {
     addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
     _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.active-uc"),this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));
     addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
-    
-    add(LabelledLayout.getSeperator());
-    
+
+    addSeperator();
+
     addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
     addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
-    
-    add(LabelledLayout.getSeperator());
-     
+
+    addSeperator();
+
     addField(Argo.localize("UMLMenu", "label.clientdependency"), getClientDependencyScroll());
     addField(Argo.localize("UMLMenu", "label.supplierdependency"), getSupplierDependencyScroll());
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);   
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
     new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-class"),"removeElement",null);
 
-    
+
 //    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
 //    addField(getNameTextField(),1,0,0);
 //
@@ -95,11 +95,11 @@ public class PropPanelComponent extends PropPanelClassifier {
 //    addCaption("Specializations:",1,1,1);
 //    addField(getSpecializationScroll(),1,1,1);
 //
-//    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);   
+//    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
 //    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete component"),"removeElement",null);
   }
 
-    
+
 } /* end class PropPanelComponent */
 
 

@@ -34,7 +34,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLExpressionBodyField;
@@ -48,7 +48,7 @@ import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 
 /**
- * A property panel for Guards. Rewrote this class to comply to Bob Tarling's layout 
+ * A property panel for Guards. Rewrote this class to comply to Bob Tarling's layout
  * mechanism and to include all valid properties as defined in the UML 1.3 spec.
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -66,18 +66,18 @@ public class PropPanelGuard extends PropPanelModelElement {
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceScroll());
-        
+
         JList transitionList = new UMLLinkedList(new UMLGuardTransitionListModel());
         addField(Argo.localize("UMLMenu", "label.transition"), new JScrollPane(transitionList));
-        
-        add(LabelledLayout.getSeperator());
-    
+
+        addSeperator();
+
         UMLExpressionModel expressionModel = new UMLExpressionModel(this,MGuard.class,"expression",
 		    MBooleanExpression.class,"getExpression","setExpression");
         addField(Argo.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-        addField(Argo.localize("UMLMenu", "label.language"), new UMLExpressionLanguageField(expressionModel,true));        	
+        addField(Argo.localize("UMLMenu", "label.language"), new UMLExpressionLanguageField(expressionModel,true));
 
-	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);	
+	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
 	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
 
   }

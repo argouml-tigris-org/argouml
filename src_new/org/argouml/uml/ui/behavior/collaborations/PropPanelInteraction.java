@@ -27,7 +27,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -37,34 +37,34 @@ import org.argouml.util.ConfigLoader;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 
 /**
- * Proppanel for interactions. 
+ * Proppanel for interactions.
  * @author jaap.branderhorst@xs4all.nl
  */
 public class PropPanelInteraction extends PropPanelModelElement {
 
     public PropPanelInteraction() {
         super("Interaction", ConfigLoader.getTabPropsOrientation());
-	
-    	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());  	
+
+    	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
     	addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
-        
+
         JList contextList = new UMLLinkedList(new UMLInteractionContextListModel());
         contextList.setVisibleRowCount(1);
         JScrollPane contextScroll = new JScrollPane(contextList);
         addField(Argo.localize("UMLMenu", "label.context"), contextScroll);
-        
-        add(LabelledLayout.getSeperator());
-       
+
+        addSeperator();
+
         JList messagesList = new UMLLinkedList(new UMLInteractionMessagesListModel());
-      	JScrollPane messagesScroll= new JScrollPane(messagesList); 	
+      	JScrollPane messagesScroll= new JScrollPane(messagesList);
         addField(Argo.localize("UMLMenu", "label.messages"), messagesScroll);
-    	
-    	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);       
+
+    	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
         new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-attribute"),"removeElement",null);
-    	
+
 	}
-	
+
 	/**
 	 * Navigates to the owning collaboration
 	 * @see org.argouml.uml.ui.foundation.core.PropPanelModelElement#navigateUp()

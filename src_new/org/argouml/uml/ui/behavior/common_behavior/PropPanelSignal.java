@@ -35,7 +35,7 @@ import javax.swing.JScrollPane;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
@@ -68,22 +68,22 @@ public class PropPanelSignal extends PropPanelModelElement {
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
-        
-        add(LabelledLayout.getSeperator());
-        
+
+        addSeperator();
+
         JList contextList = new UMLList(new UMLReflectionListModel(this,"contexts",false,"getContexts",null,"addContext","deleteContext"),true);
  		contextList.setBackground(getBackground());
         contextList.setForeground(Color.blue);
         JScrollPane contextScroll=new JScrollPane(contextList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         addField(Argo.localize("UMLMenu", "label.contexts"), contextScroll);
-        
+
         JList receiverList = new UMLList(new UMLReflectionListModel(this,"receivers",false,"getReceptions",null,"addReception","deleteReception"),true);
  		receiverList.setBackground(getBackground());
         receiverList.setForeground(Color.blue);
         JScrollPane receiverScroll=new JScrollPane(receiverList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         addField(Argo.localize("UMLMenu", "label.receptions"), receiverScroll);
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);		
+        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
         new PropPanelButton(this,buttonPanel,_signalIcon, Argo.localize("UMLMenu", "button.add-signal"),"newSignal",null);
         new PropPanelButton(this,buttonPanel,_receptionIcon, Argo.localize("UMLMenu", "button.add-reception"), "newReception", null);
         new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-signal"),"removeElement",null);
@@ -100,7 +100,7 @@ public class PropPanelSignal extends PropPanelModelElement {
             }
         }
     }
-    
+
     public void newReception() {
     	Object target = getTarget();
     	if (target instanceof MSignal) {
@@ -123,8 +123,8 @@ public class PropPanelSignal extends PropPanelModelElement {
     	}
     	return contexts;
     }
-    
-    
+
+
 	/**
 	 * Opens a new window where existing behavioral features can be added to the signal as context.
 	 * @param index
@@ -132,7 +132,7 @@ public class PropPanelSignal extends PropPanelModelElement {
     public void addContext(Integer index) {
     	Object target = getTarget();
     	if (target instanceof MSignal) {
-    		MSignal signal = (MSignal)target;	
+    		MSignal signal = (MSignal)target;
 	    	Vector choices = new Vector();
 	    	Vector selected = new Vector();
 	    	choices.addAll(CoreHelper.getHelper().getAllBehavioralFeatures());
@@ -144,7 +144,7 @@ public class PropPanelSignal extends PropPanelModelElement {
 	    	}
     	}
     }
-    
+
 	/**
 	 * Deletes the context at index from the list with contexts.
 	 * @param index
@@ -157,7 +157,7 @@ public class PropPanelSignal extends PropPanelModelElement {
     		signal.removeContext(feature);
     	}
     }
-    
+
 	/**
 	 * Returns all behavioral features that can recept this signal.
 	 * @return Collection
@@ -170,7 +170,7 @@ public class PropPanelSignal extends PropPanelModelElement {
     	}
     	return receptions;
     }
-    
+
     /**
 	 * Adds a new reception. The user has to fill in the classifier the reception
 	 * belongs too on the proppanel of the reception
@@ -179,7 +179,7 @@ public class PropPanelSignal extends PropPanelModelElement {
     public void addReception(Integer index) {
     	newReception();
     }
-    
+
     /**
 	 * Deletes the reception at index from the list with receptions.
 	 * @param index
@@ -192,10 +192,10 @@ public class PropPanelSignal extends PropPanelModelElement {
     		signal.removeReception(reception);
     	}
     }
-    
-    
-  
-    
+
+
+
+
 
 
 } /* end class PropPanelSignal */

@@ -32,7 +32,7 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -48,7 +48,7 @@ public class PropPanelInterface extends PropPanelClassifier {
     super("Interface", ConfigLoader.getTabPropsOrientation());
 
     Class mclass = MInterface.class;
-    
+
     addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
     addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
     addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceComboBox());
@@ -61,18 +61,18 @@ public class PropPanelInterface extends PropPanelClassifier {
     */
     addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
     addField(Argo.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
-    
-    add(LabelledLayout.getSeperator());
-    
+
+    addSeperator();
+
     addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
     addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
-    
-    add(LabelledLayout.getSeperator());
-    
+
+    addSeperator();
+
     addField(Argo.localize("UMLMenu", "label.association-ends"), getAssociationEndScroll());
     addField(Argo.localize("UMLMenu", "label.operations"), getFeatureScroll());
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);   
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_addOpIcon, Argo.localize("UMLMenu", "button.add-operation"),"addOperation",null);
     //new PropPanelButton(this,buttonPanel,_generalizationIcon, Argo.localize("UMLMenu", "button.add-generalization"),"addGeneralization",null);
     //new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
@@ -90,6 +90,6 @@ public class PropPanelInterface extends PropPanelClassifier {
         TargetManager.getInstance().setTarget(newInterface);
     }
   }
-  
+
 } /* end class PropPanelInterface */
 

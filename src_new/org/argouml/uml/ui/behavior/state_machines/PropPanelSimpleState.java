@@ -31,7 +31,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.util.ConfigLoader;
 
@@ -46,13 +46,13 @@ public class PropPanelSimpleState extends PropPanelState {
         addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
         addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);;
         addField(Argo.localize("UMLMenu", "label.do-activity"), doScroll);
-        
-        add(LabelledLayout.getSeperator());
-        
+
+        addSeperator();
+
         addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
         addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
         addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
-        
+
     }
 
 

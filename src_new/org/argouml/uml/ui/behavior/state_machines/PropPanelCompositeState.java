@@ -35,13 +35,13 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.util.ConfigLoader;
 
 public class PropPanelCompositeState extends PropPanelState {
-    
+
     protected JList subverticesList = null;
 
     /**
@@ -62,23 +62,23 @@ public class PropPanelCompositeState extends PropPanelState {
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
-        addField(Argo.localize("UMLMenu", "label.modifiers"), new UMLCompositeStateConcurentCheckBox()); 
+        addField(Argo.localize("UMLMenu", "label.modifiers"), new UMLCompositeStateConcurentCheckBox());
         addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
         addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);
         addField(Argo.localize("UMLMenu", "label.do-activity"), doScroll);
-    
-        add(LabelledLayout.getSeperator());
+
+        addSeperator();
 
         addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
         addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
         addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
 
-        add(LabelledLayout.getSeperator());
-        
+        addSeperator();
+
         addField(Argo.localize("UMLMenu", "label.subvertex"), new JScrollPane(subverticesList));
-	        
+
   }
-  
+
   protected void initialize() {
       subverticesList = new UMLCompositeStateSubvertexList(new UMLCompositeStateSubvertexListModel());
   }

@@ -35,7 +35,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
@@ -56,16 +56,16 @@ public class PropPanelClass extends PropPanelClassifier {
 
     private JScrollPane _attributeScroll;
     private JScrollPane _operationScroll;
-    
+
     private static UMLClassAttributeListModel attributeListModel =
         new UMLClassAttributeListModel();
-    
+
     private static UMLClassOperationListModel operationListModel =
         new UMLClassOperationListModel();
-    
+
   ////////////////////////////////////////////////////////////////
   // contructors
-  public PropPanelClass() { 
+  public PropPanelClass() {
     super("Class", ConfigLoader.getTabPropsOrientation());
     Class mclass = MClass.class;
 
@@ -75,23 +75,23 @@ public class PropPanelClass extends PropPanelClassifier {
     _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.active-uc"),this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));
     addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
     addField(Argo.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
-    
-    add(LabelledLayout.getSeperator());
-    
+
+    addSeperator();
+
     addField(Argo.localize("UMLMenu", "label.clientdependency"), getClientDependencyScroll());
     addField(Argo.localize("UMLMenu", "label.supplierdependency"), getSupplierDependencyScroll());
     addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
     addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
-    
-    add(LabelledLayout.getSeperator());
-     
+
+    addSeperator();
+
     addField(Argo.localize("UMLMenu", "label.attributes"), getAttributeScroll());
     addField(Argo.localize("UMLMenu", "label.association-ends"), getAssociationEndScroll());
     addField(Argo.localize("UMLMenu", "label.operations"), getOperationScroll());
     addField(Argo.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
-    
-  
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);   
+
+
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
     new PropPanelButton(this,buttonPanel,_addAttrIcon, Argo.localize("UMLMenu", "button.add-attribute"),"addAttribute",null);
     new PropPanelButton(this,buttonPanel,_addOpIcon, Argo.localize("UMLMenu", "button.add-operation"),"addOperation",null);
     new PropPanelButton(this,buttonPanel,_innerClassIcon, Argo.localize("UMLMenu", "button.add-inner-class"),"addInnerClass",null);
@@ -119,7 +119,7 @@ public class PropPanelClass extends PropPanelClassifier {
                 TargetManager.getInstance().setTarget(peer);
             }
         }
-       
+
     }
 
     /**
@@ -145,6 +145,6 @@ public class PropPanelClass extends PropPanelClassifier {
         }
         return _attributeScroll;
     }
-    
+
 
 } /* end class PropPanelClass */

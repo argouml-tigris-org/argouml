@@ -35,7 +35,7 @@ import javax.swing.JTextArea;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -67,7 +67,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 
     /**
      * Constructor. Builds up the various fields required.
-     * TODO: improve the conditionfield so it can be checked and the 
+     * TODO: improve the conditionfield so it can be checked and the
      * OCL editor can be used.
      */
 
@@ -75,28 +75,28 @@ public class PropPanelExtend extends PropPanelModelElement {
         super("Extend", ConfigLoader.getTabPropsOrientation());
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), 
+        addField(Argo.localize("UMLMenu", "label.stereotype"),
             new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
-        add(LabelledLayout.getSeperator());
-            
+        addSeperator();
+
 
         // Link to the two ends. This is done as a drop down. First for the
         // base use case.
-        
-        addField(Argo.localize("UMLMenu", "label.usecase-base"), 
+
+        addField(Argo.localize("UMLMenu", "label.usecase-base"),
             new UMLComboBox2(new UMLExtendBaseComboBoxModel(), ActionSetExtendBase.SINGLETON));
-            
-        addField(Argo.localize("UMLMenu", "label.extension"), 
+
+        addField(Argo.localize("UMLMenu", "label.extension"),
             new UMLComboBox2(new UMLExtendExtensionComboBoxModel(), ActionSetExtendExtension.SINGLETON));
-            
+
         JList extensionPointList = new UMLMutableLinkedList(new UMLExtendExtensionPointListModel(), ActionAddExtendExtensionPoint.SINGLETON, ActionNewExtendExtensionPoint.SINGLETON);
-        addField(Argo.localize("UMLMenu", "label.extension-points"), 
+        addField(Argo.localize("UMLMenu", "label.extension-points"),
             new JScrollPane(extensionPointList));
-            
-        add(LabelledLayout.getSeperator());
-            
+
+        addSeperator();
+
         UMLExpressionModel conditionModel =
             new UMLExpressionModel(this,MExtend.class,"condition",
             MBooleanExpression.class,"getCondition","setCondition");
@@ -112,13 +112,13 @@ public class PropPanelExtend extends PropPanelModelElement {
         // Add the toolbar.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);       
+                            Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
         new PropPanelButton(this, buttonPanel, _extensionPointIcon,
                             localize("Add extension point"),
                             "newExtensionPoint",
                             null);
         new PropPanelButton(this, buttonPanel, _deleteIcon,
-                            localize("Delete"), "removeElement", null); 
+                            localize("Delete"), "removeElement", null);
     }
 
 
@@ -132,7 +132,7 @@ public class PropPanelExtend extends PropPanelModelElement {
      * @return  The body of the {@link MBooleanExpression} which is the
      *          condition associated with this extend relationship, or
      *          <code>null</code> if there is none.
-     */ 
+     */
 
     public String getCondition() {
         String condBody = null;
@@ -194,13 +194,13 @@ public class PropPanelExtend extends PropPanelModelElement {
 
             if(ns != null) {
                 if (extend.getBase() != null) {
-                    
+
                 MExtensionPoint extensionPoint =
                     UseCasesFactory.getFactory().buildExtensionPoint(extend.getBase());
 
                 extend.addExtensionPoint(extensionPoint);
                 }
- 
+
             }
         }
     }

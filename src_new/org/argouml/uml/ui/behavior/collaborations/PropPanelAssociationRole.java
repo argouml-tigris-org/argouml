@@ -29,7 +29,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -45,7 +45,7 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
     ////////////////////////////////////////////////////////////////
     // contructors
     public PropPanelAssociationRole() {
-        super("Association Role", ConfigLoader.getTabPropsOrientation());        
+        super("Association Role", ConfigLoader.getTabPropsOrientation());
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
@@ -54,7 +54,7 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
         JComboBox baseComboBox = new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(), ActionSetAssociationRoleBase.SINGLETON);
         addField(Argo.localize("UMLMenu", "label.base"), baseComboBox);
 
-        add(LabelledLayout.getSeperator());
+        addSeperator();
 
         JList assocEndList = new UMLLinkedList(new UMLAssociationRoleAssociationEndRoleListModel());
         assocEndList.setVisibleRowCount(2); // only binary associationroles are allowed
@@ -63,7 +63,7 @@ public class PropPanelAssociationRole extends PropPanelAssociation {
         JList messageList = new UMLLinkedList(new UMLAssociationRoleMessageListModel());
         addField(Argo.localize("UMLMenu", "label.messages"), new JScrollPane(messageList));
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);      
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
         new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
 
     }

@@ -28,7 +28,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd;
@@ -52,13 +52,13 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
     }
 
     protected void positionControls() {
-        
+
         JList baseList = new UMLLinkedList(new UMLAssociationEndRoleBaseListModel());
         baseList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.base"), new JScrollPane(baseList));
-        
+
         super.positionControls();
     }
-    
+
 } /* end class PropPanelAssociationEndRole */
 

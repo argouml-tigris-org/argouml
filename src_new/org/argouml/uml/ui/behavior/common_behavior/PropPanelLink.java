@@ -35,7 +35,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.ModelFacade;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -59,7 +59,7 @@ public class PropPanelLink extends PropPanelModelElement {
         addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addLinkField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);   
+        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
         new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete object"),"removeElement",null);
     }
 
@@ -75,9 +75,9 @@ public class PropPanelLink extends PropPanelModelElement {
     }
 
     public void removeElement() {
-	MLink target = (MLink) getTarget();        
+	MLink target = (MLink) getTarget();
 	MModelElement newTarget = (MModelElement) target.getNamespace();
-                
+
         UmlFactory.getFactory().delete(target);
 	if(newTarget != null) TargetManager.getInstance().setTarget(newTarget);
     }

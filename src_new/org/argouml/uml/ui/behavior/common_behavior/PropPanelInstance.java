@@ -38,7 +38,7 @@ import javax.swing.JTree;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLClassifierComboBoxModel;
 import org.argouml.uml.ui.UMLComboBox;
@@ -79,10 +79,10 @@ public class PropPanelInstance extends PropPanelModelElement {
         addField("Related Elements", tempTree);
     //
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);	
+        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     }
 
-    
+
     public boolean isAcceptibleClassifier(MModelElement classifier) {
         return classifier instanceof MClassifier;
     }
@@ -103,14 +103,14 @@ public class PropPanelInstance extends PropPanelModelElement {
 		    classifier = (MClassifier)iter.next();
 		}
 	    }
-		    
+
         }
         return classifier;
     }
 
     public void setClassifier(MClassifier element) {
         Object target = getTarget();
-	
+
         if(target instanceof MInstance) {
 	    MInstance inst = (MInstance)target;
 //            ((MInstance) target).setClassifier((MClassifier) element);

@@ -33,7 +33,7 @@ import javax.swing.JScrollPane;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -58,7 +58,7 @@ public class PropPanelTransition extends PropPanelModelElement {
         stateList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.state"), new JScrollPane(stateList));
 
-        add(LabelledLayout.getSeperator());
+        addSeperator();
 
         JList sourceList = new UMLLinkedList(new UMLTransitionSourceListModel());
         sourceList.setVisibleRowCount(1);
@@ -76,7 +76,7 @@ public class PropPanelTransition extends PropPanelModelElement {
         effectList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.effect"), new JScrollPane(effectList));
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);     
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
         new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
     }
 

@@ -40,7 +40,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.ArgoModule;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
@@ -126,13 +126,13 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     /**
      * the namespace combobox needs to be a singleton because it has a worker
-     * thread that needs to be 
+     * thread that needs to be
      * updated by any propanel when a target is changed.
      * the namespace combobox has this optimisation because it is a performance
      * bottleneck with large models > 100 classifiers.
      */
     private static UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel = UMLModelElementNamespaceComboBoxModel.getInstance();
-    
+
     private static UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel = new UMLModelElementStereotypeComboBoxModel();
     private static UMLModelElementNamespaceListModel namespaceListModel = new UMLModelElementNamespaceListModel();
     private static UMLModelElementClientDependencyListModel clientDependencyListModel = new UMLModelElementClientDependencyListModel();
@@ -172,7 +172,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     public PropPanelModelElement(String name, ImageIcon icon, int columns) {
         super(name, icon, columns);
     }
-    
+
     /**
      * Constructor that is used if no other proppanel can be found for a modelelement
      * of some kind. Since this is the default
@@ -183,14 +183,14 @@ abstract public class PropPanelModelElement extends PropPanel {
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
-        add(LabelledLayout.getSeperator());
+        addSeperator();
 
         addField(Argo.localize("UMLMenu", "label.supplier-dependencies"), getSupplierDependencyScroll());
         addField(Argo.localize("UMLMenu", "label.client-dependencies"), getClientDependencyScroll());
         addField(Argo.localize("UMLMenu", "label.source-flows"), getSourceFlowScroll());
         addField(Argo.localize("UMLMenu", "label.target-flows"), getTargetFlowScroll());
 
-        add(LabelledLayout.getSeperator());
+        addSeperator();
 
         addField(Argo.localize("UMLMenu", "label.constraints"), getConstraintScroll());
         addField(Argo.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
@@ -331,14 +331,14 @@ abstract public class PropPanelModelElement extends PropPanel {
         }
         return elementResidenceScroll;
     }
-    
+
     protected JTextField getNameTextField() {
         if (nameTextField == null) {
             nameTextField = new UMLTextField2(nameDocument);
         }
         return nameTextField;
     }
-    
+
     /**
      * Returns the document (model) for the name. Only used for the
      * PropPanelComment.

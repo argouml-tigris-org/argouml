@@ -28,7 +28,7 @@ import javax.swing.JScrollPane;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -58,7 +58,7 @@ import ru.novosoft.uml.model_management.MPackage;
  *       old gui components.
  */
 public class PropPanelGeneralization extends PropPanelModelElement {
-     protected static Category cat = 
+     protected static Category cat =
         Category.getInstance(PropPanelGeneralization.class);
 
     private PropPanelButton _newButton;
@@ -75,8 +75,8 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         addField("Discriminator:", new UMLTextField(this,new UMLTextProperty(mclass,"discriminator","getDiscriminator","setDiscriminator")));
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        add(LabelledLayout.getSeperator());
-      
+        addSeperator();
+
         UMLModelElementListModel parentModel = new UMLReflectionListModel(this,"parent",true,"getParentElement",null,null,null);
         parentModel.setUpperBound(1);
         UMLList umlParentList = new UMLList(parentModel,true);
@@ -91,7 +91,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
         addField("Powertype:", new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(), ActionSetGeneralizationPowertype.SINGLETON));
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);       
+        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
         new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete generalization"),"removeElement",null);
     }
 
@@ -231,7 +231,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
                             gen.setChild(newElement);
                         }
                         _newButton.setEnabled(false);
-                        TargetManager.getInstance().setTarget(newElement);                       
+                        TargetManager.getInstance().setTarget(newElement);
                     }
                     catch(Exception e) {
                         cat.error(e.toString() + " in PropPanelGeneralization.newElement", e);

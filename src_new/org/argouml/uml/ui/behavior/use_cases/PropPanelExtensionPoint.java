@@ -33,7 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -63,7 +63,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         // Invoke the ModelElement constructor, but passing in our name and
         // representation (we use the same as dependency) and requesting 2
-        // columns 
+        // columns
 
         super("ExtensionPoint", ConfigLoader.getTabPropsOrientation());
 
@@ -73,25 +73,25 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         // PropPanelModelElement.
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), 
+        addField(Argo.localize("UMLMenu", "label.stereotype"),
             new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
-        
+
         // Our location (a String). We can pass in the get and set methods from
         // NSUML associated with the NSUML type. Allow the location label to
         // expand vertically so we all float to the top.
 
         JTextField locationField = new UMLTextField2(new UMLExtensionPointLocationDocument());
         addField(Argo.localize("UMLMenu", "label.location"), locationField);
-        
-        add(LabelledLayout.getSeperator());
-        
+
+        addSeperator();
+
         JList usecaseList = new UMLLinkedList(new UMLExtensionPointUseCaseListModel());
         usecaseList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.usecase"), 
+        addField(Argo.localize("UMLMenu", "label.usecase"),
             new JScrollPane(usecaseList));
-        
+
         JList extendList = new UMLLinkedList(new UMLExtensionPointExtendListModel());
-        addField(Argo.localize("UMLMenu", "label.extend"), 
+        addField(Argo.localize("UMLMenu", "label.extend"),
             new JScrollPane(extendList));
 
 
@@ -100,9 +100,9 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         // selects the owning use case.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);       
+                            Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
         new PropPanelButton(this, buttonPanel, _deleteIcon,
-                            localize("Delete"), "removeElement", null); 
+                            localize("Delete"), "removeElement", null);
     }
 
 
