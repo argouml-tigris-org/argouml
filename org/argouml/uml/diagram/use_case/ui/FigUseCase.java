@@ -207,7 +207,7 @@ public class FigUseCase extends FigNodeModelElement {
         // will realize it. Use arbitrary dimensions for now.
 
         _bigPort = new FigMyCircle(0, 0, 100, 60, Color.black, Color.white);
-        _cover = new ShadowCircle(0, 0, 100, 60, Color.black, Color.white);
+        _cover = new FigMyCircle(0, 0, 100, 60, Color.black, Color.white);
 
         // Mark the text, but not the box as filled, mark that the name may
         // use multiline text (a bit odd - how do we enter a multi-line
@@ -930,33 +930,6 @@ public class FigUseCase extends FigNodeModelElement {
 			  (int) (mu * dy + _y + ry));
             cat.debug("    returns " + res.x + ',' + res.y + ')');
             return res;
-        }
-    }
-
-    /**
-     * A FigCircle that is drawn with a shadow using the current figure's
-     * shadow size.
-    **/
-    protected class ShadowCircle extends FigMyCircle {
-        public ShadowCircle(
-            int x,
-            int y,
-            int w,
-            int h,
-            Color lColor,
-            Color fColor) {
-            super(x, y, w, h, lColor, fColor);
-        }
-
-        public void paint(Graphics g) {
-            if (_shadowSize > 0) {
-                Color shadow = new Color(
-                    SHADOW_COLOR_VALUE, SHADOW_COLOR_VALUE, SHADOW_COLOR_VALUE, 
-                    SHADOW_COLOR_ALPHA);
-                g.setColor(shadow);
-                g.fillOval(_x + _shadowSize - 1, _y + _shadowSize - 1, _w, _h);         
-            }
-            super.paint(g);                
         }
     }
 
