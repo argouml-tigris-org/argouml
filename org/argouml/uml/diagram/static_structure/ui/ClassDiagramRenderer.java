@@ -34,6 +34,7 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigDependency;
@@ -46,6 +47,7 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
@@ -102,16 +104,21 @@ public class ClassDiagramRenderer
      *         org.tigris.gef.base.Layer, java.lang.Object)
      *
      * Return a Fig that can be used to represent the given edge.
+     * @throws IllegalArgumentException if the edge is not of an expected type.
+     * @throws IllegalStateException if the edge generated has no source or dest port.
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
         if (LOG.isDebugEnabled() ) {
             LOG.debug("making figedge for " + edge);
         }
+        if (edge == null) {
+            throw new IllegalArgumentException("A model edge must be supplied");
+        }
+        FigEdge newEdge = null;
         if (ModelFacade.isAAssociation(edge)) {
             FigAssociation ascFig = new FigAssociation(edge, lay);
-            return ascFig;
-        }
-        if (ModelFacade.isALink(edge)) {
+            newEdge = ascFig;
+        } else if (ModelFacade.isALink(edge)) {
             Object lnk = /*(MLink)*/ edge;
             FigLink lnkFig = new FigLink(lnk);
             Collection linkEndsColn = ModelFacade.getConnections(lnk);
@@ -127,21 +134,17 @@ public class ClassDiagramRenderer
             lnkFig.setDestPortFig(toFN);
             lnkFig.setDestFigNode(toFN);
             lnkFig.getFig().setLayer(lay);
-            return lnkFig;
-        }
-        if (ModelFacade.isAGeneralization(edge)) {
+            newEdge = lnkFig;
+        } else if (ModelFacade.isAGeneralization(edge)) {
             FigGeneralization genFig = new FigGeneralization(edge, lay);
-            return genFig;
-        }
-        if (ModelFacade.isAPermission(edge)) {
+            newEdge = genFig;
+        } else if (ModelFacade.isAPermission(edge)) {
             FigPermission perFig = new FigPermission(edge, lay);
-            return perFig;
-        }
-        if (ModelFacade.isAUsage(edge)) {
+            newEdge = perFig;
+        } else if (ModelFacade.isAUsage(edge)) {
             FigUsage usageFig = new FigUsage(edge, lay);
-            return usageFig;
-        }
-        if (ModelFacade.isADependency(edge)) {
+            newEdge = usageFig;
+        } else if (ModelFacade.isADependency(edge)) {
             Object stereotype = null;
 
             if (ModelFacade.getStereotypes(edge).size() > 0) {
@@ -174,20 +177,42 @@ public class ClassDiagramRenderer
                 realFig.setDestPortFig(supFN);
                 realFig.setDestFigNode(supFN);
                 realFig.getFig().setLayer(lay);
-                return realFig;
+                newEdge = realFig;
             } else {
                 FigDependency depFig = new FigDependency(edge, lay);
-                return depFig;
+                newEdge = depFig;
             }
-        } else 
-            if (edge instanceof CommentEdge) {
-                return new FigEdgeNote(edge, lay);
+        } else if (edge instanceof CommentEdge) {
+            newEdge = new FigEdgeNote(edge, lay);
+        }
+        if (newEdge == null) {
+            throw new IllegalArgumentException("Don't know how to create FigEdge for model type " + edge.getClass().getName());
+        } else {
+            if (newEdge.getSourcePortFig() == null) {
+                setSourcePort(newEdge, (FigNode)lay.presentationFor(UmlHelper.getHelper().getSource(edge)));
             }
-        LOG.error("TODO ClassDiagramRenderer getFigEdgeFor");
-        return null;
+            if (newEdge.getDestPortFig() == null) {
+                setDestPort(newEdge, (FigNode)lay.presentationFor(UmlHelper.getHelper().getDestination(edge)));
+            }
+            if (newEdge.getSourcePortFig() == null || 
+                    newEdge.getDestPortFig() == null ) {
+                throw new IllegalStateException("Edge of type "
+                                            + newEdge.getClass().getName() + " created with no source or destination port");
+            }
+        }
+        return newEdge;
     }
 
-
+    private void setSourcePort(FigEdge edge, FigNode source) {
+        edge.setSourcePortFig(source);
+        edge.setSourceFigNode(source);
+    }
+    
+    private void setDestPort(FigEdge edge, FigNode dest) {
+        edge.setDestPortFig(dest);
+        edge.setDestFigNode(dest);
+    }
+    
     static final long serialVersionUID = 675407719309039112L;
 
 } /* end class ClassDiagramRenderer */
