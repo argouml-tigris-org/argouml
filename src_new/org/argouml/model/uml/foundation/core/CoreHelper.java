@@ -791,6 +791,22 @@ public class CoreHelper {
 		return associations;
 	}
 	
+	/**
+	 * Returns the associationend between some classifier type and some associaton assoc.
+	 * @param type
+	 * @param assoc
+	 * @return MAssociationEnd
+	 */
+	public MAssociationEnd getAssociationEnd(MClassifier type, MAssociation assoc) {
+		if (type == null || assoc == null) return null;
+		Iterator it = type.getAssociationEnds().iterator();
+		while (it.hasNext()) {
+			MAssociationEnd end = (MAssociationEnd)it.next();
+			if (assoc.getConnections().contains(end)) return end;
+		}
+		return null;
+	}
+	
 	
 		
 		

@@ -59,7 +59,7 @@ public class ActionAddOperation extends UMLChangeAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-    super.actionPerformed(ae);
+   
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = pb.getProject();
 	Object target = pb.getDetailsTarget();
@@ -73,6 +73,7 @@ public class ActionAddOperation extends UMLChangeAction {
 	pb.getNavPane().addToHistory(oper);
 	pb.setTarget(oper);
 	pb.getNavPane().forceUpdate();
+	 super.actionPerformed(ae);
 	
     }
 

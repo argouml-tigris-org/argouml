@@ -176,16 +176,7 @@ implements PluggablePropertyPanel {
     }
 
 
-        public void addAssociation() {
-        Object target = getTarget();
-        if(target instanceof MPackage) {
-            MPackage pkg = (MPackage) target;
-            MModelElement element = pkg.getFactory().createAssociation();
-            pkg.addOwnedElement(element);
-            navigateTo(element);
-        }
-    }
-
+  
 
     public String formatElement(MModelElement element) {
         String formatted = null;
@@ -215,10 +206,6 @@ implements PluggablePropertyPanel {
 
     public void addUseCase(MModelElement element) {
         addUseCase();
-    }
-
-    public void addAssociation(MModelElement element) {
-        addAssociation();
     }
 
     public void deleteElement(MModelElement element) {

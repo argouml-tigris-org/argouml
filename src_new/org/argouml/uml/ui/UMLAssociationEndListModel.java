@@ -89,75 +89,14 @@ public class UMLAssociationEndListModel extends UMLModelElementListModel  {
     }
     
     //  see superclass documentation
-    public void add(int index) {
-        Object target = getTarget();
-        if(target instanceof MAssociation) {
-            MAssociation assoc = (MAssociation) target;
-            MAssociationEnd assocEnd = UmlFactory.getFactory().getCore().createAssociationEnd();
-            assoc.addConnection(assocEnd);
-            fireIntervalAdded(this,index,index);
-            navigateTo(assocEnd);
-        }
-    }
-    
-    //  see superclass documentation
-    public void delete(int index) {
-        Object target = getTarget();
-        if(target instanceof MAssociationEnd) {
-            MAssociation assoc = (MAssociation) target;
-            Object obj = getModelElementAt(index);
-            if(obj instanceof MAssociationEnd) {
-                MAssociationEnd assocEnd = (MAssociationEnd) obj;
-                assoc.removeConnection(assocEnd);
-                fireIntervalRemoved(this,index,index);
-            }
-        }
-    }
-    
-    //   see superclass documentation
-    public void moveUp(int index) {
-        Object target = getTarget();
-        if(target instanceof MAssociation) {
-            MAssociation assoc = (MAssociation) target;
-            assoc.setConnections(moveUpUtil(assoc.getConnections(),index));
-            fireContentsChanged(this,index-1,index);
-        }
-    }
-    
-    //   see superclass documentation
-    public void moveDown(int index) {
-        Object target = getTarget();
-        if(target instanceof MAssociation) {
-            MAssociation assoc = (MAssociation) target;
-            assoc.setConnections(moveDownUtil(assoc.getConnections(),index));
-            fireContentsChanged(this,index,index+1);
-        }
-    }
-    
-    //  see superclass documentation
     public boolean buildPopup(JPopupMenu popup,int index) {
         UMLUserInterfaceContainer container = getContainer();
         UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
         int size = getModelElementSize();
         if(size <= 0) {
             open.setEnabled(false);
         }
-        if(size <= 2) {
-            delete.setEnabled(false);
-        }
            
-
-        popup.add(open);
-        popup.add(new UMLListMenuItem(container.localize("Add"),this,"add",index));
-        popup.add(delete);
-
-        UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"),this,"moveUp",index);
-        if(index == 0) moveUp.setEnabled(false);
-        popup.add(moveUp);
-        UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"),this,"moveDown",index);
-        if(index == getSize()-1) moveDown.setEnabled(false);
-        popup.add(moveDown);
         return true;
     }
 

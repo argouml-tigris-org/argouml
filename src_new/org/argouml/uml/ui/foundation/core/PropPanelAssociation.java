@@ -165,41 +165,6 @@ public class PropPanelAssociation extends PropPanelModelElement {
     //does this make sense??new PropPanelButton(this,buttonPanel,_associationIcon, Argo.localize("UMLMenu", "button.add-association"),"newAssociation",null);
 
   }
-
-   public void addAssociationEnd() {
-        Object target = getTarget();
-        if(target instanceof MAssociation) {
-            MAssociation assoc = (MAssociation) target;
-            MAssociationEnd assocEnd = assoc.getFactory().createAssociationEnd();
-            assoc.addConnection(assocEnd);
-            navigateTo(assocEnd);
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
-        }
-    }
-
-    public void newAssociation() {
-        Object target = getTarget();
-        if(target instanceof MAssociation) {
-            MAssociation assoc = (MAssociation) target;
-            MNamespace ns = assoc.getNamespace();
-            if(ns != null) {
-                MFactory factory = ns.getFactory();
-                MAssociation newAssoc = factory.createAssociation();
-                newAssoc.addConnection(factory.createAssociationEnd());
-                newAssoc.addConnection(factory.createAssociationEnd());
-                ns.addOwnedElement(newAssoc);
-                navigateTo(newAssoc);
-                // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
-            }
-        }
-    }
-
     
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Association") ||
