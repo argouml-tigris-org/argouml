@@ -54,7 +54,6 @@ public class CrCircularAssocClass extends CrUML {
      *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-        System.out.println("predicate2:" + dm);
         // self.allConnections->forAll(ar|ar.participant <> self)
         if (!Model.getFacade().isAAssociationClass(dm))
             return NO_PROBLEM;
