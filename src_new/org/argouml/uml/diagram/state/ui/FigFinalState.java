@@ -133,7 +133,7 @@ public class FigFinalState extends FigStateVertex {
 				sel = new SelectionActionState(this);
 				((SelectionActionState) sel).setOutgoingButtonEnabled(false);
 			} else {
-				sel = new SelectionState(this);
+				sel = new SelectionFinalState(this);
 				((SelectionState) sel).setOutgoingButtonEnabled(false);
 			}
 		}
