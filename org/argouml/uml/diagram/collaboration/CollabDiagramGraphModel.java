@@ -265,18 +265,23 @@ implements VetoableChangeListener {
                           java.lang.Class edgeClass) {
         Object connection = null;
         try {
+            // If this was an association then there will be relevant information
+            // to fetch out of the mode arguments.
+            // If it not an association then these will be passed forward harmlessly
+            // as null.
             Editor curEditor = Globals.curEditor();
             ModeManager modeManager = curEditor.getModeManager();
             Mode mode = (Mode)modeManager.top();
             Hashtable args = mode.getArgs();
-            MAggregationKind aggregation = (MAggregationKind)args.get("aggregation");
+            MAggregationKind style = (MAggregationKind)args.get("aggregation");
             Boolean unidirectional = (Boolean)args.get("unidirectional");
+            // Create the UML connection of the given type between the given model elements.
             connection = UmlFactory.getFactory().buildConnection(
-                (MClassifierRole)fromPort,
-                aggregation,
-                (MClassifierRole)toPort,
-                null,
                 edgeClass,
+                (MClassifierRole)fromPort,
+                style,
+                (MClassifierRole)toPort,
+                null, // default aggregation (none)
                 unidirectional
             );
         } catch (org.argouml.model.uml.UmlException ex) {
@@ -292,26 +297,7 @@ implements VetoableChangeListener {
         
         addEdge(connection);
         return connection;
-        
     }
-
-    /** Contruct and add a new association and connect to
-     * the given ports.
-     */
-    private Object connectAssociationRole(MClassifierRole fromPort, MClassifierRole toPort) {
-        if (fromPort instanceof MClassifier && toPort instanceof MClassifier) {
-            Editor curEditor = Globals.curEditor();
-            ModeManager modeManager = curEditor.getModeManager();
-            Mode mode = (Mode)modeManager.top();
-            Hashtable args = mode.getArgs();
-            MAggregationKind aggregation = (MAggregationKind)args.get("aggregation");
-            Boolean unidirectional = (Boolean)args.get("unidirectional");
-            return UmlFactory.getFactory().getCollaborations().buildAssociationRole(fromPort, aggregation, toPort, MAggregationKind.NONE, unidirectional);
-        }
-        
-        return null;
-    }
-    
 
   ////////////////////////////////////////////////////////////////
   // VetoableChangeListener implementation

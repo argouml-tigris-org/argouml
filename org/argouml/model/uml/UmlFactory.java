@@ -180,10 +180,10 @@ public class UmlFactory extends AbstractUmlModelFactory {
      *  TODO Bob Tarling: currently only coded for collaboration diagram
      *  introduce other diagrams slowly.
      */
-    public Object buildConnection(Object fromElement, Object toElement, Object connectionType) throws UmlException {
-        return buildConnection(fromElement, null, toElement, null, connectionType, null);
+    public Object buildConnection(Object connectionType, Object fromElement, Object toElement) throws IllegalModelElementConnectionException {
+        return buildConnection(connectionType, fromElement, null, toElement, null, null);
     }
-    public Object buildConnection(Object fromElement, Object fromStyle, Object toElement, Object toStyle, Object connectionType, Object unidirectional) throws UmlException {
+    public Object buildConnection(Object connectionType, Object fromElement, Object fromStyle, Object toElement, Object toStyle, Object unidirectional) throws IllegalModelElementConnectionException {
         
         // TODO Bob Tarling - validate against validGrid first.
         
@@ -201,14 +201,14 @@ public class UmlFactory extends AbstractUmlModelFactory {
             }
       
         } catch (Exception ex) {
-            throw new IllegalModelElementConnection("Cannot make a " + 
+            throw new IllegalModelElementConnectionException("Cannot make a " + 
                         connectionType.getClass().getName() +
                          " between a " + fromElement.getClass().getName() +
                          " and a " + toElement.getClass().getName(), ex);
         }
         
         if (connection == null) {
-            throw new IllegalModelElementConnection("Cannot make a " + 
+            throw new IllegalModelElementConnectionException("Cannot make a " + 
                         connectionType.getClass().getName() +
                          " between a " + fromElement.getClass().getName() +
                          " and a " + toElement.getClass().getName());
