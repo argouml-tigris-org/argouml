@@ -27,7 +27,7 @@ import java.util.Collection;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.AbstractGoRule;

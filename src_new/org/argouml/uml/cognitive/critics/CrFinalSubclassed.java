@@ -36,7 +36,7 @@ import java.util.*;
 import org.argouml.cognitive.*;
 
 // Use model through ModelFacade
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 
 /** Well-formedness rule [2] for MGeneralizableElement. See page 31 of UML 1.1

@@ -28,7 +28,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.api.model.ObjectFactoryManager;
+import org.argouml.api.ObjectFactoryManager;
 import org.argouml.api.model.uml.Uml;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;

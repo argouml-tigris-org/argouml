@@ -28,7 +28,7 @@ import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 
 import org.argouml.application.api.Argo;
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;

@@ -32,7 +32,7 @@ import java.util.List;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 /** Well-formedness rule [2] for MClassifier. See page 29 of UML 1.1

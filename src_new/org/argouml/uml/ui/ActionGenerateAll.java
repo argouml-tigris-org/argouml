@@ -31,7 +31,7 @@ import java.util.Vector;
 import javax.swing.tree.TreePath;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;

@@ -36,7 +36,7 @@ import javax.swing.*;
 import org.argouml.kernel.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 
 import ru.novosoft.uml.foundation.core.MModelElement;

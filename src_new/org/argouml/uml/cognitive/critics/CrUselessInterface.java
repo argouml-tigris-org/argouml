@@ -35,7 +35,7 @@ import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
 // Use Model through ModelFacade
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 
 /** A critic to detect when a class can never have instances (of

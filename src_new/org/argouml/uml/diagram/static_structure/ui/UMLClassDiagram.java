@@ -34,7 +34,7 @@ import javax.swing.Action;
 import javax.swing.JToolBar;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.CmdCreateNode;

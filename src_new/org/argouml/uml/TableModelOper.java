@@ -26,7 +26,7 @@ package org.argouml.uml;
 import java.util.*;
 import java.beans.*;
 
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 
 import ru.novosoft.uml.foundation.core.*;

@@ -35,7 +35,7 @@ import java.util.*;
 import org.argouml.cognitive.*;
 
 // Use Model through Facade
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 
 /**

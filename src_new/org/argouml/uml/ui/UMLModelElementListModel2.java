@@ -29,7 +29,7 @@ import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
 
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;

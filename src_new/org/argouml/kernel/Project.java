@@ -63,7 +63,8 @@ import org.argouml.cognitive.ui.DesignIssuesDialog;
 import org.argouml.cognitive.ui.GoalsDialog;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.cognitive.ui.ToDoPane;
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
+import org.argouml.model.uml.MofHelper;
 import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
@@ -1249,6 +1250,7 @@ public class Project implements java.io.Serializable, TargetListener {
         _root = root;
         addMember(root);
         addModel(root);
+        MofHelper.setOutermostPackage(_root);
 
     }
 

@@ -30,7 +30,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.api.model.ObjectFactoryManager;
+import org.argouml.api.ObjectFactoryManager;
 import org.argouml.api.model.uml.Uml;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;

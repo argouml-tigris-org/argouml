@@ -25,7 +25,7 @@ package org.argouml.uml.reveng.java;
 
 import java.util.*;
 
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 

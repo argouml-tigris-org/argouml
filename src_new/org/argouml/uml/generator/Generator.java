@@ -42,7 +42,7 @@ import org.argouml.application.api.NotationName;
 import org.argouml.application.api.NotationProvider;
 import org.argouml.application.api.PluggableNotation;
 import org.argouml.language.helpers.NotationHelper;
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 
 import ru.novosoft.uml.behavior.collaborations.MMessage;

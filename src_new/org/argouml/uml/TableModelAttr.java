@@ -28,7 +28,7 @@ import java.beans.*;
 
 import ru.novosoft.uml.foundation.core.*;
 
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 
 public class TableModelAttr extends TableModelComposite {

@@ -30,7 +30,7 @@ import java.awt.event.ActionEvent;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.ui.ProjectBrowser;

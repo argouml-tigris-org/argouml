@@ -23,7 +23,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;

@@ -38,7 +38,7 @@ import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
 // Use Model through ModelFacade
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 
 /** A critic whether a package/subsystem/model is empty. */

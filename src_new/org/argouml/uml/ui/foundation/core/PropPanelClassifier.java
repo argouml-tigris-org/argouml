@@ -29,7 +29,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.argouml.api.model.ObjectFactoryManager;
+import org.argouml.api.ObjectFactoryManager;
 import org.argouml.api.model.uml.Uml;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;

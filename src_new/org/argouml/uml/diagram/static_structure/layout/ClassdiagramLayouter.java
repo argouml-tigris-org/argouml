@@ -28,7 +28,7 @@ import java.util.*;
 
 import org.apache.log4j.*;
 
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.uml.diagram.layout.*;
 import org.argouml.uml.diagram.ui.*;

@@ -35,7 +35,7 @@ import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
 // Uses Model through NsumlModelFacade.
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 
 

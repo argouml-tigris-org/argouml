@@ -26,7 +26,7 @@ package org.argouml.uml.diagram.state.ui;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.AbstractGoRule;
 

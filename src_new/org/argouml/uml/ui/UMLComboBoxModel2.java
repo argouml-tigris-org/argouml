@@ -33,7 +33,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
 import org.apache.log4j.Category;
-import org.argouml.api.model.FacadeManager;
+import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
