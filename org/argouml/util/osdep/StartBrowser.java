@@ -48,13 +48,15 @@ public class StartBrowser
 	    }
 	    else if (OsUtil.isMac()) {
 		try {
-		    ClassLoader cl = new Object().getClass().getClassLoader();
+		    ClassLoader cl = ClassLoader.getSystemClassLoader();
 		    Class c = cl.loadClass("com.apple.mrj.MRJFileUtils");
 		    Class[] argtypes = { String.class };
 		    Method m = c.getMethod("openURL", argtypes);
 		    Object[] args = { url };
 		    m.invoke(c.newInstance(), args);
 		} catch (Exception cnfe) {
+		    Argo.log.error(cnfe);
+		    Argo.log.info("Trying a default browser (netscape)");
 		    String[] commline = { "netscape", url };
 		    Runtime.getRuntime().exec(commline);
 		}
