@@ -54,11 +54,11 @@ public class FigComponent extends FigNodeModelElement {
 	main rectangle. */
     private static final int BIGPORT_X = 10;
 
-    public static int OVERLAP = 4;
+    private static final int OVERLAP = 4;
 
-    protected FigRect _cover;
-    protected FigRect _upperRect;
-    protected FigRect _lowerRect;
+    private FigRect cover;
+    private FigRect upperRect;
+    private FigRect lowerRect;
 
 
     ////////////////////////////////////////////////////////////////
@@ -68,23 +68,28 @@ public class FigComponent extends FigNodeModelElement {
      * Constructor.
      */
     public FigComponent() {
-	_cover = new FigRect(BIGPORT_X, 10, 120, 80, Color.black, Color.white);
-	_upperRect = new FigRect(0, 20, 20, 10, Color.black, Color.white);
-	_lowerRect = new FigRect(0, 40, 20, 10, Color.black, Color.white);
+	cover = new FigRect(BIGPORT_X, 10, 120, 80, Color.black, Color.white);
+	upperRect = new FigRect(0, 20, 20, 10, Color.black, Color.white);
+	lowerRect = new FigRect(0, 40, 20, 10, Color.black, Color.white);
 
 	getNameFig().setLineWidth(0);
 	getNameFig().setFilled(false);
 	getNameFig().setText( placeString() );
 
 	addFig(getBigPort());
-	addFig(_cover);
+	addFig(cover);
 	addFig(getStereotypeFig());
 	addFig(getNameFig());
-	addFig(_upperRect);
-	addFig(_lowerRect);
+	addFig(upperRect);
+	addFig(lowerRect);
     }
 
-    // Why not just super( gm, node ) instead?? (ChL)
+    // TODO: Why not just super( gm, node ) instead?? (ChL)
+    /**
+     * The constructor that hooks the Fig into an existing UML element
+     * @param gm ignored
+     * @param node the UML element
+     */
     public FigComponent(GraphModel gm, Object node) {
 	this();
 	setOwner(node);
@@ -109,11 +114,11 @@ public class FigComponent extends FigNodeModelElement {
 	FigComponent figClone = (FigComponent) super.clone();
 	Iterator it = figClone.getFigs(null).iterator();
 	figClone.setBigPort((FigRect) it.next());
-	figClone._cover = (FigRect) it.next();
+	figClone.cover = (FigRect) it.next();
 	figClone.setStereotypeFig((FigText) it.next());
 	figClone.setNameFig((FigText) it.next());
-	figClone._upperRect = (FigRect) it.next();
-	figClone._lowerRect = (FigRect) it.next();
+	figClone.upperRect = (FigRect) it.next();
+	figClone.lowerRect = (FigRect) it.next();
 
 	return figClone;
     }
@@ -121,6 +126,9 @@ public class FigComponent extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // acessors
 
+    /**
+     * @param b switch underline on or off
+     */
     public void setUnderline(boolean b) {
 	getNameFig().setUnderline(b);
     }
@@ -130,13 +138,13 @@ public class FigComponent extends FigNodeModelElement {
      */
     public void setLineColor(Color c) {
 	//super.setLineColor(c);
-	_cover.setLineColor(c);
+	cover.setLineColor(c);
 	getStereotypeFig().setFilled(false);
 	getStereotypeFig().setLineWidth(0);
 	getNameFig().setFilled(false);
 	getNameFig().setLineWidth(0);
-	_upperRect.setLineColor(c);
-	_lowerRect.setLineColor(c);
+	upperRect.setLineColor(c);
+	lowerRect.setLineColor(c);
     }
 
 
@@ -167,17 +175,17 @@ public class FigComponent extends FigNodeModelElement {
 
 	Rectangle oldBounds = getBounds();
 	getBigPort().setBounds(x + BIGPORT_X, y, w - BIGPORT_X, h);
-	_cover.setBounds(x + BIGPORT_X, y, w - BIGPORT_X, h);
+	cover.setBounds(x + BIGPORT_X, y, w - BIGPORT_X, h);
 
 	Dimension stereoDim = getStereotypeFig().getMinimumSize();
 	Dimension nameDim = getNameFig().getMinimumSize();
 	if (h < 50) {
-	    _upperRect.setBounds(x, y + h / 6, 20, 10);
-	    _lowerRect.setBounds(x, y + 3 * h / 6, 20, 10);
+	    upperRect.setBounds(x, y + h / 6, 20, 10);
+	    lowerRect.setBounds(x, y + 3 * h / 6, 20, 10);
 	}
 	else {
-	    _upperRect.setBounds(x, y + 13, 20, 10);
-	    _lowerRect.setBounds(x, y + 39, 20, 10);
+	    upperRect.setBounds(x, y + 13, 20, 10);
+	    lowerRect.setBounds(x, y + 39, 20, 10);
 	}
 
 	getStereotypeFig().setBounds(x + BIGPORT_X + 1,
@@ -231,21 +239,22 @@ public class FigComponent extends FigNodeModelElement {
         
 	    if (getLayer() != null) {
 	            // elementOrdering(figures);
-	            Collection contents = getLayer().getContents(null);
-	            Collection bringToFrontList = new ArrayList();
-	            Iterator it = contents.iterator();
-	            while (it.hasNext()) {
-	                Object o = it.next();
-	                if (o instanceof FigEdgeModelElement) {
-	                    bringToFrontList.add(o);
-	                    
-	                }
+	        Collection contents = getLayer().getContents(null);
+	        Collection bringToFrontList = new ArrayList();
+	        Iterator it = contents.iterator();
+	        while (it.hasNext()) {
+	            Object o = it.next();
+	            if (o instanceof FigEdgeModelElement) {
+	                bringToFrontList.add(o);
+	                
 	            }
-	            Iterator bringToFrontIter = bringToFrontList.iterator();
-	            while (bringToFrontIter.hasNext()) {
-	                FigEdgeModelElement figEdge = (FigEdgeModelElement) bringToFrontIter.next();
-	                figEdge.getLayer().bringToFront(figEdge);
-	            }
+	        }
+	        Iterator bringToFrontIter = bringToFrontList.iterator();
+	        while (bringToFrontIter.hasNext()) {
+	            FigEdgeModelElement figEdge = 
+	                (FigEdgeModelElement) bringToFrontIter.next();
+	            figEdge.getLayer().bringToFront(figEdge);
+	        }
 	    }
 	} else
 	    if (encloser == null && getEnclosingFig() != null) {
@@ -296,6 +305,10 @@ public class FigComponent extends FigNodeModelElement {
 	*/
     }
 
+    /**
+     * TODO: This is not used anywhere. Can we remove it?
+     * @param figures ?
+     */
     public void setNode(Vector figures) {
 	int size = figures.size();
 	if (figures != null && (size > 0)) {

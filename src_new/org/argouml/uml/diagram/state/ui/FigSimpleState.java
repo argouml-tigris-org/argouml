@@ -132,15 +132,6 @@ public class FigSimpleState extends FigState {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    public void setOwner(Object node) {
-	super.setOwner(node);
-	bindPort(node, bigPort);
-    }
-
     /**
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */

@@ -126,14 +126,6 @@ public class FigDeepHistoryState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
-    /**
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    public void setOwner(Object node) {
-        super.setOwner(node);
-        bindPort(node, bigPort);
-    }
-
     /** History states are fixed size. 
      * @see org.tigris.gef.presentation.Fig#isResizable()
      */

@@ -105,14 +105,6 @@ public class FigJunctionState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // Fig accesors
 
-    /**
-     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
-     */
-    public void setOwner(Object node) {
-	super.setOwner(node);
-	bindPort(node, bigPort);
-    }
-
     /** Initial states are fixed size. 
      * @see org.tigris.gef.presentation.Fig#isResizable()
      */
