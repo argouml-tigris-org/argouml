@@ -4,7 +4,7 @@
       activity by the system in relation to its external users (actors), human
       or machine. It represents the primary route through which requirements
       are captured for the system under construction</p><p>Within the UML metamodel, use case is a sub-class of
-     <tt>classifier</tt>.</p><p>The use case icon is an oval (see <a href="ch15.html#fig.ref.use_case_diagram" title="Figure 15.1. Possible artifacts on a use case diagram.">Figure 15.1</a>).</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e13020"></a>15.3.1. Use Case Details Tabs</h3></div></div><p>The details tabs that are active for use cases are as
+     <tt>classifier</tt>.</p><p>The use case icon is an oval (see <a href="ch15.html#fig.ref.use_case_diagram" title="Figure 15.1. Possible artifacts on a use case diagram.">Figure 15.1</a>).</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e13354"></a>15.3.1. Use Case Details Tabs</h3></div></div><p>The details tabs that are active for use cases are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch15s03.html#s2.ref.use_case_property_toolbar" title="15.3.2. Use Case Property Toolbar">Section 15.3.2</a> and <a href="ch15s03.html#s2.ref.use_case_property_fields" title="15.3.3. Property Fields For Use Case">Section 15.3.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab. Fill color is used for the use case
             oval.</p></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab. It would not be usual to provide any
@@ -47,12 +47,16 @@
             forward</tt></span></dt><dd><p>Navigate forward to the next
             artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
             and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/use_case.gif" align="center"></span> <tt>New use
+            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/use_case.gif" align="center"></span> <tt>Add use
             case</tt></span></dt><dd><p>This creates a new use case within the model, (but
             not within the diagram), navigating immediately to the
             properties tab for that use case.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This method of creating new use cases can be
             confusing. Much better to create them within diagrams where you
-            want them.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="center"></span>
+            want them.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/extension_point.gif" align="center"></span> <tt>Add extension
+            point</tt></span></dt><dd><p>This creates a new use extension point within the
+            namespace of the current use case, with the current use case as its
+            associated use case, navigating immediately to the properties tab
+            for that extension point.</p></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="center"></span>
             <tt>Delete</tt></span></dt><dd><p>This deletes the selected use case from the
             model.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model
             <span class="emphasis"><i>not</i></span> just the diagram. To delete a use case
@@ -88,7 +92,8 @@
               children do.</p></td></tr></table></div></li><li><p><tt>final</tt> indicates that this
               use case can have no further children, while
               <tt>root</tt> indicates it is a top level
-              use case with no parent.</p></li></ul></div></dd><dt><span class="term"><tt><a name="ref.use_case_generalization"></a>Generalizations
+              use case with no parent.</p></li></ul></div></dd><dt><span class="term"><tt>
+            <a name="ref.use_case_generalization"></a>Generalizations
           </tt></span></dt><dd><p>Text area. Lists use cases which are generalizations
             of this one. Will be set whenever a generalization is created
             on the diagram. Button&nbsp;1 click on a generalization will
@@ -116,59 +121,78 @@
               where there are two or more generalizations listed (see
               <span class="emphasis"><i>caution</i></span> above), and the generalization
               selected is not at the bottom. It is moved one down the
-              list.</p></li></ul></div></dd><dt><span class="term"><tt>Extends</tt></span></dt><dd><p>Text box. Lists any class that is extended by this
-            use case. In ArgoUML at present extension on a use case
-            diagram is through stereotyping a dependency relationship, which
-            will not show in this box.</p><p>Where an extends relationship has been created (see below),
-            button&nbsp;1 click will navigate to that
-            relationship. Button&nbsp;2 gives a pop up menu through which
-            an <span class="emphasis"><i>anonymous</i></span> extends relationship can be
-            created.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Where an extends
+              list.</p></li></ul></div></dd><dt><span class="term"><tt>Specializations</tt></span></dt><dd><p>Text box. Lists any specialized use case (i.e. for
+            which this use case is a generalization.</p><p>button&nbsp;1 click navigates to the generalization and opens
+            its property tab.</p><p>Button&nbsp;2 click yields a drop down menu with five
+            entries</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
+              selected generalization.</p></li><li><p><tt>Add</tt>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. The link from the
+              generalization to the use case (<span class="emphasis"><i>but not the
+              generalization itself</i></span>) is removed.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This <span class="emphasis"><i>does not</i></span> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available
+             where there are two or more specializations listed, and the
+             specialization selected is not at the top. It is moved one up
+             the list.</p></li><li><p><tt>Move Down</tt>. Only available
+             where there are two or more specializations listed, and the
+             specialization selected is not at the bottom. It is moved one
+             down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Extends</tt></span></dt><dd><p>Text box. Lists any class that is extended by this
+            use case.</p><p>Where an extends relationship has been created (see below),
+            button&nbsp;1 click will navigate to that relationship. Button&nbsp;2 gives
+            a pop up menu with five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Where an extends
               relationship has been created, navigate to
-              it.</p></li><li><p><tt>Add</tt>. Add a new anonymous
-              extends relationship. This is just a documentation artifact,
-              not a true relationship, where you can record details of the
-              extension.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is possible to add multiple extends
+              it.</p></li><li><p><tt>Add</tt>. Add a new
+              extend relationship and navigate to it. The current use case is
+              set as the extension end of the extend relationship.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is possible to add multiple extends
               relationships. However is is hard to see a sensible meaning
-              for this. In addition the size of the text area, and the lack
-              of move up/move down options on the pop up menu, make all but
-              the top entry inaccessible in
-              ArgoUML.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. Where an extends
-              relationship has been created through use of
-              <tt>Add</tt> pop up menu, this removes
-              it.</p></li></ul></div></dd><dt><span class="term"><tt>Includes</tt></span></dt><dd><p>Text box. Lists any class that this use case
-            includes. In ArgoUML at present inclusion on a use case
-            diagram is through stereotyping a dependency relationship, which
-            will not show in this box.</p><p>Where an includes relationship has been created (see
-            below), button&nbsp;1 click will navigate to that
-            relationship. Button&nbsp;2 gives a pop up menu through which
-            an <span class="emphasis"><i>anonymous</i></span> includes relationship can be
-            created.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Where an includes
+              for this.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. Removes the link to the
+              selected extend relationship.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This deletes the connection to the extend relationship,
+              but does not delete the extend relationship from the
+              model.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+             there are two or more extend relationships listed (not
+             recommended), and the extend relationship selected is not at the
+             top. It is moved one up the list.</p></li><li><p><tt>Move Down</tt>. Only available where
+             there are two or more extend relationships listed (not
+             recommended), and the extend relationship selected is not at the
+             bottom. It is moved one down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Includes</tt></span></dt><dd><p>Text box. Lists any use case that this use case
+            includes.</p><p>Where an include relationship has been created (see below),
+            button&nbsp;1 click will navigate to that relationship. Button&nbsp;2 gives
+            a pop up menu with five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Where an include
               relationship has been created, navigate to
-              it.</p></li><li><p><tt>Add</tt>. Add a new anonymous
-              includes relationship. This is just a documentation artifact,
-              not a true relationship, where you can record details of the
-              extension.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is possible to add multiple includes
-              relationships. However is is hard to see a sensible meaning
-              for this. In addition the size of the text area, and the lack
-              of move up/move down options on the pop up menu, make all but
-              the top entry inaccessible in
-              ArgoUML.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. Where an includes
-              relationship has been created through use of
-              <tt>Add</tt> pop up menu, this removes
-              it.</p></li></ul></div></dd><dt><span class="term"><tt>Extension Points</tt></span></dt><dd><p>Text box. If this use case is, or can be extended,
-            this field is used to document the points at which such
-            extensions can occur.</p><p>Where an extension point has been created (see
-            below), button&nbsp;1 click will navigate to that
-            relationship. Button&nbsp;2 gives a pop up menu through which
-            an <span class="emphasis"><i>anonymous</i></span> extension points can be
-            created.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Where an extension
-              point has been created, navigate to it.</p></li><li><p><tt>Add</tt>. Add a new anonymous
-              extension point. This is a documentation artifact, where you
-              can record details of the extension point.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>At present there is no way to give a name to an
-              extension point in ArgoUML.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. Where an extension
-              point has been created through use of <tt>Add</tt>
-              pop up menu, this removes it.</p></li></ul></div></dd><dt><span class="term"><tt>Associations</tt></span></dt><dd><p>Text area. Lists any associations connected to the
+              it.</p></li><li><p><tt>Add</tt>. Add a new
+              include relationship and navigate to it. The current use case
+              will be made the base use case of the include
+              relationship.</p></li><li><p><tt>Delete</tt>. Removes the link to the
+              selected include relationship.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This deletes the connection to the include
+              relationship, but does not delete the include relationship from
+              the model.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more include relationships listed, and the
+              include relationship selected is not at the top. It is moved one
+              up the list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more include relationships listed, and the
+              include relationship selected is not at the bottom. It is moved
+              one down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Extension Points</tt></span></dt><dd><p>Text box. If this use case is, or can be extended,
+            this field lists the extension points for the use case.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Extension points are listed by their location point
+            rather than their name.</p></td></tr></table></div><p>Where an extension point has been created (see below),
+            button&nbsp;1 click will navigate to that relationship. Button&nbsp;2 gives
+            a pop up menu with five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Where an extension
+              point has been created, navigate to it.</p></li><li><p><tt>Add</tt>. Add a new extension point
+              and navigate to it, making this use case the owning use case of
+              the extension point.</p></li><li><p><tt>Delete</tt>. Where an extension
+              point has been created, this removes it.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This deletes the connection to the extension point, but
+              does not delete the extension point from the
+              model.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more extension points listed, and the extension
+              point selected is not at the top. It is moved one up the
+              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more extension points listed, and the extension
+              point selected is not at the bottom. It is moved one down the
+              list.</p></li></ul></div></dd><dt><span class="term"><tt>Associations</tt></span></dt><dd><p>Text area. Lists any associations connected to the
             use case. Button&nbsp;1 click on an association will navigate
             to that association. Button&nbsp;2 click gives a pop up menu with
             five options.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the

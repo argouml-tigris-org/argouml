@@ -20,7 +20,7 @@
       package), as well as the properties tab for datatype..</p><p>You can navigate to existing property types via the
       <tt>NavClass</tt> button on any property sheet that has a Type
       drop-down (for example attribute or parameter).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>UML&nbsp;1.3 allows user defined datatypes to be placed on
-      class diagrams. This is not permitted in ArgoUML.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e11389"></a>14.3.1. Datatype Details Tabs</h3></div></div><p>The details tabs that are active for datatypes are as
+      class diagrams. This is not permitted in ArgoUML.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e11541"></a>14.3.1. Datatype Details Tabs</h3></div></div><p>The details tabs that are active for datatypes are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch14s03.html#s2.ref.datatype_property_toolbar" title="14.3.2. Datatype Property Toolbar">Section 14.3.2</a> and <a href="ch14s03.html#s2.ref.datatype_property_fields" title="14.3.3. Property Fields For Datatype">Section 14.3.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab, but with no effect. In a future
             version of ArgoUML the <tt>Attributes</tt> and
@@ -100,9 +100,69 @@
             your own stereotype derived from
             enumeration.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
               stereotype has been selected, this will navigate you to the
-              stereotype property panel (see <a href="ch14s04.html" title="14.4. Stereotypes">Section 14.4</a>).</p></dd><dt><span class="term"><tt>Extends</tt></span></dt><dd><p>Text box. Lists any use case extended by this
-            datatype. Meaningless for a datatype. The entry is always none
-            and the pop up menu grayed out.</p></dd><dt><span class="term"><tt>Implements</tt></span></dt><dd><p>Text box. Lists any abstract classes or interfaces
+              stereotype property panel (see <a href="ch14s04.html" title="14.4. Stereotypes">Section 14.4</a>).</p></dd><dt><span class="term"><tt>Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the
+            datatype. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
+            defining this namespace (or the model for the top level
+            namespace).</p></dd><dt><span class="term"><tt>Modifiers</tt></span></dt><dd><p>Check box, with entries <tt>public</tt>,
+            <tt>abstract</tt>, <tt>final</tt> and
+            <tt>root</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>public</tt> has identical meaning
+              to the <tt>public</tt> declaration in Java. It
+              indicates whether this datatype is restricted to use in its
+              own package (the default) or can be used by
+              anyone.</p></li><li><p><tt>abstract</tt> is used to declare
+              that this datatype cannot be instantiated, but must always be
+              specialized.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML provides no mechanism for specializing
+              datatypes, so this check box is of little use.
+            </p></td></tr></table></div></li><li><p><tt>final</tt> indicates that this
+              datatype can have no further sub-types, while
+              <tt>root</tt> indicates it is a top level
+              datatype.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the absence of specialization of datatypes within
+              ArgoUML these have little value. In effect all datatypes
+              are both <tt>root</tt> and
+              <tt>final</tt></p></td></tr></table></div></li></ul></div></dd><dt><span class="term"><tt>Generalizations</tt></span></dt><dd><p>Text area. Lists any datatype that
+            <span class="emphasis"><i>generalizes</i></span> this datatype.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is not clear that generalizing datatypes makes much
+            sense.</p></td></tr></table></div><p>Button&nbsp;1 click navigates to the generalization and opens
+            its property tab.</p><p>Button&nbsp;2 click yields a drop down menu with five
+            entries</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
+              selected generalization.</p></li><li><p><tt>Add</tt>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram. You will need to find it in
+              the navigation pane and add it from there.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. The link from the
+              generalization to the datatype (<span class="emphasis"><i>but not the
+              generalization itself</i></span>) is removed.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This <span class="emphasis"><i>does not</i></span> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the top. It is moved one up the
+              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved one
+              down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Specializations</tt></span></dt><dd><p>Text box. Lists any specialized datatype (i.e. for
+            which this datatype is a generalization.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is not clear that specializing datatypes makes much
+            sense.</p></td></tr></table></div><p>button&nbsp;1 click navigates to the generalization and opens
+            its property tab.</p><p>Button&nbsp;2 click yields a drop down menu with five
+            entries</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
+              selected generalization.</p></li><li><p><tt>Add</tt>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. The link from the
+              generalization to the datatype (<span class="emphasis"><i>but not the
+              generalization itself</i></span>) is removed.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This <span class="emphasis"><i>does not</i></span> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the top. It is moved one up the
+              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the bottom. It is moved one
+              down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Implements</tt></span></dt><dd><p>Text box. Lists any abstract classes or interfaces
             realized by this datatype. By default shows the entry
             <tt>none</tt>.</p><p>Button&nbsp;1 click takes you to any entry (but see the warning
             below), button&nbsp;2 gives a pop up menu with five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Where an abstraction
@@ -125,29 +185,7 @@
             other artifact, but it would be unusual. Best
             avoided.</p></td></tr></table></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>Button&nbsp;1 click on the default entry navigates to
             the most recently selected to-do item in the to-do pane. This
-            seems to be a bug in ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt>Modifiers</tt></span></dt><dd><p>Check box, with entries <tt>public</tt>,
-            <tt>abstract</tt>, <tt>final</tt> and
-            <tt>root</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>public</tt> has identical meaning
-              to the <tt>public</tt> declaration in Java. It
-              indicates whether this datatype is restricted to use in its
-              own package (the default) or can be used by
-              anyone.</p></li><li><p><tt>abstract</tt> is used to declare
-              that this datatype cannot be instantiated, but must always be
-              specialized.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML provides no mechanism for specializing
-              datatypes, so this check box is of little use.
-            </p></td></tr></table></div></li><li><p><tt>final</tt> indicates that this
-              datatype can have no further sub-types, while
-              <tt>root</tt> indicates it is a top level
-              datatype.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the absence of specialization of datatypes within
-              ArgoUML these have little value. In effect all datatypes
-              are both <tt>root</tt> and
-              <tt>final</tt></p></td></tr></table></div></li></ul></div></dd><dt><span class="term"><tt>Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the
-            datatype. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
-            defining this namespace (or the model for the top level
-            namespace).</p></dd><dt><span class="term"><tt>Derived</tt></span></dt><dd><p>Text box. Meaningless for a datatype (which can
-            never be a generalization), which always
-            shows the entry <tt>none</tt> here. The pop-up menu
-            is always grayed out.</p></dd><dt><span class="term"><tt>Operations</tt></span></dt><dd><p>Text area. Lists all the operations defined on this
+            seems to be a bug in ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt>Operations</tt></span></dt><dd><p>Text area. Lists all the operations defined on this
             datatype. Button&nbsp;1 click takes you to the selected operation,
             button&nbsp;2 click brings up a pop up menu with five
             entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the

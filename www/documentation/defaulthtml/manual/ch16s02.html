@@ -8,7 +8,7 @@
       management. In particular the only relationship that can be shown between
       packages is <tt>Dependency</tt>, although UML&nbsp;1.3 defines
       <tt>Generalization</tt> and the sub-class dependency
-      <tt>Permission</tt> for use between packages.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e15358"></a>16.2.1. Package Details Tabs</h3></div></div><p>The details tabs that are active for packages are as
+      <tt>Permission</tt> for use between packages.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e16814"></a>16.2.1. Package Details Tabs</h3></div></div><p>The details tabs that are active for packages are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch16s02.html#s2.ref.package_property_toolbar" title="16.2.2. Package Property Toolbar">Section 16.2.2</a> and <a href="ch16s02.html#s2.ref.package_property_fields" title="16.2.3. Property Fields For Package">Section 16.2.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab. The <tt>Bounds:</tt> field
             defines the bounding box for the package on the diagram.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>There are some bugs remaining in entering data in
@@ -139,14 +139,48 @@
               within the model. In the absence of the
               <tt>topLevel</tt> stereotype, this could be used to
               emphasize that the Model is at the top
-              level.</p></td></tr></table></div></li></ul></div></dd><dt><span class="term"><tt>Derived</tt></span></dt><dd><p>Text box. Lists any derived class. This would show
-            any packages, for which this package was the
-            generalization.</p><p>However since ArgoUML does not currently
-            implement generalization for packages, this always shows the
-            entry <tt>none</tt> and the pop-up menu is always
-            grayed out.</p></dd><dt><span class="term"><tt>Extends</tt></span></dt><dd><p>Text box. Lists any use case that is extended by
-            this package. Meaningless for a package, since extension
-            relates to use cases only.</p></dd><dt><span class="term"><tt>Implements</tt></span></dt><dd><p>Text area. Lists any packages for which this package
+              level.</p></td></tr></table></div></li></ul></div></dd><dt><span class="term"><tt>Specializations</tt></span></dt><dd><p>Text box. Lists any specialized package (i.e. for
+            which this package is a generalization.</p><p>button&nbsp;1 click navigates to the generalization and opens
+            its property tab.</p><p>Button&nbsp;2 click yields a drop down menu with five
+            entries</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
+              selected generalization.</p></li><li><p><tt>Add</tt>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. The link from the
+              generalization to the package (<span class="emphasis"><i>but not the
+              generalization itself</i></span>) is removed.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This <span class="emphasis"><i>does not</i></span> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the top. It is moved one up the
+              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the bottom. It is moved one
+              down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Generalizations</tt></span></dt><dd><p>Text area. Lists any package that
+            <span class="emphasis"><i>generalizes</i></span> this package.</p><p>Button&nbsp;1 click navigates to the generalization and opens
+            its property tab.</p><p>Button&nbsp;2 click yields a drop down menu with five
+            entries</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
+              selected generalization.</p></li><li><p><tt>Add</tt>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram. You will need to find it in
+              the navigation pane and add it from there.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. The link from the
+              generalization to the package (<span class="emphasis"><i>but not the
+              generalization itself</i></span>) is removed.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This <span class="emphasis"><i>does not</i></span> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the top. It is moved one up the
+              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved one
+              down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Implements</tt></span></dt><dd><p>Text area. Lists any packages for which this package
             is the realization.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML uses this for any dependent packages,
             implying that the dependency relationship is one of
             implementation. However in the absence of a permission

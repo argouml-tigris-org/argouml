@@ -13,7 +13,7 @@
       initially visible from the model property pane as owned
       packages. However if you use the data type navigator from a suitable
       pane, you can navigate up to the model, and thereafter that data type's
-      sub-packages will appear.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e10716"></a>14.2.1. Model Details Tabs</h3></div></div><p>The details tabs that are active for the model are as
+      sub-packages will appear.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e10775"></a>14.2.1. Model Details Tabs</h3></div></div><p>The details tabs that are active for the model are as
         follows.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The <tt>Style</tt> tab is grayed out, since the
         model typically has no representation on a diagram (see the caution
         above).</p></td></tr></table></div><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch14s02.html#s2.ref.model_property_toolbar" title="14.2.2. Model Property Toolbar">Section 14.2.2</a> and <a href="ch14s02.html#s2.ref.model_property_fields" title="14.2.3. Property Fields For The Model">Section 14.2.3</a>
@@ -144,9 +144,52 @@
               within the model. In the absence of the
               <tt>topLevel</tt> stereotype, this could be used to
               emphasize that the Model is at the top
-              level.</p></td></tr></table></div></li></ul></div></dd><dt><span class="term"><tt>Derived</tt></span></dt><dd><p>Text box. Lists any derived class. Meaningless for
-            a model.</p></dd><dt><span class="term"><tt>Extends</tt></span></dt><dd><p>Text box. Lists any use case that is extended by
-            this model. Meaningless for a model.</p></dd><dt><span class="term"><tt>Implements</tt></span></dt><dd><p>Text area. Lists any models for which this model is
+              level.</p></td></tr></table></div></li></ul></div></dd><dt><span class="term"><tt>Specializations</tt></span></dt><dd><p>Text box. Lists any specialized model (i.e. for
+            which this model is a generalization.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Since there is only one model in ArgoUML there is no
+            sensible specialization of generalization that could be
+            created.</p></td></tr></table></div><p>button&nbsp;1 click navigates to the generalization and opens
+            its property tab.</p><p>Button&nbsp;2 click yields a drop down menu with five
+            entries</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
+              selected generalization.</p></li><li><p><tt>Add</tt>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. The link from the
+              generalization to the model (<span class="emphasis"><i>but not the
+              generalization itself</i></span>) is removed.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This <span class="emphasis"><i>does not</i></span> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the top. It is moved one up the
+              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the bottom. It is moved one
+              down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Generalizations</tt></span></dt><dd><p>Text area. Lists any model that
+            <span class="emphasis"><i>generalizes</i></span> this model.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Since there is only one model in ArgoUML there is no
+            sensible specialization of generalization that could be
+            created.</p></td></tr></table></div><p>Button&nbsp;1 click navigates to the generalization and opens
+            its property tab.</p><p>Button&nbsp;2 click yields a drop down menu with five
+            entries</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
+              selected generalization.</p></li><li><p><tt>Add</tt>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram. You will need to find it in
+              the navigation pane and add it from there.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. The link from the
+              generalization to the model (<span class="emphasis"><i>but not the
+              generalization itself</i></span>) is removed.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This <span class="emphasis"><i>does not</i></span> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the top. It is moved one up the
+              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved one
+              down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Implements</tt></span></dt><dd><p>Text area. Lists any models for which this model is
             the realization. Of little value within ArgoUML, since
             multiple models are not permitted.</p><p>It is possible to add realizations from this menu, although
             since there is no way to add a model to the other end of the

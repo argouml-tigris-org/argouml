@@ -8,12 +8,12 @@
         This means that every instance of this class will be identical to every
         other instance, since there will be nothing about the instances that
         can differentiate them.</p><p>Under these circumstances you should consider making explicit that
-        you have exactly one instance of this class, by using the Singleton
-        Pattern. Using the Singleton Pattern can save time and memory
+        you have exactly one instance of this class, by using the singleton
+        Pattern. Using the singleton pattern can save time and memory
         space. Within ArgoUML this can be done by using the
-        &laquo;Singleton&raquo; stereotype on this class.</p><p>If it is not your intent to have a single instance, you should
+        &laquo;singleton&raquo; stereotype on this class.</p><p>If it is not your intent to have a single instance, you should
         define instance variables (i.e. non-static attributes) and/or outgoing
-        associations that will represent differences bewteen instances.</p><p>Having specified <span class="emphasis"><i>class</i></span> as a Singleton, you
+        associations that will represent differences bewteen instances.</p><p>Having specified <span class="emphasis"><i>class</i></span> as a singleton, you
         need to define the class so there can only be a single instance. This
         will complete the information representation part of your design. To
         achieve this you need to do the following.</p><div class="orderedlist"><ol type="1"><li><p>You must define a static attribute (a class variable)
@@ -25,25 +25,18 @@
           default constructor, so that the default constructor is not used to
           create multiple instances.</p></li></ol></div><p>For the definition of a constructor under the UML 1.3 standard, and
         extensions to that definition accepted by ArgoUML see
-        <a href="ch13s05.html#s2.ref.critics_constructor_needed" title="13.5.3. Add Constructor to <class&gt;">Section 13.5.3</a>.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p> &laquo;Singleton&raquo; does not exist as a stereotype by
-        default in ArgoUML so you will need to create it the first time you
-        use it. This can be done through the <tt>Stereotype</tt>
-        property tab, reached using the <tt>NavStereo</tt> button on
-        the class property sheet (see <a href="ch14s04.html" title="14.4. Stereotypes">Section 14.4</a> and
-        <a href="ch16s05.html" title="16.5. Class">Section 16.5</a> for more details). The
-        <tt>Base&nbsp;Class</tt> should be
-        <tt>Class</tt>.</p></td></tr></table></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.critics_singleton_violated"></a>13.8.2. Singleton Stereotype Violated in &lt;class&gt;</h3></div></div><p>This class is marked with the &laquo;Singleton&raquo; stereotype,
-        but it does not satisfy the constraints imposed on Singletons
-        (ArgoUML will also accept &laquo;singleton&raquo; stereotype as
-        defining a Singleton). A Singleton class can have at most one instance.
+        <a href="ch13s05.html#s2.ref.critics_constructor_needed" title="13.5.3. Add Constructor to <class&gt;">Section 13.5.3</a>.</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.critics_singleton_violated"></a>13.8.2. Singleton Stereotype Violated in &lt;class&gt;</h3></div></div><p>This class is marked with the &laquo;singleton&raquo; stereotype,
+        but it does not satisfy the constraints imposed on singletons
+        (ArgoUML will also accept &laquo;Singleton&raquo; stereotype as
+        defining a singleton). A singleton class can have at most one instance.
         This means that the class must meet the design criteria for a singleton
         (see <a href="ch13s08.html#s2.ref.critics_consider_singleton" title="13.8.1. Consider using Singleton Pattern for <class&gt;">Section 13.8.1</a>).</p><p>Whenever you mark a class with a stereotype, the class should
         satisfy all constraints of the stereotype.  This is an important part
         of making a self-consistent and understangle design. Using the
-        Singleton Pattern can save time and memory space.</p><p>If you no longer want this class to be a Singleton, remove the
-        &laquo;Singleton&raquo; stereotype by clicking on the class and
+        singleton pattern can save time and memory space.</p><p>If you no longer want this class to be a singleton, remove the
+        &laquo;singleton&raquo; stereotype by clicking on the class and
         selecting the blank selection on the stereotype drop-down within the
-        properties tab.</p><p>To apply the Singleton Pattern you should follow the directions in
+        properties tab.</p><p>To apply the singleton pattern you should follow the directions in
         <a href="ch13s08.html#s2.ref.critics_consider_singleton" title="13.8.1. Consider using Singleton Pattern for <class&gt;">Section 13.8.1</a>.</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.critics_node_inside_element"></a>13.8.3. Nodes normally have no enclosers</h3></div></div><p>A suggestion that nodes should not be drawn inside other artifacts
         on the deployment diagram, since they represent an autonomous physical
         object.</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.critics_node_instance_inside_element"></a>13.8.4. NodeInstances normally have no enclosers</h3></div></div><p>A suggestion that node instances should not be drawn inside other

@@ -5,7 +5,7 @@
       and <tt>GeneralizableElement</tt>.</p><p>A class is represented on a class diagram as a rectangle with three
       horizontal compartments. The top compartment displays the class name (and
       stereotype), the second compartment any attributes and the third any
-      operations. The last two compartments may optionally be hidden.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e16013"></a>16.5.1. Class Details Tabs</h3></div></div><p>The details tabs that are active for classes are as
+      operations. The last two compartments may optionally be hidden.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e17551"></a>16.5.1. Class Details Tabs</h3></div></div><p>The details tabs that are active for classes are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch16s05.html#s2.ref.class_property_toolbar" title="16.5.2. Class Property Toolbar">Section 16.5.2</a> and <a href="ch16s05.html#s2.ref.class_property_fields" title="16.5.3. Property Fields For Class">Section 16.5.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab. The tick boxes,
             <tt>Attributes</tt> and <tt>Operations</tt>
@@ -111,31 +111,28 @@
               stereotype property panel (see <a href="ch16s04.html" title="16.4. Stereotype">Section 16.4</a>).</p></dd><dt><span class="term"><tt>Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the
             class. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
             defining this namespace (or the model for the top level
-            namespace).</p></dd><dt><span class="term"><tt>Extends</tt></span></dt><dd><p>Text box. Lists any class that generalizes this
-            class (see <a href="ch16s13.html" title="16.13. Generalization">Section 16.13</a>).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML is incorrect in using the designation
-            &#8220;Extends&#8221; for this field. It should correctly be
-            called &#8220;Generalizations&#8221;.</p></td></tr></table></div><p>Button&nbsp;1 click takes you to the selected entry, button&nbsp;2
-            gives a pop up menu with five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
+            namespace).</p></dd><dt><span class="term"><tt>Generalizations</tt></span></dt><dd><p>Text area. Lists any class that
+            <span class="emphasis"><i>generalizes</i></span> this class.</p><p>Button&nbsp;1 click navigates to the generalization and opens
+            its property tab.</p><p>Button&nbsp;2 click yields a drop down menu with five
+            entries</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected generalization.</p></li><li><p><tt>Add</tt>. Add a new
-              generalization.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML always has this option grayed out, which
-              appears to be a bug.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>New generalizations can be added from the class
-              diagram (but note the caution about multiple generalizations
-              below).</p></td></tr></table></div></li><li><p><tt>Delete</tt>. Removes the link to
-              the selected generalization.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This only removes the link to the
-              generalization. To remove the generalization from the model
-              you must navigate to it (or select it on the diagram or
-              navigation pane) and then delete it.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available
-              where there are two or more generalizations, and the
-              generalization selected is not at the top. It is moved one up
-              the list.</p></li><li><p><tt>Move Down</tt>. Only available
-              where there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved
-              one down the list.</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>UML&nbsp;1.3 allows you to create multiple
-            generalizations from a class, in other words permits multiple
-            inheritance. You should bear in mind that the absence of
-            multiple inheritance in many popular programming languages
-            (notably C++ and Java) may lead to implementation difficulties
-            with such designs.</p></td></tr></table></div></dd><dt><span class="term"><tt>Modifiers</tt></span></dt><dd><p>Check box, with entries <tt>public</tt>,
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram. You will need to find it in
+              the navigation pane and add it from there.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. The link from the
+              generalization to the class (<span class="emphasis"><i>but not the
+              generalization itself</i></span>) is removed.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This <span class="emphasis"><i>does not</i></span> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the top. It is moved one up the
+              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved one
+              down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Modifiers</tt></span></dt><dd><p>Check box, with entries <tt>public</tt>,
             <tt>abstract</tt>, 
             <tt>final</tt>, <tt>root</tt> and
             <tt>active</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>public</tt> has identical meaning
@@ -186,7 +183,27 @@
               the list.</p></li><li><p><tt>Move Down</tt>. Only available
               where there are two or more abstractions listed, and the
               abstraction selected is not at the bottom. It is moved
-              one down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Derived</tt></span></dt><dd><p>Text area. Lists any derived classes, i.e those for
+              one down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Specializations</tt></span></dt><dd><p>Text box. Lists any specialized class (i.e. for
+            which this class is a generalization.</p><p>button&nbsp;1 click navigates to the generalization and opens
+            its property tab.</p><p>Button&nbsp;2 click yields a drop down menu with five
+            entries</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
+              selected generalization.</p></li><li><p><tt>Add</tt>. Add a new
+              generalization. Note that the new generalization is added to
+              the model, but not the diagram.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is far easier to add generalizations by drawing
+              them on the relevant diagram in the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. The link from the
+              generalization to the class (<span class="emphasis"><i>but not the
+              generalization itself</i></span>) is removed.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This <span class="emphasis"><i>does not</i></span> remove the
+              generalization from the model or the diagram, leading to
+              potentially very confusing diagrams. It is usually far easier
+              to remove generalizations from the editing
+              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the top. It is moved one up the
+              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more specializations listed, and the
+              specialization selected is not at the bottom. It is moved one
+              down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Derived</tt></span></dt><dd><p>Text area. Lists any derived classes, i.e those for
             which this class is a generalization.</p><p>Button&nbsp;1 click takes you to the generalization for the
             selected entry, button&nbsp;2 gives a pop up menu with a single
             entry, which also takes you to the generalization.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>You may potentially have a large number of entries
