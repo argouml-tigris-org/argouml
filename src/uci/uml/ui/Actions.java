@@ -497,29 +497,43 @@ class ActionSaveProjectAs extends UMLAction {
 
 /* class ActionLoadModelFromDB */
 class ActionLoadModelFromDB extends UMLAction {
-  public ActionLoadModelFromDB() {
-    super("Load model from DB", NO_ICON);
-  }
+	public ActionLoadModelFromDB() {
+		super("Load model from DB", NO_ICON);
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+	  // when the action is performed, i.e. someone clicked on the menuitem,
+	  // create a new DBLoader, ask the user for the models name to load,
+	  // then load it and put it into an empty project.
+		
+		String modelName = JOptionPane.showInputDialog("What is the name of the model?");
+		if ((modelName == null)|| (modelName.equals(""))) return;
+		DBLoader loader = new DBLoader();
+		
+		MModel newModel = loader.read(modelName);
+		ProjectBrowser.TheInstance.setProject(new Project(newModel));
+		
+	}
+	public boolean shouldBeEnabled() {
 
-  public void actionPerformed(ActionEvent e) {
-   	  
-	  String modelName = JOptionPane.showInputDialog("What is the name of the model?");
-	  if ((modelName == null)|| (modelName.equals(""))) return;
-	  DBLoader loader = new DBLoader();
-	  
-	  MModel newModel = loader.read(modelName);
-	  ProjectBrowser.TheInstance.setProject(new Project(newModel));
-	  
-  }
-  public boolean shouldBeEnabled() {
-	  try {
-		  Class dbDriver = Class.forName("org.gjt.mm.mysql.Driver");
-	  } catch (ClassNotFoundException e) {
-		  return false;
-	  }
-	  return true;
-  }
+		// my way of finding out whether these actions should be enabled
+		// is to look for the Properties file. Not nice, but working.
+		// should be replaecd by a proper plug-in mechanism as soon as there
+		// is one for Argo
 
+		java.util.Properties props =  new java.util.Properties();
+		String configFile =  System.getProperty("argo.dbconfig", "/db.ini");
+		// System.out.println("Using: "+configFile);
+		try {
+			java.io.InputStream is = new java.io.FileInputStream(configFile);
+			props.load(is);
+		}	
+		catch (java.io.IOException e) {
+			return false;
+		}
+		return true;
+	}
+	
 } /* end class ActionLoadModelFromDB */
 
 
@@ -530,6 +544,11 @@ class ActionStoreModelToDB extends UMLAction {
   }
 
   public void actionPerformed(ActionEvent e) {
+
+	  // when the action is performed, i.e. someone clicked on the menuitem,
+	  // create a new writer, get the Project and its curent Model,
+	  // then store it. Simple as this.
+
 	  DBWriter writer = new DBWriter();
 	  
       ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -542,6 +561,9 @@ class ActionStoreModelToDB extends UMLAction {
 	  }
 	  writer.store((MModel)nm);
 
+	  // one could also store all models of the project,
+	  //don't know which is better.
+
 // 	  Vector models = p.getModels();
 //  	  for (int i = 0; i< models.size(); i++) {
 // 		  MNamespace nm = (MNamespace)models.elementAt(i);
@@ -553,15 +575,26 @@ class ActionStoreModelToDB extends UMLAction {
 // 		  writer.store((MModel)models.elementAt(i));
 // 	  }
   }
-  public boolean shouldBeEnabled() {
-	  try {
-		  Class dbDriver = Class.forName("org.gjt.mm.mysql.Driver");
-	  } catch (ClassNotFoundException e) { 
-		  return false;
-	  }
-	  return true;
-  }
+	public boolean shouldBeEnabled() {
 
+		// my way of finding out whether these actions should be enabled
+		// is to look for the Properties file. Not nice, but working.
+		// should be replaecd by a proper plug-in mechanism as soon as there
+		// is one for Argo
+
+		java.util.Properties props =  new java.util.Properties();
+		String configFile =  System.getProperty("argo.dbconfig", "/db.ini");
+		// System.out.println("Using: "+configFile);
+		try {
+			java.io.InputStream is = new java.io.FileInputStream(configFile);
+			props.load(is);
+		}	
+		catch (java.io.IOException e) {
+			return false;
+		}
+		return true;
+	}
+	
 } /* end class ActionStoreModelToDB */
 
 class ActionPrint extends UMLAction {

@@ -1,7 +1,3 @@
-/**
- * Class for readng UML models from a MySQL database
- */
-
 package uci.sql;
 
 import java.sql.*;
@@ -15,6 +11,18 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.use_cases.*;
+
+
+
+/**
+ * This class contains the functionality to load a model from a
+ * mysql database. At the moment the DB must have the name "uml",
+ * otherwise it won't work. Additionally, you need a "db.ini" file
+ * in the Argo root-directory or as parameter -Dargo.dbconfig="c:\db.ini"
+ *
+ * @author Toby Baier <Toby.Baier@gmx.net>
+ * @version 1.0
+ */
 
 public class DBLoader
 {
@@ -32,12 +40,13 @@ public class DBLoader
     {
 	props = new Properties();
 	configFile =  System.getProperty("argo.dbconfig", "/db.ini");
+	System.out.println(configFile);
 	try {
-	    InputStream is = DBLoader.class.getResourceAsStream(configFile);
+	    InputStream is = new FileInputStream(configFile);
 	    props.load(is);
 	}	
 	catch (IOException e) {
-	    System.out.println("Could not load DB properties from uci/sql/db.ini");
+	    System.out.println("Could not load DB properties from /db.ini");
 	    System.out.println(e);
 	}
 
@@ -47,7 +56,9 @@ public class DBLoader
 	DBUrl += "?" + "user=" + props.getProperty("user");
 	DBUrl += "&" + "password=" + props.getProperty("password");
 
-	try { Class.forName("org.gjt.mm.mysql.Driver").newInstance();}
+	try {
+	    Class.forName(props.getProperty("driver")).newInstance();	    
+	}
 	catch (Exception e) {
 	    System.out.println("Could not load the database driver!");
 	    System.out.println(e);
@@ -60,6 +71,13 @@ public class DBLoader
 	}
     }
 	
+	/**
+	 * This method is called from ActionLoadModelFromDb. It's the only 
+	 * public method, the only one you actually need to call to get a MModel
+	 *
+	 * @param modelName The name of the model you want to read from the database
+	 * @return the constructed model
+	 */
     public MModel read(String modelName) {
 		
 		ResultSet rs = null;
@@ -122,7 +140,7 @@ public class DBLoader
 		}
 
 		// now construct the AssociationEnds, so the associations can be 
-		//built more easily
+		// built more easily
 		rs = stmt.executeQuery("SELECT * FROM tModelElement");
 			while (rs.next()) {
 			if (rs.getString("UMLClassName").equals("AssociationEnd"))

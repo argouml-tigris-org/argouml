@@ -1,7 +1,3 @@
-/**
- * Class for writing UML models into a MySQL database
- */
-
 package uci.sql;
 
 import java.sql.*;
@@ -19,11 +15,13 @@ import ru.novosoft.uml.behavior.use_cases.*;
 /**
  * This class contains the functionality to write a model into a
  * mysql database. At the moment the DB must have the name "uml",
- * otherwise it won't work.
+ * otherwise it won't work. Additionally, you need a "db.ini" file
+ * in the Argo root-directory or as parameter -Dargo.dbconfig="c:\db.ini"
  *
  * @author Toby Baier <Toby.Baier@gmx.net>
- * @version 0.1
+ * @version 1.0
  */
+
 public class DBWriter
 {
     String DBUrl = "jdbc:mysql://";
@@ -42,11 +40,11 @@ public class DBWriter
 	props = new Properties();
 	configFile =  System.getProperty("argo.dbconfig", "/db.ini");
 	try {
-	    InputStream is = DBWriter.class.getResourceAsStream(configFile);
+	    InputStream is = new FileInputStream(configFile);
 	    props.load(is);
 	}	
 	catch (IOException e) {
-	    System.out.println("Could not load DB properties from uci/sql/db.ini");
+	    System.out.println("Could not load DB properties from /db.ini");
 	    System.out.println(e);
 	}
 
@@ -57,7 +55,7 @@ public class DBWriter
 	DBUrl += "&" + "password=" + props.getProperty("password");
 
 	try {
-	    Class.forName("org.gjt.mm.mysql.Driver").newInstance();	    
+	    Class.forName(props.getProperty("driver")).newInstance();	    
 	}
 	catch (Exception e) {
 	    System.out.println("Could not load the database driver!");
@@ -75,7 +73,7 @@ public class DBWriter
 	/**
 	 * This method is called from uci.uml.ui.ActionStoreProjectToDb to store the current namespace (which should be a MModel) into the database.
 	 *
-	 * @param model This is the MModel which will be stored.
+	 * @param model This is the model which will be stored using its name.
 	 */
     public void store(MModel model) {
 	
@@ -146,7 +144,12 @@ public class DBWriter
 		store((MModelElement)ns,stmt);
 	}
 
-	// Here the uninteresting part starts.
+	//
+	// Here the uninteresting part starts. ;-)
+	// There's one store() method for each modelelement I want to store,
+	// so you can just call store(thisElement, myStatement) to store thisElement
+	//
+
 	private void store(MPackage me, Statement stmt) throws SQLException {
 		stmtString = "REPLACE INTO tPackage (uuid) VALUES ('";
 		stmtString += me.getUUID() + "')";

@@ -8,6 +8,7 @@ import java.util.Enumeration;
 import java.beans.*;
 
 import uci.graph.*;
+import uci.uml.util.MMUtil;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -273,18 +274,12 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       if ((fromPort instanceof MNodeImpl) && (toPort instanceof MNodeImpl)) {
 	    MNode fromNo = (MNode) fromPort;
 	    MNode toNo = (MNode) toPort;
+	      if (edgeClass == MAssociationImpl.class) {
+		MAssociation asc = MMUtil.SINGLETON.buildAssociation(fromNo, toNo);
+ 	        addEdge(asc);
+		    return asc;
+	      }
 
-	    if (edgeClass == MAssociationImpl.class) {
-	      MAssociation asc = new MAssociationImpl();
-		  MAssociationEnd ae0 = new MAssociationEndImpl();
-		  ae0.setType(fromNo);
-		  MAssociationEnd ae1 = new MAssociationEndImpl();
-		  ae1.setType(toNo);
-		  asc.addConnection(ae0);
-		  asc.addConnection(ae1);
-	      addEdge(asc);
-	      return asc;
-	    }
       }
       else if ((fromPort instanceof MNodeInstanceImpl) && (toPort instanceof MNodeInstanceImpl)) {
 	MNodeInstance fromNoI = (MNodeInstance) fromPort;
@@ -307,26 +302,25 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	MComponent fromCom = (MComponent) fromPort;
 	MComponent toCom = (MComponent) toPort; 
    	
-	if (edgeClass == MDependencyImpl.class) {
-		MDependency dep = new MUsageImpl();
-		dep.addSupplier(fromCom);
-		dep.addClient(toCom);
-		addEdge(dep);
-		return dep;
-	}
+	  if (edgeClass == MDependencyImpl.class) {
+	    // nsuml: using Binding as default
+	    MDependency dep = MMUtil.SINGLETON.buildBinding(fromCom, toCom);
+	    addEdge(dep);
+	    return dep;
+	  }
 
       }
       else if ((fromPort instanceof MComponentInstanceImpl) && (toPort instanceof MComponentInstanceImpl)) {
 	MComponentInstance fromComI = (MComponentInstance) fromPort;
 	MComponentInstance toComI = (MComponentInstance) toPort; 
    	
-	if (edgeClass == MDependencyImpl.class) {
-		MDependency dep = new MUsageImpl();
-		dep.addSupplier(fromComI);
-		dep.addClient(toComI);
-		addEdge(dep);
-		return dep;
-	}
+
+	  if (edgeClass == MDependencyImpl.class) {
+	    // nsuml: using Binding as default
+	    MDependency dep = MMUtil.SINGLETON.buildBinding(fromComI, toComI);
+	    addEdge(dep);
+	    return dep;
+	  }
 
       }
  
@@ -335,21 +329,13 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	    MClass toCls = (MClass) toPort;
 
 	    if (edgeClass == MAssociationImpl.class) {
-	      MAssociation asc = new MAssociationImpl();
-		  MAssociationEnd ae0 = new MAssociationEndImpl();
-		  ae0.setType(fromCls);
-		  MAssociationEnd ae1 = new MAssociationEndImpl();
-		  ae1.setType(toCls);
-		  asc.addConnection(ae0);
-		  asc.addConnection(ae1);
-	      addEdge(asc);
+	      MAssociation asc = MMUtil.SINGLETON.buildAssociation(fromCls, toCls);
+ 	      addEdge(asc);
 	      return asc;
 	    }
-	    else if (edgeClass == MDependencyImpl.class) {
-			// nsuml: using Binding as default
-	      MDependency dep = new MBindingImpl();
-		  dep.addSupplier(fromCls);
-		  dep.addClient(toCls);
+ 	    else if (edgeClass == MDependencyImpl.class) {
+	      // nsuml: using Binding as default
+	      MDependency dep = MMUtil.SINGLETON.buildBinding(fromCls, toCls);
 	      addEdge(dep);
 	      return dep;
 	    }
@@ -362,81 +348,59 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       }
 
       else if ((fromPort instanceof MClassImpl) && (toPort instanceof MInterfaceImpl)) {
-	MClass fromCls = (MClass) fromPort;
-	MInterface toIntf = (MInterface) toPort;
+	    MClass fromCls = (MClass) fromPort;
+	    MInterface toIntf = (MInterface) toPort;
         
-        if (edgeClass == MAssociationImpl.class) {
-	  MAssociation asc = new MAssociationImpl();
-	  MAssociationEnd ae0 = new MAssociationEndImpl();
-	  ae0.setType(fromCls);
-	  MAssociationEnd ae1 = new MAssociationEndImpl();
-	  ae1.setType(toIntf);
-	  asc.addConnection(ae0);
-	  asc.addConnection(ae1);
-	  ae0.setNavigable(false); 
-	  addEdge(asc);
-	  return asc;
-	}
-	else if (edgeClass == MDependencyImpl.class) {
-		//nsuml: using Abstraction, maybe realization is meant?
-		MDependency dep = new MAbstractionImpl();
-		dep.addSupplier(fromCls);
-		dep.addClient(toIntf);
-		addEdge(dep);
-		return dep;
-	}
-	else {
-	  System.out.println("Cannot make a "+ edgeClass.getName() +
+	    if (edgeClass == MAssociationImpl.class) {
+	      MAssociation asc = MMUtil.SINGLETON.buildAssociation(fromCls, toIntf);
+ 	      addEdge(asc);
+	      return asc;
+	    }
+ 	    else if (edgeClass == MDependencyImpl.class) {
+	      // nsuml: using Binding as default
+	      MDependency dep = MMUtil.SINGLETON.buildBinding(fromCls, toIntf);
+	      addEdge(dep);
+	      return dep;
+	    }
+	    else {
+	      System.out.println("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
-	  return null;
-	}
+	      return null;
+	    }
       }
 
       else if ((fromPort instanceof MInterfaceImpl) && (toPort instanceof MClassImpl)) {
-	MInterface fromIntf = (MInterface) fromPort;
-	MClass toCls = (MClass) toPort;
+    	    MInterface fromIntf = (MInterface) fromPort;
+	    MClass toCls = (MClass) toPort;
 
 
-	if (edgeClass == MAssociationImpl.class) {
-	  MAssociation asc = new MAssociationImpl();
-	  MAssociationEnd ae0 = new MAssociationEndImpl();
-	  ae0.setType(fromIntf);
-	  MAssociationEnd ae1 = new MAssociationEndImpl();
-	  ae1.setType(toCls);
-	  ae0.setNavigable(false); 
-	  asc.addConnection(ae0);
-	  asc.addConnection(ae1);
-	  addEdge(asc);
-	  return asc;
-	}
-	else if (edgeClass == MDependencyImpl.class) {
-		//nsuml: using Abstraction, maybe realization is meant?
-		MDependency dep = new MAbstractionImpl();
-		dep.addSupplier(fromIntf);
-		dep.addClient(toCls);
-		addEdge(dep);
-		return dep;
-	}
-
-	else {
-	  System.out.println("Cannot make a "+ edgeClass.getName() +
+	    if (edgeClass == MAssociationImpl.class) {
+	      MAssociation asc = MMUtil.SINGLETON.buildAssociation(fromIntf, toCls);
+ 	      addEdge(asc);
+	      return asc;
+	    }
+ 	    else if (edgeClass == MDependencyImpl.class) {
+	      // nsuml: using Binding as default
+	      MDependency dep = MMUtil.SINGLETON.buildBinding(fromIntf, toCls);
+	      addEdge(dep);
+	      return dep;
+	    }
+	    else {
+	      System.out.println("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
-	  return null;
-	}
+	      return null;
+	    }
       }
 
       else if ((fromPort instanceof MInterfaceImpl) && (toPort instanceof MInterfaceImpl)) {
 	MInterface fromIntf = (MInterface) fromPort;
 	MInterface toIntf = (MInterface) toPort;
 
-	if (edgeClass == MDependencyImpl.class) {
-		//nsuml: using Binding
-	        MDependency dep = new MBindingImpl();
-		dep.addSupplier(fromIntf);
-		dep.addClient(toIntf);
-		addEdge(dep);
+ 	if (edgeClass == MDependencyImpl.class) {
+	  // nsuml: using Binding as default
+	  MDependency dep = MMUtil.SINGLETON.buildBinding(fromIntf, toIntf);
 	  addEdge(dep);
 	  return dep;
 	}
@@ -463,18 +427,11 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     	  addEdge(link);
     	  return link;
     	}
-      }
-
-      else if ((fromPort instanceof MObjectImpl) && (toPort instanceof MObjectImpl)) {
-	MObject fromObj = (MObject) fromPort;
-	MObject toObj = (MObject) toPort; 
-   	
-	if (edgeClass == MDependencyImpl.class) {
-		MDependency dep = new MAbstractionImpl();
-		dep.addSupplier(fromObj);
-		dep.addClient(toObj);
-		addEdge(dep);
-		return dep;
+ 	else if (edgeClass == MDependencyImpl.class) {
+	  // nsuml: using Binding as default
+	  MDependency dep = MMUtil.SINGLETON.buildBinding(fromObj, toObj);
+	  addEdge(dep);
+	  return dep;
 	}
 
       }
