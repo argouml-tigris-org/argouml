@@ -591,7 +591,7 @@ public class GenericArgoMenuBar extends JMenuBar
 	setMnemonic(notation, "Notation");
 
         view.addSeparator();
-        JMenuItem showSaved = view.add(new ActionShowSaved());
+        JMenuItem showSaved = view.add(new ActionShowXMLDump());
 	setMnemonic(showSaved, "Show Saved");
 
         appendPluggableMenus(view, PluggableMenu.KEY_VIEW);

@@ -27,19 +27,21 @@ package org.argouml.ui.cmd;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.UMLAction;
 
 /**
- * Action that shows the saved data.
+ * Action that shows an XML dump of the current project contents.
  */
-class ActionShowSaved extends UMLAction {
+class ActionShowXMLDump extends AbstractAction {
     /**
      * Insets in pixels.
      */
@@ -48,8 +50,8 @@ class ActionShowSaved extends UMLAction {
     /**
      * Constructor.
      */
-    public ActionShowSaved() {
-        super("action.show-saved");
+    public ActionShowXMLDump() {
+        super(Translator.localize("action.show-saved"));
     }
 
     /**
@@ -62,7 +64,8 @@ class ActionShowSaved extends UMLAction {
 
 	String data = pm.getQuickViewDump(project);
 
-	JDialog pw = new JDialog(pb, false);
+	JDialog pw = new JDialog(pb, Translator.localize("action.show-saved"), 
+            false);
 
 	JTextArea a = new JTextArea(data, 50, 80);
 	a.setEditable(false);
