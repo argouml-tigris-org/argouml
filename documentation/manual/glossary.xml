@@ -6,6 +6,11 @@
 The glossary for the user manual. Some cross-references are not available at
 present. Look for comments with "Fix when ready" in them.
 
+
+MVW: I commented out all the "glossseealso" references, 
+because they do not generate well, and currently 
+only pollute the manual with garbled hyperlinks.
+TODO: restore them if/when the generation problem is resolved.  
 -->
 
 <glossary id="glossary">        
@@ -54,11 +59,11 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
           <emphasis>Sequence</emphasis> and <emphasis>Collaboration
           Diagrams</emphasis>.</para>
 
-        <glossseealso otherterm="gl.collabdiag"/>
-        <glossseealso otherterm="gl.seqdiag"/>
-        <glossseealso otherterm="gl.state"/>
-        <glossseealso otherterm="gl.statediag"/>
-        <glossseealso otherterm="gl.transition"/>
+        <!--glossseealso otherterm="gl.collabdiag"/-->
+        <!--glossseealso otherterm="gl.seqdiag"/-->
+        <!--glossseealso otherterm="gl.state"/-->
+        <!--glossseealso otherterm="gl.statediag"/-->
+        <!--glossseealso otherterm="gl.transition"/-->
       </glossdef>
     </glossentry>
 
@@ -76,8 +81,8 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
           <emphasis>Use Case Diagram</emphasis> external to the system being
           designed.</para>
 
-        <glossseealso otherterm="gl.usecase"/>
-        <glossseealso otherterm="gl.usecasediag"/>
+        <!--glossseealso otherterm="gl.usecase"/-->
+        <!--glossseealso otherterm="gl.usecasediag"/-->
       </glossdef>
     </glossentry>
 
@@ -110,7 +115,7 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
         <para>A class that characterises the association between two other
           clases.</para>
 
-        <glossseealso otherterm="gl.class"/>
+        <!--glossseealso otherterm="gl.class"/-->
       </glossdef>
     </glossentry>
 
@@ -127,10 +132,10 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
         <para>A relationship between two classes in a Class Diagram or between
           Use Cases or Use Cases and Actors in a Use Case Diagram.</para>
 
-        <glossseealso otherterm="gl.actor"/>
-        <glossseealso otherterm="gl.classdiag"/>
-        <glossseealso otherterm="gl.usecase"/>
-        <glossseealso otherterm="gl.usecasediag"/>
+        <!--glossseealso otherterm="gl.actor"/-->
+        <!--glossseealso otherterm="gl.classdiag"/-->
+        <!--glossseealso otherterm="gl.usecase"/-->
+        <!--glossseealso otherterm="gl.usecasediag"/-->
       </glossdef>
     </glossentry>
 
@@ -152,9 +157,9 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
         <para>An attribute of a class or object is a specification of a data
           element encapsulated by that object.</para>
 
-        <glossseealso otherterm="gl.class"/>
-        <glossseealso otherterm="gl.method"/>
-        <glossseealso otherterm="gl.object"/>
+        <!--glossseealso otherterm="gl.class"/-->
+        <!--glossseealso otherterm="gl.method"/-->
+        <!--glossseealso otherterm="gl.object"/-->
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -203,13 +208,13 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
           <emphasis>Collaboration Diagrams</emphasis> and <emphasis>Sequence
           Diagrams</emphasis>.</para>
 
-        <glossseealso otherterm="gl.activitydiag"/>
-        <glossseealso otherterm="gl.attribute"/>
-        <glossseealso otherterm="gl.classdiag"/>
-        <glossseealso otherterm="gl.collabdiag"/>
-        <glossseealso otherterm="gl.method"/>
-        <glossseealso otherterm="gl.object"/>
-        <glossseealso otherterm="gl.seqdiag"/>
+        <!--glossseealso otherterm="gl.activitydiag"/-->
+        <!--glossseealso otherterm="gl.attribute"/-->
+        <!--glossseealso otherterm="gl.classdiag"/-->
+        <!--glossseealso otherterm="gl.collabdiag"/-->
+        <!--glossseealso otherterm="gl.method"/-->
+        <!--glossseealso otherterm="gl.object"/-->
+        <!--glossseealso otherterm="gl.seqdiag"/-->
       </glossdef>
     </glossentry>
 
@@ -232,7 +237,7 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
           classes. See
           <xref linkend="s1.umlclassdiags"/> for more information.</para>
 
-        <glossseealso otherterm="gl.class"/>
+        <!--glossseealso otherterm="gl.class"/-->
       </glossdef>
     </glossentry>
 
@@ -259,7 +264,7 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
 
           for more information.</para>
 
-        <glossseealso otherterm="gl.seqdiag"/>
+        <!--glossseealso otherterm="gl.seqdiag"/-->
       </glossdef>
     </glossentry>
 
@@ -295,7 +300,7 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
             designers' abilities to formulate solutions.</para></listitem>
         </orderedlist>
 
-        <glossseealso otherterm="gl.critic"/>
+        <!--glossseealso otherterm="gl.critic"/-->
       </glossdef>
     </glossentry>
 
@@ -322,7 +327,7 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
           Requirements Phase. See 
           <xref linkend="ch.tut.analysis"/> for more information.</para>
 
-        <glossseealso otherterm="gl.classdiag"/>
+        <!--glossseealso otherterm="gl.classdiag"/-->
       </glossdef>
     </glossentry>
 
@@ -343,9 +348,9 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
           design</emphasis> and <emphasis>comprehension and problem
           solving</emphasis>.</para>
 
-        <glossseealso otherterm="gl.reflection"/>
-        <glossseealso otherterm="gl.oppdesign"/>
-        <glossseealso otherterm="gl.comprehension"/>
+        <!--glossseealso otherterm="gl.reflection"/-->
+        <!--glossseealso otherterm="gl.oppdesign"/-->
+        <!--glossseealso otherterm="gl.comprehension"/-->
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -375,9 +380,9 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
           <emphasis>extended</emphasis> Use Case describes a special variant
           of the <emphasis>extending</emphasis> Use Case.</para> 
 
-        <glossseealso otherterm="gl.generalization"/>
-        <glossseealso otherterm="gl.includes"/>
-        <glossseealso otherterm="gl.usecase"/>
+        <!--glossseealso otherterm="gl.generalization"/-->
+        <!--glossseealso otherterm="gl.includes"/-->
+        <!--glossseealso otherterm="gl.usecase"/-->
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -409,9 +414,9 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
           particular examples of the <emphasis>generalising</emphasis> Use
           Case.</para>
 
-        <glossseealso otherterm="gl.extends"/>
-        <glossseealso otherterm="gl.includes"/>
-        <glossseealso otherterm="gl.usecase"/>
+        <!--glossseealso otherterm="gl.extends"/-->
+        <!--glossseealso otherterm="gl.includes"/-->
+        <!--glossseealso otherterm="gl.usecase"/-->
       </glossdef>
     </glossentry>
 
@@ -431,7 +436,7 @@ Originally best known for its GNU version of the Emacs
           editor, it now has many other projects, usually closely allied to
           Linux.</para>
 
-        <glossseealso otherterm="gl.linux"/>
+        <!--glossseealso otherterm="gl.linux"/-->
       </glossdef>
     </glossentry>
 
@@ -477,8 +482,8 @@ Originally best known for its GNU version of the Emacs
         <para>A <emphasis>Statechart Diagram</emphasis> that contains subsidiary
           statechart diagrams within individual <emphasis>States</emphasis>.</para>
 
-        <glossseealso otherterm="gl.state"/>
-        <glossseealso otherterm="gl.statediag"/>
+        <!--glossseealso otherterm="gl.state"/-->
+        <!--glossseealso otherterm="gl.statediag"/-->
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -507,9 +512,9 @@ Originally best known for its GNU version of the Emacs
           functionality of the <emphasis>including</emphasis> Use
           Case.</para>
 
-        <glossseealso otherterm="gl.extends"/>
-        <glossseealso otherterm="gl.generalization"/>
-        <glossseealso otherterm="gl.usecase"/>
+        <!--glossseealso otherterm="gl.extends"/-->
+        <!--glossseealso otherterm="gl.generalization"/-->
+        <!--glossseealso otherterm="gl.usecase"/-->
       </glossdef>
     </glossentry>
 
@@ -533,7 +538,7 @@ Originally best known for its GNU version of the Emacs
           iterations. See <xref linkend="s2.proctypes"/> for more
           information.</para>
 
-        <glossseealso otherterm="gl.waterfall"/>
+        <!--glossseealso otherterm="gl.waterfall"/-->
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -587,7 +592,7 @@ Originally best known for its GNU version of the Emacs
 
         <para>An open source version of the Unix operating system.</para>
 
-        <glossseealso otherterm="gl.gnu"/>
+        <!--glossseealso otherterm="gl.gnu"/-->
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -610,11 +615,11 @@ Originally best known for its GNU version of the Emacs
         <para>A <emphasis>Statechart Diagram</emphasis> where actions are associated
           with <emphasis>States</emphasis>.</para>
 
-        <glossseealso otherterm="gl.action"/>
-        <glossseealso otherterm="gl.moore"/>
-        <glossseealso otherterm="gl.state"/>
-        <glossseealso otherterm="gl.statediag"/>
-        <glossseealso otherterm="gl.transition"/>
+        <!--glossseealso otherterm="gl.action"/-->
+        <!--glossseealso otherterm="gl.moore"/-->
+        <!--glossseealso otherterm="gl.state"/-->
+        <!--glossseealso otherterm="gl.statediag"/-->
+        <!--glossseealso otherterm="gl.transition"/-->
       </glossdef>
     </glossentry>
 
@@ -642,9 +647,9 @@ Originally best known for its GNU version of the Emacs
         <para>A method of a class or object is a specification of behavior
           encapsulated by that object.</para>
 
-        <glossseealso otherterm="gl.attribute"/>
-        <glossseealso otherterm="gl.class"/>
-        <glossseealso otherterm="gl.object"/>
+        <!--glossseealso otherterm="gl.attribute"/-->
+        <!--glossseealso otherterm="gl.class"/-->
+        <!--glossseealso otherterm="gl.object"/-->
       </glossdef>
     </glossentry>
 
@@ -661,11 +666,11 @@ Originally best known for its GNU version of the Emacs
         <para>A <emphasis>Statechart Diagram</emphasis> where actions are associated
           with <emphasis>Transitions</emphasis>.</para>
 
-        <glossseealso otherterm="gl.action"/>
-        <glossseealso otherterm="gl.mealy"/>
-        <glossseealso otherterm="gl.state"/>
-        <glossseealso otherterm="gl.statediag"/>
-        <glossseealso otherterm="gl.transition"/>
+        <!--glossseealso otherterm="gl.action"/-->
+        <!--glossseealso otherterm="gl.mealy"/-->
+        <!--glossseealso otherterm="gl.state"/-->
+        <!--glossseealso otherterm="gl.statediag"/-->
+        <!--glossseealso otherterm="gl.transition"/-->
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -694,12 +699,12 @@ Originally best known for its GNU version of the Emacs
           <emphasis>Collaboration Diagrams</emphasis> and <emphasis>Sequence
           Diagrams</emphasis>.</para>
 
-        <glossseealso otherterm="gl.activitydiag"/>
-        <glossseealso otherterm="gl.attribute"/>
-        <glossseealso otherterm="gl.classdiag"/>
-        <glossseealso otherterm="gl.collabdiag"/>
-        <glossseealso otherterm="gl.method"/>
-        <glossseealso otherterm="gl.seqdiag"/>
+        <!--glossseealso otherterm="gl.activitydiag"/-->
+        <!--glossseealso otherterm="gl.attribute"/-->
+        <!--glossseealso otherterm="gl.classdiag"/-->
+        <!--glossseealso otherterm="gl.collabdiag"/-->
+        <!--glossseealso otherterm="gl.method"/-->
+        <!--glossseealso otherterm="gl.seqdiag"/-->
       </glossdef>
     </glossentry>
 
@@ -718,7 +723,7 @@ Originally best known for its GNU version of the Emacs
 
         <para>Object Constraint Language. A language for describing constraints
           within UML.</para>
-        <glossseealso otherterm="gl.uml"/>
+        <!--glossseealso otherterm="gl.uml"/-->
       </glossdef>
     </glossentry>
 
@@ -738,7 +743,7 @@ Originally best known for its GNU version of the Emacs
         <para>The Object Management Group. An international industry
           standardisation body. Best known for CORBA and UML.</para>
 
-        <glossseealso otherterm="gl.uml"/>
+        <!--glossseealso otherterm="gl.uml"/-->
       </glossdef>
     </glossentry>
 
@@ -767,7 +772,7 @@ Originally best known for its GNU version of the Emacs
 
         <para>UML is a notation to support &ooad;.</para>
 
-        <glossseealso otherterm="gl.uml"/>
+        <!--glossseealso otherterm="gl.uml"/-->
       </glossdef>
     </glossentry>
 
@@ -792,7 +797,7 @@ Originally best known for its GNU version of the Emacs
           even their own plans in order, but choose steps that are mentally
           least expensive among alternatives.</para>
 
-        <glossseealso otherterm="gl.critic"/>
+        <!--glossseealso otherterm="gl.critic"/-->
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -844,7 +849,7 @@ Originally best known for its GNU version of the Emacs
         in the language of the solution domain, rather than the problem
         domain.</para>
 
-        <glossseealso otherterm="gl.usecase"/>
+        <!--glossseealso otherterm="gl.usecase"/-->
       </glossdef>
     </glossentry>
 
@@ -866,7 +871,7 @@ Originally best known for its GNU version of the Emacs
           model of the problem situation improves, hence improving their
           design.</para>
 
-        <glossseealso otherterm="gl.critic"/>
+        <!--glossseealso otherterm="gl.critic"/-->
       </glossdef>
     </glossentry>
 
@@ -884,7 +889,7 @@ Originally best known for its GNU version of the Emacs
           <quote>customer</quote> wants from the proposed system. See
           <xref linkend="ch.tut.reqs"/> for a fuller description.</para>
 
-        <glossseealso otherterm="gl.usecase"/>
+        <!--glossseealso otherterm="gl.usecase"/-->
       </glossdef>
     </glossentry>
 
@@ -915,7 +920,7 @@ Originally best known for its GNU version of the Emacs
           the problem under consideration. See 
           <xref linkend="s1.umlseqdiags"/> for more information.</para>
 
-        <glossseealso otherterm="gl.collabdiag"/>
+        <!--glossseealso otherterm="gl.collabdiag"/-->
       </glossdef>
     </glossentry>
 
@@ -935,7 +940,7 @@ Originally best known for its GNU version of the Emacs
         <para>Standard Graphical Markup Language. Defined by ISO
           8879:1986.</para>
 
-        <glossseealso otherterm="gl.xml"/>
+        <!--glossseealso otherterm="gl.xml"/-->
       </glossdef>
     </glossentry>
 
@@ -968,7 +973,7 @@ Originally best known for its GNU version of the Emacs
         <para>Within a <emphasis>Statechart Diagram</emphasis> a one of the possible
           configurations of the machine.</para>
 
-        <glossseealso otherterm="gl.statediag"/>
+        <!--glossseealso otherterm="gl.statediag"/-->
       </glossdef>
     </glossentry>
 
@@ -991,7 +996,7 @@ Originally best known for its GNU version of the Emacs
           <emphasis>Object</emphasis>. See <xref linkend="s1.umlstatediags"/>
           for more information.</para>
 
-        <glossseealso otherterm="gl.object"/>
+        <!--glossseealso otherterm="gl.object"/-->
       </glossdef>
     </glossentry>
 
@@ -1021,7 +1026,7 @@ Originally best known for its GNU version of the Emacs
           terms of the problem domain, and Use Cases at the analysis phase
           defined in terms of the solution domain.</para>
 
-        <glossseealso otherterm="gl.uml"/>
+        <!--glossseealso otherterm="gl.uml"/-->
       </glossdef>
     </glossentry>
 
@@ -1038,7 +1043,7 @@ Originally best known for its GNU version of the Emacs
         <para>The document capturing non-functional requirements that cannot be
           associated with Use Cases.</para>
 
-        <glossseealso otherterm="gl.usecase"/>
+        <!--glossseealso otherterm="gl.usecase"/-->
       </glossdef>
     </glossentry>
 
@@ -1078,7 +1083,7 @@ ArgoUML can export diagrams in SVG.
           the overall system. See
           <xref linkend="ch.tut.analysis"/> for more information.</para>
 
-        <glossseealso otherterm="gl.seqdiag"/>
+        <!--glossseealso otherterm="gl.seqdiag"/-->
       </glossdef>
     </glossentry>
 
@@ -1101,7 +1106,7 @@ ArgoUML can export diagrams in SVG.
           an active top level system objects. See
           <xref linkend="ch.tut.analysis"/> for more information.</para>
 
-        <glossseealso otherterm="gl.statediag"/>
+        <!--glossseealso otherterm="gl.statediag"/-->
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -1139,8 +1144,8 @@ ArgoUML can export diagrams in SVG.
         <para>The change between <emphasis>States</emphasis> in a
           <emphasis>Statechart Diagram</emphasis>..</para>
 
-        <glossseealso otherterm="gl.state"/>
-        <glossseealso otherterm="gl.statediag"/>
+        <!--glossseealso otherterm="gl.state"/-->
+        <!--glossseealso otherterm="gl.statediag"/-->
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -1165,7 +1170,7 @@ ArgoUML can export diagrams in SVG.
           v1.3. Version 1.4 was released during 2001, with v2.0 planned for
           2002.</para>
 
-        <glossseealso otherterm="gl.omg"/>
+        <!--glossseealso otherterm="gl.omg"/-->
       </glossdef>
     </glossentry>
 
@@ -1183,8 +1188,8 @@ ArgoUML can export diagrams in SVG.
           sub-system. See <xref linkend="s1.tut.req_process_output"/> for more
           information.</para>
 
-        <glossseealso otherterm="gl.uml"/>
-        <glossseealso otherterm="gl.ucspec"/>
+        <!--glossseealso otherterm="gl.uml"/-->
+        <!--glossseealso otherterm="gl.ucspec"/-->
       </glossdef>
     </glossentry>
 
@@ -1207,8 +1212,8 @@ ArgoUML can export diagrams in SVG.
           Cases. See <xref linkend="s1.tut.req_process_output"/> for more
           information.</para>
 
-        <glossseealso otherterm="gl.actor"/>
-        <glossseealso otherterm="gl.usecase"/>
+        <!--glossseealso otherterm="gl.actor"/-->
+        <!--glossseealso otherterm="gl.usecase"/-->
       </glossdef>
     </glossentry>
 
@@ -1226,7 +1231,7 @@ ArgoUML can export diagrams in SVG.
         <para>The document capturing the detailed requirements behind a Use
           Case.</para>
 
-        <glossseealso otherterm="gl.usecase"/>
+        <!--glossseealso otherterm="gl.usecase"/-->
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -1292,7 +1297,7 @@ ArgoUML can export diagrams in SVG.
           design, build, test) is completed before the next starts. See
           <xref linkend="s2.proctypes"/> for more information.</para>
 
-        <glossseealso otherterm="gl.iterative"/>
+        <!--glossseealso otherterm="gl.iterative"/-->
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -1317,8 +1322,8 @@ ArgoUML can export diagrams in SVG.
           layout information, so must be supplemented by files carrying that
           information.</para>
 
-        <glossseealso otherterm="gl.uml"/>
-        <glossseealso otherterm="gl.xml"/>
+        <!--glossseealso otherterm="gl.uml"/-->
+        <!--glossseealso otherterm="gl.xml"/-->
       </glossdef>
     </glossentry>
 
@@ -1335,8 +1340,8 @@ ArgoUML can export diagrams in SVG.
         <para>eXtensible Markup Language. A simplified derivative of SGML
           defined by W3C</para>
 
-        <glossseealso otherterm="gl.sgml"/>
-        <glossseealso otherterm="gl.w3c"/>
+        <!--glossseealso otherterm="gl.sgml"/-->
+        <!--glossseealso otherterm="gl.w3c"/-->
       </glossdef>
     </glossentry>
   </glossdiv>
