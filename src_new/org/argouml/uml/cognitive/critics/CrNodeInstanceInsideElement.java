@@ -26,9 +26,11 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
@@ -47,7 +49,7 @@ public class CrNodeInstanceInsideElement extends CrUML {
      */
     public CrNodeInstanceInsideElement() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_PATTERNS);
+	addSupportedDecision(UMLDecision.PATTERNS);
     }
 
     /**

@@ -26,10 +26,9 @@
 package org.argouml.uml.cognitive.critics;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -42,7 +41,7 @@ import org.tigris.gef.ocl.ExpansionException;
  * "Abstract" Critic subclass that captures commonalities among all
  * critics in the UML domain.  This class also defines and registers
  * the categories of design decisions that the critics can
- * address.
+ * address. IT also deals with particular UMLToDoItems.
  *
  * @see org.argouml.cognitive.Designer
  * @see org.argouml.cognitive.DecisionModel
@@ -51,127 +50,6 @@ import org.tigris.gef.ocl.ExpansionException;
  */
 public class CrUML extends Critic {
     private static final Logger LOG = Logger.getLogger(CrUML.class);
-
-    /**
-     * Decision type: INHERITANCE.
-     */
-    public static final Decision DEC_INHERITANCE =
-	new Decision("misc.decision.inheritance", 1);
-
-    /**
-     * Decision type: CONTAINMENT.
-     */
-    public static final Decision DEC_CONTAINMENT =
-	new Decision("misc.decision.containment", 1);
-
-    /**
-     * Decision type: PATTERNS.
-     */
-    public static final Decision DEC_PATTERNS =
-	new Decision("misc.decision.design-patterns", 1); //??
-
-    /**
-     * Decision type: RELATIONSHIPS.
-     */
-    public static final Decision DEC_RELATIONSHIPS =
-	new Decision("misc.decision.relationships", 1);
-
-    /**
-     * Decision type: STORAGE.
-     */
-    public static final Decision DEC_STORAGE =
-	new Decision("misc.decision.storage", 1);
-
-    /**
-     * Decision type: BEHAVIOR.
-     */
-    public static final Decision DEC_BEHAVIOR =
-	new Decision("misc.decision.behavior", 1);
-
-    /**
-     * Decision type: INSTANCIATION.
-     */
-    public static final Decision DEC_INSTANCIATION =
-	new Decision("misc.decision.instantiation", 1);
-
-    /**
-     * Decision type: NAMING.
-     */
-    public static final Decision DEC_NAMING =
-	new Decision("misc.decision.naming", 1);
-
-    /**
-     * Decision type: MODULARITY.
-     */
-    public static final Decision DEC_MODULARITY =
-	new Decision("misc.decision.modularity", 1);
-
-    /**
-     * Decision type: CLASS_SELECTION.
-     */
-    public static final Decision DEC_CLASS_SELECTION =
-	new Decision("misc.decision.class-selection", 1);
-
-    /**
-     * Decision type: EXPECTED_USAGE.
-     */
-    public static final Decision DEC_EXPECTED_USAGE =
-	new Decision("misc.decision.expected-usage", 1);
-
-    /**
-     * Decision type: METHODS.
-     */
-    public static final Decision DEC_METHODS =
-	new Decision("misc.decision.methods", 1); //??
-
-    /**
-     * Decision type: CODE_GEN.
-     */
-    public static final Decision DEC_CODE_GEN =
-	new Decision("misc.decision.code-generation", 1); //??
-
-    /**
-     * Decision type: PLANNED_EXTENSIONS.
-     */
-    public static final Decision DEC_PLANNED_EXTENSIONS =
-	new Decision("misc.decision.planned-extensions", 1);
-
-    /**
-     * Decision type: STEREOTYPES.
-     */
-    public static final Decision DEC_STEREOTYPES =
-	new Decision("misc.decision.stereotypes", 1);
-
-    /**
-     * Decision type: STATE_MACHINES.
-     */
-    public static final Decision DEC_STATE_MACHINES =
-	new Decision("misc.decision.mstate-machines", 1);
-
-    /**
-     * Static initializer for this class. Called when the class is
-     * loaded (which is before any subclass instances are instanciated).
-     */
-    static {
-	Designer d = Designer.theDesigner();
-	d.getDecisionModel().startConsidering(DEC_CLASS_SELECTION);
-        d.getDecisionModel().startConsidering(DEC_BEHAVIOR);
-	d.getDecisionModel().startConsidering(DEC_NAMING);
-	d.getDecisionModel().startConsidering(DEC_STORAGE);
-	d.getDecisionModel().startConsidering(DEC_INHERITANCE);
-	d.getDecisionModel().startConsidering(DEC_CONTAINMENT);
-	d.getDecisionModel().startConsidering(DEC_PLANNED_EXTENSIONS);
-	d.getDecisionModel().startConsidering(DEC_STATE_MACHINES);
-	d.getDecisionModel().startConsidering(DEC_PATTERNS);
-	d.getDecisionModel().startConsidering(DEC_RELATIONSHIPS);
-	d.getDecisionModel().startConsidering(DEC_INSTANCIATION);
-	d.getDecisionModel().startConsidering(DEC_MODULARITY);
-	d.getDecisionModel().startConsidering(DEC_EXPECTED_USAGE);
-	d.getDecisionModel().startConsidering(DEC_METHODS);
-	d.getDecisionModel().startConsidering(DEC_CODE_GEN);
-	d.getDecisionModel().startConsidering(DEC_STEREOTYPES);
-    }
-
 
     /**
      * The constructor for this class.

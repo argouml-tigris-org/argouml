@@ -29,6 +29,7 @@ import java.util.Vector;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 
 // Use Model through Facade
@@ -59,7 +60,7 @@ public class CrDupRoleNames extends CrUML {
 
     public CrDupRoleNames() {
         setupHeadAndDesc();
-        addSupportedDecision(CrUML.DEC_NAMING);
+        addSupportedDecision(UMLDecision.NAMING);
 
         // These may not actually make any difference at present (the code
         // behind addTrigger needs more work).

@@ -28,6 +28,7 @@ import java.util.Collection;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /** A critic to detect when a classifier has too many associations.
  */
@@ -39,7 +40,7 @@ public class CrTooManyAssoc extends AbstractCrTooMany {
      */
     public CrTooManyAssoc() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
+	addSupportedDecision(UMLDecision.RELATIONSHIPS);
 	setThreshold(7);
 	addTrigger("associationEnd");
     }

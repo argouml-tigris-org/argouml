@@ -31,6 +31,7 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * Well-formedness rule [2] for MNamespace. See page 33 of UML 1.1
@@ -46,7 +47,7 @@ public class CrAssocNameConflict extends CrUML {
      */
     public CrAssocNameConflict() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_NAMING);
+	addSupportedDecision(UMLDecision.NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	// no good trigger
     }

@@ -28,9 +28,10 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.uml.diagram.deployment.ui.FigComponent;
 import org.argouml.uml.diagram.deployment.ui.FigMNode;
@@ -49,7 +50,7 @@ public class CrComponentWithoutNode extends CrUML {
      */
     public CrComponentWithoutNode() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_PATTERNS);
+	addSupportedDecision(UMLDecision.PATTERNS);
     }
 
     /**

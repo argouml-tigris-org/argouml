@@ -26,6 +26,7 @@ package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * Well-formedness rule [1] for MDataType. See page 28 of UML 1.1
@@ -41,8 +42,8 @@ public class CrNonAggDataType extends CrUML {
      */
     public CrNonAggDataType() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_CONTAINMENT);
-	addSupportedDecision(CrUML.DEC_CLASS_SELECTION);
+	addSupportedDecision(UMLDecision.CONTAINMENT);
+	addSupportedDecision(UMLDecision.CLASS_SELECTION);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
     }
 

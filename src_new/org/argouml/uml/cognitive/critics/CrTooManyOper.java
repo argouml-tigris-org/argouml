@@ -29,6 +29,7 @@ import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /** 
  * A critic to detect when a classifier has to many operations). <p>
@@ -43,7 +44,7 @@ public class CrTooManyOper extends AbstractCrTooMany {
      */
     public CrTooManyOper() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_METHODS);
+	addSupportedDecision(UMLDecision.METHODS);
 	setThreshold(20);
 	addTrigger("behavioralFeature");
     }

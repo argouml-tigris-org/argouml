@@ -30,6 +30,7 @@ import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * Well-formedness rule [1] for MBehavioralFeature. See page 28 of UML 1.1
@@ -45,7 +46,7 @@ public class CrDupParamName extends CrUML {
      */
     public CrDupParamName() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_CONTAINMENT);
+	addSupportedDecision(UMLDecision.CONTAINMENT);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
     }
 

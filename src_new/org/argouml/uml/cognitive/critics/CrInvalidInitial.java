@@ -28,6 +28,7 @@ import java.util.Collection;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 
 /**
@@ -44,7 +45,7 @@ public class CrInvalidInitial extends CrUML {
      */
     public CrInvalidInitial() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
+	addSupportedDecision(UMLDecision.STATE_MACHINES);
 	addTrigger("outgoing");
     }
 

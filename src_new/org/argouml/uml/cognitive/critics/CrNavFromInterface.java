@@ -29,6 +29,7 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect navigation from an Interface to a Class in an
@@ -60,7 +61,7 @@ public class CrNavFromInterface extends CrUML {
         
         // Specify design issue category and knowledge type
 
-        addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
+        addSupportedDecision(UMLDecision.RELATIONSHIPS);
         setKnowledgeTypes(Critic.KT_SYNTAX);
 
         // This may not actually make any difference at present (the code

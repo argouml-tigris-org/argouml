@@ -29,6 +29,7 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to check that the classifiers associated with the ends of an
@@ -65,7 +66,7 @@ public class CrCrossNamespaceAssoc extends CrUML {
      */
     public CrCrossNamespaceAssoc() {
         setupHeadAndDesc();
-        addSupportedDecision(CrUML.DEC_MODULARITY);
+        addSupportedDecision(UMLDecision.MODULARITY);
         setKnowledgeTypes(Critic.KT_SYNTAX);
     }
 

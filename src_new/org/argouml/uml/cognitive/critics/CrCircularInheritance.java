@@ -28,11 +28,12 @@ import java.util.Enumeration;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
 import org.argouml.uml.SuperclassGen;
+import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 
 /**
@@ -54,7 +55,7 @@ public class CrCircularInheritance extends CrUML {
     public CrCircularInheritance() {
         setupHeadAndDesc();
 	setPriority(ToDoItem.HIGH_PRIORITY);
-	addSupportedDecision(CrUML.DEC_INHERITANCE);
+	addSupportedDecision(UMLDecision.INHERITANCE);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("generalization");
 	// no need for trigger on "specialization"

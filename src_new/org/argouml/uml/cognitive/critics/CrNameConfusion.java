@@ -30,11 +30,12 @@ import java.util.Iterator;
 import javax.swing.Icon;
 
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 
 /**
@@ -48,7 +49,7 @@ public class CrNameConfusion extends CrUML {
      */
     public CrNameConfusion() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_NAMING);
+	addSupportedDecision(UMLDecision.NAMING);
 	setKnowledgeTypes(Critic.KT_PRESENTATION);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("name");

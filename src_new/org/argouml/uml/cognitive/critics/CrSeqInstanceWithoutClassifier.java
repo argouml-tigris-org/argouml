@@ -28,9 +28,10 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ListSet;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -48,7 +49,7 @@ public class CrSeqInstanceWithoutClassifier extends CrUML {
      */
     public CrSeqInstanceWithoutClassifier() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_PATTERNS);
+	addSupportedDecision(UMLDecision.PATTERNS);
     }
 
     /**

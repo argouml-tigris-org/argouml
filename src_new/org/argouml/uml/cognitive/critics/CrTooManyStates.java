@@ -28,6 +28,7 @@ import java.util.Collection;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /** 
  * A critic to detect when a composite state has too
@@ -41,7 +42,7 @@ public class CrTooManyStates extends AbstractCrTooMany {
      */
     public CrTooManyStates() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
+	addSupportedDecision(UMLDecision.STATE_MACHINES);
 	setThreshold(20);
 	addTrigger("substate");
     }

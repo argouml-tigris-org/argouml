@@ -26,6 +26,7 @@ package org.argouml.uml.cognitive.critics;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to suggest using the facade stereotype. <p>
@@ -41,7 +42,7 @@ public class CrConsiderFacade extends CrUML {
      */
     public CrConsiderFacade() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_MODULARITY);
+	addSupportedDecision(UMLDecision.MODULARITY);
 	addTrigger("ownedElement");
     }
 

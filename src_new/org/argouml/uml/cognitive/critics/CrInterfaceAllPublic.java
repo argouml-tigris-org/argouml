@@ -31,6 +31,7 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * Well-formedness rule [3] for MInterface. See page 32 of UML 1.1
@@ -45,7 +46,7 @@ public class CrInterfaceAllPublic extends CrUML {
      */
     public CrInterfaceAllPublic() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_PLANNED_EXTENSIONS);
+	addSupportedDecision(UMLDecision.PLANNED_EXTENSIONS);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("behavioralFeature");
     }

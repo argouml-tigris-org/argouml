@@ -26,6 +26,7 @@ package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * Well-formedness rule [1] for MAssociationClass. See page 28 of UML 1.1
@@ -40,7 +41,7 @@ public class CrNameConflictAC extends CrUML {
      */
     public CrNameConflictAC() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_NAMING);
+	addSupportedDecision(UMLDecision.NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
     }
 

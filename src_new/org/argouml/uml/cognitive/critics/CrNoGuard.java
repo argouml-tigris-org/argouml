@@ -27,6 +27,7 @@ package org.argouml.uml.cognitive.critics;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 
 /**
@@ -42,7 +43,7 @@ public class CrNoGuard extends CrUML {
      */
     public CrNoGuard() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
+	addSupportedDecision(UMLDecision.STATE_MACHINES);
 	setKnowledgeTypes(Critic.KT_COMPLETENESS);
 	addTrigger("guard");
     }

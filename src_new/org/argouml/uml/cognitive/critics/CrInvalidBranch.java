@@ -28,6 +28,7 @@ import java.util.Collection;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect when a Branch (i.e. Choice or Junction)
@@ -54,7 +55,7 @@ public class CrInvalidBranch extends CrUML {
      */
     public CrInvalidBranch() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
+	addSupportedDecision(UMLDecision.STATE_MACHINES);
 	addTrigger("incoming");
     }
 

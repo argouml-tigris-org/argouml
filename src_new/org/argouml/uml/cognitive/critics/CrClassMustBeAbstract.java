@@ -29,6 +29,7 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLDecision;
 
 /**
  * A critic to detect whether a non abstract class
@@ -44,8 +45,8 @@ public class CrClassMustBeAbstract extends CrUML {
      */
     public CrClassMustBeAbstract() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_INHERITANCE);
-	addSupportedDecision(CrUML.DEC_METHODS);
+	addSupportedDecision(UMLDecision.INHERITANCE);
+	addSupportedDecision(UMLDecision.METHODS);
 	setKnowledgeTypes(Critic.KT_SEMANTICS);
     }
 
