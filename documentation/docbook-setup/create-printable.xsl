@@ -7,6 +7,6 @@
 	exclude-result-prefixes="doc"
 	extension-element-prefixes="saxon xalanredirect lxslt">
 
-	<xsl:import href="docbook-xsl-1.49/html/docbook.xsl"/>
+	<xsl:import href="docbook-xsl-1.60.1/html/docbook.xsl"/>
 	<xsl:import href="commonsettings.xsl"/>
 </xsl:stylesheet>

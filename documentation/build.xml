@@ -139,6 +139,20 @@ This will force Ant to compile with jikes if you have it on your system. Refer t
   <property file="${argo.root.dir}/documentation/default.properties"/>
   <property name="documentation.dir" value="${argo.root.dir}/documentation"/>
 
+  <!-- The ambition is that there should be only one place where the
+       docbook-xsl version is located. This would be it then.
+       Currently this is not the case. The version is also in all the
+       docbook-setup/create-blabla.xsl files so when you change this
+       you need also to change those files. This is to be made as part 
+       of the deployment of a new version of docbook-xsl.
+    -->
+  <property name="docbook-xsl" value="docbook-xsl-1.60.1"/>
+
+  <property name="docbook-xsl-root" 
+	    value="${documentation.dir}/docbook-setup/${docbook-xsl}"/>
+  <property name="docbook-xsl-source-url"
+            value="http://cesnet.dl.sourceforge.net/sourceforge/docbook/${docbook-xsl}.zip"/>
+
   <path id="saxon.classpath">
     <pathelement location="${saxon.jar.path}" />
   </path>
@@ -167,6 +181,10 @@ This will force Ant to compile with jikes if you have it on your system. Refer t
             <pathelement location="${jimi.jar.path}" />
 	</classpath>
     </available>
+
+<echo message="Testing for docbook-xsl: ${docbook-xsl-root}/xhtml/xref.xsl"/>
+    <available property="docbook-xsl-is-available"
+	       file="${docbook-xsl-root}/xhtml/xref.xsl"/>
 
   </target>
 
@@ -237,6 +255,11 @@ This will force Ant to compile with jikes if you have it on your system. Refer t
     <antcall target="internal-scheduler"/>          
   </target>
   
+
+  <!-- =================================================================== -->
+  <!-- javahelp: Download jimi                                             -->
+  <!-- =================================================================== -->
+
   <target name="jimi-check" depends="prepare" unless="jimi-is-available">
       <echo message="Jimi is not available.">
 
@@ -271,6 +294,39 @@ directory for further information.
 
     <!-- Check availability again - if the get worked, it will be there. -->
     <available file="${jimi.jar.path}" property="jimi-is-available"/>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- javahelp: Download docbook-xsl                                      -->
+  <!-- =================================================================== -->
+
+  <target name="docbook-xsl-check" depends="prepare"
+          unless="docbook-xsl-is-available">
+      <fail message="docbook-xsl is not available.">
+
+The docbook-xsl package is not available. It is not possible to generate the
+documentation without it.
+
+To get it, call ant with the docbook-xsl-get target.
+      </fail>
+  </target>
+
+  <target name="docbook-xsl-get" depends="prepare"
+ 	  unless="docbook-xsl-is-available">
+    <get src="${docbook-xsl-source-url}"
+         dest="${documentation.dir}/docbook-setup/${docbook-xsl}.zip"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+    <unzip src="${documentation.dir}/docbook-setup/${docbook-xsl}.zip"
+           dest="${documentation.dir}/docbook-setup"/>
+
+    <!-- Check availability again - if the get worked, it will be there. -->
+    <available property="docbook-xsl-is-available"
+	       file="${docbook-xsl-root}/xhtml/xref.xsl"/>
+
   </target>
 
 
@@ -310,6 +366,8 @@ directory for further information.
   <!-- =================================================================== -->
 
   <target name="internal-scheduler">
+
+    <antcall target="docbook-xsl-check"/>
 
     <!-- First we set up some properties to make our job easier     -->
 

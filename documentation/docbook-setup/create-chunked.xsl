@@ -7,7 +7,7 @@
 	exclude-result-prefixes="doc"
 	extension-element-prefixes="saxon xalanredirect lxslt">
 
-	<xsl:import href="docbook-xsl-1.49/html/chunk.xsl"/>
+	<xsl:import href="docbook-xsl-1.60.1/html/chunk.xsl"/>
 	<xsl:import href="commonsettings.xsl"/>
 
 	<xsl:variable name="using.chunker" select="1"/>

@@ -1,8 +1,0 @@
-2001-12-07  Jirka Kosek <kosek@users.sourceforge.net>
-
-	* profile.xsl: Added support for multiple targets in one parameter
-
-2001-08-01  Norman Walsh <nwalsh@users.sourceforge.net>
-
-	* profile.xsl: New file.
-

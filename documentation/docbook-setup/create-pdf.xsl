@@ -7,7 +7,7 @@
 	exclude-result-prefixes="doc"
 	extension-element-prefixes="saxon xalanredirect lxslt">
 
-	<xsl:import href="docbook-xsl-1.49/fo/docbook.xsl"/>
+	<xsl:import href="docbook-xsl-1.60.1/fo/docbook.xsl"/>
 	<xsl:import href="commonsettings.xsl"/>
 
         <!-- Added by Jeremy Bennett for 1.49 XSL stylesheets -->
@@ -17,6 +17,6 @@
         <xsl:variable name="paper.type" select="A4"/>
         <xsl:variable name="default.table.width" select="'15cm'"/>
         <xsl:variable name="draft.watermark.image"
-                      select="docbook-xsl-1.49/images/draft.png"/>
+                      select="docbook-xsl-1.60.1/images/draft.png"/>
 
 </xsl:stylesheet>
