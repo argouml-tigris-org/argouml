@@ -75,7 +75,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
-import ru.novosoft.uml.gen.mmm.MPackage;
+import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MModel;
 
 /** Registers critics for use in Argo/UML.  This class is called at
