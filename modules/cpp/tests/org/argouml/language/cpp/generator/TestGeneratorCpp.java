@@ -71,32 +71,32 @@ public class TestGeneratorCpp extends TestCase {
     }
 
     /** factory for model elements */
-    CoreFactory _factory;
+    private CoreFactory factory;
 
     /** The venerable C++ generator instance used in the test fixtures. */
-    GeneratorCpp _generator;
+    private GeneratorCpp generator;
 
     /** the AClass model element */
-    Object _aClass;
+    private Object aClass;
 
     /** the AClass::foo() operation */
-    Object _fooMethod;
+    private Object fooMethod;
     
-    /*
+    /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
-        _generator = GeneratorCpp.getInstance();
-        _factory = UmlFactory.getFactory().getCore();
-        _aClass = _factory.buildClass("AClass");
-        _fooMethod = _factory.buildOperation(_aClass, "foo");
+        generator = GeneratorCpp.getInstance();
+        factory = UmlFactory.getFactory().getCore();
+        aClass = factory.buildClass("AClass");
+        fooMethod = factory.buildOperation(aClass, "foo");
     }
 
     /**
      * Test of getInstance method.
      */
     public void testGetInstance() {
-        assertNotNull(_generator);
+        assertNotNull(generator);
     }
 
     /**
@@ -104,7 +104,7 @@ public class TestGeneratorCpp extends TestCase {
      */
     public void testCppGenerate() {
         // generate void AClass::foo();
-        String strFooMethod = _generator.generate(_fooMethod);
+        String strFooMethod = generator.generate(fooMethod);
         assertNotNull(strFooMethod);
         assertEquals("void AClass::foo()", strFooMethod.trim());
     }
@@ -113,28 +113,28 @@ public class TestGeneratorCpp extends TestCase {
      * Test of generateOperation method.
      */
     public void testGenerateOperationAndIssue2862() {
-        Collection params = ModelFacade.getParameters(_fooMethod);
+        Collection params = ModelFacade.getParameters(fooMethod);
         assertEquals(1, params.size());
         Object returnVal = params.iterator().next();
         ModelFacade.setTaggedValue(returnVal, "pointer", "true");
-        ModelFacade.setType(returnVal, _aClass);
-        String genOp = _generator.generateOperation(_fooMethod, false);
+        ModelFacade.setType(returnVal, aClass);
+        String genOp = generator.generateOperation(fooMethod, false);
         LOG.info(genOp);
-		assertTrue(genOp.indexOf("*") != -1);
+        assertTrue(genOp.indexOf("*") != -1);
     }
 
     /**
      * Test of getModuleName method.
      */
     public void testGetModuleName() {
-        assertNonNullNonZeroLengthString(_generator.getModuleName());
+        assertNonNullNonZeroLengthString(generator.getModuleName());
     }
 
     /**
      * Test of getModuleDescription method.
      */
     public void testGetModuleDescription() {
-        assertNonNullNonZeroLengthString(_generator.getModuleDescription());
+        assertNonNullNonZeroLengthString(generator.getModuleDescription());
     }
 
     private void assertNonNullNonZeroLengthString(String s) {
@@ -146,21 +146,21 @@ public class TestGeneratorCpp extends TestCase {
      * Test of getModuleAuthor method.
      */
     public void testGetModuleAuthor() {
-        assertNonNullNonZeroLengthString(_generator.getModuleAuthor());
+        assertNonNullNonZeroLengthString(generator.getModuleAuthor());
     }
 
     /**
      * Test of getModuleVersion method.
      */
     public void testGetModuleVersion() {
-        assertNonNullNonZeroLengthString(_generator.getModuleVersion());
+        assertNonNullNonZeroLengthString(generator.getModuleVersion());
     }
 
     /**
      * Test of getModuleKey method.
      */
     public void testGetModuleKey() {
-        assertNonNullNonZeroLengthString(_generator.getModuleKey());
+        assertNonNullNonZeroLengthString(generator.getModuleKey());
     }
 }
 
