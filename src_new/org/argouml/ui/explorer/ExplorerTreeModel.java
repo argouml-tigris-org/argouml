@@ -672,10 +672,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
     public void itemStateChanged(ItemEvent e) {
 	if (e.getSource() instanceof PerspectiveComboBox) {
             rules = ((ExplorerPerspective) e.getItem()).getRulesArray();
-	} else {
+	} else { // it is the combo for "order"
 	    order = (Comparator) e.getItem();
 	}
-
 	structureChanged();
     }
 
