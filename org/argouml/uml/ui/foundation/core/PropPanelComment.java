@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.awt.Dimension;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
@@ -51,6 +52,8 @@ public class PropPanelComment extends PropPanelModelElement {
     public PropPanelComment() {
         super("Comment", _commentIcon, ConfigLoader.getTabPropsOrientation());
         UMLTextArea text = new UMLTextArea(this, new UMLTextProperty(MComment.class, "name","getName","setName"));
+        text.setLineWrap(true);
+        text.setRows(5);
         JScrollPane pane = new JScrollPane(text);
         addField("Text: ", pane);
         
