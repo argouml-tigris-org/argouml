@@ -28,37 +28,31 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.util.Enumeration;
-import java.beans.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
+import java.util.Collection;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeRenderer;
-import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.argouml.application.api.Notation;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.PathConvPercent;
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Layer;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.SelectionManager;
-import org.tigris.gef.base.Selection;
-
-import org.argouml.application.api.*;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.uml.generator.*;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 
 
 
@@ -163,10 +157,10 @@ public class FigSeqStimulus extends FigNodeModelElement {
     else return "null";
   }
 
-  protected void modelChanged() {
+  protected void modelChanged(MElementEvent mee) {
    
 
-    super.modelChanged();
+    super.modelChanged(mee);
 
     MStimulus sti = (MStimulus) getOwner();
     if (sti == null) return;
@@ -238,18 +232,6 @@ public class FigSeqStimulus extends FigNodeModelElement {
 
   }
    
-    /*
-  public void delete() {
-    // a stimulus can only be removed from the link
-    Editor ce = Globals.curEditor();
-    Layer lay = ce.getLayerManager().getActiveLayer();
-    SelectionManager sm = ce.getSelectionManager();
-    Vector figs = sm.selections();
-    Selection cf = (Selection) figs.firstElement();
-    if (  cf.getContent() instanceof FigSeqLink ) super.delete();
-
-  }
-   */
 
   public void addPathItemToLink(Layer lay) {
 

@@ -27,40 +27,39 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.beans.PropertyVetoException;
 import java.util.Enumeration;
-import java.beans.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeRenderer;
-import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.argouml.application.api.Notation;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.ModeSelect;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.base.SelectionManager;
-
-import org.tigris.gef.base.ModeSelect;
-
-import org.argouml.application.api.*;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.uml.generator.*;
-import org.argouml.uml.diagram.ui.*;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigActivation;
+import org.tigris.gef.presentation.FigDynPort;
+import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.behavior.common_behavior.MObject;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 /** Class to display graphics for a UML sequence in a diagram. */
 
@@ -511,8 +510,8 @@ public class FigSeqObject extends FigNodeModelElement
   }
 
 
-  protected void modelChanged() {
-    super.modelChanged();
+  protected void modelChanged(MElementEvent mee) {
+    super.modelChanged(mee);
     MObject obj = (MObject) getOwner();
     if (obj == null) return;
     String nameStr = Notation.generate(this, obj.getName()).trim();
@@ -926,5 +925,12 @@ public class FigSeqObject extends FigNodeModelElement
    
   }
 
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
+     */
+    public void renderingChanged() {
+        super.renderingChanged();
+    }
 
 } /* end class FigSeqObject */

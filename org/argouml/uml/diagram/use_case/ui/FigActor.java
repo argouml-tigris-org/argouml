@@ -28,19 +28,17 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
-import java.awt.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-
-import org.argouml.uml.diagram.ui.*;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.FigCircle;
+import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigText;
 
 /** Class to display graphics for a UML MState in a diagram. */
 

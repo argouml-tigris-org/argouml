@@ -28,20 +28,14 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.awt.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-
-import org.argouml.ui.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.state.*;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.state.StateDiagramGraphModel;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
 /** Abstract class to with common behavior for nestable nodes in UML
     MState diagrams. */
