@@ -110,7 +110,7 @@ public class FigComponentInstance extends FigNodeModelElement {
      */
     public Object clone() {
         FigComponentInstance figClone = (FigComponentInstance) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
         figClone.cover = (FigRect) it.next();
         figClone.setStereotypeFig((FigText) it.next());

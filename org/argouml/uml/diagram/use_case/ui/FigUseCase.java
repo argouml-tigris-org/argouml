@@ -343,7 +343,7 @@ public class FigUseCase extends FigNodeModelElement {
      */
     public Object clone() {
         FigUseCase figClone = (FigUseCase) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
 
         figClone.bigPort = (FigMyCircle) it.next();
         figClone.cover = (FigMyCircle) it.next();
@@ -449,7 +449,7 @@ public class FigUseCase extends FigNodeModelElement {
             // Tell GEF that we are starting to make a change. Loop through the
             // epVec marking each element as not visible.
 
-            Iterator it = epVec.getFigs(null).iterator();
+            Iterator it = epVec.getFigs().iterator();
 
             while (it.hasNext()) {
                 ((Fig) (it.next())).setVisible(false);
@@ -476,7 +476,7 @@ public class FigUseCase extends FigNodeModelElement {
             // Tell GEF that we are starting to make a change. Loop through the
             // epVec marking each element as visible.
 
-            Iterator it = epVec.getFigs(null).iterator();
+            Iterator it = epVec.getFigs().iterator();
 
             while (it.hasNext()) {
                 ((Fig) (it.next())).setVisible(true);
@@ -549,7 +549,7 @@ public class FigUseCase extends FigNodeModelElement {
             // (remember the first fig is the box for the whole lot, so ignore
             // it).
 
-            Iterator it = epVec.getFigs(null).iterator();
+            Iterator it = epVec.getFigs().iterator();
             it.next(); // ignore
 
             while (it.hasNext()) {
@@ -563,7 +563,7 @@ public class FigUseCase extends FigNodeModelElement {
             // to there always being space for at least one extension point.
 
             minSize.height +=
-		ROWHEIGHT * Math.max(1, epVec.getFigs(null).size() - 1);
+		ROWHEIGHT * Math.max(1, epVec.getFigs().size() - 1);
         }
 
         return minSize;
@@ -922,7 +922,7 @@ public class FigUseCase extends FigNodeModelElement {
             // (f.getY()) and integer divide by ROWHEIGHT.
 
             // TODO: in future version of GEF call getFigs returning array
-            Vector v = new Vector(epVec.getFigs(null));
+            Vector v = new Vector(epVec.getFigs());
             int i = (me.getY() - f.getY() - 1) / ROWHEIGHT;
 
             // If we are in the range of the EP list size (avoids any nasty
@@ -1002,7 +1002,7 @@ public class FigUseCase extends FigNodeModelElement {
 
             if (ft != null) {
                 // TODO: in future version of GEF call getFigs returning array
-                int i = new Vector(epVec.getFigs(null)).indexOf(ft);
+                int i = new Vector(epVec.getFigs()).indexOf(ft);
 
                 // If we found one of the current EP's move forward or
                 // backwards as appopriate, and set a newly selected EP as
@@ -1073,7 +1073,7 @@ public class FigUseCase extends FigNodeModelElement {
         // Give up if we are not one of the extension points
 
         // TODO: in future version of GEF call getFigs returning array
-        int i = new Vector(epVec.getFigs(null)).indexOf(ft);
+        int i = new Vector(epVec.getFigs()).indexOf(ft);
 
         if (i == -1) {
             return;
@@ -1120,7 +1120,7 @@ public class FigUseCase extends FigNodeModelElement {
         // element is not displayed
 
         // TODO: in future version of GEF call getFigs returning array
-        Vector v = new Vector(fgVec.getFigs(null));
+        Vector v = new Vector(fgVec.getFigs());
 
         if ((i >= v.size()) || (!((FigText) v.elementAt(i)).isVisible())) {
             return null;
@@ -1166,7 +1166,7 @@ public class FigUseCase extends FigNodeModelElement {
         // Give up if we are off the top of the vector, or the indentified
         // element is not displayed
 
-        Vector v = new Vector(fgVec.getFigs(null));
+        Vector v = new Vector(fgVec.getFigs());
 
         if ((i >= v.size()) || (!((FigText) v.elementAt(i)).isVisible())) {
             return null;
@@ -1215,7 +1215,7 @@ public class FigUseCase extends FigNodeModelElement {
 
         // TODO: in future version of GEF call getFigs returning array
         CompartmentFigText ft =
-            (CompartmentFigText) new Vector(fg.getFigs(null)).lastElement();
+            (CompartmentFigText) new Vector(fg.getFigs()).lastElement();
 
         if (ft != null) {
             ft.startTextEditor(ie);
@@ -1238,7 +1238,7 @@ public class FigUseCase extends FigNodeModelElement {
         // Loop through the vector of extension points, until we find a
         // highlighted one.
 
-        Vector v = new Vector(epVec.getFigs(null));
+        Vector v = new Vector(epVec.getFigs());
         int i;
 
         for (i = 1; i < v.size(); i++) {
@@ -1311,7 +1311,7 @@ public class FigUseCase extends FigNodeModelElement {
             // Take each EP and its corresponding fig in turn
 
             Iterator iter = eps.iterator();
-            Vector figs = new Vector(epVec.getFigs(null));
+            Vector figs = new Vector(epVec.getFigs());
 
             while (iter.hasNext()) {
                 CompartmentFigText epFig;

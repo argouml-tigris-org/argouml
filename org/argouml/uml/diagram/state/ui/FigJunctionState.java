@@ -104,7 +104,7 @@ public class FigJunctionState extends FigStateVertex {
      */
     public Object clone() {
 	FigJunctionState figClone = (FigJunctionState) super.clone();
-	Iterator it = figClone.getFigs(null).iterator();
+	Iterator it = figClone.getFigs().iterator();
 	figClone.setBigPort((FigPoly) it.next());
 	figClone.head = (FigPoly) it.next();
 	return figClone;

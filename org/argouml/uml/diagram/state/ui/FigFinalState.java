@@ -104,7 +104,7 @@ public class FigFinalState extends FigStateVertex {
      */
     public Object clone() {
         FigFinalState figClone = (FigFinalState) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigCircle) it.next());
         figClone.inCircle = (FigCircle) it.next();
 

@@ -81,7 +81,7 @@ public class FigFeature extends CompartmentFigText {
                     FigClass classFig = (FigClass) fig;
                     FigGroup group = (FigGroup) getGroup();
                 // TODO: in future version of GEF call getFigs returning array
-                    Object[] figs = group.getFigs(null).toArray();
+                    Object[] figs = group.getFigs().toArray();
                     for (int i = 1; i < figs.length; i++) {
 			// the first element is no attr or oper
                         if (figs[i].equals(_content)) {

@@ -86,7 +86,7 @@ public class FigBranchState extends FigStateVertex {
      */
     public Object clone() {
         FigBranchState figClone = (FigBranchState) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigCircle) it.next());
         figClone.head = (FigCircle) it.next();
         return figClone;

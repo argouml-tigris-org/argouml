@@ -361,7 +361,7 @@ public class FigClass extends FigNodeModelElement
         int h;
     	if (isCheckSize()) {
     	    h = ((ROWHEIGHT
-                * Math.max(1, getAttributesFig().getFigs(null).size() - 1) + 2)
+                * Math.max(1, getAttributesFig().getFigs().size() - 1) + 2)
                 * rect.height
                 / getMinimumSize().height);
         } else {
@@ -370,7 +370,7 @@ public class FigClass extends FigNodeModelElement
         if (getAttributesFig().isVisible()) {
             if (!isVisible) {  // hide compartment
                 damage();
-                Iterator it = getAttributesFig().getFigs(null).iterator();
+                Iterator it = getAttributesFig().getFigs().iterator();
                 while (it.hasNext()) {
                     ((Fig) (it.next())).setVisible(false);
                 }
@@ -381,7 +381,7 @@ public class FigClass extends FigNodeModelElement
             }
         } else {
             if (isVisible) { // show compartement
-                Iterator it = getAttributesFig().getFigs(null).iterator();
+                Iterator it = getAttributesFig().getFigs().iterator();
                 while (it.hasNext()) {
                     ((Fig) (it.next())).setVisible(true);
                 }
@@ -402,14 +402,14 @@ public class FigClass extends FigNodeModelElement
         int h =
     	    isCheckSize()
     	    ? ((ROWHEIGHT
-                * Math.max(1, getOperationsFig().getFigs(null).size() - 1) + 2)
+                * Math.max(1, getOperationsFig().getFigs().size() - 1) + 2)
     	        * rect.height
     	        / getMinimumSize().height)
     	    : 0;
         if (isOperationsVisible()) { // if displayed
             if (!isVisible) {
                 damage();
-                Iterator it = getOperationsFig().getFigs(null).iterator();
+                Iterator it = getOperationsFig().getFigs().iterator();
                 while (it.hasNext()) {
                     ((Fig) (it.next())).setVisible(false);
                 }
@@ -420,7 +420,7 @@ public class FigClass extends FigNodeModelElement
             }
         } else {
             if (isVisible) {
-                Iterator it = getOperationsFig().getFigs(null).iterator();
+                Iterator it = getOperationsFig().getFigs().iterator();
                 while (it.hasNext()) {
                     ((Fig) (it.next())).setVisible(true);
                 }
@@ -468,7 +468,7 @@ public class FigClass extends FigNodeModelElement
             // Loop through all the attributes, to find the widest (remember
             // the first fig is the box for the whole lot, so ignore it).
 
-            Iterator it = getAttributesFig().getFigs(null).iterator();
+            Iterator it = getAttributesFig().getFigs().iterator();
             it.next(); // Ignore first element
 
             while (it.hasNext()) {
@@ -482,7 +482,7 @@ public class FigClass extends FigNodeModelElement
 
             aSize.height +=
 		ROWHEIGHT * Math.max(1,
-		        getAttributesFig().getFigs(null).size() - 1) + 1;
+		        getAttributesFig().getFigs().size() - 1) + 1;
         }
 
         // Allow space for each of the operations we have
@@ -492,7 +492,7 @@ public class FigClass extends FigNodeModelElement
             // Loop through all the operations, to find the widest (remember
             // the first fig is the box for the whole lot, so ignore it).
 
-            Iterator it = getOperationsFig().getFigs(null).iterator();
+            Iterator it = getOperationsFig().getFigs().iterator();
             it.next(); // ignore
 
             while (it.hasNext()) {
@@ -503,7 +503,7 @@ public class FigClass extends FigNodeModelElement
 
             aSize.height +=
 		ROWHEIGHT * Math.max(1,
-		        getOperationsFig().getFigs(null).size() - 1) + 1;
+		        getOperationsFig().getFigs().size() - 1) + 1;
         }
 
         // we want to maintain a minimum width for the class
@@ -561,12 +561,10 @@ public class FigClass extends FigNodeModelElement
         if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
             CompartmentFigText ft = unhighlight();
             if (ft != null) {
-                int i = new Vector(getAttributesFig().getFigs(null))
-                                            .indexOf(ft);
+                int i = new Vector(getAttributesFig().getFigs()).indexOf(ft);
                 FigGroup fg = getAttributesFig();
                 if (i == -1) {
-                    i = new Vector(getOperationsFig().getFigs(null))
-                                            .indexOf(ft);
+                    i = new Vector(getOperationsFig().getFigs()).indexOf(ft);
                     fg = getOperationsFig();
                 }
                 if (i != -1) {
@@ -604,7 +602,7 @@ public class FigClass extends FigNodeModelElement
         if (cls == null) {
             return;
         }
-        int i = new Vector(getAttributesFig().getFigs(null)).indexOf(ft);
+        int i = new Vector(getAttributesFig().getFigs()).indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
@@ -621,7 +619,7 @@ public class FigClass extends FigNodeModelElement
             }
             return;
         }
-        i = new Vector(getOperationsFig().getFigs(null)).indexOf(ft);
+        i = new Vector(getOperationsFig().getFigs()).indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
@@ -653,7 +651,7 @@ public class FigClass extends FigNodeModelElement
         }
         FigText ft2 = null;
         // TODO: come GEF V 0.12 use getFigs returning an array
-        Vector v = new Vector(fgVec.getFigs(null));
+        Vector v = new Vector(fgVec.getFigs());
         if (i >= v.size() || !((FigText) v.elementAt(i)).isVisible()) {
             return null;
         }
@@ -663,7 +661,7 @@ public class FigClass extends FigNodeModelElement
                 fgVec = (fgVec == getAttributesFig())
                     ? getOperationsFig()
                     : getAttributesFig();
-                v = new Vector(fgVec.getFigs(null));
+                v = new Vector(fgVec.getFigs());
                 i = v.size() - 1;
             }
             ft2 = (FigText) v.elementAt(i);
@@ -686,7 +684,7 @@ public class FigClass extends FigNodeModelElement
         }
         FigText ft2 = null;
         // TODO: come GEF V 0.12 use getFigs returning an array
-        Vector v = new Vector(fgVec.getFigs(null));
+        Vector v = new Vector(fgVec.getFigs());
         if (i >= v.size() || !((FigText) v.elementAt(i)).isVisible()) {
             return null;
         }
@@ -696,7 +694,7 @@ public class FigClass extends FigNodeModelElement
                 fgVec = (fgVec == getAttributesFig())
                     ? getOperationsFig()
                     : getAttributesFig();
-                v = new Vector(fgVec.getFigs(null));
+                v = new Vector(fgVec.getFigs());
                 i = 1;
             }
             ft2 = (FigText) v.elementAt(i);
@@ -722,7 +720,7 @@ public class FigClass extends FigNodeModelElement
             (new ActionAddOperation()).actionPerformed(null);
         }
         // TODO: When available use getFigs() returning array
-        ft = (CompartmentFigText) new Vector(fg.getFigs(null)).lastElement();
+        ft = (CompartmentFigText) new Vector(fg.getFigs()).lastElement();
         if (ft != null) {
             ft.startTextEditor(ie);
             ft.setHighlighted(true);
@@ -737,7 +735,7 @@ public class FigClass extends FigNodeModelElement
     protected CompartmentFigText unhighlight() {
         CompartmentFigText ft;
         // TODO: in future version of GEF call getFigs returning array
-        Vector v = new Vector(getAttributesFig().getFigs(null));
+        Vector v = new Vector(getAttributesFig().getFigs());
         int i;
         for (i = 1; i < v.size(); i++) {
             ft = (CompartmentFigText) v.elementAt(i);
@@ -748,7 +746,7 @@ public class FigClass extends FigNodeModelElement
             }
         }
         // TODO: in future version of GEF call getFigs returning array
-        v = new Vector(getOperationsFig().getFigs(null));
+        v = new Vector(getOperationsFig().getFigs());
         for (i = 1; i < v.size(); i++) {
             ft = (CompartmentFigText) v.elementAt(i);
             if (ft.isHighlighted()) {
@@ -991,10 +989,10 @@ public class FigClass extends FigNodeModelElement
         currentY += height - 1; // -1 for 1 pixel overlap
 
         int na = (isAttributesVisible())
-    	    ? Math.max(1, getAttributesFig().getFigs(null).size() - 1)
+    	    ? Math.max(1, getAttributesFig().getFigs().size() - 1)
     	    : 0;
         int no = (isOperationsVisible())
-    	    ? Math.max(1, getOperationsFig().getFigs(null).size() - 1)
+    	    ? Math.max(1, getOperationsFig().getFigs().size() - 1)
     	    : 0;
         if (isCheckSize()) {
             height = ROWHEIGHT * na + 2 + extraEach;
@@ -1057,7 +1055,7 @@ public class FigClass extends FigNodeModelElement
         Fig f = hitFig(r);
         if (f == getAttributesFig() && getAttributesFig().getHeight() > 0) {
             // TODO: in future version of GEF call getFigs returning array
-            Vector v = new Vector(getAttributesFig().getFigs(null));
+            Vector v = new Vector(getAttributesFig().getFigs());
             i = (v.size() - 1) * (me.getY() - f.getY() - 3)
                 / getAttributesFig().getHeight();
             if (i >= 0 && i < v.size() - 1) {
@@ -1069,7 +1067,7 @@ public class FigClass extends FigNodeModelElement
         } else if (f == getOperationsFig()
                      && getOperationsFig().getHeight() > 0) {
             // TODO: in future version of GEF call getFigs returning array
-            Vector v = new Vector(getOperationsFig().getFigs(null));
+            Vector v = new Vector(getOperationsFig().getFigs());
             i = (v.size() - 1) * (me.getY() - f.getY() - 3)
                 / getOperationsFig().getHeight();
             if (i >= 0 && i < v.size() - 1) {
@@ -1097,7 +1095,7 @@ public class FigClass extends FigNodeModelElement
         if (strs != null) {
             Iterator iter = strs.iterator();
             // TODO: in future version of GEF call getFigs returning array
-            Vector figs = new Vector(getAttributesFig().getFigs(null));
+            Vector figs = new Vector(getAttributesFig().getFigs());
             CompartmentFigText attr;
             while (iter.hasNext()) {
                 Object sf = /*(MStructuralFeature)*/ iter.next();
@@ -1164,7 +1162,7 @@ public class FigClass extends FigNodeModelElement
         if (behs != null) {
             Iterator iter = behs.iterator();
             // TODO: in future version of GEF call getFigs returning array
-            Vector figs = new Vector(getOperationsFig().getFigs(null));
+            Vector figs = new Vector(getOperationsFig().getFigs());
             CompartmentFigText oper;
             while (iter.hasNext()) {
                 Object bf = /*(MBehavioralFeature)*/ iter.next();

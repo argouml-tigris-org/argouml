@@ -110,7 +110,7 @@ public class FigActionState extends FigStateVertex {
      */
     public Object clone() {
         FigActionState figClone = (FigActionState) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRRect) it.next());
         figClone.cover = (FigRRect) it.next();
         figClone.setNameFig((FigText) it.next());

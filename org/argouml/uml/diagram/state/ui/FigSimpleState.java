@@ -119,7 +119,7 @@ public class FigSimpleState extends FigState {
      */
     public Object clone() {
 	FigSimpleState figClone = (FigSimpleState) super.clone();
-	Iterator it = figClone.getFigs(null).iterator();
+	Iterator it = figClone.getFigs().iterator();
 	figClone.setBigPort((FigRRect) it.next());
 	figClone.cover = (FigRect) it.next();
 	figClone.setNameFig((FigText) it.next());

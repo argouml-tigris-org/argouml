@@ -180,7 +180,7 @@ public class FigPackage extends FigNodeModelElement {
      */
     public Object clone() {
         FigPackage figClone = (FigPackage) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
         figClone.setStereotypeFig((FigText) it.next());
         figClone.setNameFig((FigText) it.next());

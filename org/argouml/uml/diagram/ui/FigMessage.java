@@ -127,7 +127,7 @@ public class FigMessage extends FigNodeModelElement {
      */
     public Object clone() {
 	FigMessage figClone = (FigMessage) super.clone();
-	Iterator it = figClone.getFigs(null).iterator();
+	Iterator it = figClone.getFigs().iterator();
 	figClone.setNameFig((FigText) it.next());
 	figClone.figPoly = (FigPoly) it.next();
 	//figClone._polygon = (Polygon) _polygon.clone();

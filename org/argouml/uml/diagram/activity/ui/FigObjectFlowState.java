@@ -154,7 +154,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     public Object clone() {
         FigObjectFlowState figClone = (FigObjectFlowState) super.clone();
-        Iterator it = figClone.getFigs(null).iterator();
+        Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
         figClone.cover = (FigRect) it.next();
         figClone.classifier = (FigText) it.next();

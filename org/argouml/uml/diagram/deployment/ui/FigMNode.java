@@ -103,7 +103,7 @@ public class FigMNode extends FigNodeModelElement {
      */
     public Object clone() {
 	FigMNode figClone = (FigMNode) super.clone();
-	Iterator it = figClone.getFigs(null).iterator();
+	Iterator it = figClone.getFigs().iterator();
 	figClone.setBigPort((FigRect) it.next());
 	figClone.cover = (FigCube) it.next();
 	figClone.setStereotypeFig((FigText) it.next());
