@@ -104,6 +104,9 @@ public class UMLInitialValueComboBox extends JComboBox
                 setSelectedItem(init);
                 update();
             }
+            else if (initExpr == null){
+                setSelectedItem(null);// clear residual junk from the combo box.
+            }
         } 
         else if (target instanceof MParameter){
             MExpression initExpr = (MExpression)((MParameter)target).getDefaultValue();
@@ -113,7 +116,7 @@ public class UMLInitialValueComboBox extends JComboBox
                 update();
             }
             else if (initExpr == null){
-                setSelectedItem(null); // clear the value from the combo box.
+                setSelectedItem(null); // clear the previous value from the combo box.
             }
         }
     }
@@ -151,7 +154,7 @@ public class UMLInitialValueComboBox extends JComboBox
         else if(!eventProp.equals("name")){
             update();
         }
-    }
+    } 
 /** updates the diagram. It first has to locate it's target element and then
  *  causes the update to take place so that the diagram stays in synch with
  *  the model. needs-more-work method Parameters are not updated yet
