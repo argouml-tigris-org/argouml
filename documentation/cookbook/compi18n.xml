@@ -294,14 +294,20 @@ do a good job.
 your instance of ArgoUML is attempting to run with: en, es, en_GB,...
 </para>
 	      <para>
-The one you are currently using is shown in the log when ArgoUML starts.
-<!-- Not any more by default regretfully! See issue 2514. -->
-You will have to turn on the logging and 
-search for lines looking like:
+The one you are currently using is shown in the Versions information
+in the about box.
+Help Menu => About ArgoUML Menuitem => Version tab
+just after the Operating System information.
+Search for the text looking like this:
 <programlisting>
 Language: sh
-Country: unknown
+Country: KR
 </programlisting>
+This example means that you have your computer set to
+Swahili as spoken in Korea (I think).
+Notice that the <replaceable>Language:</replaceable> and
+<replaceable>Country:</replaceable> are localized and could
+appear in your language.
 </para>
 	    </listitem>
 	    <listitem>
