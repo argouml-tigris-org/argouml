@@ -24,10 +24,14 @@
 
 package org.argouml.cognitive;
 
-
 /**
- * This is where the class makes the decision
- * to to fire critic.
+ * Posters look at the design material from different view points, since they
+ * have to make different decisions in their evaluation process. A decision is a
+ * unit which describes what kind of decision a given poster supports. E.g. a
+ * designer is interested in making particular decisions, whereas a critic can
+ * support relevant information which help making a particular decision (aka a
+ * decision which lies in the domain specified by this class).
+ * 
  */
 public class Decision {
     ////////////////////////////////////////////////////////////////
@@ -35,8 +39,8 @@ public class Decision {
     /**
      * This is another test.
      */
-    public static final Decision UNSPEC =
-	new Decision("misc.decision.uncategorized", 1);
+    public static final Decision UNSPEC = new Decision(
+            "misc.decision.uncategorized", 1);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -52,13 +56,15 @@ public class Decision {
 
     /**
      * The constructor.
-     *
-     * @param n the (not yet localized) name
-     * @param p the priority
+     * 
+     * @param n
+     *            the (not yet localized) name
+     * @param p
+     *            the priority
      */
     public Decision(String n, int p) {
-	name = Translator.localize(n);
-	priority = p;
+        name = Translator.localize(n);
+        priority = p;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -78,34 +84,46 @@ public class Decision {
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object d2) {
-	if (!(d2 instanceof Decision)) {
-	    return false;
-	}
-	return ((Decision) d2).getName().equals(getName());
+        if (!(d2 instanceof Decision)) {
+            return false;
+        }
+        return ((Decision) d2).getName().equals(getName());
     }
 
     /**
      * @return the localized name
      */
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     /**
-     * @param n the localized name
+     * @param n
+     *            the localized name
      */
-    public void setName(String n) { name = n; }
+    public void setName(String n) {
+        name = n;
+    }
 
     /**
      * @return the priority
      */
-    public int getPriority() { return priority; }
+    public int getPriority() {
+        return priority;
+    }
 
     /**
-     * @param p the priority
+     * @param p
+     *            the priority
      */
-    public void setPriority(int p) { priority = p; }
+    public void setPriority(int p) {
+        priority = p;
+    }
 
     /**
      * @see java.lang.Object#toString()
      */
-    public String toString() { return getName(); }
+    public String toString() {
+        return getName();
+    }
 } /* end class Decision */
