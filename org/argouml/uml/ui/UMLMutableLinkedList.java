@@ -191,13 +191,12 @@ public class UMLMutableLinkedList extends UMLLinkedList {
     /**
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
-    public void mouseReleased(MouseEvent e) {
-        super.mouseReleased(e);
-        if (e.getSource() == this) {
-            if (e.isPopupTrigger()) {
-                getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
-            }
-            e.consume();
+    public void mouseReleased(MouseEvent e) {       
+        if (e.isPopupTrigger()) {
+            getPopupMenu().show(this, e.getX(), e.getY());   
+            e.consume();  
+        } else {
+            super.mouseReleased(e);
         }
     }
 
@@ -205,12 +204,11 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
     */
     public void mousePressed(MouseEvent e) {
-        super.mouseReleased(e);
-        if (e.getSource() == this) {
-            if (e.isPopupTrigger()) {
-                getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
-            }
-            e.consume();
+        if (e.isPopupTrigger()) {
+            getPopupMenu().show(this, e.getX(), e.getY());    
+            e.consume(); 
+        } else {
+            super.mousePressed(e);
         }
     }
     /**
@@ -243,6 +241,18 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      */
     public void setDeleteAction(AbstractActionRemoveElement deleteAction) {
         _deleteAction = deleteAction;
+    }
+
+    /**
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
+    public void mouseClicked(MouseEvent e) {
+        if (e.isPopupTrigger()) {
+            getPopupMenu().show(this, e.getX(), e.getY());    
+            e.consume(); 
+        } else {
+            super.mouseClicked(e);
+        }
     }
 
 }

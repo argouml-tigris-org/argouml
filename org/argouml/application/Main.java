@@ -286,9 +286,9 @@ public class Main {
 
         pb.setVisible(true);
         Object model = p.getUserDefinedModels().elementAt(0);
-        Object diag = p.getDiagrams().elementAt(0);
+        Object diag = p.getDiagrams().elementAt(0);       
         pb.getNavigatorPane().setSelection(model, diag);
-
+            
         st.mark("close splash");
         if (doSplash) {
             SplashScreen splash = pb.getSplashScreen();
@@ -298,7 +298,6 @@ public class Main {
         }
 
         st.mark("start critics");
-
         Runnable startCritics = new StartCritics();
         Main.addPostLoadAction(startCritics);
 

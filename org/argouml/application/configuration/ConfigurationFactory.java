@@ -23,11 +23,6 @@
 
 
 package org.argouml.application.configuration;
-import org.argouml.application.api.*;
-import org.argouml.kernel.*;
-import java.io.*;
-import java.util.*;
-import java.net.*;
 
 /** A factory object that provides configuration information.
  * 

@@ -134,7 +134,7 @@ public class NavigatorPane
     extends JPanel
     implements ItemListener, PropertyChangeListener, QuadrantPanel, MElementListener {
 
-    protected static Category cat = Category.getInstance(NavigatorPane.class);
+    protected transient Category cat = Category.getInstance(this.getClass());
 
     public static final int MAX_HISTORY = 10;
 
