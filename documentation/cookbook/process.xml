@@ -709,16 +709,19 @@ dependant on the well functioning of these products.
 This are products like GEF, NS-UML, ocl, log4j, xerces, jre, ...
 </para>
       <para>
-Occasionally a bug found in ArgoUML is found to be a problem in one
+Occasionally a problem found in ArgoUML is found to be a problem in one
 of these subproducts and cannot or is extremely complicated to fix
 within ArgoUML.
 </para>
       <para>
-If this happens this is the way to register that Issue in Issuezilla.
+If this happens this is the way to handle this problem.
 </para>
       <para>
 This can be performed by any member of the project (any role).
-There might be special skills involved depending on the nature of the Issue.
+There might be special skills involved depending on the nature of the problem.
+In this description "issue" means a issue in issuezilla,
+"bug report" means a bug report in some other project,
+and "problem" denotes the conceptual problem.
 </para>
       <para>
 Do the following:
@@ -726,73 +729,88 @@ Do the following:
       <orderedlist>
         <listitem>
           <para>
-During your examination of an issue you find that it is a problem
-in one of the ArgoUML subproducts (GEF, NS-UML, ocl, jre, ...).
+During your examination of an issue you find that the problem
+is in one of the ArgoUML subproducts (GEF, NS-UML, ocl, jre, ...).
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Make sure that the issue is assigned to you.
 </para>
 	</listitem>
 	<listitem>
 	  <para>
 Write a comment in the issue stating which one of the subprojects
-that is the problem (and what the problem is).
+that has the problem (and what the problem is within that subproject).
 </para>
 	</listitem>
 	<listitem>
 	  <para>
-Post a bug in that subproducts bug reporting tool (or find the bug
-already registered).
+Post a bug report in that subproducts bug reporting tool
+(or find that a bug report already registered).
 </para>
 	  <para>
-I am assuming that there is such a tool for all the subproducts.
-If there isn't for the product in question, then explain the problem
-to the responsible person for this product so that we are sure
-that the problem is communicated.
+I am assuming that there is such a tool for the subproduct in question.
+If there isn't,
+then make the bug report to the person responsible for this product
+so that we are sure that the problem is communicated.
 </para>
 	</listitem>
 	<listitem>
 	  <para>
-Set the Issue in Issuezilla to RESOLVED/WONTFIX and
+Accept the issue (set it to STARTED) and
 enter the reference from the subproducts bug reporting tool and
-if possible the URL to the bug reporting tool or to the bug in question.
+if possible the URL to the bug reporting tool or to the bug report in question.
+</para>
+	  <para>
+I am assuming that there is a bug reporting tool for the subproducts.
+If there isn't for the product in question,
+then include all communications (both ways) in the issue.
 </para>
 	</listitem>
       </orderedlist>
       <para>
-The person responsible for the sourceing of the subtool in question
-(Currently (December 2002) the subproduct responsible role 
-is not explicitly pointed out 
-but could be anyone that feels that something must be done.)
-does the following for each new release of a subproduct.
+You are now responsible to follow up on 
+the upcoming releases of the subproduct.
+If you don't think that you are the best person for this
+(you are should be since it was you that found that this problem
+is in the subproduct),
+assign the issue to "the right person".
+To follow up you should do the following.
 </para>
       <orderedlist>
 	<listitem>
 	  <para>
-Looks at the new release of that subproduct to see
-if any of the outstanding issues against that subproduct are in fact
-fixed in the release.
+Look at each new release of that subproduct to see if the bug report
+is in fact stated as fixed in that release.
 </para>
 	</listitem>
 	<listitem>
 	  <para>
-If any of the issues are fixed, then he weights together
-the importance of the issues fixed,
+If the bug report is fixed, then you weight together 
+the importance of the problem, 
+other bug reports that are also problems in ArgoUML 
+that are solved in that release,
 the amount of work needed to fit the new version of the subproduct
 instead of the old one,
-the planned releases of the subproduct with other issues promised
-to be fixed,
+the planned releases of the subproduct with promises to
+solve other bug reports,
 and
 the current release plan of ArgoUML.
-From this he decides wether it is time to do the update of 
+From this you decide wether it is time to do the update of 
 the subproduct within ArgoUML or to wait.
 </para>
 	</listitem>
 	<listitem>
 	  <para>
-If he decides that it is time to update,
-he adds the new version of the subproduct,
-does all the needed work within ArgoUML,
-tests and commits everything,
-puts the issues indeed fixed in VERIFIED/WONTFIX,
-and also closes the bugs registered in the subproducts bug reporting tool.
+If you decide that it is time to update,
+you assign all issues against that subproduct to you (if not already), 
+then you do the work.
+The work is to add the new version of the subproduct to ArgoUML,
+do all the needed work within ArgoUML to fit the new version,
+test and commit everything,
+put the issues indeed fixed in RESOLVED/FIXED,
+and close the bugs registered in the subproducts bug reporting tool.
 </para>
 	</listitem>
       </orderedlist>
