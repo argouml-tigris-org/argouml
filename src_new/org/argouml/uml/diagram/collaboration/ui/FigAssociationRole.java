@@ -26,15 +26,25 @@ package org.argouml.uml.diagram.collaboration.ui;
 import org.argouml.application.api.Notation;
 import org.argouml.uml.diagram.ui.*;
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.PathConvPercent;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
+
+import java.awt.Graphics;
+import java.util.Iterator;
+import java.util.Vector;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 
 public class FigAssociationRole extends FigAssociation {
   ////////////////////////////////////////////////////////////////
   // constructors
+  
+  	protected FigMessageGroup _messages = new FigMessageGroup();
 
     public FigAssociationRole() {
-      super();
+      super(); // this really is questionable
+      addPathItem(_messages, new PathConvPercent(this, 50, 10));
     }
 
 	/**
@@ -43,7 +53,9 @@ public class FigAssociationRole extends FigAssociation {
 	 * @param lay
 	 */
 	public FigAssociationRole(Object edge, Layer lay) {
-		super(edge, lay);
+		this();
+		setLayer(lay);
+    	setOwner(edge);
 	}
 
     ////////////////////////////////////////////////////////////////
@@ -61,6 +73,93 @@ public class FigAssociationRole extends FigAssociation {
         String asNameStr = Notation.generate(this, ar);
         _name.setText(asNameStr);
     }
+    
+    public void addMessage(FigMessage message) {
+    	_messages.addFig(message);
+    	// damage();
+    	updatePathItemLocations();
+    	_messages.damage();
+    }
 
 } /* end class FigAssociationRole */
+
+class FigMessageGroup extends FigGroup {
+	
+	/**
+	 * Constructor for FigMessageGroup.
+	 */
+	public FigMessageGroup() {
+		super();
+	}
+
+	/**
+	 * Constructor for FigMessageGroup.
+	 * @param figs
+	 */
+	public FigMessageGroup(Vector figs) {
+		super(figs);
+	}
+
+	/**
+	 * @see org.tigris.gef.presentation.Fig#paint(Graphics)
+	 */
+	public void paint(Graphics g) {
+		super.paint(g);
+		updateFigPositions();
+	}
+	
+	protected void updateFigPositions() {
+    	Vector figs = getFigs();
+    	if (!figs.isEmpty()) {
+    		FigMessage first = (FigMessage)figs.get(0);
+    		for (int i = 0; i < figs.size(); i++) {
+    			FigMessage fig = (FigMessage)figs.get(i);
+    			fig.startTrans();
+    			fig.setX(getX());
+    			if (i != 0) {
+    				fig.setY(((FigMessage)figs.get(i-1)).getY() + ((FigMessage)figs.get(i-1)).getHeight() + 5);
+    			} else {
+    				fig.setY(getY());
+    			}
+    			fig.endTrans();
+    		}
+    	}
+    }
+    
+    
+
+	/**
+	 * @see org.tigris.gef.presentation.Fig#calcBounds()
+	 */
+	public void calcBounds() {
+		super.calcBounds();
+		Vector figs = getFigs();
+		Fig last = (Fig)figs.lastElement();
+		Fig first = (Fig)figs.firstElement();
+		// _x = first.getX();
+		// _y = first.getY();
+		_h = last.getY() + last.getHeight() - first.getY();
+		_w = 0;
+		for (int i = 0; i < figs.size(); i++) {
+			Fig fig = (Fig)figs.get(i);
+			if (fig.getWidth() > _w) { 
+				_w = fig.getWidth();
+			}
+		}
+		
+	}
+	
+	
+
+	/**
+	 * @see org.tigris.gef.presentation.FigGroup#addFig(Fig)
+	 */
+	public void addFig(Fig f) {
+		super.addFig(f);
+		updateFigPositions();
+		calcBounds();
+	}
+
+}
+
 

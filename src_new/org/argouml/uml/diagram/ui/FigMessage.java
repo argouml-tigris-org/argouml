@@ -95,8 +95,9 @@ public class FigMessage extends FigNodeModelElement {
     setBounds(r.x, r.y, r.width, r.height);
   }
 
-  public FigMessage(GraphModel gm, Object node) {
+  public FigMessage(GraphModel gm, Layer lay, Object node) {
     this();
+    setLayer(lay);
     setOwner(node);
   }
 
@@ -243,14 +244,7 @@ public class FigMessage extends FigNodeModelElement {
     if (ar != null && lay != null) {
       FigAssociationRole figAssocRole = (FigAssociationRole) lay.presentationFor(ar);
       if (figAssocRole != null) {
-        Collection messages = ar.getMessages();
-        int size=0;
-        if (messages != null) {
-          size = messages.size();
-        }
-        int percent = 15 + size*10;
-        if (percent > 100) percent = 100;
-        figAssocRole.addPathItem(this, new PathConvPercent(figAssocRole, percent, 10));
+      	figAssocRole.addMessage(this);
         figAssocRole.updatePathItemLocations();
         lay.bringToFront(this);
       }
@@ -262,8 +256,9 @@ public class FigMessage extends FigNodeModelElement {
 	 * @see org.tigris.gef.presentation.Fig#delete()
 	 */
 	public void delete() {
+		System.out.println("Figmessage delete");
 		super.delete();
-		
+		remove();
 	}
 
 } /* end class FigMessage */
