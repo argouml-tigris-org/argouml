@@ -273,6 +273,7 @@ public final class PHPDocumentor {
         objDocBlock.disableTag(DocBlock.TAG_TYPE_STATIC);
 
         String sPackageName = NameGenerator.generatePackageName(modelElement);
+
         if (sPackageName != null && sPackageName != "") {
             int iFirstUnderscore = sPackageName.indexOf("_");
             if (iFirstUnderscore == -1) {
@@ -321,11 +322,12 @@ public final class PHPDocumentor {
 
         String sDescription = "";
 
+        // TODO: replace "\" in sFilename with "/"
         if (sFilename != null && sProjectName != null) {
             sDescription += sProjectName + " - " + sFilename + "\n\n";
         }
 
-        sDescription += "$Id$" + "\n\n";
+        sDescription += "$" + "Id" + "$" + "\n\n";
 
         if (sProjectName != null) {
             sDescription += "This file is part of " + sProjectName + ".\n\n";
@@ -498,8 +500,16 @@ public final class PHPDocumentor {
                 if (ModelFacade.isReturn(objParameter)) {
                     Object objReturnType = ModelFacade.getType(objParameter);
                     if (objReturnType != null) {
-                        objDocBlock.setTag(DocBlock.TAG_TYPE_RETURN,
-                                ModelFacade.getName(objReturnType));
+                        String sPackageName = NameGenerator
+                            .generatePackageName(objReturnType);
+                        if (sPackageName != null && sPackageName != "") {
+                            objDocBlock.setTag(DocBlock.TAG_TYPE_RETURN,
+                                    sPackageName + "_"
+                                    + ModelFacade.getName(objReturnType));
+                        } else {
+                            objDocBlock.setTag(DocBlock.TAG_TYPE_RETURN,
+                                    ModelFacade.getName(objReturnType));
+                        }
                     } else {
                         objDocBlock.setTag(DocBlock.TAG_TYPE_RETURN, "mixed");
                     }
@@ -845,13 +855,13 @@ public final class PHPDocumentor {
                 tmTags.put("deprecated", new DeprecatedTag());
                 break;
             case TAG_TYPE_PACKAGE:
-                tmTags.put("package", new DeprecatedTag());
+                tmTags.put("package", new PackageTag());
                 break;
             case TAG_TYPE_PARAM:
                 tmTags.put("param", new ArrayList());
                 break;
             case TAG_TYPE_RETURN:
-                tmTags.put("package", new ReturnTag());
+                tmTags.put("return", new ReturnTag());
                 break;
             case TAG_TYPE_SEE:
                 tmTags.put("see", new SeeTag());
@@ -860,10 +870,10 @@ public final class PHPDocumentor {
                 tmTags.put("since", new SinceTag());
                 break;
             case TAG_TYPE_STATIC:
-                tmTags.put("static", new DeprecatedTag());
+                tmTags.put("static", new StaticTag());
                 break;
             case TAG_TYPE_SUBPACKAGE:
-                tmTags.put("subpackage", new DeprecatedTag());
+                tmTags.put("subpackage", new SubpackageTag());
                 break;
             case TAG_TYPE_VAR:
                 tmTags.put("var", new VarTag());
