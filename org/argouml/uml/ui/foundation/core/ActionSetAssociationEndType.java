@@ -72,7 +72,7 @@ public class ActionSetAssociationEndType extends UMLChangeAction {
                 newClassifier = (MClassifier)o;
             }
         }
-        if (newClassifier != oldClassifier && end != null) {
+        if (newClassifier != oldClassifier && end != null && newClassifier != null) {
             end.setType(newClassifier);
         }
         

@@ -38,17 +38,33 @@ import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLElementOwnershipVisibilityButtonGroup extends UMLVisibilityButtonGroup {
+public abstract class UMLVisibilityButtonGroup extends UMLButtonGroup {
+
+   
+    
+    private JRadioButton _privateButton = 
+        new JRadioButton(Argo.localize("UMLMenu", "checkbox.visibility.private-lc"));
+    private JRadioButton _protectedButton =
+        new JRadioButton(Argo.localize("UMLMenu", "checkbox.visibility.protected-lc"));
+    private JRadioButton _publicButton =
+        new JRadioButton(Argo.localize("UMLMenu", "checkbox.visibility.public-lc"));
         
     /**
      * Constructor for UMLVisibilityButtonGroup.
      * @param container
      */
-    public UMLElementOwnershipVisibilityButtonGroup(UMLUserInterfaceContainer container) {
+    public UMLVisibilityButtonGroup(UMLUserInterfaceContainer container) {
         super(container);
+        setActions();
+        
+        _publicButton.setSelected(true);
+        
+        _publicButton.setMnemonic(KeyEvent.VK_U);
+        _protectedButton.setMnemonic(KeyEvent.VK_O);
+        _privateButton.setMnemonic(KeyEvent.VK_I);
+        
+        
     }
-    
-    
 
     /**
      * @see org.argouml.uml.ui.UMLButtonGroup#buildModel()
@@ -57,26 +73,39 @@ public class UMLElementOwnershipVisibilityButtonGroup extends UMLVisibilityButto
         MVisibilityKind vis = ((MModelElement)getTarget()).getVisibility();
         
         if (vis == MVisibilityKind.PRIVATE) {
-            getPrivateButton().setSelected(true);
+            _privateButton.setSelected(true);
         } else
         if (vis == MVisibilityKind.PROTECTED) {
-            getProtectedButton().setSelected(true);
+            _protectedButton.setSelected(true);
         } else
-            getPublicButton().setSelected(true);
+            _publicButton.setSelected(true);
             
     }
 
     /**
-     * @see org.argouml.uml.ui.foundation.core.UMLVisibilityButtonGroup#setActions()
+     * Returns the privateButton.
+     * @return JRadioButton
      */
-    protected void setActions() {
-        add(getPublicButton(), new ActionSetElementOwnershipVisibility(this));
-        add(getProtectedButton(), new ActionSetElementOwnershipVisibility(this));
-        add(getPrivateButton(), new ActionSetElementOwnershipVisibility(this));
-        
-        getPublicButton().setActionCommand(ActionSetElementOwnershipVisibility.PUBLIC_ACTION_COMMAND);
-        getProtectedButton().setActionCommand(ActionSetElementOwnershipVisibility.PROTECTED_ACTION_COMMAND);
-        getPrivateButton().setActionCommand(ActionSetElementOwnershipVisibility.PRIVATE_ACTION_COMMAND);
+    public JRadioButton getPrivateButton() {
+        return _privateButton;
     }
+
+    /**
+     * Returns the protectedButton.
+     * @return JRadioButton
+     */
+    public JRadioButton getProtectedButton() {
+        return _protectedButton;
+    }
+
+    /**
+     * Returns the publicButton.
+     * @return JRadioButton
+     */
+    public JRadioButton getPublicButton() {
+        return _publicButton;
+    }
+    
+    protected abstract void setActions();
 
 }
