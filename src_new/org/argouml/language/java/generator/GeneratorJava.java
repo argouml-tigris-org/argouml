@@ -220,13 +220,13 @@ implements PluggableNotation, FileGenerator {
     	nameStr = generateName (op.getName());
     }
 
-    if (documented)
-	sb.append('\n');
-    String s = generateConstraintEnrichedDocComment(op,documented,INDENT);
-    if (s != null && s.trim().length() > 0)
-      sb.append(INDENT).append(s);
-
-    sb.append(INDENT);
+    if (documented) {
+		sb.append('\n');
+    	String s = generateConstraintEnrichedDocComment(op,documented,INDENT);
+    	if (s != null && s.trim().length() > 0)
+      		sb.append(INDENT).append(s);
+    	sb.append('\n').append(INDENT);
+    }
     // 2002-07-14
     // Jaap Branderhorst
     // missing concurrency generation
@@ -975,7 +975,7 @@ implements PluggableNotation, FileGenerator {
       StringBuffer sDocComment = new StringBuffer(80);
 
       // Prepare doccomment
-      if (s != null) {
+      if (!(s == null || "".equals(s))) {
         // Just remove closing "*/"
         sDocComment.append(s.substring(0,s.indexOf("*/")+1));
       }
@@ -994,7 +994,6 @@ implements PluggableNotation, FileGenerator {
           //sDocComment += " @element-type unknown";
       }
       sDocComment.append('\n').append(INDENT).append(" */\n");
-
       return sDocComment.toString();
     }
     else {
