@@ -54,6 +54,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.graph.*;
 
 import org.argouml.kernel.Project;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
 import org.argouml.uml.diagram.static_structure.*;
@@ -413,7 +414,8 @@ public class ParserDisplay extends Parser {
     } else {
         multiString = s.substring(0, colonappereance-1).trim();
     }
-    f.setMultiplicity(new MMultiplicity(multiString));
+    f.setMultiplicity(UmlFactory.getFactory().getDataTypes().createMultiplicity(multiString));
+ 
     return s.substring(multiString.length(), s.length());
    }
    
@@ -470,7 +472,8 @@ public class ParserDisplay extends Parser {
                     tagStr = propertyStr.substring(0, propertyStr.indexOf("=")-1);
                     valueStr = propertyStr.substring(propertyStr.indexOf("="+1, propertyStr.length()));
                 }
-                MTaggedValue tag = new MTaggedValueImpl();
+                MTaggedValue tag = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
+ 
                 tag.setTag(tagStr);
                 tag.setValue(valueStr);
                 a.addTaggedValue(tag);
@@ -513,7 +516,7 @@ public class ParserDisplay extends Parser {
                                 tagStr = propertyStr.substring(0, propertyStr.indexOf("=")-1);
                                 valueStr = propertyStr.substring(propertyStr.indexOf("="+1, propertyStr.length()));
                             }
-                            MTaggedValue tag = new MTaggedValueImpl();
+                            MTaggedValue tag = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
                             tag.setTag(tagStr);
                             tag.setValue(valueStr);
                             op.addTaggedValue(tag);
@@ -530,7 +533,7 @@ public class ParserDisplay extends Parser {
   public String parseOutMultiplicity(MFeature f, String s) {
 
     s = s.trim();
-    MMultiplicity multi = new MMultiplicity();
+    MMultiplicity multi = UmlFactory.getFactory().getDataTypes().createMultiplicity();
     boolean startMulti = false; // start of a multiplicity
     boolean inRange = false;    // true if we are in a range
     boolean formerNumber = false;   // true if last char was a number
@@ -782,9 +785,7 @@ public class ParserDisplay extends Parser {
             s = s.substring(equalsIndex, s.length());
             String initExprStr = s.substring(s.indexOf("=")+1, (braceIndex <0)?
                 s.length():s.indexOf("{"));
-            MExpression initExpr = 
-                new MExpression(Notation.getDefaultNotation().toString(),
-                    initExprStr);
+            MExpression initExpr = UmlFactory.getFactory().getDataTypes().createExpression(Notation.getDefaultNotation().toString(), initExprStr);
             attr.setInitialValue(initExpr);
             return s.substring(initExprStr.length(), s.length());
         }
@@ -826,7 +827,8 @@ public class ParserDisplay extends Parser {
   /** Parse a string of the form: "range, ...", where range is of the
    *  form "lower..upper", or "integer" */
   public MMultiplicity parseMultiplicity(String s) {
-	  return new MMultiplicity(s);
+	  return UmlFactory.getFactory().getDataTypes().createMultiplicity(s);
+ 
   }
 
 
@@ -846,7 +848,10 @@ public class ParserDisplay extends Parser {
 	  if (line.startsWith("entry")) parseStateEntyAction(st, line);
 	  else if (line.startsWith("exit")) parseStateExitAction(st, line);
 	  else {
-	      MTransition t = parseTransition(new MTransitionImpl(), line);
+	      MTransition t = parseTransition(
+	          UmlFactory.getFactory().getStateMachines().createTransition(),
+                  line);
+ 
 
 	      if (t == null) continue;
 	      //System.out.println("just parsed:" + GeneratorDisplay.Generate(t));
@@ -1054,25 +1059,30 @@ public class ParserDisplay extends Parser {
   }
 
   public MAction parseAction(String s) {
-	  MCallAction a = new MCallActionImpl();
-	  a.setScript(new MActionExpression("Java",s));
+	  MCallAction a = UmlFactory.getFactory().getCommonBehavior().createCallAction();
+ 
+	  a.setScript(UmlFactory.getFactory().getDataTypes().createActionExpression("Java",s));
+ 
 	  return a;
   }
 
     /*  public MActionSequence parseActions(String s) {
-    MActionSequence as = new MActionSequenceImpl();
+    MActionSequence as = UmlFactory.getFactory().getCommonBehavior().createActionSequence(s);
+ 
     as.setName(s);
     return as;
     }*/
 
   public MGuard parseGuard(String s) {
-	MGuard g = new MGuardImpl();
-	g.setExpression(new MBooleanExpression("Java",s));
+	MGuard g = UmlFactory.getFactory().getStateMachines().createGuard();
+	g.setExpression(UmlFactory.getFactory().getDataTypes().createBooleanExpression("Java",s));
+ 
         return g;
   }
 
   public MEvent parseEvent(String s) {
-	MCallEvent ce = new MCallEventImpl();
+	MCallEvent ce = UmlFactory.getFactory().getStateMachines().createCallEvent();
+ 
 	ce.setName(s);
 	ce.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
         return ce;

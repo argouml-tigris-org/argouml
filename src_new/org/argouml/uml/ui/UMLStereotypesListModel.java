@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,6 +23,10 @@
 
 
 package org.argouml.uml.ui;
+
+import org.argouml.model.uml.UmlFactory;
+
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.foundation.core.*;
 
@@ -57,7 +61,7 @@ public class UMLStereotypesListModel extends UMLOwnedElementListModel  {
     }
 
     public MModelElement createModelElement() {
-        return new MStereotypeImpl();
+        return UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
     }
     
 }

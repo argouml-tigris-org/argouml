@@ -1,4 +1,4 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,14 +24,19 @@
 package org.argouml.uml.ui;
 
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.state.ui.*;
+
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
+
 import java.awt.event.*;
-import javax.swing.JOptionPane;
 import java.beans.*;
+
+import javax.swing.JOptionPane;
 
 
 public class ActionStateDiagram extends UMLChangeAction {
@@ -66,10 +71,10 @@ public class ActionStateDiagram extends UMLChangeAction {
 	    MClass cls = (MClass) contextObj;
 	    String contextNameStr = cls.getName();
 	    if (contextNameStr == null) contextNameStr = "untitled";
-	    MStateMachine sm = new MStateMachineImpl();
+	    MStateMachine sm = UmlFactory.getFactory().getStateMachines().createStateMachine();
 	    sm.setUUID(UUIDManager.SINGLETON.getNewUUID());
 	    sm.setName(contextNameStr + "StateMachine");
-	    MCompositeState cs = new MCompositeStateImpl();
+	    MCompositeState cs = UmlFactory.getFactory().getStateMachines().createCompositeState();
 	    cs.setName("state_machine_top");
 	    //cs.setNamespace(cls);
 	    sm.setNamespace(cls);

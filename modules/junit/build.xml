@@ -152,7 +152,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="module.src.dir" value="${module.root}/src"/>
     <property name="argo.lib.dir" value="${argo.root}/lib"/>
     <property name="module.lib.dir" value="${module.root}/lib"/>
-    <property name="classpath" value="${argo.lib.dir}/nsuml.jar:${argo.lib.dir}/ocl-argo.jar:${argo.lib.dir}/gef.jar:${argo.lib.dir}/antlrall.jar:${argo.lib.dir}/log4j.jar:${argo.lib.dir}/junit.jar"/> 
+    <property name="classpath" value="${argo.lib.dir}/nsuml.jar:${argo.lib.dir}/ocl-argo.jar:${argo.lib.dir}/gef-0.9.6.jar:${argo.lib.dir}/antlrall.jar:${argo.lib.dir}/log4j.jar:${argo.lib.dir}/junit.jar"/> 
     <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
@@ -164,6 +164,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="module.build.dir" value="${module.root}/build"/>
     <property name="module.build.src" value="${module.src.dir}"/>
     <property name="module.build.dest" value="${module.build.dir}/classes"/>
+    <property name="module.reports" value="${module.build.dir}/reports"/>
     <property name="argo.build.dest" value="${argo.build.dir}/classes"/>
 
     <property name="argo.jarfile"
@@ -244,7 +245,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
                 <include name="ocl-argo.jar" />
                 <include name="antlrall.jar" />
                 <include name="log4j.jar" />
-                <include name="gef.jar" />
+                <include name="gef-0.9.6.jar" />
             </fileset>
             <fileset dir="${module.lib.dir}">
                 <include name="*.jar" />
@@ -284,7 +285,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
                 <include name="ocl-argo.jar" />
                 <include name="antlrall.jar" />
                 <include name="log4j.jar" />
-                <include name="gef.jar" />
+                <include name="gef-0.9.6.jar" />
             </fileset>
             <fileset dir="${module.lib.dir}">
                 <include name="*.jar" />
@@ -317,6 +318,108 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
       <fileset dir="${module.lib.dir}" includes="junit.jar"/>
       <fileset dir="${module.build.dir}" includes="${module.jarfile.name}"/>
     </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Initialize for the junit tests.                                     -->
+  <!-- =================================================================== -->
+  <target name="junit-init" depends="init">
+
+     <property name="011202.xml" value="testmodels/01-12-02.xml"/>
+     <property name="991015.dtd" value="testmodels/Model.dtd"/>
+
+     <available file="${011202.xml}" property="011202.xml.available"/>
+     <available file="${991015.dtd}" property="991015.dtd.available"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Get the uml 1.3 dtd if necessary                                    -->
+  <!-- =================================================================== -->
+  <target name="junit-get-991015-dtd" depends="junit-init"
+          unless="991015.dtd.available">
+
+    <get src="http://cgi.omg.org/docs/ad/99-10-15.dtd"
+         dest="${991015.dtd}"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+     <!-- Check availability again - if the get worked, it will be there. -->
+     <available file="${991015.dtd}" property="991015.dtd.available"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Get the uml 1.3 model if necessary                                  -->
+  <!-- =================================================================== -->
+  <target name="junit-get-011202-xml"
+          depends="junit-init, junit-get-991015-dtd"
+          unless="011202.xml.available">
+
+    <get src="http://cgi.omg.org/docs/ad/01-12-02.xml"
+         dest="${011202.xml}"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+     <!-- Check availability again - if the get worked, it will be there. -->
+     <available file="${011202.xml}" property="011202.xml.available"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepare for the junit tests.                                        -->
+  <!-- =================================================================== -->
+  <target name="junit-setup" depends="junit-get-011202-xml,
+                                      junit-get-991015-dtd"/>
+
+  <!-- =================================================================== -->
+  <!-- Run the junit tests.                                                -->
+  <!-- =================================================================== -->
+  <target name="test-model" depends="compile,junit-setup">
+    <mkdir dir="${module.reports}/junit/output"/>
+    <delete>
+        <fileset dir="${module.reports}/junit/output">
+           <include name="TEST-*.xml"/>
+           <include name="TEST-*.txt"/>
+        </fileset>
+    </delete>
+
+    <!-- ant 1.4 uses printsummary="true"                          -->
+    <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
+    <!-- This should never be committed as "withOutAndErr", but    -->
+    <!-- this comment is in case it gets committed by accident.    -->
+
+    <!-- TODO:  This should be contained in default.properties     -->
+    <!--        and overridable in build.properties so that        -->
+    <!--        individual users can set as wanted.                -->
+    <!--        That is part of issue 579.                         -->
+
+    <junit printsummary="true"
+           haltonfailure="false"
+           errorproperty="junit.failure"
+           fork="yes">
+	<sysproperty key="test.model.uml13" value="${011202.xml}"/>
+        <classpath>
+            <pathelement location="${module.build.dest}"/>
+            <fileset dir="${argo.build.dir}">
+                <include name="argouml.jar" />
+                <include name="nsuml.jar" />
+                <include name="ocl-argo.jar" />
+                <include name="antlrall.jar" />
+                <include name="log4j.jar" />
+                <include name="gef-0.9.6.jar" />
+            </fileset>
+        </classpath>
+        <formatter type="plain"/>
+      <batchtest todir="${module.reports}/junit/output">
+        <fileset dir="${module.build.src}">
+          <include name="org/argouml/model/**/Test*.java" />
+        </fileset>
+      </batchtest>
+      <test name="org.argouml.model.uml.OptionalTestAgainstUmlModel"
+            todir="${module.reports}/junit/output"
+            if="011202.xml.available">
+      </test>
+    </junit>
   </target>
 
 </project>

@@ -24,7 +24,6 @@
 // File: Project.java
 // Classes: Project
 // Original Author: not known
-// $Id$
 
 // 16 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to remove
 // include and extend relationships when deleting a use case.
@@ -65,6 +64,8 @@ import org.argouml.cognitive.ui.*;
 import org.argouml.cognitive.critics.*;
 import org.argouml.cognitive.critics.ui.*;
 import org.argouml.cognitive.checklist.*;
+import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.*;
@@ -213,6 +214,7 @@ public class Project implements java.io.Serializable {
             p = new Project();
             XMIParser.SINGLETON.readModels(p,url);
             MModel model = XMIParser.SINGLETON.getCurModel();
+            UmlHelper.addListenersToModel(model);
             p._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();
             try {
                 p.addMember(model);
@@ -302,6 +304,15 @@ public class Project implements java.io.Serializable {
         InputSource source = new InputSource(zis);
         source.setEncoding("UTF-8");
         mmodel = xmiReader.parse(new InputSource(zis));
+
+        // This should probably be inside xmiReader.parse
+        // but there is another place in this source
+        // where XMIReader is used, but it appears to be
+        // the NSUML XMIReader.  When Argo XMIReader is used
+        // consistently, it can be responsible for loading
+        // the listener.  Until then, do it here.
+        UmlHelper.addListenersToModel(mmodel);
+
         // if (mmodel != null && !xmiReader.getErrors()) {
             try {
                 addMember(mmodel);
@@ -417,13 +428,15 @@ public class Project implements java.io.Serializable {
         // 	try {
         // 		XMIReader reader = new XMIReader();
         // 		MModel model  = reader.parse(new org.xml.sax.InputSource("java.xmi"));
+        //              UmlHelper.addListenersToModel(model);
         // 		model.setName("Java standards");
         // 		p.addMember(model);
         // 	} catch (Exception ex) {
         // 		ex.printStackTrace();
         // 	}
 
-        MModel m1 = new MModelImpl();
+        MModel m1 = UmlFactory.getFactory().getModelManagement().createModel();
+
         m1.setUUID(UUIDManager.SINGLETON.getNewUUID());
         m1.setName("untitledModel");
 
@@ -867,7 +880,7 @@ public class Project implements java.io.Serializable {
         cls = (MClassifier) _definedTypes.get(s);
         if (cls == null) {
             System.out.println("new Type defined!");
-            cls = new MClassImpl();
+            cls = UmlFactory.getFactory().getCore().createClass();
             cls.setName(s);
             _definedTypes.put(s, cls);
         }

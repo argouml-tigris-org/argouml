@@ -23,6 +23,8 @@
 
 package org.argouml.uml.reveng.java;
 
+import org.argouml.model.uml.UmlFactory;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 
@@ -90,4 +92,4 @@ class ClassifierContext extends Context
 	}	    
     }
 }
-	
+

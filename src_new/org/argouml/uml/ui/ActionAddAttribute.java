@@ -1,4 +1,4 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 import org.argouml.kernel.*;
 import org.argouml.uml.*;
 import org.argouml.ui.*;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import java.awt.event.*;
 
@@ -38,7 +39,7 @@ public class ActionAddAttribute extends UMLChangeAction {
     public static ActionAddAttribute SINGLETON = new ActionAddAttribute();
 
     // needs-more-work: should be part of java binding or common elements
-    //    public static MDataType INT_TYPE = new MDataTypeImpl();
+    //    public static MDataType INT_TYPE = UmlFactory.getFactory().getCore().createDataType();
     //     static{ INT_TYPE.setName("int"); }
 
 

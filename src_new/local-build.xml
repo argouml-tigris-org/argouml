@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<project name="argouml" default="replace" basedir=".">
+
+  <target name="replace">
+      <replace dir="org/argouml" summary="yes" includes="**/*.java">
+
+<replacefilter token="import org.argouml.model.uml.*;"
+value="import org.argouml.model.uml.UmlFactory;"/>
+
+      </replace>
+  </target>
+
+  <target name="run">
+    <ant antfile="build.xml" target="package"/>
+    <property name="lib.dir" value="../lib"/>
+    <java classname="org.argouml.application.Main" fork="yes">
+       <classpath>
+	  <pathelement location="../build/argouml.jar"/>
+       </classpath>
+       <sysproperty key="log4j.configuration"
+                    value="org/argouml/resource/model.lcf"/>
+    </java>
+  </target>
+
+
+</project>
+

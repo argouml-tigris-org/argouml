@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,6 +32,8 @@
 
 package org.argouml.uml.generator;
 
+import org.argouml.model.uml.UmlFactory;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
@@ -64,7 +66,7 @@ public abstract class Parser {
 
 
   public MExpression parseExpression(String s) {
-    return new MExpression("Java", s);
+    return UmlFactory.getFactory().getDataTypes().createExpression("Java", s);
   }
 
   public String parseName(String s) {

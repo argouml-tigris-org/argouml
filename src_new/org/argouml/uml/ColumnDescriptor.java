@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,7 @@ package org.argouml.uml;
 import java.util.*;
 import java.beans.*;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -39,6 +40,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.graph.*;
 
 import org.argouml.kernel.Project;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.static_structure.*;
@@ -238,7 +240,7 @@ class ColumnStereotype extends ColumnDescriptor {
     if (!(target instanceof MModelElement)) return;
     if (!(value instanceof String)) return;
 	String stereoName = (String) value;
-	MStereotype s = new MStereotypeImpl();
+	MStereotype s = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
 	s.setName(stereoName);
 	((MModelElement) target).setStereotype(s);
   }
@@ -908,7 +910,7 @@ class ColumnReturn extends ColumnDescriptor {
     Project p = pb.getProject();
     MClassifier rt = p.findType(s);
     ParserDisplay pd = ParserDisplay.SINGLETON;
-        MParameter rp = MMUtil.SINGLETON.buildParameter();
+	MParameter rp = UmlFactory.getFactory().getCore().createParameter();
 	rp.setType(rt);
 	MMUtil.SINGLETON.setReturnParameter(op, rp);
   }
@@ -1141,7 +1143,7 @@ class ColumnBaseForObject extends ColumnDescriptor {
     if (!(value instanceof String)) return;
     MObject tt = (MObject) target;
     String _value = (String) value;
-    MClass classifier = new MClassImpl(); 
+    MClass classifier = UmlFactory.getFactory().getCore().createClass(); 
     Collection col = tt.getClassifiers();
     if ((col != null) && (col.size()>0)) { 
       Iterator itcol = col.iterator(); 
@@ -1215,7 +1217,7 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
     if (!(value instanceof String)) return;
     MComponentInstance tt = (MComponentInstance) target;
     String _value = (String) value;
-    MComponent classifier = new MComponentImpl(); 
+    MComponent classifier = UmlFactory.getFactory().getCore().createComponent(); 
     Collection col = tt.getClassifiers();
     if ((col != null) && (col.size()>0)) { 
       Iterator itcol = col.iterator(); 
@@ -1290,7 +1292,7 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
     if (!(value instanceof String)) return;
     MNodeInstance tt = (MNodeInstance) target;
     String _value = (String) value;
-    MNode classifier = new MNodeImpl(); 
+    MNode classifier = UmlFactory.getFactory().getCore().createNode(); 
     Collection col = tt.getClassifiers();
     if ((col != null) && (col.size()>0)) { 
       Iterator itcol = col.iterator(); 

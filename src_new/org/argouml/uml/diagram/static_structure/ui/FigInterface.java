@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,6 +30,7 @@ import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
@@ -45,6 +46,7 @@ import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.model.uml.UmlFactory;
 
 /** Class to display graphics for a UML Interface in a diagram. */
 
@@ -78,7 +80,7 @@ public class FigInterface extends FigNodeModelElement {
    *   diagram. Not clear why it is public, or even why it is an instance
    *   variable (rather than local to the method).</p>
    */
-  public MElementResidence resident = new MElementResidenceImpl();
+  public MElementResidence resident = UmlFactory.getFactory().getCore().createElementResidence();
 
   /**
    * <p>Text highlighted by mouse actions on the diagram.</p>

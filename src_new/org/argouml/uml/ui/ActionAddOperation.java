@@ -1,4 +1,4 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ import org.argouml.uml.*;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.presentation.FigNode;
 import org.argouml.ui.*;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import java.awt.event.*;
 import java.util.Iterator;
@@ -42,7 +43,7 @@ public class ActionAddOperation extends UMLChangeAction {
     public static ActionAddOperation SINGLETON = new ActionAddOperation();
 
     // needs-more-work: should be part of java binding or common elements
-    //     public static MDataType VOID_TYPE = new MDataTypeImpl();
+    //     public static MDataType VOID_TYPE = UmlFactory.getFactory().getCore().createDataType();
     //     static { VOID_TYPE.setName("void"); }
 
 
