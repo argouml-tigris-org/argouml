@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,6 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.*;
 import org.argouml.uml.generator.*;
 import org.argouml.application.api.*;
@@ -77,12 +78,12 @@ public class UMLInitialValueComboBox extends JComboBox
                 String item = (String) getSelectedItem();
                 Object target = _container.getTarget();
                 if (target instanceof MAttribute){
-                    MExpression itemExpr = new MExpression("Java", item);
+                    MExpression itemExpr = UmlFactory.getFactory().getDataTypes().createExpression("Java", item);
                     ((MAttribute)target).setInitialValue(itemExpr);
                     update();
                 }
                 else if (target instanceof MParameter){
-                    MExpression itemExpr = new MExpression("Java", item);
+                    MExpression itemExpr = UmlFactory.getFactory().getDataTypes().createExpression("Java", item);
                     ((MParameter)target).setDefaultValue(itemExpr);
                     update();
                 }

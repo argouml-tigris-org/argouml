@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,6 +35,7 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
@@ -218,7 +219,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         // Set the condition body.
 
-        ((MExtend) target).setCondition(new MBooleanExpression(null,condBody));
+        ((MExtend) target).setCondition(UmlFactory.getFactory().getDataTypes().createBooleanExpression(null,condBody));
     }
 
 

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,9 @@ import java.beans.*;
 
 import org.argouml.application.api.*;
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.model.uml.UmlFactory;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
@@ -66,7 +68,7 @@ public class FigInclude extends FigEdgeModelElement {
      *   the label for the include relationship.</p>
      */
 
-    private static final MStereotype _INCLUDE_LABEL = new MStereotypeImpl();
+    private static final MStereotype _INCLUDE_LABEL = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
 
 
     ///////////////////////////////////////////////////////////////////////////

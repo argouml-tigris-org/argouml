@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,13 +23,18 @@
 
 
 package org.argouml.uml.ui;
-import ru.novosoft.uml.*;
+
+import org.argouml.model.uml.UmlFactory;
+
 import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-import java.util.*;
+
 import java.awt.*;
 import java.lang.reflect.*;
+import java.util.*;
+
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
 
 /**
  *   This class implements a list model for the subpackages of a package.
@@ -68,7 +73,7 @@ public class UMLPackagesListModel extends UMLOwnedElementListModel  {
     }
 
     public MModelElement createModelElement() {
-        return new MPackageImpl();
+        return UmlFactory.getFactory().getModelManagement().createPackage();
     }
     
 }

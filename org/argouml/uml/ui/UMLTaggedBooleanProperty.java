@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,14 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+
+import org.argouml.model.uml.UmlFactory;
+
 import java.lang.reflect.*;
+import java.util.*;
+
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
-import java.util.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
@@ -63,7 +67,7 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
             }
                 
             if(!found) {
-                 MTaggedValue taggedValue = new MTaggedValueImpl();
+                 MTaggedValue taggedValue = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
                  taggedValue.setTag(_tagName);
                  if(newState) {
                       taggedValue.setValue("true");

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,6 +41,8 @@
  *
  */
 package org.argouml.language.java;
+
+import org.argouml.model.uml.UmlFactory;
 
 import java.io.Serializable;
 
@@ -147,9 +149,9 @@ public class Token implements Serializable {
 	}
     }
     
-    public static class MExpression extends Token {
+    public static class TokExpression extends Token {
 
-	MExpression(String representation, int scanValue) {
+	TokExpression(String representation, int scanValue) {
 	    super(representation, scanValue);
 	}
     }
@@ -360,17 +362,17 @@ public class Token implements Serializable {
     public static final Token BOOLEAN =     new Type(JavaConstants.opNames[JavaConstants.BOOLEAN],
 						     JavaConstants.BOOLEAN);
     /*
-     * MExpression keywords
+     * TokExpression keywords
      */
-    public static final Token TRUE =        new MExpression(JavaConstants.opNames[JavaConstants.TRUE],
+    public static final Token TRUE =        new TokExpression(JavaConstants.opNames[JavaConstants.TRUE],
 							   JavaConstants.TRUE);
-    public static final Token FALSE =       new MExpression(JavaConstants.opNames[JavaConstants.FALSE],
+    public static final Token FALSE =       new TokExpression(JavaConstants.opNames[JavaConstants.FALSE],
 							   JavaConstants.FALSE);
-    public static final Token THIS =        new MExpression(JavaConstants.opNames[JavaConstants.THIS],
+    public static final Token THIS =        new TokExpression(JavaConstants.opNames[JavaConstants.THIS],
 							   JavaConstants.THIS);
-    public static final Token SUPER =       new MExpression(JavaConstants.opNames[JavaConstants.SUPER],
+    public static final Token SUPER =       new TokExpression(JavaConstants.opNames[JavaConstants.SUPER],
 							   JavaConstants.SUPER);
-    public static final Token NULL =        new MExpression(JavaConstants.opNames[JavaConstants.NULL],
+    public static final Token NULL =        new TokExpression(JavaConstants.opNames[JavaConstants.NULL],
 							   JavaConstants.NULL);
     /*
      * Statement keywords
