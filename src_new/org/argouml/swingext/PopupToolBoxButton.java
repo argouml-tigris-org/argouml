@@ -7,16 +7,20 @@
 package org.argouml.swingext;
 
 import javax.swing.Action;
+import javax.swing.ButtonModel;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.LayoutManager2;
 import java.awt.GridLayout;
@@ -29,32 +33,50 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-/**
- *
- * @author  Bob Tarling
+import java.io.Serializable;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+
+/** An extension of JButton to which alternative actions can be added.
+ * The button to trigger these actions become available when a
+ * dropdown icon is pressed on this button.
+ * @author Bob Tarling
  */
 public class PopupToolBoxButton extends JButton {
 
     private JLabel _arrowLabel;
     private JButton _button;
     private ToolBox _toolBox;
+    private DropDownIcon standardIcon;
+    private DropDownIcon rolloverIcon;
+    private Insets _borderInsets;
     
-    /** Creates a new instance of PopupToolbox */
+    /** Creates a new instance of PopupToolbox
+     * @param a The default action when pressing this button
+     * @param rows The number of rows of buttons to display in the popup toolbox
+     * @param cols The number of columns of buttons to display in the popup toolbox
+     */
     public PopupToolBoxButton(Action a, int rows, int cols) {
         super(a);
         _toolBox = new ToolBox(rows, cols);
         setAction(a);
-        setLayout(new MyLayout());
         
+        _borderInsets = _button.getBorder().getBorderInsets(this);
+
+        setLayout(new MyLayout());
+
         MyMouseListener myMouseListener = new MyMouseListener();
         addMouseMotionListener(myMouseListener);
         addMouseListener(myMouseListener);
     }
     
+    /** Provide a new default action for this button
+     * @param a The new default action
+     */    
     public void setAction(Action a) {
         // Create an invisible button to contain the new action.
         // We can use this button to find out various info for the
-        // current plaf. eg button size.
+        // current plaf (eg preferred button size) so we can emulate
+        // whatever plaf the user is set to.
         _button = new JButton(a);
         String tooltip = _button.getToolTipText();
         if (tooltip == null || tooltip.trim().length() == 0) {
@@ -66,17 +88,21 @@ public class PopupToolBoxButton extends JButton {
         JLabel iconLabel = new JLabel(_button.getIcon());
         
         // Create a label containing a dropdown arrow
-        ArrowIcon arrowIcon = new ArrowIcon(ArrowIcon.SOUTH);
-        arrowIcon.setIconHeight(_button.getHeight());
-        _arrowLabel = new JLabel(arrowIcon);
+        standardIcon = new DropDownIcon(DropDownIcon.STANDARD);
+        standardIcon.setIconHeight(_button.getPreferredSize().height);
+        
+        rolloverIcon = new DropDownIcon(DropDownIcon.ROLLOVER);
+        rolloverIcon.setIconHeight(_button.getPreferredSize().height);
+
+        _arrowLabel = new JLabel(standardIcon);
         
         // Calculate size of arrow label
         Dimension arrowSize = _arrowLabel.getPreferredSize();
         arrowSize.height = iconLabel.getPreferredSize().height;
         _arrowLabel.setPreferredSize(arrowSize);
-        
+    
         // Remove any knowledge of the action to perform from the ancestor
-        // we take control of performing the action and display the icon.
+        // we take control of performing the action and displaying the icon.
         super.setAction(null);
         setIcon(null);
         setText(null);
@@ -108,47 +134,14 @@ public class PopupToolBoxButton extends JButton {
         popup.show(this, 0, getHeight());
     }
 
+    /** Add a new action to appear as a button on the
+     * popup toolbox
+     * @param a The action to be added
+     * @return The button generated to trigger the action
+     */    
     public JButton add(Action a) {
         return _toolBox.add(a);
     }
-
-    // We must override this method otherwise we get a crash in JDK1.4 windows plaf.
-    public Dimension getMinimumSize() {
-        int nComps = getComponentCount();
-        Dimension size = new Dimension(0,0);
-        for (int i = 0 ; i < nComps ; i++) {
-            Component comp = getComponent(i);
-            if (comp.isVisible()) {
-                size.width += comp.getMinimumSize().width;
-                if (comp.getMinimumSize().height > size.height) {
-                    size.height = comp.getMinimumSize().height;
-                }
-            }
-        }
-        Insets insets = getInsets();
-        size.width += insets.left + insets.right;
-        size.height += insets.top + insets.bottom;
-        return size;
-    }
-
-    public Dimension getPreferredSize() {
-        int nComps = getComponentCount();
-        Dimension preferredSize = new Dimension(0,0);
-        for (int i = 0 ; i < nComps ; i++) {
-            Component comp = getComponent(i);
-            if (comp.isVisible()) {
-                preferredSize.width += comp.getPreferredSize().width;
-                if (comp.getPreferredSize().height > preferredSize.height) {
-                    preferredSize.height = comp.getPreferredSize().height;
-                }
-            }
-        }
-        Insets insets = getInsets();
-        preferredSize.width += insets.left + insets.right;
-        preferredSize.height += insets.top + insets.bottom;
-        return preferredSize;
-    }
-        
 
     /**
      *  It would have been easier to put a mouse listener on the arrowlabel
@@ -161,31 +154,36 @@ public class PopupToolBoxButton extends JButton {
         public void mouseDragged(MouseEvent me) {
         }
 
+        /**
+         * If the mouse movement occurs within the PopupToolBoxButton.
+         * If the mouse moves in and out of the area of the button that has the dropdown
+         * then change the icon.
+         */
         public void mouseMoved(MouseEvent me) {
             if (me.getX() >= _arrowLabel.getX() && me.getX() <= _arrowLabel.getX() + _arrowLabel.getWidth() &&
                 me.getY() >= _arrowLabel.getY() && me.getY() <= _arrowLabel.getY() + _arrowLabel.getHeight())
             {
-                // If the mouse moves into the area of the button that has the dropdown
-                // then give the dropdown a rollover effect by giving it a border
-                _arrowLabel.setBorder(new javax.swing.plaf.metal.MetalBorders.Flush3DBorder());
+                _arrowLabel.setIcon(rolloverIcon);
             } else {
                 // Then we we move off take it away.
-                _arrowLabel.setBorder(null);
+                _arrowLabel.setIcon(standardIcon);
             }
-            //setBorder(mainButtonBorder);
         }
 
         /**
-         * Empty method to satisy interface only, there is
-         * no action when mouse enters splitter area
+         * Empty method to satisy interface only, there is no special
+         * action to take place when the mouse first enters the
+         * PopupToolBoxButton area
          */
         public void mouseEntered(MouseEvent me) {
         }
 
+        /**
+         * Be double sure the dropdowns rollover border is removed when we leave the
+         * whole button.
+         */
         public void mouseExited(MouseEvent me) {
-            // Be double sure the dropdowns rollover border is removed when we leave the
-            // whole button.
-            _arrowLabel.setBorder(null);
+            _arrowLabel.setIcon(standardIcon);
         }
         
         public void mouseClicked(MouseEvent me) {
@@ -218,7 +216,7 @@ public class PopupToolBoxButton extends JButton {
                 if (comp != null && comp.isVisible()) {
                     comp.setLocation(loc);
                     comp.setSize(comp.getPreferredSize());
-                    loc.x += comp.getPreferredSize().width;
+                    loc.x += comp.getPreferredSize().width + insets.left;
                 }
             }
         }
@@ -233,45 +231,49 @@ public class PopupToolBoxButton extends JButton {
         }
 
         public Dimension preferredLayoutSize(Container parent) {
+            Insets insets = parent.getInsets();
             int nComps = parent.getComponentCount();
             Dimension preferredSize = new Dimension(0,0);
-            for (int i = 0 ; i < nComps ; i++) {
+            for (int i = 0 ; i < nComps ; ++i) {
                 Component comp = parent.getComponent(i);
                 if (comp.isVisible()) {
-                    preferredSize.width += comp.getPreferredSize().width;
+                    preferredSize.width += comp.getPreferredSize().width + insets.left;
                     if (comp.getPreferredSize().height > preferredSize.height) {
                         preferredSize.height = comp.getPreferredSize().height;
                     }
                 }
             }
-            Insets insets = parent.getInsets();
-            preferredSize.width += insets.left + insets.right;
-            preferredSize.height += insets.top + insets.bottom;
-            return preferredSize;
+            
+            return addInsets(preferredSize, insets);
         }
 
         public Dimension minimumLayoutSize(Container parent) {
+            Insets insets = parent.getInsets();
             int nComps = parent.getComponentCount();
             Dimension size = new Dimension(0,0);
-            for (int i = 0 ; i < nComps ; i++) {
+            for (int i = 0 ; i < nComps ; ++i) {
                 Component comp = parent.getComponent(i);
                 if (comp.isVisible()) {
-                    size.width += comp.getMinimumSize().width;
+                    size.width += comp.getMinimumSize().width + insets.left;
                     if (comp.getMinimumSize().height > size.height) {
                         size.height = comp.getMinimumSize().height;
                     }
                 }
             }
-            Insets insets = parent.getInsets();
-            size.width += insets.left + insets.right;
-            size.height += insets.top + insets.bottom;
-            return size;
+            return addInsets(size, insets);
+        }
+        
+        private Dimension addInsets(Dimension dim, Insets insets) {
+            // Don't add the insets width. The left width has already been added
+            // and we don't want the right width as we want the dropdown right
+            // next to the right hand edge.
+            dim.width += 2;
+            dim.height += insets.top + insets.bottom;
+            return dim;
         }
 
         public Dimension maximumLayoutSize(Container parent) {
-            int nComps = parent.getComponentCount();
-            Dimension size = new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE);
-            return size;
+            return preferredLayoutSize(parent);
         }
 
         public void invalidateLayout(Container target) {}
@@ -280,7 +282,145 @@ public class PopupToolBoxButton extends JButton {
 
     }
     
-    public class ToolBox extends Toolbar {
+    
+    
+    
+    /**
+     * A metal look and feel arrow icon that can be created to point to a compass point.
+     *
+     * @author  administrator
+     */
+    private class DropDownIcon implements Icon, Serializable, SwingConstants {
+
+        public static final int ROLLOVER = 0;
+        public static final int STANDARD = 1;
+        
+        // Sprite buffer for the arrow image of the left button
+        private int[][] buffer;
+
+        protected int[][] standardBuffer = {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0},
+            {0, 0, 1, 1, 1, 1, 1, 1, 3, 3, 0},
+            {0, 0, 0, 1, 1, 1, 1, 3, 3, 0, 0},
+            {0, 0, 0, 0, 1, 1, 3, 3, 0, 0, 0},
+            {0, 0, 0, 0, 0, 3, 3, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+        };
+
+        protected int[][] rolloverBuffer = {
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 2, 2, 2, 2, 2, 2, 2, 2, 0, 1},
+            {1, 0, 1, 1, 1, 1, 1, 1, 3, 3, 1},
+            {1, 0, 0, 1, 1, 1, 1, 3, 3, 0, 1},
+            {1, 0, 0, 0, 1, 1, 3, 3, 0, 0, 1},
+            {1, 0, 0, 0, 0, 3, 3, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+        };
+
+        int direction;
+        int iconWidth = 11;
+        int iconHeight = 16;
+        /** Construct an dropdown icon pointing in the given direction
+         * @param direction the direction the arrow will point, this being one of the constants NORTH, SOUTH, EAST, WEST
+         */        
+        public DropDownIcon(int style) {
+            if (style == ROLLOVER) buffer = rolloverBuffer;
+            else buffer = standardBuffer;
+        }
+
+        /** Paints the icon. The top-left corner of the icon is drawn at the point
+         * (x, y) in the coordinate space of the graphics context g. If this icon has
+         * no image observer, this method uses the c component as the observer.
+         *
+         * @param c the component to be used as the observer if this icon has no image observer
+         * @param g the graphics context
+         * @param x the X coordinate of the icon's top-left corner
+         * @param y the Y coordinate of the icon's top-left corner
+         */
+        public void paintIcon(Component c, Graphics g, int x, int y) {
+
+            // Initialize the color array
+            Color[] colors = {
+                    c.getBackground(),
+                    MetalLookAndFeel.getPrimaryControlDarkShadow(),
+                    MetalLookAndFeel.getPrimaryControlInfo(),
+                    MetalLookAndFeel.getPrimaryControlHighlight()};
+
+            // Fill the background first ...
+            g.setColor(c.getBackground());
+            g.fillRect(0, 0, c.getWidth(), c.getHeight());
+
+            // ... then draw the arrow.
+            if (c instanceof ArrowButton) {
+                ArrowButton button = (ArrowButton)c;
+                ButtonModel model = button.getModel();
+
+                if (model.isPressed()) {
+                    // Adjust color mapping for pressed button state
+                    colors[1] = colors[2];
+                }
+            }
+
+            for (int i=0; i<buffer[0].length; i++) {
+                for (int j=0; j<iconHeight; j++) {
+                    if (buffer[j][i] != 0) {
+                        g.setColor(colors[buffer[j][i]]);
+                        g.drawLine(i, j, i, j);
+                    }
+                }
+            }
+        }
+
+        /**
+         * Gets the height of the icon.
+         * @return the height of the icon
+         */ 
+        public int getIconWidth() {
+            return iconWidth;
+        }
+
+
+        /**
+         * Gets the height of the icon.
+         * @return the height of the icon
+         */ 
+        public int getIconHeight() {
+            return iconHeight;
+        }
+
+        public void setIconHeight(int height) {
+            //iconHeight = height;
+        }
+        public void setIconWidth(int width) {
+            //iconWidth = width;
+        }
+    }    
+    
+    
+    
+    
+    
+    // TODO move this into its own class
+    private class ToolBox extends Toolbar {
 
         int _rows;
         int _cols;
