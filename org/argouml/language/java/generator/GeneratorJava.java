@@ -359,7 +359,7 @@ implements PluggableNotation, FileGenerator {
    */
   StringBuffer generateClassifierStart (MClassifier cls) {
     String sClassifierKeyword;
-    if (cls instanceof MClassImpl) sClassifierKeyword = "class";
+    if (cls instanceof MClass) sClassifierKeyword = "class";
     else if (cls instanceof MInterface) sClassifierKeyword = "interface";
     else return null; // actors, use cases etc.
 
@@ -481,7 +481,7 @@ implements PluggableNotation, FileGenerator {
         // else
         // {
         //	String sClassifierKeyword;
-        //	if (cls instanceof MClassImpl)
+        //	if (cls instanceof MClass)
         //		sClassifierKeyword = "class";
         //	else
         //		if (cls instanceof MInterface)
@@ -544,7 +544,7 @@ implements PluggableNotation, FileGenerator {
         if (!strs.isEmpty())
         {
         	sb.append('\n');
-        	if (_verboseDocs && cls instanceof MClassImpl)
+        	if (_verboseDocs && cls instanceof MClass)
         	{
         		sb.append(INDENT).append("// Attributes\n");
         	}
@@ -569,7 +569,7 @@ implements PluggableNotation, FileGenerator {
         if (ends != null)
         {
         	sb.append('\n');
-        	if (_verboseDocs && cls instanceof MClassImpl)
+        	if (_verboseDocs && cls instanceof MClass)
         	{
         		sb.append(INDENT).append("// Associations\n");
         	}
@@ -618,7 +618,7 @@ implements PluggableNotation, FileGenerator {
         
         		tv = generateTaggedValues((MModelElement) bf);
         
-        		if ((cls instanceof MClassImpl)
+        		if ((cls instanceof MClass)
         			&& (bf instanceof MOperation)
         			&& (!((MOperation) bf).isAbstract()))
         		{
@@ -699,7 +699,7 @@ implements PluggableNotation, FileGenerator {
             if (!strs.isEmpty())
             {
                 sb.append('\n');
-                if (_verboseDocs && cls instanceof MClassImpl)
+                if (_verboseDocs && cls instanceof MClass)
                 {
                     sb.append(INDENT).append("// Attributes\n");
                 }
@@ -730,7 +730,7 @@ implements PluggableNotation, FileGenerator {
             if (!ends.isEmpty())
             {
                 sb.append('\n');
-                if (_verboseDocs && cls instanceof MClassImpl)
+                if (_verboseDocs && cls instanceof MClass)
                 {
                     sb.append(INDENT).append("// Associations\n");
                 }
@@ -779,7 +779,7 @@ implements PluggableNotation, FileGenerator {
 
                     tv = generateTaggedValues((MModelElement) bf);
 
-                    if ((cls instanceof MClassImpl)
+                    if ((cls instanceof MClass)
                         && (bf instanceof MOperation)
                         && (!((MOperation) bf).isAbstract()))
                     {

@@ -233,7 +233,7 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
     if (_target instanceof MElement) {
       MModelElement e = (MModelElement) _target;
       String ocl = "";
-      if (e instanceof MElementImpl) ocl = ((MElementImpl)e).getUMLClassName();
+      if (e instanceof MElement) ocl = ((MElementImpl)e).getUMLClassName();
       targetName = e.getName();
       if (targetName.equals("")) targetName = "(anon " + ocl + ")";
     }

@@ -53,13 +53,13 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
   /** Return all ports on node or edge */
   public Vector getPorts(Object nodeOrEdge) {
     Vector res = new Vector();  //wasteful!
-    if (nodeOrEdge instanceof MNodeImpl) res.addElement(nodeOrEdge);
-    if (nodeOrEdge instanceof MNodeInstanceImpl) res.addElement(nodeOrEdge);
-    if (nodeOrEdge instanceof MComponentImpl) res.addElement(nodeOrEdge);    
-    if (nodeOrEdge instanceof MComponentInstanceImpl) res.addElement(nodeOrEdge);
-    if (nodeOrEdge instanceof MClassImpl) res.addElement(nodeOrEdge);    
-    if (nodeOrEdge instanceof MInterfaceImpl) res.addElement(nodeOrEdge);    
-    if (nodeOrEdge instanceof MObjectImpl) res.addElement(nodeOrEdge);
+    if (nodeOrEdge instanceof MNode) res.addElement(nodeOrEdge);
+    if (nodeOrEdge instanceof MNodeInstance) res.addElement(nodeOrEdge);
+    if (nodeOrEdge instanceof MComponent) res.addElement(nodeOrEdge);    
+    if (nodeOrEdge instanceof MComponentInstance) res.addElement(nodeOrEdge);
+    if (nodeOrEdge instanceof MClass) res.addElement(nodeOrEdge);    
+    if (nodeOrEdge instanceof MInterface) res.addElement(nodeOrEdge);    
+    if (nodeOrEdge instanceof MObject) res.addElement(nodeOrEdge);
     return res;
   }
 
@@ -72,7 +72,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
   /** Return all edges going to given port */
   public Vector getInEdges(Object port) {
     Vector res = new Vector(); //wasteful!
-    if (port instanceof MNodeImpl) {
+    if (port instanceof MNode) {
       MNode no = (MNode) port;
       Collection ends = no.getAssociationEnds();
       if (ends == null) return res; // empty Vector
@@ -82,12 +82,12 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	    res.add(aec.getAssociation());
       }
     }
-    if (port instanceof MNodeInstanceImpl) {
+    if (port instanceof MNodeInstance) {
       MNodeInstance noi = (MNodeInstance) port;
       Collection ends = noi.getLinkEnds();
 	    res.addAll(ends);
     }
-    if (port instanceof MComponentImpl) {
+    if (port instanceof MComponent) {
       MComponent co = (MComponent) port;
       Collection ends = co.getAssociationEnds();
       if (ends == null) return res; // empty Vector
@@ -97,12 +97,12 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	    res.addElement(aec.getAssociation());
       }
     }
-    if (port instanceof MComponentInstanceImpl) {
+    if (port instanceof MComponentInstance) {
       MComponentInstance coi = (MComponentInstance) port;
       Collection ends = coi.getLinkEnds();
 	    res.addAll(ends);
     }
-    if (port instanceof MClassImpl) {
+    if (port instanceof MClass) {
       MClass cls = (MClass) port;
       Collection ends = cls.getAssociationEnds();
       if (ends == null) return res; // empty Vector 
@@ -112,7 +112,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	res.addElement(ae.getAssociation());
       }
     }
-    if (port instanceof MInterfaceImpl) {
+    if (port instanceof MInterface) {
       MInterface Intf = (MInterface) port;
       Collection ends = Intf.getAssociationEnds();
       if (ends == null) return res; // empty Vector 
@@ -122,7 +122,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	    res.addElement(ae.getAssociation());
 	  }
     }
-    if (port instanceof MObjectImpl) {
+    if (port instanceof MObject) {
       MInstance clo = (MInstance) port;
       Collection ends = clo.getLinkEnds();
 	    res.addAll(ends);
@@ -317,7 +317,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 			java.lang.Class edgeClass) {
 
     try {
-      if ((fromPort instanceof MNodeImpl) && (toPort instanceof MNodeImpl)) {
+      if ((fromPort instanceof MNode) && (toPort instanceof MNode)) {
 	    MNode fromNo = (MNode) fromPort;
 	    MNode toNo = (MNode) toPort;
 	      if (edgeClass == MAssociationImpl.class) {
@@ -327,7 +327,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	      }
 
       }
-      else if ((fromPort instanceof MNodeInstanceImpl) && (toPort instanceof MNodeInstanceImpl)) {
+      else if ((fromPort instanceof MNodeInstance) && (toPort instanceof MNodeInstance)) {
 	MNodeInstance fromNoI = (MNodeInstance) fromPort;
 	MNodeInstance toNoI = (MNodeInstance) toPort; 
    	
@@ -344,7 +344,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     	}
 
       }
-      else if ((fromPort instanceof MComponentImpl) && (toPort instanceof MComponentImpl)) {
+      else if ((fromPort instanceof MComponent) && (toPort instanceof MComponent)) {
 	MComponent fromCom = (MComponent) fromPort;
 	MComponent toCom = (MComponent) toPort; 
    	
@@ -355,7 +355,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	  }
 
       }
-      else if ((fromPort instanceof MComponentInstanceImpl) && (toPort instanceof MComponentInstanceImpl)) {
+      else if ((fromPort instanceof MComponentInstance) && (toPort instanceof MComponentInstance)) {
 	MComponentInstance fromComI = (MComponentInstance) fromPort;
 	MComponentInstance toComI = (MComponentInstance) toPort; 
    	
@@ -368,7 +368,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
       }
  
-      else if ((fromPort instanceof MClassImpl) && (toPort instanceof MClassImpl)) {
+      else if ((fromPort instanceof MClass) && (toPort instanceof MClass)) {
 	    MClass fromCls = (MClass) fromPort;
 	    MClass toCls = (MClass) toPort;
 
@@ -390,7 +390,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	    }
       }
 
-      else if ((fromPort instanceof MClassImpl) && (toPort instanceof MInterfaceImpl)) {
+      else if ((fromPort instanceof MClass) && (toPort instanceof MInterface)) {
 	    MClass fromCls = (MClass) fromPort;
 	    MInterface toIntf = (MInterface) toPort;
         
@@ -412,7 +412,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	    }
       }
 
-      else if ((fromPort instanceof MInterfaceImpl) && (toPort instanceof MClassImpl)) {
+      else if ((fromPort instanceof MInterface) && (toPort instanceof MClass)) {
     	    MInterface fromIntf = (MInterface) fromPort;
 	    MClass toCls = (MClass) toPort;
 
@@ -435,7 +435,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	    }
       }
 
-      else if ((fromPort instanceof MInterfaceImpl) && (toPort instanceof MInterfaceImpl)) {
+      else if ((fromPort instanceof MInterface) && (toPort instanceof MInterface)) {
 	MInterface fromIntf = (MInterface) fromPort;
 	MInterface toIntf = (MInterface) toPort;
 
@@ -452,7 +452,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	}
       }
 
-      else if ((fromPort instanceof MObjectImpl) && (toPort instanceof MObjectImpl)) {
+      else if ((fromPort instanceof MObject) && (toPort instanceof MObject)) {
 	MObject fromObj = (MObject) fromPort;
 	MObject toObj = (MObject) toPort; 
 

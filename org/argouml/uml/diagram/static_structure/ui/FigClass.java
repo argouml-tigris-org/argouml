@@ -588,7 +588,7 @@ public class FigClass extends FigNodeModelElement {
     // The next if-clause is important for the Deployment-diagram
     // it detects if the enclosing fig is a component, in this case
     // the ImplementationLocation will be set for the owning MClass
-    if (encloser != null && (encloser.getOwner() instanceof MComponentImpl)) {
+    if (encloser != null && (encloser.getOwner() instanceof MComponent)) {
       MComponent component = (MComponent) encloser.getOwner();
       MClass cl = (MClass) getOwner();
       resident.setImplementationLocation(component);

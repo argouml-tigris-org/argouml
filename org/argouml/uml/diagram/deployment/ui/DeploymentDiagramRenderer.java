@@ -20,13 +20,13 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
   /** Return a Fig that can be used to represent the given node */
 
   public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-    if (node instanceof MNodeImpl) return new FigMNode(gm, node);
-    else if (node instanceof MNodeInstanceImpl) return new FigMNodeInstance(gm, node);
-    else if (node instanceof MComponentImpl) return new FigComponent(gm, node); 
-    else if (node instanceof MComponentInstanceImpl) return new FigComponentInstance(gm, node);
-    else if (node instanceof MClassImpl) return new FigClass(gm, node); 
-    else if (node instanceof MInterfaceImpl) return new FigInterface(gm, node); 
-    else if (node instanceof MObjectImpl) return new FigObject(gm, node);
+    if (node instanceof MNode) return new FigMNode(gm, node);
+    else if (node instanceof MNodeInstance) return new FigMNodeInstance(gm, node);
+    else if (node instanceof MComponent) return new FigComponent(gm, node); 
+    else if (node instanceof MComponentInstance) return new FigComponentInstance(gm, node);
+    else if (node instanceof MClass) return new FigClass(gm, node); 
+    else if (node instanceof MInterface) return new FigInterface(gm, node); 
+    else if (node instanceof MObject) return new FigObject(gm, node);
     System.out.println("needs-more-work DeploymentDiagramRenderer getFigNodeFor");
     return null;
   }

@@ -125,7 +125,7 @@ public class TablePanelUMLSequenceDiagram extends TablePanel {
 
   public void objectSelected(Object sel) {
     super.objectSelected(sel);
-    if (sel instanceof MLinkImpl) {
+    if (sel instanceof MLink) {
       _tableModelSeqStimulusByProps.setTarget((MLink)sel);
     }
   }

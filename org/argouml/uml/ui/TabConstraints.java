@@ -532,7 +532,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
     * will be accepted by the constraint tab.
     */
   public void setTarget(Object oTarget) {
-    if (!(oTarget instanceof MModelElementImpl)) {
+    if (!(oTarget instanceof MModelElement)) {
       m_mmeiTarget = null;
       return;
     }

@@ -133,7 +133,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
           if (icon != null) lab.setIcon(icon);
 
           String tip;
-          if (value instanceof MModelElementImpl)
+          if (value instanceof MModelElement)
               tip = ((MModelElementImpl)value).getUMLClassName() + ": " +
                   ((MModelElementImpl)value).getName() + " ";
 	  else 

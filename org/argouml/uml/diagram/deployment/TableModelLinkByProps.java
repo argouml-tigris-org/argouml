@@ -58,7 +58,7 @@ public class TableModelLinkByProps extends TableModelComposite {
     int size = edges.size();
     for (int i = 0; i < size; i++) {
       Object edge = edges.elementAt(i);
-      if (edge instanceof MLinkImpl) res.addElement(edge);
+      if (edge instanceof MLink) res.addElement(edge);
     }
     return res;
   }

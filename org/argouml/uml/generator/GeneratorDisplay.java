@@ -382,7 +382,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   public String generateClassifier(MClassifier cls) {
     String generatedName = generateName(cls.getName());
     String classifierKeyword;
-    if (cls instanceof MClassImpl) classifierKeyword = "class";
+    if (cls instanceof MClass) classifierKeyword = "class";
     else if (cls instanceof MInterface) classifierKeyword = "interface";
     else return ""; // actors and use cases
     String s = "";

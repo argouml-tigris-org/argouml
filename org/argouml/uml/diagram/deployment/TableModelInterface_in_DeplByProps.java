@@ -52,7 +52,7 @@ public class TableModelInterface_in_DeplByProps extends TableModelComposite {
   }
 
   public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof UMLDeploymentDiagram || t instanceof MComponentImpl)) return new Vector();
+    if (!(t instanceof UMLDeploymentDiagram || t instanceof MComponent)) return new Vector();
     if (t instanceof UMLDeploymentDiagram) {
       UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
       Vector nodes = d.getNodes();
@@ -60,7 +60,7 @@ public class TableModelInterface_in_DeplByProps extends TableModelComposite {
       int size = nodes.size();
       for (int i = 0; i < size; i++) {
         Object node = nodes.elementAt(i);
-        if (node instanceof MInterfaceImpl) res.addElement(node);
+        if (node instanceof MInterface) res.addElement(node);
       }
       return res;
     }

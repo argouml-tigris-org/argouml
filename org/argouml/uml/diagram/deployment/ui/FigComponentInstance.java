@@ -198,14 +198,14 @@ public class FigComponentInstance extends FigNodeModelElement {
     }
 
     if (!(getOwner() instanceof MModelElement)) return;
-    if (getOwner() instanceof MComponentInstanceImpl) {
+    if (getOwner() instanceof MComponentInstance) {
       MComponentInstance me = (MComponentInstance) getOwner();
       MNodeInstance mnode = null;
 
-      if (encloser != null && (encloser.getOwner() instanceof MNodeInstanceImpl)) {
+      if (encloser != null && (encloser.getOwner() instanceof MNodeInstance)) {
         mnode = (MNodeInstance) encloser.getOwner();
       }
-      if (encloser != null && (encloser.getOwner() instanceof MComponentInstanceImpl)) {
+      if (encloser != null && (encloser.getOwner() instanceof MComponentInstance)) {
         MComponentInstance comp = (MComponentInstance) encloser.getOwner();
         mnode = (MNodeInstance) comp.getNodeInstance();
       }
