@@ -155,18 +155,19 @@ public class UMLClassDiagram extends UMLDiagram {
 
         _toolBar.add(_actionPackage);
         _toolBar.add(_actionClass);
-        
-        _toolBar.add(_actionAssociation);
-        // TODO
-        // Bobs nasty hack. The PopupToolBoxButton class can only be trusted for
-        // now on metal. Use old style popup for other plafs.
-        //if (LookAndFeelMgr.SINGLETON.determineLookAndFeel().equals(LookAndFeelMgr.METAL_PLAF)) {
-        //    _toolBar.add(buildAssociationPopup());
-        //} else {
-        //    JButton associationButton = _toolBar.add(_actionAssociation);
-        //    _toolBar.add(buildUglyAssociationPopup(associationButton));
-        //}
-        
+
+        //_toolBar.add(_actionAssociation);
+
+        // TODO Bob Tarling 22 Feb 2003: I should be able to get this working in time
+        // Bobs nasty hack. The PopupToolBoxButton class does not currently work for Windows
+        // look and feel so use the older less pretty style popup instead.
+        if (LookAndFeelMgr.SINGLETON.determineLookAndFeel().equals(LookAndFeelMgr.WINDOWS_PLAF)) {
+            JButton associationButton = _toolBar.add(_actionAssociation);
+            _toolBar.add(buildUglyAssociationPopup(associationButton));
+        } else {
+            _toolBar.add(buildAssociationPopup());
+        }
+
         _toolBar.add(_actionDepend);
         _toolBar.add(_actionPermission);
         _toolBar.add(_actionUsage);
@@ -212,7 +213,7 @@ public class UMLClassDiagram extends UMLDiagram {
         toolBox.add(_actionUniComposition);
         return toolBox;
     }
-    
+
     private UglyToolBox buildUglyAssociationPopup(JButton associationButton) {
         ImageIcon dropDownIcon =
             ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("DropDown", "DropDown");
@@ -227,5 +228,5 @@ public class UMLClassDiagram extends UMLDiagram {
         return dropDownToolBox;
     }
 
-    
+
 } /* end class UMLClassDiagram */
