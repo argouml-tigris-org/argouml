@@ -25,7 +25,6 @@
 
 package org.argouml.uml.reveng;
 
-import java.io.*;
 import org.argouml.kernel.*;
 import org.argouml.uml.reveng.java.*;
 import org.argouml.uml.diagram.ui.*;
@@ -43,9 +42,7 @@ import org.argouml.ui.*;
 import org.argouml.application.api.*;
 import org.argouml.util.logging.*;
 import org.argouml.cognitive.Designer;
-import org.argouml.util.osdep.OsUtil;
 import org.argouml.util.FileFilters;
-import org.argouml.util.SuffixFilter;
 
 import org.apache.log4j.Category;
 
@@ -410,10 +407,8 @@ class ImportRun implements Runnable {
 	_st.mark("layout");
 	if (_diagram != null) {
 		for(int i=0; i < _diagram.getModifiedDiagrams().size(); i++) {
-	    	ClassdiagramLayouter layouter =
-			new ClassdiagramLayouter((UMLDiagram)
-					 (_diagram.getModifiedDiagrams()
-					  .elementAt(i)));
+			UMLDiagram diagram = (UMLDiagram)_diagram.getModifiedDiagrams().elementAt(i);
+	    	ClassdiagramLayouter layouter = module.getLayout(diagram);
 	    	layouter.layout();
 
 	    	// Resize the diagram???
