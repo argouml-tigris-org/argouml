@@ -30,7 +30,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 import org.tigris.gef.ui.IStatusBar;
-import org.tigris.gef.util.*;
+// import org.tigris.gef.util.*;
 
 // JWindow? I don't want a frame or close widgets
 public class SplashScreen extends JWindow
@@ -41,58 +41,27 @@ implements IStatusBar {
 
   public SplashScreen(String title, String iconName) {
     super();
-    ImageIcon splashImage = ResourceLoader.lookupIconResource(iconName);
 
-    //
-    // JWindow does not allow setting title or icon.
-    //
-    // ImageIcon argoImage = ResourceLoader.lookupIconResource("Model");
-    // this.setIconImage(argoImage.getImage());
-    // if (title != null) setTitle(title);
-
-    JPanel topNorth = new JPanel(new BorderLayout());
-    topNorth.setPreferredSize(new Dimension(6,6));
-    topNorth.setBorder(new BevelBorder(BevelBorder.RAISED));
-    topNorth.add(new JLabel(""), BorderLayout.CENTER);
-
-    JPanel topSouth = new JPanel(new BorderLayout());
-    topSouth.setPreferredSize(new Dimension(6,6));
-    topSouth.setBorder(new BevelBorder(BevelBorder.RAISED));
-    topSouth.add(new JLabel(""), BorderLayout.CENTER);
-
-    JLabel topCenter = new JLabel("ArgoUML v" + ArgoVersion.VERSION,
-		                  SwingConstants.CENTER);
-    topCenter.setFont(new Font("SansSerif", Font.BOLD, 40));
-    topCenter.setPreferredSize(new Dimension(60, 60));
-    topCenter.setOpaque(false);
-    topCenter.setForeground(Color.white);
-
-    JPanel top = new JPanel(new BorderLayout());
-    top.setBackground(Color.darkGray);
-    top.add(topNorth, BorderLayout.NORTH);
-    top.add(topCenter, BorderLayout.CENTER);
-    top.add(topSouth, BorderLayout.SOUTH);
-
-    JLabel splashButton = new JLabel("");
-    if (splashImage != null) {
-      int imgWidth = splashImage.getIconWidth();
-      int imgHeight = splashImage.getIconHeight();
-      Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-      setLocation(scrSize.width/2 - imgWidth/2,
-		       scrSize.height/2 - imgHeight/2);
-      splashButton.setIcon(splashImage);
-    }
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     getContentPane().setLayout(new BorderLayout(0, 0));
     //splashButton.setMargin(new Insets(0, 0, 0, 0));
-    JPanel main = new JPanel(new BorderLayout());
-    main.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-    main.add(top, BorderLayout.NORTH);
-    main.add(splashButton, BorderLayout.CENTER);
-    main.add(_statusBar, BorderLayout.SOUTH);
-    getContentPane().add(main);
+
+    SplashPanel panel = new SplashPanel(iconName);
+    if (panel.getImage() != null) {
+      int imgWidth = panel.getImage().getIconWidth();
+      int imgHeight = panel.getImage().getIconHeight();
+      Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
+      setLocation(scrSize.width/2 - imgWidth/2,
+		       scrSize.height/2 - imgHeight/2);
+    }
+
+    JPanel splash = new JPanel(new BorderLayout());
+    splash.setBorder(new EtchedBorder(EtchedBorder.RAISED));
+    splash.add(panel, BorderLayout.CENTER);
+    splash.add(_statusBar, BorderLayout.SOUTH);
+    getContentPane().add(splash);
     // add preloading progress bar?
-	Dimension contentPaneSize = getContentPane().getPreferredSize();
+    Dimension contentPaneSize = getContentPane().getPreferredSize();
     setSize(contentPaneSize.width, contentPaneSize.height);
     //setResizable(false);
     pack();
