@@ -33,7 +33,10 @@ import java.util.*;
  *   just returns the key.  This class should not be called directly
  *   but should be called through the PropPanel.localize() method.
  *
- *   Classes named UMLResourceBundle_de, UMLResourceBundle
+ *   @author Curt Arnold
+ *   @since 0.9
+ *   @see java.util.ResourceBundle
+ *   @see UMLResourceBundle_de
  */
 public class UMLResourceBundle extends ResourceBundle {
 

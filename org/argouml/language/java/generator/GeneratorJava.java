@@ -620,11 +620,16 @@ public class GeneratorJava extends Generator {
     String t = generate(m.getTrigger());
     String g = generate(m.getGuard());
     String e = generate(m.getEffect());
-    if (s.length() > 0 && (t.length() > 0 || g.length() > 0 || e.length() > 0))
-      s += ": ";
+    if(s == null) s = "";
+    if(t == null) t = "";
+    if (s.length() > 0 &&
+        (t.length() > 0 ||
+        (g != null && g.length() > 0) ||
+        (e != null && e.length() > 0)))
+        s += ": ";
     s += t;
-    if (g.length() > 0) s += " [" + g + "]";
-    if (e.length() > 0) s += " / " + e;
+    if (g != null && g.length() > 0) s += " [" + g + "]";
+    if (e != null && e.length() > 0) s += " / " + e;
     return s;
   }
 

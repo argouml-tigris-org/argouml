@@ -241,13 +241,13 @@ implements TabModelTarget, NavigationListener {
 class InitPanelsLater implements Runnable {
     private Hashtable _panels = null;
     private TabProps _tabProps;
-    public InitPanelsLater(Hashtable p,TabProps tabProps) { 
-        _panels = p; 
+    public InitPanelsLater(Hashtable p,TabProps tabProps) {
+        _panels = p;
         _tabProps = tabProps;
     }
 
   /** Load commonly used property panels, but not those that are
-   *  commonly used within a few seconds of the tool being launched. */ 
+   *  commonly used within a few seconds of the tool being launched. */
  public void run() {
   //   // preload commonly used property panels
 
@@ -309,7 +309,7 @@ class InitPanelsLater implements Runnable {
             ((UMLUserInterfaceContainer) panel).addNavigationListener(_tabProps);
 	}
     }
-    
+
     System.out.println("done preloading Property Panels");
   }
 } /* end class InitPanelsLater */

@@ -24,9 +24,160 @@
 package org.argouml.uml.ui;
 import java.util.*;
 
+/**
+*    This class is the generic German member of the UMLResourceBundle
+*    that supports localization of the UML related PropPanels
+* 
+*    @author Curt Arnold
+*    @since 0.9
+*/
 public class UMLResourceBundle_de extends UMLResourceBundle {
 
     public UMLResourceBundle_de() {
-        put("Class:","DE_Class:");
+        //
+        //   first argument is key (english)
+        //      second argument is localized equivalent
+        put("Abstract","Abstract");
+        put("abstract","abstract");
+        put("Action:","Action:");
+        put("Activator:","Activator:");
+        put("active","active");
+        put("Add actor","Add actor");
+        put("Add association","Add association");
+        put("Add association end","Add association end");
+        put("Add attribute","Add attribute");
+        put("Add class","Add class");
+        put("Add datatype","Add datatype");
+        put("Add enumeration literal","Add enumeration literal");
+        put("Add generalization","Add generalization");
+        put("Add inner class","Add inner class");
+        put("Add interface","Add interface");
+        put("Add new class","Add new class");
+        put("add only","add only");
+        put("Add operation","Add operation");
+        put("Add parameter","Add parameter");
+        put("Add raised signal","Add raised signal");
+        put("Add realization","Add realization");
+        put("Add stereotype","Add stereotype");
+        put("Add subpackage","Add subpackage");
+        put("Add use case","Add use case");
+        put("aggregation","aggregation");
+        put("Aggregation:","Aggregation:");
+        put("Arguments:","Arguments:");
+        put("Association Ends:","Association Ends:");
+        put("Association:","Association:");
+        put("AssociationRole Ends:","AssociationRole Ends:");
+        put("Associations:","Associations:");
+        put("Attributes:","Attributes:");
+        put("Author:","Author:");
+        put("Base Class:","Base Class:");
+        put("Changeability:","Changeability:");
+        put("changeable","changeable");
+        put("Child:","Child:");
+        put("classifier","classifier");
+        put("Classifier:","Classifier:");
+        put("Classifiers:","Classifiers:");
+        put("Clients:","Clients:");
+        put("Components:","Components:");
+        put("composite","composite");
+        put("Concurrency:","Concurrency:");
+        put("Connections:","Connections:");
+        put("Delete actor","Delete actor");
+        put("Delete association","Delete association");
+        put("Delete association end","Delete association end");
+        put("Delete attribute","Delete attribute");
+        put("Delete class","Delete class");
+        put("Delete generalization","Delete generalization");
+        put("Delete interface","Delete interface");
+        put("Delete operation","Delete operation");
+        put("Delete package","Delete package");
+        put("Delete parameter","Delete parameter");
+        put("Deprecated:","Deprecated:");
+        put("Derived:","Derived:");
+        put("Discriminator:","Discriminator:");
+        put("Documentation:","Documentation:");
+        put("dynamic","dynamic");
+        put("Effect:","Effect:");
+        put("Entry","Entry");
+        put("Exceptions:","Exceptions:");
+        put("Exit","Exit");
+        put("Expression:","Expression:");
+        put("Extends:","Extends:");
+        put("Extension Points:","Extension Points:");
+        put("Final","Final");
+        put("final","final");
+        put("frozen","frozen");
+        put("Generalizations:","Generalizations:");
+        put("Go back","Go back");
+        put("Go forward","Go forward");
+        put("Go to other end","Go to other end");
+        put("Go to package","Go to package");
+        put("Go up","Go up");
+        put("Guard:","Guard:");
+        put("Implementations:","Implementations:");
+        put("Implements:","Implements:");
+        put("Includes:","Includes:");
+        put("Incoming:","Incoming:");
+        put("Initial Value:","Initial Value:");
+        put("Kind:","Kind:");
+        put("Language:","Language:");
+        put("Link Ends:","Link Ends:");
+        put("Links:","Links:");
+        put("Literals:","Literals:");
+        put("Modifiers:","Modifiers:");
+        put("Multiplicity:","Multiplicity:");
+        put("Name:","Name:");
+        put("Namespace:","Namespace:");
+        put("navigable","navigable");
+        put("Navigable:","Navigable:");
+        put("New actor","New actor");
+        put("New association","New association");
+        put("New attribute","New attribute");
+        put("New class","New class");
+        put("New data type","New data type");
+        put("New interface","New interface");
+        put("New operation","New operation");
+        put("New signal","New signal");
+        put("New stereotype","New stereotype");
+        put("none","none");
+        put("Operations:","Operations:");
+        put("ordered","ordered");
+        put("Ordering:","Ordering:");
+        put("Outgoing:","Outgoing:");
+        put("Owned Elements","Owned Elements");
+        put("Owner:","Owner:");
+        put("Packages:","Packages:");
+        put("Parameters:","Parameters:");
+        put("Parent:","Parent:");
+        put("Powertype:","Powertype:");
+        put("Predecessor:","Predecessor:");
+        put("public","public");
+        put("Public","Public");
+        put("query","query");
+        put("Receiver:","Receiver:");
+        put("Receives:","Receives:");
+        put("Related Elements","Related Elements");
+        put("Root","Root");
+        put("root","root");
+        put("Scope:","Scope:");
+        put("See:","See:");
+        put("Sender:","Sender:");
+        put("Sends:","Sends:");
+        put("Since:","Since:");
+        put("sorted","sorted");
+        put("State Machine:","State Machine:");
+        put("static","static");
+        put("Stereotype:","Stereotype:");
+        put("Stereotypes:","Stereotypes:");
+        put("Suppliers:","Suppliers:");
+        put("transient","transient");
+        put("Transition","Transition");
+        put("Transition:","Transition:");
+        put("Trigger:","Trigger:");
+        put("Type:","Type:");
+        put("unordered","unordered");
+        put("Version:","Version:");
+        put("Visibility:","Visibility:");
+        put("volatile","volatile");
     }
 }
