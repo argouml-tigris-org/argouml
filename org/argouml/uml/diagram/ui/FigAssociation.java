@@ -375,7 +375,8 @@ public class FigAssociation extends FigEdgeModelElement {
      * @return "{ordered}", "{sorted}" or "" if null or "unordered"
      */
     private String getOrderingName(MOrderingKind ok) {
-	if (ok == null || ok.getName() == null || "".equals(ok.getName)) return "";
+	if (ok == null || ok.getName() == null || "".equals(ok.getName())) 
+        return "";
 	if ("unordered".equals(ok.getName())) return "";
 	return "{" + ok.getName() + "}";
     }
