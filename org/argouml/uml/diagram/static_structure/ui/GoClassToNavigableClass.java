@@ -33,8 +33,6 @@ import org.argouml.model.ModelFacade;
 
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
 public class GoClassToNavigableClass extends AbstractGoRule {
 
     public String getRuleName() {
@@ -53,16 +51,16 @@ public class GoClassToNavigableClass extends AbstractGoRule {
         
         java.util.Iterator enum = ends.iterator();
         while (enum.hasNext()) {
-            MAssociationEnd ae = (MAssociationEnd) enum.next();
-            MAssociation asc = ae.getAssociation();
-            Collection allEnds = asc.getConnections();
+            Object ae = /*(MAssociationEnd)*/ enum.next();
+            Object asc = ModelFacade.getAssociation(ae);
+            Collection allEnds = ModelFacade.getConnections(asc);
             
-            MAssociationEnd otherEnd = null;
+            Object otherEnd = null;
             Iterator endIt = allEnds.iterator();
             if (endIt.hasNext()) {
-                otherEnd = (MAssociationEnd) endIt.next();
+                otherEnd = /*(MAssociationEnd)*/ endIt.next();
                 if (ae != otherEnd && endIt.hasNext()) {
-                    otherEnd = (MAssociationEnd) endIt.next();
+                    otherEnd = /*(MAssociationEnd)*/ endIt.next();
                     if (ae != otherEnd)
                         otherEnd = null;
                 }
@@ -70,11 +68,11 @@ public class GoClassToNavigableClass extends AbstractGoRule {
             
             if (otherEnd == null)
                 continue;
-            if (!otherEnd.isNavigable())
+            if (!ModelFacade.isNavigable(otherEnd))
                 continue;
-            if (childClasses.contains(otherEnd.getType()))
+            if (childClasses.contains(ModelFacade.getType(otherEnd)))
                 continue;
-            childClasses.add(otherEnd.getType());
+            childClasses.add(ModelFacade.getType(otherEnd));
             // TODO: handle n-way Associations
         }
         return childClasses;

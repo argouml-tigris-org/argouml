@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -152,8 +151,8 @@ public class TablePanelUMLClassDiagram extends TablePanel {
     public void objectSelected(Object sel) {
 	super.objectSelected(sel);
 	if (org.argouml.model.ModelFacade.isAClassifier(sel)) {
-	    _tableModelOper.setTarget((MClassifier) sel);
-	    _tableModelAttr.setTarget((MClassifier) sel);
+	    _tableModelOper.setTarget(/*(MClassifier)*/ sel);
+	    _tableModelAttr.setTarget(/*(MClassifier)*/ sel);
 	}
     }
 

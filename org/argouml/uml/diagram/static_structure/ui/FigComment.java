@@ -109,7 +109,7 @@ public class FigComment
     // instance variables
 
     // The model element the note is attached to.
-    private MModelElement _noteOwner = null;
+    private Object _noteOwner = null;
 
     // The figure that holds the text of the note.
     FigText _text;    
@@ -257,7 +257,7 @@ public class FigComment
     public void mouseClicked(MouseEvent me) {
         if (!_readyToEdit) {
             if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
-                MModelElement own = (MModelElement) getOwner();
+                Object own = /*(MModelElement)*/ getOwner();
                 _readyToEdit = true;
             } else {
                 cat.debug("not ready to edit note");

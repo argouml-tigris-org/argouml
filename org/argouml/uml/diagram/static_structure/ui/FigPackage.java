@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -46,6 +44,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -57,11 +56,7 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.MPackage;
 
 /** Class to display graphics for a UML package in a class diagram. */
 
@@ -176,9 +171,9 @@ public class FigPackage extends FigNodeModelElement {
 		    String lsDefaultName = "main";
 
 		    if (me.getClickCount() >= 2) {
-			MPackage lPkg = (MPackage) FigPackage.this.getOwner();
+			Object lPkg = /*(MPackage)*/ FigPackage.this.getOwner();
 			if (lPkg != null) {
-			    MNamespace lNS = lPkg;
+			    Object lNS = lPkg;
 
 			    Project lP =
 				ProjectManager.getManager().getCurrentProject();
@@ -189,7 +184,7 @@ public class FigPackage extends FigNodeModelElement {
 			    while (diagEnum.hasMoreElements()) {
 				UMLDiagram lDiagram =
 				    (UMLDiagram) diagEnum.nextElement();
-				MNamespace lDiagramNS = (MNamespace)lDiagram.getNamespace();
+				Object lDiagramNS = /*(MNamespace)*/lDiagram.getNamespace();
 				if ((lNS == null && lDiagramNS == null)
 				    || (lNS.equals(lDiagramNS))) {
 				    /* save first */
@@ -222,8 +217,8 @@ public class FigPackage extends FigNodeModelElement {
 				super.mouseClicked(me);
 				try {
 				    String nameSpace;
-				    if (lNS != null && lNS.getName() != null)
-					nameSpace = lNS.getName();
+				    if (lNS != null && ModelFacade.getName(lNS) != null)
+					nameSpace = ModelFacade.getName(lNS);
 				    else
 					nameSpace = "(anon)";
 
@@ -397,19 +392,23 @@ public class FigPackage extends FigNodeModelElement {
     }
     
     protected void updateStereotypeText() {
-        MModelElement me = (MModelElement) getOwner();
+        Object me = /*(MModelElement)*/ getOwner();
 
         if (me == null) {
             return;
         }
 
         Rectangle rect = getBounds();
-        MStereotype stereo = me.getStereotype();
+        
+        Object stereo = null;
+        if (ModelFacade.getStereotypes(me).size() > 0) {
+            stereo = ModelFacade.getStereotypes(me).iterator().next();
+        }
 
         /* check if stereotype is defined */
         if ((stereo == null)
-            || (stereo.getName() == null)
-            || (stereo.getName().length() == 0)) {
+                || (ModelFacade.getName(stereo) == null)
+                || (ModelFacade.getName(stereo).length() == 0)) {
             if (_stereo.isDisplayed()) {
                 _stereoLineBlinder.setDisplayed(false);
                 _stereo.setDisplayed(false);
@@ -418,7 +417,7 @@ public class FigPackage extends FigNodeModelElement {
             }
         } else {
             /* we got stereotype */
-            _stereo.setText(Notation.generateStereotype(this, stereo));
+            _stereo.setText(Notation.generateStereotype(this, (MStereotype)stereo));
 
             if (!_showStereotype) {
                 _stereoLineBlinder.setDisplayed(false);
@@ -596,7 +595,7 @@ public class FigPackage extends FigNodeModelElement {
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-        MPackage mclass = (MPackage) getOwner();
+        Object mclass = /*(MPackage)*/ getOwner();
 
         ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
 
