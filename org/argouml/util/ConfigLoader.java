@@ -23,14 +23,19 @@
 
 package org.argouml.util;
 
-import java.util.*;
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.util.Vector;
 
-import org.argouml.ui.*;
-import org.argouml.application.Main;
-import org.argouml.swingext.*;
+import org.apache.log4j.Logger;
+import org.argouml.swingext.Orientation;
+import org.argouml.ui.ProjectBrowser;
 
 public class ConfigLoader {
+    private static Logger _Log = Logger.getLogger("org.argouml.util.ConfigLoader"); 
 
 	////////////////////////////////////////////////////////////////
 	// static utility functions
@@ -58,7 +63,7 @@ public class ConfigLoader {
             catch(FileNotFoundException e) {
                 is = ConfigLoader.class.getResourceAsStream(configFile);
                 if(is != null) {
-                    System.out.println("Value of argo.config (" + configFile + ") could not be loaded.\nLoading default configuration.");
+                    _Log.info("Value of argo.config (" + configFile + ") could not be loaded.\nLoading default configuration.");
                 }
             }
         }
@@ -86,25 +91,23 @@ public class ConfigLoader {
                                 tabs.addElement(newTab);
                             }
                             catch (InstantiationException ex) {
-                                System.out.println("Could not make instance of " +
+                                _Log.error("Could not make instance of " +
                                     tabClass.getName());
                             }
                             catch (IllegalAccessException ex) {
-                                System.out.println("Could not make instance of " +
+                                _Log.error("Could not make instance of " +
                                     tabClass.getName());
                             }
                         }
-                        line = lnr.readLine();
-                        //System.out.println("config line: " +
-                        //(System.currentTimeMillis() - start));
+                        line = lnr.readLine();                     
                       }
                 }
                 catch (java.io.IOException io) {
-                    System.out.println("IOException");
+                    _Log.error(io);
                 }
             }
             else {
-                System.out.println("lnr is null");
+                _Log.error("lnr is null");
             }
         }
 	}
@@ -135,8 +138,8 @@ public class ConfigLoader {
 				}
 				catch (ClassNotFoundException cnfe) { }
 				catch (Exception e) {
-					System.out.println("Unanticipated exception, skipping "+tabName);
-					System.out.println(e.toString());
+					_Log.error("Unanticipated exception, skipping "+tabName);
+					_Log.error(e);
 				}
 				if (res != null) {
                                         if (ProjectBrowser.getInstance().getSplashScreen() != null) {
@@ -147,7 +150,7 @@ public class ConfigLoader {
 				}
 			}
 			if (Boolean.getBoolean("dbg")) {
-				System.out.println("\nCould not find any of these classes:\n" +
+				_Log.warn("\nCould not find any of these classes:\n" +
 								   "TabPath=" + TabPath + "\n" +
 								   "Config file=" + configFile + "\n" +
 								   "Config line #" + lineNum + ":" + line);

@@ -1117,8 +1117,7 @@ class EventTreeDefinition {
                 nameMap.put(UmlModelEventPump.REMOVE, new int[] { 0 });
                 _definition.put(sourceClass, nameMap);
             }
-        }
-        System.out.println();
+        }       
     }
 
     /**

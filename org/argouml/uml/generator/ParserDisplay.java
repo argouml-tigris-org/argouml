@@ -58,7 +58,6 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsF
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ProfileJava;
-import org.argouml.uml.generator.GeneratorDisplay.MsgPtr;
 import org.argouml.util.MyTokenizer;
 
 import ru.novosoft.uml.MElementListener;
@@ -99,7 +98,6 @@ import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.model_management.MPackage;
 
 /**
  * Interface specifying the operation to take when a PropertySpecialString
@@ -477,8 +475,7 @@ public class ParserDisplay extends Parser {
   // checks for ';' in Strings or chars in ';' separated tokens in order to
   // return an index to the next attribute or operation substring, -1 otherwise
   // (a ';' inside a String or char delimiters is ignored)
-  private int indexOfNextCheckedSemicolon(String s, int start) {
-    //System.out.println("indexOfNextCheckedSemicolon("+s+','+start+')');
+  private int indexOfNextCheckedSemicolon(String s, int start) { 
     if (s == null || start < 0 || start >= s.length())
       return -1;
     int end;
@@ -487,15 +484,13 @@ public class ParserDisplay extends Parser {
     char c;
     for (end = start; end < s.length(); end++) {
       c = s.charAt(end);
-      if (!inside && c == ';') {
-        //System.out.println("returns "+end);
+      if (!inside && c == ';') { 
         return end;
       } else if (!backslashed && (c == '\'' || c == '\"')) {
         inside = !inside;
       }
       backslashed = (!backslashed && c == '\\');
-    }
-    //System.out.println("returns "+end+" (which is s.length())");
+    }   
     return end;
   }
 

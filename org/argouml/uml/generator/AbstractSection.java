@@ -32,6 +32,8 @@ package org.argouml.uml.generator;
 import java.util.*;
 import java.io.*;
 
+import org.apache.log4j.Logger;
+
 /**
  *
  *Reading and writing preserved sections from the code
@@ -40,6 +42,7 @@ import java.io.*;
  */
 abstract public class AbstractSection
 {
+    private Logger _log = Logger.getLogger(this.getClass());
     protected Map m_ary;
 
     /** Creates a new instance of Section */
@@ -59,12 +62,10 @@ abstract public class AbstractSection
     // =======================================================================
 
     public void write(String filename, String INDENT, boolean OutputLostSections) {
-        try{
-            System.out.println("Start reading");
+        try{           
             FileReader f = new FileReader(filename);
             BufferedReader fr = new BufferedReader(f);
-            FileWriter fw = new FileWriter(filename + ".out");
-            System.out.println("Total size of Map: " + m_ary.size());
+            FileWriter fw = new FileWriter(filename + ".out");          
             String line = "";
             while (line != null){
                 line = fr.readLine();
@@ -74,15 +75,12 @@ abstract public class AbstractSection
                         String content = (String)m_ary.get(section_id);
                         fw.write(line + "\n");
                         if (content != null){
-                            fw.write(content);
-                            // System.out.println(line);
-                            // System.out.print(content);
+                            fw.write(content);                        
                         }
                         line = fr.readLine(); // read end section;
                         m_ary.remove(section_id);
                     }
-                    fw.write(line + "\n");
-                    // System.out.println(line);
+                    fw.write(line + "\n");           
                 }
             }
             if ((m_ary.isEmpty() != true) && (OutputLostSections)){
@@ -99,13 +97,12 @@ abstract public class AbstractSection
             fr.close();
             fw.close();
         } catch (IOException e){
-            System.out.println("Error: " + e.toString());
+            _log.error("Error: " + e.toString());
         }
     }
 
     public void read(String filename) {
-        try{
-            System.out.println("Start reading");
+        try{            
             FileReader f = new FileReader(filename);
             BufferedReader fr = new BufferedReader(f);
 
@@ -134,7 +131,7 @@ abstract public class AbstractSection
             }
             fr.close();
         } catch (IOException e){
-            System.out.println("Error: " + e.toString());
+            _log.error("Error: " + e.toString());
         }
     }
 
