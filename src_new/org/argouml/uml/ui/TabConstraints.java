@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JToolBar;
+import javax.swing.JOptionPane;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Category;
@@ -55,6 +56,7 @@ import tudresden.ocl.gui.OCLEditorModel;
 import tudresden.ocl.gui.events.ConstraintChangeEvent;
 import tudresden.ocl.gui.events.ConstraintChangeListener;
 import tudresden.ocl.parser.OclParserException;
+import tudresden.ocl.OclException;
 
 /**
   * Tab for OCL constraint editing.
@@ -234,8 +236,42 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
         /**
           * Add a fresh constraint to the model.
+         * 
+         * <p>There are 2 restrictions on what can be parsed, given the
+         * current OCL grammar:
+         * <ol>
+         *   <li>Class names must have a capital first letter.</li>
+         *   <li>Feature name must have a lower case first letter.</li>
+         * </ol>
           */
         public void addConstraint() {
+            
+            // check ocl parsing constraints
+            MModelElement mmeContext = m_mmeiTarget;
+
+            while (!(mmeContext instanceof MClassifier)) {
+                mmeContext = mmeContext.getModelElementContainer();
+            }
+            
+            if(ModelFacade.getName(mmeContext) == null ||
+               ModelFacade.getName(m_mmeiTarget) == null ||
+               !Character.isUpperCase(ModelFacade.getName(mmeContext).charAt(0)) ||
+               (ModelFacade.isAClass(m_mmeiTarget) &&
+                !Character.isUpperCase(ModelFacade.getName(m_mmeiTarget).charAt(0))) ||
+               (ModelFacade.isAFeature(m_mmeiTarget) &&
+                !Character.isLowerCase(ModelFacade.getName(m_mmeiTarget).charAt(0)))
+                ){
+                    // TODO I18n
+                    JOptionPane.showMessageDialog (null,
+                        "The OCL Toolkit requires that:\n\n"+
+                        "Class names have a capital first letter and\n"+
+                        "Attribute or Operation names have a lower case first letter.",
+                        "Require Correct name convention:",
+                        JOptionPane.ERROR_MESSAGE);
+                    // do not create a constraint:
+                    return;
+            }
+            
             // null elements represent new constraints, which will be added to the
             // target the first time any actual editing takes place.
             // This is done to ensure syntactical correctness of constraints stored
@@ -434,13 +470,19 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                     fireConstraintDataChanged(m_nIdx, mcOld, m_mcConstraint);
 
                 } catch (OclTypeException pe) {
-                    _cat.warn("the user has entered an invalid ocl string", pe);
+                    _cat.warn("There was some sort of OCL Type problem", pe);
                     throw pe;
                 } catch (OclParserException pe1) {
                     _cat.warn(
-                        "the user has entered an invalid ocl string",
+                        "Could not parse the constraint",
                         pe1);
                     throw pe1;
+                } catch (OclException oclExc) {
+                    // a runtime exception that occurs when some
+                    // internal test fails
+                    _cat.warn(
+                        "There was some unidentified problem");
+                    throw oclExc;
                 }
             }
 
@@ -539,6 +581,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
         /**
           * Create a representation adapter for the given constraint.
+         *
           */
         private CR representationFor(int nIdx) {
             if ((nIdx < 0) || (nIdx >= m_alConstraints.size())) {
