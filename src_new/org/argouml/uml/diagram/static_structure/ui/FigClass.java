@@ -1178,11 +1178,6 @@ public class FigClass extends FigNodeModelElement {
         calcBounds();
         setBounds(getBounds());
         
-        Object owner = getOwner();
-        if (owner != null && ModelFacade.isAbstract(owner)) {
-            Font font = _name.getFont();              
-            _name.setFont(font.deriveFont(Font.ITALIC));
-        }
         // setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
@@ -1252,7 +1247,7 @@ public class FigClass extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
     public void postLoad() {      
-//        super.postLoad();
+        super.postLoad();
         Object owner = getOwner();
         if (owner != null && ModelFacade.isAbstract(owner)) {
             Font font = _name.getFont();              
