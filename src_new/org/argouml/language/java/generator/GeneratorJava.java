@@ -900,6 +900,15 @@ public class GeneratorJava
                 }
             }
 
+            // Inner classes
+            Collection elements = cls.getOwnedElements();
+            for(Iterator i = elements.iterator(); i.hasNext(); ) {
+                MModelElement element = (MModelElement)i.next();
+                if(element instanceof MClass || element instanceof MInterface) {
+                    sb.append(generateClassifier((MClass)element));
+                }
+            }
+
             // add operations
             // TODO: constructors
             Collection behs = ModelFacade.getOperations(cls);
@@ -1504,6 +1513,13 @@ public class GeneratorJava
     }
 
     public String generateVisibility(MFeature f) {
+        String _tagged = f.getTaggedValue("src_visibility");
+        if (_tagged != null) {
+            if ( _tagged.trim().equals("") || _tagged.trim().toLowerCase().equals("package") || _tagged.trim().toLowerCase().equals("default"))
+                return "";
+            else
+                return f.getTaggedValue("src_visibility")+" ";
+        }
         MVisibilityKind vis = f.getVisibility();
         //if (vis == null) return "";
         if (MVisibilityKind.PUBLIC.equals(vis))

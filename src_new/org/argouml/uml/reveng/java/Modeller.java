@@ -948,6 +948,8 @@ public class Modeller
 	}
 	else if((modifiers & JavaRecognizer.ACC_PUBLIC) > 0) {
 	    element.setVisibility(MVisibilityKind.PUBLIC);
+	} else {
+            element.setTaggedValue("src_visibility", "default");
 	}
     }
 
