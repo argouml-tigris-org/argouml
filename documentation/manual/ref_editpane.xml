@@ -791,7 +791,7 @@ graphic artifacts to diagrams.</para></listitem>
     <sect2>
       <title>Statechart Diagram Specific Tools</title>
 
-      <para>Ten tools are provided specific to UML artifacts on state
+      <para>Eleven tools are provided specific to UML artifacts on state
         diagrams. The detailed properties of these artifacts are described in
         the section on statechart diagram artifacts (see
         <xref linkend="ch.ref.entstate"/>).</para>
@@ -844,17 +844,33 @@ graphic artifacts to diagrams.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
+                     fileref="images/icons/junction.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Junction</literal>. Add a junction pseudostate to the
+          diagram.</para>
+
+          <!--caution><para>A well formed junction should have one incoming transition
+            and two or more outgoing. &argouml; does not enforce this, but an
+            &argouml; critic will complain about any junction that does not follow
+            this rule.
+          </para></caution-->
+          <!-- TODO: Is that so? Check which critic. -->
+        </listitem>
+        
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
                      fileref="images/icons/branch.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
           <literal>Branch</literal>. Add a branch pseudostate to the
           diagram.</para>
 
-        <caution><para>A well formed branch should have one incoming transition
-          and two or more outgoing. &argouml; does not enforce this, but an
-          &argouml; critic will complain about any branch that does not follow
-          this rule.
-          <!-- TODO: Is that so? Check which critic. -->
-        </para></caution></listitem>
+          <caution><para>A well formed branch should have one incoming transition
+            and two or more outgoing. &argouml; does not enforce this, but an
+            &argouml; critic will complain about any branch that does not follow
+            this rule.
+            <!-- TODO: Is that so? Check which critic. -->
+          </para></caution>
+        </listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
@@ -994,14 +1010,15 @@ graphic artifacts to diagrams.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
-                     fileref="images/icons/branch.gif"/> 
+                     fileref="images/icons/junction.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
-          <literal>Branch</literal>. Add a branch pseudostate to the
+          <!-- TODO: should this called "Decision" in the UI? -->
+          <literal>Junction</literal>. Add a junction (decision) pseudostate to the
           diagram.</para>
 
-        <caution><para>A well formed branch should have one incoming transition
+        <caution><para>A well formed junction should have one incoming transition
           and two or more outgoing. &argouml; does not enforce this, but an
-          &argouml; critic will complain about any branch that does not follow
+          &argouml; critic will complain about any junction that does not follow
           this rule.</para></caution></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>

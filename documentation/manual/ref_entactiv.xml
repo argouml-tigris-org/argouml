@@ -460,7 +460,7 @@ but should not be according UML standard. See issue ... -->
   </sect1>
 
   <!-- Initial State. This is a pseudo state, which all have the same
-       property sheet. The pseudo states are Initial State, Branch, Fork,
+       property sheet. The pseudo states are Initial State, Junction, Branch, Fork,
        Join, Shallow History and Deep History but *NOT* Final State,
        which is a real state. Cross refer to Statechart Diagram -->
 
@@ -480,23 +480,17 @@ but should not be according UML standard. See issue ... -->
       <xref linkend="s1.ref.final_state"/>).</para>
   </sect1>
 
-  <!-- Branch. This is a pseudo state, which all have the same property
-       sheet. The pseudo states are Initial State, Branch, Fork, Join,
+  <!-- Junction. This is a pseudo state, which all have the same property
+       sheet. The pseudo states are Initial State, Junction, Branch, Fork, Join,
        Shallow History and Deep History but *NOT* Final State, which is a
        real state. Cross refer to Statechart Diagram -->
 
   <sect1>
-    <title>Branch</title>
+    <title>Junction (Decision)</title>
 
     <para>This artifact is described in the context of statechart diagrams (see
-      <xref linkend="s1.ref.branch_state"/>).</para>
+      <xref linkend="s1.ref.junction_state"/>).</para>
 
-    <caution><para>As a detailed technicality, a branch on an activity diagram
-      should be static, i.e. implemented as a <literal>junction</literal>
-      pseudostate, rather than a <literal>choice</literal> pseudostate. The
-      current release of &argouml; uses <literal>choice</literal> which is
-      wrong.</para></caution>
-<!-- TODO: See issue ... -->
   </sect1>
 
   <!-- Fork. This is a pseudo state, which all have the same property

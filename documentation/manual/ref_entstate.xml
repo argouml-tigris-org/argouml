@@ -1860,6 +1860,7 @@ you to place a pseudostate directly, but only through tools for the
 specific types of pseudostate. These are described in separate sections
 below (see
       <xref linkend="s1.ref.initial_state"/>,
+      <xref linkend="s1.ref.junction_state"/>,
       <xref linkend="s1.ref.branch_state"/>,
       <xref linkend="s1.ref.fork_state"/>,
       <xref linkend="s1.ref.join_state"/>,
@@ -2099,7 +2100,7 @@ containment hierarchy).
 
         <!-- Entry for Kind -->
 
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Kind</literal></term>
 
           <listitem>
@@ -2123,7 +2124,7 @@ Changing the initial setting has no predictable effect!.
             </para></warning>
             
           </listitem>
-        </varlistentry>
+        </varlistentry-->
 
         <!-- Entry for Incoming -->
 
@@ -2516,8 +2517,41 @@ Add a new internal transition.
     </sect2>
   </sect1>
 
+  <!-- Junction. This is a pseudo state, which all have the same property
+       sheet. The pseudo states are Initial State, Junction, Branch, Fork, Join,
+       Shallow History and Deep History but *NOT* Final State, which is a
+       real state. -->
+
+  <sect1 id="s1.ref.junction_state">
+    <title>Junction</title>
+
+    <para>
+Junction is a pseudostate (see <xref linkend="s1.ref.pseudostate"/>)
+which is used to split an incoming transition 
+into multiple outgoing transition segments 
+with different guard conditions.
+A Junction is also called a Merge or Static conditional branch.
+The chosen transition is that whose guard is true 
+at the time of the transition.
+    </para>
+
+    <para>
+A predefined guard denoted <literal>else</literal> may be defined 
+for at most one outgoing transition. 
+This transition is enabled 
+if all the guards labeling the other transitions are false.
+    </para>
+    
+    <para>According the UML standard, its symbol is a small black circle. 
+        Alternatively, it may be represented by a 
+        diamond shape (in case of "Decision" for Activity diagrams).
+        &argouml; only represents a junction on the diagram as a solid (white by default)
+        diamond, and does not support the black cicrle symbol for a junction.
+    </para>
+  </sect1>
+
   <!-- Branch. This is a pseudo state, which all have the same property
-       sheet. The pseudo states are Initial State, Branch, Fork, Join,
+       sheet. The pseudo states are Initial State, Junction, Branch, Fork, Join,
        Shallow History and Deep History but *NOT* Final State, which is a
        real state. -->
 
@@ -2542,13 +2576,11 @@ This transition is enabled
 if all the guards labeling the other transitions are false.
     </para>
     
-    <note><para>UML calls this sort of branch a <literal>choice</literal>. UML
-      also defines a static branch, <literal>junction</literal>, based on
-      static conditional expressions, which is not supported in the current
-      release of &argouml;</para></note>
+    <note><para>UML calls this sort of branch a <literal>Choice</literal>. 
+    </para></note>
 
-    <para>A branch is represented on the diagram as a solid (white by default)
-      diamond.</para>
+    <para>A branch is represented on the diagram as a small solid (white by default)
+      circle (reminiscent of a small state icon).</para>
   </sect1>
 
   <!-- Fork. This is a pseudo state, which all have the same property
