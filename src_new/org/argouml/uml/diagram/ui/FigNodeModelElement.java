@@ -149,8 +149,8 @@ public abstract class FigNodeModelElement
     // instance variables
 
     protected FigRect _bigPort;
-    public FigText _name; // Scope problem in jdk1.2
-    public FigText _stereo; // Scope problem in jdk1.2
+    public FigText _name; // TODO - public!! Make private!
+    public FigText _stereo; // TODO - public!! Make private!
     protected Vector _enclosedFigs = new Vector();
     protected Fig _encloser = null;
     protected boolean _readyToEdit = true;

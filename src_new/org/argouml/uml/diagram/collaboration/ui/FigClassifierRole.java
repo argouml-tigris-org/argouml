@@ -43,6 +43,7 @@ import java.text.ParseException;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
@@ -54,10 +55,7 @@ import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.base.Selection;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-
 
 /**
  * <p>Class to display graphics for a UML classifier role in a  collaboration
@@ -235,7 +233,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         // Can't do anything if we haven't got an owner to have a stereotype!
 
-        MModelElement me = (MModelElement) getOwner();
+        Object me = /*(MModelElement)*/ getOwner();
 
         if (me == null) {
             return;
@@ -244,7 +242,11 @@ public class FigClassifierRole extends FigNodeModelElement {
         // Record the old bounds and get the stereotype
 
         Rectangle   bounds = getBounds();
-        MStereotype stereo = me.getStereotype();
+        
+        Object stereo = null;
+        if (ModelFacade.getStereotypes(me).size() > 0) {
+            stereo = ModelFacade.getStereotypes(me);
+        }
 
         // Where we now have no stereotype, mark as not displayed. Were we do
         // have a stereotype, set the text and mark as displayed. If we remove
@@ -253,8 +255,8 @@ public class FigClassifierRole extends FigNodeModelElement {
         // will be done in setBounds().
 
         if ((stereo == null) ||
-            (stereo.getName() == null) ||
-            (stereo.getName().length() == 0)) {
+            (ModelFacade.getName(stereo) == null) ||
+            (ModelFacade.getName(stereo).length() == 0)) {
 
             if (_stereo.isDisplayed()) {
                 bounds.height -= _stereo.getBounds().height;
@@ -275,7 +277,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
             // Set the text and recalculate its bounds
 
-            _stereo.setText(Notation.generateStereotype(this, stereo));
+            _stereo.setText(Notation.generateStereotype(this, (MStereotype)stereo));
             _stereo.calcBounds();
 
             bounds.height += _stereo.getBounds().height - oldHeight;
@@ -438,7 +440,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
     protected void textEdited(FigText ft) throws PropertyVetoException {
 
-        MClassifierRole cls = (MClassifierRole) getOwner();
+        Object cls = /*(MClassifierRole)*/ getOwner();
 
         if (ft == _name) {
             String s = ft.getText();
@@ -463,18 +465,18 @@ public class FigClassifierRole extends FigNodeModelElement {
     protected void updateNameText() {
         Object own = getOwner();
         if (own == null) return;
-        MClassifierRole cr = (MClassifierRole) own;
+        Object cr = /*(MClassifierRole)*/ own;
         // We only use the notation generator for the name itself. We ought to
         // do the whole thing.
 
-        String nameStr    = Notation.generate(this, cr.getName()).trim();
+        String nameStr    = Notation.generate(this, ModelFacade.getName(cr)).trim();
         String baseString = "";
 
         // Loop through all base classes, building a comma separated list
 
-        if (cr.getBases() != null && cr.getBases().size() > 0) {
-            Vector bases = new Vector(cr.getBases());
-            baseString += org.argouml.model.ModelFacade.getName(bases.elementAt(0));
+        if (ModelFacade.getBases(cr) != null && ModelFacade.getBases(cr).size() > 0) {
+            Vector bases = new Vector(ModelFacade.getBases(cr));
+            baseString += ModelFacade.getName(bases.elementAt(0));
 
             for (int i = 1; i < bases.size(); i++)
                 baseString += ", "  +

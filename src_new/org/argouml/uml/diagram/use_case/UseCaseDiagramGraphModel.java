@@ -394,11 +394,11 @@ public class UseCaseDiagramGraphModel
             end0 = ModelFacade.getType(associationEnd0);
             end1 = ModelFacade.getType(associationEnd1);
         }
-        else if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
+        else if (ModelFacade.isAGeneralization(edge)) {
             end0 = ModelFacade.getChild(edge);
             end1 = ModelFacade.getParent(edge);
         }
-        else if (org.argouml.model.ModelFacade.isAExtend(edge)) {
+        else if (ModelFacade.isAExtend(edge)) {
             end0 = ModelFacade.getBase(edge);
             end1 = ModelFacade.getExtension(edge);
         }

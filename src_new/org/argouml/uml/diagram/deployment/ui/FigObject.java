@@ -44,12 +44,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-
-import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
-import ru.novosoft.uml.foundation.core.MComponent;
-import ru.novosoft.uml.foundation.core.MElementResidence;
-
 
 /** Class to display graphics for a UML Object in a diagram. */
 
@@ -59,7 +54,7 @@ public class FigObject extends FigNodeModelElement {
     // instance variables
 
     FigRect _cover;
-    public MElementResidence resident =
+    public Object resident =
 	UmlFactory.getFactory().getCore().createElementResidence();
 
     // add other Figs here aes needed
@@ -157,13 +152,13 @@ public class FigObject extends FigNodeModelElement {
     // user interaction methods
 
     protected void textEdited(FigText ft) throws PropertyVetoException {
-	MObject obj = (MObject) getOwner();
+	Object obj = /*(MObject)*/ getOwner();
 	if (ft == _name) {
 	    String s = ft.getText().trim();
 	    if (s.length() > 0 && (s.endsWith(":"))) {
 		s = s.substring(0, (s.length() - 1));
 	    }
-	    ParserDisplay.SINGLETON.parseObject(obj, s);
+	    ParserDisplay.SINGLETON.parseObject((MObject)obj, s);
 	}
     }
 
@@ -172,32 +167,29 @@ public class FigObject extends FigNodeModelElement {
 	// super.setEnclosingFig(encloser);
 	if (!(ModelFacade.isAModelElement(getOwner()))) return;
 	if (ModelFacade.isAObject(getOwner())) {
-	    MObject me = (MObject) getOwner();
-	    MComponentInstance mcompInst = null;
-	    MComponent mcomp = null;
+	    Object me = /*(MObject)*/ getOwner();
+	    Object mcompInst = null;
+	    Object mcomp = null;
 
 	    if (encloser != null
-		&& (ModelFacade.isAComponentInstance(encloser.getOwner())))
-	    {
-		mcompInst = (MComponentInstance) encloser.getOwner();
-		me.setComponentInstance(mcompInst);
+                    && (ModelFacade.isAComponentInstance(encloser.getOwner()))) {
+		mcompInst = /*(MComponentInstance)*/ encloser.getOwner();
+		ModelFacade.setComponentInstance(me, mcompInst);
 	    }
-	    else {
-		if (me.getComponentInstance() != null) {
-		    me.setComponentInstance(null);
-		}
+	    else if (ModelFacade.getComponentInstance(me) != null) {
+                ModelFacade.setComponentInstance(me, null);
 	    }
 	    if (encloser != null && 
 		(ModelFacade.isAComponent(encloser.getOwner()))) {
-		mcomp = (MComponent) encloser.getOwner();
-		MObject obj = (MObject) getOwner();
-		resident.setImplementationLocation(mcomp);
-		resident.setResident(obj);
+		mcomp = /*(MComponent)*/ encloser.getOwner();
+		Object obj = /*(MObject)*/ getOwner();
+		ModelFacade.setImplementationLocation(resident, mcomp);
+		ModelFacade.setResident(resident, obj);
 	    }
 	    else {
-		if (resident.getImplementationLocation() != null) {
-		    resident.setImplementationLocation(null);
-		    resident.setResident(null);
+		if (ModelFacade.getImplementationLocation(resident) != null) {
+		    ModelFacade.setImplementationLocation(resident, null);
+		    ModelFacade.setResident(resident, null);
 		}
 	    }
 	}
@@ -209,23 +201,23 @@ public class FigObject extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        MObject obj = (MObject) getOwner();
+        Object obj = /*(MObject)*/ getOwner();
 	if (obj == null) return;
 	String nameStr = "";
-	if (obj.getName() != null) {
-	    nameStr = obj.getName().trim();
+	if (ModelFacade.getName(obj) != null) {
+	    nameStr = ModelFacade.getName(obj).trim();
 	}
 
-	Vector bases = new Vector(obj.getClassifiers());
+	Vector bases = new Vector(ModelFacade.getClassifiers(obj));
  
 	String baseString = "";
 
-	if (obj.getClassifiers() != null && obj.getClassifiers().size() > 0) {
+	if (ModelFacade.getClassifiers(obj) != null && ModelFacade.getClassifiers(obj).size() > 0) {
 
-	    baseString += org.argouml.model.ModelFacade.getName(bases.elementAt(0));
+	    baseString += ModelFacade.getName(bases.elementAt(0));
 	    for (int i = 1; i < bases.size(); i++)
 		baseString +=
-		    ", "  + org.argouml.model.ModelFacade.getName(bases.elementAt(i));
+		    ", "  + ModelFacade.getName(bases.elementAt(i));
 	}
 
 	if (_readyToEdit) {

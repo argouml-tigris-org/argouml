@@ -36,8 +36,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-
 public class FigAssociationRole extends FigAssociation {
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -70,7 +68,7 @@ public class FigAssociationRole extends FigAssociation {
     protected void modelChanged(MElementEvent e) {
         super.modelChanged(e);
         //change the name
-        MAssociationRole ar = (MAssociationRole) getOwner();
+        Object ar = /*(MAssociationRole)*/ getOwner();
         if (ar == null) return;
         // String asNameStr = ((ar.getName() == null) && (ar.getBase()
         // == null)) ? "" : Notation.generate(this, ar);
@@ -207,5 +205,4 @@ class FigMessageGroup extends FigGroup {
     }
 
 }
-
 

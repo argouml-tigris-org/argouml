@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -32,6 +31,7 @@ package org.argouml.uml.diagram.deployment;
 
 import java.util.*;
 import java.beans.*;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
@@ -77,26 +77,26 @@ public class TableModelObjectByProps extends TableModelComposite {
 	    }
 	    return res;
 	}
-	else if (org.argouml.model.ModelFacade.isAComponentInstance(t)) {
-	    MComponentInstance d = (MComponentInstance) t;
+	else if (ModelFacade.isAComponentInstance(t)) {
+	    Object d = /*(MComponentInstance)*/ t;
 	    Vector res = new Vector();
-	    Collection residences = d.getResidents();
+	    Collection residences = ModelFacade.getResidents(d);
 	    Iterator it = residences.iterator();
 	    while (it.hasNext()) {
-		MInstance inst = (MInstance) it.next();
-		if (org.argouml.model.ModelFacade.isAObject(inst)) res.addElement(inst);
+		Object inst = /*(MInstance)*/ it.next();
+		if (ModelFacade.isAObject(inst)) res.addElement(inst);
 
 	    }
 	    return res;
 	}
 	else {
-	    MComponent d = (MComponent) t;
+	    Object d = /*(MComponent)*/ t;
 	    Vector res = new Vector();
-	    Collection elementResidences = d.getResidentElements();
+	    Collection elementResidences = ModelFacade.getResidentElements(d);
 	    Iterator it = elementResidences.iterator();
 	    while (it.hasNext()) {
-		MElementResidence residence = (MElementResidence) it.next();
-		MModelElement node = (MModelElement) residence.getResident();
+		Object residence = /*(MElementResidence)*/ it.next();
+		Object node = /*(MModelElement)*/ ModelFacade.getResident(residence);
 		if (org.argouml.model.ModelFacade.isAObject(node)) res.addElement(node);
 
 	    }
