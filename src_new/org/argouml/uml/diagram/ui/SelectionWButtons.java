@@ -65,10 +65,17 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     ////////////////////////////////////////////////////////////////
     // static variables
     private static int numButtonClicks = 0;
+    
+    /**
+     * The bool showRapidButtons is only false if the user selected 
+     * to never show the buttons. The user can not do this currently.
+     */
     private static boolean showRapidButtons = true;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
+    
+    /** True if the buttons on selection are currently shown. */
     private boolean paintButtons = true;
     private int pressedButton = -1;
 
@@ -95,7 +102,10 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     // static accessors
 
     /**
-     * toggle ShowRapidButtons
+     * Toggle ShowRapidButtons. Use this to switch off the displaying 
+     * of the rapid buttons completely. This may be used for a user setting,
+     * although the benefit of switching them of is debatable. 
+     * See also issue 2492.
      */
     public static void toggleShowRapidButtons() {
         showRapidButtons = !showRapidButtons;
