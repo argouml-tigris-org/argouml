@@ -31,12 +31,11 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.beans.PropertyChangeEvent;
 
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 import org.tigris.gef.presentation.Fig;
-
-import ru.novosoft.uml.MElementEvent;
 
 /**
  * This class represents a Fig for a Realization.
@@ -96,10 +95,10 @@ public class FigRealization extends FigEdgeModelElement {
      * method automatically updates the name FigText. Subclasses should override
      * and update other parts.
      *
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(MElementEvent e) {
-        // do not set _name
+    protected void modelChanged(PropertyChangeEvent e) {
+        // do not set name
         //updateStereotypeText();
     }
 

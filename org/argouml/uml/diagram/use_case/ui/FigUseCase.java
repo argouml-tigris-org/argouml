@@ -31,6 +31,7 @@ import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -58,8 +59,6 @@ import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-
-import ru.novosoft.uml.MElementEvent;
 
 /**
  * A fig to display use cases on use case diagrams.<p>
@@ -1079,13 +1078,11 @@ public class FigUseCase extends FigNodeModelElement {
         }
 
         // Mark the text as highlighted, then parse it
+        CompartmentFigText hlft = (CompartmentFigText) ft;
+        hlft.setHighlighted(true);
 
-        /* TODO: "highlightedFigText hides a field" Warning! Is intentional? */
-        CompartmentFigText highlightedFigText = (CompartmentFigText) ft;
-        highlightedFigText.setHighlighted(true);
-
-        Object ep = /*(MExtensionPoint)*/ (highlightedFigText.getOwner());
-        String text = highlightedFigText.getText().trim();
+        Object ep = /*(MExtensionPoint)*/ (hlft.getOwner());
+        String text = hlft.getText().trim();
 
         ParserDisplay.SINGLETON.parseExtensionPointFig(useCase, ep, text);
 
@@ -1263,22 +1260,23 @@ public class FigUseCase extends FigNodeModelElement {
      * Adjust the fig in the light of some change to the model.<p>
      *
      * Called both when there has been a change to notation, and when there
-     * has been an NSUML event.<p>
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     * has been an NSUML event.
+     * 
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(MElementEvent mee) {
+    protected void modelChanged(PropertyChangeEvent mee) {
 
         // Let our superclass sort itself out first
 
         super.modelChanged(mee);
         if (mee == null
-	    || mee.getName().equals("extensionPoint")
+	    || mee.getPropertyName().equals("extensionPoint")
 	    || org.argouml.model.ModelFacade.isAExtensionPoint(mee.getSource()))
 	{
             updateExtensionPoint();
             return;
         }
-        if (mee == null || mee.getName().equals("isAbstract")) {
+        if (mee == null || mee.getPropertyName().equals("isAbstract")) {
             updateNameText();
         }
     }

@@ -28,10 +28,10 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.beans.PropertyChangeEvent;
+
 import org.argouml.language.helpers.NotationHelper;
 import org.tigris.gef.base.Layer;
-
-import ru.novosoft.uml.MElementEvent;
 
 /**
  * This class represents a Fig for a Usage.
@@ -67,9 +67,9 @@ public class FigUsage extends FigDependency {
     }
         
     /**
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(MElementEvent e) {
+    protected void modelChanged(PropertyChangeEvent e) {
         super.modelChanged(e);
         String stereoTypeStr = getStereotypeFig().getText();
         

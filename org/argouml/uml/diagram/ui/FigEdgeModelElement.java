@@ -60,11 +60,11 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
@@ -82,9 +82,6 @@ import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
 import org.tigris.gef.presentation.Handle;
 
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
-
 /**
  * Abstract class to display diagram arcs for UML ModelElements that
  * look like arcs and that have editiable names.
@@ -97,7 +94,6 @@ public abstract class FigEdgeModelElement
         MouseListener,
         KeyListener,
         PropertyChangeListener,
-        MElementListener,
         NotationContext,
         ArgoNotationEventListener {
 
@@ -451,6 +447,13 @@ public abstract class FigEdgeModelElement
             endTrans();
         } else
             super.propertyChange(pve);
+        if (ModelFacade.isABase(src)) {
+            /* If the source of the event is an UML object, 
+             * then the UML model has been changed.*/
+            modelChanged(pve);
+        }
+        damage();  // TODO: (MVW) Is this required? 
+        // After all these events? I doubt it...
     }
 
     /**
@@ -556,10 +559,12 @@ public abstract class FigEdgeModelElement
      *
      * @param e the event
      */
-    protected void modelChanged(MElementEvent e) {
+    protected void modelChanged(PropertyChangeEvent e) {
         if (e == null
-            || (e.getSource() == getOwner() && "name".equals(e.getName())))
+            || (e.getSource() == getOwner() 
+                    && "name".equals(e.getPropertyName()))) {
             updateNameText();
+        }
         updateStereotypeText();
 
         if (ActionAutoResize.isAutoResizable()) {
@@ -571,7 +576,7 @@ public abstract class FigEdgeModelElement
         if (!updateClassifiers())
             return;
     }
-
+    
     /**
      * generate the notation for the modelelement and stuff it into the text Fig
      */
@@ -618,12 +623,16 @@ public abstract class FigEdgeModelElement
         if (newOwner != null) {
             Object oldOwner = getOwner();
 
-            if (org.argouml.model.ModelFacade.isAModelElement(oldOwner))
-                UmlModelEventPump.getPump().removeModelEventListener(this,
-								     oldOwner);
+            if (org.argouml.model.ModelFacade.isAModelElement(oldOwner)) {
+//                UmlModelEventPump.getPump().removeModelEventListener(this,
+//								     oldOwner);
+                Model.getPump().removeModelEventListener(this, oldOwner);
+            }
             if (org.argouml.model.ModelFacade.isAModelElement(newOwner)) {
-                UmlModelEventPump.getPump().addModelEventListener(this,
-								  newOwner);
+//                UmlModelEventPump.getPump().addModelEventListener(this,
+//								  newOwner);
+                Model.getPump().addModelEventListener(this, oldOwner);
+                
                 if (ModelFacade.getUUID(newOwner) == null) {
                     ModelFacade.setUUID(newOwner,
 					UUIDManager.getInstance().getNewUUID());
@@ -637,61 +646,61 @@ public abstract class FigEdgeModelElement
     /**
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
-    public void propertySet(MElementEvent mee) {
-        modelChanged(mee);
-        damage();
-    }
+//    public void propertySet(MElementEvent mee) {
+//        modelChanged(mee);
+//        damage();
+//    }
 
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
-    public void listRoleItemSet(MElementEvent mee) {
-        
-        modelChanged(mee);
-        damage();
-    }
+//    public void listRoleItemSet(MElementEvent mee) {
+//        
+//        modelChanged(mee);
+//        damage();
+//    }
 
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
-    public void recovered(MElementEvent mee) {
-        
-        modelChanged(mee);
-        damage();
-    }
+//    public void recovered(MElementEvent mee) {
+//        
+//        modelChanged(mee);
+//        damage();
+//    }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
-    public void removed(MElementEvent mee) {
-        
-        LOG.debug("deleting: " + this + mee);
-        if (mee.getSource() == getOwner())
-            this.removeFromDiagram();
-        else {
-            modelChanged(mee);
-            damage();
-        }
-
-    }
+//    public void removed(MElementEvent mee) {
+//        
+//        LOG.debug("deleting: " + this + mee);
+//        if (mee.getSource() == getOwner())
+//            this.removeFromDiagram();
+//        else {
+//            modelChanged(mee);
+//            damage();
+//        }
+//
+//    }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
-    public void roleAdded(MElementEvent mee) {
-        
-        modelChanged(mee);
-        damage();
-    }
+//    public void roleAdded(MElementEvent mee) {
+//        
+//        modelChanged(mee);
+//        damage();
+//    }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
-    public void roleRemoved(MElementEvent mee) {
-        
-        modelChanged(mee);
-        damage();
-    }
+//    public void roleRemoved(MElementEvent mee) {
+//        
+//        modelChanged(mee);
+//        damage();
+//    }
 
     /**
      * @see org.tigris.gef.presentation.Fig#deleteFromModel()
@@ -793,7 +802,8 @@ public abstract class FigEdgeModelElement
     public void removeFromDiagram() {
         Object o = getOwner();
         if (ModelFacade.isABase(o)) {
-            UmlModelEventPump.getPump().removeModelEventListener(this, o);
+//            UmlModelEventPump.getPump().removeModelEventListener(this, o);
+            Model.getPump().removeModelEventListener(this, o);
         }
         if (this instanceof ArgoEventListener) {
             ArgoEventPump.removeListener(this);

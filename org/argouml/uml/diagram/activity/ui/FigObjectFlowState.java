@@ -32,13 +32,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
 import java.util.Iterator;
 
-import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.FigRect;
-import org.tigris.gef.presentation.FigText;
 import org.argouml.application.api.Notation;
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
@@ -46,8 +44,9 @@ import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
-
-import ru.novosoft.uml.MElementEvent;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
 
 
 /** 
@@ -137,9 +136,9 @@ public class FigObjectFlowState extends FigNodeModelElement {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(MElementEvent mee) {        
+    protected void modelChanged(PropertyChangeEvent mee) {        
         super.modelChanged(mee);
         if ((mee.getSource() == getOwner()) 
             || (mee.getSource() == ModelFacade.getType(getOwner()))) {

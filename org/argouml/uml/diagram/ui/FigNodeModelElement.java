@@ -72,11 +72,11 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
@@ -94,9 +94,6 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
-
 /**
  * Abstract class to display diagram icons for UML ModelElements that
  * look like nodes and that have editiable names and can be
@@ -112,8 +109,6 @@ public abstract class FigNodeModelElement
         MouseListener,
         KeyListener,
         PropertyChangeListener,
-        MElementListener, // TODO: NSUML interface, how do we rid
-			  // ourselves of this?
         NotationContext,
         ArgoNotationEventListener {            
 
@@ -841,6 +836,13 @@ public abstract class FigNodeModelElement
         } else {
             super.propertyChange(pve);
         }
+        if (ModelFacade.isABase(src)) {
+            /* If the source of the event is an UML object, 
+             * e.g. the owner of this Fig (but not always only the owner 
+             * is shown, e.g. for a class, also its attributes are shown), 
+             * then the UML model has been changed.*/
+            modelChanged(pve);
+        }
     }
 
     /**
@@ -968,34 +970,37 @@ public abstract class FigNodeModelElement
      *
      * @param mee the ModelElementEvent that caused the change
      */
-    protected void modelChanged(MElementEvent mee) {
+    protected void modelChanged(PropertyChangeEvent mee) {
         if (mee == null) {
             throw new IllegalArgumentException("event may never be null "
-					       + "with modelchanged");
+                           + "with modelchanged");
         }
         if (getOwner() == null) {
             return;
         }
-        if ("name".equals(mee.getName()) && mee.getSource() == getOwner()) {
+        if ("name".equals(mee.getPropertyName()) 
+                && mee.getSource() == getOwner()) {
             updateNameText();
             damage();
         }
         if ((mee.getSource() == getOwner()
-	     && mee.getName().equals("stereotype"))) {
+                && mee.getPropertyName().equals("stereotype"))) {
             if (mee.getOldValue() != null) {
-                UmlModelEventPump.getPump()
-                    .removeModelEventListener(this, mee.getRemovedValue(), 
-                            		      "name");
+                /* TODO: MVW: No idea what to replace getRemovedValue() with...
+                 * I try getOldValue() for now. To be checked! */
+                Model.getPump().removeModelEventListener(this, 
+                        mee.getOldValue(), "name");
             }
             if (mee.getNewValue() != null) {
-                UmlModelEventPump.getPump()
-                    .addModelEventListener(this, mee.getNewValue(), "name");
+                Model.getPump().addModelEventListener(this, 
+                        mee.getNewValue(), "name");
             }
             updateStereotypeText();
             damage();
         }
     }
 
+    
     /**
      * Create a new "feature" in the owner fig.
      * 
@@ -1008,45 +1013,6 @@ public abstract class FigNodeModelElement
      */
     protected void createFeatureIn(FigGroup fg, InputEvent me) {
         
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
-     */
-    public void propertySet(MElementEvent mee) {
-        //if (_group != null) _group.propertySet(mee);        
-        modelChanged(mee);
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
-     */
-    public void listRoleItemSet(MElementEvent mee) {
-        //if (_group != null) _group.listRoleItemSet(mee);
-        modelChanged(mee);
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(MElementEvent mee) {
-        //if (_group != null) _group.recovered(mee);
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(MElementEvent mee) {
-        LOG.debug("deleting: " + this + mee);
-        Object o = mee.getSource();
-        if (o == getOwner()) {
-            removeFromDiagram();
-        } else if (isPartlyOwner(o)) {
-            updateBounds();
-            damage();
-            return;
-        }
-
     }
 
     /**
@@ -1089,22 +1055,6 @@ public abstract class FigNodeModelElement
             }
         }
         return false;
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(MElementEvent mee) {
-        //if (_group != null) _group.roleAdded(mee);
-        modelChanged(mee);
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(MElementEvent mee) {
-        //if (_group != null) _group.roleRemoved(mee);
-        modelChanged(mee);
     }
 
     /**
@@ -1199,11 +1149,10 @@ public abstract class FigNodeModelElement
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
         if (oldOwner != null) {
-            UmlModelEventPump.getPump().removeModelEventListener(this,
-								 oldOwner);
+            Model.getPump().removeModelEventListener(this, oldOwner);
         }
         if (newOwner != null) {
-            UmlModelEventPump.getPump().addModelEventListener(this, newOwner);
+            Model.getPump().addModelEventListener(this, newOwner);
         }
 
     }
@@ -1373,18 +1322,15 @@ public abstract class FigNodeModelElement
                     Iterator it2 =
 			ModelFacade.getParameters(feature).iterator();
                     while (it2.hasNext()) {
-                        UmlModelEventPump.getPump().removeModelEventListener(
-                                                        	    this,
-                                                                    it2.next());
+                        Model.getPump().removeModelEventListener(this, 
+                                it2.next());
                     }
                 }
-                UmlModelEventPump.getPump().removeModelEventListener(
-								     this,
-								     feature);
+                Model.getPump().removeModelEventListener(this, feature);
             }
         }
         if (ModelFacade.isABase(own)) {
-            UmlModelEventPump.getPump().removeModelEventListener(this, own);
+            Model.getPump().removeModelEventListener(this, own);
         }
         super.removeFromDiagram();
     }

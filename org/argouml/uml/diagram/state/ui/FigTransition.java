@@ -26,25 +26,23 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.beans.PropertyChangeEvent;
 import java.text.ParseException;
 
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.StateMachinesHelper;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
-
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
-
-import ru.novosoft.uml.MElementEvent;
 
 /**
  * This class represents the graphical representation of a transition 
@@ -145,13 +143,13 @@ public class FigTransition extends FigEdgeModelElement {
     }
 
     /**
-     * This is called after any part of the UML MModelElement has changed. This
+     * This is called after any part of the UML ModelElement has changed. This
      * method automatically updates the name FigText. Subclasses should override
      * and update other parts.
      * 
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(MElementEvent e) {
+    protected void modelChanged(PropertyChangeEvent e) {
         super.modelChanged(e);
         if (e == null) {
             return;
@@ -160,16 +158,16 @@ public class FigTransition extends FigEdgeModelElement {
         // register the guard condition
         if (ModelFacade.isATransition(e.getSource())
                 && (e.getSource() == getOwner() 
-                        && e.getName().equals("guard"))) {
-            UmlModelEventPump.getPump().addModelEventListener(this,
+                        && e.getPropertyName().equals("guard"))) {
+            Model.getPump().addModelEventListener(this,
                     e.getNewValue(), "expression");
             updateNameText();
             damage();
         } else if (ModelFacade.isATransition(e.getSource())
                 && e.getSource() == getOwner()
-                && e.getName().equals("trigger")) {
+                && e.getPropertyName().equals("trigger")) {
             // register the event (or trigger)
-            UmlModelEventPump.getPump().addModelEventListener(this,
+            Model.getPump().addModelEventListener(this,
                     e.getNewValue(), new String[] {
                     	"parameter", "name",
             	    });
@@ -177,9 +175,9 @@ public class FigTransition extends FigEdgeModelElement {
             damage();
         } else if (ModelFacade.isATransition(e.getSource())
                 && e.getSource() == getOwner() 
-                && e.getName().equals("effect")) {
+                && e.getPropertyName().equals("effect")) {
             // register the action
-            UmlModelEventPump.getPump().addModelEventListener(this,
+            Model.getPump().addModelEventListener(this,
                     e.getNewValue(), "script");
             updateNameText();
             damage();
@@ -187,16 +185,17 @@ public class FigTransition extends FigEdgeModelElement {
                 && ModelFacade.getTransitions(e.getSource()).contains(
                         getOwner())) {
             // handle events send by the event
-            if (e.getName().equals("parameter")) {
-                if (e.getAddedValue() != null) {
-                    UmlModelEventPump.getPump().addModelEventListener(
-                            this, 
-                            e.getAddedValue());
-                } else if (e.getRemovedValue() != null) {
-                    UmlModelEventPump.getPump().removeModelEventListener(
-                            this, 
-                            e.getRemovedValue());
-                }
+            if (e.getPropertyName().equals("parameter")) {
+                ; // TODO: When does this ever get used? How to replace?
+//                if (e.getAddedValue() != null) {
+//                    Model.getPump().addModelEventListener(
+//                            this, 
+//                            e.getAddedValue());
+//                } else if (e.getRemovedValue() != null) {
+//                    Model.getPump().removeModelEventListener(
+//                            this, 
+//                            e.getRemovedValue());
+//                }
             }
             updateNameText();
             damage();
@@ -213,8 +212,8 @@ public class FigTransition extends FigEdgeModelElement {
             updateNameText();
             damage();
         } else if ((e.getSource() == getOwner()) 
-                && (e.getName().equals("source") 
-                        || (e.getName().equals("target")))) {
+                && (e.getPropertyName().equals("source") 
+                        || (e.getPropertyName().equals("target")))) {
             dashed = ModelFacade.isAObjectFlowState(getSource())
                 || ModelFacade.isAObjectFlowState(getDestination());
             _fig.setDashed(dashed);

@@ -29,13 +29,15 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.argouml.model.Model;
+import org.argouml.model.ModelEventPump;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.diagram.sequence.ActivationNode;
 import org.argouml.uml.diagram.sequence.EmptyNode;
 import org.argouml.uml.diagram.sequence.LifeLinePort;
@@ -51,8 +53,6 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-
-import ru.novosoft.uml.MElementEvent;
 
 /**
  * Fig to show an object on a sequence diagram. The fig consists of an
@@ -527,7 +527,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     protected void updateListeners(Object newOwner) {
         if (ModelFacade.isAInstance(newOwner)) {
             Object oldOwner = getOwner();
-            UmlModelEventPump pump = UmlModelEventPump.getPump();
+            ModelEventPump pump = Model.getPump();
             pump.removeModelEventListener(this, oldOwner);
             pump.addModelEventListener(this,
 				       newOwner,
@@ -555,24 +555,26 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         }
     }
 
+
     /**
-     * @see FigNodeModelElement#modelChanged(MElementEvent)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(MElementEvent mee) {
+    protected void modelChanged(PropertyChangeEvent mee) {
         boolean nameChanged = false;
-        if (mee.getSource() == getOwner() && mee.getName().equals("name")) {
+        if (mee.getSource() == getOwner() 
+                && mee.getPropertyName().equals("name")) {
             updateObjectName();
             nameChanged = true;
         } else if (
             ModelFacade.isAClassifierRole(mee.getSource())
-                && mee.getName().equals("name")) {
+                && mee.getPropertyName().equals("name")) {
             updateClassifierRoleNames();
             nameChanged = true;
         } else if (
             mee.getSource() == getOwner()
-                && mee.getName().equals("stereotype")) {
+                && mee.getPropertyName().equals("stereotype")) {
             updateStereotypeText();
-        } else if (mee.getName().equals("name")) {
+        } else if (mee.getPropertyName().equals("name")) {
             updateBaseNames();
             nameChanged = true;
         }

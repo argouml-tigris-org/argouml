@@ -24,6 +24,7 @@
 
 package org.argouml.model.uml;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -35,12 +36,12 @@ import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
-import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.foundation.core.MAbstraction;
@@ -948,10 +949,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
         Project p = ProjectManager.getManager().getCurrentProject();
         Iterator it = p.findFigsForMember(cls).iterator();
         while (it.hasNext()) {
-            MElementListener listener = (MElementListener) it.next();
-            // UmlModelEventPump.getPump().removeModelEventListener(listener,
-            // attr);
-            UmlModelEventPump.getPump().addModelEventListener(listener, attr);
+            PropertyChangeListener listener = 
+                (PropertyChangeListener) it.next();
+            // Model.getPump().removeModelEventListener(listener, attr);
+            Model.getPump().addModelEventListener(listener, attr);
         }
         return attr;
     }
@@ -1351,10 +1352,11 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	Project p = ProjectManager.getManager().getCurrentProject();
 	Iterator it = p.findFigsForMember(cls).iterator();
 	while (it.hasNext()) {
-	    MElementListener listener = (MElementListener) it.next();
+	    PropertyChangeListener listener = 
+	        (PropertyChangeListener) it.next();
 	    // UmlModelEventPump.getPump().removeModelEventListener(listener,
 	    // oper);
-	    UmlModelEventPump.getPump().addModelEventListener(listener, oper);
+	    Model.getPump().addModelEventListener(listener, oper);
 	}
 	return oper;
     }
@@ -1429,10 +1431,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	Project p = ProjectManager.getManager().getCurrentProject();
 	it = p.findFigsForMember(oper).iterator();
 	while (it.hasNext()) {
-	    MElementListener listener = (MElementListener) it.next();
-	    // UmlModelEventPump.getPump().removeModelEventListener(listener,
-	    // res);
-	    UmlModelEventPump.getPump().addModelEventListener(listener, res);
+	    PropertyChangeListener listener = 
+	        (PropertyChangeListener) it.next();
+	    // Model.getPump().removeModelEventListener(listener, res);
+	    Model.getPump().addModelEventListener(listener, res);
 	}
 
 	return res;

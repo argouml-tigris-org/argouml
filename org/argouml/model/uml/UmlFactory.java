@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.model.ModelFacade;
 import org.argouml.model.UmlModelEntity;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
@@ -315,30 +314,24 @@ public class UmlFactory extends AbstractUmlModelFactory {
         
         elements.put(Uml.ABSTRACTION,
             new ObjectCreateInfo(MAbstraction.class,
-                factory,
-                "createAbstraction"));
+                factory, "createAbstraction"));
         elements.put(Uml.ASSOCIATION,
             new ObjectCreateInfo(MAssociation.class,
-                factory,
-                "createAssociation"));
+                factory, "createAssociation"));
         elements.put(Uml.ASSOCIATION_CLASS,
             new ObjectCreateInfo(MAssociationClass.class,
-                factory,
-                "createAssociationClass"));
+                factory, "createAssociationClass"));
         elements.put(Uml.ASSOCIATION_ROLE,
             new ObjectCreateInfo(MAssociationRole.class,
-                factory,
-                "createAssociationRole"));
+                factory, "createAssociationRole"));
         elements.put(Uml.DEPENDENCY,
             new ObjectCreateInfo(MDependency.class,
-                factory,
-                "createDependency"));
+                factory, "createDependency"));
         elements.put(Uml.EXTEND,
             new ObjectCreateInfo(MExtend.class, factory, "createExtend"));
         elements.put(Uml.GENERALIZATION,
             new ObjectCreateInfo(MGeneralization.class,
-                factory,
-                "createGeneralization"));
+                factory, "createGeneralization"));
         elements.put(Uml.INCLUDE,
             new ObjectCreateInfo(MInclude.class, factory, "createInclude"));
         elements.put(Uml.LINK,
@@ -347,30 +340,25 @@ public class UmlFactory extends AbstractUmlModelFactory {
             new ObjectCreateInfo(MLinkEnd.class, factory, "createLinkEnd"));
         elements.put(Uml.PERMISSION,
             new ObjectCreateInfo(MPermission.class,
-                factory,
-                "createPermission"));
+                factory, "createPermission"));
         elements.put(Uml.USAGE,
             new ObjectCreateInfo(MUsage.class, factory, "createUsage"));
         elements.put(Uml.TRANSITION,
             new ObjectCreateInfo(MTransition.class,
-                factory,
-                "createTransition"));
+                factory, "createTransition"));
         elements.put(Uml.ACTOR,
             new ObjectCreateInfo(MActor.class, factory, "createActor"));
         elements.put(Uml.CLASS,
             new ObjectCreateInfo(MClass.class, factory, "createClass"));
         elements.put(Uml.EXCEPTION,
             new ObjectCreateInfo(MException.class,
-                factory,
-                "createException"));
+                factory, "createException"));
         elements.put(Uml.CLASSIFIER,
             new ObjectCreateInfo(MClassifier.class,
-                factory,
-                "createClassifier"));
+                factory, "createClassifier"));
         elements.put(Uml.CLASSIFIER_ROLE,
             new ObjectCreateInfo(MClassifierRole.class,
-                factory,
-                "createClassifierRole"));
+                factory, "createClassifierRole"));
         elements.put(Uml.COMPONENT,
             new ObjectCreateInfo(MComponent.class, factory, "createComponent"));
         elements.put(Uml.COMPONENT_INSTANCE,
@@ -385,8 +373,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
             new ObjectCreateInfo(MNode.class, factory, "createNode"));
         elements.put(Uml.NODE_INSTANCE,
             new ObjectCreateInfo(MNodeInstance.class,
-                factory,
-                "createNodeInstance"));
+                factory, "createNodeInstance"));
         elements.put(Uml.OBJECT,
             new ObjectCreateInfo(MObject.class, factory, "createObject"));
         elements.put(Uml.PACKAGE,
@@ -397,48 +384,39 @@ public class UmlFactory extends AbstractUmlModelFactory {
             new ObjectCreateInfo(MState.class, factory, "createState"));
         elements.put(Uml.CALL_STATE,
             new ObjectCreateInfo(MCallState.class, 
-                factory, 
-                "createCallState"));
+                factory,  "createCallState"));
         elements.put(Uml.COMPOSITE_STATE,
             new ObjectCreateInfo(MCompositeState.class,
-                factory,
-                "createCompositeState"));
+                factory, "createCompositeState"));
         elements.put(Uml.PSEUDOSTATE,
             new ObjectCreateInfo(MPseudostate.class,
-                factory,
-                "createPseudostate"));
+                factory, "createPseudostate"));
         elements.put(Uml.OBJECT_FLOW_STATE,
             new ObjectCreateInfo(MObjectFlowState.class,
-                factory,
-                "createObjectFlowState"));
+                factory, "createObjectFlowState"));
         elements.put(Uml.CLASSIFIER_IN_STATE,
             new ObjectCreateInfo(MClassifierInState.class,
-                factory,
-                "createClassifierInState"));
+                factory, "createClassifierInState"));
         elements.put(Uml.SUBACTIVITY_STATE,
             new ObjectCreateInfo(MSubactivityState.class,
-                factory,
-                "createSubactivityState"));
+                factory, "createSubactivityState"));
         elements.put(Uml.USE_CASE,
             new ObjectCreateInfo(MUseCase.class, factory, "createUseCase"));
         elements.put(Uml.ACTION,
             new ObjectCreateInfo(MAction.class, factory, "createAction"));
         elements.put(Uml.ASSOCIATION_END,
             new ObjectCreateInfo(MAssociationEnd.class,
-                factory,
-                "createAssociationEnd"));
+                factory, "createAssociationEnd"));
         elements.put(Uml.CALL_ACTION,
             new ObjectCreateInfo(MCallAction.class,
-                factory,
-                "createCallAction"));
+                factory, "createCallAction"));
         elements.put(Uml.NAMESPACE,
             new ObjectCreateInfo(MNamespace.class, factory, "createNamespace"));
         elements.put(Uml.RECEPTION,
             new ObjectCreateInfo(MReception.class, factory, "createReception"));
         elements.put(Uml.STEREOTYPE,
             new ObjectCreateInfo(MStereotype.class,
-                factory,
-                "createStereotype"));
+                factory, "createStereotype"));
         elements.put(Uml.ATTRIBUTE,
             new ObjectCreateInfo(MAttribute.class, factory, "createAttribute"));
         elements.put(Uml.OPERATION,
@@ -827,6 +805,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
         if (elem instanceof MBase) {
             ((MBase) elem).remove();
+            // TODO: (MVW) How do we replace next statement? Model.getPump()...
             UmlModelEventPump.getPump().cleanUp((MBase) elem);
         }        
     }

@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.state.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
 import java.util.Iterator;
@@ -38,8 +39,6 @@ import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-
-import ru.novosoft.uml.MElementEvent;
 
 /**
  * Class to display graphics for a UML MCompositeState in a diagram.
@@ -243,14 +242,14 @@ public class FigCompositeState extends FigState {
     // event processing
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
-     *
      * Update the text labels.
+     *
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(MElementEvent mee) {
+    protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
 
-        if (mee.getName().equals("isConcurrent")) {
+        if (mee.getPropertyName().equals("isConcurrent")) {
             // TODO: this should split the composite state into two
             // regions. This must be implemented
             updateInternal();

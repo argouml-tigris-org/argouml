@@ -26,19 +26,17 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.beans.PropertyChangeEvent;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.ModelFacade;
-
+import org.argouml.model.uml.CoreFactory;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
-
-import ru.novosoft.uml.MElementEvent;
 
 /**
  * @author abonner@ics.uci.edu, jaap.branderhorst@xs4all.nl
@@ -111,13 +109,13 @@ public class FigGeneralization extends FigEdgeModelElement {
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    /** This is called aftern any part of the UML MModelElement has
-     *  changed. This method automatically updates the name FigText.
-     *  Subclasses should override and update other parts.
+    /** 
+     * This is called aftern any part of the UML MModelElement has
+     * changed. 
      * 
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(MElementEvent e) {
+    protected void modelChanged(PropertyChangeEvent e) {
 	// do not set _name
 	updateStereotypeText();
 	updateDiscriminatorText();
