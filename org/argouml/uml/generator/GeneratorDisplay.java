@@ -761,9 +761,9 @@ public class GeneratorDisplay extends Generator2 {
         Collection classes = new ArrayList();
         if (generalizations == null)
             return "";
-        Iterator enum = generalizations.iterator();
-        while (enum.hasNext()) {
-            Object g = /*(MGeneralization)*/ enum.next();
+        Iterator gens = generalizations.iterator();
+        while (gens.hasNext()) {
+            Object g = /*(MGeneralization)*/ gens.next();
             Object ge = ModelFacade.getPowertype(g);
             // assert ge != null
             if (ge != null) {

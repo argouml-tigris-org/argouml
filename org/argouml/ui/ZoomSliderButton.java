@@ -131,9 +131,9 @@ public class ZoomSliderButton extends PopupButton {
         int sliderBaseWidth = _slider.getPreferredSize().width;
         _slider.setPaintLabels(true);
         
-        for (Enumeration enum = _slider.getLabelTable().elements(); 
-            enum.hasMoreElements();) {
-            ((Component) enum.nextElement()).setFont(LABEL_FONT);
+        for (Enumeration components = _slider.getLabelTable().elements();
+             components.hasMoreElements();) {
+            ((Component) components.nextElement()).setFont(LABEL_FONT);
         }
         
         _slider.setToolTipText(Translator.localize(BUNDLE, 
