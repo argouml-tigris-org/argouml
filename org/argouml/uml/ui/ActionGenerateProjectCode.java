@@ -94,6 +94,10 @@ public class ActionGenerateProjectCode extends UMLAction {
 
     private boolean isCodeRelevantClassifier(MClassifier cls) {
       String path = Generator.getCodePath(cls);
+      String name = cls.getName();
+      if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0))) {
+        return false;
+      }
       if (path != null) {
         return (path.length() > 0);
       }

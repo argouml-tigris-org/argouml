@@ -38,7 +38,7 @@ public class ActionGenerateAll extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static ActionGenerateAll SINGLETON = new ActionGenerateAll(); 
+    public static ActionGenerateAll SINGLETON = new ActionGenerateAll();
 
 
     ////////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ public class ActionGenerateAll extends UMLAction {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       ArgoDiagram activeDiagram = pb.getActiveDiagram();
       if (!(activeDiagram instanceof UMLClassDiagram)) return;
-      
+
       UMLClassDiagram d = (UMLClassDiagram) activeDiagram;
       Vector classes = new Vector();
       Vector nodes = d.getNodes();
@@ -67,7 +67,7 @@ public class ActionGenerateAll extends UMLAction {
             continue;
           MClassifier cls = (MClassifier) owner;
           String name = cls.getName();
-          if (name == null || name.length() == 0) continue;
+          if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0))) continue;
           classes.addElement(cls);
       }
       ClassGenerationDialog cgd = new ClassGenerationDialog(classes);
