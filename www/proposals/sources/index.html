@@ -1,0 +1,160 @@
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>ArgoUML Directory Structure</title>
+  </head>
+  
+  <body>
+    <table cellpadding=0 cellspacing=0>
+      <tr bgcolor="#CCCCCC">
+        <td>
+Proposed structure of ArgoUML including non-CVS directories.
+<p/>
+Directories are prefixed with a slash (/),
+files are prefixed with a minus (-).
+<br/>
+Files and directories followed by an asterisk
+are not included in CVS.
+<br/>
+Files and directories followed by a pound sign (#)
+would only be contained in CVS as branches,
+and would no longer be part of the CVS base.
+
+<p/>
+<pre>
+     /argouml
+             /build
+                   -.cvsignore
+                   -build.xml  (Master build, would call all other build.xml)
+                   -build.bat
+                   -build.sh
+                   -argouml.default.properties
+                   -argouml.build.properties * (developer can create for customization)
+                   -argouml.version.properties
+                   /target *
+                          /dist *
+                          /documentation *
+                          /runtime *
+                                  -argoapi.jar *
+                                  -argocore.jar *
+                                  -argouml.jar *
+                                  -argojava.jar *
+			          /bin *
+                                      -argouml.sh *
+                                      -argouml.bat *
+                                  /ext *
+                                      -dummylanguage.jar
+                                      -jscheme.jar
+                                      -junit.jar
+                                      -menutest.jar
+                                      -php.jar
+             /conf
+             /documentation
+                           -build.xml
+                           -build.bat
+                           -build.sh
+                           /cookbook
+                           /faq
+                           /images
+                           /manual
+                           /quick-guide
+             /extra
+             /lib
+                 -antlrall.jar
+                 -gef-0.9.5.jar
+                 -jh.jar
+                 -log4j-1.1.3.jar
+                 -nsuml-0.4.19.jar
+                 -ocl-argo.jar
+                 -xerces-1.2.3.jar
+             /modules
+                     -build.xml
+                     -build.bat
+                     -build.sh
+                     /dummylanguage 
+                                   -build.xml
+                                   -build.bat
+                                   -build.sh
+                                   /lib
+                                   /src
+                     /jscheme
+                             -build.xml
+                             -build.bat
+                             -build.sh
+                             /lib
+                             /src
+                     /junit
+                           -build.xml
+                           -build.bat
+                           -build.sh
+                           /lib
+                           /src
+                     /menutest
+                              -build.xml
+                              -build.bat
+                              -build.sh
+                              /lib
+                              /src
+                     /php
+                         -build.xml
+                         -build.bat
+                         -build.sh
+                         /lib
+                         /src
+             /src #
+             /src_new #
+             /source
+                    -build.xml
+                    /argoappl 
+                            -build.xml
+                            /org
+                                /argouml
+             /tools
+                   /ant-1.4.1
+                             /bin
+                                 +ant
+                                 +ant.bat
+                                 +lcp.bat
+                             /lib
+                                 +ant.jar
+                                 +crimson.jar
+                                 +jaxp.jar
+                                 +optional.jar
+                   /docbook (moved from argouml/documentation/docbook-setup)
+                   /fop-0.20.3
+                              /build
+                                    +fop.jar
+                                    +fop-0.20.3-with-jimi.jar
+                              /lib
+                                    +avalon-framework-4.0.jar
+                                    +batik-1.1.jar
+                                    +logkit-1.0.jar
+                                    +xalan-2.0.0.jar
+                                    +xalanj1compat.jar
+                                    +avalon-framework-4.0.jar
+                   /lib
+             /www (unchanged)
+</pre>
+
+<p/>
+<hr/>
+Restructuring of the source would improve the compartmentalization of ArgoUML.
+Breaking the source into smaller components should allow simpler maintenance ant quality control.
+<p/>
+Adding an additional directory level under the sources
+would facilitate splitting the source files into smaller components
+in the same manner as <i>NetBeans</i> or <i>Eclipse</i>.
+<center>
+       </td>
+     </tr>
+   </table>
+   <hr align="CENTER">
+   <p>
+     <a href="../index.html">Proposals</a>
+     |
+     <a href="/index.html">ArgoUML Home</a>
+     |
+     <a href="/dev.html">Developer Zone</a>
+   </p>
+  </body>
+</html>
