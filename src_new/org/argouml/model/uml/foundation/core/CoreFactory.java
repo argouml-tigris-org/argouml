@@ -503,7 +503,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds a default binary association with two default association ends
+     * Builds a binary association with a direction, aggregation
      * and a given name.
      *
      * @param c1 The first classifier to connect to
