@@ -2318,16 +2318,15 @@ the editing pane.</para>
   <sect1>
     <title>The Generation Menu</title>
 
-    &notupdatedfor014disclaimer;
-
     <para>This menu provides support for code generation from UML diagrams. The
       functionality is built around the structural information of class
       diagrams.</para>
 
-    <note><para>The current version of &argouml; supports only code generation
-      of Java. Future work will extend this to other languages.</para></note>
+    <note><para>Without any plugins installed, &argouml; supports only code generation
+      of Java. &argouml; V0.14 supports the following languages by plugin: 
+      C#, C++, php.</para></note>
 
-    <caution><para>This is still very much a work in progress. The current
+    <caution><para>Code generation is still very much a work in progress. The current
       version of &argouml; will generate a structural template for your code,
       but is not able to handle behavioral specifications to generate code for
       the dynamic behavior of the model.</para></caution>
@@ -2335,17 +2334,17 @@ the editing pane.</para>
     <!-- Generate code for selected classes -->
 
     <sect2 id="s2.ref.menu_generate_selected_classes">
-      <title>Generate Selected Classes</title>
+      <title>Generate Selected Classes &hellip;</title>
 
       <para>This menu entry brings up a dialog box for the &argouml; code
         generator (see
         <xref linkend="fig.ref.menu_generate_selected_classes"/>).</para>
 
-      <!-- Example of the goto diagram dialog -->
+      <!-- Example of the generate classes dialog -->
 
       <figure id="fig.ref.menu_generate_selected_classes" float="1">
         <title>The dialog for <literal>Generate Selected
-          Classes</literal>.</title>
+          Classes&hellip;</literal>.</title>
 
         <screenshot><mediaobject>
           <imageobject>
@@ -2357,10 +2356,16 @@ the editing pane.</para>
 
       <!-- Describe how to use the dialog box -->
 
-      <para>Below a label <literal>Generate&nbsp;Classes:</literal> the dialog
+      <para>Below a label <literal>Generate&nbsp;Classes&nbsp;&hellip;</literal> 
+        the dialog
         box lists each of the selected classes by name with a check box to the
-        left, which is initially checked. Unchecking any of these boxes will
-        omit code generation for that class.</para>
+        right, for each language installed. 
+        All the checkboxes are initially unchecked. 
+        Checking any of these boxes will
+        cause code generation for that class.
+        Checking multiple languages for a class causes it to be generated in
+        all these languages.
+      </para>
 
       <para>In the lower portion of the dialog box is a text box labeled
         <literal>Output&nbsp;Directory:</literal> to specify the directory in
@@ -2373,21 +2378,29 @@ the editing pane.</para>
       <para>Beneath this a check box labeled <literal>compile generated
         source</literal> (clear by default) controls whether the generated code
         should be compiled.</para>
+      <!-- TODO: How do you tell ArgoUML how to do this? Without 
+      that explained here, the function is useless. -->
 
       <para>Finally, at the bottom of the dialog box are two buttons, labeled
-        <literal>Generate</literal> and <literal>Cancel</literal>. &Button1; on
-        the former will cause the code to be generated, &button1; on the latter
+        <literal>Generate</literal> and <literal>Cancel</literal>. &Button1; click on
+        the former will cause the code to be generated, &button1; click on the latter
         will cancel code generation.</para>
-      
-      <note><para>Strictly speaking this menu entry should be labeled
-        <literal>Generate&nbsp;Selected&nbsp;Classes&hellip;</literal>, since
-        it invokes a dialog box.</para></note>
+
+        <!-- TODO: The dialog box should have the window title bar title set 
+        to the same as the menu entry. See issue ... -->
+        <!-- TODO: Sizing the dialog window causes some strange behaviour 
+        for the width of the contents. E.g. reducing heigt little by little,
+        causes a jump in the width of the contents. See issue ... -->
+        <!-- TODO: When the dialog box appears, none of the checkmarks are set. 
+        Shouldn't it be by default set for all selected classes? See issue ... -->
+        <!-- TODO: Enhancement: add a "Select all", and "unselect all" 
+        button to each column. See issue ... -->
     </sect2>
 
     <!-- Generate code for all classes -->
 
     <sect2>
-      <title>Generate All Classes</title>
+      <title>Generate All Classes&hellip;</title>
 
       <indexterm>
 	<primary>Generate All Classes</primary>
@@ -2399,9 +2412,25 @@ the editing pane.</para>
       <para>Shortcut F7.</para>
 
       <para>This function behaves as
-        <literal>Generate&nbsp;Selected&nbsp;Classes</literal> (see
+        <literal>Generate&nbsp;Selected&nbsp;Classes&hellip;</literal> (see
         <xref linkend="s2.ref.menu_generate_selected_classes"/>) would with all
         classes in the model selected.</para>
+    </sect2>
+
+    <!-- Generate code for project -->
+
+    <sect2>
+      <title>Generate Code for Project&hellip; (To be Written)</title>
+      <para></para>
+      <!-- TODO: I only see the same dialog box again, but empty this time. -->
+    </sect2>
+
+    <!-- Settings for Generate for Project -->
+
+    <sect2>
+      <title>Settings for Generate for Project&hellip; (To be Written)</title>
+      <para></para>
+      <!-- TODO: I only see the same dialog box again, but empty this time. -->
     </sect2>
   </sect1>
 
@@ -2409,8 +2438,6 @@ the editing pane.</para>
 
   <sect1 id="s1.ref.menu_critique">
     <title>The Critique Menu</title>
-
-    &notupdatedfor014disclaimer;
 
     <para>This menu controls one of &argouml;'s unique features&mdash;the use
       of critics to guide the designer. The theory behind this is well
@@ -2431,7 +2458,7 @@ the editing pane.</para>
       has identified can be rectified, by raising a
       <emphasis>to-do item</emphasis>.</para></note>
 
-    <note><para>The critics run as asynchronous processes that run in parallel
+    <note><para>The critics run as asynchronous processes in parallel
       with the main &argouml; tool. Changes typically take a second or two to
       propagate as the critics wake up.</para></note>
 
@@ -2453,7 +2480,7 @@ the editing pane.</para>
       <title>Design Issues&hellip;</title>
 
       <para>This menu entry brings up a dialog box controlling how critics
-        associated with a particular design areas are to be handled (see
+        associated with a particular design area are to be handled (see
         <xref linkend="fig.ref.menu_design_issues"/>).</para>
 
       <!-- Example of the goto diagram dialog -->
@@ -2471,7 +2498,7 @@ the editing pane.</para>
       </figure>
 
       <para>&argouml; categorizes critics according the the design issue they
-      address. At present there are 16 such categories. The critics in each
+      address. There are 16 such categories. The critics in each
       category are discussed in detail in the chapter on critics
       (<xref linkend="ch.ref.critics"/>).</para>
 
@@ -2501,7 +2528,7 @@ the editing pane.</para>
           <xref linkend="s1.ref.design_issues_planned_extensions"/>.
         </para></listitem>
 
-        <listitem><para><literal>MState Machines</literal>. Fourteen
+        <listitem><para><literal>State Machines</literal>. Fourteen
           critics (see
           <xref linkend="s1.ref.design_issues_state_machines"/>.
         </para></listitem>
@@ -2558,21 +2585,28 @@ the editing pane.</para>
       </itemizedlist>
 
       <para>The sliders may be set for each category to control the critics
-        that trigger for that category. Setting a slider to zero will disable
+        that trigger for that category. Setting a slider to 
+        <literal>Off</literal> will disable
         all critics in that category, and remove all associated to-do items
         from the to-do pane.</para>
 
-      <para>Setting a slider to a higher value will enable all critics at or
+      <para>Setting a slider to a higher priority 
+        value will enable all critics at or
         above that priority level within the design issue category (1 being the
-        highest priority and 5 the lowest.</para>
+        highest priority and 4 or Off the lowest).</para>
 
-      <note><para>The sliders are set by default to 5 for all design
-        categories except <literal>Uncategorized</literal> which is set to
-        1.</para></note>
+      <note><para>The sliders are set by default to <literal>High</literal>
+        for all design
+        categories<!-- except <literal>Uncategorized</literal> which is set to
+        1-->.
+        <!-- TODO: See if that is still true. -->
+        </para></note>
 
-      <caution><para>In the current release of &argouml; all critics trigger at
+      <caution><para>In the V0.14 release of &argouml; all critics trigger at
         priority 1, so any higher values of the slider make no
-        difference.</para></caution>
+        difference.
+        <!-- TODO: See if that is still true. -->
+      </para></caution>
     </sect2>
 
     <!-- Critics for design goals -->
@@ -2584,7 +2618,7 @@ the editing pane.</para>
         are to be handled (see <xref
         linkend="fig.ref.menu_design_goals"/>).</para>
 
-      <!-- Example of the goto diagram dialog -->
+      <!-- Example of the design goals dialog -->
 
       <figure id="fig.ref.menu_design_goals" float="1">
         <title>The dialog for
@@ -2613,18 +2647,22 @@ the editing pane.</para>
 
       <para>Setting a slider to a higher value will enable all critics at or
         above that priority level within the design issue category (1 being the
-        highest priority and 5 the lowest.</para>
+        highest priority and 5 the lowest).</para>
+<!-- TODO: Why is this altered in the Design issues box, and not here? 
+Inconsistent! See issue ... -->
 
       <tip><para>It may be useful to think of this function as very similar to
         <literal>Design Issues&hellip;</literal> (see
-        <xref linkend="s2.ref.menu_design_issues"/>, but with grouping of
+        <xref linkend="s2.ref.menu_design_issues"/>), but with grouping of
         critics according to the outcomes of &ooad; rather than grouping
         according to the structure of UML.</para></tip>
 
-      <caution><para>The current version of &argouml; provides a single design
+      <caution><para>The V0.14 version of &argouml; provides a single design
         goal, <literal>Unspecified</literal>, with its slider set by default to
         priority 1. However it contains no critics and so has no
-        effect.</para></caution>
+        effect.
+        <!-- TODO: So, what do we do about it? -->
+      </para></caution>
     </sect2>
 
     <!-- Browse critics -->
@@ -2650,29 +2688,38 @@ the editing pane.</para>
       </figure>
 
       <para>This dialog controls the behavior of individual critics. To the
-        left is a list of all the critics. For each critic there are three
-        columns, labeled <literal>X</literal>, <literal>Headline</literal> and
-        <literal>Active</literal>. The first of these is a check box, which may
+        left is a list of all the critics, 
+        to enable them to be switched on or off individually.
+        For each critic there are three
+        columns, labeled <literal>Active</literal>, <literal>Headline</literal> and
+        <literal>Snoozed</literal>. The first of these is a check box, which may
         be toggled with &button1; click. The second is the headline name of the
-        critic, the third contains the word <literal>Active</literal> or
-        <literal>Inactive</literal>. A critic is inactive if the box in the
-        first column is unchecked <emphasis>or</emphasis> the box is checked,
-        but the critic has been snoozed from the to-do pane (see
-        <xref linkend="ch.ref.todopane"/> </para>
+        critic, the third indicates 
+        if the critic has been snoozed from the to-do pane (see
+        <xref linkend="ch.ref.todopane"/>.
+        A critic is only really active if the box in the
+        first column is checked <emphasis>and</emphasis> the critic has not 
+        been snoozed.
+      </para>
 
       <para>Any critic for which the box in the first column is unchecked is
         inactive and will not trigger. In addition any to-do items associated
         with that critic will be removed from the to-do pane.</para>
 
-      <note><para>In the current version of &argouml; all critics but one are
+        <!-- TODO: Check this. How? Since I can not check this, 
+        and it does not really help the user, I leave this part out for now. -->
+        <!--note><para>In the current version of &argouml; all critics but one are
         active by default. The one exception is
-        <literal>Remove&nbsp;&lt;class&gt;'s&nbsp;Circular&nbsp;Inheritance</literal>.</para></note>
+        <literal>Remove&nbsp;&lt;class&gt;'s&nbsp;Circular&nbsp;Inheritance</literal>.</para></note-->
 
-      <para>The current version of &argouml; has a total of 78 critics. They
+      <para>The V0.14 version of &argouml; has a total of 85 critics, 
+        a few of which are incompletely implemented. They
         are described in detail by design issue category in the chapter on
         critics (see <xref linkend="ch.ref.critics"/>).</para>
 
-      <itemizedlist>
+      <!-- Why repeat this whole list here? We just referred to the chapter 
+      where they are described... -->
+      <!--<itemizedlist>
         <listitem><para><literal>Resolve Association Name
           Conflict</literal>. See
           <xref linkend="critics.CrAssocNameConflict"/>
@@ -3057,36 +3104,26 @@ the editing pane.</para>
           Visible</literal>. See
           <xref linkend="critics.CrZeroLengthEdge"/>
         </para></listitem>
-      </itemizedlist>
+      </itemizedlist>-->
 
-      <para>To the right of the list are a series of fields giving detailed
+      <para>To the right of the list are a series of fields, 
+        titled <literal>Critic Details</literal>, giving detailed
         control over individual critics. Selecting a critic in the list on the
         left will populate the fields for that critic.</para>
 
-      <warning><para>In the current release of &argouml; there is a known
-        problem with the user interface. When moving down the list
-        (i.e. selecting a critic below the previously selected one) the fields
-        are populated for the previously selected critic. To get the fields for
-        the desired critic, another critic further down must be selected,
-        making the desired critic the <quote>previous critic</quote> whose
-        details will then populate the fields on the right.</para>
-
-      <para>Selecting items further up the list (i.e. selecting a critic
-        <emphasis>above</emphasis> the previously selected on) does not have
-        this problem.</para>
-
-      <para>A consequence of the different behavior when selecting up or down
-        is that the last critic on the list
-        (<literal>Make&nbsp;Edge&nbsp;More&nbsp;Visible</literal>) can never
-        populate the fields on the right.</para></warning>
-
-      <para>The fields on the right are titled <literal>Critic Class:</literal>
+      <para>The first field on the right is titled <literal>Critic Class:</literal>
         and then the full name of the class in &argouml; that implements the
-        critic.</para>
+        critic. The last part of this name (after the last dot) can be used 
+        as unique identifier of the critique, 
+        e.g. in conversations about the critic.
+      </para>
 
       <para>The first field below this title is a text box labeled
         <literal>Headline:</literal> giving the complete headline of the critic
         (which may be truncated in the list on the left).</para>
+<!-- TODO: Widening the dialog box only widens the left part, hence the long
+names still are not readable in this field. Should be 50% division at all time. 
+See issue ... -->
 
       <note><para>In the headline you may see the text
         <literal>&lt;ocl&gt;self&lt;/ocl&gt;</literal>, which will be replaced
@@ -3097,15 +3134,21 @@ the editing pane.</para>
         <literal>Priority:</literal>. The three options available are
         <literal>High</literal>, <literal>Medium</literal> and
         <literal>Low</literal> and specify the priority category of any to-do
-        item generated by this critic.</para>
+        item generated by this critic.
+        <!-- TODO: Does it alter the already existing ones? -->
+      </para>
 
       <para>The next field is labeled <literal>MoreInfo:</literal> and
         contains a URL pointing to further information with a button to the
         right labeled <literal>Go</literal> to navigate to that URL.</para>
 
-      <caution><para>In the current release of &argouml; there is no further
-        information available, and the <literal>Go</literal> button is always
-        grayed out and disabled.</para></caution>
+      <caution><para>In the V0.14 release of &argouml; there is no further
+        information available, 
+        <!-- TODO: See issue ... --> 
+        and the <literal>Go</literal> button is always
+        grayed out and disabled.
+        <!-- TODO: See issue ... -->
+      </para></caution>
 
       <para>The next field is labeled <literal>Description:</literal> and is a
         text area with a detailed explanation of what this critic means. If the
@@ -3125,7 +3168,7 @@ the editing pane.</para>
       <para>Clarifiers are the icons and wavy red underlines drawn on the
 actual diagrams to indicate the artefact to which the critic refers.
 The original
-        intention was to make the mapping from critics to clarifiers to
+        intention was to make the mapping from critics to clarifiers 
         somewhat customizable.</para>
 
       <para>For example one user might make a <literal>Missing Name</literal>
@@ -3134,7 +3177,7 @@ The original
         with their clarifier's disabled would still produce feedback that is
         listed in the to-do pane.</para>
 
-      <caution><para>In the current release of &argouml; this selector has no
+      <caution><para>In the V0.14 release of &argouml; this selector has no
         function, beyond printing a message on the console. It is for future
         development.</para></caution>
 
@@ -3148,13 +3191,13 @@ The original
           again. Otherwise it is grayed out.</para>
 
         <tip><para>You can tell a snoozed critic, because in the list on the
-          left it will have the box in the first column checked, but will be
-          shown as inactive in the third column.</para></tip></listitem>
+          left it will be indicated
+          in the third column.</para></tip></listitem>
 
         <listitem><para><literal>Configure</literal>. This button is for
           configuring the critic.</para>
 
-        <caution><para>In the current version of &argouml; this function is not
+        <caution><para>In the V0.14 version of &argouml; this function is not
           implemented, and this button is always grayed out. It is for future
           development.</para></caution></listitem>
 
@@ -3182,7 +3225,7 @@ The original
           conditions and steps would allow end-users to build new critics by
           combining those in novel ways.</para>
 
-        <caution><para>In the current version of &argouml; this function is not
+        <caution><para>In the V0.14 version of &argouml; this function is not
           implemented, and this button is always grayed out. It is for future
           development.</para></caution></listitem>
       </itemizedlist>
@@ -3198,11 +3241,45 @@ The original
   <sect1>
     <title>The Tools Menu</title>
 
-    &notupdatedfor014disclaimer;
-
     <para>This menu provides a generic menu attachment point for any plug-ins
-      provided with &argouml;. The standard system has no plug-ins, so this
-      menu entry is grayed out by default.</para>
+      provided with &argouml;. The standard system has one plug-in, and this
+      menu entry contains one submenu by default.
+    </para>
+
+    <sect2>
+      <title>Export as XMI</title>
+      <para>
+        This menu-item allows to save the complete structure of the UML model as
+        a XMI file, according the XMI V1.0 standard. 
+        Beware the fact that this file will only contain the model, 
+        not any diagram layout. Hence, if the xmi file is reloaded with the 
+        <literal>File - Open Project&hellip;</literal> menu, then the diagrams
+        are lost.
+      </para>
+      
+      <para>When the menu is activated, the standard filechooser appears, see
+        <xref linkend="fig.ref.menu_export_xmi"/>. 
+      </para>
+      
+      <figure id="fig.ref.menu_export_xmi" float="1">
+        <title>The dialog for
+          <literal>Export&nbsp;XMI</literal>.</title>
+
+        <screenshot><mediaobject>
+          <imageobject>
+            <imagedata format="PNG" align="center"
+                       fileref="images/reference/menu_export_xmi.png"/>
+          </imageobject>
+        </mediaobject></screenshot>
+      </figure>
+
+      <caution>
+        <para>The <quote>.xmi</quote> extension is not added automatically. 
+        You have to enter it with the  filename.
+        <!-- TODO: See issue ... -->
+        </para>
+      </caution>
+    </sect2>
   </sect1>
 
   <!-- The Help menu entries -->
@@ -3210,20 +3287,48 @@ The original
   <sect1>
     <title>The Help Menu</title>
 
-    &notupdatedfor014disclaimer;
+    <para>This menu provides help on the use of &argouml;. It has two
+      entries.</para>
 
-    <para>This menu provides help on the use of &argouml;. At present it has a
-      single entry.</para>
+    <!-- System information -->
+    
+    <sect2>
+      <title>System Information</title>
+      
+      <para>This menu entry brings up the system information dialog, see 
+        <xref linkend="fig.ref.menu_help_system_info"/>
+      </para>
 
+      <figure id="fig.ref.menu_help_system_info" float="1">
+        <title>The dialog for
+          <literal>System&nbsp;Information</literal>.</title>
+
+        <screenshot><mediaobject>
+          <imageobject>
+            <imagedata format="PNG" align="center"
+                       fileref="images/reference/menu_help_system_info.png"/>
+          </imageobject>
+        </mediaobject></screenshot>
+      </figure>
+      
+      <para>
+        Use this menu to describe the system that runs &argouml; to the system
+        manager or developer. The <literal>Run GC</literal> refreshes 
+        the information shown. To facilitate copy and paste into (e.g.) an email, the
+        button <literal>Copy Information to System Clipboard</literal> is
+        foreseen. The <literal>Cancel</literal> button dismisses the dialog box. 
+      </para>
+    </sect2>
+    
     <!-- Information about Argo/UML -->
 
     <sect2 id="s2.ref.menu_help_about">
-      <title>About Argo/UML</title>
+      <title>About &argouml;&hellip;</title>
 
       <para>This menu entry brings up the help window for &argouml; (see
         <xref linkend="fig.ref.menu_help"/>).</para>
 
-      <!-- Example of the goto diagram dialog -->
+      <!-- Example of the about dialog -->
 
       <figure id="fig.ref.menu_help" float="1">
         <title>The help window for &argouml;</title>
@@ -3236,25 +3341,33 @@ The original
         </mediaobject></screenshot>
       </figure>
 
-      <para>The window has five tabs, which are selected by &button1; click. By
+      <para>The window has six tabs, which are selected by &button1; click. By
         default the first tab (<literal>Splash</literal>) is shown.</para>
 
       <itemizedlist>
         <listitem><para><literal>Splash</literal>. This displays the picture
-          shown when &argouml; starts up.</para></listitem>
+          shown when &argouml; starts up, and the current version number.
+        </para></listitem>
 
         <listitem><para><literal>Version</literal>. This provides version
           information on the various packages that make up
-          &argouml;.</para></listitem>
+          &argouml;, and some operating system and environment information.
+        </para></listitem>
 
         <listitem><para><literal>Credits</literal>. This details all those who
           have created &argouml;, including contact details for the various
           module owners.</para></listitem>
 
         <listitem><para><literal>Contact Info</literal>. This gives the major
-          contact points for the &argouml; project&mdash;the web site, Jason
-          Robbins, the developers mailing list.</para></listitem>
+          contact points for the &argouml; project&mdash;the web site, and
+          the developers mailing list.</para></listitem>
 
+        <listitem><para><literal>Report bugs</literal>. This gives information
+          about how to deal with bugs in &argouml;. It is important that all bugs
+          are reported, and all cooperation is appreciated.
+          </para>
+        </listitem>
+          
         <listitem><para><literal>Legal</literal>. A statement of the FreeBSD
           license which covers all the &argouml; software.</para>
 
