@@ -95,9 +95,9 @@ ItemListener{
             ExplorerTreeNode changeNode = (ExplorerTreeNode)nodesArray[x];
             this.nodeChanged(changeNode);
             
-            ExplorerTreeNode parentNode = (ExplorerTreeNode)changeNode.getParent();
-            parentNode.orderChildren();
-            this.nodeStructureChanged(parentNode);
+//            ExplorerTreeNode parentNode = (ExplorerTreeNode)changeNode.getParent();
+//            parentNode.orderChildren();
+//            this.nodeStructureChanged(parentNode);
         }
     }
     
