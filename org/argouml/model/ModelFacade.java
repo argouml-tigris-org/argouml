@@ -868,13 +868,16 @@ public class ModelFacade {
     }
 
     /**
-     * Returns the receiver object of a stimulus
+     * Returns the receiver object of a message or stimulus
      * @param handle
-     * @return
+     * @return receiver
      */
     public static Object getReceiver(Object handle) {
         if (handle instanceof MStimulus) {
             return ((MStimulus) handle).getReceiver();
+        }
+        if (handle instanceof MMessage) {
+            return ((MMessage) handle).getReceiver();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -2518,6 +2521,17 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** returns the raised signals of an operation
+     * @param handle
+     * @return raised signals
+     */
+    public static Collection getRaisedSignals(Object handle) {
+        if (handle instanceof MOperation) {
+            return ((MOperation) handle).getRaisedSignals();
+        }
+        throw new IllegalArgumentException("Unrecognized handle: + handle");
+    }
+
     /** returns the receptions of a signal
      * @param handle
      * @return receptions
@@ -2541,6 +2555,30 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /**
+     * Returns the represented classifier of a collaboration
+     * @param handle
+     * @return represented classifier
+     */
+    public static Object getRepresentedClassifier(Object handle) {
+        if (handle instanceof MCollaboration) {
+            return ((MCollaboration) handle).getRepresentedClassifier();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /**
+     * Returns the represented operation of a collaboration
+     * @param handle
+     * @return represented operation
+     */
+    public static Object getRepresentedOperation(Object handle) {
+        if (handle instanceof MCollaboration) {
+            return ((MCollaboration) handle).getRepresentedOperation();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
     /**
      * Returns the script belonging to a given action
      * @param handle

@@ -25,11 +25,10 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-
 /**
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -49,14 +48,14 @@ public class UMLMessageReceiverListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MMessage) getTarget()).getReceiver());
+        addElement(ModelFacade.getReceiver(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return ((MMessage) getTarget()).getReceiver() == element;
+        return ModelFacade.getReceiver(getTarget()) == element;
     }
 
 }
