@@ -32,6 +32,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import javax.swing.Icon;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
@@ -40,7 +41,7 @@ import org.argouml.model.ModelFacade;
 
 /** Critic to detect whether a package name obeys to certain rules.
  */
-public class CrUnconventionalPackName extends CrUML {
+public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
 
     /**
      * The constructor.
@@ -88,20 +89,33 @@ public class CrUnconventionalPackName extends CrUML {
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String ins = "Change the name of this package.";
 	    String nameStr = ModelFacade.getName(me);
-	    String sug = "";
-	    int size = nameStr.length();
-	    for (int i = 0; i < size; i++) {
-		char c = nameStr.charAt(i);
-		if (Character.isLowerCase(c) || c == '.') sug += c;
-		else if (Character.isUpperCase(c))
-		    sug += Character.toLowerCase(c);
-	    }
-	    if (sug.equals("")) sug = "PackageName";
+	    String sug = computeSuggestion(nameStr);
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);
 	}
     }
     
+    /**
+     * 
+     * @see org.argouml.uml.cognitive.critics.AbstractCrUnconventionalName#computeSuggestion(java.lang.String)
+     */
+    public String computeSuggestion(String nameStr) {
+
+        String sug = "";
+        if (nameStr != null) {
+            int size = nameStr.length();
+            for (int i = 0; i < size; i++) {
+                char c = nameStr.charAt(i);
+                if (Character.isLowerCase(c) || c == '.')
+                    sug += c;
+                else if (Character.isUpperCase(c))
+                        sug += Character.toLowerCase(c);
+            }
+        }
+        if (sug.equals("")) sug = "packageName";
+        return sug;
+    }
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */

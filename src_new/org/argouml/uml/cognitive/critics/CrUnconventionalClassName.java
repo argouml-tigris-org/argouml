@@ -32,6 +32,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import javax.swing.Icon;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
@@ -40,7 +41,7 @@ import org.argouml.model.ModelFacade;
 
 /** Critic to detect whether a class name obeys to certain rules.
  **/
-public class CrUnconventionalClassName extends CrUML {
+public class CrUnconventionalClassName extends AbstractCrUnconventionalName {
 
     /**
      * The constructor.
@@ -85,7 +86,7 @@ public class CrUnconventionalClassName extends CrUML {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String sug = ModelFacade.getName(me);
-	    sug = sug.substring(0, 1).toUpperCase() + sug.substring(1);
+	    sug = computeSuggestion(sug);
 	    String ins = "Change the class name to start with an " 
 		+ "uppercase letter.";
 	    ((WizMEName) w).setInstructions(ins);
@@ -93,6 +94,16 @@ public class CrUnconventionalClassName extends CrUML {
 	}
     }
     
+    /**
+     * 
+     * @see org.argouml.uml.cognitive.critics.AbstractCrUnconventionalName#computeSuggestion(java.lang.String)
+     */
+    public String computeSuggestion(String sug) {
+        if (sug == null) return "";
+        sug = sug.substring(0, 1).toUpperCase() + sug.substring(1);
+        return sug;
+    }
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
