@@ -173,7 +173,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 		}
 		_choicesList.setVisibleRowCount(15);
 		JScrollPane choicesScroll = new JScrollPane(_choicesList);
-		panelChoices.add(new JLabel(Argo.localize("Menu", "label.choices")), BorderLayout.NORTH);
+		panelChoices.add(new JLabel(Argo.localize("UMLMenu", "label.choices")), BorderLayout.NORTH);
 		panelChoices.add(choicesScroll, BorderLayout.CENTER);
 		
 		_addButton = new JButton(ResourceLoader.lookupIconResource("NavigateForward"));
@@ -194,7 +194,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 		_selectedList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		_selectedList.setVisibleRowCount(15);
 		JScrollPane selectedScroll = new JScrollPane(_selectedList);
-		panelSelected.add(new JLabel(Argo.localize("Menu", "label.selected")), BorderLayout.NORTH);
+		panelSelected.add(new JLabel(Argo.localize("UMLMenu", "label.selected")), BorderLayout.NORTH);
 		panelSelected.add(selectedScroll, BorderLayout.CENTER);
 		
 		upperPanel.add(panelChoices);	
@@ -209,12 +209,12 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 		
 		JPanel okCancelPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		_okButton = new JButton(Argo.localize("Menu", "button.ok"));
+		_okButton = new JButton(Argo.localize("UMLMenu", "button.add"));
 		_okButton.addActionListener(this);
-		_cancelButton = new JButton(Argo.localize("Menu", "button.cancel"));
-		_cancelButton.addActionListener(this);
-		okCancelPanel.add(_cancelButton);
+		_cancelButton = new JButton(Argo.localize("UMLMenu", "button.cancel"));
+		_cancelButton.addActionListener(this);		
 		okCancelPanel.add(_okButton);
+		okCancelPanel.add(_cancelButton);
 		okCancelPanel.setBorder(BorderFactory.createEmptyBorder(10,0,10,10));
 		
 		add(okCancelPanel, BorderLayout.SOUTH);
