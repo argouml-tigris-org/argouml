@@ -148,8 +148,8 @@ abstract public class PropPanelModelElement extends PropPanel {
      *    @param title Title of panel
      *    @param panelCount number of horizontal panels
      *    @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002),
-     *                Use the constructor (which one ????)
-     *    specifying orientation instead.
+     *                Use the constructor specifying icon and orientation instead.
+     *                I propose to remove this by version 0.13.7 (Bob Tarling)
      */
     public PropPanelModelElement(String name, int columns) {
         this(name, null, columns);
@@ -163,6 +163,11 @@ abstract public class PropPanelModelElement extends PropPanel {
         super(name, orientation);
     }
 
+    /**
+     * Constructs the PropPanel - DO NOT USE.
+     * TODO - This method should be deprecated once all references are removed from argo
+     * Bob Tarling 9th May 2003
+     */
     public PropPanelModelElement(String name, ImageIcon icon, int columns) {
         super(name, icon, columns);
     }
