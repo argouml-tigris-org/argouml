@@ -27,30 +27,40 @@ package org.argouml.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org
-    .argouml
-    .model
-    .uml
-    .foundation
-    .extensionmechanisms
-    .ExtensionMechanismsHelper;
-import org.argouml.uml.MMUtil;
 import org.tigris.gef.base.Diagram;
+
+import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
+import org.argouml.uml.MMUtil;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
+import ru.novosoft.uml.behavior.common_behavior.MObject;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.behavior.use_cases.MActor;
+import ru.novosoft.uml.behavior.use_cases.MExtend;
+import ru.novosoft.uml.behavior.use_cases.MInclude;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
@@ -58,6 +68,7 @@ import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MComponent;
 import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MDependency;
@@ -68,9 +79,12 @@ import ru.novosoft.uml.foundation.core.MInterface;
 import ru.novosoft.uml.foundation.core.MMethod;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MNode;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.core.MPermission;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
+import ru.novosoft.uml.foundation.core.MUsage;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
@@ -84,9 +98,6 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
-// import org.argouml.uml.diagram.ui.*;
-// import org.argouml.uml.diagram.deployment.ui.*;
-// import org.argouml.uml.diagram.static_structure.ui.*;
 
 /**
  * Facade object for the Model component in ArgoUML.<p>
@@ -120,11 +131,6 @@ import ru.novosoft.uml.model_management.MPackage;
  * @author Linus Tolke
  */
 public class ModelFacade {
-    /** Constructor that forbids instantiation.
-     */
-    private ModelFacade() {
-    }
-
     ////////////////////////////////////////////////////////////////
     // constants
 
@@ -137,6 +143,36 @@ public class ModelFacade {
 
     public static final short GUARDED = 1;
     public static final short SEQUENTIAL = 2;
+    
+    // Types of line
+    public static final Class GENERALIZATION   = MGeneralization.class;
+    public static final Class ASSOCIATION_ROLE = MAssociationRole.class;
+    public static final Class ASSOCIATION      = MAssociation.class;
+    public static final Class DEPENDENCY       = MDependency.class;
+    public static final Class ABSTRACTION      = MAbstraction.class;
+    public static final Class LINK             = MLink.class;
+    public static final Class EXTEND           = MExtend.class;
+    public static final Class INCLUDE          = MInclude.class;
+    public static final Class PERMISSION       = MPermission.class;
+    public static final Class USAGE            = MUsage.class;
+
+    // Types of node
+    public static final Class CLASSIFIER_ROLE    = MClassifierRole.class;
+    public static final Class CLASS              = MClass.class;
+    public static final Class INTERFACE          = MInterface.class;
+    public static final Class PACKAGE            = MPackage.class;
+    public static final Class NODE               = MNode.class;
+    public static final Class NODE_INSTANCE      = MNodeInstance.class;
+    public static final Class COMPONENT          = MComponent.class;
+    public static final Class COMPONENT_INSTANCE = MComponentInstance.class;
+    public static final Class OBJECT             = MObject.class;
+    public static final Class ACTOR              = MActor.class;
+    public static final Class USE_CASE           = MUseCase.class;
+    
+    /** Constructor that forbids instantiation.
+     */
+    private ModelFacade() {
+    }
 
     ////////////////////////////////////////////////////////////////
     // Recognizer methods for the UML model (in alphabetic order)
