@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Created-By: 1.2.2 (Blackdown Java-Linux Team)
+Main-Class: uci.uml.Main
+Class-Path: nsuml.jar ocl-argo.jar xml4j.jar
