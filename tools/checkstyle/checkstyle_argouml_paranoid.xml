@@ -110,7 +110,7 @@
         
         <!-- Forbid assignments that are split later. -->
         <module name="GenericIllegalRegexp">
-            <property name="format" value=" = .[^;]*$"/>
+            <property name="format" value=" = .[^;{]*$"/>
             <property name="message" value="Preferably split assignments immediatly."/>
         </module>
         
