@@ -21,47 +21,60 @@ The Logging is a Layer 0 component.
 <para>
 Logging is currently implemented using log4j.
 </para>
-<warning>
-<para>
-TODO: The rest of this section is not gone through to fit the new components.
-</para>
-</warning>
 <para>
         <application>ArgoUML</application> uses the standard 
         <ulink url="http://jakarta.apache.org/log4j/">log4j</ulink>
-        logging facility. the following sections deal with the current
+        logging facility. The following sections deal with the current
         implementation in <application>ArgoUML</application>. By
         default, logging is turned off and only the version
-        information of all used libraries and Exceptions are shown on
+        information of all used libraries are shown on
         the console.
     </para>
  
     <sect2>
-        <title>What to Log</title>
+        <title>What to Log in ArgoUML</title>
         <para>
             Logging entries in log4j
             belong to exactly <emphasis>one</emphasis> level.
-            From the log4j website:
             <itemizedlist>
                 <listitem>
+		  <para>
                 The FATAL level designates very severe error events that 
                 will presumably lead the application to abort.
+Everything known about the reasons for the abortion of the application
+shall be logged.
+</para>
                 </listitem>
                 <listitem>
+		  <para>
                 The ERROR level designates error events that might still 
                 allow the application to continue running.
+Everything known about the reasons for this error condition shall be
+logged.
+</para>
                 </listitem>
                 <listitem>
+		  <para>
                 The WARN level designates potentially harmful situations.
+This is if CG can't find all the information required 
+and has to make something up.
+</para>
                 </listitem>
                 <listitem>
+		  <para>
                 The INFO level designates informational messages that 
                 highlight the progress of the application at coarse-grained 
                 level.
+This typically involves creating modules, components, and singletons,
+loading and saving of files, imported files, opening and closing files.
+</para>
                 </listitem>
                 <listitem>
+		  <para>
                 The DEBUG Level designates fine-grained informational 
                 events that are most useful to debug an application.
+This could be everything happening within the application.
+</para>
                 </listitem>
             </itemizedlist>
 
@@ -71,52 +84,21 @@ TODO: The rest of this section is not gone through to fit the new components.
             all logging entries that belong to the above levels ERROR
             and FATAL are logged as well.
         </para>
-        <para>
-            Where as the levels FATAL and ERROR are explained reasonably well,
-            the use of the remaining levels within <application>ArgoUML</application>
-            is outlined below. This is not an exhaustive list but should give some
-            guidelines to follow.
-        </para>
-        <itemizedlist>
-            <listitem>
-                The WARN level shall be used for
-                <itemizedlist>
-                    <listitem>if CG can't find all the information required 
-                        and has to make something up.</listitem>
-                </itemizedlist>
-            </listitem>
-            <listitem>
-                The INFO level shall be used for 
-                <itemizedlist>
-                    <listitem>module and plugin load messages</listitem>
-                    <listitem>CG and RE status messages</listitem>
-                    <listitem>file open and file close messages</listitem>
-                </itemizedlist>
-            </listitem>
-            <listitem>
-                The DEBUG level shall be used for
-                <itemizedlist>
-                    <listitem>messages that serve for debugging and solving 
-                        of an issue/defect.</listitem>
-                </itemizedlist>
-            </listitem>
-        </itemizedlist>
         For performance reasons, it is advised to do a check before all DEBUG
         and INFO log4j messages (see <xref linkend="example.log4j.speed"/>).
+The purpose of this test is to avoid the creation of the argument.
     </sect2>
     
     <sect2>
         <title>How to Create Log Entries...</title>
-        <important>
             <para>
                 You should <emphasis>not</emphasis> use
                 <function>System.out.println</function> in 
                 <application>ArgoUML</application> 
                 Java Code. The only exception of this rule shall be to
                 print the usage of <application>ArgoUML</application>
-                in <classname>main.java</classname>.
+                in <classname>Main.java</classname>.
             </para>
-        </important>
         
         <para>
             To make log entries from within your own classes, you just
@@ -132,7 +114,7 @@ TODO: The rest of this section is not gone through to fit the new components.
             <programlisting>
 import org.apache.log4j.Logger;
 
-Logger _cat = Logger.getLogger(<emphasis>theClass</emphasis>.class.getName());
+Logger _cat = Logger.getLogger(<replaceable>theClass</replaceable>.class.getName());
 
 ...
 
