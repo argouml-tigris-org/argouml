@@ -3157,6 +3157,115 @@ The rest of the section handles the processes that take the Issue form
 the Resolved level and further down.
 </para>
     </sect1>
+
+    <sect1 id="resolve_issue">
+      <title>How to resolve an Issue</title>
+      <para>
+This can be performed by persons that has the Developer role 
+in the project.
+Persons without the Developer role can do most of the work but they
+need a person with the the role to actually commit the work.
+There might be special skills involved but it differs widely depending
+on the nature of the Issue.
+</para>
+      <para>
+Do the following:
+</para>
+      <orderedlist>
+	<listitem id="resolve_issue_start">
+	  <para>
+Pick any Issue that is NEW or REOPENED
+that you from the description think that you are able to solve.
+Best result if you also find some Issue that you really feel 
+needs to be solved.
+<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=NEW&amp;issue_status=REOPENED">The list of all of them</ulink>.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Look at your personal schedule and how much time you have during the
+next couple of week and compare that to the amount of time you think
+you will need to spend, solving the issue.
+Compare this to the release plan to see what release your contribution
+will fit in.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+"Start" the Issue by setting Target Milestone to the release you have
+chosen.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Make sure you have a checked out copy of ArgoUML or else check out 
+a new one.
+</para>
+	  <para>
+How this is done is described in
+<xref linkend="buildingandtools"/>.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Change the code to solve the problem.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Compile and test your new code.
+</para>
+	  <para>
+Optionally this could include developing a JUnit test case to
+verify that the problem is solved.
+</para>
+	  <para>
+If your solution did not work as intended, continue changing it
+until it does.
+</para>
+	  <para>
+If you feel that your estimation of the complexity of the problem
+and your own abilities and time available was incorrect,
+then change the Target Milestone of the Issue to another one
+that fits your new estimation.
+This is just a change plan.
+</para>
+	  <para>
+If you, at this point, feel that your personal plans have changed
+so that you won't have time to pursue the work,
+change the Issue back to "NEW" with your experiences sofar
+stated in the comment. Remember not to commit your changes.
+This means that you are giving up and giving the Issue back to
+anyone.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Commit your changes (and the JUnit test case if any) stating
+the number of the Issue in the comment.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+"Resolve" the Issue with the resolution "FIXED".
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Sit back and feel the personal satisfaction of having completed a
+something that will be part of the ArgoUML product.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+If you during this, has discovered other problems,
+create new Issues stating those new problems
+according to the rule for creating Issues.
+</para>
+	</listitem>
+      </orderedlist>
+    </sect1>
+
     <sect1 id="verify_resolved_fixed">
       <title>How to verify an Issue that is FIXED</title>
       <para>
@@ -3220,6 +3329,7 @@ Do this as many times as you like until there are no Issues left.
 	</listitem>
       </orderedlist>
     </sect1>
+
     <sect1 id="verify_resolved_invalid">
       <title>How to verify an Issue that is rejected</title>
       <para>
