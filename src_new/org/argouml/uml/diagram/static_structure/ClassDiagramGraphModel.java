@@ -38,6 +38,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
@@ -232,12 +233,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Return one end of an edge.
      */
     public Object getSourcePort(Object edge) {
-        // TODO This urgently needs completing
-        if (ModelFacade.isARelationship(edge)) {
-            return CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
-        }
-        LOG.error("TODO: getSourcePort");
-        return null;
+        return UmlHelper.getHelper().getSource(edge);
     }
 
     /**
@@ -246,12 +242,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Return the other end of an edge.
      */
     public Object getDestPort(Object edge) {
-        // TODO This urgently needs completing
-        if (ModelFacade.isARelationship(edge)) {
-            return CoreHelper.getHelper().getDestination(edge);
-        }
-        LOG.error("TODO: getSourcePort");
-        return null;
+        return UmlHelper.getHelper().getDestination(edge);
     }
 
 
@@ -368,14 +359,18 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     /**
      * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
      *
-     * Add the given edge to the graph, if valid.
+     * Add the given edge to the graph, if of the correct type.
+     * @throws IllegalArgumentException if edge is null or either of its
+     * ends are null.
      */
     public void addEdge(Object edge) {
-//        // TODO Here we should do
-//        if (getDestPort(edge) == null || getSourcePort(edge) == null) {
-//            throw new IllegalArgumentException("The source and dest port should be provided on an edge");
-//        }
-//        // but we need to complete implemenentation of getSourcePort and getDestPort first
+        if (edge == null) {
+            throw new IllegalArgumentException("Cannot add a null edge");
+        }
+        
+        if (getDestPort(edge) == null || getSourcePort(edge) == null) {
+            throw new IllegalArgumentException("The source and dest port should be provided on an edge");
+        }
         
         if (LOG.isInfoEnabled()) {
             LOG.info("Adding an edge of type "
