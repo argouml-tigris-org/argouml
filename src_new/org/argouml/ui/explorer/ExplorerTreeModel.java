@@ -254,47 +254,84 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
     /**
      * updates next level of the explorer tree for a given tree path.
+     * 
+     * @param path the path to the node whose children to update.
+     * @throws IllegalArgumentException if node has a child that is not a
+     *         (descendant of) DefaultMutableTreeNode.
      */
     public void updateChildren(TreePath path) {
 	ExplorerTreeNode node = (ExplorerTreeNode) path.getLastPathComponent();
-	Vector children = new Vector();
-	Vector reordered = new Vector();
-	Vector newChildren = new Vector();
         Object modelElement = node.getUserObject();
-	Set deps = new HashSet();
-	Vector weakNodes = new Vector();
-	Vector pendingWeakNodes = new Vector();
-	Vector pendingWeakObjects = new Vector();
 
 	// Avoid doing this too early in the initialization process
-	if (rules == null)
+	if (rules == null) {
 	    return;
+	}
 
 	// Avoid recursively updating the same child
-	if (updatingChildren.contains(node))
+	if (updatingChildren.contains(node)) {
 	    return;
+	}
 	updatingChildren.add(node);
+
+	Vector children = reorderChildren(node);
+
+	Vector newChildren = new Vector();
+	Set deps = new HashSet();
+	collectChildren(modelElement, newChildren, deps);
+
+	node.setModifySet(deps);
+
+	mergeChildren(node, children, newChildren);
+
+	updatingChildren.remove(node);
+    }
+
+    /**
+     * Sorts the child nodes of node using the current ordering.
+     *
+     * <p>Note: UserObject is only available from descendants of
+     * DefaultMutableTreeNode, so any other children couldn't be sorted.
+     * Thus these are currently forbidden. But currently no such node is
+     * ever inserted into the tree.
+     *
+     * @param node the node whose children to sort
+     * @return the UserObjects of the children, in the same order as the
+     *         children.
+     * @throws IllegalArgumentException if node has a child that is not a
+     *         (descendant of) DefaultMutableTreeNode.
+     */
+    private Vector reorderChildren(ExplorerTreeNode node) {
+	Vector children = new Vector();
+	Vector reordered = new Vector();
 
 	// Enumerate the current children of node to find out which now sorts
 	// in different order, since these must be moved
 	Enumeration enChld = node.children();
+	Object lastObj = null;
 	while (enChld.hasMoreElements()) {
 	    Object child = enChld.nextElement();
 	    if (child instanceof DefaultMutableTreeNode) {
 		Object obj = ((DefaultMutableTreeNode) child).getUserObject();
-		if (children.size() > 0) {
-		    Object obj0 = children.get(children.size() - 1);
-		    if (order.compare(obj0, obj) > 0) {
-			reordered.add(child);
-			// Avoid our deinitialization here
-			// The node will be added back to the tree below
-			super.removeNodeFromParent((MutableTreeNode) child);
-		    } else
-			children.add(obj);
+		if (lastObj != null && order.compare(lastObj, obj) > 0) {
+		    reordered.add(child);
 		} else {
 		    children.add(obj);
+		    lastObj = obj;
 		}
+	    } else {
+		throw new IllegalArgumentException(
+			"Incomprehencible child node " + child.toString());
 	    }
+	}
+
+        for (int x = 0; x < reordered.size(); x++) {
+	    DefaultMutableTreeNode child =
+		(DefaultMutableTreeNode) reordered.get(x);
+
+	    // Avoid our deinitialization here
+	    // The node will be added back to the tree again
+	    super.removeNodeFromParent((MutableTreeNode) child);
 	}
 
 	// For each reordered node, find it's new position among the current
@@ -313,6 +350,35 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	    // Avoid our initialization here
 	    super.insertNodeInto(child, node, ip);
 	    children.add(ip, obj);
+	}
+
+	return children;
+    }
+
+    /**
+     * Collects the set of children modelElement should have at this point in
+     * time. The children are added to newChildren
+     *
+     * <p>Note: Both newChildren and deps are modified by this function, it
+     * is in fact it's primary purpose to modify these collections. It is your
+     * responsibility to make sure that they are empty when it is called, or
+     * to know what you are doing if they are not.
+     *
+     * @param modelElement the element to collect children for.
+     * @param newChildren the new children of modelElement.
+     * @param deps the set of objects that should be monitored for changes
+     *        since these could affect this list.
+     * @throws UnsupportedOperationException if add is not supported by
+     *         newChildren or addAll isn't supported by deps.
+     * @throws NullPointerException if newChildren or deps is null.
+     * @throws ClassCastException if newChildren or deps rejects some element.
+     * @throws IllegalArgumentException if newChildren or deps rejects some
+     *         element.
+     */
+    private void collectChildren(Object modelElement, List newChildren,
+				 Set deps) {
+	if (modelElement == null) {
+	    return;
 	}
 
 	// Collect the current set of objects that should be children to
@@ -345,134 +411,132 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	// need not be ordered
 	Collections.sort(newChildren, order);
 	deps.addAll(newChildren);
-	node.setModifySet(deps);
+    }
 
-	// Update the children to node by walking through the sorted list of
-	// children and the sorted list of children to be (in order to avoid
-	// unneccessarily touching tree nodes)
-	// Method:
-	//  Let cc be 'the first' object in the current list of children
-	//  Let nc be 'the first' object in the new list of children
-	//  Let r be -1 if cc sorts before nc, 0 if arbitrary order
-	//        and 1 if cc sorts after nc
-	//  If r < 0 then then cc should be removed
-	//  If r = 0 then
-	//    Advance both cc and nc through the arbitrary field,
-	//    adding and removing as required but no more
-	//    Weak node handling makes some other things easy, but here
-	//    it becomes a true pain.
-	//  If r > 0 then nc is new and we add it to children
-	Iterator cChlds = children.iterator();
-	Iterator nChlds = newChildren.iterator();
-	Object cc = null, nc = null;
-	int cldIdx = 0;
-	while (true) {
-	    int r;
+    /**
+     * Returns a Set of current children to remove and modifies newChildren
+     * to only contain the children not already in children and not subsumed
+     * by any WeakExplorerNode in children.
+     *
+     * <p>Note: newChildren will be modified by this call.
+     *
+     * <p>Note: It is expected that a WeakExplorerNode will not be reused and
+     * thus they will always initially be slated for removal, and only those
+     * nodes are in fact used to check subsumption of new nodes. New nodes
+     * are not checked among themselves for subsumtion.
+     *
+     * @param children is the list of current children.
+     * @param newChildren is the list of expected children.
+     * @return the Set of current children to remove.
+     * @throws UnsupportedOperationException if newChildren doesn't support
+     *         remove or removeAll.
+     * @throws NullPointerException if either argument is null.
+     */
+    private Set prepareAddRemoveSets(List children, List newChildren) {
+	Set removeSet = new HashSet();
+	Set commonObjects = new HashSet();
+	if (children.size() < newChildren.size()) {
+	    commonObjects.addAll(children);
+	    commonObjects.retainAll(newChildren);
+	} else {
+	    commonObjects.addAll(newChildren);
+	    commonObjects.retainAll(children);
+	}
+	newChildren.removeAll(commonObjects);
+	removeSet.addAll(children);
+	removeSet.removeAll(commonObjects);
 
-	    if (cc == null && cChlds.hasNext())
-		cc = cChlds.next();
-	    if (nc == null && nChlds.hasNext())
-		nc = nChlds.next();
+	// Handle WeakExplorerNodes
+	Iterator it = removeSet.iterator();
+	List weakNodes = null;
+	while (it.hasNext()) {
+	    Object obj = it.next();
+	    if (!(obj instanceof WeakExplorerNode)) {
+		continue;
+	    }
+	    WeakExplorerNode node = (WeakExplorerNode) obj;
 
-	    if (cc == null) {
-		if (nc == null)
-		    break;
-		r = 1;
-	    } else if (nc == null) {
-		r = -1;
-	    } else {
-		r = order.compare(cc, nc);
+	    if (weakNodes == null) {
+		weakNodes = new LinkedList();
+		Iterator it2 = newChildren.iterator();
+		while (it2.hasNext()) {
+		    Object obj2 = it2.next();
+		    if (obj2 instanceof WeakExplorerNode) {
+			weakNodes.add(obj2);
+		    }
+		}
 	    }
 
-	    /* Always null at least one of cc and nc in every path */
-	    if (r == 0 && cc == nc) {
-		nc = null;
-		cc = null;
-		cldIdx++;
-	    } else if (r == 0) {
-		/* Objects cc and nc sorts arbitrary */
-		Object cObj = cc;
-
-		weakNodes.clear();
-		pendingWeakObjects.clear();
-		pendingWeakNodes.clear();
-
-		do {
-		    if (cc instanceof WeakExplorerNode) {
-			weakNodes.add(cc);
-			if (!newChildren.contains(cc)) {
-			    // Note that these Vectors are parallell,
-			    // one contains the object and the other the node
-			    // at the same index (which is important)
-			    pendingWeakNodes.add(getChild(node, cldIdx));
-			    pendingWeakObjects.add(cc);
-			}
-			cldIdx++;
-		    } else {
-			if (!newChildren.contains(cc)) {
-			    removeNodeFromParent(
-				    (MutableTreeNode) node.getChildAt(cldIdx));
-			} else {
-			    cldIdx++;
-			}
-		    }
-
-		    if (cChlds.hasNext())
-			cc = cChlds.next();
-		    else
-			cc = null;
-		} while (cc != null
-			 && (nc == null || order.compare(cc, nc) == 0));
-
-		do {
-		    if (!children.contains(nc)) {
-			boolean doAdd = true;
-			if (weakNodes != null
-			    && nc instanceof WeakExplorerNode) {
-			    for (int x = 0; x < weakNodes.size(); x++) {
-				if (((WeakExplorerNode) weakNodes.get(x)).subsumes(nc)) {
-				    int i = pendingWeakObjects.indexOf(weakNodes.get(x));
-				    doAdd = false;
-				    pendingWeakNodes.remove(i);
-				    pendingWeakObjects.remove(i);
-				    break;
-				}
-			    }
-			}
-
-			if (doAdd) {
-			    ExplorerTreeNode newNode =
-				    new ExplorerTreeNode(nc, this);
-			    insertNodeInto(newNode, node, cldIdx);
-			    cldIdx++;
-			}
-		    }
-
-		    if (nChlds.hasNext())
-			nc = nChlds.next();
-		    else
-			nc = null;
-		} while (nc != null
-			 && (cObj == null || order.compare(cObj, nc) == 0));
-
-		for (int x = 0; x < pendingWeakNodes.size(); x++) {
-		    removeNodeFromParent(
-			    (MutableTreeNode) pendingWeakNodes.get(x));
-		    cldIdx--;
+	    Iterator it3 = weakNodes.iterator();
+	    while (it3.hasNext()) {
+		Object obj3 = it3.next();
+		if (node.subsumes(obj3)) {
+		    // Remove the node from removeSet
+		    it.remove();
+		    // Remove obj3 from weakNodes and newChildren
+		    newChildren.remove(obj3);
+		    it3.remove();
+		    break;
 		}
-	    } else if (r < 0) {
-		/* cc were smaller, so it is not in nChlds -> remove */
-		removeNodeFromParent((MutableTreeNode) node.getChildAt(cldIdx));
-		cc = null;
-	    } else {
-		/* cc were greater, so nc is not in cChlds -> add */
-		ExplorerTreeNode newNode = new ExplorerTreeNode(nc, this);
-		insertNodeInto(newNode, node, cldIdx);
-		nc = null;
-		cldIdx++;
 	    }
 	}
-	updatingChildren.remove(node);
+
+	return removeSet;
+    }
+
+    /**
+     * Merges the current children with the new children removing children no
+     * longer present and adding new children in the right place.
+     *
+     * @param node the TreeNode were merging lists for.
+     * @param children the current child UserObjects, in order.
+     * @param newChildren the expected child UserObjects, in order.
+     * @throws UnsupportedOperationException if the Iterator returned by
+     *         newChildren doesn't support the remove operation, or if
+     *         newChildren itself doesn't support remove or removeAll.
+     * @throws NullPointerException if node, children or newChildren are null.
+     */
+    private void mergeChildren(ExplorerTreeNode node, List children,
+			       List newChildren) {
+	Set removeObjects = prepareAddRemoveSets(children, newChildren);
+
+	int position = 0;
+	// Remember that children are not TreeNodes but UserObjects
+	Iterator childNodes = Collections.list(node.children()).iterator();
+	Iterator newNodes = newChildren.iterator();
+	Object firstNew = newNodes.hasNext() ? newNodes.next() : null;
+	while (childNodes.hasNext()) {
+	    Object childObj = childNodes.next();
+	    if (!(childObj instanceof DefaultMutableTreeNode)) {
+		continue;
+	    }
+
+	    DefaultMutableTreeNode child = (DefaultMutableTreeNode) childObj;
+	    Object userObject = child.getUserObject();
+
+	    if (removeObjects.contains(userObject)) {
+		removeNodeFromParent(child);
+	    } else {
+		while (firstNew != null
+		       && order.compare(firstNew, userObject) < 0) {
+		    insertNodeInto(new ExplorerTreeNode(firstNew, this),
+				   node,
+				   position);
+		    position++;
+		    firstNew = newNodes.hasNext() ? newNodes.next() : null;
+		}
+		position++;
+	    }
+	}
+
+	// Add any remaining nodes
+	while (firstNew != null) {
+	    insertNodeInto(new ExplorerTreeNode(firstNew, this),
+			   node,
+			   position);
+	    position++;
+	    firstNew = newNodes.hasNext() ? newNodes.next() : null;
+	}
     }
 
     /**
