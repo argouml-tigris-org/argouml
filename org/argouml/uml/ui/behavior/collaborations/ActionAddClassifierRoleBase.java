@@ -39,7 +39,10 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
  */
 public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
 
-    public final static ActionAddClassifierRoleBase SINGLETON =
+    /**
+     * The one and only instance of this class.
+     */
+    public static final ActionAddClassifierRoleBase SINGLETON =
 	new ActionAddClassifierRoleBase();
     /**
      * Constructor for ActionAddClassifierRoleBase.
@@ -53,7 +56,8 @@ public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
      */
     protected Vector getChoices() {
         Vector vec = new Vector();
-        vec.addAll(CollaborationsHelper.getHelper().getAllPossibleBases(getTarget()));
+        vec.addAll(CollaborationsHelper.getHelper()
+                .getAllPossibleBases(getTarget()));
         return vec;
     }
 
