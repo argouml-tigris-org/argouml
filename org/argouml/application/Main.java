@@ -113,9 +113,8 @@ public class Main {
         if(javaVersion.startsWith("1.2") ||
            javaVersion.startsWith("1.1")){
             
-                JOptionPane.showMessageDialog(
-                    null, "Please use Java 1.3 or later", 
-                    "Please use Java 1.3 or later", JOptionPane.ERROR_MESSAGE);
+                System.err.println("You are using Java "+javaVersion+", "+
+                    "Please use Java 1.3 or later with ArgoUml");
                 ArgoSecurityManager.getInstance().setAllowExit(true);
                 System.exit(0);
         }
