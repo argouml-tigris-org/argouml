@@ -111,33 +111,6 @@ public class PropPanelClass extends PropPanelClassifier {
     }
 
     /**
-     * Add an inner class. 
-     */
-//    public void addInnerClass() {
-//        Object target = getTarget();
-//        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-//            Object classifier = /* (MClassifier) */target;
-//            Object inner = CoreFactory.getFactory().buildClass(classifier);
-//            TargetManager.getInstance().setTarget(inner);
-//        }
-//    }
-
-    /**
-     * Add a new class.
-     */
-//    public void newClass() {
-//        Object target = getTarget();
-//        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-//            Object classifier = /* (MClassifier) */target;
-//            Object ns = ModelFacade.getNamespace(classifier);
-//            if (ns != null) {
-//                Object peer = CoreFactory.getFactory().buildClass(ns);
-//                TargetManager.getInstance().setTarget(peer);
-//            }
-//        }
-//    }
-
-    /**
      * Returns the operationScroll.
      * 
      * @return JScrollPane

@@ -43,7 +43,6 @@ public class PropPanelInterface extends PropPanelClassifier {
 
     /**
      * The constructor.
-     * 
      */
     public PropPanelInterface() {
 	super("Interface", ConfigLoader.getTabPropsOrientation());
@@ -53,24 +52,7 @@ public class PropPanelInterface extends PropPanelClassifier {
             getStereotypeBox());
 	addField(Translator.localize("label.namespace"), 
             getNamespaceComboBox());
-	/*
-	  JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
-	  modifiersPanel.add(new UMLCheckBox(Translator.localize(
-	      "checkbox.visibility.public-uc"),this,
-	      new UMLEnumerationBooleanProperty("visibility",
-	                                        ModelFacade.INTERFACE,
-	      "getVisibility","setVisibility",MVisibilityKind.class,
-	      MVisibilityKind.PUBLIC,null)));
-	  modifiersPanel.add(new UMLCheckBox(Translator.localize(
-	      "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty(
-	      "isAbstract",ModelFacade.INTERFACE,"isAbstract","setAbstract")));
-	  modifiersPanel.add(new UMLCheckBox(Translator.localize(
-	      "checkbox.final-uc"),this,new UMLReflectionBooleanProperty(
-	      "isLeaf",ModelFacade.INTERFACE,"isLeaf","setLeaf")));
-	  modifiersPanel.add(new UMLCheckBox(Translator.localize(
-	      "checkbox.root-uc"),this,new UMLReflectionBooleanProperty(
-	      "isRoot",ModelFacade.INTERFACE,"isRoot","setRoot")));
-	*/
+
 	add( getModifiersPanel());
 	add(getNamespaceVisibilityPanel());
 
@@ -94,16 +76,11 @@ public class PropPanelInterface extends PropPanelClassifier {
 	new PropPanelButton(this, lookupIcon("NewOperation"), 
 	    Translator.localize("button.new-operation"), 
 	    new ActionAddOperation());
-    
-	//new PropPanelButton(this,buttonPanel,generalizationIcon, 
-	//    Translator.localize("button.new-generalization"),
-        //    "addGeneralization",null);
-	//new PropPanelButton(this,buttonPanel,realizationIcon, 
-        //    Translator.localize("button.new-realization"),
-        //    "addRealization",null);
+
 	new PropPanelButton(this, lookupIcon("Reception"), 
             Translator.localize("button.new-reception"), 
             getActionNewReception());
+	//TODO: Add button for a new Interface (analog to Class)
 	addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
