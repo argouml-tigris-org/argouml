@@ -43,8 +43,4 @@ public class GoModelToClass extends AbstractGoRule {
       return null;
   }
 
-  public boolean isLeaf(Object node) {
-    return !(node instanceof MPackage && getChildCount(node) > 0);
-  }
-
 }

@@ -13,14 +13,7 @@ import ru.novosoft.uml.behavior.state_machines.MState;
  * @since Dec 25, 2002
  */
 public class GoStateToEntry extends AbstractGoRule {
-
-    /**
-     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
-     */
-    public boolean isLeaf(Object node) {
-        return !(node instanceof MState && getChildCount(node) > 0);
-    }
-
+    
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */

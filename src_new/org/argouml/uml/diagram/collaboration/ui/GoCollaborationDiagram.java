@@ -37,9 +37,11 @@ public class GoCollaborationDiagram extends AbstractGoRule {
   public String getRuleName() { return "Collaboration->Diagram"; }
 
   public Collection getChildren(Object parent) {
+    
+    if (!(parent instanceof MCollaboration)) return null;
     Project p = ProjectManager.getManager().getCurrentProject();
     if (p == null) return null;
-    if (!(parent instanceof MCollaboration)) return null;
+    
     Vector res = new Vector();
     Vector diagrams = p.getDiagrams();
     if (diagrams == null) return null;
@@ -52,10 +54,5 @@ public class GoCollaborationDiagram extends AbstractGoRule {
     }
     return res;
   }
-
-  public boolean isLeaf(Object node) {
-    return !(node instanceof MCollaboration && getChildCount(node) > 0);
-  }
-
 
 }

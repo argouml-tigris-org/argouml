@@ -50,27 +50,9 @@ public class GoSummaryToAttribute extends AbstractGoRule {
 
   public Collection getChildren(Object parent) {
       if ( parent instanceof AttributesNode) {
-          
-          //List list = new ArrayList();
-          
           return ModelFacade.getAttributes(((AttributesNode)parent).getParent());
-          /*
-          while(it.hasNext()){
-              
-              list.add(it.next());
-          }
-          return list;
-           */
       }
       return null;
   }
-
-
-
-  public boolean isLeaf(Object node) {
-    return ( getChildCount(node) == 0);
-  }
-
-
 
 }

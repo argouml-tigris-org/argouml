@@ -40,13 +40,6 @@ public class GoOperationToCollaboration extends AbstractGoRule {
     public String getRuleName() { return "Operation->Collaboration";}
 
     /**
-     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
-     */
-    public boolean isLeaf(Object node) {
-        return !(node instanceof MOperation && getChildCount(node)>0);
-    }
-
-    /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {

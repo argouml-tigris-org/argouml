@@ -48,11 +48,11 @@ public class GoFilteredChildren extends AbstractGoRule {
   // instance vars
   String _name = "unamed filtered rule";
   Predicate _pred = PredicateTrue.theInstance();
-  TreeModel _tm;
+  AbstractGoRule _tm;
 
   ////////////////////////////////////////////////////////////////
   // constructor
-  public GoFilteredChildren(String name, TreeModel tm, Predicate pred) {
+  public GoFilteredChildren(String name, AbstractGoRule tm, Predicate pred) {
     _name = Argo.localize ("Tree", name);
     _tm = tm;
     _pred = pred;
@@ -68,8 +68,6 @@ public class GoFilteredChildren extends AbstractGoRule {
   // TreeModel implementation
   
   public String getRuleName() { return _name; }
-  
-  public Object getRoot() { return _tm.getRoot(); }
   
   public Object getChild(Object parent, int index) {
     int unfilteredCount = _tm.getChildCount(parent);
@@ -124,8 +122,10 @@ public class GoFilteredChildren extends AbstractGoRule {
     return -1;
   }
   
+  /*
   public boolean isLeaf(Object node) {
     return !hasChildren(node);
   }
+   */
 
 }

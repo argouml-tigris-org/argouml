@@ -43,13 +43,6 @@ import ru.novosoft.uml.foundation.core.MOperation;
 public class GoOperationToCollaborationDiagram extends AbstractGoRule {
 
     /**
-     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
-     */
-    public boolean isLeaf(Object node) {
-        return !(node instanceof MOperation && getChildCount(node) > 0);
-    }
-
-    /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {

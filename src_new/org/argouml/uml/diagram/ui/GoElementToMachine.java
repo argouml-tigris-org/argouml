@@ -42,9 +42,5 @@ public class GoElementToMachine extends AbstractGoRule {
       }
       return null;
   }
-
-  public boolean isLeaf(Object node) {
-    return !(ModelFacade.isAModelElement(node) && getChildCount(node) > 0);
-  }
   
 }

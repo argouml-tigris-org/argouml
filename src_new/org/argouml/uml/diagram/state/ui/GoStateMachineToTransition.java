@@ -18,13 +18,6 @@ public class GoStateMachineToTransition extends AbstractGoRule {
     public String getRuleName() { return "State Machine->Transition"; }
 
 	/**
-	 * @see javax.swing.tree.TreeModel#isLeaf(Object)
-	 */
-	public boolean isLeaf(Object arg0) {
-		return !(arg0 instanceof MStateMachine && getChildCount(arg0) > 0);
-	}
-
-	/**
 	 * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
 	 */
 	public Collection getChildren(Object parent) {

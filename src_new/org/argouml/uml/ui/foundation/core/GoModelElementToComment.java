@@ -39,13 +39,6 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 public class GoModelElementToComment extends AbstractGoRule {
 
     /**
-     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
-     */
-    public boolean isLeaf(Object node) {
-        return !((node instanceof MModelElement) && (getChildCount(node) > 0));
-    }
-
-    /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
