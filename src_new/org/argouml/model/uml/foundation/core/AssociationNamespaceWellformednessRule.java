@@ -38,7 +38,8 @@ public class AssociationNamespaceWellformednessRule
 
     /**
      * Constructor for AssociationNamespaceWellformednessRule.
-     * @param key
+     * @param key the message key to be looked up 
+     *            to show the message to the user
      */
     public AssociationNamespaceWellformednessRule(String key) {
 	super(key);
@@ -55,7 +56,8 @@ public class AssociationNamespaceWellformednessRule
      * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(Object,Object)
      */
     public boolean isWellformed(Object/*MBase*/ element, Object newValue) {
-	if (element instanceof MAssociation && newValue instanceof MClassifier) {
+	if (element instanceof MAssociation 
+            && newValue instanceof MClassifier) {
 	    MAssociation a = (MAssociation) element;
 	    MClassifier c = (MClassifier) newValue;
 	    if (a.getNamespace().equals(c.getNamespace())) {
