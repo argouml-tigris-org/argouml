@@ -172,12 +172,13 @@ public class UMLClassDiagram extends UMLDiagram {
             actionPackage,
             actionClass,
             getAssociationActions(),
-            actionDepend,
-            actionPermission,
-            actionUsage,
-            actionGeneralize, null,
+            actionGeneralize, 
+            null,
             actionInterface,
-            actionRealize, null,
+            actionRealize, 
+            null,
+            getDependencyActions(), 
+            null,
             ActionAddAttribute.getSingleton(),
             ActionAddOperation.getSingleton()
         };
@@ -201,7 +202,20 @@ public class UMLClassDiagram extends UMLDiagram {
        
         return actions;
     }
+    /**
+     * Return an array of dependency actions in the
+     * pattern of which to build a popup toolbutton
+     */
+    private Object[] getDependencyActions() {
+        Object actions[][] = {
+            {actionDepend},
+            {actionPermission},
+            {actionUsage}
+        };
 
+        return actions;
+    }
+    
     /**
      * Return an array of association actions in the
      * pattern of which to build a popup toolbutton
