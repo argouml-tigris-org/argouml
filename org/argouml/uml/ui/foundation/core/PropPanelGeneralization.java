@@ -46,10 +46,8 @@ import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MDataType;
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MInterface;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
@@ -143,7 +141,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         return parent;
     }
 
-    public void setParentElement(MGeneralizableElement parent) {
+    public void setParentElement(Object/*MGeneralizableElement*/ parent) {
         Object target = getTarget();
         if (ModelFacade.isAGeneralization(target)) {
             Object generalization = target;
@@ -171,7 +169,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         return child;
     }
 
-    public void setChild(MGeneralizableElement child) {
+    public void setChild(Object/*MGeneralizableElement*/ child) {
         Object target = getTarget();
         if (ModelFacade.isAGeneralization(target)) {
             Object gen = /*(MGeneralization)*/ target;
@@ -197,7 +195,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         return ptype;
     }
 
-    public void setPowertype(MClassifier ptype) {
+    public void setPowertype(Object/*MClassifier*/ ptype) {
         Object target = getTarget();
         if (ModelFacade.isAGeneralization(target)) {
             Object gen = /*(MGeneralization)*/ target;
@@ -252,7 +250,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     }
 
     private boolean isAcceptible(Object/*MGeneralizableElement*/ fixed,
-				 MModelElement candidate) {
+				 Object/*MModelElement*/ candidate) {
         boolean isCompatible = true;
         Class[] keys = {
 	    MClass.class, 
@@ -271,7 +269,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         return isCompatible;
     }
 
-    public boolean isAcceptiblePowertype(MModelElement element) {
+    public boolean isAcceptiblePowertype(Object/*MModelElement*/ element) {
         return ModelFacade.isAClassifier(element);
     }
 

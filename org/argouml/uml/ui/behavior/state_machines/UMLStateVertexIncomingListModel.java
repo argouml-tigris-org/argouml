@@ -28,7 +28,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
 /**
  * Listmodel for the incoming transitions of a Statevertex
  * @since Dec 14, 2002
@@ -55,7 +54,7 @@ public class UMLStateVertexIncomingListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(MBase element) {
+    protected boolean isValidElement(Object/*MBase*/ element) {
         return ModelFacade.getIncomings(getTarget()).contains(element);
     }
 

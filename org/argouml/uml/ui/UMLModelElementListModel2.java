@@ -36,7 +36,6 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
@@ -250,7 +249,7 @@ public abstract class UMLModelElementListModel2
             if (org.argouml.model.ModelFacade.isABase(_target)) {
                 UmlModelEventPump.getPump().removeModelEventListener(
 								     this,
-								     (MBase) _target,
+								     /*(MBase)*/_target,
 								     _eventName);
             }
 
@@ -259,7 +258,7 @@ public abstract class UMLModelElementListModel2
                 // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _eventName);
                 UmlModelEventPump.getPump().addModelEventListener(
 								  this,
-								  (MBase) _target,
+								  /*(MBase)*/_target,
 								  _eventName);
 
                 removeAllElements();
@@ -283,7 +282,7 @@ public abstract class UMLModelElementListModel2
      *
      * @param element
      */
-    protected abstract boolean isValidElement(MBase element);
+    protected abstract boolean isValidElement(Object/*MBase*/ element);
 
     /**
      * Returns true if some event is valid. An event is valid if the element
@@ -296,7 +295,7 @@ public abstract class UMLModelElementListModel2
     protected boolean isValidEvent(MElementEvent e) {
         boolean valid = false;
         if (!(getChangedElement(e) instanceof Collection)) {
-            valid = isValidElement((MBase) getChangedElement(e));
+            valid = isValidElement(/*(MBase)*/getChangedElement(e));
             if (!valid && e.getNewValue() == null && e.getOldValue() != null) {
                 valid = true; // we tried to remove a value
             }
@@ -307,7 +306,7 @@ public abstract class UMLModelElementListModel2
                 valid = true;
                 while (it.hasNext()) {
                     Object o = it.next();
-                    if (!isValidElement((MBase) o)) {
+                    if (!isValidElement(/*(MBase)*/o)) {
                         valid = false;
                         break;
                     }

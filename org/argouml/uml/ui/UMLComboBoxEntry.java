@@ -116,7 +116,7 @@ public class UMLComboBoxEntry implements Comparable {
     // Idea to move this to MMUtil together with the same function from
     // org/argouml/uml/cognitive/critics/WizOperName.java
     // org/argouml/uml/generator/ParserDisplay.java
-    private static Object findNamespace(Object/*MNamespace*/ phantomNS, MModel targetModel) {
+    private static Object findNamespace(Object/*MNamespace*/ phantomNS, Object/*MModel*/ targetModel) {
         Object/*MNamespace*/ ns = null;
         Object/*MNamespace*/ targetParentNS = null;
         Object/*MNamespace*/ parentNS = ModelFacade.getNamespace(phantomNS);
@@ -227,7 +227,7 @@ public class UMLComboBoxEntry implements Comparable {
         return compare;
     }
 
-    public void nameChanged(MModelElement element) {
+    public void nameChanged(Object/*MModelElement*/ element) {
         if (element == _element && _element != null) {
             Object/*MNamespace*/ ns = ModelFacade.getNamespace(_element);
             _shortName = _profile.formatElement((MModelElement)_element, ns);

@@ -28,11 +28,9 @@
 package org.argouml.uml;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.UmlFactory;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.MModel;
-
 /** Class with utility methods. Now mostly outdated.
  * @stereotype utility
  */
@@ -42,20 +40,20 @@ public class MMUtil {
 
     public static MMUtil SINGLETON = new MMUtil();
 
-    public static MModel STANDARDS;
+    public static Object/*MModel*/ STANDARDS;
 
     static {
 	STANDARDS = UmlFactory.getFactory().getModelManagement().createModel();
-	STANDARDS.setName("standard Elements");
-	MStereotype realizationStereo =
+	ModelFacade.setName(STANDARDS, "standard Elements");
+	Object/*MStereotype*/ realizationStereo =
 	    UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
-	realizationStereo.setName("realize");
-	STANDARDS.addOwnedElement(realizationStereo);
+	ModelFacade.setName(realizationStereo, "realize");
+	ModelFacade.addOwnedElement(STANDARDS, realizationStereo);
 
-	MStereotype interfaceStereo =
+	Object/*MStereotype*/ interfaceStereo =
 	    UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
-	interfaceStereo.setName("interface");
-	STANDARDS.addOwnedElement(interfaceStereo);
+	ModelFacade.setName(interfaceStereo, "interface");
+	ModelFacade.addOwnedElement(STANDARDS, interfaceStereo);
     }
 
     /**
@@ -66,4 +64,3 @@ public class MMUtil {
     public static final String GENERATED_TAG = "GeneratedFromImport";
 
 }
-

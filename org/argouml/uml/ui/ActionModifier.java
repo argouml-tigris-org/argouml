@@ -45,6 +45,8 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MInterface;
 
 /**
  * <p>A class to perform the action of changing value of the modifiers on a
@@ -237,8 +239,8 @@ public class ActionModifier extends UMLAction {
                           String propertyName,
 			  String getMethod,
 			  String setMethod,
-			  Object/*MPackage*/ mpackage,
-			  Object/*Class*/ enumClass,
+			  MPackage mpackage,
+			  Class enumClass,
 			  Object trueValue,
 			  Object falseValue) {
 	super(name, NO_ICON);
@@ -274,7 +276,7 @@ public class ActionModifier extends UMLAction {
      */ 
 
     public ActionModifier(String name, String propertyName, String getMethod,
-                          String setMethod, Object/*MUseCase*/ museCase) { 
+                          String setMethod, MUseCase museCase) { 
         super(name, NO_ICON);
         this.object = museCase;
         _property   = new UMLReflectionBooleanProperty(propertyName,
@@ -310,7 +312,7 @@ public class ActionModifier extends UMLAction {
      */
 
     public ActionModifier(String name, String propertyName, String getMethod,
-                          String setMethod, Object/*MUseCase*/ museCase, Class enumClass,
+                          String setMethod, MUseCase museCase, Class enumClass,
                           Object trueValue, Object falseValue) {
         super(name, NO_ICON);
         this.object = museCase;

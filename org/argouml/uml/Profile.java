@@ -26,9 +26,6 @@
 package org.argouml.uml;
 
 import java.util.Iterator;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  *   This abstract class captures the configurable behavior of Argo.
  *
@@ -42,7 +39,7 @@ abstract public class Profile {
      *    @param namespace context namespace (may be null).
      *    @return a string representing the model element
      */
-    abstract public String formatElement(MModelElement element,
+    abstract public String formatElement(Object/*MModelElement*/ element,
 					 Object namespace);
     /**
      *   This method produces a string the represents the collection
@@ -53,5 +50,5 @@ abstract public class Profile {
      */
     abstract public String formatCollection(Iterator iter,
 					    Object namespace);
-    abstract public MModel getProfileModel();
+    abstract public Object/*MModel*/ getProfileModel();
 }

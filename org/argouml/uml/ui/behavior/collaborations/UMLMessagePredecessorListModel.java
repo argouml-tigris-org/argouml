@@ -30,7 +30,6 @@ import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
 /**
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -61,7 +60,7 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(MBase elem) {
+    protected boolean isValidElement(Object/*MBase*/ elem) {
         return org.argouml.model.ModelFacade.isAMessage(elem) && 
             ModelFacade.getInteraction(elem) == ModelFacade.getInteraction(getTarget()) &&
             ModelFacade.getActivator(elem) == ModelFacade.getActivator(getTarget());

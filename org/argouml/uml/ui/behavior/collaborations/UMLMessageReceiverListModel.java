@@ -28,7 +28,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
 /**
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -54,7 +53,7 @@ public class UMLMessageReceiverListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
-    protected boolean isValidElement(MBase element) {
+    protected boolean isValidElement(Object/*MBase*/ element) {
         return ModelFacade.getReceiver(getTarget()) == element;
     }
 

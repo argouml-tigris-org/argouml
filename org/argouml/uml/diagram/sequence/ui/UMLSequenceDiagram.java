@@ -52,8 +52,6 @@ import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
 import ru.novosoft.uml.behavior.common_behavior.MSendAction;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 public class UMLSequenceDiagram extends UMLDiagram {
     protected static Logger cat =
         Logger.getLogger(UMLSequenceDiagram.class);
@@ -91,7 +89,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
         }
     }
 
-    public UMLSequenceDiagram(MNamespace m) {
+    public UMLSequenceDiagram(Object/*MNamespace*/ m) {
         this();
         setNamespace(m);
     }

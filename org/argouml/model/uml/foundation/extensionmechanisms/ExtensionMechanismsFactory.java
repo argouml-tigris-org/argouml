@@ -67,7 +67,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
      *
      *  @return an initialized UML Stereotype instance.
      */
-    public MStereotype createStereotype() {
+    public Object/*MStereotype*/ createStereotype() {
         MStereotype modelElement =
 	    MFactory.getDefaultFactory().createStereotype();
 	super.initialize(modelElement);
@@ -96,7 +96,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
         MNamespace ns = (MNamespace) nsObj;
     	if (m == null || text == null || ns == null)
 	    throw new IllegalArgumentException("one of the arguments is null");
-    	MStereotype stereo = createStereotype();
+    	MStereotype stereo = (MStereotype)createStereotype();
     	stereo.setName(text);
     	stereo.setBaseClass(ExtensionMechanismsHelper.getHelper()
 			    .getMetaModelName(m));
@@ -121,7 +121,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
      * @return an initialized stereotype.
      */
     public Object/*MStereotype*/ buildStereotype(String text, Object ns) {
-    	MStereotype stereo = createStereotype();
+    	MStereotype stereo = (MStereotype)createStereotype();
     	stereo.setName(text);
     	if (ns != null && ns instanceof MNamespace)
     	    stereo.setNamespace((MNamespace) ns);
@@ -132,7 +132,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
         MModelElement m = (MModelElement)modelElement;
         // if (m == null && text == null)
 	//  throw new IllegalArgumentException("one of the arguments is null");
-        MStereotype stereo = createStereotype();
+        MStereotype stereo = (MStereotype)createStereotype();
         stereo.setName(text);
         stereo.setBaseClass(ExtensionMechanismsHelper.getHelper()
 			    .getMetaModelName(m));
@@ -173,7 +173,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
      * @param ns is the namespace to put the copy in.
      */
     public MStereotype copyStereotype(MStereotype source, MNamespace ns) {
-	MStereotype st = createStereotype();
+	MStereotype st = (MStereotype)createStereotype();
 	ns.addOwnedElement(st);
 	doCopyStereotype(source, st);
 	return st;

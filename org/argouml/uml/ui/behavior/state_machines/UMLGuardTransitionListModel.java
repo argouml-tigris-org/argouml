@@ -28,7 +28,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
 /**
  * The listmodel behind the transition property for a Guard on the Guard's 
  * property panel.
@@ -56,7 +55,7 @@ public class UMLGuardTransitionListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(MBase element) {
+    protected boolean isValidElement(Object/*MBase*/ element) {
         return element == ModelFacade.getTransition(getTarget());
     }
 

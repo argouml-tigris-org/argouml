@@ -53,11 +53,11 @@ import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator;
-
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MState;
+
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.foundation.core.MAssociation;
@@ -224,8 +224,7 @@ public class GeneratorJava
         return pathname;
     }
 
-    public String generateHeader(
-				 Object/*MClassifier*/ cls,
+    public String generateHeader(MClassifier cls,
 				 String pathname,
 				 String packagePath) {
         StringBuffer sb = new StringBuffer(80);
@@ -242,7 +241,7 @@ public class GeneratorJava
         return sb.toString();
     }
 
-    public String generateImports(Object/*MClassifier*/ cls, String packagePath) {
+    public String generateImports(MClassifier cls, String packagePath) {
         // TODO: check also generalizations
         StringBuffer sb = new StringBuffer(80);
         java.util.HashSet importSet = new java.util.HashSet();
@@ -560,7 +559,7 @@ public class GeneratorJava
         sb.append(generateVisibility(cls.getVisibility()));
 
         // Add other modifiers
-        if (cls.isAbstract() && !(org.argouml.model.ModelFacade.isAInterface(cls))) {
+        if (cls.isAbstract() && !(ModelFacade.isAInterface(cls))) {
             sb.append("abstract ");
         }
 
@@ -852,7 +851,7 @@ public class GeneratorJava
      */
     protected StringBuffer generateClassifierBody(MClassifier cls) {
         StringBuffer sb = new StringBuffer();
-        if (org.argouml.model.ModelFacade.isAClass(cls) || org.argouml.model.ModelFacade.isAInterface(cls)) {
+        if (ModelFacade.isAClass(cls) || ModelFacade.isAInterface(cls)) {
             String tv = null; // helper for tagged values
 
             // add attributes
@@ -1156,8 +1155,7 @@ public class GeneratorJava
      * @return the documentation comment for the specified model element, either
      * enhanced or completely generated
      */
-    public String generateConstraintEnrichedDocComment(
-						       Object/*MModelElement*/ me,
+    public String generateConstraintEnrichedDocComment(MModelElement me,
 						       MAssociationEnd ae) {
         String s = generateConstraintEnrichedDocComment(me, true, INDENT);
 
@@ -1385,7 +1383,7 @@ public class GeneratorJava
         return sb.toString();
     }
 
-    public String generateAssociationFrom(Object/*MAssociation*/ a, MAssociationEnd associationEnd) {
+    public String generateAssociationFrom(MAssociation a, MAssociationEnd associationEnd) {
         // TODO: does not handle n-ary associations
         StringBuffer sb = new StringBuffer(80);
 
@@ -1806,7 +1804,7 @@ public class GeneratorJava
        @param mClassifier The classifier to update from.
        @param file The file to update.
     */
-    protected static void update(Object/*MClassifier*/ mClassifier, File file)
+    protected static void update(MClassifier mClassifier, File file)
         throws Exception {
         Argo.log.info("Parsing " + file.getPath());
 

@@ -28,8 +28,6 @@ import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
-
 /**
  *  $Revision$
  *
@@ -58,7 +56,7 @@ public class UMLClassAttributeListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(MBase element) {
+    protected boolean isValidElement(Object/*MBase*/ element) {
         return (ModelFacade.getAttributes(getTarget()).contains(element));
     }
 

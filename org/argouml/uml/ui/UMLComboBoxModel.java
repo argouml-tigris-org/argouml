@@ -758,7 +758,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *                      has an acceptable type).
      */
 
-    public void updateElement(MModelElement addedElement) {
+    public void updateElement(Object/*MModelElement*/ addedElement) {
 
         // Nothing to do if the element is not of the right type.
 
@@ -769,7 +769,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // Double check that it doesn't have an entry already. Loop until we
         // find it.
 
-        String   addedName = addedElement.getName();
+        String   addedName = ModelFacade.getName(addedElement);
         boolean  inSet     = false;
         Iterator iter      = _set.iterator();
                  
@@ -815,7 +815,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *                        set (if it is currently there).
      */
 
-    public void deleteElement(MModelElement removedElement) {
+    public void deleteElement(Object/*MModelElement*/ removedElement) {
 
         // Nothing to do if the element is not of the right type.
 

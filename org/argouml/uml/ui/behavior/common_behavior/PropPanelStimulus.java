@@ -50,10 +50,7 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MModelElement;
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -119,7 +116,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
         return sender;
     }
 
-    public void setSender(MInstance element) {
+    public void setSender(Object/*MInstance*/ element) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAStimulus(target)) {
             ModelFacade.setSender(target, element);
@@ -136,14 +133,14 @@ public class PropPanelStimulus extends PropPanelModelElement {
         return receiver;
     }
 
-    public void setReceiver(MInstance element) {
+    public void setReceiver(Object/*MInstance*/ element) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAStimulus(target)) {
             ModelFacade.setReceiver(target, element);
         }
     }
 
-    public boolean isAcceptibleAssociation(MModelElement classifier) {
+    public boolean isAcceptibleAssociation(Object/*MModelElement*/ classifier) {
         return org.argouml.model.ModelFacade.isAAssociation(classifier);
     }
 
@@ -159,7 +156,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
         return association;
     }
 
-    public void setAssociation(MAssociation element) {
+    public void setAssociation(Object/*MAssociation*/ element) {
         Object target = getTarget();
         if (ModelFacade.isAStimulus(target)) {
             Object stimulus = /*(MStimulus)*/ target;

@@ -40,9 +40,6 @@ import org.argouml.uml.ui.UMLTextProperty;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 /**
  * @author Jaap
  *
@@ -85,7 +82,7 @@ public class PropPanelReception extends PropPanelModelElement {
      * @param element
      * @return boolean
      */
-    public boolean isAcceptibleClassifier(MModelElement element) {
+    public boolean isAcceptibleClassifier(Object/*MModelElement*/ element) {
         return (ModelFacade.isAClassifier(element) && !(ModelFacade.isADataType(element)));
     }
 
@@ -105,7 +102,7 @@ public class PropPanelReception extends PropPanelModelElement {
      * Sets the owner of the reception. Necessary for the MClassifierComboBox.
      * @param owner
      */
-    public void setOwner(MClassifier owner) {
+    public void setOwner(Object/*MClassifier*/ owner) {
         Object target = getTarget();
         if (ModelFacade.isAReception(target)) {
             Object rec = /*(MReception)*/ target;

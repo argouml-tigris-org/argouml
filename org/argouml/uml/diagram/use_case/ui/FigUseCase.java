@@ -73,6 +73,8 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
+
 /**
  * <p>A fig to display use cases on use case diagrams.</p>
  *
@@ -422,19 +424,19 @@ public class FigUseCase extends FigNodeModelElement {
 						     "isAbstract",
 						     "isAbstract",
 						     "setAbstract",
-						     useCase));
+						     (MUseCase)useCase));
 
         modifierMenu.addCheckItem(new ActionModifier("Leaf",
 						     "isLeaf",
 						     "isLeaf",
 						     "setLeaf",
-						     useCase));
+						     (MUseCase)useCase));
 
         modifierMenu.addCheckItem(new ActionModifier("Root",
 						     "isRoot",
 						     "isRoot",
 						     "setRoot",
-						     useCase));
+						     (MUseCase)useCase));
 
         popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
 

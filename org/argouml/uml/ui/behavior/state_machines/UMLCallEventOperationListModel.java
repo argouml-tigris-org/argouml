@@ -28,7 +28,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
 /**
  * List model for the operation with a callevent. Might be replaced by a 
  * comboboxmodel in the future.
@@ -58,7 +57,7 @@ public class UMLCallEventOperationListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(MBase element) {
+    protected boolean isValidElement(Object/*MBase*/ element) {
         return element == ModelFacade.getOperation(getTarget());
     }
 

@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 
 /**
@@ -56,7 +55,7 @@ public class UMLEventParameterListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(MBase element) {
+    protected boolean isValidElement(Object/*MBase*/ element) {
         return ((MEvent) getTarget()).getParameters().contains(element);
     }
 

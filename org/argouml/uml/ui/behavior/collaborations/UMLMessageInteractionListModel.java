@@ -28,8 +28,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	
@@ -58,7 +56,7 @@ public class UMLMessageInteractionListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(MBase element) {
+    protected boolean isValidElement(Object/*MBase*/ element) {
         return org.argouml.model.ModelFacade.isAInteraction(element) && ModelFacade.getInteraction(getTarget()) == element;
     }
 

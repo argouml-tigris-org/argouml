@@ -64,7 +64,7 @@ public abstract class AbstractActionAddModelElement extends UMLChangeAction {
      * Sets the target.
      * @param target The target to set
      */
-    public void setTarget(MModelElement target) {
+    public void setTarget(Object/*MModelElement*/ target) {
         _target = target;
     }
 

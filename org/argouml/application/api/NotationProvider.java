@@ -33,8 +33,6 @@
 
 package org.argouml.application.api;
 
-// import org.argouml.application.events.*;
-//import org.argouml.language.*;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
@@ -43,6 +41,8 @@ import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
+// import org.argouml.application.events.*;
+//import org.argouml.language.*;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MOperation;
@@ -124,4 +124,3 @@ public interface NotationProvider {
     // public void parseNodeInstance(MNodeInstance noi, String s);
     // public void parseComponentInstance(MComponentInstance coi, String s);
 }
-

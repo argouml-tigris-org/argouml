@@ -29,7 +29,6 @@ import java.util.Iterator;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
 /**
  * List model for messages on the interaction proppanel. 
  * 
@@ -59,7 +58,7 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
-    protected boolean isValidElement(MBase elem) {
+    protected boolean isValidElement(Object/*MBase*/ elem) {
         return org.argouml.model.ModelFacade.isAMessage(elem) && 
             ModelFacade.getInteraction(elem) == getTarget();
     }

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,6 +26,7 @@ package org.argouml.uml.diagram.static_structure;
 
 import java.util.*;
 import java.beans.*;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -45,7 +45,7 @@ public class MMClassVisibility implements java.io.Serializable {
   
     private MMClassVisibility(String label) { _label = label; }
 
-    public static MMClassVisibility VisibilityFor(MClassifier cls) {
+    public static MMClassVisibility VisibilityFor(Object/*MClassifier*/ cls) {
 	// doesn't really do anything without vis: PACKAGE in nsuml
 	//MVisibilityKind vk = cls.getVisibility();
 	//if (vk == null) return PUBLIC;
@@ -63,9 +63,10 @@ public class MMClassVisibility implements java.io.Serializable {
   
     public String toString() { return _label.toString(); }
 
-    public void set(MClassifier target) {
+    public void set(Object/*MClassifier*/ target) {
 	if (target == null) return;
-	if (this == PUBLIC)
-	    target.setVisibility(MVisibilityKind.PUBLIC);
+	if (this == PUBLIC) {
+	    ModelFacade.setVisibility(target, MVisibilityKind.PUBLIC);
+        }
     }
 } /* end class MMClassVisibility */

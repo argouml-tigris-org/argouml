@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
 /**
  * Shows the bases belonging to some classifierrole.
  * @since Oct 3, 2002
@@ -53,7 +52,7 @@ public class UMLClassifierRoleBaseListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
-    protected boolean isValidElement(MBase elem) {
+    protected boolean isValidElement(Object/*MBase*/ elem) {
         return ModelFacade.isAClassifier(elem) &&
              ModelFacade.getBases(getTarget()).contains(elem);
     }

@@ -56,6 +56,7 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /** Class to display graphics for a UML package in a class diagram. */
@@ -599,17 +600,13 @@ public class FigPackage extends FigNodeModelElement {
 
         ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
 
-        modifierMenu.addCheckItem(
-				  new ActionModifier(
-						     "Abstract",
+        modifierMenu.addCheckItem(new ActionModifier("Abstract",
 						     "isAbstract",
 						     "isAbstract",
 						     "setAbstract",
-						     mclass));
-        modifierMenu.addCheckItem(
-				  new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", mclass));
-        modifierMenu.addCheckItem(
-				  new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mclass));
+						     (MClass)mclass));
+        modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", (MClass)mclass));
+        modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", (MClass)mclass));
 
         popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
 

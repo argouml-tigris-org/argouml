@@ -371,14 +371,10 @@ abstract public class UMLModelElementListModel
      *  @deprecated 
      *  @param modelElement model element to display
      */
-    public void navigateTo(MModelElement modelElement) {
+    public void navigateTo(Object/*MModelElement*/ modelElement) {
         TargetManager.getInstance().setTarget(modelElement);
     }
     
-    public void navigateTo(Object modelElement) {
-        navigateTo((MModelElement) modelElement);
-    }
-
     /**
      *   This method is called in response to selecting "Open" from
      *   a context (pop-up) menu on this list.
