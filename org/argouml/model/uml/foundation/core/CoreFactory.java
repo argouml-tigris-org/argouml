@@ -147,16 +147,20 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param name The name.
      * @return an initialized UML Abstraction instance.
      */
-    public Object buildAbstraction(String name, Object parent, Object child) {
-        if (!(child instanceof MClassifier)
-                || !(parent instanceof MClassifier)) {
-            throw new IllegalArgumentException();
+    public Object buildAbstraction(String name,
+            Object supplier, 
+            Object client) {
+        if (!(client instanceof MClassifier)
+                || !(supplier instanceof MClassifier)) {
+            throw new IllegalArgumentException(
+                "The supplier and client of an abstration" +
+                "should be classifiers" );
         }
         MAbstraction abstraction = (MAbstraction)createAbstraction();
         super.initialize(abstraction);
         ModelFacade.setName(abstraction, name);
-        abstraction.addClient((MClassifier)child);
-        abstraction.addSupplier((MClassifier)child);
+        abstraction.addClient((MClassifier)client);
+        abstraction.addSupplier((MClassifier)supplier);
         return abstraction;
     }
 
