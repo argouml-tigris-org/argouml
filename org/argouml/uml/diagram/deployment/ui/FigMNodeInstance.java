@@ -284,7 +284,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
         }
 
         if (isReadyToEdit()) {
-            if (nameStr == "" && baseStr == "") {
+            if ((nameStr.length() == 0) && (baseStr.length() == 0)) {
                 getNameFig().setText("");
 	    } else {
                 getNameFig().setText(nameStr.trim() + " : " + baseStr);
