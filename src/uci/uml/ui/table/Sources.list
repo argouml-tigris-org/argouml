@@ -7,11 +7,17 @@ SOURCES= \
 	TableModelActorByProps.java \
 	TableModelAssocByProps.java \
 	TableModelComponentByProps.java \
+	TableModelCompInstanceByProps.java \
 	TableModelObjectByProps.java \
 	TableModelAttr.java \
 	TableModelClassByProps.java \
 	TableModelClass_in_DeplByProps.java \
 	TableModelAssoc_in_DeplByProps.java \
+	TableModelDependency_in_DeplByProps.java \
+	TableModelInterface_in_DeplByProps.java \
+	TableModelLinksByProps.java \
+	TableModelNodeByProps.java \
+	TableModelNodeInstanceByProps.java \
 	TableModelComposite.java \
 	TableModelOper.java \
 	TableModelStateByProps.java \

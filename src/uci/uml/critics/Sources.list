@@ -79,5 +79,13 @@ SOURCES= \
 	CrUtilityViolated.java \
 	CrComponentWithoutNode.java \
 	CrCompInstanceWithoutNode.java \
+	CrNodeInsideElement.java \
+	CrNodeInstanceInsideElement.java \
+	CrClassWithoutComponent.java \
+	CrInterfaceWithoutComponent.java \
+	CrObjectWithoutComponent.java \
+	CrWrongLinkEnds.java \
+	CrWrongDepEnds.java \
+	CrInstanceWithoutClassifier.java \
 	Init.java
 
