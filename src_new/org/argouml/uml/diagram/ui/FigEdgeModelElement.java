@@ -78,9 +78,8 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.uml.UUIDManager;
-import org.argouml.uml.diagram.ui.ActionDeleteFromDiagram;
-import org.argouml.uml.diagram.ui.ActionProperties;
 import org.argouml.util.Trash;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -196,7 +195,8 @@ public abstract class FigEdgeModelElement
     public String getTipString(MouseEvent me) {
         ToDoItem item = hitClarifier(me.getX(), me.getY());
         String tip = "";
-        if (item != null)
+        if (item != null 
+            && Globals.curEditor().getSelectionManager().containsFig(this))
             tip = item.getHeadline();
         else if (getOwner() != null)
             tip = getOwner().toString();
