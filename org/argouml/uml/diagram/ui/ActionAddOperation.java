@@ -102,6 +102,7 @@ public class ActionAddOperation extends UMLChangeAction {
     }
     /**
      * @return Returns the singleton.
+     * @deprecated singleton use will be removed in 0.18.0. Use the constructor instead
      */
     public static ActionAddOperation getSingleton() {
         return singleton;
