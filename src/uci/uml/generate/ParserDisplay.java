@@ -33,6 +33,8 @@ import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Model_Management.*;
+import uci.uml.ui.ProjectBrowser;
+import uci.uml.ui.Project;
 
 public class ParserDisplay extends Parser {
 
@@ -41,74 +43,295 @@ public class ParserDisplay extends Parser {
   ////////////////////////////////////////////////////////////////
   // parsing methods
 
+  public void parseOperationCompartment(Classifier cls, String s) {
+    StringTokenizer st = new StringTokenizer(s, "\n\r");
+    Vector ops = new Vector();
+    while (st.hasMoreTokens()) {
+      String token = st.nextToken();
+      Operation op = parseOperation(token);
+//       if (op != null)
+// 	System.out.println("just parsed " + GeneratorDisplay.Generate(op));
+      ops.addElement(op);
+    }
+    System.out.println("parsed " + ops.size() + " operations");
+    Vector curOps = cls.getBehavioralFeature();
+    if (curOps == null) {
+      try { cls.setBehavioralFeature(ops); }
+      catch (PropertyVetoException pve) { }
+      System.out.println("set all Behavioral Features");
+      return;
+    }
+    int curOpsSize = curOps.size();
+    Hashtable touched = new Hashtable();
+    int newOpsSize = ops.size();
+    int i;
+    for (i = 0; i < newOpsSize; i++) {
+      Operation op = (Operation) ops.elementAt(i);
+      touched.put(op, op);
+      Operation curOp = (Operation) cls.findBehavioralFeature(op.getName());
+      if (curOp == null || touched.contains(curOp)) {
+	curOps.insertElementAt(op, i);
+	try { op.setOwner(cls); }
+	catch (PropertyVetoException pve) { }
+      }
+      else {
+	try {
+	  curOp.setVisibility(op.getVisibility());
+	  curOp.setOwnerScope(op.getOwnerScope());
+	  curOp.setParameter(op.getParameter());
+	  touched.put(curOp, curOp);
+	}
+	catch (PropertyVetoException pve) { }
+      }
+    }
+    Vector removes = new Vector();
+    int totalOpSize = curOps.size();
+    for (i = 0; i < totalOpSize; i++) {
+      Operation op = (Operation) curOps.elementAt(i);
+      if (!touched.containsKey(op)) removes.addElement(op);
+    }
+    int nRemove = removes.size();
+    for (i = 0; i < nRemove; i++)
+      curOps.removeElement(removes.elementAt(i));
+  }
+
+  public void parseAttributeCompartment(Classifier cls, String s) {
+    StringTokenizer st = new StringTokenizer(s, "\n\r");
+    Vector attrs = new Vector();
+    while (st.hasMoreTokens()) {
+      String token = st.nextToken();
+      Attribute attr = parseAttribute(token);
+      if (attr != null)
+	System.out.println("just parsed " + GeneratorDisplay.Generate(attr));
+      attrs.addElement(attr);
+    }
+    System.out.println("parsed " + attrs.size() + " attributes");
+    Vector curAttrs = cls.getStructuralFeature();
+    if (curAttrs == null) {
+      try { cls.setStructuralFeature(attrs); }
+      catch (PropertyVetoException pve) { }
+      System.out.println("set all Structural Features");
+      return;
+    }
+    int curAttrsSize = curAttrs.size();
+    Hashtable touched = new Hashtable();
+    int newAttrsSize = attrs.size();
+    int i;
+    for (i = 0; i < newAttrsSize; i++) {
+      Attribute attr = (Attribute) attrs.elementAt(i);
+      touched.put(attr, attr);
+      Attribute curAttr = (Attribute)
+	cls.findStructuralFeature(attr.getName());
+      if (curAttr == null || touched.contains(curAttr)) {
+	curAttrs.insertElementAt(attr, i);
+	try { attr.setOwner(cls); }
+	catch (PropertyVetoException pve) { }
+      }
+      else {
+	try {
+	  curAttr.setVisibility(attr.getVisibility());
+	  curAttr.setOwnerScope(attr.getOwnerScope());
+	  curAttr.setType(attr.getType());
+	  curAttr.setInitialValue(attr.getInitialValue());
+	  touched.put(curAttr, curAttr);
+	}
+	catch (PropertyVetoException pve) { }
+      }
+    }
+    Vector removes = new Vector();
+    int totalAttrSize = curAttrs.size();
+    for (i = 0; i < totalAttrSize; i++) {
+      Attribute attr = (Attribute) curAttrs.elementAt(i);
+      if (!touched.containsKey(attr)) removes.addElement(attr);
+    }
+    int nRemove = removes.size();
+    for (i = 0; i < nRemove; i++)
+      curAttrs.removeElement(removes.elementAt(i));
+  }
+
   /** Parse a line of the form:
    *  [visibility] [keywords] returntype name(params)[;] */
   public Operation parseOperation(String s) {
     s = s.trim();
-    if (s.endsWith(";")) s = s.substring(0, s.length()-2);
+    if (s.endsWith(";")) s = s.substring(0, s.length()-1);
     Operation res = new Operation();
     s = parseOutVisibility(res, s);
     s = parseOutKeywords(res, s);
     s = parseOutReturnType(res, s);
     s = parseOutName(res, s);
     s = parseOutParams(res, s);
+    s = s.trim();
+    if (s.length() != 0)
+      System.out.println("leftover in parseOperation=|" + s + "|");
     return res;
   }
 
+
+  /** Parse a line of the form:
+   *  [visibility] [keywords] type name [= init] [;] */
   public Attribute parseAttribute(String s) {
-    return null;
+    s = s.trim();
+    if (s.endsWith(";")) s = s.substring(0, s.length()-1);
+    Attribute res = new Attribute();
+    s = parseOutVisibility(res, s);
+    s = parseOutKeywords(res, s);
+    s = parseOutType(res, s);
+    s = parseOutName(res, s);
+    s = parseOutInitValue(res, s);
+    System.out.println("leftover in parseAttribute=|" + s + "|");
+    return res;
   }
 
 
   public String parseOutVisibility(Feature f, String s) {
     s = s.trim();
     int firstSpace = s.indexOf(" ");
-    if (firstSpace == -1) return s;
-    String visStr = s.substring(0, firstSpace-1);
-    if (visStr.equals("public") || visStr.equals("+"))
-      f.setVisibility(VisibilityKind.PUBLIC);
-    else if (visStr.equals("private") || visStr.equals("-"))
-      f.setVisibility(VisibilityKind.PRIVATE);
-    else if (visStr.equals("protected") || visStr.equals("#"))
-      f.setVisibility(VisibilityKind.PROTECTED);
-    else if (visStr.equals("package") || visStr.equals("~"))
-      f.setVisibility(VisibilityKind.UNSPEC);
+    if (firstSpace == -1) firstSpace = s.length();
+    String visStr = s.substring(0, firstSpace);
+    VisibilityKind vk = VisibilityKind.PUBLIC;
+    if (visStr.equals("public") || s.startsWith("+"))
+      vk = VisibilityKind.PUBLIC;
+    else if (visStr.equals("private") || s.startsWith("-"))
+      vk = VisibilityKind.PRIVATE;
+    else if (visStr.equals("protected") || s.startsWith("#"))
+      vk = VisibilityKind.PROTECTED;
+    else if (visStr.equals("package") || s.startsWith("~"))
+      vk = VisibilityKind.UNSPEC;
     else {
-      System.out.println("unknown visibility, using default");
+      System.out.println("unknown visibility \"" + visStr +
+			 "\", using default");
       return s;
     }
-    return s.substring(firstSpace+1);
+    try { f.setVisibility(vk); }
+    catch (PropertyVetoException pve) { }
+
+    if (s.startsWith("+") || s.startsWith("-") ||
+	s.startsWith("#") || s.startsWith("~"))
+      s = s.substring(1);
+    else
+      s = s.substring(firstSpace+1);
+    return s;
   }
 
-  public String parseOutKeywords(Feature s, String s) {
+  public String parseOutKeywords(Feature f, String s) {
     s = s.trim();
     int firstSpace = s.indexOf(" ");
     if (firstSpace == -1) return s;
-    String visStr = s.substring(0, firstSpace-1);
-    if (visStr.equals("static"))
-      f.setOwnerScope(ScopeKind.CLASSIFIER);
-    else if (visStr.equals("transient"))
-      System.out.println("'transient' keyword is currently ignored");
-    else if (visStr.equals("final"))
-      System.out.println("'final' keyword is currently ignored");
-    else if (visStr.equals("abstract"))
-      System.out.println("'abstract' keyword is currently ignored");
-    else {
-      return s;
+    String visStr = s.substring(0, firstSpace);
+    try {
+      if (visStr.equals("static"))
+	f.setOwnerScope(ScopeKind.CLASSIFIER);
+      else if (visStr.equals("transient"))
+	System.out.println("'transient' keyword is currently ignored");
+      else if (visStr.equals("final"))
+	System.out.println("'final' keyword is currently ignored");
+      else if (visStr.equals("abstract"))
+	System.out.println("'abstract' keyword is currently ignored");
+      else {
+	return s;
+      }
     }
-    return parseOutKeywords(op, s.substring(firstSpace+1));
+    catch (PropertyVetoException pve) { }
+    return parseOutKeywords(f, s.substring(firstSpace+1));
   }
 
   public String parseOutReturnType(Operation op, String s) {
-    return s;
+    s = s.trim();
+    int firstSpace = s.indexOf(" ");
+    if (firstSpace == -1) return s;
+    String rtStr = s.substring(0, firstSpace);
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    Classifier rt = p.findType(rtStr);
+    try {
+      //System.out.println("setting return type: " + rtStr);
+      op.setReturnType(rt);
+    }
+    catch (PropertyVetoException pve) { }
+    return s.substring(firstSpace+1);
   }
 
   public String parseOutParams(Operation op, String s) {
-    return s;
+    s = s.trim();
+    String leftOver = s;
+    StringTokenizer st = new StringTokenizer(s, "(),");
+    Vector params = new Vector();
+    while (st.hasMoreTokens()) {
+      String token = st.nextToken();
+      Parameter p = parseParameter(token);
+      if (p != null) params.addElement(p);
+      if (!st.hasMoreTokens())
+	leftOver = s.substring(s.indexOf(token) + token.length());
+    }
+    //System.out.println("parsed " + params.size() + " params");
+    //System.out.println("leftOver = '" + leftOver  + "'");
+    Classifier rt = op.getReturnType();
+
+    try {
+      op.setParameter(params);
+      op.setReturnType(rt);
+    }
+    catch (PropertyVetoException pve) { }
+    return leftOver;
+  }
+
+  public String parseOutName(ModelElement me, String s) {
+    s = s.trim();
+    StringTokenizer st = new StringTokenizer(s, " \t()[]=;");
+    if (!st.hasMoreTokens()) {
+      System.out.println("name not parsed");
+      return s;
+    }
+    String nameStr = st.nextToken();
+
+    // needs-more-work: wasteful
+    try { me.setName(new Name(nameStr)); }
+    catch (PropertyVetoException pve) { }
+
+    int namePos = s.indexOf(nameStr);
+    return s.substring(namePos + nameStr.length());
+  }
+
+  public String parseOutType(Attribute attr, String s) {
+    s = s.trim();
+    int firstSpace = s.indexOf(" ");
+    if (firstSpace == -1) return s;
+    String typeStr = s.substring(0, firstSpace);
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    Classifier type = p.findType(typeStr);
+    try {
+      //System.out.println("setting return type: " + rtStr);
+      attr.setType(type);
+    }
+    catch (PropertyVetoException pve) { }
+    return s.substring(firstSpace+1);
+  }
+
+  public String parseOutInitValue(Attribute attr, String s) {
+    s = s.trim();
+    int equalsIndex = s.indexOf("=");
+    if (equalsIndex != 0) return s;
+    String initStr = s.substring(1).trim(); //move past "="
+    if (initStr.length() == 0) return "";
+    Expression initExpr = new Expression(initStr);
+    try {
+      //System.out.println("setting return type: " + rtStr);
+      attr.setInitialValue(initExpr);
+    }
+    catch (PropertyVetoException pve) { }
+    return "";
   }
 
   public Parameter parseParameter(String s) {
-    return null;
+    StringTokenizer st = new StringTokenizer(s, " \t");
+    String typeStr = "int", paramNameStr = "parameterName?";
+    if (st.hasMoreTokens()) typeStr = st.nextToken();
+    if (st.hasMoreTokens()) paramNameStr = st.nextToken();
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    Classifier cls = p.findType(typeStr);
+    return new Parameter(cls, paramNameStr);
   }
 
 

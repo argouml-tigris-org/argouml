@@ -56,7 +56,7 @@ public class Critic implements Poster, java.io.Serializable {
   
   /** The keys of some predefined control records. */
   public static final String ENABLED = "enabled";
-  public static final String HUSH_ORDER = "hushOrder";
+  public static final String SNOOZE_ORDER = "snoozeOrder";
 
   /** Some priority constants for ToDoItem's. */
   //public static final int LOWEST_PRIORITY = 1;
@@ -127,7 +127,7 @@ public class Critic implements Poster, java.io.Serializable {
    *  call <TT>Agency.register()</TT> with that instance. */
   public Critic() {
     addControlRec(ENABLED, Boolean.TRUE);
-    addControlRec(HUSH_ORDER, new HushOrder());
+    addControlRec(SNOOZE_ORDER, new SnoozeOrder());
     _criticType = "correctness";
     _knowledgeTypes.addElement("Correctness");
     _decisionCategory = "Checking";
@@ -165,16 +165,16 @@ public class Critic implements Poster, java.io.Serializable {
       // 	System.out.println(this.toString() + " detected error");
       //       }
       ToDoItem item = toDoItem(dm, dsgr);
-      if (dm instanceof DesignMaterial) ((DesignMaterial)dm).inform(item);
-      dsgr.inform(item);
+      postItem(item, dm, dsgr);
     }
-//     else {
-//       if (Boolean.getBoolean("debug")) {
-// 	System.out.println(this.toString() + " found " + dm.toString()
-// 			   + " OK ");
-//       }
-//     }
   }
+
+  public void postItem(ToDoItem item, Object dm, Designer dsgr) {
+    if (dm instanceof DesignMaterial) ((DesignMaterial)dm).inform(item);
+    dsgr.inform(item);
+  }
+
+
 
   /** Perform the Critic's analysis of the design. Subclasses should test
    *  the given Object to make sure that it is the type of
@@ -253,7 +253,7 @@ public class Critic implements Poster, java.io.Serializable {
   }
 
 
-    ////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
   // criticism control
 
   /** Reply true iff this Critic can execute. This fact is normally
@@ -291,16 +291,21 @@ public class Critic implements Poster, java.io.Serializable {
     return  ((Boolean) getControlRec(ENABLED)).booleanValue();
   }
 
-  /** Reply the HushOrder that is defined for this critic. */
-  public HushOrder hushOrder() {
-    return (HushOrder)getControlRec(HUSH_ORDER);
+  public void setEnabled(boolean e) {
+    Boolean enabledBool = e ? Boolean.TRUE : Boolean.FALSE;
+    addControlRec(ENABLED, enabledBool);
+  }
+
+  /** Reply the SnoozeOrder that is defined for this critic. */
+  public SnoozeOrder snoozeOrder() {
+    return (SnoozeOrder)getControlRec(SNOOZE_ORDER);
   }
 
   /** Disable this Critic for the next few minutes. */
-  public void hush() { hushOrder().hush(); }
+  public void snooze() { snoozeOrder().snooze(); }
 
-  /** Lift any previous HushOrder. */
-  public void unhush() { hushOrder().unhush(); }
+  /** Lift any previous SnoozeOrder. */
+  public void unsnooze() { snoozeOrder().snooze(); }
 
   /** Reply true iff this Critic is relevant to the decisions that
    *  the Designer is considering. By default just asks the Designer if
@@ -369,18 +374,27 @@ public class Critic implements Poster, java.io.Serializable {
     return _priority;
   }
   public void setPriority(int p) { _priority = p; }
+  public int getPriority() {
+    return _priority;
+  }
 
   /** Reply the description used in feedback produced by this Critic. */
   public String getDescription(Set offenders, Designer dsgr) {
     return _description;
   }
   public void setDescription(String d) {  _description = d; }
+  public String getDescriptionTemplate() {
+    return _description;
+  }
 
   /** Reply the moreInfoURL used in feedback produced by this Critic. */
   public String getMoreInfoURL(Set offenders, Designer dsgr) {
     return _moreInfoURL;
   }
   public void setMoreInfoURL(String m) {  _moreInfoURL = m; }
+  public String getMoreInfoURL() {
+    return _moreInfoURL;
+  }
 
   ////////////////////////////////////////////////////////////////
   // design feedback

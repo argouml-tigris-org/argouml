@@ -50,6 +50,7 @@ public class Project implements java.io.Serializable {
   public Vector _diagrams = new Vector(); // instances of LayerDiagram
   public boolean _needsSave = false;
   public Model _curModel = null;
+  public Hashtable _definedTypes = new Hashtable(80);
   public GenerationPreferences _cgPrefs = new GenerationPreferences();
   public transient VetoableChangeSupport _vetoSupport = null;
 
@@ -104,6 +105,22 @@ public class Project implements java.io.Serializable {
     setCurrentModel(m);
     _needsSave = true;
   }
+
+  public Hashtable getDefinedTypes() { return _definedTypes; }
+  public void setDefinedTypes(Hashtable h) { _definedTypes = h; }
+  public void defineType(Classifier cls) {
+    //needs-more-work: should take namespaces into account!
+    _definedTypes.put(cls.getName().getBody(), cls);
+  }
+  public Classifier findType(String s) {
+    Classifier cls = (Classifier) _definedTypes.get(s);
+    if (cls == null) {
+      cls = new MMClass(s);
+      _definedTypes.put(s, cls);
+    }
+    return cls;
+  }
+
 
   public void setCurrentModel(Model m) { _curModel = m; }
   public Model getCurrentModel() { return _curModel; }

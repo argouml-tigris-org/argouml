@@ -70,6 +70,7 @@ public class GeneratorDisplay extends Generator {
       while (enum.hasMoreElements()) {
 	Parameter p = (Parameter) enum.nextElement();
 	if (Parameter.RETURN_NAME.equals(p.getName())) {
+	  //System.out.println("generateOperation found returnType");
 	  returnType = p.getType();
 	  break;
 	}

@@ -38,11 +38,11 @@ import uci.gef.*;
 import uci.uml.ui.*;
 import uci.uml.Foundation.Core.*;
 
-public class FigRealization extends FigEdgeLine {
+public class FigRealization extends FigEdgeModelElement {
 
   public FigRealization(Object edge) {
-    super();
-    setOwner(edge);
+    super(edge);
+    addPathItem(_stereo, new PathConvPercent(this, 50, 10));
 
     ((FigLine)_fig).setDashed(true);
 
@@ -53,15 +53,26 @@ public class FigRealization extends FigEdgeLine {
     setBetweenNearestPoints(true);
   }
 
-  public void dispose() {
-    if (!(getOwner() instanceof Realization)) return;
-    Realization gen = (Realization) getOwner();
-    if (gen == null) return;
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(gen);
-    super.dispose();
+//   public void dispose() {
+//     if (!(getOwner() instanceof Realization)) return;
+//     Realization gen = (Realization) getOwner();
+//     if (gen == null) return;
+//     Project p = ProjectBrowser.TheInstance.getProject();
+//     p.moveToTrash(gen);
+//     super.dispose();
+//   }
+
+
+  protected boolean canEdit(Fig f) { return false; }
+  
+  /** This is called aftern any part of the UML ModelElement has
+   *  changed. This method automatically updates the name FigText.
+   *  Subclasses should override and update other parts. */
+  protected void modelChanged() {
+    // do not set _name
+    updateStereotypeText();
   }
 
-
+  
 } /* end class FigRealization */
 

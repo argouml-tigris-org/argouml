@@ -48,7 +48,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
   public static UMLAction _actionResolve = Actions.Resolve;
   public static UMLAction _actionEmailExpert = Actions.EmailExpert;
   //public static UMLAction _actionMoreInfo = Actions.MoreInfo;
-  public static UMLAction _actionHush = Actions.Hush;
+  public static UMLAction _actionSnooze = Actions.Snooze;
   public static UMLAction _actionRecordFix = Actions.RecordFix;
   public static UMLAction _actionReplayFix = Actions.ReplayFix;
 //   public static UMLAction _actionFixItNext = Actions.FixItNext;
@@ -63,7 +63,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
 //   JButton _fixItButton = new JButton("FixIt");  //html
 //   JButton _moreInfoButton = new JButton("More Info"); //html
 //   JButton _emailExpertButton = new JButton("Email Expert"); //html
-//   JButton _hushButton = new JButton("Hush");
+//   JButton _snoozeButton = new JButton("Snooze");
   //JTextArea _description = new JTextArea();
   WizDescription _description = new WizDescription();
   
@@ -87,8 +87,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
 //     _moreInfoButton.setFont(new Font("Dialog", Font.PLAIN, 9));
 //     buttonPane.add(_emailExpertButton);
 //     _emailExpertButton.setFont(new Font("Dialog", Font.PLAIN, 9));
-//     buttonPane.add(_hushButton);
-//     _hushButton.setFont(new Font("Dialog", Font.PLAIN, 9));
+//     buttonPane.add(_snoozeButton);
+//     _snoozeButton.setFont(new Font("Dialog", Font.PLAIN, 9));
 //     add(buttonPane, BorderLayout.NORTH);
 
     ToolBar toolBar = new ToolBar();
@@ -97,7 +97,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     toolBar.add(_actionResolve);
     toolBar.add(_actionEmailExpert);
     //toolBar.add(_actionMoreInfo);
-    toolBar.add(_actionHush);
+    toolBar.add(_actionSnooze);
     toolBar.addSeparator();
     
 //     toolBar.add(_actionRecordFix);
@@ -112,7 +112,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     //     addTool(toolBar, "Resolve");
     //     addTool(toolBar, "EmailExpert");
     //     addTool(toolBar, "MoreInfo");
-    //     addTool(toolBar, "Hush");
+    //     addTool(toolBar, "Snooze");
     //     //_description.setFont(new Font("Dialog", Font.PLAIN, 9));
     add(toolBar, BorderLayout.WEST);
 //     _description.setLineWrap(true);
@@ -167,7 +167,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     _actionResolve.updateEnabled(_target);
     _actionEmailExpert.updateEnabled(_target);
     //_actionMoreInfo.updateEnabled(_target);
-    _actionHush.updateEnabled(_target);
+    _actionSnooze.updateEnabled(_target);
     _actionRecordFix.updateEnabled(_target);
     _actionReplayFix.updateEnabled(_target);
     //     _actionFixItNext.updateEnabled(_target);

@@ -35,6 +35,7 @@ import java.beans.*;
 
 import uci.graph.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Behavioral_Elements.Use_Cases.*;
 import uci.uml.Model_Management.*;
 
@@ -210,7 +211,10 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return true if the two given ports can be connected by a 
    * kind of edge to be determined by the ports. */
-  public boolean canConnect(Object fromP, Object toP) { return true; }
+  public boolean canConnect(Object fromP, Object toP) {
+    if ((fromP instanceof Actor) && (toP instanceof Actor)) return false;
+    return true;
+  }
 
 
   /** Contruct and add a new edge of a kind determined by the ports */
@@ -222,22 +226,25 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object fromPort, Object toPort,
 			java.lang.Class edgeClass) {
-  try {
-	     if (edgeClass == Association.class){
-	        Association asc = new Association((Classifier) fromPort, (Classifier) toPort);
-	        addEdge(asc);
-	        return asc;
-	     }
-		   else if (edgeClass == Generalization.class) {
-	         Generalization gen = new Generalization((Classifier) fromPort, (Classifier) toPort);
-	         addEdge(gen);
-	         return gen;
-	     }
-       else {
-	         System.out.println("Incorrect edge");
-	         return null;
-	     }
-  }
+    try {
+      if (edgeClass == Association.class) {
+	Association asc = new Association((Classifier) fromPort,
+					  (Classifier) toPort);
+	addEdge(asc);
+	return asc;
+      }
+      else if (edgeClass == Generalization.class) {
+	Generalization gen = new Generalization((Classifier) fromPort,
+						(Classifier) toPort);
+	gen.addStereotype(Stereotype.EXTENDS);
+	addEdge(gen);
+	return gen;
+      }
+      else {
+	System.out.println("Incorrect edge");
+	return null;
+      }
+    }
     catch (java.beans.PropertyVetoException ex) { }
     System.out.println("should not enter here! connect3");
     return null;

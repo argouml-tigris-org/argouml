@@ -97,17 +97,18 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
   public FigText getNameFig() { return _name; }
 
   public void vetoableChange(PropertyChangeEvent pce) {
-    System.out.println("in vetoableChange");
+    //System.out.println("in vetoableChange");
     Object src = pce.getSource();
     if (src == getOwner()) {
       DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
       SwingUtilities.invokeLater(delayedNotify);
     }
-    else System.out.println("aaaaa");
+    else System.out.println("FigNodeModelElement got vetoableChange"+
+			    " from non-owner:" + src);
   }
 
   public void delayedVetoableChange(PropertyChangeEvent pce) {
-    System.out.println("in delayedVetoableChange");
+    //System.out.println("in delayedVetoableChange");
     Object src = pce.getSource();
     startTrans();
     // update any text, colors, fonts, etc.

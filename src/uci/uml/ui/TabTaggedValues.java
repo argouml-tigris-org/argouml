@@ -44,40 +44,23 @@ import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
 
 public class TabTaggedValues extends TabSpawnable
-implements TabModelTarget, ActionListener, ListSelectionListener {
+implements TabModelTarget {
   ////////////////////////////////////////////////////////////////
   // constants
   public final static String DEFAULT_NAME = "tag";
   public final static String DEFAULT_VALUE = "value";
-  
+
   ////////////////////////////////////////////////////////////////
   // instance variables
   Object _target;
   TableModelTaggedValues _tableModel = new TableModelTaggedValues();
   boolean _shouldBeEnabled = false;
   JTable _table = new JTable(10, 2);
-  JButton _addButton = new JButton("Add");
-  JButton _removeButton = new JButton("Remove");
-  JButton _duplicateButton = new JButton("Duplicate");
 
-  
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabTaggedValues() {
     super("TaggedValues");
-    
-    JPanel tableButtons = new JPanel();
-    tableButtons.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-    tableButtons.add(_addButton);
-    tableButtons.add(_removeButton);
-    tableButtons.add(_duplicateButton);
-
-    _addButton.addActionListener(this);
-    _addButton.setMargin(new Insets(0, 0, 0, 0));
-    _removeButton.addActionListener(this);
-    _removeButton.setMargin(new Insets(0, 0, 0, 0));
-    _duplicateButton.addActionListener(this);
-    _duplicateButton.setMargin(new Insets(0, 0, 0, 0));
 
     _table.setModel(_tableModel);
     TableColumn keyCol = _table.getColumnModel().getColumn(0);
@@ -88,22 +71,18 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
     valCol.setWidth(550);
 
     _table.setRowSelectionAllowed(false);
-    _table.getSelectionModel().addListSelectionListener(this);
-    JScrollPane sp = JTable.createScrollPaneForTable(_table);
+    // _table.getSelectionModel().addListSelectionListener(this);
+    JScrollPane sp = new JScrollPane(_table);
     Font labelFont = MetalLookAndFeel.getSubTextFont();
     _table.setFont(labelFont);
-    
-    setLayout(new BorderLayout());
-    add(tableButtons, BorderLayout.SOUTH);
-    add(sp, BorderLayout.CENTER);
-    //setFont(new Font("Dialog", Font.PLAIN, 10));
 
-    //_list.addListSelectionListener(this);
-    //_expr.getDocument().addDocumentListener(this);
+    setLayout(new BorderLayout());
+    add(sp, BorderLayout.CENTER);
   }
 
   ////////////////////////////////////////////////////////////////
   // accessors
+
   public void setTarget(Object t) {
     if (!(t instanceof ModelElement)) {
       _target = null;
@@ -113,129 +92,14 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
     _target = t;
     _shouldBeEnabled = true;
 
-    _removeButton.setEnabled(false);
-    _duplicateButton.setEnabled(false);
-    
     ModelElement me = (ModelElement) _target;
     Vector tvs = me.getTaggedValue();
-    if (tvs != null && tvs.size() > 0)
-      System.out.println("found a tagged value");
-
     _tableModel.setTarget(me);
-    
     validate();
   }
   public Object getTarget() { return _target; }
 
   public boolean shouldBeEnabled() { return _shouldBeEnabled; }
-
-
-  ////////////////////////////////////////////////////////////////
-  // actions
-
-  public void addRow() {
-    System.out.println("add button");
-    if (_target instanceof ElementImpl) {
-      int nameConflicts = 1;
-      Vector tvs = ((ElementImpl)_target).getTaggedValue();
-      String name = DEFAULT_NAME;
-      boolean conflict = true;
-      while (conflict && tvs != null) {
-	conflict = false;
-	if (nameConflicts > 1) name = DEFAULT_NAME + nameConflicts;
-	java.util.Enumeration enum = tvs.elements();
-	while (enum.hasMoreElements()) {
-	  TaggedValue tv = (TaggedValue) enum.nextElement();
-	  if (tv.getTag().getBody().equals(name)) conflict = true;
-	}
-	nameConflicts++;
-      }
-      
-      TaggedValue newTV = new TaggedValue(name, DEFAULT_VALUE);
-      try {
-	((ElementImpl)_target).addTaggedValue(newTV);
-      }
-      catch (PropertyVetoException pve) {
-	System.out.println("could not add tagged value");
-      }
-    }
-  }
-
-  public void removeRow() {
-    System.out.println("remove button");
-    TaggedValue tv = getSelectedTaggedValue();
-    if (tv == null) return;
-    try {
-      ((ElementImpl)_target).removeTaggedValue(tv);
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not remove row");
-    }    
-  }
-
-  public void duplicateRow() {
-    System.out.println("duplicate button");
-    TaggedValue tv = getSelectedTaggedValue();
-    if (tv == null) return;
-    try {
-      TaggedValue newTV = new TaggedValue(tv.getTag().getBody(),
-					  tv.getValue().getBody());
-      ((ElementImpl)_target).addTaggedValue(newTV);
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not duplicate row");
-    }    
-  }
-
-  protected TaggedValue getSelectedTaggedValue() {
-    int selectedRow = _table.getSelectedRow();
-    Vector tvs = ((ElementImpl)_target).getTaggedValue();
-    if (tvs == null || tvs.size() <= selectedRow || selectedRow < 0)
-      return null;
-    TaggedValue tv = (TaggedValue) tvs.elementAt(selectedRow);
-    return tv;
-  }
-  
-  ////////////////////////////////////////////////////////////////
-  // event handling
-
-//   public void insertUpdate(DocumentEvent e) {
-//     System.out.println(getClass().getName() + " insert");
-//     if (e.getDocument() == _expr.getDocument()) {
-//       //setTargetName();
-//       System.out.println("changed constraint expression text");
-//     }
-//   }
-
-//   public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-//   public void changedUpdate(DocumentEvent e) {
-//     System.out.println(getClass().getName() + " changed");
-//     // Apparently, this method is never called.
-//   }
-
-
-  // enable buttons when selection made
-
-  public void actionPerformed(ActionEvent ae) {
-    Object src = ae.getSource();
-    if (src == _addButton) addRow();
-    else if (src == _removeButton) removeRow();
-    else if (src == _duplicateButton) duplicateRow();
-  }
-
-  public void valueChanged(ListSelectionEvent e) {
-    //System.out.println("valueChanged");
-    Object src = e.getSource();
-    if (src == _table.getSelectionModel()) {
-      int selectedRow = e.getFirstIndex();
-      //System.out.println("selection changed: " + selectedRow);
-      if (selectedRow >= 0) {
-	_removeButton.setEnabled(true);
-	_duplicateButton.setEnabled(true);
-      }
-    }
-  }
 
 } /* end class TabTaggedValues */
 
@@ -280,31 +144,52 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   public boolean isCellEditable(int row, int col) {
     return true;
   }
-  
+
   public int getRowCount() {
     if (_target == null) return 0;
     Vector tvs = _target.getTaggedValue();
-    if (tvs == null) return 0;
-    return tvs.size();
+    //if (tvs == null) return 1;
+    return tvs.size() + 1;
   }
-  
+
   public Object getValueAt(int row, int col) {
     Vector tvs = _target.getTaggedValue();
-    if (tvs == null) return "null tvs";
+    //if (tvs == null) return "";
+    if (row == tvs.size()) return ""; //blank line allows addition
     TaggedValue tv = (TaggedValue) tvs.elementAt(row);
-    if (col == 0) return tv.getTag().getBody();
-    if (col == 1) return tv.getValue().getBody();
-    return "tv" + row*2+col;
+    if (col == 0) {
+      Name n = tv.getTag();
+      if (n == null || n.getBody() == null) return "";
+      return n.getBody();
+    }
+    if (col == 1) {
+      Uninterpreted be = tv.getValue();
+      if (be == null || be.getBody() == null) return "";
+      return be.getBody();
+    }
+    return "TV-" + row*2+col; // for debugging
   }
 
   public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
     if (columnIndex != 0 && columnIndex != 1) return;
     if (!(aValue instanceof String)) return;
     Vector tvs = _target.getTaggedValue();
-    if (tvs == null || tvs.size() <= rowIndex) return;
-    TaggedValue tv = (TaggedValue) tvs.elementAt(rowIndex);
-    if (columnIndex == 0) tv.setTag(new Name((String) aValue));
-    if (columnIndex == 1) tv.setValue(new Uninterpreted((String) aValue));
+    if (tvs.size() == rowIndex) {
+      TaggedValue tv = new TaggedValue();
+      if (columnIndex == 0) tv.setTag(new Name((String) aValue));
+      if (columnIndex == 1) tv.setValue(new Uninterpreted((String) aValue));
+      tvs.addElement(tv);
+      fireTableStructureChanged(); //?
+    }
+    else if ("".equals(aValue)) {
+      tvs.removeElementAt(rowIndex);
+      fireTableStructureChanged(); //?
+    }
+    else {
+      TaggedValue tv = (TaggedValue) tvs.elementAt(rowIndex);
+      if (columnIndex == 0) tv.setTag(new Name((String) aValue));
+      if (columnIndex == 1) tv.setValue(new Uninterpreted((String) aValue));
+    }
   }
 
   ////////////////

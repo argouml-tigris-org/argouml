@@ -59,9 +59,11 @@ public class CrEmptyPackage extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
+    System.out.println("predicate2 on " + dm);
     if (!(dm instanceof Model)) return NO_PROBLEM;
     Model mod = (Model) dm;
     Vector elms = mod.getOwnedElement();
+    System.out.println("elms = " + elms);
     if (elms == null || elms.size() == 0) return PROBLEM_FOUND;
     return NO_PROBLEM;
     //needs-more-work: different critic for packages consisting only

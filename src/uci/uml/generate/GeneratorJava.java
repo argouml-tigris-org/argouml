@@ -150,9 +150,8 @@ public class GeneratorJava extends Generator {
     if (init != null)
       s += " = " + generateExpression(init);
 
-    String constraintStr = generateConstraints(attr);
-    if (constraintStr.length() > 0)
-      s += " " + constraintStr;
+    s += ";\n";
+    s += generateConstraints(attr);
 
     return s;
   }
@@ -207,14 +206,20 @@ public class GeneratorJava extends Generator {
     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
     s += "{\n";
 
+    s += INDENT + generateTaggedValues(cls);
+    s += generateConstraints(cls);
+
     Vector strs = cls.getStructuralFeature();
     if (strs != null) {
       s += "\n";
       //s += "////////////////////////////////////////////////////////////////\n";
       s += INDENT + "// Attributes\n";
       java.util.Enumeration strEnum = strs.elements();
-      while (strEnum.hasMoreElements())
-	s += INDENT + generate(strEnum.nextElement()) + ";\n";
+      while (strEnum.hasMoreElements()) {
+	StructuralFeature sf = (StructuralFeature) strEnum.nextElement();
+	s += INDENT + generate(sf);
+	s += INDENT + generateTaggedValues(sf);
+      }
     }
 
     Vector ends = cls.getAssociationEnd();
@@ -227,6 +232,8 @@ public class GeneratorJava extends Generator {
 	AssociationEnd ae = (AssociationEnd) endEnum.nextElement();
 	IAssociation a = ae.getAssociation();
 	s += INDENT + generateAssociationFrom(a, ae);
+	s += INDENT + generateTaggedValues(a);
+	s += generateConstraints(a);
       }
     }
 
@@ -238,10 +245,16 @@ public class GeneratorJava extends Generator {
       //s += "////////////////////////////////////////////////////////////////\n";
       s += INDENT + "// Operations\n";
       java.util.Enumeration behEnum = behs.elements();
-      String terminator = " {\n" + INDENT + "}";
-      if (cls instanceof Interface) terminator = ";";
-      while (behEnum.hasMoreElements())
-	s += INDENT + generate(behEnum.nextElement()) + terminator + "\n";
+      String terminator1 = " {\n";
+      String terminator2 = INDENT + "}";
+      if (cls instanceof Interface) { terminator1 = ";\n"; terminator2 = ""; }
+      while (behEnum.hasMoreElements()) {
+	BehavioralFeature bf = (BehavioralFeature) behEnum.nextElement();
+	s += INDENT + generate(bf) + terminator1;
+	s += INDENT + generateTaggedValues(bf);
+	s += generateConstraints(bf);
+	s += terminator2;
+      }
     }
     s += "\n";
     s += "} /* end " + classifierKeyword + " " + generatedName + " */\n";
@@ -252,10 +265,46 @@ public class GeneratorJava extends Generator {
     return "<<" + generateName(s.getName()) + ">>";
   }
 
+  public String generateTaggedValues(Element e) {
+    Vector tvs = e.getTaggedValue();
+    if (tvs == null || tvs.size() == 0) return "";
+    String s = "// {";
+    int size = tvs.size();
+    for (int i = 0; i < size; i++) {
+      TaggedValue tv = (TaggedValue) tvs.elementAt(i);
+      s += generateTaggedValue(tv);
+      if (i < size-1) s += ", ";
+    }
+    s += "}\n";
+    return s;
+  }
+  
   public String generateTaggedValue(TaggedValue tv) {
     if (tv == null) return "";
     return generateName(tv.getTag()) + "=" +
       generateUninterpreted(tv.getValue());
+  }
+
+  public String generateConstraints(ModelElement me) {
+    Vector cs = me.getConstraint();
+    if (cs == null || cs.size() == 0) return "";
+    String s = INDENT + "// constraints\n";
+    int size = cs.size();
+    for (int i = 0; i < size; i++) {
+      Constraint c = (Constraint) cs.elementAt(i);
+      s += INDENT + "// " + generateConstraint(c) + "\n";
+    }
+    s += "\n";
+    return s;
+  }
+
+  public String generateConstraint(Constraint c) {
+    if (c == null) return "";
+    String s = "";
+    if (c.getName() != null && c.getName().getBody().length() != 0)
+      s += generateName(c.getName()) + ": ";
+    s += generateExpression(c.getBody());
+    return s;
   }
 
 
@@ -321,23 +370,23 @@ public class GeneratorJava extends Generator {
     return s + ";\n";
   }
 
-  public String generateConstraints(ModelElement me) {
-    Vector constr = me.getConstraint();
-    if (constr == null || constr.size() == 0) return "";
-    String s = "{";
-    java.util.Enumeration conEnum = constr.elements();
-    while (conEnum.hasMoreElements()) {
-      s += generateConstraint((Constraint)conEnum.nextElement());
-      if (conEnum.hasMoreElements()) s += "; ";
-    }
-    s += "}";
-    return s;
-  }
+//   public String generateConstraints(ModelElement me) {
+//     Vector constr = me.getConstraint();
+//     if (constr == null || constr.size() == 0) return "";
+//     String s = "{";
+//     java.util.Enumeration conEnum = constr.elements();
+//     while (conEnum.hasMoreElements()) {
+//       s += generateConstraint((Constraint)conEnum.nextElement());
+//       if (conEnum.hasMoreElements()) s += "; ";
+//     }
+//     s += "}";
+//     return s;
+//   }
 
 
-  public String generateConstraint(Constraint c) {
-    return generateExpression(c.getBody());
-  }
+//   public String generateConstraint(Constraint c) {
+//     return generateExpression(c.getBody());
+//   }
 
   ////////////////////////////////////////////////////////////////
   // internal methods?

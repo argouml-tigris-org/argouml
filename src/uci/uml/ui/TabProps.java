@@ -65,6 +65,8 @@ implements TabModelTarget {
   PropPanelActor actorPane = new PropPanelActor();
   PropPanelInstance instancePane = new PropPanelInstance();
   PropPanelLink linkPane = new PropPanelLink();
+  PropPanelGeneralization generalizationPane = new PropPanelGeneralization();
+  PropPanelRealization realizationPane = new PropPanelRealization();
   // more: packages, ...
   JPanel _lastPanel = null;
 
@@ -84,91 +86,103 @@ implements TabModelTarget {
     if (_target instanceof Diagram) {
       _shouldBeEnabled = true;
       diagramPane.setTarget(_target);
-      add(diagramPane, BorderLayout.NORTH);
+      add(diagramPane, BorderLayout.CENTER);
       _lastPanel = diagramPane;
     }
     else if (_target instanceof Model) {
       _shouldBeEnabled = true;
       modelPane.setTarget(_target);
-      add(modelPane, BorderLayout.NORTH);
+      add(modelPane, BorderLayout.CENTER);
       _lastPanel = modelPane;
     }
     else if (_target instanceof MMClass) {
       _shouldBeEnabled = true;
       classPane.setTarget(_target);
-      add(classPane, BorderLayout.NORTH);
+      add(classPane, BorderLayout.CENTER);
       _lastPanel = classPane;
     }
     else if (_target instanceof Interface) {
       _shouldBeEnabled = true;
       interfacePane.setTarget(_target);
-      add(interfacePane, BorderLayout.NORTH);
+      add(interfacePane, BorderLayout.CENTER);
       _lastPanel = interfacePane;
     }
     else if (_target instanceof Attribute) {
       _shouldBeEnabled = true;
       attrPane.setTarget(_target);
-      add(attrPane, BorderLayout.NORTH);
+      add(attrPane, BorderLayout.CENTER);
       _lastPanel = attrPane;
     }
     else if (_target instanceof Operation) {
       _shouldBeEnabled = true;
       operPane.setTarget(_target);
-      add(operPane, BorderLayout.NORTH);
+      add(operPane, BorderLayout.CENTER);
       _lastPanel = operPane;
     }
     else if (_target instanceof Association) {
       _shouldBeEnabled = true;
       assocPane.setTarget(_target);
-      add(assocPane, BorderLayout.NORTH);
+      add(assocPane, BorderLayout.CENTER);
       _lastPanel = assocPane;
     }
     else if (_target instanceof State) {
       _shouldBeEnabled = true;
       statePane.setTarget(_target);
-      add(statePane, BorderLayout.NORTH);
+      add(statePane, BorderLayout.CENTER);
       _lastPanel = statePane;
     }
     else if (_target instanceof Transition) {
       _shouldBeEnabled = true;
       transitionPane.setTarget(_target);
-      add(transitionPane, BorderLayout.NORTH);
+      add(transitionPane, BorderLayout.CENTER);
       _lastPanel = transitionPane;
     }
     else if (_target instanceof Pseudostate) {
       _shouldBeEnabled = true;
       pseudostatePane.setTarget(_target);
-      add(pseudostatePane, BorderLayout.NORTH);
+      add(pseudostatePane, BorderLayout.CENTER);
       _lastPanel = pseudostatePane;
     }
     else if (_target instanceof UseCase) {
       _shouldBeEnabled = true;
       useCasePane.setTarget(_target);
-      add(useCasePane, BorderLayout.NORTH);
+      add(useCasePane, BorderLayout.CENTER);
       _lastPanel = useCasePane;
     }
     else if (_target instanceof Actor) {
       _shouldBeEnabled = true;
       actorPane.setTarget(_target);
-      add(actorPane, BorderLayout.NORTH);
+      add(actorPane, BorderLayout.CENTER);
       _lastPanel = actorPane;
     }
     else if (_target instanceof Instance) {
       _shouldBeEnabled = true;
       instancePane.setTarget(_target);
-      add(instancePane, BorderLayout.NORTH);
+      add(instancePane, BorderLayout.CENTER);
       _lastPanel = instancePane;
     }
     else if (_target instanceof Link) {
       _shouldBeEnabled = true;
       linkPane.setTarget(_target);
-      add(linkPane, BorderLayout.NORTH);
+      add(linkPane, BorderLayout.CENTER);
       _lastPanel = linkPane;
+    }
+    else if (_target instanceof Generalization) {
+      _shouldBeEnabled = true;
+      generalizationPane.setTarget(_target);
+      add(generalizationPane, BorderLayout.CENTER);
+      _lastPanel = generalizationPane;
+    }
+    else if (_target instanceof Realization) {
+      _shouldBeEnabled = true;
+      realizationPane.setTarget(_target);
+      add(realizationPane, BorderLayout.CENTER);
+      _lastPanel = realizationPane;
     }
     //else if ...
     else {
       _shouldBeEnabled = false;
-      add(blankPane, BorderLayout.NORTH);
+      add(blankPane, BorderLayout.CENTER);
       _lastPanel = blankPane;
     }
     validate();

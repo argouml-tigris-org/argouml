@@ -56,9 +56,9 @@ public class CrMissingClassName extends CrUML {
   }
 
   public boolean predicate(Object dm, Designer dsgr) {
-    if (!(dm instanceof Classifier)) return NO_PROBLEM;
-    Classifier cls = (Classifier) dm;
-    Name myName = cls.getName();
+    if (!(dm instanceof Element)) return NO_PROBLEM;
+    Element e = (Element) dm;
+    Name myName = e.getName();
     if (myName == null || myName.equals(Name.UNSPEC) ||
 	 myName.getBody() == null || myName.getBody().length() == 0)
       return PROBLEM_FOUND;

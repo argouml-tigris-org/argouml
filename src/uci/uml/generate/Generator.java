@@ -109,6 +109,7 @@ public abstract class Generator {
   }
 
   public String generateUninterpreted(Uninterpreted un) {
+    if (un == null) return "";
     return un.getBody();
   }
 

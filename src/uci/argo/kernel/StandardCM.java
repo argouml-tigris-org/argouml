@@ -34,7 +34,7 @@ import uci.util.*;
 public class StandardCM extends AndCM {
   public StandardCM() {
     addMech(new EnabledCM());
-    addMech(new NotHushedCM());
+    addMech(new NotSnoozedCM());
     addMech(new DesignGoalsCM());
     addMech(new CurDecisionCM());
   }
@@ -42,11 +42,11 @@ public class StandardCM extends AndCM {
 
 
 
-class NotHushedCM extends ControlMech {
+class NotSnoozedCM extends ControlMech {
   public boolean isRelevant(Critic c, Designer d) {
-    return !c.hushOrder().getHushed();
+    return !c.snoozeOrder().getSnoozeed();
   }
-} // end class NotHushedCM
+} // end class NotSnoozedCM
 
 
 

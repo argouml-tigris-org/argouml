@@ -129,38 +129,16 @@ public class FigClass extends FigNodeModelElement  {
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
     super.textEdited(ft);
+    Classifier cls = (Classifier) getOwner();
     if (ft == _attr) { 
-      System.out.println("edited Attr");
-      //Classifier cls = (Classifier) getOwner();
-      //if (cls == null) return;
-      //String currentText = ft.getText();
-//       StringTokenizer updateText = new StringTokenizer(ft.getText());
-//       Attribute tempAttr = new Attribute();
-//       String temp;
-//       while (updateText.hasMoreTokens()) {
-//          temp = updateText.nextToken();
-//          if (temp == "public" || temp == "private" || temp == "protected")
-//            tempAttr.visibility = temp;
-//          else if (temp == "boolean" || temp == "char" || temp == "byte" ||
-//                   temp == "short" || temp == "int" || temp == "long" ||
-//                   temp == "float" || temp == "double")
-//            tempAttr.type = temp;       
-//          else if (temp == "final" || temp == "static" || temp == "transient")
-//            tempAttr.key = temp;     
-//       }
-      /*Vector strs = cls.getStructuralFeature();
-      String attrStr = "";
-      if (strs != null) {
-        java.util.Enumeration enum = strs.elements();
-        while (enum.hasMoreElements()) {
-	      StructuralFeature sf = (StructuralFeature) enum.nextElement();
-	      attrStr += GeneratorDisplay.Generate(sf);
-	      if (enum.hasMoreElements())
-	        attrStr += "\n";
-        }
-      }*/
+      //System.out.println("\n\n\n Edited Attr");
+      String s = ft.getText();
+      ParserDisplay.SINGLETON.parseAttributeCompartment(cls, s);
     }
-    if (ft == _oper) { System.out.println("edited Oper"); }
+    if (ft == _oper) {
+      String s = ft.getText();
+      ParserDisplay.SINGLETON.parseOperationCompartment(cls, s);
+    }
   }
 
   

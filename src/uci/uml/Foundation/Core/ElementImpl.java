@@ -192,7 +192,6 @@ public class ElementImpl implements Element, Highlightable {
   public void fireVetoableChange(String propertyName,
 				 Object oldValue, Object newValue)
        throws PropertyVetoException {
-    if (_vetoListeners == null) return;
     if (oldValue != null && oldValue.equals(newValue)) return;
     fireVetoableChangeNoCompare(propertyName, oldValue, newValue);
   }
@@ -201,6 +200,7 @@ public class ElementImpl implements Element, Highlightable {
 				 Object oldValue, Object newValue)
        throws PropertyVetoException {
     uci.argo.kernel.Designer.TheDesigner.critiqueASAP(this);
+    if (_vetoListeners == null) return;
     PropertyChangeEvent evt =
       new PropertyChangeEvent(this,
 			      propertyName, oldValue, newValue);

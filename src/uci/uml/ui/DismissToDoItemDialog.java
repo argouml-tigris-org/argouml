@@ -94,9 +94,21 @@ public class DismissToDoItemDialog extends JFrame implements ActionListener {
     _badGoalButton.addActionListener(this);
     _badDecButton.addActionListener(this);
     _explainButton.addActionListener(this);
+
+    _explaination.setText("<Enter Rationale Here>");
+    //_explaination.requestFocus();
   }
 
   public void setTarget(Object t) { _target = (ToDoItem) t; }
+
+  /** Prepare for typing in rationale field when window is opened. */
+  public void setVisible(boolean b) {
+    super.setVisible(b);
+    if (b) {
+      _explaination.requestFocus();
+      _explaination.selectAll();
+    }
+  }
 
   
   ////////////////////////////////////////////////////////////////
@@ -104,15 +116,19 @@ public class DismissToDoItemDialog extends JFrame implements ActionListener {
   public void actionPerformed(ActionEvent e) {
     if (e.getSource() == _badGoalButton) {
       //System.out.println("bad goal");
-      //needs-more-work: pop up goal model dialog
+      GoalsDialog d = new GoalsDialog(ProjectBrowser.TheInstance);
+      d.show();
       hide();
       dispose();
+      return;
     }
     if (e.getSource() == _badDecButton) {
       //System.out.println("bad decision");
-      // needs-more-work: pop up decision model dialog
+      DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.TheInstance);
+      d.show();
       hide();
       dispose();
+      return;
     }
     if (e.getSource() == _explainButton) {
       //System.out.println("I can explain!");
@@ -121,7 +137,9 @@ public class DismissToDoItemDialog extends JFrame implements ActionListener {
       list.explicitlyResolve(_target, _explaination.getText());
       hide();
       dispose();
+      return;
     }
+    System.out.println("unknown src in DismissToDoItemDialog: " + e.getSource());
   }
 
 } /* end class DismissToDoItemDialog */

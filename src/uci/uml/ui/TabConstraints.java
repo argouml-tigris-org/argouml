@@ -27,7 +27,7 @@
 
 package uci.uml.ui;
 
-//import jargo.kernel.*;
+import java.beans.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -35,27 +35,29 @@ import uci.util.*;
 import com.sun.java.swing.*;
 import com.sun.java.swing.event.*;
 import com.sun.java.swing.tree.*;
-//import com.sun.java.swing.border.*;
+import com.sun.java.swing.text.*;
+import com.sun.java.swing.table.*;
+import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Behavioral_Elements.Use_Cases.*;
 import uci.uml.Model_Management.*;
 
 public class TabConstraints extends TabSpawnable
-implements TabModelTarget, ListSelectionListener, DocumentListener, ActionListener
+implements TabModelTarget, DocumentListener, ActionListener,
+  ListSelectionListener 
 {
   ////////////////////////////////////////////////////////////////
   // instance variables
-  Object _target;
+  ModelElementImpl _target;
   boolean _shouldBeEnabled = false;
-  JList _list = new JList();
+  TableModelConstraints _tableModel = new TableModelConstraints();  
+  JTable _table = new JTable(4, 1);
   JTextArea _expr = new JTextArea();
-  JButton _addButton = new JButton("Add");
-  JButton _removeButton = new JButton("Remove");
-  JButton _duplicateButton = new JButton("Duplicate");
+  JSplitPane _splitter;
 
-  // maybe add some expression constructor buttons SOUTH
   JButton _ltButton = new JButton("<");
   JButton _leButton = new JButton("<=");
   JButton _gtButton = new JButton(">");
@@ -66,29 +68,32 @@ implements TabModelTarget, ListSelectionListener, DocumentListener, ActionListen
   JButton _forAllButton = new JButton("->forAll");
   JButton _existsButton = new JButton("->exists");
   // more...  alow user to select terms from lists
-  
 
-  
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabConstraints() {
     super("Constraints");
-    
-    JPanel listButtons = new JPanel();
-    listButtons.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-    listButtons.add(_addButton);
-    _addButton.setMargin(new Insets(0, 0, 0, 0));
-    listButtons.add(_removeButton);
-    _removeButton.setMargin(new Insets(0, 0, 0, 0));
-    listButtons.add(_duplicateButton);
-    _duplicateButton.setMargin(new Insets(0, 0, 0, 0));
 
-    //_addButton.set
-    
+    _table.setModel(_tableModel);
+    Font labelFont = MetalLookAndFeel.getSubTextFont();
+    _table.setFont(labelFont);
+
+    _table.setIntercellSpacing(new Dimension(0, 1));
+    _table.setShowVerticalLines(false);
+    _table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    _table.getSelectionModel().addListSelectionListener(this);
+    _table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+
+    TableColumn descCol = _table.getColumnModel().getColumn(0);
+    descCol.setMinWidth(100);
+    descCol.setWidth(190);
+    _table.setTableHeader(null);
+
     JPanel listPane = new JPanel();
     listPane.setLayout(new BorderLayout());
-    listPane.add(_list, BorderLayout.CENTER);
-    listPane.add(listButtons, BorderLayout.SOUTH);
+    listPane.add(new JScrollPane(_table), BorderLayout.CENTER);
+    listPane.setMinimumSize(new Dimension(100, 100));
+    listPane.setPreferredSize(new Dimension(200, 100));
 
     JPanel exprButtons = new JPanel();
     exprButtons.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -117,22 +122,15 @@ implements TabModelTarget, ListSelectionListener, DocumentListener, ActionListen
     exprPane.add(exprButtons, BorderLayout.SOUTH);
 
     setLayout(new BorderLayout());
-    JSplitPane splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+    _splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 					 listPane, exprPane);
-    //add(listPane, BorderLayout.WEST);
-    //add(exprPane, BorderLayout.CENTER);
-    splitter.setDividerSize(2);
-    splitter.setDividerLocation(200);
-    add(splitter, BorderLayout.CENTER);
+    _splitter.setDividerSize(2);
+    _splitter.setDividerLocation(200);
+    add(_splitter, BorderLayout.CENTER);
     setFont(new Font("Dialog", Font.PLAIN, 10));
-    _list.setFont(new Font("Dialog", Font.PLAIN, 10));
 
-    _list.addListSelectionListener(this);
+    _table.getSelectionModel().addListSelectionListener(this);
     _expr.getDocument().addDocumentListener(this);
-
-    _addButton.addActionListener(this);
-    _removeButton.addActionListener(this);
-    _duplicateButton.addActionListener(this);
 
     _gtButton.addActionListener(this);
     _geButton.addActionListener(this);
@@ -149,23 +147,20 @@ implements TabModelTarget, ListSelectionListener, DocumentListener, ActionListen
   ////////////////////////////////////////////////////////////////
   // accessors
   public void setTarget(Object t) {
-    if (!(t instanceof ModelElement)) {
+    if (!(t instanceof ModelElementImpl)) {
       _target = null;
       _shouldBeEnabled = false;
       return;
     }
-    _target = t;
+    _target = (ModelElementImpl) t;
     _shouldBeEnabled = true;
 
-    ModelElement me = (ModelElement) _target;
-    Vector constraints = me.getConstraint();
-    if (constraints != null && constraints.size() > 0) {
-      System.out.println("found a constraint");
-      _list.setListData(constraints);
-    }
-    else _list.setListData(new Vector());
-    _list.clearSelection();
-    //updateEnabled(null);
+    Vector constraints = _target.getConstraint();
+    _tableModel.setTarget(_target);
+    TableColumn descCol = _table.getColumnModel().getColumn(0);
+    descCol.setMinWidth(100);
+    descCol.setWidth(190);
+    _splitter.setDividerLocation(200);
     validate();
   }
   public Object getTarget() { return _target; }
@@ -177,10 +172,6 @@ implements TabModelTarget, ListSelectionListener, DocumentListener, ActionListen
 
   /** Enable/disable buttons based on the current selection */
   protected void updateEnabled(Constraint selectedConstraint) {
-    _addButton.setEnabled(true);
-    _removeButton.setEnabled(selectedConstraint != null);
-    _duplicateButton.setEnabled(selectedConstraint != null);
-
     _expr.setEnabled(selectedConstraint != null);
 
     _gtButton.setEnabled(selectedConstraint != null);
@@ -195,22 +186,17 @@ implements TabModelTarget, ListSelectionListener, DocumentListener, ActionListen
   }
 
   ////////////////////////////////////////////////////////////////
-  // actions
-
-  public void doAddButton() { }
-
-  public void doRemoveButton() { }
-
-  public void doDuplicateButton() { }
-
-  ////////////////////////////////////////////////////////////////
   // event handling
 
   public void insertUpdate(DocumentEvent e) {
     //System.out.println(getClass().getName() + " insert");
     if (e.getDocument() == _expr.getDocument()) {
-      //setTargetName();
-      System.out.println("changed constraint expression text");
+      Vector cs = _target.getConstraint();
+      int row = _table.getSelectionModel().getMinSelectionIndex();
+      if (row != -1 && row < cs.size()) {
+	Constraint c = (Constraint) cs.elementAt(row);
+	c.getBody().getBody().setBody(_expr.getText());
+      }
     }
   }
 
@@ -224,10 +210,7 @@ implements TabModelTarget, ListSelectionListener, DocumentListener, ActionListen
   /** Called when a button is pressed */
   public void actionPerformed(ActionEvent ae) {
     Object src = ae.getSource();
-    if (src == _addButton) doAddButton();
-    else if (src == _removeButton) doRemoveButton();
-    else if (src == _duplicateButton) doDuplicateButton();
-    else if (src instanceof JButton) {
+    if (src instanceof JButton) {
       String text = ((JButton)src).getText();
       boolean anyLetters = false;
       if (text == null || text.length() == 0) return;
@@ -239,22 +222,118 @@ implements TabModelTarget, ListSelectionListener, DocumentListener, ActionListen
       _expr.requestFocus();
     }
   }
-  
+
   /** Called whenever the constraint selection changes. */
-  public void valueChanged(ListSelectionEvent e) {
-    //if (e.isAdjusting()) return;
-    if (e.getSource() == _list) {
-      Constraint c = (Constraint) _list.getSelectedValue();
-      System.out.println("user selected " + c);
+  public void valueChanged(ListSelectionEvent lse) {
+    if (lse.getValueIsAdjusting()) return;
+    if (lse.getSource() == _table.getSelectionModel()) {
+      Vector cs = _target.getConstraint();
+      Constraint c;
+      if (lse.getFirstIndex() != -1 && lse.getFirstIndex() < cs.size())
+	c = (Constraint) cs.elementAt(lse.getFirstIndex());
+      else c = null;
+      //System.out.println("user selected " + c);
       String bodyText = "";
       if (c != null && c.getBody() != null)
 	bodyText = c.getBody().getBody().getBody();
       _expr.setText(bodyText);
-      updateEnabled(c);      
+      updateEnabled(c);
     }
   }
-  
-
-  
 
 } /* end class TabConstraints */
+
+
+
+
+class TableModelConstraints extends AbstractTableModel
+implements VetoableChangeListener, DelayedVetoableChangeListener {
+  ////////////////
+  // instance varables
+  ModelElement _target;
+
+  ////////////////
+  // constructor
+  public TableModelConstraints() { }
+
+  ////////////////
+  // accessors
+  public void setTarget(ModelElement me) {
+    if (_target instanceof ElementImpl)
+      ((ModelElementImpl)_target).removeVetoableChangeListener(this);
+    _target = me;
+    if (_target instanceof ElementImpl)
+      ((ModelElementImpl)_target).addVetoableChangeListener(this);
+    fireTableStructureChanged(); //?
+  }
+
+  ////////////////
+  // TableModel implemetation
+  public int getColumnCount() { return 1; }
+
+  public String  getColumnName(int c) {
+    if (c == 0) return "Name";
+    return "XXX";
+  }
+
+  public Class getColumnClass(int c) {
+    return String.class;
+  }
+
+  public boolean isCellEditable(int row, int col) {
+    return col == 0;
+  }
+
+  public int getRowCount() {
+    if (_target == null) return 0;
+    Vector cs = _target.getConstraint();
+    if (cs == null) return 1;
+    return cs.size() + 1;
+  }
+
+  public Object getValueAt(int row, int col) {
+    Vector cs = _target.getConstraint();
+    if (cs == null) return "null constraints";
+    if (row == cs.size()) return ""; // blank line allows adding
+    Constraint c = (Constraint) cs.elementAt(row);
+    if (col == 0) return c.getName().getBody();
+    else return "C-" + row+","+col; // for debugging
+  }
+
+  public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
+    //System.out.println("setting table value " + rowIndex + ", " + columnIndex);
+    if (columnIndex != 0) return;
+    if (!(aValue instanceof String)) return;
+    String val = (String) aValue;
+    Vector cs = _target.getConstraint();
+    if (rowIndex >= cs.size()) {
+      cs.addElement(new Constraint(val, "expr"));
+      fireTableStructureChanged();//?
+    }
+    else if (val.equals("")) {
+      cs.removeElementAt(rowIndex);
+      fireTableStructureChanged();//?
+    }
+    else {
+      Constraint c = (Constraint) cs.elementAt(rowIndex);
+      try { c.setName(new Name(val)); }
+      catch (PropertyVetoException pve) { }
+      fireTableRowsUpdated(rowIndex, rowIndex);
+    }
+  }
+
+  ////////////////
+  // event handlers
+
+  public void vetoableChange(PropertyChangeEvent pce) {
+    DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
+    SwingUtilities.invokeLater(delayedNotify);
+  }
+
+  public void delayedVetoableChange(PropertyChangeEvent pce) {
+    fireTableStructureChanged();
+  }
+
+
+} /* end class TableModelConstraints */
+

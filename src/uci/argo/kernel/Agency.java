@@ -61,12 +61,9 @@ public class Agency extends Observable { //implements java.io.Serialization
    * design environment. */
   private static Hashtable _criticRegistry = new Hashtable(100);
 
-  /** Reply the registery. */
-  private static Hashtable getCriticRegistry() { return _criticRegistry; }
+  private static Vector _critics = new Vector();
 
   private static Vector _triggers = new Vector();
-
-  private static Vector getTriggers() { return _triggers; }
 
   /** The main control mechanism for determining which critics should
    * be active. */
@@ -100,8 +97,33 @@ public class Agency extends Observable { //implements java.io.Serialization
   }
 
   ////////////////////////////////////////////////////////////////
+  // accessors
+
+  /** Reply the registery. */
+  private static Hashtable getCriticRegistry() { return _criticRegistry; }
+
+  private static Vector getTriggers() { return _triggers; }
+
+  public static Vector getCritics() { return _critics; }
+
+  
+
+  ////////////////////////////////////////////////////////////////
   // critic registration
 
+  protected static void addCritic(Critic cr) {
+    if (_critics.contains(cr)) return;
+    if (!(cr instanceof CompoundCritic)) _critics.addElement(cr);
+    else {
+      Vector subs = ((CompoundCritic)cr).getCritics();
+      Enumeration enum = subs.elements();
+      while (enum.hasMoreElements()) 
+	addCritic((Critic) enum.nextElement());
+      return;
+    }
+  }
+
+  
   public static void register(String crClassName, String dmClassName) {
     Class dmClass;
     try { dmClass = Class.forName(dmClassName); }
@@ -127,6 +149,7 @@ public class Agency extends Observable { //implements java.io.Serialization
 	return;
       }
       _singletonCritics.put(crClassName, cr);
+      addCritic(cr);
     }
     register(cr, dmClass);
   }
@@ -136,17 +159,18 @@ public class Agency extends Observable { //implements java.io.Serialization
    * classes. One way to do registration is in a static initializer of
    * the design material class. But additional (after-market) critics
    * could added thorugh a menu command in some control panel...*/
-  public static void register(Critic c, Class clazz) {
+  public static void register(Critic cr, Class clazz) {
     //System.out.println("registering critic " + c.toString());
     Vector critics = (Vector) getCriticRegistry().get(clazz);
     if (critics == null) {
        critics = new Vector();
        _criticRegistry.put(clazz, critics);
     }
-    critics.addElement(c);
-    notifyStaticObservers(c);
+    critics.addElement(cr);
+    notifyStaticObservers(cr);
     Dbg.log("debugRegistration","Registered: " + critics.toString());
     _cachedCritics.remove(clazz);
+    addCritic(cr);
   }
 
   protected static Hashtable _cachedCritics = new Hashtable();
@@ -182,16 +206,9 @@ public class Agency extends Observable { //implements java.io.Serialization
 
   /** Reply a Vector of all critics that are registered for any
    * design material class. */
-  public static Vector allCritics() {
-    Set cs = new Set();
-    Enumeration classes = getCriticRegistry().keys();
-    while (classes.hasMoreElements()) {
-      Class c = (Class)classes.nextElement();
-      Vector v = criticsForSpecificClass(c);
-      cs.addAllElements(v.elements());
-    }
-    return cs.asVector();
-  }
+//   public static Vector allCritics() {
+//     return _critics;
+//   }
 
   ////////////////////////////////////////////////////////////////
   // criticism control
@@ -232,26 +249,28 @@ public class Agency extends Observable { //implements java.io.Serialization
    * Needs-More-Work: I am setting global data, the
    * isEnabled bit in each critic, based on the needs of one designer.
    * I don't really support more than one Designer. */
+
+  //@ should loop over simpler vector of critics, not CompoundCritics
   public void determineActiveCritics(Designer d) {
-    Enumeration clazzEnum = getCriticRegistry().keys();
-    while (clazzEnum.hasMoreElements()) {
-      Class clazz = (Class) (clazzEnum.nextElement());
-      Enumeration criticEnum = criticsForClass(clazz).elements();
-      while (criticEnum.hasMoreElements()) {
-        Critic c = (Critic)(criticEnum.nextElement());
-        if (_controlMech.isRelevant(c, d)) {
-	  //System.out.println("Activated: " + c.toString());
-	  //Dbg.log("debugActivation","Activated: " + c.toString());
-	  c.beActive();
-	}
-        else {
-	  //System.out.println("Deactivated: " + c.toString());
-	  //Dbg.log("debugActivation","Deactivated: " + c.toString());
-	  c.beInactive();
-	}
-	Thread.yield();
+    //     Enumeration clazzEnum = getCriticRegistry().keys();
+    //     while (clazzEnum.hasMoreElements()) {
+    //       Class clazz = (Class) (clazzEnum.nextElement());
+    Enumeration criticEnum = _critics.elements();
+    while (criticEnum.hasMoreElements()) {
+      Critic c = (Critic)(criticEnum.nextElement());
+      if (_controlMech.isRelevant(c, d)) {
+	//System.out.println("Activated: " + c.toString());
+	//Dbg.log("debugActivation","Activated: " + c.toString());
+	c.beActive();
       }
+      else {
+	//System.out.println("Deactivated: " + c.toString());
+	//Dbg.log("debugActivation","Deactivated: " + c.toString());
+	c.beInactive();
+      }
+	Thread.yield();
     }
+    //}
   }
 
   ////////////////////////////////////////////////////////////////

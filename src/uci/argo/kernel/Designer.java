@@ -378,8 +378,8 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
   public void stopDesiring(String goal) { _goals.stopDesiring(goal); }
   public String getExpertEmail() { return _emailAddr; }
   public void setExpertEmail(String addr) { _emailAddr = addr; }
-  public void hush() { /* do nothing */ }
-  public void unhush() { /* do nothing */ }
+  public void snooze() { /* do nothing */ }
+  public void unsnooze() { /* do nothing */ }
 
   /** Reply the Agency object that is helping this Designer. */
   public Agency getAgency() { return _agency; }

@@ -44,6 +44,7 @@ import uci.uml.ui.*;
 import uci.uml.generate.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Foundation.Extension_Mechanisms.*;
 
 /** Abstract class to display diagram arcs for UML ModelElements that
  *  look like arcs and that have editiable names. */
@@ -63,6 +64,8 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
   public final int MARGIN = 2;
 
   protected FigText _name;
+  protected FigText _stereo = new FigText(10, 30, 90, 20);
+  
 
   /** Partially construct a new FigNode.  This method creates the
    *  _name element that holds the name of the model element and adds
@@ -83,7 +86,17 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     _name.setMultiLine(false);
     _name.setAllowsTab(false);
 
+    _stereo.setFont(LABEL_FONT);
+    _stereo.setTextColor(Color.black);
+    _stereo.setTextFilled(false);
+    _stereo.setFilled(false);
+    _stereo.setLineWidth(0);
+    _stereo.setExpandOnly(false);
+    _stereo.setMultiLine(false);
+    _stereo.setAllowsTab(false);
+
     setBetweenNearestPoints(true);
+    //((FigPoly)_fig).setRectilinear(false);
   }
 
 
@@ -159,7 +172,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
 
   public void keyPressed(KeyEvent ke) {
     if (ke.isConsumed()) return;
-    _name.keyPressed(ke);
+    if (_name != null && canEdit(_name)) _name.keyPressed(ke);
     //ke.consume();
 //     ModelElement me = (ModelElement) getOwner();
 //     try { me.setName(new Name(_name.getText())); }
@@ -186,12 +199,25 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
    *  changed. This method automatically updates the name FigText.
    *  Subclasses should override and update other parts. */
   protected void modelChanged() {
-    ModelElement me = (ModelElement) getOwner();
-    String nameStr = GeneratorDisplay.Generate(me.getName());
-    _name.setText(nameStr);
+    updateNameText();
+    updateStereotypeText();
   }
 
 
+  public void updateNameText() {
+    ModelElement me = (ModelElement) getOwner();
+    String nameStr = GeneratorDisplay.Generate(me.getName());
+    _name.setText(nameStr);    
+  }
+
+  public void updateStereotypeText() {
+    ModelElement me = (ModelElement) getOwner();
+    Vector stereos = me.getStereotype();
+    if (stereos == null || stereos.size() == 0) return;
+    String stereoStr = ((Stereotype) stereos.elementAt(0)).getName().getBody();
+    _stereo.setText("<<" + stereoStr + ">>");
+  }
+  
   /** needs-more-work: When the user deletes a ModelElement, it is
    *  moved to a special trash container. */
   public void dispose() {

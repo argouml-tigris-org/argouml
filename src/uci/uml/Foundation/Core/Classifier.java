@@ -91,6 +91,16 @@ public abstract class Classifier extends GeneralizableElementImpl {
     if (_behavioralFeature == null) return;
     fireVetoableChange("behavioralFeature", _behavioralFeature, x);
     _behavioralFeature.removeElement(x);
+    x.setOwner(null);
+  }
+  public BehavioralFeature findBehavioralFeature(Name n) {
+    Vector beh = getBehavioralFeature();
+    int behSize = beh.size();
+    for (int i = 0; i < behSize; i++) {
+      BehavioralFeature bf = (BehavioralFeature) beh.elementAt(i);
+      if (bf.getName().equals(n)) return bf;
+    }
+    return null;
   }
 
   public Vector getStructuralFeature() {
@@ -121,6 +131,16 @@ public abstract class Classifier extends GeneralizableElementImpl {
     if (_structuralFeature == null) return;
     fireVetoableChange("structuralFeature", _structuralFeature, x);
     _structuralFeature.removeElement(x);
+    x.setOwner(null);
+  }
+  public StructuralFeature findStructuralFeature(Name n) {
+    Vector str = getStructuralFeature();
+    int strSize = str.size();
+    for (int i = 0; i < strSize; i++) {
+      StructuralFeature sf = (StructuralFeature) str.elementAt(i);
+      if (sf.getName().equals(n)) return sf;
+    }
+    return null;
   }
 
   public Vector getSpecification() { return (Vector) _specification;}

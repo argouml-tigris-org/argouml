@@ -38,8 +38,8 @@ import uci.util.*;
 
 /** Interface that defines methods required on any object that can
  *  post a ToDoItem to the Designer's ToDoList. Basically requires that
- *  the poster (1) have contact information, (2) be able to hush
- *  and unhush itself, and (3) be able to determine if a ToDoItem it
+ *  the poster (1) have contact information, (2) be able to snooze
+ *  and unsnooze itself, and (3) be able to determine if a ToDoItem it
  *  posted previously should still be on the Designer's ToDoList. <p>
  *
  *  Currently Critic and Designer implement this interface.
@@ -78,11 +78,11 @@ public interface Poster {
   // criticism control
 
   /** temporarily disable this Poster. */
-  void hush();
+  void snooze();
 
-  /** Unhush this Poster, it may resume posting without further
+  /** Unsnooze this Poster, it may resume posting without further
    * delay. */
-  void unhush();
+  void unsnooze();
 
   ////////////////////////////////////////////////////////////////
   // issue resolution

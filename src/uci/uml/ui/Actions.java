@@ -122,7 +122,7 @@ public class Actions {
   public static UMLAction Resolve = new ActionResolve();
   public static UMLAction EmailExpert = new ActionEmailExpert();
   public static UMLAction MoreInfo = new ActionMoreInfo();
-  public static UMLAction Hush = new ActionHush();
+  public static UMLAction Snooze = new ActionSnooze();
 
   public static UMLAction RecordFix = new ActionRecordFix();
   public static UMLAction ReplayFix = new ActionReplayFix();
@@ -871,6 +871,11 @@ class ActionOpenGoals extends UMLAction {
 
 class ActionOpenCritics extends UMLAction {
   public ActionOpenCritics() { super("Browse Critics..."); }
+  public void actionPerformed(ActionEvent e) {
+    CriticBrowserDialog dialog = new CriticBrowserDialog();
+    dialog.show();
+  }
+
 } /* end class ActionOpenCritics */
 
 
@@ -930,7 +935,7 @@ class ActionResolve extends ToDoItemAction {
   public void actionPerformed(ActionEvent e) {
     DismissToDoItemDialog dialog = new DismissToDoItemDialog();
     dialog.setTarget(_target);
-    dialog.show();
+    dialog.setVisible(true);
   }
 } /* end class ActionResolve */
 
@@ -947,15 +952,15 @@ class ActionMoreInfo extends ToDoItemAction {
   public ActionMoreInfo() { super("More Info..."); }
 } /* end class ActionMoreInfo */
 
-class ActionHush extends ToDoItemAction {
-  public ActionHush() { super("Hush Critic"); }
+class ActionSnooze extends ToDoItemAction {
+  public ActionSnooze() { super("Snooze Critic"); }
   public void actionPerformed(ActionEvent e) {
     if (!(_target instanceof ToDoItem)) return;
     ToDoItem item = (ToDoItem) _target;
     Poster p = item.getPoster();
-    p.hush();
+    p.snooze();
   }
-} /* end class ActionHush */
+} /* end class ActionSnooze */
 
 
 ////////////////////////////////////////////////////////////////

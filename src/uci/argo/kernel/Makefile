@@ -45,7 +45,7 @@ CLASSES = \
 	HistoryItemManipulation.class \
 	HistoryItemResolve.class \
 	HistoryListener.class \
-	HushOrder.class \
+	SnoozeOrder.class \
 	Poster.class \
 	StandardCM.class \
 	EnabledCM.class \

@@ -112,6 +112,15 @@ public class Init {
   public static Critic crSingletonViolated = new CrSingletonViolated();
 
 
+
+  // Compound critics
+  public static CompoundCritic clsNaming = new CompoundCritic(crMissingClassName,
+						crDisambigClassName);
+  public static CompoundCritic noTrans1 = new CompoundCritic(crNoTransitions,
+					       crNoIncomingTransitions);
+  public static CompoundCritic noTrans2 = new CompoundCritic(crNoTransitions,
+					       crNoOutgoingTransitions);
+
   /** static initializer, register all appropriate critics */
   public static void init() {
 //     try {
@@ -161,14 +170,22 @@ public class Init {
       Agency.register(crNWayAgg, assocCls);
       Agency.register(crNameConflict, namespaceCls);
       Agency.register(crNameConflictAC, assocClassCls);
-      Agency.register(crMissingClassName, classCls);
-      Agency.register(crMissingClassName, actorCls);
-      Agency.register(crMissingClassName, useCaseCls);
+
+      // Agency.register(crMissingClassName, classCls);
+      // Agency.register(crMissingClassName, actorCls);
+      // Agency.register(crMissingClassName, useCaseCls);
+      Agency.register(clsNaming, classCls);
+      Agency.register(clsNaming, actorCls);
+      Agency.register(clsNaming, useCaseCls);
+
+      Agency.register(crMissingClassName, modelCls);
+      Agency.register(crMissingClassName, stateCls);
+
       Agency.register(crNoInstanceVariables, classCls);
       Agency.register(crNoAssociations, classifierCls);
       Agency.register(crNoOperations, classCls);
       Agency.register(crConstructorNeeded, classCls); //needs-more-work
-      Agency.register(crEmptyPackage, classCls);
+      Agency.register(crEmptyPackage, modelCls);
       Agency.register(crNonAggDataType, datatypeCls);
       Agency.register(crOppEndConflict, classifierCls);
       Agency.register(crParamTypeNotImported, operCls);
@@ -185,10 +202,12 @@ public class Init {
       Agency.register(crReservedName, attrCls);
       Agency.register(crMultiInherit, classCls);
       Agency.register(crConflictingComposites, classifierCls);
-
-      Agency.register(crNoTransitions, stateVertexCls);
-      Agency.register(crNoIncomingTransitions, stateVertexCls);
-      Agency.register(crNoOutgoingTransitions, stateVertexCls);
+      
+      // Agency.register(crNoTransitions, stateVertexCls);
+      // Agency.register(crNoIncomingTransitions, stateVertexCls);
+      // Agency.register(crNoOutgoingTransitions, stateVertexCls);
+      Agency.register(noTrans1, stateVertexCls);
+      Agency.register(noTrans2, stateVertexCls);
       Agency.register(crMultipleInitialStates, pseudostateCls);
       Agency.register(crNoInitialState, compositieStateCls);
 

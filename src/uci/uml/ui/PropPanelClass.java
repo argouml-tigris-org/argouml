@@ -264,8 +264,7 @@ implements ItemListener, DocumentListener {
       //System.out.println("class extends now is " +
       //_extendsField.getSelectedItem());
       setTargetExtends();
-    }
-    
+    } 
   }
 
   

@@ -61,16 +61,17 @@ public class CrNoIncomingTransitions extends CrUML {
       StateMachine sm = ((State)sv).getStateMachine();
       if (sm != null && sm.getTop() == sv) return NO_PROBLEM;
     }
-    Vector outgoing = sv.getOutgoing();
+    //Vector outgoing = sv.getOutgoing();
     Vector incoming = sv.getIncoming();
-    boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
+    //boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
     boolean needsIncoming = incoming == null || incoming.size() == 0;
     if (sv instanceof Pseudostate) {
       PseudostateKind k = ((Pseudostate)sv).getKind();
       if (k.equals(PseudostateKind.INITIAL)) needsIncoming = false;
-      if (k.equals(PseudostateKind.FINAL)) needsOutgoing = false;
+      //if (k.equals(PseudostateKind.FINAL)) needsOutgoing = false;
     }
-    if (needsIncoming && !needsOutgoing) return PROBLEM_FOUND;
+    // if (needsIncoming && !needsOutgoing) return PROBLEM_FOUND;
+    if (needsIncoming) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 

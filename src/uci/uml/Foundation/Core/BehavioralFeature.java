@@ -50,6 +50,46 @@ public abstract class BehavioralFeature extends Feature {
     _isQuery = x;
   }
 
+  public Classifier getReturnType()  {
+    Vector params = getParameter();
+    if (params != null) {
+      java.util.Enumeration enum = params.elements();
+      while (enum.hasMoreElements()) {
+	Parameter p = (Parameter) enum.nextElement();
+	if (Parameter.RETURN_NAME.equals(p.getName())) {
+	  return p.getType();
+	}
+      }
+    }
+    return null;
+  }
+
+  public void setReturnType(Classifier rt) throws PropertyVetoException {
+    if (rt == null) return;
+    Parameter p = findParameter(Parameter.RETURN_NAME);
+    if (p == null) {
+      p = new Parameter(rt, Parameter.RETURN_NAME);
+      addParameter(p);
+      //System.out.println("just set return type");
+    }
+    else {
+      p.setType(rt);
+    }
+  }
+
+  public Parameter findParameter(Name n) {
+    Vector params = getParameter();
+    if (params == null) return null;
+    int size = params.size();
+    for (int i = 0; i < size; i++) {
+      Parameter p = (Parameter) params.elementAt(i);
+      Name pName = p.getName();
+      if (pName == null) continue;
+      if (pName.equals(n)) return p;
+    }
+    return null; // not found
+  }
+
   public Vector getParameter() { return (Vector) _parameter;}
   public void setParameter(Vector x) throws PropertyVetoException {
     if (_parameter == null) _parameter = new Vector();
@@ -61,6 +101,8 @@ public abstract class BehavioralFeature extends Feature {
 //       p.setNamespace(getNamespace());
 //     }
   }
+
+  /** needs-more-work: explicitly set the return parameter! */
   public void addParameter(Parameter x) throws PropertyVetoException {
     if (_parameter == null) _parameter = new Vector();
     fireVetoableChange("parameter", _parameter, x);

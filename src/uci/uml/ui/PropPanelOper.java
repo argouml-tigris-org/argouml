@@ -233,7 +233,30 @@ implements ItemListener {
 
   public void setTargetType() {
     if (_target == null) return;
-    System.out.println("needs-more-work: set target type");
+    Operation op = (Operation) _target;
+    Object rtObj = _typeField.getSelectedItem();
+    Classifier rt = null;
+    if (rtObj instanceof String) {
+      String rtStr = (String) _typeField.getSelectedItem();
+      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      Project p = pb.getProject();
+      rt = p.findType(rtStr);
+    }
+    else if (rtObj instanceof Classifier) {
+      rt = (Classifier) rtObj;
+    }
+    else {
+      System.out.println("selected return type was a " + rtObj.getClass());
+      System.out.println("selected return type is " + rtObj);
+      // needs-more-work: selected predefined class
+    }
+    if (rt != null) {
+      try {
+	System.out.println("setting return type: " + rt);
+	op.setReturnType(rt);
+      }
+      catch (PropertyVetoException pve) { }
+    }
   }
 
 
