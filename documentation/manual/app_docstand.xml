@@ -3,21 +3,25 @@
 
 <!--
 
-Documentation standards for the manual.
+Standards for writing documentation (manual, cookbook, quickguide).
 
 -->
 
 <appendix id="app.docstand">
-  <title>Documentation Standards for the User Manual</title>
+  <title>Standards For Documentation Writing</title>
 
   <sect1>
     <title>Introduction</title>
 
-    <para>The entire manual is written using
+    <para>The entire documentation
+      (currently manual, cookbook, and quickguide)
+      is written using
       <ulink url="http://www.oasis-open.org/docbook"><application>DocBook
         XML&nbsp;V4.1.2</application></ulink>. This section covers some
       conventions for use of DocBook and for the documentation in general. It
-also includes some information for Emacs users
+also includes some information 
+for tooling configuration, e.g. 
+for Emacs 
 and the psgml package.
 </para>
   </sect1>
@@ -83,13 +87,13 @@ Each section dealing with one topic.
     <itemizedlist>
       <listitem>
 	<para>
-All titles of chapters, sections etc are capitalized throughout.
+All titles of chapters, sections etc. are capitalized throughout.
 </para>
       </listitem>
 
       <listitem>
 	<para>
-All titles of figures, tables etc have the first word only capitalized.
+All titles of figures, tables etc. have the first word only capitalized.
 </para>
       </listitem>
 
@@ -103,15 +107,15 @@ Spelling is US English.
       <listitem>
 	<para>
 Use full URLs throughout this manual!
-We allow for the manual being other than as html on the &argouml; web site.
+Rationale: The manual may also be published in other formats then html on the &argouml; web site.
 </para>
       </listitem>
 
       <listitem>
 	<para>
-Don't include lists of what changes that has been done.
-This information is kept by cvs, the version control tool.
-This is changed since Jeremy Bennet made the work for 0.9/0.10
+Do not include lists of what changes have been done.
+This information is kept by CVS, the version control tool.
+This is changed since Jeremy Bennet did the work for 0.9/0.10
 so there are still such lists.
 Remove them while changing the files!
 </para>
@@ -119,10 +123,10 @@ Remove them while changing the files!
 
       <listitem>
 	<para>
-If a problem in the current implementation of &argouml; is mentioned
-or perhaps even emphasized using 
-<sgmltag>warning</sgmltag>
-include the issue number in a sgml-comment in the source 
+Problems in the current implementation of &argouml; are mentioned
+or perhaps even emphasized using the
+<sgmltag>warning</sgmltag> tag.
+The issue number is included in a sgml-comment in the source 
 so that it is easy to know if this problem has been fixed.
 The issue should be mentioned in the format <quote>issue xxx</quote>, i.e.
 there should only be a space between 
@@ -145,7 +149,8 @@ them, try to remove them!
       </listitem>
       
       <listitem>
-        <para>      
+        <para>
+          For documents that contain an <quote>index</quote>:
 Add indexterms while doing changes. 
 Creating the index is a good idea 
 and we eventually should have indexterms all over. 
@@ -168,7 +173,9 @@ strangely biased.
     <itemizedlist>
       <listitem>
 	<para>
-The top level document is argouml.xml (actually in argouml.in 
+The top level document
+of the manual
+is argouml.xml (actually in argouml.in 
 and copied to argouml.xml by the build script). 
 Each chapter (or
         preface, glossary, appendix etc) is a separate file, defined as a
@@ -176,8 +183,10 @@ Each chapter (or
         file.</para></listitem>
 
       <listitem><para>There are some useful entities defined for common terms
-        at the top of argouml.xml. Of these, use of
-        <sgmltag>argouml</sgmltag> will ensure consistent naming of the
+        in the beginning of 
+        this top level document. 
+        E.g. use of
+        &amp;<sgmltag>argouml</sgmltag> will ensure consistent naming of the
 product (ArgoUML) and allow us to change it later (to Argo/UML,
         Argouml or whatever).</para></listitem>
 
@@ -204,7 +213,8 @@ product (ArgoUML) and allow us to change it later (to Argo/UML,
           <literal>navigation_pane.gif</literal></para>
 
 	<para>
-There is one exception to this and that is the critics.
+There is one exception to this and that is the 
+description of the critics in the manual.
 Each paragraph about a critic is instead marked with
 <literal>critics.</literal> followed by the classname
 implementing that critic.
@@ -248,8 +258,8 @@ editors use 6 spaces), making documents unreadable between users.
       <listitem>
 	<para>
 Indent only the tags, not the text.
-The Docbook source is kept in cvs that is a line-oriented tool. 
-This means that reindentation will be a major thing in cvs making
+The Docbook source is kept in CVS that is a line-oriented tool. 
+This means that reindentation will be a major thing in CVS making
 it hard to see if there were other things done to the code.
 Especially if reindentation caused the paragraphs to be broken
 in a different way.
@@ -264,11 +274,11 @@ Change it while changing the paragraphs.
       <listitem>
 	<para>
 Make a new line after each sentence or before expressions.
-The Docbook source is source that is handled by cvs.
+The Docbook source is source that is handled by CVS.
 When structuring the text the parts are paragraphs, sentences and words.
 By having each sentence on a line of its own it is easier to see
-what sentences has been changed and what has not in the diff reports
-from cvs.
+what sentences has been changed and what has not in the <literal>diff</literal>
+reports from CVS.
 The contributions that Jeremy Bennet did 
 are not written like this.
 Change it while changing the paragraphs.
