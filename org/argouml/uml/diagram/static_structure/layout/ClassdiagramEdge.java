@@ -28,6 +28,8 @@ import org.argouml.uml.diagram.ui.*;
 import org.tigris.gef.presentation.*;
 
 /** This class is an abstract implementation of all edges which are layoutable in the classdiagram.
+ *  @author Markus Klink
+ *  @since 0.11.1
  */
 public abstract class ClassdiagramEdge implements LayoutedEdge {
     
@@ -47,15 +49,16 @@ public abstract class ClassdiagramEdge implements LayoutedEdge {
     Fig sourceFigNode;
     
    
-    /** Constructor.
+    /** Constructor. 
      * @param edge the Edge to layout
      */
     public ClassdiagramEdge(FigEdge edge) {
         currentEdge = edge;
         underlyingFig = new FigPoly();
+        underlyingFig.setLineColor(edge.getFig().getLineColor());
        
-        destFigNode = edge.getDestPortFig();
-        sourceFigNode = edge.getSourcePortFig();
+        destFigNode = edge.getDestFigNode();
+        sourceFigNode = edge.getSourceFigNode();
     }
     
     /** abstract method to layout the edge
