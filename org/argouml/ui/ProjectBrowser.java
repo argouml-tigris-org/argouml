@@ -645,7 +645,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
    */
   protected void setActiveDiagram (ArgoDiagram ad) {
     _activeDiagram = ad;
-    System.out.println ("Active diagram set to " + ad.getName());
+    //System.out.println ("Active diagram set to " + ad.getName());
   }
 
   /**
