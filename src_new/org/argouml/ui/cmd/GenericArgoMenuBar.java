@@ -590,7 +590,11 @@ public class GenericArgoMenuBar extends JMenuBar
     }
 
     /**
-     * Build the menu "Create".
+     * Build the menu "Create" and the toolbar for diagram creation.
+     * These are build together to guarantee that
+     * the same items are present in both, and in the same sequence.<p>
+     * 
+     * The sequence of these items was determined by issue 1821.
      */
     private void initMenuCreate() {
         createDiagrams = add(new JMenu(menuLocalize("Create Diagram")));
@@ -598,34 +602,41 @@ public class GenericArgoMenuBar extends JMenuBar
         createDiagramToolbar = new ToolBar("Create Diagram Toolbar");
         createDiagramToolbar.putClientProperty("JToolBar.isRollover",  
                                                 Boolean.TRUE);
-        JMenuItem classDiagram = 
-            createDiagrams.add(ActionClassDiagram.SINGLETON);
-        setMnemonic(classDiagram, "Class Diagram");
-        createDiagramToolbar.add((ActionClassDiagram.SINGLETON));
         JMenuItem usecaseDiagram = 
             createDiagrams.add(ActionUseCaseDiagram.SINGLETON);
         setMnemonic(usecaseDiagram, "Usecase Diagram");
         createDiagramToolbar.add((ActionUseCaseDiagram.SINGLETON));
-        JMenuItem stateDiagram = 
-            createDiagrams.add(ActionStateDiagram.SINGLETON);
-        setMnemonic(stateDiagram, "State Diagram");
-        createDiagramToolbar.add((ActionStateDiagram.SINGLETON));
-        JMenuItem activityDiagram = 
-            createDiagrams.add(ActionActivityDiagram.SINGLETON);
-        setMnemonic(activityDiagram, "Activity Diagram");
-        createDiagramToolbar.add((ActionActivityDiagram.SINGLETON));
-        JMenuItem collaborationDiagram = 
-            createDiagrams.add(ActionCollaborationDiagram.SINGLETON);
-        setMnemonic(collaborationDiagram, "Collaboration Diagram");
-        createDiagramToolbar.add((ActionCollaborationDiagram.SINGLETON));
-        JMenuItem deploymentDiagram = 
-            createDiagrams.add(ActionDeploymentDiagram.SINGLETON);
-        setMnemonic(deploymentDiagram, "Deployment Diagram");
-        createDiagramToolbar.add((ActionDeploymentDiagram.SINGLETON));
+        
+        JMenuItem classDiagram = 
+            createDiagrams.add(ActionClassDiagram.SINGLETON);
+        setMnemonic(classDiagram, "Class Diagram");
+        createDiagramToolbar.add((ActionClassDiagram.SINGLETON));
+        
         JMenuItem sequenzDiagram = 
             createDiagrams.add(ActionSequenceDiagram.SINGLETON);
         setMnemonic(sequenzDiagram, "Sequenz Diagram");
         createDiagramToolbar.add((ActionSequenceDiagram.SINGLETON));
+        
+        JMenuItem collaborationDiagram = 
+            createDiagrams.add(ActionCollaborationDiagram.SINGLETON);
+        setMnemonic(collaborationDiagram, "Collaboration Diagram");
+        createDiagramToolbar.add((ActionCollaborationDiagram.SINGLETON));
+        
+        JMenuItem stateDiagram = 
+            createDiagrams.add(ActionStateDiagram.SINGLETON);
+        setMnemonic(stateDiagram, "State Diagram");
+        createDiagramToolbar.add((ActionStateDiagram.SINGLETON));
+        
+        JMenuItem activityDiagram = 
+            createDiagrams.add(ActionActivityDiagram.SINGLETON);
+        setMnemonic(activityDiagram, "Activity Diagram");
+        createDiagramToolbar.add((ActionActivityDiagram.SINGLETON));
+        
+        JMenuItem deploymentDiagram = 
+            createDiagrams.add(ActionDeploymentDiagram.SINGLETON);
+        setMnemonic(deploymentDiagram, "Deployment Diagram");
+        createDiagramToolbar.add((ActionDeploymentDiagram.SINGLETON));
+        
         appendPluggableMenus(createDiagrams,
 			     PluggableMenu.KEY_CREATE_DIAGRAMS);
     }
