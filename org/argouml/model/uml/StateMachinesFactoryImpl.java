@@ -89,7 +89,7 @@ public class StateMachinesFactoryImpl
      *
      * @return an initialized UML CallEvent instance.
      */
-    public MCallEvent createCallEvent() {
+    public Object createCallEvent() {
         MCallEvent modelElement =
 	    MFactory.getDefaultFactory().createCallEvent();
 	super.initialize(modelElement);
@@ -101,7 +101,7 @@ public class StateMachinesFactoryImpl
      *
      * @return an initialized UML ChangeEvent instance.
      */
-    public MChangeEvent createChangeEvent() {
+    public Object createChangeEvent() {
         MChangeEvent modelElement =
 	    MFactory.getDefaultFactory().createChangeEvent();
 	super.initialize(modelElement);
@@ -113,7 +113,7 @@ public class StateMachinesFactoryImpl
      *
      * @return an initialized UML CompositeState instance.
      */
-    public MCompositeState createCompositeState() {
+    public Object createCompositeState() {
         MCompositeState modelElement =
 	    MFactory.getDefaultFactory().createCompositeState();
 	super.initialize(modelElement);
@@ -125,7 +125,7 @@ public class StateMachinesFactoryImpl
      *
      * @return an initialized UML FinalState instance.
      */
-    public MFinalState createFinalState() {
+    public Object createFinalState() {
         MFinalState modelElement =
 	    MFactory.getDefaultFactory().createFinalState();
 	super.initialize(modelElement);
@@ -148,7 +148,7 @@ public class StateMachinesFactoryImpl
      *
      * @return an initialized UML Pseudostate instance.
      */
-    public MPseudostate createPseudostate() {
+    public Object createPseudostate() {
         MPseudostate modelElement =
 	    MFactory.getDefaultFactory().createPseudostate();
 	super.initialize(modelElement);
@@ -160,7 +160,7 @@ public class StateMachinesFactoryImpl
      *
      * @return an initialized UML SignalEvent instance.
      */
-    public MSignalEvent createSignalEvent() {
+    public Object createSignalEvent() {
         MSignalEvent modelElement =
 	    MFactory.getDefaultFactory().createSignalEvent();
 	super.initialize(modelElement);
@@ -172,7 +172,7 @@ public class StateMachinesFactoryImpl
      *
      * @return an initialized UML SimpleState instance.
      */
-    public MSimpleState createSimpleState() {
+    public Object createSimpleState() {
         MSimpleState modelElement =
 	    MFactory.getDefaultFactory().createSimpleState();
 	super.initialize(modelElement);
@@ -184,7 +184,7 @@ public class StateMachinesFactoryImpl
      *
      * @return an initialized UML State instance.
      */
-    public MState createState() {
+    public Object createState() {
         MState modelElement = MFactory.getDefaultFactory().createState();
 	super.initialize(modelElement);
 	return modelElement;
@@ -195,7 +195,7 @@ public class StateMachinesFactoryImpl
      *
      * @return an initialized UML StateMachine instance.
      */
-    public MStateMachine createStateMachine() {
+    public Object createStateMachine() {
         MStateMachine modelElement =
 	    MFactory.getDefaultFactory().createStateMachine();
 	super.initialize(modelElement);
@@ -207,7 +207,7 @@ public class StateMachinesFactoryImpl
      *
      * @return an initialized UML StubState instance.
      */
-    public MStubState createStubState() {
+    public Object createStubState() {
         MStubState modelElement =
 	    MFactory.getDefaultFactory().createStubState();
 	super.initialize(modelElement);
@@ -219,7 +219,7 @@ public class StateMachinesFactoryImpl
      *
      * @return an initialized UML SubmachineState instance.
      */
-    public MSubmachineState createSubmachineState() {
+    public Object createSubmachineState() {
         MSubmachineState modelElement =
 	    MFactory.getDefaultFactory().createSubmachineState();
 	super.initialize(modelElement);
@@ -231,7 +231,7 @@ public class StateMachinesFactoryImpl
      *
      * @return an initialized UML SynchState instance.
      */
-    public MSynchState createSynchState() {
+    public Object createSynchState() {
         MSynchState modelElement =
 	    MFactory.getDefaultFactory().createSynchState();
 	super.initialize(modelElement);
@@ -243,7 +243,7 @@ public class StateMachinesFactoryImpl
      *
      * @return an initialized UML TimeEvent instance.
      */
-    public MTimeEvent createTimeEvent() {
+    public Object createTimeEvent() {
         MTimeEvent modelElement =
 	    MFactory.getDefaultFactory().createTimeEvent();
 	super.initialize(modelElement);
@@ -269,16 +269,14 @@ public class StateMachinesFactoryImpl
      * @return MCompositeState the newly build top state
      * @see #buildCompositeState(Object)
      */
-    public MCompositeState buildCompositeState(MStateMachine statemachine) {
-    	if (statemachine != null) {
-            MCompositeState state = createCompositeState();
-            state.setStateMachine(statemachine);
+    public Object buildCompositeStateOnStateMachine(Object statemachine) {
+    	if (statemachine instanceof MStateMachine) {
+            MCompositeState state = (MCompositeState) createCompositeState();
+            state.setStateMachine((MStateMachine) statemachine);
             state.setName("top");
             return state;
     	}
-	    throw new IllegalArgumentException(
-                "In buildCompositeState: "
-		       + "statemachine is null");
+    	throw new IllegalArgumentException("statemachine");
     }
 
     /**
@@ -287,12 +285,12 @@ public class StateMachinesFactoryImpl
      * @param oContext the given context
      * @return MStateMachine the newly build statemachine
      */
-    public MStateMachine buildStateMachine(Object oContext) {
+    public Object buildStateMachine(Object oContext) {
     	if (oContext != null
         	    && (nsmodel.getStateMachinesHelper()
         		.isAddingStatemachineAllowed(oContext))) {
 
-    	    MStateMachine machine = createStateMachine();
+    	    MStateMachine machine = (MStateMachine) createStateMachine();
             MModelElement context = (MModelElement) oContext;
     	    machine.setContext(context);
     	    if (context instanceof MClassifier) {
@@ -301,12 +299,12 @@ public class StateMachinesFactoryImpl
     	        MBehavioralFeature feature = (MBehavioralFeature) context;
     	        machine.setNamespace(feature.getOwner());
     	    }
-    	    nsmodel.getStateMachinesFactory().buildCompositeState(machine);
+    	    nsmodel.getStateMachinesFactory()
+    	    	.buildCompositeStateOnStateMachine(machine);
     	    return machine;
-
     	}
-	    throw new IllegalArgumentException("In buildStateMachine: "
-					       + "context null or not legal");
+    	throw new IllegalArgumentException("In buildStateMachine: "
+    	        + "context null or not legal");
     }
 
     /**
@@ -316,25 +314,34 @@ public class StateMachinesFactoryImpl
      * to). The transition is owned by the compositestate.<p>
      *
      * @param owningState the composite state that owns the transition
-     * @param source the source of the transition
-     * @param dest the destination of the transition
-     * @return MTransition the newly build transition
+     * @param source the source of the transition (a StateVertex)
+     * @param dest the destination of the transition (a StateVertex)
+     * @return The newly build Transition.
      */
-    public Object buildTransition(MCompositeState owningState,
-				  MStateVertex source, MStateVertex dest) {
-      	if (owningState != null && source != null && dest != null
-        	    && owningState.getSubvertices().contains(source)
-        	    && owningState.getSubvertices().contains(dest)) {
+    public Object buildTransition(Object owningState,
+				  Object source, Object dest) {
+        if (!(owningState instanceof MCompositeState)) {
+            throw new IllegalArgumentException("owningState");
+        }
+        if (!(source instanceof MStateVertex)) {
+            throw new IllegalArgumentException("source");
+        }
+        if (!(dest instanceof MStateVertex)) {
+            throw new IllegalArgumentException("dest");
+        }
 
+        MCompositeState compositeState = (MCompositeState) owningState;
+        if (compositeState.getSubvertices().contains(source)
+                && compositeState.getSubvertices().contains(dest)) {
     	    MTransition trans = (MTransition) createTransition();
-    	    owningState.addInternalTransition(trans);
-    	    trans.setSource(source);
-    	    trans.setTarget(dest);
+    	    compositeState.addInternalTransition(trans);
+    	    trans.setSource((MStateVertex) source);
+    	    trans.setTarget((MStateVertex) dest);
     	    return trans;
 
       	}
-	    throw new IllegalArgumentException("In buildTransition: "
-					       + "arguments not legal");
+        throw new IllegalArgumentException("In buildTransition: "
+                + "arguments not legal");
     }
 
     /**
@@ -347,9 +354,9 @@ public class StateMachinesFactoryImpl
      * @param compositeState the parent
      * @return MPseudostate
      */
-    public MPseudostate buildPseudoState(Object compositeState) {
+    public Object buildPseudoState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
-            MPseudostate state = createPseudostate();
+            MPseudostate state = (MPseudostate) createPseudostate();
             state.setKind(MPseudostateKind.BRANCH);
             state.setContainer((MCompositeState) compositeState);
             ((MCompositeState) compositeState).addSubvertex(state);
@@ -367,9 +374,9 @@ public class StateMachinesFactoryImpl
      * @param compositeState the given compositestate
      * @return MSynchState the newly created SynchState
      */
-    public MSynchState buildSynchState(Object compositeState) {
+    public Object buildSynchState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
-            MSynchState state = createSynchState();
+            MSynchState state = (MSynchState) createSynchState();
             state.setBound(0);
             state.setContainer((MCompositeState) compositeState);
             return state;
@@ -387,9 +394,9 @@ public class StateMachinesFactoryImpl
      * @param compositeState the given composite state
      * @return MSynchState the newly build stubstate
      */
-    public MStubState buildStubState(Object compositeState) {
+    public Object buildStubState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
-            MStubState state = createStubState();
+            MStubState state = (MStubState) createStubState();
             state.setReferenceState("");
             state.setContainer((MCompositeState) compositeState);
             return state;
@@ -406,11 +413,11 @@ public class StateMachinesFactoryImpl
      *
      * @param compositeState the given compositestate
      * @return MSynchState the newly build synchstate
-     * @see #buildCompositeState(MStateMachine)
+     * @see #buildCompositeStateOnStateMachine(Object)
      */
-    public MCompositeState buildCompositeState(Object compositeState) {
+    public Object buildCompositeState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
-            MCompositeState state = createCompositeState();
+            MCompositeState state = (MCompositeState) createCompositeState();
             state.setConcurent(false);
             state.setContainer((MCompositeState) compositeState);
             return state;
@@ -427,9 +434,9 @@ public class StateMachinesFactoryImpl
      * @param compositeState the given compositestate
      * @return MSimpleState the newly build simple state
      */
-    public MSimpleState buildSimpleState(Object compositeState) {
+    public Object buildSimpleState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
-            MSimpleState state = createSimpleState();
+            MSimpleState state = (MSimpleState) createSimpleState();
             state.setContainer((MCompositeState) compositeState);
             return state;
         }
@@ -445,9 +452,9 @@ public class StateMachinesFactoryImpl
      * @param compositeState the given compositestate
      * @return MFinalState the given compositestate
      */
-    public MFinalState buildFinalState(Object compositeState) {
+    public Object buildFinalState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
-            MFinalState state = createFinalState();
+            MFinalState state = (MFinalState) createFinalState();
             state.setContainer((MCompositeState) compositeState);
             return state;
         }
@@ -463,9 +470,9 @@ public class StateMachinesFactoryImpl
      * @param compositeState the given compositestate
      * @return MSubmachineState the given submachinestate
      */
-    public MSubmachineState buildSubmachineState(Object compositeState) {
+    public Object buildSubmachineState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
-            MSubmachineState state = createSubmachineState();
+            MSubmachineState state = (MSubmachineState) createSubmachineState();
             state.setStateMachine(null);
             state.setContainer((MCompositeState) compositeState);
             return state;
@@ -480,7 +487,7 @@ public class StateMachinesFactoryImpl
      * @param state The state the internal transition should belong to
      * @return MTransition The internal transition constructed
      */
-    public MTransition buildInternalTransition(Object state) {
+    public Object buildInternalTransition(Object state) {
         if (state instanceof MState) {
             MTransition trans = (MTransition) createTransition();
             trans.setState((MState) state);
@@ -492,15 +499,15 @@ public class StateMachinesFactoryImpl
     }
 
     /**
-     * Build a transition between a source state and a target state. The
-     * parameters are of type Object to decouple the factory and NSUML as much
-     * as possible.
+     * Build a transition between a source state and a target state.
+     *
      * This should not be used for internal transitions!
+     *
      * @param source The source state
      * @param target The target state
      * @return MTransition The resulting transition between source an state
      */
-    public MTransition buildTransition(Object source, Object target) {
+    public Object buildTransition(Object source, Object target) {
         if (source instanceof MStateVertex && target instanceof MStateVertex) {
             MTransition trans = (MTransition) createTransition();
             trans.setSource((MStateVertex) source);
@@ -518,8 +525,8 @@ public class StateMachinesFactoryImpl
      * @param model the model
      * @return MCallEvent
      */
-    public MCallEvent buildCallEvent(Object model) {
-        MCallEvent event = createCallEvent();
+    public Object buildCallEvent(Object model) {
+        MCallEvent event = (MCallEvent) createCallEvent();
         event.setNamespace((MModel) model);
         event.setName("");
         return event;
@@ -535,7 +542,7 @@ public class StateMachinesFactoryImpl
      * @param model the model
      * @return an initialized UML CallEvent instance.
      */
-    public MCallEvent buildCallEvent(Object trans, String name, Object model) {
+    public Object buildCallEvent(Object trans, String name, Object model) {
         if (!(trans instanceof MTransition)) {
             throw new IllegalArgumentException();
         }
@@ -562,8 +569,8 @@ public class StateMachinesFactoryImpl
      * @param model the model
      * @return MSignalEvent
      */
-    public MSignalEvent buildSignalEvent(Object model) {
-        MSignalEvent event = createSignalEvent();
+    public Object buildSignalEvent(Object model) {
+        MSignalEvent event = (MSignalEvent) createSignalEvent();
         event.setNamespace((MModel) model);
         event.setName("");
         return event;
@@ -576,8 +583,8 @@ public class StateMachinesFactoryImpl
      * @param name String the name of the SignalEvent
      * @return MSignalEvent
      */
-    public MSignalEvent buildSignalEvent(String name, Object model) {
-        MSignalEvent event = createSignalEvent();
+    public Object buildSignalEvent(String name, Object model) {
+        MSignalEvent event = (MSignalEvent) createSignalEvent();
         event.setNamespace((MModel) model);
         event.setName(name);
         return event;
@@ -589,8 +596,8 @@ public class StateMachinesFactoryImpl
      * @param model the Model
      * @return MTimeEvent
      */
-    public MTimeEvent buildTimeEvent(Object model) {
-        MTimeEvent event = createTimeEvent();
+    public Object buildTimeEvent(Object model) {
+        MTimeEvent event = (MTimeEvent) createTimeEvent();
         event.setNamespace((MModel) model);
         event.setName("");
         return event;
@@ -604,8 +611,8 @@ public class StateMachinesFactoryImpl
      * @param model the model
      * @return MTimeEvent
      */
-    public MTimeEvent buildTimeEvent(String s, Object model) {
-        MTimeEvent event = createTimeEvent();
+    public Object buildTimeEvent(String s, Object model) {
+        MTimeEvent event = (MTimeEvent) createTimeEvent();
         event.setNamespace((MModel) model);
         event.setName("");
         Object te =
@@ -621,8 +628,8 @@ public class StateMachinesFactoryImpl
      * @param model the model
      * @return MChangeEvent
      */
-    public MChangeEvent buildChangeEvent(Object model) {
-        MChangeEvent event = createChangeEvent();
+    public Object buildChangeEvent(Object model) {
+        MChangeEvent event = (MChangeEvent) createChangeEvent();
         event.setNamespace((MModel) model);
         event.setName("");
         return event;
@@ -635,8 +642,8 @@ public class StateMachinesFactoryImpl
      * @param s String for creating the BooleanExpression
      * @return MChangeEvent
      */
-    public MChangeEvent buildChangeEvent(String s, Object model) {
-        MChangeEvent event = createChangeEvent();
+    public Object buildChangeEvent(String s, Object model) {
+        MChangeEvent event = (MChangeEvent) createChangeEvent();
         event.setNamespace((MModel) model);
         event.setName("");
         Object ce =
@@ -666,21 +673,34 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteCallEvent(MCallEvent elem) { }
+    public void deleteCallEvent(Object elem) {
+        if (!(elem instanceof MCallEvent)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteChangeEvent(MChangeEvent elem) { }
+    public void deleteChangeEvent(Object elem) {
+        if (!(elem instanceof MChangeEvent)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * Deletes any associated subVertices.
      *
      * @param elem the UML element to be deleted
      */
-    public void deleteCompositeState(MCompositeState elem) {
+    public void deleteCompositeState(Object elem) {
+        if (!(elem instanceof MCompositeState)) {
+            throw new IllegalArgumentException();
+        }
 
-        Collection vertices = elem.getSubvertices();
+        Collection vertices = ((MCompositeState) elem).getSubvertices();
         Iterator it = vertices.iterator();
         while (it.hasNext()) {
             MStateVertex vertex = (MStateVertex) it.next();
@@ -691,45 +711,85 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteEvent(MEvent elem) { }
+    public void deleteEvent(Object elem) {
+        if (!(elem instanceof MEvent)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteFinalState(MFinalState elem) { }
+    public void deleteFinalState(Object elem) {
+        if (!(elem instanceof MFinalState)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteGuard(MGuard elem) { }
+    public void deleteGuard(Object elem) {
+        if (!(elem instanceof MGuard)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the UML element to be deleted
      */
-    public void deletePseudostate(MPseudostate elem) { }
+    public void deletePseudostate(Object elem) {
+        if (!(elem instanceof MPseudostate)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteSignalEvent(MSignalEvent elem) { }
+    public void deleteSignalEvent(Object elem) {
+        if (!(elem instanceof MSignalEvent)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteSimpleState(MSimpleState elem) { }
+    public void deleteSimpleState(Object elem) {
+        if (!(elem instanceof MSimpleState)) {
+            throw new IllegalArgumentException();
+        }
+
+
+    }
 
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteState(MState elem) { }
+    public void deleteState(Object elem) {
+        if (!(elem instanceof MState)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * deletes its top state, which is a composite state (state vertex).
      *
      * @param elem the state machine to be removed.
      */
-    public void deleteStateMachine(MStateMachine elem) {
-        MState top = elem.getTop();
+    public void deleteStateMachine(Object elem) {
+        if (!(elem instanceof MStateMachine)) {
+            throw new IllegalArgumentException();
+        }
+
+        MState top = ((MStateMachine) elem).getTop();
 	if (top != null) {
 	    nsmodel.getUmlFactory().delete(top);
 	}
@@ -741,13 +801,17 @@ public class StateMachinesFactoryImpl
      *
      * @param elem the UML element to be deleted
      */
-    public void deleteStateVertex(MStateVertex elem) {
-        Collection col = elem.getIncomings();
+    public void deleteStateVertex(Object elem) {
+        if (!(elem instanceof MStateVertex)) {
+            throw new IllegalArgumentException();
+        }
+
+        Collection col = ((MStateVertex) elem).getIncomings();
         Iterator it = col.iterator();
         while (it.hasNext()) {
             nsmodel.getUmlFactory().delete(it.next());
         }
-        col = elem.getOutgoings();
+        col = ((MStateVertex) elem).getOutgoings();
         it = col.iterator();
         while (it.hasNext()) {
             nsmodel.getUmlFactory().delete(it.next());
@@ -757,27 +821,52 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteStubState(MStubState elem) { }
+    public void deleteStubState(Object elem) {
+        if (!(elem instanceof MStubState)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteSubmachineState(MSubmachineState elem) { }
+    public void deleteSubmachineState(Object elem) {
+        if (!(elem instanceof MSubmachineState)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteSynchState(MSynchState elem) { }
+    public void deleteSynchState(Object elem) {
+        if (!(elem instanceof MSynchState)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteTimeEvent(MTimeEvent elem) { }
+    public void deleteTimeEvent(Object elem) {
+        if (!(elem instanceof MTimeEvent)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteTransition(MTransition elem) { }
+    public void deleteTransition(Object elem) {
+        if (!(elem instanceof MTransition)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
 
 

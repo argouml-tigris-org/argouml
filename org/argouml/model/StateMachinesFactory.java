@@ -24,23 +24,6 @@
 
 package org.argouml.model;
 
-import ru.novosoft.uml.behavior.state_machines.MCallEvent;
-import ru.novosoft.uml.behavior.state_machines.MChangeEvent;
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-import ru.novosoft.uml.behavior.state_machines.MEvent;
-import ru.novosoft.uml.behavior.state_machines.MFinalState;
-import ru.novosoft.uml.behavior.state_machines.MGuard;
-import ru.novosoft.uml.behavior.state_machines.MPseudostate;
-import ru.novosoft.uml.behavior.state_machines.MSignalEvent;
-import ru.novosoft.uml.behavior.state_machines.MSimpleState;
-import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import ru.novosoft.uml.behavior.state_machines.MStubState;
-import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
-import ru.novosoft.uml.behavior.state_machines.MSynchState;
-import ru.novosoft.uml.behavior.state_machines.MTimeEvent;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
 
 /**
  * The interface for the factory for StateMachines.<p>
@@ -53,98 +36,98 @@ public interface StateMachinesFactory {
      *
      * @return an initialized UML CallEvent instance.
      */
-    MCallEvent createCallEvent();
+    Object createCallEvent();
 
     /**
      * Create an empty but initialized instance of a UML ChangeEvent.
      *
      * @return an initialized UML ChangeEvent instance.
      */
-    MChangeEvent createChangeEvent();
+    Object createChangeEvent();
 
     /**
      * Create an empty but initialized instance of a UML CompositeState.
      *
      * @return an initialized UML CompositeState instance.
      */
-    MCompositeState createCompositeState();
+    Object createCompositeState();
 
     /**
      * Create an empty but initialized instance of a UML FinalState.
      *
      * @return an initialized UML FinalState instance.
      */
-    MFinalState createFinalState();
+    Object createFinalState();
 
     /**
      * Create an empty but initialized instance of a UML Guard.
      *
      * @return an initialized UML Guard instance.
      */
-    Object/*MGuard*/createGuard();
+    Object createGuard();
 
     /**
      * Create an empty but initialized instance of a UML Pseudostate.
      *
      * @return an initialized UML Pseudostate instance.
      */
-    MPseudostate createPseudostate();
+    Object createPseudostate();
 
     /**
      * Create an empty but initialized instance of a UML SignalEvent.
      *
      * @return an initialized UML SignalEvent instance.
      */
-    MSignalEvent createSignalEvent();
+    Object createSignalEvent();
 
     /**
      * Create an empty but initialized instance of a UML SimpleState.
      *
      * @return an initialized UML SimpleState instance.
      */
-    MSimpleState createSimpleState();
+    Object createSimpleState();
 
     /**
      * Create an empty but initialized instance of a UML State.
      *
      * @return an initialized UML State instance.
      */
-    MState createState();
+    Object createState();
 
     /**
      * Create an empty but initialized instance of a UML StateMachine.
      *
      * @return an initialized UML StateMachine instance.
      */
-    MStateMachine createStateMachine();
+    Object createStateMachine();
 
     /**
      * Create an empty but initialized instance of a UML StubState.
      *
      * @return an initialized UML StubState instance.
      */
-    MStubState createStubState();
+    Object createStubState();
 
     /**
      * Create an empty but initialized instance of a UML SubmachineState.
      *
      * @return an initialized UML SubmachineState instance.
      */
-    MSubmachineState createSubmachineState();
+    Object createSubmachineState();
 
     /**
      * Create an empty but initialized instance of a UML SynchState.
      *
      * @return an initialized UML SynchState instance.
      */
-    MSynchState createSynchState();
+    Object createSynchState();
 
     /**
      * Create an empty but initialized instance of a UML TimeEvent.
      *
      * @return an initialized UML TimeEvent instance.
      */
-    MTimeEvent createTimeEvent();
+    Object createTimeEvent();
 
     /**
      * Create an empty but initialized instance of a UML Transition.
@@ -156,11 +139,11 @@ public interface StateMachinesFactory {
     /**
      * Builds a compositestate as top for some statemachine.<p>
      *
-     * @param statemachine the given statemachine
-     * @return MCompositeState the newly build top state
+     * @param statemachine The given statemachine
+     * @return MCompositeState The newly build top state
      * @see #buildCompositeState(Object)
      */
-    MCompositeState buildCompositeState(MStateMachine statemachine);
+    Object buildCompositeStateOnStateMachine(Object statemachine);
 
     /**
      * Builds a state machine owned by the given context.
@@ -168,7 +151,7 @@ public interface StateMachinesFactory {
      * @param oContext the given context
      * @return MStateMachine the newly build statemachine
      */
-    MStateMachine buildStateMachine(Object oContext);
+    Object buildStateMachine(Object oContext);
 
     /**
      * Builds a complete transition including all associations
@@ -181,8 +164,8 @@ public interface StateMachinesFactory {
      * @param dest the destination of the transition
      * @return MTransition the newly build transition
      */
-    Object buildTransition(MCompositeState owningState, MStateVertex source,
-            MStateVertex dest);
+    Object buildTransition(Object owningState, Object source,
+            Object dest);
 
     /**
      * Builds a pseudostate initialized as a choice pseudostate. The
@@ -194,7 +177,7 @@ public interface StateMachinesFactory {
      * @param compositeState the parent
      * @return MPseudostate
      */
-    MPseudostate buildPseudoState(Object compositeState);
+    Object buildPseudoState(Object compositeState);
 
     /**
      * Builds a synchstate initalized with bound 0. The synchstate
@@ -205,7 +188,7 @@ public interface StateMachinesFactory {
      * @param compositeState the given compositestate
      * @return MSynchState the newly created SynchState
      */
-    MSynchState buildSynchState(Object compositeState);
+    Object buildSynchState(Object compositeState);
 
     /**
      * Builds a stubstate initalized with an empty referenced
@@ -217,31 +200,27 @@ public interface StateMachinesFactory {
      * @param compositeState the given composite state
      * @return MSynchState the newly build stubstate
      */
-    MStubState buildStubState(Object compositeState);
+    Object buildStubState(Object compositeState);
 
     /**
      * Builds a compositestate initalized as a non-concurrent
      * composite state.  The compositestate will be a subvertix of the
-     * given compositestate. The parameter compositeState is of type
-     * Object to decouple the factory and NSUML as much as possible
-     * from the rest of ArgoUML.
+     * given compositestate.
      *
      * @param compositeState the given compositestate
      * @return MSynchState the newly build synchstate
-     * @see #buildCompositeState(MStateMachine)
+     * @see #buildCompositeStateOnStateMachine(Object)
      */
-    MCompositeState buildCompositeState(Object compositeState);
+    Object buildCompositeState(Object compositeState);
 
     /**
      * Builds a simplestate. The simplestate will be a subvertix of
-     * the given compositestate. The parameter compositeState is of
-     * type Object to decouple the factory and NSUML as much as
-     * possible.  from the rest of ArgoUML.
+     * the given compositestate.
      *
      * @param compositeState the given compositestate
      * @return MSimpleState the newly build simple state
      */
-    MSimpleState buildSimpleState(Object compositeState);
+    Object buildSimpleState(Object compositeState);
 
     /**
      * Builds a finalstate. The finalstate will be a subvertix of the
@@ -252,7 +231,7 @@ public interface StateMachinesFactory {
      * @param compositeState the given compositestate
      * @return MFinalState the given compositestate
      */
-    MFinalState buildFinalState(Object compositeState);
+    Object buildFinalState(Object compositeState);
 
     /**
      * Builds a submachinestate. The submachinestate will be a
@@ -263,7 +242,7 @@ public interface StateMachinesFactory {
      * @param compositeState the given compositestate
      * @return MSubmachineState the given submachinestate
      */
-    MSubmachineState buildSubmachineState(Object compositeState);
+    Object buildSubmachineState(Object compositeState);
 
     /**
      * Builds an internal transition for a given state. The parameter state is
@@ -272,7 +251,7 @@ public interface StateMachinesFactory {
      * @param state The state the internal transition should belong to
      * @return MTransition The internal transition constructed
      */
-    MTransition buildInternalTransition(Object state);
+    Object buildInternalTransition(Object state);
 
     /**
      * Build a transition between a source state and a target state. The
@@ -283,7 +262,7 @@ public interface StateMachinesFactory {
      * @param target The target state
      * @return MTransition The resulting transition between source an state
      */
-    MTransition buildTransition(Object source, Object target);
+    Object buildTransition(Object source, Object target);
 
     /**
      * Builds a callevent whose namespace (and therefore the ownership) is the
@@ -291,7 +270,7 @@ public interface StateMachinesFactory {
      * @param model the model
      * @return MCallEvent
      */
-    MCallEvent buildCallEvent(Object model);
+    Object buildCallEvent(Object model);
 
     /**
      * Create a initialized instance of a CallEvent with a name
@@ -303,7 +282,7 @@ public interface StateMachinesFactory {
      * @param model the model
      * @return an initialized UML CallEvent instance.
      */
-    MCallEvent buildCallEvent(Object trans, String name, Object model);
+    Object buildCallEvent(Object trans, String name, Object model);
 
     /**
      * Builds a signalevent whose namespace (and therefore the
@@ -311,7 +290,7 @@ public interface StateMachinesFactory {
      * @param model the model
      * @return MSignalEvent
      */
-    MSignalEvent buildSignalEvent(Object model);
+    Object buildSignalEvent(Object model);
 
     /**
      * Builds a named signalevent whose namespace (and therefore the
@@ -320,7 +299,7 @@ public interface StateMachinesFactory {
      * @param name String the name of the SignalEvent
      * @return MSignalEvent
      */
-    MSignalEvent buildSignalEvent(String name, Object model);
+    Object buildSignalEvent(String name, Object model);
 
     /**
      * Builds a timeevent whose namespace (and therefore the
@@ -328,7 +307,7 @@ public interface StateMachinesFactory {
      * @param model the Model
      * @return MTimeEvent
      */
-    MTimeEvent buildTimeEvent(Object model);
+    Object buildTimeEvent(Object model);
 
     /**
      * Builds a timeevent whose namespace (and therefore the
@@ -338,7 +317,7 @@ public interface StateMachinesFactory {
      * @param model the model
      * @return MTimeEvent
      */
-    MTimeEvent buildTimeEvent(String s, Object model);
+    Object buildTimeEvent(String s, Object model);
 
     /**
      * Builds a changeevent whose namespace (and therefore the
@@ -346,7 +325,7 @@ public interface StateMachinesFactory {
      * @param model the model
      * @return MChangeEvent
      */
-    MChangeEvent buildChangeEvent(Object model);
+    Object buildChangeEvent(Object model);
 
     /**
      * Builds a changeevent whose namespace (and therefore the
@@ -355,75 +334,76 @@ public interface StateMachinesFactory {
      * @param s String for creating the BooleanExpression
      * @return MChangeEvent
      */
-    MChangeEvent buildChangeEvent(String s, Object model);
+    Object buildChangeEvent(String s, Object model);
 
     /**
      * Builds a guard condition with a given transition. The guard condition is
      * empty by default. The parameter is of type Object to decouple the factory
      * and NSUML as much as possible.
+     *
      * @param transition The transition that owns the resulting guard condition
      * @return MGuard The resulting guard condition
      */
-    Object/*MGuard*/buildGuard(Object transition);
+    Object buildGuard(Object transition);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteCallEvent(MCallEvent elem);
+    void deleteCallEvent(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteChangeEvent(MChangeEvent elem);
+    void deleteChangeEvent(Object elem);
 
     /**
      * Deletes any associated subVertices.
      *
      * @param elem the UML element to be deleted
      */
-    void deleteCompositeState(MCompositeState elem);
+    void deleteCompositeState(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteEvent(MEvent elem);
+    void deleteEvent(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteFinalState(MFinalState elem);
+    void deleteFinalState(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteGuard(MGuard elem);
+    void deleteGuard(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deletePseudostate(MPseudostate elem);
+    void deletePseudostate(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteSignalEvent(MSignalEvent elem);
+    void deleteSignalEvent(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteSimpleState(MSimpleState elem);
+    void deleteSimpleState(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteState(MState elem);
+    void deleteState(Object elem);
 
     /**
      * deletes its top state, which is a composite state (state vertex).
      *
      * @param elem the state machine to be removed.
      */
-    void deleteStateMachine(MStateMachine elem);
+    void deleteStateMachine(Object elem);
 
     /**
      * Deletes the outgoing and incoming transitions of a
@@ -431,30 +411,30 @@ public interface StateMachinesFactory {
      *
      * @param elem the UML element to be deleted
      */
-    void deleteStateVertex(MStateVertex elem);
+    void deleteStateVertex(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteStubState(MStubState elem);
+    void deleteStubState(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteSubmachineState(MSubmachineState elem);
+    void deleteSubmachineState(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteSynchState(MSynchState elem);
+    void deleteSynchState(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteTimeEvent(MTimeEvent elem);
+    void deleteTimeEvent(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteTransition(MTransition elem);
+    void deleteTransition(Object elem);
 }
