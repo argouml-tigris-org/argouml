@@ -29,8 +29,8 @@ import java.util.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
-/** An Cmd to set selected figs to their preferred size or minimum size.
- * It accepts parameters "figs" or the current selection.
+/** A command to set selected figs to their preferred size or minimum size.
+ * 
  * @author Markus Klink
  */
 
@@ -59,6 +59,19 @@ public class CmdSetPreferredSize extends Cmd {
         }
         throw new IllegalArgumentException("CmdSetPreferredSize invoked with incompatible mode: " + r);
     }
+    
+    /** set the fig to be resized */
+    public void setFigToResize(Fig f) {
+        Vector figs = new Vector(1);
+        figs.add(f);
+        setArg("figs", figs);
+    }
+
+    /** set the figs to be resized */
+    public void setFigToResize(Vector figs) {
+        setArg("figs", figs);
+    }
+
 
     /** set all the figs in the selection or passed by param "figs" to the 
      * size according to the mode of the command.
@@ -82,11 +95,15 @@ public class CmdSetPreferredSize extends Cmd {
         for (int i = 0; i<size; i++) {
             Fig fi = (Fig) figs.elementAt(i);
             fi.startTrans();
-            if (_mode == PREFERRED_SIZE)
-                fi.setSize(fi.getPreferedSize());
-            else
-                fi.setSize(fi.getMinimumSize());
-            Globals.showStatus("Setting size for " +fi);
+            // only resize elements which the user would also be able 
+            // to resize.
+            if (fi.isResizable() == true) {
+                if (_mode == PREFERRED_SIZE)
+                    fi.setSize(fi.getPreferedSize());
+                else
+                    fi.setSize(fi.getMinimumSize());
+                Globals.showStatus("Setting size for " +fi);
+            }
             fi.endTrans();
         }
     }
@@ -95,3 +112,4 @@ public class CmdSetPreferredSize extends Cmd {
     public void undoIt() { }
             
 }
+
