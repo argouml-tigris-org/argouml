@@ -61,6 +61,7 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ProfileJava;
 import org.argouml.util.MyTokenizer;
 
+
 /**
  * Interface specifying the operation to take when a PropertySpecialString
  * is matched.
@@ -2012,7 +2013,7 @@ public class ParserDisplay extends Parser {
 	while (lines.hasMoreTokens()) {
 	    String line = lines.nextToken().trim();
 	    if (line.toLowerCase().startsWith("entry")) 
-                                        parseStateEntyAction(st, line);
+                                        parseStateEntryAction(st, line);
 	    else if (line.toLowerCase().startsWith("exit")) 
                                         parseStateExitAction(st, line);
 	    else if (line.toLowerCase().startsWith("do")) 
@@ -2048,7 +2049,7 @@ public class ParserDisplay extends Parser {
      *  @param st       the state object
      *  @param s        the string to be parsed
      */
-    public void parseStateEntyAction(Object st, String s) {
+    public void parseStateEntryAction(Object st, String s) {
 	if (s.toLowerCase().startsWith("entry") && s.indexOf("/") > -1)
 	    s = s.substring(s.indexOf("/") + 1).trim();
 	Object entryAction = /*(MCallAction)*/ parseAction(s);
@@ -2082,7 +2083,9 @@ public class ParserDisplay extends Parser {
         ModelFacade.setDoActivity(st, doAction);
     }
 
-    /** Parse a line of the form: "name: trigger [guard] / actions" 
+    /** Parse a transition description line of the form: 
+     *          "name: trigger [guard] / actions" 
+     *  If the last character of this line is a ";", then it is ignored.
      *  @param trans    MTransition. The transition object to which this string
      *                  applies.
      *  @param s        The string to be parsed.
@@ -2094,6 +2097,7 @@ public class ParserDisplay extends Parser {
 	if (s.charAt(s.length() - 1) == ';')
 	    s = s.substring(0, s.length() - 2);
 
+        // strip of the name, and the ":"
 	String name = "";
 	String trigger = "";
 	String guard = "";
@@ -2103,6 +2107,7 @@ public class ParserDisplay extends Parser {
 	    s = s.substring(s.indexOf(":") + 1).trim();
 	}
 
+        // get the guard from between the []
 	if (s.indexOf("[", 0) > -1 && s.indexOf("]", 0) > -1) {
 	    guard = s.substring(s.indexOf("[", 0) + 1, s.indexOf("]")).trim();
 	    s = s.substring(0, s.indexOf("[")) + s.substring(s.indexOf("]")
@@ -2110,11 +2115,13 @@ public class ParserDisplay extends Parser {
 	    s = s.trim();
 	}
 
+        // everything behind the "/" is the action
 	if (s.indexOf("/", 0) > -1) {
 	    actions = s.substring(s.indexOf("/") + 1).trim();
 	    s = s.substring(0, s.indexOf("/")).trim();
 	}
 
+        // and the remainder is the trigger
 	trigger = s;
 
 	_cat.debug("name=|" + name + "|");
@@ -2124,14 +2131,39 @@ public class ParserDisplay extends Parser {
 
 	ModelFacade.setName(trans, name);
 
+        /* The following handles the callevent that is the trigger of
+        this transition. 
+        We can distinct between 4 cases:
+        1. A trigger is given. None exists yet.
+        2. A trigger is given. One exists already.
+        3. A trigger is not given. None exists yet.
+        4. A trigger is not given. One exists already.
+        The reaction in these cases is:
+        1. Create a new trigger, name it, and hook it to the transition.
+        2. The trigger is renamed.
+        3. Nop.
+        4. The existing trigger is unhooked and erased.
+        */
+        Object /*MEvent*/ evt = ModelFacade.getTrigger(trans);
 	if (trigger.length() > 0) {
-	    Object/*MEvent*/ evt = parseEvent(trigger);
-	    if (evt != null) {
-		ModelFacade.setTrigger(trans, /*(MCallEvent)*/ evt);
-	    }
-	}
-	else {
-	    ModelFacade.setTrigger(trans, null);
+            // case 1 and 2
+            if (evt == null){
+                // case 1
+                evt = parseEvent(trigger);
+                if (evt != null) {
+                    ModelFacade.setTrigger(trans, /*(MCallEvent)*/ evt);
+                }
+            }else {
+                // case 2
+                ModelFacade.setName(evt, trigger);
+            }
+	}else { 
+            // case 3 and 4
+	    ModelFacade.setTrigger(trans, null); // unhook it
+            //ModelFacade.removexxxx(evt); // erase it
+            /* This does not work:
+            StateMachinesFactory.getFactory().deleteCallEvent((MCallEvent) evt);
+            TODO: Erase the event!*/
         }
 
 	if (guard.length() > 0) {
