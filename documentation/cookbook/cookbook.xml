@@ -4201,9 +4201,8 @@ public class TestUMLAction extends TestCase {
     }
 	
 
-    /** Function never actually called. Provided in order to make
-     *  sure that the static interface has not changed.
-     */
+    // Functions never actually called. Provided in order to make
+    // sure that the static interface has not changed.
     private void compileTestStatics() {
 	boolean t1 = UMLAction.HAS_ICON;
 	boolean t2 = UMLAction.NO_ICON;
