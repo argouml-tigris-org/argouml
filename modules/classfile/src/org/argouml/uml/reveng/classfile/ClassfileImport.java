@@ -331,11 +331,12 @@ public class ClassfileImport extends FileImportSupport {
 
         // Create a modeller for the parser
         org.argouml.uml.reveng.java.Modeller modeller = 
-            new org.argouml.uml.reveng.java.Modeller(_currentProject.getModel(),
-						     _diagram, _import,
-                                                     attribute.isSelected(),
-                                                     datatype.isSelected(), 
-                                                     fileName);
+            new org.argouml.uml.reveng.java.Modeller(
+                                                 _currentProject.getModel(),
+						 _diagram, _import,
+                                                 getAttribute().isSelected(),
+                                                 getDatatype().isSelected(), 
+                                                 fileName);
 
 	// do something with the tree
 	ClassfileTreeParser tparser = new ClassfileTreeParser();
