@@ -396,8 +396,10 @@ public class Main {
 class StartCritics implements Runnable {
   public void run() {
     Designer dsgr = Designer.theDesigner();
+    Locale locale = Locale.getDefault();
+    CrUML.setLocale(locale);
     org.argouml.uml.cognitive.critics.Init.init();
-    org.argouml.uml.cognitive.checklist.Init.init();
+    org.argouml.uml.cognitive.checklist.Init.init(locale);
     ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = pb.getProject();
     dsgr.spawnCritiquer(p);
