@@ -44,8 +44,6 @@ import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 
 /**
@@ -67,16 +65,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         // representation (we use the same as dependency) and requesting 2
         // columns 
 
-        super("ExtensionPoint", _extensionPointIcon, ConfigLoader.getTabPropsOrientation());
-
-        // This will cause the components on this property panel to be notified
-        // anytime a stereotype, namespace or use case has its name changed
-        // or is removed anywhere in the model.
-
-        Class[] namesToWatch = { MStereotype.class,
-                                 MNamespace.class,
-                                 MUseCase.class };
-        setNameEventListening(namesToWatch);
+        super("ExtensionPoint", ConfigLoader.getTabPropsOrientation());
 
         // First column
 

@@ -24,86 +24,34 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
+import org.argouml.application.api.Argo;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-
-public class PropPanelUsage extends PropPanelModelElement {
+public class PropPanelUsage extends PropPanelDependency {
 
     public PropPanelUsage() {
-        super("Usage",_usageIcon, 2);
+        super("Usage", ConfigLoader.getTabPropsOrientation());
         
-        Class[] namesToWatch = { MStereotype.class,MNamespace.class,MUsage.class};
-    	setNameEventListening(namesToWatch);
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceComboBox);
 
-        Class mclass = MUsage.class;
+        add(LabelledLayout.getSeperator());
 
-        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(nameField,1,0,0);
+        addField(Argo.localize("UMLMenu", "label.suppliers"), _supplierScroll);
+        addField(Argo.localize("UMLMenu", "label.clients"), _clientScroll);
 
-        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,1);
-        addField(namespaceComboBox,3,0,0);
-
-        addCaption("Suppliers:",0,1,0.5);
-        JList suppliersList = new UMLList(new UMLReflectionListModel(this,"supplier",true,"getSuppliers","setSuppliers",null,null),true);
-        suppliersList.setForeground(Color.blue);
-        suppliersList.setVisibleRowCount(1);
-        addField(new JScrollPane(suppliersList),0,1,0.5);
-
-        addCaption("Clients:",1,1,0.5);
-        JList clientsList = new UMLList(new UMLReflectionListModel(this,"client",true,"getClients","setClients",null,null),true);
-        clientsList.setForeground(Color.blue);
-        clientsList.setVisibleRowCount(1);
-        addField(new JScrollPane(clientsList),1,1,0.5);
-
-
-	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
-	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-	new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-association"),"removeElement",null);
-
+        // TODO: add Mapping
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+        new PropPanelButton(this, buttonPanel, _navBackIcon, Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction", "isNavigateBackEnabled");
+        new PropPanelButton(this, buttonPanel, _navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction", "isNavigateForwardEnabled");
+        new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-association"), "removeElement", null);
     }
 
-    public Collection getSuppliers() {
-        Collection suppliers = null;
-        Object target = getTarget();
-        if(target instanceof MUsage) {
-            suppliers = ((MUsage) target).getSuppliers();
-        }
-        return suppliers;
-    }
-
-    public void setSuppliers(Collection suppliers) {
-        Object target = getTarget();
-        if(target instanceof MUsage) {
-            ((MUsage) target).setSuppliers(suppliers);
-        }
-    }
-
-    public Collection getClients() {
-        Collection suppliers = null;
-        Object target = getTarget();
-        if(target instanceof MUsage) {
-            suppliers = ((MUsage) target).getClients();
-        }
-        return suppliers;
-    }
-
-    public void setClients(Collection suppliers) {
-        Object target = getTarget();
-        if(target instanceof MUsage) {
-            ((MUsage) target).setClients(suppliers);
-        }
-    }
+   
 
 } /* end class PropPanelUsage */
 

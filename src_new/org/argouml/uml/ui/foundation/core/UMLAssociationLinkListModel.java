@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,34 +21,43 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
+// $Id$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.util.ConfigLoader;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.foundation.core.MAssociation;
 
 /**
- * @since Oct 12, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 4, 2003
  */
-public class PropPanelFlow extends PropPanelRelationship {
+public class UMLAssociationLinkListModel extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for PropPanelFlow.
+     * Constructor for UMLAssociationLinkListModel.
+     * @param container
      */
-    public PropPanelFlow() {
-        super("Flow", ConfigLoader.getTabPropsOrientation());
-        initialize();
+    public UMLAssociationLinkListModel() {
+        super("link");
     }
 
-    private void initialize() {
-        addField(Argo.localize("UMLMenu", "label.name"), nameField);
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
-        addField(Argo.localize("UMLMenu", "label.constraints"), constraintScroll);
-        
-        add(LabelledLayout.getSeperator());
+     /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        if (_target != null) 
+            setAllElements(((MAssociation)getTarget()).getLinks());
     }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
+     */
+    protected boolean isValidElement(MBase o) {  
+        return o instanceof MLink && ((MAssociation)getTarget()).getLinks().contains(o);
+    }
+
 }

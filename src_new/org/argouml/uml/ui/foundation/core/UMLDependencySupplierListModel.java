@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,34 +21,43 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
+// $Id$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.util.ConfigLoader;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * @since Oct 12, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 3, 2003
  */
-public class PropPanelFlow extends PropPanelRelationship {
+public class UMLDependencySupplierListModel extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for PropPanelFlow.
+     * Constructor for UMLDependencySupplierListModel.
+     * @param container
      */
-    public PropPanelFlow() {
-        super("Flow", ConfigLoader.getTabPropsOrientation());
-        initialize();
+    public UMLDependencySupplierListModel() {
+        super("supplier");
     }
 
-    private void initialize() {
-        addField(Argo.localize("UMLMenu", "label.name"), nameField);
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
-        addField(Argo.localize("UMLMenu", "label.constraints"), constraintScroll);
-        
-        add(LabelledLayout.getSeperator());
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        if (_target != null) 
+            setAllElements(((MDependency)getTarget()).getSuppliers());
     }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
+     */
+    protected boolean isValidElement(MBase o) {  
+        return o instanceof MModelElement && ((MDependency)getTarget()).getSuppliers().contains(o);
+    }
+
 }
