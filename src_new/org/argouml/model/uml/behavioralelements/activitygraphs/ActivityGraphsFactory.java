@@ -52,14 +52,15 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */
-    private static ActivityGraphsFactory SINGLETON =
+    private static ActivityGraphsFactory sINGLETON =
 	new ActivityGraphsFactory();
 
     /**
      * Singleton instance access method.
+     * @return the singleton
      */
     public static ActivityGraphsFactory getFactory() {
-        return SINGLETON;
+        return sINGLETON;
     }
 
     /** Don't allow instantiation
@@ -171,18 +172,39 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
 					       + "context null or not legal");
     }
     
+    /**
+     * @param elem the ActionState to be deleted
+     */
     public void deleteActionState(Object elem) { }
     
+    /**
+     * @param elem the ActivityGraph to be deleted
+     */
     public void deleteActivityGraph(MActivityGraph elem) { }
     
+    /**
+     * @param elem the CallState to be deleted
+     */
     public void deleteCallState(MCallState elem) { }
     
+    /**
+     * @param elem the ClassifierInState to be deleted
+     */
     public void deleteClassifierInState(MClassifierInState elem) { }
     
+    /**
+     * @param elem ObjectFlowState
+     */
     public void deleteObjectFlowState(MObjectFlowState elem) { }
     
+    /**
+     * @param elem Partition
+     */
     public void deletePartition(MPartition elem) { }
     
+    /**
+     * @param elem SubactivityState
+     */
     public void deleteSubactivityState(MSubactivityState elem) { }
 
 }
