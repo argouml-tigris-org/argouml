@@ -221,6 +221,10 @@ public class Modeller
     */
     public void addImport(String name)
     {
+        // only do imports on the 2nd pass.
+        if( this.getAttribute("level").equals(new Integer(0)))
+            return;
+        
 	String packageName = getPackageName(name);
 	String classifierName = getClassifierName(name);
 	Object mPackage = getPackage(packageName);
@@ -331,6 +335,9 @@ public class Modeller
         ModelFacade.setLeaf(mClass, (modifiers & JavaRecognizer.ACC_FINAL) > 0);
         ModelFacade.setRoot(mClass, false);
 
+        // only do generalizations and realizations on the 2nd pass.
+        if( this.getAttribute("level").equals(new Integer(0)))
+            return;
 
 	if (superclassName != null) {
 	    try {
@@ -692,7 +699,17 @@ public class Modeller
 		    UmlFactory.getFactory().getCore().buildParameter(mOperation);
 		ModelFacade.setName(mParameter, (String) parameter.elementAt(2));
 		ModelFacade.setKindToIn(mParameter);
-		ModelFacade.setType(mParameter, mClassifier);
+                if(ModelFacade.isAClassifier(mClassifier)){
+                    ModelFacade.setType(mParameter, mClassifier);
+                }
+                else{
+                    // the type resolution failed to find a valid classifier.
+                    cat.warn("Modeller.java: a valid type for a parameter " +
+                         "could not be resolved:\n " +
+                         "In file: "+fileName+", for operation: "+
+                         ModelFacade.getName(mOperation)+", for parameter: "+
+                         ModelFacade.getName(mParameter));
+                }
 	    }
 	    catch (ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
@@ -808,7 +825,17 @@ public class Modeller
             setOwnerScope(mAttribute, modifiers);
             setVisibility(mAttribute, modifiers);
             ModelFacade.setMultiplicity(mAttribute, multiplicity);
-            ModelFacade.setType(mAttribute, mClassifier);
+            
+            if(ModelFacade.isAClassifier(mClassifier)){
+                ModelFacade.setType(mAttribute, mClassifier);
+            }
+            else{
+                // the type resolution failed to find a valid classifier.
+                cat.warn("Modeller.java: a valid type for a parameter " +
+                "could not be resolved:\n " +
+                "In file: "+fileName+", for attribute: "+
+                ModelFacade.getName(mAttribute));
+            }
 
             // Set the initial value for the attribute.
             if (initializer != null) {

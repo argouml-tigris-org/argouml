@@ -80,8 +80,15 @@ public class JavaImport extends FileImportSupport {
 	    // exceptions to the file.
 	    cat.info("Parsing " + f.getAbsolutePath());
 
+            modeller.setAttribute("level", _import.getAttribute("level"));
+            
+            try{
 	    // start parsing at the compilationUnit rule
 	    parser.compilationUnit(modeller, lexer);
+            }catch(Exception e){
+                cat.error(e.getClass().getName()+" Exception in file: "+f.getCanonicalPath()+" "+f.getName());
+                throw e;
+            }
 	}
     }
 
