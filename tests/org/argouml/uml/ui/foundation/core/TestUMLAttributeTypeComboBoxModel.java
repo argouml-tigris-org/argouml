@@ -45,7 +45,7 @@ public class TestUMLAttributeTypeComboBoxModel extends TestCase {
 
     private int oldEventPolicy;
     private MClassifier[] types;
-    private UMLAttributeTypeComboBoxModel model;
+    private UMLStructuralFeatureTypeComboBoxModel model;
     private MAttribute elem;
     
     /**
@@ -65,7 +65,7 @@ public class TestUMLAttributeTypeComboBoxModel extends TestCase {
         elem = CoreFactory.getFactory().createAttribute();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        model = new UMLAttributeTypeComboBoxModel();
+        model = new UMLStructuralFeatureTypeComboBoxModel();
         model.targetChanged(elem);
         types = new MClassifier[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
