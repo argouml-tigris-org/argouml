@@ -332,7 +332,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     setMnemonic(saveProjectAsItem,"SaveAs",'A');
     file.addSeparator();
 
-    _import = new JMenu(menuLocalize("Import..."));
+    _import = new JMenu(menuLocalize("Import"));
     JMenuItem importProjectAsItem = _import.add(ActionImportFromSources.SINGLETON);
     appendPluggableMenus(_import, "File:Import");
     file.add(_import);
@@ -1222,10 +1222,12 @@ class InitMenusLater implements Runnable {
     distribute.add(new CmdDistribute(CmdDistribute.V_SPACING));
     distribute.add(new CmdDistribute(CmdDistribute.V_CENTERS));
 
-    reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
-    reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
-    reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
     reorder.add(new CmdReorder(CmdReorder.BRING_FORWARD));
+    reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
+    reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
+    reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
+    
+   
 
     nudge.add(new CmdNudge(CmdNudge.LEFT));
     nudge.add(new CmdNudge(CmdNudge.RIGHT));

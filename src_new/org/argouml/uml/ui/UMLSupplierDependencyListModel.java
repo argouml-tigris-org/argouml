@@ -54,6 +54,7 @@ public class UMLSupplierDependencyListModel extends UMLModelElementListModel  {
         return value;
     }
     
+    
             
 }
 
