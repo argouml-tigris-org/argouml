@@ -90,4 +90,4 @@ change was contributed by Eric Lefevre.
 plan is for the number to change with each release.
 
 Note: Changes not otherwise attributed were performed by Jason Robbins
-(jrobbins@ics.uci.edu) or Adam Gauthier (agauthie@ics.uci.edu).
+(jrobbins at collab.net) or Adam Gauthier (agauthie@ics.uci.edu).
