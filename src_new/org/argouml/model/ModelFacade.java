@@ -6340,6 +6340,16 @@ public class ModelFacade {
      * copies a stereotype that is not a part of the current model to
      * the current model.<p>
      *
+     * <p>TODO: Currently does not copy the stereotype, but changes the
+     * namespace to the new model (kidnapping it). That might possibly be
+     * dangerous, especially if more complex profile models are developed.
+     * This documentation should say what is supposed to be done. I think
+     * it would have been better if the caller had been responsible for the
+     * stereotype being in the right model and been adviced of
+     * eg ModelManagementHelper.getCorrespondingElement(...). Or if that had
+     * been used here. This function could possibly assert that the caller had
+     * got it right.
+     *
      * @param handle model element
      * @param stereo stereotype
      */
@@ -6349,7 +6359,6 @@ public class ModelFacade {
             if (stereo instanceof MStereotype
                 && me.getModel() != ((MStereotype) stereo).getModel()) {
                 ((MStereotype) stereo).setNamespace(me.getModel());
-                return;
             }
             if (stereo == null || stereo instanceof MStereotype) {
                 me.setStereotype((MStereotype) stereo);
