@@ -199,7 +199,9 @@ their native language to discuss UML concepts,
 then there is no use in translating these concepts to their language,
 they will not use the translation because they are more
 comfortable with the English concepts.
-Note that the UML Specification does only exist in English.
+Note that the UML Specification does only exist in English
+and a natural part of this level of ambition would probably
+be to translate that.
 </para>
 	  </listitem>
 	  <listitem>
@@ -215,27 +217,7 @@ also includes the javadoc comments in the code of ArgoUML and
 design documentation of included packages such as GEF, NSUML...
 </para>
 	    <para>
-For translating the javadoc there exist no good tools.
-</para>
-	    <para>
-This is pointless unless we have identified an extremely large
-developer base willing to take on big parts of of the ArgoUML
-development that is
-speaking one specific language and where most of them do not
-know English.
-</para>
-	    <para>
-If any Language Team would consider this, 
-probably after several years of extremely good work on the 
-User environment translation ambition level
-it is a decision not only concerning that language team but the whole
-ArgoUML development community.
-</para>
-	    <para>
-Maybe I (Linus Tolke) have gone a little over the top now in trying 
-to define things far off the side of the planet.
-It is probably just me but I find a weird pleasure in encouraging people
-to strive for unreachable goals.
+We don't do this in the ArgoUML project.
 </para>
 	  </listitem>
 	</orderedlist>
