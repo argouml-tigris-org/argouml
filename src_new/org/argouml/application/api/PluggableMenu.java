@@ -85,6 +85,13 @@ public interface PluggableMenu extends Pluggable {
      */
     public JMenuItem getMenuItem(Object[] context);
 
+    /**
+     * Helper to create a context recognized by
+     * {@link Pluggable#inContext(Object[])}
+     * @param parentMenuItem menu item
+     * @param menuType menu name
+     * @return the proper context array.
+     */
     public Object[] buildContext(JMenuItem parentMenuItem, String menuType);
 
 } /* End interface PluggableMenu */

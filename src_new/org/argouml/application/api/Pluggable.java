@@ -50,10 +50,13 @@ package org.argouml.application.api;
  */
 public interface Pluggable extends ArgoModule {
 
+    /** Constant required in plugin manifest. */
     public static final String PLUGIN_TITLE = "ArgoUML Dynamic Load Module";
 
+    /** Constant required in plugin manifest. */
     public static final String PLUGIN_VENDOR = "University of California";
 
+    /** Constant required in plugin manifest. */
     public static final String PLUGIN_PREFIX = 
 	"org.argouml.application.api.Pluggable";
 

@@ -32,7 +32,8 @@ package org.argouml.application.api;
  */
 public interface PluggableSettingsTab extends Pluggable {
     /** Returns the settings tab panel for the plugin.
-     *This is found under the edit button
+     * This is found under the edit button.
+     * @return the setting tab panel.
      */
     public SettingsTabPanel getSettingsTabPanel();
 
