@@ -15,6 +15,9 @@ Modifications
 
  4 Apr 2002:  Jeremy Bennett. Updated info relating to singletons, now it is a
               defined stereotype within ArgoUML for release 0.9.8.
+
+22 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum.
+
 -->
 
 <chapter id="ch.ref.critics">
@@ -227,7 +230,7 @@ Modifications
     </sect2>
 
     <sect2 id="s2.ref.critics_disambig_class_name">
-      <title>Chose a Unique Name for &lt;artifact&gt; (Classes and
+      <title>Choose a Unique Name for &lt;artifact&gt; (Classes and
         Interfaces)</title>
 
       <para>Suggestion that the class or interface specified has the same name
@@ -472,7 +475,8 @@ Modifications
     <para>Critics concerning state machines.</para>
 
     <note><para>The correct title for this category should be
-      <literal>State&nbsp;Machines</literal>.</para></note>
+      <literal>State&nbsp;Machines</literal>. This is raised as an issue to be
+      fixed in a future version of &argouml;</para></note>
 
     <para>The current version of &argouml; has 14 critics in this
       category.</para>

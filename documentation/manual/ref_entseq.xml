@@ -16,6 +16,9 @@ Modifications
 19 Mar 2002:  Jeremy Bennett. Changed all tables to variablelists to fix
               problems with generating PDF.
 
+18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum,
+              particularly relating to "limitations" section.
+
 -->
 
 <chapter id="ch.ref.entseq">
@@ -54,6 +57,19 @@ Modifications
         </imageobject>
       </mediaobject></screenshot>
     </figure>
+
+    <!-- Limitations in Argo/UML relating to support in general -->
+
+    <sect2>
+      <title>Limitations Concerning Sequence Diagrams in &argouml;</title>
+
+      <para>The sequence diagram is still rather under-developed in
+        &argouml;.</para>
+
+      <para>The biggest difficulties are with the actions behind the
+        stimuli. These are purely textual in implementation, and there is no
+        way to link them back to their associated operations or signals.</para>
+    </sect2>
   </sect1>
 
   <!-- Artifacts specific to Sequence Diagrams. Object Artifact -->

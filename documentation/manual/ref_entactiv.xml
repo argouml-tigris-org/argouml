@@ -16,6 +16,8 @@ Modifications
 19 Mar 2002:  Jeremy Bennett. Changed all tables to variablelists to fix
               problems with generating PDF.
 
+18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum,
+              particularly relating to "limitations" section.
 -->
 
 <chapter id="ch.ref.entactiv">
@@ -58,6 +60,19 @@ Modifications
         </imageobject>
       </mediaobject></screenshot>
     </figure>
+
+    <!-- Limitations in Argo/UML relating to support for swimlanes -->
+
+    <sect2>
+      <title>Limitations Concerning Activity Diagrams in &argouml;</title>
+
+      <para>The activity diagram is generally well drawn, but suffers from the
+        same limitations as the state diagram (see <xref
+        linkend="s2.ref.state_limitations"/>).</para>
+
+      <para>A particular limitation is the lack of any support for
+        swimlanes.</para>
+    </sect2>
   </sect1>
 
   <!-- Artifacts specific to Activity Diagrams. Action State artifact. Has

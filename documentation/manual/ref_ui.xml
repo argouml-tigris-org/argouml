@@ -20,6 +20,8 @@ Modifications
 
  4 Apr 2002:  Jeremy Bennett. Updates for release 0.9.8. New pane resizing
 
+18 Apr 2002:  Jeremy Bennett. Added an overview of the diagrams that can be
+              created. Incorporated comments from Bob Marcum.
 -->
 
 <chapter id="ch.ref.ui">
@@ -71,6 +73,94 @@ Modifications
 
   </sect1>
 
+  <!-- A summary of the diagrams that can be created in ArgoUML -->
+
+  <sect1 id="s1.ref.diagram_types">
+    <title>UML Diagram Types supported by &argouml;</title>
+
+    <para>The UML standard specifies eight principle diagrams, all of which are
+      supported by &argouml;.</para>
+
+    <itemizedlist>
+      <listitem><para><emphasis>Use case diagram</emphasis>. Used to capture
+        and analyse the requirements for any &ooad; project. See <xref
+        linkend="ch.ref.entusecase"/> for details of the &argouml; use case
+        diagram and the artifacts it supports.</para></listitem>
+
+      <listitem><para><emphasis>Class diagram</emphasis>. This diagram captures
+        the static structure of the system being designed, showing the classes,
+        interfaces and datatypes and how they are related. Variants of this
+        diagram are used to show package structures within a system (the
+        <emphasis>package diagram</emphasis>) and the relationships between
+        particular instances (the <emphasis>object diagram</emphasis>).</para>
+
+      <para>The &argouml; class diagram provides support for class and package
+        diagrams. See <xref linkend="ch.ref.entclass"/> for details of the
+        artifacts it supports. The current implementation has no support for
+        object diagrams.</para></listitem>
+
+      <listitem><para><emphasis>Behavior diagrams</emphasis>. There are four
+        such diagrams (or strictly speaking, five, since the use case diagram
+        is a type of behavior diagram), which show the dynamic behavior of the
+        system at all levels.</para>
+
+      <itemizedlist>
+        <listitem><para><emphasis>State diagram</emphasis>. Used to show the
+          dynamic behavior of a single object (class instance). This diagram is
+          of particular use in systems using complex communication protocols,
+          such as in telecommunications. See <xref linkend="ch.ref.entstate"/>
+          for details of the &argouml; state diagram and the artifacts it
+          supports.</para></listitem>
+
+        <listitem><para><emphasis>Activity diagram</emphasis>. Used to show the
+          dynamic behavior of groups of objects (class instance). This diagram
+          is an alternative to the state diagram, and is better suited to
+          systems with a great deal of user interaction. See <xref
+          linkend="ch.ref.entactiv"/> for details of the &argouml; activity
+          diagram and the artifacts it supports.</para></listitem>
+
+        <listitem><para><emphasis>Interaction diagrams</emphasis>. There are
+          two diagrams in this category, used to show the dynamic interaction
+          between objects (class instances) in the system.</para>
+
+        <itemizedlist>
+          <listitem><para><emphasis>Sequence diagram</emphasis>. Shows the
+            interactions (typically messages or procedure calls) between
+            instances of classes (objects) and actors against a
+            timeline. Particularly useful where the timing relationships
+            between interactions are important. See <xref
+            linkend="ch.ref.entseq"/> for details of the &argouml; sequence
+            diagram and the artifacts it supports.</para></listitem>
+      
+          <listitem><para><emphasis>Collaboration diagram</emphasis>. Shows the
+            interactions (typically messages or procedure calls) between
+            instances of classes (objects) and actors against the structural
+            relationships between those instances. Particularly useful where it
+            is useful to relate interactions to the static structure of the
+            system. See <xref linkend="ch.ref.entcollab"/> for details of the
+            &argouml; collaboration diagram and the artifacts it
+            supports.</para></listitem>
+        </itemizedlist></listitem>
+      </itemizedlist></listitem>
+
+      <listitem><para><emphasis>Implementation diagrams</emphasis>. UML defines
+        two implementation diagrams to show the relationship between the
+        software components that make up a system (the <emphasis>component
+        diagram</emphasis>) and the relationship between the software and the
+        hardware on which it is deployed at run-time (the <emphasis>deployment
+        diagram</emphasis>.</para>
+
+      <para>The &argouml; deployment diagram provides support for both
+        component and deployment diagrams. See <xref
+        linkend="ch.ref.entdeploy"/> for details of the diagram and the
+        artifacts it supports.</para></listitem>
+    </itemizedlist>
+
+    <para>There are some artifacts that are common to all diagrams. These are
+      described in a separate chapter (see <xref
+      linkend="ch.ref.entities"/>).</para>
+  </sect1>
+
   <!-- The central explanation of how the mouse behaves -->
 
   <sect1 id="s1.ref.mouse">
@@ -96,9 +186,9 @@ Modifications
         button on a right-handed mouse, and is sometimes referred to as the
         <emphasis>adjust</emphasis> button.</para>
 
-      <para>A single depress and release of a mouse button whilst the mouse
-        is still is referred to as a <emphasis>click</emphasis>. Two clicks in
-        quick succession is referred to as a <emphasis>double
+      <para>A single depress and release of a mouse button while the mouse is
+        referred to as a <emphasis>click</emphasis>. Two clicks in quick
+        succession is referred to as a <emphasis>double
         click</emphasis>. Moving the mouse while holding a button down is
         referred to as <emphasis>button motion</emphasis> with the starting
         point being at <emphasis>button down</emphasis> and the end point at

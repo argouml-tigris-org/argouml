@@ -16,6 +16,8 @@ Modifications
 19 Mar 2002:  Jeremy Bennett. Changed all tables to variablelists to fix
               problems with generating PDF.
 
+18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum,
+              particularly relating to "limitations" section.
 -->
 
 <chapter id="ch.ref.entcollab">
@@ -56,6 +58,23 @@ Modifications
         </imageobject>
       </mediaobject></screenshot>
     </figure>
+
+    <!-- Limitations in Argo/UML relating to support in general -->
+
+    <sect2>
+      <title>Limitations Concerning Collaboration Diagrams in &argouml;</title>
+
+      <para>The collaboration diagram is still rather under-developed in
+        &argouml;. In particular there is no way to show instance
+        collaborations (based on objects and links) rather than specification
+        collaborations.</para>
+
+      <para>The biggest difficulties are with the messages. There are problems
+        with the sequencing of the messages and their display on the
+        diagram. The actions behind them are purely textual in implementation
+        and there is no way to link them back to their associated operations or
+        signals.</para>
+    </sect2>
   </sect1>
 
   <!-- Artifacts specific to Collaboration Diagrams. Classifier Role artifact

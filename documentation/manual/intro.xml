@@ -76,8 +76,8 @@ Modifications
 
       <para>During the 1980's a number of &ooad; process methodologies and
         notations were developed by different research teams. It became clear
-        that were many common themes, and during the 1990's a unified approach
-        for &ooad; notation was developed under the auspices of the
+        there were many common themes and, during the 1990's, a unified
+        approach for &ooad; notation was developed under the auspices of the
         <ulink url="http://www.omg.org">Object Management Group</ulink>. This
         standard became known as the Unified Modeling Language (UML), and is
         now the standard language for communicating OO concepts.</para>
@@ -91,7 +91,7 @@ Modifications
       <orderedlist>
         <listitem><para>&argouml; draws on research in cognitive psychology to
           provide novel features that increase productivity by supporting the
-          cognitive needs object-oriented software designers and
+          cognitive needs of object-oriented software designers and
           architects.</para></listitem>
 
         <listitem><para>&argouml; supports open standards
@@ -103,45 +103,44 @@ Modifications
           Java2 platform is available.</para></listitem>
 
         <listitem><para>&argouml; is an open source project. The availability
-          of the source permits ensures that a new generation of software
+          of the source ensures that a new generation of software
           designers and researchers now have a proven framework from which they
           can drive the development and evolution of CASE tool
           technologies.</para></listitem>
       </orderedlist>
 
-      <para>In creating the &argouml; development tool and environment, Jason
-        Robbins and the rest of his research team at the University of
-        California, Irvine leveraged the benefits of UML as the most prevalent
-        OO modeling language and Java as one of the most productive OO
-        development platforms to produce a solid tool for OO systems design
-        and, further a test bed for the evolution of object oriented CASE tools
+      <para>UML is the most prevalent OO modeling language and Java is one of
+        the most productive OO development platforms. Jason Robbins and the
+        rest of his research team at the University of California, Irvine
+        leveraged these benefits in creating the &argouml;. The result is a
+        solid development tool and environment for OO systems design. Further,
+        it provides a test bed for the evolution of object oriented CASE tools
         development and research.</para>
 
       <para>A first release of &argouml; was available in 1998 and more than
-        100,000 downloads since then show the impact that this project has
+        100,000 downloads by mid-2001 show the impact that this project has
         made, being popular in educational and commercial fields.</para>
     </sect2>
 
     <!-- A bit more on the status of the project. Taken from Andreas. -->
 
     <sect2>
-      <title>Finding Out More About the Project Today</title>
+      <title>Finding Out More About the Argo Project</title>
 
       <!-- The Argo/UML process and infrastructure -->
 
       <sect3>
-        <title>The &argouml; Development Process and the Infrastructure it
-        Uses</title> 
+        <title>How &argouml; is Developed</title> 
 
-        <para>Although Jason Elliot Robbins (he's still actively involved,
-          being the maintainer of the Tigris host at CollabNet, where the
-          project is hosted now) has stepped back from project leadership and
-          handed the stab to Tobias Baier, the project is still going
-          strong. There are more than 300 members on the developer mailing list
-          (see <ulink
-            url="http://argouml.tigris.org/servlets/ProjectMailingListList">
-            http://argouml.tigris.org/servlets/ProjectMailingListList</ulink>),
-          with 15-20 forming the core group.</para>
+        <para>Jason Elliot Robbins founded the Argo Project and provided early
+          project leadership.  While Jason remains active in the project, he
+          has handed off project leadership.  The project continues to move
+          forward strongly.  There are more than 300 members on the developer
+          mailing list (see <ulink
+          url="http://argouml.tigris.org/servlets/ProjectMailingListList">
+          http://argouml.tigris.org/servlets/ProjectMailingListList</ulink>),
+          with a couple of dozen of those forming the core development
+          group.</para>
 
         <para>This is the place where all the discussion on the latest tasks
           takes place, and developers discuss the directions the project should
@@ -176,7 +175,7 @@ Modifications
       <!-- A bit about development tools -->
 
       <sect3>
-        <title>Used Development Tools</title>
+        <title>Development Tools Used</title>
 
         <note><para>As a user you don't need to know this, but it's here for
           interest to explain a little about how &argouml; is
@@ -214,16 +213,16 @@ Modifications
     <sect2>
       <title>Target Audience</title>
 
-      <para>The current version of this document is aimed at experienced users
+      <para>The current release of this document is aimed at experienced users
         of UML in &ooad; (perhaps with other tools) who wish to transfer to
         &argouml;.</para>
 
-      <para>Future versions will support designers who know &ooad;, and wish to
-        adopt a UML based process.</para>
+      <para>Future releases will support designers who know &ooad;, and wish to
+        adopt UML notation within their development process.</para>
 
-      <para>A long term goal is to support those who are learning design and
-        wish to start with a UML based &ooad; process and people interested in
-        modularized code design with a GUI.</para>
+      <para>A long term goal is to support i) those who are learning design and
+        wish to start with an &ooad; process that uses UML notation, and ii)
+        people interested in modularized code design with a GUI.</para>
     </sect2>
 
     <sect2>
@@ -244,7 +243,8 @@ Modifications
       <para>The current version of the document has achieved the second of
         these.</para>
 
-      <para>In this guide there are some things you will not find</para>
+      <para>In this guide there are some things you will not find, because they
+        are covered elsewhere.</para>
 
       <itemizedlist>
         <listitem><para>Descriptions of how &argouml; works on the
@@ -262,7 +262,7 @@ Modifications
       <!-- Note these are full URLs. We allow for the manual being other than
            on the argouml part of the tigris server -->
 
-      <para>These are covered elsewhere, particularly in the
+      <para>These are covered in the
         <ulink url="http://argouml.tigris.org/documentation/defaulthtml/faq/">
           FAQ</ulink>, 
         <ulink url="http://argouml.tigris.org/documentation/defaulthtml/quickguide/">
@@ -291,8 +291,8 @@ Modifications
         deployment.</para>
 
       <para>As each UML concept is encountered, its use is explained. Its use
-        within &argouml; is then described. Finally the case study is used to
-        give examples of the concept in use.</para>
+        within &argouml; is then described. Finally the a study is used to
+        give examples of the concepts in use.</para>
     </sect2>         
 
 
@@ -302,22 +302,24 @@ Modifications
     <sect2>
       <title>Reference Manual Structure</title>
 
-      <para><xref linkend="ch.ref.ui"/> is an overview of the user
-        interface. Separate chapters <xref linkend="ch.ref.navpane"/> through
-        <xref linkend="ch.ref.menu"/> describe each of the sub-windows of the
-        user interface, known as <emphasis>Panes</emphasis>, and the menu
-        bar.</para>
+      <para><xref linkend="ch.ref.ui"/> is an overview of the user interface
+        and provides a summary of the support for the various UML diagram types
+        in &argouml;. Separate chapters <xref linkend="ch.ref.navpane"/>
+        through <xref linkend="ch.ref.menu"/> describe each of the sub-windows
+        of the user interface, known as <emphasis>Panes</emphasis>, and the
+        menu bar.</para>
 
       <para><xref linkend="ch.ref.critics"/> gives details of all the cognitive
         critics within the system. Eventually &argouml; will link directly to
         this manual when giving advice on critics.</para>
 
       <para><xref linkend="ch.ref.entities"/> is an overview of the artifacts
-        with &argouml;. The following chapters (<xref
-          linkend="ch.ref.entusecase"/> through <xref
-          linkend="ch.ref.entbuiltin"/>) describe, the artifacts that can be
-        created through each &argouml; diagram, and their properties, as well
-        as some standard artifacts provided with the system.</para>
+        (i.e. the UML entities that can be placed on diagrams) within
+        &argouml;. The following chapters (<xref linkend="ch.ref.entusecase"/>
+        through <xref linkend="ch.ref.entbuiltin"/>) describe, the artifacts
+        that can be created through each &argouml; diagram, and their
+        properties, as well as some standard artifacts provided with the
+        system.</para>
 
       <para>A complete <xref linkend="glossary"/> is provided.  <xref
           linkend="app.casestudy"/> provides material to supplement the case
@@ -338,8 +340,8 @@ Modifications
     <sect2>
       <title>User Feedback</title>
 
-      <para>Finally tell us what you think about this User Manual. Your
-        comments will help us improve things. Email your thoughts to the
+      <para>Please tell us what you think about this User Manual. Your
+        comments will help us make improvements. Email your thoughts to the
         <ulink url="mailto:users@argouml.tigris.org">&argouml; Users Mailing
           List</ulink>.</para>
     </sect2>
@@ -354,12 +356,12 @@ Modifications
   <sect1>
     <title>Assumptions</title>
 
-    <para>The current version of the manual assumes the reader is very familiar
+    <para>This release of the manual assumes the reader is very familiar
       with UML already. This is reflected in the sparseness of the description
       of UML concepts in the tutorial.</para>
 
     <para>The case study is described, but not yet fully realized throughout
-      the tutorial. This will be achieved in future versions of the
+      the tutorial. This will be achieved in future releases of the
       manual.</para>
   </sect1>
 </chapter>

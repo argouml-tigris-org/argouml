@@ -15,6 +15,8 @@ Modifications
 19 Mar 2002:  Jeremy Bennett. Changed all tables to variablelists to fix
               problems with generating PDF.
 
+18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum,
+              particularly relating to "limitations" section.
 -->
 
 <chapter id="ch.ref.entstate">
@@ -54,6 +56,20 @@ Modifications
         </imageobject>
       </mediaobject></screenshot>
     </figure>
+
+    <!-- Limitations in Argo/UML relating to support for events and code
+         generation. -->
+
+    <sect2 id="s2.ref.state_limitations">
+      <title>Limitations Concerning State Diagrams in &argouml;</title>
+
+      <para>The state diagrams is generally well drawn, but only call events
+        are supported, and these are purely textual, with no way to link them
+        back to their associated operations.</para>
+
+      <para>There code generation from state diagrams is not properly developed
+        yet.</para>
+    </sect2>
   </sect1>
 
   <!-- Artifacts specific to State Diagrams. State artifact. Has Action as

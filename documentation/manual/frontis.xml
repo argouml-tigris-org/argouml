@@ -25,13 +25,16 @@ Modifications
 14 Mar 2002:  Jeremy Bennett. First draft (A) for 0.9.8.
 
  4 Apr 2002:  Jeremy Bennett. Updated for issue 0.9.8.
+
+18 Apr 2002:  Jeremy Bennett. Incorporated first two batches of comments from
+              Bob Marcum.
 -->
 
 <bookinfo>
   <date>11/30/2001</date>
 
   <title>&argouml; User Manual</title>
-  <subtitle>An introduction to &argouml;</subtitle>
+  <subtitle>A tutorial and reference description of &argouml;</subtitle>
 
   <authorgroup>
     <author>
@@ -97,6 +100,19 @@ Modifications
   </legalnotice>
 
   <revhistory>
+    <revision>
+      <revnumber>0.9.9, draft A</revnumber> <date>22 Apr 2002</date>
+      <revdescription><para>Update to incorporate Bob Marcum's comments from
+        reviewing through to chapter 14, plus some other minor changes. The
+        reference part of the manual (chapters 7 through 22) is now
+        completed. In addition chapter 1 (introduction), tutorial chapter 2
+        (UML based &ooad;) are now largely complete.</para>
+
+      <para>Bob Marcum's comments incorporated. Change to singleton stereotype
+        also added to all children of classifier that may use
+        it.</para></revdescription>
+    </revision>
+
     <revision>
       <revnumber>0.9.8</revnumber> <date>5 Apr 2002</date>
       <revdescription><para>Full issue for release 0.9.8. Update to capture

@@ -16,6 +16,9 @@ Modifications
               function.
 
  1 Feb 2002:  Jeremy Bennett. Comments from Linus Tolke incorporated.
+
+18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum.
+
 -->
 
 <chapter id="ch.ref.navpane">
@@ -59,7 +62,7 @@ Modifications
   <sect1 id="s1.ref.nav_mouse">
     <title>Mouse Behavior in the Navigation Pane</title>
 
-    <para>Behaviour of the mouse in general, and the naming of the buttons is
+    <para>Behavior of the mouse in general, and the naming of the buttons is
       covered in the chapter on the overall user interface (see
       <xref linkend="ch.ref.ui"/>).</para>
 
@@ -183,7 +186,7 @@ Modifications
 
       <listitem><para><literal>Association-centric</literal>. In this view the
         top level shows the model. Beneath this are all diagrams and all
-        associations. All associations have then have a sub-hierarchy listing
+        associations. All associations then have a sub-hierarchy listing
         the classes they connect. Where classes have associated state diagrams
         these are shown beneath the class.</para></listitem>
 
@@ -213,7 +216,7 @@ Modifications
         transitions on the diagram, with action states being shown as
         sub-hierarchies under their connected transitions.</para></listitem>
 
-      <listitem><para><literal>Transitions-paths</literal>. This is again
+      <listitem><para><literal>Transitions-paths</literal>. This is
         similar to <literal>State-centric</literal> view. However under each
         state machine is shown the state diagram and the initial state. Under
         the initial state is a hierarchy showing the states to which it has
@@ -232,17 +235,24 @@ Modifications
         artifacts. A hierarchy is shown for any dependency beneath any top
         level artifact.</para>
 
-      <caution><para>Dependencies include realizations, use case includes and
-        extends relationships (which is not strictly correct under UML 1.3) and
+      <caution><para>Dependencies include realizations and
         implicit dependencies such as inner classes and state machines on their
-        owning classes.</para></caution></listitem>
+        owning classes.</para>
+
+      <para>When examining older &argouml; models, you may find some
+        dependencies stereotyped as <literal>&laquo;extend&raquo;</literal> or
+        <literal>&laquo;include&raquo;</literal>, since they were used
+        (incorrectly) to depict extend and include relationships on use case
+        diagrams. If such dependencies are seen, they should be replaced by
+        proper extend and include relationships, which are now supported on the
+        use case diagram.</para></caution></listitem>
     </itemizedlist>
   </sect1>
 
   <!-- Navigating around with the buttons -->
 
   <sect1>
-    <title>Navigating Back and Forward</title>
+    <title>Navigating Backward and Forward</title>
 
     <para>Two buttons are provided allowing the user to navigate back and
       forward through diagrams in the model.</para>
@@ -253,7 +263,7 @@ Modifications
           fileref="images/icons/navigate_back.gif"/>
         </imageobject></inlinemediaobject></guiicon>
         <literal>Navigate Back</literal>. &argouml; keeps a record of the
-        diagrams that you have been viewing whilst navigating the model. This
+        diagrams that you have been viewing while navigating the model. This
         button moves you back to the previous one viewed. If there are no more
         previous diagrams, the button is grayed out.</para></listitem>
 
@@ -262,7 +272,7 @@ Modifications
           fileref="images/icons/navigate_forward.gif"/>
         </imageobject></inlinemediaobject></guiicon>
         <literal>Navigate Forward</literal>. &argouml; keeps a record of the
-          diagrams that you have been viewing whilst navigating the model. This
+          diagrams that you have been viewing while navigating the model. This
           button moves you forward to the next one viewed (after you have used
           the Navigate Back button to move back). If there are no more next
           diagrams, the button is grayed out.</para></listitem>
@@ -392,7 +402,7 @@ Modifications
         hierarchy.</para>
 
       <caution><para>This functionality is not yet implemented in
-        &argouml;. Only the first panel is every shown, which is always rooted
+        &argouml;. Only the first panel is ever shown, which is always rooted
         at project. All other options are grayed out and
         unavailable.</para></caution>
 
@@ -520,9 +530,9 @@ Modifications
         be deleted from the model.</para>
 
       <warning><para>This deletes the artifact from the model completely, not
-        just from the diagram. To remove just from the diagram use the edit
-        menu (see
-        <xref linkend="s2.menu_edit_remove_from_diagram"/>).</para></warning>
+        just from the diagram. To remove the artifact just from the diagram,
+        use the edit menu (see <xref
+        linkend="s2.menu_edit_remove_from_diagram"/>).</para></warning>
 
       <caution><para>You cannot delete a diagram from the model. This function
         will just delete all the items on the diagram.</para>

@@ -17,6 +17,9 @@ Modifications
 
 12 Mar 2002:  Jeremy Bennett. Updated to reflect bux fixes to a number of
               critics.
+
+22 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum.
+
 -->
 
 <chapter id="ch.ref.menu">
@@ -46,7 +49,7 @@ Modifications
   <sect1 id="s1.ref.menu_mouse">
     <title>Mouse Behavior in the Menu Bar</title>
 
-    <para>Behaviour of the mouse in general, and the naming of the buttons is
+    <para>Behavior of the mouse in general, and the naming of the buttons is
       covered in the chapter on the overall user interface (see
       <xref linkend="ch.ref.ui"/>).</para>
 
@@ -56,7 +59,7 @@ Modifications
       <title>&Button1; Click</title>
 
       <para>Over a top level drop down menu this will expose the menu. If the
-        button is help down and moved, the behaviour of &button1; motion (see
+        button is held down and moved, the behavior of &button1; motion (see
         below) will follow.</para>
 
       <para>Over an exposed menu entry this will invoke the action of the
@@ -140,9 +143,11 @@ Modifications
         there is no dialog&mdash;the project is just created. The entry should
         properly be just <literal>New</literal>.</para></note>
 
-      <caution><para><literal>untitledModel</literal> is not a valid model
-        name (upper case is not permitted). See <xref linkend="s1.ref.model"/>
-        for a discussion of this.</para></caution>
+      <caution><para><literal>untitledModel</literal> is not a conventional
+        model name (most processes suggest models should start with an upper
+        case letter). &argouml; permits you to use a lower case letter, but
+        a critic will trigger to warn that this is not conventional. See <xref
+        linkend="s1.ref.model"/> for a discussion of this.</para></caution>
     </sect2>
 
     <!-- Open existing project -->
@@ -263,7 +268,7 @@ Modifications
 
       <para>This opens a dialog allowing you to save the project under a
         different file name (or to specify a file name for the first time if
-        you are a new project).</para>
+        the project is a new project).</para>
 
       <caution><para>If you are using an experimental version of &argouml; you
         will receive a warning message that file formats are not guaranteed to
@@ -290,7 +295,7 @@ Modifications
       <title>Import&hellip;</title>
 
       <para>This sub-menu provides access to mechanisms to import a variety of
-        material in to &argouml;. In the current version of &argouml; only one
+        material into &argouml;. In the current version of &argouml; only one
         type of import is provided as standard, the importing of Java code for
         reverse engineering.</para>
 
@@ -1232,7 +1237,7 @@ v           new datatypes in their own right (the default) or as their base
         <listitem><para>snap at 4 pixel spacing.</para></listitem>
       </itemizedlist>
 
-      <note><para>There is no option to turn of snap to grid
+      <note><para>There is no option to turn off snap to grid
         altogether</para></note>
 
       <caution><para>In the current version of &argouml; this is not actually a
@@ -1270,9 +1275,8 @@ v           new datatypes in their own right (the default) or as their base
         connections of various types (associations, generalizations) to other
         artifacts.</para>
 
-      <caution><para>The menu entry is somewhat misleading labeled. It is
-        better thought of as
-        <literal>Handles&nbsp;On&nbsp;Selection</literal>.</para></caution>
+      <caution><para>The label is somewhat misleading. It is better thought of
+        as <literal>Handles&nbsp;On&nbsp;Selection</literal>.</para></caution>
     </sect2>
 
     <!-- Choose whether UML or Java notation -->
@@ -1343,13 +1347,13 @@ v           new datatypes in their own right (the default) or as their base
         diagram in the editing pane. If a package is currently selected, the
         class diagram will be created within that package, it will be shown
         within the package on the navigation pane hierarchy (under
-        Package-centric view) and artifacts created on the diagram will have
-        the namespace of the package.</para>
+        Package-centric view) and artifacts created on the diagram will be
+        created within the namespace of the package.</para>
 
-      <tip><para>This does not prevent artifacts from other
-        namespaces/packages appearing on the diagram. They can added from the
-        navigation pane using <literal>Add to Diagram</literal> from the
-        &button2; pop-up menu.</para></tip>
+      <tip><para>This does not prevent artifacts from other namespaces/packages
+        appearing on the diagram. They can be added from the navigation pane
+        using <literal>Add to Diagram</literal> from the &button2; pop-up
+        menu.</para></tip>
     </sect2>
 
     <!-- Create a Use Case Diagram -->
@@ -1365,13 +1369,13 @@ v           new datatypes in their own right (the default) or as their base
         diagram in the editing pane. If a package is currently selected, the
         use case diagram will be created within that package, it will be shown
         within the package on the navigation pane hierarchy (under
-        Package-centric view) and artifacts created on the diagram will have
-        the namespace of the package.</para>
+        Package-centric view) and artifacts created on the diagram will be
+        created within the namespace of the package.</para>
 
-      <tip><para>This does not prevent artifacts from other
-        namespaces/packages appearing on the diagram. They can added from the
-        navigation pane using <literal>Add to Diagram</literal> from the
-        &button2; pop-up menu.</para></tip>
+      <tip><para>This does not prevent artifacts from other namespaces/packages
+        appearing on the diagram. They can be added from the navigation pane
+        using <literal>Add to Diagram</literal> from the &button2; pop-up
+        menu.</para></tip>
     </sect2>
 
     <!-- Create a State Diagram -->
@@ -1385,8 +1389,8 @@ v           new datatypes in their own right (the default) or as their base
 
       <para>This menu entry creates a blank state diagram associated with the
         currently selected class, and selects that diagram in the editing
-        pane. Artifacts created on the diagram will have the namespace of the
-        owning class.</para>
+        pane. Artifacts created on the diagram will be created within the
+        namespace of the owning class.</para>
 
       <caution><para>State diagrams <emphasis>must</emphasis> be associated
         with a class. In the current version of &argouml; the <literal>State
@@ -1406,8 +1410,8 @@ v           new datatypes in their own right (the default) or as their base
 
       <para>This menu entry creates a blank activity diagram associated with
         the currently selected class, and selects that diagram in the editing
-        pane. Artifacts created on the diagram will have the namespace of the
-        owning class.</para>
+        pane. Artifacts created on the diagram will be created within the
+        namespace of the owning class.</para>
 
       <caution><para>Activity diagrams <emphasis>must</emphasis> be associated
         with a class. In the current version of &argouml; the <literal>Activity
@@ -1429,11 +1433,12 @@ v           new datatypes in their own right (the default) or as their base
         that. Within the package hierarchy, collaboration diagrams are always
         created within a <literal>Collaboration</literal>, within the package
         or model, rather than within the package or model directly itself. If a
-        package is current selected, the collaboration diagram will be created
-        within a collaboration within that package, it will be shown within the
-        collaboration within the package on the navigation pane hierarchy
-        (under Package-centric view) and artifacts created on the diagram will
-        have the namespace of the collaboration within the package.</para>
+        package is currently selected, the collaboration diagram will be
+        created within a collaboration within that package, it will be shown
+        within the collaboration within the package on the navigation pane
+        hierarchy (under Package-centric view) and artifacts created on the
+        diagram will be created within the namespace of the collaboration
+        within the package.</para>
 
       <tip><para>This does not prevent artifacts from other
         namespaces/packages appearing on the diagram. They can added from the
@@ -1451,11 +1456,11 @@ v           new datatypes in their own right (the default) or as their base
         Diagram</title>
 
       <para>This menu entry creates a blank deployment diagram, and selects
-        that diagram in the editing pane. If a package is current selected, the
-        deployment diagram will be created within that package, it will be
+        that diagram in the editing pane. If a package is currently selected,
+        the deployment diagram will be created within that package, it will be
         shown within the package on the navigation pane hierarchy (under
-        Package-centric view) and artifacts created on the diagram will have
-        the namespace of the package.</para>
+        Package-centric view) and artifacts created on the diagram will be
+        created within the namespace of the package.</para>
 
       <tip><para>This does not prevent artifacts from other
         namespaces/packages appearing on the diagram. They can added from the
@@ -1473,11 +1478,11 @@ v           new datatypes in their own right (the default) or as their base
         Diagram</title> 
 
       <para>This menu entry creates a blank sequence diagram, and selects that
-        diagram in the editing pane. If a package is current selected, the
+        diagram in the editing pane. If a package is currently selected, the
         sequence diagram will be created within that package, it will be shown
         within the package on the navigation pane hierarchy (under
-        Package-centric view) and artifacts created on the diagram will have
-        the namespace of the package.</para>
+        Package-centric view) and artifacts created on the diagram will be
+        created within the namespace of the package.</para>
 
       <tip><para>This does not prevent artifacts from other
         namespaces/packages appearing on the diagram. They can added from the
@@ -1681,15 +1686,15 @@ v           new datatypes in their own right (the default) or as their base
             format="GIF" align="center"
             fileref="images/icons/nudge_up.gif"/>
           </imageobject></inlinemediaobject></guiicon> <literal>Nudge
-          Up</literal>. The selected artifacts are moved one pixel to the
-          up.</para></listitem>
+          Up</literal>. The selected artifacts are moved up one
+          pixel.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/nudge_down.gif"/>
           </imageobject></inlinemediaobject></guiicon> <literal>Nudge
-          Down</literal>. The selected artifacts are moved one pixel to the
-          down.</para></listitem>
+          Down</literal>. The selected artifacts are moved up one
+          pixel.</para></listitem>
       </itemizedlist>
     </sect2>
 
@@ -1731,7 +1736,7 @@ v           new datatypes in their own right (the default) or as their base
     <note><para>The current version of &argouml; supports only code generation
       of Java. Future work will extend this to other languages.</para></note>
 
-    <caution><para>This is still very much work in progress. The current
+    <caution><para>This is still very much a work in progress. The current
       version of &argouml; will generate a structural template for your code,
       but is not able to handle behavioral specifications to generate code for
       the dynamic behavior of the model.</para></caution>
@@ -2173,7 +2178,7 @@ v           new datatypes in their own right (the default) or as their base
           <xref linkend="s2.ref.critics_missing_class_name"/>
         </para></listitem>
 
-        <listitem><para><literal>Chose a Unique Name for
+        <listitem><para><literal>Choose a Unique Name for
           &lt;artifact&gt;</literal> (classes and interfaces). See
           <xref linkend="s2.ref.critics_disambig_class_name"/>
         </para></listitem>
@@ -2459,7 +2464,7 @@ v           new datatypes in their own right (the default) or as their base
         left will populate the fields for that critic.</para>
 
       <warning><para>In the current release of &argouml; there is a known
-        problem with the user interface. When moving down through the list
+        problem with the user interface. When moving down the list
         (i.e. selecting a critic below the previously selected one) the fields
         are populated for the previously selected critic. To get the fields for
         the desired critic, another critic further down must be selected,
@@ -2557,8 +2562,9 @@ v           new datatypes in their own right (the default) or as their base
           critics.</para>
 
         <para>The idea of a critic network is that they would be a state
-          machine like diagram with several steps.  Each step would have
-          condition that together defined the <quote>rule</quote> that the
+          machine like diagram with several steps. Each step would express a
+          condition which, collectively with the other steps associated with
+          that critic, articulates the <quote>rule</quote> that the
           critic is providing.  If the rule fires, then remaining steps would
           define the steps of the wizard to help the user fix the
           problem.</para>
@@ -2572,7 +2578,7 @@ v           new datatypes in their own right (the default) or as their base
 
         <para>A suggested implementation is that the conditions could be
           written in OCL against the UML meta-model.  A library of predefined
-          conditins and steps would allow end-users to build new critics by
+          conditions and steps would allow end-users to build new critics by
           combining those in novel ways.</para>
 
         <caution><para>In the current version of &argouml; this function is not

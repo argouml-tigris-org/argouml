@@ -18,6 +18,8 @@ Modifications
 
  4 Apr 2002:  Jeremy Bennett. Added info about using XMI from Gentleware.
 
+18 Apr 2002:  Jeremy Bennett. Incorporated review comments from Bob Marcum.
+
 -->
 
 <chapter id="ch.tut.uml">
@@ -246,7 +248,7 @@ Modifications
           <para>This process recognizes that our pyramid view of even slices of
             the waterfall is not realistic. In practice the early iterations
             tend to be heavy on the requirements end of things (you need to
-            define a reasonable amount even to get started), whilst the later
+            define a reasonable amount even to get started), while the later
             iterations have more of their effort in the design and build
             areas.</para>
 
@@ -257,7 +259,7 @@ Modifications
           <itemizedlist>
             <listitem><para>In the <emphasis>inception
               phase</emphasis> iterations tend to be heavy on the
-              requirements/analysis end, whilst any build activity may be
+              requirements/analysis end, while any build activity may be
               limited to emulation of the design within a CASE
               tool.</para></listitem>
 
@@ -360,6 +362,11 @@ Modifications
         requirements capture, analysis, design and build activities in
         turn. Not all parts of the process are based on UML or &argouml;. We
         will look at what other material is needed outside.</para>
+
+      <para>Within this process we will have an opportunity to see the various
+        UML diagrams in use. The full range of UML diagrams and how they are
+        supported is described in the reference manual (see <xref
+        linkend="s1.ref.diagram_types"/>).</para>
 
       <!-- Requirements Capture -->
 
@@ -700,7 +707,7 @@ Modifications
 
       <orderedlist>
         <listitem><para>Run &argouml; directly from the Web Site using Java
-          WebStart (JWS). This is the easiest option.</para></listitem>
+          Web Start. This is the easiest option.</para></listitem>
 
         <listitem><para>Download the binary code. This is the right option if
           you intend using &argouml; regularly and is not that
@@ -732,19 +739,19 @@ Modifications
         this manual really reflects the current (unstable) development of the
         previous version!</para></warning>
 
-      <!-- Using Java WebStart (JWS) -->
+      <!-- Using Java Web Start -->
 
       <sect3>
-        <title>&argouml; using JWS</title>
+        <title>&argouml; using Java Web Start</title>
 
         <para>There are two steps to this.</para>
 
         <orderedlist>
-          <listitem><para>Install JavaWebStart (JWS) on your machine. This is
+          <listitem><para>Install Java Web Start on your machine. This is
             available from <ulink
             url="http://java.sun.com/products/javawebstart">
             java.sun.com/products/javawebstart</ulink>, or via the
-            <literal>JavaWebStart</literal> link on the &argouml; <ulink
+            <literal>Java Web Start</literal> link on the &argouml; <ulink
               url="http://argouml.tigris.org">home
             page</ulink>.</para></listitem>
 
@@ -754,11 +761,12 @@ Modifications
             page</ulink>.</para></listitem>
         </orderedlist>
 
-        <para>JWS will download ArgoUML, cache it and start it the first time,
-          then on subsequent starts, check if ArgoUML is updated and only
-          download any updated parts and then start it. The &argouml;
+        <para>Java Web Start will download ArgoUML, cache it and start it the
+          first time, then on subsequent starts, check if ArgoUML is updated
+          and only download any updated parts and then start it. The &argouml;
           <ulink url="http://argouml.tigris.org">home page</ulink> also
-          provides details on starting &argouml; from the JWS console.
+          provides details on starting &argouml; from the Java Web Start
+          console.
         </para>
 
       </sect3>

@@ -17,6 +17,10 @@ Modifications
  4 Apr 2002:  Jeremy Bennett. Updated details for actor and use case to show
               new popup menus and fields to support include, extend and
               extension points for 0.9.8.
+
+18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum,
+              particularly relating to "limitations" section.
+
 -->
 
 <chapter id="ch.ref.entusecase">
@@ -54,35 +58,21 @@ Modifications
       </mediaobject></screenshot>
     </figure>
 
-    <!-- Limitations in Argo/UML relating to includes/extends and extension
-         points. -->
+    <!-- Limitations in Argo/UML relating to display of extension points. -->
 
     <sect2>
       <title>&argouml; Limitations Concerning Use Case Diagrams</title>
 
-      <para>During the standardization process of UML, there was considerable
-        change over the definition of <literal>Includes</literal> (originally
-        known as <literal>Uses</literal>) and
-        <literal>Extends</literal>. Initially they were specializations of
-        <literal>Generalization</literal> within the UML metamodel (itself a
-        specialization of <literal>Relationship</literal>.</para>
+      <para>Use case diagrams are now well supported within &argouml;. The min
+        outstanding limitation is that extension points cannot be shown in a
+        separate compartment on the use case.</para>
 
-      <para>In UML&nbsp;1.3, <literal>Includes</literal> and
-        <literal>Extends</literal> are defined as specializations directly from
-        <literal>Relationship</literal>.</para>
-
-      <warning><para>&argouml; further confuses matters by defining
-        <literal>Includes</literal> and <literal>Extends</literal> as
-        stereotyped specializations of <literal>Dependency</literal> (itself a
-        specialization of <literal>Relationship</literal>. This is an area
-        where &argouml; is out of line at present with the
-        standard.</para></warning>
-
-      <para>Further difficulties arise with <literal>Extension
-        Points</literal>, the points within a use case, where extending use
-        cases may be invoked. In the absence of a
-        <literal>LocationReference</literal> within &argouml; these are
-        restricted to purely documentation features.</para>
+      <caution><para>Earlier versions of &argouml; implemented extend and
+        include relationships by using a stereotyped dependency
+        relationship. Although such diagrams will show correctly on the
+        diagram, they will not link correctly to the use cases, and should be
+        replaced by proper extend and include relationships using the current
+        system.</para></caution>
     </sect2>
   </sect1>
 
@@ -337,14 +327,14 @@ Modifications
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. Actor is provided by default
-            with the UML standard stereotypes
-            (<literal>metaclass</literal>, <literal>powertype</literal>,
-            <literal>process</literal>, <literal>thread</literal>,
-            <literal>utility</literal>) for classifiers. &argouml; also
-            provides the additional stereotypes,
-            <literal>machine</literal>, <literal>organization</literal> and
-            <literal>person</literal>. Stereotypes are of limited value
+          <listitem><para>Drop down selector. Actor is provided by default with
+            the UML standard stereotypes (<literal>metaclass</literal>,
+            <literal>powertype</literal>, <literal>process</literal>,
+            <literal>thread</literal>, <literal>utility</literal>) for
+            classifiers. &argouml; also provides the additional stereotypes,
+            <literal>machine</literal>, <literal>organization</literal>,
+            <literal>person</literal> and
+            <literal>singleton</literal>. Stereotypes are of limited value
             with actors, but these last three are probably of most
             use.</para></listitem>
         </varlistentry>
@@ -389,7 +379,7 @@ Modifications
               that this actor cannot be instantiated, but must always be
               specialized.</para>
 
-            <caution><para>Whilst actors can be specialized and
+            <caution><para>While actors can be specialized and
               generalized, it is not clear that an abstract actor has any
               meaning. Perhaps it might be used to indicate an actor that
               does not itself interact with a use case, but whose children
@@ -826,16 +816,16 @@ Modifications
           <term><literal>Stereotype</literal></term>
 
           <listitem><para>Drop down selector. Use case is provided by default
-            with the UML standard stereotypes
-            (<literal>metaclass</literal>, <literal>powertype</literal>,
-            <literal>process</literal>, <literal>thread</literal>,
-            <literal>utility</literal>) for classifiers. &argouml; also
-            provides the additional stereotypes,
-            <literal>machine</literal>, <literal>organization</literal> and
-            <literal>person</literal>. Stereotyping can be useful when
-            creating use cases in the problem domain (requirements capture)
-            and solution domain (analysis), but none of the pre-defined
-            stereotypes are well suited to this.</para>
+            with the UML standard stereotypes (<literal>metaclass</literal>,
+            <literal>powertype</literal>, <literal>process</literal>,
+            <literal>thread</literal>, <literal>utility</literal>) for
+            classifiers. &argouml; also provides the additional stereotypes,
+            <literal>machine</literal>, <literal>organization</literal>,
+            <literal>person</literal> and
+            <literal>singleton</literal>. Stereotyping can be useful when
+            creating use cases in the problem domain (requirements capture) and
+            solution domain (analysis), but none of the pre-defined stereotypes
+            are well suited to this.</para>
 
           <warning><para>If a stereotype is selected in &argouml; it will
             not be displayed in the diagram.</para></warning></listitem>
@@ -881,7 +871,7 @@ Modifications
               that this use case cannot be instantiated, but must always be
               specialized.</para>
 
-            <caution><para>Whilst use cases can be specialized and
+            <caution><para>While use cases can be specialized and
               generalized, it is not clear that an abstract use case has
               any meaning. Perhaps it might be used to indicate an use case
               that does not itself interact with an actor, but whose
@@ -1541,7 +1531,7 @@ Modifications
             <literal>Final</literal> and <literal>Root</literal>. No known
             use.</para>
 
-          <tip><para>Whilst attributes are generalizable elements, marking
+          <tip><para>While attributes are generalizable elements, marking
             them as with these modifiers is of limited
             value with binary associations (the only support that &argouml;
             supports properly.</para></tip></listitem>
@@ -1579,7 +1569,7 @@ Modifications
             <listitem><para><literal>Add</literal>. Add a new association
               end and navigate to its property tab.</para>
 
-            <tip><para>Whilst adding new ends is possible, the value of
+            <tip><para>While adding new ends is possible, the value of
               this is limited for Use Case diagrams where the standard two
               ends is all that is every needed.</para></tip></listitem>
 
@@ -2088,7 +2078,7 @@ Modifications
           <note><para>You may not have aggregation at both ends of an
             association.</para></note>
 
-          <tip><para>Whilst it does have some meaning, it is of limited use
+          <tip><para>While it does have some meaning, it is of limited use
             to show aggregation on a use case diagram. It is useful
             for associations on class diagrams.</para></tip></listitem>
         </varlistentry>
@@ -2752,7 +2742,7 @@ Modifications
             extend relationship as its first extending relationship, navigating
             immediately to the properties tab for that extension point.</para>
 
-          <tip><para>Whilst it is perfectly valid to create extension points
+          <tip><para>While it is perfectly valid to create extension points
             from an extend relationship, the created extension point will have
             no associated use case (it can subsequently be set up).</para>
 

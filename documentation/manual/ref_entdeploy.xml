@@ -16,6 +16,8 @@ Modifications
 19 Mar 2002:  Jeremy Bennett. Changed all tables to variablelists to fix
               problems with generating PDF.
 
+18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum,
+              particularly relating to "limitations" section.
 -->
 
 <chapter id="ch.ref.entdeploy">
@@ -78,6 +80,19 @@ Modifications
         </imageobject>
       </mediaobject></screenshot>
     </figure>
+
+    <!-- Limitations in Argo/UML relating to lack of relationships -->
+
+    <sect2>
+      <title>Limitations Concerning Deployment Diagrams in &argouml;</title>
+
+      <para>The deployment diagram is generally well drawn, but there are only
+        a subset of the relationships that should be shown available, which
+        restricts the ability to show dynamic behavior of deployed code.</para>
+
+      <para>It is an inconvenience that the alternative representation of an
+        interface (as a small circle) is not supported.</para>
+    </sect2>
   </sect1>
 
   <!-- Artifacts specific to Deployment Diagrams. Node artifact -->
@@ -356,6 +371,42 @@ Modifications
               generalization selected is not at the bottom. It is moved one
               down the list.</para></listitem>
           </itemizedlist></listitem>
+        </varlistentry>
+
+        <!-- Entry for Stereotype -->
+
+        <varlistentry>
+          <term><literal>Stereotype</literal></term>
+
+          <listitem><para>Drop down selector. &argouml; provides the
+            stereotypes, <literal>machine</literal>,
+            <literal>organization</literal> and
+            <literal>person</literal>.</para>
+
+          <caution><para>&argouml; also provides the stereotype
+            <literal>realize</literal> for node instances. This appears to
+            be an error, since this stereotype properly belongs to the
+            <literal>Abstraction</literal>
+            metaclass.</para></caution>
+
+          <warning><para>Node is a type of classifier, and so should have the
+            stereotypes of a classifier by default in the UML standard. However
+            these are missing in the current release of
+            &argouml;.</para></warning></listitem>
+        </varlistentry>
+
+        <!-- Entry for NavStereo -->
+
+        <varlistentry>
+          <term><literal>Navigate Stereotype</literal></term>
+
+          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
+              format="GIF" align="center"
+              fileref="images/icons/navigate_stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> icon. If a
+              stereotype has been selected, this will navigate you to the
+              stereotype property panel (see <xref
+                linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>
 
         <!-- Entry for Modifiers -->
@@ -1045,7 +1096,12 @@ Modifications
             <literal>realize</literal> for components. This appears to
             be an error, since this stereotype properly belongs to the
             <literal>Abstraction</literal>
-            metaclass.</para></caution></listitem>
+            metaclass.</para></caution>
+
+          <warning><para>Component is a type of classifier, and should be
+            provided with the stereotypes for a classifier, however these are
+            missing in the current release of
+            &argouml;.</para></warning></listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->

@@ -25,6 +25,10 @@ Modifications
 
  4 Apr 2002:  Jeremy Bennett. Updated references to generalizations and
               specializations.
+
+18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum,
+              particularly relating to "limitations" section.
+
 -->
 
 <chapter id="ch.ref.entclass">
@@ -86,6 +90,21 @@ Modifications
         </imageobject>
       </mediaobject></screenshot>
     </figure>
+
+    <!-- Limitations in Argo/UML relating to datatypes, objects and links -->
+
+    <sect2>
+      <title>Limitations Concerning Class Diagrams in &argouml;</title>
+
+      <para>The current implementation does not allow datatypes to be shown on
+        class diagrams.</para>
+
+      <para>A variant of the class diagram within the UML standard is the
+        <emphasis>object diagram</emphasis>. There is currently no support for
+        objects or links within &argouml;. As a last resort, the &argouml;
+        deployment diagram does have both objects and links, and can be used to
+        draw simple object diagrams.</para>
+    </sect2>
   </sect1>
 
   <!-- Artifacts specific to Class Diagrams. Package artifact - cross reference
@@ -280,7 +299,7 @@ Modifications
               appears on no diagram), navigating immediately to the
               properties tab for that class.</para>
 
-          <tip><para>Whilst it can make sense to create classes this way,
+          <tip><para>While it can make sense to create classes this way,
             it can be clearer to create them within diagrams where you want
             them.</para></tip></listitem>
         </varlistentry>
@@ -299,7 +318,7 @@ Modifications
               appears on no diagram), navigating immediately to the
               properties tab for that interface.</para>
 
-          <tip><para>Whilst it can make sense to create interfaces this
+          <tip><para>While it can make sense to create interfaces this
             way, it can be clearer to create them within diagrams where you
             want them.</para></tip></listitem>
         </varlistentry>
@@ -348,7 +367,7 @@ Modifications
             on no diagram), navigating immediately to the properties tab
             for that actor.</para>
 
-          <tip><para>Whilst it can make sense to create actors this way, it
+          <tip><para>While it can make sense to create actors this way, it
             is can be clearer to create them within diagrams where you want
             them.</para></tip></listitem>
         </varlistentry>
@@ -367,7 +386,7 @@ Modifications
             appears on no diagram), navigating immediately to the
             properties tab for that use case.</para>
 
-          <tip><para>Whilst it can make sense to create use cases this way,
+          <tip><para>While it can make sense to create use cases this way,
             it can be clearer to create them within diagrams where you want
             them.</para></tip></listitem>
         </varlistentry>
@@ -402,7 +421,7 @@ Modifications
               (which appears on no diagram), navigating immediately to the
               properties tab for that generalization.</para>
 
-          <tip><para>Whilst it can make sense to create generalizations
+          <tip><para>While it can make sense to create generalizations
             this way, it is usually a lot clearer to create them within
             diagrams where you want them.</para></tip></listitem>
         </varlistentry>
@@ -1010,7 +1029,7 @@ Modifications
               appears on no diagram), navigating immediately to the
               properties tab for that interface.</para>
 
-          <tip><para>Whilst it can make sense to create interfaces this
+          <tip><para>While it can make sense to create interfaces this
             way, it can be clearer to create them within diagrams where you
             want them.</para></tip></listitem>
         </varlistentry>
@@ -1082,25 +1101,23 @@ Modifications
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. Class is provided by default
-            with the UML standard stereotypes for
-            <literal>Class</literal>
+          <listitem><para>Drop down selector. Class is provided by default with
+            the UML standard stereotypes for <literal>Class</literal>
             (<literal>implementationClass</literal> and
             <literal>type</literal>) and for <literal>Classifier</literal>
             (<literal>metaclass</literal>, <literal>powerType</literal>,
             <literal>process</literal>, <literal>thread</literal> and
-            <literal>utility</literal>), as well as the stereotypes for
-            classes in the UML standard profiles for
-            <emphasis>software development process</emphasis>
-            (<literal>boundary</literal>, <literal>entity</literal> and
-            <literal>control</literal>) and <emphasis>business
-            modeling</emphasis> (<literal>worker</literal>,
+            <literal>utility</literal>), as well as the stereotypes for classes
+            in the UML standard profiles for <emphasis>software development
+            process</emphasis> (<literal>boundary</literal>,
+            <literal>entity</literal> and <literal>control</literal>) and
+            <emphasis>business modeling</emphasis> (<literal>worker</literal>,
             <literal>case&nbsp;worker</literal>,
             <literal>internal&nbsp;worker</literal> and
-            <literal>entity</literal> (again)).
-            &argouml; also provides the additional stereotypes,
-            <literal>machine</literal>, <literal>organization</literal> and
-            <literal>person</literal>, and rather strangely
+            <literal>entity</literal> (again)).  &argouml; also provides the
+            additional stereotypes, <literal>machine</literal>,
+            <literal>organization</literal>, <literal>person</literal> and
+            <literal>singleton</literal>, and rather strangely
             <literal>realize</literal> (a stereotype of
             <literal>Abstraction</literal>).</para>
 
@@ -3857,9 +3874,9 @@ Modifications
             <literal>powerType</literal>, <literal>process</literal>,
             <literal>thread</literal> and <literal>utility</literal>).
             &argouml; also provides the additional stereotypes,
-            <literal>machine</literal>, <literal>organization</literal> and
-            <literal>person</literal>, and rather strangely
-            <literal>realize</literal> (a stereotype of
+            <literal>machine</literal>, <literal>organization</literal>,
+            <literal>person</literal> and <literal>singleton</literal>, and
+            rather strangely <literal>realize</literal> (a stereotype of
             <literal>Abstraction</literal>).</para>
 
           <caution><para>&argouml; provides the stereotype

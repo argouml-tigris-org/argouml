@@ -12,6 +12,8 @@ Modifications
               original manual by Alejandro, Phillipe and Andreas.
 
 31 Jan 2002:  Jeremy Bennett. Chapter written.
+
+18 Apr 2002:  Jeremy Bennett. Comments from Bob Marcum incorporated.
 -->
 
 <chapter id="ch.ref.todopane">
@@ -41,7 +43,7 @@ Modifications
 
     <para>A selector box at the top allows a choice of how the data is
       presented, a button allows the display of the hierarchy to be changed,
-      and there is an indicator the number of to-do items identified.</para>
+      and there is an indicator of the number of to-do items identified.</para>
 
     <para>More information on critics can be found in the discussion of the
       <literal>Critique</literal> menu (see
@@ -53,7 +55,7 @@ Modifications
   <sect1 id="s1.ref.todo_mouse">
     <title>Mouse Behavior in the To-Do Pane</title>
 
-    <para>Behaviour of the mouse in general, and the naming of the buttons is
+    <para>Behavior of the mouse in general, and the naming of the buttons is
       covered in the chapter on the overall user interface (see
       <xref linkend="ch.ref.ui"/>).</para>
 

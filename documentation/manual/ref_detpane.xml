@@ -14,6 +14,7 @@ Modifications
 
 29 Jan 2002:  Jeremy Bennett. Chapter written.
 
+18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum.
 -->
 
 <chapter id="ch.ref.detpane">
@@ -109,7 +110,7 @@ Modifications
       <title>&Button2; Actions</title>
 
       <para>When used over text field entries in the the properties tab, this
-        may display a context dependent pop-up menu (dependin on the
+        may display a context dependent pop-up menu (depending on the
         field). Menu entries are highlighted (but not selected) and sub-menus
         exposed by subsequent mouse motion (without any buttons). Menu entry
         selection is with &button1;</para>
@@ -230,10 +231,11 @@ Modifications
       </figure>
 
       <para>At the top are three buttons, which will dismiss the selected item,
-        labeled <literal>It is not relevant to my goals</literal>, <literal>It
-        is not of concern at the moment</literal> and <literal>Reason given
-        below</literal>. If you choose the third of these you should
-        <emphasis>first</emphasis> enter a reason in the main text box.</para>
+        labeled 1) <literal>It is not relevant to my goals</literal>, 2)
+        <literal>It is not of concern at the moment</literal>, and 3)
+        <literal>Reason given below</literal>. If you choose the third of these
+        you should <emphasis>first</emphasis> enter a reason in the main text
+        box.</para>
 
       <tip><para>If you wish to resolve a to-do item by following its
         recommendations, just make the recommended changes and the to-do item
@@ -241,7 +243,7 @@ Modifications
         dialog.</para></tip>
 
       <caution><para>Because of the layout of the dialog box in the current
-        release of &argouml;, it is all to possible to click the
+        release of &argouml;, it is all to easy to click the
         <literal>Reason given below</literal> button before entering a
         reason.</para></caution></listitem>
 
@@ -259,7 +261,8 @@ Modifications
         selected to-do item as subject.</para>
 
       <warning><para>This will send an Email to Jason Robbins' old Email
-        address at UCI, and may not receive a response. You are better advised
+        address at UCI, and may not receive a response. There is currently now
+        way to change this address. You are better advised
         to join the &argouml; users mailing list, and submit your request for
         help there. An empty email to
         <literal>users-subscribe@argouml.tigris.org</literal> will achieve this
@@ -281,7 +284,7 @@ Modifications
 
       <para>The critic will make up after a period of time. Initially this
         period is 10 minutes, but it doubles on each successive application of
-        the Snooze button. The critic can be woken up explicitly through the
+        the Snooze button. The critic can be awakened explicitly through the
         <literal>Critique&nbsp;&gt;&nbsp;Browse&nbsp;Critics&hellip;</literal>
         menu (see <xref linkend="s2.ref.menu_browse_critics"/>).</para>
 
@@ -325,6 +328,12 @@ Modifications
 
     <warning><para>In the current release of &argouml; the URLs are generally
       invalid. The few that are valid have no information.</para></warning>
+
+    <!-- Point to browse critics menu -->
+
+    <para>Customization of the critics menu is possible through the
+      <literal>Browse critics&hellip;</literal> menu (see <xref
+      linkend="s2.ref.menu_browse_critics"/>).</para>
   </sect1>
 
   <!-- The Properties tab -->

@@ -25,6 +25,8 @@ Modifications
  4 Apr 2002:  Jeremy Bennett. Updated references to generalizations and
               specializations.
 
+22 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum.
+
 -->
 
 <chapter id="ch.ref.entities">
@@ -235,7 +237,7 @@ Modifications
               appears on no diagram), navigating immediately to the
               properties tab for that class.</para>
 
-          <tip><para>Whilst it can make sense to create classes this way,
+          <tip><para>While it can make sense to create classes this way,
             it is usually a lot clearer to  create them within diagrams
             where you want them.</para></tip></listitem>
         </varlistentry>
@@ -254,7 +256,7 @@ Modifications
               appears on no diagram), navigating immediately to the
               properties tab for that interface.</para>
 
-          <tip><para>Whilst it can make sense to create interfaces this
+          <tip><para>While it can make sense to create interfaces this
             way, it is usually a lot clearer to create them within diagrams
             where you want them.</para></tip></listitem>
         </varlistentry>
@@ -303,7 +305,7 @@ Modifications
             on no diagram), navigating immediately to the properties tab
             for that actor.</para>
 
-          <tip><para>Whilst it can make sense to create actors this
+          <tip><para>While it can make sense to create actors this
             way, it is usually a lot clearer to create them within diagrams
             where you want them.</para></tip></listitem>
         </varlistentry>
@@ -322,7 +324,7 @@ Modifications
             on no diagram), navigating immediately to the properties tab
             for that use case.</para>
 
-          <tip><para>Whilst it can make sense to create use cases this
+          <tip><para>While it can make sense to create use cases this
             way, it is usually a lot clearer to create them within diagrams
             where you want them.</para></tip></listitem>
         </varlistentry>
@@ -341,7 +343,7 @@ Modifications
             on no diagram), navigating immediately to the properties tab
             for that package.</para>
 
-          <tip><para>Whilst it can make sense to create sub-packages of the
+          <tip><para>While it can make sense to create sub-packages of the
             model this way, it is usually a lot clearer to create them
             within diagrams where you want them.</para></tip></listitem>
         </varlistentry>
@@ -361,7 +363,7 @@ Modifications
               (which appears on no diagram), navigating immediately to the
               properties tab for that generalization.</para>
 
-          <tip><para>Whilst it can make sense to create generalizations
+          <tip><para>While it can make sense to create generalizations
             this way, it is usually a lot clearer to create them within
             diagrams where you want them.</para></tip></listitem>
         </varlistentry>
@@ -688,7 +690,7 @@ Modifications
 
             <note><para>The item is placed under its relevant folder,
               irrespective of where the pop up menu is revealed. So
-              &button2; lick on <literal>Actor</literal> folder and
+              &button2; click on <literal>Actor</literal> folder and
               selection of <literal>Add/Package</literal> will place the
               new package under the <literal>Package</literal> folder, not
               the <literal>Actor</literal> folder.</para></note>
@@ -855,7 +857,7 @@ Modifications
                 elements, or <literal>false</literal> meaning it
                 cannot.</para>
 
-              <tip><para>Whilst formally available, a derived datatype
+              <tip><para>While formally available, a derived datatype
                 does not have an obvious value, and so datatypes should
                 always be marked with
                 <literal>derived=false</literal>.</para></tip></listitem>
@@ -937,7 +939,7 @@ Modifications
               linkend="s1.ref.class_class"/>) within the same package as
               the current datatype.</para>
 
-          <tip><para>Whilst it can make sense to create datatypes this way,
+          <tip><para>While it can make sense to create datatypes this way,
             it can be clearer to create them within the package or model
             where you want them.</para></tip></listitem>
         </varlistentry>
@@ -1009,10 +1011,10 @@ Modifications
             with the UML standard stereotypes for classifier
             (<literal>metaclass</literal>, <literal>powertype</literal>,
             <literal>process</literal>, <literal>thread</literal> and
-            <literal>utility</literal>). &argouml; also provides the
-            additional stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and <literal>person</literal>
-            as well as the abstraction stereotype
+            <literal>utility</literal>). &argouml; also provides the additional
+            stereotypes, <literal>machine</literal>,
+            <literal>organization</literal>, <literal>person</literal> and
+            <literal>singleton</literal> as well as the abstraction stereotype
             <literal>realize</literal>.</para>
 
           <para>Most important of all, &argouml; provides the stereotype
@@ -1219,7 +1221,7 @@ Modifications
               and this field shows the name [empty], whatever name you
               choose to give the abstraction.</para></note>
 
-            <tip><para>Whilst adding abstractions is possible, only the
+            <tip><para>While adding abstractions is possible, only the
               supplier end is created, and there is no way to supply the
               client end. The value of such abstractions is therefore
               minimal.</para></tip></listitem>
@@ -1637,9 +1639,9 @@ Modifications
             artifacts using the stereotype, not just the
             stereotype.</para></caution>
 
-          <warning><para>&argouml; does neither imposes, nor checks that
-            artifacts using a stereotype adopt the stereotype's
-            modifiers.</para></warning></listitem> 
+          <warning><para>&argouml; neither imposes, nor checks that artifacts
+            using a stereotype adopt the stereotype's
+            modifiers.</para></warning></listitem>
         </varlistentry>
 
         <!-- Entry for Generalizations -->
@@ -1753,17 +1755,24 @@ Modifications
   <sect1>
     <title>&argouml; Diagrams</title>
 
-    <para>&argouml; supports seven types of diagrams: i) use case; ii) class;
-      iii) sequence; iv) state; v) collaboration; vi) activity; and vii)
-      deployment. They are created using the <literal>Create
-      Diagram</literal> drop down menu (see <xref
-        linkend="s1.ref.create.diagram.menu"/>).</para>
+    <para>&argouml; supports all eight primary types of diagrams defined by
+      UML 1.3: i) use case; ii) class; iii) sequence; iv) state; v)
+      collaboration; vi) activity; vii) component and viii) deployment. They
+      are created using the <literal>Create Diagram</literal> drop down menu
+      (see <xref linkend="s1.ref.create.diagram.menu"/>).</para>
 
-    <note><para>State and activity diagrams are associated with a particular
+    <note><para>&argouml; uses its deployment diagram to create both UML 1.3
+      component and deployment diagrams.</para></note>
+
+    <caution><para>State and activity diagrams are associated with a particular
       class, and can only be created when a class has been selected. In the
       current version of &argouml; they are not grayed out even when a class
       is not selected. However under these circumstances they will have no
-      effect.</para></note>
+      effect.</para></caution>
+
+    <warning><para>There is currently no support for the UML 1.3 object diagram
+      as a variant of the class diagram. It is possible to create simple object
+      diagrams within the &argouml; deployment diagram.</para></warning>
 
     <!-- The details tabs -->
 

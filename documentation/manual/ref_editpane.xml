@@ -21,6 +21,7 @@ Modifications
  4 Apr 2002:  Jeremy Bennett. Double click on package icons and new icons on
               use case diagram added for release 0.9.8.
 
+18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum.
 -->
 
 <chapter id="ch.ref.editpane">
@@ -466,10 +467,12 @@ Modifications
           <literal>Dependency</literal>. Add a dependency between two artifacts
           selected using &button1; motion (from the dependent artifact).</para>
 
-        <caution><para>&argouml; incorrectly uses stereotyped dependencies to
-          represent UML <literal>extends</literal> and
-          <literal>includes</literal>
-          relationships.</para></caution></listitem>
+        <caution><para>Older versions of &argouml; incorrectly used stereotyped
+          dependencies to represent UML <literal>extends</literal> and
+          <literal>includes</literal> relationships. Where these are found they
+          should be replaced by proper extend and include relationships, which
+          are now supported on the use case
+          diagram.</para></caution></listitem>
       </itemizedlist>
     </sect2>
 
@@ -968,14 +971,13 @@ Modifications
           interface still applies on deployment
           diagrams.</para></caution></listitem>
 
-        <listitem><para><guiicon><inlinemediaobject><imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/icons/object.gif"/> 
+        <listitem><para><guiicon><inlinemediaobject><imageobject> <imagedata
+          format="GIF" align="center" fileref="images/icons/object.gif"/>
           </imageobject></inlinemediaobject></guiicon>
-          <literal>Class</literal>. Add an object to the diagram. For
-          convenience, when the mouse is over a selected class it displays four
-          handles to left, right, top and bottom, which may be dragged to form
-          link relationships.</para></listitem>
+          <literal>Object</literal>. Add an object to the diagram. For
+          convenience, when the mouse is over a selected object it displays
+          four handles to left, right, top and bottom, which may be dragged to
+          form link relationships.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
