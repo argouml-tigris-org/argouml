@@ -31,4 +31,17 @@ import org.tigris.gef.presentation.FigGroup;
  */
 public abstract class FigCompartment extends FigGroup {
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
+    public int getLineWidth() {
+        return _lineWidth;
+    }
+    
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
+    public void setLineWidth(int w) {
+        _lineWidth = w;
+    }
 }

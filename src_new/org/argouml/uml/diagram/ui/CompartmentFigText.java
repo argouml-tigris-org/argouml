@@ -120,24 +120,24 @@ public class CompartmentFigText extends FigText {
     // The following method overrides are necessary for proper graphical
     // behavior
 
-    /**
-     * Override for correct graphical behaviour.<p>
-     *
-     * @param w  Desired line width. Overridden and set to zero anyway.
-     */
-    public void setLineWidth(int w) {
-        super.setLineWidth(0);
-    }
+//    /**
+//     * Override for correct graphical behaviour.<p>
+//     *
+//     * @param w  Desired line width. Overridden and set to zero anyway.
+//     */
+//    public void setLineWidth(int w) {
+//        super.setLineWidth(0);
+//    }
 
 
-    /**
-     * Override for correct graphical behaviour.<p>
-     *
-     * @return  Current line width&mdash;always 1.
-     */
-    public int getLineWidth() {
-        return 1;
-    }
+//    /**
+//     * Override for correct graphical behaviour.<p>
+//     *
+//     * @return  Current line width&mdash;always 1.
+//     */
+//    public int getLineWidth() {
+//        return 1;
+//    }
 
     
     /**
