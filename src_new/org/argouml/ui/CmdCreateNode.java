@@ -24,18 +24,10 @@
 
 package org.argouml.ui;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Dictionary;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 
@@ -59,16 +51,6 @@ import org.argouml.model.Model;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
-    /**
-     * Logger.
-     */
-    private static final Logger LOG = Logger.getLogger(CmdCreateNode.class);
-
-    /**
-     * The cache for once found creation methods.
-     */
-    private static Dictionary cache = new Hashtable();
-
     /**
      * Prefix for the action key.
      */

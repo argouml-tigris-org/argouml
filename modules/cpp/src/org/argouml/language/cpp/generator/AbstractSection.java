@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001, 2005 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,35 +22,37 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: AbstractSection.java
-// Classes: AbstractSection
-// Original Author: Marian Heddesheimer
-
-// 09 Feb 2003: Thomas Neustupny (thn@tigris.org), extraced abstract class
-// 14 Dec 2004: Luis Sergio Oliveira (euluis@tigris.org), fixed rewriting of
-//              generated sources for C++ module, e.g., issue 2828.
-
 package org.argouml.language.cpp.generator;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.EOFException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 /**
+ * Reading and writing preserved sections from the code.
  *
- *Reading and writing preserved sections from the code
- *
- * @author  Marian
+ * @author Marian Heddesheimer
  */
-public abstract class AbstractSection
-{
+public abstract class AbstractSection {
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(AbstractSection.class);
 
     private Map mAry;
 
-    /** Creates a new instance of Section */
+    /**
+     * Creates a new instance of Section.
+     */
     public AbstractSection() {
         mAry = new HashMap();
         mAry.clear();
@@ -75,8 +77,7 @@ public abstract class AbstractSection
      * @param outputLostSections true if lost sections are to be written
      */
     public void write(String filename, String indent,
-		      boolean outputLostSections)
-    {
+		      boolean outputLostSections) {
         try {
             FileReader f = new FileReader(filename);
             BufferedReader fr = new BufferedReader(f);
@@ -103,10 +104,11 @@ public abstract class AbstractSection
                             }
                             endSectionId = getSectId(line);
                         } while (endSectionId == null);
-                        if (!endSectionId.equals(sectionId))
+                        if (!endSectionId.equals(sectionId)) {
                             LOG.error("Mismatch between sectionId (\""
                                     + sectionId + "\") and endSectionId (\""
                                     + endSectionId + "\")!");
+                        }
                     }
                     mAry.remove(sectionId);
                 }
@@ -188,7 +190,7 @@ public abstract class AbstractSection
             second = line.indexOf(end2);
         }
         String s = null;
-        if ( (first >= 0) && (second >= 0) ) {
+        if ((first >= 0) && (second >= 0)) {
             first = first + begin.length();
             s = line.substring(first, second);
         }

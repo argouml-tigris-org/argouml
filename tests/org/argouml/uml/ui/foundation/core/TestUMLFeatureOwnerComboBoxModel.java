@@ -31,8 +31,6 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  * @since Nov 6, 2002
  * @author jaap.branderhorst@xs4all.nl

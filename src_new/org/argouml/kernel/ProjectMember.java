@@ -24,12 +24,6 @@
 
 package org.argouml.kernel;
 
-/**
- * @author Administrator
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
 public interface ProjectMember {
 
     /**
@@ -41,7 +35,7 @@ public interface ProjectMember {
      *
      * @return the member's name without any prefix or suffix
      */
-    public String getUniqueDiagramName();
+    String getUniqueDiagramName();
 
     /**
      * Returns a unique member's name for storage in a zipfile.
@@ -50,16 +44,16 @@ public interface ProjectMember {
      *
      * @return the name for zip file storage
      */
-    public abstract String getZipName();
+    String getZipName();
 
     /**
      * @return a short string defining the member type.
      * Usually equals the file extension.
      */
-    public abstract String getType();
+    String getType();
 
     /**
      * @return the file extension string
      */
-    public abstract String getZipFileExtension();
+    String getZipFileExtension();
 }

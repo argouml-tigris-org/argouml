@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002, 2005 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,11 +51,17 @@ public class ClassFileFilter extends FileFilter {
      * @return true, if the file passes the filter, false otherwise.
      */
     public boolean accept(File f) {
-	if (f == null) return false;
-	if (f.isDirectory()) return true;
+	if (f == null) {
+	    return false;
+	}
+	if (f.isDirectory()) {
+	    return true;
+	}
 	String extension = getExtension(f.getName());
 	for (int i = 0; i < suffixes.length; i++) {
-	    if (suffixes[i].equalsIgnoreCase(extension)) return true;
+	    if (suffixes[i].equalsIgnoreCase(extension)) {
+	        return true;
+	    }
 	}
 	return false;
     }

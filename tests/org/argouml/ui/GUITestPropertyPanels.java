@@ -61,9 +61,6 @@ import org.tigris.gef.util.EnumerationEmpty;
 import org.tigris.gef.util.EnumerationSingle;
 import org.tigris.swidgets.Horizontal;
 
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  * GuiTestPropertyPanels attempts to load a project file and iterates through
  * all known modelelements of this project. For each modelelement it creates

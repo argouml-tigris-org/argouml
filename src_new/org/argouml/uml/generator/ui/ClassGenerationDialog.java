@@ -65,7 +65,6 @@ import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
-import org.argouml.util.osdep.OsUtil;
 import org.tigris.gef.util.Converter;
 
 /**

@@ -31,8 +31,6 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-
 /**
  * @since Oct 31, 2002
  * @author jaap.branderhorst@xs4all.nl

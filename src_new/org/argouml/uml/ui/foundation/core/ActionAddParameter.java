@@ -30,6 +30,7 @@ import java.util.Collection;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
@@ -62,11 +63,16 @@ class ActionAddParameter extends AbstractActionNewModelElement {
         if (ModelFacade.isAParameter(target)) {
             feature = ModelFacade.getBehavioralFeature(target);
             if (feature != null) {
-                Object model = ProjectManager.getManager().getCurrentProject().getModel();
-                Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-                Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(feature);
+                Project currentProject =
+                    ProjectManager.getManager().getCurrentProject();
+                Object model = currentProject.getModel();
+                Object voidType = currentProject.findType("void");
+                Collection propertyChangeListeners =
+                    currentProject.findFigsForMember(feature);
                 TargetManager.getInstance().setTarget(
-                        Model.getCoreFactory().buildParameter(feature, model, voidType, propertyChangeListeners));
+                        Model.getCoreFactory().buildParameter(
+                                feature, model, voidType,
+                                propertyChangeListeners));
                 super.actionPerformed(e);
             }
         }

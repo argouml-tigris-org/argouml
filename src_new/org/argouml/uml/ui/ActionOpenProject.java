@@ -43,7 +43,6 @@ import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
-import org.argouml.util.osdep.OsUtil;
 import org.tigris.gef.base.Globals;
 
 /**

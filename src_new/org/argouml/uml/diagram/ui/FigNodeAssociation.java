@@ -1,10 +1,38 @@
-/**
- * Class to display graphics for N-ary association (association node)
- *
- * @author pepargouml@yahoo.es
- */
+// $Id$
+// Copyright (c) 2005 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.diagram.ui;
+
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.SwingUtilities;
 
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.base.Editor;
@@ -18,15 +46,11 @@ import org.tigris.gef.presentation.FigDiamond;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigText;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-
+/**
+ * Class to display graphics for N-ary association (association node).
+ *
+ * @author pepargouml@yahoo.es
+ */
 public class FigNodeAssociation extends FigNodeModelElement {
 
     ////////////////////////////////////////////////////////////////
@@ -42,8 +66,8 @@ public class FigNodeAssociation extends FigNodeModelElement {
 
 
     public FigNodeAssociation() {
-        setBigPort(new FigDiamond(0,0,70,70,Color.cyan, Color.cyan));
-        head = new FigDiamond(0,0,70,70,Color.black, Color.white);
+        setBigPort(new FigDiamond(0, 0, 70, 70, Color.cyan, Color.cyan));
+        head = new FigDiamond(0, 0, 70, 70, Color.black, Color.white);
         // Add the following to allow name editing on the diagram
         setNameFig(new FigText(X + 10, Y + 22, 0, 21, true));
         getNameFig().setFilled(false);
@@ -90,7 +114,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
 
 
     /**
-     * Used when a n-ary association becomes a binary association
+     * Used when a n-ary association becomes a binary association.
      *
      * @param mee
      */
@@ -111,13 +135,15 @@ public class FigNodeAssociation extends FigNodeModelElement {
                         oldNodeFig.setOwner(null);
                         FigEdge figEdge = null;
                         Editor editor = Globals.curEditor();
-                        GraphModel gm = (GraphModel)editor.getGraphModel();
-                        GraphEdgeRenderer renderer = editor.getGraphEdgeRenderer();
+                        GraphModel gm = editor.getGraphModel();
+                        GraphEdgeRenderer renderer =
+                            editor.getGraphEdgeRenderer();
                         Layer lay = editor.getLayerManager().getActiveLayer();
                         figEdge = renderer.getFigEdgeFor(gm, lay, association);
                         editor.add(figEdge);
                         if (gm instanceof MutableGraphModel) {
-                            MutableGraphModel mutableGraphModel = (MutableGraphModel) gm;
+                            MutableGraphModel mutableGraphModel =
+                                (MutableGraphModel) gm;
                             mutableGraphModel.removeNode(association);
                             mutableGraphModel.addEdge(association);
                         }
@@ -132,17 +158,19 @@ public class FigNodeAssociation extends FigNodeModelElement {
     }
 
     /**
-     * Updates the name if modelchanged receives an "isAbstract" event
+     * Updates the name if modelchanged receives an "isAbstract" event.
      */
     protected void updateAbstract() {
         Rectangle rect = getBounds();
-        if (getOwner() == null)
+        if (getOwner() == null) {
             return;
+        }
         Object assoc =  getOwner();
-        if (ModelFacade.isAbstract(assoc))
+        if (ModelFacade.isAbstract(assoc)) {
             getNameFig().setFont(getItalicLabelFont());
-        else
+        } else {
             getNameFig().setFont(getLabelFont());
+        }
         super.updateNameText();
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
@@ -228,7 +256,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
         Object owner = getOwner();
         super.removeFromDiagram();
         Editor editor = Globals.curEditor();
-        GraphModel gm = (GraphModel)editor.getGraphModel();
+        GraphModel gm = editor.getGraphModel();
         if (gm instanceof MutableGraphModel) {
             MutableGraphModel mutableGraphModel = (MutableGraphModel) gm;
             mutableGraphModel.removeEdge(owner);
