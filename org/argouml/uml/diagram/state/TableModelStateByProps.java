@@ -34,6 +34,15 @@ import org.apache.log4j.Category;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
+/**
+ * @deprecated this class is deprecated since 0.15.1 and should be removed
+ *             in 0.15.2, due to the fact that the TableModel classes
+ *             have never been used, and are not maintained,
+ *
+ *             There is no reason why someone cannot try to complete the
+ *             TableModel implementation, however, a higher priority
+ *             at the moment is to clean argouml of un maintained code.
+ */
 public class TableModelStateByProps extends TableModelComposite {
     protected static Category cat = 
         Category.getInstance(TableModelStateByProps.class);
