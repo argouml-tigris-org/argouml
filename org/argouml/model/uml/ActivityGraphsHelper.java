@@ -86,7 +86,7 @@ public class ActivityGraphsHelper {
             ns = ModelFacade.getNamespace(ns);
         if (ns != null) {
             Collection c = ModelManagementHelper.getHelper()
-                .getAllModelElementsOfKind(ns, (Class) ModelFacade.CLASSIFIER);
+                .getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
             Iterator i = c.iterator();
             while (i.hasNext()) { 
                 Object classifier = i.next();
