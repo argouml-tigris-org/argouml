@@ -39,8 +39,6 @@ public class MenuResourceBundle_fr extends ListResourceBundle {
 
 
    static final Object[][] _contents = {
-        {"action.import", "Importer"},
-        {"action.set-source-path", "Set Source Path..." },
         {"1", "1" },
         {"0..1", "0..1" },
         {"0..*", "0..*" },
@@ -91,11 +89,6 @@ public class MenuResourceBundle_fr extends ListResourceBundle {
         {"Mnemonic_Critique", "R" },
         {"Help", "Aide" },
         {"Mnemonic_Help", "H" },
-        {"action.layout-automatic", "Automatique" },
-        {"action.layout-incremental", "Incr\u00e9mental" },
-        {"action.as-diagram", "En Tant que Diagramme" },
-        {"action.as-table", "En Tant que Table" },
-        {"action.as-metrics", "En Tant que M\u00e9triques" },
         {"ToDoItem", "RubriqueAFaire" },
         {"Javadocs", "Javadocs" },
         {"Source", "Source" },
