@@ -30,12 +30,13 @@
 
 package org.argouml.cognitive;
 
-import java.util.*;
-import javax.swing.*;
+import java.util.Vector;
 
-import org.tigris.gef.util.*;
+import javax.swing.Icon;
 
-/** MInterface that defines methods required on any object that can
+import org.tigris.gef.util.VectorSet;
+
+/** Interface that defines methods required on any object that can
  *  post a ToDoItem to the Designer's ToDoList. Basically requires that
  *  the poster (1) have contact information, (2) be able to snooze
  *  and unsnooze itself, and (3) be able to determine if a ToDoItem it
