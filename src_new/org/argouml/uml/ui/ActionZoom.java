@@ -66,7 +66,7 @@ public class ActionZoom extends UMLAction {
 	SelectionManager sm = ce.getSelectionManager();         
 
         // Get all the figures from the diagram.
-        Vector nodes = ((Diagram)ProjectBrowser.TheInstance.getTarget()).getLayer().getContents();
+        Vector nodes = ((Diagram)ProjectBrowser.TheInstance.getActiveDiagram()).getLayer().getContents();
         for(int i=0; i < nodes.size(); i++) {
 	    sm.select((Fig)(nodes.elementAt(i)));  // Select all the figures in the diagram.
         }      
