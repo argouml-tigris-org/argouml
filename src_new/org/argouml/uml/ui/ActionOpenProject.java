@@ -100,7 +100,8 @@ public class ActionOpenProject extends UMLAction {
 					      t,
 					      JOptionPane.YES_NO_CANCEL_OPTION);
 
-            if (response == JOptionPane.CANCEL_OPTION)
+            if (response == JOptionPane.CANCEL_OPTION 
+	        || response == JOptionPane.CLOSED_OPTION)
                 return;
             if (response == JOptionPane.YES_OPTION) {
                 boolean safe = false;
