@@ -168,6 +168,11 @@ public class FigClass extends FigNodeModelElement {
      *   change it to 19 pixels, 1 more than ({@link #STEREOHEIGHT} here. The
      *   attribute and operations boxes are created at 19 pixels, 2 more than
      *   {@link #ROWHEIGHT}.</p>
+     *
+     * <p>CAUTION: This constructor (with no arguments) is the only one
+     *   that does enableSizeChecking(false), all others must set it true.
+     *   This is because this constructor is the only one called when loading
+     *   a project. In this case, the parsed size must be maintained.</p>
      */
 
     public FigClass() {
@@ -246,6 +251,7 @@ public class FigClass extends FigNodeModelElement {
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
 
+        enableSizeChecking(false);
         suppressCalcBounds = true;
 
         addFig(_bigPort);
@@ -281,6 +287,7 @@ public class FigClass extends FigNodeModelElement {
     public FigClass(GraphModel gm, Object node) {
 
         this();
+        enableSizeChecking(true);
         setOwner(node);
 
         if ((node instanceof MClassifier) &&
@@ -916,29 +923,29 @@ public class FigClass extends FigNodeModelElement {
         // correction due to rounded division result, will be added to the name
         // compartment
 
-	Rectangle oldBounds = getBounds();
-	Dimension aSize = checkSize ? getMinimumSize() : new Dimension(w,h);
+        Rectangle oldBounds = getBounds();
+        Dimension aSize = checkSize ? getMinimumSize() : new Dimension(w,h);
 
-	int newW = Math.max(w,aSize.width);
-	int newH = h;
+        int newW = Math.max(w,aSize.width);
+        int newH = h;
 
-	int extra_each = 0;
-	int height_correction = 0;
+        int extra_each = 0;
+        int height_correction = 0;
 
-	// First compute all nessessary height data. Easy if we want less than
+        // First compute all nessessary height data. Easy if we want less than
         // the minimum
 
-	if (newH <= aSize.height) {
+        if (newH <= aSize.height) {
 
             // Just use the mimimum
 
             newH = aSize.height;
 
-	} else  {
+        } else  {
 
             // Split the extra amongst the number of displayed compartments
 
-	    int displayedFigs = 1; //this is for _name
+            int displayedFigs = 1; //this is for _name
 
             if (_attrVec.isDisplayed()) {
 	        displayedFigs++;
@@ -951,12 +958,12 @@ public class FigClass extends FigNodeModelElement {
             // Calculate how much each, plus a correction to put in the name
             // comparment if the result is rounded
 
-	    extra_each        = (newH - aSize.height) / displayedFigs;
-	    height_correction = (newH - aSize.height) -
+            extra_each        = (newH - aSize.height) / displayedFigs;
+            height_correction = (newH - aSize.height) -
                                 (extra_each * displayedFigs);
-	}
+        }
 
-	// Now resize all sub-figs, including not displayed figs. Start by the
+        // Now resize all sub-figs, including not displayed figs. Start by the
         // name. We override the getMinimumSize if it is less than our view (21
         // pixels hardcoded!). Add in the shared extra, plus in this case the
         // correction.
@@ -981,7 +988,7 @@ public class FigClass extends FigNodeModelElement {
         }
 
         _name.setBounds(x,currentY,newW,height);
-	_stereo.setBounds(x,y,newW,STEREOHEIGHT + 1);
+        _stereo.setBounds(x,y,newW,STEREOHEIGHT + 1);
         _stereoLineBlinder.setBounds(x + 1,y + STEREOHEIGHT,newW - 2,2);
 
         // Advance currentY to where the start of the attribute box is,
@@ -990,21 +997,28 @@ public class FigClass extends FigNodeModelElement {
         // displayed.
 
         currentY += height-1;  // -1 for 1 pixel overlap
-   	aSize     = getUpdatedSize(_attrVec, x, currentY, newW,
-                                   ROWHEIGHT *
-                                   Math.max(1, _attrVec.getFigs().size() - 1) +
-                                   2 + extra_each);
 
-   	if (_attrVec.isDisplayed()) {
+        int na = (_attrVec.isDisplayed()) ? Math.max(1,_attrVec.getFigs().size()-1) : 0;
+        int no = (_operVec.isDisplayed()) ? Math.max(1,_operVec.getFigs().size()-1) : 0;
+        if (checkSize) {
+            height = ROWHEIGHT * na + 2 + extra_each;
+		} else if (newH > currentY-y && na+no > 0) {
+            height = (newH+y-currentY) * na / (na+no) + 1;
+		} else {
+            height = 1;
+		}
+        aSize = getUpdatedSize(_attrVec, x, currentY, newW, height);
+
+        if (_attrVec.isDisplayed()) {
             currentY += aSize.height - 1;  // -1 for 1 pixel overlap
         }
 
         // Finally update the bounds of the operations box
 
-   	aSize = getUpdatedSize(_operVec, x, currentY, newW,
+        aSize = getUpdatedSize(_operVec, x, currentY, newW,
                                newH + y - currentY);
 
-	// set bounds of big box
+        // set bounds of big box
 
         _bigPort.setBounds(x,y,newW,newH);
 
@@ -1012,7 +1026,7 @@ public class FigClass extends FigNodeModelElement {
         // and trigger anyone who's listening to see if the "bounds" property
         // has changed.
 
- 	calcBounds();
+        calcBounds();
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
     }
