@@ -49,7 +49,7 @@ import org.argouml.swingext.LabelledLayout;
  *  @author Jeremy Jones
  *  @since  0.9.7
  */
-public class SettingsTabFonts
+public class SettingsTabAppearance
     extends SettingsTabHelper
     implements SettingsTabPanel
 {
@@ -59,7 +59,7 @@ public class SettingsTabFonts
     private JLabel      _metalLabel;
     private JCheckBox   _smoothEdges;
     
-    public SettingsTabFonts() {
+    public SettingsTabAppearance() {
         super();
 
         setLayout(new BorderLayout());
@@ -149,10 +149,10 @@ public class SettingsTabFonts
     }
 
     public void handleSettingsTabCancel() { }
-    public String getModuleName() { return "SettingsTabFonts"; }
-    public String getModuleDescription() { return "Settings of font"; }
+    public String getModuleName() { return "SettingsTabAppearance"; }
+    public String getModuleDescription() { return "Appearance Settings"; }
     public String getModuleAuthor() { return "ArgoUML Core"; }
     public String getModuleVersion() { return ArgoVersion.getVersion(); }
-    public String getModuleKey() { return "module.settings.fonts"; }
-    public String getTabKey() { return "tab.fonts"; }
+    public String getModuleKey() { return "module.settings.appearance"; }
+    public String getTabKey() { return "tab.appearance"; }
 }
