@@ -70,8 +70,10 @@ Diagram Pane or the Drawing Pane of the Multi-Editor Pane.
       <para>In the main editing area &button1; click is used to select an
         individual artifact.</para>
 
-      <para>Some artifacts (e.g. actor, class) show special handles at 
-        the sides, top and bottom, 
+      <para>Some artifacts (e.g. actor, class) show special handles
+        (called <quote>Selection Action Buttons</quote>, see <xref
+        linkend="s1.ref.edit_pane_selection_action_buttons"/>)
+        at the sides, top and bottom, 
         which can be clicked to create a new related artifact, 
         with the relation indicated. 
         If the shift key
@@ -166,7 +168,10 @@ outside of the menu area.
         at the corners or ends, and
         these can be used for re-sizing.</para>
 
-      <para>Some artifacts (e.g. actor, class) show special handles at the
+      <para>Some artifacts (e.g. actor, class) show special handles 
+        (called <quote>Selection Action Buttons</quote>, see <xref
+        linkend="s1.ref.edit_pane_selection_action_buttons"/>)
+        at the
         sides, top and bottom, which can be dragged to form types of
         relationship with other artifacts.</para>
 
@@ -1112,6 +1117,19 @@ graphic artifacts to diagrams.</para></listitem>
     </sect2>
   </sect1>
 
+  <!-- Selection Action Buttons -->
+  
+  <sect1 id="s1.ref.edit_pane_selection_action_buttons">
+    <title>Selection Action Buttons (To Be Written)</title>
+    
+    <!-- TODO: Show many graphic examples, 
+    and explain what each button does, 
+    and in which ways the can be activated, 
+    e.g. clicking, dragging, shift clicking,... -->
+    <para>
+    </para>
+  </sect1>
+  
   <!-- Clarifiers -->
 
   <sect1>
