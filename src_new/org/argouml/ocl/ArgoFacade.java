@@ -153,6 +153,11 @@ class ArgoAny implements Any {
 
       if (foundOp == null) { throw new OclTypeException("operation "+name+" not found in classifier "+toString());}
 
+      /* Query checking added 05/21/01, sz9 */
+      if (! foundOp.isQuery()) {
+        throw new OclTypeException ("Non-query operations cannot be used in OCL expressions. (" + name + ")");
+      }      
+      
       MParameter rp = MMUtil.SINGLETON.getReturnParameter(foundOp);
 
       if (rp == null || rp.getType() == null) {
