@@ -48,6 +48,9 @@ public class FigAssociation extends FigEdgeModelElement {
 
   protected FigText _srcMult, _srcRole;
   protected FigText _destMult, _destRole;
+  protected FigText _srcOrdering, _destOrdering;
+
+  protected ArrowHead sourceArrowHead, destArrowHead;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -55,7 +58,7 @@ public class FigAssociation extends FigEdgeModelElement {
   public FigAssociation() {
     addPathItem(_name, new PathConvPercent(this, 50, 10));
     addPathItem(_stereo, new PathConvPercent(this, 50, 25));
-
+    
     _srcMult = new FigText(10, 30, 90, 20);
     _srcMult.setFont(LABEL_FONT);
     _srcMult.setTextColor(Color.black);
@@ -87,6 +90,23 @@ public class FigAssociation extends FigEdgeModelElement {
     _destRole.setFilled(false);
     _destRole.setLineWidth(0);
     addPathItem(_destRole, new PathConvPercentPlusConst(this, 100, -35, -15));
+    
+    _srcOrdering = new FigText(10,30,90,20);
+    _srcOrdering.setFont(LABEL_FONT);
+    _srcOrdering.setTextColor(Color.black);
+    _srcOrdering.setTextFilled(false);
+    _srcOrdering.setFilled(false);
+    _srcOrdering.setLineWidth(0);
+    addPathItem(_srcOrdering, new PathConvPercentPlusConst(this, 0, 35, -30));
+
+    _destOrdering = new FigText(10,30,90,20);
+    _destOrdering.setFont(LABEL_FONT);
+    _destOrdering.setTextColor(Color.black);
+    _destOrdering.setTextFilled(false);
+    _destOrdering.setFilled(false);
+    _destOrdering.setLineWidth(0);
+    addPathItem(_destOrdering, new PathConvPercentPlusConst(this, 100, -35, -30));
+
     setBetweenNearestPoints(true);
   }
 
@@ -184,12 +204,20 @@ public class FigAssociation extends FigEdgeModelElement {
                                                          ae1.getStereotype()) +
                               " " + _destRole.getText());
     }
+
+    if (true == true ) {
+       _srcOrdering.setText(getOrderingName(ae0.getOrdering()));
+       _destOrdering.setText(getOrderingName(ae1.getOrdering()));
+    }
+
     boolean srcNav = ae0.isNavigable();
     boolean destNav = ae1.isNavigable();
     if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS)
       srcNav = destNav = false;
-    setSourceArrowHead(chooseArrowHead(ae0.getAggregation(), srcNav));
-    setDestArrowHead(chooseArrowHead(ae1.getAggregation(), destNav));
+    sourceArrowHead = chooseArrowHead(ae0.getAggregation(), srcNav);
+    destArrowHead = chooseArrowHead(ae1.getAggregation(), destNav);
+    setSourceArrowHead(sourceArrowHead);
+    setDestArrowHead(destArrowHead);
   }
 
 
@@ -301,7 +329,24 @@ public class FigAssociation extends FigEdgeModelElement {
     return popUpActions;
   }
 
+    /* returns the name of the OrderingKind.
+     * @return "{ordered}", "{sorted}" or "" if null or "unordered"
+     */
+    private String getOrderingName(MOrderingKind ok) {
+	if (ok == null) return "";
+	if (ok.getName() == null) return "";
+	if ("unordered".equals(ok.getName())) return "";
+	return "{" + ok.getName() + "}";
+    }
+
   static final long serialVersionUID = 9100125695919853919L;
 
+    public void paint(Graphics g) {
+        sourceArrowHead.setLineColor(getLineColor());
+        destArrowHead.setLineColor(getLineColor());
+        super.paint(g);
+    }
+
 } /* end class FigAssociation */
+
 
