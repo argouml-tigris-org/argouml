@@ -134,7 +134,17 @@ public class UMLResourceBundle_fr extends ListResourceBundle {
         {"New stereotype", "Nouveau st\u00e9r\u00e9otype" },  
         {"Add enumeration literal", "Ajouter un litt\u00e9ral d'enum\u00e9ration" },  
         {"NavStereo", "Aller au st\u00e9r\u00e9otype s\u00e9lectionn\u00e9" },
-        {"NavClass", "Aller \u00e0 la classe s\u00e9lectionn\u00e9e" }
+        {"NavClass", "Aller \u00e0 la classe s\u00e9lectionn\u00e9e" },
+
+
+        { "Checklist", "Liste de contr\u00f4le" },         
+        { "Constraints", "Contraintes" },                  
+        { "Documentation", "Documentation" },              
+        { "Properties", "Propri\u00e9t\u00e9s" },          
+        { "Source", "Source" },                            
+        { "Style", "Style" },                              
+        { "TaggedValues", "\u00c9tiquettes" },            
+        { "ToDoItem", "\u00c9l\u00e9ment \u00e0 corriger" }
     };
 
     public Object[][] getContents() {
