@@ -672,13 +672,21 @@ public class Project implements java.io.Serializable, TargetListener {
             // diagrams (first for loop).
             // The we save all XMI objects (second for loop).
             // This is because order is important on saving.
+            Collection names = new ArrayList();
+            int counter = 0;  
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember)_members.elementAt(i);
                 if (!(p.getType().equalsIgnoreCase("xmi"))) {
                     Argo.log.info(
                         "Saving member of type: "
                             + ((ProjectMember)_members.elementAt(i)).getType());
-                    stream.putNextEntry(new ZipEntry(p.getName()));
+                    String name = p.getName();
+                    String originalName = name;                                  
+                    while (names.contains(name)) {
+                        name = ++counter + originalName;
+                    }
+                    names.add(name);
+                    stream.putNextEntry(new ZipEntry(name));
                     p.save(path, overwrite, writer);
                     writer.flush();
                     stream.closeEntry();
