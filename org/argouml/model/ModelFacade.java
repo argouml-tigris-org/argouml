@@ -4218,6 +4218,9 @@ public class ModelFacade {
         if (handle instanceof MAggregationKind) {
             return ((MAggregationKind) handle).getName();
         }
+        if (handle instanceof MVisibilityKind) {
+            return ((MVisibilityKind) handle).getName();
+        }
         if (handle instanceof MCallConcurrencyKind) {
             return ((MCallConcurrencyKind) handle).getName();
         }
