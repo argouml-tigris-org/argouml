@@ -89,6 +89,7 @@ public class ModuleLoader {
 	    else {
 	        argoHome = new File(argoRoot).getAbsoluteFile().getParent();
 	    }
+            argoHome = java.net.URLDecoder.decode(argoHome);
 	    ArgoModule.cat.info("argoHome is " + argoHome);
 	}
     }
@@ -123,9 +124,13 @@ public class ModuleLoader {
 
 	String[] path = {
 	    System.getProperty("user.dir") + fs + ArgoModule.MODULEFILENAME,
+	    System.getProperty("user.dir") + fs + ArgoModule.MODULEFILENAME_ALTERNATE,
 	    System.getProperty("user.home") + fs + ArgoModule.MODULEFILENAME,
+	    System.getProperty("user.home") + fs + ArgoModule.MODULEFILENAME_ALTERNATE,
 	    System.getProperty("java.home") + fs + "lib" +
-	                                        fs + ArgoModule.MODULEFILENAME
+	                                        fs + ArgoModule.MODULEFILENAME,
+	    System.getProperty("java.home") + fs + "lib" +
+	                                        fs + ArgoModule.MODULEFILENAME_ALTERNATE
 	};
 
 	// Get all of the file paths.  Check if the file exists,

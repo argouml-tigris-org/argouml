@@ -54,8 +54,7 @@ public interface ArgoModule {
 
 
     public static final String MODULEFILENAME = ".argo.modules";
-
-
+    public static final String MODULEFILENAME_ALTERNATE = "argo.modules";
 
     public boolean initializeModule(); // called when loading module
     
