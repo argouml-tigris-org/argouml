@@ -70,7 +70,7 @@ This is the Analysis tutorial chapter of the User Manual.
            dynamic models together. -->
 
       <sect3>
-        <title>System State Diagram (To be written)</title>
+        <title>System Statechart Diagram (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -297,19 +297,19 @@ This is the Analysis tutorial chapter of the User Manual.
 
   </sect1>
 
-  <!-- Introduce UML State Diagrams and how they can be used for System
-       State Diagrams. Will be very limited for this edition. At this stage
+  <!-- Introduce UML Statechart Diagrams and how they can be used for System
+       Statechart Diagrams. Will be very limited for this edition. At this stage
        we only show the bits relevant to System level diagrams. -->
 
   <sect1 id="s1.umlstatediags">
-    <title>State Diagrams (To be written)</title>
+    <title>Statechart Diagrams (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 
     <sect2>
-      <title>The State Diagram (To be written)</title>
+      <title>The Statechart Diagram (To be written)</title>
 
-      <remark>Types of state diagram (Moore, Mealy); Hierarchical diagrams. To
+      <remark>Types of statechart diagram (Moore, Mealy); Hierarchical diagrams. To
         be written&hellip;</remark>
     </sect2>
 
@@ -317,12 +317,12 @@ This is the Analysis tutorial chapter of the User Manual.
          Level -->
 
     <sect2>
-      <title>Advanced State Diagrams (To be written)</title>
+      <title>Advanced Statechart Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Hierarchical State Diagrams (To be written)</title>
+        <title>Hierarchical Statechart Diagrams (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -332,10 +332,10 @@ This is the Analysis tutorial chapter of the User Manual.
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1 id="s1.argostatediags">
-    <title>Creating State Diagrams in &argouml;</title>
+    <title>Creating Statechart Diagrams in &argouml;</title>
 
     <sect2>
-      <title>State Diagrams (To be written)</title>
+      <title>Statechart Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
       
@@ -343,9 +343,9 @@ This is the Analysis tutorial chapter of the User Manual.
            Diagram --> 
 
       <sect3>
-        <title>Creating a State Diagram</title>
+        <title>Creating a Statechart Diagram</title>
 
-        <para>Select a class, then you can create a state diagram.</para>
+        <para>Select a class, then you can create a statechart diagram.</para>
       </sect3>
     </sect2>
 
@@ -388,12 +388,12 @@ This is the Analysis tutorial chapter of the User Manual.
          Level -->
 
     <sect2>
-      <title>Advanced State Diagrams (To be written)</title>
+      <title>Advanced Statechart Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Hierarchical State Diagrams (To be written)</title>
+        <title>Hierarchical Statechart Diagrams (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -454,7 +454,7 @@ This is the Analysis tutorial chapter of the User Manual.
     </sect2>
 
     <sect2>
-      <title>System State Diagrams (To be written)</title>
+      <title>System Statechart Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>

@@ -1945,7 +1945,7 @@ the editing pane.</para>
         menu.</para></tip>
     </sect2>
 
-    <!-- Create a State Diagram -->
+    <!-- Create a Statechart Diagram -->
 
     <sect2 id="s2.ref.create.diagram.state_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
@@ -1954,12 +1954,12 @@ the editing pane.</para>
         </imageobject></inlinemediaobject></guiicon> State
         Diagram</title> 
 
-      <para>This menu entry creates a blank state diagram associated with the
+      <para>This menu entry creates a blank statechart diagram associated with the
         currently selected class, and selects that diagram in the editing
         pane. Artifacts created on the diagram will be created within the
         namespace of the owning class.</para>
 
-      <tip><para>State diagrams <emphasis>must</emphasis> be associated
+      <tip><para>Statechart diagrams <emphasis>must</emphasis> be associated
         with a class. The <literal>State
         Diagram</literal> menu entry is grayed out if a class is not
         selected. 

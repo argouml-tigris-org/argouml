@@ -456,17 +456,17 @@ Originally best known for its GNU version of the Emacs
   <glossdiv>
     <title>H</title>
 
-    <!-- Hierarchical State Diagram -->
+    <!-- Hierarchical Statechart Diagram -->
 
     <glossentry id="gl.hierstatediag">
-      <glossterm>Hierarchical State Diagram</glossterm>
+      <glossterm>Hierarchical Statechart Diagram</glossterm>
 
       <glossdef>
       <indexterm>
-        <primary>Hierarchical State Diagram</primary>
+        <primary>Hierarchical Statechart Diagram</primary>
       </indexterm>
       <indexterm>
-        <primary>State Diagram</primary>
+        <primary>Statechart Diagram</primary>
 	<secondary>Hierarchical</secondary>
       </indexterm>
       <indexterm>
@@ -474,8 +474,8 @@ Originally best known for its GNU version of the Emacs
 	<secondary>Hierarchical State</secondary>
       </indexterm>
 
-        <para>A <emphasis>State Diagram</emphasis> that contains subsidiary
-          state diagrams within individual <emphasis>States</emphasis>.</para>
+        <para>A <emphasis>Statechart Diagram</emphasis> that contains subsidiary
+          statechart diagrams within individual <emphasis>States</emphasis>.</para>
 
         <glossseealso otherterm="gl.state"/>
         <glossseealso otherterm="gl.statediag"/>
@@ -607,7 +607,7 @@ Originally best known for its GNU version of the Emacs
         <primary>Mealy Machine</primary>
       </indexterm>
 
-        <para>A <emphasis>State Diagram</emphasis> where actions are associated
+        <para>A <emphasis>Statechart Diagram</emphasis> where actions are associated
           with <emphasis>States</emphasis>.</para>
 
         <glossseealso otherterm="gl.action"/>
@@ -658,7 +658,7 @@ Originally best known for its GNU version of the Emacs
         <primary>Moore Machine</primary>
       </indexterm>
 
-        <para>A <emphasis>State Diagram</emphasis> where actions are associated
+        <para>A <emphasis>Statechart Diagram</emphasis> where actions are associated
           with <emphasis>Transitions</emphasis>.</para>
 
         <glossseealso otherterm="gl.action"/>
@@ -965,17 +965,17 @@ Originally best known for its GNU version of the Emacs
         <primary>State</primary>
       </indexterm>
 
-        <para>Within a <emphasis>State Diagram</emphasis> a one of the possible
+        <para>Within a <emphasis>Statechart Diagram</emphasis> a one of the possible
           configurations of the machine.</para>
 
         <glossseealso otherterm="gl.statediag"/>
       </glossdef>
     </glossentry>
 
-    <!-- State Diagram -->
+    <!-- Statechart Diagram -->
 
     <glossentry id="gl.statediag">
-      <glossterm>State Diagram</glossterm>
+      <glossterm>Statechart Diagram</glossterm>
 
       <glossdef>
       <indexterm>
@@ -1082,21 +1082,21 @@ ArgoUML can export diagrams in SVG.
       </glossdef>
     </glossentry>
 
-    <!-- System State Diagram -->
+    <!-- System Statechart Diagram -->
 
     <glossentry id="gl.sysstatediag">
-      <glossterm>System State Diagram</glossterm>
+      <glossterm>System Statechart Diagram</glossterm>
 
       <glossdef>
       <indexterm>
-        <primary>System State Diagram</primary>
+        <primary>System Statechart Diagram</primary>
       </indexterm>
       <indexterm>
         <primary>Diagram</primary>
 	<secondary>System State</secondary>
       </indexterm>
 
-        <para>A <emphasis>State Diagram</emphasis> used in the
+        <para>A <emphasis>Statechart Diagram</emphasis> used in the
           <emphasis>Analysis</emphasis> Phase showing the dyanamic behavior of
           an active top level system objects. See
           <xref linkend="ch.tut.analysis"/> for more information.</para>
@@ -1137,7 +1137,7 @@ ArgoUML can export diagrams in SVG.
       </indexterm>
 
         <para>The change between <emphasis>States</emphasis> in a
-          <emphasis>State Diagram</emphasis>..</para>
+          <emphasis>Statechart Diagram</emphasis>..</para>
 
         <glossseealso otherterm="gl.state"/>
         <glossseealso otherterm="gl.statediag"/>

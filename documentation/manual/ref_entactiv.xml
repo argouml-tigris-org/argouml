@@ -28,7 +28,7 @@ Argo/UML.
     <para><xref linkend="fig.ref.activity_diagram"/> shows an Activity Diagram
       with all possible artifacts displayed.</para>
 
-    <!-- This picture more or less maps to the one used for State Diagram. -->
+    <!-- This picture more or less maps to the one used for Statechart Diagram. -->
 
     <figure id="fig.ref.activity_diagram" float="1">
       <title>Possible artifacts on an activity diagram.</title>
@@ -52,7 +52,7 @@ Argo/UML.
       (signals), sub-activities, object flows, control icons and interactions 
       with other classifiers are not provided. 
       In practice there is little in the current implementation of
-      the activity diagram to distinguish it from the state diagram (see <xref
+      the activity diagram to distinguish it from the statechart diagram (see <xref
       linkend="ch.ref.entstate"/>).</para>
 
     </sect2>
@@ -406,17 +406,17 @@ but should not be according UML standard. See issue ... -->
   <sect1>
     <title>Action</title>
 
-    <para>This artifact is described in the context of state diagrams (see
+    <para>This artifact is described in the context of statechart diagrams (see
       <xref linkend="s1.ref.action_state"/>).</para>
   </sect1>
 
   <!-- Transition artifact. Has Call Event and Guard as sub-artifacts. Cross
-       refer to State Diagram -->
+       refer to Statechart Diagram -->
 
   <sect1>
     <title>Transition</title>
 
-    <para>This artifact is described in the context of state diagrams (see
+    <para>This artifact is described in the context of statechart diagrams (see
       <xref linkend="s1.ref.transition_state"/>).</para>
 
     <caution><para>Remember that action states do not have explicit triggers.
@@ -435,7 +435,7 @@ but should not be according UML standard. See issue ... -->
   <sect1>
     <title>Event</title>
 
-    <para>This artifact is described in the context of state diagrams (see
+    <para>This artifact is described in the context of statechart diagrams (see
       <xref linkend="s1.ref.call_event_state"/>).</para>
 
     <caution><para>The only place this is used is for the trigger of a
@@ -454,40 +454,40 @@ but should not be according UML standard. See issue ... -->
   <sect1>
     <title>Guard</title>
 
-    <para>This artifact is described in the context of state diagrams (see
+    <para>This artifact is described in the context of statechart diagrams (see
       <xref linkend="s1.ref.guard_state"/>).</para>
   </sect1>
 
   <!-- Initial State. This is a pseudo state, which all have the same
        property sheet. The pseudo states are Initial State, Branch, Fork,
        Join, Shallow History and Deep History but *NOT* Final State,
-       which is a real state. Cross refer to State Diagram -->
+       which is a real state. Cross refer to Statechart Diagram -->
 
   <sect1>
     <title>Initial State</title>
 
-    <para>This artifact is described in the context of state diagrams (see
+    <para>This artifact is described in the context of statechart diagrams (see
       <xref linkend="s1.ref.initial_state"/>).</para>
   </sect1>
 
-  <!-- Final State - cross refer to State Diagram-->
+  <!-- Final State - cross refer to Statechart Diagram-->
 
   <sect1>
     <title>Final State</title>
 
-    <para>This artifact is described in the context of state diagrams (see
+    <para>This artifact is described in the context of statechart diagrams (see
       <xref linkend="s1.ref.final_state"/>).</para>
   </sect1>
 
   <!-- Branch. This is a pseudo state, which all have the same property
        sheet. The pseudo states are Initial State, Branch, Fork, Join,
        Shallow History and Deep History but *NOT* Final State, which is a
-       real state. Cross refer to State Diagram -->
+       real state. Cross refer to Statechart Diagram -->
 
   <sect1>
     <title>Branch</title>
 
-    <para>This artifact is described in the context of state diagrams (see
+    <para>This artifact is described in the context of statechart diagrams (see
       <xref linkend="s1.ref.branch_state"/>).</para>
 
     <caution><para>As a detailed technicality, a branch on an activity diagram
@@ -501,24 +501,24 @@ but should not be according UML standard. See issue ... -->
   <!-- Fork. This is a pseudo state, which all have the same property
        sheet. The pseudo states are Initial State, Branch, Fork, Join,
        Shallow History and Deep History but *NOT* Final State, which is a
-       real state. Cross refer to State Diagram -->
+       real state. Cross refer to Statechart Diagram -->
 
   <sect1>
     <title>Fork</title>
 
-    <para>This artifact is described in the context of state diagrams (see
+    <para>This artifact is described in the context of statechart diagrams (see
       <xref linkend="s1.ref.fork_state"/>).</para>
   </sect1>
 
   <!-- Join. This is a pseudo state, which all have the same property
        sheet. The pseudo states are Initial State, Branch, Fork, Join,
        Shallow History and Deep History but *NOT* Final State, which is a
-       real state. Cross refer to State Diagram -->
+       real state. Cross refer to Statechart Diagram -->
 
   <sect1>
     <title>Join</title>
 
-    <para>This artifact is described in the context of state diagrams (see
+    <para>This artifact is described in the context of statechart diagrams (see
       <xref linkend="s1.ref.join_state"/>).</para>
   </sect1>
 </chapter>

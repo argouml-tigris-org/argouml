@@ -768,14 +768,14 @@ graphic artifacts to diagrams.</para></listitem>
       </itemizedlist>
     </sect2>
 
-    <!-- Tools for State Diagrams and in many cases for Activity Diagrams -->
+    <!-- Tools for Statechart Diagrams and in many cases for Activity Diagrams -->
 
     <sect2>
-      <title>State Diagram Specific Tools</title>
+      <title>Statechart Diagram Specific Tools</title>
 
       <para>Ten tools are provided specific to UML artifacts on state
         diagrams. The detailed properties of these artifacts are described in
-        the section on state diagram artifacts (see
+        the section on statechart diagram artifacts (see
         <xref linkend="ch.ref.entstate"/>).</para>
 
       <itemizedlist>

@@ -247,7 +247,7 @@ A description of all the toolbar entries
                 </imageobject>
               </inlinemediaobject>
             </guiicon>
-            <literal>State Diagram</literal> See for a full description
+            <literal>Statechart Diagram</literal> See for a full description
             <xref linkend="s2.ref.create.diagram.state_diagram"/>.
           </para>
         </listitem>

@@ -101,16 +101,16 @@ own chapters.
         system at all levels.</para>
 
       <itemizedlist>
-        <listitem><para><emphasis>State diagram</emphasis>. Used to show the
+        <listitem><para><emphasis>Statechart diagram</emphasis>. Used to show the
           dynamic behavior of a single object (class instance). This diagram is
           of particular use in systems using complex communication protocols,
           such as in telecommunications. See <xref linkend="ch.ref.entstate"/>
-          for details of the &argouml; state diagram and the artifacts it
+          for details of the &argouml; statechart diagram and the artifacts it
           supports.</para></listitem>
 
         <listitem><para><emphasis>Activity diagram</emphasis>. Used to show the
           dynamic behavior of groups of objects (class instance). This diagram
-          is an alternative to the state diagram, and is better suited to
+          is an alternative to the statechart diagram, and is better suited to
           systems with a great deal of user interaction. See <xref
           linkend="ch.ref.entactiv"/> for details of the &argouml; activity
           diagram and the artifacts it supports.</para></listitem>

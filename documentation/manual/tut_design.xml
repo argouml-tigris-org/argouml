@@ -68,12 +68,12 @@ Sequence Diagrams and Collaboration Diagrams (To be written)
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- State Diagrams are the detailed realisation of classes that link
+      <!-- Statechart Diagrams are the detailed realisation of classes that link
            them to sequence and collaboration diagrams. Activity Diagrams are a
            variant-->
 
       <sect3>
-        <title>State Diagrams and Activity Diagrams (To be written)</title>
+        <title>Statechart Diagrams and Activity Diagrams (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -478,16 +478,16 @@ Sequence diagrams does not work in ArgoUML version 0.14.
 
   </sect1>
 
-  <!-- Take State Diagrams in Detail. Need to show how these link to sequence
+  <!-- Take Statechart Diagrams in Detail. Need to show how these link to sequence
        and collaboration diagrams. -->
 
   <sect1>
-    <title>State Diagrams (To be written)</title>
+    <title>Statechart Diagrams (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 
     <sect2>
-      <title>The State Diagram (To be written)</title>
+      <title>The Statechart Diagram (To be written)</title>
 
       <remark>More on this. To be written&hellip;</remark>
     </sect2>
@@ -495,7 +495,7 @@ Sequence diagrams does not work in ArgoUML version 0.14.
     <!-- More on all the detailed stuff -->
 
     <sect2>
-      <title>Advanced State Diagrams (To be written)</title>
+      <title>Advanced Statechart Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
@@ -584,12 +584,12 @@ Sequence diagrams does not work in ArgoUML version 0.14.
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>Creating State Diagrams in &argouml; (To be written)</title>
+    <title>Creating Statechart Diagrams in &argouml; (To be written)</title>
 
     <!-- A bit more detail this time -->
 
     <sect2>
-      <title>State Diagrams (To be written)</title>
+      <title>Statechart Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
@@ -616,7 +616,7 @@ Sequence diagrams does not work in ArgoUML version 0.14.
     <!-- How to do hard things -->
 
     <sect2>
-      <title>Advanced State Diagrams (To be written)</title>
+      <title>Advanced Statechart Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
@@ -692,7 +692,7 @@ Sequence diagrams does not work in ArgoUML version 0.14.
     </sect2>
   </sect1>
 
-  <!-- Activity Diagrams as a variant of State Diagrams -->
+  <!-- Activity Diagrams as a variant of Statechart Diagrams -->
 
   <sect1 id="s1.umlactivitydiags">
     <title>Activity Diagrams (To be written)</title>
@@ -714,7 +714,7 @@ Sequence diagrams does not work in ArgoUML version 0.14.
     </sect2>
   </sect1>
 
-  <!-- Now show how to do in in Argo/UML. Relate to State Diagrams -->
+  <!-- Now show how to do in in Argo/UML. Relate to Statechart Diagrams -->
 
   <sect1>
     <title>Creating Activity Diagrams in &argouml; (To be written)</title>
@@ -897,7 +897,7 @@ Sequence diagrams does not work in ArgoUML version 0.14.
     </sect2>
 
     <sect2>
-      <title>State Diagrams (To be written)</title>
+      <title>Statechart Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>

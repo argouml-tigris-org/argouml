@@ -3,18 +3,18 @@
 
 <!--
 
-Description of all the artifacts associated with State Diagrams within ArgoUML.
+Description of all the artifacts associated with Statechart Diagrams within ArgoUML.
 
 -->
 
 <chapter id="ch.ref.entstate">
-  <title>State Diagram Artifact Reference</title>
+  <title>Statechart Diagram Artifact Reference</title>
 
   <sect1>
     <title>Introduction</title>
 
     <para>This chapter describes each artifact that can be created within a
-      state diagram. Note that some sub-artifacts of artifacts on the diagram
+      statechart diagram. Note that some sub-artifacts of artifacts on the diagram
       may not actually themselves appear on the diagram.</para>
 
     <para>There is a close relationship between this material and the
@@ -29,13 +29,13 @@ Description of all the artifacts associated with State Diagrams within ArgoUML.
 
     <!-- A diagram to show all things visible on the diagram -->
 
-    <para><xref linkend="fig.ref.state_diagram"/> shows a state diagram with
+    <para><xref linkend="fig.ref.state_diagram"/> shows a statechart diagram with
       all possible artifacts displayed.</para>
 
-    <!-- A state diagram showing just about everything. -->
+    <!-- A statechart diagram showing just about everything. -->
 
     <figure id="fig.ref.state_diagram" float="1">
-      <title>Possible artifacts on a state diagram.</title>
+      <title>Possible artifacts on a statechart diagram.</title>
 
       <screenshot><mediaobject>
         <imageobject>
@@ -49,10 +49,10 @@ Description of all the artifacts associated with State Diagrams within ArgoUML.
          generation. -->
 
     <sect2 id="s2.ref.state_limitations">
-      <title>Limitations Concerning State Diagrams in &argouml;</title>
+      <title>Limitations Concerning Statechart Diagrams in &argouml;</title>
 
       <para>
-The state diagrams are generally well drawn, but the 4 event types 
+The statechart diagrams are generally well drawn, but the 4 event types 
 supported (CallEvent, SignalEvent, ChangeEvent and TimeEvent), are purely 
 textual, with no way to link them back to their associated operations.
 <!-- TODO: See issue ... -->
@@ -60,7 +60,7 @@ Also the various kinds of Actions are only supported in the same way.
 </para>
 
       <para>
-Code generation from state diagrams is not properly developed yet.
+Code generation from statechart diagrams is not properly developed yet.
 </para>
 
       <para>
@@ -84,7 +84,7 @@ in future versions of &argouml;.
     </sect2>
   </sect1>
 
-  <!-- Artifacts specific to State Diagrams. State artifact. Has Action as
+  <!-- Artifacts specific to Statechart Diagrams. State artifact. Has Action as
        sub-artifact -->
 
   <sect1 id="s1.ref.state">
@@ -98,7 +98,7 @@ some external event to occur, or some dynamic activity
 <quote>in progress</quote>.
 </para>
     
-    <para>A state is represented on a state diagram in &argouml; as a
+    <para>A state is represented on a statechart diagram in &argouml; as a
       rectangle with rounded corners, with a horizontal line separating the
       name at the top from the description of the behavior below. The
       description of the behavior includes the entry and exit actions and any
@@ -759,7 +759,7 @@ metamodel.
       sub-states), allowing hierarchical state machines to be
       constructed.</para>
 
-    <para>A composite state is represented on a state diagram in &argouml; as a
+    <para>A composite state is represented on a statechart diagram in &argouml; as a
       large rectangle with rounded corners, with a horizontal line separating
       the name at the top from the description of the behavior and the model
       of the sub-state machine below. The description of the behavior includes
@@ -865,7 +865,7 @@ Within the UML metamodel, <literal>Transition</literal> is a sub-class of
     </para>
 
     <para>
-A transition is represented on a state diagram in &argouml; as a
+A transition is represented on a statechart diagram in &argouml; as a
 line with arrow connecting the source to the destination state. 
 Next to this line is a string containing the following parts:
 If the transition is named, then the name is shown alongside the line
@@ -1849,7 +1849,7 @@ Within the UML metamodel, <literal>Pseudostate</literal> is a sub-class of
     </para>
 
     <para>
-The representation of a pseudostate on a state diagram in &argouml;
+The representation of a pseudostate on a statechart diagram in &argouml;
 depends on the particular kind of pseudostate: initial, deepHistory,
 shallowHistory, join, fork, junction and choice. &argouml; does not allow
 you to place a pseudostate directly, but only through tools for the

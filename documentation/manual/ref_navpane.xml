@@ -219,7 +219,7 @@ This chapter covers the Explorer.
       <!--listitem><para><literal>Association-centric</literal>. In this view the
         top level shows the model. Beneath this are all diagrams and all
         associations. All associations then have a sub-hierarchy listing
-        the classes they connect. Where classes have associated state diagrams
+        the classes they connect. Where classes have associated statechart diagrams
         these are shown beneath the class.</para></listitem-->
 
       <listitem><para><literal>State-centric</literal>. In this view the top
@@ -248,7 +248,7 @@ This chapter covers the Explorer.
 
       <listitem><para><literal>Transitions-paths</literal>. This is
         similar to <literal>State-centric</literal> view. However under each
-        state machine is shown the state diagram and the initial state. Under
+        state machine is shown the statechart diagram and the initial state. Under
         the initial state is a hierarchy showing the states to which it has
         transitions, and so on for each of those states. A similar structure is
         used for activity diagrams.</para></listitem>

@@ -377,7 +377,7 @@ ArgoUML up and running.
           <emphasis>concept diagram</emphasis>.</para>
 
         <para>We will introduce the UML <emphasis>sequence diagram</emphasis>
-          and <emphasis>state diagram</emphasis> to capture requirements for
+          and <emphasis>statechart diagram</emphasis> to capture requirements for
           the overall behavior of the system.</para>
 
         <para>Finally we will take the Use Cases from the requirements capture
@@ -393,7 +393,7 @@ ArgoUML up and running.
 
         <para>We use the UML <emphasis>package diagram</emphasis> to organize
           the components of the project. We then revisit the class diagram,
-          sequence diagram and state diagram, to show how they can be used
+          sequence diagram and statechart diagram, to show how they can be used
           recursively to design the complete solution.</para>
 
         <para>During this part of the process, we need to develop our system
@@ -405,7 +405,7 @@ ArgoUML up and running.
           alternative to, or to complement the <emphasis>sequence
           diagram</emphasis>. Similarly we will look at the UML
           <emphasis>activity diagram</emphasis> as an alternative or complement
-          to the state diagram.</para>
+          to the statechart diagram.</para>
 
         <para>Finally we shall use the UML <emphasis>deployment
           diagram</emphasis> to specify how the system will actually be

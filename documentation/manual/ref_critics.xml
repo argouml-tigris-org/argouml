@@ -275,7 +275,7 @@ you change that class at the same time (and think through the deployment).
       <title>Choose a Unique Name for a (State related) Artifact</title>
 
       <para>Suggestion that the state specified has the same name as another
-        (in the current state diagram), which is bad design and will prevent
+        (in the current statechart diagram), which is bad design and will prevent
         valid code generation.</para>
     </sect2>
 

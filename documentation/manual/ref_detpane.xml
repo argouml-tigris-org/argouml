@@ -446,7 +446,7 @@ Initially this
       (use case diagram (<xref linkend="ch.ref.entusecase"/>,
       class diagram (<xref linkend="ch.ref.entclass"/>,
       sequence diagram (<xref linkend="ch.ref.entseq"/>,
-      state diagram (<xref linkend="ch.ref.entstate"/>,
+      statechart diagram (<xref linkend="ch.ref.entstate"/>,
       collaboration diagram (<xref linkend="ch.ref.entcollab"/>,
       activity diagram (<xref linkend="ch.ref.entactiv"/>,
       deployment diagram (<xref linkend="ch.ref.entdeploy"/>). Property sheets
