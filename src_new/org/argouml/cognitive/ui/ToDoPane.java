@@ -167,13 +167,13 @@ public class ToDoPane extends JPanel
         _combo = new JComboBox();
         _tree = new DisplayTextTree();
         _toolbar = new ToolBar();
+        _toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         
         _perspectives = new Vector();
         
         _flatView = Actions.FlatToDo;
         _countLabel = new JLabel(formatCountLabel(999));
         
-        _toolbar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
         _toolbar.add(_combo);
         // This is the only reason GEF toolbar is used here.
         // Must find a way to implement the same.

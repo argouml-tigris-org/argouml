@@ -88,6 +88,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         setLayout(new BorderLayout());
 
         JToolBar toolBar = new ToolBar(JToolBar.VERTICAL);
+        toolBar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         toolBar.add(_actionNewToDoItem);
         toolBar.add(_actionResolve);
         toolBar.add(_actionEmailExpert);
