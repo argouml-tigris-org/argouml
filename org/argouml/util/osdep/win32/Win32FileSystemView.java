@@ -29,11 +29,6 @@ import java.lang.reflect.Method;
  */
 
 public class Win32FileSystemView extends FileSystemView { 
-    private static final Object[] noArgs = {}; 
-    private static final Class[] noArgTypes = {}; 
-
-    private static Method listRootsMethod = null; 
-    private static boolean listRootsMethodChecked = false; 
 
     public Win32FileSystemView() {
         super();
@@ -124,10 +119,6 @@ public class Win32FileSystemView extends FileSystemView {
     } 
     
     class FileSystemRoot extends File { 
-        public FileSystemRoot(File f) { 
-            super(f, ""); 
-        } 
-    
         public FileSystemRoot(String s) { 
             super(s); 
         } 
