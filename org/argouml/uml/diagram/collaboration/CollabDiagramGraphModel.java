@@ -22,31 +22,22 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 // File: CollabDiagramGraphModel.java
 // Classes: CollabDiagramGraphModel
 // Original Author: agauthie@ics.uci.edu
-// $Id$
-
 
 package org.argouml.uml.diagram.collaboration;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.VetoableChangeListener;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
 import org.apache.log4j.Logger;
-
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-
-import java.util.*;
-import java.beans.*;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.model_management.*;
-
+import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
 /** This class defines a bridge between the UML meta-model
  *  representation of the design and the GraphModel interface used by

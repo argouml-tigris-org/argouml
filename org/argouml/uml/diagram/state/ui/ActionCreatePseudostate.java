@@ -25,7 +25,6 @@
 // File: ActionCreatePseudostate.java
 // Classes: ActionCreatePseudostate
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.diagram.state.ui;
 
@@ -33,8 +32,6 @@ import java.util.Hashtable;
 
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.model.ModelFacade;
-
-import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /**  */
 public class ActionCreatePseudostate extends CmdCreateNode {
@@ -62,7 +59,7 @@ public class ActionCreatePseudostate extends CmdCreateNode {
     // TODO: should call super, reduce code volume!
     public Object makeNode() {
 	Object newNode = super.makeNode();
-	MPseudostateKind kind = (MPseudostateKind) _args.get("kind");
+	Object kind = _args.get("kind");
 	ModelFacade.setKind(newNode, kind);
     
 	return newNode;

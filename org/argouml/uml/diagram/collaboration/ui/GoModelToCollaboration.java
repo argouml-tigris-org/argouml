@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.diagram.collaboration.ui;
 
 import java.util.ArrayList;
@@ -34,7 +33,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 /**
  * @since Oct 1, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -50,7 +48,8 @@ public class GoModelToCollaboration extends AbstractGoRule {
 	if (org.argouml.model.ModelFacade.isAModel(parent)) {
             Object model = /*(MModel)*/ parent;
             Collection col = ModelManagementHelper.getHelper()
-		.getAllModelElementsOfKind(model, MCollaboration.class);
+		.getAllModelElementsOfKind(model,
+                    (Class)ModelFacade.COLLABORATION);
             List returnList = new ArrayList();
             Iterator it = col.iterator();
             while (it.hasNext()) {

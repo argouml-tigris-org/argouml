@@ -25,7 +25,6 @@
 // File: FigInitialState.java
 // Classes: FigInitialState
 // Original Author: abonner@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.diagram.state.ui;
 
@@ -38,11 +37,12 @@ import java.util.Collection;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
+import org.argouml.model.ModelFacade;
+
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 
-import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 /** Class to display graphics for a UML State in a diagram. */
 
 public class FigInitialState extends FigStateVertex {
@@ -96,12 +96,14 @@ public class FigInitialState extends FigStateVertex {
     // Fig accessors
 
     public Selection makeSelection() {
-        MPseudostate pstate = null;
+        Object pstate = null;
         Selection sel = null;
         if (getOwner() != null) {
-            pstate = (MPseudostate) getOwner();
+            pstate = getOwner();
             if (pstate == null) return sel;
-            if (org.argouml.model.ModelFacade.isAActivityGraph(pstate.getContainer().getStateMachine())) {
+            if (org.argouml.model.ModelFacade.isAActivityGraph(
+                    ModelFacade.getStateMachine(
+                        ModelFacade.getContainer(pstate)))) {
                 sel = new SelectionActionState(this);
                 ((SelectionActionState) sel).setIncomingButtonEnabled(false);
                 Collection outs = ModelFacade.getOutgoings(getOwner());

@@ -25,7 +25,6 @@
 // File: UMLCollaborationDiagram.java
 // Classes: UMLCollaborationDiagram
 // Original Author: agauthie@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.diagram.collaboration.ui;
 
@@ -46,19 +45,13 @@ import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionAddMessage;
 import org.argouml.uml.ui.ActionAddNote;
+
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.presentation.Fig;
-
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 public class UMLCollaborationDiagram extends UMLDiagram {
 
@@ -71,56 +64,53 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     // actions for toolbar
 
     protected static Action _actionClassifierRole =
-        new CmdCreateNode(MClassifierRole.class, "ClassifierRole");
+        new CmdCreateNode((Class)ModelFacade.CLASSIFIER_ROLE,
+                          "ClassifierRole");
 
     protected static Action _actionAssoc =
         new CmdSetMode(
 		       ModeCreatePolyEdge.class,
 		       "edgeClass",
-		       MAssociationRole.class,
+		       (Class)ModelFacade.ASSOCIATION_ROLE,
 		       "AssociationRole");
 
     protected static Action _actionGeneralize =
         new CmdSetMode(
 		       ModeCreatePolyEdge.class,
 		       "edgeClass",
-		       MGeneralization.class,
+		       (Class)ModelFacade.GENERALIZATION,
 		       "Generalization");
 
     protected static Action _actionAssociation =
-        new ActionAddAssociationRole(
-				     MAggregationKind.NONE,
+        new ActionAddAssociationRole(ModelFacade.NONE_AGGREGATIONKIND,
 				     false,
 				     "Association");
     protected static Action _actionAggregation =
-        new ActionAddAssociationRole(
-				     MAggregationKind.AGGREGATE,
+        new ActionAddAssociationRole(ModelFacade.AGGREGATE_AGGREGATIONKIND,
 				     false,
 				     "Aggregation");
     protected static Action _actionComposition =
-        new ActionAddAssociationRole(
-				     MAggregationKind.COMPOSITE,
+        new ActionAddAssociationRole(ModelFacade.COMPOSITE_AGGREGATIONKIND,
 				     false,
 				     "Composition");
     protected static Action _actionUniAssociation =
-        new ActionAddAssociationRole(
-				     MAggregationKind.NONE,
+        new ActionAddAssociationRole(ModelFacade.NONE_AGGREGATIONKIND,
 				     true,
 				     "UniAssociation");
     protected static Action _actionUniAggregation =
-        new ActionAddAssociationRole(
-				     MAggregationKind.AGGREGATE,
+        new ActionAddAssociationRole(ModelFacade.AGGREGATE_AGGREGATIONKIND,
 				     true,
 				     "UniAggregation");
     protected static Action _actionUniComposition =
-        new ActionAddAssociationRole(
-				     MAggregationKind.COMPOSITE,
+        new ActionAddAssociationRole(ModelFacade.COMPOSITE_AGGREGATIONKIND,
 				     true,
 				     "UniComposition");
 
     protected static Action _actionDepend = 
-        new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", 
-                       MDependency.class, "Dependency");
+        new CmdSetMode(ModeCreatePolyEdge.class,
+                       "edgeClass", 
+                       (Class)ModelFacade.DEPENDENCY,
+                       "Dependency");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -134,9 +124,9 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         }
     }
 
-    public UMLCollaborationDiagram(MNamespace m) {
+    public UMLCollaborationDiagram(Object namespace) {
         this();
-        setNamespace(m);
+        setNamespace(namespace);
     }
 
     public int getNumMessages() {

@@ -22,16 +22,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
- * ActionAddAssociation.java
- *
- * Created on 15 February 2003, 01:01
- */
 package org.argouml.uml.diagram.ui;
 
-
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
+import org.argouml.model.ModelFacade;
 
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.ModeCreatePolyEdge;
@@ -41,9 +34,10 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  * stimulus and a given action type. This is done in one step when a
  * new edge between two nodes is instanciated
  *
+ * Created on 15 February 2003, 01:01
+ *
  * @author Bob Tarling
  */
-
 public class ActionAddAssociationRole extends CmdSetMode {
     
     /**
@@ -53,11 +47,14 @@ public class ActionAddAssociationRole extends CmdSetMode {
      *        association
      * @param name the action description
      */
-    public ActionAddAssociationRole(MAggregationKind aggregation, boolean unidirectional, String name) {
-        super(ModeCreatePolyEdge.class, "edgeClass", MAssociationRole.class, name);
-        _modeArgs.put("aggregation", aggregation);
+    public ActionAddAssociationRole(Object aggregationKind,
+                                    boolean unidirectional,
+                                    String name) {
+        super(ModeCreatePolyEdge.class,
+              "edgeClass",
+              (Class)ModelFacade.ASSOCIATION_ROLE,
+              name);
+        _modeArgs.put("aggregation", aggregationKind);
         _modeArgs.put("unidirectional", new Boolean(unidirectional));
     }
 }
-
-

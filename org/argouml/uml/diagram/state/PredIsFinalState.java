@@ -25,10 +25,7 @@
 
 package org.argouml.uml.diagram.state;
 
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.tigris.gef.util.*;
+import org.tigris.gef.util.Predicate;
 
 public class PredIsFinalState implements Predicate {
 

@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
@@ -31,11 +30,11 @@ import java.util.Iterator;
 import org.argouml.application.api.Notation;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
+
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.state_machines.MState;
 
@@ -134,51 +133,50 @@ public abstract class FigState extends FigStateVertex {
         super.updateListeners(newOwner);
         if (newOwner != null) {
             // register for events from all internal transitions
-            MState state = (MState) newOwner;
-            Iterator it = state.getInternalTransitions().iterator();
+            Object state = newOwner;
+            Iterator it = ModelFacade.getInternalTransitions(state).iterator();
             while (it.hasNext()) {
                 UmlModelEventPump.getPump()
-		    .addModelEventListener(this, (MBase) it.next());
+		    .addModelEventListener(this, it.next());
             }
             // register for the doactivity etc.
-            if (state.getDoActivity() != null) {
+            if (ModelFacade.getDoActivity(state) != null) {
                 UmlModelEventPump.getPump()
-		    .addModelEventListener(this, (MBase) state.getDoActivity());
+		    .addModelEventListener(this, ModelFacade.getDoActivity(state));
             }
-            if (state.getEntry() != null) {
+            if (ModelFacade.getEntry(state) != null) {
                 UmlModelEventPump.getPump()
-		    .addModelEventListener(this, (MBase) state.getEntry());
+		    .addModelEventListener(this, ModelFacade.getEntry(state));
             }
-            if (state.getExit() != null) {
+            if (ModelFacade.getExit(state) != null) {
                 UmlModelEventPump.getPump()
-		    .addModelEventListener(this, (MBase) state.getExit());
+		    .addModelEventListener(this, ModelFacade.getExit(state));
             }
         } else {
             // lets remove all registrations since this is called
             // BEFORE the owner is changed (I hope nobody is going to
             // change that...)  the owner is the oldOwner
-            MState state = (MState) getOwner();
+            Object state = getOwner();
             if (state != null) {
-                Iterator it = state.getInternalTransitions().iterator();
+                Iterator it = ModelFacade.getInternalTransitions(state).iterator();
                 while (it.hasNext()) {
                     UmlModelEventPump.getPump()
-			.removeModelEventListener(this, (MBase) it.next());
+			.removeModelEventListener(this, it.next());
                 }
-                if (state.getDoActivity() != null) {
+                if (ModelFacade.getDoActivity(state) != null) {
                     UmlModelEventPump.getPump()
 			.removeModelEventListener(this,
-						  (MBase)
-						  state.getDoActivity());
+						  ModelFacade.getDoActivity(state));
                 }
-                if (state.getEntry() != null) {
+                if (ModelFacade.getEntry(state) != null) {
                     UmlModelEventPump.getPump()
 			.removeModelEventListener(this,
-						  (MBase) state.getEntry());
+						  ModelFacade.getEntry(state));
                 }
-                if (state.getExit() != null) {
+                if (ModelFacade.getExit(state) != null) {
                     UmlModelEventPump.getPump()
 			.removeModelEventListener(this,
-						  (MBase) state.getExit());
+						  ModelFacade.getExit(state));
                 }
             }
 
@@ -189,10 +187,10 @@ public abstract class FigState extends FigStateVertex {
      * Updates the text inside the state
      */
     protected void updateInternal() {
-        MState s = (MState) getOwner();
-        if (s == null)
+        Object state = getOwner();
+        if (state == null)
             return;
-        String newText = Notation.generateStateBody(this, s);
+        String newText = Notation.generateStateBody(this, (MState) state);
         _internal.setText(newText);
 
         calcBounds();

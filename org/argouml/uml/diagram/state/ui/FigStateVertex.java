@@ -26,17 +26,15 @@
 // File: FigStateVertex.java
 // Classes: FigStateVertex
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.diagram.state.ui;
 
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
 /** Abstract class to with common behavior for nestable nodes in UML
     MState diagrams. */
@@ -65,19 +63,18 @@ public abstract class FigStateVertex extends FigNodeModelElement {
         super.setEnclosingFig(encloser);
         if (!(org.argouml.model.ModelFacade.isAStateVertex(getOwner())))
             return;
-        MStateVertex sv = (MStateVertex) getOwner();
-        MCompositeState m = null;
+        Object stateVertex = getOwner();
+        Object compositeState = null;
         if (encloser != null
 	    && (org.argouml.model.ModelFacade.isACompositeState(encloser.getOwner())))
 	{
-            m = (MCompositeState) encloser.getOwner();
+            compositeState = encloser.getOwner();
         } else {
-            m = (MCompositeState)
-		StateMachinesHelper.getHelper()
-		.getTop(StateMachinesHelper.getHelper().getStateMachine(sv));
+            compositeState = StateMachinesHelper.getHelper()
+		.getTop(StateMachinesHelper.getHelper().getStateMachine(stateVertex));
         }
-        if (m != null)
-            sv.setContainer(m);
+        if (compositeState != null)
+            ModelFacade.setContainer(stateVertex,compositeState);
     }
 
 } /* end class FigStateVertex */

@@ -27,7 +27,6 @@
 // File: FigFinalState.java
 // Classes: FigFinalState
 // Original Author: ics125b spring 98
-// $Id$
 
 package org.argouml.uml.diagram.state.ui;
 
@@ -39,15 +38,14 @@ import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
+import org.argouml.model.ModelFacade;
+
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-
-
-import ru.novosoft.uml.behavior.state_machines.MFinalState;
 
 /** Class to display graphics for a UML MState in a diagram. */
 
@@ -130,11 +128,13 @@ public class FigFinalState extends FigStateVertex {
     // Fig accessors
 
     public Selection makeSelection() {
-	MFinalState pstate = null;
+	Object pstate = null;
 	Selection sel = null;
 	if (getOwner() != null) {
-	    pstate = (MFinalState) getOwner();
-	    if (org.argouml.model.ModelFacade.isAActivityGraph(pstate.getContainer().getStateMachine())) {
+	    pstate = getOwner();
+	    if (org.argouml.model.ModelFacade.isAActivityGraph(
+                    ModelFacade.getStateMachine(
+                        ModelFacade.getContainer(pstate)))) {
 		sel = new SelectionActionState(this);
 		((SelectionActionState) sel).setOutgoingButtonEnabled(false);
 	    } else {
