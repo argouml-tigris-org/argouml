@@ -30,6 +30,17 @@
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
+// 28 Jan 2002: Jeremy Bennett (mail@jeremybennett.com). Bug in detecting
+// constructors with explicit void returns fixed.
+
+// 31 Jan 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to recognise
+// any operation with stereotype <<create>> as constructor.
+
+// 4 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Code factored by use of
+// static methods in central org.argouml.cognitive.critics.CriticUtils utility
+// class.
+
+
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
@@ -39,82 +50,110 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import org.argouml.cognitive.*;
+import org.argouml.cognitive.critics.*;
 
-/** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
+
+/**
+ * <p> A critic to detect when a class can never have instances (of itself or
+ * any subclasses).</p>
+ *
+ * <p>The critic will trigger whenever a class has instance variables that are
+ * uninitialised and there is no constructor.</p>
+ *
+ * <p>A constructor is any operation with stereotype &laquo;create&raquo;
+ * (the UML view of the world, which is preferred). We'll also accept
+ * &laquo;Create&raquo;, although it's not strictly UML standard.</p>
+ *
+ * <p>We also accept a constructor defined as an operation with the same
+ * name as the class, which is not static and which returns no result (the
+ * Java view of the world).</p>
+ *
+ * <p>Internally we use some of the static utility methods of the {@link
+ * org.argouml.cognitive.critics.CriticUtils CriticUtils} class.</p>
+ *
+ * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_constructor_needed">ArgoUML User Manual: Constructor Needed</a>
+ */
 
 public class CrConstructorNeeded extends CrUML {
 
-  public CrConstructorNeeded() {
-    setHeadline("Add Constructor to <ocl>self</ocl>");
-    sd("You have not yet defined a constructor for class <ocl>self</ocl>. "+
-       "Constructors initialize new instances such that their "+
-       "attributes have valid values.  This class probably needs a constructor "+
-       "because not all of its attributes have initial values. \n\n"+
-       "Defining good constructors is key to establishing class invariants, and "+
-       "class invariants are a powerful aid in writing solid code. \n\n"+
-       "To fix this, press the \"Next>\" button, or add a constructor manually "+
-       "by clicking on <ocl>self</ocl> in the navigator pane and "+
-       "using the Create menu to make a new constructor. ");
+    /**
+     * <p>Constructor for the critic.</p>
+     *
+     * <p>Sets up the resource name, which will allow headline and description
+     * to found for the current locale. Provides a design issue category
+     * (STORAGE) and adds triggers for metaclasses "behaviouralFeature" and
+     * "structuralFeature".</p>
+     *
+     * @return  nothing returned since this is a constructor
+     */
 
-    addSupportedDecision(CrUML.decSTORAGE);
-    addTrigger("behavioralFeature");
-    addTrigger("structuralFeature");
-  }
+    public CrConstructorNeeded() {
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClass)) return NO_PROBLEM;
-    MClass cls = (MClass) dm;
+        setResource("CrConstructorNeeded");
 
-    boolean uninitializedIVar = false;
-    Collection str = cls.getFeatures();
-    if (str == null) return NO_PROBLEM;
-    Iterator enum = str.iterator();
-    while (enum.hasNext()) {
-      Object feature = enum.next();
-      if (!(feature instanceof MAttribute))
-        continue;
-      MAttribute attr = (MAttribute) feature;
-      MScopeKind sk = attr.getOwnerScope();
-      //MChangeableKind ck = attr.getChangeability();
-      MExpression init = attr.getInitialValue();
-      if (MScopeKind.INSTANCE.equals(sk))
-	if (init == null || init.getBody() == null ||
-	    init.getBody() == null ||
-	    init.getBody().trim().length() == 0)
-	  uninitializedIVar = true;
+        addSupportedDecision(CrUML.decSTORAGE);
+
+        // These may not actually make any difference at present (the code
+        // behind addTrigger needs more work).
+
+        addTrigger("behavioralFeature");
+        addTrigger("structuralFeature");
     }
 
-    if (!uninitializedIVar) return NO_PROBLEM;
+    /**
+     * <p>The trigger for the critic.</p>
+     *
+     * <p>First see if we have any instance variables that are not
+     * initialised. If not there is no problem. If there are any uninitialised
+     * instance variables, then look for a constructor.</p>
+     *
+     * <p>A constructor is any operation with stereotype &laquo;create&raquo;
+     * (the UML view of the world, which is preferred). We'll also accept
+     * &laquo;Create&raquo;, although it's not strictly UML standard.</p>
+     *
+     * <p>We also accept a constructor defined as an operation with the same
+     * name as the class, which is not static and which returns no result (the
+     * Java view of the world).</p>
+     *
+     * @param  dm    the {@link java.lang.Object Object} to be checked against
+     *               the critic.
+     *
+     * @param  dsgr  the {@link org.argouml.cognitive.Designer Designer}
+     *               creating the model. Not used, this is for future
+     *               development of ArgoUML.
+     *
+     * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.  
+     */
+    
+    public boolean predicate2(Object dm, Designer dsgr) {
 
-    Collection beh = cls.getFeatures();
-    String className = cls.getName();
-    if (beh == null) return PROBLEM_FOUND;
-    enum = beh.iterator();
-    while (enum.hasNext()) {
-      Object feature = enum.next();
-      if (!(feature instanceof MBehavioralFeature))
-        continue;
-      MBehavioralFeature bf = (MBehavioralFeature) feature;
-      String operName = bf.getName();
-      if (getReturnType(bf) != null) continue;
-      if (!operName.equals(className)) continue;
-      MScopeKind sk = bf.getOwnerScope();
-      if (!MScopeKind.INSTANCE.equals(sk)) continue;
-      if (getReturnType(bf) == null) return NO_PROBLEM;
+        // Only look at classes
+
+        if (!(dm instanceof MClass)) {
+            return NO_PROBLEM;
+        }
+
+        // Cast to the class, initialise a boolean to track if we've found the
+        // problem and get all the features (attributes and operations)
+
+        MClass cls = (MClass) dm;
+
+        // First see if we have any uninitialised instance variables. If not,
+        // then we don't need a constructor, so have no problem.
+
+        if (!(CriticUtils.hasUninitInstanceVariables(cls))) {
+            return NO_PROBLEM;
+        }
+
+        // We have some instance variables that are not initialised, so we need
+        // a constructor. If we don't find one, there is a problem.
+
+        if (CriticUtils.hasConstructor(cls)) {
+            return NO_PROBLEM;
+        }
+        else
+            return PROBLEM_FOUND;
     }
-    return PROBLEM_FOUND;
-  }
-  private MParameter getReturnType(MBehavioralFeature bf)
-  {
-    Collection parameters = bf.getParameters();
-    for (Iterator iter = parameters.iterator(); iter.hasNext();) {
-      MParameter param = (MParameter)iter.next();
-      if (param.getKind()==MParameterDirectionKind.RETURN)
-        return param;
-    };
-    return null;
-  };
 
 } /* end class CrConstructorNeeded */
-
