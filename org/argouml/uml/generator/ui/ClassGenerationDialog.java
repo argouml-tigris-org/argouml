@@ -373,8 +373,7 @@ public class ClassGenerationDialog
     private void doBrowse() {
         try {
             // Show Filechooser to select OuputDirectory
-            JFileChooser chooser =
-                FileChooserFactory.getFileChooser(
+            JFileChooser chooser = new JFileChooser(
                     (String) outputDirectoryComboBox
                         .getModel()
                         .getSelectedItem());

@@ -26,14 +26,11 @@ package org.argouml.ui;
 
 import javax.swing.JFileChooser;
 
-import org.argouml.util.osdep.OsUtil;
-import org.argouml.util.osdep.win32.Win32FileSystemView;
-
 /**
  * Factory class to return a JFileChooser configured
  * according to JRE requirements.
  *
- * TODO: Remove when JRE1.3 no longer supported.
+ * @deprecated this class is no longer required now we no loner support UML 1.3
  *
  * @author Bob Tarling
  */
@@ -42,13 +39,13 @@ public class FileChooserFactory {
     /**
      * Return a proper FileChooser. This replaces the normal FileChooser with a
      * system-dependent one, but solely in case of Sun Java 1.3.1 on Windows.
+     * @deprecated 
      *
      * @return <code>JFileChooser</code>
+     * @deprecated now we are JRE1.4+ we can just call new JFileChooser()
+     * directly.
      */
     public static JFileChooser getFileChooser() {
-        if (OsUtil.isWin32() && OsUtil.isSunJdk() && OsUtil.isJdk131()) {
-            return new JFileChooser(new Win32FileSystemView());
-        }
         return new JFileChooser();
     }
 
@@ -64,11 +61,10 @@ public class FileChooserFactory {
      * home directory on Unix.
      *
      * @return <code>JFileChooser</code>
+     * @deprecated now we are JRE1.4+ we can just call new JFileChooser(String)
+     * directly.
      */
     public static JFileChooser getFileChooser(String directory) {
-        if (OsUtil.isWin32() && OsUtil.isSunJdk() && OsUtil.isJdk131()) {
-            return new JFileChooser(directory, new Win32FileSystemView());
-        }
         return new JFileChooser(directory);
     }
 }

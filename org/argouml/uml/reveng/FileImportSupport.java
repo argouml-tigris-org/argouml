@@ -43,8 +43,6 @@ import org.argouml.kernel.Project;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.SuffixFilter;
-import org.argouml.util.osdep.OsUtil;
-import org.argouml.util.osdep.win32.Win32FileSystemView;
 import org.tigris.gef.base.Globals;
 
 /**
@@ -183,38 +181,18 @@ public abstract class FileImportSupport implements PluggableImport {
      * @see org.argouml.application.api.PluggableImport#getChooser(org.argouml.uml.reveng.Import)
      */
     public JComponent getChooser(Import imp) {
-	String directory = Globals.getLastDirectory();
-	//JFileChooser ch = OsUtil.getFileChooser(directory);
-
-	JFileChooser ch;
-        // TODO: Remove test when JRE1.3 support dropped
-        if (OsUtil.isWin32() && OsUtil.isSunJdk() && OsUtil.isJdk131()) {
-            ch = new ImportFileChooser(
-                imp,
-                directory,
-                new Win32FileSystemView());
-        } else {
-            ch = new ImportFileChooser(imp, directory);
+        String directory = Globals.getLastDirectory();
+        
+        final JFileChooser chooser = new ImportFileChooser(imp, directory);
+        
+        chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        SuffixFilter[] filters = getSuffixFilters();
+        if (filters != null) {
+            for (int i = 0; i < filters.length; i++) {
+                    chooser.addChoosableFileFilter(filters[i]);
+                }
         }
-
-	if (ch == null) {
-            if (OsUtil.isWin32() && OsUtil.isSunJdk() && OsUtil.isJdk131()) {
-                ch = new ImportFileChooser(imp, new Win32FileSystemView());
-            } else {
-                ch = new ImportFileChooser(imp);
-            }
-        }
-
-	final JFileChooser chooser = ch;
-
-	chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-	SuffixFilter[] filters = getSuffixFilters();
-	if (filters != null) {
-	    for (int i = 0; i < filters.length; i++) {
-                chooser.addChoosableFileFilter(filters[i]);
-            }
-	}
-	return chooser;
+        return chooser;
     }
 
     /**
