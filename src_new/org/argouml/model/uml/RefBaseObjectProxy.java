@@ -34,6 +34,9 @@ import javax.jmi.reflect.RefBaseObject;
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.model_management.MPackage;
+
 /**
  * @author Thierry
  */
@@ -90,41 +93,45 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
         this.realObject = obj;
     }
 
-    /**
-      * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
-      */
-    public Object invoke(Object proxy, Method method, Object[] args)
-        throws Throwable {
-        Object result = null;
+	/**
+	  * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+	  */
+	public Object invoke(Object proxy, Method method, Object[] args)
+		throws Throwable {
+		Object result = null;
 
-        System.out.println("method: " + method.getName());
+		System.out.println("method: " + method.getName());
 
-        if (method.getName().equals("refMetaObject")) {
-            result = refMetaObject();
-        }
-        else if (method.getName().equals("refImmediatePackage")) {
-            result = refImmediatePackage();
-        }
-        else if (method.getName().equals("refOutermostPackage")) {
-            result = refOutermostPackage();
-        }
-        else {
-            try {
-                result = method.invoke(this.realObject, args);
-            }
-            catch (InvocationTargetException e) {
-                throw e.getTargetException();
-            }
-        }
-        return result;
-    }
+		if (method.getName().equals("refMetaObject")) {
+			result = refMetaObject();
+		}
+		else if (method.getName().equals("refMofId")) {
+			result = refMofId();
+		}
+		else if (method.getName().equals("refImmediatePackage")) {
+			result = refImmediatePackage();
+		}
+		else if (method.getName().equals("refOutermostPackage")) {
+			result = refOutermostPackage();
+		}
+		else {
+			try {
+				System.out.println ("Executing " + method.getName());
+				result = method.invoke(realObject, args);
+			}
+			catch (InvocationTargetException e) {
+				throw e.getTargetException();
+			}
+		}
+		return result;
+	}
 
     /**
      * @see javax.jmi.reflect.RefBaseObject#refMetaObject()
      */
     public RefObject refMetaObject()
     {
-        throw new RuntimeException("Not yet implemented");
+        return null;
     }
 
     /**
@@ -132,7 +139,16 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
      */
     public RefPackage refImmediatePackage()
     {
-        throw new RuntimeException("Not yet implemented");
+		if (realObject instanceof MBase) {
+			MBase base = (MBase)realObject;
+			Object container = base.getModelElementContainer();
+			while (container != null) {
+				if (container instanceof MPackage) {
+					return (RefPackage)container;
+				}
+			}
+		}
+		return null;
     }
 
     /**
@@ -140,7 +156,17 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
      */
     public RefPackage refOutermostPackage()
     {
-        throw new RuntimeException("Not yet implemented");
+		Object outermost = null;
+		if (realObject instanceof MBase) {
+			MBase base = (MBase)realObject;
+			Object container = base.getModelElementContainer();
+			while (container != null) {
+				if (container instanceof MPackage) {
+					outermost = container;
+				}
+			}
+		}
+		return (RefPackage)outermost;
     }
 
     /**
@@ -148,7 +174,11 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
      */
     public String refMofId()
     {
-        throw new RuntimeException("Not yet implemented");
+		if (realObject instanceof MBase) {
+			MBase base = (MBase)realObject;
+			return base.getUUID();
+		}
+		return null;
     }
 
     /**
@@ -156,6 +186,14 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
      */
     public Collection refVerifyConstraints(boolean arg0)
     {
-        throw new RuntimeException("Not yet implemented");
+		throw new RuntimeException("Not yet implemented");
     }
+
+	/**
+	 * @return the proxied object
+	 */
+	protected Object getRealObject() {
+		return realObject;
+	}
+
 }
