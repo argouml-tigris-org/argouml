@@ -152,7 +152,7 @@ public abstract class UMLButtonGroup
         Object o = e.getSource();
         Action action = (Action)_actions.get(o);
         if (action != null) {
-            e.setSource(this);
+            // e.setSource(this);
             action.actionPerformed(e);
         }
     }    
