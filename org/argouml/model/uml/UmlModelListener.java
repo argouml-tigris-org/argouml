@@ -23,14 +23,12 @@
 
 package org.argouml.model.uml;
 
+import org.apache.log4j.Category;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ProjectBrowser;
+
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-
-import org.apache.log4j.Category;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.NavigatorPane;
-import org.argouml.ui.ProjectBrowser;
 
 /**
  * A single listener that converts MElementEvents into Argo events. 
