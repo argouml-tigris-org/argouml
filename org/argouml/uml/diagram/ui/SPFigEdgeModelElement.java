@@ -179,7 +179,6 @@ public class SPFigEdgeModelElement extends StylePanel
 	if (_target == null) return;
 	String bboxStr = _bboxField.getText();
 	if (bboxStr.length() == 0) return;
-	_target.startTrans();
 	java.util.StringTokenizer st =
 	    new java.util.StringTokenizer(bboxStr, ", ");
 	try {
@@ -200,7 +199,6 @@ public class SPFigEdgeModelElement extends StylePanel
 	Object c =  _lineField.getSelectedItem();
 	if (_target == null || c == null) return;
     Color oldColor = _target.getLineColor();
-	_target.startTrans();
 	if (c instanceof Color) _target.setLineColor((Color) c);
 	_target.setLineWidth((c instanceof Color) ? 1 : 0);
 	_target.endTrans();

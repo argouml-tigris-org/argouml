@@ -44,7 +44,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.util.Iterator;
-import java.util.Vector;
 
 import javax.swing.SwingUtilities;
 
@@ -298,7 +297,6 @@ public class FigComment
 
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         Object src = pce.getSource();
-        startTrans();
         // update any text, colors, fonts, etc.
         renderingChanged();
         // update the relative sizes and positions of internel Figs
@@ -312,7 +310,6 @@ public class FigComment
 	    && Boolean.FALSE.equals(pve.getNewValue()))
 	{
             try {
-                startTrans();
                 //parse the text that was edited
                 textEdited((FigText) src);
                 // resize the FigNode to accomodate the new text

@@ -370,7 +370,6 @@ public abstract class FigEdgeModelElement
 
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         Object src = pce.getSource();
-        startTrans();
         // update any text, colors, fonts, etc.
         modelChanged(null);
         // update the relative sizes and positions of internel Figs
@@ -386,7 +385,6 @@ public abstract class FigEdgeModelElement
             && Boolean.FALSE.equals(pve.getNewValue())) {
             cat.debug("finished editing");
             try {
-                startTrans();
                 textEdited((FigText) src);
                 calcBounds();
                 endTrans();

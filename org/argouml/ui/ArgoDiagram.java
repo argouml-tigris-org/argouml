@@ -95,7 +95,7 @@ public class ArgoDiagram extends Diagram {
      */
     public String getVetoMessage(String propertyName) {
     	if (propertyName.equals("name")) {
-	    return "Name of diagram may not exist allready";
+	    return "Name of diagram may not exist already";
     	}
         return null;
     }
@@ -111,15 +111,15 @@ public class ArgoDiagram extends Diagram {
      */
     public Fig getContainingFig(Object obj) {
         Fig fig = super.presentationFor(obj);
-        if (fig == null && org.argouml.model.ModelFacade.isAModelElement(obj)) {
+        if (fig == null && ModelFacade.isAModelElement(obj)) {
 	    // maybe we have a modelelement that is part of some other
             // fig
-            if (org.argouml.model.ModelFacade.isAOperation(obj) || org.argouml.model.ModelFacade.isAAttribute(obj)) {
+            if (ModelFacade.isAOperation(obj) || ModelFacade.isAAttribute(obj)) {
                 // get all the classes from the diagram
                 Iterator it = getNodes().iterator();
                 while (it.hasNext()) {
                     Object o = it.next();
-                    if (org.argouml.model.ModelFacade.isAClassifier(o)) {
+                    if (ModelFacade.isAClassifier(o)) {
                         if (ModelFacade.getFeatures(o).contains(obj))
 			    return presentationFor(o);
                     }
@@ -144,16 +144,6 @@ public class ArgoDiagram extends Diagram {
                 ((Editor) it.next()).damageAll();
             }
         }
-    }
-
-    /**
-     * @deprecated in favour of getEdges(Collection)
-     */
-    public Vector getEdges() {
-        if (getGraphModel() != null) {
-            return getGraphModel().getEdges();
-        }
-        return super.getEdges();
     }
 
     /**

@@ -236,7 +236,6 @@ public class FigExtend extends FigEdgeModelElement {
         // to start something
 
         super.modelChanged(e);
-        startTrans();
 
         // Now sort out the condition text. Use the null string if there is no
         // condition set. We call the main generate method, which will realise

@@ -27,7 +27,6 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
