@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- JNLP File for launching ArgoUML with WebStart -->
 <jnlp spec="1.0+"
-      codebase="http://argouml.tigris.org/files/4/0/0100/"
+      codebase="http://argouml.tigris.org/nonav/download/jws/"
       href="http://argouml.tigris.org/nonav/download/jws/ws010.jnlp">
   <information>
     <title>ArgoUML 0.10</title>
