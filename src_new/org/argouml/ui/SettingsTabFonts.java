@@ -29,18 +29,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import org.argouml.application.ArgoVersion;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
 import org.argouml.swingext.LabelledLayout;
 
-/* This is copied from SettingsTabPreferences */
-/** Action object for handling Argo settings
+/**
+ *  Provides settings for altering the appearance of the Argo application.
  *
  *  @author Linus Tolke
  *  @author Jeremy Jones
@@ -53,8 +56,9 @@ public class SettingsTabFonts
 
     private JComboBox	_lookAndFeel;
     private JComboBox	_metalTheme;
-    private JLabel	_metalLabel;
-
+    private JLabel      _metalLabel;
+    private JCheckBox   _smoothEdges;
+    
     public SettingsTabFonts() {
         super();
 
@@ -85,7 +89,14 @@ public class SettingsTabFonts
         _metalLabel.setLabelFor(_metalTheme);
         top.add(_metalLabel);
         top.add(_metalTheme);
-
+        
+        _smoothEdges = createCheckBox("label.smooth-edges");
+        JLabel emptyLabel = new JLabel();
+        emptyLabel.setLabelFor(_smoothEdges);
+        
+        top.add(emptyLabel);
+        top.add(_smoothEdges);
+        
         top.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(top, BorderLayout.CENTER);
 
@@ -119,16 +130,22 @@ public class SettingsTabFonts
 
         _lookAndFeel.setSelectedItem(laf);
         _metalTheme.setSelectedItem(theme);		
+        
+        _smoothEdges.setSelected(Configuration.getBoolean(
+            Argo.KEY_SMOOTH_EDGES, false));
     }
 
     public void handleSettingsTabSave() {
-	LookAndFeelMgr.SINGLETON.setCurrentLookAndFeel(
-			LookAndFeelMgr.SINGLETON.getLookAndFeelFromName(
-			(String) _lookAndFeel.getSelectedItem()));
-		
-	LookAndFeelMgr.SINGLETON.setCurrentTheme(
-			LookAndFeelMgr.SINGLETON.getThemeFromName(
-			(String) _metalTheme.getSelectedItem()));
+        LookAndFeelMgr.SINGLETON.setCurrentLookAndFeel(
+            LookAndFeelMgr.SINGLETON.getLookAndFeelFromName(
+                (String) _lookAndFeel.getSelectedItem()));
+    
+        LookAndFeelMgr.SINGLETON.setCurrentTheme(
+            LookAndFeelMgr.SINGLETON.getThemeFromName(
+                (String) _metalTheme.getSelectedItem()));
+    
+        Configuration.setBoolean(Argo.KEY_SMOOTH_EDGES, 
+            _smoothEdges.isSelected());
     }
 
     public void handleSettingsTabCancel() { }

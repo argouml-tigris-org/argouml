@@ -29,6 +29,9 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Vector;
@@ -40,6 +43,8 @@ import javax.swing.JToolBar;
 import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -376,13 +381,17 @@ class ArgoJGraph extends JGraph {
 }
 
 class ArgoEditor extends Editor {
+    
+    private RenderingHints  _argoRenderingHints;
         
     public ArgoEditor(Diagram d) {
 	super(d);
+    setupRenderingHints();
     }
         
     public ArgoEditor(GraphModel gm, Component c) {
 	super(gm, c);
+    setupRenderingHints();
     }
 
     /**
@@ -423,5 +432,55 @@ class ArgoEditor extends Editor {
 	_modeManager.mouseMoved(me);
 	//- RedrawManager.unlock();
 	//- _redrawer.repairDamage();
+    }
+    
+    /**
+     * Overridden to set Argo-specific RenderingHints to determine whether
+     * or not antialiasing should be turned on.
+     */
+    public synchronized void paint(Graphics g) {
+        if(!shouldPaint())
+            return;
+
+        if(g instanceof Graphics2D) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHints(_argoRenderingHints);
+            g2.scale(_scale, _scale);
+        }
+        getLayerManager().paint(g);
+        //getLayerManager().getActiveLayer().paint(g);
+        if(_canSelectElements) {
+            _selectionManager.paint(g);
+            _modeManager.paint(g);
+        }        
+    }
+    
+    /**
+     * Construct a new set of RenderingHints to reflect current user
+     * settings.
+     */
+    private void setupRenderingHints()
+    {
+        _argoRenderingHints = new RenderingHints(null);
+
+        _argoRenderingHints.put(RenderingHints.KEY_FRACTIONALMETRICS, 
+            RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+        
+        if (Configuration.getBoolean(Argo.KEY_SMOOTH_EDGES, false)) {
+            _argoRenderingHints.put(RenderingHints.KEY_RENDERING, 
+                RenderingHints.VALUE_RENDER_QUALITY);
+            _argoRenderingHints.put(RenderingHints.KEY_ANTIALIASING, 
+                RenderingHints.VALUE_ANTIALIAS_ON);
+            _argoRenderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, 
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);        
+        }
+        else {
+            _argoRenderingHints.put(RenderingHints.KEY_RENDERING, 
+                RenderingHints.VALUE_RENDER_SPEED);
+            _argoRenderingHints.put(RenderingHints.KEY_ANTIALIASING, 
+                RenderingHints.VALUE_ANTIALIAS_OFF);
+            _argoRenderingHints.put(RenderingHints.KEY_TEXT_ANTIALIASING, 
+                RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);        
+        }
     }
 }
