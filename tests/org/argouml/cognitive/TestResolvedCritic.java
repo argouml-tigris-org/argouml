@@ -32,9 +32,8 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.tigris.gef.util.VectorSet;
 
-import ru.novosoft.uml.foundation.core.MClass;
-
 public class TestResolvedCritic extends TestCase {
+    
     public TestResolvedCritic(String name) {
 	super(name);
     }

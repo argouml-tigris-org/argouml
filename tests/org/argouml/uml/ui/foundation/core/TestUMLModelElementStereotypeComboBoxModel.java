@@ -47,8 +47,8 @@ import ru.novosoft.uml.model_management.MModel;
 public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
 
     private int oldEventPolicy;
-    protected MClass elem;
-    protected UMLModelElementStereotypeComboBoxModel model;
+    private MClass elem;
+    private UMLModelElementStereotypeComboBoxModel model;
     private MStereotype[] stereotypes;
     
     /**

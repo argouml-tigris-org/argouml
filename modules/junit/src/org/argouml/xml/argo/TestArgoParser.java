@@ -35,6 +35,11 @@ import org.argouml.kernel.ZargoFilePersister;
 
 /** Testcase to load projects without exception. */
 public class TestArgoParser extends TestCase {
+    /**
+     * The constructor.
+     * 
+     * @param name the name
+     */
     public TestArgoParser(String name) {
         super(name);
     }
@@ -89,7 +94,8 @@ public class TestArgoParser extends TestCase {
             url = new URL("file:testmodels/Garbage.zargo");
             ZargoFilePersister persister = new ZargoFilePersister();
             Project p = persister.loadProject(url);
-            assertTrue("Load Status", !ArgoParser.SINGLETON.getLastLoadStatus());
+            assertTrue("Load Status", 
+                    !ArgoParser.SINGLETON.getLastLoadStatus());
         } catch (java.net.MalformedURLException e) {
             assertTrue("Incorrect test case.", false);
         } catch (Exception io) {

@@ -287,29 +287,35 @@ public class SynchronizeDialog extends javax.swing.JDialog {
         isBusy = !isBusy;
     } //GEN-LAST:event_buttonPauseActionPerformed
 
-    private void tableModelKeyPressed(java.awt.event.KeyEvent evt) { //GEN-FIRST:event_tableModelKeyPressed
+    private void tableModelKeyPressed(java.awt.event.KeyEvent evt) 
+    { //GEN-FIRST:event_tableModelKeyPressed
         updateActionButtons();
     } //GEN-LAST:event_tableModelKeyPressed
 
-    private void tableModelMousePressed(java.awt.event.MouseEvent evt) { //GEN-FIRST:event_tableModelMousePressed
+    private void tableModelMousePressed(java.awt.event.MouseEvent evt) 
+    { //GEN-FIRST:event_tableModelMousePressed
         updateActionButtons();
     } //GEN-LAST:event_tableModelMousePressed
 
-    private void tableCodeKeyPressed(java.awt.event.KeyEvent evt) { //GEN-FIRST:event_tableCodeKeyPressed
+    private void tableCodeKeyPressed(java.awt.event.KeyEvent evt) 
+    { //GEN-FIRST:event_tableCodeKeyPressed
         updateActionButtons();
     } //GEN-LAST:event_tableCodeKeyPressed
 
-    private void tableCodeMousePressed(java.awt.event.MouseEvent evt) { //GEN-FIRST:event_tableCodeMousePressed
+    private void tableCodeMousePressed(java.awt.event.MouseEvent evt) 
+    { //GEN-FIRST:event_tableCodeMousePressed
         updateActionButtons();
     } //GEN-LAST:event_tableCodeMousePressed
 
-    private void buttonCloseActionPerformed(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_buttonCloseActionPerformed
+    private void buttonCloseActionPerformed(java.awt.event.ActionEvent evt) 
+    { //GEN-FIRST:event_buttonCloseActionPerformed
         setVisible(false);
         dispose();
     } //GEN-LAST:event_buttonCloseActionPerformed
 
     /** Closes the dialog */
-    private void closeDialog(java.awt.event.WindowEvent evt) { //GEN-FIRST:event_closeDialog
+    private void closeDialog(java.awt.event.WindowEvent evt) 
+    { //GEN-FIRST:event_closeDialog
         setVisible(false);
         dispose();
     } //GEN-LAST:event_closeDialog

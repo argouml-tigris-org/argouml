@@ -40,8 +40,8 @@ import ru.novosoft.uml.behavior.collaborations.MInteraction;
 public class TestUMLInteractionCollaborationListModel extends TestCase {
 
     private int oldEventPolicy;
-    protected MInteraction elem;
-    protected UMLInteractionContextListModel model;
+    private MInteraction elem;
+    private UMLInteractionContextListModel model;
     
     /**
      * Constructor for TestUMLInteractionCollaborationListModel.

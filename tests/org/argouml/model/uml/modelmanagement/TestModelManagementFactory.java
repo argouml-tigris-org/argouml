@@ -30,11 +30,11 @@ import org.argouml.util.CheckUMLModelHelper;
 
 public class TestModelManagementFactory extends TestCase {
 
-    static String[] allModelElements = {
+    protected static String[] allModelElements = {
 	"ElementImport", "Model", "Package", "Subsystem" 
     };
 
-    public TestModelManagementFactory(String n) {
+    private TestModelManagementFactory(String n) {
 	super(n);
     }
 

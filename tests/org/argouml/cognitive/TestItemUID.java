@@ -44,7 +44,6 @@ import org.argouml.uml.diagram.state.ui.FigCompositeState;
 import org.argouml.uml.diagram.state.ui.FigDeepHistoryState;
 import org.argouml.uml.diagram.state.ui.FigFinalState;
 import org.argouml.uml.diagram.state.ui.FigForkState;
-import org.argouml.uml.diagram.state.ui.FigHistoryState;
 import org.argouml.uml.diagram.state.ui.FigInitialState;
 import org.argouml.uml.diagram.state.ui.FigJoinState;
 import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
@@ -63,7 +62,6 @@ import org.argouml.uml.diagram.use_case.ui.FigInclude;
 import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
-import ru.novosoft.uml.foundation.core.MClass;
 
 public class TestItemUID extends TestCase {
     

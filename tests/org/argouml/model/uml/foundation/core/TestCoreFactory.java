@@ -34,9 +34,6 @@ import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MConstraint;
-import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.model_management.MModel;
 
@@ -257,7 +254,8 @@ public class TestCoreFactory extends TestCase {
 	}
 	MModelElement elem = ModelManagementFactory.getFactory().createModel();
 	Object con = CoreFactory.getFactory().buildConstraint(elem);
-	assertNull("Namespace is unexpectly set", ModelFacade.getNamespace(con));
+	assertNull("Namespace is unexpectly set", 
+            ModelFacade.getNamespace(con));
 	assertTrue(
 		   "Constrained element is not set",
 		   !ModelFacade.getConstrainedElements(con).isEmpty());

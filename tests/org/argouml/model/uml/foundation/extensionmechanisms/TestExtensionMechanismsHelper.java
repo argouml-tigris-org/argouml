@@ -29,7 +29,6 @@ import java.util.Collection;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
-import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 

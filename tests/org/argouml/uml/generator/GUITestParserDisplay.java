@@ -384,7 +384,7 @@ public class GUITestParserDisplay extends TestCase {
     }
 
     private void softAddStereotype(String name, Object elem)
-            throws ParseException {
+        throws ParseException {
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
         
@@ -646,7 +646,7 @@ public class GUITestParserDisplay extends TestCase {
     }
 
     private void checkName(Object attr, String text, String name)
-            throws ParseException {
+        throws ParseException {
         ParserDisplay.SINGLETON.parseAttribute(text, attr);
         assertTrue(text + " gave wrong name: " + ModelFacade.getName(attr),
             name.equals(ModelFacade.getName(attr)));
@@ -669,7 +669,7 @@ public class GUITestParserDisplay extends TestCase {
     }
 
     private void checkType(Object attr, String text, String type)
-            throws ParseException {
+        throws ParseException {
         ParserDisplay.SINGLETON.parseAttribute(text, attr);
         assertTrue(
         	   text
@@ -678,7 +678,8 @@ public class GUITestParserDisplay extends TestCase {
         	      ? "(null)"
         	      : ModelFacade.getName(ModelFacade.getType(attr))),
                   ModelFacade.getType(attr) != null
-        	   && type.equals(ModelFacade.getName(ModelFacade.getType(attr))));
+        	   && type.equals(ModelFacade.getName(ModelFacade
+                       .getType(attr))));
     }
 
     private void checkType(MOperation op, String text, String type)
@@ -745,7 +746,7 @@ public class GUITestParserDisplay extends TestCase {
     }
 
     private void checkVisibility(Object attr, String text, String vis)
-            throws ParseException {
+        throws ParseException {
         ParserDisplay.SINGLETON.parseAttribute(text, attr);
         assertTrue(
         	   text
@@ -754,7 +755,8 @@ public class GUITestParserDisplay extends TestCase {
         	      ? "(null)"
         	      : ModelFacade.getName(ModelFacade.getVisibility(attr))),
                   ModelFacade.getVisibility(attr) != null
-        	   && vis.equals(ModelFacade.getName(ModelFacade.getVisibility(attr))));
+        	   && vis.equals(ModelFacade.getName(ModelFacade
+                       .getVisibility(attr))));
     }
 
     private void checkVisibility(MOperation op, String text, String vis)
@@ -775,18 +777,19 @@ public class GUITestParserDisplay extends TestCase {
             Object attr,
             String text,
             String props[])
-            throws ParseException {
+        throws ParseException {
         int i;
         ParserDisplay.SINGLETON.parseAttribute(text, attr);
         for (i = 0; i + 1 < props.length; i += 2) {
             if (props[i + 1] == null)
         	assertTrue(
-        		   "TaggedValue " + props[i] + " exists!",
-			   ((MAttribute)attr).getTaggedValue(props[i]) == null);
+        	    "TaggedValue " + props[i] + " exists!",
+        	        ((MAttribute) attr).getTaggedValue(props[i]) == null);
             else
         	assertTrue(
-        		   "TaggedValue " + props[i] + " wrong!",
-			   props[i + 1].equals(((MAttribute)attr).getTaggedValue(props[i])));
+        	    "TaggedValue " + props[i] + " wrong!",
+		    props[i + 1].equals(((MAttribute) attr).getTaggedValue(
+		            props[i])));
         }
     }
 
@@ -870,7 +873,7 @@ public class GUITestParserDisplay extends TestCase {
     }
 
     private void checkValue(Object attr, String text, String val)
-            throws ParseException {
+        throws ParseException {
         ParserDisplay.SINGLETON.parseAttribute(text, attr);
         assertTrue(
         	   text
@@ -880,13 +883,16 @@ public class GUITestParserDisplay extends TestCase {
         	      : ModelFacade.getBody(ModelFacade.getInitialValue(attr))),
         	   val == null
         	   && (ModelFacade.getInitialValue(attr) == null
-        	       || "".equals(ModelFacade.getBody(ModelFacade.getInitialValue(attr))))
+        	       || "".equals(ModelFacade.getBody(ModelFacade
+                           .getInitialValue(attr))))
         	   || val != null
         	   && ModelFacade.getInitialValue(attr) != null
-        	   && val.equals(ModelFacade.getBody(ModelFacade.getInitialValue(attr))));
+        	   && val.equals(ModelFacade.getBody(ModelFacade
+                       .getInitialValue(attr))));
     }
 
-    private void checkStereotype(Object attr, String text, String val) throws ParseException {
+    private void checkStereotype(Object attr, String text, String val) 
+        throws ParseException {
         ParserDisplay.SINGLETON.parseAttribute(text, attr);
         assertTrue(
         	   text + " gave wrong stereotype "
@@ -896,7 +902,8 @@ public class GUITestParserDisplay extends TestCase {
         	   (val == null && ModelFacade.getStereoType(attr) == null)
         	   || (val != null
         	       && ModelFacade.getStereoType(attr) != null
-        	       && val.equals(ModelFacade.getName(ModelFacade.getStereoType(attr)))));
+        	       && val.equals(ModelFacade.getName(ModelFacade
+                           .getStereoType(attr)))));
     }
 
     private void checkStereotype(MOperation op, String text, String val)

@@ -53,7 +53,7 @@ public class Section extends AbstractSection {
      * can place an initial body within the both identifying lines
      *
      * @param id the section id
-     * @param indent
+     * @param indent the current indentation
      * @return the generated string
      */
     public static String generateTop(String id, String indent) {
@@ -69,7 +69,7 @@ public class Section extends AbstractSection {
      * can place an initial body within the both identifying lines
      *
      * @param id the section id
-     * @param indent
+     * @param indent the current indentation
      * @return the generated string
      */
     public static String generateBottom(String id, String indent) {

@@ -87,34 +87,34 @@ public class TestMyTokenizer extends TestCase {
 	
 	String str4 = " newAttr = \": h\" ";
 	String delim4 = " ,\t,<<,>>,[,],:,=,{,},\\,";
-	String res4_1[] = {
+	String res4dot1[] = {
 	    " ", "newAttr", " ", "=", " ", "\"", ":", " ", "h\"", " " 
 	};
-	String res4_2[] = {
+	String res4dot2[] = {
 	    " ", "newAttr", " ", "=", " ", "\": h\"", " "
 	};
 
 	String str5 = " newAttr = \': h\' ";
 	String delim5 = " ,\t,<<,>>,[,],:,=,{,},\\,";
-	String res5_1[] = {
+	String res5dot1[] = {
 	    " ", "newAttr", " ", "=", " ", "\'", ":", " ", "h\'", " " 
 	};
-	String res5_2[] = {
+	String res5dot2[] = {
 	    " ", "newAttr", " ", "=", " ", "\': h\'", " "
 	};
 
 	String str6 = "newAttr = (: ()h) ";
 	String delim6 = " ,\t,<<,>>,[,],:,=,{,},\\,";
-	String res6_1[] = {
+	String res6dot1[] = {
 	    "newAttr", " ", "=", " ", "(", ":", " ", "()h)", " " 
 	};
-	String res6_2[] = {
+	String res6dot2[] = {
 	    "newAttr", " ", "=", " ", "(: ()h)", " "
 	};
 
 	String str7 = "newAttr = (\"\\\" )(\" () \'\\\' )(\')";
 	String delim7 = " ,\t,<<,>>,[,],:,=,{,},\\,";
-	String res7_1[] = {
+	String res7dot1[] = {
 	    "newAttr",
 	    " ",
 	    "=",
@@ -129,7 +129,7 @@ public class TestMyTokenizer extends TestCase {
 	    " ",
 	    ")(\')" 
 	};
-	String res7_2[] = {
+	String res7dot2[] = {
 	    "newAttr",
 	    " ",
 	    "=",
@@ -143,7 +143,7 @@ public class TestMyTokenizer extends TestCase {
 	    "\'\\\' )(\'",
 	    ")" 
 	};
-	String res7_3[] = {
+	String res7dot3[] = {
 	    "newAttr",
 	    " ",
 	    "=",
@@ -157,7 +157,7 @@ public class TestMyTokenizer extends TestCase {
 	    " ",
 	    ")(\')" 
 	};
-	String res7_4[] = {
+	String res7dot4[] = {
 	    "newAttr",
 	    " ",
 	    "=",
@@ -166,10 +166,10 @@ public class TestMyTokenizer extends TestCase {
 	    "(\" () \'\\\' )",
 	    "(\')" 
 	};
-	String res7_5[] = {
+	String res7dot5[] = {
 	    "newAttr", " ", "=", " ", "(\"\\\" )(\" () \'\\\' )(\')" 
 	};
-	String res7_6[] = {
+	String res7dot6[] = {
 	    "newAttr",
 	    " ",
 	    "=",
@@ -216,49 +216,57 @@ public class TestMyTokenizer extends TestCase {
 		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 	checkConstr(str3, delim3, res3, seps);
 
-	checkConstr(str4, delim4, res4_1);
-	checkConstr(str4, delim4, res4_1, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str4, delim4, res4_2, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-	checkConstr(str4, delim4, res4_1, MyTokenizer.PAREN_EXPR_SEPARATOR);
+	checkConstr(str4, delim4, res4dot1);
+	checkConstr(str4, delim4, res4dot1, 
+	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+	checkConstr(str4, delim4, res4dot2, 
+	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	checkConstr(str4, delim4, res4dot1, MyTokenizer.PAREN_EXPR_SEPARATOR);
 	checkConstr(
 		    str4,
 		    delim4,
-		    res4_1,
+		    res4dot1,
 		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
-	checkConstr(str4, delim4, res4_2, seps);
+	checkConstr(str4, delim4, res4dot2, seps);
 
-	checkConstr(str5, delim5, res5_1);
-	checkConstr(str5, delim5, res5_2, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str5, delim5, res5_1, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-	checkConstr(str5, delim5, res5_1, MyTokenizer.PAREN_EXPR_SEPARATOR);
+	checkConstr(str5, delim5, res5dot1);
+	checkConstr(str5, delim5, res5dot2, 
+	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+	checkConstr(str5, delim5, res5dot1, 
+	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	checkConstr(str5, delim5, res5dot1, MyTokenizer.PAREN_EXPR_SEPARATOR);
 	checkConstr(
 		    str5,
 		    delim5,
-		    res5_1,
+		    res5dot1,
 		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
-	checkConstr(str5, delim5, res5_2, seps);
+	checkConstr(str5, delim5, res5dot2, seps);
 
-	checkConstr(str6, delim6, res6_1);
-	checkConstr(str6, delim6, res6_1, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str6, delim6, res6_1, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-	checkConstr(str6, delim6, res6_2, MyTokenizer.PAREN_EXPR_SEPARATOR);
+	checkConstr(str6, delim6, res6dot1);
+	checkConstr(str6, delim6, res6dot1, 
+	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+	checkConstr(str6, delim6, res6dot1, 
+	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	checkConstr(str6, delim6, res6dot2, MyTokenizer.PAREN_EXPR_SEPARATOR);
 	checkConstr(
 		    str6,
 		    delim6,
-		    res6_2,
+		    res6dot2,
 		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
-	checkConstr(str6, delim6, res6_1, seps);
+	checkConstr(str6, delim6, res6dot1, seps);
 
-	checkConstr(str7, delim7, res7_1);
-	checkConstr(str7, delim7, res7_2, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-	checkConstr(str7, delim7, res7_3, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-	checkConstr(str7, delim7, res7_4, MyTokenizer.PAREN_EXPR_SEPARATOR);
+	checkConstr(str7, delim7, res7dot1);
+	checkConstr(str7, delim7, res7dot2, 
+	            MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+	checkConstr(str7, delim7, res7dot3, 
+	            MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+	checkConstr(str7, delim7, res7dot4, MyTokenizer.PAREN_EXPR_SEPARATOR);
 	checkConstr(
 		    str7,
 		    delim7,
-		    res7_5,
+		    res7dot5,
 		    MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
-	checkConstr(str7, delim7, res7_6, seps);
+	checkConstr(str7, delim7, res7dot6, seps);
     }
 
     public void testPutToken() {

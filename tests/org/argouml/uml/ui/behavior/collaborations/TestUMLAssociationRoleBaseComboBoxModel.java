@@ -49,8 +49,8 @@ import ru.novosoft.uml.model_management.MModel;
 public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
 
     private int oldEventPolicy;
-    protected MAssociationRole elem;
-    protected UMLAssociationRoleBaseComboBoxModel model;
+    private MAssociationRole elem;
+    private UMLAssociationRoleBaseComboBoxModel model;
     private MAssociation[] bases;
     
     /**

@@ -42,8 +42,8 @@ public class TestUMLCollaborationRepresentedClassifierListModel
     extends TestCase {
 
     private int oldEventPolicy;
-    protected MCollaboration elem;
-    protected UMLCollaborationRepresentedClassifierListModel model;
+    private MCollaboration elem;
+    private UMLCollaborationRepresentedClassifierListModel model;
     
     /**
      * Constructor for TestUMLCollaborationRepresentedClassifierListModel.

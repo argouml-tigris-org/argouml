@@ -56,8 +56,8 @@ public class TestUmlModelEventPump extends TestCase {
     private boolean eventcalled;
     private TestListener listener2;
 
-    public static final boolean TEST_PERFORMANCE = false;
-    public static final int PERFORMANCE_TEST_SIZE = 5000;
+    private static final boolean TEST_PERFORMANCE = false;
+    private static final int PERFORMANCE_TEST_SIZE = 5000;
 
     private class TestListener implements MElementListener {
 
@@ -147,7 +147,8 @@ public class TestUmlModelEventPump extends TestCase {
     public void testAddLegalListener() {
         UmlModelEventPump.getPump().cleanUp();
         assertTrue(UmlModelEventPump.getPump().getEventListenerMap().isEmpty());
-        // assertTrue(UmlModelEventPump.getPump().getClassListenerMap().isEmpty());
+        // assertTrue(UmlModelEventPump.getPump()
+        //     .getClassListenerMap().isEmpty());
         UmlModelEventPump.getPump().addClassModelEventListener(
 							       listener,
 							       elem.getClass(),
@@ -161,10 +162,11 @@ public class TestUmlModelEventPump extends TestCase {
 							      "name" 
 							  });
         assertTrue(
-		   !UmlModelEventPump.getPump().getClassListenerMap().isEmpty());
+	    !UmlModelEventPump.getPump().getClassListenerMap().isEmpty());
         assertTrue(
-		   !UmlModelEventPump.getPump().getEventListenerMap().isEmpty());
-        // assertTrue(UmlModelEventPump.getPump().getClassListenerMap().getListenerList(elem.getClass()).getListenerCount() > 0);
+	    !UmlModelEventPump.getPump().getEventListenerMap().isEmpty());
+        // assertTrue(UmlModelEventPump.getPump().getClassListenerMap()
+        //    .getListenerList(elem.getClass()).getListenerCount() > 0);
         MElementListener[] list =
             UmlModelEventPump.getPump()
 	        .getEventListenerMap().getListeners(elem,

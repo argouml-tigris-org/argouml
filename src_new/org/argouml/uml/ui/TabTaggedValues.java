@@ -61,39 +61,44 @@ public class TabTaggedValues extends TabSpawnable
     implements TabModelTarget {
     ////////////////////////////////////////////////////////////////
     // constants
-    public static final String DEFAULT_NAME = "tag";
-    public static final String DEFAULT_VALUE = "value";
+    private static final String DEFAULT_NAME = "tag";
+    private static final String DEFAULT_VALUE = "value";
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    Object _target;
-    TableModelTaggedValues _tableModel = null;
-    boolean _shouldBeEnabled = false;
-    JTable _table = new JTable(10, 2);
-    JLabel _titleLabel;
+    private Object target;
+    private TableModelTaggedValues tableModel = null;
+    private boolean shouldBeEnabled = false;
+    private JTable table = new JTable(10, 2);
+    private JLabel titleLabel;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
+    /**
+     * The constructor.
+     * 
+     */
     public TabTaggedValues() {
         super("tab.tagged-values");
-        _tableModel = new TableModelTaggedValues(this);
-        _table.setModel(_tableModel);
+        tableModel = new TableModelTaggedValues(this);
+        table.setModel(tableModel);
 
-        _table.setRowSelectionAllowed(false);
+        table.setRowSelectionAllowed(false);
         // _table.getSelectionModel().addListSelectionListener(this);
-        JScrollPane sp = new JScrollPane(_table);
+        JScrollPane sp = new JScrollPane(table);
         Font labelFont = LookAndFeelMgr.getInstance().getSmallFont();
-        _table.setFont(labelFont);
-        _titleLabel = new JLabel("none");
+        table.setFont(labelFont);
+        titleLabel = new JLabel("none");
         resizeColumns();
         setLayout(new BorderLayout());
-        add(_titleLabel, BorderLayout.NORTH);
+        add(titleLabel, BorderLayout.NORTH);
         add(sp, BorderLayout.CENTER);
     }
 
+    /**
+     * Resize the columns. 
+     */
     public void resizeColumns() {
-        TableColumn keyCol = _table.getColumnModel().getColumn(0);
-        TableColumn valCol = _table.getColumnModel().getColumn(1);
+        TableColumn keyCol = table.getColumnModel().getColumn(0);
+        TableColumn valCol = table.getColumnModel().getColumn(1);
         keyCol.setMinWidth(50);
         keyCol.setWidth(150);
         keyCol.setPreferredWidth(150);
@@ -101,27 +106,31 @@ public class TabTaggedValues extends TabSpawnable
         valCol.setWidth(550);
         valCol.setPreferredWidth(550);
         //_table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        _table.sizeColumnsToFit(-1);
+        table.sizeColumnsToFit(-1);
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public void setTarget(Object target) {
-        if (_table.isEditing()) {
-            TableCellEditor ce = _table.getCellEditor();
+    /**
+     * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
+     */
+    public void setTarget(Object theTarget) {
+        if (table.isEditing()) {
+            TableCellEditor ce = table.getCellEditor();
             if (ce != null && !ce.stopCellEditing())
                 ce.cancelCellEditing();
         }
 
-        Object t = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
+        Object t = (theTarget instanceof Fig) 
+                    ? ((Fig) theTarget).getOwner() : theTarget;
         if (!(org.argouml.model.ModelFacade.isAModelElement(t))) {
-            _target = null;
-            _shouldBeEnabled = false;
+            target = null;
+            shouldBeEnabled = false;
             return;
         }
-        _target = t;
-        _shouldBeEnabled = true;
+        target = t;
+        shouldBeEnabled = true;
 
         //TableColumn keyCol = _table.getColumnModel().getColumn(0);
         //TableColumn valCol = _table.getColumnModel().getColumn(1);
@@ -131,34 +140,43 @@ public class TabTaggedValues extends TabSpawnable
         //valCol.setMinWidth(250);
         //valCol.setWidth(550);
         //valCol.setPreferredWidth(550);
-        _table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        _table.sizeColumnsToFit(0);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table.sizeColumnsToFit(0);
 
-        Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(_target));
-        _tableModel.setTarget(_target);
-        if (_target != null) {
-            _titleLabel.setText("Target: "
-				+ ModelFacade.getUMLClassName(_target)
-				+ " (" + ModelFacade.getName(_target) + ")");
+        Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(target));
+        tableModel.setTarget(target);
+        if (target != null) {
+            titleLabel.setText("Target: "
+				+ ModelFacade.getUMLClassName(target)
+				+ " (" + ModelFacade.getName(target) + ")");
         }
         else {
-            _titleLabel.setText("none");
+            titleLabel.setText("none");
         }
         validate();
     }
 
-    public Object getTarget() { return _target; }
+    /**
+     * @see org.argouml.ui.TabTarget#getTarget()
+     */
+    public Object getTarget() { return target; }
 
-    public void refresh() { setTarget(_target); }
+    /**
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
+    public void refresh() { setTarget(target); }
 
-    public boolean shouldBeEnabled(Object target) {
-        Object t = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
+    /**
+     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
+     */
+    public boolean shouldBeEnabled(Object theTarget) {
+        Object t = (theTarget instanceof Fig) ? ((Fig) theTarget).getOwner() : theTarget;
         if (!(org.argouml.model.ModelFacade.isAModelElement(t))) {
-            _shouldBeEnabled = false;
-            return _shouldBeEnabled;
+            shouldBeEnabled = false;
+            return shouldBeEnabled;
         }
         else {
-            _shouldBeEnabled = true;
+            shouldBeEnabled = true;
             return true;
         }
     }
@@ -201,12 +219,12 @@ class TableModelTaggedValues extends AbstractTableModel
 
     ////////////////
     // instance varables
-    Object _target;		// ModelElement
-    TabTaggedValues _tab = null;
+    private Object target;		// ModelElement
+    private TabTaggedValues tab = null;
 
     ////////////////
     // constructor
-    public TableModelTaggedValues(TabTaggedValues t) { _tab = t; }
+    public TableModelTaggedValues(TabTaggedValues t) { tab = t; }
 
     ////////////////
     // accessors
@@ -215,12 +233,12 @@ class TableModelTaggedValues extends AbstractTableModel
         if (!ModelFacade.isAModelElement(t))
             throw new IllegalArgumentException();
         
-	if (_target != null)
-	    UmlModelEventPump.getPump().removeModelEventListener(this, _target);
-	_target = t;
+	if (target != null)
+	    UmlModelEventPump.getPump().removeModelEventListener(this, target);
+	target = t;
 	UmlModelEventPump.getPump().addModelEventListener(this, t);
 	fireTableDataChanged();
-	_tab.resizeColumns();
+	tab.resizeColumns();
     }
 
     ////////////////
@@ -242,14 +260,14 @@ class TableModelTaggedValues extends AbstractTableModel
     }
 
     public int getRowCount() {
-	if (_target == null) return 0;
-	Collection tvs = ModelFacade.getTaggedValuesCollection(_target);
+	if (target == null) return 0;
+	Collection tvs = ModelFacade.getTaggedValuesCollection(target);
 	//if (tvs == null) return 1;
 	return tvs.size() + 1;
     }
 
     public Object getValueAt(int row, int col) {
-	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(_target));
+	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(target));
 	//if (tvs == null) return "";
 	if (row == tvs.size()) return ""; //blank line allows addition
 	Object tv = tvs.elementAt(row);
@@ -273,7 +291,7 @@ class TableModelTaggedValues extends AbstractTableModel
 	if (!(aValue instanceof String)) return;
         if (aValue == null) aValue = "";
         
-	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(_target));
+	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(target));
 	if (tvs.size() <= rowIndex) {
 	    Object tv =
 		UmlFactory.getFactory()
@@ -305,10 +323,10 @@ class TableModelTaggedValues extends AbstractTableModel
             }
 	    mEvent = new TableModelEvent(this, rowIndex);
 	}
-	ModelFacade.setTaggedValues(_target, tvs);
+	ModelFacade.setTaggedValues(target, tvs);
 	if (mEvent != null)
 	    fireTableChanged(mEvent);
-	_tab.resizeColumns();
+	tab.resizeColumns();
     }
 
     ////////////////
@@ -336,7 +354,7 @@ class TableModelTaggedValues extends AbstractTableModel
 
     public void delayedVetoableChange(PropertyChangeEvent pce) {
 	fireTableDataChanged();
-	_tab.resizeColumns();
+	tab.resizeColumns();
     }
 
 } /* end class TableModelTaggedValues */
