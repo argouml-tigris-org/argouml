@@ -351,6 +351,49 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
         format.</para></tip>
     </sect2>
 
+    <!-- Revert to saved project -->
+    <!-- This menu-item is added thanks to issue 2215 -->
+
+    <sect2 id="s2.ref.menu_revert_to_saved">
+      <title>Revert to Saved</title>
+
+      <para>
+This menu-item allows you to throw away all your recent changes, 
+and reload the last saved version of the current project. 
+It works a bit like an <literal>Undo</literal> feature, 
+but only restores changes done since the last time the user saved.
+      </para>
+
+      <para>
+This menu-item is downlighted unless 
+the currentproject has been saved or loaded before (i.e. it has a name), 
+and it has been altered.
+      </para>
+
+      <para>
+When this menu-item is activated, 
+a small confirmation dialog box opens, 
+as shown in the figure below.
+This warning that all recent changes will be discarded, 
+is needed because the action can not be undone.
+Selecting <literal>No</literal> cancels the whole action as if you did not select the menu-item in the first place.
+Selecting <literal>Yes</literal> reloads the last saved file.
+      </para>
+
+      <figure id="fig.ref.menu_revert_to_saved" float="1">
+        <title>The warning dialog for Revert to Saved.
+        </title>
+
+        <screenshot><mediaobject>
+          <imageobject>
+            <imagedata format="PNG" align="center"
+                         fileref="images/reference/menu_revert_to_saved.png"/>
+          </imageobject>
+        </mediaobject></screenshot>
+      </figure>
+    </sect2>
+
+
     <!-- Import -->
 
     <sect2>
