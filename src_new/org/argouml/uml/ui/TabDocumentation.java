@@ -32,6 +32,8 @@ public class TabDocumentation extends TabText {
   // constructor
   public TabDocumentation() {
     super("Documentation");
+    _text.setLineWrap(true);
+    _text.setWrapStyleWord(true);
   }
 
   ////////////////////////////////////////////////////////////////
