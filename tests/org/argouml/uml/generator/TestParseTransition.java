@@ -95,7 +95,6 @@ public class TestParseTransition extends TestCase {
      * These should generate a ParseException.
      */
     public void testParseTransitionNotCreate() {
-        /* : */
         checkGenerated(aState, "trigger[guard/effect", false, false, false, 
                 true);
         checkGenerated(aState, "trigger(", false, false, false, true);
@@ -104,6 +103,7 @@ public class TestParseTransition extends TestCase {
         checkGenerated(aState, "tr]jhgf[ijh", false, false, false, true);
         checkGenerated(aState, "tr]/e", false, false, false, true);
         checkGenerated(aState, "tr/i[gg]er", false, false, false, true);
+        checkGenerated(aState, "tri[g/g]er", false, false, false, true);
     }
     
     /**
