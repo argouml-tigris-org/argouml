@@ -87,11 +87,6 @@ public class Critic implements Poster, Serializable {
       Argo.localize(RESOURCE_BUNDLE, "knowledge.tool");
 
 
-  /** Some priority constants for ToDoItem's. */
-  //public static final int LOWEST_PRIORITY = 1;
-  //public static final int DEFAULT_PRIORITY = 5;
-  //public static final int HIGHEST_PRIORITY = 10;
-
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -475,18 +470,20 @@ public class Critic implements Poster, Serializable {
   /** Lift any previous SnoozeOrder. */
   public void unsnooze() { snoozeOrder().unsnooze(); }
 
-  /** Reply true iff this Critic is relevant to the decisions that
+  /** Reply true if this Critic is relevant to the decisions that
    *  the Designer is considering. By default just asks the Designer if
    *  he/she is considering my decisionCategory. Really this is
    *  something for a ControlMech to compute, but if a subclass of
    *  Critic encapsulates some information you may need to override
    *  this method. */
   public boolean isRelevantToDecisions(Designer dsgr) {
+      cat.info(this);
     Enumeration enum = getSupportedDecisions().elements();
     while (enum.hasMoreElements()) {
       Decision d = (Decision) enum.nextElement();
+      cat.info(d + " " + d.getPriority());
       //if (dsgr.isConsidering(d)) return true;
-      if (d.getPriority() > 0) return true;
+      if (d.getPriority() > 0 && d.getPriority()<=getPriority()) return true;
     }
     return false;
   }
@@ -669,7 +666,8 @@ public class Critic implements Poster, Serializable {
       getCriticKey() + "," +
       getCriticType() + "," +
       getDecisionCategory() + "," +
-      getHeadline() + ")";
+      getHeadline() + "," +
+      getPriority() + ")";
   }
 
 } /* end class Critic */
