@@ -56,8 +56,7 @@ implements PropertyChangeListener {
   /** The name of the default Argo notation.  This notation is
    *  part of Argo core distribution.
    */
-  public static final NotationName NOTATION_ARGO =
-         org.argouml.language.uml.generator.GeneratorUml.NOTATION;
+  public static final NotationName NOTATION_ARGO = makeNotation("UML", "1.3");
 
   /** The name of the Argo java-like notation.  This notation is
    *  part of Argo core distribution.
