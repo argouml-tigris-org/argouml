@@ -254,19 +254,6 @@ public class Argo
 				           .getLastDirectory());
     }
 
-    /** Helper for localization to eliminate the need to import
-     *  the gef util library.
-     * 
-     * @param bundle the localization bundle name to use
-     * @param key the resource string to find
-     * @return the localized string
-     * @deprecated since 0.15.2.
-     * Use {see org.argouml.i18n.Translator#localize(String)} directly instead.
-     */
-    public static String localize(String bundle, String key) {
-        return org.argouml.i18n.Translator.localize(bundle, key);
-    }
-
     /** Returns a vector of plugins of the class type passed
      *  which satisfy both of the contexts required.
      *
