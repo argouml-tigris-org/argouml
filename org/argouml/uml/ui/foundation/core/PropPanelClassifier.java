@@ -119,6 +119,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
             MOperation oper = MMUtil.SINGLETON.buildOperation(classifier);
+            oper.addMElementListener(((MElementListener)ProjectBrowser.TheInstance.getActiveDiagram().presentationFor(classifier)));
             navigateTo(oper);
             // 2002-07-15
             // Jaap Branderhorst

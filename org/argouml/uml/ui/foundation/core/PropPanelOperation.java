@@ -31,7 +31,9 @@ import java.util.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
 import org.argouml.application.api.*;
@@ -47,6 +49,13 @@ public class PropPanelOperation extends PropPanelModelElement {
         super("Operation", _operationIcon,3);
 
         Class mclass = MOperation.class;
+        //
+        //   this will cause the components on this page to be notified
+        //      anytime a stereotype, namespace, operation, etc
+        //      has its name changed or is removed anywhere in the model
+        Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class };
+        setNameEventListening(namesToWatch);
+
 
         addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
         addField(nameField,1,0,0);
@@ -109,7 +118,8 @@ public class PropPanelOperation extends PropPanelModelElement {
 	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
 	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
 	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-	new PropPanelButton(this,buttonPanel,_operationIcon, Argo.localize("UMLMenu", "button.add-new-operation"),"buttonAddOperation",null);
+	
+	// new PropPanelButton(this,buttonPanel,_operationIcon, Argo.localize("UMLMenu", "button.add-new-operation"),"buttonAddOperation",null);
 // I uncommented this next line. I don't know why it was commented out, it seems to work just fine...--pjs--
         new PropPanelButton(this,buttonPanel,_parameterIcon, Argo.localize("UMLMenu", "button.add-parameter"),"buttonAddParameter",null);
 	//new PropPanelButton(this,buttonPanel,_signalIcon,localize("Add raised signal"),"buttonAddRaisedSignal",null);
@@ -263,6 +273,7 @@ public class PropPanelOperation extends PropPanelModelElement {
             MClassifier owner = oper.getOwner();
             if(owner != null) {
 		MOperation newOper = MMUtil.SINGLETON.buildOperation(owner);
+		newOper.addMElementListener(((MElementListener)ProjectBrowser.TheInstance.getActiveDiagram().presentationFor(owner)));
                 navigateTo(newOper);
                
             }
