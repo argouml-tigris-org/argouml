@@ -39,7 +39,7 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
     /**
      * Constructor for UMLSearchableComboBox.
      * @param model the model
-     * @param selectAction the action for selction
+     * @param selectAction the action for selection
      * @param showIcon true if we show an icon in the list
      */
     public UMLSearchableComboBox(UMLComboBoxModel2 model,
