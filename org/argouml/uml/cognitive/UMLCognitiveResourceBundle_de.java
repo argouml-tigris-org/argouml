@@ -45,13 +45,13 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrAssocNameConflict_desc" ,
 	        "Jedes Element eines Namensraums mu\u00df einen eindeutigen Namen haben. \n\nKlare und unzweideutige Namensgebung ist ein Schl\u00fcssel zur Codegenerierung, Verst\u00e4ndlichkeit und Wartbarkeit des Entwurfs. \n\nUm dieses Problem zu beheben, benutzen Sie den \"Next\" Button, oder selektieren Sie die Elemente und benutzen Sie die \"Eigenschaften\" Registerkarte um ihre Namen zu \u00e4ndern." },
         { "CrAttrNameConflict_head" ,
-                "\u00c4ndern Sie den Attributnamen um einen Konflikt zu vermeiden."},
+                "\u00c4ndern Sie den MAttribut Namen um einen Konflikt zu vermeiden."},
         { "CrAttrNameConflict_desc" ,
 	        "Attribute m\u00fcssen unterschiedliche Namen haben.  Dieses Problem kann auch durch vererbte Attribute entstehen. \n\nKlare und eindeutige Namen sind ein Schl\u00fcssel zur Codegenerierung und der Erstellung eines verst\u00e4ndlichen und wartbaren Entwurfs.\n\nUm dieses Problem zu l\u00f6sen benutzen Sie den \"Next\" Button, oder selektieren Sie eines der betreffenden Attribute dieser Klasse und \u00e4ndern Sie seinen Namen."},
         { "CrOperNameConflict_head" ,
 	        "\u00c4ndern Sie Namen oder Signaturen in <ocl>self</ocl>" },
         { "CrOperNameConflict_desc" ,
-	        "Zwei Operationen haben exakt die gleiche Signatur. Operationen m\u00fcssen unterschiedliche Signaturen haben. Eine Signatur ist die Kombination des Namens und der Parametertypen der Operation. \n\nDas Vermeiden von identischen Signaturen ist ein Schl\u00fcssel zur Codegenerierung und zur Erstellung eines verst\u00e4ndlichen und wartbaren Entwurfs.\n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button oder selektieren Sie eine der betreffenden Operationen dieser Klasse uund \u00e4ndern Sie deren Namen." },
+	        "Zwei Operationen haben exakt die gleiche Signatur.  Operationen m\u00fcssen unterschiedliche Signaturen haben. Eine Signatur ist die Kombination des Namens und der Parametertypen der Operation. \n\nDas Vermeiden von identischen Signaturen ist ein Schl\u00fcssel zur Codegenerierung und zur Erstellung eines verst\u00e4ndlichen und wartbaren Entwurfs.\n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button oder selektieren Sie eine der betreffenden Operationen dieser Klasse uund \u00e4ndern Sie deren Namen." },
         { "CrCircularAssocClass_head" ,
 	        "Ringf\u00f6rmige Assoziation" },
         { "CrCircularAssocClass_desc" ,
@@ -75,7 +75,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrDupRoleNames_head" ,
 	        "\u00c4ndern Sie den <ocl>self</ocl> Rollennamen" },
         { "CrDupRoleNames_desc" ,
-	        "Assoziation <ocl>self</ocl> hat zwei Rollen mit widerspr\u00fcchlichen Namen. \n\nKlare und unzweideutige Namensgebung ist ein Schl\u00fcssel zur Codegenerierung und der Verst\u00e4ndlichkeit und Wartbarkeit des Entwurfs. \n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button oder selektieren Sie <ocl>self</ocl> und benutzen Sie die 'Eigenschaften' Registerkarte um die Rollennamen zu \u00e4ndern." },
+	        "MAssoziation <ocl>self</ocl> hat zwei Rollen mit widerspr\u00fcchlichen Namen. \n\nKlare und unzweideutige Namensgebung ist ein Schl\u00fcssel zur Codegenerierung und der Verst\u00e4ndlichkeit und Wartbarkeit des Entwurfs. \n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button oder selektieren Sie <ocl>self</ocl> und benutzen Sie die 'Eigenschaften' Registerkarte um die Rollennamen zu \u00e4ndern." },
         { "CrFinalSubclassed_head" ,
 	        "Entfernen Sie das 'final' Schl\u00fcsselwort oder entfernen Sie die Unterklassen" },
         { "CrFinalSubclassed_desc" ,
@@ -83,15 +83,15 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrIllegalGeneralization_head" ,
 	        "Unerlaubte MGeneralisierung" },
         { "CrIllegalGeneralization_desc" ,
-	        "Modellelemente k\u00f6nnen nur von Elementen des gleichen Typs erben. \n\nEine g\u00fcltige Vererbungshierachie ist erforderlich zur Codegenerierung und zur Korrektheit des Entwurfs. \n\nUm dieses Problem zu beheben, benutzen Sie den \"Next\" Button oder selektieren Sie den Generalisierungspfeil per Hand um ihn zu entfernen." },
+	        "MModell Elemente k\u00f6nnen nur von Elementen des gleichen Typs erben. \n\nEine g\u00fcltige Vererbungshierachie ist erforderlich zur Codegenerierung und zur Korrektheit des Entwurfs. \n\nUm dieses Problem zu beheben, benutzen Sie den \"Next\" Button oder selektieren Sie den Generalisierungspfeil per Hand um ihn zu entfernen." },
         { "CrAlreadyRealizes_head" ,
 	        "Entfernen Sie die unn\u00f6tige Realisierung von <ocl>self</ocl>" },
         { "CrAlreadyRealizes_desc" ,
-	        "Die selektierte Klassen implementiert bereits indirekt das Interface {item.extra}. Es gibt keinen Grund es nochmals direkt zu implementieren. \n\nDen Entwurf zu vereinfachen ist immer eine gute Idee. Sie m\u00f6chten vielleicht diesen \"To Do\" Eintrag l\u00f6schen, falls Sie es offensichtlich machen wollen, da\u00df die selektierte Klasse dieses MInterface implementiert.\n\nUm dieses Problem zu beheben selektieren Sie die Realisierung (die punktierte Linie mit der weissen, dreieckigen, Pfeilspitze) und dr\u00fccken Sie die 'Entfernen' Taste." },
+	        "Die selektierte Klassen implementiert bereits indirekt das MInterface {item.extra}. Es gibt keinen Grund es nochmals direkt zu implementieren. \n\nDen Entwurf zu vereinfachen ist immer eine gute Idee. Sie m\u00f6chten vielleicht diesen \"To Do\" Eintrag l\u00f6schen, falls Sie es offensichtlich machen wollen, da\u00df die selektierte Klasse dieses MInterface implementiert.\n\nUm dieses Problem zu beheben selektieren Sie die Realisierung (die punktierte Linie mit der weissen, dreieckigen, Pfeilspitze) und dr\u00fccken Sie die 'Entfernen' Taste." },
         { "CrInterfaceAllPublic_head" ,
 	        "Operationen in einem Interface m\u00fcssen 'public' sein" },
         { "CrInterfaceAllPublic_desc" ,
-	        "Interfaces sind dazu gedacht, die Menge der Operationen zu spezifizieren, welche von anderen Klassen implementiert werden m\u00fcssen. Dazu m\u00fcssen sie 'public' sein. \n\nEine wohldurchdachte Sammlung von Interfaces ist ein guter Weg die potentiellen Erweiterungen eines Klassen-Frameworks zu spezifizieren. \n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button, oder selektieren Sie die Operationen des Interfaces per Hand und benutzen Sie die 'Eigenschaften' Registerkarte um Sie 'public' zu machen." },
+	        "Interfaces sind dazu gedacht die Menge der Operationen zu spezifizieren, welche von anderen Klassen implementiert werden m\u00fcssen. Sie m\u00fcssen 'public' sein. \n\nEine wohldurchdachte Sammlung von Interfaces ist ein guter Weg die potentiellen Erweiterungen eines Klassen-Frameworks zu spezifizieren. \n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button, oder selektieren Sie die Operationen des Interfaces per Hand und benutzen Sie die 'Eigenschaften' Registerkarte um Sie 'public' zu machen." },
         { "CrInterfaceOperOnly_head" ,
 	        "Interfaces d\u00fcrfen nur Operationen haben" },
         { "CrInterfaceOperOnly_desc" ,
@@ -107,7 +107,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrNavFromInterface_head" ,
                 "Remove Navigation from MInterface <ocl>self</ocl>" },
         { "CrNavFromInterface_desc" ,
-                "Associations involving an MInterface can be not be naviagable in the direction from the MInterface.  This is because interfaces do contain only operation declarations and cannot hold pointers to other objects.\n\nThis part of the design should be changed before you can generate code from this design.  If you do generate code before fixing this problem, the code will not match the design.\n\nTo fix this, select the MAssociation and use the \"Properties\" tab to uncheck Navigable for the end touching the MInterface.  The MAssociation should then appear with an stick arrowhead pointed away from the MInterface." },
+                "Associations involving an MInterface can be not be naviagable in the direction from the MInterface.  This is because interfaces do contain only operation declarations and cannot hold pointers to other objects.\n\nThis part of the design should be changed before you can generate code from this design.  If you do generate code before fixing this problem, the code will not match the design.\n\nTo fix this, select the MAssociation and use the \"Properties\" tab to uncheck Navigable for the end touching the MInterface.  The MAssociation should then appear with a stick arrowhead pointed towards the MInterface." },
         { "CrUnnavigableAssoc_head" ,
                 "Make <ocl>self</ocl> Navigable" },
         { "CrUnnavigableAssoc_desc" ,
@@ -133,9 +133,9 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrMissingStateName_desc" ,
 	        "Jeder Zustand in einer Statemachine sollte einen Namen haben. \n\nKlare und unzweideutige Namensgebung ist ein Schl\u00fcssel zur Verst\u00e4ndlichkeit und wartbarkeit des Entwurfs. \n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button, selektieren Sie den Zustand per Hand und benutzen Sie die 'Eigenschaften' Registerkarte um ihm einen Namen zu geben, oder selektieren Sie den Zustand und tippen Sie einen Namen." },
         { "CrNoInstanceVariables_head" ,
-	        "F\u00fcgen Sie eine Instanzvariable zu <ocl>self</ocl> hinzu" },
+	        "F\u00fcgen Sie eine Klassenvariable zu <ocl>self</ocl> hinzu" },
         { "CrNoInstanceVariables_desc" ,
-                "Sie haben noch keine Instanzvariablen f\u00fcr <ocl>self</ocl> definiert. Normalerweise haben Klassen Instanzvariablen, die Zustandsinformationen der einzelnen Instanzen halten. Klassen, die nur statische Klassenvariablen und statische Methoden beinhalten, sollten den Stereotyp <<utility>> tragen.\n\nUm dieses Problem zu beheben, dr\u00fccken Sie den \"Next\" Button oder f\u00fcgen sie Attribute \u00fcber das Men\u00fc hinzu." },
+                "You have not yet specified instance variables for <ocl>self</ocl>. Normally classes have instance variables that store state information for each instance. Classes that provide only static attributes and methods should be stereotyped <<utility>>.\n\nDefining instance variables needed to complete the information representation part of your design. \n\nTo fix this, press the \"Next>\" button, or add instance variables by dobule clicking on <ocl>self</ocl> in the navigator pane and using the Create menu to make a new attribute. " },
         { "CrNoAssociations_head" ,
 	        "F\u00fcgen Sie Assoziationen zu <ocl>self</ocl> hinzu" },
         { "CrNoAssociations_desc" ,
@@ -143,13 +143,13 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrNonAggDataType_head" ,
                 "Wrap MDataType" },
         { "CrNonAggDataType_desc" ,
-                "DataTypes are not full classes and cannot be associated with classes, unless the MDataType is part of a composite (black diamond) aggregation. \n\nGood OO design depends on careful choices about which entities to represent as full objects and which to represent as attributes of objects.\n\nTo fix this, use the \"Next>\" button, or manually replace the MDataType with a full class or change the association aggregation to containmentby a full class.\n" },
+                "DataTypes are not full classes and cannot be associated with classes, unless the MDataType is part of a composite (black diamond) aggregation. \n\nGood OO design depends on careful choices about which entities to represent as full objects and which to represent as attributes of objects.\n\nTo fix this, use the \"Next>\" button, or manually replace the MDataType with a full class or change the association aggregation to containment by a full class.\n" },
         { "CrOppEndConflict_head" ,
-	        "Benennen Sie die Assozationsrollen um" },
+	        "Benennen Sie die MAssozations Rollen um" },
         { "CrOppEndConflict_desc" ,
-	        "Zwei Rollen von <ocl>self</ocl> haben den gleichen Namen. Rollen m\u00fcssen unterschiedliche Namen haben. Dies ist eventuell verursacht durch ein ererbtes Attribut. \n\nKlare und unzweideutige Namensgebung ist ein Schl\u00fcssel zur Codegenerierung und zum Erstellen eines verst\u00e4ndlichen und wartbaren Entwurfs.\n\nUm dieses Problem zu beheben dr\u00fccken Sie den \"Next\" Button oder selektieren Sie die Rolle am anderen Ende der Assoziation dieser Klasse und \u00e4ndern Sie ihren Namen." },
+	        "Zwei Rollen von <ocl>self</ocl> haben den gleichen Namen. Rollen m\u00fcssen unterschiedliche Namen haben.\n\nKlare und unzweideutige Namensgebung ist ein Schl\u00fcssel zur Codegenerierung und zum Erstellen eines verst\u00e4ndlichen und wartbaren Entwurfs.\n\nUm dieses Problem zu beheben dr\u00fccken Sie den \"Next\" Button oder selektieren Sie die Rolle am anderen Ende der Assoziation dieser Klasse und \u00e4ndern Sie ihren Namen." },
         { "CrParamTypeNotImported_head" ,
-	        "Importieren Sie den Parametertyp in die Klasse" },
+	        "Importieren Sie den MParameter Typ in die Klasse" },
         { "CrParamTypeNotImported_desc" ,
 	        "Der Typ eines jeden Operationsparameter mu\u00df sichtbar sein und in die Klasse importiert werden, welche die Operation beinhaltet.\n\nDas Importieren von Klassen ist erforderlich f\u00fcr die Codegenerierung. Eine gute Aufteilung von Klassen in Pakete ist ein Schl\u00fcssel zu einem verst\u00e4ndlichen Entwurf.\n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button oder f\u00fcgen Sie der betreffenden Klasse per Hand eine 'import' Anweisung hinzu." },
         { "CrSignatureConflict_head" ,
@@ -163,7 +163,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrUselessInterface_head" ,
 	        "Definieren Sie eine Klasse um <ocl>self</ocl> zu implementieren" },
         { "CrUselessInterface_desc" ,
-                "<ocl>self</ocl> kann nicht genutzt werden, weil es keine Klasse gibt, die dieses Interface implementiert.\n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button oder nutzen Sie den \"Rapid-Button\" am unteren Rand des Diagrammelements." },
+                "<ocl>self</ocl> can never be used because no classes implement it.\n\nTo fix this problem, press the \"Next>\" button or manually use the toolbar \"Class\" button to define classes and the \"Realizes\" button to make a relationship from the class to the highlighted interface." },
         { "CrDisambigClassName_head" ,
 	        "W\u00e4hlen Sie einen eindeutigen Namen f\u00fcr <ocl>self</ocl>" },
         { "CrDisambigClassName_desc" ,
@@ -203,7 +203,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrNoTransitions_head" ,
 	        "F\u00fcgen Sie \u00dcberg\u00e4nge zu <ocl>self</ocl hinzu" },
         { "CrNoTransitions_desc" ,
-	        "Der Zustand <ocl>self</ocl> hat keine ein- oder ausgehenden \u00dcberg\u00e4nge. Normalerweise haben Zust\u00e4nde ein- und ausgehende Zustands\u00fcberg\u00e4nge. \n\nDie Definition von vollst\u00e4ndigen Zust\u00e4nden und \u00dcberg\u00e4ngen ist erforderlich um das Verhalten Ihres Entwurfs vollst\u00e4ndig zu beschreiben. Um dieses Problem zu beheben dr\u00fccken Sie den \"Next\" Button oder f\u00fcgen Sie die \u00dcberg\u00e4nge per Hand hinzu. Dazu klicken Sie auf das \u00dcbergangs Icon im Toolbar und erzeugen Sie die \u00dcberg\u00e4nge von und zu <ocl>self</ocl> per Drag und Drop." },
+	        "MZustand <ocl>self</ocl> hat keine ein- oder ausgehenden \u00dcberg\u00e4nge. Normalerweise haben Zust\u00e4nde ein- und ausgehende \u00dcberg\u00e4nge. \n\nDie Definition von vollst\u00e4ndigen Zust\u00e4nden und \u00dcberg\u00e4ngen ist erforderlich um das Verhalten Ihres Entwurfs vollst\u00e4ndig zu beschreiben. Um dieses Problem zu beheben dr\u00fccken Sie den \"Next\" Button oder f\u00fcgen Sie die \u00dcberg\u00e4nge per Hand hinzu. Dazu klicken Sie auf das \u00dcbergangs Icon im Toolbar und erzeugen Sie die \u00dcberg\u00e4nge von und zu <ocl>self</ocl> per Drag und Drop." },
         { "CrNoIncomingTransitions_head" ,
 	        "F\u00fcgen Sie die eingehenden \u00dcberg\u00e4nge zu <ocl>self</ocl> hinzu" },	
         { "CrNoIncomingTransitions_desc" ,
@@ -295,7 +295,7 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrWrongLinkEnds_head" ,
                 "LinkEnds have not the same locations" },
         { "CrWrongLinkEnds_desc" ,
-                " In deployment-diagrams objects can reside either on components\n or on component-instances. So it is not possible to have two objects\n connected with a Link, while one object resides on an component and\n an the other obejct on a component-instance.\n\n\n To fix this remove one object of the two connected objects from its location to an element that has the\n same type as the location of the other object" },
+                " In deployment-diagrams objects can reside either on components\n or on component-instances. So it is not possible to have two objects\n connected with a Link, while one object resides on an component and\n an the other object on a component-instance.\n\n\n To fix this remove one object of the two connected objects from its location to an element that has the\n same type as the location of the other object" },
         { "CrInstanceWithoutClassifier_head" ,
                 "Set classifier" },
         { "CrInstanceWithoutClassifier_desc" ,
@@ -319,23 +319,23 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrStimulusWithWrongPosition_head" ,
                 "Wrong position of these stimuli" },
         { "CrStimulusWithWrongPosition_desc" ,
-                "In sequence-diagrams the sender-side oh the communication-connections oh these\nstimuli are connected at the beginning of an activation. To be a sender an object must\nhave a focus-of-control first." },
+                "In sequence-diagrams the sender-side of the communication-connections of these\nstimuli are connected at the beginning of an activation. To be a sender an object must\nhave a focus-of-control first." },
         { "CrUnconventionalOperName_head" ,
-	        "W\u00e4hlen Sie einen besseren Namen f\u00fcr die Operation" },
+	        "W\u00e4hlen Sie einen besseren Namen f\u00fcr die MOperation" },
         { "CrUnconventionalOperName_desc" ,
 	        "Normalerweise beginnen Namen von Operationen mit einem Kleinbuchstaben. Der Name '<ocl>self</ocl>' ist ungew\u00f6hnlich da er das nicht tut.\n\nDas Einhalten von sinnvollen Konventionen zur Namensgebung hilft die Verst\u00e4ndlichkeit und Wartbarkeit des Entwurfs zu verbessern. \n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button oder selektieren Sie <ocl>self</ocl> per Hand und benutzen Sie die 'Eigenschaften' Registerkarte um einen anderen Namen zu vergeben." },
         { "CrUnconventionalAttrName_head" ,
-	        "W\u00e4hlen Sie einen besseren Namen f\u00fcr das Attribut" },
+	        "W\u00e4hlen Sie einen besseren Namen f\u00fcr das MAttribut" },
         { "CrUnconventionalAttrName_desc" ,
 	        "Normalerweise beginnen Namen von Attributen mit einem Kleinbuchstaben. Der Name '<ocl>self</ocl>' ist ungew\u00f6hnlich da er das nicht tut.\n\nDas Einhalten von sinnvollen Konventionen zur Namensgebung hilft die Verst\u00e4ndlichkeit und Wartbarkeit des Entwurfs zu verbessern. \n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button oder selektieren Sie <ocl>self</ocl> per Hand und benutzen Sie die 'Eigenschaften' Registerkarte um einen anderen Namen zu vergeben." },
         { "CrUnconventionalClassName_head" ,
-	        "Schreiben Sie den Klassennamen <ocl>self</ocl> gro\u00df" },
+	        "Schreiben Sie den Klassennamen <ocl>self</ocl> gross" },
         { "CrUnconventionalClassName_desc" ,
-	        "Normalerweise beginnen Klassennamen mit einem Gro\u00dfbuchstaben. Der Name '<ocl>self</ocl>' ist ungew\u00f6hnlich, da er nicht mit einem Gro\u00dfbuchstaben beginnt.\n\nDas Einhalten von sinnvollen Konventionen zur Namensgebung hilft die Verst\u00e4ndlichkeit und Wartbarkeit des Entwurfs zu verbessern. \n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button oder selektieren Sie <ocl>self</ocl> per Hand und benutzen Sie die 'Eigenschaften' Registerkarte um einen anderen Namen zu vergeben." },
+	        "Normalerweise beginnen Klassennamen mit einem Gro\u00dfbuchstaben. Der Name '<ocl>self</ocl>' ist ungew\u00f6hnlich da er nicht mit einem Gro\u00dfbuchstaben beginnt.\n\nDas Einhalten von sinnvollen Konventionen zur Namensgebung hilft die Verst\u00e4ndlichkeit und Wartbarkeit des Entwurfs zu verbessern. \n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button oder selektieren Sie <ocl>self</ocl> per Hand und benutzen Sie die 'Eigenschaften' Registerkarte um einen anderen Namen zu vergeben." },
         { "CrUnconventionalPackName_head" ,
 	        "W\u00e4hlen Sie einen anderen Paketnamen f\u00fcr <ocl>self</ocl>" },
         { "CrUnconventionalPackName_desc" ,
-	        "Normalerweise werden Paketnamen durchg\u00e4ngig klein geschrieben mit Punkten, welche \"geschachtelte\" Pakete anzeigen. Der Name '<ocl>self</ocl>' ist ungew\u00f6hnlich, da er nicht aus kleinen Buchstaben und Punkten besteht.\n\nDas Einhalten von sinnvollen Konventionen zur Namensgebung hilft die Verst\u00e4ndlichkeit und Wartbarkeit des Entwurfs zu verbessern. \n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button oder selektieren Sie <ocl>self</ocl> per Hand und benutzen Sie die 'Eigenschaften' Registerkarte, um einen anderen Namen zu vergeben." },
+	        "Normalerweise werden Paketnamen durchg\u00e4ngig klein geschrieben mit Punkten, welche \"geschachtelte\" Pakete anzeigen. Der Name '<ocl>self</ocl>' ist ungew\u00f6hnlich, da er nicht aus kleinen Buchstaben und Punkten besteht.\n\nDas Einhalten von sinnvollen Konventionen zur Namensgebung hilft die Verst\u00e4ndlichkeit und Wartbarkeit des Entwurfs zu verbessern. \n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button oder selektieren Sie <ocl>self</ocl> per Hand und benutzen Sie die 'Eigenschaften' Registerkarte um einen anderen Namen zu vergeben." },
         { "CrClassMustBeAbstract_head" ,
                 "Class Must be Abstract" },
         { "CrClassMustBeAbstract_desc" ,
@@ -355,15 +355,15 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrConsiderSingleton_head" ,
 	        "Sie sollten erw\u00e4gen das 'Singleton' Entwurfsmuster zu benutzen" },
         { "CrConsiderSingleton_desc" ,
-                "This class has no attributes or associations that are navigable away from instances of this class.  This means that every instance of this class will be equal() to every other instance, since there will be no instance variables to differentiate them. If this not your intent, you should define some attributes or associations that will represent differences bewteen instances. If there are no attributes or associations that differentiate instances, the you shoudld consider having exatly one instance of this class, as in the Singleton Pattern.\n\nDefining the multiplicity of instances is needed to complete the information representation part of your design.  Using the Singleton Pattern can save time and memory space.\n\nTo automatically apply the Singleton Pattern, press the \"Next>\" button; or manually (1) mark the class with the Singlton stereotype, (2) add a static variable that holds one instance of this class, (3) and make all constructors private.\n\nTo learn more about the Singleton Pattern, press the MoreInfo icon." },
+                "This class has no attributes or associations that are navigable away from instances of this class.  This means that every instance of this class will be equal() to every other instance, since there will be no instance variables to differentiate them. If this not your intent, you should define some attributes or associations that will represent differences bewteen instances. If there are no attributes or associations that differentiate instances, the you shoudld consider having exatly one instance of this class, as in the Singleton Pattern.\n\nDefining the multiplicity of instances is needed to complete the information representation part of your design.  Using the Singleton Pattern can save time and memory space.\n\nTo automatically apply the Singleton Pattern, press the \"Next>\" button; or manually (1) mark the class with the Singleton stereotype, (2) add a static variable that holds one instance of this class, (3) and make all constructors private.\n\nTo learn more about the Singleton Pattern, press the MoreInfo icon." },
         { "CrSingletonViolated_head" ,
                 "Singleton MStereotype Violated" },
         { "CrSingletonViolated_desc" ,
-                "This class is marked with the Singleton stereotype, but it does not satisfy the constraints imposed on singletons.  A singleton class can have at most one instance.  This means that the class must have (1) a static variable holding the instance, (2) only private constructors so that new instances cannot be made by other code, and (3) there must be at least one constructor to override the default constructor.\n\nWhenever you mark a class with a stereotype, the class should satisfy all constraints of the stereotype.  This is an important part of making a self-consistent and understangle design. Using the Singleton Pattern can save time and memory space.\n\nIf you no longer want this class to be a Singleton, remove the Singleton stereotype by clicking on the class and deleting Singleton from the Props tab. \nTo automatically apply the Singleton Pattern, press the \"Next>\" button; or manually (1) mark the class with the Singlton stereotype, (2) add a static variable that holds one instance of this class, (3) and make all constructors private.\n\nTo learn more about the Singleton Pattern, press the MoreInfo icon." },
+                "This class is marked with the Singleton stereotype, but it does not satisfy the constraints imposed on singletons.  A singleton class can have at most one instance.  This means that the class must have (1) a static variable holding the instance, (2) only private constructors so that new instances cannot be made by other code, and (3) there must be at least one constructor to override the default constructor.\n\nWhenever you mark a class with a stereotype, the class should satisfy all constraints of the stereotype.  This is an important part of making a self-consistent and understangle design. Using the Singleton Pattern can save time and memory space.\n\nIf you no longer want this class to be a Singleton, remove the Singleton stereotype by clicking on the class and deleting Singleton from the Props tab. \nTo automatically apply the Singleton Pattern, press the \"Next>\" button; or manually (1) mark the class with the Singleton stereotype, (2) add a static variable that holds one instance of this class, (3) and make all constructors private.\n\nTo learn more about the Singleton Pattern, press the MoreInfo icon." },
         { "CrNodesOverlap_head" ,
                 "Clean Up Diagram" },
         { "CrNodesOverlap_desc" ,
-                "Some of the objects in this diagram overlap and obscure each other. This may hide important information and make it difficult for humans to understand. A neat appearance may also make your diagrams more influencial on other designers, implementors, and decision makers.\n\nConstructing an understandable set of class diagrams is an important part of your design. \n\nTo fix this, move the highlighted nodes in the digragm." },
+                "Some of the objects in this diagram overlap and obscure each other. This may hide important information and make it difficult for humans to understand. A neat appearance may also make your diagrams more influencial on other designers, implementors, and decision makers.\n\nConstructing an understandable set of class diagrams is an important part of your design. \n\nTo fix this, move the highlighted nodes in the diagram." },
         { "CrZeroLengthEdge_head" ,
                 "Make Edge More Visible" },
         { "CrZeroLengthEdge_desc" ,
@@ -378,14 +378,14 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "Updates", "Updates" },
         { "General", "Allgemein" },
         { "Actions" , "Aktionen" },
-        { "Transitions", "Zustands\u00fcberg\u00e4nge" },
+        { "Transitions", "\u00dcberg\u00e4nge" },
         { "Structure", "Struktur" },
         { "Trigger", "Ausl\u00f6ser" },
-        { "MGuard", "Bedingung" },
+        { "MGuard", "MBedingung" },
         //
         //   The following blocks define the UML related
         //      Checklists.  The key is the name of
-        //      the non-deprecated implmenting class,
+        //      the non-deprecated implementing class,
         //      the value is an array of categories which
         //      are each an array of Strings.  The first
         //      string in each category is the name of the
@@ -396,158 +396,158 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "ChClass",
             new String[][] {
                 new String[] { "Naming",
-		  "Beschreibt der Name '<ocl>self</ocl>' die Klasse auf klare Weise?",
-		  "Ist '<ocl>self</ocl>' ein Hauptwort oder ein Hauptsatz?",
-		  "K\u00f6nnte der Name '<ocl>self</ocl>' mi\u00dfinterpretiert werden oder etwas anderes bedeuten?"
+                  "Does the name '<ocl>self</ocl>' clearly describe the class?",
+                  "Is '<ocl>self</ocl>' a noun or noun phrase?",
+                  "Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?"
                 },
                 new String[] { "Encoding",
-		  "Sollte <ocl>self</ocl> eine eigene Klasse sein oder ein einfaches Attribut einer anderen Klasse?",
-		  "Macht <ocl>self</ocl> genau eine Sache, und diese ordentlich?",
-		  "K\u00f6nnte <ocl>self</ocl> in zwei oder mehrere Klassen unterteilt werden?"
+                  "Should <ocl>self</ocl> be its own class or a simple attribute of another class?",
+                  "Does <ocl>self</ocl> do exactly one thing and do it well?",
+                  "Could <ocl>self</ocl> be broken down into two or more classes?"
                 },
                 new String[] { "Value",
-		  "Haben alle Attribute von <ocl>self</ocl> sinnvolle Startwerte?",
-		  "K\u00f6nnten Sie eine Invariante f\u00fcr diese Klasse schreiben?",
-		  "Etablieren alle Konstruktoren die Invariante dieser Klasse?",
-		  "Stellen alle Operationen sicher, dass die Invariante der Klasse erhalten bleibt?"
+                  "Do all attributes of <ocl>self</ocl> start with meaningful values?",
+                  "Could you write an invariant for this class?",
+                  "Do all constructors establish the class invariant?",
+                  "Do all operations maintain the class invariant?"
                 },
                 new String[] { "Location",
-		  "K\u00f6nnte <ocl>self</ocl> auch an einer anderen Stelle in der Klassenhierachie definiert werden?",
-		  "Ist geplant, da\u00df <ocl>self</ocl> Unterklassen haben soll?",
-		  "K\u00f6nnte <ocl>self</ocl> aus dem Modell entfernt werden?", 
-		  "Gibt es eine andere Klasse in dem Modell, welche \u00fcberarbeitet oder entfernt werden sollte, weil sie den gleichen Zweck wie <ocl>self</ocl> erf\u00fcllt?"
+                  "Could <ocl>self</ocl> be defined in a different location in the class hierarchy?",
+                  "Have you planned to have subclasses of <ocl>self</ocl>?",
+                  "Could <ocl>self</ocl> be eliminated from the model?",
+                  "Is there another class in the model that should be revised or eliminated because it serves the same purpose as <ocl>self</ocl>?"
                 },
                 new String[] { "Updates",
-		  "Aus welchen Gr\u00fcnden wird eine Instanz von <ocl>self</ocl> aktualisiert?",
-		  "Gibt es ein anderes Objekt, welches aktualisiert werden mu\u00df wenn <ocl>self</ocl> aktualisiert wird?"
+                  "For what reasons will an instance of <ocl>self</ocl> be updated?",
+                  "Is there some other object that must be updated whenever <ocl>self</ocl> is updated?"
                 }
             }
         },
         { "ChAttribute",
             new String[][] {
                 new String[] { "Naming",
-		  "Beschreibt der Name '<ocl>self</ocl>' das Attribut auf klare Weise?",
-		  "Ist '<ocl>self</ocl>' ein Hauptwort oder ein Hauptsatz?",
-		  "K\u00f6nnte der Name '<ocl>self</ocl>' mi\u00dfinterpretiert werden oder etwas anderes bedeuten?"
+                  "Does the name '<ocl>self</ocl>' clearly describe the attribute?",
+                  "Is '<ocl>self</ocl>' a noun or noun phrase?",
+                  "Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?"
                 },
                 new String[] { "Encoding",
-		  "Ist der Typ <ocl>self.type</ocl> zu beschr\u00e4nkt um alle sinnvollen Werte von <ocl>self</ocl> enthalten?",
-		  "Erlaubt der Typ <ocl>self.type</ocl> Werte, welche niemals korrekt f\u00fcr <ocl>self</ocl> sein k\u00f6nnen?",
-		  "K\u00f6nnte <ocl>self</ocl> mit einem anderen Attribut von <ocl>self.owner</ocl> zusammengefasst werden (z.B. {owner.structuralFeature})?",
-		  "K\u00f6nnte <ocl>self</ocl> in zwei oder mehrere Teile zerlegt werden (z.B. kann eine Telefonnummer in Vorwahl und Rufnummer zerlegt werden)?",
-		  "K\u00f6nnte <ocl>self</ocl> aus anderen Attributen errechnet werden, anstatt gespeichert zu werden?"
+                  "Is the type <ocl>self.type</ocl> too restrictive to represent all possible values of <ocl>self</ocl>?",
+                  "Does the type <ocl>self.type</ocl> allow values for <ocl>self</ocl> that could never be correct?",
+                  "Could <ocl>self</ocl> be combined with some other attribute of <ocl>self.owner</ocl> (e.g., {owner.structuralFeature})?",
+                  "Could <ocl>self</ocl> be broken down into two or more parts (e.g., a phonenumber can be broken down into area code, prefix, and number)?",
+                  "Could <ocl>self</ocl> be computed from other attributes instead of stored?"
                 },
                 new String[] { "Value",
-		  "Sollte  <ocl>self</ocl> einen Start- (oder Default-) Wert haben?",
-		  "Ist der Startwert von <ocl>self.initialValue</ocl> korrekt?",
-		  "K\u00f6nnten Sie einen verst\u00e4ndlichen Ausdruck schreiben, welcher \u00fcberpr\u00fcft ob <ocl>self</ocl> korrekt ist?"
+                  "Should <ocl>self</ocl> have an initial (or default) value?",
+                  "Is the initial value <ocl>self.initialValue</ocl> correct?",
+                  "Could you write an expression to check if <ocl>self</ocl> is correct? Plausible?"
                 },
                 new String[] { "Location",
-		  "K\u00f6nnte <ocl>self</ocl> in einer anderen Klasse definiert werden, welche mit <ocl>self.owner</ocl> assoziiert ist?",
-		  "K\u00f6nnte <ocl>self</ocl> in der Vererbungshierachie nach oben bewegt werden um auch auf owner.name und andere Klassen angewendet zu werden?", 
-		  "Kann <ocl>self</ocl> auf alle Instanzen der Klasse <ocl>self.owner</ocl>, inklusive der Unterklassen, angewendet werden?",
-	          "K\u00f6nnte <ocl>self</ocl> aus dem Modell entfernt werden?",
-	          "Gibt es ein anderes Attribut in dem Modell, welches \u00fcberarbeitet oder entfernt werden sollte, weil es den gleichen Zweck wie <ocl>self</ocl> erf\u00fcllt?"
+                  "Could <ocl>self</ocl> be defined in a different class that is associated with <ocl>self.owner</ocl>?",
+                  "Could <ocl>self</ocl> be moved up the inheritance hierarchy to apply to owner.name and to other classes?",
+                  "Does <ocl>self</ocl> apply to all instances of class <ocl>self.owner</ocl> including instances of subclasses?",
+                  "Could <ocl>self</ocl> be eliminated from the model?",
+                  "Is there another attribute in the model that should be revised or eliminated because it serves the same purpose as <ocl>self</ocl>?"
                 },
                 new String[] { "Updates",
-		  "Aus welchen Gr\u00fcnden wird <ocl>self</ocl> upgedated?",
-		  "Gibt es ein anderes Attribut, welches upgedated werden muss, wenn <ocl>self</ocl> upgedated wird?",
-		  "Gibt es eine Methode welche aufgerufen werden sollte, wenn <ocl>self</ocl> upgedated wird?",
-	          "Gibt es eine Methode welche aufgerufen werden sollte, wenn <ocl>self</ocl> einen bestimmten Wert erh\u00e4lt?"
+                  "For what reasons will <ocl>self</ocl> be updated?",
+                  "Is there some other attribute that must be updated whenever <ocl>self</ocl> is updated?",
+                  "Is there a method that should be called when <ocl>self</ocl> is updated?",
+                  "Is there a method that should be called when <ocl>self</ocl> is given a certain kind of value?"
                 }
             }
         },
         { "ChOperation",
             new String[][] {
                 new String[] { "Naming",
-		  "Beschreibt der Name '<ocl>self</ocl>' die Operation auf klare Weise?",
-		  "Ist '<ocl>self</ocl>' ein T\u00e4tigkeitswort oder ein Hauptsatz?", 
-		  "K\u00f6nnte der Name '<ocl>self</ocl>' mi\u00dfinterpretiert werden oder etwas anderes bedeuten?",
-		  "Macht <ocl>self</ocl> eine Sache und diese ordentlich?"
+                  "Does the name '<ocl>self</ocl>' clearly describe the operation?",
+                  "Is '<ocl>self</ocl>' a verb or verb phrase?",
+                  "Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?",
+                  "Does <ocl>self</ocl> do one thing and do it well?"
                 },
                 new String[] { "Encoding",
-		  "Ist der R\u00fcckgabewert '<ocl>self.returnType</ocl>' zu beschr\u00e4nkt um alle m\u00f6glichen R\u00fcckgabewert von <ocl>self</ocl> zu enthalten?",
-		  "Erlaubt der Typ '<ocl>self.returnType</ocl>' R\u00fcckgabewerte, welche niemals korrekt sein k\u00f6nnen?",
-		  "K\u00f6nnte <ocl>self</ocl> mit einer anderen Operation von <ocl>self.owner</ocl> zusammengelegt werden (z.B. <ocl sep=', '>self.owner.behavioralFeature</ocl>)?",
-		  "K\u00f6nnte <ocl>self</ocl> in zwei oder mehrere Teile zerlegt werden (z.B. Preprocessing, Hauptteil und Postprocessing)?",
-		  "K\u00f6nnte <ocl>self</ocl> durch eine Folge von Aufrufen einfacherer Operationen ersetzt werden?",
-		  "K\u00f6nnte <ocl>self</ocl> mit anderen Operationen zusammengelegt werden um die Anzahl von Aufrufen zu reduzieren?"
+                  "Is the return type '<ocl>self.returnType</ocl>' too restrictive to represent all possible values returned by <ocl>self</ocl>?",
+                  "Does '<ocl>self.returnType</ocl>' allow return values that could never be correct?",
+                  "Could <ocl>self</ocl> be combined with some other operation of <ocl>self.owner</ocl> (e.g., <ocl sep=', '>self.owner.behavioralFeature</ocl>)?",
+                  "Could <ocl>self</ocl> be broken down into two or more parts (e.g., pre-process, main processing, and post-processing)?",
+                  "Could <ocl>self</ocl> be replaced by a series of client calls to simpler operations?",
+                  "Could <ocl>self</ocl> be combined with other operations to reduce the number of calls clients must make?"
                 },
                 new String[] { "Value",
-		  "Kann <ocl>self</ocl> alle m\u00f6glichen Eingaben verarbeiten?",
-		  "Gibt es spezielle Eingaben, die separat behandelt werden m\u00fcssen?",
-		  "K\u00f6nnten Sie einen verst\u00e4ndlichen Ausdruck schreiben, welcher die Argumente von <ocl>self</ocl> auf Korrektheit \u00fcberpr\u00fcft?",
-		  "K\u00f6nnen Sie die Vorbedingungen von <ocl>self</ocl> definieren?",
-		  "K\u00f6nnen Sie die Nachbedingungen von <ocl>self</ocl> definieren?",
-		  "Wie wird sich <ocl>self</ocl> verhalten, wenn die Vorbedingungen verletzt sind?",
-		  "Wie wird sich <ocl>self</ocl> verhalten, wenn die Nachbedingungen verletzt sind?"
+                  "Can <ocl>self</ocl> handle all possible inputs?",
+                  "Are there special case inputs that must be handled separately?",
+                  "Could you write an expression to check if the arguments to <ocl>self</ocl> are correct? Plausible?",
+                  "Can you express the preconditions of <ocl>self</ocl>?",
+                  "Can you express the postconditions of <ocl>self</ocl>?",
+                  "How will <ocl>self</ocl> behave if preconditions are violated?",
+                  "How will <ocl>self</ocl> behave if postconditions cannot be achieved?"
                 },
                 new String[] { "Location",
-		  "K\u00f6nnte <ocl>self</ocl> in einer anderen Klasse definiert werden, welche mit <ocl>self.owner</ocl> assoziiert ist?",       
-		  "K\u00f6nnte <ocl>self</ocl> in der Vererbungshierachie nach oben bewegt werden um auch auf <ocl>self.owner</ocl> und andere Klassen angewendet zu werden?",
-                  "Kann <ocl>self</ocl> auf alle Instanzen der Klasse <ocl>self.owner</ocl>, inklusive der Unterklassen, angewendet werden?",
-	          "K\u00f6nnte <ocl>self</ocl> aus dem Modell entfernt werden?",
-	          "Gibt es eine andere Operation in dem Modell, welche \u00fcberarbeitet oder entfernt werden sollte, weil sie den gleichen Zweck wie <ocl>self</ocl> erf\u00fcllt?"
+                  "Could <ocl>self</ocl> be defined in a different class that is associated with <ocl>self.owner</ocl>?",
+                  "Could <ocl>self</ocl> be moved up the inheritance hierarchy to apply to <ocl>self.owner</ocl> and to other classes?",
+                  "Does <ocl>self</ocl> apply to all instances of class <ocl>self.owner</ocl> including instances of subclasses?",
+                  "Could <ocl>self</ocl> be eliminated from the model?",
+                  "Is there another operation in the model that should be revised or eliminated because it serves the same purpose as <ocl>self</ocl>?"
                 }
             }
         },
         { "ChAssociation",
             new String[][] {
                 new String[] { "Naming",
-		  "Beschreibt der Name '<ocl>self</ocl>' die Klasse auf klare Weise?",
-		  "Ist '<ocl>self</ocl>' ein Hauptwort oder ein Hauptsatz?",
-		  "K\u00f6nnte der Name '<ocl>self</ocl>' mi\u00dfinterpretiert werden oder etwas anderes bedeuten?"
+                  "Does the name '<ocl>self</ocl>' clearly describe the class?",
+                  "Is '<ocl>self</ocl>' a noun or noun phrase?",
+                  "Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?"
                 },
                 new String[] { "Encoding",
-		  "Sollte <ocl>self</ocl> eine eigene Klasse sein, oder ein einfaches Attribut einer anderen Klasse?",
-		  "Macht <ocl>self</ocl> genau eine Sache, und diese ordentlich?",
-		  "K\u00f6nnte <ocl>self</ocl> in zwei oder mehrere Klassen unterteilt werden?"
+                  "Should <ocl>self</ocl> be its own class or a simple attribute of another class?",
+                  "Does <ocl>self</ocl> do exactly one thing and do it well?",
+                  "Could <ocl>self</ocl> be broken down into two or more classes?"
                 },
                 new String[] { "Value",
-                  "Haben alle Attribute von <ocl>self</ocl> sinnvolle Startwerte?",
-		  "K\u00f6nnten Sie eine Invariante f\u00fcr diese Klasse schreiben?",
-		  "Etablieren alle Konstruktoren die Invariante dieser Klasse?",
-		  "Stellen alle Operationen sicher, dass die Invariante der Klasse erhalten bleibt?"
+                  "Do all attributes of <ocl>self</ocl> start with meaningful values?",
+                  "Could you write an invariant for this class?",
+                  "Do all constructors establish the class invariant?",
+                  "Do all operations maintain the class invariant?"
                 },
                 new String[] { "Location",
-                  "K\u00f6nnte <ocl>self</ocl> auch an einer anderen Stelle in der Klassenhierachie definiert werden?",
-		  "Ist geplant, da\u00df <ocl>self</ocl> Unterklassen haben soll?",
-		  "K\u00f6nnte <ocl>self</ocl> aus dem Modell entfernt werden?", 
-		  "Gibt es eine andere Klasse in dem Modell, welche \u00fcberarbeitet oder entfernt werden sollte, weil sie den gleichen Zweck wie <ocl>self</ocl> erf\u00fcllt?"
+                  "Could <ocl>self</ocl> be defined in a different location in the class hierarchy?",
+                  "Have you planned to have subclasses of <ocl>self</ocl>?",
+                  "Could <ocl>self</ocl> be eliminated from the model?",
+                  "Is there another class in the model that should be revised or eliminated because it serves the same purpose as <ocl>self</ocl>?"
                 },
                 new String[] { "Updates",
-                  "Aus welchen Gr\u00fcnden wird eine Instanz von <ocl>self</ocl> upgedatet?",
-		  "Gibt es ein anderes Objekt, welches upgedatet werden mu\u00df wenn <ocl>self</ocl> upgedatet wird?"
+                  "For what reasons will an instance of <ocl>self</ocl> be updated?",
+                  "Is there some other object that must be updated whenever <ocl>self</ocl> is updated?"
                 }
             }
         },
         { "ChInterface",
             new String[][] {
                 new String[] { "Naming",
-                  "Beschreibt der Name '<ocl>self</ocl>' die Klasse auf klare Weise?",
-		  "Ist '<ocl>self</ocl>' ein Hauptwort oder ein Hauptsatz?",
-		  "K\u00f6nnte der Name '<ocl>self</ocl>' mi\u00dfinterpretiert werden oder etwas anderes bedeuten?"
+                  "Does the name '<ocl>self</ocl>' clearly describe the class?",
+                  "Is '<ocl>self</ocl>' a noun or noun phrase?",
+                  "Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?"
                 },
                 new String[] { "Encoding",
-        	  "Sollte <ocl>self</ocl> eine eigene Klasse sein, oder ein einfaches Attribut einer anderen Klasse?",
-		  "Macht <ocl>self</ocl> genau eine Sache, und diese ordentlich?",
-		  "K\u00f6nnte <ocl>self</ocl> in zwei oder mehrere Klassen unterteilt werden?"
+                  "Should <ocl>self</ocl> be its own class or a simple attribute of another class?",
+                  "Does <ocl>self</ocl> do exactly one thing and do it well?",
+                  "Could <ocl>self</ocl> be broken down into two or more classes?"
                 },
                 new String[] { "Value",
-                  "Haben alle Attribute von <ocl>self</ocl> sinnvolle Startwerte?",
-	          "K\u00f6nnten Sie eine Invariante f\u00fcr diese Klasse schreiben?",
-		  "Etablieren alle Konstruktoren die Invariante dieser Klasse?",
-		  "Stellen alle Operationen sicher, dass die Invariante der Klasse erhalten bleibt?"
+                  "Do all attributes of <ocl>self</ocl> start with meaningful values?",
+                  "Could you write an invariant for this class?",
+                  "Do all constructors establish the class invariant?",
+                  "Do all operations maintain the class invariant?"
                 },
                 new String[] { "Location",
-                  "K\u00f6nnte <ocl>self</ocl> auch an einer anderen Stelle in der Klassenhierachie definiert werden?",
-		  "Ist geplant, da\u00df <ocl>self</ocl> Unterklassen haben soll?",
-		  "K\u00f6nnte <ocl>self</ocl> aus dem Modell entfernt werden?", 
-		  "Gibt es eine andere Klasse in dem Modell, welche \u00fcberarbeitet oder entfernt werden sollte, weil sie den gleichen Zweck wie <ocl>self</ocl> erf\u00fcllt?"
+                  "Could <ocl>self</ocl> be defined in a different location in the class hierarchy?",
+                  "Have you planned to have subclasses of <ocl>self</ocl>?",
+                  "Could <ocl>self</ocl> be eliminated from the model?",
+                  "Is there another class in the model that should be revised or eliminated because it serves the same purpose as <ocl>self</ocl>?"
                 },
                 new String[] { "Updates",
-		  "Aus welchen Gr\u00fcnden wird eine Instanz von <ocl>self</ocl> aktualisiert?",
-		  "Gibt es ein anderes Objekt, welches aktualisiert werden mu\u00df wenn <ocl>self</ocl> aktualisiert wird?"
+                  "For what reasons will an instance of <ocl>self</ocl> be updated?",
+                  "Is there some other object that must be updated whenever <ocl>self</ocl> is updated?"
                 }
             }
         },
@@ -592,30 +592,30 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "ChLink",
             new String[][] {
                 new String[] { "Naming",
-                  "Beschreibt der Name '<ocl>self</ocl>' die Klasse auf klare Weise?",
-		  "Ist '<ocl>self</ocl>' ein Hauptwort oder ein Hauptsatz?",
-		  "K\u00f6nnte der Name '<ocl>self</ocl>' mi\u00dfinterpretiert werden oder etwas anderes bedeuten?"
+                  "Does the name '<ocl>self</ocl>' clearly describe the class?",
+                  "Is '<ocl>self</ocl>' a noun or noun phrase?",
+                  "Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?"
                 },
                 new String[] { "Encoding",
-                  "Sollte <ocl>self</ocl> eine eigene Klasse sein, oder ein einfaches Attribut einer anderen Klasse?",
-		  "Macht <ocl>self</ocl> genau eine Sache, und diese ordentlich?",
-		  "K\u00f6nnte <ocl>self</ocl> in zwei oder mehrere Klassen unterteilt werden?"
+                  "Should <ocl>self</ocl> be its own class or a simple attribute of another class?",
+                  "Does <ocl>self</ocl> do exactly one thing and do it well?",
+                  "Could <ocl>self</ocl> be broken down into two or more classes?"
                 },
                 new String[] { "Value",
-		  "Haben alle Attribute von <ocl>self</ocl> sinnvolle Startwerte?",
-		  "K\u00f6nnten Sie eine Invariante f\u00fcr diese Klasse schreiben?",
-		  "Etablieren alle Konstruktoren die Invariante dieser Klasse?",
-		  "Stellen alle Operationen sicher, dass die Invariante der Klasse erhalten bleibt?"
+                  "Do all attributes of <ocl>self</ocl> start with meaningful values?",
+                  "Could you write an invariant for this class?",
+                  "Do all constructors establish the class invariant?",
+                  "Do all operations maintain the class invariant?"
                 },
                 new String[] { "Location",
-		  "K\u00f6nnte <ocl>self</ocl> auch an einer anderen Stelle in der Klassenhierachie definiert werden?",
-		  "Ist geplant, da\u00df <ocl>self</ocl> Unterklassen haben soll?",
-		  "K\u00f6nnte <ocl>self</ocl> aus dem Modell entfernt werden?", 
-		  "Gibt es eine andere Klasse in dem Modell, welche \u00fcberarbeitet oder entfernt werden sollte, weil sie den gleichen Zweck wie <ocl>self</ocl> erf\u00fcllt?"
+                  "Could <ocl>self</ocl> be defined in a different location in the class hierarchy?",
+                  "Have you planned to have subclasses of <ocl>self</ocl>?",
+                  "Could <ocl>self</ocl> be eliminated from the model?",
+                  "Is there another class in the model that should be revised or eliminated because it serves the same purpose as <ocl>self</ocl>?"
                 },
                 new String[] { "Updates",
-		  "Aus welchen Gr\u00fcnden wird eine Instanz von <ocl>self</ocl> aktualisiert?",
-		  "Gibt es ein anderes Objekt, welches aktualisiert werden mu\u00df wenn <ocl>self</ocl> aktualisiert wird?"
+                  "For what reasons will an instance of <ocl>self</ocl> be updated?",
+                  "Is there some other object that must be updated whenever <ocl>self</ocl> is updated?"
                 }
             }
         },
@@ -684,60 +684,60 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "ChUseCase",
             new String[][] {
                 new String[] { "Naming",
-		  "Beschreibt der Name '<ocl>self</ocl>' den Anwendungsfall auf klare Weise?",       
-		  "Ist '<ocl>self</ocl>' ein Hauptwort oder ein Hauptsatz?",
-		  "K\u00f6nnte der Name '<ocl>self</ocl>' mi\u00dfinterpretiert werden oder etwas anderes bedeuten?"
+                  "Does the name '<ocl>self</ocl>' clearly describe the class?",
+                  "Is '<ocl>self</ocl>' a noun or noun phrase?",
+                  "Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?"
                 },
                 new String[] { "Encoding",
-		  "Sollte <ocl>self</ocl> ein eigener Anwendungsfall sein, oder ein einfaches Attribut eines anderen?",
-		  "Macht <ocl>self</ocl> genau eine Sache, und diese ordentlich?",       
-		  "K\u00f6nnte <ocl>self</ocl> in zwei oder mehrere Anwendungsf\u00e4lle unterteilt werden?"
+                  "Should <ocl>self</ocl> be its own class or a simple attribute of another class?",
+                  "Does <ocl>self</ocl> do exactly one thing and do it well?",
+                  "Could <ocl>self</ocl> be broken down into two or more classes?"
                 },
                 new String[] { "Value",
-		  "Haben alle Attribute von <ocl>self</ocl> sinnvolle Startwerte?",
-			       "K\u00f6nnten Sie eine Invariante f\u00fcr diesen Anwendungsfall schreiben?" /* , */
-			       /* "Etablieren alle Konstruktoren die Invariante dieser Klasse?", 
-				  "Stellen alle Operationen sicher, dass die Invariante der Klasse erhalten bleibt?" */
+                  "Do all attributes of <ocl>self</ocl> start with meaningful values?",
+                  "Could you write an invariant for this class?",
+                  "Do all constructors establish the class invariant?",
+                  "Do all operations maintain the class invariant?"
                 },
                 new String[] { "Location",
-			       /*"K\u00f6nnte <ocl>self</ocl> auch an einer anderen Stelle in der Klassenhierachie definiert werden?",       
-				 "Ist geplant, da\u00df <ocl>self</ocl> Unterklassen haben soll?", */
-		  "K\u00f6nnte <ocl>self</ocl> aus dem Modell entfernt werden?" /*, 
-									     "Gibt es eine andere Klasse in dem Modell, welche \u00fcberarbeitet oder entfernt werden sollte, weil sie den gleichen Zweck wie <ocl>self</ocl> erf\u00fcllt?" */
+                  "Could <ocl>self</ocl> be defined in a different location in the class hierarchy?",
+                  "Have you planned to have subclasses of <ocl>self</ocl>?",
+                  "Could <ocl>self</ocl> be eliminated from the model?",
+                  "Is there another class in the model that should be revised or eliminated because it serves the same purpose as <ocl>self</ocl>?"
                 },
                 new String[] { "Updates",
-		  "Aus welchen Gr\u00fcnden wird eine Instanz von <ocl>self</ocl> aktualisiert?",       
-		  "Gibt es ein anderes Objekt, welches aktualisiert werden mu\u00df wenn <ocl>self</ocl> aktualisiert wird?"
+                  "For what reasons will an instance of <ocl>self</ocl> be updated?",
+                  "Is there some other object that must be updated whenever <ocl>self</ocl> is updated?"
                 }
             }
         },
         { "ChActor",
             new String[][] {
                 new String[] { "Naming",
-		  "Beschreibt der Name '<ocl>self</ocl>' den Aktor auf klare Weise?",
-		  "Ist '<ocl>self</ocl>' ein Hauptwort oder ein Hauptsatz?",
-		  "K\u00f6nnte der Name '<ocl>self</ocl>' mi\u00dfinterpretiert werden oder etwas anderes bedeuten?"
+                  "Does the name '<ocl>self</ocl>' clearly describe the class?",
+                  "Is '<ocl>self</ocl>' a noun or noun phrase?",
+                  "Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?"
                 },
-                new String[] { "Encoding", /*
-					     "Sollte <ocl>self</ocl> eine eigene Klasse sein, oder ein einfaches Attribut einer anderen Klasse?", */
-		  "Macht <ocl>self</ocl> genau eine Sache, und diese ordentlich?",
-		  "K\u00f6nnte <ocl>self</ocl> in zwei oder mehrere Aktoren unterteilt werden?"
+                new String[] { "Encoding",
+                  "Should <ocl>self</ocl> be its own class or a simple attribute of another class?",
+                  "Does <ocl>self</ocl> do exactly one thing and do it well?",
+                  "Could <ocl>self</ocl> be broken down into two or more classes?"
                 },
-                new String[] { "Value" /* ,
-		  "Haben alle Attribute von <ocl>self</ocl> sinnvolle Startwerte?",
-        	  "K\u00f6nnten Sie eine Invariante f\u00fcr diese Klasse schreiben?",
-		  "Etablieren alle Konstruktoren die Invariante dieser Klasse?",
-		  "Stellen alle Operationen sicher, dass die Invariante der Klasse erhalten bleibt?" */
+                new String[] { "Value",
+                  "Do all attributes of <ocl>self</ocl> start with meaningful values?",
+                  "Could you write an invariant for this class?",
+                  "Do all constructors establish the class invariant?",
+                  "Do all operations maintain the class invariant?"
                 },
                 new String[] { "Location",
-			       /* "K\u00f6nnte <ocl>self</ocl> auch an einer anderen Stelle in der Klassenhierachie definiert werden?",
-				  "Ist geplant, da\u00df <ocl>self</ocl> Unterklassen haben soll?", */
-		  "K\u00f6nnte <ocl>self</ocl> aus dem Modell entfernt werden?", 
-		  "Gibt es einen anderen Aktoren in dem Modell, welcher \u00fcberarbeitet oder entfernt werden sollte, weil er den gleichen Zweck wie <ocl>self</ocl> erf\u00fcllt?"
+                  "Could <ocl>self</ocl> be defined in a different location in the class hierarchy?",
+                  "Have you planned to have subclasses of <ocl>self</ocl>?",
+                  "Could <ocl>self</ocl> be eliminated from the model?",
+                  "Is there another class in the model that should be revised or eliminated because it serves the same purpose as <ocl>self</ocl>?"
                 },
                 new String[] { "Updates",
-		  "Aus welchen Gr\u00fcnden wird eine Instanz von <ocl>self</ocl> aktualisiert?",
-		  "Gibt es ein anderes Objekt, welches aktualisiert werden mu\u00df wenn <ocl>self</ocl> aktualisiert wird?"
+                  "For what reasons will an instance of <ocl>self</ocl> be updated?",
+                  "Is there some other object that must be updated whenever <ocl>self</ocl> is updated?"
                 }
             }
         }

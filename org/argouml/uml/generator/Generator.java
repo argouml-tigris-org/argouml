@@ -26,6 +26,8 @@ package org.argouml.uml.generator;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
@@ -106,7 +108,7 @@ public abstract class Generator {
     if (expr == null) return "";
     return generateUninterpreted(expr.getBody());
   }
-  
+
   public String generateExpression(MConstraint expr) {
     if (expr == null) return "";
     return generateExpression(expr.getBody());
