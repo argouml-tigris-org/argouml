@@ -60,7 +60,7 @@ public class ChangeRegistry implements GraphListener
      * @param newValue true means that the project needs to be saved. 
      *                 False means that there is nothing to save.
      */
-    public void setChangeFlag( boolean newValue ) {
+    private void setChangeFlag( boolean newValue ) {
 		
         boolean oldValue = ActionSaveProject.getInstance().isEnabled();
         

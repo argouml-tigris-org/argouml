@@ -34,6 +34,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.StylePanelFigNodeModelElement;
 
 /**
@@ -127,7 +129,10 @@ public class StylePanelFigInterface extends StylePanelFigNodeModelElement {
             if (src == operCheckBox) {
                 ((FigInterface) getPanelTarget())
                     .setOperationsVisible(operCheckBox.isSelected());
-                markNeedsSave();
+                Project p = ProjectManager.getManager().getCurrentProject();
+                if (p != null) {
+                    p.setNeedsSave(true);
+                }
             } else
                 super.itemStateChanged(e);
         }

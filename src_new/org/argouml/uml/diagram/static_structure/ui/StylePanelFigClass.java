@@ -35,6 +35,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.StylePanelFigNodeModelElement;
 
 /**
@@ -146,15 +148,20 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
     public void itemStateChanged(ItemEvent e) {
         if (!refreshTransaction) {
             Object src = e.getSource();
-
+            Project p = ProjectManager.getManager().getCurrentProject();
+            
             if (src == attrCheckBox) {
                 ((FigClass) getPanelTarget()).setAttributesVisible(attrCheckBox
                         .isSelected());
-                markNeedsSave();
+                if (p != null) {
+                    p.setNeedsSave(true);
+                }
             } else if (src == operCheckBox) {
                 ((FigClass) getPanelTarget()).setOperationsVisible(operCheckBox
                         .isSelected());
-                markNeedsSave();
+                if (p != null) {
+                    p.setNeedsSave(true);
+                }
             } else
                 super.itemStateChanged(e);
         }

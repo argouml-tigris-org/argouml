@@ -95,7 +95,7 @@ public class TestUMLAction extends TestCase {
 	UMLAction to = new UMLAction(new String(), true);
 
 	// to.actionPerformed(new ActionEvent());
-	to.markNeedsSave();
+	// to.markNeedsSave();
 	to.updateEnabled(new Object());
 	to.updateEnabled();
 	to.shouldBeEnabled();
