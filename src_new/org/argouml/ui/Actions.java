@@ -122,24 +122,6 @@ public class Actions {
   public static UMLAction SystemInfo = new ActionSystemInfo();
   public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
 
-  /**
-   * The show diagram list action. When this action is triggered the diagram
-   * list will toggle between a visible/invisible status.
-   */
-  public static UMLAction ShowDiagramList = new ActionShowDiagramList();
-
-  /**
-   * The show todo list action. When this action is triggered the todo
-   * list will toggle between a visible/invisible status.
-   */
-  public static UMLAction ShowToDoList = new ActionShowToDoList();
-
-  /**
-   * The show details action. When this action is triggered the details
-   * tabs will toggle between a visible/invisible status.
-   */
-  public static UMLAction ShowDetails = new ActionShowDetails();
-
   public static void updateAllEnabled() {
     java.util.Enumeration actions = _allActions.elements();
     while (actions.hasMoreElements()) {
@@ -498,51 +480,3 @@ class ActionAboutArgoUML extends UMLAction {
   }
   public boolean shouldBeEnabled() { return true; }
 } /* end class ActionAboutArgoUML */
-
-/**
- * A class to perform the action of showing or hiding the todo list pane.
- *
- * @author  Bob Tarling
- */
-class ActionShowToDoList extends UMLAction {
-  public ActionShowToDoList() {
-    super("Show ToDo List", NO_ICON);
-  }
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    pb.setToDoPaneVisible(!pb.isToDoPaneVisible());
-  }
-} /* end class ActionShowToDoList */
-
-/**
- * A class to perform the action of showing or hiding the details tabs pane.
- *
- * @author  Bob Tarling
- */
-class ActionShowDetails extends UMLAction {
-  public ActionShowDetails() {
-    super("Show Details", NO_ICON);
-  }
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    pb.setDetailsPaneVisible(!pb.isDetailsPaneVisible());
-  }
-} /* end class ActionShowDetails */
-
-/**
- * A class to perform the action of showing or hiding the diagram list pane.
- *
- * @author  Bob Tarling
- */
-class ActionShowDiagramList extends UMLAction {
-  public ActionShowDiagramList() {
-    super("Show Diagram List", NO_ICON);
-  }
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    pb.setNavigatorPaneVisible(!pb.isNavigatorPaneVisible());
-  }
-} /* end class ActionShowDiagramList */
-
-
-
