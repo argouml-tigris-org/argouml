@@ -5,7 +5,7 @@
       <title>Property panels</title>
       <para>
 Purpose - to provide a form view of the diagrams and objects in the model.
-The contents of the model is modifyable.
+The contents of the model is modifiable.
 </para>
       <para>
 The Property panels will be located in
@@ -33,9 +33,12 @@ a description on how it works now.
 </para>
 </warning>
 	  <para>
-Property Panels are found as class PropPanelXXX.java, where XXX is the
-UML metaclass. They are in sub-packages of org.argouml.uml.ui
-corresponding to the XXX NSUML packages, which in turn correspond to
+Property Panels are found as class 
+<filename>PropPanel<replaceable>XXX</replaceable>.java</filename>, 
+where <replaceable>XXX</replaceable> is the
+UML meta-class. They are in sub-packages of org.argouml.uml.ui
+corresponding to the <replaceable>XXX</replaceable> NSUML packages, 
+which in turn correspond to
 their section in the chapter 2 of the UML 1.3 spec. This packaging is
 essential for their lookup through Java reflection.
 </para>
@@ -122,7 +125,7 @@ class.
 A drop down box of options that can be selected, with an icon to the
 right allowing navigation to the property panel for the currently
 selected item. For example the Stereotype field. Supported in general
-by the <literal>UMLComboBox</literal> class and more speficically by
+by the <literal>UMLComboBox</literal> class and more specifically by
 its subclass for stereotypes,
 <literal>UMLStereotypeComboBox</literal>.
 </para>
@@ -134,7 +137,7 @@ A non-editable text box, with a pop-up menu that allows opening,
 addition, deletion, moving up and moving down of entries. For example
 the Generalizations field. Supported by the <literal>UMLList</literal>
 class. The list model is usually provided by a sub-class of
-<literal>UMLModelElementListModel</literal>. There is a varient
+<literal>UMLModelElementListModel</literal>. There is a variant
 <literal>UMLModelElementListLinkModel</literal> which adds a link
 option to the pop-up menu, allowing connection to existing model
 elements (used for the Extension Points field for
@@ -211,7 +214,9 @@ A string naming an NSUML event that should force a refresh of the list
 model. A null value will cause all events to trigger a refresh. The
 best way to identify the event you want to use is to look at the NSUML
 source for the container object (<literal>MUseCaseImpl</literal> in
-our example) for calls to <literal>fireXXX()</literal>. The first
+our example) for calls to 
+<literal>fire<replaceable>XXX</replaceable>()</literal>. 
+The first
 argument is the name of the event (in our case
 <literal>extend</literal>). There is no definitive list, but from the
 NSUML source, these are all the names of events that are used:
@@ -529,7 +534,7 @@ In this routine you may create a new NSUML entity.
 There seem to be three ways to do this, in order of preference 1) use
 a utility from the <literal>MMUtil</literal> class, 2) use the NSUML
 Factory class to create what you want 3) use new on a
-<literal>MXXXImpl</literal> class.
+<literal>M<replaceable>XXX</replaceable>Impl</literal> class.
 Whilst 1) is best, most of the <literal>MMUtil</literal> routines are
 not yet general enough.
 </para>
@@ -927,7 +932,7 @@ helpful to permit at least a vertical scrollbar where needed
 	    <para>
 Finally the inherited method <literal>addCaption()</literal> is used
 to add the label for the field and <literal>addField()</literal> to
-add the associated scrollpane.
+add the associated scroll pane.
 </para>
 
 	    <para>
@@ -945,7 +950,7 @@ non-zero value.
 	</sect3>
 
 	<sect3>
-	  <title>Adding Property Tab Toolbar Buttons</title>
+	  <title>Adding Property Tab Tool-bar Buttons</title>
 
 	    <para>
 These are added by creating new instances of
@@ -1049,8 +1054,8 @@ PropPanelExtend.
 
 	    <para>
 The model behind the drop down is created by using
-<literal>UMLCombBoxModel</literal>:
-<literal>UMLCombBoxModel(container, predicate, event, getter, setter,
+<literal>UMLComboBoxModel</literal>:
+<literal>UMLComboBoxModel(container, predicate, event, getter, setter,
 allowVoid, baseClass, useModel)</literal>.
 </para>
 
@@ -1061,12 +1066,12 @@ PropPanel that, given a model element, determines if it should be in
 the drop down, the event is the NSUML <literal>MElementEvent</literal>
 name we are looking for (see earlier for the list),
 <literal>getter</literal> is the name of a public method in the
-PropPanel that yields the current entry in the comboBox (of type
+PropPanel that yields the current entry in the combo Box (of type
 <literal>baseClass</literal>), <literal>setter</literal> (with a
 single argument of type <literal>baseClass</literal>) sets that entry,
 <literal>allowVoid</literal> if <literal>true</literal> will allow an
 empty entry for the box, <literal>baseClass</literal> is the NSUML
-metaclass from which all entries must descend,
+meta-class from which all entries must descend,
 <literal>useModel</literal> is <literal>true</literal> to consider all
 the elements in the standard profile model for inclusion (so the Java
 types, standard stereotypes etc.).
@@ -1116,7 +1121,7 @@ Furthermore it is a <classname>UMLUserInterfaceComponent</classname>.
 Since it is an <classname>UMLUserInterfaceComponent</classname>
 it must implement <methodname>targetChanged</methodname> and
 <methodname>targetReasserted</methodname>.
-<methodname>TargetChanged</methodname> is called everytime the 
+<methodname>TargetChanged</methodname> is called every time the 
 <classname>UMLTextField</classname> is selected. 
 <methodname>targetReasserted</methodname> is of no interest for 
 <classname>UMLTextField</classname>.
@@ -1155,7 +1160,7 @@ to <classname>UMLChangeDispatch</classname>.
 these events to all containers implementing
 <interfacename>UMLUserInterfaceComponents</interfacename>
 interested in this event, including <classname>UMLTextField</classname>.
-It will also dispatch the event to all childs of an interested container
+It will also dispatch the event to all children of an interested container
 implementing
 <interfacename>UMLUserInterfaceComponent</interfacename>.
 By this it is only necessary to register a 
@@ -1170,7 +1175,7 @@ knows several methods of which only one is of interest to
 	      <listitem>
 		<para>propertySet</para>
 		<para>
-Called everytime a property in a 
+Called every time a property in a 
 <classname>MModelElement</classname> is set. 
 This method calls 
 <methodname>update</methodname> too if the 
@@ -1194,7 +1199,7 @@ The methods <methodname>insertUpdate</methodname>
 and <methodname>removeUpdate</methodname> are respectively called when a
 character is added to the document 
 <classname>UMLTextField</classname> contains or removed. 
-Since both methods are called when there is true userinput 
+Since both methods are called when there is true user input 
 and when the contents of the document are changed programmatically,
 the methods distinguish between them.
 <methodname>InsertUpdate</methodname> and 
@@ -1203,22 +1208,22 @@ are both handled via the protected method
 <methodname>handleEvent</methodname>.
 <methodname>HandleEvent</methodname> updates the property in 
 <classname>UMLTextProperty</classname> if it is really changed.
-If the update comes via userinput, it is checked if it is valid input. 
+If the update comes via user input, it is checked if it is valid input. 
 If it is not, a <classname>JOptionPane</classname> is shown with '
-a warning and the change is not commited into the model.
-If it is not via userinput, the input is not checked and the
+a warning and the change is not committed into the model.
+If it is not via user input, the input is not checked and the
 property is set. If the property is set, the update method is called.
 </para>
 
 	  <para>
 The implementation of <interfacename>FocusListener</interfacename>
-makes sure that the checking of userinput only happens when focus is lost.
+makes sure that the checking of user input only happens when focus is lost.
 Otherwise, it would not be possible to enter 'intermediate' values 
 that are not legal. 
 For instance, say the value class is not legal. 
 Without the implementation of <interfacename>FocusListener</interfacename>,
-it would not be possible to enter classdiagram since
-handleEvent would popup a warning messagebox.
+it would not be possible to enter class diagram since
+handleEvent would pop-up a warning message box.
 </para>
 
 	  <para>

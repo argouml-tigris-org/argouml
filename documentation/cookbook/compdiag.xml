@@ -11,7 +11,7 @@
       <para>
 Purpose - to generate a graphical view of the diagrams in the model with
 tools.
-The contents of the diagrams and model is modifyable.
+The contents of the diagrams and model is modifiable.
 TODO: Notation!
 </para>
       <para>
@@ -27,14 +27,14 @@ The Diagrams are depending on the Model and the GUI framework.
       <sect2>
 	<title>Multi editor pane</title>
 	<para>
-The multieditorpane is the pane with the diagram editor in it.
+The multi editor pane is the pane with the diagram editor in it.
 Normally it is placed in the upper right corner of the application.
 One of the feature requests is to make the pane dockable so maybe 
 it won't be there in the future.
 </para>
 	<para>
-The multieditorpane consists of tabs that hold editors as you can see
-in the classdiagram.
+The multi editor pane consists of tabs that hold editors as you can see
+in the class diagram.
         <mediaobject>
 	  <imageobject>
 	    <imagedata fileref="images/cookbook/multieditorpane.gif" 
@@ -44,23 +44,28 @@ in the classdiagram.
 </para>
 	<para>
 At the moment there is only one editor tab in place.
-This is the TabDiagram that shows an UMLDiagram, the target.
+This is the <classname>TabDiagram</classname> that shows an UMLDiagram, 
+the target.
 </para>
 	<para>
-The TabDiagram is spawnable.
+The <classname>TabDiagram</classname> is spawn-able.
 This means that the user can double click the tab and the diagram will
 spawn as a separate window.
 </para>
 	<para>
-The target of the MultiEditorPane is set via the setTarget method 
+The target of the <classname>MultiEditorPane</classname> is set via the 
+<methodname>setTarget</methodname> method 
 of the pane.
-This method is called by the setTarget method of the ProjectBrowser.
-The pane's setTarget method will call each setTarget method of each
-tab that is an instance of TabModelTarget.
-Besides setting the target of the tabs, the setTarget method also
-calls MultiEditorPane.select(Object o).
+This method is called by the <methodname>setTarget</methodname> method 
+of the <classname>ProjectBrowser</classname>.
+The pane's <methodname>setTarget</methodname> method 
+will call each <methodname>setTarget</methodname> method of 
+each tab that is an instance of <classname>TabModelTarget</classname>.
+Besides setting the target of the tabs, 
+the <methodname>setTarget</methodname> method also
+calls <classname>MultiEditorPane</classname>.select(Object o).
 This selects the new target on a tab. This probably belongs in 
-the setTarget method of the individual tabs and diagrams but 
+the <methodname>setTarget</methodname> method of the individual tabs and diagrams but 
 that's how it's implemented at the moment.
 </para>
 	<sect3>
@@ -68,9 +73,10 @@ that's how it's implemented at the moment.
 	  <para>
 <itemizedlist>
 	      <listitem>
-		<para>...add a new tab to the MultiEditorPane?</para>
+		<para>...add a new tab to the <classname>MultiEditorPane</classname>?</para>
 		<para>
-Create a new class that's a child of JPanel and put the following 
+Create a new class that's a child of <classname>JPanel</classname> 
+and put the following 
 line in argo.ini:
 <programlisting>
 multi:	<replaceable>fully classified name of new tab class</replaceable>
@@ -100,7 +106,7 @@ diagram and add them to the graph model and renderer.
 	  <listitem>
 	    <para>
 Create a new property panel class that will be displayed in
-the property tab windown on the details pane.
+the property tab window on the details pane.
 This is described in <xref linkend="propertypanels"></xref>.
 </para>
 	  </listitem>
@@ -109,7 +115,7 @@ This is described in <xref linkend="propertypanels"></xref>.
 	<para>
 Throughout we shall use the example of adding the UML Extend
 relationship to a use case diagram. This allows two Use Cases to be
-joined by a dotted arrow labelled
+joined by a dotted arrow labeled
 <literal>&laquo;extend&raquo;</literal> to show that one extends the
 behavior of the other.
 </para>
@@ -128,27 +134,28 @@ with looking at the code.
 	<title>How to add a new Fig</title>
 
 	  <para>
-The new item must be added to the toolbar. Both the graph model and
+The new item must be added to the tool-bar. Both the graph model and
 diagram renderer for the diagram will need modifying for any new fig
 object.
 </para>
 
 	<sect3>
-	  <title>Adding to the toolbar</title>
+	  <title>Adding to the tool-bar</title>
 
 	    <para>
 Find the diagram object in
-<literal>uml/diagram/XXXX/ui/UMLYYYYDiagram.java</literal>, where
-<literal>XXXX</literal> is the diagram type (lower case) and
-<literal>YYYY</literal> the diagram type (bumpy caps). For example
-<literal>uml/diagram/use_case/ui/UMLUseCaseDiagram.java</literal>. 
+<filename>uml/diagram/<replaceable>XXXX</replaceable>/ui/UML<replaceable>YYYY</replaceable>Diagram.java</filename>, 
+where
+<replaceable>XXXX</replaceable> is the diagram type (lower case) and
+<replaceable>YYYY</replaceable> the diagram type (bumpy caps). For example
+<filename>uml/diagram/use_case/ui/UMLUseCaseDiagram.java</filename>. 
 This will be a subclass of UMLDiagram (in
-<literal>uml/diagram/ui/UMLDiagram.java</literal>).
+<filename>uml/diagram/ui/UMLDiagram.java</filename>).
 </para>
 
 	    <para>
-Each toolbar action is declared as a protected static field of class
-<literal>Action</literal>, initiated as a 
+Each tool-bar action is declared as a protected static field of class
+<classname>Action</classname>, initiated as a 
 <literal>new CmdCreateNode</literal> (for nodal UML elements) or a
 <literal>new CmdSetMode</literal> (for behavior, or creation of line
 UML elements). These classes are part of the GEF library.
@@ -186,23 +193,23 @@ protected static Action _actionAssoc =
 The first argument is a GEF class that defines the type of behavior
 wanted (in this case creating a poly-edge). The second and third
 arguments are a named parameter used by
-<literal>ModeCreatePolyEdge</literal> ("edgeClass") and its value
+<classname>ModeCreatePolyEdge</classname> ("edgeClass") and its value
 (<literal>MAssociationImpl.class</literal>). The final argument is a
 tooltip.
 </para>
 
 	    <para>
-The toolbar is actually created by defining a method,
-<literal>initToolBar()</literal> which adds the tools in turn to the
-toolbar (a protected member named <literal>_toolBar</literal>).
+The tool-bar is actually created by defining a method,
+<methodname>initToolBar()</methodname> which adds the tools in turn to the
+tool-bar (a protected member named <literal>_toolBar</literal>).
 </para>
 
 	    <para>
 The default constructor for the diagram is declared private, since it
-must not be called directly. The desired constructor takes a namespace
+must not be called directly. The desired constructor takes a name-space
 as an argument, and sets up a graph model
-(<literal>UseCaseDiagramGraphModel</literal>), layer perspective and
-renderer (<literal>UseCaseDigramRenderer</literal>) for nodes and
+(<classname>UseCaseDiagramGraphModel</classname>), layer perspective and
+renderer (<classname>UseCaseDigramRenderer</classname>) for nodes and
 edges.
 </para>
 	</sect3>
@@ -214,18 +221,19 @@ edges.
 The graph model is the bridge between the UML meta-model
 representation of the design and the graph model of GEF. They are
 found in the parent directory of the corresponding diagram class, and
-have the general name <literal>YYYYDiagramGraphModel.java</literal>,
-where <literal>YYYY</literal> is the diagram name in bumpy caps. For
+have the general name 
+<filename><replaceable>YYYY</replaceable>DiagramGraphModel.java</filename>,
+where <replaceable>YYYY</replaceable> is the diagram name in bumpy caps. For
 example the use case diagram graph model is in
-<literal>uml/diagram/use_case/UseCaseDiagramGraphModel.java</literal>
+<filename>uml/diagram/use_case/UseCaseDiagramGraphModel.java</filename>
 </para>
 
 	    <para>
 The graph model is defined as a child of the GEF class
-<literal>MutableGraphSupport</literal>, and should implement
-<literal>MutableGraphModel</literal> (GEF),
-<literal>VetoableChangeListener</literal> (Java) and
-<literal>MElementListener</literal> (NSUML).
+<classname>MutableGraphSupport</classname>, and should implement
+<classname>MutableGraphModel</classname> (GEF),
+<classname>VetoableChangeListener</classname> (Java) and
+<classname>MElementListener</classname> (NSUML).
 </para>
 	</sect3>
 
@@ -236,23 +244,23 @@ The graph model is defined as a child of the GEF class
 The renderer is responsible for creating graphic figs as required on
 the diagram. It is found in the same directory of the corresponding
 diagram class, and has the general name
-<literal>YYYYDiagramRenderer.java</literal>, where
-<literal>YYYY</literal> is the diagram name in bumpy caps. For example
+<filename><replaceable>YYYY</replaceable>DiagramRenderer.java</filename>, where
+<replaceable>YYYY</replaceable> is the diagram name in bumpy caps. For example
 the use case diagram graph model is in
-<literal>uml/diagram/use_case/ui/UseCaseDiagramRenderer.java</literal>
+<filename>uml/diagram/use_case/ui/UseCaseDiagramRenderer.java</filename>
 </para>
 
 	    <para>
-This provides two routines, <literal>getFigNodeFor()</literal>, which
+This provides two routines, <methodname>getFigNodeFor()</methodname>, which
 provides a fig object to represent a given NSUML node object and
-<literal>getFigEdgeFor()</literal>, which provides a fig object to
+<methodname>getFigEdgeFor()</methodname>, which provides a fig object to
 represent a given NSUML edge object.
 </para>
 
 	    <para>
-In our example, we must extend <literal>getFigEdgeFor()</literal> so
+In our example, we must extend <methodname>getFigEdgeFor()</methodname> so
 it can handle NSUML MExtend objects (producing a
-<literal>FigExtend</literal>).
+<classname>FigExtend</classname>).
 </para>
 	</sect3>
 
@@ -280,8 +288,8 @@ advice that the model has changed.
 	  <title>Creating a new Fig (explanation 2)</title>
 
 	  <para>
-Assuming you have your modelelement already defined in the model
-and your PropPanel for that modelelement
+Assuming you have your model element already defined in the model
+and your PropPanel for that model element
 you should make the Fig class. 
 
             <orderedlist>
@@ -293,7 +301,7 @@ extend from <classname>FigNodeModelElement</classname>.
 For edges, that are lines like <classname>FigAssociation</classname>, 
 extend from <classname>FigEdgeModelElement</classname>.
 The name of the Fig has to start with (yes indeed) Fig. 
-The rest of the name should be equal to the modelelement name.
+The rest of the name should be equal to the model element name.
 </para>
               </listitem>
               <listitem>
@@ -321,7 +329,7 @@ See <methodname>setOwner</methodname> of
               </listitem>
               <listitem>
                 <para>
-Create an overriden method 
+Create an overridden method 
 <methodname>protected void modelChanged()</methodname>.
 This method must be called (and is if you implement the fig correctly)
 if the owner changes.
@@ -367,12 +375,12 @@ If you are building a node, adapt
                 <para>
 Adapt the method <methodname>getFigEdgeFor</methodname> on
 implementors of <classname>GraphEdgeRenderer</classname> if
-you are implenting an edge so it will return the correct 
+you are implementing an edge so it will return the correct 
 <classname>FigEdge</classname> for your object. 
 If you are implementing a node, adapt the method 
 <methodname>getFigNodeFor</methodname> on
 implementors of <classname>GraphNodeRenderer</classname>.
-In argouml classes like <classname>ClassDiagramRenderer</classname>
+In ArgoUML classes like <classname>ClassDiagramRenderer</classname>
 implement these interfaces.
 </para>
               </listitem>
@@ -380,25 +388,25 @@ implement these interfaces.
                 <para>
 Add an image file for the buttons to the resource directory
 <filename class="directory">org/argouml/Images</filename>.
-This image file must be of Gif format and have a
+This image file must be of GIF format and have a
 drawing of the button image to be used in itself.
 This image is also used on the PropPanel.
 The name of the Image file should be 
-<filename><replaceable>modelelement</replaceable>.gif</filename>
+<filename><replaceable>model element</replaceable>.gif</filename>
 </para>
               </listitem>
               <listitem>
                 <para>
-Add buttons to the action you created on those places in the gui that
+Add buttons to the action you created on those places in the GUI that
 have a need for it.
 This should be at least the button bar in each diagram
-where you can draw your modelelement.
-Probably the parent of your modelelement (e.g. class in case of operation) 
+where you can draw your model element.
+Probably the parent of your model element (e.g. class in case of operation) 
 will want a button too, so add it to the PropPanel of the parent. 
 In case of the diagrams, add it in 
 <filename>UML<replaceable>diagram</replaceable>.java</filename>, 
 so in <classname>UMLClassDiagram</classname> if it belongs there. 
-In case of the PropPanels, most of them don't use actions,
+In case of the <classname>PropPanel</classname>s, most of them don't use actions,
 they implement them directly as methods in the PropPanel themselves.
 Please don't do that but use an action so we have one place of definition.
 </para>

@@ -26,16 +26,16 @@ to be replaced by interfaces without NSUML object and
 eventually removed.
 </para>
       <para>
-ArgoUML uses several factories and helperclasses to manipulate the NSUML
+ArgoUML uses several factories and helper classes to manipulate the NSUML
 model. 
 The NSUML model itself does not define enough 'business' logic
-to be directly used and the factories and helperclasses provide a
+to be directly used and the factories and helper classes provide a
 centralized place for accessing this 'business' logic.
 Per section of chapter 2 of the UML 1.3 specification there is one factory
 and one helper. They are placed in their own packages. The package name
 convention is:
-<classname>org.argouml.model.uml.SECTIONNAME</classname>
-where sectionname is one of the following:
+<classname>org.argouml.model.uml.<replaceable>SECTIONNAME</replaceable></classname>
+where <replaceable>SECTIONNAME</replaceable> is one of the following:
 <itemizedlist>
 	  <listitem>
 	    <para>foundation</para>
@@ -75,9 +75,9 @@ where sectionname is one of the following:
       <para>
 Each package has at least a helper and a factory in it.
 The factories contain all methods that deal with
-creating and building modelelements.
+creating and building model elements.
 The helpers contain all utility methods needed to manipulate
-the modelelements.
+the model elements.
 </para>
       <para>
 Both helpers and factories are singletons.
@@ -88,11 +88,11 @@ and <methodname>getHelper</methodname> for the helper.
       <sect2>
 	<title>Factories</title>
 	<para>
-The factories contain at least for each modelelement a create method.
+The factories contain at least for each model element a create method.
 Example: <methodname>createClass</methodname>
 resides in <classname>CoreFactory</classname> in the package
 <classname>org.argouml.model.uml.foundation.core</classname>.
-Besides that, there are several buildmethods to build classes.
+Besides that, there are several build methods to build classes.
 The build methods have a signature like
 <methodsynopsis>
 	    <modifier>public</modifier>
@@ -104,21 +104,21 @@ The build methods have a signature like
 	  </methodsynopsis>.
 </para>
 	<para>
-Each build method verifies the wellformednessrules
+Each build method verifies the wellformedness rules
 as defined in the UML spec 1.3.
 The reason for this is that NS-UML does not enforce
-the wellformedness rules even though non-wellformed UML can lead to
-non-wellformed XMI which leads to saving/loading issues and
-all kinds of illegal states of argouml.
+the wellformedness rules even though non-well-formed UML can lead to
+non-well-formed XMI which leads to saving/loading issues and
+all kinds of illegal states of ArgoUML.
 </para>
 	<para>
 If you want to create an element you shall use the create methods
 in the factories.
 You are strongly advised to use a build method or, if there is
-none that suits your needs, to build one thereby reusing the allready
+none that suits your needs, to build one thereby reusing the already
 existing build methods and utility methods in the helpers.
-One reason for this is that the eventlisteners for
-the newly created modelelement are setup correctly.
+One reason for this is that the event listeners for
+the newly created model element are setup correctly.
 </para>
         <para>
 TODO: Am I allowed to call the factories from any thread?
@@ -127,15 +127,15 @@ TODO: Am I allowed to call the factories from any thread?
       <sect2>
 	<title>Helpers</title>
 	<para>
-The helpers contain all utility methods for manipulating modelelements.
-For example, they contain methods to get all modelelements
+The helpers contain all utility methods for manipulating model elements.
+For example, they contain methods to get all model elements
 of a certain class out of the model
 (see <methodname>getAllModelelementsOfKind</methodname> in 
 <classname>ModelmanagementHelper</classname>).
 </para>
 	<para>
 To find a utility method you need to know where it is.
-As a rule of thumb, a utility method for some modelelement 
+As a rule of thumb, a utility method for some model element 
 is defined in the helper that corresponds with the section
 in the UML specification.
 For example, all utility methods for manipulating classes 
@@ -143,7 +143,7 @@ are defined in <classname>CoreHelper</classname>.
 </para>
 	<para>
 There are a few exceptions to this rule, mainly if 
-the utility method deals with two modelelements 
+the utility method deals with two model elements 
 that correspond to different sections in the UML
 specification.
 Then you have to look in both corresponding helpers and you
@@ -166,13 +166,13 @@ This interface consists of three parts:
 <orderedlist>
 	      <listitem>
 		<para>
-The model factories, responsible for creation and deletion of modelelements
+The model factories, responsible for creation and deletion of model elements
 </para>
 	      </listitem>
 	      <listitem>
 		<para>
 The model helpers, responsible for utility functions to manipulate the
-modelelements and
+model elements and
 </para>
 	      </listitem>
 	      <listitem>
@@ -191,18 +191,18 @@ Therefore we won't discuss them here again.
 	  <para>
 The model event pump is the gateway between the model elements and the
 rest of ArgoUML.
-Events fired by the modelelements are catched by the pump and then
+Events fired by the model elements are caught by the pump and then
 'pumped' to those listeners interested in them.
 The main advantage of this model is that the registration of listeners
 is concentrated in one place (see picture *).
 This makes it easier to change the interface between the model and the
-rest of argouml.
+rest of ArgoUML.
 </para>
 	  <para>
 Besides this, there are some improvements to the performance of the
-pump made in comparision to the situation without the pump.
+pump made in comparison to the situation without the pump.
 The main improvement is that you can register for just one type of
-event and not for all events fired by some modelelement.
+event and not for all events fired by some model element.
 </para>
 	  <para>
 <mediaobject>
@@ -234,7 +234,7 @@ You might wonder: how does this all work?
 Well, very simple in fact.
 </para>
 	  <para>
-A modelevent (from now on a MEvent) has a name that uniquely
+A model event (from now on a MEvent) has a name that uniquely
 identifies the type of the event.
 
 In most cases the name of the MEvent is equal to the name of the
@@ -261,8 +261,8 @@ and <xref linkend="pump-remove-listener-for-event"/>
 	  <para>
 Besides the case that you are interested in only one type of event (or
 a set of types), there are occasions that you are interested in all
-events fired by a certain modelelement or even for all events fired by
-a certain type of modelelement.
+events fired by a certain model element or even for all events fired by
+a certain type of model element.
 
 For these cases, the pump has functionality too.
 
@@ -310,7 +310,7 @@ Hey, I saw some other methods for adding and removing?
 Yes there are some other method for adding and removing. 
 
 You can add a listener that is interested in ALL events fired by a
-certain modelelements.
+certain model elements.
 
 This works with the method:
 <programlisting>
@@ -320,7 +320,7 @@ As you can see no names of events you can register for here.
 </para>
 	    <para>
 Furthermore, you can add a listener that is interested in several
-types of events but coming from 1 modelelement.
+types of events but coming from 1 model element.
 
 This is a convenience method for not having to call the methods
 explained in section
@@ -333,12 +333,12 @@ addModelEventListener(MElementListener listener, MBase modelelement, String[] ev
 </programlisting>
 </para>
 	    <para>
-You can pass the method an array of strings with eventnames in which
+You can pass the method an array of strings with event names in which
 your listener is interested.
 </para>
 	    <para>
-Thirdly there is a very powerfull method to register your listener to
-ALL events fired by a ALL modelelements of a certain class.
+Thirdly there is a very powerful method to register your listener to
+ALL events fired by a ALL model elements of a certain class.
 
 You can understand that using this method can have severe performance
 impacts.
@@ -349,8 +349,8 @@ The method is:
 addClassModelEventListener(MElementListener listener, Class modelClass)
 </programlisting>
 There are also methods that allow you to register only for one type of
-event fired by all modelelements of a certain class and to register
-for a set of types of events fired by all modelements of a certain
+event fired by all model elements of a certain class and to register
+for a set of types of events fired by all mod elements of a certain
 class.
 </para>
 	    <para>
@@ -364,7 +364,7 @@ This works with methods starting with remove instead of add.
 	  <orderedlist>
 	    <listitem>
 	      <para>
-Don't forget to remove your listener from the eventpump if it's not
+Don't forget to remove your listener from the event pump if it's not
 interested in some event any more.
 </para>
 	      <para>
@@ -418,11 +418,11 @@ itself is going to change.
 Not the API but the implementation! At the moment the event pump does
 not use the AWT Event Thread for dispatching events.
 
-This can make argouml slow (in the perception of the user). 
+This can make ArgoUML slow (in the perception of the user). 
 </para>
 	    <para>
 Besides that, the current implementation does not use the standard
-data structure that Swing uses for event registriation
+data structure that Swing uses for event registration
 (i.e. <classname>javax.swing.EventListenerList</classname>).
 
 We are in the process of researching if it is a good thing to use this
@@ -443,7 +443,7 @@ Working directly against NS-UML or JMI/MDR will make changes in the
 NS-UML or JMI/MDR affect large portions of the code.
 For this reason we have in the Model subsystem
 a set of classes that lay between the NS-UML and JMI/MDR that
-hides the apis of NS-UML or JMI/MDR between something that will not
+hides the APIs of NS-UML or JMI/MDR between something that will not
 change while moving between them.
 This is the Facade classes of the Model subsystem i.e. the ModelFacade.
 There are also other classes that hides the internals of NS-UML like the
@@ -588,12 +588,12 @@ It is provided for use of others.
 	  <listitem>
 	    <para>...add a new model element?</para>
 	    <para>
-Make a parameterless build method for your NSUML modelelement in one of
+Make a parameterless build method for your NSUML model element in one of
 the UML Factories (for instance <classname>CoreFactory</classname>).
 Stick to the UML 1.3 spec to choose the correct Factory.
 The package structure under <classname>org.argouml.model.uml</classname>
 follows the chapters in the UML spec so get it and read it!
-In the buildmethod, create a new modelelement using the appropriate
+In the build method, create a new model element using the appropriate
 create method in the factory.
 The build method e.g. is a wrapper around the create method.
 For all elements there are already create methods (thanks Thierry).
@@ -601,18 +601,20 @@ For some elements there are already build methods.
 If you need one of these elements, use the build method before you
 barge into building new ones.
 Initialize all things you need in the build method as far as they
-don't need other modelelements.
+don't need other model elements.
 In the UML spec you can read which elements you need to initialize.
 See for example <methodname>buildAttribute()</methodname> for an example.
 </para>
 	    <para>
-If you need to attach other already existing modelelements to your
-modelelement make a 
-<methodname>buildXXXX(MModelelement toattach1, ...)</methodname> 
+If you need to attach other already existing model elements to your
+model element make a 
+<methodname>build<replaceable>XXXX</replaceable>(MModelelement 
+            toattach1, ...)
+</methodname> 
 method in the factory where you made the build method. 
 Don't ever call the create methods directly. 
 If we use the build methods we will always have initialized
-modelelements which will make a difference concerning save/load issues
+model elements which will make a difference concerning save/load issues
 for example.
 </para>
             <para>

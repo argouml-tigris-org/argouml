@@ -32,7 +32,7 @@ are about to commit something please do:
 <orderedlist>
 	  <listitem>
 	    <para>
-Compile argouml 
+Compile ArgoUML 
 (<command>build run</command> or <command>build package</command>).
 </para>
 	    <para>
@@ -57,7 +57,7 @@ attributes make a clean compile
 </para>
 	    <para>
 The build mechanism does not yet have reliable 
-dependancy checker enabled so this is the best way to make sure.
+dependency checker enabled so this is the best way to make sure.
 </para>
 	  </listitem>
 
@@ -69,7 +69,7 @@ If your changes include adding abstract operations make a clean compile
 </para>
 	    <para>
 The build mechanism does not yet have reliable 
-dependancy checker enabled so this is the best way to make sure.
+dependency checker enabled so this is the best way to make sure.
 </para>
 	  </listitem>
 
@@ -90,7 +90,7 @@ If in doubt, run all JUnit test cases.
 	    <para>
 Do a <command>cvs update</command> in src_new to make sure that 
 you do not forget to commit any file and to make sure that no one 
-else has commited anything in the mean time.
+else has committed anything in the mean time.
 </para>
 	    <para>
 Remember that if you do not commit all the files from src_new
@@ -111,7 +111,7 @@ please compile again.
 Commit all files that are included in a change at the same time.
 </para>
 	    <para>
-This reduces the chance of anyone getting an inconsistant set of files
+This reduces the chance of anyone getting an inconsistent set of files
 by updating in the middle of your commit.
 </para>
 	  </listitem>
@@ -127,7 +127,7 @@ Remember that the repository is also a backup copy of your work.
 If your change is so big and involves so many files that you would
 like to commit it for backup reasons but it doesn't compile or
 doesn't work or for some other reason should not confuse the main 
-branch in cvs, create a branch to work in.
+branch in CVS, create a branch to work in.
 Then when your work is complete, you merge the branch into 
 the main branch.
 </para>
@@ -189,7 +189,7 @@ propertypanel, cppcodegeneration
 		  <para>
 <replaceable>owner</replaceable> is a self explaining code for the
 owner of the branch, 
-e.g. tlach (Thierry Lach) or mklink (Markus Klink).
+e.g. tlach (Thierry Lach) or mkl (Markus Klink).
 </para>
 		</listitem>
               </itemizedlist>
@@ -264,11 +264,13 @@ interesting.
 ...create a branch for my work on <replaceable>xxxyyy</replaceable> 
 and start work on that branch?</para>
 	      <para>
-This assumes that you have a checked out copy of argouml
+This assumes that you have a checked out copy of ArgoUML
 	      </para>
 	      <orderedlist>
 		<listitem>
-		  <para>Change directory to the directory where argouml is checked out.</para>
+		  <para>
+Change directory to the directory where ArgoUML is checked out.
+</para>
 		</listitem>
 		<listitem>
 		  <para>
@@ -315,12 +317,12 @@ decided/received clearance to enter it in the main branch.
 	      <orderedlist>
 		<listitem>
 		  <para>
-Change directory to the directory where argouml is checked out.
+Change directory to the directory where ArgoUML is checked out.
 		  </para>
 		  <para>
 If you are just working on one feature at a time this is the place where you
 have a checked out copy on the branch in question. If not, this could be any
-checked out copy of the source that does not contain any uncommited changes.
+checked out copy of the source that does not contain any uncommitted changes.
 		  </para>
 		</listitem>
 		<listitem>
@@ -380,19 +382,21 @@ There are two alternatives:
 		<itemizedlist>
 		  <listitem>
 		    <para>
-Check out argouml or part of it on that branch:
+Check out ArgoUML or part of it on that branch:
 <command>cvs co -r <replaceable>work_xxxyyy_hisname</replaceable> argouml</command>
 		    </para>
 		  </listitem>
 		  <listitem>
 		    <para>
-Update your copy of argouml to be on that branch:
+Update your copy of ArgoUML to be on that branch:
 <command>cvs update -r <replaceable>work_xxxyyy_hisname</replaceable></command>
 		    </para>
 		    <para>
-Make sure that your copy does not have any uncommited code or else your
-uncommited code will be present in your checked out copy on the branch.
-This could, on the other hand, be useful if you want to test if your uncommited
+Make sure that your copy does not have any uncommitted code or else your
+uncommitted code will be present in your checked out copy on the branch.
+This could, 
+on the other hand, 
+be useful if you want to test if your uncommitted
 code works also with the additions on that branch.
 		    </para>
 		  </listitem>
@@ -430,7 +434,7 @@ responsibility to convert the conceptual new line to the correct new
 line character on your system.
 <note>
 	      <para>
-This is only so for normal files (not marked with -kb in cvs).
+This is only so for normal files (not marked with -kb in CVS).
 </para>
 	    </note>
 </para>
@@ -464,7 +468,7 @@ in the file.
 This is a problem because the subsequent commit will also touch every
 line in the file making that file unmergeable.
 This means that every developer that had it modified in a branch or in
-a checked out copy will have no help from cvs when doing his merging.
+a checked out copy will have no help from CVS when doing his merging.
 </para>
 	      <para>
 Remember that you never know what other developers are working with.
@@ -476,10 +480,10 @@ each check in so that your editor has not done this for you.
 </para>
 	    </listitem>
 	    <listitem>
-	      <para>When cvs clients and file systems are not in sync</para>
+	      <para>When CVS clients and file systems are not in sync</para>
 	      <para>
 This could result in one of several things. 
-Either each line gets an extra empty line when commited,
+Either each line gets an extra empty line when committed,
 or the whole file turns out to be on the same line.
 </para>
 	      <para>
@@ -490,7 +494,7 @@ This is the case on several files in the repository at the moment
 These cases should be fixed because the files are no longer
 readable.
 For the first case, removing every other line (the empty ones)
-can in some cases be done without cvs having problems with
+can in some cases be done without CVS having problems with
 merging later on.
 For the second case, with a single long line, this will be very
 problematic so even though it might cause problems for other
@@ -503,17 +507,17 @@ When this is fixed, let the fix be the only thing done in that commit.
 To avoid this in the future, always do a 
 <command>cvs diff</command> before doing your
 change to make sure that only the lines that you have actually
-modified will be changed by cvs and not the whole file.
+modified will be changed by CVS and not the whole file.
 </para>
 	    </listitem>
 	  </orderedlist>
 	  <para>
-Files that are binary that shall be stored in cvs shall be marked
+Files that are binary that shall be stored in CVS shall be marked
 as binary.
 They are marked with the admin flag -kb.
 This means that the line ending conversion mechanism will not be applied
 on those files and they will be exactly the same on all systems.
-This is good for jars, gifs, and other such files.
+This is good for jars, GIFs, and other such files.
 </para>
 	</listitem>
       </itemizedlist>
@@ -598,10 +602,10 @@ the documentation from the XML-source to HTML and PDF.
 	<para>
 This directory contains the jar files of products used
 by the ArgoUML
-(such as log4j, nsuml).
+(such as log4j, NSUML).
 </para>
 	<para>
-These are distributed with argouml and have licenses that allow this.
+These are distributed with ArgoUML and have licenses that allow this.
 For clarity the README files and licenses and other distribution
 details of each used jar will also be stored in this directory.
 (Quick summary: BSD License, Apache License, LGPL are OK, GPL is not.)
@@ -612,7 +616,7 @@ to appear when starting ArgoUML and in the About box.
 Take care also to make the versions of these libraries explicit,
 so as to allow people building from sources to figure out
 exact dependencies. Easiest way is to rename the files to
-include versioning informations, the same way as shared
+include version informations, the same way as shared
 libraries in Unix world: foo-x.y.z.jar, bar-x.y.z.jar,
 etc...
 </para>
@@ -622,7 +626,7 @@ etc...
 	<para>Contains source level modules of ArgoUML.</para>
 	<para>
 Source level modules are modules that can be compiled and deployed
-independantly (after) the rest of ArgoUML.
+independently (after) the rest of ArgoUML.
 Each module is located in its own subdirectory.
 This is the list as it looks now (March 2003).
 </para>
@@ -644,7 +648,7 @@ the directory <filename class="directory">tests</filename>.
 	  <listitem>
 	    <para><filename class="directory">menutest</filename></para>
 	    <para>
-Test module that tests the plugin interface for the menus.
+Test module that tests the plug-in interface for the menus.
 </para>
 	  </listitem>
 	  <listitem>
@@ -710,8 +714,8 @@ Tools also have the readme files, licenses and other distribution files
 stored in this directory in much the same way as the libraries in
 <filename class="directory">lib</filename>.
 However the requirement on the license is different.
-The tools are never distributed with argouml but merely used in the
-development of argouml so it is enough to have a license that does not
+The tools are never distributed with ArgoUML but merely used in the
+development of ArgoUML so it is enough to have a license that does not
 allow distribution.
 (Quick summary: BSD License, Apache license, LGPL, GPL, Freeware are OK.)
 </para>

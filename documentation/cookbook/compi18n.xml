@@ -31,7 +31,7 @@ The Internationalization is located in <classname>org.argouml.i18n</classname>
 in the class path.
 In the checked out copy of ArgoUML it is located partly in
 <filename>argouml/src_new/org/argouml/i18n</filename> 
-- functionality, and non-localized default language (US english), 
+- functionality, and non-localized default language (US English), 
 and partly in
 <filename>argouml/src/i18n/<replaceable>language</replaceable>/src/org/argouml</filename>
 - all files for a specific language.
@@ -48,7 +48,7 @@ Please read carefully.
 </para>
       <para>
 In ArgoUML internationalization (sometimes called i18n) is done using
-the propertyfiles.
+the property files.
 In some cases there are instead ListResourceBundle classes but they
 will be changed to property files as soon as the problems with the transition
 is overcome.
@@ -77,7 +77,7 @@ per language working with all gettext applications.
 There are also tools to help the translator do his job
 delivered with gettext that are the same for all the applications.
 In each of these language teams discussions are held that ensure a
-consistant use of words over all these applications.
+consistent use of words over all these applications.
 </para>
 	<para>
 It is for me (Linus Tolke, May 2002) unclear if and how such a
@@ -134,7 +134,7 @@ the fact that it has localized strings of its own but also
 because it handles parts of the localization.
 </para>
 	      <para>
-This means discussing with the teams developing the underlaying package
+This means discussing with the teams developing the underlying package
 as to how best to provide the localization for those parts. 
 Either by providing localization for that team to include in the
 package or by having ArgoUML overriding that package in that respect.
@@ -289,7 +289,7 @@ Translate all the texts in each of these files.
 </para>
 	      <para>
 This is a lot of extremely qualified work including searching well-known
-litterature on UML and Software Engineering in order to get the correct
+literature on UML and Software Engineering in order to get the correct
 terms for the domain.
 Discuss with other UML and Software Engineering professionals with the
 same native language to get it right.
@@ -400,7 +400,7 @@ with the changes and served by such a contact.
 If you have strings that are sentences where you have dynamic values
 like a file name, a class name, or some property to enter at a certain place,
 remember that all languages would not write it exactly like that.
-Use MessageFormat to build every such sentence!
+Use <classname>MessageFormat</classname> to build every such sentence!
 There is a convenience function in <classname>Translator</classname>
 called <methodname>messageFormat</methodname>.
 </para>
@@ -414,7 +414,7 @@ This will make it easier for the translation team to
 spot the modification.
 </para>
 	      <para>
-There eledgedly are tools in the java world to spot this kind of changes.
+There allegedly are tools in the java world to spot this kind of changes.
 Until we have the tools and processes in place to handle them
 it is better to rely on this simpler mechanism to guarantee correctness.
 </para>

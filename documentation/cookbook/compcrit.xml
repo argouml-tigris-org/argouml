@@ -35,7 +35,7 @@ This subsystem contains the following main class types:
 	  <para>
 Critics provide help to find artifacts in
 the model that do not obey simple design "rules" or
-"best practises".
+"best practices".
 </para>
 	</listitem>
 	<listitem>
@@ -73,7 +73,7 @@ found by the Critics.
 <listitem><para>org.argouml.cognitive.critics</para>
 	    <para>
 These are basic critics, which are very general in nature. For example
-ArgoUML keeps nagging when Modelelements overlap, which makes the
+ArgoUML keeps nagging when Model elements overlap, which makes the
 Diagram hard to read.
 </para>
 	    <para>
@@ -92,10 +92,16 @@ This package also contains Wizards used by these Critiques.
 </para>
 </listitem>
 <listitem><para>org.argouml.pattern.cognitive.critics</para>
-<para>These are critics related to patterns. Currently they deal only with the Singleton pattern</para>
+            <para>
+These are critics related to patterns. 
+Currently they deal only with the Singleton pattern
+</para>
 </listitem>
 <listitem><para>org.argouml.language.java.cognitive.critics</para>
-<para>These are critics which deal with java specific issues. Currently this is only a warning agains modelling multiple inheritance.</para>
+            <para>
+These are critics which deal with java specific issues. 
+Currently this is only a warning against modeling multiple inheritance.
+</para>
 </listitem>
 </itemizedlist>
 </para>
@@ -132,7 +138,7 @@ but it could go in one of the other
 <classname>cognitive.critics</classname> packages.
 </para>
 	      <para>
-Write a constructor, which takes no argouments and calls the following
+Write a constructor, which takes no arguments and calls the following
 methods of <classname>CrUML</classname>:
 </para>
 	      <itemizedlist>
@@ -165,14 +171,14 @@ in the to-do pane.
 		</listitem>
 		<listitem>
 		  <para>
-<command>addTrigger("<replaceable>UML MetaClass</replaceable>");</command>
-where <replaceable>UML MetaClass</replaceable> is a UML MetaClass,
+<command>addTrigger("<replaceable>UML Meta-Class</replaceable>");</command>
+where <replaceable>UML Meta-Class</replaceable> is a UML Meta-Class,
 with initial lower capital, e.g. "associationEnd".
 The intention is that critics should only trigger for elements (or
-children) of particular UML metaclasses.
-I (Jeremy Bennett february 2002) believe this code is not yet working
+children) of particular UML meta-classes.
+I (Jeremy Bennett February 2002) believe this code is not yet working
 so you can probably leave it out.
-You can have multiple calls to this method for different metaclasses.
+You can have multiple calls to this method for different meta-classes.
 </para>
 		</listitem>
 	      </itemizedlist>
@@ -317,7 +323,7 @@ Check that your particular critic is enabled in Browse Critics
 		<para>
 (IMPORTANT) Check that the design material is actually found in 
 <classname>org.argouml.uml.cognitive.critics.ChildGenUML</classname>.
-This method is incomplete and might not find all modelelements!
+This method is incomplete and might not find all model elements!
 </para>
 	      </listitem>
 	    </orderedlist>
