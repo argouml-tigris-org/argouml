@@ -1701,6 +1701,17 @@ public class ModelFacade {
             ((MAbstraction)a).addSupplier((MClassifier)cls);
         }
     }
+    
+    /**
+     * Adds a supplier dependency to some modelelement
+     * @param supplier the supplier 
+     * @param dependency the dependency
+     */
+    public static void addSupplierDependency(Object supplier, Object dependency) {
+        if (isAModelElement(supplier) && isADependency(dependency)) {
+            ((MModelElement)supplier).addSupplierDependency((MDependency)dependency);
+        }
+    }
 
     /**
      * Adds a client classifier to some abstraction.
@@ -1710,9 +1721,20 @@ public class ModelFacade {
     public static void addClient(Object a, Object cls) {
         if (a != null
             && cls != null
-            && a instanceof MAbstraction
-            && cls instanceof MClassifier) {
+            && ModelFacade.isAAbstraction(a)
+            && cls instanceof MClassifier) {                
             ((MAbstraction)a).addClient((MClassifier)cls);
+        }
+    }
+    
+    /**
+     * Adds a client dependency to some modelelement
+     * @param handle the modelelement
+     * @param dependency the dependency
+     */
+    public static void addClientDependency(Object handle, Object dependency) {
+        if (handle != null && dependency != null && isAModelElement(handle) && isADependency(dependency)) {
+            ((MModelElement)handle).addClientDependency((MDependency)dependency);
         }
     }
 

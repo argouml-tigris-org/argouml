@@ -131,7 +131,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	 *
 	 *  @return an initialized UML Abstraction instance.
 	 */
-	public MAbstraction createAbstraction() {
+	public Object createAbstraction() {
 		MAbstraction modelElement =
 			MFactory.getDefaultFactory().createAbstraction();
 		super.initialize(modelElement);
@@ -145,9 +145,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML Abstraction instance.
      */
     public Object buildAbstraction(String name) {
-        MAbstraction abstraction = MFactory.getDefaultFactory().createAbstraction();
+        Object abstraction = createAbstraction();
         super.initialize(abstraction);
-        abstraction.setName(name);
+        ModelFacade.setName(abstraction, name);
         return abstraction;
     }
 
@@ -1380,13 +1380,13 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	 * Java) and a client who implements the realization.
 	 * @param client
 	 * @param supplier
-	 * @return MAbstraction
+	 * @return Object the created abstraction
 	 */
-	public MAbstraction buildRealization(MModelElement client, MModelElement supplier) {
+	public Object buildRealization(MModelElement client, MModelElement supplier) {
             if (client == null || supplier == null || client.getNamespace() == null || supplier.getNamespace() == null) {
                 throw new IllegalArgumentException("In buildrealization faulty arguments.");
             }
-            MAbstraction realization = UmlFactory.getFactory().getCore().createAbstraction();
+            Object realization = UmlFactory.getFactory().getCore().createAbstraction();
             MNamespace nsc = client.getNamespace();
             MNamespace nss = supplier.getNamespace();
             MNamespace ns = null;
@@ -1396,9 +1396,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
                 ns = ProjectManager.getManager().getCurrentProject().getModel();
             }
             ExtensionMechanismsFactory.getFactory().buildStereotype(realization, "realize", ns);
-            client.addClientDependency(realization);
-            supplier.addSupplierDependency(realization);
-
+            ModelFacade.addClientDependency(client, realization);
+            ModelFacade.addSupplierDependency(supplier, realization);
+            ModelFacade.addClientDependency(client, realization);         
             return realization;
 	}
 
