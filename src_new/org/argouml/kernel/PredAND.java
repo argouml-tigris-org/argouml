@@ -33,6 +33,8 @@ import org.tigris.gef.util.*;
 /**
  * Predicate to provide logical <B>AND</B> between two other predicates.  
  * 
+ * This class belongs in org.argouml.util
+ *
  * @author Eugenio Alvarez
  *
  */

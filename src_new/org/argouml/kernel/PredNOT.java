@@ -34,6 +34,7 @@ import org.tigris.gef.util.*;
  * Predicate to provide logical <B>NOT</B>. The predicate returns 
  * true if its internal <code>Predicate</code> return false;    
  * 
+ * This class belongs in org.argouml.util
  * @author Eugenio Alvarez
  *
  */

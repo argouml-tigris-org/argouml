@@ -31,7 +31,12 @@ import org.argouml.cognitive.*;
 // TODO: how can this possibly be persistent?
 // TODO: provide accessors
 // TODO: define subclasses for: modification, criticism
-
+/**
+ * History is now managed by the TargetManager.
+ *
+ * @deprecated since 0.15.1, remove in 0.15.2,
+ *             Hreplaced by the TargetManager.
+ */
 public class HistoryItem {
 
     ////////////////////////////////////////////////////////////////
