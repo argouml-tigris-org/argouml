@@ -11,14 +11,24 @@ import java.util.*;
 
 public class ArgoFacade implements ModelFacade {
 
+    public MClassifier target;
+    
+    public ArgoFacade(Object target) {
+	if (target instanceof MClassifier)
+	    this.target = (MClassifier)target;
+    }
+
     public Any getClassifier(String name) {
       Project p = ProjectBrowser.TheInstance.getProject();
-      MClassifier classifier = p.findTypeInModel(name, p.getCurrentNamespace());
-      if (classifier == null) {
-          throw new OclTypeException("cannot find classifier: "+name);
+      if (target != null) 
+	  return new ArgoAny(target);
+      else {
+	  MClassifier classifier = p.findTypeInModel(name, p.getCurrentNamespace());
+	  if (classifier == null) {
+	      throw new OclTypeException("cannot find classifier: "+name);
+	  }
+	  return new ArgoAny(classifier);
       }
-      ArgoAny result = new ArgoAny(classifier);
-      return result;
     }
 }
 
