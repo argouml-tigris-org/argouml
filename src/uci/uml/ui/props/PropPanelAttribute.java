@@ -142,11 +142,11 @@ implements DocumentListener, ItemListener {
     gb.setConstraints(initScroll, c);
     add(initScroll);
 
-    Component ed = _typeField.getEditor().getEditorComponent();
-    Document typeDoc = ((JTextField)ed).getDocument();
-    typeDoc.addDocumentListener(this);
+    // Component ed = _typeField.getEditor().getEditorComponent();
+    // Document typeDoc = ((JTextField)ed).getDocument();
+    // typeDoc.addDocumentListener(this);
 
-    _initText.getDocument().addDocumentListener(this);
+    // _initText.getDocument().addDocumentListener(this);
 
     _visField.addItemListener(this);
     _keywordsField.addItemListener(this);
@@ -166,7 +166,8 @@ implements DocumentListener, ItemListener {
       _typeField.setModel(new DefaultComboBoxModel(Converter.convert(offeredTypes)));
 
     MVisibilityKind vk = attr.getVisibility();
-    _visField.setSelectedItem(vk.getName());
+	if (vk != null)
+		_visField.setSelectedItem(vk.getName());
 
     MScopeKind sk = attr.getOwnerScope();
     MChangeableKind ck = attr.getChangeability();
@@ -238,13 +239,16 @@ implements DocumentListener, ItemListener {
     Object sel = _typeField.getSelectedItem();
     MClassifier cls;
     if (sel == null) return;
-    //System.out.println("set target type: " + sel);
+    System.out.println("set target type: " + sel);
 
-    if (sel instanceof MClassifier)
-      cls = (MClassifier) sel;
+    if (sel instanceof MClassifier) {
+		    System.out.println("have it");
+			cls = (MClassifier) sel;
+	}
     else {
-	cls = new MClassifierImpl();
-	cls.setName(sel.toString());
+		    System.out.println("new one");
+			cls = new MClassifierImpl();
+			cls.setName(sel.toString());
     }
     attr.setType(cls);
   }
@@ -286,29 +290,32 @@ implements DocumentListener, ItemListener {
 
 
   public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-    if (src == _keywordsField) {
-      //System.out.println("attr keywords now is " +
-      //_keywordsField.getSelectedItem());
-      setTargetKeywords();
-    }
-    else if (src == _visField) {
-      //System.out.println("attr MVisibilityKind now is " +
-      //_visField.getSelectedItem());
-      setTargetVisibility();
-    }
-    else if (src == _typeField) {
-//       System.out.println("attr type now is " +
-// 			 _typeField.getSelectedItem());
-      setTargetType();
-    }
-    else if (src == _initText) {
-      // needs-more-work: I might want to have an expression builder
-      // or a history of useful expressions 
-      //System.out.println("attr init now is " +
-      //_initText.getText());
-      setTargetInit();
-    }
+	  if (e.getStateChange() == ItemEvent.SELECTED) {
+		  Object src = e.getSource();
+		  if (src == _keywordsField) {
+			  //System.out.println("attr keywords now is " +
+			  //_keywordsField.getSelectedItem());
+			  setTargetKeywords();
+		  }
+		  else if (src == _visField) {
+			  //System.out.println("attr MVisibilityKind now is " +
+			  //_visField.getSelectedItem());
+			  setTargetVisibility();
+		  }
+		  else if (src == _typeField) {
+			  //System.out.println(getClass().getName() + " itemStateChanged " +e);
+			  //       System.out.println("attr type now is " +
+			  // 			 _typeField.getSelectedItem());
+			  setTargetType();
+		  }
+		  else if (src == _initText) {
+			  // needs-more-work: I might want to have an expression builder
+			  // or a history of useful expressions 
+			  //System.out.println("attr init now is " +
+			  //_initText.getText());
+			  setTargetInit();
+		  }
+	  }
   }
 
 

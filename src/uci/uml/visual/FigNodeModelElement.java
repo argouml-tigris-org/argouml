@@ -423,6 +423,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	}
 	public void listRoleItemSet(MElementEvent mee) {
 	    //if (_group != null) _group.listRoleItemSet(mee);
+	    modelChanged();
+	    damage();
 	}
 	public void recovered(MElementEvent mee) {
 	    //if (_group != null) _group.recovered(mee);
@@ -434,9 +436,13 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	}
 	public void roleAdded(MElementEvent mee) {
 	    //if (_group != null) _group.roleAdded(mee);
+	    modelChanged();
+	    damage();
 	}
 	public void roleRemoved(MElementEvent mee) {
 	    //if (_group != null) _group.roleRemoved(mee);
+	    modelChanged();
+	    damage();
 	}
 
 

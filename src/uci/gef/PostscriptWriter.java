@@ -442,12 +442,17 @@ private void handlesinglepixel(int x, int y, int pixel) {
       p.println("(" + buf.toString() + ") show");
   }
 
-    public void drawString(java.text.AttributedCharacterIterator aci, int i1, int i2) {}
+
+    // if you want to compile this with jdk1.1, you have to comment out this method.
+    // if you want to compile this with jdk1.2, you MUST NOT comment out this method.
+    // Did sun make a good job implementing jdk1.2? :-(((
+    // public void drawString(java.text.AttributedCharacterIterator aci, int i1, int i2) {}
 
   public void comment(String cmt) {
       p.println("% " + cmt);
   }
 
-
+  public void drawString(java.text.CharacterIterator aci, int i1, int
+i2) {}
 
 }
