@@ -57,7 +57,7 @@ public class ActionAddNote extends UMLChangeAction {
     // constructors
 
     public ActionAddNote() {
-        super("Note");
+        super("New Note");
     }
 
     ////////////////////////////////////////////////////////////////

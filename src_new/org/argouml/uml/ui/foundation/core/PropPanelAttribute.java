@@ -84,7 +84,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 			    this,
 			    buttonPanel,
 			    _addAttrIcon,
-				Translator.localize("UMLMenu", "button.add-attribute"),
+				Translator.localize("UMLMenu", "button.new-attribute"),
 			    "newAttribute",
 			    null);
 	new PropPanelButton(

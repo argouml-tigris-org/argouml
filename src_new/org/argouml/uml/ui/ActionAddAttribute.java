@@ -50,7 +50,7 @@ public class ActionAddAttribute extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionAddAttribute() { super("button.add-attribute"); }
+    public ActionAddAttribute() { super("button.new-attribute"); }
 
 
     ////////////////////////////////////////////////////////////////

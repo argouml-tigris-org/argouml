@@ -257,7 +257,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 			    this,
 			    buttonPanel,
 			    _addOpIcon,
-				Translator.localize("UMLMenu", "button.add-new-operation"),
+				Translator.localize("UMLMenu", "button.new-operation"),
 			    "buttonAddOperation",
 			    null);
         // I uncommented this next line. I don't know why it was commented out, it seems to work just fine...--pjs--
@@ -265,14 +265,14 @@ public class PropPanelOperation extends PropPanelModelElement {
 			    this,
 			    buttonPanel,
 			    _parameterIcon,
-				Translator.localize("UMLMenu", "button.add-parameter"),
+				Translator.localize("UMLMenu", "button.new-parameter"),
 			    "buttonAddParameter",
 			    null);
         new PropPanelButton(
 			    this,
 			    buttonPanel,
 			    _signalIcon,
-			    localize("Add raised signal"),
+			    localize("New Raised Signal"),
 			    "buttonAddRaisedSignal",
 			    null);
         new PropPanelButton(

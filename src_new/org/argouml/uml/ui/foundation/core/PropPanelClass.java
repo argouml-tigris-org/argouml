@@ -90,10 +90,10 @@ public class PropPanelClass extends PropPanelClassifier {
 
 
 	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-	new PropPanelButton(this, buttonPanel, _addAttrIcon, Translator.localize("UMLMenu", "button.add-attribute"), "addAttribute", null);
-	new PropPanelButton(this, buttonPanel, _addOpIcon, Translator.localize("UMLMenu", "button.add-operation"), "addOperation", null);
-	new PropPanelButton(this, buttonPanel, _innerClassIcon, Translator.localize("UMLMenu", "button.add-inner-class"), "addInnerClass", null);
-	new PropPanelButton(this, buttonPanel, _classIcon, Translator.localize("UMLMenu", "button.add-new-class"), "newClass", null);
+	new PropPanelButton(this, buttonPanel, _addAttrIcon, Translator.localize("UMLMenu", "button.new-attribute"), "addAttribute", null);
+	new PropPanelButton(this, buttonPanel, _addOpIcon, Translator.localize("UMLMenu", "button.new-operation"), "addOperation", null);
+	new PropPanelButton(this, buttonPanel, _innerClassIcon, Translator.localize("UMLMenu", "button.new-inner-class"), "addInnerClass", null);
+	new PropPanelButton(this, buttonPanel, _classIcon, Translator.localize("UMLMenu", "button.new-class"), "newClass", null);
 	new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-class"), "removeElement", null);
 
     }

@@ -110,10 +110,10 @@ public class PropPanelUseCase extends PropPanelClassifier {
                 Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace",
                             null);
         new PropPanelButton(this, buttonPanel, _useCaseIcon,
-                Translator.localize("UMLMenu", "button.add-usecase"), "newUseCase",
+                Translator.localize("UMLMenu", "button.new-usecase"), "newUseCase",
                             null);
         new PropPanelButton(this, buttonPanel, _extensionPointIcon,
-                            localize("Add extension point"),
+                            localize("New Extension Point"),
                             "newExtensionPoint",
                             null);
         new PropPanelButton(this, buttonPanel, _deleteIcon,
@@ -147,7 +147,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
 
     /**
-     * <p>Invoked by the "Add extension point" toolbar button to create a new
+     * <p>Invoked by the "New Extension Point" toolbar button to create a new
      *   extension point for this use case in the same namespace as the current
      *   use case.</p>
      *

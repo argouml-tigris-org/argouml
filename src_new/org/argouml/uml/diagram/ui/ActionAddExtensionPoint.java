@@ -83,7 +83,7 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
      */
 
     public ActionAddExtensionPoint() {
-        super("Add Extension Point");
+        super("New Extension Point");
     }
 
 

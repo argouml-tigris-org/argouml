@@ -88,7 +88,7 @@ public class PropPanelNode extends PropPanelClassifier {
         addField(Translator.localize("UMLMenu", "label.components"), new JScrollPane(compList));
 
         new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete node"), "removeElement", null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete Node"), "removeElement", null);
     }
 
     public Collection getResidents() {

@@ -78,7 +78,7 @@ public class PropPanelAssociation extends PropPanelRelationship {
 	addField(Translator.localize("UMLMenu", "label.association-links"), _linksScroll);
 
 	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-	// new PropPanelButton(this,buttonPanel,_navForwardIcon, Translator.localize("UMLMenu", "button.add-association-end"),"addAssociationEnd",null);
+	// new PropPanelButton(this,buttonPanel,_navForwardIcon, Translator.localize("UMLMenu", "button.new-association-end"),"addAssociationEnd",null);
 	new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-association"), "removeElement", null);
 
 

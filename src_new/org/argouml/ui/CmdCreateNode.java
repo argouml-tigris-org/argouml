@@ -63,6 +63,9 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
             }
         }
     }
+    
+    private static final String ACTION_PREFIX_KEY = "action.new";
+    
     /**
      * Constructor for CmdCreateNode.
      * @param args
@@ -207,6 +210,8 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      * Adds tooltip text to the Action.
      */
     private void putToolTip(String name) {
-        putValue(Action.SHORT_DESCRIPTION, Translator.localize(name));
+        putValue(Action.SHORT_DESCRIPTION, 
+		Translator.localize(ACTION_PREFIX_KEY) + " " 
+		+ Translator.localize(name));
     }
 }
