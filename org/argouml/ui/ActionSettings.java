@@ -149,6 +149,7 @@ public class ActionSettings extends UMLAction
                 catch (Exception exception) {
                     Argo.log.error("got an Exception in ActionSettings");
                     Argo.log.error(exception);
+                    exception.printStackTrace();
                 }
             }
             
