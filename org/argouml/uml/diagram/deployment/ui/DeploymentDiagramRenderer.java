@@ -37,8 +37,11 @@ import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigLink;
 import org.argouml.uml.diagram.ui.FigAssociation;
+import org.argouml.uml.diagram.ui.FigAssociationClass;
+import org.argouml.uml.diagram.ui.FigAssociationEnd;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigGeneralization;
+import org.argouml.uml.diagram.ui.FigNodeAssociation;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
@@ -66,6 +69,8 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             Map styleAttributes) {
         if (Model.getFacade().isANode(node)) {
             return new FigMNode(gm, node);
+        } else if (Model.getFacade().isAAssociation(node)) {
+            return new FigNodeAssociation(gm, node);
         } else if (Model.getFacade().isANodeInstance(node)) {
             return new FigMNodeInstance(gm, node);
         } else if (Model.getFacade().isAComponent(node)) {
@@ -97,12 +102,30 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             Layer lay, 
             Object edge, 
             Map styleAttributes) {
-
-        if (Model.getFacade().isAAssociation(edge)) {
+        if (Model.getFacade().isAAssociationClass(edge)) {
+            FigAssociationClass ascCFig = new FigAssociationClass(edge, lay);
+            return ascCFig;
+        } else if (Model.getFacade().isAAssociation(edge)) {
             Object asc = /*(MAssociation)*/ edge;
             FigAssociation ascFig = new FigAssociation(asc, lay);
             return ascFig;
+        } else if (Model.getFacade().isAAssociationEnd(edge)) {
+            FigAssociationEnd asend = new FigAssociationEnd(edge, lay);
+            Model.getFacade().getAssociation(edge);
+            FigNode associationFN =
+                    (FigNode) lay.presentationFor(Model
+                            .getFacade().getAssociation(edge));
+            FigNode classifierFN =
+                    (FigNode) lay.presentationFor(Model
+                            .getFacade().getType(edge));
+
+            asend.setSourcePortFig(associationFN);
+            asend.setSourceFigNode(associationFN);
+            asend.setDestPortFig(classifierFN);
+            asend.setDestFigNode(classifierFN);
+            return asend;
         }
+
         if (Model.getFacade().isALink(edge)) {
             Object lnk = /*(MLink)*/ edge;
             FigLink lnkFig = new FigLink(lnk);

@@ -24,25 +24,30 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.argouml.kernel.DelayedVChangeListener;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
-import org.tigris.gef.base.*;
-import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.MutableGraphModel;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigCircle;
-import org.tigris.gef.presentation.FigPoly;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
 import java.util.Iterator;
+
+import javax.swing.SwingUtilities;
+
+import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.PathConvPercent;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigCircle;
+import org.tigris.gef.presentation.FigPoly;
 
 
 /**
@@ -106,20 +111,23 @@ public class FigAssociationClass
         final FigAssociationClass currentFig = this;
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                ArgoDiagram diagram =
-                        ProjectManager.getManager().getCurrentProject().
-                        getActiveDiagram();
-                Layer lay = diagram.getLayer();
+                Layer lay = currentFig.getLayer();
+                Editor editor = Globals.curEditor();
+
                 if (currentFig.getOwner() == null) {
                     currentFig.removeFromDiagram();
+                    lay.remove(currentFig);
+                    editor.remove(currentFig);
                 }
                 else {
                     currentFig.removePathItem(getMiddleGroup());
-                    Editor editor = Globals.curEditor();
+
                     GraphModel graphModel = editor.getGraphModel();
                     MutableGraphModel mutableGraphModel = (MutableGraphModel)
                             graphModel;
-                    if (mutableGraphModel instanceof ClassDiagramGraphModel) {
+                    if (mutableGraphModel instanceof ClassDiagramGraphModel
+                            || mutableGraphModel 
+                            instanceof DeploymentDiagramGraphModel) {
                         mutableGraphModel.addNode(currentFig.getOwner());
                         int x = head.getX();
                         int y = head.getY();
@@ -158,7 +166,7 @@ public class FigAssociationClass
                                 break;
                             }
                         }
-                        edge = 
+                        edge =
                             new FigEdgeAssociationClass(head, fig, currentFig);
                         edge.setOwner(currentFig.getOwner());
                         lay.add(edge);
