@@ -48,7 +48,6 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.events.ArgoModuleEventListener;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.swingext.Orientable;
 import org.argouml.swingext.Orientation;
@@ -102,19 +101,7 @@ import org.argouml.uml.ui.behavior.use_cases.PropPanelExtend;
 import org.argouml.uml.ui.behavior.use_cases.PropPanelExtensionPoint;
 import org.argouml.uml.ui.behavior.use_cases.PropPanelInclude;
 import org.argouml.uml.ui.behavior.use_cases.PropPanelUseCase;
-import org.argouml.uml.ui.foundation.core.PropPanelAbstraction;
-import org.argouml.uml.ui.foundation.core.PropPanelAssociation;
-import org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd;
-import org.argouml.uml.ui.foundation.core.PropPanelAttribute;
-import org.argouml.uml.ui.foundation.core.PropPanelClass;
-import org.argouml.uml.ui.foundation.core.PropPanelComponent;
-import org.argouml.uml.ui.foundation.core.PropPanelDataType;
-import org.argouml.uml.ui.foundation.core.PropPanelDependency;
-import org.argouml.uml.ui.foundation.core.PropPanelGeneralization;
-import org.argouml.uml.ui.foundation.core.PropPanelInterface;
-import org.argouml.uml.ui.foundation.core.PropPanelNode;
-import org.argouml.uml.ui.foundation.core.PropPanelOperation;
-import org.argouml.uml.ui.foundation.core.PropPanelParameter;
+import org.argouml.uml.ui.foundation.core.*;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelStereotype;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.presentation.Fig;
@@ -148,19 +135,7 @@ import ru.novosoft.uml.behavior.use_cases.MExtendImpl;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPointImpl;
 import ru.novosoft.uml.behavior.use_cases.MIncludeImpl;
 import ru.novosoft.uml.behavior.use_cases.MUseCaseImpl;
-import ru.novosoft.uml.foundation.core.MAbstractionImpl;
-import ru.novosoft.uml.foundation.core.MAssociationEndImpl;
-import ru.novosoft.uml.foundation.core.MAssociationImpl;
-import ru.novosoft.uml.foundation.core.MAttributeImpl;
-import ru.novosoft.uml.foundation.core.MClassImpl;
-import ru.novosoft.uml.foundation.core.MComponentImpl;
-import ru.novosoft.uml.foundation.core.MDataTypeImpl;
-import ru.novosoft.uml.foundation.core.MDependencyImpl;
-import ru.novosoft.uml.foundation.core.MGeneralizationImpl;
-import ru.novosoft.uml.foundation.core.MInterfaceImpl;
-import ru.novosoft.uml.foundation.core.MNodeImpl;
-import ru.novosoft.uml.foundation.core.MOperationImpl;
-import ru.novosoft.uml.foundation.core.MParameterImpl;
+import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotypeImpl;
 
 /**
@@ -512,9 +487,7 @@ public class TabProps
      * the current diagram. If so, that modelelement is the target.
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(Object)
      */
-    public boolean shouldBeEnabled(Object target) {
-        ArgoDiagram diagram =
-            ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+    public boolean shouldBeEnabled(Object target) {      
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isADiagram(target) || ModelFacade.isABase(target)) {
             _shouldBeEnabled = true;

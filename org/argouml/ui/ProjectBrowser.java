@@ -408,7 +408,7 @@ public class ProjectBrowser
 
             cat.debug("setting project target = " + o);
 
-            _editorPane.setTarget(o);
+            // _editorPane.setTarget(o);
 
             _target = o;
             if (o instanceof MNamespace) {
@@ -453,7 +453,7 @@ public class ProjectBrowser
             }
             getNavigatorPane().getTree().setTarget(o);
             
-            Actions.updateAllEnabled();
+            
         }
         TargetManager.getInstance().setTarget(o);
 

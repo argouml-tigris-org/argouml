@@ -29,38 +29,26 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import javax.swing.Action;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.GridLayout;
-
-import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.CmdCreateNode;
-import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.ActionAddAssociation;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionAddAttribute;
 import org.argouml.uml.ui.ActionAddNote;
 import org.argouml.uml.ui.ActionAddOperation;
-
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.ui.ToolBar;
 
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.foundation.core.MAbstraction;
-import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MGeneralization;
