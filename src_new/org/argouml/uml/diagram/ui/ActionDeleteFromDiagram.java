@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,11 +66,22 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * Tells if this action shall be enabled or not.
+     *
+     * @return true if it shall be enabled.
+     */
     public boolean shouldBeEnabled() {
         super.shouldBeEnabled();
         int size = 0;
         try {
             Editor ce = Globals.curEditor();
+	    if (ce == null) {
+		return false;
+	    }
+	    if (ce.getSelectionManager() == null) {
+		return false;
+	    }
             Vector figs = ce.getSelectionManager().getFigs();
             size = figs.size();
         } catch (Exception e) {
