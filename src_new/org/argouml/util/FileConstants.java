@@ -29,7 +29,18 @@ package org.argouml.util;
  * @stereotype utility
  */
 public class FileConstants {
-    public final static String COMPRESSED_FILE_EXT = ".zargo";
-    public final static String UNCOMPRESSED_FILE_EXT = ".argo";
-    public final static String PROJECT_FILE_EXT = ".argo";
+    /**
+     * The extension for .zargo files is COMPRESSED_FILE_EXT.
+     */
+    public static final String COMPRESSED_FILE_EXT = ".zargo";
+    
+    /**
+     * The extension for .argo files is UNCOMPRESSED_FILE_EXT.
+     */
+    public static final String UNCOMPRESSED_FILE_EXT = ".argo";
+    
+    /**
+     * The extension for .argo files is PROJECT_FILE_EXT.
+     */
+    public static final String PROJECT_FILE_EXT = ".argo";
 }
