@@ -303,7 +303,7 @@ public class Critic implements Poster, Serializable {
       // For now I (Linus) just comment it out.
       // cat.debug("applying critic: " + _headline);
     if (predicate(dm, dsgr)) {
-      cat.debug("predicate() detected error");
+      cat.debug("predicate() returned true, creating ToDoItem");
       _numCriticsFired++;
       ToDoItem item = toDoItem(dm, dsgr);
       postItem(item, dm, dsgr);
