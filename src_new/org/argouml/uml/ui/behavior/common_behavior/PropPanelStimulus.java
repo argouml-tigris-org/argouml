@@ -130,11 +130,11 @@ public class PropPanelStimulus extends PropPanelModelElement {
     }
 
 
-    public MInstance getReceiver() {
-        MInstance receiver = null;
+    public Object getReceiver() {
+        Object receiver = null;
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAStimulus(target)) {
-            receiver =  ((MStimulus) target).getReceiver();
+        if (ModelFacade.isAStimulus(target)) {
+            receiver =  ModelFacade.getReceiver(target);
         }
         return receiver;
     }

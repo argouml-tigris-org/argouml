@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,12 +24,10 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-
-
 /**
  * The list of classifiers represented by some collaboration as shown on the 
  * collaboration proppanel
@@ -55,7 +51,7 @@ public class UMLCollaborationRepresentedClassifierListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MCollaboration) getTarget()).getRepresentedClassifier());
+        addElement(ModelFacade.getRepresentedClassifier(getTarget()));
     }
 
     /**
@@ -63,7 +59,7 @@ public class UMLCollaborationRepresentedClassifierListModel
      */
     protected boolean isValidElement(MBase elem) {         
         return org.argouml.model.ModelFacade.isAClassifier(elem) && 
-            ((MCollaboration) getTarget()).getRepresentedClassifier() == elem;
+            ModelFacade.getRepresentedClassifier(getTarget()) == elem;
     }
 
 }

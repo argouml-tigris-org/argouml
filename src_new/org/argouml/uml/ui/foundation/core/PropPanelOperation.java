@@ -397,7 +397,7 @@ public class PropPanelOperation extends PropPanelModelElement {
         Collection signals = null;
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAOperation(target)) {
-            signals = ((MOperation) target).getRaisedSignals();
+            signals = ModelFacade.getRaisedSignals(target);
         }
         return signals;
     }

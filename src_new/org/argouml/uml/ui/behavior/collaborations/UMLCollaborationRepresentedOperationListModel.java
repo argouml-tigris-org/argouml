@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,6 +24,7 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
@@ -67,7 +66,7 @@ public class UMLCollaborationRepresentedOperationListModel
      */
     protected boolean isValidElement(MBase elem) {
         return org.argouml.model.ModelFacade.isAOperation(elem) && 
-            ((MCollaboration) getTarget()).getRepresentedOperation() == elem;
+            ModelFacade.getRepresentedOperation(getTarget()) == elem;
     }
 
 }
