@@ -28,9 +28,12 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 import ru.novosoft.uml.behavior.activity_graphs.MObjectFlowState;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
@@ -93,6 +96,44 @@ public class ActivityGraphsHelper {
             }
         } else
             throw new IllegalArgumentException();
+        return null;
+    }
+    
+    /**
+     * Find a state of a Classifier by its name.
+     * This routine is used to make the connection between 
+     * a ClassifierInState and its State.
+     * 
+     * @author mvw
+     * @param c the Classifier. If this is not a Classifier, then 
+     *          IllegalArgumentException is thrown.
+     * @param s the string that represents the name of 
+     *          the state we are looking for. If "" or null, then 
+     *          null is returned straight away.
+     * @return  the State (as Object) or null, if not found.
+     */
+    public Object findStateByName(Object c, String s) {
+        if (!(c instanceof MClassifier))
+            throw new IllegalArgumentException();
+        if ((s == "") || (s == null)) return null;
+        Collection allStatemachines = ModelFacade.getBehaviors(c);
+        Iterator i = allStatemachines.iterator();
+        while (i.hasNext()) {
+            Object statemachine = i.next();
+            Object top = StateMachinesHelper.getHelper().getTop(statemachine);
+            Collection allStates = 
+                StateMachinesHelper.getHelper().getAllSubStates(top);
+            Iterator ii = allStates.iterator();
+            while (ii.hasNext()) {
+                Object state = ii.next();
+                if (ModelFacade.isAState(state)) { 
+                    String statename = ((MState) state).getName();
+                    if (statename != null) 
+                        if (statename.equals(s))
+                            return state;
+                }
+            }
+        }
         return null;
     }
 }
