@@ -24,7 +24,12 @@
 
 package org.argouml.kernel;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import junit.framework.TestCase;
+
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -52,7 +57,56 @@ public class TestProject extends TestCase {
         // maybe next test is going to change in future
         assertEquals(p.getRoot(), p.getModel());
     }
+    
+    /**
+     * Test the moveToTrash function for package and content.
+     */
+    public void testTrashcanPackageContent() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        // test with a class in a package
+        Object package1 = Model.getModelManagementFactory().buildPackage(
+                "test1", null);
+        Model.getCoreHelper().setNamespace(package1, p.getRoot());
+        Object cls1 = Model.getCoreFactory().buildClass(package1);
+        Object cls2 = Model.getCoreFactory().buildClass(package1);
+        Object cls3 = Model.getCoreFactory().buildClass(package1);
+        Object cls4 = Model.getCoreFactory().buildClass(p.getRoot());
+        Collection c1 = ModelFacade.getOwnedElements(p.getRoot());
+        p.moveToTrash(package1);
+        Collection c = ModelFacade.getOwnedElements(p.getRoot());
+        assertTrue("Package not in trash", p.isInTrash(package1));
+        assertTrue("Package not deleted", !c.contains(package1));
+        assertTrue("Class 1 not deleted", !c.contains(cls1));
+        assertTrue("Class 2 not deleted", !c.contains(cls2));
+        assertTrue("Class 3 not deleted", !c.contains(cls3));
+        assertTrue("Class 4 has been deleted", c.contains(cls4));
+    }
 
+    /**
+     * Test the moveToTrash function for class and content.
+     */
+    public void testTrashcanClassContent() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        // test with a class and an inner class
+        Object aClass = Model.getCoreFactory().buildClass("Test", p.getRoot());
+        Object cls1 = Model.getCoreFactory().buildClass(aClass);
+        Object cls2 = Model.getCoreFactory().buildClass(aClass);
+        Object cls3 = Model.getCoreFactory().buildClass(aClass);
+        Object typ = Model.getCoreFactory().buildClass(p.getRoot());
+        Object oper2a = Model.getCoreFactory().buildOperation(cls2, 
+                p.getRoot(), cls3, new ArrayList());
+        Object oper2b = Model.getCoreFactory().buildOperation(cls2, 
+                p.getRoot(), typ, new ArrayList());
+        p.moveToTrash(aClass);
+        Collection c = ModelFacade.getOwnedElements(p.getRoot());
+        assertTrue("Package not in trash", p.isInTrash(aClass));
+        assertTrue("Package not deleted", !c.contains(aClass));
+        assertTrue("Class 1 not deleted", !c.contains(cls1));
+        assertTrue("Class 2 not deleted", !c.contains(cls2));
+        assertTrue("Class 3 not deleted", !c.contains(cls3));
+    }
+
+    
     /**
      * @see junit.framework.TestCase#setUp()
      */
