@@ -72,6 +72,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 
   protected static final int ROWHEIGHT = 17; // min. 17, used to calculate y pos of FigText items in a compartment
   protected static final int STEREOHEIGHT = 18;
+  protected boolean checkSize = true; // Needed for loading. Warning: if false, a too small size might look bad!
 
   static {
     LABEL_FONT = MetalLookAndFeel.getSubTextFont();
@@ -561,14 +562,17 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	super.calcBounds();
   }
 
-  /** returns the new size of the FigGroup (either attributes or operations)
+  public void enableSizeChecking(boolean flag) {
+    checkSize = flag;
+  }
 
-   after calculation new bounds for all sub-figs, considering their
-      minimal sizes; FigGroup need not be displayed; no update event is fired */
+  /** returns the new size of the FigGroup (either attributes or operations)
+    after calculation new bounds for all sub-figs, considering their
+    minimal sizes; FigGroup need not be displayed; no update event is fired */
   protected Dimension getUpdatedSize(FigGroup fg, int x, int y, int w, int h) {
 	int newW = w;
 	int n = fg.getFigs().size()-1;
-	int newH = Math.max(h,ROWHEIGHT*Math.max(1,n)+2);
+	int newH = checkSize ? Math.max(h,ROWHEIGHT*Math.max(1,n)+2) : h;
 	int step = (n>0) ? (newH-1) / n : 0; // width step between FigText objects
 	//int maxA = Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
 
@@ -580,7 +584,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	while (figs.hasMoreElements()) {
 	  fi = (Fig)figs.nextElement();
 	  fw = fi.getMinimumSize().width;
-	  fi.setBounds(x+1,yy+1,fw,ROWHEIGHT-2);
+	  fi.setBounds(x+1,yy+1,fw,Math.min(ROWHEIGHT,step)-2);
 	  if (newW < fw+2)
 	      newW = fw+2;
 	  yy += step;
