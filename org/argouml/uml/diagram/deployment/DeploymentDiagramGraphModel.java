@@ -162,7 +162,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 		return CommonBehaviorHelper.getHelper().getSource(/*(MLink)*/ edge);
 	    }
     
-	cat.debug("TODO getSourcePort");
+	LOG.debug("TODO getSourcePort");
 
 	return null;
     }
@@ -177,7 +177,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 		.getDestination(/*(MLink)*/ edge);
 	}
     
-	cat.debug("TODO getDestPort");
+	LOG.debug("TODO getDestPort");
 
 	return null;
     }
@@ -227,7 +227,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
  
     /** Add the given node to the graph, if valid. */
     public void addNode(Object node) {
-	cat.debug("adding class node!!");
+        LOG.debug("adding class node!!");
 	if (!canAddNode(node)) return;
 	_nodes.addElement(node);
 	// TODO: assumes public, user pref for default visibility?
@@ -241,7 +241,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Add the given edge to the graph, if valid. */
     public void addEdge(Object edge) {
-	cat.debug("adding class edge!!!!!!");
+        LOG.debug("adding class edge!!!!!!");
 	if (!canAddEdge(edge)) return;
 	_edges.addElement(edge);
 	// TODO: assumes public
@@ -311,7 +311,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    Object eo = /*(MElementImport)*/ pce.getNewValue();
 	    Object me = ModelFacade.getModelElement(eo);
 	    if (oldOwned.contains(eo)) {
-		cat.debug("model removed " + me);
+		LOG.debug("model removed " + me);
 		if (ModelFacade.isANode(me)) removeNode(me);
 		if (ModelFacade.isANodeInstance(me)) removeNode(me);
 		if (ModelFacade.isAComponent(me)) removeNode(me);
@@ -324,7 +324,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 		if (ModelFacade.isALink(me)) removeEdge(me);
 	    }
 	    else {
-		cat.debug("model added " + me);
+		LOG.debug("model added " + me);
 	    }
 	}
     }
