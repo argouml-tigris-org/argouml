@@ -134,7 +134,7 @@ public class UMLClassDiagram extends UMLDiagram {
         Object actions[] = {
             _actionPackage,
             _actionClass,
-            buildAssociationPopup(),
+            getAssociationActions(),
             _actionDepend,
             _actionPermission,
             _actionUsage,
@@ -149,16 +149,16 @@ public class UMLClassDiagram extends UMLDiagram {
         return actions;
     }
     
-    private PopupToolBoxButton buildAssociationPopup() {
-        PopupToolBoxButton toolBox = new PopupToolBoxButton(_actionAssociation, 0, 2);
-        toolBox.add(_actionAssociation);
-        toolBox.add(_actionUniAssociation);
-        toolBox.add(_actionAggregation);
-        toolBox.add(_actionUniAggregation);
-        toolBox.add(_actionComposition);
-        toolBox.add(_actionUniComposition);
-        return toolBox;
+    private Object[] getAssociationActions() {
+        Object actions[][] = {
+            {_actionAssociation,_actionUniAssociation},
+            {_actionAggregation,_actionUniAggregation},
+            {_actionComposition,_actionUniComposition}
+        };
+
+        return actions;
     }
+    
     
     /**
      * Creates a new diagramname.
