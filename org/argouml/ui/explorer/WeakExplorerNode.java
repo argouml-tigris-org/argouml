@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,39 +22,42 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.explorer.rules;
-
-import org.argouml.ui.explorer.WeakExplorerNode;
+package org.argouml.ui.explorer;
 
 /**
- * This class is a support class for The Navigation panel Go Rules.
- * Don't confuse it with anything to do with GEF nodes or the like.
+ * Interface for adding weak nodes to the explorer, in this case nodes that
+ * can yield to nodes already in the explorer. This may typically look like:
  *
- * $Revision$
+ * <pre>
+ * public class SomeNode implements WeakExplorerNode {
+ *     Object parent;
  *
- * @author  alexb, $Author$
- * @since argo 0.13.4, Created on 21 March 2003, 23:18
+ *     public SomeNode(Object parent) {
+ *         this.parent = parent;
+ *     }
+ *
+ *     public boolean subsumes(Object obj) {
+ *         return obj instanceof SomeNode;
+ *     }
+ * }
+ * </pre>
+ *
+ * @author d00mst
+ * @since 0.16.alpha1
  */
-public class OperationsNode implements WeakExplorerNode {
-    
-    Object parent;
-    
-    /** Creates a new instance of OperationsNode */
-    public OperationsNode(Object parent) {
-        
-        this.parent = parent;
-    }
-    
-    public Object getParent() {
-	return parent;
-    }
-        
-    public String toString() {
-	return "Operations";
-    }
+public interface WeakExplorerNode {
 
-    public boolean subsumes(Object obj) {
-	return obj instanceof OperationsNode;
-    }
+    /**
+     * This method is called by ExplorerTreeModel to check if this
+     * WeakExplorerNode subsumes another WeakExplorerNode, ie if this
+     * node should be preserved rather than adding the other node.
+     * This only comes into play if this instance and the other
+     * sorts equal, since otherwise there will anyway be tree
+     * modifications and then it doesn't matter.
+     *
+     * @param obj another WeakExplorerNode
+     * @return true if this node subsumes obj, otherwise false.
+     */
+    public boolean subsumes(Object obj);
 }
 
