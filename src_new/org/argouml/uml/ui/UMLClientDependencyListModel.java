@@ -78,11 +78,6 @@ public class UMLClientDependencyListModel extends UMLModelElementListModel  {
 	}
         return value;
     }
- 
-    public void open(int index) {
-        navigateTo(elementAtUtil(getClientDependencies(),index,MDependency.class));
-    }    
-
     /**
      * <p>Add a new abstraction relationship.</p>
      *
