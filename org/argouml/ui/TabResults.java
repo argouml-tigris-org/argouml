@@ -353,9 +353,9 @@ public class TabResults
 		}
 	    }
 	    relatedModel.setTarget(related, null);
-	    relatedLabel.setText("Related Elements: "
-				  + related.size()
-				  + " items");
+	    Object[] msgArgs = {new Integer(related.size()) };
+	    relatedLabel.setText(Translator.messageFormat(
+                "dialog.find.related-elements", msgArgs));
 	}
     }
 
@@ -367,12 +367,10 @@ public class TabResults
      */
     public void run()
     {
-	resultsLabel.setText("Searching...");
+	resultsLabel.setText(Translator.localize("dialog.find.searching"));
 	results.removeAllElements();
 	depthFirst(root, null);
 	setResults(results, diagrams);
-	//resultsLabel.setText("Results: " + results.size() + " items");
-	//resultsModel.setTarget(results, diagrams);
     }
 
     private void depthFirst(Object node, Diagram lastDiagram)
