@@ -152,6 +152,14 @@ public class CrSingletonViolated extends CrUML {
         // Now we know it is a class, handle the object as a class
 
         MClass cls = (MClass) dm;
+        
+        // shouldn't fire if it is a type
+        MStereotype stereo = cls.getStereotype();
+        if (stereo != null) {
+        	if (stereo.getName().toLowerCase().equals("type")) {
+        		return NO_PROBLEM;
+        	}
+        }
 
         // Check for the correct stereotype, a suitable static attribute and
         // one or more constructors, all private as per JavaDoc above.
