@@ -39,10 +39,12 @@ import javax.swing.JToolBar;
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionAddMessage;
+import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
@@ -56,6 +58,7 @@ import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 public class UMLCollaborationDiagram extends UMLDiagram {
 
@@ -70,6 +73,13 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     protected static Action _actionAssoc = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociationRole.class, "AssociationRole");
 
     protected static Action _actionGeneralize = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MGeneralization.class, "Generalization");
+
+    protected static Action _actionAssociation = new ActionAddAssociationRole(MAggregationKind.NONE, false, "Association");
+    protected static Action _actionAggregation = new ActionAddAssociationRole(MAggregationKind.AGGREGATE, false, "Aggregation");
+    protected static Action _actionComposition = new ActionAddAssociationRole(MAggregationKind.COMPOSITE, false, "Composition");
+    protected static Action _actionUniAssociation = new ActionAddAssociationRole(MAggregationKind.NONE, true, "UniAssociation");
+    protected static Action _actionUniAggregation = new ActionAddAssociationRole(MAggregationKind.AGGREGATE, true, "UniAggregation");
+    protected static Action _actionUniComposition = new ActionAddAssociationRole(MAggregationKind.COMPOSITE, true, "UniComposition");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -132,10 +142,24 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     protected void initToolBar(JToolBar toolBar) {
         toolBar.add(_actionClassifierRole);
         toolBar.addSeparator();
-        toolBar.add(_actionAssoc);
+        toolBar.add(buildAssociationPopup());
+        //toolBar.add(_actionAssoc);
         toolBar.add(ActionAddMessage.SINGLETON);
         toolBar.add(_actionGeneralize);
     }
+    
+    private PopupToolBoxButton buildAssociationPopup() {
+        PopupToolBoxButton toolBox = new PopupToolBoxButton(_actionAssociation, 0, 2);
+        toolBox.add(_actionAssociation);
+        toolBox.add(_actionUniAssociation);
+        toolBox.add(_actionAggregation);
+        toolBox.add(_actionUniAggregation);
+        toolBox.add(_actionComposition);
+        toolBox.add(_actionUniComposition);
+        return toolBox;
+    }
+    
+
 
     /**  After loading the diagram it?s necessary to connect
       *  every FigMessage to its FigAssociationRole. 
