@@ -44,15 +44,7 @@ public class UMLSignalComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLSignalComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValid(MModelElement)
-     */
-    protected boolean isValid(MElementEvent e) {
-        MModelElement m = (MModelElement)getChangedElement(e);
-        return m instanceof MSignal;
+        super(container, false);
     }
 
     /**
@@ -82,6 +74,16 @@ public class UMLSignalComboBoxModel extends UMLComboBoxModel2 {
     protected boolean isValidRoleAdded(MElementEvent e) {
         MModelElement m = (MModelElement)getChangedElement(e);
         return m instanceof MSignal;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        if (getTarget() != null) {
+        return ((MReception)getTarget()).getSignal();
+        }
+        return null;
     }
 
 }

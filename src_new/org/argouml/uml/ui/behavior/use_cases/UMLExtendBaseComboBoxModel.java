@@ -48,7 +48,7 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLExtendBaseComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, false);
     }
 
     /**
@@ -58,13 +58,8 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
         MExtend extend = (MExtend)getTarget();
         if (extend == null) return;
         MNamespace ns = extend.getNamespace();
-        addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
+        setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
         removeElement(extend.getExtension());
-        if (extend.getBase() != null) {
-            setSelectedItem(extend.getBase());
-        } else {
-            setSelectedItem("");
-        }   
     }
 
     /**
@@ -81,6 +76,16 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
         MModelElement m = (MModelElement)getChangedElement(e);
         MExtend extend = (MExtend)getTarget();
         return (m instanceof MUseCase && m != extend.getExtension()); 
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        if (getTarget() != null) {
+            return ((MExtend)getTarget()).getBase();
+        }
+        return null;
     }
 
 }

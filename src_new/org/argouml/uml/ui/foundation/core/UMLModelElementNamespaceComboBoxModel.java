@@ -42,7 +42,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      */
     public UMLModelElementNamespaceComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, false);
     }
 
     /**
@@ -65,11 +65,16 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      */
     protected void buildModelList() {
         setElements(CoreHelper.getHelper().getAllPossibleNamespaces((MModelElement)getTarget()));
-        if (getTarget() != null && ((MModelElement)getTarget()).getNamespace() != null) {
-            setSelectedItem(((MModelElement)getTarget()).getNamespace());
-        } 
-        else 
-            setSelectedItem("");
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        if (getTarget() != null) {
+            return ((MModelElement)getTarget()).getNamespace();
+        }
+        return null;
     }
 
 }

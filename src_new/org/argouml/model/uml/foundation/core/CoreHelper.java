@@ -1047,7 +1047,7 @@ public class CoreHelper {
         if (ns.getModel() != m.getModel()) return false;
         if (m == ns) return false;
         if (m instanceof MNamespace && m == getFirstSharedNamespace((MNamespace)m, ns)) return false;
-        if (ns instanceof MInterface || ns instanceof MActor) return false;
+        if (ns instanceof MInterface || ns instanceof MActor || ns instanceof MUseCase) return false;
         else
         if (ns instanceof MComponent) return (m instanceof MComponent && m != ns);
         else
@@ -1085,7 +1085,7 @@ public class CoreHelper {
         if (ns instanceof MClassifierRole) {
             if (!(((MClassifierRole)ns).getAvailableContentses().contains(m) || 
                 ((MClassifierRole)ns).getAvailableFeatures().contains(m))) return false;
-        } else
+        } 
         if (m instanceof MStructuralFeature) {
             if (!isValidNamespace((MStructuralFeature)m, ns)) return false;
         } else
@@ -1097,7 +1097,7 @@ public class CoreHelper {
         }
         if (m instanceof MAssociation) {
             if (!isValidNamespace((MAssociation)m, ns)) return false;
-        } 
+        } else
         if (m instanceof MCollaboration) {
             if (!isValidNamespace((MCollaboration)m, ns)) return false;
         }

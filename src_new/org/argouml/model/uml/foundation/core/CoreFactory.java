@@ -1064,7 +1064,12 @@ public class CoreFactory extends AbstractUmlModelFactory {
     
     public void deleteFlow(MFlow elem) {}
     
-    public void deleteGeneralizableElement(MGeneralizableElement elem) {}    
+    public void deleteGeneralizableElement(MGeneralizableElement elem) {
+        Iterator it = elem.getGeneralizations().iterator();
+        while (it.hasNext()) {
+            UmlFactory.getFactory().delete((MGeneralization)it.next());
+        }
+    }    
     
     public void deleteGeneralization(MGeneralization elem) {}
     

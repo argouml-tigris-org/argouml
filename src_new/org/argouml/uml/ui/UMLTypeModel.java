@@ -58,7 +58,7 @@ public class UMLTypeModel extends UMLComboBoxModel2 {
      */
     public UMLTypeModel(
         UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, false);
     }
 
     /**
@@ -141,6 +141,23 @@ public class UMLTypeModel extends UMLComboBoxModel2 {
     protected boolean isValidRoleAdded(MElementEvent e) {
         MModelElement m = (MModelElement)getChangedElement(e);
         return m instanceof MClassifier;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        if (getTarget() == null) return null;
+        if (getTarget() instanceof MParameter) {
+            return ((MParameter)getTarget()).getType();
+        } else
+        if (getTarget() instanceof MAttribute) {
+            return ((MAttribute)getTarget()).getType();
+        } else
+        if (getTarget() instanceof MAssociationEnd) {
+            return ((MAssociationEnd)getTarget()).getType();
+        } else
+        return null;
     }
 
 }
