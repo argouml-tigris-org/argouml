@@ -24,7 +24,7 @@
 package org.argouml.i18n;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 
 import java.util.Properties;
@@ -41,26 +41,24 @@ public class Translator {
     private static Properties images = null;
 
     /** Property file containing the bindings. */
-    private static File properties =
-        new File("org/argouml/i18n/images.properties");
+    private static String propertiesFile = "images.properties";
 
     /**   
      * Loads image bindings from a File.
      * @param file the properties file
      * @return the properties in file
      */
-    private static Properties loadImageBindings (File file) {
+    private static Properties loadImageBindings (String file) {
 
-        FileInputStream fileStream = null;
+        InputStream inputStream = null;
         Properties properties = new Properties();
 
         try {
-            fileStream = new FileInputStream(file);
-            properties.load(fileStream);
-            fileStream.close();
+            inputStream = Translator.class.getResourceAsStream(propertiesFile);
+            properties.load(inputStream);
+            inputStream.close();
         } catch (IOException ex) {
-            System.out.println("Unable to load properties from file: "
-                               + file.getAbsolutePath());
+            System.out.println("Unable to load properties from file: " + file);
             ex.printStackTrace(System.out);
             System.exit(1);
         }
@@ -78,7 +76,7 @@ public class Translator {
         String binding = null;
 
         if (images == null) {
-            images = loadImageBindings(properties);
+            images = loadImageBindings(propertiesFile);
         }
 
         binding = images.getProperty(name);
