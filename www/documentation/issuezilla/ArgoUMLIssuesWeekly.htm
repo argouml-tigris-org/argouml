@@ -16,7 +16,7 @@ xmlns="http://www.w3.org/TR/REC-html40">
   <o:Author>Linus Tolke </o:Author>
   <o:LastAuthor>Linus Tolke </o:LastAuthor>
   <o:Created>2002-03-17T14:36:07Z</o:Created>
-  <o:LastSaved>2002-07-15T20:11:31Z</o:LastSaved>
+  <o:LastSaved>2002-07-18T13:46:46Z</o:LastSaved>
   <o:Company>Enea Epact AB</o:Company>
   <o:Version>9.2720</o:Version>
  </o:DocumentProperties>
@@ -68,7 +68,7 @@ function fnGetIEVer()
 function fnBuildFrameset()
 {
  var szHTML="<frameset rows=\"*,18\" border=0 width=0 frameborder=no framespacing=0>"+
-  "<frame src=\""+document.all.item("shLink")[2].href+"\" name=\"frSheet\" noresize>"+
+  "<frame src=\""+document.all.item("shLink")[0].href+"\" name=\"frSheet\" noresize>"+
   "<frameset cols=\"54,*\" border=0 width=0 frameborder=no framespacing=0>"+
   "<frame src=\"\" name=\"frScroll\" marginwidth=0 marginheight=0 scrolling=no>"+
   "<frame src=\"\" name=\"frTabs\" marginwidth=0 marginheight=0 scrolling=no>"+
@@ -335,15 +335,16 @@ function fnSetActiveSheet(iSh)
   <x:WindowWidth>10380</x:WindowWidth>
   <x:WindowTopX>240</x:WindowTopX>
   <x:WindowTopY>135</x:WindowTopY>
-  <x:ActiveSheet>2</x:ActiveSheet>
   <x:ProtectStructure>False</x:ProtectStructure>
   <x:ProtectWindows>False</x:ProtectWindows>
  </x:ExcelWorkbook>
+</xml><![endif]--><!--[if gte mso 9]><xml>
+ <o:shapedefaults v:ext="edit" spidmax="3076"/>
 </xml><![endif]-->
 </head>
 
 <frameset rows="*,39" border=0 width=0 frameborder=no framespacing=0>
- <frame src="./ArgoUMLIssuesWeekly_files/sheet001.htm" name="frSheet">
+ <frame src="./ArgoUMLIssuesWeekly_files/chart001.htm" name="frSheet">
  <frame src="./ArgoUMLIssuesWeekly_files/tabstrip.htm" name="frTabs" marginwidth=0 marginheight=0>
  <noframes>
   <body>
