@@ -174,7 +174,7 @@ public class TestTargetManager extends TestCase {
 		assertTrue(
 			TargetManager.getInstance().getTargets().contains(testObject));
 		TargetManager.getInstance().removeTarget(testObject);
-		assertNull(TargetManager.getInstance().getTargets());
+		assertTrue(TargetManager.getInstance().getTargets().isEmpty());
 		testList.add(testObject);
 		TargetManager.getInstance().setTargets(testList);
 		assertTrue(
