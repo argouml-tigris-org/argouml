@@ -1,0 +1,8 @@
+The directory argouml/notes is intended to
+provide developers working on a CVS branch
+a location to place shared documents
+related to the branch.
+
+As a rule, none of those documents should be merged
+back into the root branch.
+
