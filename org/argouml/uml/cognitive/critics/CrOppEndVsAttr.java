@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -37,7 +35,6 @@ import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -100,7 +97,7 @@ public class CrOppEndVsAttr extends CrUML {
             Collection conn = asc.getConnections();
 
             if (ModelFacade.isAAssociationRole(asc))
-                conn = ((MAssociationRole) asc).getConnections();
+                conn = ModelFacade.getConnections(asc);
             if (conn == null)
                 continue;
 

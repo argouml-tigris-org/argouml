@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -253,14 +252,14 @@ public class FigSeqStimulus extends FigNodeModelElement {
 	// 15/09/00 AK
 	// the new stimulus becomes a pathItem of its link
    
-	MLink mlink = ((MStimulus) getOwner()).getCommunicationLink();
+	Object mlink = ModelFacade.getCommunicationLink(getOwner());
 
 	if (mlink != null && lay != null) {
       
 	    FigSeqLink figSeqLink = (FigSeqLink) lay.presentationFor(mlink);
 	    if (figSeqLink != null) {
         
-		Collection stimuli = mlink.getStimuli();
+		Collection stimuli = ModelFacade.getStimuli(mlink);
 		int size = 0;
 		if (stimuli != null) {
 		    size = stimuli.size();

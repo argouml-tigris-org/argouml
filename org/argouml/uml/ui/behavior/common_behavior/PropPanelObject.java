@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -122,7 +121,7 @@ public class PropPanelObject extends PropPanelModelElement {
 	    //            classifier = ((MInstance) target).getClassifier();
 
 	    // at the moment , we only deal with one classifier
-	    Collection col = ((MInstance) target).getClassifiers();
+	    Collection col = ModelFacade.getClassifiers(target);
             Iterator iter = col.iterator();
             if (iter.hasNext()) {
                 classifier = (MClassifier) iter.next();

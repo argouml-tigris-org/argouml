@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,10 +26,9 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.util.Collection;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.ui.AbstractGoRule;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * Go rule for the package perspective to show the comments belonging to some
@@ -44,8 +42,8 @@ public class GoModelElementToComment extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (org.argouml.model.ModelFacade.isAModelElement(parent)) {
-            return ((MModelElement) parent).getComments();
+        if (ModelFacade.isAModelElement(parent)) {
+            return ModelFacade.getComments(parent);
         }
         return null;
     }

@@ -31,6 +31,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import java.awt.event.*;
 import java.util.*;
+import org.argouml.model.ModelFacade;
 
 
 public class ActionAggregation extends UMLAction {
@@ -77,13 +78,17 @@ public class ActionAggregation extends UMLAction {
 	    Selection sel = (Selection) sels.firstElement();
 	    Fig f = sel.getContent();
 	    Object owner = ((FigEdgeModelElement) f).getOwner();
-	    java.util.List ascEnds = ((MAssociation) owner).getConnections();
-	    MAssociationEnd ascEnd = null;
-	    if (str.equals("src"))
-		ascEnd = (MAssociationEnd) ascEnds.get(0);
-	    else
-		ascEnd = (MAssociationEnd) ascEnds.get(ascEnds.size() - 1);
-	    ascEnd.setAggregation(agg);
+	    Collection ascEnds = ModelFacade.getConnections(owner);
+            Iterator iter = ascEnds.iterator();
+	    Object ascEnd = null;
+	    if (str.equals("src")) {
+		ascEnd = iter.next();
+            } else {
+                while (iter.hasNext()) {
+                    ascEnd = iter.next();
+                }
+            }
+	    ModelFacade.setAggregation(ascEnd, agg);
 	}
     }
 

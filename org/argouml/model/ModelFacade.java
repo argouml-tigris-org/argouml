@@ -1514,13 +1514,17 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
-    /** Get the body of an Expression.
+    /** Get the body of an method/constraint/expression.
      *
      *
      * @param handle expression.
      * @return the body.
      */
     public static Object getBody(Object handle) {
+        if (handle instanceof MMethod)
+            return ((MMethod) handle).getBody();
+        if (handle instanceof MConstraint)
+            return ((MConstraint) handle).getBody();
         if (handle instanceof MExpression)
             return ((MExpression) handle).getBody();
         throw new IllegalArgumentException("Unrecognized object " + handle);
@@ -1554,6 +1558,48 @@ public class ModelFacade {
     }
 
     /**
+     * Gets the classifiers roles of some model element
+     * @param handle the model element
+     * @return the classifiers roles of the instance
+     */
+    public static Collection getClassifierRoles(Object handle) {
+        if (handle instanceof MFeature) {
+            return ((MFeature) handle).getClassifierRoles();
+        }
+        if (handle instanceof MClassifier) {
+            return ((MClassifier) handle).getClassifierRoles();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Gets the classifierss of some instance
+     * @param handle the instance
+     * @return the classifierss of the instance
+     */
+    public static Collection getClassifiers(Object handle) {
+        if (handle instanceof MInstance) {
+            return ((MInstance) handle).getClassifiers();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Gets the classifiers in state of some model element
+     * @param handle the model element
+     * @return the classifierss in state
+     */
+    public static Collection getClassifiersInState(Object handle) {
+        if (handle instanceof MClassifier) {
+            return ((MClassifier) handle).getClassifiersInState();
+        }
+        if (handle instanceof MState) {
+            return ((MState) handle).getClassifiersInState();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
      * Gets the clients of some dependency
      * @param handle the dependency
      * @return the clients of the dependency
@@ -1579,6 +1625,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Get the condition of an extend.
+     *
+     * @param o extend
+     * @return the condition
+     */
+    public static Object getCondition(Object o) {
+        if (o != null && o instanceof MExtend) {
+            return ((MExtend) o).getCondition();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + o);
+    }
+
     /** Get the concurrency of an operation.
      *
      * @param o operation.
@@ -1594,17 +1652,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + o);
     }
 
-    /** The list of Connections or AssociationEnds to an Association.
+    /** The list of connections to an association or link.
      *
-     * @param handle to the association.
+     * @param handle to the association or link
      * @return a Collection with all connections.
      */
     public static Collection getConnections(Object handle) {
         if (handle instanceof MAssociation) {
             return ((MAssociation) handle).getConnections();
         }
-
-        // ...
+        if (handle instanceof MLink) {
+            return ((MLink) handle).getConnections();
+        }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
@@ -1831,10 +1890,34 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
-    /** Get the comments of an element.
+    /** Get the communication connection of an message.
      *
-     * @param handle the model element that we are getting the comments of
-     * @returns the comment (or null)
+     * @param handle the message that we are getting the communication connection
+     * @returns the communication connection
+     */
+    public static Object getCommunicationConnection(Object handle) {
+        if (handle instanceof MMessage)
+            return ((MMessage) handle).getCommunicationConnection();
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Get the communication link of a stimulus.
+     *
+     * @param handle the message that we are getting the communication link
+     * @returns the communication link
+     */
+    public static Object getCommunicationLink(Object handle) {
+        if (handle instanceof MStimulus)
+            return ((MStimulus) handle).getCommunicationLink();
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Get the collaborations of an element.
+     *
+     * @param handle the model element that we are getting the collaborations of
+     * @returns the collaborations
      */
     public static Collection getCollaborations(Object handle) {
         if (handle instanceof MOperation)
@@ -1857,6 +1940,13 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + element);
     }
     
+    public static Collection getConstrainingElements(Object handle) {
+        if (handle instanceof MCollaboration) {
+            return ((MCollaboration)handle).getConstrainingElements();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
     public static Collection getConstraints(Object handle) {
         if (handle instanceof MModelElement) {
             return ((MModelElement) handle).getConstraints();
@@ -1874,9 +1964,16 @@ public class ModelFacade {
      * @param handle
      * @return Object
      */
-    public static Object getContainer(Object handle) {
+    public static Object getModelElementContainer(Object handle) {
         if (handle instanceof MBase) {
             return ((MBase) handle).getModelElementContainer();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    public static Object getContainer(Object handle) {
+        if (handle instanceof MStateVertex) {
+            return ((MStateVertex) handle).getContainer();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -3283,6 +3380,17 @@ public class ModelFacade {
     public static void setFeatures(Object element, Collection features) {
         if (element != null && element instanceof MClassifier && features instanceof List) {
             ((MClassifier)element).setFeatures((List)features);
+        }
+    }
+
+    /**
+     * Sets the aggregation of some model element.
+     * @param element the model element to set aggregation
+     * @param aggregation the aggregation kind
+     */
+    public static void setAggregation(Object element, Object aggregationKind) {
+        if (element instanceof MAssociationEnd && aggregationKind instanceof MAggregationKind) {
+            ((MAssociationEnd)element).setAggregation((MAggregationKind)aggregationKind);
         }
     }
 

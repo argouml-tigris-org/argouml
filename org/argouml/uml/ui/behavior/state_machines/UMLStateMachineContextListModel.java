@@ -25,11 +25,10 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
-
 /**
  * Listmodel for the context of a statemachine
  * @since Dec 6, 2002
@@ -54,14 +53,13 @@ public class UMLStateMachineContextListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MStateMachine) getTarget()).getContext());
+        addElement(ModelFacade.getContext(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return element == ((MStateMachine) getTarget()).getContext();
+        return element == ModelFacade.getContext(getTarget());
     }
-
 }

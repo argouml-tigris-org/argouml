@@ -49,7 +49,7 @@ public final class OCLUtil{
         
 	while ((me != null) &&
 	       (!(ModelFacade.isANamespace(me)))) {
-	    me = ModelFacade.getContainer(me);
+	    me = ModelFacade.getModelElementContainer(me);
 	}
 
 	return me;

@@ -34,7 +34,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Category;
@@ -44,7 +43,6 @@ import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
 
-import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
@@ -263,17 +261,18 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (edge == null) return false;
 	if (_edges.contains(edge)) return false;
 	Object end0 = null, end1 = null;
-	if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
-	    List conns = ((MAssociation) edge).getConnections();
+	if (ModelFacade.isAAssociation(edge)) {
+	    Collection conns = ModelFacade.getConnections(edge);
+	    Iterator iter = conns.iterator();
 	    if (conns.size() < 2) return false;
-	    MAssociationEnd ae0 = (MAssociationEnd) conns.get(0);
-	    MAssociationEnd ae1 = (MAssociationEnd) conns.get(1);
-	    if (ae0 == null || ae1 == null) return false;
-	    end0 = ae0.getType();
-	    end1 = ae1.getType();
+	    Object associationEnd0 = iter.next();
+	    Object associationEnd1 = iter.next();
+	    if (associationEnd0 == null || associationEnd1 == null) return false;
+	    end0 = ModelFacade.getType(associationEnd0);
+	    end1 = ModelFacade.getType(associationEnd1);
 	}
-	else if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
-	    end0 = ((MGeneralization) edge).getChild();
+	else if (ModelFacade.isAGeneralization(edge)) {
+	    end0 = ModelFacade.getChild(edge);
 	    end1 = ((MGeneralization) edge).getParent();
 	}
 	else if (org.argouml.model.ModelFacade.isADependency(edge)) {
@@ -284,7 +283,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    end1 = ((Object[]) suppliers.toArray())[0];
 	}
 	else if (org.argouml.model.ModelFacade.isALink(edge)) {
-	    Collection roles = ((MLink) edge).getConnections();
+	    Collection roles = ModelFacade.getConnections(edge);
 	    MLinkEnd le0 = (MLinkEnd) ((Object[]) roles.toArray())[0];
 	    MLinkEnd le1 = (MLinkEnd) ((Object[]) roles.toArray())[0];
 	    if (le0 == null || le1 == null) return false;

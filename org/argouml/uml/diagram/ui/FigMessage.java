@@ -38,6 +38,7 @@ import java.text.ParseException;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.collaboration.ui.FigAssociationRole;
 import org.argouml.uml.generator.ParserDisplay;
@@ -47,7 +48,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 
@@ -258,11 +258,11 @@ public class FigMessage extends FigNodeModelElement {
     /** add the FigMessage to the Path Items of its FigAssociationRole */
     public void addPathItemToFigAssociationRole(Layer lay) {
 
-	MAssociationRole ar =
-	    ((MMessage) getOwner()).getCommunicationConnection();
-	if (ar != null && lay != null) {
+	Object associationRole =
+	    ModelFacade.getCommunicationConnection(getOwner());
+	if (associationRole != null && lay != null) {
 	    FigAssociationRole figAssocRole =
-		(FigAssociationRole) lay.presentationFor(ar);
+		(FigAssociationRole) lay.presentationFor(associationRole);
 	    if (figAssocRole != null) {
 		figAssocRole.addMessage(this);
 		figAssocRole.updatePathItemLocations();

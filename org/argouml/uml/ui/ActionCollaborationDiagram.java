@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -33,7 +31,6 @@ import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
@@ -61,39 +58,39 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        MNamespace ns = (MNamespace) handle;
+        MNamespace namespace = (MNamespace) handle;
         Object target = TargetManager.getInstance().getTarget();
-        MCollaboration c = null;
-        if (org.argouml.model.ModelFacade.isAOperation(target)) {
-            c =
+        Object collaboration = null;
+        if (ModelFacade.isAOperation(target)) {
+            collaboration =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
-                    ns);
-            c.setRepresentedOperation((MOperation) target);
-        } else if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            c =
+                    namespace);
+            ((MCollaboration)collaboration).setRepresentedOperation((MOperation) target);
+        } else if (ModelFacade.isAClassifier(target)) {
+            collaboration =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
                     (MClassifier) target);
-            c.setRepresentedClassifier((MClassifier) target);
-        } else if (org.argouml.model.ModelFacade.isAModel(target)) {
-            c =
+            ((MCollaboration)collaboration).setRepresentedClassifier((MClassifier) target);
+        } else if (ModelFacade.isAModel(target)) {
+            collaboration =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
                     (MModel) target);
-        } else if (org.argouml.model.ModelFacade.isAInteraction(target)) {
-            c = ((MInteraction) target).getContext();
+        } else if (ModelFacade.isAInteraction(target)) {
+            collaboration = ModelFacade.getContext(target);
         } else if (target instanceof UMLCollaborationDiagram) {
-            Object o = ((UMLCollaborationDiagram) target).getOwner();
-            if (org.argouml.model.ModelFacade.isACollaboration(o)) {
+            Object owner = ((UMLCollaborationDiagram) target).getOwner();
+            if (org.argouml.model.ModelFacade.isACollaboration(owner)) {
                 //preventing backward compat problems
-                c = (MCollaboration) o;
+                collaboration = owner;
             }
         } else if (org.argouml.model.ModelFacade.isACollaboration(target)) {
-            c = (MCollaboration) target;
+            collaboration = (MCollaboration) target;
         } else {
-            c =
+            collaboration =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
-                    ns);
+                    namespace);
         }
-        UMLCollaborationDiagram d = new UMLCollaborationDiagram(c);
+        UMLCollaborationDiagram d = new UMLCollaborationDiagram((MCollaboration)collaboration);
         return d;
     }
 

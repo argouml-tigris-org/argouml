@@ -163,11 +163,11 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         }
     }
 
-    public MGeneralizableElement getChild() {
-        MGeneralizableElement child = null;
+    public Object getChild() {
+        Object child = null;
         Object target = getTarget();
         if (ModelFacade.isAGeneralization(target)) {
-            child = ((MGeneralization) target).getChild();
+            child = ModelFacade.getChild(target);
         }
         return child;
     }
