@@ -28,7 +28,6 @@ import javax.swing.ImageIcon;
 
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLVisibilityPanel;
 
 /**
  * @since Nov 6, 2002
@@ -36,20 +35,8 @@ import org.argouml.uml.ui.UMLVisibilityPanel;
  */
 public class PropPanelFeature extends PropPanelModelElement {
 
-    protected UMLFeatureOwnerScopeCheckBox ownerScopeCheckbox;
-    protected UMLComboBox2 ownerComboBox;
-    
-    private static UMLFeatureOwnerComboBoxModel featureOwnerComboBoxModel = new UMLFeatureOwnerComboBoxModel();
-
-    /**
-     * Constructor for PropPanelFeature.
-     * @param name
-     * @param columns
-     */
-    public PropPanelFeature(String name, int columns) {
-        super(name, columns);
-        initialize();
-    }
+    protected UMLFeatureOwnerScopeCheckBox _ownerScopeCheckbox;
+    protected UMLComboBox2 _ownerComboBox;     
 
     /**
      * Constructor for PropPanelFeature.
@@ -57,31 +44,19 @@ public class PropPanelFeature extends PropPanelModelElement {
      * @param icon
      * @param orientation
      */
-    public PropPanelFeature(
+    protected PropPanelFeature(
         String name,
-        ImageIcon icon,
         Orientation orientation) {
-        super(name, icon, orientation);
-        initialize();
-    }
-
-    /**
-     * Constructor for PropPanelFeature.
-     * @param name
-     * @param icon
-     * @param columns
-     */
-    public PropPanelFeature(String name, ImageIcon icon, int columns) {
-        super(name, icon, columns);
+        super(name, orientation);
         initialize();
     }
     
     private void initialize() {
-        ownerScopeCheckbox = new UMLFeatureOwnerScopeCheckBox();
+        _ownerScopeCheckbox = new UMLFeatureOwnerScopeCheckBox();
         // according to the UML spec we need an attribute visibility here
         // but it seems that NSUML thinks that elementownership visibility
         // and feature visibility are the same
-        ownerComboBox = new UMLComboBox2(featureOwnerComboBoxModel, ActionSetFeatureOwner.SINGLETON); 
+        _ownerComboBox = new UMLComboBox2(new UMLFeatureOwnerComboBoxModel(), ActionSetFeatureOwner.SINGLETON); 
     }
 
 

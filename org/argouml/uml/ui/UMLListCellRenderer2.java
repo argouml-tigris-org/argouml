@@ -68,25 +68,15 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
         if (value instanceof MBase) {
-            String name = null;
-            if (value instanceof MModelElement) {
-                MModelElement elem = (MModelElement) value;
-                name = elem.getName();
-                if (name == null || name.equals("")) {
-                    name = "(anon " + makeTypeName(elem) + ")";
-                }
-            } else {
-                name = makeTypeName(value);
-            }
-
-            label.setText(name);
+            String text = makeText((MBase)value);            
+            label.setText(text);
             if (_showIcon) {
                 Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(value);
                 if (icon != null)
                     label.setIcon(icon);
             } else {
                 // hack to make sure that the right hight is applied when no icon is used.
-                label = (JLabel) super.getListCellRendererComponent(list, name, index, isSelected, cellHasFocus);
+                label = (JLabel) super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
             }
 
         }
@@ -94,12 +84,31 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
         return label;
     }
 
+    /**
+     * Makes the text that must be placed on the label that is returned.
+     * @param value
+     * @return String
+     */
+    public String makeText(Object value) {
+        String name = null;
+        if (value instanceof MModelElement) {
+            MModelElement elem = (MModelElement) value;
+            name = elem.getName();
+            if (name == null || name.equals("")) {
+                name = "(anon " + makeTypeName(elem) + ")";
+            }
+        } else {
+            name = makeTypeName(value);
+        }
+        return name;
+
+    }
+
     private String makeTypeName(Object elem) {
-        String fullName = elem.getClass().getName();
-        fullName = fullName.substring(fullName.lastIndexOf('.') + 2, fullName.length());
-        if (fullName.endsWith("Impl"))
-            fullName = fullName.substring(0, fullName.indexOf("Impl"));
-        return fullName;
+        if (elem instanceof MBase) {
+            return ((MBase) elem).getUMLClassName();
+        }
+        return null;
     }
 
 }
