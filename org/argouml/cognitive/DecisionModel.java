@@ -31,7 +31,6 @@
 package org.argouml.cognitive;
 
 import java.util.*;
-import java.awt.*;
 
 /** The DecisionModel is part of the state of the Designer.  It
  *  describes what types of decisions, or design issues, the Designer

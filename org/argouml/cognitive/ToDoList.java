@@ -144,7 +144,7 @@ public class ToDoList
         while (true) {
             forceValidityCheck(removes);
             removes.removeAllElements();
-            try { _validityChecker.sleep(3000); }
+            try { Thread.sleep(3000); }
             catch (InterruptedException ignore) {
                 cat.error("InterruptedException!!!", ignore);
             }
