@@ -47,7 +47,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggableImport;
 import org.argouml.cognitive.Designer;
@@ -110,8 +110,8 @@ public class Import {
     private ImportStatusScreen iss;
     
     // log4j logging
-    private static Category cat =
-	Category.getInstance(org.argouml.uml.reveng.Import.class);
+    private static Logger cat =
+	Logger.getLogger(org.argouml.uml.reveng.Import.class);
     
     /**
      * Unnecessary attribute

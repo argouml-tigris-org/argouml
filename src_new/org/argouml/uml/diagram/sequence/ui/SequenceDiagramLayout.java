@@ -39,7 +39,7 @@ import java.util.Enumeration;
 import java.awt.Rectangle;
 import java.awt.Color;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.presentation.FigDynPort;
 import org.tigris.gef.presentation.Fig;
@@ -52,8 +52,8 @@ import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 
 public class SequenceDiagramLayout extends LayerPerspective {
-    protected static Category cat = 
-        Category.getInstance(SequenceDiagramLayout.class);
+    protected static Logger cat = 
+        Logger.getLogger(SequenceDiagramLayout.class);
 
     static final int MIN_GAP = 80;
     static final int OBJ_WIDTH = 0;

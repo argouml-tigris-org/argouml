@@ -52,8 +52,8 @@ public interface ArgoModule {
     // TODO:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //
-    // public final static Category cat = 
-    // Category.getInstance(ModuleLoader.class.getPackage().getName());
+    // public final static Logger cat = 
+    // Logger.getLogger(ModuleLoader.class.getPackage().getName());
 
 
     public static final String MODULEFILENAME = ".argo.modules";

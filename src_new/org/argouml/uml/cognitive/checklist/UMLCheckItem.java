@@ -24,7 +24,7 @@
 
 package org.argouml.uml.cognitive.checklist;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 
 
@@ -41,8 +41,8 @@ import org.tigris.gef.util.Predicate;
  * @see org.argouml.ocl.OCLEvaluator */
 
 public class UMLCheckItem extends CheckItem {
-    protected static Category cat = 
-        Category.getInstance(UMLCheckItem.class);
+    protected static Logger cat = 
+        Logger.getLogger(UMLCheckItem.class);
 
     public UMLCheckItem(String c, String d) { super(c, d); }
 

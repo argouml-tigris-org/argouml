@@ -46,13 +46,13 @@ public class Configuration {
 
     /** Define a static log4j category variable for ArgoUML configuration.
      */
-    public static final Category cat = 
-	Category.getInstance("org.argouml.application.configuration");
+    public static final Logger cat = 
+	Logger.getLogger("org.argouml.application.configuration");
     // TODO:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //
-    // public final static Category cat = 
-    // Category.getInstance(ConfigurationHandler.class.getPackage().getName()); 
+    // public final static Logger cat = 
+    // Logger.getLogger(ConfigurationHandler.class.getPackage().getName()); 
 
     /** Property to indicate configuration load from file
      */

@@ -81,8 +81,8 @@ public final class Notation implements PropertyChangeListener {
     // TODO:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //
-    // public final static Category cat =
-    // Category.getInstance(NotationNameImpl.class.getPackage().getName());
+    // public final static Logger cat =
+    // Logger.getLogger(NotationNameImpl.class.getPackage().getName());
 
     /** The name of the default Argo notation.  This notation is
      *  part of Argo core distribution.

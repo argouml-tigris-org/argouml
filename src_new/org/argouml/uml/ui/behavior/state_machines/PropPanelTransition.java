@@ -32,7 +32,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 
 import org.argouml.uml.ui.PropPanelButton;
@@ -43,7 +43,7 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 public class PropPanelTransition extends PropPanelModelElement {
-    protected static Category cat = Category.getInstance(PropPanelTransition.class);
+    protected static Logger cat = Logger.getLogger(PropPanelTransition.class);
 
     ////////////////////////////////////////////////////////////////
     // contructors

@@ -30,7 +30,7 @@ package org.argouml.swingext;
 import java.awt.*;
 import java.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Lays out components in a single row or column starting from any
@@ -49,8 +49,8 @@ import org.apache.log4j.Category;
  */
 public class SerialLayout extends LineLayout {
     
-    protected static Category cat = 
-        Category.getInstance(SerialLayout.class);
+    protected static Logger cat = 
+        Logger.getLogger(SerialLayout.class);
         
     public static final int LEFTTORIGHT = 10;
     public static final int TOPTOBOTTOM = 10;

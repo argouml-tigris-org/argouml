@@ -36,7 +36,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 /** Agency manages Critics.  Since classes are not really first class
  *  objects in java, a singleton instance of Agency is made and passed
@@ -56,7 +56,7 @@ import org.argouml.cognitive.Designer;
  *  still half done.  Trigger's are the critiquing requests.  The code
  *  for triggers is currently dormant (latent?). */
 public class Agency extends Observable { //implements java.io.Serialization
-    protected static Category cat = Category.getInstance(Agency.class);
+    protected static Logger cat = Logger.getLogger(Agency.class);
     ////////////////////////////////////////////////////////////////
     // instance variables
     

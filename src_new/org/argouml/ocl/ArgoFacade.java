@@ -32,7 +32,7 @@ import tudresden.ocl.check.types.Type;
 import tudresden.ocl.check.types.Type2;
 import tudresden.ocl.check.*;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.*;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
@@ -94,7 +94,7 @@ public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
 }
 
 class ArgoAny implements Any, Type2 {
-    protected static Category cat = Category.getInstance(ArgoAny.class);
+    protected static Logger cat = Logger.getLogger(ArgoAny.class);
 
     Object classifier;
 

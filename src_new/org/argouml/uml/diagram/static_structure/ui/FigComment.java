@@ -48,7 +48,7 @@ import java.util.Vector;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.ModelFacade;
@@ -80,7 +80,7 @@ public class FigComment
 	       KeyListener,
 	       PropertyChangeListener
 {
-    protected static Category cat = Category.getInstance(FigComment.class);
+    protected static Logger cat = Logger.getLogger(FigComment.class);
 
     ////////////////////////////////////////////////////////////////
     // constants

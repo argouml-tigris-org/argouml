@@ -41,7 +41,7 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
 import org.argouml.uml.diagram.ui.*;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 // could be singleton
 
@@ -64,8 +64,8 @@ import org.apache.log4j.Category;
 public class ClassDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer {
 
-    protected static Category cat = 
-        Category.getInstance(ClassDiagramRenderer.class);
+    protected static Logger cat = 
+        Logger.getLogger(ClassDiagramRenderer.class);
 
     /** Return a Fig that can be used to represent the given node */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {

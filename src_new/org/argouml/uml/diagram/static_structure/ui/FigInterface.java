@@ -43,7 +43,7 @@ import java.util.Vector;
 
 import javax.swing.JMenu;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.ModelFacade;
@@ -86,7 +86,7 @@ import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 /** Class to display graphics for a UML Interface in a diagram. */
 
 public class FigInterface extends FigNodeModelElement {
-    protected static Category cat = Category.getInstance(FigInterface.class);
+    protected static Logger cat = Logger.getLogger(FigInterface.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
