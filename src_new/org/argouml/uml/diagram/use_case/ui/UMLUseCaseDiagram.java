@@ -193,8 +193,11 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     }
     
     public UMLUseCaseDiagram(String name, MNamespace m) {
-        super(name, m);
-        setNamespace(m);
+        this(m);
+        try {
+            setName(name);
+        } catch(PropertyVetoException v) {
+        }
     }
 
     /**
