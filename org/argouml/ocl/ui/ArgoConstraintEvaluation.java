@@ -141,7 +141,37 @@ public class ArgoConstraintEvaluation extends ConstraintEvaluation {
 
   protected String getEnteredConstraint()
   {
-    return "context " + classifierName + "\n" + super.getEnteredConstraint();
+//   TODO: was a call to super.getEnteredConstraint
+    return "context " + classifierName + "\n" + getConstraintName();
+  }
+
+  //    TODO:
+  //    This method should be eliminated when ocl-argo
+  //       is updated
+  //    Curt Arnold: 27 Nov 2000
+  private java.lang.reflect.Method _getConstraintName = null;
+  private boolean _attemptedReflection = false;
+  public String getConstraintName() {
+    String name = "unknownName";
+    if(!_attemptedReflection) {
+        _attemptedReflection = true;
+        try {
+            _getConstraintName = ConstraintEvaluation.class.getMethod("getConstraintName",new Class[] {});
+        }
+        catch(Exception ex) {
+            System.out.println("Needs updated ocl-argo.jar");
+            ex.printStackTrace();
+        }
+    }
+    if(_getConstraintName != null) {
+        try {
+            name = (String) _getConstraintName.invoke(this,new Object[] {});
+        }
+        catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    return name;
   }
 
   protected void doCopyTreeToText() {
@@ -194,4 +224,5 @@ public class ArgoConstraintEvaluation extends ConstraintEvaluation {
       dialog.dispose();
     }
   }
+
 }
