@@ -69,42 +69,36 @@ public abstract class UMLList2 extends JList implements UMLUserInterfaceComponen
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
-        ((UMLModelElementListModel2)getModel()).propertySet(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        ((UMLModelElementListModel2)getModel()).roleAdded(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        ((UMLModelElementListModel2)getModel()).roleRemoved(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
-        ((UMLModelElementListModel2)getModel()).listRoleItemSet(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent e) {
-        ((UMLModelElementListModel2)getModel()).removed(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
     public void recovered(MElementEvent e) {
-        ((UMLModelElementListModel2)getModel()).recovered(e);
     }
 
     /**
