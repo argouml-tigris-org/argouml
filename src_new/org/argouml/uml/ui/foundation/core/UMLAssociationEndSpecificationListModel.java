@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,12 +25,10 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	
@@ -53,14 +49,14 @@ public class UMLAssociationEndSpecificationListModel extends UMLModelElementList
      */
     protected void buildModelList() {
         if (_target != null) 
-            setAllElements(((MAssociationEnd) _target).getSpecifications());
+            setAllElements(ModelFacade.getSpecifications(_target));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {  
-        return org.argouml.model.ModelFacade.isAClassifier(o) && ((MAssociationEnd) getTarget()).getSpecifications().contains(o);
+        return org.argouml.model.ModelFacade.isAClassifier(o) && ModelFacade.getSpecifications(getTarget()).contains(o);
     }
 
 }

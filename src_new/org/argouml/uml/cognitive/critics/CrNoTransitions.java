@@ -35,7 +35,6 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
 
 
-import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
@@ -56,8 +55,8 @@ public class CrNoTransitions extends CrUML {
 	if (!(ModelFacade.isAStateVertex(dm))) return NO_PROBLEM;
 	MStateVertex sv = (MStateVertex) dm;
 	if (ModelFacade.isAState(sv)) {
-	    MStateMachine sm = ((MState) sv).getStateMachine();
-	    if (sm != null && sm.getTop() == sv) return NO_PROBLEM;
+	    Object sm = ModelFacade.getStateMachine(sv);
+	    if (sm != null && ((MStateMachine)sm).getTop() == sv) return NO_PROBLEM;
 	}
 	Collection outgoing = sv.getOutgoings();
 	Collection incoming = sv.getIncomings();

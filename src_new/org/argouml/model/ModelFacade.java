@@ -73,9 +73,11 @@ import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MFinalState;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.behavior.state_machines.MSignalEvent;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
@@ -2592,13 +2594,34 @@ public class ModelFacade {
     }
 
     /**
-     * Returns the sender object of a stimulus
+     * Returns the sender object of a stimulus or a message
      * @param handle
      * @return
      */
     public static Object getSender(Object handle) {
         if (handle instanceof MStimulus) {
             return ((MStimulus) handle).getSender();
+        }
+        if (handle instanceof MMessage) {
+            return ((MMessage) handle).getSender();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /**
+     * Returns the sender object of a stimulus or a message
+     * @param handle
+     * @return
+     */
+    public static Object getSignal(Object handle) {
+        if (handle instanceof MSendAction) {
+            return ((MSendAction) handle).getSignal();
+        }
+        if (handle instanceof MSignalEvent) {
+            return ((MSignalEvent) handle).getSignal();
+        }
+        if (handle instanceof MReception) {
+            return ((MReception) handle).getSignal();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -2656,13 +2679,28 @@ public class ModelFacade {
     }
 
     /**
-     * Returns the state machine belonging to some given state
+     * Returns the state machine belonging to some given state or transition
      * @param handle
      * @return Object
      */
     public static Object getStateMachine(Object handle) {
         if (handle instanceof MState) {
             return ((MState) handle).getStateMachine();
+        }
+        if (handle instanceof MTransition) {
+            return ((MTransition) handle).getStateMachine();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns the state belonging to some given transition
+     * @param handle
+     * @return Object
+     */
+    public static Object getState(Object handle) {
+        if (handle instanceof MTransition) {
+            return ((MTransition) handle).getState();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -2712,6 +2750,30 @@ public class ModelFacade {
     public static Collection getSubvertices(Object handle) {
         if (isACompositeState(handle)) {
             return ((MCompositeState) handle).getSubvertices();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns the submachie of a submachine state
+     * @param handle
+     * @return submachine
+     */
+    public static Object getSubmachine(Object handle) {
+        if (handle instanceof MSubmachineState) {
+            return ((MSubmachineState) handle).getStateMachine();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns the submachie of a submachine state
+     * @param handle
+     * @return submachine
+     */
+    public static Collection getSubmachineStates(Object handle) {
+        if (handle instanceof MStateMachine) {
+            return ((MStateMachine) handle).getSubmachineStates();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -2885,6 +2947,9 @@ public class ModelFacade {
      */
     public static Collection getSpecifications(Object cls) {
         Collection result = new Vector();
+        if (cls instanceof MAssociationEnd) {
+            return ((MAssociationEnd) cls).getSpecifications();
+        }
         if (cls instanceof MClassifier) {
             Collection deps = ((MClassifier) cls).getClientDependencies();
             Iterator depIterator = deps.iterator();

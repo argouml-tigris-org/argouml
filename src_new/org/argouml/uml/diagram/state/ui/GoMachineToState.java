@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,11 +26,11 @@
 
 package org.argouml.uml.diagram.state.ui;
 
+import org.argouml.model.ModelFacade;
 import java.util.Collection;
 
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 
 /**
@@ -51,8 +50,7 @@ public class GoMachineToState extends AbstractGoRule {
         
         if (org.argouml.model.ModelFacade.isAStateMachine(parent)) {
             if ( ((MStateMachine) parent).getTop() != null) { 
-                return ((MCompositeState) ((MStateMachine) parent).getTop())
-                                .getSubvertices();
+                return ModelFacade.getSubvertices(((MStateMachine)parent).getTop());
             }
         }
         return null;
