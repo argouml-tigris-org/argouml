@@ -42,10 +42,10 @@ import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MOperation;
+//import ru.novosoft.uml.foundation.core.MAttribute;
+//import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
-import ru.novosoft.uml.foundation.data_types.MExpression;
+//import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
@@ -53,9 +53,9 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 public abstract class Parser {
 
     public abstract MExtensionPoint parseExtensionPoint(String s);
-    public abstract void parseOperation(String s, MOperation op)
+    public abstract void parseOperation(String s, Object op)
 	throws ParseException;
-    public abstract void parseAttribute(String s, MAttribute attr)
+    public abstract void parseAttribute(String s, Object attr)
 	throws ParseException;
     public abstract MParameter parseParameter(String s);
     //   public abstract Package parsePackage(String s);
@@ -72,7 +72,7 @@ public abstract class Parser {
     public abstract MEvent parseEvent(String s);
 
 
-    public MExpression parseExpression(String s) {
+    public Object parseExpression(String s) {
 	return UmlFactory.getFactory().getDataTypes().createExpression("Java",
 								       s);
     }

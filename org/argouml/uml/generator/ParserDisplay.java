@@ -62,16 +62,11 @@ import org.argouml.uml.ProfileJava;
 import org.argouml.uml.generator.GeneratorDisplay.MsgPtr;
 import org.argouml.util.MyTokenizer;
 
-import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MArgument;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
-import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
-import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
-import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.state_machines.MCallEvent;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
@@ -82,9 +77,7 @@ import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
@@ -94,11 +87,8 @@ import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MIterationExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
-import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * Interface specifying the operation to take when a PropertySpecialString
@@ -116,7 +106,7 @@ interface PropertyOperation {
      * @param value The value of the property, may be null if no value was
      *		  given.
      */
-    public void found(MModelElement element, String value);
+    public void found(Object element, String value);
 }
 
 /**
@@ -127,11 +117,11 @@ interface PropertyOperation {
  * <p><b>Example:</b><pre>
  *  _attributeSpecialStrings[0] = new PropertySpecialString("frozen",
  *	new PropertyOperation() {
- *	    public void found(MModelElement element, String value) {
+ *	    public void found(Object element, String value) {
  *		MChangeableKind kind = MChangeableKind.FROZEN;
  *		if (value != null && value.equalsIgnoreCase("false"))
  *		    kind = MChangeableKind.CHANGEABLE;
- *		if (element instanceof MStructuralFeature)
+ *		if (ModelFacade.isAStructuralFeature(element))
  *		    ((MStructuralFeature)element).setChangeability(kind);
  *	    }
  *	});</pre>
@@ -177,7 +167,7 @@ class PropertySpecialString {
      * @param value The value of a property.
      * @return <b>true</b> if an action is performed, otherwise <b>false</b>.
      */
-    public boolean invoke(MModelElement element, String name, String value) {
+    public boolean invoke(Object element, String name, String value) {
 	if (!_name.equalsIgnoreCase(name))
 	    return false;
 	_op.found(element, value);
@@ -227,24 +217,24 @@ public class ParserDisplay extends Parser {
 	    new PropertySpecialString("frozen",
 		    new PropertyOperation()
 		    {
-			public void found(MModelElement element, String value)
+			public void found(Object element, String value)
 			{
 			    MChangeableKind kind = MChangeableKind.FROZEN;
 			    if (value != null && value.equalsIgnoreCase("false"))
 				kind = MChangeableKind.CHANGEABLE;
-			    if (element instanceof MStructuralFeature)
+			    if (ModelFacade.isAStructuralFeature(element))
 				((MStructuralFeature) element).setChangeability(kind);
 			}
 		    });
 	_attributeSpecialStrings[1] =
 	    new PropertySpecialString("addonly",
 		    new PropertyOperation() {
-			public void found(MModelElement element, String value)
+			public void found(Object element, String value)
 			{
 			    MChangeableKind kind = MChangeableKind.ADD_ONLY;
 			    if ("false".equalsIgnoreCase(value))
 				kind = MChangeableKind.CHANGEABLE;
-			    if (element instanceof MStructuralFeature)
+			    if (ModelFacade.isAStructuralFeature(element))
 				((MStructuralFeature) element).setChangeability(kind);
 			}
 		    });
@@ -257,97 +247,97 @@ public class ParserDisplay extends Parser {
 	_operationSpecialStrings[0] =
 	    new PropertySpecialString("sequential",
 		    new PropertyOperation() {
-			public void found(MModelElement element, String value)
+			public void found(Object element, String value)
 			{
 			    MCallConcurrencyKind kind =
 				MCallConcurrencyKind.SEQUENTIAL;
-			    if (element instanceof MOperation)
+			    if (ModelFacade.isAOperation(element))
 				((MOperation) element).setConcurrency(kind);
 			}
 		    });
 	_operationSpecialStrings[1] =
 	    new PropertySpecialString("guarded",
 		    new PropertyOperation() {
-			public void found(MModelElement element, String value)
+			public void found(Object element, String value)
 			{
 			    MCallConcurrencyKind kind =
 				MCallConcurrencyKind.GUARDED;
 			    if (value != null && value.equalsIgnoreCase("false"))
 				kind = MCallConcurrencyKind.SEQUENTIAL;
-			    if (element instanceof MOperation)
+			    if (ModelFacade.isAOperation(element))
 				((MOperation) element).setConcurrency(kind);
 			}
 		    });
 	_operationSpecialStrings[2] =
 	    new PropertySpecialString("concurrent",
 		    new PropertyOperation() {
-			public void found(MModelElement element, String value)
+			public void found(Object element, String value)
 			{
 			    MCallConcurrencyKind kind =
 				MCallConcurrencyKind.CONCURRENT;
 			    if (value != null && value.equalsIgnoreCase("false"))
 				kind = MCallConcurrencyKind.SEQUENTIAL;
-			    if (element instanceof MOperation)
+			    if (ModelFacade.isAOperation(element))
 				((MOperation) element).setConcurrency(kind);
 			}
 		    });
 	_operationSpecialStrings[3] =
 	    new PropertySpecialString("concurrency",
 		    new PropertyOperation() {
-			public void found(MModelElement element, String value) {
+			public void found(Object element, String value) {
 			    MCallConcurrencyKind kind =
 				MCallConcurrencyKind.SEQUENTIAL;
 			    if ("guarded".equalsIgnoreCase(value))
 				kind = MCallConcurrencyKind.GUARDED;
 			    else if ("concurrent".equalsIgnoreCase(value))
 				kind = MCallConcurrencyKind.CONCURRENT;
-			    if (element instanceof MOperation)
+			    if (ModelFacade.isAOperation(element))
 				((MOperation) element).setConcurrency(kind);
 			}
 		    });
 	_operationSpecialStrings[4] =
 	    new PropertySpecialString("abstract",
 		    new PropertyOperation() {
-			public void found(MModelElement element, String value) {
+			public void found(Object element, String value) {
 			    boolean isAbstract = true;
 			    if (value != null && value.equalsIgnoreCase("false"))
 				isAbstract = false;
-			    if (element instanceof MOperation)
+			    if (ModelFacade.isAOperation(element))
 				((MOperation) element).setAbstract(isAbstract);
 			}
 		    });
 	_operationSpecialStrings[5] =
 	    new PropertySpecialString("leaf",
 		    new PropertyOperation() {
-			public void found(MModelElement element, String value) {
+			public void found(Object element, String value) {
 			    boolean isLeaf = true;
 			    if (value != null && value.equalsIgnoreCase("false"))
 				isLeaf = false;
-			    if (element instanceof MOperation)
+			    if (ModelFacade.isAOperation(element))
 				((MOperation) element).setLeaf(isLeaf);
 			}
 		    });
 	_operationSpecialStrings[6] =
 	    new PropertySpecialString("query",
 		    new PropertyOperation() {
-			public void found(MModelElement element, String value)
+			public void found(Object element, String value)
 			{
 			    boolean isQuery = true;
 			    if (value != null && value.equalsIgnoreCase("false"))
 				isQuery = false;
-			    if (element instanceof MBehavioralFeature)
+			    if (ModelFacade.isABehavioralFeature(element))
 				((MBehavioralFeature) element).setQuery(isQuery);
 			}
 		    });
 	_operationSpecialStrings[7] =
 	    new PropertySpecialString("root",
 		    new PropertyOperation() {
-			public void found(MModelElement element, String value)
+			public void found(Object element, String value)
 			{
 			    boolean isRoot = true;
 			    if (value != null && value.equalsIgnoreCase("false"))
 				isRoot = false;
-			    if (element instanceof MOperation)
+			    if (ModelFacade.isAOperation(element))
 				((MOperation) element).setRoot(isRoot);
 			}
 		    });
@@ -401,7 +391,7 @@ public class ParserDisplay extends Parser {
             useCase.removeExtensionPoint(ep);
         }
         else {
-            ep.setName(newEp.getName());
+            ModelFacade.setName(ep, newEp.getName());
             ep.setLocation(newEp.getLocation());
         }
     }
@@ -480,28 +470,28 @@ public class ParserDisplay extends Parser {
 	    throw new ParseException("Qualified names must end with a name", 0);
 
 	if (name != null)
-	    me.setName(name);
+	    ModelFacade.setName(me, name);
 
 	if (stereotype != null) {
 	    stereotype = stereotype.trim();
-	    MStereotype stereo = getStereotype(me, stereotype);
+	    Object stereo = getStereotype(me, stereotype);
 
 	    if (stereo != null)
-		me.setStereotype(stereo);
+		ModelFacade.setStereotype(me, stereo);
 	    else if ("".equals(stereotype))
-		me.setStereotype(null);
+		ModelFacade.setStereotype(me, null);
 	}
 
 	if (path != null) {
 	    MModelElement nspe = ModelManagementHelper.getHelper()
 		.getElement(path, me.getModel());
 
-	    if (nspe == null || !(nspe instanceof MNamespace))
+	    if (nspe == null || !(ModelFacade.isANamespace(nspe)))
 		throw new ParseException("Unable to resolve namespace", 0);
 	    if (!CoreHelper.getHelper().getAllPossibleNamespaces(me).contains(nspe))
 		throw new ParseException("Invalid namespace for element", 0);
 
-	    ((MNamespace) nspe).addOwnedElement(me);
+	    ModelFacade.addOwnedElement(nspe, me);
 	}
     }
 
@@ -510,7 +500,7 @@ public class ParserDisplay extends Parser {
     // order to return an index to the next attribute or operation
     // substring, -1 otherwise (a ';' inside a String or char
     // delimiters is ignored)
-    private int indexOfNextCheckedSemicolon(String s, int start) { 
+    private int indexOfNextCheckedSemicolon(String s, int start) {
 	if (s == null || start < 0 || start >= s.length())
 	    return -1;
 	int end;
@@ -519,13 +509,13 @@ public class ParserDisplay extends Parser {
 	char c;
 	for (end = start; end < s.length(); end++) {
 	    c = s.charAt(end);
-	    if (!inside && c == ';') { 
+	    if (!inside && c == ';') {
 		return end;
 	    } else if (!backslashed && (c == '\'' || c == '\"')) {
 		inside = !inside;
 	    }
 	    backslashed = (!backslashed && c == '\\');
-	}   
+	}
 	return end;
     }
 
@@ -712,11 +702,11 @@ public class ParserDisplay extends Parser {
             epLocation = st.nextToken().trim();
 
             if (epLocation.equals(":")) {
-                ep.setName(null);
+                ModelFacade.setName(ep, null);
                 ep.setLocation(null);
             }
             else {
-                ep.setName(null);
+                ModelFacade.setName(ep, null);
                 ep.setLocation(epLocation);
             }
 
@@ -728,7 +718,7 @@ public class ParserDisplay extends Parser {
 
             epName = st.nextToken().trim();
 
-            ep.setName(epName);
+            ModelFacade.setName(ep, epName);
             ep.setLocation(null);
 
             break;
@@ -742,7 +732,7 @@ public class ParserDisplay extends Parser {
             colon      = st.nextToken();
             epLocation = st.nextToken().trim();
 
-            ep.setName(epName);
+            ModelFacade.setName(ep, epName);
             ep.setLocation(epLocation);
 
             break;
@@ -778,7 +768,7 @@ public class ParserDisplay extends Parser {
     /* (formerly visibility name (parameter list) : return-type-expression
      *	{property-string} ) */
     /* (formerly 2nd: [visibility] [keywords] returntype name(params)[;] ) */
-    public void parseOperation(String s, MOperation op) throws ParseException {
+    public void parseOperation(String s, Object op) throws ParseException {
 	MyTokenizer st;
 	boolean hasColon = false;
 	String name = null;
@@ -938,23 +928,23 @@ public class ParserDisplay extends Parser {
 	}
 
 	if (visibility != null) {
-	    MVisibilityKind vis = getVisibility(visibility.trim());
-	    op.setVisibility(vis);
+	    short vis = getVisibility(visibility.trim());
+	    ModelFacade.setVisibility(op, vis);
 	}
 
 	if (name != null)
-	    op.setName(name.trim());
-	else if (op.getName() == null || "".equals(op.getName()))
-	    op.setName("anonymous");
+	    ModelFacade.setName(op, name.trim());
+	else if (ModelFacade.getName(op) == null || "".equals(ModelFacade.getName(op)))
+	    ModelFacade.setName(op, "anonymous");
 
 	if (type != null) {
-	    MClassifier ow = op.getOwner();
-	    MNamespace ns = null;
-	    if (ow != null && ow.getNamespace() != null)
-		ns = ow.getNamespace();
+	    Object ow = ModelFacade.getOwner(op);
+	    Object ns = null;
+	    if (ow != null && ModelFacade.getNamespace(ow) != null)
+		ns = ModelFacade.getNamespace(ow);
 	    else
-		ns = op.getModel();
-	    MClassifier mtype = getType(type.trim(), ns);
+		ns = ModelFacade.getModel(op);
+	    Object mtype = getType(type.trim(), ns);
 	    setReturnParameter(op, mtype);
 	}
 
@@ -963,11 +953,11 @@ public class ParserDisplay extends Parser {
 
 	if (stereotype != null) {
 	    stereotype = stereotype.trim();
-	    MStereotype stereo = getStereotype(op, stereotype);
+	    Object stereo = getStereotype(op, stereotype);
 	    if (stereo != null)
-		op.setStereotype(stereo);
+		ModelFacade.setStereotype(op, stereo);
 	    else if ("".equals(stereotype))
-		op.setStereotype(null);
+		ModelFacade.setStereotype(op, null);
 	}
     }
 
@@ -989,24 +979,24 @@ public class ParserDisplay extends Parser {
      *
      * <p>This syntax is compatible with the UML 1.3 specification.
      *
-     * @param op The MOperation the parameter list belongs to.
+     * @param op The operation the parameter list belongs to.
      * @param param The parameter list, without enclosing parentheses.
      * @param paramOffset The offset to the beginning of the parameter list.
      *	Used for error reports.
      * @throws java.text.ParseException when it detects an error in the
      *	attribute string. See also ParseError.getErrorOffset().
      */
-    private void parseParamList(MOperation op, String param, int paramOffset)
+    private void parseParamList(Object op, String param, int paramOffset)
 	throws ParseException {
 	MyTokenizer st = new MyTokenizer(param, " ,\t,:,=,\\,",
 					 _parameterCustomSep);
-	List origParam = op.getParameters();
-	MClassifier ow = op.getOwner();
-	MNamespace ns = null;
-	if (ow != null && ow.getNamespace() != null)
-	    ns = ow.getNamespace();
+	Collection origParam = ModelFacade.getParameters(op);
+	Object ow = ModelFacade.getOwner(op);
+	Object ns = null;
+	if (ow != null && ModelFacade.getNamespace(ow) != null)
+	    ns = ModelFacade.getNamespace(ow);
 	else
-	    ns = op.getModel();
+	    ns = ModelFacade.getModel(op);
 
 	Iterator it = origParam.iterator();
 	while (st.hasMoreTokens()) {
@@ -1015,13 +1005,13 @@ public class ParserDisplay extends Parser {
 	    String tok;
 	    String type = null;
 	    String value = null;
-	    MParameter p = null;
+	    Object p = null;
 	    boolean hasColon = false;
 	    boolean hasEq = false;
 
 	    while (it.hasNext() && p == null) {
-		p = (MParameter) it.next();
-		if (p.getKind().equals(MParameterDirectionKind.RETURN))
+		p = it.next();
+		if (ModelFacade.isReturn(p))
 		    p = null;
 	    }
 
@@ -1090,27 +1080,27 @@ public class ParserDisplay extends Parser {
 	    }
 
 	    if (name != null)
-		p.setName(name.trim());
+		ModelFacade.setName(p, name.trim());
 
 	    if (kind != null)
-		p.setKind(getParamKind(kind.trim()));
+		setParamKind(p, kind.trim());
 
 	    if (type != null)
-		p.setType(getType(type.trim(), ns));
+		ModelFacade.setType(p, getType(type.trim(), ns));
 
 	    if (value != null) {
-		MExpression initExpr =
+		Object initExpr =
 		    UmlFactory.getFactory().getDataTypes().createExpression(
 			    Notation.getDefaultNotation().toString(),
 			    value.trim());
-		p.setDefaultValue(initExpr);
+		ModelFacade.setDefaultValue(p, initExpr);
 	    }
 	}
 
 	while (it.hasNext()) {
-	    MParameter p = (MParameter) it.next();
-	    if (!p.getKind().equals(MParameterDirectionKind.RETURN))
-		op.removeParameter(p);
+	    Object p = it.next();
+	    if (!ModelFacade.isReturn(p))
+		ModelFacade.removeParameter(op, p);
 	}
     }
 
@@ -1118,35 +1108,34 @@ public class ParserDisplay extends Parser {
      * Sets the return parameter of op to be of type type. If there is none,
      * one is created. If there are many, all but one are removed.
      */
-    private void setReturnParameter(MOperation op, MClassifier type) {
-	MParameter param = null;
-	Iterator it = op.getParameters().iterator();
+    private void setReturnParameter(Object op, Object type) {
+	Object param = null;
+	Iterator it = ModelFacade.getParameters(op).iterator();
 	while (it.hasNext()) {
-	    MParameter p = (MParameter) it.next();
-	    if (MParameterDirectionKind.RETURN.equals(p.getKind())) {
+	    Object p = it.next();
+	    if (ModelFacade.isReturn(p)) {
 		param = p;
 		break;
 	    }
 	}
 	while (it.hasNext()) {
-	    MParameter p = (MParameter) it.next();
-	    if (MParameterDirectionKind.RETURN.equals(p.getKind()))
-		op.removeParameter(p);
+	    Object p = it.next();
+	    if (ModelFacade.isReturn(p))
+		ModelFacade.removeParameter(op, p);
 	}
 	if (param == null) {
 	    param = UmlFactory.getFactory().getCore().buildParameter(op);
 	}
-	param.setType(type);
+	ModelFacade.setType(param, type);
     }
 
-    private MParameterDirectionKind getParamKind(String s) {
-	MParameterDirectionKind kind = MParameterDirectionKind.IN;
+    private void setParamKind(Object p, String s) {
 	if ("out".equalsIgnoreCase(s))
-	    kind = MParameterDirectionKind.OUT;
+	    ModelFacade.setKindToOut(p);
 	else if ("inout".equalsIgnoreCase(s))
-	    kind = MParameterDirectionKind.INOUT;
-
-	return kind;
+	    ModelFacade.setKindToInOut(p);
+	else
+	    ModelFacade.setKindToIn(p);
     }
 
     /**
@@ -1217,7 +1206,7 @@ public class ParserDisplay extends Parser {
     /* (formerly: visibility name [multiplicity] : type-expression
      *   = initial-value {property-string} ) */
     /* (2nd formerly: [visibility] [keywords] type name [= init] [;] ) */
-    public void parseAttribute(String s, MAttribute attr)
+    public void parseAttribute(String s, Object attr)
 	throws ParseException
     {
 	String multiplicity = null;
@@ -1396,36 +1385,36 @@ public class ParserDisplay extends Parser {
 
 
 	if (visibility != null) {
-	    MVisibilityKind vis = getVisibility(visibility.trim());
-	    attr.setVisibility(vis);
+	    short vis = getVisibility(visibility.trim());
+	    ModelFacade.setVisibility(attr, vis);
 	}
 
 	if (name != null)
-	    attr.setName(name.trim());
-	else if (attr.getName() == null || "".equals(attr.getName()))
-	    attr.setName("anonymous");
+	    ModelFacade.setName(attr, name.trim());
+	else if (ModelFacade.getName(attr) == null || "".equals(ModelFacade.getName(attr)))
+	    ModelFacade.setName(attr, "anonymous");
 
 	if (type != null) {
-	    MClassifier ow = attr.getOwner();
-	    MNamespace ns = null;
-	    if (ow != null && ow.getNamespace() != null)
-		ns = ow.getNamespace();
+	    Object ow = ModelFacade.getOwner(attr);
+	    Object ns = null;
+	    if (ow != null && ModelFacade.getNamespace(ow) != null)
+		ns = ModelFacade.getNamespace(ow);
 	    else
-		ns = attr.getModel();
-	    attr.setType(getType(type.trim(), ns));
+		ns = ModelFacade.getModel(attr);
+	    ModelFacade.setType(attr, getType(type.trim(), ns));
 	}
 
 	if (value != null) {
-	    MExpression initExpr =
+	    Object initExpr =
 		UmlFactory.getFactory().getDataTypes().createExpression(
 									Notation.getDefaultNotation().toString(),
 									value.trim());
-	    attr.setInitialValue(initExpr);
+	    ModelFacade.setInitialValue(attr, initExpr);
 	}
 
 	if (multiplicity != null) {
 	    try {
-		attr.setMultiplicity(
+		ModelFacade.setMultiplicity(attr,
 			UmlFactory.getFactory().getDataTypes()
 			.createMultiplicity(multiplicity.trim()));
 	    } catch (IllegalArgumentException iae) {
@@ -1439,23 +1428,23 @@ public class ParserDisplay extends Parser {
 
 	if (stereotype != null) {
 	    stereotype = stereotype.trim();
-	    MStereotype stereo = getStereotype(attr, stereotype);
+	    Object stereo = getStereotype(attr, stereotype);
 	    if (stereo != null)
-		attr.setStereotype(stereo);
+		ModelFacade.setStereotype(attr, stereo);
 	    else if ("".equals(stereotype))
-		attr.setStereotype(null);
+		ModelFacade.setStereotype(attr, null);
 	}
     }
 
     /**
-     * Finds the MClassifier associated with the type named in name.
+     * Finds the classifier associated with the type named in name.
      *
      * @param name The name of the type to get.
      * @param defaultSpace The default name-space to place the type in.
-     * @return The MClassifier associated with the name.
+     * @return The classifier associated with the name.
      */
-    private MClassifier getType(String name, MNamespace defaultSpace) {
-	MClassifier type = null;
+    private Object getType(String name, Object defaultSpace) {
+	Object type = null;
 	Project p = ProjectManager.getManager().getCurrentProject();
 	// Should we be getting this from the GUI? BT 11 aug 2002
 	type = p.findType(name, false);
@@ -1464,45 +1453,43 @@ public class ParserDisplay extends Parser {
 		UmlFactory.getFactory().getCore().buildClass(name,
 							     defaultSpace);
 	}
-	if (type.getModel() != p.getModel()
-	    && !ModelManagementHelper.getHelper().getAllNamespaces(p.getModel()).contains(type.getNamespace()))
+	if (ModelFacade.getModel(type) != p.getModel()
+	    && !ModelManagementHelper.getHelper().getAllNamespaces(p.getModel()).contains(ModelFacade.getNamespace(type)))
 	{
 	    type =
-		(MClassifier)
 		ModelManagementHelper.getHelper()
-		.getCorrespondingElement(type,
-					 defaultSpace.getModel());
+		.getCorrespondingElement(type, ModelFacade.getModel(defaultSpace));
 	}
 	return type;
     }
 
     /**
-     * Finds a MVisibilityKind for the visibility specified by name. If no
+     * Finds a visibility for the visibility specified by name. If no
      * known visibility can be deduced, private visibility is used.
      *
-     * @param name The name of the visibility.
-     * @return A MVisibilityKind corresponding to name.
+     * @param name The Java name of the visibility.
+     * @return A visibility corresponding to name.
      */
-    private MVisibilityKind getVisibility(String name) {
+    private short getVisibility(String name) {
 	if ("+".equals(name) || "public".equals(name))
-	    return MVisibilityKind.PUBLIC;
+	    return ModelFacade.ACC_PUBLIC;
 	else if ("#".equals(name) || "protected".equals(name))
-	    return MVisibilityKind.PROTECTED;
+	    return ModelFacade.ACC_PROTECTED;
 	else /* if ("-".equals(name) || "private".equals(name)) */
-	    return MVisibilityKind.PRIVATE;
+	    return ModelFacade.ACC_PRIVATE;
     }
 
     /**
-     * Applies a Vector of name value pairs of properties to a MModelElement.
-     * The name is treaded as the tag of a tagged value unless it is one of the
+     * Applies a Vector of name value pairs of properties to a model element.
+     * The name is treated as the tag of a tagged value unless it is one of the
      * PropertySpecialStrings, in which case the action of the
      * PropertySpecialString is invoked.
      *
-     * @param elem An element to apply the properties to.
+     * @param elem An model element to apply the properties to.
      * @param prop A Vector with name, value pairs of properties.
      * @param spec An array of PropertySpecialStrings to use.
      */
-    private void setProperties(MModelElement elem, Vector prop,
+    private void setProperties(Object elem, Vector prop,
 			       PropertySpecialString spec[]) {
 	String name;
 	String value;
@@ -1532,42 +1519,39 @@ public class ParserDisplay extends Parser {
 			continue nextProp;
 	    }
 
-	    elem.setTaggedValue(name, value);
+	    ModelFacade.setTaggedValue(elem, name, value);
 	}
     }
 
     /**
-     * Recursively search a hive of a model for a MStereotype with the name
+     * Recursively search a hive of a model for a stereotype with the name
      * given in name.
      *
-     * @param obj The MModelElement to be suitable for.
-     * @param root The MModelElement to search from.
-     * @param name The name of the MStereotype to search for.
-     * @return An MStereotype named name, or null if none is found.
+     * @param obj The model element to be suitable for.
+     * @param root The model element to search from.
+     * @param name The name of the stereotype to search for.
+     * @return An stereotype named name, or null if none is found.
      */
-    private MStereotype recFindStereotype(MModelElement obj, MModelElement root,
-					  String name) {
-	MStereotype stereo;
+    private Object recFindStereotype(Object obj, Object root, String name) {
+	Object stereo;
 
 	if (root == null)
 	    return null;
 
-	if (root instanceof MStereotype &&
-	    name.equals(root.getName())) {
+	if (ModelFacade.isAStereotype(root) && name.equals(ModelFacade.getName(root))) {
 
 	    if (ExtensionMechanismsHelper.getHelper().isValidStereoType(obj, (MStereotype) root))
-		return (MStereotype) root;
+		return root;
 	    else
 		_cat.debug("Missed stereotype "
 			   + ((MStereotype) root).getBaseClass());
 
 	}
 
-	if (!(root instanceof MNamespace))
+	if (!ModelFacade.isANamespace(root))
 	    return null;
 
-	MNamespace nameSpace     = (MNamespace) root;
-	Collection ownedElements = nameSpace.getOwnedElements();
+	Collection ownedElements = ModelFacade.getOwnedElements(root);
 
 	if (ownedElements == null) {
 	    return null;
@@ -1578,7 +1562,7 @@ public class ParserDisplay extends Parser {
 	Iterator iter = ownedElements.iterator();
 
 	while (iter.hasNext()) {
-	    stereo = recFindStereotype(obj, (MModelElement) iter.next(), name);
+	    stereo = recFindStereotype(obj, iter.next(), name);
 	    if (stereo != null)
 		return stereo;
 	}
@@ -1587,19 +1571,19 @@ public class ParserDisplay extends Parser {
 
 
     /**
-     * Finds a MStereotype named name either in the subtree of the model
+     * Finds a stereotype named name either in the subtree of the model
      * rooted at root, or in the the ProfileJava model.
      *
-     * <p>TODO: Should create the MStereotype under root if it
+     * <p>TODO: Should create the stereotype under root if it
      * isn't found.
      *
      * @param obj A MModelElements to find a suitable stereotype for.
-     * @param name The name of the MStereotype to search for.
-     * @return An MStereotype named name, or possibly null.
+     * @param name The name of the stereotype to search for.
+     * @return A stereotype named name, or possibly null.
      */
-    private MStereotype getStereotype(MModelElement obj, String name) {
-	MModel root = obj.getModel();
-	MStereotype stereo;
+    private Object getStereotype(Object obj, String name) {
+	Object root = ModelFacade.getModel(obj);
+	Object stereo;
 
 	stereo = recFindStereotype(obj, root, name);
 	if (stereo != null)
@@ -1611,7 +1595,7 @@ public class ParserDisplay extends Parser {
 				   name);
 
 	if (stereo != null)
-	    return (MStereotype) ModelManagementHelper.getHelper()
+	    return ModelManagementHelper.getHelper()
 		.getCorrespondingElement(stereo, root);
 
 	if (root != null && name.length() > 0) {
@@ -1789,19 +1773,19 @@ public class ParserDisplay extends Parser {
      * @param s The string that possibly identifies some visibility
      * @return String The string s WITHOUT the visibility signs.
      */
-    public String parseOutVisibility(MFeature f, String s) {
+    public String parseOutVisibility(Object f, String s) {
 	s = s.trim();
 	// We only support UML 1.3 notation in this parser
 	// get the first char
 	String visStr = s.substring(0, 1);
 	if (visStr.equals("#")) {
-	    f.setVisibility(MVisibilityKind.PROTECTED);
+	    ModelFacade.setVisibility(f, ModelFacade.ACC_PROTECTED);
 	    return s.substring(1, s.length());
 	} else if (visStr.equals("-")) {
-	    f.setVisibility(MVisibilityKind.PRIVATE);
+	    ModelFacade.setVisibility(f, ModelFacade.ACC_PRIVATE);
 	    return s.substring(1, s.length());
 	} else if (visStr.equals("+")) {
-	    f.setVisibility(MVisibilityKind.PUBLIC);
+	    ModelFacade.setVisibility(f, ModelFacade.ACC_PUBLIC);
 	    return s.substring(1, s.length());
 	}
 	// public, private, protected as keyword
@@ -1809,13 +1793,13 @@ public class ParserDisplay extends Parser {
 	if (firstSpace > 0) {
 	    visStr = s.substring(0, firstSpace);
 	    if (visStr.equals("public")) {
-		f.setVisibility(MVisibilityKind.PUBLIC);
+		ModelFacade.setVisibility(f, ModelFacade.ACC_PUBLIC);
 		return s.substring(firstSpace, s.length());
 	    } else if (visStr.equals("protected")) {
-		f.setVisibility(MVisibilityKind.PROTECTED);
+		ModelFacade.setVisibility(f, ModelFacade.ACC_PROTECTED);
 		return s.substring(firstSpace, s.length());
 	    } else if (visStr.equals("private")) {
-		f.setVisibility(MVisibilityKind.PRIVATE);
+		ModelFacade.setVisibility(f, ModelFacade.ACC_PRIVATE);
 		return s.substring(firstSpace, s.length());
 	    }
 	}
@@ -1849,8 +1833,7 @@ public class ParserDisplay extends Parser {
 			ProjectManager.getManager().getCurrentProject();
 		    Iterator it = pr.findFigsForMember(op).iterator();
 		    while (it.hasNext()) {
-			MElementListener listener =
-			    (MElementListener) it.next();
+			Object listener = it.next();
 			// UmlModelEventPump.getPump().removeModelEventListener(listener,
 			// p);
 			UmlModelEventPump.getPump().addModelEventListener(listener,
@@ -1876,7 +1859,7 @@ public class ParserDisplay extends Parser {
 	if (s.equals("") || delim.indexOf(s.charAt(0)) >= 0) {
 	    //duh there is no name
 	    if (me.getName() == null || me.getName().equals("")) {
-		me.setName("anno");
+		ModelFacade.setName(me, "anno");
 	    }
 	    return s;
 	}
@@ -1890,7 +1873,7 @@ public class ParserDisplay extends Parser {
 	String nameStr = st.nextToken();
 
 	// TODO: wasteful
-	me.setName(nameStr);
+	ModelFacade.setName(me, nameStr);
 
 	int namePos = s.indexOf(nameStr);
 	return s.substring(namePos + nameStr.length());
@@ -1918,8 +1901,8 @@ public class ParserDisplay extends Parser {
 		    type =
 			UmlFactory.getFactory().getCore().buildClass(typeExpr);
 		}
-		if (attr.getNamespace() != null) {
-		    type.setNamespace(attr.getNamespace());
+		if (ModelFacade.getNamespace(attr) != null) {
+		    ModelFacade.setNamespace(type, attr.getNamespace());
 		}
 		attr.setType(type);
 		s = s.substring(typeExpr.length(), s.length());
@@ -1979,10 +1962,10 @@ public class ParserDisplay extends Parser {
 			    (braceIndex < 0)
 			    ? s.length()
 			    : s.indexOf("{"));
-            MExpression initExpr =
+            Object initExpr =
 		UmlFactory.getFactory().getDataTypes().createExpression(Notation.getDefaultNotation().toString(),
 									initExprStr);
-            attr.setInitialValue(initExpr);
+            ModelFacade.setInitialValue(attr, initExpr);
             return s.substring(initExprStr.length(), s.length());
         }
         return s;
@@ -2000,8 +1983,8 @@ public class ParserDisplay extends Parser {
 	MClassifier cls = p.findType(typeStr);
 	MParameter param = UmlFactory.getFactory().getCore().buildParameter();
 	param.setType(cls);
-	param.setKind(MParameterDirectionKind.IN);
-	param.setName(paramNameStr);
+	ModelFacade.setKindToIn(param);
+	ModelFacade.setName(param, paramNameStr);
 
 	return param;
     }
@@ -2082,7 +2065,7 @@ public class ParserDisplay extends Parser {
 	if (s.startsWith("entry") && s.indexOf("/") > -1)
 	    s = s.substring(s.indexOf("/") + 1).trim();
 	MCallAction entryAction = (MCallAction) parseAction(s);
-	entryAction.setName("anon");
+	ModelFacade.setName(entryAction, "anon");
 	st.setEntry(entryAction);
     }
 
@@ -2090,7 +2073,7 @@ public class ParserDisplay extends Parser {
 	if (s.startsWith("exit") && s.indexOf("/") > -1)
 	    s = s.substring(s.indexOf("/") + 1).trim();
 	MCallAction exitAction = (MCallAction) parseAction(s);
-	exitAction.setName("anon");
+	ModelFacade.setName(exitAction, "anon");
 	st.setExit(exitAction);
     }
 
@@ -2098,7 +2081,7 @@ public class ParserDisplay extends Parser {
         if (s.startsWith("do") && s.indexOf("/") > -1)
             s = s.substring(s.indexOf("/") + 1).trim();
         MCallAction doAction = (MCallAction) parseAction(s);
-        doAction.setName("anon");
+        ModelFacade.setName(doAction, "anon");
         st.setDoActivity(doAction);
     }
 
@@ -2138,7 +2121,7 @@ public class ParserDisplay extends Parser {
 	_cat.debug("guard=|" + guard + "|");
 	_cat.debug("actions=|" + actions + "|");
 
-	trans.setName(parseName(name));
+	ModelFacade.setName(trans, parseName(name));
 
 	if (trigger.length() > 0) {
 	    MEvent evt = parseEvent(trigger);
@@ -2152,7 +2135,7 @@ public class ParserDisplay extends Parser {
 	if (guard.length() > 0) {
 	    MGuard g = parseGuard(guard);
 	    if (g != null) {
-		g.setName("anon");
+		ModelFacade.setName(g, "anon");
 		g.setTransition(trans);
 		trans.setGuard(g);
 	    }
@@ -2162,7 +2145,7 @@ public class ParserDisplay extends Parser {
 
 	if (actions.length() > 0) {
 	    MCallAction effect = (MCallAction) parseAction(actions);
-	    effect.setName("anon");
+	    ModelFacade.setName(effect, "anon");
 	    trans.setEffect(effect);
 	}
 	else
@@ -2181,13 +2164,13 @@ public class ParserDisplay extends Parser {
      *
      * <p>This syntax is compatible with the UML 1.3 specification.
      *
-     * @param cls The MClassifierRole to apply any changes to.
+     * @param cls The classifier role to apply any changes to.
      * @param s The String to parse.
      * @throws java.text.ParseException when it detects an error in the
      *	attribute string. See also ParseError.getErrorOffset().
      */
     /* (formerly: "name: base" ) */
-    public void parseClassifierRole(MClassifierRole cls, String s)
+    public void parseClassifierRole(Object cls, String s)
 	throws ParseException {
 	String name = null;
 	String token;
@@ -2269,23 +2252,23 @@ public class ParserDisplay extends Parser {
 	//	;
 
 	if (role != null)
-	    cls.setName(role.trim());
+	    ModelFacade.setName(cls, role.trim());
 
 	if (bases != null) {
 	    // Remove bases that aren't there anymore
-	    Collection b = cls.getBases();
+	    Collection b = ModelFacade.getBases(cls);
 	    Iterator it = b.iterator();
-	    MClassifier c;
-	    MNamespace ns = cls.getNamespace();
-	    if (ns != null && ns.getNamespace() != null)
-		ns = ns.getNamespace();
+	    Object c;
+	    Object ns = ModelFacade.getNamespace(cls);
+	    if (ns != null && ModelFacade.getNamespace(ns) != null)
+		ns = ModelFacade.getNamespace(ns);
 	    else
-		ns = cls.getModel();
+		ns = ModelFacade.getModel(cls);
 
 	    while (it.hasNext()) {
-		c = (MClassifier) it.next();
-		if (!bases.contains(c.getName()))
-		    cls.removeBase(c);
+		c = it.next();
+		if (!bases.contains(ModelFacade.getName(c)))
+		    ModelFacade.removeBase(cls, c);
 	    }
 
 	    it = bases.iterator();
@@ -2295,14 +2278,14 @@ public class ParserDisplay extends Parser {
 
 		Iterator it2 = b.iterator();
 		while (it2.hasNext()) {
-		    c = (MClassifier) it2.next();
-		    if (d.equals(c.getName()))
+		    c = it2.next();
+		    if (d.equals(ModelFacade.getName(c)))
 			continue addBases;
 		}
 		c = getType(d, ns);
-		if (c.getNamespace() instanceof MCollaboration)
-		    c.setNamespace(ns);
-		cls.addBase(c);
+		if (ModelFacade.isACollaboration(ModelFacade.getNamespace(c)))
+		    ModelFacade.setNamespace(c, ns);
+		ModelFacade.addBase(cls, c);
 	    }
 	}
     }
@@ -3285,8 +3268,8 @@ public class ParserDisplay extends Parser {
 	int count = 0;
 
 	while (it.hasNext()) {
-	    MParameter p = (MParameter) it.next();
-	    if (MParameterDirectionKind.RETURN.equals(p.getKind()))
+	    Object p = it.next();
+	    if (ModelFacade.isReturn(p))
 		continue;
 	    count++;
 	}
@@ -3330,7 +3313,7 @@ public class ParserDisplay extends Parser {
     }
 
     /** Parse a line of the form: "name: action" */
-    public void parseStimulus(MStimulus sti, String s) {
+    public void parseStimulus(Object sti, String s) {
 	// strip any trailing semi-colons
 	s = s.trim();
 	if (s.length() == 0) return;
@@ -3359,7 +3342,7 @@ public class ParserDisplay extends Parser {
 
 	Object act = ModelFacade.getDispatchAction(sti);
 	ModelFacade.setName(act, action);
-	ModelFacade.setName(sti, name);    
+	ModelFacade.setName(sti, name);
     }
 
     public Object parseAction(String s) {
@@ -3374,7 +3357,7 @@ public class ParserDisplay extends Parser {
     /*  public MActionSequence parseActions(String s) {
 	MActionSequence as = UmlFactory.getFactory().getCommonBehavior().createActionSequence(s);
 
-	as.setName(s);
+	ModelFacade.setName(as, s);
 	return as;
 	}*/
 
@@ -3388,7 +3371,7 @@ public class ParserDisplay extends Parser {
     public MEvent parseEvent(String s) {
 	MCallEvent ce =
 	    UmlFactory.getFactory().getStateMachines().buildCallEvent();
-	ce.setName(s);
+	ModelFacade.setName(ce, s);
 	return ce;
     }
 
@@ -3415,9 +3398,9 @@ public class ParserDisplay extends Parser {
 	    name = s;
 	}
 
-	obj.setName(name);
+	ModelFacade.setName(obj, name);
 
-	obj.setClassifiers(new Vector());
+	ModelFacade.setClassifiers(obj, new Vector());
 	if (baseTokens != null) {
 	    while (baseTokens.hasMoreElements()) {
 		String typeString = baseTokens.nextToken();
@@ -3429,7 +3412,7 @@ public class ParserDisplay extends Parser {
     }
 
     /** Parse a line of the form: "name : base-node" */
-    public void parseNodeInstance(MNodeInstance noi, String s) {
+    public void parseNodeInstance(Object noi, String s) {
 	// strip any trailing semi-colons
 	s = s.trim();
 	if (s.length() == 0) return;
@@ -3453,23 +3436,23 @@ public class ParserDisplay extends Parser {
 	tokenizer = new StringTokenizer(bases, ",");
 
 	Vector v = new Vector();
-	MNamespace ns = noi.getNamespace();
+	Object ns = ModelFacade.getNamespace(noi);
 	if (ns != null) {
 	    while (tokenizer.hasMoreElements()) {
 		String newBase = tokenizer.nextToken();
-		MClassifier cls = (MClassifier) ns.lookup(newBase.trim());
+		Object cls = ModelFacade.lookupIn(ns, newBase.trim());
 		if (cls != null)
 		    v.add(cls);
 	    }
 	}
 
-	noi.setClassifiers(v);
-	noi.setName(new String(name));
+	ModelFacade.setClassifiers(noi, v);
+	ModelFacade.setName(noi, new String(name));
 
     }
 
     /** Parse a line of the form: "name : base-component" */
-    public void parseComponentInstance(MComponentInstance coi, String s) {
+    public void parseComponentInstance(Object coi, String s) {
 	// strip any trailing semi-colons
 	s = s.trim();
 	if (s.length() == 0) return;
@@ -3491,18 +3474,18 @@ public class ParserDisplay extends Parser {
 	tokenizer = new StringTokenizer(bases, ",");
 
 	Vector v = new Vector();
-	MNamespace ns = coi.getNamespace();
+	Object ns = ModelFacade.getNamespace(coi);
 	if (ns != null) {
 	    while (tokenizer.hasMoreElements()) {
 		String newBase = tokenizer.nextToken();
-		MClassifier cls = (MClassifier) ns.lookup(newBase.trim());
+		Object cls = ModelFacade.lookupIn(ns, newBase.trim());
 		if (cls != null)
 		    v.add(cls);
 	    }
 	}
 
-	coi.setClassifiers(v);
-	coi.setName(new String(name));
+	ModelFacade.setClassifiers(coi, v);
+	ModelFacade.setName(coi, new String(name));
 
     }
 
