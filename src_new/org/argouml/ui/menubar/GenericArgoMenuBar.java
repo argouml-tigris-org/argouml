@@ -59,6 +59,7 @@ import org.argouml.uml.ui.ActionExit;
 import org.argouml.uml.ui.ActionGenerateAll;
 import org.argouml.uml.ui.ActionGenerateOne;
 import org.argouml.uml.ui.ActionGenerateProjectCode;
+import org.argouml.uml.ui.ActionGenerationSettings;
 import org.argouml.uml.ui.ActionImportFromSources;
 import org.argouml.uml.ui.ActionNew;
 import org.argouml.uml.ui.ActionOpenProject;
@@ -496,7 +497,9 @@ public class GenericArgoMenuBar extends JMenuBar
         _generate.add(ActionGenerateOne.SINGLETON);
         JMenuItem genAllItem = _generate.add(ActionGenerateAll.SINGLETON);
         setAccelerator(genAllItem,F7);
+        _generate.addSeparator();
         _generate.add(ActionGenerateProjectCode.SINGLETON);
+        _generate.add(ActionGenerationSettings.SINGLETON);
         //generate.add(Actions.GenerateWeb);
         appendPluggableMenus(_generate, PluggableMenu.KEY_GENERATE);
 

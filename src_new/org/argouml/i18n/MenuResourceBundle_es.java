@@ -99,6 +99,7 @@ public class MenuResourceBundle_es extends ListResourceBundle {
         {"Generate Selected Classes", "Generar clases seleccionadas..." },
         {"Generate All Classes", "Generar todas las clases..." },
         {"Generate Code for Project", "Generate Code for Project..." },
+        {"Settings for Generate for Project", "Settings for Generate for Project..." },
         {"Toggle Auto-Critique", "(Des)activar Auto-Criticos" },
         {"Design Issues...", "Temas de dise\u00f1o..." },
         {"Design Goals...", "Objetivos de dise\u00f1o..." },
