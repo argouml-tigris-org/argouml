@@ -130,19 +130,23 @@ public class Main {
                 if ((themeMemory = ProjectBrowser.getThemeFromArg(args[i])) != 0) {
                     // Remembered!
                 } else if (args[i].equalsIgnoreCase("-help") ||
-                args[i].equalsIgnoreCase("-h")) {
+                           args[i].equalsIgnoreCase("-h") ||
+                           args[i].equalsIgnoreCase("--help") ||
+                           args[i].equalsIgnoreCase("/?")) {
                     System.err.println("Usage: [options] [project-file]");
                     System.err.println("Options include: ");
                     ProjectBrowser.printThemeArgs();
-                    System.err.println("  -nosplash       dont display Argo/UML logo");
-                    System.err.println("  -noedem         dont report usage statistics");
-                    System.err.println("  -nopreload      dont preload common classes");
+                    System.err.println("  -nosplash       don't display Argo/UML logo");
+                    System.err.println("  -noedem         don't report usage statistics");
+                    System.err.println("  -nopreload      don't preload common classes");
                     System.err.println("  -profileload    report on load times");
-                    System.err.println("  -norecentfile   do not reload last saved file");
+                    System.err.println("  -norecentfile   don't reload last saved file");
                     System.err.println("");
                     System.err.println("You can also set java settings which influence the behaviour of ArgoUML:");
-                    System.err.println("  -Duser.language e.g. en");
-                    System.err.println("  -Duser.region   e.g. US");
+                    System.err.println("  -Duser.language    [e.g. en]");
+                    System.err.println("  -Duser.region      [e.g. US]");
+                    System.err.println("  -Dforce.nativelaf  [force ArgoUML to use the native look and feel. UNSUPPORTED]");
+                    System.err.println("\n\n");
                     System.exit(0);
                 } else if (args[i].equalsIgnoreCase("-nosplash")) {
                     doSplash = false;
@@ -155,7 +159,7 @@ public class Main {
                 } else if (args[i].equalsIgnoreCase("-norecentfile")) {
                     reloadRecent = false;
                 } else {
-                    System.err.println("Ingoring unknown option '" + args[i] + "'");
+                    System.err.println("Ignoring unknown option '" + args[i] + "'");
                 }
             } else {
                 if (projectName == null) {
@@ -205,6 +209,7 @@ public class Main {
         //
 	st.mark("locales");
         ResourceLoader.addResourceExtension("gif");
+        ResourceLoader.addResourceLocation("/org/argouml/Images/metalLookAndFeel/toolbarButtonGraphics/general");
         ResourceLoader.addResourceLocation("/org/argouml/Images");
         ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
 
