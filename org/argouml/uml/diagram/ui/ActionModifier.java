@@ -24,10 +24,14 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.argouml.uml.ui.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyVetoException;
+
 import org.argouml.model.ModelFacade;
+import org.argouml.uml.ui.UMLAction;
+import org.argouml.uml.ui.UMLBooleanProperty;
+import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
+import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 
 /**
  * A class to perform the action of changing value of the modifiers on a

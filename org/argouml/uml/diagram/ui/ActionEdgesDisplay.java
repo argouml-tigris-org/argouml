@@ -24,14 +24,19 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.event.ActionEvent;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.*;
+import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.ui.UMLAction;
-import org.tigris.gef.base.*;
-import org.tigris.gef.graph.*;
-import org.tigris.gef.presentation.*;
-import java.awt.event.*;
-import java.util.*;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
 
 /** An action that makes all edges on the selected node visible/not visible
  *  on the diagram.

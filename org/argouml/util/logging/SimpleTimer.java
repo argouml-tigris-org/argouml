@@ -26,7 +26,8 @@
 
 package org.argouml.util.logging;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Vector;
 
 /**
  * This class makes it easy to get the time between two or several 
