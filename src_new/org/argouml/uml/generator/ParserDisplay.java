@@ -167,11 +167,19 @@ public class ParserDisplay extends Parser {
   /** The vector of CustomSeparators to use when tokenizing attributes */
   private Vector _attributeCustomSep;
 
+  /** The acceptible base classes for attribute stereotypes */
+  private String _attributeBases[] = {"Attribute", "StructuralFeature",
+	"Feature", "ModelElement", null};
+
   /** The array of special properties for operations */
   private PropertySpecialString _operationSpecialStrings[];
 
   /** The vector of CustomSeparators to use when tokenizing attributes */
   private Vector _operationCustomSep;
+
+  /** The acceptible base classes for operation stereotypes */
+  private String _operationBases[] = {"Operation", "BehavioralFeature",
+	"Feature", "ModelElement", null};
 
   /** The vector of CustomSeparators to use when tokenizing parameters */
   private Vector _parameterCustomSep;
@@ -379,58 +387,6 @@ public class ParserDisplay extends Parser {
 
     parseOperation(text, op);
   }
-/*
-    if (cls == null || op == null)
-      return;
-    StringTokenizer st = new StringTokenizer(text,";");
-    String s = st.hasMoreTokens() ? st.nextToken().trim() : null;
-    int i = cls.getFeatures().indexOf(op);
-    if (s != null && s.length() > 0) {
-      MOperation newOp = parseOperation(s);
-      if (newOp != null) {
-        if (UmlHelper.getHelper().getCore().getReturnParameter(newOp).getType().getModel() == null) {
-            MNamespace model = null;
-            if (cls.getModel() != null) {
-                model = cls.getModel();
-            } else {
-                // somewhere there has been a misstake.
-                // lets try to repair it
-                model = ProjectBrowser.TheInstance.getProject().getModel();
-                model.addOwnedElement(cls);
-                // but better tell the developer (and maybe the user if he watches)
-                _cat.error("The MClass " + cls.toString() + " returned null on getModel!");
-            }
-            model.addOwnedElement(UmlHelper.getHelper().getCore().getReturnParameter(newOp).getType()); 
-        }   
-        newOp.setAbstract(op.isAbstract());
-        newOp.setOwnerScope(op.getOwnerScope());
-        if (i != -1) {
-          cls.removeFeature(i);
-          cls.addFeature(i,newOp);
-        } else {
-          cls.addFeature(newOp);
-        }
-      }
-    } else {
-      cls.removeFeature(i);
-    }
-    // more operations entered:
-    while (st.hasMoreTokens()) {
-      s = st.nextToken().trim();
-      if (s != null && s.length() > 0) {
-        MOperation newOp = parseOperation(s);
-        if (newOp != null) {
-          newOp.setAbstract(op.isAbstract());
-          newOp.setOwnerScope(op.getOwnerScope());
-          if (i != -1) {
-            cls.addFeature(++i,newOp);
-          } else {
-            cls.addFeature(newOp);
-          }
-        }
-      }
-    }
-*/
 
 /*
   // Seems to be obsolete
@@ -773,7 +729,8 @@ public class ParserDisplay extends Parser {
 
     if (stereotype != null) {
 	stereotype = stereotype.trim();
-	MStereotype stereo = getStereotype(op.getModel(), stereotype);
+	MStereotype stereo = getStereotype(op.getModel(), stereotype,
+		_operationBases);
 	if (stereo != null)
 	    op.setStereotype(stereo);
 	else if ("".equals(stereotype))
@@ -1186,7 +1143,8 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 
     if (stereotype != null) {
 	stereotype = stereotype.trim();
-	MStereotype stereo = getStereotype(attr.getModel(), stereotype);
+	MStereotype stereo = getStereotype(attr.getModel(), stereotype,
+		_attributeBases);
 	if (stereo != null)
 	    attr.setStereotype(stereo);
 	else if ("".equals(stereotype))
@@ -1283,7 +1241,8 @@ nextProp:
    * @param name The name of the MStereotype to search for.
    * @return An MStereotype named name, or null if none is found.
    */
-  private MStereotype recFindStereotype(MModelElement root, String name) {
+  private MStereotype recFindStereotype(MModelElement root, String name,
+	    String base[]) {
     MStereotype stereo;
 
     if (root == null)
@@ -1291,8 +1250,20 @@ nextProp:
 
     if (root instanceof MStereotype &&
 	name.equals(root.getName())) {
+	int i;
+	for (i = 0; base != null && i < base.length; i++) {
+	    String bc = ((MStereotype)root).getBaseClass();
+	    if ((base[i] == null && bc == null) ||
+		(base[i] != null && base[i].equals(bc)))
+		break;
+	}
 
-	return (MStereotype) root;
+	if (base == null || i < base.length)
+	    return (MStereotype) root;
+/*
+	else
+	    System.out.println("Missed stereotype " + ((MStereotype)root).getBaseClass());
+*/
     }
 
     if (!(root instanceof MNamespace))
@@ -1310,11 +1281,53 @@ nextProp:
     Iterator iter = ownedElements.iterator();
 
     while(iter.hasNext()) {
-	stereo = recFindStereotype((MModelElement) iter.next(), name);
+	stereo = recFindStereotype((MModelElement) iter.next(), name, base);
 	if (stereo != null)
 	    return stereo;
     }
     return null;
+  }
+
+  // Refactoring: static to denote that it doesn't use any class members.
+  // Needs-more-work:
+  // Idea to move this to MMUtil together with the same function from
+  // org/argouml/uml/ui/UMLComboBoxEntry.java
+  // org/argouml/uml/cognitive/critics/WizOperName.java
+  private static MNamespace findNamespace(MNamespace phantomNS, MModel targetModel) {
+    MNamespace ns = null;
+    MNamespace targetParentNS = null;
+    MNamespace parentNS = phantomNS.getNamespace();
+    if(parentNS == null) {
+	ns = targetModel;
+    } else {
+	targetParentNS = findNamespace(parentNS,targetModel);
+	//
+	//   see if there is already an element with the same name
+	//
+	Collection ownedElements = targetParentNS.getOwnedElements();
+	String phantomName = phantomNS.getName();
+	String targetName;
+	if(ownedElements != null) {
+	    MModelElement ownedElement;
+	    Iterator iter = ownedElements.iterator();
+	    while(iter.hasNext()) {
+		ownedElement = (MModelElement) iter.next();
+		targetName = ownedElement.getName();
+		if(targetName != null && phantomName.equals(targetName)) {
+		    if(ownedElement instanceof MPackage) {
+			ns = (MPackage) ownedElement;
+			break;
+		    }
+		}
+	    }
+	}
+	if(ns == null) {
+	    ns = targetParentNS.getFactory().createPackage();
+	    ns.setName(phantomName);
+	    targetParentNS.addOwnedElement(ns);
+	}
+    }
+    return ns;
   }
 
   /**
@@ -1328,14 +1341,43 @@ nextProp:
    * @param name The name of the MStereotype to search for.
    * @return An MStereotype named name, or possibly null.
    */
-  private MStereotype getStereotype(MModelElement root, String name) {
+  private MStereotype getStereotype(MModelElement root, String name,
+	    String base[]) {
     MStereotype stereo;
+    boolean phantom = false;
 
-    stereo = recFindStereotype(root, name);
-    if (stereo == null)
-	stereo = recFindStereotype(ProfileJava.getInstance().getProfileModel(), name);
+    stereo = recFindStereotype(root, name, base);
+    if (stereo == null) {
+	stereo = recFindStereotype(
+		ProfileJava.getInstance().getProfileModel(),
+		name,
+		base);
 
-    //if (stereo == null) {
+	// This (if it exist) is a phantom stereotype...
+	phantom = true;
+    }
+
+    if (stereo != null && phantom) {
+	if (root instanceof MModel) {
+	    MNamespace targetNS = findNamespace(stereo.getNamespace(), (MModel)root);
+	    MStereotype clone = null;
+	    try {
+		clone = (MStereotype) stereo.getClass().getConstructor(new Class[] {}).newInstance(new Object[] {});
+		clone.setName(stereo.getName());
+		clone.setStereotype(stereo.getStereotype());
+		clone.setBaseClass(((MStereotype) stereo).getBaseClass());
+		targetNS.addOwnedElement(clone);
+		stereo = clone;
+	    }
+	    catch(Exception ex) {
+		ex.printStackTrace();
+	    }
+	} else {
+	    stereo = null;
+	}
+    }
+
+    //if (stereo == null && root != null) {
     //    Create a new stereotype
     //}
 
