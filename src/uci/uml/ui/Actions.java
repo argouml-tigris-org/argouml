@@ -55,6 +55,7 @@ import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.model_management.*;
 import uci.uml.visual.*;
+import uci.uml.util.*;
 import uci.uml.generate.*;
 import uci.xml.argo.ArgoParser;
 import uci.uml.ocl.*;
@@ -1208,6 +1209,7 @@ class ActionStateDiagram extends UMLChangeAction {
 		String contextNameStr = cls.getName();
 		if (contextNameStr == null) contextNameStr = "untitled";
 		MStateMachine sm = new MStateMachineImpl();
+		sm.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		sm.setName(contextNameStr + "StateMachine");
 		MCompositeState cs = new MCompositeStateImpl();
 		cs.setName("state_machine_top");
@@ -1245,11 +1247,12 @@ class ActionActivityDiagram extends UMLChangeAction {
       String contextNameStr = ns.getName();
       if (contextNameStr == null) contextNameStr = "untitled";
       MActivityGraph am = new MActivityGraphImpl();
+      am.setUUID(UUIDManager.SINGLETON.getNewUUID());
       am.setName(contextNameStr + "ActivityGraph");
       MCompositeState cs = new MCompositeStateImpl();
       cs.setName("activities_top");
       //cs.setNamespace(ns);
-      //am.setNamespace(ns);
+      am.setNamespace(ns);
       am.setTop(cs);
       ns.addBehavior(am);
       UMLActivityDiagram d = new UMLActivityDiagram(ns, am);
@@ -1277,6 +1280,7 @@ class ActionCollaborationDiagram extends UMLChangeAction {
     Project p = ProjectBrowser.TheInstance.getProject();
     try {
 		MCollaboration c = new MCollaborationImpl();
+		c.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		c.setName("Collaboration");
 		p.getModel().addOwnedElement(c);
 		MInteraction interaction = new MInteractionImpl();
@@ -1585,7 +1589,7 @@ class ActionAddMessage extends UMLChangeAction {
 		msg.setAction(ua);
 		ar.addMessage(msg);
 		MCollaboration collab = (MCollaboration) ar.getNamespace();
-		collab.addOwnedElement(msg);
+		// collab.addOwnedElement(msg);
 		Collection interactions = collab.getInteractions();
 		// at the moment there can be only one Interaction per Collaboration
 		Iterator iter2 = interactions.iterator();
