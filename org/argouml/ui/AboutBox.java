@@ -41,8 +41,8 @@ import org.argouml.application.api.PluggableAboutTab;
 import org.argouml.i18n.Translator;
 import org.argouml.util.Tools;
 
-/** This is what you see after you click the About
- * button in the toolbar.
+/** This is what you see after you activate the "Help->About ArgoUML" menu-item.
+ * 
  */
 public class AboutBox extends JDialog {
 
@@ -53,17 +53,23 @@ public class AboutBox extends JDialog {
     // instance variables
 
     JTabbedPane _tabs = new JTabbedPane();
-    int i = 3; // insets in pixels
+    /** Insets in pixels  */
+    private int i = 3;
 
     /** Shared splash panel */
     SplashPanel _splashPanel = null;
 
     ////////////////////////////////////////////////////////////////
     // constructor
+    /** Class constructor. */
     public AboutBox() {
 	this((Frame) null, false);
     }
 
+    /** Class constructor.
+     *
+     * @param owner     the frame from which the dialog is displayed
+     */
     public AboutBox(Frame owner) {
 	this(owner, false);
     }
@@ -72,10 +78,10 @@ public class AboutBox extends JDialog {
 	return Translator.localize(str);
     }
 
-    /** Create a JScrollPane from the text
+    /** Creates a JScrollPane from the text
      *
-     * @returns the JScrollPane
-     * @param the text to represent
+     * @return          the JScrollPane
+     * @param text      the text to represent
      */
     private JScrollPane createPane(String text) {
 	JTextArea a = new JTextArea();
@@ -88,7 +94,13 @@ public class AboutBox extends JDialog {
 	return new JScrollPane(a);
     }
 
-
+    /** 
+    * Class constructor.
+    * 
+    * @param owner      the frame from which the dialog is displayed
+    * @param modal      true for a modal dialog, false for one that allows 
+    *                   other windows to be active at the same time 
+    */
     public AboutBox(Frame owner, boolean modal) {
 	super(owner, modal);
         // TODO: i18n
@@ -119,7 +131,7 @@ public class AboutBox extends JDialog {
 	versionBuf.append(localize("aboutbox.thanks"));
 	versionBuf.append("\n");
 
-        /** MVW: Added the inset JPanel, so that the image width is also
+        /* MVW: Added the inset JPanel, so that the image width is also
         applied to the "ArgoUML Vx,xx.x" part */
         JPanel myInsetPanel = new JPanel(); 
         /* top, left, bottom, right */
@@ -132,7 +144,6 @@ public class AboutBox extends JDialog {
         imgHeight += 40 + 40; 
         myInsetPanel.add(_splashPanel); 
         _tabs.addTab("Splash", myInsetPanel); 
-	//_tabs.addTab("Splash", _splashPanel);
 
 	_tabs.addTab("Version", createPane(versionBuf.toString()));
 	_tabs.addTab("Credits", 
@@ -144,7 +155,7 @@ public class AboutBox extends JDialog {
 	_tabs.addTab("Legal", 
 		     createPane(localize("aboutbox.legal")));
 
-	// Add the about tabs from the modules.
+	// Add the About tabs from the modules.
 	ArrayList list = Argo.getPlugins( PluggableAboutTab.class);
 	ListIterator iterator = list.listIterator();
 	while (iterator.hasNext()) {
