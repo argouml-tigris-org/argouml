@@ -392,9 +392,11 @@ Property files to be searched:
     <copy todir="${argo.build.classes}/org/argouml/resource">
       <fileset dir="${argo.src.dir}/org/argouml/resource" excludes="CVS/**" includes="**/**"/>
     </copy>
+  	<!-- this should copy across all .tee files, dtds and xslt  for persistence mechanism -->
     <copy todir="${argo.build.classes}/org/argouml/persistence">
       <fileset dir="${argo.src.dir}/org/argouml/persistence" excludes="CVS/**" includes="**/**"/>
     </copy>
+  	
     <copy file="${argo.src.dir}/org/argouml/argo.ini" tofile="${argo.build.classes}/org/argouml/argo.ini"/>
     <copy file="${argo.src.dir}/org/argouml/default.xmi" tofile="${argo.build.classes}/org/argouml/default.xmi"/>
     <copy file="${argo.src.dir}/org/argouml/registry.xml" tofile="${argo.build.classes}/org/argouml/registry.xml"/>
