@@ -153,8 +153,15 @@ public class ProjectBrowser
         this("ArgoUML", false);
     }
 
-    private ProjectBrowser(String appName, boolean doSplash) {
-        super(appName);
+    /**
+     * The constructor.
+     * 
+     * @param applicationName  the title of the frame
+     * @param doSplash determines if we have to show 
+     *                 the splash screen at startup
+     */
+    private ProjectBrowser(String applicationName, boolean doSplash) {
+        super(applicationName);
         theInstance = this;
         SplashScreen.setDoSplash(doSplash);
         if (doSplash) {
@@ -176,7 +183,7 @@ public class ProjectBrowser
         getContentPane().add(createPanels(doSplash), BorderLayout.CENTER);
         getContentPane().add(statusBar, BorderLayout.SOUTH);
 
-        setAppName(appName);
+        setAppName(applicationName);
 
         // allows me to ask "Do you want to save first?"
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -205,7 +212,12 @@ public class ProjectBrowser
 
     /**
      * Creates the panels in the working area
-     * @return Component
+     *
+     * @param doSplash true if we show  the splashscreen during startup
+     * @return Component the area between the menu and the statusbar. 
+     *                   It contains the workarea at centre and the toolbar
+     *                   position north, south, east or west.
+     *
      */
     protected Component createPanels(boolean doSplash) {
         if (doSplash) {
@@ -419,9 +431,16 @@ public class ProjectBrowser
         setTitle(ProjectManager.getManager().getCurrentProject().getName());
     }
     
+    /**
+     * @return the application name as shown in the titlebar
+     */
     public String getAppName() {
         return appName;
     }
+    
+    /**
+     * @param n the application name as shown in the titlebar
+     */
     public void setAppName(String n) {
         appName = n;
     }
@@ -441,6 +460,9 @@ public class ProjectBrowser
      * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
      * org.argouml.ui.targetmanager.TargetManager#setTarget(Object)
      * TargetManager.getInstance().setTarget(Object)}
+     * Only still used in tests.
+     *
+     * @param o the target
      */
     public void setTarget(Object o) {
         TargetManager.getInstance().setTarget(o);
@@ -451,8 +473,9 @@ public class ProjectBrowser
      * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
      * org.argouml.ui.targetmanager.TargetManager#getTarget()
      * TargetManager.getInstance().getTarget()}
+     *
+     * @return the target object
      */
-    
     public Object getTarget() {
         return TargetManager.getInstance().getTarget();
     }
@@ -462,6 +485,8 @@ public class ProjectBrowser
      *
      * TODO: should introduce an instance variable to go straight to
      * the correct tab instead of trying all
+     *
+     * @param o the todo item to select
      */
     public void setToDoItem(Object o) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
@@ -493,6 +518,8 @@ public class ProjectBrowser
 
     /**
      * Get the tab page instance of the given class
+     * 
+     * @param tabClass the given class
      * @return the tabpage
      */
     public TabSpawnable getTab(Class tabClass) {
@@ -511,6 +538,9 @@ public class ProjectBrowser
 					+ " tab found");
     }
 
+    /**
+     * @return the status bar
+     */
     public StatusBar getStatusBar() {
         return statusBar;
     }
@@ -522,6 +552,9 @@ public class ProjectBrowser
         return menuBar;
     }
 
+    /**
+     * @return the editor pane
+     */
     public MultiEditorPane getEditorPane() {
         return editorPane;
     }
@@ -641,15 +674,21 @@ public class ProjectBrowser
         statusBar.showStatus(s);
     }
 
-    /**    Called by a user interface element when a request to
-     *    navigate to a model element has been received.
+    /**    
+     * Called by a user interface element when a request to
+     * navigate to a model element has been received.
+     *
+     * @param element the navigation target
      */
     public void navigateTo(Object element) {  
         setTarget(element);
     }
 
-    /**   Called by a user interface element when a request to
-     *   open a model element in a new window has been recieved.
+    /**   
+     * Called by a user interface element when a request to
+     * open a model element in a new window has been recieved.
+     *
+     * @param element the UI element to be opened
      */
     public void open(Object element) {
     }
@@ -689,14 +728,23 @@ public class ProjectBrowser
         Configuration.setInteger(Argo.KEY_SCREEN_TOP_Y, getY());
     }
 
+    /**
+     * @param event
+     */
     public void moduleUnloaded(ArgoModuleEvent event) {
         // TODO:  Disable menu
     }
 
+    /**
+     * @param event
+     */
     public void moduleEnabled(ArgoModuleEvent event) {
         // TODO:  Enable menu
     }
 
+    /**
+     * @param event
+     */
     public void moduleDisabled(ArgoModuleEvent event) {
         // TODO:  Disable menu
     }
@@ -804,7 +852,8 @@ public class ProjectBrowser
 
     /**
      * Sets the splashscreen. Sets the current splashscreen to invisible
-     * @param ss
+     * 
+     * @param ss the new splashscreen
      */
     public void setSplashScreen(SplashScreen ss) {
         if (splashScreen != null && splashScreen != ss) {
@@ -825,6 +874,9 @@ public class ProjectBrowser
         return theInstance;
     }
 
+    /**
+     * @param splash true if we have to show the splashscreen
+     */
     public static synchronized void setSplash(boolean splash) {
         showSplashScreen = splash;
     }

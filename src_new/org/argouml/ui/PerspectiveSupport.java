@@ -44,65 +44,87 @@ public class PerspectiveSupport {
     /**
      * The go rules that this Tree model uses to build child nodes.
      */
-    protected Vector _goRules;
+    private Vector goRules;
     
     /** name */
-    protected String _name;
+    private String name;
     
     /** list of all possible rules in the collection Todolist specific */
-    protected static Vector _rules = new Vector();
+    private static Vector rules = new Vector();
         
-    protected PerspectiveSupport() { }
+    private PerspectiveSupport() { }
     
-    /** Creates a new instance of PerspectiveSupport */
-    public PerspectiveSupport(String name) {
+    /** 
+     * Creates a new instance of PerspectiveSupport
+     * 
+     * @param n the name to be localized
+     */
+    public PerspectiveSupport(String n) {
         
-        setName(Translator.localize("Tree", name));
-        _goRules = new Vector();
+        name = Translator.localize("Tree", n);
+        goRules = new Vector();
     }
     
-    public PerspectiveSupport(String name, Vector subs) {
-        this(name);
-        _goRules = subs;
+    /**
+     * The constructor.
+     * 
+     * @param n the name to be localized
+     * @param subs the go rules
+     */
+    public PerspectiveSupport(String n, Vector subs) {
+        this(n);
+        goRules = subs;
     }
     
     // ------------- Rule management --------------
     
-    /** adds a rule to the perspective that will generate child
+    /** 
+     * Adds a rule to the perspective that will generate child
      * nodes for any given parent node.
+     *
+     * @param tm the tree model to be added
      */
     public void addSubTreeModel(TreeModel tm) {
-        if (_goRules.contains(tm)) return;
-        _goRules.addElement(tm);
+        if (goRules.contains(tm)) return;
+        goRules.addElement(tm);
     }
     
-    /** remove a rule from the perspective that will generate child
+    /** 
+     * Remove a rule from the perspective that will generate child
      * nodes for any given parent node.
+     *
+     * @param tm the treemodel to be removed
      */
     public void removeSubTreeModel(TreeModel tm) {
-        _goRules.removeElement(tm);
+        goRules.removeElement(tm);
     }
     
-    /** get the rules that together form the perspective */
+    /** 
+     * Get the rules that together form the perspective.
+     * 
+     * @return the rules that form the perspecive
+     */
     public Vector getSubTreeModels() {
-        return _goRules;
+        return goRules;
     }
     
     // ----------- name -------------------------
-    
 
     /**
      * @return the name
      */
-    public String getName() { return _name; }
+    public String getName() { return name; }
     
 
     /**
      * @param s the name
      */
-    public void setName(String s) { _name = s; }
+    public void setName(String s) { name = s; }
     
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         if (getName() != null) return getName();
         else return super.toString();
@@ -110,12 +132,19 @@ public class PerspectiveSupport {
         
     // ------ all rules ----------
     
-    /** TODO: factor out */
+    /** TODO: factor out
+     *
+     * @param rule the rule to be added
+     */
     public static void registerRule(TreeModel rule) {
-        _rules.addElement(rule);
+        rules.addElement(rule);
     }
     
-    /** TODO: factor out */
-    public static Vector getRegisteredRules() { return _rules; }
+    /**
+     * @return Returns the _goRules.
+     */
+    protected Vector getGoRules() {
+        return goRules;
+    }
     
 }
