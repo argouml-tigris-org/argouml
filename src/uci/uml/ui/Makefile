@@ -81,8 +81,14 @@ CLASSES = \
 	Menu.class \
 	ModelElementRenderer.class \
 	MultiEditorPane.class \
+	NavAssociation.class \
 	NavigatorConfigDialog.class \
+	NavContainment.class \
+	NavDiagramCentric.class \
+	NavInheritance.class \
+	NavPackageCentric.class \
 	NavPerspective.class \
+	NavStrictContainment.class \
 	NavigatorPane.class \
 	PriorityNode.class \
 	Project.class \

@@ -43,6 +43,7 @@ import uci.graph.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
 
 /** Class to display graphics for a UML Class in a diagram. */
 
@@ -149,11 +150,19 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
   public void propertyChange(PropertyChangeEvent pve) {
     Object src = pve.getSource();
     String pName = pve.getPropertyName();
-    if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue()))
+    if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
       System.out.println("finished editing");
-    if (src == _clss) { System.out.println("class changed " + pName);}
-    if (src == _attr) { System.out.println("attr changed " + pName);}
-    if (src == _oper) { System.out.println("oper changed " + pName);}
+      Classifier cls = (Classifier) getOwner();
+      try {
+	if (src == _clss) { cls.setName(new Name(_clss.getText())); }
+	if (src == _attr) { System.out.println("attr changed " + pName);}
+	if (src == _oper) { System.out.println("oper changed " + pName);}
+      }
+      catch (PropertyVetoException ex) {
+	System.out.println("could not parse and use the text you entered");
+      }
+    }
+    else super.propertyChange(pve);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -162,14 +171,16 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
   public void mouseClicked(MouseEvent me) {
     if (me.isConsumed()) return;
     if (me.getClickCount() >= 2) {
-      System.out.println("starting editor!");
       if (_clss.contains(me.getX(), me.getY())) _clss.mouseClicked(me);
       if (_attr.contains(me.getX(), me.getY())) _attr.mouseClicked(me);
       if (_oper.contains(me.getX(), me.getY())) _oper.mouseClicked(me);
     }
     me.consume();
   }
-  
+
+  // needs-more-work: catch keyTyped and start editing class name if
+  // the name is not set to anything other than a default
+    
   ////////////////////////////////////////////////////////////////
   // internal methods
   

@@ -85,6 +85,11 @@ public class FigLine extends Fig {
     firePropChange("bounds", null, null);
   }
 
+  public int getX1() { return _x1; }
+  public int getY1() { return _y1; }
+  public int getX2() { return _x2; }
+  public int getY2() { return _y2; }
+
   /** Set one of the end point coordinates. Each of these methods
    *  fires PropertyChange with "bounds". */
   public void setX1(int x1) {

@@ -31,7 +31,7 @@ import java.util.*;
 /** Abstract class that defines a common interface to all of
  *  path-to-coord mapping objects.  These objects store some
  *  information about a point that is defined relative to a path
- *  (e.g., along a FigEdige) and provide methods to get the
+ *  (e.g., along a FigEdge) and provide methods to get the
  *  coordinates (x, y) for that point.  This allows us to place labels
  *  along a FigEdge and have the label stay in the right place, even
  *  if the FigEdge moves. */

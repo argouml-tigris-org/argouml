@@ -42,8 +42,8 @@ public class FigAssociation extends FigEdgeLine
 implements VetoableChangeListener, DelayedVetoableChangeListener {
 
   protected FigText _name;
-  protected FigText _source_end;
-  protected FigText _dest_end;
+  protected FigText _srcMult, _srcRole;
+  protected FigText _destMult, _destRole;
 
   public FigAssociation(Object edge) {
     super();
@@ -62,24 +62,43 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     _name.setFilled(false);
     _name.setLineWidth(0);
 
-    addPathItem(_name, new PathConvPercent(this, (float).50, 0));
+    addPathItem(_name, new PathConvPercent(this, (float).50, 10));
 
-    _source_end = new FigText(10, 30, 90, 20);
-    _source_end.setFont(labelFont);
-    _source_end.setTextColor(Color.black);
-    _source_end.setTextFilled(false);
-    _source_end.setFilled(false);
-    _source_end.setLineWidth(0);
-    addPathItem(_source_end, new PathConvPercent(this, (float).20, 0));
+    _srcMult = new FigText(10, 30, 90, 20);
+    _srcMult.setFont(labelFont);
+    _srcMult.setTextColor(Color.black);
+    _srcMult.setTextFilled(false);
+    _srcMult.setFilled(false);
+    _srcMult.setLineWidth(0);
+    addPathItem(_srcMult,
+		new PathConvPercentPlusConst(this, (float).0, 20, 10));
 
-    _dest_end = new FigText(10, 30, 90, 20);
-    _dest_end.setFont(labelFont);
-    _dest_end.setTextColor(Color.black);
-    _dest_end.setTextFilled(false);
-    _dest_end.setFilled(false);
-    _dest_end.setLineWidth(0);
-    addPathItem(_dest_end, new PathConvPercent(this, (float).80, 0));
+    _srcRole = new FigText(10, 30, 90, 20);
+    _srcRole.setFont(labelFont);
+    _srcRole.setTextColor(Color.black);
+    _srcRole.setTextFilled(false);
+    _srcRole.setFilled(false);
+    _srcRole.setLineWidth(0);
+    addPathItem(_srcRole,
+		new PathConvPercentPlusConst(this, (float).0, 35, -15));
 
+    _destMult = new FigText(10, 30, 90, 20);
+    _destMult.setFont(labelFont);
+    _destMult.setTextColor(Color.black);
+    _destMult.setTextFilled(false);
+    _destMult.setFilled(false);
+    _destMult.setLineWidth(0);
+    addPathItem(_destMult,
+		new PathConvPercentPlusConst(this, (float)1.00, -20, 10));
+
+    _destRole = new FigText(10, 30, 90, 20);
+    _destRole.setFont(labelFont);
+    _destRole.setTextColor(Color.black);
+    _destRole.setTextFilled(false);
+    _destRole.setFilled(false);
+    _destRole.setLineWidth(0);
+    addPathItem(_destRole,
+		new PathConvPercentPlusConst(this, (float)1.00, -35, -15));
     setBetweenNearestPoints(true);
     updateText();
   }
@@ -118,44 +137,46 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     startTrans();
     _name.setText(asNameStr);
 
-    AssociationEnd _end_1 = ((AssociationEnd)(as.getConnection().elementAt(0)));
-    AssociationEnd _end_2 = ((AssociationEnd)(as.getConnection().elementAt(1)));
+    AssociationEnd ae1 = ((AssociationEnd)(as.getConnection().elementAt(0)));
+    AssociationEnd ae2 = ((AssociationEnd)(as.getConnection().elementAt(1)));
 
-    _source_end.setText(GeneratorDisplay.Generate(_end_1.getMultiplicity()));
-    _dest_end.setText(GeneratorDisplay.Generate(_end_2.getMultiplicity()));
+    _srcMult.setText(GeneratorDisplay.Generate(ae1.getMultiplicity()));
+    _destMult.setText(GeneratorDisplay.Generate(ae2.getMultiplicity()));
 
-    AggregationKind agg_kind_1 = _end_1.getAggregation();
-    AggregationKind agg_kind_2 = _end_2.getAggregation();
+    _srcRole.setText(GeneratorDisplay.Generate(ae1.getName()));
+    _destRole.setText(GeneratorDisplay.Generate(ae2.getName()));
 
-    updateArrowHead("source", agg_kind_1);
-    updateArrowHead("dest", agg_kind_2);
-
+    setSourceArrowHead(chooseArrowHead(ae1.getAggregation()));
+    setDestArrowHead(chooseArrowHead(ae2.getAggregation()));
+    
     Rectangle bbox = getBounds();
     setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
     endTrans();
   }
 
-  protected void updateArrowHead(String which, AggregationKind agg_kind)
-  {
-    ArrowHead newArrowhead = new ArrowHeadNone();
+  protected ArrowHead chooseArrowHead(AggregationKind ak) {
+    ArrowHead res = new ArrowHeadNone();
 
-    if (agg_kind.equals(AggregationKind.UNSPEC)) {
-      newArrowhead = new ArrowHeadNone(); }
-    if (agg_kind.equals(AggregationKind.NONE)) {
-      newArrowhead = new ArrowHeadNone(); }
-    if (agg_kind.equals(AggregationKind.AGG)) {
-      ArrowHeadDiamond temp = new ArrowHeadDiamond();
-      temp.setFillColor(Color.white);
-      newArrowhead = temp; }
-    if (agg_kind.equals(AggregationKind.COMPOSITE)) {
-      ArrowHeadDiamond temp = new ArrowHeadDiamond();
-      temp.setFillColor(Color.black);
-      newArrowhead = temp; }
-
-    if (which.equals("source")) {
-      setSourceArrowHead(newArrowhead); }
-    else if (which.equals("dest")) {
-      setDestArrowHead(newArrowhead); }
+    if (AggregationKind.UNSPEC.equals(ak))
+      return ArrowHeadNone.TheInstance;
+    if (AggregationKind.NONE.equals(ak))
+      return ArrowHeadNone.TheInstance;
+    if (AggregationKind.AGG.equals(ak))
+      return ArrowHeadDiamond.WhiteDiamond;
+//     {
+//       ArrowHeadDiamond res = new ArrowHeadDiamond();
+//       res.setFillColor(Color.white);
+//       return res;
+//     }
+    if (AggregationKind.COMPOSITE.equals(ak))
+      return ArrowHeadDiamond.BlackDiamond;
+//       {
+//       ArrowHeadDiamond res = new ArrowHeadDiamond();
+//       res.setFillColor(Color.black);
+//       return res;
+//     }
+    System.out.println("unknown case in drawing arrowhead");
+    return ArrowHeadNone.TheInstance;
   }
 
 } /* end class FigAssociation */

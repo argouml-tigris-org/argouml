@@ -191,7 +191,15 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
   // Fig API
 
   /** Reply the bounding box for this FigEdge. */
-  public Rectangle getBounds() { return _fig.getBounds(); }
+  public Rectangle getBounds() {
+    Rectangle res = _fig.getBounds();
+    Enumeration enum = _pathItems.elements();
+    while (enum.hasMoreElements()) {
+      Fig f = ((PathItem) enum.nextElement()).getFig();
+      res = res.union(f.getBounds());
+    }
+    return res;
+  }
 
   /** Update my bounding box */
   protected void calcBounds() {
@@ -259,7 +267,10 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
       PathItem element = (PathItem) pathVec.elementAt(i);
       PathConv path = element.getPath();
       Fig f = element.getFig();
-      f.setLocation(path.getPoint().x, path.getPoint().y);
+      int halfWidth = f.getWidth() / 2;
+      int halfHeight = f.getHeight() / 2;
+      Point loc = path.getPoint();
+      f.setLocation(loc.x - halfWidth, loc.y - halfHeight);
       f.paint(g);
     } 
   }

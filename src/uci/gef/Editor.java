@@ -137,6 +137,9 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   protected transient RedrawManager _redrawer = new RedrawManager(this);
 
 
+  protected transient FigTextEditor _activeTextEditor = null;
+
+
   ////////////////////////////////////////////////////////////////
   // constructors and related functions
 
@@ -383,6 +386,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     getLayerManager().paint(g);
     _selectionManager.paint(g);
     _modeManager.paint(g);
+    if (_activeTextEditor != null) _activeTextEditor.repaint();
   }
 
   public synchronized void print(Graphics g) {
@@ -415,6 +419,12 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public Component getAwtComponent() { return _awt_component; }
   public void setAwtComponent(Component c) { _awt_component = c; }
 
+  public void setActiveTextEditor(FigTextEditor fte) {
+    if (_activeTextEditor != null)
+      _activeTextEditor.endEditing();
+    _activeTextEditor = fte;
+  }
+  
   public void setCursor(Cursor c) {
     if (getAwtComponent() != null) {
       getAwtComponent().setCursor(c);
@@ -493,7 +503,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** Invoked when a mouse button has been pressed. */
   public void mousePressed(MouseEvent me) {
-    if (getAwtComponent() != null) getAwtComponent().requestFocus();
+    setActiveTextEditor(null);
+    //if (getAwtComponent() != null) getAwtComponent().requestFocus();
     RedrawManager.lock();
     Globals.curEditor(this);
     //setUnderMouse(me);

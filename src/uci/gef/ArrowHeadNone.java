@@ -38,6 +38,8 @@ import java.util.*;
 
 /** Draws no arrow head at the end of a FigEdge. */
 public class ArrowHeadNone extends ArrowHead {
-  public void paint(Graphics g, Point start, Point end) {
-  }
+
+  public static ArrowHeadNone TheInstance = new ArrowHeadNone();
+  
+  public void paint(Graphics g, Point start, Point end) { }
 }

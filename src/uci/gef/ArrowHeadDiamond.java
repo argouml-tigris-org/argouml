@@ -41,6 +41,28 @@ import java.util.*;
 
 public class ArrowHeadDiamond extends ArrowHead {
 
+  ////////////////////////////////////////////////////////////////
+  // constants
+  
+  public static ArrowHeadDiamond WhiteDiamond =
+  new ArrowHeadDiamond(Color.black, Color.white);
+
+  public static ArrowHeadDiamond BlackDiamond =
+  new ArrowHeadDiamond(Color.black, Color.black);
+
+
+  ////////////////////////////////////////////////////////////////
+  // constuctors
+  public ArrowHeadDiamond() { }
+  public ArrowHeadDiamond(Color line, Color fill) {
+    super(line, fill);
+    arrow_height = 20; //?
+    arrow_width = 5; //?
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // display methods
+  
   public void paint(Graphics g, Point start, Point end) {
     int    xFrom, xTo, yFrom, yTo;
     double denom, x, y, dx, dy, cos, sin;
@@ -81,12 +103,12 @@ public class ArrowHeadDiamond extends ArrowHead {
     g.drawPolygon(diamond);	    
   }
   
-  private double dist(int x0, int y0, int x1, int y1) {
-    double dx, dy;
-    dx = (double)(x0-x1);
-    dy = (double)(y0-y1);
-    return Math.sqrt(dx*dx+dy*dy);
-  }
+//   private double dist(int x0, int y0, int x1, int y1) {
+//     double dx, dy;
+//     dx = (double)(x0-x1);
+//     dy = (double)(y0-y1);
+//     return Math.sqrt(dx*dx+dy*dy);
+//   }
   
   private double dist(double dx, double dy) {
     return Math.sqrt(dx*dx+dy*dy);

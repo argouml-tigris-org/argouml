@@ -43,6 +43,7 @@ CLASSES2 = \
 	AssociationEnd.class \
 	Attribute.class \
 	BehavioralFeature.class \
+	Class.class \
 	Classifier.class \
 	Constraint.class \
 	DataType.class \
