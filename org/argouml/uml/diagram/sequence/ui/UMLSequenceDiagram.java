@@ -113,7 +113,16 @@ public class UMLSequenceDiagram extends UMLDiagram {
     SequenceDiagramGraphModel gm = new SequenceDiagramGraphModel();
     gm.setNamespace(m);
     setGraphModel(gm);
-    LayerPerspective lay = new SequenceDiagramLayout(m.getName(), gm);
+    
+    LayerPerspective lay;
+    if (m == null) {
+        System.out.println("SEVERE WARNING: Sequence diagram was created " +
+                           "without a valid namesspace. " + 
+                           "Setting namespace to empty.");
+        lay = new SequenceDiagramLayout("", gm);
+    }
+    else
+        lay = new SequenceDiagramLayout(m.getName(), gm);
     setLayer(lay);
     SequenceDiagramRenderer rend = new SequenceDiagramRenderer(); // singleton
     lay.setGraphNodeRenderer(rend);
