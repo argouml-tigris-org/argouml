@@ -29,7 +29,7 @@ import org.argouml.uml.generator.AbstractSection;
 /**
  * Code section handling for PHP
  *
- * @author  Kai Schröder, k.schroeder@php.net
+ * @author  Kai Schr&ouml;der, k.schroeder@php.net
  * @since   ArgoUML 0.15.5
  */
 public class Section extends AbstractSection {

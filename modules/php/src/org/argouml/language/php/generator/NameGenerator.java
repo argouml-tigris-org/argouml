@@ -31,7 +31,7 @@ import org.argouml.model.ModelFacade;
 /**
  * Helper class to generate names for model elements in PHP notation
  *
- * @author Kai Schröder
+ * @author Kai Schr&ouml;der
  * @since  ArgoUML 0.15.5
  */
 public final class NameGenerator {
