@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,13 +24,20 @@
 
 package org.argouml.model;
 
-import junit.framework.*;
+import java.util.Collection;
+import junit.framework.TestCase;
+import org.argouml.model.uml.UmlFactory;
+import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
+import ru.novosoft.uml.behavior.activity_graphs.MPartition;
 
 /**
- * Tests some of the methods in ModelFacade.
+ * Tests some of the methods in ModelFacade.<p>
  *
- * This is a complement to TestModelFacade that makes a lot more general tests.
- * Especially it tests that there are errors thrown in some cases.
+ * This is a complement to the tests in TestModelFacade and TestModelFacade3
+ * that makes a lot more general tests.<p>
+ *
+ * As opposed to the tests in TestModelFacade and TestModelFacade3 these
+ * tests are maintained more or less manually.
  * 
  * @author Linus Tolke
  */
@@ -38,6 +45,7 @@ public class TestModelFacade2 extends TestCase {
 
     /**
      * Constructor for TestModelFacade2.
+     *
      * @param arg0 name of test case
      */
     public TestModelFacade2(String arg0)
@@ -46,9 +54,9 @@ public class TestModelFacade2 extends TestCase {
     }
 
     /**
-     * Test that the correct error is thrown for isAsynchronous
+     * Test that the correct error is thrown for isAsynchronous.
      */
-    public void testErrorThrown() {
+    public void testErrorThrownInIsAsynchronous() {
 	try {
 	    ModelFacade.isAsynchronous(new Object());
 	    assertTrue("Error was not thrown", false);
@@ -57,4 +65,19 @@ public class TestModelFacade2 extends TestCase {
 	}
     }
 
+    /**
+     * Test for setModelElementContainer.
+     */
+    public void testSetModelElementContainer() {
+	UmlFactory fy = UmlFactory.getFactory();
+
+	MActivityGraph container =
+	    fy.getActivityGraphs().createActivityGraph();
+	MPartition partition = fy.getActivityGraphs().createPartition();
+
+	ModelFacade.setModelElementContainer(partition, container);
+
+	Collection collection = container.getPartitions();
+	assertTrue(collection.contains(partition));
+    }
 }
