@@ -421,7 +421,7 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     private Action getActionAttribute() {
         if (actionAttribute == null) {
-            actionAttribute = ActionAddAttribute.getSingleton();
+            actionAttribute = new ActionAddAttribute();
         }
         return actionAttribute;
     }
@@ -431,7 +431,7 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     private Action getActionOperation() {
         if (actionOperation == null) {
-            actionOperation = ActionAddOperation.getSingleton();
+            actionOperation = new ActionAddOperation();
         }
         return actionOperation;
     }
