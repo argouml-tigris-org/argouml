@@ -24,12 +24,14 @@
 package org.argouml.model.uml.foundation.core;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.MFactory;
@@ -380,9 +382,17 @@ public class CoreFactory extends AbstractUmlModelFactory {
     public MAssociation buildAssociation(MClassifier c1, boolean nav1, MClassifier c2, boolean nav2) {
         MAssociation assoc = UmlFactory.getFactory().getCore().createAssociation();
         assoc.setName("");
-        buildAssociationEnd(assoc, null, c1,null, null, nav1, null, null, null, null, null);
-        buildAssociationEnd(assoc, null, c2,null, null, nav2, null, null, null, null, null);
-        return assoc;
+        assoc.setNamespace(c1.getNamespace());
+        if (CoreHelper.getHelper().welformedAssociationNamespace(assoc, c2)) {
+        	buildAssociationEnd(assoc, null, c1,null, null, nav1, null, null, null, null, null);
+        	buildAssociationEnd(assoc, null, c2,null, null, nav2, null, null, null, null, null);
+        	return assoc;
+        } else {
+        	assoc.remove();
+        	logger.fatal("Tried to construct association not in one namespace with connected classifiers!");
+        	return null;
+        }
+        
     }
     
     /**
@@ -439,20 +449,36 @@ public class CoreFactory extends AbstractUmlModelFactory {
     {
         MAssociationEnd end = UmlFactory.getFactory().getCore().createAssociationEnd();
         if (assoc != null && type != null) {
-            end.setAssociation(assoc);
-            end.setNamespace(assoc.getNamespace());
-            assoc.addConnection(end);
-            end.setType(type);
+        	end.setAssociation(assoc);
+        	if (UmlHelper.getHelper().getCore().welformedAssociationEndNamespace(end, type.getNamespace())) {
+	            end.setAssociation(assoc);
+	            assoc.addConnection(end);
+	            end.setType(type);
+        	} else {
+        		// this should never happen
+        		end.remove();
+            	logger.fatal("Tried to create associationend to a non valid classifier");
+            	return null;
+        	}
         } else {
             // this should never happen
+            end.remove();
             logger.fatal("Tried to create associationend without association");
+            return null;
             
         }
-        if (name != null && name.length() > 0) {
-            end.setName(name);
-        } else {
-            end.setName("");
+        // wellformdnessrule
+        if (name == null || name.equals("")) {
+        	name = "newAssociationEnd";
+        }   
+        String tempname = name;
+        int counter = 0;
+        while (!UmlHelper.getHelper().getCore().welformedAssociationEndName(end, tempname)) {
+        	tempname = name + counter;
+        	counter++;
         }
+        name = tempname;
+        end.setName(name);
         if (multi != null) {
             end.setMultiplicity(multi);
         } else {
@@ -468,7 +494,13 @@ public class CoreFactory extends AbstractUmlModelFactory {
             end.setOrdering(MOrderingKind.UNORDERED);
         }
         if (aggregation != null) {
-            end.setAggregation(aggregation);
+        	if (UmlHelper.getHelper().getCore().welformedAssociationEndAggregation(end, aggregation)) {
+            	end.setAggregation(aggregation);
+        	} else {
+        		end.remove();
+            	logger.fatal("Tried to create associationend with a non valid aggregation");
+            	return null;
+        	}
         } else { 
             end.setAggregation(MAggregationKind.NONE);
         }

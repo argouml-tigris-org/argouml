@@ -23,18 +23,45 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.util.*;
-import javax.swing.*;
+import java.util.Collection;
+import java.util.Iterator;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLCheckBox;
+import org.argouml.uml.ui.UMLComboBox;
+import org.argouml.uml.ui.UMLComboBoxModel;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
+import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLMultiplicityComboBox;
+import org.argouml.uml.ui.UMLRadioButton;
+import org.argouml.uml.ui.UMLReflectionBooleanProperty;
+import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.uml.ui.UMLVisibilityPanel;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MDataType;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
+import ru.novosoft.uml.foundation.data_types.MChangeableKind;
+import ru.novosoft.uml.foundation.data_types.MOrderingKind;
+import ru.novosoft.uml.foundation.data_types.MScopeKind;
+
 
 public class PropPanelAssociationEnd extends PropPanelModelElement {
 
@@ -253,8 +280,12 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     }
 
     public boolean isAcceptibleType(MModelElement type) {
+    	boolean wellformed = false;
+    	if (type instanceof MClassifier) {
+    		wellformed = CoreHelper.getHelper().welformedAssociationEndNamespace((MAssociationEnd)getTarget(), ((MClassifier)type).getNamespace());
+    	}
         return (type instanceof MClassifier) &&
-            !(type instanceof MDataType);
+            !(type instanceof MDataType) && wellformed;
     }
 
     public void navigateUp() {
