@@ -360,7 +360,8 @@ public class ModelFacade {
      * @returns true if handle is a constructor.
      */
     public static boolean isConstructor(Object handle) {
-        return isStereotype(handle, "create");
+        return CoreHelper.getHelper().isOperation(handle)
+		&& isStereotype(handle, "create");
     }
 
     /**
