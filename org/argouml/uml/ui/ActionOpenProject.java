@@ -58,8 +58,8 @@ public class ActionOpenProject
     extends UMLAction
     implements CommandLineInterface {
 
-    protected static Logger cat =
-        Logger.getLogger(org.argouml.uml.ui.ActionOpenProject.class);
+    private static final Logger LOG =
+        Logger.getLogger(ActionOpenProject.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -109,15 +109,15 @@ public class ActionOpenProject
 			});
 
             int response =
-                JOptionPane.showConfirmDialog(
-					      pb,
+                JOptionPane.showConfirmDialog(pb,
 					      t,
 					      t,
 					      JOptionPane.YES_NO_CANCEL_OPTION);
 
             if (response == JOptionPane.CANCEL_OPTION 
-	        || response == JOptionPane.CLOSED_OPTION)
+                    || response == JOptionPane.CLOSED_OPTION) {
                 return;
+            }
             if (response == JOptionPane.YES_OPTION) {
                 boolean safe = false;
 
@@ -127,8 +127,9 @@ public class ActionOpenProject
                 if (!safe) {
                     safe = ActionSaveProjectAs.SINGLETON.trySave(false);
                 }
-                if (!safe)
+                if (!safe) {
                     return;
+                }
             }
         }
 
@@ -141,15 +142,16 @@ public class ActionOpenProject
             JFileChooser chooser = null;
             if (p != null && p.getURL() != null) {
                 File file = new File(p.getURL().getFile());
-                if (file.getParentFile() != null)
+                if (file.getParentFile() != null) {
                     chooser = OsUtil.getFileChooser(file.getParent());
-            } else
+                }
+            } else {
                 chooser = OsUtil.getFileChooser();
+            }
 
-            // JFileChooser chooser = OsUtil.getFileChooser (directory);
-
-            if (chooser == null)
+            if (chooser == null) {
                 chooser = OsUtil.getFileChooser();
+            }
 
             chooser.setDialogTitle(
                     Translator.localize("Actions",
@@ -180,7 +182,7 @@ public class ActionOpenProject
                 }
             }
         } catch (IOException ignore) {
-            cat.error("got an IOException in ActionOpenProject", ignore);
+            LOG.error("got an IOException in ActionOpenProject", ignore);
         }
     }
 
@@ -220,15 +222,19 @@ public class ActionOpenProject
 					     url.toString()
 					 }));
         } catch (ParserConfigurationException ex) {
+            LOG.error("Exception while loading project", ex);
+            ex.printStackTrace();
             showErrorPane(
 			  "Could not load the project "
 			  + url.toString()
-			  + " due to configuration errors.\n"
+			  + " due to parser configuration errors.\n"
 			  + "Please read the instructions at www.argouml.org "
 			  + "on the "
 			  + "requirements of argouml and how to install it.");
             p = oldProject;
         } catch (IllegalFormatException ex) {
+            LOG.error("Exception while loading project", ex);
+            ex.printStackTrace();
             showErrorPane(
 			  "Could not load the project "
 			  + url.toString()
@@ -243,6 +249,8 @@ public class ActionOpenProject
 			  + "The file was not found.");
             p = oldProject;
         } catch (IOException io) {
+            LOG.error("Exception while loading project", io);
+            io.printStackTrace();
             // now we have to handle the case of a corrupted XMI file
             showErrorPane(
 			  "Could not load the project "
@@ -258,6 +266,8 @@ public class ActionOpenProject
 			  + "the corrupted project file.");
             p = oldProject;
         } catch (SAXException ex) {
+            LOG.error("Exception while loading project", ex);
+            ex.printStackTrace();
             showErrorPane(
 			  "Could not load the project "
 			  + url.toString()
@@ -325,7 +335,8 @@ public class ActionOpenProject
 	try {
 	    url = new URL(argument);
 	} catch (MalformedURLException e) {
-	    cat.error("Incorrectly formatted URL.", e);
+            e.printStackTrace();
+	    LOG.error("Incorrectly formatted URL.", e);
 	    return false;
 	}
 	loadProject(url);

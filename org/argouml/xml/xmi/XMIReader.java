@@ -29,6 +29,9 @@
 package org.argouml.xml.xmi;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -38,6 +41,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.model_management.MModel;
 
 /**
@@ -50,7 +54,7 @@ import ru.novosoft.uml.model_management.MModel;
  * @see ru.novosoft.uml.xmi.XMIReader
  */
 public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
-    private Logger _cat = Logger.getLogger(this.getClass());
+    private static final Logger LOG = Logger.getLogger(XMIReader.class);
     
     private boolean _errors = false;
     private org.xml.sax.Parser _parser = null;
@@ -109,20 +113,57 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
             getParser().parse(p_is);
             performLinking();
         } catch (IOException e) {            
-            _cat.error("IOException while trying to read inputsource " 
+            LOG.error("IOException while trying to read inputsource " 
                 + p_is.getSystemId(), e);
             throw e;
         } catch (SAXException e) {
-            _cat.error("Parsing error while trying to parse inputsource " 
+            LOG.error("Parsing error while trying to parse inputsource " 
                 + p_is.getSystemId(), e);
             throw e;
         } catch (ClassCastException e) {
-            _cat.error("Parsing error while trying to parse inputsource "
+            LOG.error("Parsing error while trying to parse inputsource "
                 + p_is.getSystemId(), e);
             throw new SAXException(e);
         }
 
     }
+
+/*  Please do not delete this commented out code. Bob Tarling 3 Mar 2004.
+//  This is useful for discovering load problems with corrupt XMI
+//  NSUML isn't particularly good at reporting detail of errors
+//  and unfortunately is a bit too protective of it's data to just extend.
+//  By refactoring this class to move and rename to 
+//  ru.novosoft.uml.xmi.NsumlXMIReader it can get access to the links
+//  attribute of the NSUML XMIReader and report on any corrupt data.
+//  This technique was used to fix 
+//  http://argouml.tigris.org/issues/show_bug.cgi?id=2547 and will no
+//  doubt prove useful again.
+//
+*/    
+//    protected void performLinking() {
+//        try {
+//            Iterator i = links.iterator();
+//            Object link = null;
+//            while(i.hasNext()) {
+//                link = i.next();
+//                Class c = link.getClass();
+//                Field[] fields = c.getDeclaredFields();
+//                boolean methodType = fields[2].getBoolean(link);
+//                if (!methodType) {
+//                    String parameterXMIID =  (String)fields[3].get(link);
+//                    String parameterXMIUUID =  (String)fields[4].get(link);
+//                    Object objectParameter =  (String)getObject(parameterXMIID, parameterXMIUUID);
+//                    if (!(objectParameter instanceof MModelElement)) {
+//                        String sourceObject = (String)fields[0].get(link);
+//                        String methodName =  (String)fields[1].get(link);
+//                        LOG.error("Invalid link data from XMI " + sourceObject + " " + methodName + " " + parameterXMIID + " " + parameterXMIUUID + " " + objectParameter);
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//        }
+//        super.performLinking();
+//    }
     
     /**
      * Parses a given inputsource to a model. Does not override the novosoft 
