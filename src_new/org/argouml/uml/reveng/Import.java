@@ -632,7 +632,7 @@ public class Import {
 	    String pass = "2-nd pass";
 	    if (i <= numberOfFiles/2) pass = "1-st pass";
 	    
-            progressLabel.setText("Parsing file " + (i/2+1) + " of " + numberOfFiles/2
+            progressLabel.setText("Parsing file " + ((i-1)%(numberOfFiles/2)+1) + " of " + numberOfFiles/2
 				  + ". "+pass);
             repaint();
         }
