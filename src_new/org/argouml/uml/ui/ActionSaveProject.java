@@ -31,6 +31,7 @@ import org.tigris.gef.util.Localizer;
 import java.io.*;
 import java.awt.event.*;
 import java.util.zip.*;
+import java.text.MessageFormat;
 
 import javax.swing.JOptionPane;
 
@@ -86,15 +87,11 @@ public class ActionSaveProject extends UMLAction {
       File f = new File (fullpath);
       if (f.exists() && !overwrite) {
         //Argo.log.info ("Are you sure you want to overwrite " + fullpath + "?");
-        String sConfirm = Localizer.localize ("Actions", "template.save_project.confirm_overwrite");
-        
-        int nNamePos = sConfirm.indexOf ("%0");
-        if (nNamePos > -1) {
-          sConfirm = sConfirm.substring (0, nNamePos) +
-                     fullpath +
-                     sConfirm.substring (nNamePos + 2);
-        }
-        
+        String sConfirm = MessageFormat.format (
+            Localizer.localize ("Actions",
+                                "template.save_project.confirm_overwrite"),
+            new Object[] {fullpath}
+          );
         int nResult = JOptionPane.showConfirmDialog (
             pb,
             sConfirm,
@@ -108,13 +105,10 @@ public class ActionSaveProject extends UMLAction {
         }
       }
       
-      String sStatus = Localizer.localize ("Actions", "template.save_project.status_writing");
-      int nNamePos = sStatus.indexOf ("%0");
-      if (nNamePos > -1) {
-        sStatus = sStatus.substring (0, nNamePos) +
-                  fullpath +
-                  sStatus.substring (nNamePos + 2);
-      }
+      String sStatus = MessageFormat.format (
+          Localizer.localize ("Actions", "template.save_project.status_writing"),
+          new Object[] {fullpath}
+        );
       pb.showStatus (sStatus);
       {
         ZipOutputStream zos = new ZipOutputStream (new FileOutputStream (f));
@@ -134,25 +128,19 @@ public class ActionSaveProject extends UMLAction {
         fw.close();
         // zos.close();
       }
-      sStatus = Localizer.localize ("Actions", "template.save_project.status_wrote");
-      nNamePos = sStatus.indexOf ("%0");
-      if (nNamePos > -1) {
-        sStatus = sStatus.substring (0, nNamePos) +
-                  p.getURL() +
-                  sStatus.substring (nNamePos + 2);
-      }
+      sStatus = MessageFormat.format (
+          Localizer.localize ("Actions", "template.save_project.status_wrote"),
+          new Object[] {p.getURL()}
+        );
       pb.showStatus (sStatus);
       
       return true;
     }
     catch (FileNotFoundException fnfe) {
-      String sMessage = Localizer.localize ("Actions", "template.save_project.file_not_found");
-      int nDetailPos = sMessage.indexOf ("%0");
-      if (nDetailPos > -1) {
-        sMessage = sMessage.substring (0, nDetailPos) +
-                   fnfe.getMessage() +
-                   sMessage.substring (nDetailPos + 2);
-      }
+      String sMessage = MessageFormat.format (
+          Localizer.localize ("Actions", "template.save_project.file_not_found"),
+          new Object[] {fnfe.getMessage()}
+        );
       
       JOptionPane.showMessageDialog (
           pb,
@@ -164,13 +152,10 @@ public class ActionSaveProject extends UMLAction {
       fnfe.printStackTrace();
     }
     catch (IOException ioe) {
-      String sMessage = Localizer.localize ("Actions", "template.save_project.io_exception");
-      int nDetailPos = sMessage.indexOf ("%0");
-      if (nDetailPos > -1) {
-        sMessage = sMessage.substring (0, nDetailPos) +
-                   ioe.getMessage() +
-                   sMessage.substring (nDetailPos + 2);
-      }
+      String sMessage = MessageFormat.format (
+          Localizer.localize ("Actions", "template.save_project.io_exception"),
+          new Object[] {ioe.getMessage()}
+        );
       
       JOptionPane.showMessageDialog (
           pb,

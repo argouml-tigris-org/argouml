@@ -38,14 +38,14 @@ import java.awt.event.*;
 public class ActionResourceBundle_de extends ListResourceBundle {
 
   static final Object[][] _contents = {
-    {"template.save_project.confirm_overwrite", "Sind Sie sicher, daß Sie %0 überschreiben wollen?"},
-    {"template.save_project.status_writing", "Speichere %0..."},
-    {"template.save_project.status_wrote", "%0 wurde gespeichert."},
+    {"template.save_project.confirm_overwrite", "Sind Sie sicher, daß Sie {0} überschreiben wollen?"},
+    {"template.save_project.status_writing", "Speichere {0}..."},
+    {"template.save_project.status_wrote", "{0} wurde gespeichert."},
     {"template.save_project.file_not_found",
-       "Beim Speichern ist ein Problem aufgetreten: \"%0\".\n" +
+       "Beim Speichern ist ein Problem aufgetreten: \"{0}\".\n" +
        "Dies könnte Ihre Datei beschädigt haben."},
     {"template.save_project.io_exception",
-       "Beim Speichern ist ein Problem aufgetreten: \"%0\".\n" +
+       "Beim Speichern ist ein Problem aufgetreten: \"{0}\".\n" +
        "Dies könnte Ihre Datei beschädigt haben."},
     {"text.save_project.confirm_overwrite_title", "Überschreiben bestätigen"},
     {"text.save_project.file_not_found_title", "Problem beim Speichern"},
