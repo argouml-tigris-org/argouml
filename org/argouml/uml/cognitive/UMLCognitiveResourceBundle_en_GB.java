@@ -43,6 +43,11 @@
 // CrCrossNamespaceAssoc, CrDupRoleName, CrMultipleAgg and CrNWayAgg given in
 // more detail.
 
+// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Description of
+// CrConsiderSingleton and CrSingletonViolated updated now that <<singleton>>
+// is built in to ArgoUML. Corrected MState Machines to State Machines. Also
+// added general stuff from base resource bundle that was not in en_GB.
+
 
 package org.argouml.uml.cognitive;
 import java.util.*;
@@ -62,6 +67,61 @@ import org.argouml.util.*;
 public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
 
     private static final Object[][] _contents = {
+	// General stuff
+        {"decision.behavior", "Behaviour"},
+        {"decision.class-selection", "Class Selection"},
+        {"decision.code-generation", "Code Generation"},
+        {"decision.containment", "Containment"},
+        {"decision.design-patterns", "Design Patterns"},
+        {"decision.expected-usage", "Expected Usage"},
+        {"decision.inheritance", "Inheritance"},
+        {"decision.instantiation", "Instantiation"},
+        {"decision.methods", "Methods"},
+        {"decision.modularity", "Modularity"},
+        {"decision.mstate-machines", "State Machines"},
+        {"decision.naming", "Naming"},
+        {"decision.planned-extensions", "Planned Extensions"},
+        {"decision.relationships", "Relationships"},
+        {"decision.stereotypes", "Stereotypes"},
+        {"decision.storage", "Storage"},
+        {"decision.uncategorized", "Uncategorized"},
+
+        {"goal.unspecified", "Unspecified"},
+
+        {"knowledge.completeness", "Completeness"},
+        {"knowledge.consistency", "Consistency"},
+        {"knowledge.correctness", "Correctness"},
+        {"knowledge.designers", "Designer's"},
+        {"knowledge.experiential", "Experiential"},
+        {"knowledge.optimization", "Optimization"},
+        {"knowledge.organizational", "Organizational"},
+        {"knowledge.presentation", "Presentation"},
+        {"knowledge.semantics", "Semantics"},
+        {"knowledge.syntax", "Syntax"},
+        {"knowledge.tool", "Tool"},
+
+        {"todopane.label.no-items", " No Items "},
+        {"todopane.label.item", " {0} Item "},
+        {"todopane.label.items", " {0} Items "},
+
+        {"button.ok", "OK"},
+        {"button.cancel", "Cancel"},
+        {"button.open", "Open"},
+        {"button.back", "Back"},
+        {"button.next", "Next"},
+        {"button.finish", "Finish"},
+        {"button.help", "Help"},
+
+        {"mnemonic.button.back", "B"},
+        {"mnemonic.button.next", "N"},
+        {"mnemonic.button.finish", "F"},
+        {"mnemonic.button.help", "H"},
+
+        {"level.low", "Low"},
+        {"level.medium", "Medium"},
+        {"level.high", "High"},
+
+	// Critics text
         { "CrAssocNameConflict_head" ,
                 "Resolve Association Name Conflict" },
         { "CrAssocNameConflict_desc" ,
@@ -520,7 +580,7 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
           "that you have exactly one instance of this class, by using the " +
           "Singleton Pattern. Using the Singleton Pattern can save time and " +
           "memory space. Within ArgoUML; this can be done by using the " +
-          "<<Singleton>> stereotype on this class.\n" +
+          "<<singleton>> stereotype on this class.\n" +
           "\n" +
           "If it is not your intent to have a single instance, you should " +
           "define instance variables (i.e. non-static attributes) and/or " +
@@ -553,13 +613,7 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
           "ArgoUML this means you must remove the return value created by " +
           "default for an operation. ArgoUML; will also accept any " +
           "operation that follows these conventions as a constructor even if" +
-          "it is not stereotyped <<create>> or <<Create>>.\n" +
-          "\n" +
-          "<<Singleton>> does not exist as a stereotype by default in " +
-          "ArgoUML; so you will need to create it the first time you use " +
-          "it. This can be done through the Stereotype property tab, " +
-          "reached using the NavStereo button on the class property sheet. " +
-          "The Base Class should be Class."},
+          "it is not stereotyped <<create>> or <<Create>>."},
 
         // Updated to reflect use of <<create>> stereotype for constructors and
         // lack of a wizard at this stage
@@ -568,9 +622,9 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
           "Singleton Stereotype Violated in <ocl>self</ocl>" },
 
         { "CrSingletonViolated_desc",
-          "<ocl>self</ocl> is marked with the <<Singleton>>; stereotype, " +
+          "<ocl>self</ocl> is marked with the <<singleton>>; stereotype, " +
           "but it does not satisfy the constraints imposed on Singletons " +
-          "(ArgoUML will also accept <<singleton>> stereotype as defining a " +
+          "(ArgoUML will also accept <<Singleton>> stereotype as defining a " +
           "Singleton).\n" +
           "\n" +
           "A Singleton class can have at most one instance.  This means " +
@@ -592,7 +646,7 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
           "Using the Singleton Pattern can save time and memory space.\n" +
           "\n" +
           "If you no longer want this class to be a Singleton, remove the " +
-          "<<Singleton>> or <<singleton>> stereotype by clicking on the " +
+          "<<singleton>> or <<Singleton>> stereotype by clicking on the " +
           "class and selecting the blank selection on the stereotype " +
           "drop-down within the properties tab.\n" +
           "\n" +

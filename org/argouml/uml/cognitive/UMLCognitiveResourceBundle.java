@@ -43,6 +43,10 @@
 // CrCrossNamespaceAssoc, CrDupRoleName, CrMultipleAgg and CrNWayAgg given in
 // more detail.
 
+// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Description of
+// CrConsiderSingleton and CrSingletonViolated updated now that <<singleton>>
+// is built in to ArgoUML. Corrected MState Machines to State Machines.
+
 
 package org.argouml.uml.cognitive;
 import java.util.*;
@@ -73,7 +77,7 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
         {"decision.instantiation", "Instantiation"},
         {"decision.methods", "Methods"},
         {"decision.modularity", "Modularity"},
-        {"decision.mstate-machines", "MState Machines"},
+        {"decision.mstate-machines", "State Machines"},
         {"decision.naming", "Naming"},
         {"decision.planned-extensions", "Planned Extensions"},
         {"decision.relationships", "Relationships"},
@@ -575,7 +579,7 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
           "that you have exactly one instance of this class, by using the " +
           "Singleton Pattern. Using the Singleton Pattern can save time and " +
           "memory space. Within ArgoUML; this can be done by using the " +
-          "<<Singleton>> stereotype on this class.\n" +
+          "<<singleton>> stereotype on this class.\n" +
           "\n" +
           "If it is not your intent to have a single instance, you should " +
           "define instance variables (i.e. non-static attributes) and/or " +
@@ -608,13 +612,7 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
           "ArgoUML this means you must remove the return value created by " +
           "default for an operation. ArgoUML; will also accept any " +
           "operation that follows these conventions as a constructor even if" +
-          "it is not stereotyped <<create>> or <<Create>>.\n" +
-          "\n" +
-          "<<Singleton>> does not exist as a stereotype by default in " +
-          "ArgoUML; so you will need to create it the first time you use " +
-          "it. This can be done through the Stereotype property tab, " +
-          "reached using the NavStereo button on the class property sheet. " +
-          "The Base Class should be Class."},
+          "it is not stereotyped <<create>> or <<Create>>."},
 
         // Updated to reflect use of <<create>> stereotype for constructors and
         // lack of a wizard at this stage
@@ -623,9 +621,9 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
           "Singleton Stereotype Violated in <ocl>self</ocl>" },
 
         { "CrSingletonViolated_desc",
-          "<ocl>self</ocl> is marked with the <<Singleton>>; stereotype, " +
+          "<ocl>self</ocl> is marked with the <<singleton>>; stereotype, " +
           "but it does not satisfy the constraints imposed on Singletons " +
-          "(ArgoUML will also accept <<singleton>> stereotype as defining a " +
+          "(ArgoUML will also accept <<Singleton>> stereotype as defining a " +
           "Singleton).\n" +
           "\n" +
           "A Singleton class can have at most one instance.  This means " +
@@ -647,7 +645,7 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
           "Using the Singleton Pattern can save time and memory space.\n" +
           "\n" +
           "If you no longer want this class to be a Singleton, remove the " +
-          "<<Singleton>> or <<singleton>> stereotype by clicking on the " +
+          "<<singleton>> or <<Singleton>> stereotype by clicking on the " +
           "class and selecting the blank selection on the stereotype " +
           "drop-down within the properties tab.\n" +
           "\n" +
