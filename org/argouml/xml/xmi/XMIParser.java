@@ -38,36 +38,36 @@ public class XMIParser {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
+
     public static XMIParser SINGLETON = new XMIParser();
-    
+
     ////////////////////////////////////////////////////////////////
     // instance variables
-    
+
     protected MModel  _curModel      = null;
     protected Project _proj          = null;
     protected HashMap _UUIDRefs      = null;
-    
+
     ////////////////////////////////////////////////////////////////
     // constructors
-    
+
     protected XMIParser() { /* super(); */ }
-    
+
     ////////////////////////////////////////////////////////////////
     // accessors
-    
+
     public MModel  getCurModel()         { return _curModel; }
     public void    setProject(Project p) { _proj = p; }
     public HashMap getUUIDRefs()         { return _UUIDRefs; }
-    
-    
+
+
     ////////////////////////////////////////////////////////////////
     // main parsing methods
-    
+
     public synchronized void readModels(Project p, URL url) {
 
         _proj = p;
-        
+
         System.out.println("=======================================");
         System.out.println("== READING MODEL " + url);
         try {
@@ -76,33 +76,48 @@ public class XMIParser {
             source.setSystemId(url.toString());
             _curModel = reader.parse(source);
             _UUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
-            
-        } catch (Exception ex) {
+
+        }
+        catch(SAXException saxEx) {
+            //
+            //  a SAX exception could have been generated
+            //    because of another exception.
+            //    Get the initial exception to display the
+            //    location of the true error
+            Exception ex = saxEx.getException();
+            if(ex == null) {
+                saxEx.printStackTrace();
+            }
+            else {
+                ex.printStackTrace();
+            }
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
         }
         System.out.println("=======================================");
-        
+
         try {
             _proj.addModel((ru.novosoft.uml.foundation.core.MNamespace) _curModel);
         } catch (PropertyVetoException ex) {
-            System.err.println("An error occorred adding the model to the project!");
+            System.err.println("An error occurred adding the model to the project!");
             ex.printStackTrace();
         }
 
         Collection ownedElements = _curModel.getOwnedElements();
 	Iterator oeIterator = ownedElements.iterator();
-        
+
  	while (oeIterator.hasNext()) {
             MModelElement me = (MModelElement) oeIterator.next();
             if (me instanceof MClass) {
                 _proj.defineType((MClass) me);
             }
             else if (me instanceof MDataType) {
-                _proj.defineType((MDataType) me);   
-            }       
+                _proj.defineType((MDataType) me);
+            }
         }
     }
-    
-    
+
+
 } /* end class XMIParser */
 
