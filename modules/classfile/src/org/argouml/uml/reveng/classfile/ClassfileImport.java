@@ -26,8 +26,10 @@ package org.argouml.uml.reveng.classfile;
 
 import java.io.*;
 import org.argouml.kernel.*;
+import org.argouml.application.api.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.static_structure.layout.*;
+import org.argouml.uml.reveng.*;
 import org.argouml.uml.reveng.classfile.ui.*;
 import org.tigris.gef.base.*;
 import ru.novosoft.uml.model_management.*;
@@ -36,6 +38,9 @@ import java.awt.*;
 import java.util.*;
 import java.util.jar.*;
 import java.util.zip.*;
+import org.argouml.util.FileFilters;
+import org.argouml.util.SuffixFilter;
+import org.argouml.util.ClassFileFilter;
 
 
 /**
@@ -46,7 +51,7 @@ import java.util.zip.*;
  *
  * @author Andreas Rueckert <a_rueckert@gmx.net>
  */
-public class ClassfileImport {
+public class ClassfileImport extends FileImportSupport {
 
     /////////////////////////////////////////////////////////
     // Instance variables
@@ -55,12 +60,12 @@ public class ClassfileImport {
     private static ClassfileImport _INSTANCE = new ClassfileImport();
 
     // Create a interface to the current diagram
-    org.argouml.uml.reveng.DiagramInterface _diagram = new org.argouml.uml.reveng.DiagramInterface(Globals.curEditor());
+    org.argouml.uml.reveng.DiagramInterface _diagram;// = new org.argouml.uml.reveng.DiagramInterface(Globals.curEditor());
 
-    private JComponent   configPanel = null;
-    private JCheckBox    _descend;
-    private JRadioButton _attribute;
-    private JRadioButton _datatype;
+    //private JComponent   configPanel = null;
+    //private JCheckBox    _descend;
+    //private JRadioButton _attribute;
+    //private JRadioButton _datatype;
 
     /** The files that needs a second RE pass. */
     private ArrayList _secondPassFiles;
@@ -69,9 +74,10 @@ public class ClassfileImport {
     private Project _currentProject = null;
 
     // A status window for the import process.
-    private RevEngStatusDialog _status = null;
+    //private RevEngStatusDialog _status = null;
 
-
+    private Import _import;
+ 
     ///////////////////////////////////////////////////////
     // Methods
 
@@ -87,7 +93,7 @@ public class ClassfileImport {
     /**
      * Get the panel that lets the user set reverse engineering
      * parameters.
-     */
+     *
     public JComponent getConfigPanel() {
 
 	if(configPanel == null) {
@@ -187,7 +193,18 @@ public class ClassfileImport {
 	}
 	return configPanel;
     }
-
+    */
+    
+    public void parseFile( Project p, Object o, DiagramInterface diagram, Import _import)
+	throws Exception {
+		if (o instanceof File ) {
+                    File f = (File)o;
+                    this._diagram = diagram;
+                    this._import = _import;
+                    startImport(p, f);
+                }
+    }
+    
     /**
      * Start the import process for a project and a file.
      *
@@ -198,25 +215,24 @@ public class ClassfileImport {
 	_secondPassFiles = new ArrayList();
 	_currentProject = p;
 
-
 	// Create a new status window and pass the total number of files to import.
-	_status = new RevEngStatusDialog();
-	_status.show();
+	//_status = new RevEngStatusDialog();
+	//_status.show();
 
 	// Start the 1st pass.
-	_status.startPass("Starting first pass", countFiles(f, true));
+	//_status.startPass("Starting first pass", countFiles(f, true));
 
 	// Process the current file. If it's a directory, process all the file in it.
 	processFile(f, true);
 
 	// End first pass.
-	_status.endPass("First pass completed");
+	//_status.endPass("First pass completed");
 
 	int secondPassCount = count2ndPassFiles(_secondPassFiles);
 
-	if(secondPassCount > 0) {
+        if(secondPassCount > 0) {
 
-	    _status.startPass("Reparse files with unknown types", secondPassCount);
+	    //_status.startPass("Reparse files with unknown types", secondPassCount);
 
 	    // Process all the files, that need a second pass.
 	    for(Iterator i = _secondPassFiles.iterator(); i.hasNext();) {
@@ -226,13 +242,14 @@ public class ClassfileImport {
 		    do2ndJarPass((ArrayList)next);
 		} else {
 		    File nextFile = (File)next;
-		    _status.startFile(nextFile.getName());
-		    do2ndFilePass(new FileInputStream(nextFile));
-		    _status.endFile();
+                    String fileName = nextFile.getName();
+		    //_status.startFile(fileName);
+		    do2ndFilePass(new FileInputStream(nextFile), fileName);
+		    //_status.endFile();
 		}
 	    }
 
-	    _status.endPass("Reparse completed");
+	    //_status.endPass("Reparse completed");
 	}
 
 	// Layout the modified diagrams.
@@ -244,7 +261,7 @@ public class ClassfileImport {
 	}
 
 	// Let the use close the status window.
-	_status.importCompleted();
+	//_status.importCompleted();
     }
 
     /**
@@ -284,8 +301,10 @@ public class ClassfileImport {
 	String [] files = f.list();  // Get the content of the directory
 
 	for( int i = 0; i < files.length; i++) {
-	    total += countFiles( new File( f, files[i]), _descend.isSelected());
-	}
+	    //total += countFiles( new File( f, files[i]), _descend.isSelected());
+	    total += countFiles( new File( f, files[i]), _import.isDiscendDirectoriesRecursively());
+            
+        }
 
 	return total;
     }
@@ -314,7 +333,7 @@ public class ClassfileImport {
      * @exception Parser exceptions.
      */
     public void processFile(File f, boolean subdirectories) throws Exception {
-
+        
 	if ( f.isDirectory() && subdirectories) {    // If f is a directory and the subdirectory flag is set,
 	    processDirectory(f);                     // import all the files in this directory
 	} else {
@@ -323,15 +342,16 @@ public class ClassfileImport {
 		processJarFile(f);
 	    } else {
 		if( f.getName().endsWith(".class")) {
-		    _status.startFile(f.getName());          // Show the filename in the status window.
+                    String fileName = f.getName();
+		    //_status.startFile(fileName);          // Show the filename in the status window.
 		    try {
-			parseFile(new FileInputStream(f));   // Try to parse this file.
+			parseFile(new FileInputStream(f), fileName);   // Try to parse this file.
 		    } catch(Exception e1) {
 			// System.out.println("Exception: " + e1.getMessage());
 			// e1.printStackTrace();
 			_secondPassFiles.add(f);
 		    }
-		    _status.endFile();
+		    //_status.endFile();
 		}
 	    }
 	}
@@ -346,9 +366,9 @@ public class ClassfileImport {
      * @exception Parser exceptions.
      */
     protected void processDirectory(File f) throws Exception {
-	boolean doSubdirs = _descend.isSelected();
+	boolean doSubdirs = _import.isDiscendDirectoriesRecursively();
 
-	_status.enterDirectory(f.getName());
+	//_status.enterDirectory(f.getName());
 
 	String [] files = f.list();  // Get the content of the directory
 
@@ -356,7 +376,7 @@ public class ClassfileImport {
 	    processFile( new File( f, files[i]), doSubdirs);
 	}
 
-	_status.leaveDirectory();
+	//_status.leaveDirectory();
     }
 
     /**
@@ -368,15 +388,15 @@ public class ClassfileImport {
 	JarFile jarfile = new JarFile(f);
 	ArrayList jar_secondPassFiles = new ArrayList();  // A second pass buffer just for this jar.
 
-	_status.openJar(f.getName());  // Show the opening of the jar file in the status window.
+	//_status.openJar(f.getName());  // Show the opening of the jar file in the status window.
 
 	for( Enumeration e=jarfile.entries(); e.hasMoreElements(); ) {
 	    ZipEntry entry = (ZipEntry)e.nextElement();
 	    String entryName = entry.getName();
 	    if( ! entry.isDirectory() && entryName.endsWith(".class")) {
-		_status.startFile(entryName);          // Show the filename in the status window.
+		//_status.startFile(entryName);          // Show the filename in the status window.
 		try {
-		    parseFile(jarfile.getInputStream(entry));
+		    parseFile(jarfile.getInputStream(entry), entryName);
 		} catch(Exception e1) {
 		    if(jar_secondPassFiles.isEmpty()) {     // If there are no files tagged for a second pass,
 			jar_secondPassFiles.add(f);   // add the jar files as the 1st element.
@@ -385,13 +405,13 @@ public class ClassfileImport {
 		    e1.printStackTrace();
 		    jar_secondPassFiles.add(entryName);  // Store the entry to be parsed a 2nd time.
 		}
-		_status.endFile();
+		//_status.endFile();
 
 		Thread.sleep(10);
 	    }
 	}
 
-	_status.closeJar();  // Show the closing of the jar file.
+	//_status.closeJar();  // Show the closing of the jar file.
 
 	// If there are files to parse again, add the jar to the 2nd pass.
 	if( ! jar_secondPassFiles.isEmpty()) {
@@ -412,15 +432,15 @@ public class ClassfileImport {
 	    Iterator iterator = secondPassBuffer.iterator();
 	    JarFile jarfile = new JarFile( (File)iterator.next());
 
-	    _status.openJar(jarfile.getName());  // Show the opening of the jar file in the status window.
+	    //_status.openJar(jarfile.getName());  // Show the opening of the jar file in the status window.
 
 	    while(iterator.hasNext()) {
 		String filename = (String)iterator.next();
-		_status.startFile(filename);
-		do2ndFilePass(jarfile.getInputStream(jarfile.getEntry(filename)));
-		_status.endFile();
+		//_status.startFile(filename);
+		do2ndFilePass(jarfile.getInputStream(jarfile.getEntry(filename)), filename);
+		//_status.endFile();
 	    }
-	    _status.closeJar();  // Show the closing of the jar file.
+	    //_status.closeJar();  // Show the closing of the jar file.
 	    jarfile.close();
 	}
     }
@@ -431,9 +451,9 @@ public class ClassfileImport {
      *
      * @param is The input stream of the file.
      */
-    private void do2ndFilePass(InputStream is) {
+    private void do2ndFilePass(InputStream is, String fileName) {
 	try {                    // Try to parse the file.
-	    parseFile(is);
+	    parseFile(is, fileName);
 	} catch(Exception e2) {    // If there were errors, show them.
 	    System.out.println("ERROR: " + e2.getMessage());
 	    e2.printStackTrace();
@@ -447,7 +467,7 @@ public class ClassfileImport {
      *
      * @exception Parser exception.
      */
-    public void parseFile(InputStream is) throws Exception {
+    public void parseFile(InputStream is, String fileName) throws Exception {
 
         ClassfileParser parser = new ClassfileParser(new SimpleByteLexer(new BufferedInputStream(is)));
 
@@ -456,9 +476,9 @@ public class ClassfileImport {
 
         // Create a modeller for the parser
         org.argouml.uml.reveng.java.Modeller modeller = new org.argouml.uml.reveng.java.Modeller((MModel)_currentProject.getModel(),
-												 _diagram,
-												 _attribute.isSelected(),
-												 _datatype.isSelected());
+												 _diagram, _import,
+												 attribute.isSelected(),
+												 datatype.isSelected(), fileName);
 
 	// do something with the tree
 	ClassfileTreeParser tparser = new ClassfileTreeParser();
@@ -484,6 +504,42 @@ public class ClassfileImport {
     public boolean needsSave() {
 	return ( ! _diagram.getModifiedDiagrams().isEmpty());
     }
+    
+    /** Textual description of the module.  */
+    public String getModuleDescription() {
+	return "Java import from class or jar files";
+    }
+    
+    public String getModuleKey() {
+	return "module.import.java-classes";
+    }
+
+    public boolean initializeModule() {
+
+	// Advertise a little
+	Argo.log.info ("+---------------------------------------+");
+	Argo.log.info ("| Java classfile import module enabled! |");
+	Argo.log.info ("+---------------------------------------+");
+
+        return true;
+    }
+    
+    /** Display name of the module.  */
+    public String getModuleName() {
+        return "Java from classes";
+    }
+    
+    /**
+     * Provides an array of suffixe filters for the module.
+     * Must be implemented in child class.
+     * @return SuffixFilter[] suffixes for processing
+     */
+    public SuffixFilter[] getSuffixFilters() {
+		SuffixFilter[] result = 
+                    {FileFilters.JavaClassFilter, FileFilters.JavaJarFilter};
+		return result;
+    }
+    
 }
 
 
