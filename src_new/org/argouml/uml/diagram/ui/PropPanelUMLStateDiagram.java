@@ -22,15 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.state.ui;
+package org.argouml.uml.diagram.ui;
 
 import org.argouml.application.api.Argo;
 import org.argouml.uml.diagram.ui.PropPanelDiagram;
 
-/**
- * @deprecated as of 0.15.2, replaced with 
- *             org.argouml.uml.diagram.ui.PropPanelUMLStateDiagram.
- */
 public class PropPanelUMLStateDiagram extends PropPanelDiagram {
 
 
