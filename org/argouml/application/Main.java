@@ -143,8 +143,8 @@ public class Main {
 	}
       } else {
 	projectName = args[i];
-	if (!projectName.endsWith(Project.FILE_EXT))
-	  projectName += Project.FILE_EXT;
+	if (!projectName.endsWith(Project.COMPRESSED_FILE_EXT))
+	  projectName += Project.COMPRESSED_FILE_EXT;
 	projectFile = new File(projectName);
 	if (!projectFile.exists()) {
 	  System.err.println("Project file '" + projectFile +

@@ -68,7 +68,9 @@ public class Project implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // constants
   public static final String SEPARATOR = "/";
-  public final static String FILE_EXT = ".zargo";
+  public final static String COMPRESSED_FILE_EXT = ".zargo";
+  public final static String UNCOMPRESSED_FILE_EXT = ".argo";
+  public final static String PROJECT_FILE_EXT = ".argo";
   public final static String TEMPLATES = "/org/argouml/templates/";
   //public final static String EMPTY_PROJ = "EmptyProject" + FILE_EXT;
   public final static String UNTITLED_FILE = "Untitled";
@@ -108,7 +110,7 @@ public class Project implements java.io.Serializable {
   }
 
   public Project(URL url) {
-    _url = Util.fixURLExtension(url, FILE_EXT);
+    _url = Util.fixURLExtension(url, COMPRESSED_FILE_EXT);
     _saveRegistry = new UMLChangeRegistry();
   }
 
@@ -188,13 +190,13 @@ public class Project implements java.io.Serializable {
             org.argouml.application.Main.addPostLoadAction(new ResetStatsLater());
         }
 	
-        else if(suffix.equals(".zargo")) {
+        else if(suffix.equals(COMPRESSED_FILE_EXT)) {
 	    try {
 		ZipInputStream zis = new ZipInputStream(url.openStream());
 		
 		// first read the .argo file from Zip
 		String name = zis.getNextEntry().getName();
-		while(!name.endsWith(".argo")) {
+		while(!name.endsWith(PROJECT_FILE_EXT)) {
 		    name = zis.getNextEntry().getName();
 		}
 		
@@ -365,11 +367,11 @@ public class Project implements java.io.Serializable {
     public String getBaseName() {
 	String n = getName();
 	
-	if (n.endsWith(FILE_EXT)) {
-	    return n.substring(0, n.length() - FILE_EXT.length());
+	if (n.endsWith(COMPRESSED_FILE_EXT)) {
+	    return n.substring(0, n.length() - COMPRESSED_FILE_EXT.length());
 	}
-	if (n.endsWith(".argo")) {
-	    return n.substring(0, n.length() - ".argo".length());
+	if (n.endsWith(UNCOMPRESSED_FILE_EXT)) {
+	    return n.substring(0, n.length() - UNCOMPRESSED_FILE_EXT.length());
 	}
 	return n;
     }
@@ -399,7 +401,7 @@ public class Project implements java.io.Serializable {
 
   public void setURL(URL url) throws PropertyVetoException {
     if (url != null) {
-      url = Util.fixURLExtension(url, FILE_EXT);
+      url = Util.fixURLExtension(url, COMPRESSED_FILE_EXT);
     }
     getVetoSupport().fireVetoableChange("url", _url, url);
 
