@@ -172,7 +172,7 @@ implements PluggableNotation {
     MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
     if ( rp != null) {
       MClassifier returnType = rp.getType();
-      
+
       if (returnType == null && !nameStr.equals(clsName)) s += "void ";
       else if (returnType != null) s += generateClassifierRef (returnType) + " ";
     }
@@ -182,30 +182,30 @@ implements PluggableNotation {
       //
       //		if (nameStr.equals(clsName)) s += " "; // this is a constructor!
     }
-    
+
     // name and params
     Vector params = new Vector (op.getParameters());
     params.remove (rp);
-    
+
     s += nameStr + "(";
-    
+
     if (params != null) {
       boolean first = true;
-      
+
       for (int i=0; i < params.size(); i++) {
         MParameter p = (MParameter) params.elementAt (i);
-        
+
         if (!first) s += ", ";
-        
+
         s += generateParameter (p);
         first = false;
       }
     }
-    
+
     s += ")";
-    
+
     return s;
-    
+
   }
 
 
@@ -288,10 +288,10 @@ implements PluggableNotation {
     if (cls instanceof MClassImpl) classifierKeyword = "class";
     else if (cls instanceof MInterface) classifierKeyword = "interface";
     else return ""; // actors and use cases
-    
+
     StringBuffer sb = new StringBuffer(80);
     sb.append(DocumentationManager.getComments(cls));  // Add the comments for this classifier first.
-    
+
     /*
      * Replaced 2001-09-26 STEFFEN ZSCHALER
      *
@@ -300,7 +300,7 @@ implements PluggableNotation {
     sb.append(DocumentationManager.getDocs(cls)).append("\n");
      */
     sb.append (generateConstraintEnrichedDocComment (cls)).append ("\n");
-    
+
     sb.append(generateVisibility(cls.getVisibility()));
     if (cls.isAbstract() && !(cls instanceof MInterface)) sb.append("abstract ");
     if (cls.isLeaf()) sb.append("final ");
@@ -308,23 +308,23 @@ implements PluggableNotation {
     String baseClass = generateGeneralzation(cls.getGeneralizations());
     String tv = null;
     if (!baseClass.equals("")) sb.append(' ').append("extends ").append(baseClass);
-    
+
     // nsuml: realizations!
     if (cls instanceof MClass) {
       String interfaces = generateSpecification((MClass)cls);
       if (!interfaces.equals("")) sb.append(' ').append("implements ").append(interfaces);
     }
     sb.append("\n{");
-    
+
     tv = generateTaggedValues(cls);
     if (tv != null && tv.length() > 0) sb.append(INDENT).append(tv);
-    
+
     // sb.append(generateConstraints(cls)); Removed 2001-09-26 STEFFEN ZSCHALER
-    
+
     Collection strs = MMUtil.SINGLETON.getAttributes(cls);
     if (strs != null) {
       sb.append('\n');
-      
+
       if (cls instanceof MClassImpl) sb.append(INDENT).append("// Attributes\n");
       Iterator strEnum = strs.iterator();
       while (strEnum.hasNext()) {
@@ -334,7 +334,7 @@ implements PluggableNotation {
         if (tv != null && tv.length() > 0) sb.append(INDENT).append(tv).append('\n');
       }
     }
-    
+
     Collection ends = cls.getAssociationEnds();
     if (ends != null) {
       sb.append('\n');
@@ -346,33 +346,33 @@ implements PluggableNotation {
         sb.append('\n').append(INDENT).append(generateAssociationFrom(a, ae));
         tv = generateTaggedValues(a);
         if (tv != null && tv.length() > 0) sb.append(INDENT).append(tv);
-        
+
         // sb.append(generateConstraints(a));  Removed 2001-09-26 STEFFEN ZSCHALER Why was this not in generateAssociationFrom ?
       }
     }
-    
+
     // needs-more-work: constructors
     Collection behs = MMUtil.SINGLETON.getOperations(cls);
     if (behs != null) {
       sb.append ('\n');
       sb.append (INDENT).append ("// Operations\n");
-      
+
       Iterator behEnum = behs.iterator();
-      
+
       while (behEnum.hasNext()) {
         MBehavioralFeature bf = (MBehavioralFeature) behEnum.next();
-        
+
         sb.append ('\n').append (INDENT).append (generate (bf));
-        
+
         tv = generateTaggedValues((MModelElement)bf);
-      
+
         if ((cls instanceof MClassImpl) &&
             (bf instanceof MOperation) &&
             (! ((MOperation) bf).isAbstract())) {
           sb.append ('\n').append (INDENT).append ("{\n");
-          
+
           if (tv.length() > 0) sb.append (INDENT).append (tv);
-          
+
           sb.append (generateMethodBody ((MOperation) bf)).append ('\n')
             .append (INDENT).append ("}\n");
         }
@@ -383,7 +383,7 @@ implements PluggableNotation {
       }
     }
     sb.append("} /* end ").append(classifierKeyword).append(' ').append(generatedName).append(" */\n");
-    
+
     return sb.toString();
   }
 
@@ -400,12 +400,12 @@ implements PluggableNotation {
       Collection methods = op.getMethods();
       Iterator i = methods.iterator();
       MMethod m = null;
-      
+
       //System.out.print(", op!=null, size="+methods.size());
       while (i != null && i.hasNext()) {
         //System.out.print(", i!= null");
         m = (MMethod) i.next();
-        
+
         if (m != null) {
           //System.out.println(", BODY of "+m.getName());
           //System.out.println("|"+m.getBody().getBody()+"|");
@@ -415,7 +415,7 @@ implements PluggableNotation {
             return "";
         }
       }
-   
+
       // pick out return type
       MParameter rp = MMUtil.SINGLETON.getReturnParameter (op);
       if (rp != null) {
@@ -423,7 +423,7 @@ implements PluggableNotation {
         return generateDefaultReturnStatement (returnType);
       }
     }
-    
+
     return generateDefaultReturnStatement (null);
   }
 
@@ -536,8 +536,12 @@ implements PluggableNotation {
       }
 
       // Build doccomment
-      sDocComment += " @element-type " + ae.getType().getName();
-
+      MClassifier type = ae.getType();
+      if (type != null) {
+          sDocComment += " @element-type " + type.getName();
+      } else {
+          sDocComment += " @element-type unknown";
+      }
       sDocComment += "\n" +
                      INDENT + " */";
 
@@ -888,7 +892,7 @@ implements PluggableNotation {
       return "";
     }
   }
-  
+
   /**
    * Generate "final" keyword for final operations.
    */
@@ -900,7 +904,7 @@ implements PluggableNotation {
       return "";
     }
   }
-  
+
   public String generateChangability(MStructuralFeature sf) {
     MChangeableKind ck = sf.getChangeability();
     //if (ck == null) return "";
