@@ -22,8 +22,15 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // File: FigClassifierRole.java
+// Classes: FigClassifierRole
 // Original Author: agauthie@ics.uci.edu
 // $Id$
+
+// 10 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed to stop
+// collaboration roles all stretching to the top left on reload. Problem was
+// caused by setBounds not moving the stereotype. This is only a quick fix. It
+// leaves space for the stereotype, even when it isn't being displayed.
+
 
 package org.argouml.uml.diagram.collaboration.ui;
 
@@ -47,177 +54,499 @@ import org.argouml.ui.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.ui.*;
 
-/** Class to display graphics for a UML collaboration in a diagram. */
+
+/**
+ * <p>Class to display graphics for a UML classifier role in a  collaboration
+ *   diagram.</p>
+ *
+ * <p>Stereotype (if there is one) and name are displayed in the centre of the
+ *   box.</p>
+ *
+ * @author 10 Apr 2002. Jeremy Bennett (mail@jeremybennett.com). Modifications
+ *         to ensure stereotypes are handled correctly.
+ */
 
 public class FigClassifierRole extends FigNodeModelElement {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public int PADDING = 5;
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-
-  FigRect _bigPort;
-  FigRect _cover;
-
-  // add other Figs here aes needed
-
-  ////////////////////////////////////////////////////////////////
-  // constructors
-
-  public FigClassifierRole() {
-    _bigPort = new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan);
-    _cover = new FigRect(10, 10, 90, 50, Color.black, Color.white);
-    _name.setLineWidth(0);
-    _name.setMultiLine(true);
-    _name.setFilled(false);
-    _name.setUnderline(true);
-    Dimension nameMin = _name.getMinimumSize();
-    _name.setBounds(10, 10, 90, nameMin.height);
-
-    _stereo.setLineWidth(0);
-    _stereo.setFilled(false);
-    _stereo.setJustifciaionByName("Center");
-    Dimension stereoMin = _stereo.getMinimumSize();
-    _stereo.setBounds(10, 10, 90, stereoMin.height);
-
-    // add Figs to the FigNode in back-to-front order
-    addFig(_bigPort);
-    addFig(_cover);
-    addFig(_stereo);
-    addFig(_name);
-
-    Rectangle r = getBounds();
-    setBounds(r.x, r.y, r.width, r.height);
-  }
-
-  public FigClassifierRole(GraphModel gm, Object node) {
-    this();
-    setOwner(node);
-  }
-
-  public String placeString() { return "new ClassifierRole"; }
-
-  public Object clone() {
-    FigClassifierRole figClone = (FigClassifierRole) super.clone();
-    Vector v = figClone.getFigs();
-    figClone._bigPort = (FigRect) v.elementAt(0);
-    figClone._cover = (FigRect) v.elementAt(1);
-    figClone._stereo = (FigText) v.elementAt(2);
-    figClone._name = (FigText) v.elementAt(3);
-    return figClone;
-  }
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    // Constants
+    //
+    ///////////////////////////////////////////////////////////////////////////
 
 
-  protected void updateStereotypeText() {
-    MModelElement me = (MModelElement) getOwner();
-    if (me == null) return;
-    _stereo.setText(Notation.generateStereotype(this, me.getStereotype()));
-    Rectangle oldBounds = getBounds();
-    _stereo.calcBounds();
-    calcBounds();
-    firePropChange("bounds", oldBounds, getBounds());
-  
-  }
+    /**
+     * <p>The minimum padding above and below the stereotype and name.</p>
+     */
 
-  ////////////////////////////////////////////////////////////////
-  // Fig accessors
+    protected int _PADDING = 5;
 
-  public void setLineColor(Color col) { _cover.setLineColor(col); }
-  public Color getLineColor() { return _cover.getLineColor(); }
 
-  public void setFillColor(Color col) { _cover.setFillColor(col); }
-  public Color getFillColor() { return _cover.getFillColor(); }
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    // Instance variables
+    //
+    ///////////////////////////////////////////////////////////////////////////
 
-  public void setFilled(boolean f) { _cover.setFilled(f); }
-  public boolean getFilled() { return _cover.getFilled(); }
+    /**
+     * <p>The invisible fig that is used as the contact port for the
+     *   classifier role.</p>
+     */
 
-  public void setLineWidth(int w) { _cover.setLineWidth(w); }
-  public int getLineWidth() { return _cover.getLineWidth(); }
+    FigRect _bigPort;
 
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    Object onlyPort = node;
-    bindPort(onlyPort, _bigPort);
+
+    /**
+     * <p>The fig that is used for the complete classifier role. Identical in
+     *   size to {@link #_bigPort}.</p>
+     */
+
+    FigRect _cover;
+
+    // add other Figs here as needed
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    // constructors
+    //
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * <p>Constructor for a new classifier role.</p>
+     *
+     * <p>An invisible {@link FigRect} as the point of contact for connections
+     *   ({@link #_bigPort}), with matching rectangle providing the graphic
+     *   rendering {@link #_cover}). Stereotype and name are rendered centrally
+     *   in the rectangle.</p>
+     */
+
+    public FigClassifierRole() {
+
+        // The big port and cover. Color of the big port is irrelevant
+
+        _bigPort = new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan);
+        _cover   = new FigRect(10, 10, 90, 50, Color.black, Color.white);
+
+        // The stereotype. Width is the same as the cover, height is whatever
+        // its minimum permitted is. The text should be centred.
+
+        Dimension stereoMin = _stereo.getMinimumSize();
+
+        _stereo.setLineWidth(0);
+        _stereo.setFilled(false);
+        _stereo.setJustifciaionByName("Center");
+        _stereo.setDisplayed(false);
+
+        _stereo.setBounds(10, 10, 90, stereoMin.height);
+
+        // The name. Width is the same as the cover, height is whatever its
+        // minimum permitted is. The text of the name will be centred by
+        // default. In the same place as the stereotype, since at this stage
+        // the stereotype is not displayed. Being a classifier role it is
+        // underlined
+
+        Dimension nameMin = _name.getMinimumSize();
+
+        _name.setLineWidth(0);
+        _name.setMultiLine(true);
+        _name.setFilled(false);
+        _name.setUnderline(true);
+
+        _name.setBounds(10, 10, 90, nameMin.height);
+
+        // add Figs to the FigNode in back-to-front order
+
+        addFig(_bigPort);
+        addFig(_cover);
+        addFig(_stereo);
+        addFig(_name);
+
+        // Set our bounds to those we are given.
+
+        Rectangle r = getBounds();
+        setBounds(r.x, r.y, r.width, r.height);
+    }
+
+
+    /**
+     * <p>Variant constructor that associates the classifier role with a
+     *   particular NSUML object.</p>
+     *
+     * <p>Classifier role is constructed with {@link FigClassifierRole()}.</p>
+     *
+     * @param gm    The graph model to use. Ignored in this implementation.
+     *
+     * @param node  The NSUML object to associate with this Fig.
+     */
+
+    public FigClassifierRole(GraphModel gm, Object node) {
+        this();
+        setOwner(node);
+    }
+
+
+    /**
+     * <p>Return the default name to use for this classifier role.</p>
+     *
+     * <p>Seems to be immediately overwritten by the empty string, but may be
+     *   useful in defining the default name size?</p>
+     *
+     * @return  The string to use ("new Classifier Role" in this case).
+     */
+
+    public String placeString() {
+        return "new Classifier Role";
+    }
+
+
+    /**
+     * <p>Version of the clone to ensure all sub-figs are copied.</p>
+     *
+     * <p>Uses the generic superclass clone which gives a vector of all the
+     *   figs. Then initialize our instance variables from this vector.</p>
+     *
+     * @return  A new copy of the the current fig.
+     */
+
+    public Object clone() {
+        FigClassifierRole figClone = (FigClassifierRole) super.clone();
+        Vector            v        = figClone.getFigs();
+
+        figClone._bigPort = (FigRect) v.elementAt(0);
+        figClone._cover   = (FigRect) v.elementAt(1);
+        figClone._stereo  = (FigText) v.elementAt(2);
+        figClone._name    = (FigText) v.elementAt(3);
+
+        return figClone;
+    }
+
+
+    /**
+     * <p>Update the stereotype text.</p>
+     *
+     * <p>If the stereotype text is non-existant, we must make sure it is
+     *   marked not displayed, and update the display accordingly.</p>
+     *
+     * <p>Similarly if there is text, we must make sure it is marked
+     *   displayed.</p>
+     */
+
+    protected void updateStereotypeText() {
+
+        // Can't do anything if we haven't got an owner to have a stereotype!
+
+        MModelElement me = (MModelElement) getOwner();
+
+        if (me == null) {
+            return;
+        }
+
+        // Record the old bounds and get the stereotype
+
+        Rectangle   bounds = getBounds();
+        MStereotype stereo = me.getStereotype();
+
+        // Where we now have no stereotype, mark as not displayed. Were we do
+        // have a stereotype, set the text and mark as displayed. If we remove
+        // or add/change a stereotype we adjust the vertical bounds
+        // appropriately. Otherwise we need not work out the bounds here. That
+        // will be done in setBounds().
+
+        if ((stereo == null) ||
+            (stereo.getName() == null) ||
+            (stereo.getName().length() == 0)) {
+
+            if (_stereo.isDisplayed()) {
+                bounds.height -= _stereo.getBounds().height;
+                _stereo.setDisplayed(false);
+            }
+        }
+        else {
+
+            int oldHeight = _stereo.getBounds().height;
+
+            // If we weren't currently displayed the effective height was
+            // zero. Mark the stereotype as displayed
+
+            if (!(_stereo.isDisplayed())) {
+                oldHeight = 0;
+                _stereo.setDisplayed(true);
+            }
+
+            // Set the text and recalculate its bounds
+
+            _stereo.setText(Notation.generateStereotype(this, stereo));
+            _stereo.calcBounds();
+
+            bounds.height += _stereo.getBounds().height - oldHeight;
+        }
+
+        // Set the bounds to our old bounds (reduced if we have taken the
+        // stereotype away). If the bounds aren't big enough when we've added a
+        // stereotype, they'll get increased as needed.
+
+        System.out.println("stereo: " + bounds);
+        setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    // Fig accessors
+    //
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    public void setLineColor(Color col) { _cover.setLineColor(col); }
+    public Color getLineColor() { return _cover.getLineColor(); }
+
+    public void setFillColor(Color col) { _cover.setFillColor(col); }
+    public Color getFillColor() { return _cover.getFillColor(); }
+
+    public void setFilled(boolean f) { _cover.setFilled(f); }
+    public boolean getFilled() { return _cover.getFilled(); }
+
+    public void setLineWidth(int w) { _cover.setLineWidth(w); }
+    public int getLineWidth() { return _cover.getLineWidth(); }
+
+
+    /**
+     * <p>Change the owning NSUML object for this Fig.</p>
+     *
+     * <p>Use the superclass method, but then bind our big port to the NSUML
+     *  object, and advise that the model has changed.</p>
+     *
+     * @param  node  The NSUML object to own this fig.
+     */
+
+    public void setOwner(Object node) {
+        super.setOwner(node);
+        bindPort((Object) node, _bigPort);
 	modelChanged();
-  }
+    }
 
-  public Dimension getMinimumSize() {
-    Dimension bigPortMin = _bigPort.getMinimumSize();
-    Dimension coverMin = _cover.getMinimumSize();
-    Dimension nameMin = _name.getMinimumSize();
 
-    int h = Math.max(bigPortMin.height, Math.max(coverMin.height, nameMin.height + PADDING*2));
-    int w = Math.max(bigPortMin.width, Math.max(coverMin.width, nameMin.width + PADDING * 2));
-    return new Dimension(w, h);
-  }
+    /**
+     * <p>Work out the minimum size that this Fig can be.</p>
+     *
+     * <p>This should be the size of the stereotype + name + padding. However
+     *   we allow for the possible case that the cover or big port could be
+     *   bigger still.</p>
+     *
+     * @return  The minimum size of this fig.
+     */
 
-  /* Override setBounds to keep shapes looking right */
-  public void setBounds(int x, int y, int w, int h) {
-    if (_name == null) return;
+    public Dimension getMinimumSize() {
+      
+        Dimension bigPortMin = _bigPort.getMinimumSize();
+        Dimension coverMin   = _cover.getMinimumSize();
+        Dimension stereoMin  = _stereo.getMinimumSize();
+        Dimension nameMin    = _name.getMinimumSize();
 
-    Rectangle oldBounds = getBounds();
-    _bigPort.setBounds(x, y, w, h);
-    _cover.setBounds(x, y, w, h);
+        Dimension newMin    = new Dimension(nameMin.width, nameMin.height);
 
-    Dimension nameMin = _name.getMinimumSize();
+        // Work out whether we need to count in the stereotype
 
-    int extra_each = (h - nameMin.height) / 2;
+        if (_stereo.isDisplayed()) {
+            newMin.width   = Math.max(newMin.width, stereoMin.width);
+            newMin.height += stereoMin.height;
+        }
 
-    _name.setBounds(x+1, y+extra_each, w-2, nameMin.height);
-    //_bigPort.setBounds(x+1, y+1, w-2, h-2);
-    _x = x; _y = y; _w = w; _h = h;
+        // Maximum should allow for bigPort and cover.
 
-    firePropChange("bounds", oldBounds, getBounds());
-    calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-    updateEdges();
-  }
+        newMin.height = Math.max(bigPortMin.height,
+                                 Math.max(coverMin.height,
+                                          newMin.height + _PADDING * 2));
+
+        newMin.width  = Math.max(bigPortMin.width,
+                                 Math.max(coverMin.width,
+                                          newMin.width + _PADDING * 2));
+
+        System.out.println("getMinimumSize: " + newMin);
+        return newMin;
+    }
+
+
+    /**
+     * <p>Override setBounds to keep shapes looking right.</p>
+     *
+     * <p>Set the bounds of all components of the Fig. The stereotype (if any)
+     *   and name are centred in the fig.</p>
+     *
+     * <p>We allow for the requested bounds being too small, and impose our
+     *   minimum size if necessary.</p>
+     *
+     * @param x  X coordinate of upper left corner
+     *
+     * @param y  Y coordinate of upper left corner
+     *
+     * @param w  width of bounding box
+     *
+     * @param h  height of bounding box
+     *
+     * @author 10 Apr 2002. Jeremy Bennett (mail@jeremybennett.com). Patch to
+     *         allow for stereotype as well.
+     */
+
+    public void setBounds(int x, int y, int w, int h) {
+
+        // In the rather unlikely case that we have no name, we give up.
+
+        if (_name == null) {
+            return;
+        }
+
+        System.out.println("Setting bounds: " + x + ", " + y + ", " + w +
+                           ", " + h);
+
+        // Remember where we are at present, so we can tell GEF later. Then
+        // check we are as big as the minimum size
+
+        Rectangle oldBounds = getBounds();
+        Dimension minSize   = getMinimumSize();
+
+        int newW = (minSize.width  > w) ? minSize.width  : w;
+        int newH = (minSize.height > h) ? minSize.height : h;
+
+        Dimension stereoMin = _stereo.getMinimumSize();
+        Dimension nameMin   = _name.getMinimumSize();
+
+        // Work out the padding each side, depending on whether the stereotype
+        // is displayed and set bounds accordingly
+
+        if (_stereo.isDisplayed()) {
+            int extra_each = (h - nameMin.height - stereoMin.height) / 2;
+
+            _stereo.setBounds(x, y + extra_each, w, stereoMin.height);
+            _name.setBounds(x, y + stereoMin.height + extra_each, w,
+                            nameMin.height); 
+        }
+        else {
+            int extra_each = (h - nameMin.height) / 2;
+
+            _name.setBounds(x, y + extra_each, w, nameMin.height);
+        }
+
+        // Set the bounds of the bigPort and cover
+
+        _bigPort.setBounds(x, y, newW, newH);
+        _cover.setBounds(x, y, newW, newH);
+
+        // Record the changes in the instance variables of our parent, tell GEF
+        // and trigger the edges to reconsider themselves.
+
+        _x = x;
+        _y = y;
+        _w = newW;
+        _h = newH;
+        
+        firePropChange("bounds", oldBounds, getBounds());
+        updateEdges();
+    }
 
   
-  ////////////////////////////////////////////////////////////////
-  // event handlers
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    // event handlers
+    //
+    ///////////////////////////////////////////////////////////////////////////
 
-  protected void textEdited(FigText ft) throws PropertyVetoException {
-	  // super.textEdited(ft);
-    MClassifierRole cls = (MClassifierRole) getOwner();
-    if (ft == _name) {
-       String s = ft.getText();
-       // System.out.println("S ist: "+s);
-      ParserDisplay.SINGLETON.parseClassifierRole(cls, s);
-    }
-  }
+    /**
+     * <p>Called after text has been edited directly on the screen.</p>
+     *
+     * @param ft  The text that was edited.
+     */
 
-  protected void modelChanged() {
-    super.modelChanged();
-    MClassifierRole cr = (MClassifierRole) getOwner();
-    if (cr == null) return;
-    String nameStr = Notation.generate(this, cr.getName()).trim();
-    String baseString = "";
-    if (cr.getBases() != null && cr.getBases().size()>0) {
-	Vector bases = new Vector(cr.getBases());
-	baseString += ((MClassifier)bases.elementAt(0)).getName();
-        for(int i=1; i<bases.size(); i++)
-	    baseString += ", "  + ((MClassifier)bases.elementAt(i)).getName();
+    protected void textEdited(FigText ft) throws PropertyVetoException {
+
+        MClassifierRole cls = (MClassifierRole) getOwner();
+
+        if (ft == _name) {
+            String s = ft.getText();
+            ParserDisplay.SINGLETON.parseClassifierRole(cls, s);
+        }
     }
 
-    if (_readyToEdit) {
-      if( nameStr == "" && baseString == "")
-	_name.setText("");
-      else
-	_name.setText(nameStr.trim() + " : " + baseString);
+
+    /**
+     * <p>Adjust the fig in the light of some change to the model.</p>
+     *
+     * <p><em>Note</em>. The current implementation does not properly use
+     *   Notation.generate to generate the full name for a classifier role.</p>
+     */
+
+    protected void modelChanged() {
+
+        // Let the superclass sort out any of its changes
+
+        super.modelChanged();
+
+        // Give up if we don't have an owner
+
+        MClassifierRole cr = (MClassifierRole) getOwner();
+
+        if (cr == null) {
+            return;
+        }
+
+        // Note our current bounds
+
+        Rectangle oldBounds = getBounds();
+
+        // We only use the notation generator for the name itself. We ought to
+        // do the whole thing.
+
+        String nameStr    = Notation.generate(this, cr.getName()).trim();
+        String baseString = "";
+
+        // Loop through all base classes, building a comma separated list
+
+        if (cr.getBases() != null && cr.getBases().size()>0) {
+            Vector bases = new Vector(cr.getBases());
+            baseString += ((MClassifier)bases.elementAt(0)).getName();
+
+            for(int i=1; i<bases.size(); i++)
+                baseString += ", "  +
+                              ((MClassifier)bases.elementAt(i)).getName();
+        }
+
+        // Build the final string and set it as the name text.
+
+        if (_readyToEdit) {
+            if( nameStr == "" && baseString == "")
+                _name.setText("");
+            else
+                _name.setText("/" + nameStr.trim() + " : " + baseString);
+        }
+
+        // Now recalculate all the bounds, using our old bounds.
+
+	setBounds(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
     }
-  }
 
-//  public void keyPressed(KeyEvent ke) {}
 
-  public void dispose() {
-    if (!(getOwner() instanceof MElement)) return;
-    MElement elmt = (MElement) getOwner();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(elmt);
-    super.dispose();
-  }
+    /**
+     * <p>Handle the deletion of the owner of this fig.</p>
+     *
+     * <p>Not clear that this does anything beyond the default.</p>
+     */
 
+    public void dispose() {
+
+        // Give up if no owner
+
+        if (!(getOwner() instanceof MElement)) {
+            return;
+        }
+
+        MElement elmt = (MElement) getOwner();
+        Project  p    = ProjectBrowser.TheInstance.getProject();
+
+        p.moveToTrash(elmt);
+        super.dispose();
+    }
 
 
 } /* end class FigClassifierRole */
