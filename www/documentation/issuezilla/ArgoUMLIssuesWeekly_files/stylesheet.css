@@ -56,11 +56,18 @@ a:visited
 	mso-protection:locked visible;
 	mso-style-name:Normal;
 	mso-style-id:0;}
+.font16
+	{color:windowtext;
+	font-size:10.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:Arial;
+	mso-generic-font-family:auto;
+	mso-font-charset:0;}
 td
 	{mso-style-parent:style0;
-	padding-top:1px;
-	padding-right:1px;
-	padding-left:1px;
+	padding:0px;
 	mso-ignore:padding;
 	color:windowtext;
 	font-size:10.0pt;
@@ -81,6 +88,9 @@ td
 	mso-rotate:0;}
 .xl24
 	{mso-style-parent:style0;
+	font-weight:700;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
 	mso-rotate:90;}
 .xl25
 	{mso-style-parent:style0;
@@ -138,10 +148,4 @@ td
 .xl34
 	{mso-style-parent:style0;
 	text-align:left;
-	mso-rotate:90;}
-.xl35
-	{mso-style-parent:style0;
-	font-weight:700;
-	font-family:Arial, sans-serif;
-	mso-font-charset:0;
 	mso-rotate:90;}
