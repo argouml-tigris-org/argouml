@@ -111,7 +111,7 @@ public class UMLClassDiagram extends UMLDiagram {
     ClassDiagramGraphModel gm = new ClassDiagramGraphModel();
     gm.setNamespace(m);
     setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspective(m.getName(), gm);
+    LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
     setLayer(lay);
     ClassDiagramRenderer rend = new ClassDiagramRenderer(); // singleton
     lay.setGraphNodeRenderer(rend);
