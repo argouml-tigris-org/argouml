@@ -62,7 +62,9 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     /**
      * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getNamespace()
      */
-    public Object getNamespace() { return Model.getFacade().getNamespace(collab); }
+    public Object getNamespace() { 
+        return Model.getFacade().getNamespace(collab); 
+    }
 
     /**
      * @param collaboration the collaboration to be set for this diagram
@@ -139,37 +141,6 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	return new Vector(); // TODO:?
     }
 
-    /**
-     * Return one end of an edge.
-     *
-     * @see org.tigris.gef.graph.BaseGraphModel#getSourcePort(java.lang.Object)
-     */
-    public Object getSourcePort(Object edge) {
-        if (edge instanceof CommentEdge) {
-            return ((CommentEdge) edge).getSource();
-        } else if (Model.getFacade().isARelationship(edge)) {
-	    return Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
-	}
-	LOG.debug("TODO: getSourcePort");
-	return null;
-    }
-
-    /**
-     * Return  the other end of an edge.
-     *
-     * @see org.tigris.gef.graph.BaseGraphModel#getDestPort(java.lang.Object)
-     */
-    public Object getDestPort(Object edge) {
-        if (edge instanceof CommentEdge) {
-            return ((CommentEdge) edge).getDestination();
-        } else if (Model.getFacade().isARelationship(edge)) {
-	    return Model.getCoreHelper().getDestination(edge);
-	}
-	LOG.debug("TODO: getDestPort");
-	return null;
-    }
-
-
     ////////////////////////////////////////////////////////////////
     // MutableGraphModel implementation
 
@@ -182,7 +153,8 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	if (node == null) return false;
 	if (containsNode(node)) return false;
 	return (Model.getFacade().isAClassifierRole(node)
-            || Model.getFacade().isAMessage(node));
+            || Model.getFacade().isAMessage(node)
+            || Model.getFacade().isAComment(node));
     }
 
     /**
