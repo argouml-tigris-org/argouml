@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CrUnconventionalPackName.java
-// Classes: CrUnconventionalPackName
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import javax.swing.Icon;
@@ -39,7 +32,8 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
 
-/** Critic to detect whether a package name obeys to certain rules.
+/**
+ * Critic to detect whether a package name obeys to certain rules.
  */
 public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
 
@@ -81,7 +75,8 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
     }
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     * @see org.argouml.cognitive.critics.Critic#initWizard(
+     *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {

@@ -111,7 +111,7 @@ public class ProjectMemberDiagram extends ProjectMember {
 
     /**
      * Write the diagram to the given writer.
-     * @see org.argouml.kernel.ProjectMember#save(java.io.Writer)
+     * @see org.argouml.kernel.ProjectMember#save(java.io.Writer, Integer)
      */
     public void save(Writer writer, Integer indent) throws SaveException {
         OCLExpander expander;

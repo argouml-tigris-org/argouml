@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.uml.cognitive.critics;
 
 import javax.swing.Icon;
@@ -33,15 +32,17 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
-/** Critic to detect whether an attribute name obeys to certain rules.
- *  <p>
- *  Checks for:
- *  <ul>
- *  <li> all lower case or
- *  <li> all upper case
- *  </ul>
- *  where trailing underscores are removed, and
- *  constants are not nagged at.
+
+/**
+ * Critic to detect whether an attribute name obeys to certain rules.
+ * <p>
+ * Checks for:
+ * <ul>
+ * <li> all lower case or
+ * <li> all upper case
+ * </ul>
+ * where trailing underscores are removed, and
+ * constants are not nagged at.
  */
 public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 
@@ -153,7 +154,8 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     * @see org.argouml.cognitive.critics.Critic#initWizard(
+     *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {

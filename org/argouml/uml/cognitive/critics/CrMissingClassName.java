@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,14 +30,15 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
-/** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. 
+
+/**
+ * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
+ * Semantics. OMG document ad/97-08-04. 
  */
 public class CrMissingClassName extends CrUML {
 
     /**
      * The constructor.
-     * 
      */
     public CrMissingClassName() {
 	setHeadline("Choose a Name");
@@ -67,7 +68,8 @@ public class CrMissingClassName extends CrUML {
     }
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     * @see org.argouml.cognitive.critics.Critic#initWizard(
+     *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {

@@ -718,7 +718,7 @@ public abstract class PropPanel
      * 
      * @deprecated As of V0.17.1. Reason: Nobody has any business 
      * poking around in my Panels. 
-     * Use {@link addButton(Component)} instead.
+     * Use {@link #addButton(Component)} instead.
      */
     protected JToolBar getButtonPanel() {
         return buttonPanel;

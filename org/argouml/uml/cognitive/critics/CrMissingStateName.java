@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,12 +37,11 @@ import org.argouml.model.ModelFacade;
  * A critic to detect whether a state has a name.
  * Does not apply to all kinds of states!
  * E.g. excluded are final state, initial state, action state,...
- **/
+ */
 public class CrMissingStateName extends CrUML {
     
     /**
      * The constructor.
-     * 
      */
     public CrMissingStateName() {
 	setHeadline("Choose a Name");
@@ -83,7 +82,8 @@ public class CrMissingStateName extends CrUML {
     }
 							   
     /**
-     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     * @see org.argouml.cognitive.critics.Critic#initWizard(
+     *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
