@@ -50,7 +50,7 @@ public class FigActor extends FigNodeModelElement {
 
   /** UML does not really use ports, so just define one big one so
    *  that users can drag edges to or from any point in the icon. */
-  FigRect _bigPort;
+  FigCircle _bigPort;
 
   /* Put in the things for the "person" in the FigActor */
   FigCircle _head;
@@ -67,7 +67,8 @@ public class FigActor extends FigNodeModelElement {
 
   public FigActor() {
     // Put this rectangle behind the rest, so it goes first
-    _bigPort = new FigRect(5, 5, 30, 85, Color.gray, Color.gray);
+    //_bigPort = new FigRect(5, 5, 30, 85, Color.gray, Color.gray);
+    _bigPort = new FigCircle(10, 10, 20, 30, Color.gray, Color.gray);
     _head = new FigCircle(10, 10, 20, 30, Color.black, Color.white);
     _body = new FigLine(20, 40, 20, 60, Color.black);
     _arms = new FigLine(10, 50, 30, 50, Color.black);
@@ -89,8 +90,6 @@ public class FigActor extends FigNodeModelElement {
     addFig(_rightLeg);
     addFig(_name);
 
-    setBlinkPorts(true); // make port invisble unless mouse enters
-    Rectangle r = getBounds();
   }
 
   public FigActor(GraphModel gm, Object node) {
@@ -103,7 +102,7 @@ public class FigActor extends FigNodeModelElement {
   public Object clone() {
     FigActor figClone = (FigActor) super.clone();
     Vector v = figClone.getFigs();
-    figClone._bigPort = (FigRect) v.elementAt(0);
+    figClone._bigPort = (FigCircle) v.elementAt(0);
     figClone._head = (FigCircle) v.elementAt(1);
     figClone._body = (FigLine) v.elementAt(2);
     figClone._arms = (FigLine) v.elementAt(3);
@@ -156,13 +155,35 @@ public class FigActor extends FigNodeModelElement {
   }
   public int getLineWidth() { return _head.getLineWidth(); }
 
-  ////////////////////////////////////////////////////////////////
-  // event handlers
+  public Dimension getMinimumSize() {
+    Dimension nameDim = _name.getMinimumSize();
+    int w = nameDim.width;
+    int h = nameDim.height + 65;
+    return new Dimension(w, h);
+  }
 
-//   /** Update the text labels */
-//   protected void modelChanged() {
-//     super.modelChanged();
-//   }
+  public void setBounds(int x, int y, int w, int h) {
+    int middle = w/2;
+    h = _h;
+    Rectangle oldBounds = getBounds();
+    _bigPort.setLocation(x + middle - _bigPort.getWidth()/2, y + h - 85);
+    _head.setLocation(x + middle - _head.getWidth()/2, y + h - 85);
+    _body.setLocation(x + middle, y + h - 55);
+    _arms.setLocation(x + middle - _arms.getWidth()/2, y + h - 45);
+    _leftLeg.setLocation(x + middle - _leftLeg.getWidth(), y + h - 35);
+    _rightLeg.setLocation(x + middle,  y + h - 35);
 
+    Dimension minTextSize = _name.getMinimumSize();
+    _name.setBounds(x + middle - minTextSize.width/2,
+		    y + h - minTextSize.height,
+		    minTextSize.width, minTextSize.height);
+
+    updateEdges();
+    _x = x;
+    _y = y;
+    _w = w;
+    // do not set height
+    firePropChange("bounds", oldBounds, getBounds());
+  }
 
 } /* end class FigActor */
