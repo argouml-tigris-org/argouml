@@ -75,26 +75,33 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
         if (ModelFacade.isAPseudostate(o)) {
             Object kind = ModelFacade.getPseudostateKind(o);
             if (ModelFacade.equalsPseudostateKind(kind,
-                    ModelFacade.FORK_PSEUDOSTATEKIND))
-                    getTitleLabel().setText("Fork State");
+                ModelFacade.FORK_PSEUDOSTATEKIND))
+                getTitleLabel().setText(
+                    Translator.localize("label.pseudostate.fork"));
             if (ModelFacade.equalsPseudostateKind(kind,
-                    ModelFacade.JOIN_PSEUDOSTATEKIND))
-                    getTitleLabel().setText("Join State");
+                ModelFacade.JOIN_PSEUDOSTATEKIND))
+                getTitleLabel().setText(
+                    Translator.localize("label.pseudostate.join"));
             if (ModelFacade.equalsPseudostateKind(kind,
-                    ModelFacade.BRANCH_PSEUDOSTATEKIND))
-                    getTitleLabel().setText("Choice State");
+                ModelFacade.BRANCH_PSEUDOSTATEKIND))
+                getTitleLabel().setText(
+                    Translator.localize("label.pseudostate.choice"));
             if (ModelFacade.equalsPseudostateKind(kind,
-                    ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND))
-                    getTitleLabel().setText("Deep History State");
+                ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND))
+                getTitleLabel().setText(
+                    Translator.localize("label.pseudostate.deephistory"));
             if (ModelFacade.equalsPseudostateKind(kind,
-                    ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND))
-                    getTitleLabel().setText("Shallow History State");
+                ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND))
+                getTitleLabel().setText(
+                    Translator.localize("label.pseudostate.shallowhistory"));
             if (ModelFacade.equalsPseudostateKind(kind,
-                    ModelFacade.INITIAL_PSEUDOSTATEKIND))
-                    getTitleLabel().setText("Initial State");
+                ModelFacade.INITIAL_PSEUDOSTATEKIND))
+                getTitleLabel().setText(
+                    Translator.localize("label.pseudostate.initial"));
             if (ModelFacade.equalsPseudostateKind(kind,
-                    ModelFacade.JUNCTION_PSEUDOSTATEKIND))
-                    getTitleLabel().setText("Junction State");
+                ModelFacade.JUNCTION_PSEUDOSTATEKIND))
+                getTitleLabel().setText(
+                    Translator.localize("label.pseudostate.junction"));
         }
 
     }
