@@ -838,7 +838,7 @@ class ActionSaveGraphics extends UMLAction {
 	chooser.addChoosableFileFilter( FileFilters.GIFFilter );
 	chooser.addChoosableFileFilter( FileFilters.PSFilter );
 	chooser.addChoosableFileFilter( FileFilters.EPSFilter );
-	//chooser.addChoosableFileFilter( FileFilters.SVGFilter );
+	chooser.addChoosableFileFilter( FileFilters.SVGFilter );
 	// concerning the following lines: is .GIF preferred?
 	chooser.setFileFilter( FileFilters.GIFFilter );
 	File def = new File(  defaultName + "."
@@ -860,8 +860,8 @@ class ActionSaveGraphics extends UMLAction {
 		cmd = new CmdSaveEPS();
 	    else if (FileFilters.GIFFilter._suffix.equals(extension))
 		cmd = new CmdSaveGIF();
-	    //else if (FileFilters.SVGFilter._suffix.equals(extension))
-		//cmd = new CmdSaveSVG();
+	    else if (FileFilters.SVGFilter._suffix.equals(extension))
+		cmd = new CmdSaveSVG();
 	    else {
 		pb.showStatus("Unknown graphics file type withextension "
 			      +extension);
