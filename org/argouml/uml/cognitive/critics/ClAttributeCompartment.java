@@ -37,7 +37,8 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
 /**
- * Class that represents the clarifier attribute compartment (?).
+ * Class that represents the clarifier (red wavy line) 
+ * for a attribute compartment.
  *
  */
 public class ClAttributeCompartment implements Clarifier {

@@ -47,7 +47,8 @@ import org.argouml.model.ModelFacade;
  * classes have a lot of operations. See the {@link #predicate2}
  * method for possible solutions.<p>
  *
- * @see <a href="http://argouml.tigris.org/documentation/printablehtml/manual/argouml.html/#s2.ref.oper_name_conflict">
+ * @see <a 
+ * href="http://argouml.tigris.org/documentation/printablehtml/manual/argouml.html/#s2.ref.oper_name_conflict">
  * ArgoUML User Manual: Change Names or Signatures in &lt;artifact&gt;
  * </a>
  * @author jrobbins@ics.uci.edu
@@ -165,7 +166,7 @@ public class CrOperNameConflict extends CrUML {
      * @return       The {@link javax.swing.Icon Icon} to use.
      */
     public Icon getClarifier() {
-        return ClOperationCompartment.TheInstance;
+        return ClOperationCompartment.getTheInstance();
     }
 
 
