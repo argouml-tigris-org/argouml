@@ -61,6 +61,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ItemUID;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.kernel.DelayedChangeNotify;
@@ -145,6 +146,7 @@ public abstract class FigNodeModelElement
     protected boolean suppressCalcBounds = false;
     public int _shadowSize =
         Configuration.getInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
+    private ItemUID _id;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -215,6 +217,10 @@ public abstract class FigNodeModelElement
 
     ////////////////////////////////////////////////////////////////
     // accessors
+
+    public void setItemUID(ItemUID id) { _id = id; }
+
+    public ItemUID getItemUID() { return _id; }
 
     public FigText getNameFig() {
         return _name;
