@@ -31,6 +31,7 @@ import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
+ * The listmodel of the client dependencies for some modelelement
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -57,7 +58,7 @@ public class UMLModelElementClientDependencyListModel
      */
     protected boolean isValidRoleAdded(MElementEvent e) {
         Object o = getChangedElement(e);
-        return o instanceof MDependency && ((MModelElement)getTarget()).getClientDependencies().contains(o);
+        return e.getSource() == getTarget() && e.getName() == "clientDependency" && o instanceof MDependency && ((MModelElement)getTarget()).getClientDependencies().contains(o);
     }
 
 }
