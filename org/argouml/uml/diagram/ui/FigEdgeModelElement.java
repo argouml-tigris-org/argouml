@@ -581,7 +581,7 @@ public abstract class FigEdgeModelElement
      */
     protected void updateNameText() {
 
-        if (getOwner() == null)
+        if ((getOwner() == null) || (getOwner() instanceof CommentEdge))
             return;
         String nameStr =
 	    Notation.generate(this, Model.getFacade().getName(getOwner()));
@@ -594,7 +594,7 @@ public abstract class FigEdgeModelElement
      * generate the notation for the stereotype and stuff it into the text Fig
      */
     protected void updateStereotypeText() {
-        if (getOwner() == null) {
+        if ((getOwner() == null) || (getOwner() instanceof CommentEdge)) {
             return;
         }
         Object stereotype = null;
