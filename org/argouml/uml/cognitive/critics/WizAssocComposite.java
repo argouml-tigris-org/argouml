@@ -63,8 +63,8 @@ import org.tigris.gef.util.*;
 
 
 public class WizAssocComposite extends Wizard {
-    protected static Category cat = Category.getInstance(WizAssocComposite.class);
-    
+   protected static Category cat = Category.getInstance(WizAssocComposite.class);
+   
 
     /**
      * <p>The initial instructions on the Step 1 screen. May be set to a
@@ -423,6 +423,4 @@ public class WizAssocComposite extends Wizard {
 
         return false;
     }
-
-
 } /* end class WizAssocComposite */
