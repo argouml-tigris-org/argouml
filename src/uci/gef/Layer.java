@@ -194,6 +194,7 @@ public abstract class Layer implements java.io.Serializable {
   public void bringForward(Fig f) { }
   public void sendBackward(Fig f) { }
   public void bringToFront(Fig f) { }
+  public void bringInFrontOf(Fig f1, Fig f2) { }
   public void reorder(Fig f, int function) { }
 
   ////////////////////////////////////////////////////////////////

@@ -36,6 +36,7 @@ import java.awt.event.*;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Cursor;
+import java.util.*;
 
 /** A Mode to process events from the Editor when the user is
  *  modifying a Fig.  Right now users can drag one or more
@@ -49,7 +50,7 @@ import java.awt.Cursor;
 public class ModeModify extends Mode {
   ////////////////////////////////////////////////////////////////
   // constants
-  
+
   /** Minimum amoun that the user must move the mouse to indicate that he
    *  really wants to modify something. */
   public static final int MIN_DELTA = 4;
@@ -67,7 +68,7 @@ public class ModeModify extends Mode {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-  
+
   /** The point relative to the original postition of the
    *  Fig where the dragging started.  Keeping this point
    *  allows the user to "grip" any part of the Fig, rather
@@ -110,7 +111,7 @@ public class ModeModify extends Mode {
 
   ////////////////////////////////////////////////////////////////
   // event handlers
-  
+
   private static Point snapPt = new Point(0, 0);
 
   /** When the user drags the mouse two things can happen: (1) if the
@@ -120,7 +121,7 @@ public class ModeModify extends Mode {
    *  handle around the drawing area and the Fig reacts to that.  */
   public void mouseDragged(MouseEvent me) {
     if (me.getModifiers() == InputEvent.BUTTON3_MASK) return;
-    int x = me.getX(), y = me.getY();    
+    int x = me.getX(), y = me.getY();
     int dx, dy, snapX, snapY;
     if (!checkMinDelta(x, y)) { me.consume(); return; }
     SelectionManager sm = getEditor().getSelectionManager();
@@ -159,20 +160,22 @@ public class ModeModify extends Mode {
 
     sm.startTrans();
     if (_curHandle.index == -1) {
-      setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));      
-      sm.translate(dx, dy);
+      setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+      if (legal(dx, dy, sm, me)) {
+	sm.translate(dx, dy);
+	_lastX = snapX; _lastY = snapY;
+      }
     }
     else if (_curHandle.index >= 0) {
+      // needs-more-work: check if legal
       setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
       sm.dragHandle(snapX, snapY, _anchor.x, _anchor.y, _curHandle);
+      _lastX = snapX; _lastY = snapY;
     }
     //Note: if _curHandle.index == -2 then do nothing
 
     sm.endTrans();
-
     _editor.scrollToShow(snapX, snapY);
-	
-    _lastX = snapX; _lastY = snapY;
     me.consume();
   }
 
@@ -209,6 +212,30 @@ public class ModeModify extends Mode {
     if (me.getModifiers() == InputEvent.BUTTON3_MASK) return;
     done();
     me.consume();
+    SelectionManager sm = getEditor().getSelectionManager();
+    Vector figs = sm.getFigs();
+    Enumeration sels = figs.elements();
+    while (sels.hasMoreElements()) {
+      Fig selectedFig = (Fig) sels.nextElement();
+      if (!(selectedFig instanceof FigNode)) continue;
+      Rectangle bbox = selectedFig.getBounds();
+      Layer lay = selectedFig.getLayer();
+      Vector otherFigs = lay.getContents();
+      Enumeration others = otherFigs.elements();
+      Fig encloser = null;
+      while (others.hasMoreElements()) {
+        Fig otherFig = (Fig) others.nextElement();
+        if (!(otherFig instanceof FigNode)) continue;
+        if (figs.contains(otherFig)) continue;
+        Rectangle trap = otherFig.getTrapRect();
+        // now bbox is where the fig _will_ be
+        if ((trap.contains(bbox.x, bbox.y) && 
+             trap.contains(bbox.x + bbox.width, bbox.y + bbox.height))) {
+           encloser = otherFig;
+           }
+      }
+      selectedFig.setEnclosingFig(encloser);
+    }
   }
 
   public void start() {
@@ -231,6 +258,39 @@ public class ModeModify extends Mode {
         y < _startY - MIN_DELTA)
       _minDeltaAchieved = true;
     return _minDeltaAchieved;
+  }
+
+  protected boolean legal(int dx, int dy, SelectionManager sm, MouseEvent me) {
+    Vector figs = sm.getFigs();
+    Enumeration sels = figs.elements();
+    while (sels.hasMoreElements()) {
+      Fig selectedFig = (Fig) sels.nextElement();
+      if (!(selectedFig instanceof FigNode)) continue;
+      Rectangle bbox = selectedFig.getBounds();
+      bbox.x += dx; bbox.y += dy;
+      Layer lay = selectedFig.getLayer();
+      Vector otherFigs = lay.getContents();
+      Enumeration others = otherFigs.elements();
+      while (others.hasMoreElements()) {
+        Fig otherFig = (Fig) others.nextElement();
+        if (!(otherFig instanceof FigNode)) continue;
+        if (figs.contains(otherFig)) continue;
+        Rectangle trap = otherFig.getTrapRect();
+        // now bbox is where the fig _will_ be
+        int cornersHit = 0;
+        if (trap.contains(bbox.x, bbox.y)) cornersHit++;
+        if (trap.contains(bbox.x + bbox.width, bbox.y)) cornersHit++;
+        if (trap.contains(bbox.x, bbox.y + bbox.height)) cornersHit++;
+        if (trap.contains(bbox.x + bbox.width, bbox.y + bbox.height)) cornersHit++;
+        if (!trap.intersects(bbox)) continue;
+        if ((trap.contains(bbox.x, bbox.y) &&
+	     trap.contains(bbox.x + bbox.width, bbox.y + bbox.height))) continue;
+        if ((bbox.contains(trap.x, trap.y) &&
+	     bbox.contains(trap.x + trap.width, trap.y + trap.height))) continue;
+        return false;
+      }
+    }
+    return true;
   }
 
   static final long serialVersionUID = -5048296582544436022L;

@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: Fig.java
 // Classes: Fig
 // Original Author: ics125 spring 1996
@@ -179,6 +177,18 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
     _locked = b;
   }
   public boolean getLocked() { return _locked; }
+
+  public Rectangle getTrapRect() { return getBounds(); }
+
+  public Fig getEnclosingFig() { return null; }
+
+  public void setEnclosingFig(Fig f) {
+    if (f != null && f != getEnclosingFig() && _layer != null) {
+        _layer.bringInFrontOf(this,f);
+        damage();
+    }
+    //System.out.println("enclosing fig has been set");
+  }
 
 
   /** Sets the owner object of this Fig. Fires PropertyChangeEvent
@@ -372,7 +382,7 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
    *  simpler, and better avoids "screen dirt". */
   public void damage() { if (_layer != null) _layer.damaged(this); }
 
-  
+
   /** This indicates that some Cmd is starting a manipulation on the
    *  receiving Fig and that redrawing must take place at the objects
    *  old location. This adds a damage region to all editors that are
@@ -459,12 +469,12 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
    *  size. Subclasses must override to return something useful. */
   public Dimension getPreferedSize() { return new Dimension(_w, _h); }
 
-  public Stack getPopUpActions() { 
+  public Stack getPopUpActions() {
     Stack popUpActions = setPopUpActions();
-    return popUpActions; 
+    return popUpActions;
   }
 
-  public Stack setPopUpActions() { 
+  public Stack setPopUpActions() {
     Stack popUpActions = new Stack();
     popUpActions.push(new CmdReorder(CmdReorder.BRING_FORWARD));
     popUpActions.push(new CmdReorder(CmdReorder.SEND_BACKWARD));
@@ -502,7 +512,7 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
   public void setYs(int[] ys) { }
 
   public void addPoint(int x, int y) { }
-  public void insertPoint(int i, int x, int y) { } 
+  public void insertPoint(int i, int x, int y) { }
   public void removePoint(int i) { }
 
   /** Return the length of the path around this Fig. By default,
@@ -643,7 +653,7 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
   }
   // note: computing non-intersection is faster on average.  Maybe I
   // should structure the API to allow clients to take advantage of that?
-  
+
   /** Return the center of the given Fig. By default the center is the
    *  center of its bounding box. Subclasses may want to define
    *  something else. */

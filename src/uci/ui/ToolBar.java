@@ -24,8 +24,6 @@
 
 package uci.ui;
 
-
-
 import java.util.*;
 import java.beans.*;
 import java.awt.*;
@@ -206,6 +204,12 @@ public class ToolBar extends JToolBar implements MouseListener {
 	uci.gef.Globals.setSticky(true);
       }
     }
+    else if (me.getClickCount() == 1) {
+      if (!(src instanceof JButton)) return;
+      JButton b = (JButton) src;
+      b.setFocusPainted(false);
+      b.getModel().setPressed(true);
+    }
   }
 
 
@@ -222,6 +226,20 @@ public class ToolBar extends JToolBar implements MouseListener {
       ((JButton)c).getModel().setArmed(false);
       ((JButton)c).getModel().setPressed(false);
     }
+  }
+
+  public void unpressAllButtons() {
+    int size = getComponentCount();
+    for (int i = 0; i < size; i++) {
+      Component c = getComponent(i);
+      if (!(c instanceof JButton)) continue;
+      ((JButton)c).getModel().setArmed(false);
+      ((JButton)c).getModel().setPressed(false);
+    }
+    Component c = getComponent(0);
+    JButton select = (JButton) c;
+    select.getModel().setArmed(true);
+    select.getModel().setPressed(true);
   }
 
   protected static ImageIcon loadIconResource(String imgName, String desc) {

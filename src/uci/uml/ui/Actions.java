@@ -48,7 +48,7 @@ import uci.uml.Behavioral_Elements.Use_Cases.*;
 import uci.uml.Model_Management.*;
 import uci.uml.visual.*;
 import uci.uml.generate.*;
-//@ import uci.uml.xmi.*;
+import uci.uml.xmi.*;
 
 public class Actions {
 
@@ -373,7 +373,7 @@ class ActionSaveAsXMI extends UMLAction {
     System.out.println("Dump XMI now.");
     Project p = ProjectBrowser.TheInstance.getProject();
 
-    //@ XMITraverse.traverse(p);
+    XMITraverse.traverse(p);
   }
 } /* end class ActionSaveAsXMI */
 

@@ -69,7 +69,7 @@ implements IStatusBar {
   protected static Action _actionOpen = Actions.Open;
   protected static Action _actionSave = Actions.Save;
   protected static Action _actionSaveAs = Actions.SaveAs;
-  //-protected static Action _actionSaveAsXMI = Actions.SaveAsXMI;
+  //protected static Action _actionSaveAsXMI = Actions.SaveAsXMI;
   // -----
   protected static Action _actionAddToProj = Actions.AddToProj;
   // -----
@@ -266,7 +266,7 @@ implements IStatusBar {
     saveItem.setMnemonic('S');
     saveItem.setAccelerator(ctrlS);
     file.add(_actionSaveAs);
-    //-file.add(_actionSaveAsXMI);
+    //file.add(_actionSaveAsXMI);
     file.addSeparator();
     JMenuItem printItem = file.add(_actionPrint);
     printItem.setMnemonic('P');

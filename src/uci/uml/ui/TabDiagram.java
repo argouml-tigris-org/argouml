@@ -44,7 +44,8 @@ import uci.uml.visual.*;
 
 
 public class TabDiagram extends TabSpawnable
-implements TabModelTarget, uci.gef.event.GraphSelectionListener {
+implements TabModelTarget, uci.gef.event.GraphSelectionListener,
+uci.gef.event.ModeChangeListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected UMLDiagram _target; // the diagram object
@@ -74,6 +75,7 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
     p.add(_jgraph, BorderLayout.CENTER);
     add(p, BorderLayout.CENTER);
     _jgraph.addGraphSelectionListener(this);
+    _jgraph.addModeChangeListener(this);
   }
 
   public Object clone() {
@@ -142,6 +144,15 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
     _jgraph.removeGraphSelectionListener(listener);
   }
 
+  public void modeChange(ModeChangeEvent mce) {
+    //System.out.println("TabDiagram got mode change event");
+    if (!Globals.getSticky() && Globals.mode() instanceof ModeSelect)
+      _toolBar.unpressAllButtons();
+  }
+
+  public void removeModeChangeListener(ModeChangeListener listener) {
+    _jgraph.removeModeChangeListener(listener);
+  }
 
   ////////////////////////////////////////////////////////////////
   // utility methods

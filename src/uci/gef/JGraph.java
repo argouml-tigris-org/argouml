@@ -208,7 +208,14 @@ public class JGraph extends JPanel implements Cloneable {
     getEditor().removeGraphSelectionListener(listener);
   }
 
-  
+  public void addModeChangeListener(ModeChangeListener listener) {
+    getEditor().addModeChangeListener(listener);
+  }
+
+  public void removeModeChangeListener(ModeChangeListener listener) {
+    getEditor().removeModeChangeListener(listener);
+  }
+
   ////////////////////////////////////////////////////////////////
   // Editor facade
 

@@ -505,7 +505,16 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public void removeGraphSelectionListener(GraphSelectionListener listener) {
     _selectionManager.removeGraphSelectionListener(listener);
   }
-  
+
+  /** Remember to notify listener whenever the mode changes. */
+  public void addModeChangeListener(ModeChangeListener listener) {
+    _modeManager.addModeChangeListener(listener);
+  }
+
+  /** Stop notifing listener of mode changes. */
+  public void removeModeChangeListener(ModeChangeListener listener) {
+    _modeManager.removeModeChangeListener(listener);
+  }
 
 
   ////////////////////////////////////////////////////////////////

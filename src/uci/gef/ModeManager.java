@@ -36,7 +36,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.io.Serializable;
+
 import uci.util.*;
+import uci.gef.event.*;
+import com.sun.java.swing.event.EventListenerList;
 
 /** ModeManager keeps track of all the Modes for a given Editor.
  *  Events are passed to the Modes for handling.  The submodes are
@@ -61,6 +64,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** Set the parent Editor of this ModeManager */
   public void setEditor(Editor w) { _editor = w; }
+
+  protected EventListenerList _listeners = new EventListenerList();
 
   /** Get the parent Editor of this ModeManager */
   public Editor getEditor() { return _editor; }
@@ -96,13 +101,17 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
       if (m.getClass() == newModeClass) return;
     }
     _modes.addElement(newMode);
+    //fireModeChanged();
   }
 
   /** Remove the topmost Mode iff it can exit. */
   public Mode pop() {
     if (_modes.isEmpty()) return null;
     Mode res = top();
-    if (res.canExit()) _modes.removeElement(res);
+    if (res.canExit()) {
+      _modes.removeElement(res);
+      fireModeChanged();
+    }
     return res;
   }
 
@@ -176,6 +185,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
       Mode m = ((Mode)_modes.elementAt(i));
       m.mouseReleased(me);
     }
+    //fireModeChanged();
   }
 
   /** Pass events to all modes in order, until one consumes it. */
@@ -194,7 +204,6 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     }
   }
 
-  
   ////////////////////////////////////////////////////////////////
   // mode transitions
 
@@ -223,6 +232,29 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   }
 
   ////////////////////////////////////////////////////////////////
+  // mode events
+
+  public void addModeChangeListener(ModeChangeListener listener) {
+    _listeners.add(ModeChangeListener.class, listener);
+  }
+
+  public void removeModeChangeListener(ModeChangeListener listener) {
+    _listeners.remove(ModeChangeListener.class, listener);
+  }
+
+  protected void fireModeChanged() {
+    Object[] listeners = _listeners.getListenerList();
+    ModeChangeEvent e = null;
+    for (int i = listeners.length - 2; i >= 0; i -= 2) {
+      if (listeners[i] == ModeChangeListener.class) {
+       	if (e == null) e = new ModeChangeEvent(_editor, getModes());
+       	//needs-more-work: should copy vector, use JGraph as src?
+       	((ModeChangeListener)listeners[i+1]).modeChange(e);
+      }
+    }
+  }
+
+  ////////////////////////////////////////////////////////////////
   // painting methods
 
   /** Paint each mode in the stack: bottom to top. */
@@ -234,5 +266,4 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     }
   }
 
-  static final long serialVersionUID = -8650764865339534461L;
 } /* end class ModeManager */

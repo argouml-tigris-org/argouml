@@ -207,6 +207,8 @@ public class Globals {
    *  global mode even after it has been given to one editor. */
   public static void setSticky(boolean b) { _sticky = b; }
 
+  public static boolean getSticky() { return _sticky; }
+
   /** The next global mode. This is given to an editor on mouse entry */
   protected static Mode _mode;
 
@@ -263,7 +265,7 @@ public class Globals {
    *  themselves by calling removePropertyChangeListener.  Otherwise
    *  this table will keep pointers that can reduce grabage
    *  collection. */
-   
+
   protected static Hashtable _pcListeners = new Hashtable();
 
   /** The most listeners a Fig can have, 4. */
