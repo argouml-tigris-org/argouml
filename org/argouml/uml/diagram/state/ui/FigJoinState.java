@@ -38,21 +38,17 @@ import java.util.Iterator;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 
-/** Class to display graphics for a UML MState in a diagram. */
-
+/** Class to display graphics for a UML Join State in a diagram. 
+ */
 public class FigJoinState extends FigStateVertex {
 
     ////////////////////////////////////////////////////////////////
     // constants
 
     private static final int MARGIN = 2;
-
     private static final int X = 10;
-
     private static final int Y = 10;
-
     private static final int WIDTH = 80;
-
     private static final int HEIGHT = 9;
 
     ////////////////////////////////////////////////////////////////
@@ -114,7 +110,7 @@ public class FigJoinState extends FigStateVertex {
         getBigPort().setBounds(x, y, w, h);
         head.setBounds(x, y, w, h);
 
-        calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+        calcBounds(); 
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
     }

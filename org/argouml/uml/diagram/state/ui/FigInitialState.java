@@ -42,22 +42,19 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 
-/** Class to display graphics for a UML State in a diagram. */
-
+/** 
+ * Class to display graphics for a UML Initial State in a diagram. 
+ */
 public class FigInitialState extends FigStateVertex {
 
     ////////////////////////////////////////////////////////////////
     // constants
 
     private static final int MARGIN = 2;
-
     private static final int X = 10;
-
     private static final int Y = 10;
-
-    private static final int WIDTH = 20;
-
-    private static final int HEIGHT = 20;
+    private static final int WIDTH = 16;
+    private static final int HEIGHT = 16;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -74,9 +71,11 @@ public class FigInitialState extends FigStateVertex {
         FigCircle bigPort = 
             new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan);
         head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.black);
+
         // add Figs to the FigNode in back-to-front order
         addFig(bigPort);
         addFig(head);
+        
         setBigPort(bigPort);
         
         setBlinkPorts(false); //make port invisble unless mouse enters
@@ -211,6 +210,8 @@ public class FigInitialState extends FigStateVertex {
     }
 
     /**
+     * Block keypresses. There is nothing to enter on the diagram.
+     * 
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {
