@@ -51,14 +51,25 @@ public class Modeller
     /** Stack up the state when descending inner classes. */
     private Stack parseStateStack;
 
+    /** Only attributes will be generated. */
+    private boolean noAssociations;
+
+    /** Arrays will be modelled as unique datatypes. */
+    private boolean arraysAsDatatype;
+
     /**
        Create a new modeller.
        
        @param model The model to work with.
     */
-    public Modeller(MModel model, DiagramInterface diagram)
+    public Modeller(MModel model,
+		    DiagramInterface diagram,
+		    boolean noAssociations,
+		    boolean arraysAsDatatype)
     {
 	this.model = model;
+	this.noAssociations = noAssociations;
+	this.arraysAsDatatype = arraysAsDatatype;
 	currentPackage = model;
 	parseState = new ParseState(model, getPackage("java.lang"));
 	parseStateStack = new Stack();
@@ -387,37 +398,75 @@ public class Modeller
     */
     public void addAttribute(short modifiers,
                              String typeSpec,
-                             String variable,
+                             String name,
 			     String initializer,
                              String javadoc)
     {
-	MAttribute mAttribute = getAttribute((String)variable);
-	parseState.feature(mAttribute);
+	MMultiplicity multiplicity = MMultiplicity.M1_1;
 
-	if((javadoc==null) || "".equals(javadoc)) {
-	    javadoc = "/** */";
+	if(!arraysAsDatatype && typeSpec.indexOf('[') != -1) {
+	    typeSpec = typeSpec.substring(0, typeSpec.indexOf('['));
+	    multiplicity = MMultiplicity.M1_N;
 	}
-	getTaggedValue(mAttribute, "documentation").setValue(javadoc);
-
-	setScope(mAttribute, modifiers);
-	setVisibility(mAttribute, modifiers);
-	mAttribute.setMultiplicity(MMultiplicity.M1_1);
-
+	    
 	MClassifier mClassifier =
 	    getContext(typeSpec).get(getClassifierName(typeSpec));
-	mAttribute.setType(mClassifier);
+	MAttribute mAttribute = getAttribute(name, initializer, mClassifier);
 
-	// Set the initial value for the attribute.
-	if(initializer != null) {
-	    mAttribute.setInitialValue(new MExpression("Java", initializer));
-	}
+	if(mAttribute != null) {
+	    parseState.feature(mAttribute);
 
-	if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
-	    mAttribute.setChangeability(MChangeableKind.FROZEN);
+	    if((javadoc==null) || "".equals(javadoc)) {
+		javadoc = "/** */";
+	    }
+	    getTaggedValue(mAttribute, "documentation").setValue(javadoc);
+
+	    setScope(mAttribute, modifiers);
+	    setVisibility(mAttribute, modifiers);
+	    mAttribute.setMultiplicity(multiplicity);
+	    
+	    mAttribute.setType(mClassifier);
+	    
+	    // Set the initial value for the attribute.
+	    if(initializer != null) {
+		mAttribute.setInitialValue(new MExpression("Java",
+							   initializer));
+	    }
+	    
+	    if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
+		mAttribute.setChangeability(MChangeableKind.FROZEN);
+	    }
+	    else if(mAttribute.getChangeability() == MChangeableKind.FROZEN ||
+		    mAttribute.getChangeability() == null) {
+		mAttribute.setChangeability(MChangeableKind.CHANGEABLE);
+	    }
 	}
-	else if(mAttribute.getChangeability() == MChangeableKind.FROZEN) {
-	    mAttribute.setChangeability(MChangeableKind.CHANGEABLE);
-	}
+	else {
+	    MAssociationEnd mAssociationEnd = 
+		getAssociationEnd(name, mClassifier);
+	    
+	    if((javadoc==null) || "".equals(javadoc)) {
+		javadoc = "/** */";
+	    }
+	    getTaggedValue(mAssociationEnd, "documentation").setValue(javadoc);
+
+	    setScope(mAssociationEnd, modifiers);
+	    setVisibility(mAssociationEnd, modifiers);
+	    mAssociationEnd.setMultiplicity(multiplicity);
+	    
+	    mAssociationEnd.setType(mClassifier);
+	    
+	    if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
+		mAssociationEnd.setChangeability(MChangeableKind.FROZEN);
+	    }
+	    else if(mAssociationEnd.getChangeability() ==
+		    MChangeableKind.FROZEN ||
+		    mAssociationEnd.getChangeability() == null) {
+		mAssociationEnd.setChangeability(MChangeableKind.CHANGEABLE);
+	    }
+	    
+	    mAssociationEnd.setNavigable(true);
+	}	    
     }
 
     /**
@@ -560,18 +609,63 @@ public class Modeller
        not found, a new is created.
 
        @param name The name of the attribute.
+       @param initializer The initializer code.
+       @param mClassifier The type, used when checking for existing
+                          association.
        @returns The attribute found or created.  
     */
-    private MAttribute getAttribute(String name)
+    private MAttribute getAttribute(String name,
+				    String initializer,
+				    MClassifier mClassifier)
     {
 	MAttribute mAttribute = (MAttribute)parseState.getFeature(name);
 
-	if(mAttribute == null) {
+	if(mAttribute == null &&
+	   (initializer != null ||
+	    (noAssociations &&
+	     getAssociationEnd(name, mClassifier) == null))) {
 	    mAttribute = new MAttributeImpl();
 	    mAttribute.setName(name);
 	    parseState.getClassifier().addFeature(mAttribute);
 	}
 	return mAttribute;
+    }
+
+    /**
+       Find an associationEnd from the currentClassifier to the type
+       specified. If not found, a new is created.
+
+       @param name The name of the attribute.
+       @param mClassifier Where the association ends.
+       @returns The attribute found or created.
+    */
+    private MAssociationEnd getAssociationEnd(String name,
+					      MClassifier mClassifier)
+    {
+	MAssociationEnd mAssociationEnd = null;
+	for(Iterator i = mClassifier.getAssociationEnds().iterator();
+	    i.hasNext(); ) {
+	    MAssociationEnd ae = (MAssociationEnd)i.next();
+	    if(name.equals(ae.getName())) {
+		mAssociationEnd = ae;
+	    }
+	}
+
+	if(mAssociationEnd == null && !noAssociations) {
+	    mAssociationEnd = new MAssociationEndImpl();
+	    MAssociationEnd mAssociationEnd2 = new MAssociationEndImpl();
+	    MAssociation mAssociation = new MAssociationImpl();
+	    mAssociation.addConnection(mAssociationEnd);
+	    mAssociation.addConnection(mAssociationEnd2);
+	    mAssociation.setNamespace(currentPackage);
+	    mAssociationEnd2.setType(parseState.getClassifier());
+	    mAssociationEnd2.setNavigable(false);
+	    mAssociationEnd2.setAggregation(MAggregationKind.NONE);
+	    mAssociationEnd.setName(name);
+	    mAssociationEnd.setType(mClassifier);
+	    mAssociationEnd.setAggregation(MAggregationKind.NONE);
+	}
+	return mAssociationEnd;
     }
 
     /**
@@ -701,6 +795,23 @@ public class Modeller
 	}
 	else {
 	    feature.setOwnerScope(MScopeKind.INSTANCE);
+	}
+    }
+
+    /**
+       Set the scope for an association end.
+       
+       @param mAssociationEnd The end.
+       @param modifiers A sequence of modifiers which may contain 
+                        'static'.
+    */
+    private void setScope(MAssociationEnd mAssociationEnd, short modifiers)
+    {
+	if((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
+	    mAssociationEnd.setTargetScope(MScopeKind.CLASSIFIER);
+	}
+	else {
+	    mAssociationEnd.setTargetScope(MScopeKind.INSTANCE);
 	}
     }
 

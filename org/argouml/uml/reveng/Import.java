@@ -24,7 +24,6 @@
 package org.argouml.uml.reveng; 
 
 import java.io.*;
-import javax.swing.*;
 import org.argouml.kernel.*;
 import org.argouml.uml.reveng.java.*;
 import org.argouml.uml.diagram.ui.*;
@@ -32,6 +31,8 @@ import org.argouml.uml.diagram.static_structure.layout.*;
 import org.tigris.gef.base.*;
 import ru.novosoft.uml.model_management.*;
 
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * This is the main class for all import classes.
@@ -44,7 +45,43 @@ import ru.novosoft.uml.model_management.*;
 public class Import {
 
     // Create a interface to the current diagram
-    static DiagramInterface _diagram = new DiagramInterface(Globals.curEditor());
+    static DiagramInterface _diagram =
+	new DiagramInterface(Globals.curEditor());
+
+    private static JComponent configPanel = null;
+    private static JCheckBox descend;
+
+    /**
+     * Get the panel that lets the user set reverse engineering
+     * parameters.
+     */
+    public static JComponent getConfigPanel() {
+
+	if(configPanel == null) {
+	    JPanel general = new JPanel();
+	    general.setLayout(new GridBagLayout());
+
+	    descend = new JCheckBox("Descend directories recursively.");
+	    descend.setSelected(true);
+	    general.add(descend, 
+			new GridBagConstraints(GridBagConstraints.RELATIVE,
+					       GridBagConstraints.RELATIVE,
+					       GridBagConstraints.REMAINDER,
+					       GridBagConstraints.REMAINDER,
+					       1.0, 1.0,
+					       GridBagConstraints.NORTHWEST,
+					       GridBagConstraints.NONE,
+					       new Insets(5, 5, 5, 5),
+					       0, 0));
+
+	    JTabbedPane tab = new JTabbedPane();
+	    tab.add(general, "General");
+	    tab.add(JavaImport.getConfigPanel(), "Java");
+	    configPanel = tab;
+	}
+	return configPanel;
+    }
+	
 
     /**
      * The main method for all parsing actions. It calls the
@@ -53,8 +90,7 @@ public class Import {
      *
      * @param p The current Argo project.
      * @param f The file or directory, we want to parse.
-     * @exception Parser exceptions.
-     */
+     * @exception Parser exceptions.  */
     public static void doFile(Project p, File f) throws Exception {
 
 	if ( f.isDirectory())       // If f is a directory, 
@@ -64,7 +100,10 @@ public class Import {
 
 	// Layout the modified diagrams.
 	for(int i=0; i < _diagram.getModifiedDiagrams().size(); i++) {
-	    ClassdiagramLayouter layouter = new ClassdiagramLayouter((UMLDiagram)(_diagram.getModifiedDiagrams().elementAt(i)));
+	    ClassdiagramLayouter layouter =
+		new ClassdiagramLayouter((UMLDiagram)
+					 (_diagram.getModifiedDiagrams()
+					  .elementAt(i)));
 	    layouter.layout();
 
 	    // Resize the diagram???
@@ -91,7 +130,9 @@ public class Import {
 	    if ( curFile.isDirectory()) {   // If this file is a directory
 		// MMFactory factory = new MMFactory((MModel)p.getModel());
 		// factory.createPackage( curFile);  // create a package for it.
-		doDirectory(p, curFile);
+		if(descend.isSelected()) {
+		    doDirectory(p, curFile);
+		}
 	    } else
 		parseFile(p, curFile);      // Parse the file.
 	} 
@@ -107,7 +148,8 @@ public class Import {
     public static void parseFile( Project p, File f) throws Exception {
 
 	// Is this file a Java source file?
-	if ( ( f.getName().length() > 5) && f.getName().substring( f.getName().length() - 5).equals( ".java"))
+	if ( f.getName().endsWith(".java")) {
 	    JavaImport.parseFile( p, f, _diagram);
+	}
     }
 }
