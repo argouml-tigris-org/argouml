@@ -54,7 +54,8 @@ public class FigActionState extends FigStateVertex {
 
     /** UML does not really use ports, so just define one big one so
      *  that users can drag edges to or from any point in the icon. */
-
+    // TODO _bigPort is already defined in FigNodeModelElement
+    // Why do we need it redefined here?
     FigRRect _bigPort;
     FigRRect _cover;
 
