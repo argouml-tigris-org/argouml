@@ -89,15 +89,6 @@ public class PropPanelMessage extends PropPanelModelElement {
     actionList.setVisibleRowCount(1);
     JScrollPane actionScroll = new JScrollPane(actionList);
     addField(Argo.localize("UMLMenu", "label.action"), actionScroll);
-/*
-    UMLModelElementListModel actionModel=new UMLActionListModel(this, "action",true,"getAction",null,"addAction","deleteAction");
-    JList actionList = new UMLList(actionModel,true);
-    actionList.setForeground(Color.blue);
-    actionList.setFont(smallFont);
-    actionList.setVisibleRowCount(1);
-    JScrollPane actionScroll = new JScrollPane(actionList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    addField(Argo.localize("UMLMenu", "label.action"), actionScroll);
-    */
     
     JScrollPane predecessorScroll = new JScrollPane(new UMLMutableLinkedList(this, new UMLPredecessorListModel(this), ActionAddPredecessor.SINGLETON, null));
     addField(Argo.localize("UMLMenu", "label.predecessor"), predecessorScroll);
@@ -106,17 +97,12 @@ public class PropPanelMessage extends PropPanelModelElement {
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu" ,"button.go-back"),"navigateBackAction","isNavigateBackEnabled");
     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_actionIcon, Argo.localize("UMLMenu", "button.add-action"),"addAction","isAddActionEnabled");
+    // ActionNewAction.SINGLETON.setTarget((MModelElement)getTarget());
+    // buttonPanel.add(new PropPanelButton2(this, ActionNewAction.SINGLETON));
     new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
  }
     
-    public MAction getAction() {
-        MAction action = null;
-        Object target = getTarget();
-        if(target instanceof MMessage) {
-            action = ((MMessage) target).getAction();
-        }
-        return action;
-    }
+
     
     public MCallAction addAction() {
     	MCallAction action = null;
@@ -125,23 +111,6 @@ public class PropPanelMessage extends PropPanelModelElement {
             action = (MCallAction)CommonBehaviorFactory.getFactory().buildAction((MMessage)target);
         }
         return action;
-    }
-    
-     public MCallAction addAction(Integer integer) {
-    	MCallAction action = null;
-        Object target = getTarget();
-        if(target instanceof MMessage) {
-            action = (MCallAction)CommonBehaviorFactory.getFactory().buildAction((MMessage)target);
-        }
-        return action;
-    }
-    	
-    
-    public void deleteAction(Integer index) {
-        Object target = getTarget();
-        if(target instanceof MMessage) {
-            ((MMessage) target).setAction(null);
-        }
     }
     
    protected boolean isAcceptibleBaseMetaClass(String baseClass) {

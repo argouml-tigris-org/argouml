@@ -22,44 +22,44 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.uml.ui;
+package org.argouml.uml.ui.behavior.collaborations;
 
-import javax.swing.ImageIcon;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
-import org.argouml.application.api.Argo;
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class AbstractActionNewModelElement extends UMLChangeAction {
+public class UMLCollaborationInteractionListModel
+    extends UMLModelElementListModel2 {
 
-    private MModelElement _target;
-    
-    protected AbstractActionNewModelElement() {
-        super(Argo.localize("CoreMenu", "New"), true, NO_ICON);
-    }  
-    
-     /**
-     * Returns the target.
-     * @return MModelElement
+    /**
+     * Constructor for UMLCollaborationInteractionListModel.
+     * @param container
      */
-    public MModelElement getTarget() {
-        return _target;
+    public UMLCollaborationInteractionListModel(UMLUserInterfaceContainer container) {
+        super(container);
     }
 
     /**
-     * Sets the target.
-     * @param target The target to set
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
-    public void setTarget(MModelElement target) {
-        _target = target;
+    protected void buildModelList() {
+        removeAllElements();
+        addElement(((MInteraction)getContainer().getTarget()).getContext());
     }
 
     /**
-     * @see javax.swing.Action#isEnabled()
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
      */
-    public abstract boolean isEnabled();
-       
+    protected boolean isValid(MModelElement elem) {
+        return (elem instanceof MCollaboration && 
+            ((MCollaboration)elem).getInteractions().contains(getContainer().getTarget()));
+    }
+
 }

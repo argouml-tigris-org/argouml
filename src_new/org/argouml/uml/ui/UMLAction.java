@@ -68,7 +68,7 @@ public class UMLAction extends AbstractAction {
     putValue(Action.SHORT_DESCRIPTION,
       Translator.localize("CoreMenu", name) + " ");
     if (global) Actions.addAction(this);
-  }
+  } 
 
   /** Perform the work the action is supposed to do. */
   public void actionPerformed(ActionEvent e) {

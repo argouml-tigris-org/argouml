@@ -25,6 +25,7 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
+import java.util.Iterator;
 
 import javax.swing.JPopupMenu;
 
@@ -39,79 +40,32 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  * 
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLMessagesInteractionListModel extends UMLModelElementListModel {
+public class UMLMessagesInteractionListModel extends UMLModelElementListModel2 {
 
-	/**
-	 * Constructor for UMLMessagesModel.
-	 * @param container
-	 * @param property
-	 * @param showNone
-	 */
-	public UMLMessagesInteractionListModel(
-		UMLUserInterfaceContainer container,
-		String property,
-		boolean showNone) {
-		super(container, property, showNone);
-	}
-
-	/**
-	 * Gets the message at index
-	 * @see org.argouml.uml.ui.UMLModelElementListModel#getModelElementAt(int)
-	 */
-	protected MModelElement getModelElementAt(int index) {
-		 return elementAtUtil(getMessages(), index,
-                             MMessage.class);
-	}
-	
-	/**
-	 * Returns the messages belonging to the interaction that's the target of
-	 * this model.
-	 * @return Collection
-	 */
-	private Collection getMessages() {
-        Collection messages = null;
-        Object target = getTarget();
-
-        if (target instanceof MInteraction) {
-            MInteraction interaction = (MInteraction) target;
-            messages = interaction.getMessages();
-        }
-
-        return messages;
-
+    /**
+     * Constructor for UMLMessagesInteractionListModel.
+     * @param container
+     */
+    public UMLMessagesInteractionListModel(UMLUserInterfaceContainer container) {
+        super(container);
     }
-    
-	/**
-	 * @see org.argouml.uml.ui.UMLModelElementListModel#recalcModelElementSize()
-	 */
-	protected int recalcModelElementSize() {
-		int size = 0;
-		Collection messages = getMessages();
-		if (messages != null) size = messages.size();
-		return size;
-	}
-	
-	
-	
 
-	/**
-	 * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
-	 */
-	public boolean buildPopup(JPopupMenu popup, int index) {
-		UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
-        if(getModelElementSize() <= 0) {
-            open.setEnabled(false);
-            delete.setEnabled(false);
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        removeAllElements();
+        Iterator it = ((MInteraction)getContainer().getTarget()).getMessages().iterator();
+        while (it.hasNext()) {
+            addElement(it.next());
         }
+    }
 
-        popup.add(open);
-        popup.add(delete);
-        
-        // no moveup, movedown
-		return true;
-	}
-
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
+     */
+    protected boolean isValid(MModelElement elem) {
+        return (elem instanceof MMessage && ((MMessage)elem).getInteraction() == getContainer().getTarget());
+    }
 
 }
