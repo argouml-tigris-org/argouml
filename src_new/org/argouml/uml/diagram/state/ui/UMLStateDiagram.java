@@ -99,6 +99,15 @@ public class UMLStateDiagram extends UMLDiagram {
 
     public UMLStateDiagram(MNamespace m, MStateMachine sm) {
         this();
+        if (sm != null && m == null) {        
+        	MModelElement context = sm.getContext();
+        	if (context instanceof MClassifier) {
+        	    m = (MNamespace)context;
+        	} else
+        	if (context instanceof MBehavioralFeature) {
+        	    m = ((MBehavioralFeature)context).getOwner();
+        	}
+        }
         if (m != null && m.getName() != null) {
             String name = null, diag_name = m.getName();
             Object[] args = { name };
@@ -110,7 +119,7 @@ public class UMLStateDiagram extends UMLDiagram {
             } catch (PropertyVetoException pve) {
             }
         }
-        if (m != null && m.getNamespace() != null)
+        if (m != null)
             setup(m, sm);
 
     }

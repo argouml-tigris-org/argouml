@@ -23,76 +23,89 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Collection;
+import java.util.Vector;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreePath;
 
-import org.argouml.ui.*;
+import org.argouml.ui.AbstractGoRule;
+
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MClass;
 
 public class GoClassToNavigableClass extends AbstractGoRule {
 
-  public String getRuleName() { return "Class->Navigable Class"; }
-  
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    Vector children = new Vector(getChildren(parent));
-    if (children != null) return children.elementAt(index);
-    throw 
-	new UnsupportedOperationException("getChild should never be get here");
-  }
-
-  public int getChildCount(Object parent) {
-    Collection children = getChildren(parent);
-    if (children != null) return children.size();
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    Vector children = new Vector(getChildren(parent));
-    if (children != null && children.contains(child))
-      return children.indexOf(child);
-    return -1;
-  }
-
-  public Collection getChildren(Object parent) {
-    if (!(parent instanceof MClass)) return null;
-    Vector res = new Vector();
-    Vector ends = new Vector(((MClass)parent).getAssociationEnds());
-    if (ends == null) return null;
-    java.util.Enumeration enum = ends.elements();
-    while (enum.hasMoreElements()) {
-      MAssociationEnd ae = (MAssociationEnd) enum.nextElement();
-      MAssociation asc = ae.getAssociation();
-      Vector allEnds = new Vector( asc.getConnections());
-      MAssociationEnd otherEnd = null;
-      if (ae == allEnds.elementAt(0))
-	otherEnd = (MAssociationEnd) allEnds.elementAt(1);
-      if (ae == allEnds.elementAt(1))
-	otherEnd = (MAssociationEnd) allEnds.elementAt(0);
-      if (otherEnd == null) continue;
-      if (!otherEnd.isNavigable()) continue;
-      if (res.contains(otherEnd.getType())) continue;
-      res.addElement(otherEnd.getType());
-      // TODO: handle n-way Associations
+    public String getRuleName() {
+        return "Class->Navigable Class";
     }
-    return res;
-  }
 
-  public boolean isLeaf(Object node) {
-    return !(node instanceof MClass && getChildCount(node) > 0);
-  }
+    public Object getRoot() {
+        throw new UnsupportedOperationException("getRoot should never be called");
+    }
+    public void setRoot(Object r) {
+    }
 
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
+    public Object getChild(Object parent, int index) {
+        Vector children = new Vector(getChildren(parent));
+        if (children != null)
+            return children.elementAt(index);
+        throw new UnsupportedOperationException("getChild should never be get here");
+    }
+
+    public int getChildCount(Object parent) {
+        Collection children = getChildren(parent);
+        if (children != null)
+            return children.size();
+        return 0;
+    }
+
+    public int getIndexOfChild(Object parent, Object child) {
+        Vector children = new Vector(getChildren(parent));
+        if (children != null && children.contains(child))
+            return children.indexOf(child);
+        return -1;
+    }
+
+    public Collection getChildren(Object parent) {
+        if (!(parent instanceof MClass))
+            return null;
+        Vector res = new Vector();
+        Vector ends = new Vector(((MClass) parent).getAssociationEnds());
+        if (ends == null)
+            return null;
+        java.util.Enumeration enum = ends.elements();
+        while (enum.hasMoreElements()) {
+            MAssociationEnd ae = (MAssociationEnd) enum.nextElement();
+            MAssociation asc = ae.getAssociation();
+            Vector allEnds = new Vector(asc.getConnections());
+            MAssociationEnd otherEnd = null;
+            if (ae == allEnds.elementAt(0))
+                otherEnd = (MAssociationEnd) allEnds.elementAt(1);
+            if (ae == allEnds.elementAt(1))
+                otherEnd = (MAssociationEnd) allEnds.elementAt(0);
+            if (otherEnd == null)
+                continue;
+            if (!otherEnd.isNavigable())
+                continue;
+            if (res.contains(otherEnd.getType()))
+                continue;
+            res.addElement(otherEnd.getType());
+            // TODO: handle n-way Associations
+        }
+        return res;
+    }
+
+    public boolean isLeaf(Object node) {
+        return !(node instanceof MClass && getChildCount(node) > 0);
+    }
+
+    public void valueForPathChanged(TreePath path, Object newValue) {
+    }
+    public void addTreeModelListener(TreeModelListener l) {
+    }
+    public void removeTreeModelListener(TreeModelListener l) {
+    }
 
 }

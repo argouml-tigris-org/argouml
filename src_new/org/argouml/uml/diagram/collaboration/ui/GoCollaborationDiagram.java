@@ -23,18 +23,17 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Collection;
+import java.util.Vector;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreePath;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.*;
+import org.argouml.ui.AbstractGoRule;
+
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 
 public class GoCollaborationDiagram extends AbstractGoRule {
 
