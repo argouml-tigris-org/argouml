@@ -28,47 +28,57 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.ArgoDiagram;
 
-/** In the future this will be a trash can icon in the project
+/**
+ * In the future this will be a trash can icon in the project
  * browser.  Deleting an object moves it to the trash.  You can move
  * things back out of the trash if you like.  Eventually you empty the
  * trash.  Critics check for relationships between things that will
  * break when the trash is empty.  E.g., Class X's superclass is in
- * the trash, you must fix this before you empty the trash. 
- * 
+ * the trash, you must fix this before you empty the trash.
+ *
  * TODO: Move to the Model component.
  * Problem: there are public static attributes so it is hard to make a proxy
  */
-public class Trash {
-    private static final Logger LOG = 
+public final class Trash {
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
         Logger.getLogger(Trash.class);
-    
+
     /**
      * The SINGLETON trashcan.
      */
     public static final Trash SINGLETON = new Trash();
 
-    /** Keys are model objects, values are TrashItems with recovery info */
+    /**
+     * Keys are model objects, values are TrashItems with recovery info.
+     */
     private Vector contents = new Vector();
 
-    private Trash() { }
+    /**
+     * Constructor to forbid creating this class.
+     */
+    private Trash() {
+        // Do nothing.
+    }
 
     /**
      * @param obj the object to be added
-     * @param places currently null in all calls to this function
+     * @param places currently <code>null</code> in all calls to this function
      */
     public void addItemFrom(Object obj, Vector places) {
 	if (obj == null) {
 	    LOG.warn("tried to add null to trash!");
 	    return;
-	}    
+	}
 	if (ModelFacade.isAModelElement(obj)) {
 	    //MModelElement me = (MModelElement) obj;
 	    TrashItem ti = new TrashItem(obj, places);
 	    contents.addElement(ti);
-      
-	    // next two lines give runtime exceptions. 
+
+	    // next two lines give runtime exceptions.
 	    // Remove should be done properly
 	    // me.setNamespace(null);
 	    // me.setNamespace(Trash_Model);
@@ -89,20 +99,22 @@ public class Trash {
 	int size = contents.size();
 	for (int i = 0; i < size; i++) {
 	    TrashItem ti = (TrashItem) contents.elementAt(i);
-	    if (ti.getItem() == obj) return true;
+	    if (ti.getItem() == obj) {
+	        return true;
+	    }
 	}
 	return false;
     }
-  
+
     /**
      * @param obj the object to be recovered, i.e. put it back into the model
      */
     public void recoverItem(Object obj) {
 	LOG.debug("TODO: recover from trash");
-	if (ModelFacade.isAModelElement(obj)) {
-	    TrashItem ti = null; //TODO: find in trash
+	// if (ModelFacade.isAModelElement(obj)) {
+	    // TrashItem ti = null; //TODO: find in trash
 	    //((MModelElement)obj).recoverFromTrash(ti);
-	}
+	// }
     }
 
     /**
@@ -132,7 +144,6 @@ public class Trash {
 	    }
 	    LOG.debug(buf.toString());
 	}
-    
     }
 
     /**
@@ -147,22 +158,30 @@ public class Trash {
 class TrashItem {
 
     private Object item;
-    private Object recoveryInfo = null;
     private Vector places;
 
+    /**
+     * Constructor.
+     *
+     * @param theItem The item.
+     * @param thePlaces ???
+     */
     TrashItem(Object theItem, Vector thePlaces) {
 	item = theItem;
 	places = thePlaces;
 	//if (item instanceof MModelElement) {
 	// this can't work with nsuml. Toby
 	/*      try {
-		_recoveryInfo = ((MModelElement)item).prepareForTrash();
+		recoveryInfo = ((MModelElement)item).prepareForTrash();
 		}
 		catch (PropertyVetoException pve) { }
 	*/
 	//}
     }
 
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     public boolean equals(Object o) {
 	if (o instanceof TrashItem) {
 	    TrashItem ti = (TrashItem) o;
@@ -171,7 +190,12 @@ class TrashItem {
 	return false;
     }
 
-    public int hashCode() { return item.hashCode(); }
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+        return item.hashCode();
+    }
 
     /**
      * @return Returns the _item.
