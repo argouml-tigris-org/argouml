@@ -61,6 +61,10 @@ public class CrNameConflict extends CrUML {
             Collection names = new ArrayList(); 
             while (it.hasNext()) {  
                 String name = ModelFacade.getName(it.next());
+		if (name == null)
+		    continue;
+		if ("".equals(name))
+		    continue;
                 if (names.contains(name)) {  
                     problem = PROBLEM_FOUND; 
                     break;   
