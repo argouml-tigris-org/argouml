@@ -26,6 +26,9 @@ package org.argouml.uml.ui;
 
 import javax.swing.JTextArea;
 
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargettableModelView;
+
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
@@ -36,7 +39,7 @@ import ru.novosoft.uml.MElementListener;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 28, 2002
  */
-public class UMLTextArea2 extends JTextArea implements MElementListener, TargetChangedListener {
+public class UMLTextArea2 extends JTextArea implements MElementListener, TargettableModelView {
 
     
     /**
@@ -89,18 +92,11 @@ public class UMLTextArea2 extends JTextArea implements MElementListener, TargetC
         ((UMLPlainTextDocument)getDocument()).recovered(e);     
     }
 
-    /**
-     * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
+    /** 
+     * @see org.argouml.ui.targetmanager.TargettableModelView#getTargettableModel()
      */
-    public void targetChanged(Object newTarget) {
-        ((UMLPlainTextDocument)getDocument()).targetChanged(newTarget);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
-     */
-    public void targetReasserted(Object newTarget) {
-        ((UMLPlainTextDocument)getDocument()).targetReasserted(newTarget);
+    public TargetListener getTargettableModel() {
+        return ((TargetListener)getDocument());
     }
 
 }

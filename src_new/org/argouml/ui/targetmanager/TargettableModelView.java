@@ -1,4 +1,5 @@
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -20,42 +21,22 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// $header$
-package org.argouml.uml.ui;
+package org.argouml.ui.targetmanager;
 
 /**
- * Classes implementing this interface are interested in changes of the
- * target. Target changes occur when the user or argouml itself (programmatically)
- * select another modelelement. 
- *<p>
- * This listener is introduced to remove the very close dependency between
- * property panel and GUI elements. More specifically to support the need to
- * implement GUI elements as singletons which is not possible with the implementation
- * that uses UMLUserInterfaceComponent as the interface.
- * </p>
- * <p>
- * The methods are called at the moment via UMLChangeDispatch. In the future
- * an eventpump will come into place that does not call the components on a 
- * property panel but that will call the interested instances (GUI elements) 
- * directly.
- * </p>
- * @since Nov 8, 2002
+ * Marker interface to indicate that some Swing view element (such as a 
+ * JTable or a JTree has a model that implements TargetListener. 
+ * UMLModelElementListModel2 is such an implementor. Via this interface it's 
+ * easy to collect all targetlisteners on a property panel as is done in the 
+ * settarget method of PropPanel.
  * @author jaap.branderhorst@xs4all.nl
  */
-public interface TargetChangedListener {
-    
-    /**
-     * This method is called when a new target is selected, either by the
-     * program or by the user.
-     * @param newTarget
-     */
-    public void targetChanged(Object newTarget);
-    
-    /**
-     * This method is called when the navigation history is updated.
-     * @param newTarget
-     */
-    public void targetReasserted(Object newTarget);
+public interface TargettableModelView {
 
+    /**
+     * Returns the Swing model that implements targetlistener.
+     * @return The Swing model
+     */
+    public TargetListener getTargettableModel();
+    
 }

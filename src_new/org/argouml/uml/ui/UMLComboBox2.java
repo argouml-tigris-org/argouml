@@ -27,6 +27,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JComboBox;
 
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargettableModelView;
+
 /**
  * ComboBox for UML modelelements. This implementation does not use 
  * reflection and seperates Model, View and Controller better then does
@@ -34,8 +37,7 @@ import javax.swing.JComboBox;
  * replaced with this implementation to improve performance.
  */
 public class UMLComboBox2
-    extends JComboBox
-    implements TargetChangedListener {       
+    extends JComboBox implements TargettableModelView {       
     
     /**
      * Constructor for UMLMessageActivatorComboBox.
@@ -65,21 +67,6 @@ public class UMLComboBox2
     public UMLComboBox2(UMLComboBoxModel2 arg0, UMLAction action) {
         this(arg0, action, false);
     }
-    
-    /**
-     * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
-     */
-    public void targetChanged(Object newTarget) {
-        ((UMLComboBoxModel2)getModel()).targetChanged(newTarget);
-    }
-
-    
-    /**
-     * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
-     */
-    public void targetReasserted(Object newTarget) {
-        ((UMLComboBoxModel2)getModel()).targetReasserted(newTarget);
-    }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
@@ -105,6 +92,13 @@ public class UMLComboBox2
     public Object getTarget() {
         return ((UMLComboBoxModel2)getModel()).getTarget();
     }
-
     
+    
+    /**
+     * @see org.argouml.ui.targetmanager.TargettableModelView#getTargettableModel()
+     */
+    public TargetListener getTargettableModel() {
+        return (TargetListener)getModel();
+    }
+
 }

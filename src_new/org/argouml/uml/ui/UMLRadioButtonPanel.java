@@ -38,6 +38,9 @@ import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
@@ -51,19 +54,21 @@ import ru.novosoft.uml.MElementListener;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 4, 2003
  */
-public abstract class UMLRadioButtonPanel extends JPanel implements TargetChangedListener, MElementListener {
-    
+public abstract class UMLRadioButtonPanel
+    extends JPanel
+    implements TargetListener, MElementListener {
+
     /**
      * The target object of which some attribute is shown via this panel.
      */
     private Object _target;
-    
+
     /**
      * The name of the MEvent that is fired when the target object has changed
      * the attribute that is shown here.
      */
     private String _propertySetName;
-    
+
     /**
      * The group of buttons
      */
@@ -83,7 +88,13 @@ public abstract class UMLRadioButtonPanel extends JPanel implements TargetChange
      * that's executed when one of the buttons is pressed.
      * @param horizontal when true the buttons should be layed out horizontaly.
      */
-    public UMLRadioButtonPanel(boolean isDoubleBuffered, String title, Map labeltextsActioncommands, String propertySetName, Action setAction, boolean horizontal ) {
+    public UMLRadioButtonPanel(
+        boolean isDoubleBuffered,
+        String title,
+        Map labeltextsActioncommands,
+        String propertySetName,
+        Action setAction,
+        boolean horizontal) {
         super(isDoubleBuffered);
         setLayout(horizontal ? new GridLayout() : new GridLayout(0, 1));
         setDoubleBuffered(true);
@@ -92,7 +103,6 @@ public abstract class UMLRadioButtonPanel extends JPanel implements TargetChange
         setButtons(labeltextsActioncommands, setAction);
         setPropertySetName(propertySetName);
     }
-
 
     /**
      * Constructs a new UMLRadioButtonPanel. 
@@ -106,10 +116,21 @@ public abstract class UMLRadioButtonPanel extends JPanel implements TargetChange
      * that's executed when one of the buttons is pressed
      * @param horizontal when true the buttons should be layed out horizontaly.
      */
-    public UMLRadioButtonPanel(String title, Map labeltextsActioncommands, String propertySetName, Action setAction, boolean horizontal) {
-        this(true, title, labeltextsActioncommands, propertySetName, setAction, horizontal);
+    public UMLRadioButtonPanel(
+        String title,
+        Map labeltextsActioncommands,
+        String propertySetName,
+        Action setAction,
+        boolean horizontal) {
+        this(
+            true,
+            title,
+            labeltextsActioncommands,
+            propertySetName,
+            setAction,
+            horizontal);
     }
-    
+
     /**
      * Initially constructs the buttons.
      * @param labeltextsActioncommands A map of keys containing the texts for
@@ -122,35 +143,20 @@ public abstract class UMLRadioButtonPanel extends JPanel implements TargetChange
     private void setButtons(Map labeltextsActioncommands, Action setAction) {
         Enumeration en = _buttonGroup.getElements();
         while (en.hasMoreElements()) {
-            AbstractButton button = (AbstractButton)en.nextElement();
-            _buttonGroup.remove(button);            
+            AbstractButton button = (AbstractButton) en.nextElement();
+            _buttonGroup.remove(button);
         }
         removeAll();
-        Iterator it = labeltextsActioncommands.keySet().iterator(); 
-        while(it.hasNext()) {
-            String keyAndLabel = (String)it.next();
+        Iterator it = labeltextsActioncommands.keySet().iterator();
+        while (it.hasNext()) {
+            String keyAndLabel = (String) it.next();
             JRadioButton button = new JRadioButton(keyAndLabel);
             button.addActionListener(setAction);
-            button.setActionCommand((String)labeltextsActioncommands.get(keyAndLabel));
-            _buttonGroup.add(button);           
+            button.setActionCommand(
+                (String) labeltextsActioncommands.get(keyAndLabel));
+            _buttonGroup.add(button);
             add(button);
         }
-    }
-
-    /**
-     * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
-     */
-    public void targetChanged(Object newTarget) {
-        if (_target != newTarget)
-            setTarget(newTarget);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
-     */
-    public void targetReasserted(Object newTarget) {
-        if (_target != newTarget)
-            setTarget(newTarget);
     }
 
     /**
@@ -204,13 +210,20 @@ public abstract class UMLRadioButtonPanel extends JPanel implements TargetChange
      * @param target The target to set
      */
     public void setTarget(Object target) {
+        target = target instanceof Fig ? ((Fig)target).getOwner() : target;
         if (_target instanceof MBase) {
-            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
+            UmlModelEventPump.getPump().removeModelEventListener(
+                this,
+                (MBase) _target,
+                _propertySetName);
         }
         _target = target;
         if (_target instanceof MBase) {
-             // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
-             UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, _propertySetName);
+            // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
+            UmlModelEventPump.getPump().addModelEventListener(
+                this,
+                (MBase) _target,
+                _propertySetName);
         }
         if (_target != null)
             buildModel();
@@ -231,14 +244,14 @@ public abstract class UMLRadioButtonPanel extends JPanel implements TargetChange
     public void setPropertySetName(String propertySetName) {
         _propertySetName = propertySetName;
     }
-    
+
     /**
      * Builds the model. That is: it selects the radiobutton showing the value
      * of the attribute shown. The name of this method is choosen to be
      * compliant with for example UMLModelElementListModel2
      */
     public abstract void buildModel();
-    
+
     /**
      * Selects the radiobutton with the given actionCommand
      * @param actionCommand The actionCommand of the button that should be
@@ -248,12 +261,32 @@ public abstract class UMLRadioButtonPanel extends JPanel implements TargetChange
         Enumeration en = _buttonGroup.getElements();
         ButtonModel model = null;
         while (en.hasMoreElements()) {
-            model = ((AbstractButton)en.nextElement()).getModel();
+            model = ((AbstractButton) en.nextElement()).getModel();
             if (actionCommand.equals(model.getActionCommand())) {
                 model.setSelected(true);
                 break;
             }
         }
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        setTarget(e.getNewTargets()[0]);
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        setTarget(e.getNewTargets()[0]);
     }
 
 }
