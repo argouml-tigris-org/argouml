@@ -44,14 +44,12 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.PluggableNotation;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.UUIDManager;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
-
+import org.argouml.uml.UUIDHelper;
 
 /**
  * Generator2 subclass to generate text for display in diagrams in in
@@ -1930,7 +1928,7 @@ public class GeneratorCpp extends Generator2
 
 
     private String generateSectionTop(Object op, String localIndent) {
-        String id = ProjectManager.getUUID(op);
+        String id = UUIDHelper.getInstance().getUUID(op);
         if (id == null) {
             id = (new UID().toString());
             // id =  op.getName() + "__" + static_count;
@@ -1940,7 +1938,7 @@ public class GeneratorCpp extends Generator2
     }
 
     private String generateSectionBottom(Object op, String localIndent) {
-        String id = ProjectManager.getUUID(op);
+        String id = UUIDHelper.getInstance().getUUID(op);
         if (id == null) {
             id = (new UID().toString());
             // id =  op.getName() + "__" + static_count;

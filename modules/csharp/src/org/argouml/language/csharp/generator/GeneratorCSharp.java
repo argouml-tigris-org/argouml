@@ -39,13 +39,12 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.PluggableNotation;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.UUIDManager;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
+import org.argouml.uml.UUIDHelper;
 
 import tudresden.ocl.parser.node.AConstraintBody;
 
@@ -1513,7 +1512,7 @@ public class GeneratorCSharp extends Generator2
     }
 
     private String generateSection(Object cls) {
-        String id = ProjectManager.getUUID(cls);
+        String id = UUIDHelper.getInstance().getUUID(cls);
 	if (id == null) {
 	    id = (new UID().toString());
 	    // id = cls.getName() + "__" + static_count;

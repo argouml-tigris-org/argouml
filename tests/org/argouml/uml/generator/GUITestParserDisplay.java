@@ -30,6 +30,7 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.ExtensionMechanismsFactory;
@@ -167,11 +168,14 @@ public class GUITestParserDisplay extends TestCase {
     public void testAttributeType() throws ParseException {
         Object attr;
 
-        Object ns =
-            ProjectManager.getManager().getCurrentProject().getModel();
-        Object intType =
-            ProjectManager.getManager().getCurrentProject().findType("int");
-
+        Object ns = null;
+        Object intType = null;
+        Project project = ProjectManager.getManager().getCurrentProject();
+        if (project != null) {
+            ns = project.getModel();
+            intType = project.findType("int");
+        }
+        
         attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
@@ -201,10 +205,13 @@ public class GUITestParserDisplay extends TestCase {
     public void testAttributeVisibility() throws ParseException {
         Object attr;
 
-        MNamespace ns =  (MNamespace)
-            ProjectManager.getManager().getCurrentProject().getModel();
-        Object intType =
-            ProjectManager.getManager().getCurrentProject().findType("int");
+        Object ns = null;
+        Object intType = null;
+        Project project = ProjectManager.getManager().getCurrentProject();
+        if (project != null) {
+            ns = project.getModel();
+            intType = project.findType("int");
+        }
 
         attr = UmlFactory.getFactory().getCore().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
