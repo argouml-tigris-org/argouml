@@ -33,14 +33,14 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
 
-/** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. */
-
+/**
+ * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
+ * Semantics. OMG document ad/97-08-04.
+ */
 public class CrDisambigClassName extends CrUML {
 
     /**
      * The constructor.
-     * 
      */
     public CrDisambigClassName() {
 	setHeadline("Choose a Unique Name for <ocl>self</ocl>");
@@ -93,7 +93,8 @@ public class CrDisambigClassName extends CrUML {
     }
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     * @see org.argouml.cognitive.critics.Critic#initWizard(
+     *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {

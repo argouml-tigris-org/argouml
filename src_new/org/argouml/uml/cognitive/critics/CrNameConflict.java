@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CrNameConflict.java
-// Classes: CrNameConflict
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.HashMap;
@@ -41,15 +34,14 @@ import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
 
-
-/** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. */
-
+/**
+ * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
+ * Semantics. OMG document ad/97-08-04.
+ */
 public class CrNameConflict extends CrUML {
 
     /**
      * The constructor.
-     * 
      */
     public CrNameConflict() {
         setHeadline("Revise Name to Avoid Conflict");
@@ -124,7 +116,8 @@ public class CrNameConflict extends CrUML {
     }
  
     /**
-     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     * @see org.argouml.cognitive.critics.Critic#initWizard(
+     *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
         if (w instanceof WizMEName) {

@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrReservedName.java
-// Classes: CrReservedName
-// Original Author: jrobbins@ics.uci.edu
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Enumeration;
@@ -39,7 +35,8 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 
-/** This critic checks whether a given name in the Model resembles or matches
+/**
+ * This critic checks whether a given name in the Model resembles or matches
  * a reserved UML keyword or java keyword.
  */
 public class CrReservedName extends CrUML {
@@ -240,7 +237,8 @@ public class CrReservedName extends CrUML {
     public Icon getClarifier() { return ClClassName.getTheInstance(); }
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     * @see org.argouml.cognitive.critics.Critic#initWizard(
+     *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,10 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: CrConstructorNeeded.java
-// Classes: CrConstructorNeeded
-// Original Author: jrobbins@ics.uci.edu
 
 package org.argouml.uml.cognitive.critics;
 
@@ -149,7 +145,8 @@ public class CrConstructorNeeded extends CrUML {
 
     
     /**
-     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     * @see org.argouml.cognitive.critics.Critic#initWizard(
+     *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizAddConstructor) {

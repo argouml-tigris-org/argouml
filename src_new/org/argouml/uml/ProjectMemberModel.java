@@ -126,7 +126,7 @@ public class ProjectMemberModel extends ProjectMember {
 
     /**
      * Save the project model to XMI.
-     * @see org.argouml.kernel.ProjectMember#save(java.io.Writer)
+     * @see org.argouml.kernel.ProjectMember#save(java.io.Writer, Integer)
      */
     public void save(Writer w, Integer indent) throws SaveException {
         if (w == null) {

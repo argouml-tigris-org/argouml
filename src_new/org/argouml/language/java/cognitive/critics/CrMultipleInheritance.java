@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CrMultipleInheritance.java.java
-// Classes: CrMultipleInheritance.java
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.language.java.cognitive.critics;
 
 import java.util.Collection;
@@ -39,8 +32,10 @@ import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.cognitive.critics.CrUML;
 import org.argouml.uml.cognitive.critics.WizCueCards;
-/** Well-formedness rule [2] for MAssociationEnd. See page 28 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. 
+
+/**
+ * Well-formedness rule [2] for MAssociationEnd. See page 28 of UML 1.1
+ * Semantics. OMG document ad/97-08-04. 
  */
 public class CrMultipleInheritance extends CrUML {
 
@@ -70,7 +65,8 @@ public class CrMultipleInheritance extends CrUML {
     }
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     * @see org.argouml.cognitive.critics.Critic#initWizard(
+     *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizCueCards) {

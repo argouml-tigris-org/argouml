@@ -99,7 +99,7 @@ public class SequenceDiagramGraphModel
         }
        
         /**
-         * @return
+         * @return the {@link FigObject} of the destination.
          */
         public FigObject getDestFigObject() {
             return destFigObject;
@@ -129,7 +129,7 @@ public class SequenceDiagramGraphModel
        
 
         /**
-         * @return
+         * @return the {@link FigObject} of the source.
          */
         public FigObject getSrcFigObject() {
             return srcFigObject;

@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CrNameConfusion.java
-// Classes: CrNameConfusion
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -41,14 +34,15 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
-/** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. 
+
+/**
+ * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
+ * Semantics. OMG document ad/97-08-04. 
  */
 public class CrNameConfusion extends CrUML {
 
     /**
      * The constructor.
-     * 
      */
     public CrNameConfusion() {
 	setHeadline("Revise Name to Avoid Confusion");
@@ -177,7 +171,8 @@ public class CrNameConfusion extends CrUML {
 
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     * @see org.argouml.cognitive.critics.Critic#initWizard(
+     *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizManyNames) {
