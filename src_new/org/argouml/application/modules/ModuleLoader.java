@@ -462,7 +462,7 @@ public class ModuleLoader {
 		    sClassName = line.substring(equalPos + 1).trim();
 		}
 		catch (Exception e) {
-		    System.err.println ("Unable to process " + filename +
+		    cat.warn ("Unable to process " + filename +
 		                        " at line " + lnr.getLineNumber() +
 					" data = '" + realLine + "'");
 		    continue;

@@ -175,7 +175,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
      * @return true if the save was successful, false if not.
      */
     boolean saveURL(URL url) {
-	// System.out.println ("Configuration saved to " + url + "\n");
+	// cat.info("Configuration saved to " + url + "\n");
 	return false;
     }
 

@@ -26,6 +26,8 @@ package org.argouml.ui.targetmanager;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author gebruiker
  *
@@ -33,6 +35,9 @@ import java.io.PrintWriter;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class TargetException extends RuntimeException {
+
+    private static final Logger _cat = 
+        Logger.getLogger(TargetException.class);
 
     /** The cause of this exception, or null */
     private Throwable cause;
@@ -78,8 +83,7 @@ public class TargetException extends RuntimeException {
     public void printStackTrace() {
 	super.printStackTrace();
 	if (cause != null) {
-	    System.err.println("Caused by:");
-	    cause.printStackTrace();
+        _cat.error("Caused by:", cause);
 	}
     }
 

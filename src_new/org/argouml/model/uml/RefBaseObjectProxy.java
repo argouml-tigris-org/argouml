@@ -34,6 +34,8 @@ import javax.jmi.reflect.RefBaseObject;
 import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 
+import org.apache.log4j.Logger;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.model_management.MPackage;
 
@@ -42,6 +44,9 @@ import ru.novosoft.uml.model_management.MPackage;
  */
 public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
 
+    private static final Logger _cat = 
+        Logger.getLogger(RefBaseObjectProxy.class);
+            
     private Object _realObject;
 
     /**
@@ -100,7 +105,7 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
         throws Throwable {
         Object result = null;
 
-        System.out.println("method: " + method.getName());
+        _cat.debug("method: " + method.getName());
 
         if (method.getName().equals("refMetaObject")) {
             result = refMetaObject();
@@ -116,7 +121,7 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
         }
         else {
             try {
-                System.out.println ("Executing " + method.getName());
+                _cat.debug("Executing " + method.getName());
                 result = method.invoke(_realObject, args);
             }
             catch (InvocationTargetException e) {

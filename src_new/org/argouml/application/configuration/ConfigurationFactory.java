@@ -25,6 +25,8 @@
 
 package org.argouml.application.configuration;
 
+import org.apache.log4j.Logger;
+
 /** A factory object that provides configuration information.
  * 
  * @author Thierry Lach
@@ -55,8 +57,9 @@ public class ConfigurationFactory
 		    (ConfigurationFactory) Class.forName(name).newInstance();
             }
 	    catch (Exception e) {
-	        System.out.println ("Can't create configuration factory " +
-	                            name + ", using default factory");
+		Logger.getLogger(ConfigurationFactory.class).
+		    warn("Can't create configuration factory " 
+                    + name + ", using default factory");
             }
 	}
 	if (newFactory == null)

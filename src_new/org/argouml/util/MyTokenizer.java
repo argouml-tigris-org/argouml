@@ -331,7 +331,7 @@ class ExprSeparatorWithStrings extends CustomSeparator {
  * <p><b>Example</b><br><pre>
  * MyTokenizer tzer = new MyTokenizer("Hello, how are you?", " ,\\,");
  * while (tzer.hasMoreTokens())
- *   System.out.println("\"" + tzer.nextToken() + "\"");
+ *   _cat.info("\"" + tzer.nextToken() + "\"");
  * </pre>
  *
  * <p>Which whould yield the following output:<pre>
