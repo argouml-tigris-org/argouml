@@ -850,6 +850,25 @@ public class MMUtil {
 		return result;
 	}
 
+
+    /**
+     * Returns all return parameters for an operation.
+     * @param operation
+     * @return Collection
+     */
+	public Collection getReturnParameters(MOperation operation) {
+		Vector returnParams = new Vector();
+		MParameter firstReturnParameter = null;
+		Iterator params = operation.getParameters().iterator();
+		while (params.hasNext()) {
+			MParameter parameter = (MParameter)params.next();
+			if ((parameter.getKind()).equals(MParameterDirectionKind.RETURN)) {
+				returnParams.add(parameter);
+			}
+		}
+		return (Collection)returnParams;
+	}
+	
 	/** this method finds all paramters of the given operation which have
 	 * the MParamterDirectionType RETURN. If it is only one, it is returned.
 	 * In case there are no return parameters, null is returned. If there
