@@ -66,7 +66,12 @@ import org.tigris.gef.presentation.FigNode;
 public class StateDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer
 {
+    /** @deprecated by MVW in 0.16. Use LOG instead.
+    */
     protected static Logger cat = 
+        Logger.getLogger(StateDiagramRenderer.class);
+    
+    private static final Logger LOG = 
         Logger.getLogger(StateDiagramRenderer.class);
 
     /** Return a Fig that can be used to represent the given node */
@@ -104,30 +109,29 @@ public class StateDiagramRenderer
             else if (kind.equals(ModelFacade.JOIN_PSEUDOSTATEKIND)) {
                 return new FigJoinState(gm, node);
             }
-            else if (kind.equals(ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND))
-	    {
+            else if (kind.equals(ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND)) {
                 return new FigShallowHistoryState(gm, node);
             }
             else if (kind.equals(ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND)) {
                 return new FigDeepHistoryState(gm, node);     
             }
             else {
-                cat.warn("found a type not known");
+                LOG.warn("found a type not known");
             }
         }
-        cat.debug("TODO StateDiagramRenderer getFigNodeFor");
+        LOG.debug("TODO StateDiagramRenderer getFigNodeFor");
         return null;
     }
 
     /** Return a Fig that can be used to represent the given edge */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-	cat.debug("making figedge for " + edge);
+	LOG.debug("making figedge for " + edge);
 	if (org.argouml.model.ModelFacade.isATransition(edge)) {
 	    FigTransition trFig = new FigTransition(edge, lay);
 	    return trFig;
 	}
 
-	cat.debug("TODO StateDiagramRenderer getFigEdgeFor");
+	LOG.debug("TODO StateDiagramRenderer getFigEdgeFor");
 	return null;
     }
 
