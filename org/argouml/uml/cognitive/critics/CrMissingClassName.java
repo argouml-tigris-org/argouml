@@ -53,8 +53,7 @@ public class CrMissingClassName extends CrUML {
 	if (!(ModelFacade.isAModelElement(dm))) return NO_PROBLEM;
 	Object e = /*(MModelElement)*/ dm;
 	String myName = ModelFacade.getName(e);
-	if (myName == null || myName.equals("") ||
-	    myName == null || myName.length() == 0)
+	if (myName == null || myName.equals("") || myName.length() == 0)
 	    return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }

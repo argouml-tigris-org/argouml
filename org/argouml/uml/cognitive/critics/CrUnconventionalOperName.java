@@ -37,6 +37,9 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
+
+/** Critic to detect whether an operation name obeys to certain rules.
+ */
 public class CrUnconventionalOperName extends CrUML {
 
     public CrUnconventionalOperName() {

@@ -39,6 +39,9 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 
+
+/** A critic to detect whether an state has a name.
+ **/
 public class CrMissingStateName extends CrUML {
     
     public CrMissingStateName() {
@@ -49,10 +52,13 @@ public class CrMissingStateName extends CrUML {
     }
 						   
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!ModelFacade.isAStateVertex(dm) || ModelFacade.isTop(dm))
+	if (!ModelFacade.isAStateVertex(dm))
 	    return NO_PROBLEM;   
+        if (ModelFacade.isACompositeState(dm) && ModelFacade.isTop(dm))
+            return NO_PROBLEM;
+        
 	String myName = ModelFacade.getName(dm);
-	if (myName == null || myName.equals(""))
+	if (myName == null || myName.equals("") || myName.length()==0)
 	    return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }

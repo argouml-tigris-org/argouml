@@ -37,6 +37,9 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
+
+/** Critic to detect whether a class name obeys to certain rules.
+ **/
 public class CrUnconventionalClassName extends CrUML {
 
     public CrUnconventionalClassName() {

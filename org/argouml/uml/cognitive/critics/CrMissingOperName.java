@@ -36,6 +36,9 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
+
+/** A critic to detect whether an operation has a name.
+ **/
 public class CrMissingOperName extends CrUML {
 
     public CrMissingOperName() {
