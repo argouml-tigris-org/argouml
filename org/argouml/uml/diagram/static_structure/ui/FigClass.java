@@ -1167,6 +1167,7 @@ public class FigClass extends FigNodeModelElement {
         if (getOwner() != null) {
             updateAttributes();
             updateOperations();
+            updateAbstract();
         }
         super.renderingChanged();
     }
@@ -1241,21 +1242,6 @@ public class FigClass extends FigNodeModelElement {
         }
 
         super.updateListeners(newOwner);
-    }
-
-    /**
-     * FigClass sets the italic font for abstract classes here.
-     *
-     * @see org.tigris.gef.presentation.Fig#postLoad()
-     */
-    public void postLoad() {      
-        super.postLoad();
-        Object owner = getOwner();
-        if (owner != null && ModelFacade.isAbstract(owner)) {
-            Font font = _name.getFont();              
-            _name.setFont(font.deriveFont(Font.ITALIC));
-        }
-        
     }
 
 } /* end class FigClass */
