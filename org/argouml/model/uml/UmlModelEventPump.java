@@ -428,7 +428,7 @@ public final class UmlModelEventPump implements MElementListener {
             else 
                 listenerList.addAll((Set)_listenerModelEventsMap.get(getKey(source, null)));
         }
-        return listenerList;
+        return listenerList != null ? listenerList : new HashSet();
     }
         
     /**
