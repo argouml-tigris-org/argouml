@@ -1,5 +1,4 @@
-
-
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -39,8 +38,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.ToolTipManager;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Category;
+import org.apache.log4j.*;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
@@ -459,7 +457,7 @@ public class Main {
         */
         if(System.getProperty("log4j.configuration") == null) {
             BasicConfigurator.configure();
-            Category.getRoot().getHierarchy().disableAll();
+            Logger.getRootLogger().getLoggerRepository().setThreshold(Level.OFF);
         }
     }
 

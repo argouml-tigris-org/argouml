@@ -1,4 +1,5 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,12 +27,8 @@ import java.util.ArrayList;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Category;
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Hierarchy;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.Priority;
-import org.apache.log4j.spi.RootCategory;
+import org.apache.log4j.*;
+import org.apache.log4j.spi.*;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.application.modules.ModuleLoader;
 import org.argouml.util.logging.ThrowableRenderer;
@@ -176,7 +173,7 @@ public class Argo
      *  custom <code>log4j</code> formatters
      *  to be used on objects displayed on the console log.
      */
-    public final static Category log;
+    public final static Logger log;
 
     /** Don't let this class be instantiated. */
     private Argo()
@@ -264,21 +261,21 @@ public class Argo
 	// Create a throwable renderer
 	ThrowableRenderer tr = new ThrowableRenderer();
 	// Create a separate hierarchy for the argo logger
-	Hierarchy hier = new Hierarchy(new RootCategory(Priority.INFO));
+	Hierarchy hier = new Hierarchy(new RootCategory(Level.INFO));
 	// Add the ThrowableRenderer
 	hier.getRendererMap().put(Throwable.class, tr);
 	// Set up the argo console logger in its own hierarchy
-	Category cat = hier.getInstance(CONSOLE_LOG);
+	Logger cat = hier.getLogger(CONSOLE_LOG);
 	cat.addAppender(new ConsoleAppender(
 	    new PatternLayout(System.getProperty(ARGO_CONSOLE_PREFIX, "")
 			      + "%m%n"),
 	    ConsoleAppender.SYSTEM_OUT));
 
 	// Add the throwable renderer
-	cat.getRoot().getHierarchy().getRendererMap().put(Throwable.class, tr);
+	((Hierarchy) cat.getRootLogger().getHierarchy()).getRendererMap().put(Throwable.class, tr);
 
 	if (System.getProperty(ARGO_CONSOLE_SUPPRESS) != null) {
-	    cat.getRoot().getHierarchy().disableAll();
+	    cat.getRoot().getLoggerRepository().setThreshold(Level.OFF);
 	}
 
 	// Set log here.  No going back.
