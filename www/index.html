@@ -1,83 +1,47 @@
 <html>
-
-
-
 <head>
 
-<link REL="stylesheet" TYPE="text/css" HREF="http://www.tigris.org/branding/style.css">
-
-
-
-
-
-<meta http-equiv="Content-Type"
-
-content="text/html; charset=iso-8859-1">
-
 <meta name="keywords"
-
 content="ArgoUML, Argo, UML, Unified Modeling Language, modeling, modelling, Gentleware, Poseidon, MDA, model-driven, software architecture, software methods, software engineering, CASE, consulting, seminar, seminars, coaching, Java, XML, OCL, object, technology">
+
+<style type="text/css">
+/* <![CDATA[ */
+@import url(http://www.tigris.org/branding/css/ns4_toxins.css);
+/* ]]> */
+</style>
+ <link rel="stylesheet" type="text/css" href="http://www.tigris.org/branding/css/main.css" media="screen" />
+ <link rel="stylesheet" type="text/css" href="http://www.tigris.org/branding/css/print.css" media="print" />
+
+
 
 <title>ArgoUML homepage</title>
 
 </head>
+<body>
 
-
-
-<body bgcolor="#FFFFFF" text="#000000">
-<table border="0" cellpadding="2" width="98%" bgcolor="#FFFFFF">
+<div class="app">
+<table>
 <tr>
-<td width="100%" bgcolor="#CCCC99">
-<strong><font color="000033" face="Arial, Helvetica, sans-serif">
-ArgoUML: A modelling tool for design using UML.
-</font></strong>
+<td width="50%" rowspan="2">
+
+<h1 style="color: #036;">Welcome to ArgoUML</h1>
+<img src="/images/argologo.gif" align="right" hspace="0" width="110" height="60" border="0">
+
+<p>ArgoUML is a modelling tool that helps you do your design using UML.</p>
+
+<p>Look at the <a href="/features.html">features</a>
+that are already implemented in ArgoUML.</p>
+
+<p>ArgoUML has been downloaded over 200,000 times!</p>
+
+</td>
+<td valign="bottom">
+<h3>User documentation</h3>
 </td>
 </tr>
-
 <tr>
-<td width="100%">
-<img src="/images/argologo.gif" align="right" hspace="0" width="110" height="60">
 
-Welcome to the homepage of ArgoUML, a java based cognitive CASE tool.
-
-<p>
-
-ArgoUML is a modelling tool to help you do your design using UML.
-<p>
-Look at the <a href="/features.html">features</a>
-that are already implemented in ArgoUML!
-
-
-
-<h3>Screenshot</h3>
-
-Here is a screen-shot of ArgoUML. <br>
-
-Top left: a hierarchical view of the current project file. <br>
-
-Upper right: editor(s) for the
-
-selected part of the project, in this case a class diagram. <br>
-
-Bottom left: the designer's &quot;to do&quot; list. <br>
-
-Bottom right: details of the selected
-
-object in the diagram or the selected &quot;to do&quot; item. <br>
-
-<table>
-
-<tr><td>
-
-<a href="tours/">
-<img src="/images/welcome_screenshot.gif" alt="Go on the full tour" width=564 height=561>
-</a>
-
-<td></tr></table>
-
-
-<h3>User documentation</h3>
-
+<td style="background: #eed;">
 <ul>
   <li>The <a href="/documentation/defaulthtml/quick-guide/">Quick Guide</a>
   <li>The <a href="/faqs/users.html">Users FAQ</a>
@@ -88,42 +52,73 @@ object in the diagram or the selected &quot;to do&quot; item. <br>
       <a href="/issues/enter_bug.cgi?issue_type=ENHANCEMENT&component=argouml">a feature request</a>
   (You must be a logged in Tigris member to do this).
 </ul>
+</td>
+</tr>
 
-<h3>Download</h3>
-
-
-
+<tr><td colspan="2">
+<h3>Download: Two Ways to Launch ArgoUML</h3>
+</td>
+</tr>
+<tr><td style="background: #eed;">
 <ul>
 
-<li>Launch via JavaWebStart:</li>
-<ul>
-<li>
-    First, install
-    <a href="http://java.sun.com/products/javawebstart/">JavaWebStart</a>.
-    Then click on the link below.  Installation and upgrades are automatic.
-    If you have problems starting the application via JavaWebStart, please see our
-    <a href="/faqs/jws.html">JWS FAQ</a>.
-    Thank you!</li>
-<li><a href="/files/documents/4/383/ArgoUML-stable.jnlp">Launch ArgoUML latest stable release</a></li>
-<li><a href="/files/documents/4/679/ArgoUML-development.jnlp">Launch ArgoUML latest development release</a></li>
-</ul>
+<li><b>Launch via JavaWebStart:</b><br>
+1. Install <a href="http://java.sun.com/products/javawebstart/">JavaWebStart</a>.<br>
+2. <a href="http://argouml.tigris.org/files/documents/4/383/ArgoUML-stable.jnlp">Launch latest stable release</a></br>
 
-
-<li>Download files:</li>
-<ul>
-<!--
-<li>Download latest development release:
-    <br>
-    <b>Please be careful:</b> This is a release still under development.
-    Notice also that unpacking the zip-files requires jar.
-    WinZIP will not do.
+Installation and upgrades are automatic.  If you have problems, please
+see our <a href="/faqs/jws.html">JWS FAQ</a>.<br><br>
 </li>
--->
-<li>Download latest stable release:
-<a href="http://argouml.tigris.org/servlets/ProjectDownloadList">v0.12</a></li>
+</ul>
+</td>
+<td width="50%" style="background: #eed;">
+<ul>
+<li><b>Download files:</b><br>
+1. Download latest stable release:
+<a href="http://argouml.tigris.org/files/documents/4/1088/ArgoUML-0.12.zip">v0.12</a> 
+(<a href="http://argouml.tigris.org/servlets/ProjectDownloadList">other formats</a>)<br>
+2. Unzip the archive<br>
+3a. On Windows or Mac: Double-click on argouml.jar<br>
+3b. On Unix: Type the command 'java -jar argouml.jar'
+</li>
+</ul>
+</td>
+</tr>
+</table>
+
+<h3>Screenshot (click for tour)</h3>
+<table border="0">
+<tr>
+<td>
+<a href="tours/">
+<img align="left" src="/images/welcome_screenshot.gif" alt="Go on the full tour" border="0" width="564" height="561">
+</a>
+</td>
+<td>
+<div>ArgoUML's user interface is divided into 4 panels:</div>
+<div><b>Top left</b>: a hierarchical view of the current project file.</div>
+<div><b>Top right</b>: editor for the selected part of the project, in this case a class diagram.</div>
+<div><b>Bottom left</b>: the designer's "to do" list.</div>
+<div><b>Bottom right</b>: details of the selected object in the diagram or the selected "to do" item.</div>
+
+<p><b>Supported diagrams</b>:</p>
+<ul>
+ <li>Class</li>
+ <li>State</li>
+ <li>Use case</li>
+ <li>Activity</li>
+ <li>Collaboration</li>
+ <li>Deployment</li>
+ <li>Sequence</li>
 </ul>
 
-</ul>
+<p>Learn more on the <a href="tours/">ArgoUML tour</a>.</p>
+
+</td>
+</tr>
+</table>
+
+
 
 <h3>Commercial Extensions</h3>
 
@@ -155,9 +150,8 @@ of ArgoUML.
 </tr>
 </table>
 
-</td>
-</tr>
-</table>
+</div>
+
 </body>
 
 </html>
