@@ -279,13 +279,13 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         		.isAddingStatemachineAllowed(oContext))) {
 
     	    MStateMachine machine = createStateMachine();
-                MModelElement context = (MModelElement) oContext;
+            MModelElement context = (MModelElement) oContext;
     	    machine.setContext(context);
     	    if (context instanceof MClassifier) {
-        		machine.setNamespace((MClassifier) context);
+    	        machine.setNamespace((MClassifier) context);
     	    } else if (context instanceof MBehavioralFeature) {
-        		MBehavioralFeature feature = (MBehavioralFeature) context;
-        		machine.setNamespace(feature.getOwner());
+    	        MBehavioralFeature feature = (MBehavioralFeature) context;
+    	        machine.setNamespace(feature.getOwner());
     	    }
     	    StateMachinesFactory.getFactory().buildCompositeState(machine);
     	    return machine;
@@ -560,7 +560,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MSignalEvent buildSignalEvent(String name, Object model) {
         MSignalEvent event = createSignalEvent();
-        event.setNamespace((MModel)model);
+        event.setNamespace((MModel) model);
         event.setName(name);
         return event;
     }
