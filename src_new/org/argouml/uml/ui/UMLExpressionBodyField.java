@@ -31,21 +31,15 @@ import org.apache.log4j.Logger;
 
 import ru.novosoft.uml.MElementEvent;
 
+
 /**
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003), because it depends on
- * {@link org.argouml.uml.ui.UMLExpressionModel}.
- * TODO: What is this replaced by?
- * This class is part of the 'old'(pre 0.13.*) implementation of proppanels
- * that used reflection a lot.
+ * This text field shows the body of a UML expression.
+ *
  */
 public class UMLExpressionBodyField
     extends JTextArea
     implements DocumentListener, UMLUserInterfaceComponent {
 
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
     private static final Logger LOG = 
         Logger.getLogger(UMLExpressionBodyField.class);
 
