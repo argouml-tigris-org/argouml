@@ -146,6 +146,16 @@ public class Argo
     public static final ConfigurationKey KEY_SCREEN_THEME =
 	Configuration.makeKey("screen", "theme");
 
+    /** Key for look and feel class name
+     */
+    public static final ConfigurationKey KEY_LOOK_AND_FEEL_CLASS =
+        Configuration.makeKey("screen", "lookAndFeelClass");
+
+    /** Key for theme class name
+     */
+    public static final ConfigurationKey KEY_THEME_CLASS =
+        Configuration.makeKey("screen", "themeClass");
+
     /** Key for user email address
      */
     public static final ConfigurationKey KEY_USER_EMAIL =
@@ -178,15 +188,12 @@ public class Argo
     public final static Logger log;
 
     /** Don't let this class be instantiated. */
-    private Argo()
-    {
-
+    private Argo() {
     }
 
     /** Change the default startup directory.
      */
-    public static void setDirectory(String dir)
-    {
+    public static void setDirectory(String dir) {
 	// Store in the user configuration, and
 	// let gef know also.
 	org.tigris.gef.base.Globals.setLastDirectory(dir);
@@ -196,13 +203,12 @@ public class Argo
 
     /** Get the default startup directory.
      */
-    public static String getDirectory()
-    {
+    public static String getDirectory() {
 	// Use the configuration if it exists, otherwise
 	// use what gef thinks.
 	return Configuration.getString(
-				       KEY_STARTUP_DIR,
-				       org.tigris.gef.base.Globals.getLastDirectory());
+           KEY_STARTUP_DIR,
+           org.tigris.gef.base.Globals.getLastDirectory());
     }
 
     /** Helper for localization to eliminate the need to import
@@ -221,8 +227,7 @@ public class Argo
      *
      *  If no plugins are available, returns null.
      */
-    public static final ArrayList getPlugins(Class pluginType, Object[] context)
-    {
+    public static final ArrayList getPlugins(Class pluginType, Object[] context) {
 	return ModuleLoader.getInstance().getPlugins(pluginType, context);
     }
 
@@ -230,35 +235,29 @@ public class Argo
      *
      *  If no plugins are available, returns null.
      */
-    public static final ArrayList getPlugins(Class pluginType)
-    {
+    public static final ArrayList getPlugins(Class pluginType) {
 	return ModuleLoader.getInstance().getPlugins(pluginType, null);
     }
 
     /** Initializes the module loader.  Multiple calls are ignored.
      */
-    public static final void initializeModules()
-    {
+    public static final void initializeModules() {
 	ModuleLoader.getInstance().initialize();
     }
 
-    public static String getArgoHome()
-    {
+    public static String getArgoHome() {
 	return ModuleLoader.getInstance().getArgoHome();
     }
 
-    public static String getArgoRoot()
-    {
+    public static String getArgoRoot() {
 	return ModuleLoader.getInstance().getArgoRoot();
     }
 
-    public static Icon lookupIconResource(String arg1)
-    {
+    public static Icon lookupIconResource(String arg1) {
 	return ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(arg1);
     }
 
-    public static Icon lookupIconResource(String arg1, String arg2)
-    {
+    public static Icon lookupIconResource(String arg1, String arg2) {
 	return ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(arg1, arg2);
     }
 

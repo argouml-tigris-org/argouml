@@ -53,7 +53,7 @@ public class JasonsBigTheme extends MetalTheme {
   private final FontUIResource smallFont =
   new FontUIResource("Dialog", Font.PLAIN, 12);
 
-  public String getName() { return "JasonsBig"; }
+  public String getName() { return "Large Fonts"; }
 
   // these are blue in Metal Default Theme
   protected ColorUIResource getPrimary1() { return primary1; } 
