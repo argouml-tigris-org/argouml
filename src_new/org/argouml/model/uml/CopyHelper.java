@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -152,11 +152,12 @@ public final class CopyHelper {
      * 1. No copy function is known for element's type.
      * 2. The copy function fails or throws.
      *
-     * @param element is the element to copy.
+     * @param anelement is the element to copy.
      * @return a copy of element, or null.
-     * @throw NullPointerException if element is null.
+     * @throws NullPointerException if element is null.
      */
-    public Object/*MModelElement*/ copy(Object/*MModelElement*/ anelement, Object/*MNamespace*/ ans) {
+    public Object/*MModelElement*/ copy(Object/*MModelElement*/ anelement,
+					Object/*MNamespace*/ ans) {
 	// Don't explicitly check if element is null
         MModelElement element = (MModelElement) anelement;
         MNamespace ns = (MNamespace) ans;
