@@ -34,18 +34,22 @@ import javax.swing.*;
 public interface NotationName {
 
     /** Returns the name of the language.
+     * @return the language name.
      */
     public String getName();
 
     /** Returns the version of the language if applicable, otherwise null
+     * @return the language version or null
      */
     public String getVersion();
 
     /** Returns a textual title for the notation.
+     * @return a title for the language.
      */
     public String getTitle();
 
     /** Returns an icon for the notation, or null if no icon is available.
+     * @return an <code>Icon</code> for the language or null if not available.
      */
     public Icon getIcon();
 
@@ -55,11 +59,14 @@ public interface NotationName {
      *
      *  This should incorporate both the name and the version if one
      *  exists.
+     * 
+     * @return the value for this notation to be stored in the configuration.
      */
     public String getConfigurationValue();
 
     /** Ease-of-use helper for usage in swing.
      *  Usually, it is equal to <code>getConfigurationValue()</code>.
+     * @return a string representation of the notation name.
      */
     public String toString();
 
@@ -67,6 +74,8 @@ public interface NotationName {
      *  if this notation is the same as another.
      *  This must be equivalent to
      *  <code>getConfigurationValue().equals(nn.getConfigurationValue())</code>
+     * @param notationName to compare
+     * @return boolean indicating equality or inequality.
      */
-    public boolean equals(NotationName nn);
+    public boolean equals(NotationName notationName);
 }
