@@ -1024,7 +1024,15 @@ public class Modeller
                                 String initializer,
                                 Object mClassifier)
     {
-        Object mAttribute = parseState.getFeature(name);
+    	Collection list = parseState.getFeatures(name);
+        Object mAttribute = null;
+	for (Iterator it = list.iterator(); it.hasNext();) {
+		Object o = it.next();
+		if ( ModelFacade.isAAttribute(o) ) {
+			mAttribute = o;
+			break;
+		}
+	}
         if (mAttribute == null) {
             mAttribute = UmlFactory.getFactory().getCore().buildAttribute(name);
             ModelFacade.addFeature(parseState.getClassifier(), mAttribute);
