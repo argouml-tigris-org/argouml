@@ -969,7 +969,9 @@ public class Project implements java.io.Serializable {
 
     protected void trashInternal(Object obj) {
     	boolean needSave = false;
-    	
+    	if (obj != null) {
+            Trash.SINGLETON.addItemFrom(obj, null);
+        }
     	if (obj instanceof MBase) { // an object that can be represented
     		ProjectBrowser.TheInstance.getEditorPane().removePresentationFor(obj, getDiagrams());
                 UmlFactory.getFactory().delete((MBase)obj);
@@ -990,6 +992,7 @@ public class Project implements java.io.Serializable {
     			needSave = true;
     		}
     	}
+    	
     	
     	setNeedsSave(needSave);	
     }
