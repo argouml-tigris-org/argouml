@@ -69,11 +69,15 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.Project;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ActionGoToCritique;
+import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.UUIDManager;
@@ -95,7 +99,6 @@ import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 
@@ -287,33 +290,51 @@ public abstract class FigNodeModelElement
         return _encloser;
     }
 
-    public void setEnclosingFig(Fig f) {
-        super.setEnclosingFig(f);
-        if (!(getOwner() instanceof MModelElement))
-            return;
-        MModelElement elem = (MModelElement) getOwner();
-        if (f == null
-            && getEnclosingFig() != null) {
-	    // move from a package to the diagram
-            // TODO: we should print "from blahblah package
-
-            // TODO: we should take into account 'playing around with
-            // the classes' on some diagram
-            return;
+    /**
+     * Updates the modelelement container if the fig is moved in or
+     * out another fig. If this fig doesn't have an enclosing fig
+     * anymore, the namespace of the diagram will be the owning
+     * modelelement. If this fig is moved inside another
+     * FigNodeModelElement the owner of that fignodemodelelement will
+     * be the owning modelelement.
+     * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
+     */
+    public void setEnclosingFig(Fig encloser) {
+	super.setEnclosingFig(encloser);
+	Fig oldEncloser = _encloser;
+	if (encloser != oldEncloser) {
+	    Object owningModelelement = null;
+	    if (encloser == null) {
+		// moved outside another fig onto the diagram canvas
+		Project currentProject =
+		    ProjectManager.getManager().getCurrentProject();
+                ArgoDiagram diagram = currentProject.getActiveDiagram();
+                if (diagram instanceof UMLDiagram
+			&& ((UMLDiagram)diagram).getNamespace() != null) {
+                    owningModelelement = ((UMLDiagram)diagram).getNamespace();
+                } else {
+                    owningModelelement = currentProject.getRoot();
+                }
+	    } else {
+		// moved into a fig
+                if (ModelFacade.isABase(encloser.getOwner())) {
+                    owningModelelement = encloser.getOwner();
+                }
+            }
+            if (owningModelelement != null
+		&& getOwner() != null
+		&& (!ModelManagementHelper.getHelper()
+		    .isCyclicOwnership(owningModelelement, getOwner()))
+		&& (ModelFacade.isANamespace(owningModelelement)
+		    && (CoreHelper.getHelper()
+			.isValidNamespace(getOwner(),
+					  owningModelelement)))) {
+                ModelFacade.setModelElementContainer(getOwner(), 
+						     owningModelelement);
+                // TODO: move the associations to the correct owner (namespace)
+            }
         }
-        if (f == null
-            && getEnclosingFig() == null) { // placement on the diagram
-            return;
-        }
-        Object fOwner = f.getOwner();
-        if (fOwner instanceof MNamespace) { // placed it on a package
-            if (CoreHelper.getHelper().isValidNamespace(elem, 
-							(MNamespace) fOwner))
-		((MNamespace) fOwner).addOwnedElement(elem);
-            return;
-        }
-        _encloser = f;
-
+        _encloser = encloser;
     }
 
     public Vector getEnclosedFigs() {

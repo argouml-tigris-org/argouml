@@ -40,6 +40,8 @@ import org.tigris.gef.base.Diagram;
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
+import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
+import ru.novosoft.uml.behavior.activity_graphs.MPartition;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
@@ -47,11 +49,13 @@ import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MActionSequence;
+import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
 import ru.novosoft.uml.behavior.common_behavior.MDataValue;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
 import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 import ru.novosoft.uml.behavior.common_behavior.MReception;
@@ -60,6 +64,7 @@ import ru.novosoft.uml.behavior.common_behavior.MSendAction;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
@@ -70,7 +75,36 @@ import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.core.MAbstraction;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationClass;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MComment;
+import ru.novosoft.uml.foundation.core.MComponent;
+import ru.novosoft.uml.foundation.core.MConstraint;
+import ru.novosoft.uml.foundation.core.MDataType;
+import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MElement;
+import ru.novosoft.uml.foundation.core.MElementResidence;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MFlow;
+import ru.novosoft.uml.foundation.core.MGeneralizableElement;
+import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MMethod;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MNode;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.core.MPermission;
+import ru.novosoft.uml.foundation.core.MRelationship;
+import ru.novosoft.uml.foundation.core.MStructuralFeature;
+import ru.novosoft.uml.foundation.core.MUsage;
 import ru.novosoft.uml.foundation.data_types.MActionExpression;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
@@ -84,6 +118,7 @@ import ru.novosoft.uml.foundation.data_types.MScopeKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.model_management.MElementImport;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MSubsystem;
@@ -2186,6 +2221,101 @@ public class ModelFacade {
             ((MAttribute) at).setInitialValue((MExpression) expr);
         }
     }
+    
+    /**
+     * <p>Sets the container that owns the handle. This must be set
+     * correctly so every modelelement except the root model does have
+     * an owner. Otherwise the saving/loading will fail.</p>
+     *
+     * <p><b>Warning: when changing the implementation of this method
+     * be warned that the sequence of the if then else tree DOES
+     * matter.</b> Most notabely, do not move the setNamespace method
+     * any level up in the tree.</p>
+     * 
+     * <p><b>Warning: the implementation does not support setting the
+     * owner of actions.</b> Use setState1 etc. on action for that
+     * goal</p>
+     *
+     * @param handle The modelelement that must be added to the container
+     * @param container The owning modelelement
+     * @exception IllegalArgumentException when the handle or
+     * container is null or if the handle cannot be added to the
+     * container.
+     */
+    public static void setModelElementContainer(Object handle,
+						Object container)
+        throws IllegalArgumentException
+    {
+        if (handle == null || container == null) {
+            throw new IllegalArgumentException("Neither the modelelement to be "
+					       + "added as the container " 
+					       + "nor the one to which "
+					       + "the modelelement is added "
+					       + "may be null");
+        }
+        if (handle instanceof MPartition 
+	    && container instanceof MActivityGraph) {
+            ((MPartition) handle).setActivityGraph((MActivityGraph) container);
+        } else if (handle instanceof MConstraint
+		   && container instanceof MStereotype) {
+	    MConstraint c = (MConstraint) handle;
+	    c.setConstrainedElement2((MStereotype) container);
+        } else if (handle instanceof MInteraction
+		   && container instanceof MCollaboration) {
+            ((MInteraction) handle).setContext((MCollaboration) container);
+        } else if (handle instanceof MElementResidence
+		   && container instanceof MComponent) {
+	    MElementResidence er = (MElementResidence) handle;
+	    er.setImplementationLocation((MComponent) container);
+        } else if (handle instanceof MAttributeLink
+		   && container instanceof MInstance) {
+            ((MAttributeLink) handle).setInstance((MInstance) container);
+        } else if (handle instanceof MMessage
+		   && container instanceof MInteraction) {
+            ((MMessage) handle).setInteraction((MInteraction) container);
+        } else if (handle instanceof MLinkEnd && container instanceof MLink) {
+            ((MLinkEnd) handle).setLink((MLink) container);
+        } else if (handle instanceof MAttributeLink
+		   && container instanceof MLinkEnd) {
+            ((MAttributeLink) handle).setLinkEnd((MLinkEnd) container);
+        } else if (handle instanceof MTaggedValue
+		   && container instanceof MStereotype) {
+            ((MTaggedValue) handle).setStereotype((MStereotype) container);
+        } else if (handle instanceof MTaggedValue
+		   && container instanceof MModelElement) {
+            ((MTaggedValue) handle).setModelElement((MModelElement) container);
+        } else if (handle instanceof MStateVertex
+		   && container instanceof MCompositeState) {
+            ((MStateVertex) handle).setContainer((MCompositeState) container);
+        } else if (handle instanceof MElementImport
+		   && container instanceof MPackage) {
+            ((MElementImport) handle).setPackage((MPackage) container);
+        } else if (handle instanceof MTransition
+		   && container instanceof MState) {
+            ((MTransition) handle).setState((MState) container);
+        } else if (handle instanceof MState
+		   && container instanceof MStateMachine) {
+            ((MState) handle).setStateMachine((MStateMachine) container);
+        } else if (handle instanceof MTransition
+		   && container instanceof MStateMachine) {
+            ((MTransition) handle).setStateMachine((MStateMachine) container);
+        } else if (handle instanceof MAction
+		   && container instanceof MTransition) {
+            ((MAction) handle).setTransition((MTransition) container);
+        } else if (handle instanceof MGuard
+		   && container instanceof MTransition) {
+            ((MGuard) handle).setTransition((MTransition) container);
+        } else if (handle instanceof MModelElement
+		   && container instanceof MNamespace) {
+            ((MModelElement) handle).setNamespace((MNamespace) container);
+        } else {
+            throw new IllegalArgumentException("Object "
+					       + handle.toString()
+					       + " cannot be owned by "
+					       + container.toString());
+        }
+    }
+
 
     /**
      * Sets a multiplicity of some attribute or association end.
