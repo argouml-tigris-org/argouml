@@ -108,7 +108,11 @@ public class UMLComboBoxEntry implements Comparable {
         return _longName;
     }
 
-    private MNamespace findNamespace(MNamespace phantomNS, MModel targetModel) {
+    // Refactoring: static to denote that it doesn't use any class members.
+    // Needs-more-work:
+    // Idea to move this to MMUtil together with the same function from
+    // org/argouml/uml/cognitive/critics/WizOperName.java
+    private static MNamespace findNamespace(MNamespace phantomNS, MModel targetModel) {
         MNamespace ns = null;
         MNamespace targetParentNS = null;
         MNamespace parentNS = phantomNS.getNamespace();
