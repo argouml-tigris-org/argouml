@@ -182,23 +182,24 @@ In the UML metamodel,
                 elements, or <literal>false</literal> meaning it
                 cannot.</para>
 
-              <note><para>
+                <note><para>
 Derived states still have their value in analysis to introduce useful
 names or concepts, and in design to avoid re-computation. 
 </para>
-              </note>
+                </note>
 
-              <note>
-                <para>
+                <note>
+                  <para>
 The UML <literal>Element</literal> metaclass from which all other
 artifacts are derived includes the tagged element
 <literal>documentation</literal> which is handled by the
 <emphasis>documentation tab</emphasis> under
 &argouml;
 </para>
-              </note>
-            </listitem>
-          </itemizedlist>
+                </note>
+              </listitem>
+            </itemizedlist>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -287,6 +288,7 @@ default in the UML standard.
             <literal>Abstraction</literal>
             metaclass.</para></caution>
  -->
+</para>
 	  </listitem>
         </varlistentry>
 
