@@ -43,14 +43,14 @@ public interface CollaborationsFactory {
      *
      * @return an initialized UML AssociationEndRole instance.
      */
-    MAssociationEndRole createAssociationEndRole();
+    Object createAssociationEndRole();
 
     /**
      * Create an empty but initialized instance of a UML AssociationRole.
      *
      * @return an initialized UML AssociationRole instance.
      */
-    MAssociationRole createAssociationRole();
+    Object createAssociationRole();
 
     /**
      * Create an empty but initialized instance of a UML ClassifierRole.

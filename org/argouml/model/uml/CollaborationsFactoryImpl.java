@@ -38,6 +38,7 @@ import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
@@ -66,7 +67,7 @@ public class CollaborationsFactoryImpl
      *
      * @return an initialized UML AssociationEndRole instance.
      */
-    public MAssociationEndRole createAssociationEndRole() {
+    public Object createAssociationEndRole() {
         MAssociationEndRole modelElement =
             MFactory.getDefaultFactory().createAssociationEndRole();
         super.initialize(modelElement);
@@ -78,7 +79,7 @@ public class CollaborationsFactoryImpl
      *
      * @return an initialized UML AssociationRole instance.
      */
-    public MAssociationRole createAssociationRole() {
+    public Object createAssociationRole() {
         MAssociationRole modelElement =
             MFactory.getDefaultFactory().createAssociationRole();
         super.initialize(modelElement);
@@ -228,9 +229,9 @@ public class CollaborationsFactoryImpl
      */
     public MAssociationEndRole buildAssociationEndRole(Object atype) {
         MClassifierRole type = (MClassifierRole) atype;
-        MAssociationEndRole end = createAssociationEndRole();
-        end.setType(type);
-        return end;
+        Object end = createAssociationEndRole();
+        ((MAssociationEndRole) end).setType(type);
+        return (MAssociationEndRole) end;
     }
 
     /**
@@ -248,7 +249,7 @@ public class CollaborationsFactoryImpl
 	    (MCollaboration) ModelFacade.getNamespace(from);
         MCollaboration colTo = (MCollaboration) ModelFacade.getNamespace(to);
         if (colFrom != null && colFrom.equals(colTo)) {
-            MAssociationRole role = createAssociationRole();
+            MAssociationRole role = (MAssociationRole) createAssociationRole();
             // we do not create on basis of associations between the
             // bases of the classifierroles
             role.addConnection(buildAssociationEndRole(from));
@@ -287,7 +288,7 @@ public class CollaborationsFactoryImpl
         if (colFrom != null && colFrom.equals(colTo)) {
             boolean nav1 = Boolean.FALSE.equals(unidirectional);
             boolean nav2 = true;
-            MAssociationRole role = createAssociationRole();
+            MAssociationRole role = (MAssociationRole) createAssociationRole();
             // we do not create on basis of associations between the
             // bases of the classifierroles
             MAssociationEndRole fromEnd = buildAssociationEndRole(from);
