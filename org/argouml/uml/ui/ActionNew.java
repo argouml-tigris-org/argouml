@@ -39,7 +39,7 @@ import org.argouml.ui.targetmanager.TargetManager;
  *
  * @stereotype singleton
  */
-public class ActionNew extends UMLAction {
+public class ActionNew extends ActionFileOperations {
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -66,7 +66,7 @@ public class ActionNew extends UMLAction {
     public void actionPerformed(ActionEvent e) {
         Project p = ProjectManager.getManager().getCurrentProject();
         
-        if (!(new ActionOpenProject()).askConfirmationAndSave()) return;
+        if (!askConfirmationAndSave()) return;
         
 	// we should remove all open dialogs. They have as parent the
 	// ProjectBrowser

@@ -50,7 +50,7 @@ import org.argouml.ui.cmd.GenericArgoMenuBar;
  * @see ActionOpenProject
  * @stereotype singleton
  */
-public class ActionSaveProject extends UMLAction {
+public class ActionSaveProject extends ActionFileOperations {
     /** logger */
     private static final Logger LOG = Logger.getLogger(ActionSaveProject.class);
   

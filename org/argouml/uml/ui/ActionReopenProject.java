@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * @author  Frank Jelinek
  * @since 10. November 2003 (0.15.2)
  */
-public class ActionReopenProject extends UMLAction {
+public class ActionReopenProject extends ActionFileOperations {
     private static final Logger LOG =
 	Logger.getLogger(ActionReopenProject.class);
 
@@ -75,16 +75,13 @@ public class ActionReopenProject extends UMLAction {
      * project
      */
     public void actionPerformed(ActionEvent e) {
-        // load of the new project
-        // just reuse of the ActionOpen object
-        ActionOpenProject openProjectHandler =
-            new ActionOpenProject();
-        
-        if (!openProjectHandler.askConfirmationAndSave()) return;
+        if (!askConfirmationAndSave()) return;
         
         File toOpen = new File(filename);;
         try {
-            openProjectHandler.loadProject(toOpen.toURL());
+            // load of the new project
+            // just reuse of the ActionOpen object
+            loadProject(toOpen.toURL());
         }
         catch ( java.net.MalformedURLException ex) {
             LOG.error("got an URLException in ActionReopenProject", ex);

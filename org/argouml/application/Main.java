@@ -115,7 +115,8 @@ public class Main {
         Translator.init();
         // create an anonymous class as a kind of adaptor for the cognitive
         // System to provide proper translation/i18n.
-        org.argouml.cognitive.Translator.setTranslator(new AbstractCognitiveTranslator() {
+        org.argouml.cognitive.Translator.setTranslator(
+                new AbstractCognitiveTranslator() {
             public String i18nlocalize(String key) {
                 return Translator.localize(key);
             }
