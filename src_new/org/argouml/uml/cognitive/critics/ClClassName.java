@@ -37,7 +37,8 @@ import org.tigris.gef.presentation.FigText;
 
 
 /**
- * The clarifier (the red wavy line) for the classname.
+ * The clarifier (the red wavy line) for the classname. IT actually works for any modelelement
+ * with a name.
  *
  */
 public class ClClassName implements Clarifier {
