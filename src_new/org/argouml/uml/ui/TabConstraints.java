@@ -417,7 +417,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                     } else {
                         mcOld = UmlFactory.getFactory().getCore().createConstraint();
                         ModelFacade.setName(mcOld, ModelFacade.getName(m_mcConstraint));
-                        ModelFacade.setBody(mcOld, UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",ModelFacade.getBody(ModelFacade.getBody(m_mcConstraint))));
+                        ModelFacade.setBody(mcOld, UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",(String)ModelFacade.getBody(ModelFacade.getBody(m_mcConstraint))));
                         ModelFacade.setBody(m_mcConstraint,UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",sData));
                     }
 
@@ -460,7 +460,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                                           .getDataTypes()
                                           .createBooleanExpression(
                                                        "OCL",
-                                                       ModelFacade.getBody(constraintBody)));
+                                                       (String)ModelFacade.getBody(constraintBody)));
 
                     ModelFacade.setName(m_mcConstraint, sName);
 
