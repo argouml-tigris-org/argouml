@@ -29,9 +29,9 @@ public class NotationResourceBundle_fr extends ResourceBundleHelper
 implements PluggableResourceBundle {
 
    static final Object[][] _contents = {
-        {"label_use_guillemots", "Utiliser des guillemets (\u00ab \u00bb) pour les st\u00e9r\u00e9eotypes" },
-        {"label_uml_notation_only", "Autoriser uniquement une notation UML stricte" },
-        {"tab_notation", "Notation" }  
+        {"label.use-guillemots", "Utiliser des guillemets (\u00ab \u00bb) pour les st\u00e9r\u00e9eotypes" },
+        {"label.uml-notation-only", "Autoriser uniquement une notation UML stricte" },
+        {"tab.notation", "Notation" }  
    };
 
      public Object[][] getContents() {

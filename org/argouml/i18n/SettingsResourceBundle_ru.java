@@ -42,20 +42,20 @@ public class SettingsResourceBundle_ru extends ListResourceBundle {
 
         {"caption.settings", "Установки" },
 
-        {"tab_user", "Пользователь" },  
-        {"label_user", "Полное имя:" },  
-        {"label_email", "Адрес электронной почты:" },  
-        {"label_splash", "Показывать заставку" },  
-        {"label_preload", "Предварительно зпгружать общие классы" },  
-        {"label_edem", "Отчитываться о статистике использования" },  
-        {"label_profile", "Отчитываться о времени загрузки" },  
-        {"tab_preferences", "Предпочтения" },  
-        {"tab_environment", "Окружение" },  
+        {"label.edem", "Отчитываться о статистике использования" },  
+        {"label.email", "Адрес электронной почты:" },  
+	{"label.fonts.big", "Большой" },
+	{"label.fonts.huge", "Гигантский" },
+	{"label.fonts.normal", "Нормальный" },
+        {"label.preload", "Предварительно зпгружать общие классы" },  
+        {"label.profile", "Отчитываться о времени загрузки" },  
+        {"label.splash", "Показывать заставку" },  
+        {"label.user", "Полное имя:" },  
 
-	{"tab_fonts", "Шрифты" },
-	{"label_fonts_normal", "Нормальный" },
-	{"label_fonts_big", "Большой" },
-	{"label_fonts_huge", "Гигантский" },
+        {"tab.environment", "Окружение" },  
+	{"tab.fonts", "Шрифты" },
+        {"tab.preferences", "Предпочтения" },  
+        {"tab.user", "Пользователь" },  
 
    };
 
