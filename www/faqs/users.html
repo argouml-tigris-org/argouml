@@ -7,7 +7,7 @@ DT {
 <title>Frequently asked questions for ArgoUML.</title>
 </head>
 <body>
-<H2>Frequently asked questions for ArgoUML. (4 October 2003)</H2>
+<H2>Frequently asked questions for ArgoUML. (15 October 2003)</H2>
 <div class="app">
 <H3>List of all questions</H3>
 <H4>Introduction</H4>
@@ -41,6 +41,9 @@ DT {
 <li><a href="#diag_link">How do I know what diagram I'm working on?</a>
 <li><a href="#actor_link">How can I sort the artifacts in the Navigation Pane?</a>
 <li><a href="#elem_link">How do I arrange my diagram elements?</a>
+<li><a href="#sequence_diagrams_not_working">
+      Why don't the sequence diagrams work?
+    </a>
 <li><a href="#ord_link">I'm trying to change the ordering of the links in the sequence diagram. How do I do that?</a>
 <li><a href="#state_link">How do I create a state diagram?</a>
 <li><a href="#act_link">How do I create an activity diagram?</a>
@@ -322,6 +325,31 @@ will align elements.
 <p>
 There also is the menu item <b>Arrange</b> where you can align, group or
 nudge (move a little bit) elements.
+
+
+<DT><a name="sequence_diagrams_not_working">
+      Why don't the sequence diagrams work?
+    </a>
+<DD>In 0.10.1 they should be working.
+This implementation is however not faithful to UML,
+nor to the look and feel of the rest of ArgoUML.
+<p>
+
+In 0.12 there are problems with the sequence diagrams.
+Among other things the arrow heads does not appear.
+<p>
+
+In 0.14 the sequence diagrams are completely turned off and should not
+be working.
+<p>
+
+In 0.16 a new implementation will be made.
+We are very eager for this new implementation to work correctly so
+if you can <a href="#helpdeveloping">help</a> with this, 
+monitor the news items and announcements of development releases
+for the progress of this feature and test it ruthlessly when available.
+If you want to do more,
+discuss with Jaap Branderhorst that is responsible for this work.
 
 
 <DT><a name="ord_link">I'm trying to change the ordering of the links in the sequence
