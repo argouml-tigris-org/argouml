@@ -25,18 +25,14 @@
 package org.argouml.uml;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.UmlException;
 import org.argouml.model.XmiReader;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  *   This class implements the abstract class Profile for use in modelling
@@ -58,11 +54,14 @@ public class ProfileJava extends Profile {
 
     private Object/*MModel*/ defaultModel;
 
+    /**
+     * The constructor.
+     */
     public ProfileJava() {
         try {
             getProfileModel();
         } catch (ProfileException e) {
-            // TODO How are we going to handl3e exception here.
+            // TODO: How are we going to handl3e exception here.
             // I think the profiles need some rethinking - Bob.
             LOG.error("Exception in ProfileJava constructor", e);
         }
@@ -118,7 +117,8 @@ public class ProfileJava extends Profile {
 	} else {
 	    name = "unknown type";
 	}
-	Object/*MMultiplicity*/ mult = Model.getFacade().getMultiplicity(assocEnd);
+	Object/*MMultiplicity*/ mult = 
+	    Model.getFacade().getMultiplicity(assocEnd);
 	if (mult != null) {
 	    StringBuffer buf = new StringBuffer(name);
 	    buf.append("[");
@@ -163,8 +163,10 @@ public class ProfileJava extends Profile {
      */
     protected String defaultGeneralizationName(Object/*MGeneralization*/ gen,
 					       Object namespace) {
-	Object/*MGeneralizableElement*/ child = Model.getFacade().getChild(gen);
-	Object/*MGeneralizableElement*/ parent = Model.getFacade().getParent(gen);
+	Object/*MGeneralizableElement*/ child = 
+	    Model.getFacade().getChild(gen);
+	Object/*MGeneralizableElement*/ parent = 
+	    Model.getFacade().getParent(gen);
 	StringBuffer buf = new StringBuffer();
 	buf.append(formatElement(child, namespace));
 	buf.append(" extends ");
@@ -211,7 +213,8 @@ public class ProfileJava extends Profile {
 			   Object/*MModelElement*/ element,
 			   String pathSep) {
 	if (element != null) {
-	    Object/*MNamespace*/ parent = Model.getFacade().getNamespace(element);
+	    Object/*MNamespace*/ parent = 
+	        Model.getFacade().getNamespace(element);
 	    if (parent != null && parent != element) {
 		buildPath(buffer, parent, pathSep);
 		buffer.append(pathSep);
