@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -25,14 +23,38 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-// Source file: f:/jr/projects/uml/Foundation/Data_Types/ParameterDirectionKind.java
+
 
 package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
 public class ParameterDirectionKind {
-    
-  public ParameterDirectionKind() { }
+
+  public static final ParameterDirectionKind IN =
+  new ParameterDirectionKind("in");
+  public static final ParameterDirectionKind INOUT =
+  new ParameterDirectionKind("inout"); 
+  public static final ParameterDirectionKind OUT =
+  new ParameterDirectionKind("out");
+  public static final ParameterDirectionKind RETURN =
+  new ParameterDirectionKind("return");
+
+  public static final ParameterDirectionKind[] POSSIBLE_DIRS = {
+    IN, INOUT, OUT, RETURN };
+
+  protected String _label;
+
+  public ParameterDirectionKind(String label) { _label = label; }
+
+  public boolean equals(Object o) {
+    if (!(o instanceof ParameterDirectionKind)) return false;
+    String oLabel = ((ParameterDirectionKind)o)._label;
+    return _label.equals(oLabel);
+  }
+
+  public int hashCode() { return _label.hashCode(); }
+
+  public String toString() { return _label.toString(); }
 
 }

@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -25,7 +23,7 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-// Source file: Foundation/Core/AssociationEnd.java
+
 
 /** AssociationEnd's are in the Namespace of the Classifier that they
  *  attach to. */
@@ -57,7 +55,7 @@ public class AssociationEnd extends ModelElementImpl {
   //nmw: public AssociationEndRole _associationEndRole[];
   //% public LinkEnd _linkEnd[];
   public Vector _linkEnd = new Vector();
-    
+
   public AssociationEnd() {}
   public AssociationEnd(Name name) { super(name); }
   public AssociationEnd(String nameStr) { super(new Name(nameStr)); }
@@ -81,60 +79,60 @@ public class AssociationEnd extends ModelElementImpl {
 
   public boolean getIsNavigable() { return _isNavigable; }
   public void setIsNavigable(boolean x) throws PropertyVetoException {
-    fireVetoableChange("navigable", _isNavigable, x);    
+    fireVetoableChange("navigable", _isNavigable, x);
     _isNavigable = x;
   }
 
   public boolean getIsOrdered() { return _isOrdered; }
   public void setIsOrdered(boolean x) throws PropertyVetoException {
-    fireVetoableChange("ordered", _isOrdered, x);    
+    fireVetoableChange("ordered", _isOrdered, x);
     _isOrdered = x;
   }
 
   public AggregationKind getAggregation() { return _aggregation; }
   public void setAggregation(AggregationKind x) throws PropertyVetoException {
-    fireVetoableChange("aggregation", _aggregation, x);    
+    fireVetoableChange("aggregation", _aggregation, x);
     _aggregation = x;
   }
 
   public ScopeKind getTargetScope() { return _targetScope; }
   public void setTargetScope(ScopeKind x) throws PropertyVetoException {
-    fireVetoableChange("targetScope", _targetScope, x);    
+    fireVetoableChange("targetScope", _targetScope, x);
     _targetScope = x;
   }
 
   public Multiplicity getMultiplicity() { return _multiplicity; }
   public void setMultiplicity(Multiplicity x) throws PropertyVetoException {
-    fireVetoableChange("multiplicity", _multiplicity, x);    
+    fireVetoableChange("multiplicity", _multiplicity, x);
     _multiplicity = x;
   }
 
   public ChangeableKind getChangeable() { return _changeable; }
   public void setChangeable(ChangeableKind x) throws PropertyVetoException {
-    fireVetoableChange("changeable", _changeable, x);    
+    fireVetoableChange("changeable", _changeable, x);
     _changeable = x;
   }
 
   public IAssociation getAssociation() { return _association; }
   public void setAssociation(IAssociation x) throws PropertyVetoException {
-    fireVetoableChange("association", _association, x);    
+    fireVetoableChange("association", _association, x);
     _association = x;
   }
 
   public Vector getQualifier() { return (Vector) _qualifier;}
   public void setQualifier(Vector x) throws PropertyVetoException {
     if (_qualifier == null) _qualifier = new Vector();
-    fireVetoableChange("qualifier", _qualifier, x);    
+    fireVetoableChange("qualifier", _qualifier, x);
     _qualifier = x;
   }
   public void addQualifier(Attribute x) throws PropertyVetoException {
     if (_qualifier == null) _qualifier = new Vector();
-    fireVetoableChange("qualifier", _qualifier, x);    
+    fireVetoableChange("qualifier", _qualifier, x);
     _qualifier.addElement(x);
   }
   public void removeQualifier(Attribute x) throws PropertyVetoException {
     if (_qualifier == null) return;
-    fireVetoableChange("qualifier", _qualifier, x);    
+    fireVetoableChange("qualifier", _qualifier, x);
     _qualifier.removeElement(x);
   }
 
@@ -151,48 +149,48 @@ public class AssociationEnd extends ModelElementImpl {
   public Vector getSpecification() { return (Vector) _specification;}
   public void setSpecification(Vector x) throws PropertyVetoException {
     if (_specification == null) _specification = new Vector();
-    fireVetoableChange("specification", _specification, x);    
+    fireVetoableChange("specification", _specification, x);
     _specification = x;
   }
   public void addSpecification(Classifier x) throws PropertyVetoException {
     if (_specification == null) _specification = new Vector();
-    fireVetoableChange("specification", _specification, x);    
+    fireVetoableChange("specification", _specification, x);
     _specification.addElement(x);
   }
   public void removeSpecification(Classifier x) throws PropertyVetoException {
     if (_specification == null) return;
-    fireVetoableChange("specification", _specification, x);    
+    fireVetoableChange("specification", _specification, x);
     _specification.removeElement(x);
   }
-  
+
   //- public AssociationEndRole[] getAssociationEndRole() {
   //-   return associationEndRole;
   //- }
   //- public void setAssociationEndRole(Vector x) {
   //-   associationEndRole = x;
   //- }
-  
+
   public Vector getLinkEnd() { return (Vector) _linkEnd;}
   public void setLinkEnd(Vector x) throws PropertyVetoException {
     if (_linkEnd == null) _linkEnd = new Vector();
-    fireVetoableChange("linkEnd", _linkEnd, x);    
+    fireVetoableChange("linkEnd", _linkEnd, x);
     _linkEnd = x;
   }
   public void addLinkEnd(LinkEnd x) throws PropertyVetoException {
     if (_linkEnd == null) _linkEnd = new Vector();
-    fireVetoableChange("linkEnd", _linkEnd, x);    
+    fireVetoableChange("linkEnd", _linkEnd, x);
     _linkEnd.addElement(x);
   }
   public void removeLinkEnd(LinkEnd x) throws PropertyVetoException {
     if (_linkEnd == null) return;
-    fireVetoableChange("linkEnd", _linkEnd, x);    
+    fireVetoableChange("linkEnd", _linkEnd, x);
     _linkEnd.removeElement(x);
   }
 
   ////////////////////////////////////////////////////////////////
   // events
-  public void fireVetoableChange(String propertyName, 
-				 Object oldValue, Object newValue) 
+  public void fireVetoableChange(String propertyName,
+				 Object oldValue, Object newValue)
        throws PropertyVetoException {
     super.fireVetoableChange(propertyName, oldValue, newValue);
     if (_association instanceof ElementImpl) {
@@ -202,7 +200,7 @@ public class AssociationEnd extends ModelElementImpl {
   }
 
 
-  
+
   ////////////////////////////////////////////////////////////////
   // debugging
 
@@ -212,5 +210,5 @@ public class AssociationEnd extends ModelElementImpl {
       "}";
     return s;
   }
-  
+
 }

@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -25,6 +23,8 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
+
+
 package uci.uml.checklist;
 
 import uci.argo.checklist.*;
@@ -33,6 +33,11 @@ import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
 
 
+/** Defines a checklist to help designers design better attributes.
+ *  Basically, propmts them to think about various aspects of the
+ *  design. Needs-More-Work: the checklist items are categorized, but
+ *  those categories are not shown yet in the user interface. */
+
 public class ChAttribute extends UMLChecklist {
 
   public ChAttribute() {
@@ -40,11 +45,11 @@ public class ChAttribute extends UMLChecklist {
     addItem("Does the name '{name}' clearly describe the attribute?");
     addItem("Is '{name}' a noun or noun phrase?");
     addItem("Could the name '{name}' be misinterperrted to mean something else?");
-    
+
 
     setNextCategory("Encoding");
     addItem("Is the type {type} too restrictive to represent all "+
-	    "possible values of {name}?"); 
+	    "possible values of {name}?");
     addItem("Does the type {type} allow values for {name} that could never be "+
 	    "correct?");
     addItem("Could {name} be combined with some other attribute of "+
@@ -52,13 +57,13 @@ public class ChAttribute extends UMLChecklist {
     addItem("Could {name} be broken down into two or more parts (e.g., a phone"+
 	    "number can be broken down into area code, prefix, and number)?");
     addItem("Could {name} be computed from other attributes instead of stored?");
-    
+
     setNextCategory("Value");
     addItem("Should {name} have an initial (or default) value?");
     addItem("Is the initial value {initialValue} correct?");
     addItem("Could you write an expression to check if {name} is correct? "+
 	    "Plausable?");
-    
+
     setNextCategory("Location");
     addItem("Could {name} be defined in a different class that is associated "+
 	    "with {owner}?");
@@ -75,12 +80,12 @@ public class ChAttribute extends UMLChecklist {
 
     addItem("Is there some other attribute that must be updated whenever "+
 	    "{name} is updated?");
-    
+
     addItem("Is there a method that should be called when {name} is updated?");
     addItem("Is there a method that should be called when {name} is given a "+
 	    "certain kind of value?");
-    
-    
+
+
   }
 
 } /* end class ChAttribute */

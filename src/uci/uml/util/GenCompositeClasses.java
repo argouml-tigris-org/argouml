@@ -35,6 +35,11 @@ import uci.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 
+/** Utility class to generate the children of a class.  In this case
+ *  the "children" of a class are the other classes that are
+ *  assocaiated with the parent class, and that Association has a
+ *  COMPOSITE end at the parent.  This is used in one of the
+ *  NavPerspectives. */
 
 public class GenCompositeClasses implements ChildGenerator {
   public java.util.Enumeration gen(Object o) {

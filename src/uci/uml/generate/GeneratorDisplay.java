@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -25,6 +23,8 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
+
+
 package uci.uml.generate;
 
 import java.util.*;
@@ -32,6 +32,13 @@ import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Model_Management.*;
+
+/** Generator subclass to generate text for display in diagrams in in
+ * text fields in the Argo/UML user interface.  The generated code
+ * looks a lot like (invalid) Java.  The idea is that other generators
+ * could be written for outher languages.  This code is just a
+ * placeholder for future development, I expect it to be totally
+ * replaced. */
 
 // needs-more-work: always check for null!!!
 
@@ -42,7 +49,7 @@ public class GeneratorDisplay extends Generator {
   public static String Generate(Object o) {
     return SINGLETON.generate(o);
   }
-  
+
   public String generateOperation(Operation op) {
     String s = "";
     s += generateVisibility(op);
@@ -64,7 +71,7 @@ public class GeneratorDisplay extends Generator {
     if (returnType == null) s += "void?? ";
     else s += generateClassifierRef(returnType) + " ";
 
-    
+
     // name and params
     s += generateName(op.getName()) + "(";
     params = op.getParameter();
@@ -96,7 +103,7 @@ public class GeneratorDisplay extends Generator {
 
     String slash = "";
     if (attr.containsStereotype(Stereotype.DERIVED)) slash = "/";
-    
+
     s += slash + generateName(attr.getName());
     Expression init = attr.getInitialValue();
     if (init != null)
@@ -105,7 +112,7 @@ public class GeneratorDisplay extends Generator {
     String constraintStr = generateConstraints(attr);
     if (constraintStr.length() > 0)
       s += " " + constraintStr;
-    
+
     return s;
   }
 
@@ -183,7 +190,7 @@ public class GeneratorDisplay extends Generator {
     }
 
     // needs-more-work: constructors
-    
+
     Vector behs = cls.getBehavioralFeature();
     if (behs != null) {
       s += "\n";
@@ -193,7 +200,7 @@ public class GeneratorDisplay extends Generator {
       while (behEnum.hasMoreElements())
 	s += generate(behEnum.nextElement()) + ";\n";
     }
-    
+
     s += "} /* end " + classifierKeyword + " " + generatedName + " */\n";
     return s;
   }
@@ -266,10 +273,10 @@ public class GeneratorDisplay extends Generator {
   public String generateConstraint(Constraint c) {
     return generateExpression(c.getBody());
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // internal methods?
-  
+
 
   public String generateGeneralzation(Vector generalizations) {
     if (generalizations == null) return "";
@@ -299,7 +306,7 @@ public class GeneratorDisplay extends Generator {
     }
     return s;
   }
-       
+
   public String generateVisibility(ElementOwnership eo) {
     if (eo == null) return "";
     VisibilityKind vis = eo.getVisibility();
@@ -353,9 +360,9 @@ public class GeneratorDisplay extends Generator {
   public static final String ANY_RANGE = "0..*";
   //public static final String ANY_RANGE = "*";
   // needs-more-work: user preference between "*" and "0..*"
-  
+
   public String generateMultiplicityRange(MultiplicityRange mr) {
-    
+
     Integer lower = mr.getLower();
     Integer upper = mr.getUpper();
     if (lower == null && upper == null) return ANY_RANGE;
@@ -363,6 +370,6 @@ public class GeneratorDisplay extends Generator {
     if (upper == null) return lower.toString() + "..*";
     if (lower.intValue() == upper.intValue()) return lower.toString();
     return mr.getLower().toString() + ".." + mr.getUpper().toString();
-  } 
+  }
 
 } /* end class GeneratorDisplay */

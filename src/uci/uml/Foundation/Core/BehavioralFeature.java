@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -25,7 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-// Source file: Foundation/Core/BehavioralFeature.java
 
 package uci.uml.Foundation.Core;
 
@@ -42,17 +39,17 @@ public abstract class BehavioralFeature extends Feature {
   public Vector _parameter = new Vector();
   //% public MMException raisedException[];
   public Vector _raisedException = new Vector();
-  
+
   public BehavioralFeature() { }
   public BehavioralFeature(Name name) { super(name); }
   public BehavioralFeature(String nameStr) { super(new Name(nameStr)); }
-  
+
   public boolean getIsQuery() { return _isQuery; }
   public void setIsQuery(boolean x) throws PropertyVetoException {
     fireVetoableChange("isQuery", _isQuery, x);
     _isQuery = x;
   }
-  
+
   public Vector getParameter() { return (Vector) _parameter;}
   public void setParameter(Vector x) throws PropertyVetoException {
     if (_parameter == null) _parameter = new Vector();
@@ -93,5 +90,5 @@ public abstract class BehavioralFeature extends Feature {
     fireVetoableChange("raisedException", _raisedException, x);
     _raisedException.removeElement(x);
   }
-  
+
 }

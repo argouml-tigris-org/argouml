@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -23,6 +21,8 @@
 // SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
+
+
 
 
 // Source file: Foundation/Core/Parameter.java
@@ -41,7 +41,7 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 
 public class Parameter extends ModelElementImpl {
   public static final Name RETURN_NAME = new Name("return");
-  
+
   public Expression _defaultValue;
   public ParameterDirectionKind _kind;
   public BehavioralFeature _behavioralFeature;
@@ -50,7 +50,7 @@ public class Parameter extends ModelElementImpl {
   //% public ObjectFlowState _availability[];
   public Vector _availability = new Vector();
   public Signal _signal;
-  
+
   public Parameter() { }
   public Parameter(Name name) { super(name); }
   public Parameter(String nameStr) { super(new Name(nameStr)); }
@@ -85,7 +85,7 @@ public class Parameter extends ModelElementImpl {
   public void setParameters(Event x) {
     _parameters = x;
   }
-  
+
   public Vector getAvailability() {
     return (Vector) _availability;
   }
@@ -99,11 +99,10 @@ public class Parameter extends ModelElementImpl {
   public void removeAvailability(ObjectFlowState x) {
     _availability.removeElement(x);
   }
-  
+
   public Signal getSignal() { return _signal; }
   public void setM_Signal(Signal x) {
     _signal = x;
   }
 
-  
 }

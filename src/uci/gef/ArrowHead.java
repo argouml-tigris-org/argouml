@@ -24,7 +24,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
 // File: ArrowHead.java
 // Classes: ArrowHead
 // Original Author: abonner@ics.uci.edu

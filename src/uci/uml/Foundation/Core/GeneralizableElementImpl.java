@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -25,7 +23,7 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-// Source file: Foundation/Core/GeneralizableElement.java
+
 
 package uci.uml.Foundation.Core;
 
@@ -49,25 +47,25 @@ implements GeneralizableElement {
   public GeneralizableElementImpl(String nameStr) {
     super(new Name(nameStr));
   }
-  
+
   public boolean getIsRoot() { return _isRoot; }
   public void setIsRoot(boolean x) throws PropertyVetoException {
     fireVetoableChange("isRoot", _isRoot, x);
     _isRoot = x;
   }
-  
+
   public boolean getIsLeaf() { return _isLeaf; }
   public void setIsLeaf(boolean x) throws PropertyVetoException {
     fireVetoableChange("isLeaf", _isLeaf, x);
     _isLeaf = x;
   }
-  
+
   public boolean getIsAbstract() { return _isAbstract; }
   public void setIsAbstract(boolean x) throws PropertyVetoException {
     fireVetoableChange("isAbstract", _isAbstract, x);
     _isAbstract = x;
   }
-  
+
   public Vector getGeneralization() {
     return (Vector) _generalization;
   }
@@ -93,7 +91,7 @@ implements GeneralizableElement {
     fireVetoableChange("generalization", _generalization, x);
     _generalization.removeElement(x);
   }
-  
+
   public Vector getSpecialization() {
     return (Vector) _specialization;
   }
@@ -121,5 +119,5 @@ implements GeneralizableElement {
     fireVetoableChange("specalization", _specialization, x);
     _specialization.removeElement(x);
   }
-  
+
 }

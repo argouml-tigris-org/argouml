@@ -24,7 +24,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package uci.uml.util;
 
 import java.util.*;
@@ -34,6 +33,16 @@ import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
+
+
+/** This class is a placeholder that will eventually be replaced by a
+ *  design-time OCL evaluator.  This class is used to help generate
+ *  the text shown in the titles and bodies of feedback produced by
+ *  critics and checklist items.  For example if the headline of a
+ *  critic contains {name}, then the name of the offending model
+ *  element is used in place of that expression.  Needs-more-work:
+ *  right now this only handles a small, hard-coded set of
+ *  expressions, I should use a full OCL evaluator. */
 
 public class UMLDescription {
 
@@ -60,13 +69,15 @@ public class UMLDescription {
   public static String VIS = "visibility";
   public static String MULT = "multiplicity";
   public static String TYPE = "type";
+  public static String RETURNS = "returns";
+  public static String INIT = "initialValue";
   public static String OWNER = "owner";
   public static String STRUCT = "owner.structuralFeature";
   public static String BEHAV = "owner.behavioralFeature";
   public static String NAMESPACE = "namespace";
 
   public static String DEFAULT_STR = "(anon)";
-  
+
   // needs-more-work: replace this with an OCL evaluator
   public static String evaluateOCL(Object dm, String expr) {
     //System.out.println("expr = " + expr);
@@ -79,6 +90,7 @@ public class UMLDescription {
       if (res == null || res.length() == 0) return DEFAULT_STR;
       return res;
     }
+
     if (VIS.equalsIgnoreCase(expr)) {
       if (!(dm instanceof Feature)) return "(non-Feature)";
       VisibilityKind vk = ((Feature) dm).getVisibility();
@@ -103,6 +115,34 @@ public class UMLDescription {
       if (res == null || res.length() == 0) return DEFAULT_STR;
       return res;
     }
+    if (RETURNS.equalsIgnoreCase(expr)) {
+      if (!(dm instanceof BehavioralFeature)) return "(non-BehavioralFeature)";
+      BehavioralFeature bf = ((BehavioralFeature) dm);
+      Classifier returnType = null;
+      java.util.Enumeration enum = bf.getParameter().elements();
+      while (enum.hasMoreElements()) {
+	Parameter p = (Parameter) enum.nextElement();
+	if (Parameter.RETURN_NAME.equals(p.getName())) {
+	  returnType = p.getType();
+	  break;
+	}
+      }
+      if (returnType == null) return DEFAULT_STR;
+      res = returnType.toString();
+      if (res == null || res.length() == 0) return DEFAULT_STR;
+      return res;
+    }
+
+    if (INIT.equalsIgnoreCase(expr)) {
+      if (!(dm instanceof Attribute)) return "(non-Attribute)";
+      Attribute attr = (Attribute) dm;
+      Expression initExpr = attr.getInitialValue();
+      if (initExpr == null) return DEFAULT_STR;
+      res = initExpr.getBody().getBody();
+      if (res == null || res.length() == 0) return DEFAULT_STR;
+      return res;
+    }
+
     if (OWNER.equalsIgnoreCase(expr)) {
       if (!(dm instanceof Feature)) return "(non-Feature)";
       Classifier cls = ((Feature) dm).getOwner();
@@ -111,6 +151,7 @@ public class UMLDescription {
       if (res == null || res.length() == 0) return DEFAULT_STR;
       return res;
     }
+
     if (STRUCT.equalsIgnoreCase(expr)) {
       if (!(dm instanceof Feature)) return "(non-Feature)";
       Classifier cls = ((Feature) dm).getOwner();
@@ -126,6 +167,7 @@ public class UMLDescription {
       if (res == null || res.length() == 0) return DEFAULT_STR;
       return res;
     }
+
     if (BEHAV.equalsIgnoreCase(expr)) {
       if (!(dm instanceof Feature)) return "(non-Feature)";
       Classifier cls = ((Feature) dm).getOwner();
@@ -141,6 +183,7 @@ public class UMLDescription {
       if (res == null || res.length() == 0) return DEFAULT_STR;
       return res;
     }
+
     if (NAMESPACE.equalsIgnoreCase(expr)) {
       if (!(dm instanceof ModelElement)) return "(Non-ModelElement)";
       Namespace ns = ((ModelElement) dm).getNamespace();
@@ -153,7 +196,6 @@ public class UMLDescription {
     }
     return "(invalid expression: " + expr + ")";
   }
-  
-  
+
 } /* end class UMLDescription */
 

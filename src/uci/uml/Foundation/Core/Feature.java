@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -23,6 +21,8 @@
 // SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
+
+
 
 
 // Source file: Foundation/Core/Feature.java
@@ -44,7 +44,7 @@ public abstract class Feature extends ModelElementImpl {
   public VisibilityKind _visibility = VisibilityKind.UNSPEC;
   public Classifier _owner;
   //nmw: public ClassifierRole _classifierRole[];
-    
+
   public Feature() { }
   public Feature(Name name) { super(name); }
   public Feature(String nameStr) { super(new Name(nameStr)); }
@@ -74,8 +74,8 @@ public abstract class Feature extends ModelElementImpl {
 
   ////////////////////////////////////////////////////////////////
   // events
-//   public void fireVetoableChange(String propertyName, 
-// 				 Object oldValue, Object newValue) 
+//   public void fireVetoableChange(String propertyName,
+// 				 Object oldValue, Object newValue)
 //        throws PropertyVetoException {
 //     super.fireVetoableChange(propertyName, oldValue, newValue);
 //     if (_owner != null) {
@@ -85,10 +85,10 @@ public abstract class Feature extends ModelElementImpl {
 //   }
 
 
-  
+
   ////////////////////////////////////////////////////////////////
   // debugging
-  
+
   public String toString() { return getName().getBody(); }
 
 }

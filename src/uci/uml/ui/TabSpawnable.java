@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -25,11 +23,18 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
+
+
 package uci.uml.ui;
 
 import java.awt.*;
 import java.util.*;
 import com.sun.java.swing.*;
+
+/** A subclass of JPanel that can act as a tab in the DetailsPane or
+ *  MultiEditorPane.  When the tab is double-clicked, this JPanel will
+ *  generate a separate window of the same size and with the same
+ *  contents.  This is almost like "tearing off" a tab. */
 
 public class TabSpawnable extends JPanel implements Cloneable {
   public final int OVERLAPP = 30;

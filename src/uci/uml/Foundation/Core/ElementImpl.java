@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -23,6 +21,8 @@
 // SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
+
+
 
 
 // Source file: Foundation/Core/Element.java
@@ -43,7 +43,7 @@ import uci.ui.Highlightable;
  *  via the _vetoListeners, but setHighlight sends notifications to
  *  _propertyListeners. */
 
-  
+
 public class ElementImpl implements Element, Highlightable {
   public Name _name = Name.UNSPEC;
   //% public TaggedValue _characteristic[];
@@ -54,7 +54,7 @@ public class ElementImpl implements Element, Highlightable {
   public transient Vector _vetoListeners = new Vector();
   public transient Vector _propertyListeners = new Vector();
   public boolean _highlight;
-  
+
   public ElementImpl() { }
   public ElementImpl(Name name) {
     try { setName(name); }
@@ -136,16 +136,16 @@ public class ElementImpl implements Element, Highlightable {
     _vetoListeners.removeElement(listener);
   }
 
-  public void fireVetoableChange(String propertyName, 
-				 boolean oldValue, boolean newValue) 
+  public void fireVetoableChange(String propertyName,
+				 boolean oldValue, boolean newValue)
        throws PropertyVetoException {
 	 fireVetoableChange(propertyName,
 			    new Boolean(oldValue),
 			    new Boolean(newValue));
   }
 
-  public void fireVetoableChange(String propertyName, 
-				 int oldValue, int newValue) 
+  public void fireVetoableChange(String propertyName,
+				 int oldValue, int newValue)
        throws PropertyVetoException {
 	 fireVetoableChange(propertyName,
 			    new Integer(oldValue),
@@ -154,8 +154,8 @@ public class ElementImpl implements Element, Highlightable {
 
 
 
-  public void fireVetoableChange(String propertyName, 
-				 Object oldValue, Object newValue) 
+  public void fireVetoableChange(String propertyName,
+				 Object oldValue, Object newValue)
        throws PropertyVetoException {
 	 if (_vetoListeners == null) return;
     if (oldValue != null && oldValue.equals(newValue)) return;
@@ -164,7 +164,7 @@ public class ElementImpl implements Element, Highlightable {
 			      propertyName, oldValue, newValue);
     try {
       for (int i = 0; i < _vetoListeners.size(); i++) {
-	VetoableChangeListener target = 
+	VetoableChangeListener target =
 	  (VetoableChangeListener) _vetoListeners.elementAt(i);
 	target.vetoableChange(evt);
       }
@@ -182,12 +182,12 @@ public class ElementImpl implements Element, Highlightable {
       }
       // And now rethrow the PropertyVetoException.
       throw veto;
-    }    
+    }
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // property change events
-  
+
   public synchronized void
   addPropertyChangeListener(PropertyChangeListener listener) {
     if (_propertyListeners == null) _propertyListeners = new Vector();
@@ -201,14 +201,14 @@ public class ElementImpl implements Element, Highlightable {
     _propertyListeners.removeElement(listener);
   }
 
-  public void firePropertyChange(String propertyName, 
+  public void firePropertyChange(String propertyName,
 				 boolean oldValue, boolean newValue) {
 	 firePropertyChange(propertyName,
 			    new Boolean(oldValue),
 			    new Boolean(newValue));
   }
 
-  public void firePropertyChange(String propertyName, 
+  public void firePropertyChange(String propertyName,
 				 int oldValue, int newValue) {
 	 firePropertyChange(propertyName,
 			    new Integer(oldValue),
@@ -217,22 +217,22 @@ public class ElementImpl implements Element, Highlightable {
 
 
 
-  public void firePropertyChange(String propertyName, 
+  public void firePropertyChange(String propertyName,
 				 Object oldValue, Object newValue) {
     if (_propertyListeners == null) return;
     if (oldValue != null && oldValue.equals(newValue)) return;
     PropertyChangeEvent evt =
       new PropertyChangeEvent(this, propertyName, oldValue, newValue);
     for (int i = 0; i < _propertyListeners.size(); i++) {
-      PropertyChangeListener target = 
+      PropertyChangeListener target =
 	(PropertyChangeListener) _propertyListeners.elementAt(i);
       target.propertyChange(evt);
-    }    
+    }
   }
 
   ////////////////////////////////////////////////////////////////
   // OCL support
-  
+
   public String getOCLTypeStr() {
     String javaClassName = getClass().getName();
     int dotIndex = javaClassName.lastIndexOf(".");

@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -23,6 +21,8 @@
 // SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
+
+
 
 
 // Source file: Foundation/Core/Dependency.java
@@ -44,14 +44,14 @@ public class Dependency extends ModelElementImpl {
   //% public Dependency _subDependency[];
   public Vector _subDependency = new Vector();
   public Dependency _owningDependency;
-  
+
   public Dependency() { }
   public Dependency(Name name) { super(name); }
   public Dependency(String nameStr) { super(new Name(nameStr)); }
 
   public Dependency(ModelElement aSupplier, ModelElement aClient) {
     super(new Name(aSupplier.getName().getBody() + "-->" +
-		   aClient.getName().getBody())); 
+		   aClient.getName().getBody()));
     // needs-more-work
     //try {
       addSupplier(aSupplier);
@@ -60,7 +60,7 @@ public class Dependency extends ModelElementImpl {
     //catch (PropertyVetoException pve) { }
   }
 
-  
+
   public String getDescription() { return _description; }
   public void setDescription(String x) {
     _description = x;

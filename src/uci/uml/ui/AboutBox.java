@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -23,6 +21,8 @@
 // SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
+
+
 
 
 
@@ -116,10 +116,8 @@ public class AboutBox extends JFrame {
     s+="software and its documentation for educational, research and non-profit\n";
     s+="purposes, without fee, and without a written agreement is hereby granted,\n";
     s+="provided that the above copyright notice and this paragraph appear in all\n";
-    s+="copies. Permission to incorporate this software into commercial products may\n";
-    s+="be obtained by contacting the University of California. David F. Redmiles\n";
-    s+="Department of Information and Computer Science (ICS) University of\n";
-    s+="California Irvine, California 92697-3425 Phone: 714-824-3823. This software\n";
+    s+="copies. Permission to incorporate this software into commercial products must\n";
+    s+="be negotiated with the University of California. This software\n";
     s+="program and documentation are copyrighted by The Regents of the University\n";
     s+="of California. The software program and documentation are supplied 'as is',\n";
     s+="without any accompanying services from The Regents. The Regents do not\n";

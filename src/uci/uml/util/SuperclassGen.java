@@ -32,6 +32,9 @@ import java.util.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
 
+/** Utility class to generate the children of a class.  In this case
+ *  the "children" of a class are it's base classes. */
+
 
 public class SuperclassGen implements ChildGenerator {
   public Enumeration gen(Object o) {
@@ -47,4 +50,3 @@ public class SuperclassGen implements ChildGenerator {
     return res.elements();
   }
 } /* end class SuperclassGen */
-  

@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -25,6 +23,8 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
+
+
 package uci.uml.ui;
 
 import java.awt.*;
@@ -38,6 +38,13 @@ import uci.ui.ToolBar;
 import uci.util.*;
 import uci.argo.kernel.*;
 
+
+/** In a future release, each Critic will also provide a wizard to
+ * help fix the problem it identifies.  The "Next>" button will
+ * advance through the steps of the wizard, and increase the blue
+ * progress bar on the ToDoItem "sticky note" icon in ToDo tree pane.
+ *
+ * @see uci.argo.kernel.CriticCC */
 
 public class WizStep extends JPanel
 implements TabToDoTarget, ActionListener {
@@ -101,10 +108,11 @@ implements TabToDoTarget, ActionListener {
     }
     else if (_target instanceof ToDoItem) {
       ToDoItem tdi = (ToDoItem) _target;
+      // needs-more-work: these should be set based on the item
       _backButton.setEnabled(false);
       _nextButton.setEnabled(false);
       _finishButton.setEnabled(false);
-      _helpButton.setEnabled(true);
+      _helpButton.setEnabled(false);
     }
     else {
       //_description.setText("needs-more-work");

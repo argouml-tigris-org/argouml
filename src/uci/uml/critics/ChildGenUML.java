@@ -1,3 +1,30 @@
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
+
+
+
 // File: ChildGenUML.java
 // Classes: ChildGenUML
 // Original Author: jrobbins
@@ -11,6 +38,14 @@ import uci.uml.ui.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
 
+/** This class gives critics access to parts of the UML model of the
+ *  design.  It defines a gen() function that returns the "children"
+ *  of any given part of the UML model.  Basically, it goes from
+ *  Project, to Models, to ModelElements.  Argo's critic Agency uses
+ *  this to apply critics where appropriate.
+ *
+ * @see uci.argo.kernel.Agency */
+
 public class ChildGenUML implements ChildGenerator {
   /** Reply a Enumeration of the children of the given Object */
   public Enumeration gen(Object o) {
@@ -22,7 +57,7 @@ public class ChildGenUML implements ChildGenerator {
       Vector ownedElements = ((Package)o).getOwnedElement();
       if (ownedElements != null) return ownedElements.elements();
     }
-    
+
     if (o instanceof ElementOwnership) {
       ModelElement me = ((ElementOwnership)o).getModelElement();
       return new EnumerationSingle(me);
@@ -32,7 +67,7 @@ public class ChildGenUML implements ChildGenerator {
 
 //     if (o instanceof Classifier) {
 //       Classifier c = (Classifier) o;
-//       EnumerationComposite res = new EnumerationComposite();      
+//       EnumerationComposite res = new EnumerationComposite();
 //       res.addSub(c.getBehavioralFeature());
 //       res.addSub(c.getStructuralFeature());
 //       return res;
@@ -43,15 +78,15 @@ public class ChildGenUML implements ChildGenerator {
 //       Vector assocEnds = asc.getConnection();
 //       if (assocEnds != null) return assocEnds.elements();
 //     }
-    
 
-    
-    
-    
+
+
+
+
     // // needed?
 //     if (o instanceof StateMachine) {
 //       StateMachine sm = (StateMachine) o;
-//       EnumerationComposite res = new EnumerationComposite();      
+//       EnumerationComposite res = new EnumerationComposite();
 //       State top = sm.getTop();
 //       if (top != null) res.addSub(EnumerationSingle(top));
 //       res.addSub(sm.getTransitions());
@@ -66,7 +101,7 @@ public class ChildGenUML implements ChildGenerator {
 //     }
 
     // tons more cases
-    
+
     return EnumerationEmpty.theInstance();
   }
 } /* end class ChildGenUML */

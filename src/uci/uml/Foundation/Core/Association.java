@@ -3,12 +3,10 @@
 // software and its documentation for educational, research and non-profit
 // purposes, without fee, and without a written agreement is hereby granted,
 // provided that the above copyright notice and this paragraph appear in all
-// copies. Permission to incorporate this software into commercial products may
-// be obtained by contacting the University of California. David F. Redmiles
-// Department of Information and Computer Science (ICS) University of
-// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
-// program and documentation are copyrighted by The Regents of the University
-// of California. The software program and documentation are supplied "as is",
+// copies. Permission to incorporate this software into commercial products
+// must be negotiated with University of California. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "as is",
 // without any accompanying services from The Regents. The Regents do not
 // warrant that the operation of the program will be uninterrupted or
 // error-free. The end-user understands that the program was developed for
@@ -23,6 +21,8 @@
 // SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
+
+
 
 
 
@@ -47,7 +47,7 @@ implements IAssociation {
   //nmw: public AssociationRole associationRole[];
   //% public Link _link[];
   public Vector _link = new Vector();
-    
+
   public Association() { }
   public Association(Name name) { super(name); }
   public Association(String nameStr) { super(new Name(nameStr)); }
@@ -62,7 +62,7 @@ implements IAssociation {
   public Association(Name name, Name srcN, Classifier srcC,
 		     Multiplicity srcM, AggregationKind srcA,
 		     Name dstN, Classifier dstC, Multiplicity dstM,
-		     AggregationKind dstA) { 
+		     AggregationKind dstA) {
     super(name);
     try {
       AssociationEnd src = new AssociationEnd(srcN, srcC, srcM, srcA);
@@ -73,7 +73,7 @@ implements IAssociation {
     catch (PropertyVetoException pce) { }
   }
 
-  public Association(Classifier srcC, Classifier dstC) { 
+  public Association(Classifier srcC, Classifier dstC) {
     super();
     try {
       AssociationEnd src = new AssociationEnd(srcC);
@@ -89,7 +89,7 @@ implements IAssociation {
 
   public Vector getConnection() { return (Vector) _connection; }
   public void setConnection(Vector x) throws PropertyVetoException {
-    if (_connection == null) _connection = new Vector();    
+    if (_connection == null) _connection = new Vector();
     fireVetoableChange("connection", _connection, x);
     _connection = x;
     java.util.Enumeration enum = _connection.elements();
@@ -109,7 +109,7 @@ implements IAssociation {
     fireVetoableChange("connection", _connection, x);
     _connection.removeElement(x);
   }
- 
+
   //- public AssociationRole[] getAssociationRole() {
   //-   return AssociationRole;
   //- }
@@ -140,18 +140,18 @@ implements IAssociation {
   public boolean hasCompositeEnd() {
     if (_connection == null) return false;
     java.util.Enumeration enum = _connection.elements();
-    while (enum.hasMoreElements()) { 
+    while (enum.hasMoreElements()) {
       AssociationEnd ae = (AssociationEnd) enum.nextElement();
       if (AggregationKind.COMPOSITE.equals(ae.getAggregation()))
 	return true;
     }
     return false;
   }
-  
+
   public boolean hasAggregateEnd() {
     if (_connection == null) return false;
     java.util.Enumeration enum = _connection.elements();
-    while (enum.hasMoreElements()) { 
+    while (enum.hasMoreElements()) {
       AssociationEnd ae = (AssociationEnd) enum.nextElement();
       if (AggregationKind.AGG.equals(ae.getAggregation()))
 	return true;
@@ -162,7 +162,7 @@ implements IAssociation {
   ////////////////////////////////////////////////////////////////
   // debugging
 
-  
+
   public String dbgString() {
     String s = "";
     Vector v;
@@ -170,7 +170,7 @@ implements IAssociation {
 
     String slash = "";
     if (containsStereotype(Stereotype.DERIVED)) slash = "/";
-    
+
     s += getOCLTypeStr() + "(" + slash + getName().getBody().toString() + ")[";
 
     String stereos = dbgStereotypes();
@@ -188,6 +188,6 @@ implements IAssociation {
     s += "\n]";
     return s;
   }
-  
+
 }
 
