@@ -448,27 +448,9 @@ public class UseCaseDiagramGraphModel
         // the model namespace.
 
         getNodes().add(node);
-        /*
-         * 2002-07-14
-         * Jaap Branderhorst
-         * Issue 324
-         * Next line of code didn't check if the node allready was
-         * owned by some namespace. So when a node was added that was allready
-         * owned by a namespace, the node was moved to the namespace the
-         * usecase diagram belongs to.
-         * OLD CODE
-
-	 if ((node instanceof MActor) ||
-	 (node instanceof MUseCase)) {
-
-         * NEW CODE:
-         */
-	if (((ModelFacade.isAActor(node))
-	     || (ModelFacade.isAUseCase(node)))
-	    && (ModelFacade.getNamespace(node) == null)) {
-	    // end NEW CODE
-	    LOG.debug("setting namespace " + model
-		      + " to element " + node);
+        
+        if (ModelFacade.isAModelElement(node)
+                && ModelFacade.getNamespace(node) == null) {
             Model.getCoreHelper().addOwnedElement(model, /*(MModelElement)*/ node);
         }
 
