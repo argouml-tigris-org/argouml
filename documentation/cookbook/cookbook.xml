@@ -2836,6 +2836,7 @@ so in reality this is more of an ambition than a fact.
 	  <para>
 Since the whole module contains a lot of texts describing
 things for the user there should be a lot of issues here.
+Discuss this with the language teams.
 </para>
 	</sect3>
 	<sect3 id="comp-critics-to-comp-plugins">
@@ -3002,27 +3003,49 @@ Having written the code you need to add the text for the headline and
 description to the cognitive resource bundles. 
 These are in the package 
 <classname>org.argouml.i18n</classname>, 
-in the files
-<filename>UMLCognitiveResourceBundle.java</filename>
-<filename>UMLCognitiveResourceBundle_en_GB.java</filename>,
-<filename>UMLCognitiveResourceBundle_es.java</filename>, ...
-for default,
-British English,
-Spanish, ...
-respectively.
+in the file
+<filename>UMLCognitiveResourceBundle.java</filename>.
 You need to add two keys for the head and description,
 which will be named respectively
 <constant>Cr<replaceable>XxxxYyyyZzzz</replaceable>_head</constant>
 and
 <constant>Cr<replaceable>XxxxYyyyZzzz</replaceable>_desc</constant>.
 There are plenty of examples to look at there.
+The other files 
+(<filename>UMLCognitiveResourceBundle_en_GB.java</filename>,
+<filename>UMLCognitiveResourceBundle_es.java</filename>, ...
+for
+British English,
+Spanish, ...
+respectively)
+are the responsibility of the corresponding language team.
+Notify the language teams that there is work to be done.
+</para>
+	      <para>
+In method <methodname>Init</methodname>
+of the class <classname>org.argouml.uml.cognitive.critics.Init</classname>, 
+add two statements:
+<programlisting>
+  public static Critic <replaceable>crXxxxxYyyyZzzz</replaceable> = new <replaceable>CrXxxxxYyyyZzzz</replaceable>();
+...
+  Agency.register(<replaceable>crXxxxxYyyyZzzz</replaceable>, <replaceable>DesignMaterialCls</replaceable>);
+</programlisting>
+If you want to add a critic to a design material 
+which is not already declared (for example the Extend class), 
+you will have to add a third statement to the 
+<methodname>Init</methodname> method as well, which is:
+<programlisting>
+  java.lang.Class <replaceable>XxxYyyyZzCls</replaceable> = <replaceable>MXxxYyyyZzImpl</replaceable>.class;
+</programlisting>
+where <replaceable>MXxxYyyyZzImpl</replaceable>.class should be part of the NovoSoft UML package.
 </para>
 	      <para>
 Finally you should get a new section added to the user manual reference
 section on critics.
 The purpose of this is to collect all the details and rationale around
 this critic to complement the short text in the description.
-Contact Jeremy Bennett for help with that.
+It should go in the ref_critics.xml file and have an id tag
+named critics.<replaceable>CrXxxYyyyZzzz</replaceable>.
 </para>
 	    </listitem>
 	    <listitem>
