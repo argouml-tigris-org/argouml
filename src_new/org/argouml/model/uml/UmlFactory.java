@@ -206,6 +206,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
         {ModelFacade.ASSOCIATION,      ModelFacade.USE_CASE},
         {ModelFacade.ASSOCIATION,      ModelFacade.ACTOR,              ModelFacade.USE_CASE},
         {ModelFacade.ASSOCIATION,      ModelFacade.NODE},
+        {ModelFacade.ASSOCIATION_ROLE, ModelFacade.CLASSIFIER_ROLE},
         {ModelFacade.EXTEND,           ModelFacade.USE_CASE},
         {ModelFacade.INCLUDE,          ModelFacade.USE_CASE},
         {ModelFacade.LINK,             ModelFacade.NODE_INSTANCE},
