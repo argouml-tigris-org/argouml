@@ -52,6 +52,8 @@ import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.util.*;
+
 
 /** Abstract class to display diagram arcs for UML ModelElements that
  *  look like arcs and that have editiable names. */
@@ -422,4 +424,15 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	    damage();
 	}
 
+    /**
+     * Add the owner of this element to the trash, so other Argo components (i.e. critics) 
+     * realize, that it is deleted.
+     */
+    public void delete() {
+	if(getOwner() != null) {
+	    Trash.SINGLETON.addItemFrom( getOwner(), null);
+	}
+	super.delete();
+    }
 } /* end class FigEdgeModelElement */
+
