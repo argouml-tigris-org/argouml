@@ -37,6 +37,9 @@ import java.util.Locale;
 /** StartCritics is a thread which helps to start the critiquing thread
  */
 public class StartCritics implements Runnable {
+	/**
+	 * @see java.lang.Runnable#run()
+	 */
     public void run() {
         Designer dsgr = Designer.theDesigner();
         org.argouml.uml.cognitive.critics.Init.init();
