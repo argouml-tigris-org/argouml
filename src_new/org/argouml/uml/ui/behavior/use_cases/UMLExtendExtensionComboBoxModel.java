@@ -29,7 +29,6 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
@@ -52,12 +51,12 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        MExtend extend = (MExtend) getTarget();
+        Object extend = /*(MExtend)*/ getTarget();
         if (extend == null) return;
-        MNamespace ns = extend.getNamespace();
+        Object ns = ModelFacade.getNamespace(extend);
         addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
-        if (extend.getBase() != null) {
-            removeElement(extend.getBase());
+        if (ModelFacade.getBase(extend) != null) {
+            removeElement(ModelFacade.getBase(extend));
         }
     }
 

@@ -25,13 +25,11 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import java.awt.event.ActionEvent;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
-
-import ru.novosoft.uml.behavior.common_behavior.MReception;
-import ru.novosoft.uml.behavior.common_behavior.MSignal;
 
 /**
  * Combobox for signals on the reception proppanel.
@@ -54,10 +52,10 @@ public class UMLReceptionSignalComboBox extends UMLComboBox2 {
      */
     protected void doIt(ActionEvent event) {
         Object o = getModel().getElementAt(getSelectedIndex());
-        MSignal signal = (MSignal) o;
-        MReception reception = (MReception) getTarget();
-        if (signal != reception.getSignal()) {
-            reception.setSignal(signal);
+        Object signal = /*(MSignal)*/ o;
+        Object reception = /*(MReception)*/ getTarget();
+        if (signal != ModelFacade.getSignal(signal)) {
+            ModelFacade.setSignal(reception, signal);
         }
     }
 

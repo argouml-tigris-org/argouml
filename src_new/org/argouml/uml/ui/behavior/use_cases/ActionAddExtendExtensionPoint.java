@@ -31,8 +31,6 @@ import java.util.Vector;
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-
 /**
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -61,8 +59,8 @@ public class ActionAddExtendExtensionPoint extends AbstractActionAddModelElement
     protected Vector getChoices() {
         Vector ret = new Vector();
         if (getTarget() != null) {
-            MExtend extend = (MExtend)getTarget();
-            Collection c = extend.getBase().getExtensionPoints();
+            Object extend = /*(MExtend)*/getTarget();
+            Collection c = ModelFacade.getExtensionPoints(ModelFacade.getBase(extend));
             ret.addAll(c);
         }
         return ret;

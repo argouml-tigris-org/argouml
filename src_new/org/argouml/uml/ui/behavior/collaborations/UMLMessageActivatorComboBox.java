@@ -25,13 +25,12 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import java.awt.event.ActionEvent;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-
 /**
  * The combobox for activators on the message proppanel. The only reason this 
  * combobox implements melementlistener is to conform to UMLChangeDispatch. The 
@@ -56,9 +55,9 @@ public class UMLMessageActivatorComboBox extends UMLComboBox2 {
      */
     protected void doIt(ActionEvent event) {
         Object o = getModel().getElementAt(getSelectedIndex());
-        MMessage activator = (MMessage) o;
-        MMessage mes = (MMessage) getTarget();
-        if (activator != mes.getActivator()) {
+        Object activator = /*(MMessage)*/ o;
+        Object mes = /*(MMessage)*/ getTarget();
+        if (activator != ModelFacade.getActivator(mes)) {
             CollaborationsHelper.getHelper().setActivator(mes, activator);
         }
     }

@@ -32,8 +32,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-
 /**
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -55,7 +53,7 @@ public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
      */
     protected Vector getChoices() {
         Vector vec = new Vector();
-        vec.addAll(CollaborationsHelper.getHelper().getAllPossibleBases((MClassifierRole) getTarget()));
+        vec.addAll(CollaborationsHelper.getHelper().getAllPossibleBases(getTarget()));
         return vec;
     }
 
@@ -80,7 +78,7 @@ public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
      * org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
-        MClassifierRole role = (MClassifierRole) getTarget();
+        Object role = /*(MClassifierRole)*/ getTarget();
         CollaborationsHelper.getHelper().setBases(role, selected);
     }
         

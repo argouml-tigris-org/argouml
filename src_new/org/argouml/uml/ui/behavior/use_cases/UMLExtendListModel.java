@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -457,7 +456,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      */
     protected void build(MModelElement from, MModelElement to) {
         if (org.argouml.model.ModelFacade.isAUseCase(from) && org.argouml.model.ModelFacade.isAUseCase(to)) {
-            UseCasesFactory.getFactory().buildExtend((MUseCase) to, (MUseCase) from);
+            UseCasesFactory.getFactory().buildExtend(/*(MUseCase)*/ to, /*(MUseCase)*/ from);
         } else
             throw new IllegalArgumentException("In build of UMLExtendListModel: either the arguments are null or not instanceof MUseCase");
     }
@@ -489,8 +488,8 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
      */
-    protected MModelElement getRelation(MModelElement from, MModelElement to) {
-        return UseCasesHelper.getHelper().getExtends((MUseCase) to, (MUseCase) from);
+    protected Object/*MModelElement*/ getRelation(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
+        return UseCasesHelper.getHelper().getExtends(/*(MUseCase)*/ to, /*(MUseCase)*/ from);
     }
 
     /**
@@ -498,7 +497,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      */
     protected Collection getSelected() {
         if (org.argouml.model.ModelFacade.isAUseCase(getTarget())) {
-            return UseCasesHelper.getHelper().getExtendedUseCases((MUseCase) getTarget());
+            return UseCasesHelper.getHelper().getExtendedUseCases(/*(MUseCase)*/ getTarget());
         } else
             throw new IllegalStateException("In getSelected of UMLExtendListModel: target is not an instanceof MUseCase");
     }

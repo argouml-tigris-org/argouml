@@ -149,11 +149,12 @@ public class UseCasesHelper {
 	
     /**
      * Returns all usecases this usecase extends
-     * @param clazz
+     * @param ausecase
      * @return Collection
      */
-    public Collection getExtendedUseCases(MUseCase usecase) {
-	if (usecase == null) return new ArrayList();
+    public Collection getExtendedUseCases(Object ausecase) {
+	if (ausecase == null) return new ArrayList();
+        MUseCase usecase = (MUseCase) ausecase;
 	Iterator it = usecase.getExtends().iterator();
 	List list = new ArrayList();
 	while (it.hasNext()) {
@@ -183,7 +184,9 @@ public class UseCasesHelper {
      * @param extension
      * @return MExtend
      */
-    public MExtend getExtends(MUseCase base, MUseCase extension) {
+    public Object getExtends(Object/*MUseCase*/ abase, Object/*MUseCase*/ anextension) {
+        MUseCase base = (MUseCase) abase;
+        MUseCase extension = (MUseCase) anextension;
 	if (base == null || extension == null) return null;
 	Iterator it = extension.getExtends().iterator();
 	while (it.hasNext()) {
@@ -200,8 +203,9 @@ public class UseCasesHelper {
      * @param clazz
      * @return Collection
      */
-    public Collection getIncludedUseCases(MUseCase usecase) {
-	if (usecase == null) return new ArrayList();
+    public Collection getIncludedUseCases(Object/*MUseCase*/ ausecase) {
+	if (ausecase == null) return new ArrayList();
+        MUseCase usecase = (MUseCase) ausecase;
 	Iterator it = usecase.getIncludes().iterator();
 	List list = new ArrayList();
 	while (it.hasNext()) {
@@ -219,7 +223,9 @@ public class UseCasesHelper {
      * @param extension
      * @return MExtend
      */
-    public MInclude getIncludes(MUseCase base, MUseCase inclusion) {
+    public MInclude getIncludes(Object abase, Object aninclusion) {
+        MUseCase base = (MUseCase)abase;
+        MUseCase inclusion = (MUseCase)aninclusion;
 	if (base == null || inclusion == null) return null;
 	Iterator it = inclusion.getIncludes().iterator();
 	while (it.hasNext()) {
@@ -237,7 +243,8 @@ public class UseCasesHelper {
      * @param uc
      * @return Collection
      */
-    public Collection getSpecificationPath(MUseCase uc) {
+    public Collection getSpecificationPath(Object ausecase) {
+        MUseCase uc = (MUseCase)ausecase;
 	Set set = new HashSet();
 	set.addAll(ModelManagementHelper.getHelper()
 		   .getAllSurroundingNamespaces(uc));

@@ -42,7 +42,6 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -60,7 +59,7 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
         Class mclass = (Class) ModelFacade.COMPONENT_INSTANCE;
 
         Class[] namesToWatch =
-        {(Class) ModelFacade.STEREOTYPE, (Class) ModelFacade.NAMESPACE, MClassifier.class};
+            {(Class) ModelFacade.STEREOTYPE, (Class) ModelFacade.NAMESPACE, MClassifier.class};
 
         setNameEventListening(namesToWatch);
 
@@ -85,26 +84,26 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
         Object target = getTarget();
 
         if (org.argouml.model.ModelFacade.isAInstance(target)) {
-	    MInstance inst = (MInstance) target;
+	    Object inst = /*(MInstance)*/ target;
 //            ((MInstance) target).setClassifier((MClassifier) element);
 
 	    // delete all classifiers
-	    Collection col = inst.getClassifiers();
+	    Collection col = ModelFacade.getClassifiers(inst);
 	    if (col != null) {
 		Iterator iter = col.iterator();
 		if (iter != null && iter.hasNext()) {
-		    MClassifier classifier = (MClassifier) iter.next();
-		    inst.removeClassifier(classifier);
+		    Object classifier = /*(MClassifier)*/ iter.next();
+		    ModelFacade.removeClassifier(inst, classifier);
 		}
 	    }
 	    // add classifier
-	    inst.addClassifier( element);
+	    ModelFacade.addClassifier(inst, element);
 
         }
     }
 
-    public MClassifier getClassifier() {
-        MClassifier classifier = null;
+    public Object getClassifier() {
+        Object classifier = null;
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAInstance(target)) {
             // at the moment , we only deal with one classifier
@@ -112,7 +111,7 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
             if (col != null) {
                 Iterator iter = col.iterator();
                 if (iter != null && iter.hasNext()) {
-                    classifier = (MClassifier) iter.next();
+                    classifier = /*(MClassifier)*/ iter.next();
                 }
             }
 

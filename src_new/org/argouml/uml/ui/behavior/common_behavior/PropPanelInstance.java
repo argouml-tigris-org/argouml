@@ -113,21 +113,20 @@ public class PropPanelInstance extends PropPanelModelElement {
         Object target = getTarget();
 
         if (org.argouml.model.ModelFacade.isAInstance(target)) {
-	    MInstance inst = (MInstance) target;
+	    Object inst = /*(MInstance)*/ target;
 //            ((MInstance) target).setClassifier((MClassifier) element);
 
 	    // delete all classifiers
-	    Collection col = inst.getClassifiers();
+	    Collection col = ModelFacade.getClassifiers(inst);
 	    if (col != null) {
 		Iterator iter = col.iterator();
 		if (iter != null && iter.hasNext()) {
-		    MClassifier classifier = (MClassifier) iter.next();
-		    inst.removeClassifier(classifier);
+		    Object classifier = /*(MClassifier)*/ iter.next();
+		    ModelFacade.removeClassifier(inst, classifier);
 		}
 	    }
 	    // add classifier
-	    inst.addClassifier( element);
+	    ModelFacade.addClassifier(inst, element);
         }
     }
 } /* end class PropPanelInstance */
-

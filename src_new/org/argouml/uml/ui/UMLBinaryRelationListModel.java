@@ -116,7 +116,7 @@ abstract public class UMLBinaryRelationListModel
                 while (it.hasNext()) {
                     MModelElement othermelement = (MModelElement) it.next();
                     if (!dialog.getSelected().contains(othermelement)) {
-                        MModelElement connector =
+                        Object/*MModelElement*/ connector =
                             getRelation(melement, othermelement);
                         Object pt = TargetManager.getInstance().getTarget();
                         TargetManager.getInstance().setTarget(connector);
@@ -135,10 +135,10 @@ abstract public class UMLBinaryRelationListModel
     public void delete(int index) {
         Object target = getSource();
         if (org.argouml.model.ModelFacade.isAModelElement(target)) {
-            MModelElement melement = (MModelElement) target;
-            MModelElement othermelement =
+            Object/*MModelElement*/ melement = (MModelElement) target;
+            Object/*MModelElement*/ othermelement =
                 (MModelElement) getModelElementAt(index);
-            MModelElement relation = getRelation(melement, othermelement);
+            Object/*MModelElement*/ relation = getRelation(melement, othermelement);
             Object pt = TargetManager.getInstance().getTarget();
             TargetManager.getInstance().setTarget(relation);
             ActionEvent event = new ActionEvent(this, 1, "delete");
@@ -196,9 +196,9 @@ abstract public class UMLBinaryRelationListModel
      * @param to
      * @return MModelElement
      */
-    abstract protected MModelElement getRelation(
-        MModelElement from,
-        MModelElement to);
+    abstract protected Object getRelation(
+        Object from,
+        Object to);
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)

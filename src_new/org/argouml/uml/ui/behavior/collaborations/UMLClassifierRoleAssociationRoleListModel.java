@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -31,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -39,8 +39,6 @@ import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.MutableGraphModel;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
@@ -75,11 +73,11 @@ public class UMLClassifierRoleAssociationRoleListModel
     protected Collection getChoices() {
 	Object target = getTarget();
 	if (org.argouml.model.ModelFacade.isAClassifierRole(target)) {
-	    MClassifierRole role = (MClassifierRole) target;
+	    Object role = /*(MClassifierRole)*/ target;
 	    List list = new ArrayList();
-	    Iterator it = role.getBases().iterator();
+	    Iterator it = ModelFacade.getBases(role).iterator();
 	    while (it.hasNext()) {
-		MClassifier base = (MClassifier) it.next();
+		Object base = /*(MClassifier)*/ it.next();
 		list.addAll(CoreHelper.getHelper().getAssociatedClassifiers(base));
 	    }
 	    return list;
@@ -113,8 +111,8 @@ public class UMLClassifierRoleAssociationRoleListModel
      * MModelElement)
      */
     protected void build(MModelElement from, MModelElement to) {
-	if (from != null && to != null && org.argouml.model.ModelFacade.isAClassifierRole(from) && org.argouml.model.ModelFacade.isAClassifierRole(to)) { 
-	    CollaborationsFactory.getFactory().buildAssociationRole((MClassifierRole) from, (MClassifierRole) to);
+	if (from != null && to != null && ModelFacade.isAClassifierRole(from) && ModelFacade.isAClassifierRole(to)) { 
+	    CollaborationsFactory.getFactory().buildAssociationRole(from, to);
 	}
     }
 
@@ -123,9 +121,9 @@ public class UMLClassifierRoleAssociationRoleListModel
      * org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement,
      * MModelElement)
      */
-    protected MModelElement getRelation(MModelElement from, MModelElement to) {
-	if (from != null && to != null && org.argouml.model.ModelFacade.isAClassifierRole(from) && org.argouml.model.ModelFacade.isAClassifierRole(to)) { 
-	    return CollaborationsHelper.getHelper().getAssocationRole((MClassifierRole) from, (MClassifierRole) to);
+    protected Object getRelation(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
+	if (from != null && to != null && ModelFacade.isAClassifierRole(from) && ModelFacade.isAClassifierRole(to)) { 
+	    return CollaborationsHelper.getHelper().getAssocationRole(/*(MClassifierRole)*/ from, /*(MClassifierRole)*/ to);
 	} else
 	    throw new IllegalArgumentException("Tried to get relation between some objects of which one was not a classifierrole");
     }

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -28,11 +27,9 @@ package org.argouml.uml.ui.behavior.use_cases;
 import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
-
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 /**
  * Sets the base of an extend. Updates both the model (NSUML) as the diagrams.
@@ -59,25 +56,25 @@ public class ActionSetExtendBase extends UMLChangeAction {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();
-        MUseCase newBase = null;
-        MUseCase oldBase = null;
-        MExtend extend = null;
+        Object newBase = null;
+        Object oldBase = null;
+        Object extend = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2) source;
-            newBase = (MUseCase) combo.getSelectedItem();
+            newBase = /*(MUseCase)*/ combo.getSelectedItem();
             Object o = combo.getTarget();
             if (org.argouml.model.ModelFacade.isAExtend(o)) {
-                extend = (MExtend) o;
+                extend = /*(MExtend)*/ o;
                 o = combo.getSelectedItem();
                 if (org.argouml.model.ModelFacade.isAUseCase(o)) {
-                    newBase = (MUseCase) o;
-                    oldBase = extend.getBase();
+                    newBase = /*(MUseCase)*/ o;
+                    oldBase = ModelFacade.getBase(extend);
                     if (newBase != oldBase) {
-                        extend.setBase(newBase);
+                        ModelFacade.setBase(extend, newBase);
                     }
                 } else {
                     if (o != null && o.equals("")) {
-                        extend.setBase(null);
+                        ModelFacade.setBase(extend, null);
                     }
                 }
 

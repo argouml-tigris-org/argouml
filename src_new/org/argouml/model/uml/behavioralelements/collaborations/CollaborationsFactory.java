@@ -26,6 +26,7 @@ package org.argouml.model.uml.behavioralelements.collaborations;
 
 import java.util.Collection;
 import java.util.Iterator;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
@@ -159,7 +160,8 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     /**
      * Builds an associationendrole based on some classifierrole
      */
-    public MAssociationEndRole buildAssociationEndRole(MClassifierRole type) {
+    public MAssociationEndRole buildAssociationEndRole(Object atype) {
+        MClassifierRole type = (MClassifierRole) atype;
     	MAssociationEndRole end = createAssociationEndRole();
     	end.setType(type);
     	return end;
@@ -168,11 +170,11 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     /**
      * Builds a binary associationrole on basis of two classifierroles
      */
-    public MAssociationRole buildAssociationRole(MClassifierRole from,
-						 MClassifierRole to) 
+    public MAssociationRole buildAssociationRole(Object/*MClassifierRole*/ from,
+						 Object/*MClassifierRole*/ to) 
     {
-    	MCollaboration colFrom = (MCollaboration) from.getNamespace();
-    	MCollaboration colTo = (MCollaboration) to.getNamespace();
+    	MCollaboration colFrom = (MCollaboration) ModelFacade.getNamespace(from);
+    	MCollaboration colTo = (MCollaboration) ModelFacade.getNamespace(to);
     	if (colFrom != null && colFrom.equals(colTo)) {
 	    MAssociationRole role = createAssociationRole();
 	    // we do not create on basis of associations between the

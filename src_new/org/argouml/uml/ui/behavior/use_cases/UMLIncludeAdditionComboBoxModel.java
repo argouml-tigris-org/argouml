@@ -30,7 +30,6 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
@@ -53,12 +52,12 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        MInclude inc = (MInclude) getTarget();
+        Object inc = /*(MInclude)*/ getTarget();
         if (inc == null) return;
-        MNamespace ns = inc.getNamespace();
+        Object ns = ModelFacade.getNamespace(inc);
         addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
-        if (contains(inc.getBase()))
-            removeElement(inc.getBase());
+        if (contains(ModelFacade.getBase(inc)))
+            removeElement(ModelFacade.getBase(inc));
     }
 
     /**

@@ -47,9 +47,7 @@ import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
-import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
@@ -93,10 +91,10 @@ public class PropPanelSignal extends PropPanelModelElement {
     public void newSignal() {
         Object target = getTarget();
         if (ModelFacade.isASignal(target)) {
-            MNamespace ns = (MNamespace) ModelFacade.getNamespace(target);
+            Object ns = /*(MNamespace)*/ ModelFacade.getNamespace(target);
             if (ns != null) {
-                MSignal newSig = ns.getFactory().createSignal();
-                ns.addOwnedElement(newSig);
+                Object newSig = ((MNamespace)ns).getFactory().createSignal();
+                ModelFacade.addOwnedElement(ns, newSig);
                 TargetManager.getInstance().setTarget(newSig);
             }
         }
@@ -105,8 +103,8 @@ public class PropPanelSignal extends PropPanelModelElement {
     public void newReception() {
     	Object target = getTarget();
     	if (ModelFacade.isASignal(target)) {
-	    MSignal signal = (MSignal) target;
-	    MReception reception = CommonBehaviorFactory.getFactory().buildReception(signal);
+	    Object signal = /*(MSignal)*/ target;
+	    Object reception = CommonBehaviorFactory.getFactory().buildReception(signal);
             TargetManager.getInstance().setTarget(reception);
     	}
     }
@@ -133,15 +131,15 @@ public class PropPanelSignal extends PropPanelModelElement {
     public void addContext(Integer index) {
     	Object target = getTarget();
     	if (org.argouml.model.ModelFacade.isASignal(target)) {
-	    MSignal signal = (MSignal) target;
+	    Object signal = /*(MSignal)*/ target;
 	    Vector choices = new Vector();
 	    Vector selected = new Vector();
 	    choices.addAll(CoreHelper.getHelper().getAllBehavioralFeatures());
-	    selected.addAll(signal.getContexts());
+	    selected.addAll(ModelFacade.getContexts(signal));
 	    UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-contexts"), true, true);
 	    int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
 	    if (returnValue == JOptionPane.OK_OPTION) {
-		signal.setContexts(dialog.getSelected());
+		ModelFacade.setContexts(signal, dialog.getSelected());
 	    }
     	}
     }
@@ -152,10 +150,10 @@ public class PropPanelSignal extends PropPanelModelElement {
      */
     public void deleteContext(Integer index) {
     	Object target = getTarget();
-    	if (org.argouml.model.ModelFacade.isASignal(target)) {
-	    MSignal signal = (MSignal) target;
-	    MBehavioralFeature feature = (MBehavioralFeature) UMLModelElementListModel.elementAtUtil(signal.getContexts(), index.intValue(), null);
-	    signal.removeContext(feature);
+    	if (ModelFacade.isASignal(target)) {
+	    Object signal = /*(MSignal)*/ target;
+	    Object feature = /*(MBehavioralFeature)*/ UMLModelElementListModel.elementAtUtil(ModelFacade.getContexts(signal), index.intValue(), null);
+	    ModelFacade.removeContext(signal, feature);
     	}
     }
 
@@ -187,10 +185,10 @@ public class PropPanelSignal extends PropPanelModelElement {
      */
     public void deleteReception(Integer index) {
     	Object target = getTarget();
-    	if (org.argouml.model.ModelFacade.isASignal(target)) {
-	    MSignal signal = (MSignal) target;
-	    MReception reception = (MReception) UMLModelElementListModel.elementAtUtil(signal.getReceptions(), index.intValue(), null);
-	    signal.removeReception(reception);
+    	if (ModelFacade.isASignal(target)) {
+	    Object signal = /*(MSignal)*/ target;
+	    Object reception = /*(MReception)*/ UMLModelElementListModel.elementAtUtil(ModelFacade.getReceptions(signal), index.intValue(), null);
+	    ModelFacade.removeReception(signal, reception);
     	}
     }
 

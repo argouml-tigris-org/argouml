@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -59,6 +58,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
 import org.argouml.ui.ArgoDiagram;
@@ -74,7 +74,6 @@ import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.behavior.use_cases.MInclude;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 
@@ -191,9 +190,9 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         Object     target   = getTarget();
 
         if (org.argouml.model.ModelFacade.isAUseCase(target)) {
-            MUseCase useCase = (MUseCase) target;
+            Object useCase = /*(MUseCase)*/ target;
 
-            includes = useCase.getIncludes();
+            includes = ModelFacade.getIncludes(useCase);
         }
 
         return includes;
@@ -230,12 +229,12 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         // Note that we cope with the NSUML bug by using the getBase() accessor
         // rather than the getAddition() accessor to reverse the problem.
 
-        if (org.argouml.model.ModelFacade.isAInclude(element)) {
-            MInclude include = (MInclude) element;
-            MUseCase target  = include.getBase();
+        if (ModelFacade.isAInclude(element)) {
+            Object include = /*(MInclude)*/ element;
+            Object target  = ModelFacade.getBase(include);
 
             if (target != null) {
-                value = super.formatElement(target);
+                value = super.formatElement((MModelElement)target);
             }
         }
         else {
@@ -270,7 +269,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     public void add(int index) {
     	Object target = getTarget();
     	if (org.argouml.model.ModelFacade.isAUseCase(target)) {
-	    MUseCase usecase = (MUseCase) target;	
+	    Object usecase = /*(MUseCase)*/ target;	
 	    Vector choices = new Vector();
 	    Vector selected = new Vector();
 	    choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
@@ -281,7 +280,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 	    if (returnValue == JOptionPane.OK_OPTION) {
 		Iterator it = dialog.getSelected().iterator();
 		while (it.hasNext()) {
-		    MUseCase includedusecase = (MUseCase) it.next();
+		    Object includedusecase = /*(MUseCase)*/ it.next();
 		    if (!selected.contains(includedusecase)) {
 			ProjectBrowser pb = ProjectBrowser.getInstance();
 			ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
@@ -299,9 +298,9 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 		}
 		it = selected.iterator();
 		while (it.hasNext()) {
-		    MUseCase includedusecase = (MUseCase) it.next();
+		    Object includedusecase = /*(MUseCase)*/ it.next();
 		    if (!dialog.getSelected().contains(includedusecase)) {
-			MInclude include = UseCasesHelper.getHelper().getIncludes(usecase, includedusecase);
+			Object include = UseCasesHelper.getHelper().getIncludes(usecase, includedusecase);
 			Object pt = TargetManager.getInstance().getTarget();
 			TargetManager.getInstance().setTarget(include);
 			ActionEvent event = new ActionEvent(this, 1, "delete");
@@ -341,9 +340,9 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     public void delete(int index) {
     	Object target = getTarget();
     	if (org.argouml.model.ModelFacade.isAUseCase(target)) {
-	    MUseCase usecase = (MUseCase) target;
-	    MUseCase includedusecase = (MUseCase) UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getIncludedUseCases(usecase), index, null);
-	    MInclude include = UseCasesHelper.getHelper().getIncludes(includedusecase, usecase);
+	    Object usecase = /*(MUseCase)*/ target;
+	    Object includedusecase = /*(MUseCase)*/ UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getIncludedUseCases(usecase), index, null);
+	    Object include = UseCasesHelper.getHelper().getIncludes(includedusecase, usecase);
 	    Object pt = TargetManager.getInstance().getTarget();
 	    TargetManager.getInstance().setTarget(include);
 	    ActionEvent event = new ActionEvent(this, 1, "delete");
@@ -441,8 +440,9 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
             return;
         }
 
-        MUseCase useCase = (MUseCase) target;
-        useCase.setIncludes(moveUpUtil(useCase.getIncludes(), index));
+        Object useCase = /*(MUseCase)*/ target;
+        Collection includes = ModelFacade.getIncludes(useCase);
+        ModelFacade.setIncludes(useCase, moveUpUtil(includes, index));
 
         // Having moved an include relationship, mark as needing saving
 
@@ -483,8 +483,8 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
             return;
         }
 
-        MUseCase useCase = (MUseCase) target;
-        useCase.setIncludes(moveDownUtil(useCase.getIncludes(), index));
+        Object useCase = /*(MUseCase)*/ target;
+        ModelFacade.setIncludes(useCase, moveDownUtil(ModelFacade.getIncludes(useCase), index));
 
         // Having moved an include relationship, mark as needing saving
 
@@ -521,6 +521,5 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
 
 } /* End of class UMLIncludeListModel */
-
 
 

@@ -471,8 +471,7 @@ public class UseCaseDiagramGraphModel
          
          * NEW CODE:
          */
-	if (((org.argouml.model.ModelFacade.isAActor(node)) || (org.argouml.model.ModelFacade.isAUseCase(node))) && 
-	    (ModelFacade.getNamespace(node) == null)) {
+	if (((ModelFacade.isAActor(node)) || (ModelFacade.isAUseCase(node))) && (ModelFacade.getNamespace(node) == null)) {
 	    // end NEW CODE
             cat.debug("setting namespace " + _model +
 		      " to element " + node);

@@ -29,7 +29,6 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
@@ -53,10 +52,10 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAReception(target)) {
-            MReception rec = (MReception) target;
+            Object rec = /*(MReception)*/ target;
             removeAllElements();
             setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(MSignal.class));
-            setSelectedItem(rec.getSignal());      
+            setSelectedItem(ModelFacade.getSignal(rec));      
         }
          
     }
