@@ -24,6 +24,7 @@
 
 package org.argouml.ui.menubar;
 
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JMenu;
@@ -55,107 +56,98 @@ class InitMenusLater implements Runnable {
     detailsTabs = dt;
   }
 
-  public void run() {
-    KeyStroke ctrlR = KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK);
-    KeyStroke ctrlL = KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_MASK);
+    public void run() {
+        int menuShortcut = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
-    KeyStroke F1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
-    KeyStroke F2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
-    KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
-    KeyStroke F4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0);
-    KeyStroke F5 = KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);
-    KeyStroke F6 = KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0);
-    KeyStroke F7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
-    KeyStroke F8 = KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0);
-    KeyStroke F9 = KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0);
-    KeyStroke F10 = KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0);
+        KeyStroke ctrlR = KeyStroke.getKeyStroke(KeyEvent.VK_R, menuShortcut);
+        KeyStroke ctrlL = KeyStroke.getKeyStroke(KeyEvent.VK_L, menuShortcut);
 
-    KeyStroke alt1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_MASK);
-    KeyStroke alt2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, KeyEvent.ALT_MASK);
-    KeyStroke alt3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.ALT_MASK);
-    KeyStroke alt4 = KeyStroke.getKeyStroke(KeyEvent.VK_4, KeyEvent.ALT_MASK);
-    KeyStroke alt5 = KeyStroke.getKeyStroke(KeyEvent.VK_5, KeyEvent.ALT_MASK);
-    KeyStroke alt6 = KeyStroke.getKeyStroke(KeyEvent.VK_6, KeyEvent.ALT_MASK);
-    KeyStroke alt7 = KeyStroke.getKeyStroke(KeyEvent.VK_7, KeyEvent.ALT_MASK);
-    KeyStroke alt8 = KeyStroke.getKeyStroke(KeyEvent.VK_8, KeyEvent.ALT_MASK);
-    KeyStroke alt9 = KeyStroke.getKeyStroke(KeyEvent.VK_9, KeyEvent.ALT_MASK);
-    KeyStroke alt0 = KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.ALT_MASK);
+        KeyStroke F1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
+        KeyStroke F2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
+        KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
+        KeyStroke F4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0);
+        KeyStroke F5 = KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);
+        KeyStroke F6 = KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0);
+        KeyStroke F7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
+        KeyStroke F8 = KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0);
+        KeyStroke F9 = KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0);
+        KeyStroke F10 = KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0);
 
-    KeyStroke altshift1 =
-      KeyStroke.getKeyStroke(KeyEvent.VK_1,
-			     KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
-    KeyStroke altshift2 =
-      KeyStroke.getKeyStroke(KeyEvent.VK_2,
-			     KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
-    KeyStroke altshift3 =
-      KeyStroke.getKeyStroke(KeyEvent.VK_3,
-			     KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+        KeyStroke alt1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_MASK);
+        KeyStroke alt2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, KeyEvent.ALT_MASK);
+        KeyStroke alt3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.ALT_MASK);
+        KeyStroke alt4 = KeyStroke.getKeyStroke(KeyEvent.VK_4, KeyEvent.ALT_MASK);
+        KeyStroke alt5 = KeyStroke.getKeyStroke(KeyEvent.VK_5, KeyEvent.ALT_MASK);
+        KeyStroke alt6 = KeyStroke.getKeyStroke(KeyEvent.VK_6, KeyEvent.ALT_MASK);
+        KeyStroke alt7 = KeyStroke.getKeyStroke(KeyEvent.VK_7, KeyEvent.ALT_MASK);
+        KeyStroke alt8 = KeyStroke.getKeyStroke(KeyEvent.VK_8, KeyEvent.ALT_MASK);
+        KeyStroke alt9 = KeyStroke.getKeyStroke(KeyEvent.VK_9, KeyEvent.ALT_MASK);
+        KeyStroke alt0 = KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.ALT_MASK);
 
-    align.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
-    align.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
-    GenericArgoMenuBar.setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS)),ctrlR);
-    GenericArgoMenuBar.setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS)),ctrlL);
+        KeyStroke altshift1 =
+          KeyStroke.getKeyStroke(KeyEvent.VK_1,
+                                 KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+        KeyStroke altshift2 =
+          KeyStroke.getKeyStroke(KeyEvent.VK_2,
+                                 KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+        KeyStroke altshift3 =
+          KeyStroke.getKeyStroke(KeyEvent.VK_3,
+                                 KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
 
-    align.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
-    align.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
-    align.add(new CmdAlign(CmdAlign.ALIGN_TO_GRID));
+        align.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
+        align.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
+        GenericArgoMenuBar.setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS)),ctrlR);
+        GenericArgoMenuBar.setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS)),ctrlL);
 
-    distribute.add(new CmdDistribute(CmdDistribute.H_SPACING));
-    distribute.add(new CmdDistribute(CmdDistribute.H_CENTERS));
-    distribute.add(new CmdDistribute(CmdDistribute.V_SPACING));
-    distribute.add(new CmdDistribute(CmdDistribute.V_CENTERS));
+        align.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
+        align.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
+        align.add(new CmdAlign(CmdAlign.ALIGN_TO_GRID));
 
-    reorder.add(new CmdReorder(CmdReorder.BRING_FORWARD));
-    reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
-    reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
-    reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
-    
-   
+        distribute.add(new CmdDistribute(CmdDistribute.H_SPACING));
+        distribute.add(new CmdDistribute(CmdDistribute.H_CENTERS));
+        distribute.add(new CmdDistribute(CmdDistribute.V_SPACING));
+        distribute.add(new CmdDistribute(CmdDistribute.V_CENTERS));
 
-    nudge.add(new CmdNudge(CmdNudge.LEFT));
-    nudge.add(new CmdNudge(CmdNudge.RIGHT));
-    nudge.add(new CmdNudge(CmdNudge.UP));
-    nudge.add(new CmdNudge(CmdNudge.DOWN));
+        reorder.add(new CmdReorder(CmdReorder.BRING_FORWARD));
+        reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
+        reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
+        reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
 
-    JMenuItem autoLayout = layout.add(new ActionLayout("action.layout-automatic"));
-    JMenuItem incrLayout = layout.add(new ActionLayout("action.layout-incremental"));
-    /** incremental layout is currently not implemented */
-    incrLayout.setEnabled(false);
 
-    JMenuItem nextEditItem = editTabs.add(Actions.NextEditTab);
-    nextEditItem.setAccelerator(F6);
-    editTabs.addSeparator();
 
-    JMenuItem tabe1Item = editTabs.add(new ActionGoToEdit("action.as-diagram"));
-    tabe1Item.setAccelerator(altshift1);
-    JMenuItem tabe2Item = editTabs.add(new ActionGoToEdit("action.as-table"));
-    tabe2Item.setAccelerator(altshift2);
-    JMenuItem tabe3Item = editTabs.add(new ActionGoToEdit("action.as-metrics"));
-    tabe3Item.setAccelerator(altshift3);
+        nudge.add(new CmdNudge(CmdNudge.LEFT));
+        nudge.add(new CmdNudge(CmdNudge.RIGHT));
+        nudge.add(new CmdNudge(CmdNudge.UP));
+        nudge.add(new CmdNudge(CmdNudge.DOWN));
 
-//    JMenuItem nextDetailsItem = detailsTabs.add(Actions.NextDetailsTab);
-//    nextDetailsItem.setAccelerator(F5);
-//    detailsTabs.addSeparator();
+        JMenuItem autoLayout = layout.add(new ActionLayout("action.layout-automatic"));
+        JMenuItem incrLayout = layout.add(new ActionLayout("action.layout-incremental"));
+        /** incremental layout is currently not implemented */
+        incrLayout.setEnabled(false);
 
-    JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("tab.todo-item"));
-    tab1Item.setAccelerator(alt1);
-    JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("tab.properties"));
-    tab2Item.setAccelerator(alt2);
-    JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("tab.documentation"));
-    tab3Item.setAccelerator(alt3);
-    JMenuItem tab4Item = detailsTabs.add(new ActionGoToDetails("tab.source"));
-    tab4Item.setAccelerator(alt4);
-    JMenuItem tab5Item = detailsTabs.add(new ActionGoToDetails("tab.constraints"));
-    tab5Item.setAccelerator(alt5);
-    JMenuItem tab6Item = detailsTabs.add(new ActionGoToDetails("tab.tagged-values"));
-    tab6Item.setAccelerator(alt6);
-    JMenuItem tab7Item = detailsTabs.add(new ActionGoToDetails("tab.checklist"));
-    tab7Item.setAccelerator(alt7);
-    //JMenuItem tab8Item = detailsTabs.add(new ActionGoToDetails("tab.history"));
-    //tab8Item.setAccelerator(alt8);
-    //JMenuItem tab9Item = detailsTabs.add(new ActionGoToDetails(""));
-    //tab9Item.setAccelerator(alt9);
-    //JMenuItem tab0Item = detailsTabs.add(new ActionGoToDetails(""));
-    //tab0Item.setAccelerator(alt0);
-  }
+        JMenuItem nextEditItem = editTabs.add(Actions.NextEditTab);
+        nextEditItem.setAccelerator(F6);
+        editTabs.addSeparator();
+
+        JMenuItem tabe1Item = editTabs.add(new ActionGoToEdit("action.as-diagram"));
+        tabe1Item.setAccelerator(altshift1);
+        JMenuItem tabe2Item = editTabs.add(new ActionGoToEdit("action.as-table"));
+        tabe2Item.setAccelerator(altshift2);
+        JMenuItem tabe3Item = editTabs.add(new ActionGoToEdit("action.as-metrics"));
+        tabe3Item.setAccelerator(altshift3);
+        JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("tab.todo-item"));
+        tab1Item.setAccelerator(alt1);
+        JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("tab.properties"));
+        tab2Item.setAccelerator(alt2);
+        JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("tab.documentation"));
+        tab3Item.setAccelerator(alt3);
+        JMenuItem tab4Item = detailsTabs.add(new ActionGoToDetails("tab.source"));
+        tab4Item.setAccelerator(alt4);
+        JMenuItem tab5Item = detailsTabs.add(new ActionGoToDetails("tab.constraints"));
+        tab5Item.setAccelerator(alt5);
+        JMenuItem tab6Item = detailsTabs.add(new ActionGoToDetails("tab.tagged-values"));
+        tab6Item.setAccelerator(alt6);
+        JMenuItem tab7Item = detailsTabs.add(new ActionGoToDetails("tab.checklist"));
+        tab7Item.setAccelerator(alt7);
+    }
 } /* end class InitMenusLater */
