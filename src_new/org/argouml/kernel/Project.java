@@ -126,7 +126,6 @@ public class Project implements java.io.Serializable {
     protected MModel _defaultModel = null;
     public boolean _needsSave = false;
     protected MNamespace _currentNamespace = null;
-    public Hashtable _definedTypes = new Hashtable(80);
     public HashMap _UUIDRefs = null;
     public GenerationPreferences _cgPrefs = new GenerationPreferences();
     public transient VetoableChangeSupport _vetoSupport = null;
@@ -794,17 +793,29 @@ public class Project implements java.io.Serializable {
     //     _needsSave = true;
     //   }
 
-    public Vector getDefinedTypesVector() { return new Vector(_definedTypes.values()); }
-    public Hashtable getDefinedTypes() { return _definedTypes; }
-    public void setDefinedTypes(Hashtable h) { _definedTypes = h; }
-    public void defineType(MClassifier cls) {
-        //TODO: should take namespaces into account!
-        // this is a hack because names are not always being assigned under argo-nsuml branch - JH
-        String name = cls.getName();
-        if (name == null) name = "anon";
-        _definedTypes.put(name,  cls);
-    }
+    
+
+    
+    
+    /**
+     * Searches for a type/classifier with name s. If the type is not found,
+     * a new type is created and added to the current namespace.
+     * @param s
+     * @return MClassifier
+     */
     public MClassifier findType(String s) {
+        return findType(s, true);
+    }
+    
+    /**
+     * Searches for a type/classifier with name s. If defineNew is true, 
+     * a new type is defined if the type/classifier is not found. The newly created
+     * type is added to the currentNamespace and given the name s.
+     * @param s
+     * @param defineNew
+     * @return MClassifier
+     */
+    public MClassifier findType(String s, boolean defineNew) {
         if (s != null) s = s.trim();
         if (s == null || s.length()==0) return null;
         MClassifier cls = null;
@@ -814,15 +825,12 @@ public class Project implements java.io.Serializable {
             if (cls != null) return cls;
         }
         cls = findTypeInModel(s, _defaultModel);
-        if (cls != null ) return cls;
-        cls = (MClassifier) _definedTypes.get(s);
-        if (cls == null) {
+        
+        if (cls == null && defineNew) {
             cat.debug("new Type defined!");
-            cls = UmlFactory.getFactory().getCore().buildClass();
+            cls = UmlFactory.getFactory().getCore().buildClass(getCurrentNamespace());
             cls.setName(s);
         }
-        if (cls.getNamespace() == null)
-            cls.setNamespace(getCurrentNamespace());
         return cls;
     }
     

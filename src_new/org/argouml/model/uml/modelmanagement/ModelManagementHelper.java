@@ -130,7 +130,7 @@ public class ModelManagementHelper {
 	public Collection getAllModelElementsOfKind(Class kind) {
 		if (kind == null) return new ArrayList();
                 Project p = Project.getCurrentProject();
-		MNamespace model = p.getModel();
+		MNamespace model = p.getRoot();
 		return getAllModelElementsOfKind(model, kind);
 	}
 	

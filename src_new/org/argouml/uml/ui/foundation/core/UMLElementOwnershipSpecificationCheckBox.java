@@ -46,7 +46,7 @@ public class UMLElementOwnershipSpecificationCheckBox extends UMLCheckBox2 {
     public UMLElementOwnershipSpecificationCheckBox(UMLUserInterfaceContainer container) {
         super(container, 
             Argo.localize("UMLMenu", "label.specialization"), 
-            ActionSetElementOwnershipSpecification.SINGLETON, "specification");
+            ActionSetElementOwnershipSpecification.SINGLETON, "isSpecification");
     }
 
     /**

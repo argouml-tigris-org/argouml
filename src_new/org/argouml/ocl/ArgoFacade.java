@@ -46,7 +46,7 @@ public class ArgoFacade implements ModelFacade {
           /**
            * Added search in defined types 2001-10-18 STEFFEN ZSCHALER.
            */
-          classifier = (MClassifier) p.getDefinedTypes().get (name);
+          classifier = (MClassifier) p.findType(name, false);
           
           if (classifier == null) {
             throw new OclTypeException("cannot find classifier: "+name);

@@ -51,7 +51,6 @@ public abstract class UMLComboBoxModel2
     private static Category log = 
         Category.getInstance("org.argouml.uml.ui.UMLComboBoxModel2");
         
-    private UMLUserInterfaceContainer _container = null;
     private Object _target = null;
     
     private List _objects = Collections.synchronizedList(new ArrayList());
@@ -98,7 +97,7 @@ public abstract class UMLComboBoxModel2
     public void propertySet(MElementEvent e) {
         if (e.getName().equals(_propertySetName) 
             && e.getSource() == getTarget() && 
-            contains(getChangedElement(e))) {
+            (contains(getChangedElement(e)) || getChangedElement(e) == null)) {
                 setSelectedItem(getChangedElement(e));
         }
     }
@@ -156,23 +155,6 @@ public abstract class UMLComboBoxModel2
                 removeElement(o);
             }      
         }
-    }
-
-    /**
-     * Returns the container.
-     * @return UMLUserInterfaceContainer
-     */
-    protected UMLUserInterfaceContainer getContainer() {
-        return _container;
-    }
-
-    /**
-     * Sets the container.
-     * @param container The container to set
-     */
-    protected void setContainer(UMLUserInterfaceContainer container) {
-        _container = container;
-        setTarget(_container.getTarget());
     }
     
     public void targetChanged(Object newTarget) {

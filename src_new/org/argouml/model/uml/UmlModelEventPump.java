@@ -188,7 +188,15 @@ public final class UmlModelEventPump implements MElementListener {
             listenerList = new HashSet();
             _listenerClassModelEventsMap.put(modelClass, listenerList);
         }
-        listenerList.add(new ListenerEventName(listener, eventName));    
+        ListenerEventName couple = new ListenerEventName(listener, eventName);
+        it = listenerList.iterator();
+        boolean addNeeded = true;
+        while (it.hasNext()) {
+            if (couple.equals(it.next())) {
+                return;
+            }
+        }
+        listenerList.add(couple);    
     }
     
     /**
@@ -248,9 +256,9 @@ public final class UmlModelEventPump implements MElementListener {
         }
         // remove the listener from the registry
         Set listenerList = (Set)_listenerClassModelEventsMap.get(modelClass);
-        it = listenerList.iterator();
-        while (it.hasNext()) {
-            ListenerEventName couple = (ListenerEventName)it.next();
+        Object[] asArray = listenerList.toArray();
+        for (int i = 0 ; i<asArray.length; i++) {
+            ListenerEventName couple = (ListenerEventName)asArray[i];
             if (couple.getListener() == listener && (couple.getEventName().equals(eventName) || eventName == null)) {
                 listenerList.remove(couple);
             }
@@ -402,12 +410,16 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private Set getListenerList(MElementEvent e) {
-        Set listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
-        if (_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)) != null) {
+        MBase source = (MBase)e.getSource();
+        String eventName = e.getName();
+        if (e.getType() == e.ELEMENT_REMOVED)
+            eventName = REMOVE;
+        Set listenerList = (Set)_listenerModelEventsMap.get(getKey(source, eventName));
+        if (_listenerModelEventsMap.get(getKey(source, null)) != null) {
             if (listenerList == null) 
-                listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null));
+                listenerList = (Set)_listenerModelEventsMap.get(getKey(source, null));
             else 
-                listenerList.addAll((Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)));
+                listenerList.addAll((Set)_listenerModelEventsMap.get(getKey(source, null)));
         }
         return listenerList;
     }
@@ -552,6 +564,18 @@ class ListenerEventName {
      */
     public MElementListener getListener() {
         return _listener;
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object obj) {
+        if (obj instanceof ListenerEventName) {
+            ListenerEventName couple = (ListenerEventName)obj;
+            if (couple.getEventName().equals(_eventName) && couple.getListener().equals(_listener)) 
+                return true;
+        }
+        return super.equals(obj);
     }
 
 }    

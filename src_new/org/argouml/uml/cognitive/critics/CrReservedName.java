@@ -210,9 +210,8 @@ public class CrReservedName extends CrUML {
         // Dont critique the built-in java types, they are supposed to
         // have those "reserved" names.
         Project p = Project.getCurrentProject();
-        Hashtable definedTypes = p.getDefinedTypes();
-        if (definedTypes.get(nameStr)!=null &&
-            definedTypes.get(nameStr).equals(nameStr)) return NO_PROBLEM;
+        MClassifier type = p.findTypeInModel(nameStr, p.getDefaultModel());
+        if (type != null) return NO_PROBLEM;
 
         java.util.Enumeration enum = _umlReserved.elements();
         while (enum.hasMoreElements()) {

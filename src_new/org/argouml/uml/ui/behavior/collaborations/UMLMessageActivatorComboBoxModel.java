@@ -52,7 +52,7 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        Object target = getContainer().getTarget();
+        Object target = getTarget();
         if (target instanceof MMessage) {
             MMessage mes = (MMessage)target;
             removeAllElements();
