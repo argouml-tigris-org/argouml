@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
@@ -42,6 +43,9 @@ import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MGeneralizableElement;
+import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
@@ -246,6 +250,12 @@ public class CollaborationsHelper {
 		}
 	}
     
+    /**
+     * Returns all possible predecessors for some message, taking into account
+     * the wellformednessrules as defined in section 2.10 of the UML spec.
+     * @param message
+     * @return Collection
+     */
     public Collection getAllPossiblePredecessors(MMessage message) {
         if (message == null) throw new IllegalArgumentException("In getAllPossiblePredecessors: argument message is null");
         MInteraction inter = message.getInteraction();
@@ -260,6 +270,121 @@ public class CollaborationsHelper {
             }
         }
         return list;
+    }
+    
+    /**
+     * Returns all possible bases for some classifierrole taking into account the 
+     * wellformednessrules as defined in section 2.10.3 of the UML 1.3 spec.
+     * @param role
+     * @return Collection
+     */
+    public Collection getAllPossibleBases(MClassifierRole role) {
+        if (role == null || role.getNamespace() == null) return new ArrayList();
+        MCollaboration coll = (MCollaboration)role.getNamespace();
+        MNamespace ns = coll.getNamespace();
+        Collection returnList = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifier.class);
+        returnList.removeAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifierRole.class));
+        return returnList;
+    }
+    
+    /**
+     * Adds a base to the given classifierrole. If the 
+     * classifierrole does not have a name yet and there is only one base,
+     * the name of the classifierrole is set to the name of the given base
+     * according to the wellformednessrules of section 2.10.3 of the UML 1.3 
+     * spec.
+     * @param role
+     * @param base
+     */
+    public void addBase(MClassifierRole role, MClassifier base) {
+        if (role == null || base == null) throw new IllegalArgumentException("In addBase: either the role or the base is null");
+        role.addBase(base);
+        if (role.getBases().size() == 1) {
+            role.setName(base.getName());
+            role.setAvailableContentses(base.getOwnedElements());
+            role.setAvailableFeatures(base.getFeatures());
+        } else {
+            Iterator it = base.getOwnedElements().iterator();
+            while (it.hasNext()) {
+                MModelElement elem = (MModelElement)it.next();
+                if (!role.getAvailableContentses().contains(elem)) {
+                    role.addAvailableContents((MModelElement)it.next());
+                }
+            }
+            it = base.getFeatures().iterator();
+            while (it.hasNext()) {
+                MFeature feature = (MFeature)it.next();
+                if (!role.getAvailableFeatures().contains(feature)) {
+                    role.addAvailableFeature((MFeature)it.next());
+                }
+            }
+        }
+       
+    }
+    
+    /**
+     * Sets the bases of the given classifierrole to the given collection bases.
+     * @param role
+     * @param bases
+     */
+    public void setBases(MClassifierRole role, Collection bases) {
+        if (role == null || bases == null) throw new IllegalArgumentException("In addBase: either the role or the collection bases is null");
+        Iterator it = role.getBases().iterator();
+        while(it.hasNext()) {
+            role.removeBase((MClassifier)it.next());
+        }
+        it = bases.iterator();
+        while (it.hasNext()) {
+            addBase(role, (MClassifier)it.next());
+        }
+    }
+    
+    /**
+     * Returns all available features for a given classifierrole as defined in 
+     * section 2.10.3.3 of the UML 1.3 spec. Does not use the standard getAvailableFeatures
+     * method on ClassifierRole since this is derived information.
+     * @param role
+     * @return Collection
+     */
+    public Collection allAvailableFeatures(MClassifierRole role) {
+        if (role == null) return new ArrayList();
+        List returnList = new ArrayList();
+        Iterator it = role.getParents().iterator();
+        while (it.hasNext()) {
+            MGeneralizableElement genElem = (MGeneralizableElement)it.next();
+            if (genElem instanceof MClassifierRole) {
+                returnList.addAll(allAvailableFeatures((MClassifierRole)genElem));
+            }
+        }
+        it = role.getBases().iterator();
+        while(it.hasNext()) {
+            returnList.addAll(((MClassifier)it.next()).getFeatures());
+        }
+        return returnList;
+    }
+    
+    /**
+     * Returns all available contents for a given classifierrole as defined in 
+     * section 2.10.3.3 of the UML 1.3 spec. Does not use the standard getAvailableContents
+     * method on ClassifierRole since this is derived information.
+     * @param role
+     * @return Collection
+     */
+    public Collection allAvailableContents(MClassifierRole role) {
+        if (role == null) return new ArrayList();
+        List returnList = new ArrayList();
+        Iterator it = role.getParents().iterator();
+        while (it.hasNext()) {
+            MGeneralizableElement genElem = (MGeneralizableElement)it.next();
+            if (genElem instanceof MClassifierRole) {
+                returnList.addAll(allAvailableContents((MClassifierRole)genElem));
+            }
+        }
+        it = role.getBases().iterator();
+        while(it.hasNext()) {
+            returnList.addAll(((MClassifier)it.next()).getOwnedElements());
+        }
+        return returnList;
     }
 		
 }
