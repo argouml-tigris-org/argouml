@@ -383,8 +383,7 @@ public abstract class UMLComboBoxModel2
 
     public void setSelectedItem(Object o) {
         if ((_selectedObject != null && !_selectedObject.equals(o))
-            || _selectedObject == null
-            && o != null) {
+            || _selectedObject == null) {
             _selectedObject = o;
             fireContentsChanged(this, -1, -1);
         }

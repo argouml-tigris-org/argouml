@@ -178,9 +178,9 @@ public final class UmlModelEventPump implements MElementListener {
         EventKey[] keys = _definition.getEventTypes(modelClass, eventName);
         Iterator it = col.iterator();
         while (it.hasNext()) {
-            MBase base = (MBase) it.next();
+            MBase base = (MBase)it.next();
             for (int i = 0; i < keys.length; i++) {
-                _listenerMap.put(base, keys[i], (MElementListener) listener);
+                _listenerMap.put(base, keys[i], (MElementListener)listener);
             }
         }
         // add the class to the 'interested classes list' so the listener is 
@@ -303,8 +303,8 @@ public final class UmlModelEventPump implements MElementListener {
                 .getAllModelElementsOfKind(modelClass)
                 .iterator();
         while (it.hasNext()) {
-            MBase base = (MBase) it.next();
-            removeModelEventListener(listener, base, eventName);            
+            MBase base = (MBase)it.next();
+            removeModelEventListener(listener, base, eventName);
         }
         // remove the listener from the registry
         EventKey[] keys = _definition.getEventTypes(modelClass, eventName);
@@ -347,13 +347,13 @@ public final class UmlModelEventPump implements MElementListener {
                     eventNames[i]);
             for (int j = 0; j < keys.length; j++) {
                 _listenerMap.remove(
-                    (MBase) modelelement,
+                    (MBase)modelelement,
                     keys[j],
-                    (MElementListener) listener);
+                    (MElementListener)listener);
                 _listenerMap.put(
-                    (MBase) modelelement,
+                    (MBase)modelelement,
                     keys[j],
-                    (MElementListener) listener);
+                    (MElementListener)listener);
             }
         }
     }
@@ -368,27 +368,18 @@ public final class UmlModelEventPump implements MElementListener {
     public void addModelEventListener(
         Object listener,
         Object modelelement,
-        String eventName) {
-        if (modelelement == null)
-            return;
-        if (listener == null
-            || eventName == null
-            || !(listener instanceof MElementListener)
-            || !(modelelement instanceof MBase))
-            throw new IllegalArgumentException(
-                "Wrong argument types while "
-                    + "adding a modelelement listener");
+        String eventName) {        
         EventKey[] keys =
             _definition.getEventTypes(modelelement.getClass(), eventName);
         for (int i = 0; i < keys.length; i++) {
             _listenerMap.remove(
-                (MBase) modelelement,
+                (MBase)modelelement,
                 keys[i],
-                (MElementListener) listener);
+                (MElementListener)listener);
             _listenerMap.put(
-                (MBase) modelelement,
+                (MBase)modelelement,
                 keys[i],
-                (MElementListener) listener);
+                (MElementListener)listener);
         }
     }
 
@@ -412,13 +403,13 @@ public final class UmlModelEventPump implements MElementListener {
         EventKey[] keys = _definition.getEventTypes(modelelement.getClass());
         for (int i = 0; i < keys.length; i++) {
             _listenerMap.remove(
-                (MBase) modelelement,
+                (MBase)modelelement,
                 keys[i],
-                (MElementListener) listener);
+                (MElementListener)listener);
             _listenerMap.put(
-                (MBase) modelelement,
+                (MBase)modelelement,
                 keys[i],
-                (MElementListener) listener);
+                (MElementListener)listener);
         }
 
     }
@@ -438,7 +429,7 @@ public final class UmlModelEventPump implements MElementListener {
             return;
         if (!(handle instanceof MBase))
             throw new IllegalArgumentException("Handle is not a valid modelelement");
-        MBase modelElement = (MBase) handle;
+        MBase modelElement = (MBase)handle;
         if (listener == null
             || modelElement == null
             || eventNames == null
@@ -451,9 +442,9 @@ public final class UmlModelEventPump implements MElementListener {
                     eventNames[i]);
             for (int j = 0; j < keys.length; j++) {
                 _listenerMap.remove(
-                    (MBase) modelElement,
+                    (MBase)modelElement,
                     keys[j],
-                    (MElementListener) listener);
+                    (MElementListener)listener);
             }
         }
     }
@@ -470,7 +461,7 @@ public final class UmlModelEventPump implements MElementListener {
             return;
         if (!(handle instanceof MBase))
             throw new IllegalArgumentException("Handle is not a valid modelelement");
-        MBase modelElement = (MBase) handle;
+        MBase modelElement = (MBase)handle;
         if (listener == null || modelElement == null)
             throw new IllegalArgumentException("Tried to remove null listener from null modelelement");
         EventKey[] keys = _definition.getEventTypes(modelElement.getClass());
@@ -478,7 +469,7 @@ public final class UmlModelEventPump implements MElementListener {
             _listenerMap.remove(
                 modelElement,
                 keys[i],
-                (MElementListener) listener);
+                (MElementListener)listener);
         }
     }
 
@@ -496,16 +487,16 @@ public final class UmlModelEventPump implements MElementListener {
             return;
         if (!(handle instanceof MBase))
             throw new IllegalArgumentException("Handle is not a valid modelelement");
-        MBase modelElement = (MBase) handle;
+        MBase modelElement = (MBase)handle;
         if (listener == null || modelElement == null || eventName == null)
             throw new IllegalArgumentException("Tried to remove null listener from null modelelement");
         EventKey[] keys =
             _definition.getEventTypes(modelElement.getClass(), eventName);
         for (int j = 0; j < keys.length; j++) {
             _listenerMap.remove(
-                (MBase) modelElement,
+                (MBase)modelElement,
                 keys[j],
-                (MElementListener) listener);
+                (MElementListener)listener);
         }
 
     }
@@ -522,7 +513,7 @@ public final class UmlModelEventPump implements MElementListener {
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
-    public void listRoleItemSet(MElementEvent e) {       
+    public void listRoleItemSet(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].listRoleItemSet(e);
@@ -531,7 +522,7 @@ public final class UmlModelEventPump implements MElementListener {
 
     private MElementListener[] getListenerList(MElementEvent e) {
         return _listenerMap.getListeners(
-            (MBase) e.getSource(),
+            (MBase)e.getSource(),
             new EventKey(e.getType(), e.getName()));
     }
 
@@ -551,7 +542,7 @@ public final class UmlModelEventPump implements MElementListener {
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
-    public void recovered(MElementEvent e) {       
+    public void recovered(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].recovered(e);
@@ -561,7 +552,7 @@ public final class UmlModelEventPump implements MElementListener {
     /**
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
-    public void removed(MElementEvent e) {       
+    public void removed(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].removed(e);
@@ -571,7 +562,7 @@ public final class UmlModelEventPump implements MElementListener {
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
-    public void roleAdded(MElementEvent e) {       
+    public void roleAdded(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].roleAdded(e);
@@ -581,7 +572,7 @@ public final class UmlModelEventPump implements MElementListener {
     /**
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
-    public void roleRemoved(MElementEvent e) {        
+    public void roleRemoved(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
             listeners[i].roleRemoved(e);
@@ -650,7 +641,7 @@ class EventKey {
 
     public boolean equals(Object o) {
         if (o instanceof EventKey) {
-            EventKey key = (EventKey) o;
+            EventKey key = (EventKey)o;
             if ((key.getType() == null && getType() == null)
                 || (key.getType() != null && key.getType().equals(getType()))
                 && (key.getName() != null
@@ -694,21 +685,21 @@ class EventListenerList {
         Object[] lList = _listenerList;
         int n = getListenerCount(lList, key);
         MElementListener[] result =
-            (MElementListener[]) Array.newInstance(MElementListener.class, n);
+            (MElementListener[])Array.newInstance(MElementListener.class, n);
         int j = 0;
         // if the event name is not set we should return all listeners interested
         if (key.getType().intValue() == 0) {
             Integer type = key.getType();
             for (int i = lList.length - 3; i >= 0; i -= 3) {
                 if (type.equals(lList[i]))
-                    result[j++] = (MElementListener) lList[i + 2];
+                    result[j++] = (MElementListener)lList[i + 2];
             }
         } else if (key.getName() != null && key.getType() != null) {
             Integer type = key.getType();
             String name = key.getName();
             for (int i = lList.length - 3; i >= 0; i -= 3) {
                 if (name.equals(lList[i + 1]) && type.equals(lList[i]))
-                    result[j++] = (MElementListener) lList[i + 2];
+                    result[j++] = (MElementListener)lList[i + 2];
             }
         } else
             throw new IllegalArgumentException("Illegal eventkey!");
@@ -760,17 +751,12 @@ class EventListenerList {
      * @param key
      * @param listener
      */
-    public void remove(EventKey key, MElementListener listener) {
-        if (listener == null || key == null)
-            throw new IllegalArgumentException("Null key or null listener");
+    public void remove(EventKey key, MElementListener listener) {   
         if (key.getName() != null && key.getType() != null)
             for (int i = _listenerList.length - 3; i >= 0; i -= 3) {
                 if (_listenerList[i + 2] == listener
-                    && (
-                        new EventKey(
-                            (Integer) _listenerList[i],
-                            (String) _listenerList[i + 1])).equals(
-                        key)) {
+                    && key.getName().equals(_listenerList[i+1]) && key.getType().equals(_listenerList[i]))
+                        {
                     removeElement(i);
                     break;
                 }
@@ -896,10 +882,8 @@ class EventListenerHashMap {
     public synchronized void put(
         MBase element,
         EventKey key,
-        MElementListener listener) {
-        if (element == null || listener == null)
-            throw new IllegalArgumentException("Modelelement or listener null");
-        EventListenerList list = (EventListenerList) _listenerMap.get(element);
+        MElementListener listener) {     
+        EventListenerList list = (EventListenerList)_listenerMap.get(element);
         if (list == null) {
             list = new EventListenerList();
             _listenerMap.put(element, list);
@@ -916,10 +900,8 @@ class EventListenerHashMap {
     public synchronized void remove(
         MBase element,
         EventKey key,
-        MElementListener listener) {
-        if (element == null || listener == null)
-            throw new IllegalArgumentException("Modelelement or listener null");
-        EventListenerList list = (EventListenerList) _listenerMap.get(element);
+        MElementListener listener) {    
+        EventListenerList list = (EventListenerList)_listenerMap.get(element);
         if (list != null) {
             list.remove(key, listener);
         }
@@ -941,7 +923,7 @@ class EventListenerHashMap {
      * @return
      */
     public MElementListener[] getListeners(MBase element, EventKey key) {
-        EventListenerList list = (EventListenerList) _listenerMap.get(element);
+        EventListenerList list = (EventListenerList)_listenerMap.get(element);
         return list == null ? NULL_ARRAY : list.getListeners(key);
     }
 
@@ -985,7 +967,7 @@ class ClassListenerHashMap {
         MElementListener listener) {
         if (element == null || listener == null)
             throw new IllegalArgumentException("Modelelement or listener null");
-        EventListenerList list = (EventListenerList) _listenerMap.get(element);
+        EventListenerList list = (EventListenerList)_listenerMap.get(element);
         if (list == null) {
             list = new EventListenerList();
             _listenerMap.put(element, list);
@@ -1005,7 +987,7 @@ class ClassListenerHashMap {
         MElementListener listener) {
         if (element == null || listener == null)
             throw new IllegalArgumentException("Modelelement or listener null");
-        EventListenerList list = (EventListenerList) _listenerMap.get(element);
+        EventListenerList list = (EventListenerList)_listenerMap.get(element);
         if (list != null) {
             list.remove(key, listener);
         }
@@ -1026,7 +1008,7 @@ class ClassListenerHashMap {
      * @return
      */
     public MElementListener[] getListeners(Class element, EventKey key) {
-        EventListenerList list = (EventListenerList) _listenerMap.get(element);
+        EventListenerList list = (EventListenerList)_listenerMap.get(element);
         return list == null ? NULL_ARRAY : list.getListeners(key);
     }
 
@@ -1042,7 +1024,7 @@ class ClassListenerHashMap {
         EventListenerList[] lists = new EventListenerList[hierarchy.length];
         EventListenerList list = null;
         for (int i = 0; i < lists.length; i++) {
-            list = (EventListenerList) _listenerMap.get(hierarchy[i]);
+            list = (EventListenerList)_listenerMap.get(hierarchy[i]);
             lists[i] = list == null ? new EventListenerList() : list;
         }
         return lists;
@@ -1053,7 +1035,7 @@ class ClassListenerHashMap {
         if (clazz != Object.class) {
             Class[] tmp = getHierarchy(clazz.getSuperclass());
             returnClass =
-                (Class[]) Array.newInstance(Class.class, tmp.length + 1);
+                (Class[])Array.newInstance(Class.class, tmp.length + 1);
             System.arraycopy(tmp, 0, returnClass, 0, tmp.length);
             returnClass[tmp.length] = clazz;
         } else {
@@ -1089,7 +1071,7 @@ class EventTreeDefinition {
         synchronized (doc) {
             NodeList sources = doc.getChildNodes().item(0).getChildNodes();
             for (int i = 0; i < sources.getLength(); i++) {
-                Element source = (Element) sources.item(i);
+                Element source = (Element)sources.item(i);
                 String className = source.getAttribute("classname");
                 Class sourceClass = null;
                 try {
@@ -1100,13 +1082,13 @@ class EventTreeDefinition {
                 Map nameMap = new HashMap();
                 NodeList eventTypes = source.getChildNodes();
                 for (int j = 0; j < eventTypes.getLength(); j++) {
-                    Element eventType = (Element) eventTypes.item(j);
+                    Element eventType = (Element)eventTypes.item(j);
                     String name = eventType.getAttribute("name");
                     NodeList typeNodes = eventType.getChildNodes();
                     int typeLength = typeNodes.getLength();
                     int[] types = new int[typeLength];
                     for (int k = 0; k < typeLength; k++) {
-                        Element typeNode = (Element) typeNodes.item(k);
+                        Element typeNode = (Element)typeNodes.item(k);
                         types[k] =
                             Integer.parseInt(
                                 typeNode.getFirstChild().getNodeValue());
@@ -1117,7 +1099,7 @@ class EventTreeDefinition {
                 nameMap.put(UmlModelEventPump.REMOVE, new int[] { 0 });
                 _definition.put(sourceClass, nameMap);
             }
-        }       
+        }
     }
 
     /**
@@ -1128,18 +1110,18 @@ class EventTreeDefinition {
      */
     public EventKey[] getEventTypes(Class modelClass) {
         modelClass = formatClass(modelClass);
-        Map nameMap = (Map) _definition.get(modelClass);
+        Map nameMap = (Map)_definition.get(modelClass);
         Iterator it = nameMap.keySet().iterator();
         int size = 0;
         while (it.hasNext()) {
-            size += ((int[]) nameMap.get(it.next())).length;
+            size += ((int[])nameMap.get(it.next())).length;
         }
         EventKey[] result = new EventKey[size + 1];
         int counter = 0;
         it = nameMap.keySet().iterator();
         while (it.hasNext()) {
-            String name = (String) it.next();
-            int[] types = (int[]) nameMap.get(name);
+            String name = (String)it.next();
+            int[] types = (int[])nameMap.get(name);
             EventKey[] keys = new EventKey[types.length];
             for (int i = 0; i < types.length; i++) {
                 keys[i] = new EventKey(types[i], name);
@@ -1166,9 +1148,9 @@ class EventTreeDefinition {
      */
     public EventKey[] getEventTypes(Class modelClass, String name) {
         modelClass = formatClass(modelClass);
-        Map nameMap = (Map) _definition.get(modelClass);
+        Map nameMap = (Map)_definition.get(modelClass);
         if (nameMap != null) {
-            int[] types = (int[]) nameMap.get(name);
+            int[] types = (int[])nameMap.get(name);
             if (types != null) {
 
                 EventKey[] keys = new EventKey[types.length];

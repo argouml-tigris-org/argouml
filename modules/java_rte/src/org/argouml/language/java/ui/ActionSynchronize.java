@@ -24,14 +24,14 @@
 package org.argouml.language.java.ui;
 
 //import org.argouml.language.java.rte.*;
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-import org.argouml.ui.ProjectBrowser;
+import java.awt.event.ActionEvent;
+import java.util.Vector;
 
-import java.awt.event.*;
-import java.lang.reflect.*;
-import java.util.*;
-import javax.swing.*;
+import javax.swing.JMenuItem;
+
+import org.argouml.application.api.PluggableMenu;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.ui.UMLAction;
 
 /** Plugin for synchronizing Java sources (RTE).
  *

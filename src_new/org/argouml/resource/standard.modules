@@ -36,3 +36,4 @@ module.propertypanel.model=org.argouml.uml.ui.model_management.PropPanelModel
 # #module.bottomright.history=org.argouml.uml.ui.TabHistory
 # #module.bottomright.hash=org.argouml.uml.ui.TabHash
 #
+module.menu.file.export.xmi=org.argouml.ui.ActionExportXMI
