@@ -376,71 +376,103 @@ public class ModelFacade {
     /** Invisible model element: STIMULUS */
     public static final Object STIMULUS = MStimulus.class;
 
+    /** Invisible model element: AGGREGATIONKIND */
     public static final Object AGGREGATIONKIND = MAggregationKind.class;
+    /** Invisible model element: BOOLEAN_EXPRESSION */
     public static final Object BOOLEAN_EXPRESSION = MBooleanExpression.class;
+    /** Invisible model element: GUARD */
     public static final Object GUARD = MGuard.class;
+    /** Invisible model element: EVENT */
     public static final Object EVENT = MEvent.class;
 
+    /** Changeability kind: ADD_ONLY_CHANGEABLEKIND */
     public static final Object ADD_ONLY_CHANGEABLEKIND =
         MChangeableKind.ADD_ONLY;
+    /** Changeability kind: CHANGEABLE_CHANGEABLEKIND */
     public static final Object CHANGEABLE_CHANGEABLEKIND =
         MChangeableKind.CHANGEABLE;
+    /** Changeability kind: FROZEN_CHANGEABLEKIND */
     public static final Object FROZEN_CHANGEABLEKIND = MChangeableKind.FROZEN;
 
+    /** Concurrency kind: CONCURRENT_CONCURRENCYKIND */
     public static final Object CONCURRENT_CONCURRENCYKIND =
         MCallConcurrencyKind.CONCURRENT;
-
+    /** Concurrency kind: GUARDED_CONCURRENCYKIND */
     public static final Object GUARDED_CONCURRENCYKIND =
         MCallConcurrencyKind.GUARDED;
-
+    /** Concurrency kind: SEQUENTIAL_CONCURRENCYKIND */
     public static final Object SEQUENTIAL_CONCURRENCYKIND =
         MCallConcurrencyKind.SEQUENTIAL;
 
+    /** Type of node: PSEUDOSTATEKIND */
     public static final Object PSEUDOSTATEKIND = MPseudostateKind.class;
+    /** Pseudo state kind: INITIAL_PSEUDOSTATEKIND */
     public static final Object INITIAL_PSEUDOSTATEKIND =
         MPseudostateKind.INITIAL;
+    /** Pseudo state kind: DEEPHISTORY_PSEUDOSTATEKIND */
     public static final Object DEEPHISTORY_PSEUDOSTATEKIND =
         MPseudostateKind.DEEP_HISTORY;
+    /** Pseudo state kind: SHALLOWHISTORY_PSEUDOSTATEKIND */
     public static final Object SHALLOWHISTORY_PSEUDOSTATEKIND =
         MPseudostateKind.SHALLOW_HISTORY;
+    /** Pseudo state kind: FORK_PSEUDOSTATEKIND */
     public static final Object FORK_PSEUDOSTATEKIND = MPseudostateKind.FORK;
+    /** Pseudo state kind: JOIN_PSEUDOSTATEKIND */
     public static final Object JOIN_PSEUDOSTATEKIND = MPseudostateKind.JOIN;
+    /** Pseudo state kind: JUNCTION_PSEUDOSTATEKIND */
     public static final Object JUNCTION_PSEUDOSTATEKIND =
         MPseudostateKind.JUNCTION;
+    /** Pseudo state kind: BRANCH_PSEUDOSTATEKIND */
     public static final Object BRANCH_PSEUDOSTATEKIND = MPseudostateKind.BRANCH;
 
+    /** Visibility kind: PUBLIC_VISIBILITYKIND */
     public static final Object PUBLIC_VISIBILITYKIND = MVisibilityKind.PUBLIC;
+    /** Visibility kind: PRIVATE_VISIBILITYKIND */
     public static final Object PRIVATE_VISIBILITYKIND = MVisibilityKind.PRIVATE;
+    /** Visibility kind: PROTECTED_VISIBILITYKIND */
     public static final Object PROTECTED_VISIBILITYKIND =
         MVisibilityKind.PROTECTED;
 
+    /** Aggregation kind: AGGREGATE_AGGREGATIONKIND */
     public static final Object AGGREGATE_AGGREGATIONKIND =
         MAggregationKind.AGGREGATE;
+    /** Aggregation kind: COMPOSITE_AGGREGATIONKIND */
     public static final Object COMPOSITE_AGGREGATIONKIND =
         MAggregationKind.COMPOSITE;
+    /** Aggregation kind: NONE_AGGREGATIONKIND */
     public static final Object NONE_AGGREGATIONKIND = MAggregationKind.NONE;
 
+    /** Ordering kind: ORDERED_ORDERINGKIND */
     public static final Object ORDERED_ORDERINGKIND = MOrderingKind.ORDERED;
+    /** Ordering kind: UNORDERED_ORDERINGKIND */
     public static final Object UNORDERED_ORDERINGKIND = MOrderingKind.UNORDERED;
+    /** Ordering kind: SORTED_ORDERINGKIND */
     public static final Object SORTED_ORDERINGKIND = MOrderingKind.SORTED;
 
+    /** Multiplicity value: M1_1_MULTIPLICITY */
     public static final Object M1_1_MULTIPLICITY = MMultiplicity.M1_1;
+    /** Multiplicity value: M0_1_MULTIPLICITY */
     public static final Object M0_1_MULTIPLICITY = MMultiplicity.M0_1;
+    /** Multiplicity value: M0_N_MULTIPLICITY */
     public static final Object M0_N_MULTIPLICITY = MMultiplicity.M0_N;
+    /** Multiplicity value: M1_N_MULTIPLICITY */
     public static final Object M1_N_MULTIPLICITY = MMultiplicity.M1_N;
 
+    /** Scope kind: CLASSIFIER_SCOPEKIND */
     public static final Object CLASSIFIER_SCOPEKIND = MScopeKind.CLASSIFIER;
+    /** Scope kind: INSTANCE_SCOPEKIND */
     public static final Object INSTANCE_SCOPEKIND = MScopeKind.INSTANCE;
 
+    /** Parameter direction kind: INOUT_PARAMETERDIRECTIONKIND */
     public static final Object INOUT_PARAMETERDIRECTIONKIND =
         MParameterDirectionKind.INOUT;
-
+    /** Parameter direction kind: IN_PARAMETERDIRECTIONKIND */
     public static final Object IN_PARAMETERDIRECTIONKIND =
         MParameterDirectionKind.IN;
-
+    /** Parameter direction kind: OUT_PARAMETERDIRECTIONKIND */
     public static final Object OUT_PARAMETERDIRECTIONKIND =
         MParameterDirectionKind.OUT;
-
+    /** Parameter direction kind: RETURN_PARAMETERDIRECTIONKIND */
     public static final Object RETURN_PARAMETERDIRECTIONKIND =
         MParameterDirectionKind.RETURN;
 
