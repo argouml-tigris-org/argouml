@@ -72,7 +72,9 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 
 /** The main window of the ArgoUML application. */
 
-public class ProjectBrowser extends JFrame implements IStatusBar, NavigationListener, PropertyChangeListener {
+public class ProjectBrowser
+    extends JFrame
+    implements IStatusBar, NavigationListener, PropertyChangeListener {
 
     protected static Category cat = Category.getInstance(ProjectBrowser.class);
 
@@ -157,7 +159,7 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
     public ProjectBrowser() {
         this("ArgoUML", false);
     }
-    
+
     public ProjectBrowser(String appName, boolean doSplash) {
         super(appName);
         TheInstance = this;
@@ -175,25 +177,49 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
         /* Work in progress here to allow multiple details panes with 
         ** different contents - Bob Tarling
         */
-        _eastPane = makeDetailsPane(BorderSplitPane.EAST.toLowerCase(), Vertical.getInstance());
-        _southPane = makeDetailsPane(BorderSplitPane.SOUTH.toLowerCase(), Horizontal.getInstance());
-        _southEastPane = makeDetailsPane(BorderSplitPane.SOUTHEAST.toLowerCase(), Horizontal.getInstance());
-        _northWestPane = makeDetailsPane(BorderSplitPane.NORTHWEST.toLowerCase(), Horizontal.getInstance());
-        _northPane = makeDetailsPane(BorderSplitPane.NORTH.toLowerCase(), Horizontal.getInstance());
-        _northEastPane = makeDetailsPane(BorderSplitPane.NORTHEAST.toLowerCase(), Horizontal.getInstance());
+        _eastPane =
+            makeDetailsPane(
+                BorderSplitPane.EAST.toLowerCase(),
+                Vertical.getInstance());
+        _southPane =
+            makeDetailsPane(
+                BorderSplitPane.SOUTH.toLowerCase(),
+                Horizontal.getInstance());
+        _southEastPane =
+            makeDetailsPane(
+                BorderSplitPane.SOUTHEAST.toLowerCase(),
+                Horizontal.getInstance());
+        _northWestPane =
+            makeDetailsPane(
+                BorderSplitPane.NORTHWEST.toLowerCase(),
+                Horizontal.getInstance());
+        _northPane =
+            makeDetailsPane(
+                BorderSplitPane.NORTH.toLowerCase(),
+                Horizontal.getInstance());
+        _northEastPane =
+            makeDetailsPane(
+                BorderSplitPane.NORTHEAST.toLowerCase(),
+                Horizontal.getInstance());
 
         if (_southPane != null)
             detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, _southPane);
         if (_southEastPane != null)
-            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST, _southEastPane);
+            detailsPanesByCompassPoint.put(
+                BorderSplitPane.SOUTHEAST,
+                _southEastPane);
         if (_eastPane != null)
             detailsPanesByCompassPoint.put(BorderSplitPane.EAST, _eastPane);
         if (_northWestPane != null)
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST, _northWestPane);
+            detailsPanesByCompassPoint.put(
+                BorderSplitPane.NORTHWEST,
+                _northWestPane);
         if (_northPane != null)
             detailsPanesByCompassPoint.put(BorderSplitPane.NORTH, _northPane);
         if (_northEastPane != null)
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST, _northEastPane);
+            detailsPanesByCompassPoint.put(
+                BorderSplitPane.NORTHEAST,
+                _northEastPane);
 
         getTabProps().addNavigationListener(this);
 
@@ -208,7 +234,11 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
         // allows me to ask "Do you want to save first?"
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowCloser());
-        ImageIcon argoImage = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Model");
+        ImageIcon argoImage =
+            ResourceLoaderWrapper
+                .getResourceLoaderWrapper()
+                .lookupIconResource(
+                "Model");
         this.setIconImage(argoImage.getImage());
         // 
 
@@ -245,7 +275,12 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
     protected Component createPanels(boolean doSplash) {
         // Set preferred sizes from config file
         if (_southPane != null) {
-            _southPane.setPreferredSize(new Dimension(0, Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)));
+            _southPane.setPreferredSize(
+                new Dimension(
+                    0,
+                    Configuration.getInteger(
+                        Argo.KEY_SCREEN_SOUTH_HEIGHT,
+                        DEFAULT_COMPONENTHEIGHT)));
         }
 
         // The workarea is all the visible space except the menu, toolbar and status bar.
@@ -254,14 +289,16 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
         _workarea = new BorderSplitPane();
         // create the todopane
         if (doSplash) {
-            _splash.getStatusBar().showStatus("Making Project Browser: To Do Pane");
+            _splash.getStatusBar().showStatus(
+                "Making Project Browser: To Do Pane");
             _splash.getStatusBar().incProgress(5);
         }
         _todoPane = new ToDoPane(doSplash);
         _workarea.add(_todoPane, BorderSplitPane.SOUTHWEST);
         // create the navpane
         if (doSplash) {
-            _splash.getStatusBar().showStatus("Making Project Browser: Navigator Pane");
+            _splash.getStatusBar().showStatus(
+                "Making Project Browser: Navigator Pane");
             _splash.getStatusBar().incProgress(5);
         }
         _navPane = new NavigatorPane(doSplash);
@@ -273,7 +310,9 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
         Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
-            _workarea.add((DetailsPane) entry.getValue(), (String) entry.getKey());
+            _workarea.add(
+                (DetailsPane) entry.getValue(),
+                (String) entry.getKey());
         }
         _workarea.add(_editorPane);
 
@@ -311,12 +350,27 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
             setDetailsTarget(o);
             _target = o;
             if (o instanceof MNamespace) {
-                ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace) o);
+                ProjectManager
+                    .getManager()
+                    .getCurrentProject()
+                    .setCurrentNamespace(
+                    (MNamespace) o);
             } else if (o instanceof MModelElement) {
                 if (((MModelElement) o).getNamespace() != null) {
-                    ProjectManager.getManager().getCurrentProject().setCurrentNamespace(((MModelElement) o).getNamespace());
+                    ProjectManager
+                        .getManager()
+                        .getCurrentProject()
+                        .setCurrentNamespace(
+                        ((MModelElement) o).getNamespace());
                 } else
-                    ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace) ProjectManager.getManager().getCurrentProject().getRoot());
+                    ProjectManager
+                        .getManager()
+                        .getCurrentProject()
+                        .setCurrentNamespace(
+                        (MNamespace) ProjectManager
+                            .getManager()
+                            .getCurrentProject()
+                            .getRoot());
             }
 
             if (o instanceof ArgoDiagram) {
@@ -324,7 +378,11 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
                 if (o instanceof UMLDiagram) {
                     MNamespace m = ((UMLDiagram) o).getNamespace();
                     if (m != null)
-                        ProjectManager.getManager().getCurrentProject().setCurrentNamespace(m);
+                        ProjectManager
+                            .getManager()
+                            .getCurrentProject()
+                            .setCurrentNamespace(
+                            m);
                 }
             }
 
@@ -466,9 +524,11 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
             setTarget(first);
             return;
         }
-        Vector diagrams = ProjectManager.getManager().getCurrentProject().getDiagrams();
+        Vector diagrams =
+            ProjectManager.getManager().getCurrentProject().getDiagrams();
         Object target = _editorPane.getTarget();
-        if ((target instanceof Diagram) && ((Diagram) target).countContained(dms) == dms.size()) {
+        if ((target instanceof Diagram)
+            && ((Diagram) target).countContained(dms) == dms.size()) {
             setTarget(first);
             return;
         }
@@ -490,7 +550,9 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
             setTarget(first);
         }
         // making it possible to jump to the modelroot
-        if (first.equals(ProjectManager.getManager().getCurrentProject().getRoot())) {
+        if (first
+            .equals(
+                ProjectManager.getManager().getCurrentProject().getRoot())) {
             setTarget(first);
         }
     }
@@ -560,9 +622,15 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
      * Save the positions of the screen spliters in the properties file
      */
     public void saveScreenConfiguration() {
-        Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, getNavigatorPane().getWidth());
-        Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, getTodoPane().getWidth());
-        Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, _southPane.getHeight());
+        Configuration.setInteger(
+            Argo.KEY_SCREEN_WEST_WIDTH,
+            getNavigatorPane().getWidth());
+        Configuration.setInteger(
+            Argo.KEY_SCREEN_SOUTHWEST_WIDTH,
+            getTodoPane().getWidth());
+        Configuration.setInteger(
+            Argo.KEY_SCREEN_SOUTH_HEIGHT,
+            _southPane.getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());
@@ -588,7 +656,9 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
      * @return the details pane or null if none is required for the given
      *         compass point.
      */
-    private DetailsPane makeDetailsPane(String compassPoint, Orientation orientation) {
+    private DetailsPane makeDetailsPane(
+        String compassPoint,
+        Orientation orientation) {
         DetailsPane detailsPane = new DetailsPane(compassPoint, orientation);
         if (detailsPane.getTabCount() == 0)
             return null;
@@ -608,7 +678,9 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
+        if (evt
+            .getPropertyName()
+            .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
             Project p = (Project) evt.getNewValue();
             setTitle(p.getName());
             Actions.updateAllEnabled();

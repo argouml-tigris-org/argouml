@@ -23,25 +23,27 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.application.api.*;
+import java.awt.event.ActionEvent;
+import java.text.MessageFormat;
+import java.util.Collection;
+import java.util.Vector;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
+import javax.swing.JOptionPane;
+
+import org.argouml.application.api.Argo;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.model_management.MModelImpl;
-
-import java.util.*;
-import java.awt.event.*;
-import java.text.MessageFormat;
-
-import javax.swing.*;
-import javax.swing.tree.TreePath;
 
 /**
  * Action for removing (moving to trash) objects from the model. Objects can be:
@@ -72,22 +74,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     
     protected ActionRemoveFromModel(boolean global) {
         super(Argo.localize("CoreMenu", "Erase From Model"),global);
-    }
-    
-    /**
-     * Returns the selected object. It is possible that the selected target on
-     * the detailspane is not selected on the navpane. This is a defect. 
-     * Therefore we give priority to the selection at the detailspane.
-     * @return Object
-     */
-    protected Object getTarget() {
-    	ProjectBrowser pb = ProjectBrowser.TheInstance;
-    	Object target = pb.getDetailsTarget();
-    	if (target == null) { // nothing selected on detailspane
-    		target = pb.getNavigatorPane().getSelectedObject();
-    	}
-    	return target;
-    }
+    }      
     
     /**
      * Only disabled when nothing is selected. Necessary to use since this 
@@ -96,15 +83,25 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */	
     public boolean shouldBeEnabled() {
-        if (getTarget() instanceof Diagram) { // we cannot delete the last diagram
+        boolean enabled = false;
+        super.shouldBeEnabled();
+        int size = 0;
+        try {
+            Editor ce = Globals.curEditor();
+            Vector figs = ce.getSelectionManager().getFigs();
+            size = figs.size();
+        } catch (Exception e) {
+        }
+        if (size > 0) return true;
+        Object target = ProjectBrowser.TheInstance.getTarget();                
+        if (target instanceof Diagram) { // we cannot delete the last diagram
             return ProjectManager.getManager().getCurrentProject().getDiagrams().size() > 1;
         }
-        if (getTarget() instanceof MModel &&  // we cannot delete the model itself
-            getTarget().equals(ProjectManager.getManager().getCurrentProject().getModel())) {
+        if (target instanceof MModel &&  // we cannot delete the model itself
+            target.equals(ProjectManager.getManager().getCurrentProject().getModel())) {
                 return false;
         }
-    	return getTarget() != null;
-    	
+    	return target != null;    	
     }
     
     /**
@@ -115,8 +112,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        Object target = getTarget();
-        if (target != null) {
+        Object[] targets = getTargets();
+        for (int i = 0; i < targets.length; i++) {
+            Object target = targets[i];
             if (sureRemove(target)) {
                 // Argo.log.info("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
                 // move the pointer to the target in the NavPane to some other target (up)
@@ -133,9 +131,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                 ProjectManager.getManager().getCurrentProject().moveToTrash(target); 
                 if (newTarget != null) 
                     ProjectBrowser.TheInstance.setTarget(newTarget);
+                ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
             } 
-            		
-        }
+        }        
         super.actionPerformed(ae);
     }
     
@@ -222,5 +220,15 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                                             JOptionPane.YES_NO_OPTION);
         
         return (response == JOptionPane.YES_OPTION);
+    }
+    
+    protected Object[] getTargets() {
+        Vector figs = null;
+        try {
+            Editor ce = Globals.curEditor();
+            figs = ce.getSelectionManager().getFigs();
+        } catch (Exception e) {
+        }
+        return figs.size() > 0 ? figs.toArray() : new Object[] {ProjectBrowser.TheInstance.getTarget()};        
     }
 } /* end class ActionRemoveFromModel */

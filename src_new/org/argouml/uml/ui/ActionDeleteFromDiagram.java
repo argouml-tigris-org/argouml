@@ -23,16 +23,13 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.diagram.ui.*;
+import java.awt.event.ActionEvent;
+import java.util.Vector;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-
-import ru.novosoft.uml.foundation.core.*;
-
-import java.awt.event.*;
-import java.util.*;
+import org.argouml.application.api.Argo;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.presentation.Fig;
 
 /** deletes an modelelement from the diagram, but not from the model.
  *  @stereotype singleton
@@ -41,31 +38,31 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
-    public static ActionDeleteFromDiagram SINGLETON = new ActionDeleteFromDiagram(); 
 
+    public static ActionDeleteFromDiagram SINGLETON =
+        new ActionDeleteFromDiagram();
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    private ActionDeleteFromDiagram() { super("Delete From Diagram"); }
-
+    private ActionDeleteFromDiagram() {
+        super("Delete From Diagram");
+    }
 
     ////////////////////////////////////////////////////////////////
     // main methods
 
     public boolean shouldBeEnabled() {
-	int size = 0;
-	try {
-	    Editor ce = Globals.curEditor();
-	    Vector figs = ce.getSelectionManager().getFigs();
-	    size = figs.size();
-	}
-	catch(Exception e) {
-	}
-	return size > 0;
+        super.shouldBeEnabled();
+        int size = 0;
+        try {
+            Editor ce = Globals.curEditor();
+            Vector figs = ce.getSelectionManager().getFigs();
+            size = figs.size();
+        } catch (Exception e) {
+        }
+        return size > 0;
     }
-
 
     public void actionPerformed(ActionEvent ae) {
         int size = 0;
@@ -96,10 +93,10 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
                 */
                 f.delete();
             }
+        } catch (Exception ex) {
+            Argo.log.error(
+                "ActionDeleteFromDiagram.actionPerformed()Exception = ");
         }
-        catch(Exception ex) {
-            Argo.log.error("ActionDeleteFromDiagram.actionPerformed()Exception = ");
-        }
-    } 
+    }
 
 }
