@@ -324,64 +324,6 @@ public final class ProjectManager {
             LOG.error(e);
             throw e;
         }
-        // read the xmi
-        try {
-            ZipInputStream zis = new ZipInputStream(url.openStream());
-
-            // first read the .argo file from Zip
-            String name = zis.getNextEntry().getName();
-            while (!name.endsWith(".xmi")) {
-                ZipEntry nextEntry = zis.getNextEntry();
-                if (nextEntry == null) {
-                    throw new IOException("The XMI file is missing "
-					  + "from the .zargo file.");
-                }
-                name = nextEntry.getName();
-            }
-
-            XMIReader xmiReader = null;
-            try {
-                xmiReader = new XMIReader();
-            } catch (SAXException se) { // duh, this must be caught and handled
-                LOG.error("SAXException caught", se);
-                throw se;
-            } catch (ParserConfigurationException pc) {
-                // duh, this must be caught and handled
-                LOG.error("ParserConfigurationException caught", pc);
-                throw pc;
-            }
-//            Object mmodel = null;
-
-            InputSource source = new InputSource(zis);
-            source.setEncoding("UTF-8");
-//            mmodel = xmiReader.parseToModel(new InputSource(zis));
-            // the following strange construction is needed because
-            // Novosoft does not really know how to handle
-            // exceptions...
-            if (xmiReader.getErrors()) {
-                if (xmiReader.getErrors()) {
-                    ArgoParser.SINGLETON.setLastLoadStatus(false);
-                    ArgoParser.SINGLETON.setLastLoadMessage(
-                        "XMI file " + url.toString()
-                        + " could not be parsed.");
-                    LOG.error(
-                        "XMI file "
-                        + url.toString()
-                        + " could not be parsed.");
-                    throw new SAXException(
-                        "XMI file "
-                        + url.toString()
-                        + " could not be parsed.");
-                }
-            }
-            zis.close();
-
-        } catch (IOException e) {
-            // exception can occur both due to argouml code as to J2SE
-            // code, so lets log it
-            LOG.error("IOException caught", e);
-            throw e;
-        }
         p.loadZippedProjectMembers(url);
         p.postLoad();
         return p;
