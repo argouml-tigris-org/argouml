@@ -923,25 +923,25 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   }
 
 
-    public static final int ThemeNormal = 1;
-    public static final int ThemeBig = 2;
-    public static final int ThemeHuge = 3;
+    private static final int ThemeNormal = 1;
+    private static final int ThemeBig = 2;
+    private static final int ThemeHuge = 3;
 
-    // /**
-     // * Detecting the theme from the command line.
-     // */
-    // public static int getThemeFromArg(String arg) {
-	// if (arg.equalsIgnoreCase("-big")) {
-	    // return ThemeBig;
-	// } else if (arg.equalsIgnoreCase("-huge")) {
-	    // return ThemeHuge;
-	// }
-	// return 0;
-    // }
-    // public static void printThemeArgs() {
-	// System.err.println("  -big            use big fonts");
-	// System.err.println("  -huge           use huge fonts");
-    // }
+    /**
+     * Detecting the theme from the command line.
+     */
+    public static int getThemeFromArg(String arg) {
+	if (arg.equalsIgnoreCase("-big")) {
+	    return ThemeBig;
+	} else if (arg.equalsIgnoreCase("-huge")) {
+	    return ThemeHuge;
+	}
+	return 0;
+    }
+    public static void printThemeArgs() {
+	System.err.println("  -big            use big fonts");
+	System.err.println("  -huge           use huge fonts");
+    }
 
     private int currentTheme = -1;
     public int getCurrentTheme() { return currentTheme; }
