@@ -33,16 +33,17 @@ implements VetoableChangeListener  {
    *  Also, elements from other models will have their FigNodes add a
    *  line to say what their model is. */
 
-  protected Object _model;
+  protected MNamespace _model;
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
     /** get the homemodel. */
-  public Object getNamespace() { return _model; }
+  public MNamespace getNamespace() { return _model; }
+
     /** set the homemodel. */
-  public void setNamespace(Object namespace) {
-    ModelFacade.setNamespace(_model, namespace);
+  public void setNamespace(MNamespace namespace) {
+    _model = namespace;
   }
 
   ////////////////////////////////////////////////////////////////
