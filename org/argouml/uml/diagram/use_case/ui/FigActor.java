@@ -69,8 +69,7 @@ public class FigActor extends FigNodeModelElement {
     public FigActor() {
         // Put this rectangle behind the rest, so it goes first
         FigRect bigPort = new FigRect(10, 30, 15, 45);
-        bigPort.setFilled(false);
-        bigPort.setLineWidth(0);
+        bigPort.setVisible(false);
         head = new FigCircle(10, 30, 15, 15, Color.black, Color.white);
         body = new FigLine(20, 45, 20, 60, Color.black);
         arms = new FigLine(10, 50, 30, 50, Color.black);
