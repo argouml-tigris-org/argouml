@@ -30,13 +30,18 @@ class ArgoAny implements Any {
 	this.classifier = classifier;
     }
 
-    public Type navigateQualified(String name) { // , Type[] qualifiers) {
+    public Type navigateQualified(String name, Type[] qualifiers) {
 
 	if (classifier == null) {
 	    throw new OclTypeException("attempting to access features of Void");
 	}
 
-	Type type = Basic.navigateAny(name, this);
+	
+	if (qualifiers != null) {
+	    throw new OclTypeException("qualified associations not supported yet!");
+	}
+
+	Type type = Basic.navigateAnyQualified(name, this, qualifiers);
 	if (type != null) return type;
 
 	MAttribute foundAttr = null;
@@ -75,7 +80,7 @@ class ArgoAny implements Any {
 	    throw new OclTypeException("attempting to access features of Void");
 	}
 
-       	Type type = Basic.navigateAny(name, params);
+       	Type type = Basic.navigateAnyParameterized(name, params);
 	if (type != null) return type;
 
 	MOperation foundOp = null;
@@ -118,25 +123,30 @@ class ArgoAny implements Any {
     }
 
     public boolean conformsTo(Type type) {
-	return false;
+		return false;
     }
 
     public boolean equals(Object o) {
-	ArgoAny any = null;
-	if (o instanceof ArgoAny) {
-	    any = (ArgoAny)o;
-	    return (any.classifier == classifier);
-	}
-	return false;
+		ArgoAny any = null;
+		if (o instanceof ArgoAny) {
+			any = (ArgoAny)o;
+			return (any.classifier == classifier);
+		}
+		return false;
     }
     public int hashCode() {
-	if (classifier == null) return 0;
-	return classifier.hashCode();
+		if (classifier == null) return 0;
+		return classifier.hashCode();
     }
     public String toString() {
-	if (classifier == null) return "Void";
-	return classifier.getName();
+		if (classifier == null) return "Void";
+		return classifier.getName();
     }
+
+	public boolean hasState(String name) {
+		System.out.println("ArgoAny.hasState() has been called, but is not implemented yet!");
+		return false;
+	}
 }
 
 
