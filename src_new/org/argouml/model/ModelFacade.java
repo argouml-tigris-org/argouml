@@ -5306,7 +5306,7 @@ public class ModelFacade {
 		(MExpressionEditor) UmlFactory.getFactory().getDataTypes()
 		    .createExpressionEditor(handle);
             expressionEditor.setBody((String) expr);
-            handle = (Object) expressionEditor.toExpression();
+            expressionEditor.toExpression();
             // this last step creates a new MExpression
             return;
         }
