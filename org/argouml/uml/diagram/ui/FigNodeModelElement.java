@@ -508,6 +508,13 @@ public abstract class FigNodeModelElement
             } catch (ParseException pe) {
                 ProjectBrowser.getInstance().getStatusBar().showStatus(
                     "Error: " + pe + " at " + pe.getErrorOffset());
+                // if there was a problem parsing,
+                // then reset the text in the fig - because the model was not
+                // updated.
+                if(me.getName() != null)
+                    ft.setText(me.getName());
+                else
+                    ft.setText("");
             }
             //me.setName(ft.getText());
         }
