@@ -312,7 +312,7 @@ implements ItemListener, TreeSelectionListener {
         JPopupMenu popup = new JPopupMenu("test");
 	Object obj = getSelectedObject();
 	if (obj instanceof PopupGenerator) {
-	  Vector actions = ((PopupGenerator)obj).getPopUpActions();
+	  Vector actions = ((PopupGenerator)obj).getPopUpActions(me);
 	  int size = actions.size();
 	  for (int i = 0; i < size; ++i) {
 	    AbstractAction a = (AbstractAction) actions.elementAt(i);

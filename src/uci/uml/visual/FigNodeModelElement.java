@@ -116,8 +116,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 
   public FigText getNameFig() { return _name; }
 
-  public Vector getPopUpActions() {
-    Vector popUpActions = super.getPopUpActions();
+  public Vector getPopUpActions(MouseEvent me) {
+    Vector popUpActions = super.getPopUpActions(me);
     popUpActions.addElement(Actions.Properties);
     return popUpActions;
   }

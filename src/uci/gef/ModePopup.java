@@ -59,11 +59,12 @@ public class ModePopup extends Mode {
     if (!(underMouse instanceof PopupGenerator)) return;
     _editor.getSelectionManager().select(underMouse);
     JPopupMenu popup = new JPopupMenu("test");
-    Vector actions = ((PopupGenerator)underMouse).getPopUpActions();
+    Vector actions = ((PopupGenerator)underMouse).getPopUpActions(me);
     int size = actions.size();
     for (int i = 0; i < size; ++i) {
-      AbstractAction a = (AbstractAction) actions.elementAt(i);
-      popup.add(a);
+      Object a = actions.elementAt(i);
+      if (a instanceof AbstractAction) popup.add((AbstractAction) a);
+      else if (a instanceof JMenu) popup.add((JMenu) a);
     }
     popup.show(_editor.getAwtComponent(), me.getX(), me.getY());
   }

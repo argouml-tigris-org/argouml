@@ -354,6 +354,7 @@ public class FigPoly extends Fig {
   }
 
   public Point getFirstPoint() { return getPoints(0); }
+  public Point getLastPoint() { return getPoints(_npoints - 1); }
 
   /** When the user drags the handles, move individual points */
   public void setPoints(Handle h, int mX, int mY) {

@@ -37,6 +37,7 @@ import javax.swing.tree.*;
 
 import uci.util.*;
 import uci.gef.*;
+import uci.uml.Foundation.Core.*;
 
 
 public class TabDocs extends TabText {
@@ -51,6 +52,7 @@ public class TabDocs extends TabText {
   protected String genText() {
     //System.out.println("Docstab getting docs for " + _target);
     Object modelObject = _target;
+    if ( !(modelObject instanceof ElementImpl) ) return null;
     if (_target instanceof FigNode)
       modelObject = ((FigNode)_target).getOwner();
     if (_target instanceof FigEdge)
@@ -70,5 +72,4 @@ public class TabDocs extends TabText {
     DocumentationManager.setDocs(modelObject, s);
   }
 
-  
 } /* end class TabDocs */

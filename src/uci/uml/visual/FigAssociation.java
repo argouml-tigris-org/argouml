@@ -174,6 +174,58 @@ public class FigAssociation extends FigEdgeModelElement {
     return ArrowHeadNone.TheInstance;
   }
 
+  public Vector getPopUpActions(MouseEvent me) {
+    Vector popUpActions = super.getPopUpActions(me);
+    // x^2 + y^2 = r^2  (equation of a circle)
+    Point firstPoint = this.getFirstPoint();
+    Point lastPoint = this.getLastPoint();
+    int length = getPerimeterLength();
+
+    int rSquared = (int) (.3 * length);
+
+    // max distance is set at 100 pixels, (rSquared = 100^2)
+    if( rSquared > 100 )
+      rSquared = 10000;
+    else
+      rSquared *= rSquared;
+
+    int srcDeterminingFactor = getSquaredDistance(me.getPoint(), firstPoint);
+    int destDeterminingFactor = getSquaredDistance(me.getPoint(), lastPoint);
+
+    if (srcDeterminingFactor < rSquared &&
+	srcDeterminingFactor < destDeterminingFactor) {
+      JMenu multMenu = new JMenu("Multiplicity");
+      multMenu.add(Actions.SrcMultOne);
+      multMenu.add(Actions.SrcMultZeroToOne);
+      multMenu.add(Actions.SrcMultOneToMany);
+      multMenu.add(Actions.SrcMultZeroToMany);
+      popUpActions.insertElementAt(multMenu, popUpActions.size() - 1);
+
+      JMenu aggMenu = new JMenu("Aggregation");
+      aggMenu.add(Actions.SrcAggNone);
+      aggMenu.add(Actions.SrcAgg);
+      aggMenu.add(Actions.SrcAggComposite);
+      popUpActions.insertElementAt(aggMenu, popUpActions.size() - 1);
+    }
+    else if (destDeterminingFactor < rSquared) {
+      JMenu multMenu = new JMenu("Multiplicity");
+      multMenu.add(Actions.DestMultOne);
+      multMenu.add(Actions.DestMultZeroToOne);
+      multMenu.add(Actions.DestMultOneToMany);
+      multMenu.add(Actions.DestMultZeroToMany);
+      popUpActions.insertElementAt(multMenu, popUpActions.size() - 1);
+
+      JMenu aggMenu = new JMenu("Aggregation");
+      aggMenu.add(Actions.DestAggNone);
+      aggMenu.add(Actions.DestAgg);
+      aggMenu.add(Actions.DestAggComposite);
+      popUpActions.insertElementAt(aggMenu, popUpActions.size() - 1);
+    }
+    else { }
+
+    return popUpActions;
+  }
+
   static final long serialVersionUID = 9100125695919853919L;
 
 } /* end class FigAssociation */

@@ -46,7 +46,6 @@ implements TabModelTarget, DocumentListener {
   JTextArea _text = new JTextArea();
   boolean _parseChanges = true;
   boolean _shouldBeEnabled = false;
-  
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -60,7 +59,7 @@ implements TabModelTarget, DocumentListener {
 
   ////////////////////////////////////////////////////////////////
   // accessors
-  
+
   public void setTarget(Object t) {
     _target = t;
     _parseChanges = false;
@@ -101,7 +100,7 @@ implements TabModelTarget, DocumentListener {
     if (s == null) s = "(null)";
     //System.out.println("parsing text:" + s);
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // event handlers
   public void insertUpdate(DocumentEvent e) {

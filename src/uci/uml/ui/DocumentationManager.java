@@ -27,26 +27,51 @@
 package uci.uml.ui;
 
 import java.util.*;
+import java.beans.*;
 
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Extension_Mechanisms.*;
+import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Model_Management.*;
 
 public class DocumentationManager {
 
-  public static Hashtable _docs = new Hashtable();
-  
   public static String getDocs(Object o) {
-    String s = (String) _docs.get(o);
-    if (s == null) {
-      return defaultFor(o);
-
+    if (o instanceof ElementImpl) {
+      Vector tValues = ((ElementImpl) o).getTaggedValue();
+      if (!tValues.isEmpty()) {
+        java.util.Enumeration enum = tValues.elements();
+        while(enum.hasMoreElements()) {
+          TaggedValue tv = (TaggedValue) enum.nextElement();
+          if (tv.getTag().getBody().equals("javadocs"))
+            return tv.getValue().getBody();
+        }
+      }
+      else return defaultFor(o);
     }
-    return s;
+    return defaultFor(o);
   }
 
   public static void setDocs(Object o, String s) {
-    if (o == null) return;
-    _docs.put(o, s);
+    Vector tValues = ((ElementImpl) o).getTaggedValue();
+    if (!tValues.isEmpty()) {
+      java.util.Enumeration enum = tValues.elements();
+      while(enum.hasMoreElements()) {
+        TaggedValue tv = (TaggedValue) enum.nextElement();
+        if (tv.getTag().getBody().equals("javadocs"))
+          tv.getValue().setBody(s);
+      }
+    }
+    else {
+      TaggedValue newTag = new TaggedValue(new Name("javadocs"),
+					   new Uninterpreted(s));
+      try {
+        ((ElementImpl) o).addTaggedValue(newTag);
+      }
+      catch (PropertyVetoException pve) {
+	System.out.println("pve while settig java docs");
+      }
+    }
   }
 
   ////////////////////////////////////////////////////////////////
@@ -90,5 +115,5 @@ public class DocumentationManager {
     }
     return "(No documentation)";
   }
-  
+
 } /* end class DocumentationManager */

@@ -219,34 +219,34 @@ public class XMIParser extends XMIParserBase {
     if (_verbose) ignoreElement(e);
     // needs-more-work: done with XMI.reference
   }
-  
+
   protected void handle_stereotype(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (_curME != null && _lastReference instanceof Stereotype)
       _curME.addStereotype((Stereotype)_lastReference);
   }
-  
+
   protected void handle_constraint(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (_curME != null && _lastReference instanceof Constraint)
       _curME.addConstraint((Constraint)_lastReference);
     // needs-more-work: done with XMI.reference
   }
-  
+
   protected void handle_provision(XMLElement e) throws PropertyVetoException {
     // needs-more-work: done with XMI.reference
   }
-  
+
   protected void handle_requirement(XMLElement e) throws PropertyVetoException {
     // needs-more-work: done with XMI.reference
   }
-  
+
   protected void handle_template(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (_curME != null && _lastReference instanceof ModelElement)
       _curME.setTemplate((ModelElement)_lastReference);
   }
-  
+
   protected void handle_implementation(XMLElement e) throws PropertyVetoException {
     // needs-more-work: done with XMI.reference
   }
@@ -298,7 +298,7 @@ public class XMIParser extends XMIParserBase {
       ((GeneralizableElementImpl)_curME).setIsLeaf(b);
     else System.out.println("can't set isLeaf");
   }
-  
+
   protected void handle_isRoot(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     boolean b = "true".equals(e.getAttribute("XMI.value"));
@@ -306,22 +306,22 @@ public class XMIParser extends XMIParserBase {
       ((GeneralizableElementImpl)_curME).setIsRoot(b);
     else System.out.println("can't set isRoot");
   }
-  
+
   protected void handle_generalization(XMLElement e) throws PropertyVetoException {
     if (_verbose) ignoreElement(e);
     // needs-more-work: done with XMI.reference
   }
-  
+
   protected void handle_specialization(XMLElement e) throws PropertyVetoException {
     if (_verbose) ignoreElement(e);
     // needs-more-work: done with XMI.reference
   }
-  
+
   protected void handle_participant(XMLElement e) throws PropertyVetoException {
     if (_verbose) ignoreElement(e);
     // needs-more-work: done with XMI.reference
   }
-  
+
   protected void handle_realization(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (inTag("Operation")) {
@@ -337,12 +337,12 @@ public class XMIParser extends XMIParserBase {
       }
     }
   }
-  
+
   protected void handle_specification(XMLElement e) throws PropertyVetoException {
     if (_verbose) ignoreElement(e);
     // needs-more-work: done with XMI.reference
   }
-  
+
   protected void handle_changeable(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String s = e.getAttribute("XMI.value");
@@ -360,7 +360,7 @@ public class XMIParser extends XMIParserBase {
       _curAssociationEndRole.setChangeable(k);
     else System.out.println("can't set ChangeableKind");
   }
-  
+
   protected void handle_multiplicity(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String multStr = e.getText().trim();
@@ -378,7 +378,7 @@ public class XMIParser extends XMIParserBase {
       _curClassifierRole.setMultiplicity(m);
     else System.out.println("unknown context for multiplicity: " + multStr);
   }
-  
+
   /** Parse a string of the form: "range, ...", where range is of the
    *  form "lower..upper", or "integer" */
   public Multiplicity parseMultiplicity(String s) {
@@ -425,7 +425,7 @@ public class XMIParser extends XMIParserBase {
       ((AssociationEnd)_curME).setTargetScope(k);
     else System.out.println("can't set TargetScopeKind: " + _curME);
   }
-  
+
   protected void handle_type(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (inTag("AssociationEnd")) {
@@ -449,33 +449,33 @@ public class XMIParser extends XMIParserBase {
     }
     else System.out.println("unknown context for <type>:" + e.getText());
   }
-  
+
   protected void handleAssociation(XMLElement e) throws PropertyVetoException {
     _curAssociation = (Association) findOrCreate(e, Association.class);
     _curME = _curAssociation;
     if (_firstPass) return;
     addToModel(_curME);
   }
-  
+
   protected void handle_isActive(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     boolean b = "true".equals(e.getAttribute("XMI.value"));
     if (_curClass != null) _curClass.setIsActive(b);
     else System.out.println("can't set isActive");
   }
-  
+
   protected void handleClass(XMLElement e) throws PropertyVetoException {
     _curClass  = (MMClass) findOrCreate(e, MMClass.class);
     _curME = _curClass;
     if (_firstPass) return;
     addToModel(_curME);
   }
-  
+
   protected void handleClassEnd(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (_curModel == null) _proj.defineType(_curClass);
   }
-  
+
   protected void handleAssociationClass(XMLElement e) throws PropertyVetoException {
     _curAssociationClass = (AssociationClass)
     findOrCreate(e, AssociationClass.class);
@@ -483,7 +483,7 @@ public class XMIParser extends XMIParserBase {
     if (_firstPass) return;
     addToModel(_curME);
   }
-  
+
   protected void handle_isNavigable(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     boolean b = "true".equals(e.getAttribute("XMI.value"));
@@ -494,7 +494,7 @@ public class XMIParser extends XMIParserBase {
     else
       System.out.println("can't set isNavigable");
   }
-  
+
   protected void handle_isOrdered(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     boolean b = "true".equals(e.getAttribute("XMI.value"));
@@ -505,7 +505,7 @@ public class XMIParser extends XMIParserBase {
     else
       System.out.println("can't set isOrdered");
   }
-  
+
   protected void handle_aggregation(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String s = e.getAttribute("XMI.value");
@@ -523,18 +523,18 @@ public class XMIParser extends XMIParserBase {
     else
       System.out.println("can't set Aggregation");
   }
-  
+
   protected void handle_qualifier(XMLElement e) throws PropertyVetoException {
     // needs-more-work
   }
-  
+
   protected void handleAssociationEnd(XMLElement e) throws PropertyVetoException {
     _curAssociationEnd = (AssociationEnd) findOrCreate(e, AssociationEnd.class);
     _curME = _curAssociationEnd;
     if (_firstPass) return;
     if (_curAssociation != null) _curAssociation.addConnection(_curAssociationEnd);
   }
-  
+
   protected void handle_initialValue(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String body = e.getText().trim();
@@ -542,35 +542,35 @@ public class XMIParser extends XMIParserBase {
       _curAttribute.setInitialValue(new Expression(body));
       //System.out.println("set init val to:" + body + ".");
   }
-  
+
   protected void handleAttribute(XMLElement e) throws PropertyVetoException {
     _curAttribute = (Attribute) findOrCreate(e, Attribute.class);
     _curME = _curAttribute;
     if (_firstPass) return;
     if (_curClass != null) _curClass.addStructuralFeature(_curAttribute);
   }
-  
+
   protected void handle_body(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String body = e.getText().trim();
     if (body == null) return;
-    if (inTag("UninterpretedAction") && _curUninterpretedAction != null) 
+    if (inTag("UninterpretedAction") && _curUninterpretedAction != null)
       _curUninterpretedAction.setBody(body);
   }
-  
+
   protected void handleConstraint(XMLElement e) throws PropertyVetoException {
     _curConstraint = (Constraint) findOrCreate(e, Constraint.class);
     _curME = _curConstraint;
     if (_firstPass) return;
   }
-  
+
   protected void handleDataType(XMLElement e) throws PropertyVetoException {
     _curDataType = (DataType) findOrCreate(e, DataType.class);
     _curME = _curDataType;
     if (_firstPass) return;
     addToModel(_curME);
   }
-  
+
   protected void handleDataTypeEnd(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (_curModel == null) _proj.defineType(_curDataType);
@@ -584,7 +584,7 @@ public class XMIParser extends XMIParserBase {
       _curDependency.setDescription(desc);
     }
   }
-  
+
   protected void handle_client(XMLElement e) throws PropertyVetoException {
     if (_curME instanceof Dependency) {
       if (_lastReference instanceof ModelElement) {
@@ -592,7 +592,7 @@ public class XMIParser extends XMIParserBase {
       }
     }
   }
-  
+
   protected void handle_supplier(XMLElement e) throws PropertyVetoException {
     if (_curME instanceof Dependency) {
       if (_lastReference instanceof ModelElement) {
@@ -600,11 +600,11 @@ public class XMIParser extends XMIParserBase {
       }
     }
   }
-  
+
   protected void handle_subDependencies(XMLElement e) throws PropertyVetoException {
     //needs-more-work
   }
-  
+
   protected void handleDependency(XMLElement e) throws PropertyVetoException {
     _curDependency = (Dependency) findOrCreate(e, Dependency.class);
     _curME = _curDependency;
@@ -612,7 +612,7 @@ public class XMIParser extends XMIParserBase {
     // needs-more-work: if inTag("subDependencies") addSubDependency();
     addToModel(_curME);
   }
-  
+
   protected void handle_discriminator(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String body = e.getText().trim();
@@ -620,7 +620,7 @@ public class XMIParser extends XMIParserBase {
       _curGeneralization.setDiscriminator(new Name(body));
     //System.out.println("set discriminator to:" + body + ".");
   }
-  
+
   protected void handle_subtype(XMLElement e) throws PropertyVetoException {
     if (_curME instanceof Generalization) {
       if (_lastReference instanceof GeneralizableElement) {
@@ -628,7 +628,7 @@ public class XMIParser extends XMIParserBase {
       }
     }
   }
-  
+
   protected void handle_supertype(XMLElement e) throws PropertyVetoException {
     if (_curME instanceof Generalization) {
       if (_lastReference instanceof GeneralizableElement) {
@@ -636,28 +636,28 @@ public class XMIParser extends XMIParserBase {
       }
     }
   }
-  
+
   protected void handleGeneralization(XMLElement e) throws PropertyVetoException {
     _curGeneralization = (Generalization) findOrCreate(e, Generalization.class);
     _curME = _curGeneralization;
     if (_firstPass) return;
     addToModel(_curME);
   }
-  
+
   protected void handleInterface(XMLElement e) throws PropertyVetoException {
     _curInterface = (Interface) findOrCreate(e, Interface.class);
     _curME = _curInterface;
     if (_firstPass) return;
     addToModel(_curME);
   }
-  
+
   protected void handleMethod(XMLElement e) throws PropertyVetoException {
     _curMethod = (Method) findOrCreate(e, Method.class);
     _curME = _curMethod;
     if (_firstPass) return;
     // needs-more-work
   }
-  
+
   protected void handle_concurrency(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String s = e.getAttribute("XMI.value");
@@ -670,25 +670,25 @@ public class XMIParser extends XMIParserBase {
     if (_curOperation != null) _curOperation.setConcurrency(k);
     else System.out.println("can't set CallConcurrency");
   }
-  
+
   protected void handle_isPolymorphic(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     boolean b = "true".equals(e.getAttribute("XMI.value"));
     if (_curOperation != null) _curOperation.setIsPolymorphic(b);
     else System.out.println("can't set isPolymorphic");
   }
-  
+
   protected void handle_operationSpecification(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String body = e.getText().trim();
     if (body != null && !body.equals("")) {
-      if (inTag("Operation") && _curOperation != null) 
+      if (inTag("Operation") && _curOperation != null)
           _curOperation.setSpecification(new Uninterpreted(body));
       else System.out.println("unknown context for Uninterpreted");
     }
     //System.out.println("set operation spec to:" + body + ".");
   }
-  
+
   protected void handleOperation(XMLElement e) throws PropertyVetoException {
     _curOperation = (Operation) findOrCreate(e, Operation.class);
     _curME = _curOperation;
@@ -699,7 +699,7 @@ public class XMIParser extends XMIParserBase {
       _curInterface.addBehavioralFeature(_curOperation);
     else System.out.println("unknown context for operation: " + e.getText());
   }
-  
+
   protected void handle_defaultValue(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String body = e.getText().trim();
@@ -707,7 +707,7 @@ public class XMIParser extends XMIParserBase {
       _curParameter.setDefaultValue(new Expression(body));
     //System.out.println("set default value to:" + body + ".");
   }
-  
+
   protected void handle_kind(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String s = e.getAttribute("XMI.value");
@@ -721,7 +721,7 @@ public class XMIParser extends XMIParserBase {
     if (_curParameter != null) _curParameter.setKind(k);
     else System.out.println("can't set ParameterDirectionKind");
   }
-  
+
   protected void handleParameter(XMLElement e) throws PropertyVetoException {
     _curParameter = (Parameter) findOrCreate(e, Parameter.class);
     _curME = _curParameter;
@@ -730,28 +730,28 @@ public class XMIParser extends XMIParserBase {
       if (_curOperation != null) _curOperation.addParameter(_curParameter);
     }
   }
-  
+
   protected void handleComment(XMLElement e) throws PropertyVetoException {
     // needs-more-work
     //? _curComment = (Comment) findOrCreate(e, Comment.class);
     //? if (_firstPass) return;
     if (_dbg) notImplemented(e);
   }
-  
+
   protected void handle_deployment(XMLElement e) throws PropertyVetoException {
     // needs-more-work: done with XMI.reference
   }
-  
+
   protected void handle_modelElement(XMLElement e) throws PropertyVetoException { }
   protected void handleComponent(XMLElement e) throws PropertyVetoException {
     if (_dbg) notImplemented(e);
     addToModel(_curME);
   }
-  
+
   protected void handle_component(XMLElement e) throws PropertyVetoException {
     // needs-more-work: done with XMI.reference
   }
-  
+
 // JH - commented this out, it created a *DOM* node, don't think this ever
 // worked correctly, but I could be wrong ;-)
 //  protected void handleNode(XMLElement e) throws PropertyVetoException {
@@ -763,19 +763,19 @@ public class XMIParser extends XMIParserBase {
   protected void handle_geometry(XMLElement e) throws PropertyVetoException {
     if (_verbose) ignoreElement(e);
   }
-  
+
   protected void handle_style(XMLElement e) throws PropertyVetoException {
     if (_verbose) ignoreElement(e);
   }
-  
+
   protected void handle_model(XMLElement e) throws PropertyVetoException {
     if (_verbose) ignoreElement(e);
   }
-  
+
   protected void handlePresentation(XMLElement e) throws PropertyVetoException {
     if (_verbose) ignoreElement(e);
   }
-  
+
   protected void handle_baseClass(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String nStr = e.getText().trim();
@@ -786,24 +786,24 @@ public class XMIParser extends XMIParserBase {
   protected void handle_icon(XMLElement e) throws PropertyVetoException {
     if (_verbose) ignoreElement(e);
   }
-  
+
   protected void handle_stereotypeConstraint(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (_curStereotype != null && _lastReference instanceof Constraint)
       _curStereotype.addStereotypeConstraint((Constraint)_lastReference);
   }
-  
+
   protected void handle_extendedElement(XMLElement e) throws PropertyVetoException {
     if (_verbose) ignoreElement(e); //needs-more-work?
   }
-  
+
   protected void handleStereotype(XMLElement e) throws PropertyVetoException {
     _curStereotype = (Stereotype) findOrCreate(e, Stereotype.class);
     _curME = _curStereotype;
     if (_firstPass) return;
     addToModel(_curME);
   }
-  
+
   protected void handleTaggedValue(XMLElement e) throws PropertyVetoException {
     //_curTaggedValue = (TaggedValue) findOrCreate(e, TaggedValue.class);
     if (_firstPass) return;
@@ -813,7 +813,7 @@ public class XMIParser extends XMIParserBase {
     else if (_curME != null)
       _curME.addTaggedValue(_curTaggedValue);
   }
-  
+
   protected void handle_tag(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String body = e.getText().trim();
@@ -821,7 +821,7 @@ public class XMIParser extends XMIParserBase {
       _curTaggedValue.setTag(new Name(body));
     //System.out.println("set tag to:" + body + ".");
   }
-  
+
   protected void handle_value(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String body = e.getText().trim();
@@ -829,14 +829,14 @@ public class XMIParser extends XMIParserBase {
       _curTaggedValue.setValue(new Uninterpreted(body));
     //System.out.println("set tag VALUE to:" + body + ".");
   }
-  
+
   protected void handleEnumerationLiteral(XMLElement e) throws PropertyVetoException {
     _curEnumerationLiteral = (EnumerationLiteral)
       findOrCreate(e, EnumerationLiteral.class);
     if (_firstPass) return;
     if (_curEnumeration != null) _curEnumeration.addLiteral(_curEnumerationLiteral);
   }
-  
+
   protected void handleEnumeration(XMLElement e) throws PropertyVetoException {
     _curEnumeration = (uci.uml.Foundation.Data_Types.Enumeration)
       findOrCreate(e, uci.uml.Foundation.Data_Types.Enumeration.class);
@@ -844,12 +844,12 @@ public class XMIParser extends XMIParserBase {
     if (_firstPass) return;
     addToModel(_curME);
   }
-  
+
   protected void handleRequest(XMLElement e) throws PropertyVetoException {
     _curRequest = (Request) findOrCreate(e, Request.class);
     if (_firstPass) return;
   }
-  
+
   protected void handleActionSequence(XMLElement e) throws PropertyVetoException {
     _curActionSequence = (ActionSequence)
       findOrCreate(e, ActionSequence.class);
@@ -862,62 +862,62 @@ public class XMIParser extends XMIParserBase {
     else if (inTag("exit") && _curME instanceof State)
       ((State)_curME).setEntry(_curActionSequence);
   }
-  
+
   protected void handleCreateAction(XMLElement e) throws PropertyVetoException {
     _curCreateAction = (CreateAction) findOrCreate(e, CreateAction.class);
     _curME = _curCreateAction;
     if (_firstPass) return;
     //? addToModel(_curME);
   }
-  
+
   protected void handleDestroyAction(XMLElement e) throws PropertyVetoException {
     _curDestroyAction = (DestroyAction) findOrCreate(e, DestroyAction.class);
     _curME = _curDestroyAction;
     if (_firstPass) return;
     //? addToModel(_curME);
   }
-  
+
   protected void handleSignal(XMLElement e) throws PropertyVetoException {
     _curSignal = (Signal) findOrCreate(e, Signal.class);
     _curME = _curSignal;
     if (_firstPass) return;
     //? addToModel(_curME);
   }
-  
+
   protected void handleException(XMLElement e) throws PropertyVetoException {
     _curException = (MMException) findOrCreate(e, Exception.class);
     _curME = _curException;
     if (_firstPass) return;
     //? addToModel(_curME);
   }
-  
+
   protected void handleLink(XMLElement e) throws PropertyVetoException {
     _curLink = (Link) findOrCreate(e, Link.class);
     _curME = _curLink;
     if (_firstPass) return;
     addToModel(_curME);
   }
-  
+
   protected void handleLinkEnd(XMLElement e) throws PropertyVetoException {
     _curLinkEnd = (LinkEnd) findOrCreate(e, LinkEnd.class);
     _curME = _curLinkEnd;
     if (_firstPass) return;
     if (_curLink != null) _curLink.addLinkRole(_curLinkEnd);
   }
-  
+
   protected void handleObject(XMLElement e) throws PropertyVetoException {
     if (_dbg) notImplemented(e);
 //     _curObject = (Object) findOrCreate(e, Object.class);
 //     if (_firstPass) return;
   }
-  
+
   protected void handleLinkObject(XMLElement e) throws PropertyVetoException {
     _curLink = (Link) findOrCreate(e, Link.class);
     _curME = _curLink;
     if (_firstPass) return;
     addToModel(_curME);
   }
-  
+
   protected void handleLocalInvocation(XMLElement e) throws PropertyVetoException {
     _curLocalInvocation = (LocalInvocation)
       findOrCreate(e, LocalInvocation.class);
@@ -925,7 +925,7 @@ public class XMIParser extends XMIParserBase {
     if (_firstPass) return;
     //? addToModel(_curME);
   }
-  
+
   protected void handleMessageInstance(XMLElement e) throws
   PropertyVetoException {
     if (_dbg) notImplemented(e);
@@ -934,28 +934,28 @@ public class XMIParser extends XMIParserBase {
 //     if (_firstPass) return;
 //     addToModel(_curME);
   }
-  
+
   protected void handleReception(XMLElement e) throws PropertyVetoException {
     _curReception = (Reception) findOrCreate(e, Reception.class);
     _curME = _curReception;
     if (_firstPass) return;
     //? addToModel(_curME);
   }
-  
+
   protected void handleReturnAction(XMLElement e) throws PropertyVetoException {
     _curReturnAction = (ReturnAction) findOrCreate(e, ReturnAction.class);
     _curME = _curReturnAction;
     if (_firstPass) return;
     //? addToModel(_curME);
   }
-  
+
   protected void handleSendAction(XMLElement e) throws PropertyVetoException {
     _curSendAction = (SendAction) findOrCreate(e, SendAction.class);
     _curME = _curSendAction;
     if (_firstPass) return;
     //? addToModel(_curME);
   }
-  
+
   protected void handleTerminateAction(XMLElement e) throws PropertyVetoException {
     _curTerminateAction = (TerminateAction)
       findOrCreate(e, TerminateAction.class);
@@ -963,7 +963,7 @@ public class XMIParser extends XMIParserBase {
     if (_firstPass) return;
     //? addToModel(_curME);
   }
-  
+
   protected void handleUninterpretedAction(XMLElement e) throws PropertyVetoException {
     _curUninterpretedAction = (UninterpretedAction)
       findOrCreate(e, UninterpretedAction.class);
@@ -973,7 +973,7 @@ public class XMIParser extends XMIParserBase {
       _curMessage.setAction(_curUninterpretedAction);
     //? addToModel(_curME);
   }
-  
+
   protected void handle_base(XMLElement e) throws PropertyVetoException {
     //@@@ set base name
     String baseStr = e.getText().trim();
@@ -982,7 +982,7 @@ public class XMIParser extends XMIParserBase {
     if (inTag("ClassifierRole") && _curClassifierRole != null)
       _curClassifierRole.setBaseString(baseStr);
   }
-  
+
   protected void handleAssociationEndRole(XMLElement e) throws PropertyVetoException {
     _curAssociationEndRole = (AssociationEndRole)
       findOrCreate(e, AssociationEndRole.class);
@@ -991,7 +991,7 @@ public class XMIParser extends XMIParserBase {
     if (_curAssociationRole != null)
       _curAssociationEndRole.setAssociationRole(_curAssociationRole);
   }
-  
+
   protected void handleAssociationRole(XMLElement e) throws PropertyVetoException {
     _curAssociationRole = (AssociationRole)
       findOrCreate(e, AssociationRole.class);
@@ -1007,14 +1007,14 @@ public class XMIParser extends XMIParserBase {
     if (_firstPass) return;
     if (_curCollaboration != null) _curCollaboration.addPublicOwnedElement(_curME);
   }
-  
+
   protected void handleCollaboration(XMLElement e) throws PropertyVetoException {
     _curCollaboration = (Collaboration) findOrCreate(e, Collaboration.class);
     _curME = _curCollaboration;
     if (_firstPass) return;
     addTopModel(_curCollaboration);
   }
-  
+
   protected void handle_messageRef(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (_curAssociationRole != null && _lastReference instanceof Message)
@@ -1028,7 +1028,7 @@ public class XMIParser extends XMIParserBase {
     if (_curCollaboration != null)
       _curCollaboration.setInteraction(_curInteraction);
   }
-  
+
   protected void handleMessage(XMLElement e) throws PropertyVetoException {
     _curMessage = (Message) findOrCreate(e, Message.class);
     _curME = _curMessage;
@@ -1036,21 +1036,21 @@ public class XMIParser extends XMIParserBase {
     if (_curCollaboration != null) _curCollaboration.addPublicOwnedElement(_curME);
     if (_curInteraction != null) _curInteraction.addMessage(_curMessage);
   }
-  
+
   protected void handleActor(XMLElement e) throws PropertyVetoException {
     _curActor = (Actor) findOrCreate(e, Actor.class);
     _curME = _curActor;
     if (_firstPass) return;
     addToModel(_curME);
   }
-  
+
   protected void handleUseCase(XMLElement e) throws PropertyVetoException {
     _curUseCase = (UseCase) findOrCreate(e, UseCase.class);
     _curME = _curUseCase;
     if (_firstPass) return;
     addToModel(_curME);
   }
-  
+
   protected void handleUseCaseInstance(XMLElement e) throws PropertyVetoException {
     _curUseCaseInstance = (UseCaseInstance)
       findOrCreate(e, UseCaseInstance.class);
@@ -1058,21 +1058,21 @@ public class XMIParser extends XMIParserBase {
     if (_firstPass) return;
     addToModel(_curME);
   }
-  
+
   protected void handleCallEvent(XMLElement e) throws PropertyVetoException {
     _curCallEvent = (CallEvent) findOrCreate(e, CallEvent.class);
     _curME = _curCallEvent;
     if (_firstPass) return;
     if (_curTransition != null) _curTransition.setTrigger(_curCallEvent);
   }
-  
+
   protected void handleChangeEvent(XMLElement e) throws PropertyVetoException {
     _curChangeEvent  = (ChangeEvent) findOrCreate(e, ChangeEvent.class);
     _curME = _curChangeEvent;
     if (_firstPass) return;
     if (_curTransition != null) _curTransition.setTrigger(_curChangeEvent);
   }
-  
+
   protected void handleState(XMLElement e) throws PropertyVetoException {
     //System.out.println("<State> id=" + e.getAttribute("XMI.id"));
     //System.out.println("<state> found: " + find);
@@ -1083,7 +1083,7 @@ public class XMIParser extends XMIParserBase {
       _curCompositeState.addSubstate((StateVertex)_curME);
     //? addToModel(_curME);
   }
-  
+
   protected void handle_isConcurrent(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     boolean b = "true".equals(e.getAttribute("XMI.value"));
@@ -1091,7 +1091,7 @@ public class XMIParser extends XMIParserBase {
       ((CompositeState)_curME).setIsConcurrent(b);
     else System.out.println("can't set isConcurrent");
   }
-  
+
   protected void handleCompositeState(XMLElement e) throws PropertyVetoException {
     _curME = (ModelElementImpl) findOrCreate(e, CompositeState.class);
     if (_firstPass) return;
@@ -1103,7 +1103,7 @@ public class XMIParser extends XMIParserBase {
       _curActivityModel.setTop((State)_curME);
     _curCompositeState = (CompositeState) _curME;
   }
-  
+
   protected void handleExpression(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String body = e.getText().trim();
@@ -1111,14 +1111,14 @@ public class XMIParser extends XMIParserBase {
       _curGuard.setExpression(new BooleanExpression(body));
     //System.out.println("set guard expression to:" + body + ".");
   }
-  
+
   protected void handleGuard(XMLElement e) throws PropertyVetoException {
     _curGuard= (Guard) findOrCreate(e, Guard.class);
     _curME = _curGuard;
     if (_firstPass) return;
     if (_curTransition != null) _curTransition.setGuard(_curGuard);
   }
-  
+
   protected void handle_stateKind(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String s = e.getAttribute("XMI.value");
@@ -1135,7 +1135,7 @@ public class XMIParser extends XMIParserBase {
     if (_curPseudostate != null) _curPseudostate.setKind(k);
     else System.out.println("can't set PseudoState Kind");
   }
-  
+
   protected void handlePseudostate(XMLElement e) throws PropertyVetoException {
     _curPseudostate = (Pseudostate) findOrCreate(e, Pseudostate.class);
     _curME = _curPseudostate;
@@ -1144,14 +1144,14 @@ public class XMIParser extends XMIParserBase {
       _curCompositeState.addSubstate((StateVertex)_curME);
     //? addToModel(_curME);
   }
-  
+
   protected void handleSignalEvent(XMLElement e) throws PropertyVetoException {
     _curSignalEvent = (SignalEvent) findOrCreate(e, SignalEvent.class);
     _curME = _curSignalEvent;
     if (_firstPass) return;
     if (_curTransition != null) _curTransition.setTrigger(_curSignalEvent);
   }
-  
+
   protected void handleSimpleState(XMLElement e) throws PropertyVetoException {
     _curSimpleState = (SimpleState) findOrCreate(e, SimpleState.class);
     _curME = _curSimpleState;
@@ -1160,7 +1160,7 @@ public class XMIParser extends XMIParserBase {
       _curCompositeState.addSubstate((StateVertex)_curME);
     //? addToModel(_curME);
   }
-  
+
   protected void handleStateMachine(XMLElement e) throws PropertyVetoException {
     _curStateMachine = (StateMachine) findOrCreate(e, StateMachine.class);
     _curME = _curStateMachine;
@@ -1169,7 +1169,7 @@ public class XMIParser extends XMIParserBase {
       _curClass.addBehavior(_curStateMachine);
     //? addToModel(_curClass);
   }
-  
+
   protected void handleSubmachineState(XMLElement e) throws PropertyVetoException {
     _curSubmachineState = (SubmachineState)
       findOrCreate(e, SubmachineState.class);
@@ -1179,7 +1179,7 @@ public class XMIParser extends XMIParserBase {
       _curCompositeState.addSubstate((StateVertex)_curME);
     //? addToModel(_curME);
   }
-  
+
   protected void handle_duration(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     String body = e.getText().trim();
@@ -1188,26 +1188,26 @@ public class XMIParser extends XMIParserBase {
       _curTimeEvent.setDuration((TimeExpression)_curExpression);
     //System.out.println("set guard expression to:" + body + ".");
   }
-  
+
   protected void handleTimeEvent(XMLElement e) throws PropertyVetoException {
     _curTimeEvent = (TimeEvent) findOrCreate(e, TimeEvent.class);
     _curME = _curTimeEvent;
     if (_firstPass) return;
     if (_curTransition != null) _curTransition.setTrigger(_curTimeEvent);
   }
-  
+
   protected void handle_sourceState(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (_curTransition != null && _lastReference instanceof StateVertex)
       _curTransition.setSource((StateVertex)_lastReference);
   }
-  
+
   protected void handle_targetState(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (_curTransition != null && _lastReference instanceof StateVertex)
       _curTransition.setTarget((StateVertex)_lastReference);
   }
-  
+
   protected void handleTransition(XMLElement e) throws PropertyVetoException {
     _curTransition = (Transition) findOrCreate(e, Transition.class);
     _curME = _curTransition;
@@ -1218,13 +1218,13 @@ public class XMIParser extends XMIParserBase {
     else if (inTag("ActivityModel") && _curActivityModel != null)
       _curActivityModel.addTransition(_curTransition);
   }
-  
+
   protected void handlePartition(XMLElement e) throws PropertyVetoException {
     _curPartition = (Partition) findOrCreate(e, Partition.class);
     _curME = _curPartition;
     if (_firstPass) return;
   }
-  
+
   protected void handleActivityModel(XMLElement e) throws PropertyVetoException {
     _curActivityModel = (ActivityModel) findOrCreate(e, ActivityModel.class);
     _curME = _curActivityModel;
@@ -1233,7 +1233,7 @@ public class XMIParser extends XMIParserBase {
       _curUseCase.addBehavior(_curActivityModel);
     // needs-more-work: should have a stack
   }
-  
+
   protected void handleActionState(XMLElement e) throws PropertyVetoException {
     _curActionState = (ActionState) findOrCreate(e, ActionState.class);
     _curME = _curActionState;
@@ -1242,7 +1242,7 @@ public class XMIParser extends XMIParserBase {
       _curCompositeState.addSubstate((StateVertex)_curME);
     //? addToModel(_curME);
   }
-  
+
   protected void handleActivityState(XMLElement e) throws PropertyVetoException {
     _curActivityState = (ActivityState) findOrCreate(e, ActivityState.class);
     _curME = _curActivityState;
@@ -1251,26 +1251,26 @@ public class XMIParser extends XMIParserBase {
       _curCompositeState.addSubstate((StateVertex)_curME);
     //? addToModel(_curME);
   }
-  
+
   protected void handle_inState(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (_curClassifierInState != null && _lastReference instanceof State)
       _curClassifierInState.setInState((State)_lastReference);
   }
-  
+
   protected void handleClassifierInState(XMLElement e) throws PropertyVetoException {
     _curClassifierInState = (ClassifierInState) findOrCreate(e, ClassifierInState.class);
     _curME = _curClassifierInState;
     if (_firstPass) return;
     //? addToModel(_curME);
   }
-  
+
   protected void handle_typeState(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (_curObjectFlowState != null && _lastReference instanceof ClassifierInState)
       _curObjectFlowState.setTypeState((ClassifierInState)_lastReference);
   }
-  
+
   protected void handleObjectFlowState(XMLElement e) throws PropertyVetoException {
     _curObjectFlowState = (ObjectFlowState) findOrCreate(e, ObjectFlowState.class);
     _curME = _curObjectFlowState;
@@ -1278,22 +1278,22 @@ public class XMIParser extends XMIParserBase {
     if (inTag("CompositeState") && _curCompositeState != null)
       _curCompositeState.addSubstate((StateVertex)_curME);
   }
-  
+
   protected void handle_contents(XMLElement e) throws PropertyVetoException {
     if (_dbg) notImplemented(e);
     // needs-more-work: done with XMI.reference
   }
-  
+
   protected void handleElementReference(XMLElement e) throws PropertyVetoException {
     _curElementReference = (ElementReference) findOrCreate(e, ElementReference.class);
     if (_firstPass) return;
   }
-  
+
   protected void handlePackage(XMLElement e) throws PropertyVetoException {
     _curPackage = (MMPackage) findOrCreate(e, MMPackage.class);
     if (_firstPass) return;
   }
-  
+
   protected void handleModel(XMLElement e) throws PropertyVetoException {
     _curME = (Model) findOrCreate(e, Model.class);
     if (_firstPass) return;
@@ -1305,7 +1305,7 @@ public class XMIParser extends XMIParserBase {
     // that are at level 33 and greater.
     _curModel = (Model) _curME;
   }
-  
+
   protected void handleModelEnd(XMLElement e) throws PropertyVetoException {
     if (_firstPass) return;
     if (_numNestedModels > 0)
@@ -1319,7 +1319,7 @@ public class XMIParser extends XMIParserBase {
       ((Subsystem)_curME).setIsInstantiable(b);
     else System.out.println("can't set isInstantiable");
   }
-  
+
   protected void handleSubsystem(XMLElement e) throws PropertyVetoException {
     _curSubsystem = (Subsystem) findOrCreate(e, Subsystem.class);
     _curME = _curSubsystem;

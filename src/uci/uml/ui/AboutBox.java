@@ -107,7 +107,7 @@ public class AboutBox extends JFrame {
 		     "  Piotr Kaminski\n"+
 		     "  Nick Santucci\n"+
 		     "  Eric Lefevre\n"+
-		     "  Sean Chen\n"
+		     "  Sean Chen\n" +
 		     "  Jim Holt\n"
 		     );
 

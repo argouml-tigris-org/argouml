@@ -42,7 +42,7 @@ public class ArgoParser extends SAXParserBase {
   // instance variables
 
   protected Project        _proj   = null;
-  
+
   private   ArgoTokenTable _tokens = new ArgoTokenTable();
 
   ////////////////////////////////////////////////////////////////
@@ -72,38 +72,38 @@ public class ArgoParser extends SAXParserBase {
   public Project getProject() { return _proj; }
 
   public void handleStartElement(XMLElement e) {
-        if (_dbg) System.out.println("NOTE: ArgoParser handleStartTag:" + e.getName());
-        try {
-            switch (_tokens.toToken(e.getName(), true)) {
-                case _tokens.TOKEN_argo: handleArgo(e); break;
-                case _tokens.TOKEN_documentation: handleDocumentation(e); break;
-                default: if (_dbg) 
-                           System.out.println("WARNING: unknown tag:" + e.getName());  break;
-            }
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    if (_dbg) System.out.println("NOTE: ArgoParser handleStartTag:" + e.getName());
+    try {
+      switch (_tokens.toToken(e.getName(), true)) {
+      case _tokens.TOKEN_argo: handleArgo(e); break;
+      case _tokens.TOKEN_documentation: handleDocumentation(e); break;
+      default: if (_dbg) 
+	System.out.println("WARNING: unknown tag:" + e.getName());  break;
+      }
+    }
+    catch (Exception ex) {
+      ex.printStackTrace();
+    }
   }
 
 
   public void handleEndElement(XMLElement e) {
-        if (_dbg) System.out.println("NOTE: ArgoParser handleEndTag:" + e.getName()+".");
-        try {
-            switch (_tokens.toToken(e.getName(), false)) {
-                case _tokens.TOKEN_authorname : handleAuthorname(e); break;
-                case _tokens.TOKEN_version : handleVersion(e); break;
-                case _tokens.TOKEN_description : handleDescription(e); break;
-                case _tokens.TOKEN_searchpath : handleSearchpath(e); break;
-                case _tokens.TOKEN_member : handleMember(e); break;
-                case _tokens.TOKEN_historyfile : handleHistoryfile(e); break;
-                default : if (_dbg) 
-                    System.out.println("WARNING: unknown end tag:" + e.getName()); break;
-            }
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    if (_dbg) System.out.println("NOTE: ArgoParser handleEndTag:" + e.getName()+".");
+    try {
+      switch (_tokens.toToken(e.getName(), false)) {
+      case _tokens.TOKEN_authorname : handleAuthorname(e); break;
+      case _tokens.TOKEN_version : handleVersion(e); break;
+      case _tokens.TOKEN_description : handleDescription(e); break;
+      case _tokens.TOKEN_searchpath : handleSearchpath(e); break;
+      case _tokens.TOKEN_member : handleMember(e); break;
+      case _tokens.TOKEN_historyfile : handleHistoryfile(e); break;
+      default : if (_dbg) 
+	System.out.println("WARNING: unknown end tag:" + e.getName()); break;
+      }
+    }
+    catch (Exception ex) {
+      ex.printStackTrace();
+    }
   }
 
   protected void handleArgo(XMLElement e) {
@@ -142,6 +142,7 @@ public class ArgoParser extends SAXParserBase {
   }
 
   protected void handleHistoryfile(XMLElement e) {
+    if (e.getAttribute("name") == null) return;
     String historyfile = e.getAttribute("name").trim();
     _proj._historyFile = historyfile;
   }

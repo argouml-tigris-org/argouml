@@ -29,42 +29,43 @@ import org.xml.sax.helpers.AttributeListImpl;
 /**
  * @author Jim Holt
  */
- 
+
 public class XMLElement {
-    
+
   ////////////////////////////////////////////////////////////////
   // constructors
-    
+
   public XMLElement(String name, AttributeList attributes) {
-       _name = name;
-       _attributes = new AttributeListImpl(attributes);
+    _name = name;
+    _attributes = new AttributeListImpl(attributes);
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // accessors
 
   public String getName()            { return _name; }
   public void   setName(String name) { _name = name; }
+
   public void   addText(String text) { _text = _text.append(text); }
   public void   setText(String text) { _text = new StringBuffer(text); }
-  public void   resetText() { _text.setLength(0); }
+  public void   resetText()          { _text.setLength(0); }
   public String getText()            { return _text.toString(); }
+
   public void   setAttributes(AttributeList attributes) {
     _attributes = new AttributeListImpl(attributes);
   }
-  public String getAttribute(String attribute)
-                   { return _attributes.getValue(attribute); }
-  public String getAttributeName(int i)
-                   { return _attributes.getName(i); }
-  public String getAttributeValue(int i)
-                   { return _attributes.getValue(i); }
+  public String getAttribute(String attribute) {
+    return _attributes.getValue(attribute);
+  }
+  public String getAttributeName(int i) { return _attributes.getName(i); }
+  public String getAttributeValue(int i) { return _attributes.getValue(i); }
   public int    getNumAttributes() { return _attributes.getLength(); }
-  
+
   ////////////////////////////////////////////////////////////////
   // instance variables
-    
+
   private String        _name       = null;
   private StringBuffer  _text       = new StringBuffer(100);
   private AttributeList _attributes = null;
-  
+
 } /* end class XMLElement */

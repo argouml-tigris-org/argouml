@@ -26,66 +26,66 @@ package uci.xml;
 import java.util.Hashtable;
 
 /**
- * @author Jim Holt
+ * @author Jim Holy
  */
- 
+
 public abstract class XMLTokenTableBase {
 
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-    
+  ////////////////////////////////////////////////////////////////
+  // instance variables
+
   protected  Hashtable _tokens       = null;
   protected  boolean   _dbg          = false;
   protected  String    _openTags[]   = new String[100];
   protected  int       _openTokens[] = new int[100];
   protected  int       _numOpen      = 0;
 
-  
-    ////////////////////////////////////////////////////////////////
-    // constructors
-    
-    public XMLTokenTableBase(int tableSize) {
-       _tokens = new Hashtable(tableSize); 
-       setupTokens();
-    }
-    
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
-    public final int toToken(String s, boolean push) {
-      if (push) _openTags[++_numOpen] = s;
-      else if (s.equals(_openTags[_numOpen])) {
-	//System.out.println("matched: " + s);
-	return _openTokens[_numOpen--];
+  ////////////////////////////////////////////////////////////////
+  // constructors
+
+  public XMLTokenTableBase(int tableSize) {
+    _tokens = new Hashtable(tableSize);
+    setupTokens();
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // accessors
+
+  public final int toToken(String s, boolean push) {
+    if (push) _openTags[++_numOpen] = s;
+    else if (s.equals(_openTags[_numOpen])) {
+      //System.out.println("matched: " + s);
+      return _openTokens[_numOpen--];
+    }
+    Integer i = (Integer) _tokens.get(s);
+    if (i != null) {
+      _openTokens[_numOpen] = i.intValue();
+      return _openTokens[_numOpen];
+    }
+    else return -1;
+  }
+
+  public void    setDbg(boolean dbg)     { _dbg = dbg; }
+  public boolean getDbg()                { return _dbg; }
+
+  ////////////////////////////////////////////////////////////////
+  // class methods
+
+  protected void addToken(String s, Integer i) {
+    boolean error = false;
+    if (_dbg) {
+      if (_tokens.contains(i) || _tokens.containsKey(s)) {
+	System.out.println("ERROR: token table already contains " + s);
+	error = true;
       }
-      Integer i = (Integer) _tokens.get(s);
-      if (i != null) {
-	_openTokens[_numOpen] = i.intValue();
-	return _openTokens[_numOpen];
-      }
-      else return -1;
     }
-    
-    public void    setDbg(boolean dbg)     { _dbg = dbg; }
-    public boolean getDbg()                { return _dbg; }
-
-    ////////////////////////////////////////////////////////////////
-    // class methods
-
-    protected void addToken(String s, Integer i) {
-        boolean error = false;
-        if (_dbg) {
-            if (_tokens.contains(i) || _tokens.containsKey(s)) {
-               System.out.println("ERROR: token table already contains " + s);
-               error = true;
-            }
-        }
-        _tokens.put(s,i);
-        if (_dbg && !error) {
-            System.out.println("NOTE: added '" + s + "' to token table");
-        }
+    _tokens.put(s,i);
+    if (_dbg && !error) {
+      System.out.println("NOTE: added '" + s + "' to token table");
     }
+  }
 
-    protected abstract void setupTokens();
-    
+  protected abstract void setupTokens();
+
 } /* end class XMLTokenTableBase */

@@ -28,49 +28,49 @@ import uci.xml.XMLTokenTableBase;
 /**
  * @author Jim Holt
  */
- 
+
 public class ArgoTokenTable extends XMLTokenTableBase {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-    
-    public ArgoTokenTable() {
-       super(32);
-    }
-    
-    ////////////////////////////////////////////////////////////////
-    // constants
-    public static final String STRING_argo                   = "argo";
-    public static final String STRING_authorname             = "authorname";
-    public static final String STRING_version                = "version";
-    public static final String STRING_description            = "description";
-    public static final String STRING_searchpath             = "searchpath";
-    public static final String STRING_member                 = "member";
-    public static final String STRING_historyfile            = "historyfile";
-    public static final String STRING_documentation          = "documentation";
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
-    public static final int    TOKEN_argo                    = 1;
-    public static final int    TOKEN_authorname              = 2;
-    public static final int    TOKEN_version                 = 3;
-    public static final int    TOKEN_description             = 4;
-    public static final int    TOKEN_searchpath              = 5;
-    public static final int    TOKEN_member                  = 6;
-    public static final int    TOKEN_historyfile             = 7;
-    public static final int    TOKEN_documentation           = 8;
-    public static final int    TOKEN_undefined               = 9;
+  public ArgoTokenTable() {
+    super(32);
+  }
 
-    ////////////////////////////////////////////////////////////////
-    // protected methods
+  ////////////////////////////////////////////////////////////////
+  // constants
+  public static final String STRING_argo                   = "argo";
+  public static final String STRING_authorname             = "authorname";
+  public static final String STRING_version                = "version";
+  public static final String STRING_description            = "description";
+  public static final String STRING_searchpath             = "searchpath";
+  public static final String STRING_member                 = "member";
+  public static final String STRING_historyfile            = "historyfile";
+  public static final String STRING_documentation          = "documentation";
 
-    protected void setupTokens()
-    {
-        addToken(STRING_argo, new Integer(TOKEN_argo));
-        addToken(STRING_authorname, new Integer(TOKEN_authorname));
-        addToken(STRING_version, new Integer(TOKEN_version));
-        addToken(STRING_description, new Integer(TOKEN_description));
-        addToken(STRING_searchpath, new Integer(TOKEN_searchpath));
-        addToken(STRING_member, new Integer(TOKEN_member));
-        addToken(STRING_historyfile, new Integer(TOKEN_historyfile));
-    }
-    
+  public static final int    TOKEN_argo                    = 1;
+  public static final int    TOKEN_authorname              = 2;
+  public static final int    TOKEN_version                 = 3;
+  public static final int    TOKEN_description             = 4;
+  public static final int    TOKEN_searchpath              = 5;
+  public static final int    TOKEN_member                  = 6;
+  public static final int    TOKEN_historyfile             = 7;
+  public static final int    TOKEN_documentation           = 8;
+  public static final int    TOKEN_undefined               = 9;
+
+  ////////////////////////////////////////////////////////////////
+  // protected methods
+
+  protected void setupTokens()
+  {
+    addToken(STRING_argo, new Integer(TOKEN_argo));
+    addToken(STRING_authorname, new Integer(TOKEN_authorname));
+    addToken(STRING_version, new Integer(TOKEN_version));
+    addToken(STRING_description, new Integer(TOKEN_description));
+    addToken(STRING_searchpath, new Integer(TOKEN_searchpath));
+    addToken(STRING_member, new Integer(TOKEN_member));
+    addToken(STRING_historyfile, new Integer(TOKEN_historyfile));
+  }
+
 } /* end class ArgoTokenTable */

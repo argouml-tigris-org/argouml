@@ -148,6 +148,42 @@ public class Actions {
   public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
   public static UMLAction Properties = new ActionProperties();
 
+  // multiplicity
+  public static UMLAction SrcMultOne =
+  new ActionMultiplicity(Multiplicity.ONE, "src");
+  public static UMLAction DestMultOne =
+  new ActionMultiplicity(Multiplicity.ONE, "dest");
+
+  public static UMLAction SrcMultZeroToOne=
+  new ActionMultiplicity(Multiplicity.ONE_OR_ZERO, "src");
+  public static UMLAction DestMultZeroToOne =
+  new ActionMultiplicity(Multiplicity.ONE_OR_ZERO, "dest");
+
+  public static UMLAction SrcMultZeroToMany =
+  new ActionMultiplicity(Multiplicity.ZERO_OR_MORE, "src");
+  public static UMLAction DestMultZeroToMany =
+  new ActionMultiplicity(Multiplicity.ZERO_OR_MORE, "dest");
+
+  public static UMLAction SrcMultOneToMany =
+  new ActionMultiplicity(Multiplicity.ONE_OR_MORE, "src");
+  public static UMLAction DestMultOneToMany =
+  new ActionMultiplicity(Multiplicity.ONE_OR_MORE, "dest");
+
+  // aggregation
+  public static UMLAction SrcAgg =
+  new ActionAggregation(AggregationKind.AGG, "src");
+  public static UMLAction DestAgg =
+  new ActionAggregation(AggregationKind.AGG, "dest");
+
+  public static UMLAction SrcAggComposite =
+  new ActionAggregation(AggregationKind.COMPOSITE, "src");
+  public static UMLAction DestAggComposite =
+  new ActionAggregation(AggregationKind.COMPOSITE, "dest");
+
+  public static UMLAction SrcAggNone =
+  new ActionAggregation(AggregationKind.NONE, "src");
+  public static UMLAction DestAggNone =
+  new ActionAggregation(AggregationKind.NONE, "dest");
 
 
 
@@ -600,7 +636,7 @@ class ActionOpenProject extends UMLAction {
 class ActionSaveProject extends UMLAction {
   protected static OCLExpander expander = null;
   public ActionSaveProject() {
-    super("Save Project", NO_ICON);
+    super("Save Project");
     Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/argo.tee");
     expander = new OCLExpander(templates);
   }
@@ -1793,3 +1829,60 @@ class ActionProperties extends UMLAction {
   }
   public boolean shouldBeEnabled() { return true; }
 } /* end class ActionShowProperties */
+
+
+class ActionMultiplicity extends UMLAction {
+  String str = "";
+  Multiplicity mult = null;
+  public ActionMultiplicity(Multiplicity m, String s) {
+    super(m.min() + ".." + m.maxString(), NO_ICON);
+    str = s;
+    mult = m;
+  }
+
+  public void actionPerformed(ActionEvent ae) {
+    Vector sels = Globals.curEditor().getSelectionManager().selections();
+    if( sels.size() == 1 ) {
+      Selection sel = (Selection) sels.firstElement();
+      Fig f = sel.getContent();
+      Object owner = ((FigEdgeModelElement) f).getOwner();
+      Vector ascEnds = ((Association) owner).getConnection();
+      AssociationEnd ascEnd = null;
+      if(str.equals("src"))
+        ascEnd = (AssociationEnd) ascEnds.firstElement();
+      else
+        ascEnd = (AssociationEnd) ascEnds.lastElement();
+      try { ascEnd.setMultiplicity(mult); }
+      catch (PropertyVetoException pve) { }
+    }
+  }
+  public boolean shouldBeEnabled() { return true; }
+} /* end class ActionSrcMultOneToMany */
+
+class ActionAggregation extends UMLAction {
+  String str = "";
+  AggregationKind agg = null;
+  public ActionAggregation(AggregationKind a, String s) {
+    super(a.toString(), NO_ICON);
+    str = s;
+    agg = a;
+  }
+
+  public void actionPerformed(ActionEvent ae) {
+    Vector sels = Globals.curEditor().getSelectionManager().selections();
+    if( sels.size() == 1 ) {
+      Selection sel = (Selection) sels.firstElement();
+      Fig f = sel.getContent();
+      Object owner = ((FigEdgeModelElement) f).getOwner();
+      Vector ascEnds = ((Association) owner).getConnection();
+      AssociationEnd ascEnd = null;
+      if(str.equals("src"))
+        ascEnd = (AssociationEnd) ascEnds.firstElement();
+      else
+        ascEnd = (AssociationEnd) ascEnds.lastElement();
+      try { ascEnd.setAggregation(agg); }
+      catch (PropertyVetoException pve) { }
+    }
+  }
+  public boolean shouldBeEnabled() { return true; }
+} /* end class ActionSrcMultOneToMany */

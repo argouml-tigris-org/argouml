@@ -32,6 +32,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.util.*;
+import javax.swing.JMenu;
 
 import uci.util.*;
 import uci.ui.*;
@@ -554,13 +555,15 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
    *  size. Subclasses must override to return something useful. */
   public Dimension getPreferedSize() { return new Dimension(_w, _h); }
 
-  public Vector getPopUpActions() {
-    Vector actions = new Vector();
-    actions.addElement(CmdReorder.BringForward);
-    actions.addElement(CmdReorder.SendBackward);
-    actions.addElement(CmdReorder.BringToFront);
-    actions.addElement(CmdReorder.SendToBack);
-    return actions;
+  public Vector getPopUpActions(MouseEvent me) {
+    Vector popUpActions = new Vector();
+    JMenu orderMenu = new JMenu("Ordering");
+    orderMenu.add(CmdReorder.BringForward);
+    orderMenu.add(CmdReorder.SendBackward);
+    orderMenu.add(CmdReorder.BringToFront);
+    orderMenu.add(CmdReorder.SendToBack);
+    popUpActions.addElement(orderMenu);
+    return popUpActions;
   }
 
   // needs-more-work: property change events?
@@ -580,6 +583,8 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 
   /** Get and set the points along a path for Figs that are path-like. */
   public void setPoints(Point[] ps) { }
+  public Point getFirstPoint() { return new Point(); }
+  public Point getLastPoint() { return new Point();}
   public Point[] getPoints() { return new Point[0]; }
   public final void setPoints(int i, Point p) { setPoints(i, p.x, p.y); }
   public final void setPoints(Handle h, Point p) { setPoints(h, p.x, p.y); }

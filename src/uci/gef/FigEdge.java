@@ -323,6 +323,10 @@ implements PropertyChangeListener, Highlightable {
     _fig.setPoints(h, x, y);
     calcBounds();
   }
+
+  public Point getFirstPoint() { return _fig.getFirstPoint(); }
+  public Point getLastPoint() { return _fig.getLastPoint(); }
+
   public Point getPoints(int i) { return _fig.getPoints(i); }
   public int getNumPoints() { return _fig.getNumPoints(); }
   public void setNumPoints(int npoints) {

@@ -111,6 +111,13 @@ public class Multiplicity implements java.io.Serializable {
     }
     return res;
   }
+
+  public String maxString() {
+    int max = max();
+    if (max == Integer.MAX_VALUE) return "*";
+    else return Integer.toString(max);
+  }
+
   static final long serialVersionUID = -7746929584910122951L;
 }
 
