@@ -22,15 +22,26 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.api;
+
 import javax.swing.*;
+
+import org.argouml.uml.ui.*;
 
 /**  An interface which identifies an ArgoUML plug-in property panel.
  *   Plug-ins are replacements or additions to standard Argo classes.
  *   
+ *   PluggablePropertyPanel should expect to be passed a
+ *   {@link QuadrantPanel} as the first argument in the inContext call.
+ *   The plugin can use getQuadrant to determine which panel is requesting
+ *   plugins.
+ * 
  *   @author Thierry Lach
- *   @since 0.9.4
+ *   @since ARGO0.9.4
  */
 public interface PluggablePropertyPanel extends Pluggable {
 
-} /* End interface PluggablePropertyPanel */
+    public Class getClassForPanel();
 
+    public PropPanel getPropertyPanel();
+
+} /* End interface PluggablePropertyPanel */
