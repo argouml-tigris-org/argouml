@@ -165,7 +165,7 @@ The only part of the requirements notation specified by the
       documentary. The only diagram is the use case diagram, showing the
       relationships between use cases and actors.</para>
 
-    <sect2>
+    <sect2 id="s2.tut.vision_document">
       <title>Vision Document</title>
 
       <para>Typical sections of this document would be as follows.</para>
@@ -1224,9 +1224,199 @@ It is possible to name generalization relationships using the property
     <title>Case Study</title>
 
     <sect2>
-      <title>Vision Document (To be written)</title>
+      <title>Vision Document</title>
+      <para>
+A vision document contains more than those things needed for
+the modelling effort.
+It also contains financial and scheduling pertinent information.
+The following sections are those parts of the Vision Document
+spelled out in section
+<xref linkend="s2.tut.vision_document"/> above.
+In practice this format need not be followed religiously, but
+is used here for consistency.
+</para>
 
-      <remark>To be written&hellip;</remark>
+      <sect3>
+        <title>Summary</title>
+        <para>
+The company wishes to produce and market a line of ATM devices.
+The purpose of this project is to produce the hardware and
+the software to drive it that are both maintainable and robust.
+</para>
+      </sect3>
+
+      <sect3>
+        <title>Goals</title>
+        <para>
+To produce better designed products based on newer
+technology.
+Follow the MDA philosophy of the OMG by producing first
+a Platform Independent Model (PIM).
+As current modeling technology does not admit of
+maintaining the integrity of the connection between the 
+PIM and Platform Specific Models (PSMs), the PIM will
+become comparatively stable before the first iteration of
+the PSM is produced.
+The software platform will be Java technology.
+The system will use a simple userid (from ATM card) and
+password (or PIN) mechanism.
+</para>
+      </sect3>
+
+      <sect3>
+        <title>Market Context</title>
+        <para>
+Equipment currently on the market is based on older
+technology for both hardware and software.
+This technology has not reached the end of its
+useful life, making it unlikely that the vendors of that
+gear are going to update it in the near future.
+On the other hand newer technology is available
+that would put us at a competitive advantage if implemented
+now.
+</para>
+      </sect3>
+
+      <sect3>
+        <title>Stakeholders</title>
+
+        <para>
+Among the stakeholders for this system are the Engineering
+Department, the Maintenance Department, and the Central
+Computer Facility.
+The full list of these stakeholders and the specific
+individuals representing them are.
+</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>
+<emphasis>Engineering</emphasis>. &nbsp;Bunny, Bugs
+</para>
+          </listitem>
+          <listitem>
+            <para>
+<emphasis>Maintenance</emphasis>. &nbsp;Hardy, Oliver
+</para>
+          </listitem>
+          <listitem>
+            <para>
+<emphasis>Computer Facility</emphasis>. &nbsp;Laurel, Stanley
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+<emphasis>Chief Executive Officer</emphasis>. &nbsp;Hun, Atilla The
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+<emphasis>Marketing</emphasis>. &nbsp;Harry, Oil Can
+            </para>
+          </listitem>
+        </itemizedlist>
+
+      </sect3>
+
+      <sect3>
+        <title>Key Features</title>
+
+        <para>
+Cash deposit, cash withdrawal, and account inquiries by
+customers.
+Customers include people who have accounts at the owning
+bank as well as people who wish to make withdrawals from
+accounts in other banks or from credit card accounts.
+</para>
+
+        <para>
+Maintenance of the equipment by the bank's engineers.
+This action may be initiated by the engineer on a routine
+basis.
+It may also be initiated by the equipment which can call
+the engineer when it detects an internal fault.
+</para>
+
+        <para>
+Unloading of deposits and loading of cash by officials
+of the local bank branch.
+These actions occur either on a scheduled basis or when the
+central computer determines that the cash supply is low or
+the deposit receptacle is liable to be getting full.
+</para>
+
+        <para>
+An audit trail for all activities will be maintained and
+sent periodically to the bank's central computer.
+It will be possible for the maintenance engineer to make 
+a copy of the audit trail for sneaker net communications
+with the central computer.
+</para>
+
+        <para>
+Both dialup and leased line support will be provided.
+The ATM will continue to provide services to customers when
+communications with the central computer is not available.
+</para>
+
+      </sect3>
+
+      <sect3>
+        <title>Constraints</title>
+        <para>
+The project must be completed within nine months.
+It must cost no more than 1,750,000 USD excluding
+production costs.
+Components may be contracted out, but the basic
+architecture as well as the infrastructure will be designed
+in house.
+Close liaison must be maintained between the software
+development and the design, development and production of
+the hardware.
+Neither the hardware nor the software shall be considered
+the independent variable, but rather they shall be
+considered coequal.
+</para>
+      </sect3>
+
+      <sect3>
+        <title>Appendix</title>
+
+        <para>
+The following are the actors that directly support this
+vision.
+Additional actors may be identified later that are needed
+to support this or that technology.
+They should not be added to this list unless they are
+deemed to directly support the vision as described in this
+document.
+</para>
+
+        <itemizedlist>
+          <listitem><para>Central Computer</para></listitem>
+          <listitem><para>Customer</para></listitem>
+          <listitem><para>Local Branch Official</para></listitem>
+          <listitem><para>Maintenance Engineer</para></listitem>
+        </itemizedlist>
+
+        <para>
+The following are the use cases that directly support this vision.
+Additional use cases may be identified later that are
+needed to support this or that technology or to support the
+use cases listed here.
+They should not be added to this list unless they are
+deemed to directly support the vision as described in this
+document.
+</para>
+
+        <itemizedlist>
+          <listitem><para>Audit</para></listitem>
+          <listitem><para>Customer Uses Machine</para></listitem>
+          <listitem><para>Maintain Machine</para></listitem>
+        </itemizedlist>
+
+      </sect3>
+
     </sect2>
 
     <sect2>
