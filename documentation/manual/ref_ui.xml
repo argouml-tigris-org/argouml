@@ -333,6 +333,13 @@ own chapters.
           replace the selected text.</para>
       </sect3>
     </sect2>
+    
+    <sect2 id="s2.ref.mouse.alt">
+      <title>Alt with &Button1;: Panning</title>
+      <para>When holding down the Alt key during &button1; down on a diagram, 
+        movement of the mouse pans the drawing area. The function is indicated 
+        by the mousepointer which turns into a crosshair with arrows.</para>
+    </sect2>
 
     <!-- Button2 click -->
 
