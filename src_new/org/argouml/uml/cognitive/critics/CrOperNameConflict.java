@@ -117,7 +117,7 @@ public class CrOperNameConflict extends CrUML {
             return NO_PROBLEM;
         }
 
-	Iterator enum = ModelFacade.getOperations(dm).iterator();
+	Iterator ops = ModelFacade.getOperations(dm).iterator();
 
         // Get all the features (giving up if there are none). Then loop
         // through finding all operations. Each time we find one, we compare
@@ -126,9 +126,9 @@ public class CrOperNameConflict extends CrUML {
 
         Vector operSeen = new Vector();
 
-        while (enum.hasNext()) {
+        while (ops.hasNext()) {
 
-	    Object op = enum.next();
+	    Object op = ops.next();
 
             // Compare against all earlier operations. If there's a match we've
             // found the problem

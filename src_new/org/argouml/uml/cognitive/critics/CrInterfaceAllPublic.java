@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,9 +53,9 @@ public class CrInterfaceAllPublic extends CrUML {
 	Object inf = /*(MInterface)*/ dm;
 	Collection bf = ModelFacade.getFeatures(inf);
 	if (bf == null) return NO_PROBLEM;
-	Iterator enum = bf.iterator();
-	while (enum.hasNext()) {
-	    Object f = /*(MFeature)*/ enum.next();
+	Iterator features = bf.iterator();
+	while (features.hasNext()) {
+	    Object f = /*(MFeature)*/ features.next();
 	    if (ModelFacade.getVisibility(f) == null) return NO_PROBLEM;
 	    if (!ModelFacade.getVisibility(f).equals(ModelFacade.PUBLIC_VISIBILITYKIND))
 		return PROBLEM_FOUND;

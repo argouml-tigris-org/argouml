@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -79,9 +79,9 @@ public class CrAttrNameConflict extends CrUML {
 
 	Vector namesSeen = new Vector();
 
-	Iterator enum = ModelFacade.getAttributes(dm).iterator();
-	while (enum.hasNext()) {
-	    String name = ModelFacade.getName(enum.next());
+	Iterator attrs = ModelFacade.getAttributes(dm).iterator();
+	while (attrs.hasNext()) {
+	    String name = ModelFacade.getName(attrs.next());
 	    if (name == null || name.length() == 0) continue;
 
 	    if (namesSeen.contains(name)) return PROBLEM_FOUND;

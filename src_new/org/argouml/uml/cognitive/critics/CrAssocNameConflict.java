@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,7 +42,7 @@ import org.argouml.model.ModelFacade;
 public class CrAssocNameConflict extends CrUML {
 
     public CrAssocNameConflict() {
-	setHeadline("Resolve Assocaiation Name Conflict");
+	setHeadline("Resolve Association Name Conflict");
 	addSupportedDecision(CrUML.decNAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	// no good trigger
@@ -53,9 +53,9 @@ public class CrAssocNameConflict extends CrUML {
 	Collection oes = ModelFacade.getOwnedElements(dm);
 	if (oes == null) return NO_PROBLEM;
 	Vector namesSeen = new Vector();
-	Iterator enum = oes.iterator();
-	while (enum.hasNext()) {
-	    if (!(ModelFacade.isAAssociation(enum.next()))) continue;
+	Iterator elems = oes.iterator();
+	while (elems.hasNext()) {
+	    if (!ModelFacade.isAAssociation(elems.next())) continue;
 	    // TODO: not implemented yet
 	}
 	return NO_PROBLEM;

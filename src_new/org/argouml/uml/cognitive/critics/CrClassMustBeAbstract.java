@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -57,9 +57,9 @@ public class CrClassMustBeAbstract extends CrUML {
 	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
 	if (ModelFacade.isAbstract(dm)) return NO_PROBLEM;
 	
-	Iterator enum = ModelFacade.getOperations(dm).iterator();
-	while (enum.hasNext()) {
-	    if (ModelFacade.isAbstract(enum.next())) return PROBLEM_FOUND;
+	Iterator ops = ModelFacade.getOperations(dm).iterator();
+	while (ops.hasNext()) {
+	    if (ModelFacade.isAbstract(ops.next())) return PROBLEM_FOUND;
 	}
 	return NO_PROBLEM;
     }
