@@ -37,221 +37,204 @@ import java.util.Vector;
 import org.apache.log4j.Category;
 import org.argouml.application.api.Notation;
 import org.argouml.uml.generator.ParserDisplay;
-import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
 
 /** Class to display graphics for a UML MCompositeState in a diagram. */
 
-public class FigCompositeState extends FigStateVertex {
+public class FigCompositeState extends FigState {
     protected static Category cat = Category.getInstance(FigCompositeState.class);
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  public final int MARGIN = 2;
-  public final int X = 0;
-  public final int Y = 0;
-  public final int W = 180;
-  public final int H = 150;
+    public final int MARGIN = 2;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The main label on this icon. */
-  //FigText _name;
+    /** The main label on this icon. */
+    //FigText _name;
 
-  FigRect _cover;
-  FigText _internal;
-  FigLine _divider;
+    FigRect _cover;
+    FigLine _divider;
 
-  // add other Figs here aes needed
+    // add other Figs here aes needed
 
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    public FigCompositeState() {
+        super();
+        _bigPort = new FigRRect(getInitialX() + 1, getInitialY() + 1, getInitialWidth() - 2, getInitialHeight() - 2, Color.cyan, Color.cyan);
+        _cover = new FigRRect(getInitialX(), getInitialY(), getInitialWidth(), getInitialHeight(), Color.black, Color.white);
 
-  public FigCompositeState() {
-    _bigPort = new FigRRect(X+1, Y+1, W-2, H-2, Color.cyan, Color.cyan);
-    _cover = new FigRRect(X, Y, W, H, Color.black, Color.white);
+        _bigPort.setLineWidth(0);
+        _name.setLineWidth(0);
+        _name.setBounds(getInitialX() + 2, getInitialY() + 2, getInitialWidth() - 4, _name.getBounds().height);
+        _name.setFilled(false);
 
-    _bigPort.setLineWidth(0);
-    _name.setLineWidth(0);
-    _name.setBounds(X+2, Y+2, W-4, _name.getBounds().height);
-    _name.setFilled(false);
+        _divider = new FigLine(getInitialX(), getInitialY() + 2 + _name.getBounds().height + 1, getInitialWidth() - 1, getInitialY() + 2 + _name.getBounds().height + 1, Color.black);
 
-    _divider = new FigLine(X,  Y+2 + _name.getBounds().height + 1,
-			   W-1,  Y+2 + _name.getBounds().height + 1,
-			   Color.black);
+        // add Figs to the FigNode in back-to-front order
+        addFig(_bigPort);
+        addFig(_cover);
+        addFig(_name);
+        addFig(_divider);
+        addFig(_internal);
 
-    _internal = new FigText(X+2, Y+2 + _name.getBounds().height + 4,
-			    W-4, H - (Y+2 + _name.getBounds().height + 4));
-    _internal.setFont(LABEL_FONT);
-    _internal.setTextColor(Color.black);
-    _internal.setLineWidth(0);
-    _internal.setFilled(false);
-    _internal.setExpandOnly(true);
-    _internal.setMultiLine(true);
-    _internal.setJustification(FigText.JUSTIFY_LEFT);
-
-    // add Figs to the FigNode in back-to-front order
-    addFig(_bigPort);
-    addFig(_cover);
-    addFig(_name);
-    addFig(_divider);
-    addFig(_internal);
-
-    //setBlinkPorts(false); //make port invisble unless mouse enters
-    Rectangle r = getBounds();
-    setBounds(r.x, r.y, r.width, r.height);
-  }
-
-  public FigCompositeState(GraphModel gm, Object node) {
-    this();
-    setOwner(node);
-  }
-
-  public String placeString() { return "new MCompositeState"; }
-
-  public Object clone() {
-    FigCompositeState figClone = (FigCompositeState) super.clone();
-    Vector v = figClone.getFigs();
-    figClone._bigPort = (FigRect) v.elementAt(0);
-    figClone._cover = (FigRect) v.elementAt(1);
-    figClone._name = (FigText) v.elementAt(2);
-    figClone._divider = (FigLine) v.elementAt(3);
-    figClone._internal = (FigText) v.elementAt(4);
-    return figClone;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public Selection makeSelection() {
-    return new SelectionState(this);
-  }
-
-  public Dimension getMinimumSize() {
-    Dimension nameDim = _name.getMinimumSize();
-    Dimension internalDim = _internal.getMinimumSize();
-
-    int h = nameDim.height + 4 + internalDim.height;
-    int w = Math.max(nameDim.width + 4, internalDim.width + 4);
-    return new Dimension(w, h);
-  }
-
-  public boolean getUseTrapRect() { return true; }
-
-  /* Override setBounds to keep shapes looking right */
-  public void setBounds(int x, int y, int w, int h) {
-    if (_name == null) return;
-    Rectangle oldBounds = getBounds();
-    Dimension nameDim = _name.getMinimumSize();
-
-    _name.setBounds(x+2, y+2, w-4,  nameDim.height);
-    _divider.setShape(x, y + nameDim.height + 1, x + w - 1,  y + nameDim.height + 1);
-
-    _internal.setBounds(x+2, y + nameDim.height + 4,
-			w-4, h - nameDim.height - 6);
-
-    _bigPort.setBounds(x, y, w, h);
-    _cover.setBounds(x, y, w, h);
-
-    calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-    updateEdges();
-    firePropChange("bounds", oldBounds, getBounds());
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // fig accessors
-
-  public void setLineColor(Color col) {
-    _cover.setLineColor(col);
-    _divider.setLineColor(col);
-  }
-
-  public Color getLineColor() {
-    return _cover.getLineColor();
-  }
-
-  public void setFillColor(Color col) {
-    _cover.setFillColor(col);
-  }
-  public Color getFillColor() {
-    return _cover.getFillColor();
-  }
-
-  public void setFilled(boolean f) {
-    _cover.setFilled(f);
-  }
-  public boolean getFilled() {
-    return _cover.getFilled();
-  }
-
-  public void setLineWidth(int w) {
-    _cover.setLineWidth(w);
-    _divider.setLineWidth(w);
-  }
-  public int getLineWidth() {
-    return _cover.getLineWidth();
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // event processing
-
-  /** Update the text labels */
-  protected void modelChanged(MElementEvent mee) {
-    if (mee == null) {
-        updateInternal();
-        super.modelChanged(mee);
-    } else
-    if (mee.getName().equals("isConcurrent") || mee.getName().equals("subvertex") ||
-        mee.getName().equals("classifierInState") || mee.getName().equals("classifierInState") ||
-        mee.getName().equals("deferrableEvent") || mee.getName().equals("internalTransition") ||
-        mee.getName().equals("doActivity") || mee.getName().equals("entry") || mee.getName().equals("exit") ||
-        mee.getName().equals("stateMachine") ||
-        mee.getName().equals("incoming") || mee.getName().equals("outgoing")) {
-            updateInternal();
-            // register this fig as a listener if the event is about adding modelelements to the state
-            updateListeners(getOwner());
-    } else
-    if (mee.getSource() instanceof MTransition && mee.getName().equals("name")) {
-        updateInternal();
-    } else
-        super.modelChanged(mee);
-
-  }
-
-  public void textEdited(FigText ft) throws PropertyVetoException {
-    super.textEdited(ft);
-    if (ft == _internal) {
-      MState st = (MState) getOwner();
-      if (st == null) return;
-      String s = ft.getText();
-      ParserDisplay.SINGLETON.parseStateBody(st, s);
+        //setBlinkPorts(false); //make port invisble unless mouse enters
+        Rectangle r = getBounds();
+        setBounds(r.x, r.y, r.width, r.height);
     }
-  }
-  
-  /**
-   * Updates the text inside the composite state
-   */
-  protected void updateInternal() {
-        MState s = (MState) getOwner();
-    if (s == null) return;
-    String newText = Notation.generateStateBody(this, s);
-    _internal.setText(newText);
 
-    calcBounds();
-    Rectangle rect = getBounds();
-    setBounds(rect.x, rect.y, rect.width, rect.height);
-  }
+    public FigCompositeState(GraphModel gm, Object node) {
+        this();
+        setOwner(node);
+    }
 
+    public String placeString() {
+        return "new MCompositeState";
+    }
+
+    public Object clone() {
+        FigCompositeState figClone = (FigCompositeState) super.clone();
+        Vector v = figClone.getFigs();
+        figClone._bigPort = (FigRect) v.elementAt(0);
+        figClone._cover = (FigRect) v.elementAt(1);
+        figClone._name = (FigText) v.elementAt(2);
+        figClone._divider = (FigLine) v.elementAt(3);
+        figClone._internal = (FigText) v.elementAt(4);
+        return figClone;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    public Dimension getMinimumSize() {
+        Dimension nameDim = _name.getMinimumSize();
+        Dimension internalDim = _internal.getMinimumSize();
+
+        int h = nameDim.height + 4 + internalDim.height;
+        int w = Math.max(nameDim.width + 4, internalDim.width + 4);
+        return new Dimension(w, h);
+    }
+
+    public boolean getUseTrapRect() {
+        return true;
+    }
+
+    /* Override setBounds to keep shapes looking right */
+    public void setBounds(int x, int y, int w, int h) {
+        if (_name == null)
+            return;
+        Rectangle oldBounds = getBounds();
+        Dimension nameDim = _name.getMinimumSize();
+
+        _name.setBounds(x + 2, y + 2, w - 4, nameDim.height);
+        _divider.setShape(x, y + nameDim.height + 1, x + w - 1, y + nameDim.height + 1);
+
+        _internal.setBounds(x + 2, y + nameDim.height + 4, w - 4, h - nameDim.height - 6);
+
+        _bigPort.setBounds(x, y, w, h);
+        _cover.setBounds(x, y, w, h);
+
+        calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+        updateEdges();
+        firePropChange("bounds", oldBounds, getBounds());
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // fig accessors
+
+    public void setLineColor(Color col) {
+        _cover.setLineColor(col);
+        _divider.setLineColor(col);
+    }
+
+    public Color getLineColor() {
+        return _cover.getLineColor();
+    }
+
+    public void setFillColor(Color col) {
+        _cover.setFillColor(col);
+    }
+    public Color getFillColor() {
+        return _cover.getFillColor();
+    }
+
+    public void setFilled(boolean f) {
+        _cover.setFilled(f);
+    }
+    public boolean getFilled() {
+        return _cover.getFilled();
+    }
+
+    public void setLineWidth(int w) {
+        _cover.setLineWidth(w);
+        _divider.setLineWidth(w);
+    }
+    public int getLineWidth() {
+        return _cover.getLineWidth();
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // event processing
+
+    /** Update the text labels */
+    protected void modelChanged(MElementEvent mee) {
+        super.modelChanged(mee);
+
+        if (mee.getName().equals("isConcurrent")) {
+            // TODO: this should split the composite state into two regions. This must be implemented
+            updateInternal();
+        }
+
+    }
+
+    public void textEdited(FigText ft) throws PropertyVetoException {
+        super.textEdited(ft);
+        if (ft == _internal) {
+            MState st = (MState) getOwner();
+            if (st == null)
+                return;
+            String s = ft.getText();
+            ParserDisplay.SINGLETON.parseStateBody(st, s);
+        }
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialHeight()
+     */
+    protected int getInitialHeight() {
+        return 150;
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialWidth()
+     */
+    protected int getInitialWidth() {
+        return 180;
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialX()
+     */
+    protected int getInitialX() {
+        return 0;
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.state.ui.FigState#getInitialY()
+     */
+    protected int getInitialY() {
+        return 0;
+    }
 
 } /* end class FigCompositeState */

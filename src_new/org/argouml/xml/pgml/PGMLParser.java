@@ -133,8 +133,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 				 "org.argouml.uml.diagram.state.ui.FigJoinState");
 	  _translateUciToOrg.put("uci.uml.visual.FigShallowHistoryState",
 				 "org.argouml.uml.diagram.state.ui.FigShallowHistoryState");
-	  _translateUciToOrg.put("uci.uml.visual.FigState",
-				 "org.argouml.uml.diagram.state.ui.FigState");
+	  _translateUciToOrg.put("uci.uml.visual.FigSimpleState",
+				 "org.argouml.uml.diagram.state.ui.FigSimpleState");
 	  _translateUciToOrg.put("uci.uml.visual.FigActionState",
 				 "org.argouml.uml.diagram.activity.ui.FigActionState");
 	  _translateUciToOrg.put("uci.uml.visual.FigStateVertex",
@@ -158,7 +158,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         if ("org.argouml.uml.diagram.static_structure.ui.FigNote"
             .equals(oldName))
             return "org.argouml.uml.diagram.static_structure.ui.FigComment";
-
+		if ("org.argouml.uml.diagram.state.ui.FigState".equals(oldName))
+			return "org.argouml.uml.diagram.state.ui.FigSimpleState";
         if ( oldName.startsWith("org.") ) return oldName;
 
         if ( oldName.startsWith("uci.gef.") ) {

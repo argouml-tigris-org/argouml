@@ -97,7 +97,7 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
     _panels.put(FigEdgeModelElement.class, spfeme);
     _panels.put(FigInterface.class, spfi);
     _panels.put(FigAssociation.class, spfeme);
-    _panels.put(FigState.class, spf);
+    _panels.put(FigSimpleState.class, spf);
     _panels.put(FigTransition.class, spfeme);
     _panels.put(FigActor.class, spf);
     _panels.put(FigInstance.class, spf);

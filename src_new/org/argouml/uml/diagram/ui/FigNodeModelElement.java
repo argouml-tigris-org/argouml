@@ -666,8 +666,8 @@ public abstract class FigNodeModelElement
 
     public void setOwner(Object own) {
         Object oldOwner = getOwner();
-        super.setOwner(own);
-        updateListeners(own);                         
+        updateListeners(own);   
+        super.setOwner(own);                              
         if (own instanceof MModelElement) {
             MModelElement me = (MModelElement) own;          
             if (me.getUUID() == null)
@@ -711,8 +711,8 @@ public abstract class FigNodeModelElement
      */
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
-
-            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)oldOwner);
+			if (oldOwner != null)
+            	UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)oldOwner);
             if (newOwner != null) {
             	UmlModelEventPump.getPump().addModelEventListener(this, (MBase)newOwner);                       
             }

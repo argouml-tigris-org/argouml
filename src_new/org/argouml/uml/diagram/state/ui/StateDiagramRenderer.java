@@ -50,7 +50,7 @@ import org.argouml.uml.diagram.activity.ui.*;
  * <pre>
  *  UML Object          ---  Fig
  *  ---------------------------------------
- *  MState              ---  FigState
+ *  MState              ---  FigSimpleState
  *  MCompositeState     ---  FigCompositeState
  *  MActionState        ---  FigActionState
  *  MFinalState         ---  FigFinalState
@@ -82,7 +82,7 @@ public class StateDiagramRenderer implements GraphNodeRenderer, GraphEdgeRendere
             return new FigCompositeState(gm, node);
         }
         else if (node instanceof MState) {
-            return new FigState(gm, node);
+            return new FigSimpleState(gm, node);
         }
         else if (node instanceof MPseudostate) {
             MPseudostate pState = (MPseudostate) node;
