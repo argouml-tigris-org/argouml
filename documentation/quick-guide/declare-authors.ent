@@ -20,7 +20,6 @@
 <!ENTITY email-kunle.odu			'<email>Kunle_Odutola&#64;hotmail.com</email>'>
 <!ENTITY address-kunle.odu		'<address>&email-kunle.odu;</address>'>
 <!ENTITY author-kunle.odu 		'<author><firstname>Kunle</firstname><surname>Odutola</surname></author>'>
-<!ENTITY copyright-kunle.odu	   '<para>Copyright (c) 2001 by Kunle Odutola. All rights reserved</para>'>
 
 <!-- ......................................................................
 

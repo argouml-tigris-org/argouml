@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "docbookx/docbookx.dtd"> -->
 <!-- 
 
 	[ PLEASE DO NOT REMOVE THIS COMMENT BLOCK!! ]
@@ -52,19 +51,19 @@ Open standards: XMI, SVG and PGML
 				</listitem>
 				<listitem>
 					<para>
-100% Java
+            100% Platform independent thanks to the exclusive use of Java
 					</para>
 				</listitem>
 				<listitem>
 					<para>
-Open Source allows to extend or customize it.
+            Open Source, which allows extending or customizeing.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
-Cognitive features like:
-reflection-in-action, bopportunistic design, 
-comprehension and problem solving
+            Cognitive features like:
+            reflection-in-action, opportunistic design, 
+            comprehension and problem solving
 					</para>
 				</listitem>
 			</itemizedlist>

@@ -1,48 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "../docbook-setup/docbookx/docbookx.dtd"> -->
-<!-- 
 
--->
+
 <chapter id="running">
 	<title>Running &argo;</title>
 	<para>
-&argo; contains one model that your can examine and modify.
-</para>
-	<para>
-Commands are available from the menus and by right-clicking on
-the objects either in the list of objects or in the diagram.
-The commands available from the objects work on these objects.
-</para>
-	<para>
-Some commands for creating and drawing are available from
-the icon bars over the diagrams.
-</para>
-	<sect1>
-		<title>The window</title>
+    When &argo; starts, then it shows an empty class diagram
+    on which you can add various objects. &argo; works according the following
+    principles:
+  </para>
+
+  <section>
+    <title>Project and Model</title>
+    <para>
+      The save and open operations handle one <literal>project</literal> at a
+      time. One <literal>project</literal> corresponds to a
+      <literal>model</literal> plus diagram information. 
+      The <literal>model</literal> might contain many
+      objects (ModelElements) which might be present on a diagram, but this is not
+      required. Hence, the <literal>model</literal> that is stored in &argo; is
+      independent of the contents of the diagrams. But everything together is
+      stored in a <literal>project</literal>.
+    </para>
+  </section>
+
+  <section>
+    <title>Objects</title>
+    <para>
+      Select objects by left-clicking on them.
+      The functionality of &argo; can be activated in the menu, 
+      in toolbars,
+      or in pop-up menus when right-clicking above an object.
+      Many of these functions work on the selected objects.
+    </para>
+    <para>
+      All diagrams have toolbars at the top which are used 
+      to create objects on the diagram.
+    </para>
+  </section>
+
+	<section>
+		<title>Overview of the window</title>
 		<para>
-At the top there is a menu bar with commands available.
-In the file menu you can store the model or open another model
-instead.
-</para>
+      The top of the window contains a menu bar with commands available.
+      In the <literal>File</literal> menu you can store the project or 
+      open another project instead.
+    </para>
 		<para>
-The upper left part of &argo; lists the diagrams and objects 
-of the model in one of several views.
-</para>
+      The upper left part of the &argo; window shows a tree model 
+      of diagrams and objects. 
+      This view can be adapted to your needs 
+      by filtering the objects that are shown, 
+      and the structure in which they are shown.
+    </para>
 		<para>
-The upper right part of &argo; shows one diagram at the time.
-You can work with the objects in the diagrams, dragging and dropping
-and using the quick-links to create new objects connected to the
-already present objects.
-</para>
+      The upper right part of &argo; shows the current diagram (one at a time).
+      You can drag and drop the objects in the diagrams,
+      and you can use the quick-links 
+      that appear when hovering over a selected object 
+      to create new objects connected to the
+      already present objects.
+    </para>
 		<para>
-The lower right part you contains various details of various 
-objects of the model. You select the object in one of the upper
-levels and choose what details you want to examine using the
-tabs.
-</para>
+      The lower right part contains various details of the currently selected 
+      object: You select the object in one of the upper
+      levels and choose what details you want to examine using the
+      tabs.
+    </para>
 		<para>
-The lower left part contains a list of all ToDo items for this
-model.
-</para>
-	</sect1>
+      The lower left part contains a list of all ToDo items for this
+      model.
+    </para>
+	</section>
+
 </chapter>
