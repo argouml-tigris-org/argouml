@@ -650,4 +650,14 @@ public class Designer
     /** just returns false */
     public boolean canFixIt(ToDoItem item) { return false; }
     
+    class ChildGenDMElements implements ChildGenerator {
+        /** Reply a Enumeration of the children of the given Object */
+        public Enumeration gen(Object o) {
+            if (o instanceof Design)
+                return ((Design) o).elements();
+            else
+                return EnumerationEmpty.theInstance();
+        }
+    } /* end class ChildGenDMElements */
+    
 } /* end class Designer */
