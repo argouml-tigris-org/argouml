@@ -82,6 +82,11 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
     private JTable _classTable;
     private JComboBox _outputDirectoryComboBox;
 
+    /** Used to select the next language column in case 
+     * the "Select All" button is pressed. 
+     */
+    private int languageHistory = 0;
+
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -530,6 +535,12 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
             }
         }
 
+        /** Sets or clears all checkmarks for the (next) language for all classes
+         *  @param value If false then all checkmarks are cleared for all 
+         *  languages. 
+         *  If true then all are cleared, except for one language column, 
+         *  these are all set. 
+         */
         public void setAllChecks(boolean value) {
             int rows = getRowCount();
             int checks = getLanguagesCount();
@@ -542,7 +553,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
                 Object cls = _classes.elementAt(i);
 
                 for (int j = 0; j < checks; ++j) {
-                    if (value) {
+                    if (value && (j == languageHistory)) {
                         _checked[j].add(cls);
                     }
                     else {
@@ -550,7 +561,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
                     }
                 }
             }
-            
+            if (value) if (++languageHistory >= checks) languageHistory = 0;
             getOkButton().setEnabled(value);
         }
     } /* end class TableModelClassChecks */    
