@@ -92,7 +92,7 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
      * Test setBase().
      */
     public void testSetBase() {
-        Model.getCollaborationsHelper().setBase(elem, bases[0]);
+        Model.getUseCasesHelper().setBase(elem, bases[0]);
         assertTrue(model.getSelectedItem() == bases[0]);
     }
 
@@ -100,7 +100,7 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
      * Test setBase() with null argument.
      */
     public void testSetBaseToNull() {
-        Model.getCollaborationsHelper().setBase(elem, null);
+        Model.getUseCasesHelper().setBase(elem, null);
         assertNull(model.getSelectedItem());
     }
 
