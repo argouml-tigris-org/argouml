@@ -28,6 +28,10 @@
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
+// 6 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Code written as part of
+// fix to issue 619.
+
+
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
@@ -37,22 +41,103 @@ import ru.novosoft.uml.foundation.core.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
-/** Well-formedness rule [1] for Associations. See page 27 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. */
+/**
+ * <p>A critic to check that the classifiers associated with the ends of an
+ *   association are in the same namespace as the association.</p>
+ *
+ * <p>With hierarchical namespaces, this would appear to allow any
+ *   association. However the intent would seem to be that, whilst association
+ *   between packages is reasonable, association between sub-systems or models
+ *   is not.</p>
+ *
+ * <p>This is the fourth well-formedness rule for associations in the UML 1.3
+ *   standard (see section 2.5.3 of the standard).</p>
+ *
+ * <p> Since ArgoUML currently only supports a single model, and no subsystems,
+ *   there is no way to trigger the critic at present. Although a deleted
+ *   classifier will appear in the separate "trash" namespace, this will also
+ *   delete the association, so the critic will not trigger. However it will be
+ *   useful for the future when multiple models and sub-systems are
+ *   supported.</p>
+ *
+ * <p>Internally we use some of the static utility methods of the {@link
+ *   org.argouml.cognitive.critics.CriticUtils CriticUtils} class.</p>
+ *
+ * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_cross_namespace_assoc">ArgoUML User Manual: Classifier not in Namespace of its Association</a>
+ */
 
 public class CrCrossNamespaceAssoc extends CrUML {
 
-  public CrCrossNamespaceAssoc() {
-    setHeadline("Aggregate Role in N-way MAssociation");
+    /**
+     * <p>Constructor for the critic.</p>
+     *
+     * <p>Sets up the resource name, which will allow headline and description
+     * to found for the current locale. Provides a design issue category
+     * (MODULARITY) and a knowledge type (SYNTAX).</p>
+     */
 
-    addSupportedDecision(CrUML.decMODULARITY);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-  }
+    public CrCrossNamespaceAssoc() {
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    // needs-more-work: not implemented
-    return NO_PROBLEM;
-  }
+        setResource("CrCrossNamespaceAssoc");
+
+        addSupportedDecision(CrUML.decMODULARITY);
+        setKnowledgeTypes(Critic.KT_SYNTAX);
+    }
+
+
+    /**
+     * <p>The trigger for the critic.</p>
+     *
+     * <p>Get the association. Then loop through the association ends, checking
+     * that their associated classifiers are in the namespace, i.e. are part of
+     * the same model or subsystem.</p>
+     *
+     * @param  dm    the {@link java.lang.Object Object} to be checked against
+     *               the critic.
+     *
+     * @param  dsgr  the {@link org.argouml.cognitive.Designer Designer}
+     *               creating the model. Not used, this is for future
+     *               development of ArgoUML.
+     *
+     * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
+     */
+    
+    public boolean predicate2(Object dm, Designer dsgr) {
+
+        // Only look at associations
+
+        if (!(dm instanceof MAssociation)) {
+            return NO_PROBLEM;
+        }
+
+        // Get the Association and its connections.
+
+        MAssociation asc   = (MAssociation) dm;
+        Collection   conns = asc.getConnections();
+
+        // Iterate over all the AssociationEnds and check that each connected
+        // classifier is in the same sub-system or model
+
+        Iterator enum = conns.iterator();
+
+        while (enum.hasNext()) {
+
+            // The next AssociationEnd, and its classifier. Check the
+            // classifier is in the namespace of the association. If not we
+            // have a problem.
+
+            MAssociationEnd ae  = (MAssociationEnd) enum.next();
+            MClassifier     clf = ae.getType();
+
+            if (!(CriticUtils.sameNamespace(clf, asc))) {
+                return PROBLEM_FOUND;
+            }
+        }
+
+        // If we drop out there is no problem
+
+        return NO_PROBLEM;
+    }
 
 } /* end class CrCrossNamespaceAssoc.java */
-
