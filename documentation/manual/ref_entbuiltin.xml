@@ -681,7 +681,7 @@ use is for return type and parameter types in method signatures.
               <para>Comment</para>
             </entry>
             <entry>
-              <para>no</para>
+              <para>yes</para>
             </entry>
           </row>
           <row>
@@ -692,7 +692,7 @@ use is for return type and parameter types in method signatures.
               <para>Comment</para>
             </entry>
             <entry>
-              <para>no</para>
+              <para>yes</para>
             </entry>
           </row>
           <row>
@@ -725,7 +725,7 @@ use is for return type and parameter types in method signatures.
               <para>ObjectFlowState</para>
             </entry>
             <entry>
-              <para>no</para>
+              <para>yes</para>
             </entry>
           </row>
           <row>
