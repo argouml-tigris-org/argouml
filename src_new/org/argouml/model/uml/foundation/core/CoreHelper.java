@@ -1077,11 +1077,19 @@ public class CoreHelper {
     }
     /**
      * Returns true if some modelelement may be owned by the given namespace
-     * @param m
-     * @param ns
+     * @param m a MModelElement
+     * @param ns a MNamespace
      * @return boolean
      */
-    public boolean isValidNamespace(MModelElement m, MNamespace ns) {
+    public boolean isValidNamespace(Object mObj, Object nsObj) {
+        
+        if( !(mObj instanceof MModelElement) ||
+            !(nsObj instanceof MNamespace))
+            return false;
+        
+        MModelElement m = (MModelElement)mObj;
+        MNamespace ns = (MNamespace)nsObj;
+        
         if (m == null || ns == null)
             return false;
         if (ns.getModel() != m.getModel())
