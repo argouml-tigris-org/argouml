@@ -75,7 +75,7 @@ implements PluggableNotation, FileGenerator {
 
     protected boolean _verboseDocs = false;
     protected boolean _lfBeforeCurly = false;private static final boolean VERBOSE_DOCS = false; // TODO: make it configurable
-  
+
   private static GeneratorJava SINGLETON = new GeneratorJava();
 
   public static GeneratorJava getInstance() { return SINGLETON; }
@@ -90,7 +90,7 @@ implements PluggableNotation, FileGenerator {
     return SINGLETON.generate (o);
   }
 
-    /** Generates a file for the classifier. 
+    /** Generates a file for the classifier.
      * This method could have been static if it where not for the need to
      * call it through the Generatorinterface.
      * @return the full path name of the the generated file or
@@ -219,18 +219,17 @@ implements PluggableNotation, FileGenerator {
     } else {
     	nameStr = generateName (op.getName());
     }
-
+	sb.append('\n'); // begin with a blank line
     if (documented) {
-		sb.append('\n');
     	String s = generateConstraintEnrichedDocComment(op,documented,INDENT);
     	if (s != null && s.trim().length() > 0)
-      		sb.append(INDENT).append(s);
-    	sb.append('\n').append(INDENT);
+      		sb.append(INDENT).append(s).append('\n');
     }
 
     // 2002-07-14
     // Jaap Branderhorst
     // missing concurrency generation
+	sb.append(INDENT);
     sb.append(generateConcurrency(op));
     sb.append(generateAbstractness(op));
     sb.append(generateChangeability(op));
@@ -276,14 +275,14 @@ implements PluggableNotation, FileGenerator {
 
   public String generateAttribute (MAttribute attr, boolean documented) {
     StringBuffer sb = new StringBuffer(80);
-
+	sb.append('\n'); // begin with a blank line
     if (documented) {
-        String s = 
+        String s =
             generateConstraintEnrichedDocComment(attr,documented,INDENT);
         if (s != null && s.trim().length() > 0)
-            sb.append('\n').append(INDENT).append(s);
-        sb.append(INDENT);
+            sb.append(INDENT).append(s).append('\n');
     }
+    sb.append(INDENT);
     sb.append(generateVisibility(attr));
     sb.append(generateScope(attr));
     sb.append(generateChangability(attr));
@@ -294,7 +293,7 @@ implements PluggableNotation, FileGenerator {
          * (no 0..1 as modifier)
          * Therefore removed the multiplicity generation
          * START OLD CODE
-         
+
         if (!MMultiplicity.M1_1.equals(attr.getMultiplicity()))
         {
         	String m = generateMultiplicity(attr.getMultiplicity());
@@ -316,7 +315,7 @@ implements PluggableNotation, FileGenerator {
     		sb.append(generateClassifierRef(type)).append("[] ");
     	} else
     	sb.append("java.util.Vector ");
-    } 
+    }
 
     sb.append(generateName(attr.getName()));
     MExpression init = attr.getInitialValue();
@@ -436,7 +435,7 @@ implements PluggableNotation, FileGenerator {
 
     return sb;
   }
-  
+
     protected StringBuffer generateClassifierEnd(MClassifier cls)
     {
         StringBuffer sb = new StringBuffer();
@@ -514,7 +513,7 @@ implements PluggableNotation, FileGenerator {
         //			.append(sClassifierKeyword)
         //			.append(" ")
         //			.append(generateName(cls.getName()))
-        //			.append(" */"); 
+        //			.append(" */");
         //	}
         //	sbPrefix.append('\n');
         // END OLD CODE
@@ -532,7 +531,7 @@ implements PluggableNotation, FileGenerator {
      */
     public String generateClassifier(MClassifier cls)
     {
-        /* 
+        /*
          * 2002-07-11
          * Jaap Branderhorst
          * To prevent generation of not requested whitespace etc. the method is reorganized.
@@ -545,12 +544,12 @@ implements PluggableNotation, FileGenerator {
         StringBuffer sb = generateClassifierStart(cls);
         if (sb == null)
         	return ""; // not a class or interface
-        
+
         String tv = null; // helper for tagged values
-        
+
         // add attributes
         Collection strs = MMUtil.SINGLETON.getAttributes(cls);
-        // 
+        //
          // 2002-06-08
          // Jaap Branderhorst
          // Bugfix: strs is never null. Should check for isEmpty instead
@@ -565,14 +564,14 @@ implements PluggableNotation, FileGenerator {
         	{
         		sb.append(INDENT).append("// Attributes\n");
         	}
-        
+
         	Iterator strEnum = strs.iterator();
         	while (strEnum.hasNext())
         	{
         		MStructuralFeature sf = (MStructuralFeature) strEnum.next();
-        
+
         		sb.append(generate(sf));
-        
+
         		tv = generateTaggedValues(sf);
         		if (tv != null && tv.length() > 0)
         		{
@@ -580,7 +579,7 @@ implements PluggableNotation, FileGenerator {
         		}
         	}
         }
-        
+
         // add attributes implementing associations
         Collection ends = cls.getAssociationEnds();
         if (ends != null)
@@ -590,15 +589,15 @@ implements PluggableNotation, FileGenerator {
         	{
         		sb.append(INDENT).append("// Associations\n");
         	}
-        
+
         	Iterator endEnum = ends.iterator();
         	while (endEnum.hasNext())
         	{
         		MAssociationEnd ae = (MAssociationEnd) endEnum.next();
         		MAssociation a = ae.getAssociation();
-        
+
         		sb.append(generateAssociationFrom(a, ae));
-        
+
         		tv = generateTaggedValues(a);
         		if (tv != null && tv.length() > 0)
         		{
@@ -606,11 +605,11 @@ implements PluggableNotation, FileGenerator {
         		}
         	}
         }
-        
+
         // add operations
         // TODO: constructors
         Collection behs = MMUtil.SINGLETON.getOperations(cls);
-        // 
+        //
          // 2002-06-08
          // Jaap Branderhorst
          // Bugfix: behs is never null. Should check for isEmpty instead
@@ -626,15 +625,15 @@ implements PluggableNotation, FileGenerator {
         		sb.append(INDENT).append("// Operations\n");
         	}
         	Iterator behEnum = behs.iterator();
-        
+
         	while (behEnum.hasNext())
         	{
         		MBehavioralFeature bf = (MBehavioralFeature) behEnum.next();
-        
+
         		sb.append(generate(bf));
-        
+
         		tv = generateTaggedValues((MModelElement) bf);
-        
+
         		if ((cls instanceof MClass)
         			&& (bf instanceof MOperation)
         			&& (!((MOperation) bf).isAbstract()))
@@ -644,12 +643,12 @@ implements PluggableNotation, FileGenerator {
         			else
         				sb.append(' ');
         			sb.append('{');
-        
+
         			if (tv.length() > 0)
         			{
         				sb.append('\n').append(INDENT).append(tv);
         			}
-        
+
         			// there is no ReturnType in behavioral feature (nsuml)
         			sb.append('\n').append(generateMethodBody((MOperation) bf)).append(
         				INDENT).append(
@@ -665,9 +664,9 @@ implements PluggableNotation, FileGenerator {
         		}
         	}
         }
-        
+
         sb = appendClassifierEnd(sb, cls, false);
-        
+
         return sb.toString();
          start new code: */
         StringBuffer returnValue = new StringBuffer();
@@ -705,7 +704,7 @@ implements PluggableNotation, FileGenerator {
 
             // add attributes
             Collection strs = UmlHelper.getHelper().getCore().getAttributes(cls);
-            // 
+            //
             // 2002-06-08
             // Jaap Branderhorst
             // Bugfix: strs is never null. Should check for isEmpty instead
@@ -771,7 +770,7 @@ implements PluggableNotation, FileGenerator {
             // add operations
             // TODO: constructors
             Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
-            // 
+            //
             // 2002-06-08
             // Jaap Branderhorst
             // Bugfix: behs is never null. Should check for isEmpty instead
@@ -1381,8 +1380,8 @@ implements PluggableNotation, FileGenerator {
             return "synchronized ";
         }
         return "";
-    }  
-    
+    }
+
     public String generateMultiplicity(MMultiplicity m) {
     if (m == null) { return ""; }
     if (MMultiplicity.M0_N.equals(m)) return ANY_RANGE;
