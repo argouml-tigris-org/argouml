@@ -33,7 +33,7 @@ public abstract class AbstractProjectMember implements ProjectMember {
     ////////////////////////////////////////////////////////////////
     // instance varables
 
-    private String name;
+    private String uniqueName;
     private Project project = null;
 
     ////////////////////////////////////////////////////////////////
@@ -42,12 +42,36 @@ public abstract class AbstractProjectMember implements ProjectMember {
     /**
      * The constructor.
      * 
-     * @param theName the name of the member
+     * @param theUniqueName the name of the member, this must
+     *                      be different for all members. Note
+     *                      that for diagram members this is
+     *                      not the name of the diagram.
      * @param theProject the owning project
      */
-    public AbstractProjectMember(String theName, Project theProject) {
+    public AbstractProjectMember(String theUniqueName, Project theProject) {
         project = theProject;
-        setName(theName);
+        makeUniqueName(theUniqueName);
+    }
+
+    /**
+     * In contrast to {@link #getZipName} returns the member's
+     * name without the prepended name of the project. This is
+     * the name that {@link Project#findMemberByName} goes by.
+     *
+     * @author Steffen Zschaler
+     *
+     * @return the member's name without any prefix or suffix
+     */
+    public String getUniqueDiagramName() {
+        String s = uniqueName;
+        
+        if (s != null) {
+            if (!s.endsWith (getZipFileExtension())) {
+                s += getZipFileExtension();
+            }
+        }
+        
+        return s;
     }
 
     /**
@@ -58,48 +82,52 @@ public abstract class AbstractProjectMember implements ProjectMember {
      * @return the name for zip file storage
      */
     public String getZipName() {
-        if (name == null)
+        if (uniqueName == null)
             return null;
         
         String s = project.getBaseName();
         
-        if (name.length() > 0)
-            s += "_" + name;
+        if (uniqueName.length() > 0)
+            s += "_" + uniqueName;
         
-        if (!s.endsWith(getFileExtension()))
-            s += getFileExtension();
+        if (!s.endsWith(getZipFileExtension())) {
+            s += getZipFileExtension();
+        }
 
-        System.out.println("Returning members name as " + s);
         return s;
     }
   
     /**
-     * @param s the name of the member
+     * Makes a unique name for this member.
+     * Note this is not the diagram name and this appears
+     * to be flawed.
+     * @param s a string which will make up part of this
+     *          unique name.
      */
-    protected void setName(String s) {
-        name = s;
+    protected void makeUniqueName(String s) {
+        uniqueName = s;
         
-        if (name == null) {
+        if (uniqueName == null) {
             return;
         }
         
-        if (name.startsWith (project.getBaseName())) {
-            name = name.substring (project.getBaseName().length());
+        if (uniqueName.startsWith (project.getBaseName())) {
+            uniqueName = uniqueName.substring (project.getBaseName().length());
             int i = 0;
-            for (; i < name.length(); i++) {
-            	if (name.charAt(i) != '_') {
+            for (; i < uniqueName.length(); i++) {
+            	if (uniqueName.charAt(i) != '_') {
             	    break;
                 }
             }
             if (i > 0) {
-                name = name.substring(i);
+                uniqueName = uniqueName.substring(i);
             }
         }
         
-        if (name.endsWith(getFileExtension())) {
-            name = 
-                name.substring(0,
-                        name.length() - getFileExtension().length());
+        if (uniqueName.endsWith(getZipFileExtension())) {
+            uniqueName = 
+                uniqueName.substring(0,
+                        uniqueName.length() - getZipFileExtension().length());
         }
     }
 
@@ -112,7 +140,9 @@ public abstract class AbstractProjectMember implements ProjectMember {
     /**
      * @return the file extension string
      */
-    public abstract String getFileExtension();
+    public String getZipFileExtension() {
+        return "." + getType();
+    }
 
     ////////////////////////////////////////////////////////////////
     // actions
@@ -121,7 +151,7 @@ public abstract class AbstractProjectMember implements ProjectMember {
      * Remove this member from its project.
      */
     protected void remove() {
-        name = null;
+        uniqueName = null;
         project = null;
     }
 } /* end class ProjectMember */

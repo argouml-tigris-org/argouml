@@ -917,6 +917,7 @@ class EventKey {
  * @author jaap.branderhorst@xs4all.nl
  */
 class EventListenerList {
+    private static final Logger LOG = Logger.getLogger(EventListenerList.class);
     /**
      * A null array to be shared by all empty listener lists.
      */
@@ -1013,7 +1014,7 @@ class EventListenerList {
 
     public boolean contains(EventKey key, MElementListener listener) {
         if (key == null) {
-            System.out.println(" KEy null");
+            LOG.info(" KEy null");
         }
         for (int i = listenerList.length - 1; i > 0; i -= 3) {
             if (listenerList[i] == listener
