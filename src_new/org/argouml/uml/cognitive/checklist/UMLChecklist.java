@@ -32,7 +32,7 @@ public class UMLChecklist extends Checklist {
 
   /**
    *   This method initializes a UMLChecklist from an
-   *   String[][] retrieved from UMLCognitiveResourceBundle
+   *   String[][] retrieved from org.argouml.uml.cognitive.UMLCognitiveResourceBundle
    */
   public UMLChecklist(String[][] categories) {
     String[] names;

@@ -35,9 +35,9 @@ import ru.novosoft.uml.behavior.state_machines.*;
  *  those categories are not shown yet in the user interface. 
  *
  *  @deprecated Now created by loading strings from 
- *     UMLCognitiveResourceBundle into a generic UMLChecklist instance
+ *     org.argouml.uml.cognitive.UMLCognitiveResourceBundle into a generic UMLChecklist instance
  *           
- *  @see UMLCognitiveResourceBundle
+ *  @see org.argouml.uml.cognitive.UMLCognitiveResourceBundle
  *  @see UMLChecklist
  * 
  */
