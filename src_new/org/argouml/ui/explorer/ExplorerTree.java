@@ -31,6 +31,8 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
@@ -84,6 +86,13 @@ extends DisplayTextTree
     public ExplorerTree() {
         super();
         
+        // issue 2261: we must add this project property change first
+        // in order to receive the new project event after
+        // the ExplorerEventAdaptor 
+        //(which is initialised in the ExplorerTreeModel).
+        ProjectManager.getManager()
+            .addPropertyChangeListener(new ProjectPropertyChangeListener());
+        
         this.setModel(new ExplorerTreeModel(ProjectManager.getManager().getCurrentProject()));
         this.addMouseListener(new NavigatorMouseListener(this));
         this.addTreeSelectionListener(new NavigationTreeSelectionListener());
@@ -94,6 +103,7 @@ extends DisplayTextTree
         
         showStereotype =
         Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
+        
     }
     
     /** Listens to mouse events coming from the *JTree*,
@@ -398,4 +408,28 @@ extends DisplayTextTree
             
         }
     }
+    
+    class ProjectPropertyChangeListener implements PropertyChangeListener{
+        
+        /**
+         * Listens to events coming from the project manager,
+         * in order to expand the root node by default.
+         */
+        public void propertyChange(java.beans.PropertyChangeEvent pce) {
+            
+            // project events
+            if (pce.getPropertyName()
+                    .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
+                        
+                TreeModel model = getModel();
+                
+                if(model != null && model.getRoot() != null) {
+                    
+                    expandPath(getPathForRow(0));
+                    
+                }
+            }
+        }
+    }
+
 }
