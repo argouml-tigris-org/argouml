@@ -34,28 +34,27 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
-import java.awt.*;
-import java.util.*;
-import java.beans.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.beans.PropertyVetoException;
 import java.text.ParseException;
-import javax.swing.*;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.collaborations.*;
-
-import org.tigris.gef.presentation.*;
+import org.argouml.application.api.Notation;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.graph.*;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
 
-import org.argouml.application.api.*;
-import org.argouml.language.helpers.*;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.uml.generator.*;
-import org.argouml.uml.diagram.ui.*;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 
 /**
@@ -472,32 +471,18 @@ public class FigClassifierRole extends FigNodeModelElement {
         }
     }
 
-
     /**
      * <p>Adjust the fig in the light of some change to the model.</p>
      *
      * <p><em>Note</em>. The current implementation does not properly use
      *   Notation.generate to generate the full name for a classifier role.</p>
+     *
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
-
-    protected void modelChanged(MElementEvent mee) {
-
-        // Let the superclass sort out any of its changes
-
-        super.modelChanged(mee);
-
-        // Give up if we don't have an owner
-
-        MClassifierRole cr = (MClassifierRole) getOwner();
-
-        if (cr == null) {
-            return;
-        }
-
-        // Note our current bounds
-
-        Rectangle oldBounds = getBounds();
-
+    protected void updateNameText() {
+        Object own = getOwner();
+        if (own == null) return;
+        MClassifierRole cr = (MClassifierRole)own;
         // We only use the notation generator for the name itself. We ought to
         // do the whole thing.
 
@@ -523,11 +508,21 @@ public class FigClassifierRole extends FigNodeModelElement {
             else
                 _name.setText("/" + nameStr.trim() + " : " + baseString);
         }
-
-        // Now recalculate all the bounds, using our old bounds.
-
-	setBounds(oldBounds.x, oldBounds.y, oldBounds.width, oldBounds.height);
+        
+        Rectangle rect = getBounds();
+        setBounds(rect.x, rect.y, rect.width, rect.height);
+        
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     */
+    protected void modelChanged(MElementEvent mee) {
+        // base should get it's own figtext and it's own update method
+        if (mee.getName().equals("base") && mee.getSource() == getOwner()) { 
+            updateNameText();
+        } else
+            super.modelChanged(mee);
+    }
 
 } /* end class FigClassifierRole */

@@ -90,7 +90,6 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /** Abstract class to display diagram icons for UML ModelElements that
  *  look like nodes and that have editiable names and can be
