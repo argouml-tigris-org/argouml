@@ -137,12 +137,30 @@ public class FigInterface extends FigNodeModelElement {
     return new SelectionInterface(this);
   }
 
+  /**
+   * Build a collection of menu items relevant for a right-click popup menu on an Interface.
+   *
+   * @param     me     a mouse event
+   * @returns           a collection of menu items
+   */
   public Vector getPopUpActions(MouseEvent me) {
     Vector popUpActions = super.getPopUpActions(me);
     JMenu addMenu = new JMenu("Add");
     addMenu.add(ActionAddOperation.SINGLETON);
     addMenu.add(ActionAddNote.SINGLETON);
     popUpActions.insertElementAt(addMenu, popUpActions.size() - 1);
+
+    // Block added by BobTarling 7-Jan-2001
+    MInterface mclass = (MInterface) getOwner();
+    ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
+
+    modifierMenu.addCheckItem(new ActionModifier("Public", "visibility", "getVisibility", "setVisibility", mclass, MVisibilityKind.class, MVisibilityKind.PUBLIC, null));
+    modifierMenu.addCheckItem(new ActionModifier("Abstract", "isAbstract", "isAbstract", "setAbstract", mclass));
+    modifierMenu.addCheckItem(new ActionModifier("Final", "isLeaf", "isLeaf", "setLeaf", mclass));
+    modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mclass));
+
+    popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
+    // end of block
 
     return popUpActions;
   }
