@@ -206,9 +206,9 @@ implements DocumentListener, ItemListener, ChangeListener {
     MAssociationEndRole endB = (MAssociationEndRole) conns.elementAt(1);
 
     String roleAStr = endA.getName();
-    if (roleAStr ==null) roleAStr = "(anon)";
+    //if (roleAStr ==null) roleAStr = "(anon)";
     String roleBStr = endB.getName();
-    if (roleBStr == null) roleBStr = "(anon)";
+    //if (roleBStr == null) roleBStr = "(anon)";
     
 //     MVisibilityKind vkA = endA.getVisibility();
 //     _visAField.setSelectedItem(vkA);

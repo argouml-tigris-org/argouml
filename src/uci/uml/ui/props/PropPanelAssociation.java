@@ -235,12 +235,21 @@ implements DocumentListener, ItemListener, ChangeListener {
     _roleBField.setText(roleBStr);
     if (mA != null)
 	_multAField.setSelectedItem(mA.toString());
+    else
+	_multAField.setSelectedItem(null);
     if (mB != null)
 	_multBField.setSelectedItem(mB.toString());
+    else
+	_multBField.setSelectedItem(null);
     if (akA != null)
 	_aggAField.setSelectedItem(akA.getName());
+    else
+	_aggAField.setSelectedItem(MAggregationKind.NONE.getName());
     if (akB != null)
 	_aggBField.setSelectedItem(akB.getName());
+    else
+	_aggBField.setSelectedItem(MAggregationKind.NONE.getName());
+
     _navAField.getModel().setSelected(navA);
     _navBField.getModel().setSelected(navB);
   }
