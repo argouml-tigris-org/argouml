@@ -138,8 +138,15 @@ public class FigAssociation extends FigEdgeModelElement {
     setBetweenNearestPoints(true);
   }
 
+    /*
   public FigAssociation(Object edge) {
+    this(edge, null);   
+  }
+  */
+  
+  public FigAssociation(Object edge, Layer lay) {
     this();
+    setLayer(lay);
     setOwner(edge);
   }
 
@@ -196,7 +203,15 @@ public class FigAssociation extends FigEdgeModelElement {
 
     MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
     MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
-
+    
+    Fig oldDest = getDestFigNode();
+    Fig oldSource = getSourceFigNode();
+    
+    setDestFigNode((FigNode)getLayer().presentationFor(ae0.getType()));
+    setDestPortFig(getLayer().presentationFor(ae0.getType()));
+    setSourceFigNode((FigNode)getLayer().presentationFor(ae1.getType())); 
+    setSourcePortFig(getLayer().presentationFor(ae1.getType()));  
+    
     MMultiplicity mult0 = ae0.getMultiplicity();
     MMultiplicity mult1 = ae1.getMultiplicity();
     _srcMult.setText(Notation.generate(this, mult0));
@@ -237,6 +252,9 @@ public class FigAssociation extends FigEdgeModelElement {
        _srcOrdering.setText(getOrderingName(ae0.getOrdering()));
        _destOrdering.setText(getOrderingName(ae1.getOrdering()));
     }
+    
+    
+    
 
     boolean srcNav = ae0.isNavigable();
     boolean destNav = ae1.isNavigable();
@@ -249,7 +267,10 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcGroup.calcBounds();
     _destGroup.calcBounds();
     _middleGroup.calcBounds();
-    // updatePathFigs();
+    Object oldOwner = ProjectBrowser.TheInstance.getTarget();
+    ProjectBrowser.TheInstance.setTarget(getOwner());
+    ProjectBrowser.TheInstance.setTarget(oldOwner);
+    
   }
 
   

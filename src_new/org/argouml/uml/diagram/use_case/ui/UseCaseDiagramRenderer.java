@@ -129,7 +129,8 @@ public class UseCaseDiagramRenderer
 
         if (edge instanceof MAssociation) {
             MAssociation   asc         = (MAssociation) edge;
-            FigAssociation ascFig      = new FigAssociation(asc);
+            FigAssociation ascFig      = new FigAssociation(asc, lay);
+            /*
             Vector         connections = new Vector(asc.getConnections());
 
             // Print out a rude message if the association isn't connected to
@@ -168,6 +169,7 @@ public class UseCaseDiagramRenderer
 
             ascFig.setDestPortFig(toFN);
             ascFig.setDestFigNode(toFN);
+            */
 
             return ascFig;
         }

@@ -60,7 +60,9 @@ public class Trash {
       MModelElement me = (MModelElement) obj;
 	  TrashItem ti = new TrashItem(obj, places);
 	  _contents.addElement(ti);
-	  me.setNamespace(Trash_Model);
+      // next two lines give runtime exceptions. Remove should be done properly
+	  //me.setNamespace(null);
+      // me.setNamespace(Trash_Model);
 	  //System.out.println("added " + obj + " to trash");
     }
     //needs-more-work: trash diagrams

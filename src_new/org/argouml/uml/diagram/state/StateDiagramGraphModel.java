@@ -211,7 +211,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     //if (tr.getNamespace() == null)
     //_namespace.addOwnedElement(tr);
 	//_machine.addTransition(tr);
-	tr.setStateMachine(_machine);
+	// tr.setStateMachine(_machine);
     fireEdgeAdded(edge);
   }
 
@@ -285,11 +285,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	return null;
 
     if (edgeClass == MTransitionImpl.class) {
-      MTransition tr = UmlFactory.getFactory().getStateMachines().createTransition();
-      // _namespace.addOwnedElement(tr);
-	  _machine.addTransition(tr);
-      tr.setSource(fromSV);
-      tr.setTarget(toSV);
+      MTransition tr = UmlFactory.getFactory().getStateMachines().buildTransition(_machine, fromSV, toSV);
       addEdge(tr);
       return tr;
     }
