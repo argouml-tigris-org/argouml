@@ -178,6 +178,14 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 	    "org.argouml.uml.diagram.sequence.ui.FigSeqStimulus");
     }
 
+    /**
+     * @param from the class name to be "translated", i.e. replaced 
+     *             by something else
+     * @param to   the resulting name
+     */
+    public void addTranslation(String from, String to) {
+        translationTable.put(from, to);
+    }
 
     /**
      * @see org.tigris.gef.xml.pgml.PGMLParser#translateClassName(java.lang.String)
@@ -400,8 +408,33 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      * Utility class to pair a name and a value String together.
      */
     protected class NameVal {
-	String name;
-	String value;
+        private String name;
+        private String value;
+        
+        /**
+         * The constructor.
+         * 
+         * @param n the name
+         * @param v the value
+         */
+        NameVal(String n, String v) {
+            name = n.trim();
+            value = v.trim();
+        }
+
+        /**
+         * @return returns the name
+         */
+        String getName() {
+            return name;
+        }
+
+        /**
+         * @return returns the value
+         */
+        String getValue() {
+            return value;
+        }
     }
 
     /**
@@ -425,9 +458,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 	if (lqpos < 0 || rqpos <= lqpos)
 	    return null;
 
-	rv = new NameVal();
-	rv.name = str.substring(0, eqpos);
-	rv.value = str.substring(lqpos + 1, rqpos);
+	rv = new NameVal(str.substring(0, eqpos), 
+            str.substring(lqpos + 1, rqpos));
 
 	return rv;
     }
@@ -506,12 +538,11 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 		    //cat.debug("Private Element: \"" + str + "\"");
 
 		    if (nval != null) {
-			LOG.debug("Private Element: \"" + nval.name
-			          + "\" \"" + nval.value + "\"");
-			if ("ItemUID".equals(nval.name.trim())) {
-			    nval.value = nval.value.trim();
-			    if (nval.value.length() > 0)
-				setElementItemUID(nval.value);
+			LOG.debug("Private Element: \"" + nval.getName()
+			          + "\" \"" + nval.getValue() + "\"");
+			if ("ItemUID".equals(nval.getName())) {
+			    if (nval.getValue().length() > 0)
+				setElementItemUID(nval.getValue());
 			}
 		    }
 		}
