@@ -571,28 +571,25 @@ public class DetailsPane
      * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // we can neglect this, the detailspane allways selects the
-        // first target in a set of targets. The first target can only
-        // be changed in a targetRemoved or a TargetSet event
-        fireTargetAdded(e);
+	targetSet(e);
     }
 
     /**
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // how to handle empty target lists?
-        // probably the detailspane should only show an empty pane in that case
-        setTarget(e.getNewTarget());
-        fireTargetRemoved(e);
+	targetSet(e);
     }
 
     /**
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTarget());
-        fireTargetSet(e);
+        // how to handle empty target lists?
+        // probably the detailspane should only show an empty pane in that case
+	fireTargetEvent(e);
+	setTarget(e.getNewTarget());
+	fireTargetEvent(e);
     }
 
     /**
@@ -625,6 +622,19 @@ public class DetailsPane
         }
 
     }
+
+    private void fireTargetEvent(TargetEvent e) {
+	if (TargetEvent.TARGET_SET.equals(e.getName())) {
+	    fireTargetSet(e);
+	} else if (TargetEvent.TARGET_ADDED.equals(e.getName())) {
+	    fireTargetAdded(e);
+	} else if (TargetEvent.TARGET_REMOVED.equals(e.getName())) {
+	    fireTargetRemoved(e);
+	} else {
+	    cat.warn("fireTargetEvent didn't recognize target event name: " + e.getName());
+	}
+    }
+
     private void fireTargetSet(TargetEvent targetEvent) {
         //          Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
