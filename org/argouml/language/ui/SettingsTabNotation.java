@@ -43,14 +43,12 @@ import org.argouml.application.helpers.SettingsTabHelper;
 import org.argouml.ui.ShadowComboBox;
 
 /**
- * Action object for handling Notation settings.
+ * Settings tab panel for handling Notation settings.
  *
  * @author Thierry Lach
  * @since  0.9.4
  */
-public class SettingsTabNotation 
-    extends SettingsTabHelper
-    implements SettingsTabPanel {
+public class SettingsTabNotation extends SettingsTabHelper {
 
     private JCheckBox allowNotations = null;
     private JCheckBox useGuillemots = null;

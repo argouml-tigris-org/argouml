@@ -49,14 +49,11 @@ import org.argouml.uml.ui.TabStyle;
 import org.argouml.uml.ui.TabTaggedValues;
 
 /**
- *  Tab pane for setting layout options.
+ *  Settings dialog tab panel for layout options.
  *
  *  @author Linus Tolke
  */
-public class SettingsTabLayout
-    extends SettingsTabHelper
-    implements SettingsTabPanel
-{
+public class SettingsTabLayout extends SettingsTabHelper {
 
     private Property	prpTodo;
     private Property	prpProperties;

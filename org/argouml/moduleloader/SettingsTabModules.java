@@ -46,16 +46,15 @@ import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
 
 /**
- * Makes it possible to select the module that are to be enabled.
+ * Tab for the settings dialog that makes it possible to 
+ * select the modules that are to be enabled.
  *
  * TODO: Header for the table.
  *
  * @author Linus Tolke
  */
-public class SettingsTabModules
-    extends SettingsTabHelper
-    implements SettingsTabPanel
-{
+public class SettingsTabModules extends SettingsTabHelper {
+    
     private JTable table;
     private JPanel notYetLoadedPanel = null;
 
