@@ -53,7 +53,9 @@ public class UMLAssociationEndRoleBaseListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MAssociationEndRole)getTarget()).getBase());
+        if (((MAssociationEndRole)getTarget()).getBase() != null) {
+            addElement(((MAssociationEndRole)getTarget()).getBase());
+        }
     }
 
     /**
@@ -63,6 +65,13 @@ public class UMLAssociationEndRoleBaseListModel
         MModelElement m = (MModelElement)getChangedElement(e);
         return m instanceof MAssociationEnd && 
             ((MAssociationRole)((MAssociationEndRole)getTarget()).getAssociation()).getBase().getConnections().contains(m);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidPropertySet(MElementEvent e) {
+        return isValidRoleAdded(e) || contains(e.getOldValue());
     }
 
 }
