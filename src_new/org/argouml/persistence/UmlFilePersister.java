@@ -23,14 +23,19 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.argouml.persistence;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.List;
@@ -215,16 +220,23 @@ public class UmlFilePersister extends AbstractFilePersister {
      */
     public Project doLoad(URL url) throws OpenException {
         try {
-            // First scan fist line of real XML to get version number
+            Project p = new Project(url);
+            
+            int versionFromFile = Integer.parseInt(getVersion(url));
 
-            // If version < PERSISTENCE_VERSION call stylesheets
-            // and return final url
+            // TODO: Uncomment this code when the mystery
+            // of loading a resource is solved.
+//            LOG.info("Loading uml file of version " + versionFromFile);
+//            while (versionFromFile < PERSISTENCE_VERSION) {
+//                ++versionFromFile;
+//                LOG.info("Upgrading to version " + versionFromFile);
+//                url = transform(url, versionFromFile);
+//            }
 
             XmlInputStream inputStream =
                         new XmlInputStream(url.openStream(), "argo");
 
             ArgoParser parser = new ArgoParser();
-            Project p = new Project(url);
             parser.readProject(p, inputStream);
 
             List memberList = parser.getMemberList();
@@ -260,40 +272,100 @@ public class UmlFilePersister extends AbstractFilePersister {
     /**
      * Transform a string of XML data according to the service required.
      *
-     * @param xml The original XML
-     * @param xslt the XSLT transformation
-     * @return the transformed XML
-     * @throws TransformerException on XSLT transformation error
+     * @param url The URL of the XML to be transformed
+     * @param version the version of the persistence format
+     *                the XML is to be transformed to.
+     * @return the URL of the transformed XML
+     * @throws OpenException on XSLT transformation error or file read
      */
-    public static final String transform(String xml, String xslt)
-    	throws TransformerException {
+    public final URL transform(URL url, int version)
+        throws OpenException {
 
-        StreamSource xsltStreamSource =
-            new StreamSource(new StringReader(xslt));
-        return transform(xml, xsltStreamSource);
+        try {
+            String upgradeFilesPath = "/org/argouml/persistence/";
+            String upgradeFile = "upgrade" + version + ".xsl";
+    
+            // TODO This should not access the hard disk file
+            String sourcePath = "D:/CVS/argouml/src_new";   
+            String xsltFileName = sourcePath + upgradeFilesPath + upgradeFile;
+            File xsltFile = new File(xsltFileName);
+            URL xsltUrl = xsltFile.toURL();
+            
+            // TODO But should instead access a resource inside the jar
+    //        String xsltFileName = upgradeFilesPath + upgradeFile;
+    //        URL xsltUrl = UmlFilePersister.class.getResource(xsltFileName);
+            LOG.info("Resource is " + xsltUrl);
+    
+            // Read xsltStream into a temporary file
+            // Get url for temp file.
+            // openStream from url and wrap in StreamSource
+            StreamSource xsltStreamSource = new StreamSource(xsltUrl.openStream());
+    
+            TransformerFactory factory = TransformerFactory.newInstance();
+            Transformer transformer = factory.newTransformer(xsltStreamSource);
+    
+            File file = File.createTempFile("transformation", ".uml");
+            file.deleteOnExit();
+            
+            String encoding = "UTF-8";
+            FileOutputStream stream =
+                new FileOutputStream(file);
+            Writer writer = new BufferedWriter(new OutputStreamWriter(
+                    stream, encoding));
+            Result result = new StreamResult(writer);
+    
+            StreamSource inputStreamSource = new StreamSource(url.openStream());
+            transformer.transform(inputStreamSource, result);
+            
+            writer.close();
+            return file.toURL();
+        } catch (IOException e) {
+            throw new OpenException(e);
+        } catch (TransformerException e) {
+            throw new OpenException(e);
+        }
     }
 
+//    private File getXsltFile(int version) {
+//        File file;
+//        String xsltFileName = "org/argouml/persistence/upgrade"+ version +".xsl";
+//        InputStream xsltStream = this.getClass().getClassLoader()
+//            .getResourceAsStream(xsltFileName);
+//
+//        // Read xsltStream into a temporary file
+//        // Get url for temp file.
+//        // openStream from url and wrap in StreamSource
+//        return file;
+//    }
+    
+    private String getVersion(URL url) throws IOException {
+        BufferedInputStream inputStream = new BufferedInputStream(url.openStream());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        String rootLine = reader.readLine();
+        while (!rootLine.startsWith("<uml ")) {
+            rootLine = reader.readLine();
+        }
+        inputStream.close();
+        reader.close();
+        return getVersion(rootLine);
+    }
+    
     /**
-     * Transform a string of XML data according to the service required.
-     *
-     * @param xml The original XML
-     * @param xsltStreamSource the transformation stream
-     * @return the transformed XML
-     * @throws TransformerException on XSLT transformation error
+     * Get the version attribute value from a string of XML.
+     * @param rootLine
+     * @return the version
      */
-    public static final String transform(String xml,
-            StreamSource xsltStreamSource)
-    	throws TransformerException {
-
-        TransformerFactory factory = TransformerFactory.newInstance();
-        Transformer transformer = factory.newTransformer(xsltStreamSource);
-        Source input = new StreamSource(new StringReader(xml));
-
-        StringWriter writer = new StringWriter();
-        Result result = new StreamResult(writer);
-
-        transformer.transform(input, result);
-        String transformation = writer.toString();
-        return transformation;
+    protected String getVersion(String rootLine) {
+        String version;
+        int versionPos = rootLine.indexOf("version=\"");
+        if (versionPos > 0) {
+            int startPos = versionPos + 9;
+            int endPos = rootLine.indexOf("\"", startPos);
+            version = rootLine.substring(startPos, endPos);
+        } else {
+            version = "1";
+        }
+        return version;
     }
+
 }
