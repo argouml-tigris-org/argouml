@@ -23,10 +23,9 @@
 
 package org.argouml.kernel;
 
-import java.net.*;
-import java.io.*;
-import java.util.*;
-import java.beans.*;
+import java.io.IOException;
+import java.io.Writer;
+import java.net.URL;
 
 import org.apache.log4j.Category;
 

@@ -31,18 +31,18 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.apache.log4j.Category;
+import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.model.ModelFacade;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
-
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
 /**
  * UMTreeCellRenderer determines how the entries in the Navigationpane
@@ -53,69 +53,79 @@ import org.argouml.model.ModelFacade;
  *  of object to be displayed.
  */
 public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
-    
-    protected static Category cat =
-    Category.getInstance(UMLTreeCellRenderer.class);
-    
+
+    private Category cat = Category.getInstance(this.getClass());
+
     ////////////////////////////////////////////////////////////////
     // TreeCellRenderer implementation
-    
-    public Component getTreeCellRendererComponent(JTree tree,
-                                                  Object value,
-                                                  boolean sel, 
-                                                  boolean expanded, 
-                                                  boolean leaf, 
-                                                  int row, 
-                                                  boolean hasFocus) {
-        
-        Component r = super.getTreeCellRendererComponent(tree, 
-                                                         value, 
-                                                         sel, 
-                                                         expanded, 
-                                                         leaf, 
-                                                         row, 
-                                                         hasFocus);
-        
+
+    public Component getTreeCellRendererComponent(
+        JTree tree,
+        Object value,
+        boolean sel,
+        boolean expanded,
+        boolean leaf,
+        int row,
+        boolean _hasFocus) {
+        if (TargetManager.getInstance().getTargets().contains(value)) {
+            sel = true;           
+        } else {
+            sel = false;          
+        }
+
+        Component r =
+            super.getTreeCellRendererComponent(
+                tree,
+                value,
+                sel,
+                expanded,
+                leaf,
+                row,
+                _hasFocus);
+
         if (r instanceof JLabel) {
-            JLabel lab = (JLabel) r;
-            Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper()
-                                             .lookupIcon(value);
+            JLabel lab = (JLabel)r;
+            Icon icon =
+                ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(
+                    value);
+
             if (icon != null)
                 lab.setIcon(icon);
             else
                 cat.warn("UMLTreeCellRenderer: using default Icon");
-            
+
             // setting the tooltip
             String tip = null;
             if (ModelFacade.isAModelElement(value)) {
                 tip = ModelFacade.getUMLClassName(value);
-            }
-            else if(value instanceof UMLDiagram){
-                
-                if(value instanceof UMLActivityDiagram)
+            } else if (value instanceof UMLDiagram) {
+
+                if (value instanceof UMLActivityDiagram)
                     tip = Argo.localize("UMLMenu", "label.activity-diagram");
-                else if(value instanceof UMLSequenceDiagram)
+                else if (value instanceof UMLSequenceDiagram)
                     tip = Argo.localize("UMLMenu", "label.sequence-diagram");
-                else if(value instanceof UMLCollaborationDiagram)
-                    tip = Argo.localize("UMLMenu", "label.collaboration-diagram");
-                else if(value instanceof UMLDeploymentDiagram)
+                else if (value instanceof UMLCollaborationDiagram)
+                    tip =
+                        Argo.localize("UMLMenu", "label.collaboration-diagram");
+                else if (value instanceof UMLDeploymentDiagram)
                     tip = Argo.localize("UMLMenu", "label.deployment-diagram");
-                else if(value instanceof UMLStateDiagram)
+                else if (value instanceof UMLStateDiagram)
                     tip = Argo.localize("UMLMenu", "label.state-chart-diagram");
-                else if(value instanceof UMLUseCaseDiagram)
+                else if (value instanceof UMLUseCaseDiagram)
                     tip = Argo.localize("UMLMenu", "label.usecase-diagram");
-                else if(value instanceof UMLClassDiagram)
+                else if (value instanceof UMLClassDiagram)
                     tip = Argo.localize("UMLMenu", "label.class-diagram");
-            }
-            else
+            } else
                 // TODO I18n
                 tip = (value == null) ? "empty" : value.toString() + " ";
-                
+
             // lab.setToolTipText(tip);
-            if (tree.getToolTipText() != null && !tree.getToolTipText().equals(tip))
+            if ((tree.getToolTipText() != null
+                && !tree.getToolTipText().equals(tip))
+                || (tree.getToolTipText() == null && tip != null))
                 tree.setToolTipText(tip);
         }
         return r;
     }
-    
+
 } /* end class UMLTreeCellRenderer */

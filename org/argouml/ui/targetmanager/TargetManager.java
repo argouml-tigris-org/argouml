@@ -460,7 +460,7 @@ public final class TargetManager {
      * @return A collection with all targets.
      */
     public synchronized Collection getTargets() {
-        return _targets.length > 0 ? Arrays.asList(_targets) : null;
+        return _targets.length > 0 ? Arrays.asList(_targets) : new ArrayList();
     }
 
     /**

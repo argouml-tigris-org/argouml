@@ -85,7 +85,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
  */
 
 public class FigClass extends FigNodeModelElement {
-    protected static Category cat = Category.getInstance(FigClass.class);
+    private Category cat = Category.getInstance(this.getClass());
 
     ////////////////////////////////////////////////////////////////
     // constants

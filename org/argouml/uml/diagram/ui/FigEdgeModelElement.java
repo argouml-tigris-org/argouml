@@ -54,6 +54,7 @@ import javax.swing.JMenu;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Category;
+import org.argouml.application.api.ArgoEventListener;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationContext;
 import org.argouml.application.api.NotationName;
@@ -593,6 +594,9 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
         Object o = getOwner();
         if (o instanceof MBase) {
             UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)o);
+        }
+        if (this instanceof ArgoEventListener) {
+            ArgoEventPump.removeListener(this);
         }
         
         Iterator it = getPathItemFigs().iterator();
