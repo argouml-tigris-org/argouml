@@ -70,7 +70,8 @@ import org.tigris.toolbar.ToolBarFactory;
 
 /**
  * The TabDiagram is the tab in the multieditorpane that holds a diagram. The 
- * TabDiagram consists of a JGraph (with the figs) and a toolbar. It is possible
+ * TabDiagram consists of a JGraph (with the figs) and a toolbar. 
+ * It used to be possible (in past versions of ArgoUML)
  * to spawn objects of this class into a dialog via the spawn method of its
  * parent.
  */
@@ -297,6 +298,9 @@ public class TabDiagram
 
     }
 
+    /**
+     * @param listener the listener to be removed
+     */
     public void removeGraphSelectionListener(GraphSelectionListener listener) {
         graph.removeGraphSelectionListener(listener);
     }
@@ -314,6 +318,9 @@ public class TabDiagram
     }
 
     
+    /**
+     * @param listener the listener to be removed
+     */
     public void removeModeChangeListener(ModeChangeListener listener) {
         graph.removeModeChangeListener(listener);
     }

@@ -111,9 +111,12 @@ public class PropPanelString
     /**
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
-    public boolean shouldBeEnabled(Object target) { return false; }
+    public boolean shouldBeEnabled(Object theTarget) { return false; }
 
 
+    /**
+     * Set the target name.
+     */
     protected void setTargetName() {
     }
 

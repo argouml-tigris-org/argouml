@@ -78,7 +78,7 @@ public abstract class UMLDiagram
     // actions for toolbar
     
     /**
-     * Tool to add a comment node.<p>
+     * Tool to add a comment node.
      */
     protected static Action _actionComment =
 	new RadioAction(new CmdCreateNode(ModelFacade.COMMENT, "Note"));
@@ -447,7 +447,8 @@ public abstract class UMLDiagram
      * Set all toolbar buttons to unselected other then the toolbar button
      * with the supplied action.
      *
-     * @param otherThanAction
+     * @param otherThanAction the action of the button 
+     *                        that is NOT to be deselected
      */
     public void deselectOtherTools(Action otherThanAction) {
         //cat.debug("Looking for action " + otherThanAction);

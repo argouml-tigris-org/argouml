@@ -87,6 +87,9 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
                 .elementAt(direction));
     }
 
+    /**
+     * Set the arrow direction for the target.
+     */
     public void setTargetArrow() {
         String ad = (String) arrowField.getSelectedItem();
         int arrowDirection = FigMessage.getArrowDirections().indexOf(ad);

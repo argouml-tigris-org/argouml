@@ -129,10 +129,11 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public void setup(FigNode fn, Object port, int x, int y, boolean reverse) {
+    public void setup(FigNode fignode, Object port, int x, int y, 
+            boolean reverse) {
         start();
-        sourceFigNode = fn;
-        startPortFig = fn.getPortFig(port);
+        sourceFigNode = fignode;
+        startPortFig = fignode.getPortFig(port);
         startPort = port;
         _newItem = createNewItem(null, x, y);
         destToSource = reverse;
