@@ -38,9 +38,12 @@
 // 31 Jan 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to recognise
 // any as a constructor operation with stereotype <<create>> as constructor.
 
-// 4 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Code factored by use of
-// static methods in central org.argouml.cognitive.critics.CriticUtils utility
-// class.
+//  4 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Code factored by use
+// of static methods in central org.argouml.cognitive.critics.CriticUtils
+// utility class.
+
+// 15 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Code factoring
+// improved by use of hasSingletonStereotype.
 
 
 package org.argouml.pattern.cognitive.critics;
@@ -150,23 +153,16 @@ public class CrSingletonViolated extends CrUML {
 
         MClass cls = (MClass) dm;
 
-        // Check it actually is stereotyped as Singleton. Although "Singleton"
-        // is the usual naming, we'll accept "singleton"
+        // Check for the correct stereotype, a suitable static attribute and
+        // one or more constructors, all private as per JavaDoc above.
 
-        if( !(CriticUtils.hasStereotype(cls,"Singleton") ||
-              CriticUtils.hasStereotype(cls,"singleton"))) {
+        if (!(CriticUtils.hasSingletonStereotype(cls))) {
             return NO_PROBLEM;
         }
-
-        // Now check if it has a static Attribute with the same type as the
-        // class. If not then we have a problem
 
         if (!(CriticUtils.hasStaticAttrForClass(cls))) {
             return PROBLEM_FOUND;
         }
-
-        // Look at all the constructors and check i) there is at least one and
-        // ii) they are all private.
 
         if (CriticUtils.hasOnlyPrivateConstructors(cls)) {
             return NO_PROBLEM;

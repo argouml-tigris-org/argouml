@@ -40,6 +40,8 @@
 // static methods in central org.argouml.cognitive.critics.CriticUtils utility
 // class.
 
+// 15 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Ccomments corrected.
+
 
 package org.argouml.uml.cognitive.critics;
 
@@ -132,26 +134,21 @@ public class CrConstructorNeeded extends CrUML {
             return NO_PROBLEM;
         }
 
-        // Cast to the class, initialise a boolean to track if we've found the
-        // problem and get all the features (attributes and operations)
+        // Cast to the class, check for uninitialised instance variables and
+        // constructor as per JavaDoc above.
 
         MClass cls = (MClass) dm;
-
-        // First see if we have any uninitialised instance variables. If not,
-        // then we don't need a constructor, so have no problem.
 
         if (!(CriticUtils.hasUninitInstanceVariables(cls))) {
             return NO_PROBLEM;
         }
 
-        // We have some instance variables that are not initialised, so we need
-        // a constructor. If we don't find one, there is a problem.
-
         if (CriticUtils.hasConstructor(cls)) {
             return NO_PROBLEM;
         }
-        else
+        else {
             return PROBLEM_FOUND;
+        }
     }
 
 } /* end class CrConstructorNeeded */
