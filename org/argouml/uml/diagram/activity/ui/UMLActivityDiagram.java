@@ -65,21 +65,21 @@ public class UMLActivityDiagram extends UMLDiagram {
     ////////////////
     // actions for toolbar
 
-    protected static Action _actionState =
+    private static Action actionState =
         new CmdCreateNode(ModelFacade.ACTION_STATE, "ActionState");
 
-    protected static Action _actionStartPseudoState;
-    protected static Action _actionFinalPseudoState;
-    protected static Action _actionJunctionPseudoState;
-    protected static Action _actionBranchPseudoState;
-    protected static Action _actionForkPseudoState;
-    protected static Action _actionJoinPseudoState;
-    // protected static Action _actionNewSwimlane;
-    protected static Action _actionCallState;
-    protected static Action _actionObjectFlowState;
-    protected static Action _actionSubactivityState;
+    private static Action actionStartPseudoState;
+    private static Action actionFinalPseudoState;
+    private static Action actionJunctionPseudoState;
+    private static Action actionBranchPseudoState;
+    private static Action actionForkPseudoState;
+    private static Action actionJoinPseudoState;
+    // private static Action actionNewSwimlane;
+    private static Action actionCallState;
+    private static Action actionObjectFlowState;
+    private static Action actionSubactivityState;
 
-    protected static Action _actionTransition =
+    private static Action actionTransition =
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
@@ -105,35 +105,35 @@ public class UMLActivityDiagram extends UMLDiagram {
         } catch (PropertyVetoException pve) { }
 
 	// start state, end state, forks, joins, etc.
-	_actionStartPseudoState =
+	actionStartPseudoState =
 	    new ActionCreatePseudostate(ModelFacade.INITIAL_PSEUDOSTATEKIND, 
 					"Initial");
 
-	_actionFinalPseudoState =
+	actionFinalPseudoState =
             new CmdCreateNode(ModelFacade.FINALSTATE, "FinalState");
 
-	_actionJunctionPseudoState =
+	actionJunctionPseudoState =
 	    new ActionCreatePseudostate(ModelFacade.JUNCTION_PSEUDOSTATEKIND,
 					"Junction");
 
-	_actionForkPseudoState =
+	actionForkPseudoState =
 	    new ActionCreatePseudostate(ModelFacade.FORK_PSEUDOSTATEKIND, 
 					"Fork");
 
-	_actionJoinPseudoState =
+	actionJoinPseudoState =
 	    new ActionCreatePseudostate(ModelFacade.JOIN_PSEUDOSTATEKIND,
 					"Join");
 	
 	//_actionNewSwimlane = new CmdCreateNode(ModelFacade.PARTITION, 
 	// "Create a new swimlane");
 
-        _actionCallState =
+        actionCallState =
             new CmdCreateNode(ModelFacade.CALLSTATE, "CallState");
 
-        _actionObjectFlowState =
+        actionObjectFlowState =
             new CmdCreateNode(ModelFacade.OBJECTFLOWSTATE, "ObjectFlowState");
 
-        _actionSubactivityState =
+        actionSubactivityState =
             new CmdCreateNode(ModelFacade.SUBACTIVITYSTATE, "SubactivityState");
 
     }
@@ -156,9 +156,10 @@ public class UMLActivityDiagram extends UMLDiagram {
         }
     }
 
-    /**
-     * @param namespace
-     * @param agraph
+    /** 
+     * Constructor
+     * @param namespace the namespace for the diagram
+     * @param agraph the ActivityGraph for the diagram
      */
     public UMLActivityDiagram(Object namespace, Object agraph) {
 
@@ -274,20 +275,20 @@ public class UMLActivityDiagram extends UMLDiagram {
     protected Object[] getUmlActions() {
         Object actions[] =
         {
-	    _actionState,
-	    _actionTransition,
+	    actionState,
+	    actionTransition,
 	    null,
-	    _actionStartPseudoState,
-	    _actionFinalPseudoState,
-	    _actionJunctionPseudoState,
-	    _actionForkPseudoState,
-	    _actionJoinPseudoState,
+	    actionStartPseudoState,
+	    actionFinalPseudoState,
+	    actionJunctionPseudoState,
+	    actionForkPseudoState,
+	    actionJoinPseudoState,
 	    //_actionNewSwimlane,
 	    null,
-	    /*_actionCallState, //uncomment these, and ...
-            _actionObjectFlowState,
-            _actionSubactivityState,
-            null,*/
+	    /*actionCallState, /* uncomment this ...
+            actionObjectFlowState,
+            actionSubactivityState,
+            null, */
 	    _actionComment,
             _actionCommentLink
 	};
