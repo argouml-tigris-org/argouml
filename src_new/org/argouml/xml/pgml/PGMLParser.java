@@ -201,7 +201,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
       String descr = attrList.getValue("description").trim();
       if (descr.endsWith("[0, 0, 0, 0]") || descr.endsWith("[0,0,0,0]")) {
         ((FigNodeModelElement)_previousNode).enableSizeChecking(false);
-        ((FigClass)_previousNode).setOperationVisible(false);
+        if (_previousNode instanceof FigClass) {
+        	((FigClass)_previousNode).setOperationVisible(false);
+        } 
         ((FigNodeModelElement)_previousNode).enableSizeChecking(true);
       }
     }
