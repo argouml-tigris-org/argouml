@@ -58,6 +58,32 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2005-01-29</entry>
+          <entry>
+Change to Model subsystem chapter.
+Removed references to UmlEventPump and clearified how to remove
+elements using the UmlFactory.
+(See <xref linkend="pump-register-listener-for-type"/>
+and <xref linkend="working-with-the-model"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+
+      <tbody valign="top">
+        <row>
+          <entry>2005-01-26</entry>
+          <entry>
+Change to requirement of JDK version support.
+(See <xref linkend="REQ7"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2005-01-07</entry>
           <entry>
 Added copyright notices to the files.

@@ -471,7 +471,7 @@ Would this be an improvement?
 	</sect3>
       </sect2>
 
-  <sect2>
+  <sect2 id="working-with-the-model">
     <title>How to work against the model</title>
 
     <para>
@@ -573,7 +573,7 @@ MFactory.getDefaultFactory().create<replaceable>Type</replaceable>()
         &nbsp;
   		</entry>
       <entry>
-        ProjectManager.getManager().getCurrentProject().moveToTrash(<replaceable>object</replaceable>) 
+        Model.getUmlFactory().delete(<replaceable>object</replaceable>) 
       </entry>
 	  </row>
 	  <row>
