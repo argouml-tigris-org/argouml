@@ -34,7 +34,7 @@ public class UMLMetaclassComboBox extends JComboBox implements UMLUserInterfaceC
     { "ModelElement", "Classifier", "Class", "Interface", "DataType", "Exception", "Signal",
         "Association", "AssociationEnd", "Attribute", "Operation", "Generalization", "Flow", "Usage", "BehavioralFeature",
         "CallEvent", "Abstraction", "Component", "Package", "Constraint", "Comment","ObjectFlowState",
-        "Model", "Subsystem", "Collaboration", "Permission", "Actor" };
+        "Model", "Subsystem", "Collaboration", "Permission", "Actor", "Node", "NodeInstance", "Link" };
 
   private Method _getMethod;
   private Method _setMethod;
