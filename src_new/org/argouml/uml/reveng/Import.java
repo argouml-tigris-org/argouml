@@ -55,7 +55,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.NavigatorPane;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.StatusBar;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
@@ -527,7 +527,7 @@ public class Import {
             
             UmlModelEventPump.getPump().startPumpingEvents();
             
-            NavigatorPane.getInstance().forceUpdate();
+            ExplorerEventAdaptor.getInstance().structureChanged();
             pb.setEnabled(true);
             
             Argo.log.info(_st);
