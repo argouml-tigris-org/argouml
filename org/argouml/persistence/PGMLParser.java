@@ -26,7 +26,6 @@ package org.argouml.persistence;
 
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -43,6 +42,8 @@ import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
@@ -600,14 +601,13 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         try {
             Map attributeMap = interpretStyle(st);
 
-            // TODO: This block should be replaced to use the factories
-            // in the Diagram subsystem. The model element type
-            // should be determined from the href attribute and then the
-            // diagram renderers called as described in issue 859
-            Class nodeClass = Class.forName(translateClassName(clsName));
-            f = (Fig) nodeClass.newInstance();
-            setStyleAttributes(f, attributeMap);
-            // End block
+            Object modelElement = getModelElement(attrList);
+            GraphNodeRenderer figNodeRenderer = _diagram.getLayer().getGraphNodeRenderer();
+            f = figNodeRenderer.getFigNodeFor(modelElement, attributeMap);
+            if (f == null) {
+                GraphEdgeRenderer figEdgeRenderer = _diagram.getLayer().getGraphEdgeRenderer();
+                f = figEdgeRenderer.getFigEdgeFor(modelElement, attributeMap);
+            }
             
             if (xStr != null && !xStr.equals("")) {
                 int x = Integer.parseInt(xStr);
@@ -649,31 +649,18 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         setAttrs(f, attrList);
         return f;
     }
-
+    
     /**
-     * Set the fig style attributes. This should move into
-     * the render factories as described in issue 859.
-     * @param fig the fig to style.
+     * Return the model element being referred to by interogating
+     * the attributes of the XML group node.
      * @param attributeMap a map of name value pairs
      */
-    private void setStyleAttributes(Fig fig, Map attributeMap) {
-        String name;
-        String value;
-        Iterator it = attributeMap.keySet().iterator();
-        while (it.hasNext()) {
-            name = (String) it.next();
-            value = (String) attributeMap.get(name);
-            
-            if ("operationsVisible".equals(name)) {
-                ((OperationsCompartmentContainer) fig)
-                    .setOperationsVisible(value.equalsIgnoreCase("true"));
-            } else if ("attributesVisible".equals(name)) {
-                ((AttributesCompartmentContainer) fig)
-                    .setAttributesVisible(value.equalsIgnoreCase("true"));
-            }
-        }
+    private Object getModelElement(Attributes attrList) {
+        String href = attrList.getValue("href");
+        return _ownerRegistry.get(href);
     }
     
+
     /**
      * The StringTokenizer is expected to be positioned at the start a a string
      * of style identifiers in the format name=value;name=value;name=value....

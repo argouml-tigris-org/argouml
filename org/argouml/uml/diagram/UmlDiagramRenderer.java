@@ -24,7 +24,7 @@
 
 package org.argouml.uml.diagram;
 
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -63,6 +63,7 @@ import org.argouml.uml.diagram.static_structure.ui.FigLink;
 import org.argouml.uml.diagram.static_structure.ui.FigModel;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.static_structure.ui.FigSubsystem;
+import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigAssociationEnd;
@@ -73,6 +74,7 @@ import org.argouml.uml.diagram.ui.FigNodeAssociation;
 import org.argouml.uml.diagram.ui.FigPermission;
 import org.argouml.uml.diagram.ui.FigRealization;
 import org.argouml.uml.diagram.ui.FigUsage;
+import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.use_case.ui.FigActor;
 import org.argouml.uml.diagram.use_case.ui.FigExtend;
 import org.argouml.uml.diagram.use_case.ui.FigInclude;
@@ -80,6 +82,7 @@ import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
@@ -180,8 +183,36 @@ public abstract class UmlDiagramRenderer
             }
         }
         
+        if (figNode != null) {
+            setStyleAttributes(figNode, styleAttributes);
+        }
+        
         return figNode;
     }
+    
+    /**
+     * Set the fig style according to attributes.
+     * @param fig the fig to style.
+     * @param attributeMap a map of name value pairs
+     */
+    private void setStyleAttributes(Fig fig, Map attributeMap) {
+        String name;
+        String value;
+        Iterator it = attributeMap.keySet().iterator();
+        while (it.hasNext()) {
+            name = (String) it.next();
+            value = (String) attributeMap.get(name);
+            
+            if ("operationsVisible".equals(name)) {
+                ((OperationsCompartmentContainer) fig)
+                    .setOperationsVisible(value.equalsIgnoreCase("true"));
+            } else if ("attributesVisible".equals(name)) {
+                ((AttributesCompartmentContainer) fig)
+                    .setAttributesVisible(value.equalsIgnoreCase("true"));
+            }
+        }
+    }
+    
 
     /**
      * Return a Fig that can be used to represent the given edge.
