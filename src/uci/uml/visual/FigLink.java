@@ -50,6 +50,9 @@ public class FigLink extends FigEdgeModelElement {
     modelChanged();
   }
 
+  // needs-more-work: should edit something...
+  protected boolean canEdit(Fig f) { return false; }
+
   public void dispose() {
     Link l = (Link) getOwner();
     if (l == null) return;

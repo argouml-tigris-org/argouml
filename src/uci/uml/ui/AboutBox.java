@@ -76,12 +76,12 @@ public class AboutBox extends JFrame {
 //     _legal.setFont(ctrlFont);
 //     _contact.setFont(ctrlFont);
     
-    _version.setText("Argo/UML Version 0.5\n"+
-		     "Built on September 30, 1998\n"+
+    _version.setText("Argo/UML Version 0.5.1\n"+
+		     "Built on October 8, 1998\n"+
 		     "Includes:\n"+
 		     "  GEF v0.6 beta 3\n"+
 		     "  Argo v0.8\n"+
-		     "  uci.uml v0.4\n"
+		     "  uci.uml v0.4.1\n"
 		     );
 
     _credits.setText("Argo/UML was developed by the following:\n"+

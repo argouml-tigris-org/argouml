@@ -39,7 +39,7 @@ public class GenerationPreferences implements java.io.Serializable {
     if (System.getProperty("os.name").startsWith("S"))
       _outputDir = "/tmp";
     else
-      _outputDir = "c:\temp";
+      _outputDir = "c:\\temp";
   }
 
   ////////////////////////////////////////////////////////////////
