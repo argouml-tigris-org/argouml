@@ -4,11 +4,6 @@
 
 Documentation standards for the manual.
 
-Modifications
-=============
-
- 4 Dec 2001:  Jeremy Bennett. First version.
-
 -->
 
 <appendix id="app.docstand">
@@ -28,18 +23,62 @@ Modifications
   <!-- Conventions for the document in general -->
 
   <sect1>
+    <title>Style</title>
+
+    <itemizedlist>
+      <listitem>
+	<para>
+"We" in the document means the persons reading the document and using
+&argouml;
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+"I" in the document refers to the author and is only used to denote
+the authors personal opinion. 
+Avoid using it! 
+</para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+
+
+  <sect1>
     <title>Document Conventions</title>
 
     <itemizedlist>
-      <listitem><para>All titles of chapters, sections etc are capitalised
-        throughout.</para></listitem>
+      <listitem>
+	<para>
+All titles of chapters, sections etc are capitalized throughout.
+</para>
+      </listitem>
 
-      <listitem><para>All titles of figures, tables etc have the first word
-        only capitalised.</para></listitem>
+      <listitem>
+	<para>
+All titles of figures, tables etc have the first word only capitalized.
+</para>
+      </listitem>
 
-      <listitem><para>Spelling is US English. One day we might abuse XML
-        entities to the extent of making this
-        parameterisable!</para></listitem>
+      <listitem>
+	<para>
+Spelling is US English. (Webster ?)
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+Use full URLs throughout this manual!
+We allow for the manual being other than as html on the &argouml; web site.
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+Don't include lists of what changes that has been done.
+This information is kept by cvs, the version control tool.
+</para>
+      </listitem>
     </itemizedlist>
   </sect1>
 
@@ -115,11 +154,44 @@ class.
         implemented in the style sheets and so do not appear in the
         glossary!</para></listitem>
 
-      <listitem><para>Use spaces (2 per level) rather than tabs. Tabs are
-        generally set so large the text moves over to the right of the page,
-        and are not set the same everywhere (emacs uses 8 spaces, some MS
-        editors use 6 spaces), making documents unreadable between
-        users.</para></listitem>
+      <listitem>
+	<para>
+Use spaces rather than tabs. 
+Tabs are generally set so large the text moves over to the right of the page,
+and are not set the same everywhere (emacs uses 8 spaces, some MS
+editors use 6 spaces), making documents unreadable between users.
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+Indent only the tags, not the text.
+The Docbook source is kept in cvs that is a line-oriented tool. 
+This means that reindentation will be a major thing in cvs making
+it hard to see if there were other things done to the code.
+Especielly if reindentation caused the paragraphs to be broken
+in a different way.
+Not indenting the text means that the text will be unchanged even
+if the heading level was changed.
+The contributions that Jeremy Bennet did for 0.10 
+are not indented like this.
+Change it while changing the paragraphs.
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+Make a new line after each sentence or before expressions.
+The Docbook source is source that is handled by cvs.
+When structuring the text the parts are paragraphs, sentences and words.
+By having each sentence on a line of its own it is easier to see
+what sentences has been changed and what has not in the diff reports
+from cvs.
+The contributions that Jeremy Bennet did 
+are not written like this.
+Change it while changing the paragraphs.
+</para>
+      </listitem>
 
       <listitem><para>All block graphics should be encapsulated within
         <sgmltag>figure</sgmltag>, allowing reference from around the
@@ -159,9 +231,13 @@ class.
       inluded with &psgml;.</para>
 
     <itemizedlist>
-      <listitem><para>&emacs; local variables appear in a few lines of
-        comment at the bottom of each XML file. Please don't delete these if
-        you don't use emacs!</para></listitem>
+      <listitem>
+	<para>
+&emacs; local variables appear in a few lines of 
+comment at the bottom of each XML file. 
+Please don't delete these!
+</para>
+      </listitem>
 
       <listitem><para>Adding
         <literal>(setq&nbsp;sgml-set-face&nbsp;t)</literal> to your
