@@ -145,13 +145,13 @@ public class SelectionInterface extends SelectionWButtons {
 	int newX = cx, newY = cy, newW = cw, newH = ch;
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
-	Class edgeClass = null;
-	Class nodeClass = (Class) Model.getMetaTypes().getUMLClass();
+	Object edgeType = null;
+	Object nodeType = Model.getMetaTypes().getUMLClass();
 	int bx = mX, by = mY;
 	boolean reverse = false;
 	switch (hand.index) {
 	case 11: //add realization
-	    edgeClass = (Class) Model.getMetaTypes().getAbstraction();
+	    edgeType = Model.getMetaTypes().getAbstraction();
 	    reverse = true;
 	    by = cy + ch;
 	    bx = cx + cw / 2;
@@ -160,10 +160,10 @@ public class SelectionInterface extends SelectionWButtons {
 	    LOG.warn("invalid handle number");
 	    break;
 	}
-	if (edgeClass != null && nodeClass != null) {
+	if (edgeType != null && nodeType != null) {
 	    Editor ce = Globals.curEditor();
 	    ModeCreateEdgeAndNode m =
-	        new ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
+	        new ModeCreateEdgeAndNode(ce, edgeType, nodeType, false);
 	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
 	    ce.pushMode(m);
 	}

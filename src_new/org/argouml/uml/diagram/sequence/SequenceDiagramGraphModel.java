@@ -672,15 +672,15 @@ public class SequenceDiagramGraphModel
         ModeManager modeManager = curEditor.getModeManager();
         Mode mode = (Mode) modeManager.top();
         Hashtable args = mode.getArgs();
-        Class actionClass = (Class) args.get("action");
+        Object actionType = args.get("action");
         CanConnectCmd cmd = null;
-        if (actionClass == Model.getMetaTypes().getCallAction()) {
+        if (Model.getMetaTypes().getCallAction().equals(actionType)) {
             cmd = new CanConnectCallActionCmd(fromP, toP);
-        } else if (actionClass == Model.getMetaTypes().getReturnAction()) {
+        } else if (Model.getMetaTypes().getReturnAction().equals(actionType)) {
             cmd = new CanConnectReturnActionCmd(fromP, toP);
-        } else if (actionClass == Model.getMetaTypes().getCreateAction()) {
+        } else if (Model.getMetaTypes().getCreateAction().equals(actionType)) {
             cmd = new CanConnectCreateActionCmd(fromP, toP);
-        } else if (actionClass == Model.getMetaTypes().getDestroyAction()) {
+        } else if (Model.getMetaTypes().getDestroyAction().equals(actionType)) {
             cmd = new CanConnectDestroyActionCmd(fromP, toP);
         } else {
             // not supported action
@@ -699,7 +699,7 @@ public class SequenceDiagramGraphModel
      * @see org.tigris.gef.graph.MutableGraphModel#connect(
      *          Object, Object, Class)
      */
-    public Object connect(Object fromPort, Object toPort, Class edgeClass) {
+    public Object connect(Object fromPort, Object toPort, Class edgeType) {
         if (!canConnect(fromPort, toPort)) {
             return null;
         }
@@ -707,13 +707,13 @@ public class SequenceDiagramGraphModel
         Object fromObject = null;
         Object toObject = null;
         Object action = null;
-        if (edgeClass == Model.getMetaTypes().getLink()) {
+        if (Model.getMetaTypes().getLink().equals(edgeType)) {
             Editor curEditor = Globals.curEditor();
             ModeManager modeManager = curEditor.getModeManager();
             Mode mode = modeManager.top();
             Hashtable args = mode.getArgs();
-            Class actionClass = (Class) args.get("action");
-            if (actionClass == Model.getMetaTypes().getCallAction()) {
+            Object actionType = args.get("action");
+            if (Model.getMetaTypes().getCallAction().equals(actionType)) {
                 if (fromPort instanceof LinkPort
                     && toPort instanceof LinkPort) {
                     fromObject = ((LinkPort) fromPort).getObject();
@@ -723,7 +723,7 @@ public class SequenceDiagramGraphModel
                         Model.getCommonBehaviorFactory()
                             .createCallAction();
                 }
-            } else if (actionClass == Model.getMetaTypes().getCreateAction()) {
+            } else if (Model.getMetaTypes().getCreateAction().equals(actionType)) {
                 if (fromPort instanceof LinkPort
                     && ModelFacade.isAObject(toPort)) {
                     fromObject = ((LinkPort) fromPort).getObject();
@@ -732,7 +732,7 @@ public class SequenceDiagramGraphModel
                         Model.getCommonBehaviorFactory()
                             .createCreateAction();
                 }
-            } else if (actionClass == Model.getMetaTypes().getReturnAction()) {
+            } else if (Model.getMetaTypes().getReturnAction().equals(actionType)) {
                 if (fromPort instanceof LinkPort
                     && toPort instanceof LinkPort) {
                     fromObject = ((LinkPort) fromPort).getObject();
@@ -742,7 +742,7 @@ public class SequenceDiagramGraphModel
                             .createReturnAction();
 
                 }
-            } else if (actionClass == Model.getMetaTypes().getDestroyAction()) {
+            } else if (Model.getMetaTypes().getDestroyAction().equals(actionType)) {
                 if (fromPort instanceof LinkPort
                     && toPort instanceof LinkPort) {
                     fromObject = ((LinkPort) fromPort).getObject();
@@ -751,10 +751,9 @@ public class SequenceDiagramGraphModel
                         Model.getCommonBehaviorFactory()
                             .createDestroyAction();
                 }
-            } else if (actionClass == Model.getMetaTypes().getSendAction()) {
+            } else if (Model.getMetaTypes().getSendAction().equals(actionType)) {
                 ;// no implementation, not of importance to sequence diagrams
-            } else if (actionClass
-                    == Model.getMetaTypes().getTerminateAction()) {
+            } else if (Model.getMetaTypes().getTerminateAction().equals(actionType)) {
                 ;// not implemented yet
             }
         }

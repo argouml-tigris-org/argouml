@@ -108,13 +108,13 @@ public class CheckManager implements Serializable {
         Enumeration enumeration = lists.keys();
 
         while (enumeration.hasMoreElements()) {
-            Class index = (Class) enumeration.nextElement();
+            Object clazz = enumeration.nextElement();
 
             Class[] intfs = cls.getInterfaces();
             for (int i = 0; i < intfs.length; i++) {
-                if (intfs[i].equals(index)) {
+                if (intfs[i].equals(clazz)) {
                     // We found it!
-                    Checklist chlist = (Checklist) lists.get(index);
+                    Checklist chlist = (Checklist) lists.get(clazz);
 
                     // Enter the class to speed up the next search.
                     lists.put(cls, chlist);

@@ -255,34 +255,27 @@ public class Init {
      * static initializer, register all appropriate critics.
      */
     public static void init() {
-	Class modelCls = (Class) Model.getMetaTypes().getModel();
-	Class packageCls = (Class) Model.getMetaTypes().getPackage();
-	Class modelElementCls =
-	    (Class) Model.getMetaTypes().getModelElement();
-	Class classCls = (Class) Model.getMetaTypes().getUMLClass();
-	Class classifierCls =
-	    (Class) Model.getMetaTypes().getClassifier();
-	Class interfaceCls = (Class) Model.getMetaTypes().getInterface();
-	Class attrCls = (Class) Model.getMetaTypes().getAttribute();
-	Class paramCls = (Class) Model.getMetaTypes().getParameter();
-	Class operCls = (Class) Model.getMetaTypes().getOperation();
-	Class assocCls = (Class) Model.getMetaTypes().getAssociation();
-	Class assocEndCls =
-	    (Class) Model.getMetaTypes().getAssociationEnd();
-	Class assocClassCls =
-	    (Class) Model.getMetaTypes().getAssociationClass();
-	Class namespaceCls = (Class) Model.getMetaTypes().getNamespace();
-	Class genElementCls =
-	    (Class) Model.getMetaTypes().getGeneralizableElement();
-	Class genCls = (Class) Model.getMetaTypes().getGeneralization();
-	Class datatypeCls = (Class) Model.getMetaTypes().getDatatype();
-	Class useCaseCls = (Class) Model.getMetaTypes().getUseCase();
-	Class actorCls = (Class) Model.getMetaTypes().getActor();
-	Class stateVertexCls =
-	    (Class) Model.getMetaTypes().getStateVertex();
-	Class stateCls = (Class) Model.getMetaTypes().getState();
-	Class compositieStateCls =
-	    (Class) Model.getMetaTypes().getCompositeState();
+        Object modelCls = Model.getMetaTypes().getModel();
+        Object packageCls = Model.getMetaTypes().getPackage();
+        Object modelElementCls = Model.getMetaTypes().getModelElement();
+        Object classCls = Model.getMetaTypes().getUMLClass();
+        Object classifierCls = Model.getMetaTypes().getClassifier();
+        Object interfaceCls = Model.getMetaTypes().getInterface();
+        Object attrCls = Model.getMetaTypes().getAttribute();
+        Object paramCls = Model.getMetaTypes().getParameter();
+        Object operCls = Model.getMetaTypes().getOperation();
+        Object assocCls = Model.getMetaTypes().getAssociation();
+        Object assocEndCls = Model.getMetaTypes().getAssociationEnd();
+        Object assocClassCls = Model.getMetaTypes().getAssociationClass();
+        Object namespaceCls = Model.getMetaTypes().getNamespace();
+        Object genElementCls = Model.getMetaTypes().getGeneralizableElement();
+        Object genCls = Model.getMetaTypes().getGeneralization();
+        Object datatypeCls = Model.getMetaTypes().getDatatype();
+        Object useCaseCls = Model.getMetaTypes().getUseCase();
+        Object actorCls = Model.getMetaTypes().getActor();
+        Object stateVertexCls = Model.getMetaTypes().getStateVertex();
+        Object stateCls = Model.getMetaTypes().getState();
+        Object compositieStateCls = Model.getMetaTypes().getCompositeState();
 	// Class stateDiagramCls   = UMLStateDiagram.class;
 	// Class useCaseDiagramCls = UMLUseCaseDiagram.class;
 
@@ -356,10 +349,8 @@ public class Init {
 	Agency.register(crTooManyStates, compositieStateCls);
 	Class classDiagramCls   = UMLClassDiagram.class;
 	Agency.register(crTooManyClasses, classDiagramCls);
-	Class pseudostateCls =
-	    (Class) Model.getMetaTypes().getPseudostate();
-	Class transitionCls =
-	    (Class) Model.getMetaTypes().getTransition();
+	Object pseudostateCls = Model.getMetaTypes().getPseudostate();
+	Object transitionCls = Model.getMetaTypes().getTransition();
 	Agency.register(noTrans1, stateVertexCls);
 	Agency.register(noTrans2, stateVertexCls);
 	Agency.register(crMultipleInitialStates, pseudostateCls);

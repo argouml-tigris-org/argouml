@@ -153,10 +153,8 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
         // TODO: potential class cast exception
         if (f instanceof FigAssociation)  {
             Object assoc = f.getOwner();
-            Class edgeClass = (Class) getArg("edgeClass");
-            if (edgeClass != null
-                    && edgeClass.equals(
-                            Model.getMetaTypes().getAssociation())) {
+            Object edgeType = getArg("edgeClass");
+            if (Model.getMetaTypes().getAssociation().equals(edgeType)) {
                 boolean isValid =
                     Model.getUmlFactory().isConnectionValid(
                         Model.getMetaTypes().getAssociationEnd(),
@@ -204,15 +202,14 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
                 editor.damageAll();
                 p._isComplete = true;
 
-                Class edgeClass = (Class) getArg("edgeClass");
-                if (edgeClass.equals(Model.getMetaTypes().getAssociation())
+                Object edgeType = getArg("edgeClass");
+                if (edgeType.equals(Model.getMetaTypes().getAssociation())
                         && ModelFacade.isAAssociation(foundPort)) {
-                    edgeClass =
-                        (Class) Model.getMetaTypes().getAssociationEnd();
+                    edgeType = Model.getMetaTypes().getAssociationEnd();
                 }
-                if (edgeClass != null) {
+                if (edgeType != null) {
                     setNewEdge(mutableGraphModel.connect(
-                                    getStartPort(), foundPort, edgeClass));
+                                    getStartPort(), foundPort, (Class) edgeType));
                 } else {
                     setNewEdge(mutableGraphModel.connect(
                                     getStartPort(), foundPort));
