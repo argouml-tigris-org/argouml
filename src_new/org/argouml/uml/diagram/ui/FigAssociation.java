@@ -40,9 +40,11 @@ import javax.swing.JMenu;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.ActionAggregation;
 import org.argouml.uml.ui.ActionMultiplicity;
 import org.argouml.uml.ui.ActionNavigability;
+
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.PathConvPercentPlusConst;
@@ -57,7 +59,6 @@ import org.tigris.gef.presentation.FigText;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
-
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MOrderingKind;
@@ -178,28 +179,28 @@ public class FigAssociation extends FigEdgeModelElement {
 	setOwner(edge);
     }
 
-    public void setOwner(Object own) {
+    public void setOwner(Object association) {
 	Object oldOwner = getOwner();
-	super.setOwner(own);
+	super.setOwner(association);
 
-	if (org.argouml.model.ModelFacade.isAAssociation(own)) {
-	    MAssociation newAsc = (MAssociation) own;
-	    for (int i = 0; i < newAsc.getConnections().size(); i++) {
-		MAssociationEnd end =
-		    ((MAssociationEnd) ((Object[]) newAsc.getConnections().toArray())[i]);
-		UmlModelEventPump.getPump().removeModelEventListener(this, end);
-		UmlModelEventPump.getPump().addModelEventListener(this, end);
+	if (org.argouml.model.ModelFacade.isAAssociation(association)) {
+	    Collection connections = ModelFacade.getConnections(association);
+	    for (int i = 0; i < connections.size(); i++) {
+		Object assEnd =
+		    (((Object[]) connections.toArray())[i]);
+		UmlModelEventPump.getPump().removeModelEventListener(this, assEnd);
+		UmlModelEventPump.getPump().addModelEventListener(this, assEnd);
 	    }
-	    UmlModelEventPump.getPump().removeModelEventListener(this, newAsc);
-	    UmlModelEventPump.getPump().addModelEventListener(this, newAsc);
-	    MAssociationEnd ae0 = 
-		(MAssociationEnd) ((Object[]) (newAsc.getConnections()).toArray())[0];
-	    MAssociationEnd ae1 =
-		(MAssociationEnd) ((Object[]) (newAsc.getConnections()).toArray())[1];
+	    UmlModelEventPump.getPump().removeModelEventListener(this, association);
+	    UmlModelEventPump.getPump().addModelEventListener(this, association);
+	    Object assEnd1 = 
+		((Object[]) connections.toArray())[0];
+	    Object assEnd2 =
+		((Object[]) connections.toArray())[1];
 	    FigNode destNode =
-		(FigNode) getLayer().presentationFor(ae1.getType());
+		(FigNode) getLayer().presentationFor(ModelFacade.getType(assEnd1));
 	    FigNode srcNode =
-		(FigNode) getLayer().presentationFor(ae0.getType());
+		(FigNode) getLayer().presentationFor(ModelFacade.getType(assEnd1));
 	    if (destNode != null) {
 		setDestFigNode(destNode);
 		setDestPortFig(destNode);
@@ -217,33 +218,37 @@ public class FigAssociation extends FigEdgeModelElement {
     // event handlers
 
     protected void textEdited(FigText ft) throws PropertyVetoException {
-	MAssociation asc = (MAssociation) getOwner();
-	if (asc == null) return;
+	
+        if (getOwner() == null) return;
 	super.textEdited(ft);
 
-	Collection conn = asc.getConnections();
+	Collection conn = ModelFacade.getConnections(getOwner());
 	if (conn == null || conn.size() == 0) return;
 
 	if (ft == _srcRole) {
-	    MAssociationEnd srcAE =
-		(MAssociationEnd) ((Object[]) conn.toArray())[0];
-	    srcAE.setName(_srcRole.getText());
+	    Object srcAE =
+		((Object[]) conn.toArray())[0];
+	    ModelFacade.setName(srcAE, _srcRole.getText());
 	}
 	if (ft == _destRole) {
-	    MAssociationEnd destAE =
-		(MAssociationEnd) ((Object[]) conn.toArray())[1];
-	    destAE.setName(_destRole.getText());
+	    Object destAE =
+		((Object[]) conn.toArray())[1];
+	    ModelFacade.setName(destAE, _destRole.getText());
 	}
 	// TODO: parse multiplicities
     }
   
     private void updateEnd(FigText multiToUpdate, FigText roleToUpdate,
 			   FigText orderingToUpdate,
-			   MAssociationEnd end) {
-	MMultiplicity multi = end.getMultiplicity();
-	String name = end.getName();
-	MOrderingKind order = end.getOrdering();
-	MStereotype stereo = end.getStereotype();
+			   Object end) {
+                               
+        if(!ModelFacade.isAAssociationEnd(end))
+            throw new IllegalArgumentException();
+        
+	Object multi = ModelFacade.getMultiplicity(end);
+	String name = ModelFacade.getName(end);
+	MOrderingKind order = ((MAssociationEnd)end).getOrdering();
+	MStereotype stereo = (MStereotype)ModelFacade.getStereotype(end);
     
 	multiToUpdate.setText(Notation.generate(this, multi));
 	orderingToUpdate.setText(getOrderingName(order));

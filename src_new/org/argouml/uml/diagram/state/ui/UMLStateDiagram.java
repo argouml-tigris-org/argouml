@@ -224,7 +224,7 @@ public class UMLStateDiagram extends UMLDiagram {
     }
 
     public MStateMachine getStateMachine() {
-        return ((StateDiagramGraphModel) getGraphModel()).getMachine();
+        return (MStateMachine)((StateDiagramGraphModel) getGraphModel()).getMachine();
     }
 
     /**

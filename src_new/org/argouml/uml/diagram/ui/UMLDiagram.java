@@ -44,10 +44,8 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBarFactory;
 import org.tigris.toolbutton.ToolButton;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * This class provides support for writing a UML diagram for argo using
@@ -99,7 +97,7 @@ public abstract class UMLDiagram
     
     ////////////////////////////////////////////////////////////////
     // instance variables
-    protected MNamespace  _namespace;
+    protected Object  _namespace;
     protected DiagramInfo _diagramName = new DiagramInfo(this);
 
     private JToolBar toolBar;
@@ -120,7 +118,7 @@ public abstract class UMLDiagram
         setNamespace(ns);
     }
   
-    public UMLDiagram(String diagramName, MNamespace ns) {
+    public UMLDiagram(String diagramName, Object ns) {
         this(ns);
         try { setName(diagramName); }
         catch (PropertyVetoException pve) { 
@@ -130,7 +128,7 @@ public abstract class UMLDiagram
 
     public void initialize(Object owner) {
 	super.initialize(owner);
-	if (org.argouml.model.ModelFacade.isANamespace(owner)) setNamespace((MNamespace) owner);
+	if (org.argouml.model.ModelFacade.isANamespace(owner)) setNamespace(owner);
 	else cat.debug("unknown object in UMLDiagram initialize:"
 		       + owner);
     }
@@ -139,7 +137,7 @@ public abstract class UMLDiagram
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public MNamespace getNamespace() { return _namespace; }
+    public Object getNamespace() { return _namespace; }
   
     /**
      * sets the namespace of the Diagram, and
@@ -152,7 +150,7 @@ public abstract class UMLDiagram
             cat.error(ns);
             throw new IllegalArgumentException("Given object not a namespace");
         }
-        _namespace = (MNamespace) ns;      
+        _namespace = ns;
         // add the diagram as a listener to the namspace so
         // that when the namespace is remove()d the diagram is deleted also.
         UmlModelEventPump.getPump().addModelEventListener(this,
@@ -333,7 +331,7 @@ public abstract class UMLDiagram
 		MElementListener listener = (MElementListener) o;
 		Fig fig = (Fig) o;
 		pump.removeModelEventListener(listener,
-					      (MBase) fig.getOwner()); 
+					      fig.getOwner()); 
 	    }
 	}
 	pump.removeModelEventListener(this, getNamespace());

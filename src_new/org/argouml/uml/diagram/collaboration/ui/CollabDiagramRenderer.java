@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -31,17 +29,19 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-
 import org.apache.log4j.Category;
-import org.argouml.uml.diagram.ui.*;
+
+import org.argouml.model.ModelFacade;
+import org.argouml.uml.diagram.ui.FigDependency;
+import org.argouml.uml.diagram.ui.FigGeneralization;
+import org.argouml.uml.diagram.ui.FigMessage;
+
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
 
 public class CollabDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer 
@@ -51,30 +51,29 @@ public class CollabDiagramRenderer
 
     /** Return a Fig that can be used to represent the given node */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-	if (org.argouml.model.ModelFacade.isAClassifierRole(node))
+	if (ModelFacade.isAClassifierRole(node))
 	    return new FigClassifierRole(gm, lay, node);
-	if (org.argouml.model.ModelFacade.isAMessage(node))
+	if (ModelFacade.isAMessage(node))
 	    return new FigMessage(gm, lay, node);
 	cat.debug("TODO CollabDiagramRenderer getFigNodeFor");
 	return null;
     }
 
-    /** Return a Fig that can be used to represent the given edge */
-    /** Generally the same code as for the ClassDiagram, since its
-	very related to it. */
+    /** Return a Fig that can be used to represent the given edge,
+     * Generally the same code as for the ClassDiagram, since its
+     * very related to it.
+     */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-	if (org.argouml.model.ModelFacade.isAAssociationRole(edge)) {
+	if (ModelFacade.isAAssociationRole(edge)) {
 	    FigAssociationRole asrFig = new FigAssociationRole(edge, lay);
 	    return asrFig;
 	} else 
-	    if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
-		MGeneralization   gen    = (MGeneralization) edge;
-		FigGeneralization genFig = new FigGeneralization(gen, lay);
+	    if (ModelFacade.isAGeneralization(edge)) {
+		FigGeneralization genFig = new FigGeneralization(edge, lay);
 		return genFig;
 	    }
-	if (org.argouml.model.ModelFacade.isADependency(edge)) {
-	    MDependency dep = (MDependency) edge;
-	    FigDependency depFig = new FigDependency(dep , lay);
+	if (ModelFacade.isADependency(edge)) {
+	    FigDependency depFig = new FigDependency(edge , lay);
 	    return depFig;
 	}
 

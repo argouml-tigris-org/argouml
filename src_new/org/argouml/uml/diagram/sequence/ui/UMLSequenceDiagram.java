@@ -170,7 +170,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
         Iterator oeIterator = null;
         Collection ownedElements = null;
         if (getNamespace() != null)
-            ownedElements = getNamespace().getOwnedElements();
+            ownedElements = ModelFacade.getOwnedElements(getNamespace());
         if (ownedElements != null)
             oeIterator = ownedElements.iterator();
         Layer lay = getLayer();
