@@ -23,19 +23,21 @@
 
 package org.argouml.kernel;
 
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
 import org.tigris.gef.util.*;
 
+/**
+ * Predicate to test if an Object is and instance of a class.
+ */
 public class PredInstanceOf implements Predicate {
-	protected Class _class = null;
+  protected Class _class;
 
-	public PredInstanceOf(Class cls) { _class = cls; }
+  public PredInstanceOf(Class cls) { 
+    _class = cls; 
+  }
 
-	public boolean predicate(Object obj) {
-		return _class.isInstance(obj);
-	}
+  public boolean predicate(Object obj) {
+    return _class.isInstance(obj);
+  }
 
-} /* end class PredIsStartState */
+} /* end class PredInstanceOf */
 

@@ -96,18 +96,25 @@ implements Serializable, TreeModel, Cloneable {
     NavPerspective machineToState = new NavPerspective("States of Class");
     NavPerspective machineToTransition = new NavPerspective("Transitions of Class");
 
+    // Subsystem is travsersed via Classifier. Eugenio
     GoFilteredChildren modelToPackages =
       new GoFilteredChildren("Package->Subpackages",
 			     new GoModelToElements(),
-			     new PredInstanceOf(MPackage.class));
+			     new PredAND(new PredInstanceOf(MPackage.class),
+                             new PredNotInstanceOf(MSubsystem.class)));
+
     GoFilteredChildren modelToClassifiers =
       new GoFilteredChildren("Package->Classifiers",
 			     new GoModelToElements(),
-			     new PredInstanceOf(MClassifier.class));
+                 new PredInstanceOf(MClassifier.class));
+
+    // AssociationClass is traversed via Classifier. Eugenio
     GoFilteredChildren modelToAssociations =
       new GoFilteredChildren("Package->Associations",
 			     new GoModelToElements(),
-			     new PredInstanceOf(MAssociation.class));
+			     new PredAND(new PredInstanceOf(MAssociation.class),
+                             new PredNotInstanceOf(MAssociationClass.class)));
+
     GoFilteredChildren modelToInstances =
       new GoFilteredChildren("Package->Instances",
 			     new GoModelToElements(),
@@ -323,7 +330,7 @@ implements Serializable, TreeModel, Cloneable {
   }
 
   public static Vector getRegisteredRules() { return _rules; }
-  
+
   ////////////////////////////////////////////////////////////////
   // constructor
 
@@ -332,10 +339,10 @@ implements Serializable, TreeModel, Cloneable {
   public Object clone() throws CloneNotSupportedException {
     return super.clone();
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
-  
+
 
   /**
    * Messaged when the user has altered the value for the item identified
@@ -357,13 +364,13 @@ implements Serializable, TreeModel, Cloneable {
 
   /*
    * Notify all listeners that have registered interest for
-   * notification on this event type.  The event instance 
-   * is lazily created using the parameters passed into 
+   * notification on this event type.  The event instance
+   * is lazily created using the parameters passed into
    * the fire method.
    * @see EventListenerList
    */
-  protected void fireTreeNodesChanged(Object source, Object[] path, 
-				      int[] childIndices, 
+  protected void fireTreeNodesChanged(Object source, Object[] path,
+				      int[] childIndices,
 				      Object[] children) {
     // Guaranteed to return a non-null array
     Object[] listeners = _listenerList.getListenerList();
@@ -374,22 +381,22 @@ implements Serializable, TreeModel, Cloneable {
       if (listeners[i]==TreeModelListener.class) {
 	// Lazily create the event:
 	if (e == null)
-	  e = new TreeModelEvent(source, path, 
+	  e = new TreeModelEvent(source, path,
 				 childIndices, children);
 	((TreeModelListener)listeners[i+1]).treeNodesChanged(e);
-      }          
+      }
     }
   }
 
   /*
    * Notify all listeners that have registered interest for
-   * notification on this event type.  The event instance 
-   * is lazily created using the parameters passed into 
+   * notification on this event type.  The event instance
+   * is lazily created using the parameters passed into
    * the fire method.
    * @see EventListenerList
    */
-  protected void fireTreeNodesInserted(Object source, Object[] path, 
-				       int[] childIndices, 
+  protected void fireTreeNodesInserted(Object source, Object[] path,
+				       int[] childIndices,
 				       Object[] children) {
     // Guaranteed to return a non-null array
     Object[] listeners = _listenerList.getListenerList();
@@ -400,22 +407,22 @@ implements Serializable, TreeModel, Cloneable {
       if (listeners[i]==TreeModelListener.class) {
 	// Lazily create the event:
 	if (e == null)
-	  e = new TreeModelEvent(source, path, 
+	  e = new TreeModelEvent(source, path,
 				 childIndices, children);
 	((TreeModelListener)listeners[i+1]).treeNodesInserted(e);
-      }          
+      }
     }
   }
 
   /*
    * Notify all listeners that have registered interest for
-   * notification on this event type.  The event instance 
-   * is lazily created using the parameters passed into 
+   * notification on this event type.  The event instance
+   * is lazily created using the parameters passed into
    * the fire method.
    * @see EventListenerList
    */
-  protected void fireTreeNodesRemoved(Object source, Object[] path, 
-				      int[] childIndices, 
+  protected void fireTreeNodesRemoved(Object source, Object[] path,
+				      int[] childIndices,
 				      Object[] children) {
     // Guaranteed to return a non-null array
     Object[] listeners = _listenerList.getListenerList();
@@ -426,10 +433,10 @@ implements Serializable, TreeModel, Cloneable {
       if (listeners[i]==TreeModelListener.class) {
 	// Lazily create the event:
 	if (e == null)
-	  e = new TreeModelEvent(source, path, 
+	  e = new TreeModelEvent(source, path,
 				 childIndices, children);
 	((TreeModelListener)listeners[i+1]).treeNodesRemoved(e);
-      }          
+      }
     }
   }
 
@@ -440,13 +447,13 @@ implements Serializable, TreeModel, Cloneable {
 
   /*
    * Notify all listeners that have registered interest for
-   * notification on this event type.  The event instance 
-   * is lazily created using the parameters passed into 
+   * notification on this event type.  The event instance
+   * is lazily created using the parameters passed into
    * the fire method.
    * @see EventListenerList
    */
-  public void fireTreeStructureChanged(Object source, Object[] path, 
-					  int[] childIndices, 
+  public void fireTreeStructureChanged(Object source, Object[] path,
+					  int[] childIndices,
 					  Object[] children) {
     // Guaranteed to return a non-null array
     Object[] listeners = _listenerList.getListenerList();
@@ -457,10 +464,10 @@ implements Serializable, TreeModel, Cloneable {
       if (listeners[i]==TreeModelListener.class) {
 	// Lazily create the event:
 	if (e == null)
-	  e = new TreeModelEvent(source, path, 
+	  e = new TreeModelEvent(source, path,
 				 childIndices, children);
 	((TreeModelListener)listeners[i+1]).treeStructureChanged(e);
-      }          
+      }
     }
   }
 
