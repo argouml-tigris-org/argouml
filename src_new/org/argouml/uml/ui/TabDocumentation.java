@@ -116,7 +116,7 @@ public class TabDocumentation extends PropPanel {
     }
 
     /**
-     * Checks if the tabprops should be enabled. Returns true if the target
+     * Checks if the tab should be enabled. Returns true if the target
      * returned by getTarget is a modelelement or if that target shows up as Fig
      * on the active diagram and has a modelelement as owner.
      * 

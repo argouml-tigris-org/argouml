@@ -79,20 +79,18 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * <p>
  * This is the tab on the details panel (DetailsPane) that holds the property
- * panel. On change of target, the property panel in TabProps is changed. 
- * </p>
- * <p>
+ * panel. On change of target, the property panel in TabProps is changed. <p>
+ * 
  * With the introduction of the TargetManager, 
  * this class holds its original power
  * of controlling its target. The property panels (subclasses of PropPanel) for
- * which this class is the container are being registrated as TargetListeners in
+ * which this class is the container are being registered as TargetListeners in
  * the setTarget method of this class. 
- * They are not registrated with TargetManager
+ * They are not registered with TargetManager
  * but with this class to prevent race-conditions while firing TargetEvents from
  * TargetManager.
- *</p>
+ *
  * @author unknown
  */
 public class TabProps
@@ -175,8 +173,10 @@ public class TabProps
         }
     }
 
-    /** Preload property panels that are commonly used within the first
-     *  few seconds after the tool is launched. */
+    /** 
+     * Preload property panels that are commonly used within the first
+     * few seconds after the tool is launched. 
+     */
     protected void initPanels() {
 
         panels.put(ModelFacade.CLASS/*MClassImpl.class*/, new PropPanelClass());
@@ -206,8 +206,8 @@ public class TabProps
         // FigText has no owner, so we do it directly
         panels.put(FigText.class, new PropPanelString());
         // now a plugin
-        // _panels.put(MModelImpl.class, new PropPanelModel());
-        //_panels.put((Class)ModelFacade.USE_CASE/*MUseCaseImpl.class*/, 
+        // panels.put(MModelImpl.class, new PropPanelModel());
+        // panels.put((Class)ModelFacade.USE_CASE/*MUseCaseImpl.class*/, 
         //                 new PropPanelUseCase());
         //important: MStateImpl corresponds to PropPanelSimpleState 
         //               not to PropPanelState!!

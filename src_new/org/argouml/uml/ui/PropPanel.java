@@ -69,7 +69,7 @@ import ru.novosoft.uml.MElementListener;
  * This abstract class provides the basic layout and event dispatching
  * support for all Property Panels.<p>
  *
- * The property panel is {@link org.argouml.swingext.LabelledLayout layed out}
+ * The property panel is {@link org.argouml.swingext.LabelledLayout} layed out
  * as a number (specified in the constructor) of equally sized panels
  * that split the available space.  Each panel has a column of
  * "captions" and matching column of "fields" which are laid out

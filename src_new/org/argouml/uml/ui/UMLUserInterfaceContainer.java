@@ -28,13 +28,13 @@ import org.argouml.uml.*;
 import java.util.*;
 
 /**
- *    Interface supported by any container of UML user interface components.
- *    This interface allows UML user interface components to determine
- *    the currently selected target and profile and allows the control
- *    to request a navigation.  Implemented by PropPanel
+ * Interface supported by any container of UML user interface components.
+ * This interface allows UML user interface components to determine
+ * the currently selected target and profile and allows the control
+ * to request a navigation.  Implemented by PropPanel.
  *
- *    @author Curt Arnold
- *    @see PropPanel
+ * @author Curt Arnold
+ * @see PropPanel
  */
 public interface UMLUserInterfaceContainer {
 
