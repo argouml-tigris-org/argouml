@@ -220,7 +220,7 @@ Property files to be searched:
       <pathelement location="${ocl-argo.jar.path}" />
       <pathelement location="${gef.jar.path}" />
       <pathelement location="${antlrall.jar.path}" />
-      <pathelement location="${log4j.jar.path}" />
+      <pathelement location="${logging.jar.path}" />
       <pathelement location="${jh.jar.path}" />
     </path>
 
@@ -230,7 +230,7 @@ Property files to be searched:
       <pathelement location="${ocl-argo.jar.path}" />
       <pathelement location="${gef.jar.path}" />
       <pathelement location="${antlrall.jar.path}" />
-      <pathelement location="${log4j.jar.path}" />
+      <pathelement location="${logging.jar.path}" />
       <pathelement location="${jh.jar.path}" />
     </path>
 
@@ -297,9 +297,6 @@ Property files to be searched:
     <available classname="org.tigris.gef.util.Localizer"
 	       classpathref="argo.compile.classpath"
                property="has.gef.localizer" />
-    <available classname="org.apache.log4j.Category"
-	       classpathref="argo.compile.classpath"
-               property="has.log4j" />
     <available classname="antlr.ANTLRException"
 	       classpathref="argo.compile.classpath"
                property="has.antlr" />
@@ -420,7 +417,6 @@ ${Name} Build file
           depends="prepare,
 	           check.gef.localizer,
 		   check.gef,
-		   check.log4j,
 		   check.antlr">
   </target>
 
@@ -434,12 +430,6 @@ ${Name} Build file
           depends="prepare, check.gef"
 	  unless="has.gef.localizer">
     <fail message="Please install a more recent version of the gef library (minimum 0.9.5)"/>
-  </target>
-
-  <target name="check.log4j"
-          depends="prepare"
-	  unless="has.log4j">
-    <fail message="log4j library does not appear to be in the classpath."/>
   </target>
 
   <target name="check.antlr"
@@ -541,7 +531,7 @@ ${Name} Build file
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar" />
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar" />
     <copy file="${jh.jar.path}" tofile="${argo.build.dir}/jh.jar" />
-    <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar" />
+    <copy file="${logging.jar.path}" tofile="${argo.build.dir}/commons-logging.jar" />
     <copy file="${nsuml.jar.path}" tofile="${argo.build.dir}/nsuml.jar" />
     <copy file="${ocl-argo.jar.path}" tofile="${argo.build.dir}/ocl-argo.jar" />
     <copy file="${xerces.jar.path}" tofile="${argo.build.dir}/xerces.jar" />
@@ -594,9 +584,6 @@ ${Name} Build file
             href="${jdk.javadoc.link}"
             packagelistLoc="${jdk.javadoc.link}"/>
       <link offline="true"
-            href="${log4j.javadoc.link}"
-            packagelistLoc="${log4j.javadoc.link}"/>
-      <link offline="true"
             href="${xerces.javadoc.link}"
             packagelistLoc="${xerces.javadoc.link}"/>
 
@@ -623,8 +610,8 @@ ${Name} Build file
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.zip" basedir="${argo.build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
-    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}.tar" basedir="${argo.build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt">
+    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.zip" basedir="${argo.build.dir}" includes="${gef.jar.name} commons-logging.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
+    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}.tar" basedir="${argo.build.dir}" includes="${gef.jar.name} commons-logging.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt">
     <!--
       <tarfileset mode="555">
 	<include name="argouml.sh">
@@ -652,8 +639,8 @@ ${Name} Build file
   <!-- =================================================================== -->
   <target name="dist-lib" depends="init">
     <echo message="Building the library distribution files (zip,tar)"/>
-    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.zip" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
-    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.zip" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/commons-logging.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/commons-logging.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
     <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar.gz" src="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar" />
     <delete file="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar"/>
   </target>
@@ -749,8 +736,6 @@ ${Name} Build file
           classpath="${argo.build.classes};${classpath}">
       <!--sysproperty key="javax.xml.parsers.SAXParserFactory"
                    value="org.apache.xerces.parsers.SAXParser"/-->
-      <!-- sysproperty key="log4j.configuration"
-                   value="org/argouml/resource/configuration.lcf"/-->
         <classpath>
 	  <pathelement location="${argo.build.classes}"/>
 	  <path refid="argo.runtime.classpath"/>
@@ -843,7 +828,7 @@ ${Name} Build file
             <pathelement location="${ocl-argo.jar.path}" />
             <pathelement location="${gef.jar.path}" />
             <pathelement location="${antlrall.jar.path}" />
-            <pathelement location="${log4j.jar.path}" />
+            <pathelement location="${logging.jar.path}" />
             <pathelement location="${jh.jar.path}" />
         </classpath>
      </javac>
@@ -893,7 +878,7 @@ ${Name} Build file
             <pathelement location="${ocl-argo.jar.path}" />
             <pathelement location="${gef.jar.path}" />
             <pathelement location="${antlrall.jar.path}" />
-            <pathelement location="${log4j.jar.path}" />
+            <pathelement location="${logging.jar.path}" />
             <pathelement location="${jh.jar.path}" />
         </classpath>
         <formatter type="xml"/>
