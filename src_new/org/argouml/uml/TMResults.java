@@ -27,6 +27,7 @@ import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
 
+import org.argouml.application.api.Argo;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
@@ -38,7 +39,14 @@ import org.tigris.gef.base.Diagram;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 
+/** TMResults implements a default table model which is used by
+ *  Find and Goto Operations in order to display search results.
+ *  It defines a default table model with columns and can 
+ *  resolve found objects to strings.
+ */
 public class TMResults extends AbstractTableModel {
+
+    private static final String BUNDLE = "Label";
     ////////////////
     // instance vars
     Vector _rowObjects;
@@ -58,7 +66,7 @@ public class TMResults extends AbstractTableModel {
     }
 
     ////////////////
-    // TableModel implemetation
+    // TableModel implementation
     public int getColumnCount() {
         return 4;
     }
@@ -100,21 +108,21 @@ public class TMResults extends AbstractTableModel {
                 case 0 :
                     String name = null;
                     if (d instanceof UMLClassDiagram)
-                        name = "Class Diagram";
+                        name = "label.class-diagram";
                     else if (d instanceof UMLUseCaseDiagram) {
-                        name = "Use Case Diagram";
+                        name = "label.usecase-diagram";
                     } else if (d instanceof UMLStateDiagram) {
-                        name = "State Diagram";
+                        name = "label.state-diagram";
                     } else if (d instanceof UMLDeploymentDiagram) {
-                        name = "Deployment Diagram";
+                        name = "label.deployment-diagram";
                     } else if (d instanceof UMLCollaborationDiagram) {
-                        name = "Collaboration Diagram";
+                        name = "label.collaboration-diagram";
                     } else if (d instanceof UMLActivityDiagram) {
-                        name = "Activity Diagram";
+                        name = "label.activity-diagram";
                     } else if (d instanceof UMLSequenceDiagram) {
-                        name = "Sequence Diagram";
+                        name = "label.sequence-diagram";
                     }
-                    return name;
+                    return Argo.localize(BUNDLE,name);
                 case 1 :
                     return d.getName();
                 case 2 :
