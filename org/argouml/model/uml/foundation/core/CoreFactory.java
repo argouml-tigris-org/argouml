@@ -443,31 +443,32 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param nav2 The navigability of the second Associaton end
      * @param agg2 The aggregation type of the second Associaton end
      * @return MAssociation
+     * @throws IllegalArgumentException if either Classifier is null
      */
-    public MAssociation buildAssociation(MClassifier c1,
+    private MAssociation buildAssociation(MClassifier c1,
 					 boolean nav1,
 					 MAggregationKind agg1,
 					 MClassifier c2,
 					 boolean nav2,
 					 MAggregationKind agg2) {
-	if (c1 == null || c2 == null) {
+        if (c1 == null || c2 == null) {
             throw new IllegalArgumentException("one of "
 					       + "the classifiers to be "
 					       + "connected is null");
         }
-	MNamespace ns1 = c1.getNamespace();
-	MNamespace ns2 = c2.getNamespace();
-	if (ns1 == null || ns2 == null) {
+        MNamespace ns1 = c1.getNamespace();
+        MNamespace ns2 = c2.getNamespace();
+        if (ns1 == null || ns2 == null) {
             throw new IllegalArgumentException("one of "
 					       + "the classifiers does not "
 					       + "belong to a namespace");
         }
-	MAssociation assoc =
-	    UmlFactory.getFactory().getCore().createAssociation();
-	assoc.setName("");
-	assoc.setNamespace(CoreHelper.getHelper().getFirstSharedNamespace(ns1,
-									  ns2));
-	buildAssociationEnd(
+        MAssociation assoc =
+            UmlFactory.getFactory().getCore().createAssociation();
+        assoc.setName("");
+        assoc.setNamespace(CoreHelper.getHelper().getFirstSharedNamespace(ns1,
+        								  ns2));
+        buildAssociationEnd(
 			    assoc,
 			    null,
 			    c1,
@@ -479,7 +480,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 			    null,
 			    null,
 			    null);
-	buildAssociationEnd(
+        buildAssociationEnd(
 			    assoc,
 			    null,
 			    c2,
@@ -491,43 +492,48 @@ public class CoreFactory extends AbstractUmlModelFactory {
 			    null,
 			    null,
 			    null);
-	return assoc;
+        return assoc;
     }
 
     /**
      * Builds a binary associationrole on basis of two classifierroles,
      * navigation and aggregation.
      *
-     * @param from   the first given classifier
-     * @param agg1   the first aggregationkind
-     * @param to     the second given classifier
-     * @param agg2   the second aggregationkind
+     * @param fromClassifier   the first given classifier
+     * @param aggregationKind1 the first aggregationkind
+     * @param toClassifier     the second given classifier
+     * @param aggregationKind2 the second aggregationkind
      * @param unidirectional true if unidirectional
      * @return the newly build binary associationrole
      */
-    public MAssociation buildAssociation(
-					 MClassifier from,
-					 MAggregationKind agg1,
-					 MClassifier to,
-					 MAggregationKind agg2,
+    public Object buildAssociation(
+					 Object fromClassifier,
+					 Object aggregationKind1,
+					 Object toClassifier,
+					 Object aggregationKind2,
 					 Boolean unidirectional) {
-	if (from == null || to == null)
-            throw new IllegalArgumentException("one of "
-					       + "the classifiers to be "
-					       + "connected is null");
-	MNamespace ns1 = from.getNamespace();
-	MNamespace ns2 = to.getNamespace();
-	if (ns1 == null || ns2 == null)
-            throw new IllegalArgumentException("one of "
-					       + "the classifiers does not "
-					       + "belong to a namespace");
-	MAssociation assoc =
-            UmlFactory.getFactory().getCore().createAssociation();
-	assoc.setName("");
-	assoc.setNamespace(
-			   CoreHelper.getHelper().getFirstSharedNamespace(ns1,
-									  ns2));
-
+        if (fromClassifier == null || toClassifier == null)
+                throw new IllegalArgumentException("one of "
+        				       + "the classifiers to be "
+        				       + "connected is null");
+        MClassifier from = (MClassifier)fromClassifier;
+        MClassifier to = (MClassifier)toClassifier;
+        MAggregationKind agg1 = (MAggregationKind)aggregationKind1;
+        MAggregationKind agg2 = (MAggregationKind)aggregationKind2;
+        
+        MNamespace ns1 = from.getNamespace();
+        MNamespace ns2 = to.getNamespace();
+        if (ns1 == null || ns2 == null)
+                throw new IllegalArgumentException("one of "
+        				       + "the classifiers does not "
+        				       + "belong to a namespace");
+        MAssociation assoc =
+                UmlFactory.getFactory().getCore().createAssociation();
+        assoc.setName("");
+        assoc.setNamespace(
+        		   CoreHelper.getHelper().getFirstSharedNamespace(ns1,
+        								  ns2));
+        
         boolean nav1 = true;
         boolean nav2 = true;
 
@@ -542,7 +548,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
             nav2 = true;
         }
 
-	buildAssociationEnd(
+        buildAssociationEnd(
 			    assoc,
 			    null,
 			    from,
@@ -554,7 +560,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 			    null,
 			    null,
 			    null);
-	buildAssociationEnd(
+        buildAssociationEnd(
 			    assoc,
 			    null,
 			    to,
@@ -580,8 +586,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param classifier2 The second classifier to connect
      * @return MAssociation
      */
-    public MAssociation buildAssociation(Object classifier1,
-					 Object classifier2) {
+    public MAssociation buildAssociation(
+            Object classifier1,
+			Object classifier2) {
         MClassifier c1 = (MClassifier) classifier1;
         MClassifier c2 = (MClassifier) classifier2;
         return buildAssociation(c1, true, MAggregationKind.NONE,
@@ -596,7 +603,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param nav2 The navigability of the second Associaton end
      * @return MAssociation
      */
-    public MAssociation buildAssociation(
+    private MAssociation buildAssociation(
 					 MClassifier c1,
 					 boolean nav1,
 					 MClassifier c2,
@@ -635,7 +642,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param agg2 The aggregation type of the second Associaton end
      * @return MAssociation
      */
-    public MAssociation buildAssociation(
+    private MAssociation buildAssociation(
 					 MClassifier c1,
 					 MAggregationKind agg1,
 					 MClassifier c2,
