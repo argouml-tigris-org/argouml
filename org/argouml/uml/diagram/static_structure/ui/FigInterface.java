@@ -57,7 +57,6 @@ public class FigInterface extends FigNodeModelElement {
   // instance variables
 
   protected FigGroup _operVec;
-  protected FigRect _bigPort;
   protected FigRect _operBigPort;
   protected FigRect _stereoLineBlinder;
   public MElementResidence resident = new MElementResidenceImpl();
@@ -68,9 +67,6 @@ public class FigInterface extends FigNodeModelElement {
   // constructors
 
   public FigInterface() {
-    // this rectangle marks the whole interface figure; everything is inside it:
-    _bigPort = new FigRect(10, 10, 60, 20+ROWHEIGHT, Color.cyan, Color.cyan);
-
     _name.setLineWidth(1);
     _name.setFilled(true);
 
@@ -149,11 +145,6 @@ public class FigInterface extends FigNodeModelElement {
     popUpActions.insertElementAt(addMenu, popUpActions.size() - 1);
 
     return popUpActions;
-  }
-
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
   }
 
   public Dimension getMinimumSize() {
@@ -477,5 +468,3 @@ public class FigInterface extends FigNodeModelElement {
 	firePropChange("bounds", oldBounds, getBounds());
   }
 } /* end class FigInterface */
-
-
