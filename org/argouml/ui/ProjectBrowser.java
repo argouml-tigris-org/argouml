@@ -187,7 +187,8 @@ public class ProjectBrowser
         _editorPane = new MultiEditorPane();
         getContentPane().setFont(defaultFont);
         getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(_menuBar, BorderLayout.NORTH);
+        this.setJMenuBar(_menuBar);
+        //getContentPane().add(_menuBar, BorderLayout.NORTH);
         getContentPane().add(createPanels(doSplash), BorderLayout.CENTER);
         getContentPane().add(_statusBar, BorderLayout.SOUTH);
 
