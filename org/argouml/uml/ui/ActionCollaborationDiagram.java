@@ -29,11 +29,15 @@ import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHel
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.apache.log4j.Logger;
 
 /** Action to trigger creation of new collaboration diagram.
  *  @stereotype singleton
  */
 public class ActionCollaborationDiagram extends ActionAddDiagram {
+    
+    private static final Logger LOG = 
+        Logger.getLogger(ActionCollaborationDiagram.class);
 
     public static ActionCollaborationDiagram SINGLETON =
         new ActionCollaborationDiagram();
@@ -47,8 +51,8 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
      */
     public UMLDiagram createDiagram(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
-            cat.error("No namespace as argument");
-            cat.error(handle);
+            LOG.error("No namespace as argument");
+            LOG.error(handle);
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
@@ -92,8 +96,8 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
      */
     public boolean isValidNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
-            cat.error("No namespace as argument");
-            cat.error(handle);
+            LOG.error("No namespace as argument");
+            LOG.error(handle);
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
