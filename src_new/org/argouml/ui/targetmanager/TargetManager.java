@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.swing.event.EventListenerList;
 
@@ -36,7 +37,9 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.ui.Actions;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
@@ -63,14 +66,14 @@ public final class TargetManager {
      * @author jaap.branderhorst@xs4all.nl
      */
     private class HistoryManager implements TargetListener {
-        
+
         private final static int MAX_SIZE = 100;
-        
+
         /**
          * The history with targets
          */
         private List _history = new ArrayList();
-        
+
         /**
          * Flag to indicate if the current settarget was instantiated by a
          * navigateBack action.
@@ -97,36 +100,42 @@ public final class TargetManager {
          * @param target The target to put into the history
          */
         private void putInHistory(Object target) {
-            // only targets we didn't have allready count
-            target = target instanceof Fig ? ((Fig)target).getOwner() : target;            
             if (_currentTarget > -1) {
-                Object oldTarget = ((WeakReference) _history.get(_currentTarget)).get();   
-                if (oldTarget == target) return;             
+                // only targets we didn't have allready count
+                Object modelTarget =
+                    target instanceof Fig ? ((Fig)target).getOwner() : target;
+                Object oldTarget =
+                    ((WeakReference)_history.get(_currentTarget)).get();
+                oldTarget =
+                    oldTarget instanceof Fig
+                        ? ((Fig)oldTarget).getOwner()
+                        : oldTarget;
+                if (oldTarget == modelTarget)
+                    return;
             }
-            if (target != null && !_navigateBackward) {                
-                if (_currentTarget+1 == _history.size()) {                
+            if (target != null && !_navigateBackward) {
+                if (_currentTarget + 1 == _history.size()) {
                     _history.add(new WeakReference(target));
                     _currentTarget++;
                     resize();
-                }
-                else {                
+                } else {
                     WeakReference ref =
-                        (WeakReference) _history.get(_currentTarget);
-                    if (!ref.get().equals(target)) {
+                        _currentTarget > -1
+                            ? (WeakReference)_history.get(_currentTarget)
+                            : null;
+                    if (_currentTarget == -1 || !ref.get().equals(target)) {
                         int size = _history.size();
-                        for (int i = _currentTarget+1;
-                            i < size;
-                            i++) {
-                            _history.remove(_currentTarget+1);
+                        for (int i = _currentTarget + 1; i < size; i++) {
+                            _history.remove(_currentTarget + 1);
                         }
                         _history.add(new WeakReference(target));
                         _currentTarget++;
-                    }                 
+                    }
                 }
-                
+
             }
         }
-        
+
         /**
          * Resizes the history if it's grown too big.
          *
@@ -135,29 +144,30 @@ public final class TargetManager {
             int size = _history.size();
             if (size > MAX_SIZE) {
                 int oversize = size - MAX_SIZE;
-                int halfsize = size/2;
+                int halfsize = size / 2;
                 if (_currentTarget > halfsize && oversize < halfsize) {
                     for (int i = 0; i < oversize; i++) {
-                        _history.remove(0);                        
+                        _history.remove(0);
                     }
                     _currentTarget -= oversize;
                 }
             }
         }
-        
+
         /**
          * Navigate one target forward in history. Throws an illegalstateException
          * if not possible.
          *
          */
         private void navigateForward() {
-            if (_currentTarget >= _history.size()-1) 
-                throw new IllegalStateException("NavigateForward is not allowed " +
-                    "since the targetpointer is pointing at the upper boundary " +
-                    "of the history");
+            if (_currentTarget >= _history.size() - 1)
+                throw new IllegalStateException(
+                    "NavigateForward is not allowed "
+                        + "since the targetpointer is pointing at the upper boundary "
+                        + "of the history");
             setTarget(((WeakReference)_history.get(++_currentTarget)).get());
         }
-        
+
         /**
          * Navigate one step back in history. Throws an illegalstateexception if
          * not possible.
@@ -165,15 +175,16 @@ public final class TargetManager {
          */
         private void navigateBackward() {
             if (_currentTarget == 0) {
-                throw new IllegalStateException("NavigateBackward is not allowed " +
-                   "since the targetpointer is pointing at the lower boundary " +
-                   "of the history");
+                throw new IllegalStateException(
+                    "NavigateBackward is not allowed "
+                        + "since the targetpointer is pointing at the lower boundary "
+                        + "of the history");
             }
             _navigateBackward = true;
             setTarget(((WeakReference)_history.get(--_currentTarget)).get());
             _navigateBackward = false;
         }
-        
+
         /**
          * Checks if it's possible to navigate back.
          * @return true if it's possible to navigate back.
@@ -181,13 +192,13 @@ public final class TargetManager {
         private boolean navigateBackPossible() {
             return _currentTarget > 0;
         }
-        
+
         /**
          * Checks if it's possible to navigate forward         
          * @return true if it's possible to navigate forward
          */
         private boolean navigateForwardPossible() {
-            return _currentTarget < _history.size()-1;
+            return _currentTarget < _history.size() - 1;
         }
 
         /**
@@ -211,7 +222,7 @@ public final class TargetManager {
         public void targetSet(TargetEvent e) {
             putInHistory(e.getNewTargets()[0]);
         }
-        
+
         /**
          * Cleans the history in total.
          *
@@ -220,15 +231,41 @@ public final class TargetManager {
             _history = new ArrayList();
             _currentTarget = -1;
         }
-        
+
         private void removeHistoryTarget(Object o) {
-            Iterator it = _history.iterator();
+            if (ModelFacade.isADiagram(o)) {
+                ListIterator it = ((Diagram)o).getEdges().listIterator();
+                while (it.hasNext()) {
+                    removeHistoryTarget(it.next());
+                }
+                it = ((Diagram)o).getNodes().listIterator();
+                while (it.hasNext()) {
+                    removeHistoryTarget(it.next());
+                }
+            }
+            ListIterator it = _history.listIterator();
+            int oldCurrentTarget = _currentTarget;
             while (it.hasNext()) {
                 WeakReference ref = (WeakReference)it.next();
                 Object historyObject = ref.get();
-                if (o == historyObject) {
-                    _history.remove(ref);
+                if (ModelFacade.isAModelElement(o)) {
+                    historyObject =
+                        historyObject instanceof Fig
+                            ? ((Fig)historyObject).getOwner()
+                            : historyObject;
+
                 }
+                if (o == historyObject) {
+                    if (_history.indexOf(ref) <= _currentTarget) {
+                        _currentTarget--;
+                    }
+                    it.remove();
+                }
+
+                // cannot break here since an object can be multiple times in history
+            }
+            if (oldCurrentTarget != _currentTarget) {
+                Actions.updateAllEnabled();
             }
         }
 
@@ -262,7 +299,7 @@ public final class TargetManager {
      * The list with targetlisteners
      */
     private EventListenerList _listenerList = new EventListenerList();
-    
+
     /**
      * The history manager of argouml. Via the historymanager browser behaviour
      * is emulated
@@ -309,7 +346,7 @@ public final class TargetManager {
                 _modelTarget = determineModelTarget(_newTarget);
                 fireTargetSet(targets);
                 _targets = new Object[] { o };
-                _newTarget = null;         
+                _newTarget = null;
             }
             endTargetTransaction();
         }
@@ -445,7 +482,7 @@ public final class TargetManager {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
-                 ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
+                 ((TargetListener)listeners[i + 1]).targetSet(targetEvent);
             }
         }
     }
@@ -463,7 +500,7 @@ public final class TargetManager {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
-                 ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
+                 ((TargetListener)listeners[i + 1]).targetAdded(targetEvent);
             }
         }
     }
@@ -481,7 +518,7 @@ public final class TargetManager {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
-                ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
+                 ((TargetListener)listeners[i + 1]).targetRemoved(targetEvent);
             }
         }
     }
@@ -507,7 +544,7 @@ public final class TargetManager {
     public Fig getFigTarget() {
         return _figTarget;
     }
-    
+
     /**
      * Calculates the most probable 'fig-form' of some target.
      * @param target the target to calculate the 'fig-form' for.
@@ -525,7 +562,7 @@ public final class TargetManager {
             }
         }
 
-        return target instanceof Fig ? (Fig) target : null;
+        return target instanceof Fig ? (Fig)target : null;
     }
 
     /**
@@ -547,7 +584,7 @@ public final class TargetManager {
      */
     private Object determineModelTarget(Object target) {
         if (target instanceof Fig) {
-            Object owner = ((Fig) target).getOwner();
+            Object owner = ((Fig)target).getOwner();
             if (ModelFacade.isABase(owner)) {
                 target = owner;
             }
@@ -556,7 +593,7 @@ public final class TargetManager {
             || ModelFacade.isABase(target) ? target : null;
 
     }
-    
+
     /**
      * Navigates the target pointer one target forward. This implements together
      * with navigateBackward browser like functionality.
@@ -566,7 +603,7 @@ public final class TargetManager {
     public void navigateForward() throws IllegalStateException {
         _historyManager.navigateForward();
     }
-    
+
     /**
      * Navigates the target pointer one target backward. This implements together
      * with navigateForward browser like functionality
@@ -576,7 +613,7 @@ public final class TargetManager {
     public void navigateBackward() throws IllegalStateException {
         _historyManager.navigateBackward();
     }
-    
+
     /**
      * Checks if it's possible to navigate forward.
      * @return true if it is possible to navigate forward.
@@ -584,7 +621,7 @@ public final class TargetManager {
     public boolean navigateForwardPossible() {
         return _historyManager.navigateForwardPossible();
     }
-    
+
     /**
      * Checks if it's possible to navigate backward
      * @return true if it's possible to navigate backward
@@ -592,19 +629,18 @@ public final class TargetManager {
     public boolean navigateBackPossible() {
         return _historyManager.navigateBackPossible();
     }
-    
+
     /**
-     * Cleans the history. Needed for the JUnit tests.
+     * Cleans the history. Needed for the JUnit tests and when instantiating a 
+     * new project
      *
      */
-    void cleanHistory() {
+    public void cleanHistory() {
         _historyManager.clean();
     }
-    
+
     public void removeHistoryElement(Object o) {
-        
+        _historyManager.removeHistoryTarget(o);
     }
-    
-    
 
 }

@@ -29,6 +29,7 @@ import java.util.Vector;
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.targetmanager.TargetManager;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.model_management.MModel;
@@ -64,10 +65,12 @@ public class Trash {
       cat.warn("tried to add null to trash!");
       return;
     }
+    TargetManager.getInstance().removeHistoryElement(obj);
     if (obj instanceof MModelElement) {
       MModelElement me = (MModelElement) obj;
 	  TrashItem ti = new TrashItem(obj, places);
 	  _contents.addElement(ti);
+      
       // next two lines give runtime exceptions. Remove should be done properly
 	  //me.setNamespace(null);
       // me.setNamespace(Trash_Model);
