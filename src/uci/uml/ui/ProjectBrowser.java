@@ -360,8 +360,8 @@ implements IStatusBar {
     createDiagrams.add(Actions.CollaborationDiagram);
     createDiagrams.add(Actions.DeploymentDiagram);
 
-    JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
-    createModelElements.add(Actions.AddTopLevelPackage);
+    //JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
+    //createModelElements.add(Actions.AddTopLevelPackage);
     //createModelElements.add(_actionClass);
     //createModelElements.add(_actionInterface);
     //createModelElements.add(_actionActor);
