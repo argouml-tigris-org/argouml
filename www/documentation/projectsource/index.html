@@ -1,0 +1,147 @@
+<HTML>
+<HEAD>
+  <META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+  <META CONTENT="text/html; charset=windows-1252" HTTP-EQUIV=CONTENT-TYPE>
+
+      <TITLE>Project Source</TITLE>
+
+  <LINK REL="stylesheet" TYPE="text/css" HREF="http://www.tigris.org/branding/style.css?JServSessionIdservlets=ruqb3zcbc2">
+</HEAD>
+<BODY>
+<TABLE BORDER="0" CELLSPACING="1" CELLPADDING="3" WIDTH="100%">
+  <TR>
+    <TD CLASS="Header" NOWRAP>Project Source: <SPAN CLASS="ProjectNameHeader"><A HREF="http://argouml.tigris.org/servlets/ProjectHome?JServSessionIdservlets=ruqb3zcbc2">argouml</A></SPAN></TD>  
+  </TR>
+</TABLE>
+
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="2" WIDTH="100%">
+  <TR>
+    <TD COLSPAN="2" CLASS="InputHeader" VALIGN="top">Access the source code repository for this project in one of the following ways:</TD>
+  </TR>
+  <TR>
+    <TD COLSPAN="2" CLASS="PlainText" VALIGN="top">
+      <UL>
+<P>
+        <LI><A HREF="http://argouml.tigris.org/source/browse/argouml/?JServSessionIdservlets=ruqb3zcbc2">Browse</A> source code on-line to view this project's directory structure and files.</LI><BR><BR>
+
+        <LI><A HREF="http://argouml.tigris.org/servlets/ProjectDownloadList?JServSessionIdservlets=ruqb3zcbc2">Download</A> source code archives, if any are available, to copy read-only source files for this project on to your local system.</LI><BR><BR>
+
+
+<P>
+        <LI>You can use CVS to check out your own copies of project source code files if you have the appropriate permissions. CVS is an open source version control for keeping track of all modifications to project source code files. You can choose either a <A HREF="http://www.cvshome.org/downloads.html">command-line CVS client</A> or <A HREF="http://www.cvsgui.org/download.html">WinCvs</A> with a Windows interface. Whether you have CVS permissions and what you can do with source files depends upon your role in this project. (<A HREF="/project/www/docs/ProjectRoles.html?JServSessionIdservlets=ruqb3zcbc2">Roles?</A>)
+<P>
+<h2>Module description</h2> 
+Argo/UML consists of several modules which can be checked out at once or one by one. Below is a list of all modules and then follows a list of the <strong>recommended</strong> modules.
+<P>
+<UL>
+<LI> <strong>argouml/src_new</strong>: the module containing the src of the <i>current</i> development (aka 0.9.x branch)
+<LI> <strong>argouml/lib</strong>: the module containing the libs
+<LI> <strong>argouml/documentation</strong>: the module containing the docsources for the manual, quick-guide, developer FAQ etc.
+<LI> <strong>argouml/src</strong>: the module containing the <i>old</i> sources
+<LI> <strong>argouml/www</strong>: the module containing the web site documents
+</UL>
+<p>
+<strong>Required to build (see also <a href="/documentation/defaulthtml/cookbook/">developer FAQ</a> for reasons of inclusion of GEF):</strong>
+<ul>
+<li> argouml/src_new
+<li> argouml/lib
+<li> gef/src
+<li> gef/lib
+</ul>
+</p>
+<p>
+<strong>Required for creating documentation:</strong>
+<ul>
+<li> modules required to build
+<li> argouml/documentation
+<li> argouml/www
+</ul>
+</p>
+<p>
+<strong>Required for historians only:</strong>
+<ul> 
+<li> argouml/src: this is the 0.8.x release which is not maintained anymore
+</ul>
+</UL>
+<P>
+<HR noShade SIZE=1>
+
+<A NAME="commandlinecvs"></A><SPAN CLASS="InputHeader">CVS command line checkout
+ instructions</SPAN>&nbsp;&nbsp;&nbsp;(<A HREF="#wincvs">Skip to WinCvs checkout
+ instructions</A>)
+<P>
+Before you can do a cvs checkout, you must set the cvsroot to indicate where the
+ CVS repository for this project is located.
+<OL>
+<LI>The command to set cvsroot and login is:
+<P>
+<BLOCKQUOTE>
+           <B>cvs -d :pserver:guest@cvs.tigris.org:/cvs login</B><BR>
+           Login with your own password, the same as the one you use to access the site.  Or use the password "guest" with username "guest".
+</BLOCKQUOTE>
+<P>Then you can check out a working copy with:
+<P>
+<BLOCKQUOTE>
+           <B>cvs -d :pserver:guest@cvs.tigris.org:/cvs checkout argouml</B><BR><BR>
+</BLOCKQUOTE>
+<P>
+
+If this is the only project you working on, you only need to set the cvsroot once. Thereafter when you log in to this domain, the cvs repository for this project is assumed. If you are working multiple projects, however, you must specify the cvsroot each time you log in to ensure that the cvs repository you are accessing is the right one.
+<P>
+<LI>To check out the project source repository an individual module (if you don't need the entire repository), type:
+<P>
+<BLOCKQUOTE>
+          <B>cvs -d :pserver:guest@cvs.tigris.org:/cvs checkout argouml/[modulename]</B>
+</BLOCKQUOTE>
+This command should result in a scrolling list of files being added to the local directory you specified on your machine. Now you are ready to use your file editor to work with individual files and make changes.
+</OL>
+<P>
+If you wish to contribute to the project's CVS repository, you must have "cvs-commit" permissions as a project member. <B>Note: Before you may <I>commit</I> modified files into the project repository, you must set up an SSH tunnel for security purposes.</B>
+<P>
+<A HREF="/project/www/docs/ddUsingCVS_command-line.html?JServSessionIdservlets=ruqb3zcbc2">CVS how-to guide for this site</A>
+<P>
+
+<HR noShade SIZE=1>
+<A NAME="wincvs"></A><SPAN CLASS="InputHeader">WinCvs checkout instructions</SPAN><BR>
+<P>
+To use WinCvs to check out your own set of source code files, you must first set up the correct cvs root using the following steps.
+<P>
+<OL>
+<LI>Launch WinCvs and select <B>Cvs Admin - Preferences</B>. Enter the CVSroot:
+<P>
+<BLOCKQUOTE>
+<B>:pserver:guest@cvs.tigris.org:/cvs</B>
+</BLOCKQUOTE>
+Click OK.
+<P>
+<LI>If this your first cvs checkout, create a folder in Windows Explorer to hold all of your cvs project folders. Then create a subfolder for this project. (You may even want to create separate subfolders for each module if you're working in more than one.)
+<P>
+<LI>In WinCvs, select <B>Cvs Admin - Login</B> and enter your cvs password.
+<P>
+<LI>Click on the left window in the program and select a folder. Then select <B>
+Cvs Admin - Checkout Module</B>. Select the project folder you created earlier.
+<P>
+<LI>Enter project module name and click OK. You should see a scrolling list of filenames as these are created in your folder(s).
+<P>
+<LI>Repeat the module creation process for each additional cvs module you wish to check out.
+</OL>
+</UL>
+
+<A HREF="/project/www/docs/ddUsingWinCvs.html?JServSessionIdservlets=ruqb3zcbc2">WinCvs how-to guide for this site
+</A>
+
+
+
+  </TD>
+  </TR>
+</TABLE>
+
+<!-- End Servlet-Specific template -->
+
+<!-- Page End --><!-- End Main Window Table -->
+    </TD>
+  </TR>
+</TABLE>
+</BODY>
+</HTML>
+
