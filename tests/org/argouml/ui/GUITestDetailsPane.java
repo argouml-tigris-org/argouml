@@ -30,10 +30,11 @@ import javax.swing.JPanel;
 import junit.framework.TestCase;
 
 import org.argouml.model.uml.CoreFactory;
-import org.argouml.swingext.Horizontal;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+
+import org.tigris.swidgets.Horizontal;
 
 /**
  * @author jaap.branderhorst@xs4all.nl

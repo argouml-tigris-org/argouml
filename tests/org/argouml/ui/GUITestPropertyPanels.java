@@ -61,10 +61,11 @@ import org.argouml.kernel.ZargoFilePersister;
 import org.argouml.model.ModelFacade;
 // import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.swingext.Horizontal;
 import org.argouml.ui.targetmanager.TargetEvent;
 // import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
+
+import org.tigris.swidgets.Horizontal;
 
 /**
  * GuiTestPropertyPanels attempts to load a project file and iterates through
