@@ -98,7 +98,8 @@ public class AboutBox extends JDialog {
     _tabs.addTab("Splash", _splashPanel);
 
     try {
-	JTextArea a = new JTextArea();
+        JTextArea a = new JTextArea();
+        a.setEditable(false);
         a.read(new StringReader(versionBuf.toString()), null);
         _tabs.addTab("Version", new JScrollPane(a));
     }
@@ -107,11 +108,12 @@ public class AboutBox extends JDialog {
     }
 
     try {
-	JTextArea a = new JTextArea();
+        JTextArea a = new JTextArea();
         a.read(new InputStreamReader(getClass().
-				     getResourceAsStream(Argo.RESOURCEDIR 
-							 + "credits.about")),
-	       null);
+                                     getResourceAsStream(Argo.RESOURCEDIR 
+                                                         + "credits.about")),
+               null);
+        a.setEditable(false);
         _tabs.addTab("Credits", new JScrollPane(a));
     }
     catch (Exception e) {
@@ -119,11 +121,12 @@ public class AboutBox extends JDialog {
     }
 
     try {
-	JTextArea a = new JTextArea();
+        JTextArea a = new JTextArea();
+        a.setEditable(false);
         a.read(new InputStreamReader(getClass().
-				     getResourceAsStream(Argo.RESOURCEDIR
-							 + "contacts.about")),
-	       null);
+                                     getResourceAsStream(Argo.RESOURCEDIR
+                                                         + "contacts.about")),
+               null);
         _tabs.addTab("Contact Info", new JScrollPane(a));
     }
     catch (Exception e) {
@@ -132,11 +135,12 @@ public class AboutBox extends JDialog {
 
 
     try {
-	JTextArea a = new JTextArea();
+        JTextArea a = new JTextArea();
+        a.setEditable(false);
         a.read(new InputStreamReader(getClass().
-				     getResourceAsStream(Argo.RESOURCEDIR
-							 + "bugreport.about")),
-	       null);
+                                     getResourceAsStream(Argo.RESOURCEDIR
+                                                         + "bugreport.about")),
+               null);
         _tabs.addTab("Report bugs", new JScrollPane(a));
     }
     catch (Exception e) {
@@ -145,11 +149,12 @@ public class AboutBox extends JDialog {
 
 
     try {
-	JTextArea a = new JTextArea();
+        JTextArea a = new JTextArea();
+        a.setEditable(false);
         a.read(new InputStreamReader(getClass().
-				     getResourceAsStream(Argo.RESOURCEDIR
-							 + "legal.about")),
-	       null);
+                                     getResourceAsStream(Argo.RESOURCEDIR
+                                                         + "legal.about")),
+               null);
         _tabs.addTab("Legal", new JScrollPane(a));
     }
     catch (Exception e) {
