@@ -196,7 +196,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         qualifiersScroll = new JScrollPane(new UMLLinkedList(
                 new UMLAssociationEndQualifiersListModel()));
         qualifierButton = new PropPanelButton2(new ActionAddAttribute());
-        qualifierButton.setToolTipText("new Qualifier");
+        qualifierButton.setToolTipText(
+                Translator.localize("button.new-qualifier"));
 
     }
 
