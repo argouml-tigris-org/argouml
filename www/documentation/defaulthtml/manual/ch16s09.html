@@ -11,7 +11,7 @@
       with a (user defined) stereotype of
       <tt>&laquo;signal&raquo;</tt> as suggested in the UML 1.3
       standard. This allows any dependency relationships between signals to be
-      shown.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e20067"></a>16.9.1. Signal Details Tabs</h3></div></div><p>The details tabs that are active for signals are as
+      shown.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e20223"></a>16.9.1. Signal Details Tabs</h3></div></div><p>The details tabs that are active for signals are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch16s09.html#s2.ref.signal_property_toolbar" title="16.9.2. Signal Property Toolbar">Section 16.9.2</a> and <a href="ch16s09.html#s2.ref.signal_property_fields" title="16.9.3. Property Fields For Signal">Section 16.9.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab, but relating to the owning class,
             rather than the signal. The tick boxes,
@@ -51,8 +51,6 @@
             structure.</p></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_back.gif" align="center"></span> <tt>Go
             back</tt></span></dt><dd><p>Navigate back to the previous
             artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
-            and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
             and there is no guarantee where (if anywhere) this button will
             take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_forward.gif" align="center"></span> <tt>Go
             forward</tt></span></dt><dd><p>Navigate forward to the next
@@ -96,7 +94,7 @@
             an error, since this stereotype properly belongs to the
             <tt>Abstraction</tt>
             metaclass.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <a href="ch16s04.html" title="16.4. Stereotype">Section 16.4</a>).</p></dd><dt><span class="term"><tt>Extends</tt></span></dt><dd><p>Text box. Lists any class that generalizes this
             class (see <a href="ch16s13.html" title="16.13. Generalization">Section 16.13</a>).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML is incorrect in using the designation
             &#8220;Extends&#8221; for this field. It should correctly be
@@ -113,13 +111,12 @@
               the selected generalization.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This only removes the link to the
               generalization. To remove the generalization from the model
               you must navigate to it (or select it on the diagram or
-              navigation pane) and then delete it.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available
-              where there are two or more generalizations, and the
-              generalization selected is not at the top. It is moved one up
-              the list.</p></li><li><p><tt>Move Down</tt>. Only available
-              where there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved
-              one down the list.</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML allows you to create generalizations,
+              navigation pane) and then delete it.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more generalizations, and the generalization
+              selected is not at the top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved down
+              one.</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML allows you to create generalizations,
             but not to specify parents, so they are of no use at
             all.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>To specify detailed properties of signals define them
             as classes with the stereotype
@@ -138,13 +135,12 @@
               the selected abstraction.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This only removes the link to the
               abstraction. To remove the abstraction from the model
               you must navigate to it (or select it on the diagram or
-              navigation pane) and then delete it.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available
-              where there are two or more abstractions, and the
-              abstraction selected is not at the top. It is moved one up
-              the list.</p></li><li><p><tt>Move Down</tt>. Only available
-              where there are two or more abstractions listed, and the
-              abstraction selected is not at the bottom. It is moved
-              one down the list.</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML allows you to create abstractions, but
+              navigation pane) and then delete it.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more abstractions, and the abstraction selected
+              is not at the top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more abstractions listed, and the abstraction
+              selected is not at the bottom. It is moved down
+              one.</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML allows you to create abstractions, but
             not to specify suppliers, so they are of no use at all. Since
             signals should not have operations or attributes, abstraction
             seems a meaningless concept.</p></td></tr></table></div></dd><dt><span class="term"><tt>Modifiers</tt></span></dt><dd><p>Check box, with entries <tt>public</tt>,
@@ -178,37 +174,34 @@
               entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected operation.</p></li><li><p><tt>Add</tt>. Add a new
               operation and navigate to it.</p></li><li><p><tt>Delete</tt>. Removes the selected
-              operation from the model.</p></li><li><p><tt>Move Up</tt>. Only available
-              where there are two or more operations, and the operation
-              selected is not at the top. It is moved one up the
-              list.</p></li><li><p><tt>Move Down</tt>. Only available
-              where there are two or more operations listed, and the
-              operation selected is not at the bottom. It is moved
-              one down the list.</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Signals should not have any
+              operation from the model.</p></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more operations, and the operation selected is
+              not at the top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more operations listed, and the operation
+              selected is not at the bottom. It is moved down
+              one.</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Signals should not have any
             operations.</p></td></tr></table></div></dd><dt><span class="term"><tt>Attributes</tt></span></dt><dd><p>Text area. Lists all the attributes (see <a href="ch16s06.html" title="16.6. Attribute">Section 16.6</a>) defined for this class. These
             are effectively the parameters to the signal. Button&nbsp;1 click
             takes you to the selected attribute, button&nbsp;2 click brings
             up a pop up menu with five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected attribute.</p></li><li><p><tt>Add</tt>. Add a new
               attribute and navigate to it.</p></li><li><p><tt>Delete</tt>. Removes the selected
-              attribute from the model.</p></li><li><p><tt>Move Up</tt>. Only available
-              where there are two or more attributes, and the attribute
-              selected is not at the top. It is moved one up the
-              list.</p></li><li><p><tt>Move Down</tt>. Only available
-              where there are two or more attributes listed, and the
-              attribute selected is not at the bottom. It is moved
-              one down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Associations</tt></span></dt><dd><p>Text area. Lists all the associations (see <a href="ch16s10.html" title="16.10. Association">Section 16.10</a>) defined on this
+              attribute from the model.</p></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more attributes, and the attribute selected is
+              not at the top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more attributes listed, and the attribute
+              selected is not at the bottom. It is moved down
+              one.</p></li></ul></div></dd><dt><span class="term"><tt>Associations</tt></span></dt><dd><p>Text area. Lists all the associations (see <a href="ch16s10.html" title="16.10. Association">Section 16.10</a>) defined on this
               signal. Button&nbsp;1 click takes you to the selected
               association, button&nbsp;2 click brings up a pop up menu with
               five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected association.</p></li><li><p><tt>Add</tt>. Add a new
               association and navigate to it.</p></li><li><p><tt>Delete</tt>. Removes the selected
-              association from the model.</p></li><li><p><tt>Move Up</tt>. Only available
-              where there are two or more associations, and the association
-              selected is not at the top. It is moved one up the
-              list.</p></li><li><p><tt>Move Down</tt>. Only available
-              where there are two or more associations listed, and the
-              association selected is not at the bottom. It is moved
-              one down the list.</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Signals should not have any
+              association from the model.</p></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more associations, and the association selected
+              is not at the top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more associations listed, and the association
+              selected is not at the bottom. It is moved down
+              one.</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Signals should not have any
             associations&#8212;the concept is
             meaningless.</p></td></tr></table></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch16s08.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch16.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch16s10.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">16.8. Parameter&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;16.10. Association</td></tr></table></div></body></html>

@@ -4,7 +4,7 @@
       code, database, library, documentation) that realizes a set of
       interfaces. In the UML metamodel it is a sub-class of
       <tt>Classifier</tt>.</p><p>A component is represented on a class diagram as a box with two small
-      rectangles protruding from its left side, labeled with its name.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e27680"></a>21.4.1. Component Details Tabs</h3></div></div><p>The details tabs that are active for components are as
+      rectangles protruding from its left side, labeled with its name.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e28845"></a>21.4.1. Component Details Tabs</h3></div></div><p>The details tabs that are active for components are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch21s04.html#s2.ref.component_property_toolbar" title="21.4.2. Component Property Toolbar">Section 21.4.2</a> and <a href="ch21s04.html#s2.ref.component_property_fields" title="21.4.3. Property Fields For Component">Section 21.4.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab. The <tt>Bounds:</tt> field
             defines the bounding box for the component on the
@@ -67,8 +67,11 @@
             <tt>realize</tt> for components. This appears to
             be an error, since this stereotype properly belongs to the
             <tt>Abstraction</tt>
-            metaclass.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
-              stereotype has been selected, this will navigate you to the
+            metaclass.</p></td></tr></table></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>Component is a type of classifier, and should be
+            provided with the stereotypes for a classifier, however these are
+            missing in the current release of
+            ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <a href="ch16s04.html" title="16.4. Stereotype">Section 16.4</a>).</p></dd><dt><span class="term"><tt>Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the
             component. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
             defining this namespace (or the model for the top level
@@ -84,13 +87,12 @@
               null with no parent, that can not be added to the
               diagram. Its value is somewhat
               limited!</p></td></tr></table></div></li><li><p><tt>Delete</tt>. Removes the link to
-              the selected generalization.</p></li><li><p><tt>Move Up</tt>. Only available
-              where there are two or more generalizations, and the
-              generalization selected is not at the top. It is moved one up
-              the list.</p></li><li><p><tt>Move Down</tt>. Only available
-              where there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved
-              one down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Modifiers</tt></span></dt><dd><p>Check box, with entries <tt>abstract</tt>,
+              the selected generalization.</p></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more generalizations, and the generalization
+              selected is not at the top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved down
+              one.</p></li></ul></div></dd><dt><span class="term"><tt>Modifiers</tt></span></dt><dd><p>Check box, with entries <tt>abstract</tt>,
             <tt>final</tt> and <tt>root</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>abstract</tt> is used to declare
               that this component cannot be instantiated, but must always
               be specialized.</p></li><li><p><tt>final</tt> indicates that this

@@ -1,13 +1,22 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>15.3. Use Case</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch15.html" title="Chapter 15. ArgoUML Use Case Diagram Artifact Reference"><link rel="previous" href="ch15s02.html" title="15.2. Actor"><link rel="next" href="ch15s04.html" title="15.4. Association"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">15.3. Use Case</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch15s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 15. ArgoUML Use Case Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch15s04.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="s1.ref.use_case"></a>15.3. Use Case</h2></div></div><p>A use case represents a complete meaningful &#8220;chunk&#8221; of
+   <title>15.3. Use Case</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch15.html" title="Chapter 15. ArgoUML Use Case Diagram Artifact Reference"><link rel="previous" href="ch15s02.html" title="15.2. Actor"><link rel="next" href="ch15s04.html" title="15.4. Extension Point"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">15.3. Use Case</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch15s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 15. ArgoUML Use Case Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch15s04.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="s1.ref.use_case"></a>15.3. Use Case</h2></div></div><p>A use case represents a complete meaningful &#8220;chunk&#8221; of
       activity by the system in relation to its external users (actors), human
       or machine. It represents the primary route through which requirements
       are captured for the system under construction</p><p>Within the UML metamodel, use case is a sub-class of
-     <tt>classifier</tt>.</p><p>The use case icon is an oval (see <a href="ch15.html#fig.ref.use_case_diagram" title="Figure 15.1. Possible artifacts on a use case diagram.">Figure 15.1</a>).</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e13354"></a>15.3.1. Use Case Details Tabs</h3></div></div><p>The details tabs that are active for use cases are as
+     <tt>classifier</tt>.</p><p>The use case icon is an oval (see <a href="ch15.html#fig.ref.use_case_diagram" title="Figure 15.1. Possible artifacts on a use case diagram.">Figure 15.1</a>). It may be split in two, with the
+      lower compartment showing extension points</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>By default ArgoUML does not show the extension point
+      compartment. It may be revealed by the context sensitive
+      <tt>Show</tt> menu (using button&nbsp;2 click), or from the Style
+      tab.</p></td></tr></table></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>The current release of ArgoUML does not preserve
+      information about whether the extension point compartment is showing on
+      save. On reload, no compartments will be visible.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e14407"></a>15.3.1. Use Case Details Tabs</h3></div></div><p>The details tabs that are active for use cases are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch15s03.html#s2.ref.use_case_property_toolbar" title="15.3.2. Use Case Property Toolbar">Section 15.3.2</a> and <a href="ch15s03.html#s2.ref.use_case_property_fields" title="15.3.3. Property Fields For Use Case">Section 15.3.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab. Fill color is used for the use case
-            oval.</p></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab. It would not be usual to provide any
+            oval.</p><p>The <tt>Display: Extension Points</tt> check box is
+            used to control whether an extension point compartment is
+            displayed.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The <tt>Shadow</tt> field has no effect on
+            use cases.</p></td></tr></table></div></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab. It would not be usual to provide any
             code for a use case, since it is primarily a vehicle for
             capturing requirements about the system under construction, not
             creating the solution.</p></dd><dt><span class="term"><tt>Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
@@ -67,25 +76,26 @@
             first letter (and initial letters of any component words),
             e.g. <tt>RemoteSensor</tt>.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not enforce any naming convention for
             use cases</p></td></tr></table></div></dd><dt><span class="term"><tt>Stereotype</tt></span></dt><dd><p>Drop down selector. Use case is provided by default
-            with the UML standard stereotypes
-            (<tt>metaclass</tt>, <tt>powertype</tt>,
-            <tt>process</tt>, <tt>thread</tt>,
-            <tt>utility</tt>) for classifiers. ArgoUML also
-            provides the additional stereotypes,
-            <tt>machine</tt>, <tt>organization</tt> and
-            <tt>person</tt>. Stereotyping can be useful when
-            creating use cases in the problem domain (requirements capture)
-            and solution domain (analysis), but none of the pre-defined
-            stereotypes are well suited to this.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>If a stereotype is selected in ArgoUML it will
-            not be displayed in the diagram.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
-              stereotype has been selected, this will navigate you to the
+            with the UML standard stereotypes (<tt>metaclass</tt>,
+            <tt>powertype</tt>, <tt>process</tt>,
+            <tt>thread</tt>, <tt>utility</tt>) for
+            classifiers. ArgoUML also provides the additional stereotypes,
+            <tt>machine</tt>, <tt>organization</tt>,
+            <tt>person</tt> and
+            <tt>singleton</tt>. Stereotyping can be useful when
+            creating use cases in the problem domain (requirements capture) and
+            solution domain (analysis), but none of the pre-defined stereotypes
+            are well suited to this.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the current release of ArgoUML if a stereotype is
+            selected in ArgoUML it will not be displayed in the
+            diagram.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <a href="ch14s04.html" title="14.4. Stereotypes">Section 14.4</a>).</p></dd><dt><span class="term"><tt>Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the
             use case. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
             defining this namespace (or the model for the top level
             namespace).</p></dd><dt><span class="term"><tt>Modifiers</tt></span></dt><dd><p>Check box, with entries <tt>Abstract</tt>,
             <tt>Final</tt> and <tt>Root</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>abstract</tt> is used to declare
               that this use case cannot be instantiated, but must always be
-              specialized.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Whilst use cases can be specialized and
+              specialized.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>While use cases can be specialized and
               generalized, it is not clear that an abstract use case has
               any meaning. Perhaps it might be used to indicate an use case
               that does not itself interact with an actor, but whose
@@ -113,15 +123,14 @@
               generalization from the model or the diagram, leading to
               potentially very confusing diagrams. It is usually far easier
               to remove generalizations from the editing
-              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available
-              where there are two or more generalizations listed (see
+              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more generalizations listed (see
               <span class="emphasis"><i>caution</i></span> above), and the generalization
-              selected is not at the top. It is moved one up the
-              list.</p></li><li><p><tt>Move Down</tt>. Only available
-              where there are two or more generalizations listed (see
+              selected is not at the top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more generalizations listed (see
               <span class="emphasis"><i>caution</i></span> above), and the generalization
-              selected is not at the bottom. It is moved one down the
-              list.</p></li></ul></div></dd><dt><span class="term"><tt>Specializations</tt></span></dt><dd><p>Text box. Lists any specialized use case (i.e. for
+              selected is not at the bottom. It is moved down
+              one.</p></li></ul></div></dd><dt><span class="term"><tt>Specializations</tt></span></dt><dd><p>Text box. Lists any specialized use case (i.e. for
             which this use case is a generalization.</p><p>button&nbsp;1 click navigates to the generalization and opens
             its property tab.</p><p>Button&nbsp;2 click yields a drop down menu with five
             entries</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
@@ -135,13 +144,13 @@
               generalization from the model or the diagram, leading to
               potentially very confusing diagrams. It is usually far easier
               to remove generalizations from the editing
-              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available
-             where there are two or more specializations listed, and the
-             specialization selected is not at the top. It is moved one up
-             the list.</p></li><li><p><tt>Move Down</tt>. Only available
-             where there are two or more specializations listed, and the
-             specialization selected is not at the bottom. It is moved one
-             down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Extends</tt></span></dt><dd><p>Text box. Lists any class that is extended by this
+              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+             there are two or more specializations listed, and the
+             specialization selected is not at the top. It is moved up
+             one.</p></li><li><p><tt>Move Down</tt>. Only available where
+             there are two or more specializations listed, and the
+             specialization selected is not at the bottom. It is moved down
+             one.</p></li></ul></div></dd><dt><span class="term"><tt>Extends</tt></span></dt><dd><p>Text box. Lists any class that is extended by this
             use case.</p><p>Where an extends relationship has been created (see below),
             button&nbsp;1 click will navigate to that relationship. Button&nbsp;2 gives
             a pop up menu with five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Where an extends
@@ -156,10 +165,10 @@
               model.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
              there are two or more extend relationships listed (not
              recommended), and the extend relationship selected is not at the
-             top. It is moved one up the list.</p></li><li><p><tt>Move Down</tt>. Only available where
+             top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
              there are two or more extend relationships listed (not
              recommended), and the extend relationship selected is not at the
-             bottom. It is moved one down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Includes</tt></span></dt><dd><p>Text box. Lists any use case that this use case
+             bottom. It is moved down one.</p></li></ul></div></dd><dt><span class="term"><tt>Includes</tt></span></dt><dd><p>Text box. Lists any use case that this use case
             includes.</p><p>Where an include relationship has been created (see below),
             button&nbsp;1 click will navigate to that relationship. Button&nbsp;2 gives
             a pop up menu with five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Where an include
@@ -172,11 +181,11 @@
               relationship, but does not delete the include relationship from
               the model.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
               there are two or more include relationships listed, and the
-              include relationship selected is not at the top. It is moved one
-              up the list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              include relationship selected is not at the top. It is moved up
+              one.</p></li><li><p><tt>Move Down</tt>. Only available where
               there are two or more include relationships listed, and the
               include relationship selected is not at the bottom. It is moved
-              one down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Extension Points</tt></span></dt><dd><p>Text box. If this use case is, or can be extended,
+              down one.</p></li></ul></div></dd><dt><span class="term"><tt>Extension Points</tt></span></dt><dd><p>Text box. If this use case is, or can be extended,
             this field lists the extension points for the use case.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Extension points are listed by their location point
             rather than their name.</p></td></tr></table></div><p>Where an extension point has been created (see below),
             button&nbsp;1 click will navigate to that relationship. Button&nbsp;2 gives
@@ -188,11 +197,11 @@
               does not delete the extension point from the
               model.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
               there are two or more extension points listed, and the extension
-              point selected is not at the top. It is moved one up the
-              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              point selected is not at the top. It is moved up
+              one.</p></li><li><p><tt>Move Down</tt>. Only available where
               there are two or more extension points listed, and the extension
-              point selected is not at the bottom. It is moved one down the
-              list.</p></li></ul></div></dd><dt><span class="term"><tt>Associations</tt></span></dt><dd><p>Text area. Lists any associations connected to the
+              point selected is not at the bottom. It is moved down
+              one.</p></li></ul></div></dd><dt><span class="term"><tt>Associations</tt></span></dt><dd><p>Text area. Lists any associations connected to the
             use case. Button&nbsp;1 click on an association will navigate
             to that association. Button&nbsp;2 click gives a pop up menu with
             five options.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
@@ -207,21 +216,17 @@
               association from the model or the diagram, leading to
               potentially very confusing diagrams. It is usually far easier
               to remove associations from the editing
-              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available
-             where there are two or more associations listed, and the
-             association selected is not at the top. It is moved one up the
-             list.</p></li><li><p><tt>Move Down</tt>. Only available
-             where there are two or more associations listed, and the
-             association selected is not at the bottom. It is moved one
-             down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Operations</tt></span></dt><dd><p>Text area. Listing the operations that are available
+              pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
+             there are two or more associations listed, and the association
+             selected is not at the top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
+             there are two or more associations listed, and the association
+             selected is not at the bottom. It is moved down
+             one.</p></li></ul></div></dd><dt><span class="term"><tt>Operations</tt></span></dt><dd><p>Text area. Listing the operations that are available
             on this use case. As a sub-class of the UML classifier
             metaclass, a use case has many of the properties of a
-            class (see <a href="ch16s05.html" title="16.5. Class">Section 16.5</a>).</p><p>In some OOA&amp;D processes it might be useful to treat use
-            cases as classes as well, and give them operations and
-            attributes. This is of very limited in ArgoUML, since it is
-            not possible to take a use case and add it to a class diagram,
-            so all class relationships must be shown with the notation of a
-            use case diagram.</p><p>Should you wish to add operations to a use case,
+            class (see <a href="ch16s05.html" title="16.5. Class">Section 16.5</a>).</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Some OOA&amp;D processes make use of operations and
+            attributes in requirements definition. The process described in the
+            tutorial section of this user manual does not do so.</p></td></tr></table></div><p>Should you wish to add operations to a use case,
             button&nbsp;1 click allows you to navigate to them and
             button&nbsp;2 click gives a pop up menu with options to
             <tt>Open</tt>, <tt>Add</tt>,
@@ -230,15 +235,12 @@
             for examples of how these operations are used).</p></dd><dt><span class="term"><tt>Attributes</tt></span></dt><dd><p>Text area. Listing the attributes that are available
             on this use case. As a sub-class of the UML classifier
             metaclass, a use case has many of the properties of a
-            class (see <a href="ch16s05.html" title="16.5. Class">Section 16.5</a>).</p><p>In some OOA&amp;D processes it might be useful to treat use
-            cases as classes as well, and give them operations and
-            attributes. This is of very limited in ArgoUML, since it is
-            not possible to take a use case and add it to a class diagram,
-            so all class relationships must be shown with the notation of a
-            use case diagram.</p><p>Should you wish to add attributes to a use case,
+            class (see <a href="ch16s05.html" title="16.5. Class">Section 16.5</a>).</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Some OOA&amp;D processes make use of operations and
+            attributes in requirements definition. The process described in the
+            tutorial section of this user manual does not do so.</p></td></tr></table></div><p>Should you wish to add attributes to a use case,
             button&nbsp;1 click allows you to navigate to them and
             button&nbsp;2 click gives a pop up menu with options to
             <tt>Open</tt>, <tt>Add</tt>,
             <tt>Delete</tt>, <tt>Move&nbsp;Up</tt> and
             <tt>Move&nbsp;Down</tt> (see <a href="ch15s03.html#ref.use_case_generalization">Generalizations</a>
-            for examples of how these operations are used).</p></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch15s02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch15.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch15s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">15.2. Actor&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;15.4. Association</td></tr></table></div></body></html>
+            for examples of how these operations are used).</p></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch15s02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch15.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch15s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">15.2. Actor&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;15.4. Extension Point</td></tr></table></div></body></html>

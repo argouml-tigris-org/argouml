@@ -20,7 +20,7 @@
       package), as well as the properties tab for datatype..</p><p>You can navigate to existing property types via the
       <tt>NavClass</tt> button on any property sheet that has a Type
       drop-down (for example attribute or parameter).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>UML&nbsp;1.3 allows user defined datatypes to be placed on
-      class diagrams. This is not permitted in ArgoUML.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e11541"></a>14.3.1. Datatype Details Tabs</h3></div></div><p>The details tabs that are active for datatypes are as
+      class diagrams. This is not permitted in ArgoUML.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e12619"></a>14.3.1. Datatype Details Tabs</h3></div></div><p>The details tabs that are active for datatypes are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch14s03.html#s2.ref.datatype_property_toolbar" title="14.3.2. Datatype Property Toolbar">Section 14.3.2</a> and <a href="ch14s03.html#s2.ref.datatype_property_fields" title="14.3.3. Property Fields For Datatype">Section 14.3.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab, but with no effect. In a future
             version of ArgoUML the <tt>Attributes</tt> and
@@ -48,7 +48,7 @@
                 <tt>true</tt>, meaning the class is
                 redundant&#8212;it can be formally derived from other
                 elements, or <tt>false</tt> meaning it
-                cannot.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Whilst formally available, a derived datatype
+                cannot.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>While formally available, a derived datatype
                 does not have an obvious value, and so datatypes should
                 always be marked with
                 <tt>derived=false</tt>.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt>Element</tt> metaclass from
@@ -67,7 +67,7 @@
             and there is no guarantee where (if anywhere) this button will
             take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/datatype.gif" align="center"></span> <tt>New
             datatype</tt></span></dt><dd><p>This creates a new datatype (see <a href="ch16s05.html" title="16.5. Class">Section 16.5</a>) within the same package as
-              the current datatype.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Whilst it can make sense to create datatypes this way,
+              the current datatype.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>While it can make sense to create datatypes this way,
             it can be clearer to create them within the package or model
             where you want them.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/enumeration_literal.gif" align="center"></span> <tt>Add enumeration
             literal</tt></span></dt><dd><p>This creates a new enumeration literal within the
@@ -87,10 +87,10 @@
             with the UML standard stereotypes for classifier
             (<tt>metaclass</tt>, <tt>powertype</tt>,
             <tt>process</tt>, <tt>thread</tt> and
-            <tt>utility</tt>). ArgoUML also provides the
-            additional stereotypes, <tt>machine</tt>,
-            <tt>organization</tt> and <tt>person</tt>
-            as well as the abstraction stereotype
+            <tt>utility</tt>). ArgoUML also provides the additional
+            stereotypes, <tt>machine</tt>,
+            <tt>organization</tt>, <tt>person</tt> and
+            <tt>singleton</tt> as well as the abstraction stereotype
             <tt>realize</tt>.</p><p>Most important of all, ArgoUML provides the stereotype
             <tt>enumeration</tt> for use with user defined
             enumeration data types.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p><tt>enumeration</tt> should always be used
@@ -99,7 +99,7 @@
             stereotype user defined types, you should consider creating
             your own stereotype derived from
             enumeration.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <a href="ch14s04.html" title="14.4. Stereotypes">Section 14.4</a>).</p></dd><dt><span class="term"><tt>Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the
             datatype. This is the package hierarchy.</p><p>Button&nbsp;1 click on the entry will take you to the package
             defining this namespace (or the model for the top level
@@ -137,11 +137,11 @@
               to remove generalizations from the editing
               pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
               there are two or more generalizations listed, and the
-              generalization selected is not at the top. It is moved one up the
-              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              generalization selected is not at the top. It is moved up
+              one.</p></li><li><p><tt>Move Down</tt>. Only available where
               there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved one
-              down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Specializations</tt></span></dt><dd><p>Text box. Lists any specialized datatype (i.e. for
+              generalization selected is not at the bottom. It is moved down
+              one.</p></li></ul></div></dd><dt><span class="term"><tt>Specializations</tt></span></dt><dd><p>Text box. Lists any specialized datatype (i.e. for
             which this datatype is a generalization.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is not clear that specializing datatypes makes much
             sense.</p></td></tr></table></div><p>button&nbsp;1 click navigates to the generalization and opens
             its property tab.</p><p>Button&nbsp;2 click yields a drop down menu with five
@@ -158,11 +158,11 @@
               to remove generalizations from the editing
               pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
               there are two or more specializations listed, and the
-              specialization selected is not at the top. It is moved one up the
-              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              specialization selected is not at the top. It is moved up
+              one.</p></li><li><p><tt>Move Down</tt>. Only available where
               there are two or more specializations listed, and the
-              specialization selected is not at the bottom. It is moved one
-              down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Implements</tt></span></dt><dd><p>Text box. Lists any abstract classes or interfaces
+              specialization selected is not at the bottom. It is moved down
+              one.</p></li></ul></div></dd><dt><span class="term"><tt>Implements</tt></span></dt><dd><p>Text box. Lists any abstract classes or interfaces
             realized by this datatype. By default shows the entry
             <tt>none</tt>.</p><p>Button&nbsp;1 click takes you to any entry (but see the warning
             below), button&nbsp;2 gives a pop up menu with five entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Where an abstraction
@@ -170,18 +170,17 @@
               below).</p></li><li><p><tt>Add</tt>. Add a new abstraction
               dependency.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not navigate to the new abstraction,
               and this field shows the name [empty], whatever name you
-              choose to give the abstraction.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Whilst adding abstractions is possible, only the
+              choose to give the abstraction.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>While adding abstractions is possible, only the
               supplier end is created, and there is no way to supply the
               client end. The value of such abstractions is therefore
               minimal.</p></td></tr></table></div></li><li><p><tt>Delete</tt>. Where an abstraction
               has been added this removes it completely from the
-              model.</p></li><li><p><tt>Move Up</tt>. Only available
-              where there are two or more abstractions, and the abstraction
-              selected is not at the top. It is moved one up the
-              list.</p></li><li><p><tt>Move Down</tt>. Only available
-              where there are two or more abstractions listed, and the
-              abstraction selected is not at the bottom. It is moved
-              one down the list.</p></li></ul></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>In principle a datatype could realize some
+              model.</p></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more abstractions, and the abstraction selected
+              is not at the top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more abstractions listed, and the abstraction
+              selected is not at the bottom. It is moved down
+              one.</p></li></ul></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>In principle a datatype could realize some
             other artifact, but it would be unusual. Best
             avoided.</p></td></tr></table></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>Button&nbsp;1 click on the default entry navigates to
             the most recently selected to-do item in the to-do pane. This
@@ -191,13 +190,12 @@
             entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected operation.</p></li><li><p><tt>Add</tt>. Add a new
               operation and navigate to it.</p></li><li><p><tt>Delete</tt>. Removes the selected
-              operation from the model.</p></li><li><p><tt>Move Up</tt>. Only available
-              where there are two or more operations, and the operation
-              selected is not at the top. It is moved one up the
-              list.</p></li><li><p><tt>Move Down</tt>. Only available
-              where there are two or more operations listed, and the
-              operation selected is not at the bottom. It is moved
-              one down the list.</p></li></ul></div><p>See <a href="ch16s07.html" title="16.7. Operation">Section 16.7</a> for details of
+              operation from the model.</p></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more operations, and the operation selected is
+              not at the top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more operations listed, and the operation
+              selected is not at the bottom. It is moved down
+              one.</p></li></ul></div><p>See <a href="ch16s07.html" title="16.7. Operation">Section 16.7</a> for details of
             operations.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML treats all operations as equivalent. Any
             operations created here will use the same mechanism as
             operations for classes. Remember that operations on datatypes
@@ -209,13 +207,11 @@
             entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
               selected literal.</p></li><li><p><tt>Add</tt>. Add a new
               literal and navigate to it.</p></li><li><p><tt>Delete</tt>. Removes the selected
-              literal from the model.</p></li><li><p><tt>Move Up</tt>. Only available
-              where there are two or more literals, and the literal
-              selected is not at the top. It is moved one up the
-              list.</p></li><li><p><tt>Move Down</tt>. Only available
-              where there are two or more literals listed, and the
-              literal selected is not at the bottom. It is moved
-              one down the list.</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not actually have a separate
+              literal from the model.</p></li><li><p><tt>Move Up</tt>. Only available where
+              there are two or more literals, and the literal selected is not
+              at the top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
+              there are two or more literals listed, and the literal selected
+              is not at the bottom. It is moved down one.</p></li></ul></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not actually have a separate
             concept of a literal. The navigations listed above will all
             take you to the property sheet for an attribute of a class (see
             <a href="ch16s06.html" title="16.6. Attribute">Section 16.6</a>). When defining a literal,

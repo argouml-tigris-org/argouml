@@ -1,11 +1,11 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
    <title>16.8. Parameter</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch16.html" title="Chapter 16. ArgoUML Class Diagram Artifact Reference"><link rel="previous" href="ch16s07.html" title="16.7. Operation"><link rel="next" href="ch16s09.html" title="16.9. Signal"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">16.8. Parameter</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch16s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 16. ArgoUML Class Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch16s09.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="s1.ref.parameter"></a>16.8. Parameter</h2></div></div><p>A parameter is a variable that can be passed. In the UML metamodel it
-      is a sub-class of <tt>ModelElement</tt>.</p><p>A parameter is represented on within the operation declaration in the
-      operation compartment of a class.</p><blockquote class="blockquote"><p><span class="emphasis"><i>name</i></span> <tt>:</tt>
+      is a sub-class of <tt>ModelElement</tt>.</p><p>A parameter is represented within the operation declaration in the
+      operation compartment of a class as follows.</p><blockquote class="blockquote"><p><span class="emphasis"><i>name</i></span> <tt>:</tt>
       <span class="emphasis"><i>type</i></span></p></blockquote><p><span class="emphasis"><i>name</i></span> is the name of the parameter.</p><p><span class="emphasis"><i>type</i></span> is the type (UML datatype, class or
       interface) of the parameter.</p><p>The exception is any parameter representing a return value, whose
-      type only is shown at the end of the operation declaration.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e19623"></a>16.8.1. Parameter Details Tabs</h3></div></div><p>The details tabs that are active for parameters are as
+      type only is shown at the end of the operation declaration.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e19782"></a>16.8.1. Parameter Details Tabs</h3></div></div><p>The details tabs that are active for parameters are as
         follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch16s08.html#s2.ref.parameter_property_toolbar" title="16.8.2. Parameter Property Toolbar">Section 16.8.2</a> and <a href="ch16s08.html#s2.ref.parameter_property_fields" title="16.8.3. Property Fields For Parameter">Section 16.8.3</a>
             below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab, but relating to the owning class,
             rather than the parameter. The tick boxes,
@@ -37,8 +37,6 @@
             back</tt></span></dt><dd><p>Navigate back to the previous
             artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
             and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
-            and there is no guarantee where (if anywhere) this button will
             take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_forward.gif" align="center"></span> <tt>Go
             forward</tt></span></dt><dd><p>Navigate forward to the next
             artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
@@ -69,7 +67,7 @@
             an error, since this stereotype properly belongs to the
             <tt>Abstraction</tt>
             metaclass.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <a href="ch16s04.html" title="16.4. Stereotype">Section 16.4</a>).</p></dd><dt><span class="term"><tt>Owner</tt></span></dt><dd><p>Text box. Records the operation which contains this
             parameter.</p><p>Button&nbsp;1 click on the entry will navigate to the
             operation. Button&nbsp;2 click provides a pop up menu with a single
@@ -84,7 +82,7 @@
             <tt>int</tt> as the type the first time a parameter
             is created, and thereafter the type of the most recently
             created parameter.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Type</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_type.gif" align="center"></span> icon. This will
-            navigate you to the property panel for the currently selected
+            navigate to the property panel for the currently selected
             type. (see <a href="ch16s05.html" title="16.5. Class">Section 16.5</a>, <a href="ch16s03.html" title="16.3. Datatype">Section 16.3</a> and <a href="ch16s14.html" title="16.14. Interface">Section 16.14</a>).</p></dd><dt><span class="term"><tt>Initial Value</tt></span></dt><dd><p>Text box with drop down. This allows you to set an
             initial value for the parameter if desired (this is
             optional). The drop down menu provides access to the common

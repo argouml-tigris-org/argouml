@@ -1,8 +1,8 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
    <title>14.2. The Model</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch14.html" title="Chapter 14. ArgoUML Top Level Artifact Reference"><link rel="previous" href="ch14.html" title="Chapter 14. ArgoUML Top Level Artifact Reference"><link rel="next" href="ch14s03.html" title="14.3. Datatype"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">14.2. The Model</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch14.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 14. ArgoUML Top Level Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch14s03.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="s1.ref.model"></a>14.2. The Model</h2></div></div><p>The model is the top level artifact within ArgoUML. In the UML
-      meta-model it is a sub-class of package. In many respects within ArgoUML
-      it behaves similarly to a package (see <a href="ch16s02.html" title="16.2. Package">Section 16.2</a>).</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML is restricted to one model within the
+      meta-model it is a sub-class of package. In many respects within
+      ArgoUML it behaves similarly to a package (see <a href="ch16s02.html" title="16.2. Package">Section 16.2</a>).</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML is restricted to one model within the
       tool.</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>In principle you can add a model to a class diagram using
       the context sensitive (button&nbsp;2) pop up menu <tt>Add To
       Diagram</tt>from the navigation pane. However this is very demanding
@@ -13,7 +13,7 @@
       initially visible from the model property pane as owned
       packages. However if you use the data type navigator from a suitable
       pane, you can navigate up to the model, and thereafter that data type's
-      sub-packages will appear.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e10775"></a>14.2.1. Model Details Tabs</h3></div></div><p>The details tabs that are active for the model are as
+      sub-packages will appear.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e11853"></a>14.2.1. Model Details Tabs</h3></div></div><p>The details tabs that are active for the model are as
         follows.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The <tt>Style</tt> tab is grayed out, since the
         model typically has no representation on a diagram (see the caution
         above).</p></td></tr></table></div><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch14s02.html#s2.ref.model_property_toolbar" title="14.2.2. Model Property Toolbar">Section 14.2.2</a> and <a href="ch14s02.html#s2.ref.model_property_fields" title="14.2.3. Property Fields For The Model">Section 14.2.3</a>
@@ -47,12 +47,12 @@
             take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/class.gif" align="center"></span> <tt>Add
             class</tt></span></dt><dd><p>This creates a new class (see <a href="ch16s05.html" title="16.5. Class">Section 16.5</a>) within the model (which
               appears on no diagram), navigating immediately to the
-              properties tab for that class.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Whilst it can make sense to create classes this way,
+              properties tab for that class.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>While it can make sense to create classes this way,
             it is usually a lot clearer to  create them within diagrams
             where you want them.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/interface.gif" align="center"></span> <tt>Add
             interface</tt></span></dt><dd><p>This creates a new interface (see <a href="ch16s14.html" title="16.14. Interface">Section 16.14</a>) within the model (which
               appears on no diagram), navigating immediately to the
-              properties tab for that interface.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Whilst it can make sense to create interfaces this
+              properties tab for that interface.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>While it can make sense to create interfaces this
             way, it is usually a lot clearer to create them within diagrams
             where you want them.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/datatype.gif" align="center"></span> <tt>Add
             datatype</tt></span></dt><dd><p>This creates a new data type (see <a href="ch14s03.html" title="14.3. Datatype">Section 14.3</a>) within the model (which appears
@@ -63,22 +63,22 @@
             stereotype.</p></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/actor.gif" align="center"></span> <tt>Add
             actor</tt></span></dt><dd><p>This creates a new actor (see <a href="ch15s02.html" title="15.2. Actor">Section 15.2</a>) within the model (which appears
             on no diagram), navigating immediately to the properties tab
-            for that actor.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Whilst it can make sense to create actors this
+            for that actor.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>While it can make sense to create actors this
             way, it is usually a lot clearer to create them within diagrams
             where you want them.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/use_case.gif" align="center"></span> <tt>Add use
             case</tt></span></dt><dd><p>This creates a new use case (see <a href="ch15s03.html" title="15.3. Use Case">Section 15.3</a>) within the model (which appears
             on no diagram), navigating immediately to the properties tab
-            for that use case.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Whilst it can make sense to create use cases this
+            for that use case.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>While it can make sense to create use cases this
             way, it is usually a lot clearer to create them within diagrams
             where you want them.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/package.gif" align="center"></span> <tt>Add
             subpackage</tt></span></dt><dd><p>This creates a new sub-package (see <a href="ch16s02.html" title="16.2. Package">Section 16.2</a>) within the model (which appears
             on no diagram), navigating immediately to the properties tab
-            for that package.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Whilst it can make sense to create sub-packages of the
+            for that package.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>While it can make sense to create sub-packages of the
             model this way, it is usually a lot clearer to create them
             within diagrams where you want them.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/generalization.gif" align="center"></span> <tt>Add
-            generalization</tt></span></dt><dd><p>This creates a new generalization (see <a href="ch15s06.html" title="15.6. Generalization">Section 15.6</a> and <a href="ch16s13.html" title="16.13. Generalization">Section 16.13</a>) within the model
+            generalization</tt></span></dt><dd><p>This creates a new generalization (see <a href="ch15s08.html" title="15.8. Generalization">Section 15.8</a> and <a href="ch16s13.html" title="16.13. Generalization">Section 16.13</a>) within the model
               (which appears on no diagram), navigating immediately to the
-              properties tab for that generalization.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Whilst it can make sense to create generalizations
+              properties tab for that generalization.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>While it can make sense to create generalizations
             this way, it is usually a lot clearer to create them within
             diagrams where you want them.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/realization.gif" align="center"></span> <tt>Add
             realization</tt></span></dt><dd><p>This should create a new realization (i.e. an
@@ -125,7 +125,7 @@
             metaclass.</p></td></tr></table></div><p>Stereotyping models is a useful thing, although it is of
             limited value in ArgoUML where you have only a single
             model.</p></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <a href="ch14s04.html" title="14.4. Stereotypes">Section 14.4</a>).</p></dd><dt><span class="term"><tt>Namespace</tt></span></dt><dd><p>Text box. Records the namespace for the model. This
             is the package hierarchy. However since the model is at the top
             of the hierarchy in ArgoUML, this box is always
@@ -162,11 +162,11 @@
               to remove generalizations from the editing
               pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
               there are two or more specializations listed, and the
-              specialization selected is not at the top. It is moved one up the
-              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              specialization selected is not at the top. It is moved up
+              one.</p></li><li><p><tt>Move Down</tt>. Only available where
               there are two or more specializations listed, and the
-              specialization selected is not at the bottom. It is moved one
-              down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Generalizations</tt></span></dt><dd><p>Text area. Lists any model that
+              specialization selected is not at the bottom. It is moved down
+              one.</p></li></ul></div></dd><dt><span class="term"><tt>Generalizations</tt></span></dt><dd><p>Text area. Lists any model that
             <span class="emphasis"><i>generalizes</i></span> this model.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Since there is only one model in ArgoUML there is no
             sensible specialization of generalization that could be
             created.</p></td></tr></table></div><p>Button&nbsp;1 click navigates to the generalization and opens
@@ -185,11 +185,11 @@
               to remove generalizations from the editing
               pane.</p></td></tr></table></div></li><li><p><tt>Move Up</tt>. Only available where
               there are two or more generalizations listed, and the
-              generalization selected is not at the top. It is moved one up the
-              list.</p></li><li><p><tt>Move Down</tt>. Only available where
+              generalization selected is not at the top. It is moved up
+              one.</p></li><li><p><tt>Move Down</tt>. Only available where
               there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved one
-              down the list.</p></li></ul></div></dd><dt><span class="term"><tt>Implements</tt></span></dt><dd><p>Text area. Lists any models for which this model is
+              generalization selected is not at the bottom. It is moved down
+              one.</p></li></ul></div></dd><dt><span class="term"><tt>Implements</tt></span></dt><dd><p>Text area. Lists any models for which this model is
             the realization. Of little value within ArgoUML, since
             multiple models are not permitted.</p><p>It is possible to add realizations from this menu, although
             since there is no way to add a model to the other end of the
@@ -215,7 +215,7 @@
               new artifact of the specified type within the model, and
               navigates to that item.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The item is placed under its relevant folder,
               irrespective of where the pop up menu is revealed. So
-              button&nbsp;2 lick on <tt>Actor</tt> folder and
+              button&nbsp;2 click on <tt>Actor</tt> folder and
               selection of <tt>Add/Package</tt> will place the
               new package under the <tt>Package</tt> folder, not
               the <tt>Actor</tt> folder.</p></td></tr></table></div><p>This is the only menu option actually available to the
