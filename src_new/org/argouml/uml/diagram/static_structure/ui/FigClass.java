@@ -69,8 +69,6 @@ public class FigClass extends FigNodeModelElement {
   protected FigRect _stereoLineBlinder;
   public MElementResidence resident = new MElementResidenceImpl();
 
-  protected Vector mAttrs = new Vector();
-  protected Vector mOpers = new Vector();
   protected CompartmentFigText highlightedFigText = null;
 
   ////////////////////////////////////////////////////////////////
@@ -151,8 +149,6 @@ public class FigClass extends FigNodeModelElement {
 	figClone._stereoLineBlinder = (FigRect) v.elementAt(3);
 	figClone._attrVec = (FigGroup) v.elementAt(4);
 	figClone._operVec = (FigGroup) v.elementAt(5);
-	figClone.mAttrs = mAttrs;
-	figClone.mOpers = mOpers;
 	return figClone;
   }
 
@@ -325,9 +321,8 @@ public class FigClass extends FigNodeModelElement {
 	Fig f = hitFig(r);
     if (f == _attrVec) {
 	  Vector v = _attrVec.getFigs();
-	  i = mAttrs.size() * (me.getY() - f.getY() - 3) / _attrVec.getHeight();
-	  if (i >= 0 && i < mAttrs.size() && i < v.size()-1) {
-	    ProjectBrowser.TheInstance.setTarget(mAttrs.elementAt(i));
+	  i = (v.size()-1) * (me.getY() - f.getY() - 3) / _attrVec.getHeight();
+	  if (i >= 0 && i < v.size()-1) {
 	    targetIsSet = true;
 	    f = (Fig)v.elementAt(i+1);
 		((CompartmentFigText)f).setHighlighted(true);
@@ -336,9 +331,8 @@ public class FigClass extends FigNodeModelElement {
 	}
     else if (f == _operVec) {
 	  Vector v = _operVec.getFigs();
-	  i = mOpers.size() * (me.getY() - f.getY() - 3) / _operVec.getHeight();
-	  if (i >= 0 && i < mOpers.size() && i < v.size()-1) {
-	    ProjectBrowser.TheInstance.setTarget(mOpers.elementAt(i));
+	  i = (v.size()-1) * (me.getY() - f.getY() - 3) / _operVec.getHeight();
+	  if (i >= 0 && i < v.size()-1) {
 	    targetIsSet = true;
 	    f = (Fig)v.elementAt(i+1);
 		((CompartmentFigText)f).setHighlighted(true);
@@ -356,7 +350,7 @@ public class FigClass extends FigNodeModelElement {
 
   public void keyPressed(KeyEvent ke) {
     int key = ke.getKeyCode();
-    if (key == KeyEvent.VK_TAB) {
+    if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
       CompartmentFigText ft = unhighlight();
       if (ft != null) {
         int i = _attrVec.getFigs().indexOf(ft);
@@ -366,7 +360,7 @@ public class FigClass extends FigNodeModelElement {
           fg = _operVec;
         }
         if (i != -1) {
-          if (ke.isShiftDown()) {
+          if (key == KeyEvent.VK_UP) {
             ft = (CompartmentFigText)getPreviousVisibleFeature(fg,ft,i);
           } else {
             ft = (CompartmentFigText)getNextVisibleFeature(fg,ft,i);
@@ -432,20 +426,16 @@ public class FigClass extends FigNodeModelElement {
     if (cls == null) return;
     int i = _attrVec.getFigs().indexOf(ft);
     if (i != -1) {
-	  if (i > 0 && i <= mAttrs.size()) {
-	    ParserDisplay.SINGLETON.parseAttributeFig(cls,(MAttribute)mAttrs.elementAt(i-1),ft.getText().trim());
-	    highlightedFigText = (CompartmentFigText)ft;
-	    highlightedFigText.setHighlighted(true);
-	  }
+	  highlightedFigText = (CompartmentFigText)ft;
+	  highlightedFigText.setHighlighted(true);
+	  ParserDisplay.SINGLETON.parseAttributeFig(cls,(MAttribute)highlightedFigText.getFeature(),highlightedFigText.getText().trim());
 	  return;
 	}
 	i = _operVec.getFigs().indexOf(ft);
 	if (i != -1) {
-	  if (i > 0 && i <= mOpers.size()) {
-	    ParserDisplay.SINGLETON.parseOperationFig(cls,(MOperation)mOpers.elementAt(i-1),ft.getText().trim());
-	    highlightedFigText = (CompartmentFigText)ft;
-	    highlightedFigText.setHighlighted(true);
-	  }
+	  highlightedFigText = (CompartmentFigText)ft;
+	  highlightedFigText.setHighlighted(true);
+	  ParserDisplay.SINGLETON.parseOperationFig(cls,(MOperation)highlightedFigText.getFeature(),highlightedFigText.getText().trim());
 	  return;
 	}
   }
@@ -546,7 +536,7 @@ public class FigClass extends FigNodeModelElement {
     if (strs != null) {
 	  Iterator iter = strs.iterator();
       Vector figs = _attrVec.getFigs();
-	  FigText attr;
+	  CompartmentFigText attr;
       while (iter.hasNext()) {
 	    MStructuralFeature sf = (MStructuralFeature) iter.next();
 	    if (figs.size() <= acounter) {
@@ -559,26 +549,18 @@ public class FigClass extends FigNodeModelElement {
           attr.setMultiLine(false);
 	      _attrVec.addFig(attr);
 		} else {
-		  attr = (FigText)figs.elementAt(acounter);
+		  attr = (CompartmentFigText)figs.elementAt(acounter);
 	    }
 	    attr.setText(Notation.generate(this,sf));
+	    attr.setFeature(sf);
 	    // underline, if static
 	    attr.setUnderline(MScopeKind.CLASSIFIER.equals(sf.getOwnerScope()));
-	    if (acounter <= mAttrs.size())
-	    	mAttrs.setElementAt(sf,acounter-1);
-	    else
-	    	mAttrs.addElement(sf);
 	    acounter++;
       }
       if (figs.size() > acounter) {
         //cleanup of unused attribute FigText's
         for (int i=figs.size()-1; i>=acounter; i--)
           _attrVec.removeFig((Fig)figs.elementAt(i));
-	  }
-      if (mAttrs.size() >= acounter) {
-        //cleanup of unused attributes
-        for (int i=mAttrs.size()-1; i>=acounter-1; i--)
-          mAttrs.removeElementAt(i);
 	  }
 	}
 	int ocounter = 1;
@@ -587,7 +569,7 @@ public class FigClass extends FigNodeModelElement {
       behs.removeAll(strs);
 	  Iterator iter = behs.iterator();
       Vector figs = _operVec.getFigs();
-	  FigText oper;
+	  CompartmentFigText oper;
       while (iter.hasNext()) {
 	    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
 	    if (figs.size() <= ocounter) {
@@ -600,30 +582,22 @@ public class FigClass extends FigNodeModelElement {
           oper.setMultiLine(false);
 	      _operVec.addFig(oper);
 		} else {
-		  oper = (FigText)figs.elementAt(ocounter);
+		  oper = (CompartmentFigText)figs.elementAt(ocounter);
 	    }
 	    oper.setText(Notation.generate(this,bf));
+	    oper.setFeature(bf);
 	    // underline, if static
 	    oper.setUnderline(MScopeKind.CLASSIFIER.equals(bf.getOwnerScope()));
 	    // italics, if abstract
 	    //oper.setItalic(((MOperation)bf).isAbstract()); // does not properly work (GEF bug?)
         if (((MOperation)bf).isAbstract()) oper.setFont(ITALIC_LABEL_FONT);
         else oper.setFont(LABEL_FONT);
-	    if (ocounter <= mOpers.size())
-	    	mOpers.setElementAt(bf,ocounter-1);
-	    else
-	    	mOpers.addElement(bf);
 	    ocounter++;
       }
       if (figs.size() > ocounter) {
         //cleanup of unused operation FigText's
         for (int i=figs.size()-1; i>=ocounter; i--)
           _operVec.removeFig((Fig)figs.elementAt(i));
-	  }
-      if (mOpers.size() >= ocounter) {
-        //cleanup of unused operations
-        for (int i=mOpers.size()-1; i>=ocounter-1; i--)
-          mOpers.removeElementAt(i);
 	  }
 	}
 
