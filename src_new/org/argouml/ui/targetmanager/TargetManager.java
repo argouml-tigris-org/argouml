@@ -27,6 +27,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.event.EventListenerList;
@@ -218,6 +219,17 @@ public final class TargetManager {
         private void clean() {
             _history = new ArrayList();
             _currentTarget = -1;
+        }
+        
+        private void removeHistoryTarget(Object o) {
+            Iterator it = _history.iterator();
+            while (it.hasNext()) {
+                WeakReference ref = (WeakReference)it.next();
+                Object historyObject = ref.get();
+                if (o == historyObject) {
+                    _history.remove(ref);
+                }
+            }
         }
 
     }
@@ -587,6 +599,10 @@ public final class TargetManager {
      */
     void cleanHistory() {
         _historyManager.clean();
+    }
+    
+    public void removeHistoryElement(Object o) {
+        
     }
     
     

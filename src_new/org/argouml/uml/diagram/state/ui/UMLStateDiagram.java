@@ -59,36 +59,54 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 public class UMLStateDiagram extends UMLDiagram {
-    protected static Category cat = Category.getInstance(UMLStateDiagram.class);
+    private Category _cat = Category.getInstance(UMLStateDiagram.class);
 
     /**
      * this diagram needs to be deleted when its statemachine is deleted.
      */
     MStateMachine theStateMachine;
-    
+
     ////////////////
     // actions for toolbar
 
-    protected static Action _actionState = new CmdCreateNode(MState.class, "State");
+    protected static Action _actionState =
+        new CmdCreateNode(MState.class, "State");
 
-    protected static Action _actionCompositeState = new CmdCreateNode(MCompositeState.class, "CompositeState");
+    protected static Action _actionCompositeState =
+        new CmdCreateNode(MCompositeState.class, "CompositeState");
 
     // start state, end state, forks, joins, etc.
-    protected static Action _actionStartPseudoState = new ActionCreatePseudostate(MPseudostateKind.INITIAL, "Initial");
+    protected static Action _actionStartPseudoState =
+        new ActionCreatePseudostate(MPseudostateKind.INITIAL, "Initial");
 
-    protected static Action _actionFinalPseudoState = new CmdCreateNode(MFinalState.class, "FinalState");
+    protected static Action _actionFinalPseudoState =
+        new CmdCreateNode(MFinalState.class, "FinalState");
 
-    protected static Action _actionBranchPseudoState = new ActionCreatePseudostate(MPseudostateKind.BRANCH, "Branch");
+    protected static Action _actionBranchPseudoState =
+        new ActionCreatePseudostate(MPseudostateKind.BRANCH, "Branch");
 
-    protected static Action _actionForkPseudoState = new ActionCreatePseudostate(MPseudostateKind.FORK, "Fork");
+    protected static Action _actionForkPseudoState =
+        new ActionCreatePseudostate(MPseudostateKind.FORK, "Fork");
 
-    protected static Action _actionJoinPseudoState = new ActionCreatePseudostate(MPseudostateKind.JOIN, "Join");
+    protected static Action _actionJoinPseudoState =
+        new ActionCreatePseudostate(MPseudostateKind.JOIN, "Join");
 
-    protected static Action _actionShallowHistoryPseudoState = new ActionCreatePseudostate(MPseudostateKind.SHALLOW_HISTORY, "ShallowHistory");
+    protected static Action _actionShallowHistoryPseudoState =
+        new ActionCreatePseudostate(
+            MPseudostateKind.SHALLOW_HISTORY,
+            "ShallowHistory");
 
-    protected static Action _actionDeepHistoryPseudoState = new ActionCreatePseudostate(MPseudostateKind.DEEP_HISTORY, "DeepHistory");
+    protected static Action _actionDeepHistoryPseudoState =
+        new ActionCreatePseudostate(
+            MPseudostateKind.DEEP_HISTORY,
+            "DeepHistory");
 
-    protected static Action _actionTransition = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MTransition.class, "Transition");
+    protected static Action _actionTransition =
+        new CmdSetMode(
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            MTransition.class,
+            "Transition");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -108,19 +126,19 @@ public class UMLStateDiagram extends UMLDiagram {
 
     public UMLStateDiagram(MNamespace m, MStateMachine sm) {
         this();
-        if (sm != null && m == null) {        
-        	MModelElement context = sm.getContext();
-        	if (context instanceof MClassifier) {
-        	    m = (MNamespace)context;
-        	} else
-        	if (context instanceof MBehavioralFeature) {
-        	    m = ((MBehavioralFeature)context).getOwner();
-        	}
+        if (sm != null && m == null) {
+            MModelElement context = sm.getContext();
+            if (context instanceof MClassifier) {
+                m = (MNamespace)context;
+            } else if (context instanceof MBehavioralFeature) {
+                m = ((MBehavioralFeature)context).getOwner();
+            }
         }
         if (m != null && m.getName() != null) {
             String name = null, diag_name = m.getName();
             Object[] args = { name };
-            int number = ((m.getBehaviors()) == null ? 0 : m.getBehaviors().size());
+            int number =
+                ((m.getBehaviors()) == null ? 0 : m.getBehaviors().size());
             name = diag_name + " " + (number++);
             Argo.log.info("UMLStateDiagram constructor: String name = " + name);
             try {
@@ -134,11 +152,11 @@ public class UMLStateDiagram extends UMLDiagram {
     }
 
     /**
-     * The owner of a statediagram is the namespace it's showing.
+     * The owner of a statediagram is the statediagram it's showing.
      */
     public MModelElement getOwner() {
-        StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();          
-        return gm.getNamespace();
+        StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
+        return gm.getMachine();
     }
 
     /**
@@ -148,21 +166,21 @@ public class UMLStateDiagram extends UMLDiagram {
      * @see org.tigris.gef.base.Diagram#initialize(Object)
      */
     public void initialize(Object o) {
-        if (!(o instanceof MStateMachine))
-            return;
-        MStateMachine sm = (MStateMachine) o;
-        MModelElement context = sm.getContext();
-        MNamespace contextNamespace = null;
-        if (context instanceof MClassifier) {
-            contextNamespace = (MClassifier)context;
+        if (o instanceof MStateMachine) {
+            MStateMachine sm = (MStateMachine)o;
+            MModelElement context = sm.getContext();
+            MNamespace contextNamespace = null;
+            if (context instanceof MClassifier) {
+                contextNamespace = (MClassifier)context;
+            } else if (context instanceof MBehavioralFeature) {
+                contextNamespace =
+                    ((MBehavioralFeature)context).getOwner().getNamespace();
+            }
+            if (contextNamespace != null) {
+                setup(contextNamespace, sm);
+            }
         } else
-        if (context instanceof MBehavioralFeature) {
-            contextNamespace = ((MBehavioralFeature)context).getOwner().getNamespace();
-        }
-        if (contextNamespace != null) {
-            setup(contextNamespace, sm);
-        } else
-        	throw new IllegalStateException("Cannot find context namespace while initializing statediagram");
+            throw new IllegalStateException("Cannot find context namespace while initializing statediagram");
     }
 
     /** method to perform a number of important initializations of a StateDiagram. 
@@ -180,12 +198,12 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     public void setup(MNamespace m, MStateMachine sm) {
         setNamespace(m);
-        
+
         // add the diagram as a listener to the statemachine so
         // that when the statemachine is removed() the diagram is deleted also.
         UmlModelEventPump.getPump().addModelEventListener(this, sm);
         theStateMachine = sm;
-        
+
         StateDiagramGraphModel gm = new StateDiagramGraphModel();
         gm.setNamespace(m);
         if (sm != null)
@@ -199,7 +217,7 @@ public class UMLStateDiagram extends UMLDiagram {
     }
 
     public MStateMachine getStateMachine() {
-        return ((StateDiagramGraphModel) getGraphModel()).getMachine();
+        return ((StateDiagramGraphModel)getGraphModel()).getMachine();
     }
 
     /**
@@ -207,7 +225,7 @@ public class UMLStateDiagram extends UMLDiagram {
      * @param m
      */
     public void setStateMachine(MStateMachine sm) {
-        ((StateDiagramGraphModel) getGraphModel()).setMachine(sm);
+        ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
     }
 
     /**
@@ -239,19 +257,24 @@ public class UMLStateDiagram extends UMLDiagram {
         String name = null;
         name = "State Diagram " + _StateDiagramSerial;
         _StateDiagramSerial++;
-        if (!ProjectManager.getManager().getCurrentProject().isValidDiagramName(name)) {
+        if (!ProjectManager
+            .getManager()
+            .getCurrentProject()
+            .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;
     }
-    
-  /**
-   * This diagram listens to NSUML events from its Statemachine;
-   * When the Statemachine is removed, we also want to delete this diagram too.
-   */
-  public void removed(MElementEvent e){
-      
-      UmlModelEventPump.getPump().removeModelEventListener(this,theStateMachine);
-      super.removed(e);
-  }
+
+    /**
+     * This diagram listens to NSUML events from its Statemachine;
+     * When the Statemachine is removed, we also want to delete this diagram too.
+     */
+    public void removed(MElementEvent e) {
+
+        UmlModelEventPump.getPump().removeModelEventListener(
+            this,
+            theStateMachine);
+        super.removed(e);
+    }
 } /* end class UMLStateDiagram */
