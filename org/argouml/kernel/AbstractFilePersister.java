@@ -1,25 +1,27 @@
-//Copyright (c) 1996-2004 The Regents of the University of California. All
-//Rights Reserved. Permission to use, copy, modify, and distribute this
-//software and its documentation without fee, and without a written
-//agreement is hereby granted, provided that the above copyright notice
-//and this paragraph appear in all copies.  This software program and
-//documentation are copyrighted by The Regents of the University of
-//California. The software program and documentation are supplied "AS
-//IS", without any accompanying services from The Regents. The Regents
-//does not warrant that the operation of the program will be
-//uninterrupted or error-free. The end-user understands that the program
-//was developed for research purposes and is advised not to rely
-//exclusively on the program for any reason.  IN NO EVENT SHALL THE
-//UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-//SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-//ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-//THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-//SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-//WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-//MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-//PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-//CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-//UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+// $Id$
+// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.kernel;
 
 import java.io.File;
@@ -27,11 +29,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Hashtable;
 
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 import org.tigris.gef.ocl.OCLExpander;
+import org.tigris.gef.ocl.TemplateReader;
 
 /**
  * To persist to and from zargo (zipped file) storage.
@@ -44,17 +48,21 @@ public abstract class AbstractFilePersister extends FileFilter
     private static final Logger LOG = 
         Logger.getLogger(AbstractFilePersister.class);
     
-    protected static final String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
-    protected static final String ARGO2_TEE = "/org/argouml/xml/dtd/argo2.tee";
+    private static final String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
+    private static final String ARGO2_TEE = "/org/argouml/xml/dtd/argo2.tee";
 
+    /**
+     * The PERSISTENCE_VERSION is increased every time a new version of 
+     * ArgoUML is released, which uses an forwards incompatible file format.
+     * This allows conversion of old persistence version files 
+     * to be converted to the current one.
+     */
     protected static final int PERSISTENCE_VERSION = 2;
     
     /**
      * This is used in the save process for PGML.
      */
-    protected static OCLExpander expander;
-    
-    protected String desc;
+    private static OCLExpander expander;
     
     /**
      * Copies one file src to another, raising file exceptions
@@ -114,6 +122,13 @@ public abstract class AbstractFilePersister extends FileFilter
      */
     public abstract String getExtension();
 
+    /**
+     * (Just the description, not the extension between "()".)
+     * 
+     * @return the description valid for this type of file
+     */
+    protected abstract String getDesc();
+    
     private static String getExtension(File f) {
         if (f == null) return null;
         return getExtension(f.getName());
@@ -131,6 +146,34 @@ public abstract class AbstractFilePersister extends FileFilter
      * @see javax.swing.filechooser.FileFilter#getDescription()
      */
     public String getDescription() {
-        return desc + " (*." + getExtension() + ")";
+        return getDesc() + " (*." + getExtension() + ")";
+    }
+    
+    /**
+     * @param t the hashtable made with the Templatereader
+     *         for a ArgoUML TEE file
+     * @return the expander
+     */
+    public OCLExpander getExpander(Hashtable t) {
+        if (expander == null) {
+            expander = new OCLExpander(t);
+        }
+        return expander;
+    }
+    
+    /**
+     * @return the hashtable made with the Templatereader
+     *         for the ArgoUML TEE file
+     */
+    protected Hashtable getArgoTeeTemplate() {
+        return TemplateReader.readFile(ARGO_TEE);
+    }
+
+    /**
+     * @return the hashtable made with the Templatereader
+     *         for the ArgoUML TEE_2 file
+     */
+    protected Hashtable getArgoTee2Template() {
+        return TemplateReader.readFile(ARGO2_TEE);
     }
 }

@@ -31,18 +31,10 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Hashtable;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
-import org.argouml.util.FileConstants;
 import org.tigris.gef.ocl.ExpansionException;
-import org.tigris.gef.ocl.OCLExpander;
-import org.tigris.gef.ocl.TemplateReader;
 
 /**
  * To persist to and from argo (xml file) storage.
@@ -56,10 +48,9 @@ public class ArgoFilePersister extends AbstractFilePersister {
     
     /**
      * The constructor.
-     * Sets the extensionname and the description. 
+     *  
      */
     public ArgoFilePersister() {
-        desc = "Argo project file";
     }
     
     /**
@@ -67,6 +58,13 @@ public class ArgoFilePersister extends AbstractFilePersister {
      */
     public String getExtension() {
         return "argo";
+    }
+    
+    /**
+     * @see org.argouml.kernel.AbstractFilePersister#getDesc()
+     */
+    protected String getDesc() {
+        return "Argo project file";
     }
     
     /**
@@ -154,13 +152,8 @@ public class ArgoFilePersister extends AbstractFilePersister {
     }
     
     private void expand(Writer writer, Object project) throws SaveException {
-        if (expander == null) {
-            Hashtable templates = TemplateReader.readFile(ARGO2_TEE);
-            expander = new OCLExpander(templates);
-        }
-        
         try {
-            expander.expand(writer, project, "", "");
+            getExpander(getArgoTee2Template()).expand(writer, project, "", "");
         } catch (ExpansionException e) {
             throw new SaveException(e);
         }
