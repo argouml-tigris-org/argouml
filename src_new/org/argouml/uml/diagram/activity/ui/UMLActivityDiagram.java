@@ -72,12 +72,6 @@ public class UMLActivityDiagram extends UMLDiagram {
     private Action actionSubactivityState;
 
     /**
-     * The serial number for new activity diagrams. 
-     * Used to create an unique number for the name of the diagram. 
-     */
-    private static int activityDiagramSerial = 1;
-
-    /**
      * Constructor
      */
     public UMLActivityDiagram() {
@@ -117,15 +111,16 @@ public class UMLActivityDiagram extends UMLDiagram {
             || !ModelFacade.isAActivityGraph(agraph))
             throw new IllegalArgumentException();
 
-        if (namespace != null && ModelFacade.getName(namespace) != null) {
-            String name =
-                ModelFacade.getName(namespace)
+        if (namespace != null && ModelFacade.getName(namespace) != null) 
+            if (ModelFacade.getName(namespace).trim() != "") {
+                String name =
+                    ModelFacade.getName(namespace)
                     + " activity "
                     + (ModelFacade.getBehaviors(namespace).size());
-            try {
-                setName(name);
-            } catch (PropertyVetoException pve) { }
-        }
+                try {
+                    setName(name);
+                } catch (PropertyVetoException pve) { }
+            }
         if (namespace != null)
             setup(namespace, agraph);
         else
@@ -246,10 +241,8 @@ public class UMLActivityDiagram extends UMLDiagram {
      *
      * @return String
      */
-    protected static String getNewDiagramName() {
-        String name = null;
-        name = "Activity Diagram " + activityDiagramSerial;
-        activityDiagramSerial++;
+    protected String getNewDiagramName() {
+        String name = "Activity Diagram " + getNextDiagramSerial();
         if (!ProjectManager.getManager().getCurrentProject()
                  .isValidDiagramName(name)) {
             name = getNewDiagramName();

@@ -84,7 +84,6 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
     ////////////////////////////////////////////////////////////////
     // contructors
-    private static int collaborationDiagramSerial = 1;
 
     /**
      * constructor
@@ -224,10 +223,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      * Creates a new diagramname.
      * @return String
      */
-    protected static String getNewDiagramName() {
-        String name = null;
-        name = "Collaboration Diagram " + collaborationDiagramSerial;
-        collaborationDiagramSerial++;
+    protected String getNewDiagramName() {
+        String name = "Collaboration Diagram " + getNextDiagramSerial();
         if (!ProjectManager.getManager().getCurrentProject()
 	        .isValidDiagramName(name)) {
             name = getNewDiagramName();
