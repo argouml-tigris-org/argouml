@@ -66,6 +66,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
     private int privateTextDepth = 0;
     private StringBuffer privateText = new StringBuffer();
+    private boolean attributesVisible;
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -191,6 +192,15 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      * @see org.tigris.gef.xml.pgml.PGMLParser#translateClassName(java.lang.String)
      */
     protected String translateClassName(String oldName) {
+        if ("org.tigris.gef.presentation.FigGroup".equals(oldName)
+                && _currentNode instanceof FigClass)
+            return "org.argouml.uml.diagram.ui.FigAttributesCompartment";
+        if ("org.tigris.gef.presentation.FigGroup".equals(oldName)
+                && _currentNode instanceof FigClass)
+            return "org.argouml.uml.diagram.ui.FigOperationsCompartment";
+        if ("org.tigris.gef.presentation.FigGroup".equals(oldName)
+                && _currentNode instanceof FigInterface)
+            return "org.argouml.uml.diagram.ui.FigOperationsCompartment";
         if ("org.argouml.uml.diagram.static_structure.ui.FigNote"
             .equals(oldName))
             return "org.argouml.uml.diagram.static_structure.ui.FigComment";
@@ -242,6 +252,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         if (descr != null) {
             descr = descr.trim();
         }
+        
         if (_elementState == NODE_STATE && elementName.equals("group") 
                 && _currentNode instanceof OperationsCompartmentContainer
                 && isOperationsXml(attrList)) {
@@ -262,21 +273,22 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             }
         } else {
             // The following is required only for backwards
-            // compatability to before fig compartments existed
+            // compatability to before fig compartments were
+            // introduced in version 0.17
             if (_elementState == NODE_STATE && elementName.equals("group") 
                     && _currentNode != null && attrList != null 
                     && (_currentNode instanceof FigClass  
                         || _currentNode instanceof FigInterface)) {
                 // compartment of class figure detected
-                if (isHiddenXml(descr)) {
+                attributesVisible = true;
+                if (isHiddenXml(descr, (FigNodeModelElement)_currentNode)) {
                     // the detected compartment need to be hidden
                     ((FigNodeModelElement) _currentNode)
                         .enableSizeChecking(false);
                     if (_currentNode != previousNode) {
                         // it's the first compartment of the class:
                         if (_currentNode instanceof FigClass) {
-                            ((FigClass) _currentNode)
-                                .setAttributesVisible(false);
+                            attributesVisible = false;
                         } else {
                             ((FigInterface) _currentNode)
                                 .setOperationsVisible(false);
@@ -306,10 +318,14 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 
                 _elementState = NODE_STATE;
                 _currentNode = previousNode;
-                if (isHiddenXml(descr) && previousNode instanceof FigClass) {
+                if (previousNode instanceof FigClass) {
+                    boolean operationsVisible = !isHiddenXml(descr, (FigNodeModelElement)previousNode);
             	    ((FigNodeModelElement) previousNode)
                         .enableSizeChecking(false);
-            	    ((FigClass) previousNode).setOperationsVisible(false);
+            	    ((FigClass) previousNode).
+                        setOperationsVisible(operationsVisible);
+                    ((FigClass) previousNode).
+                        setAttributesVisible(attributesVisible);
             	    ((FigNodeModelElement) previousNode)
             	        .enableSizeChecking(true);
                 }
@@ -355,6 +371,27 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         return text.endsWith("[0, 0, 0, 0]")
                || text.endsWith("[0,0,0,0]")
                || text.endsWith("[]");
+    }
+
+    /**
+     * The fig is denoted as being hidden in the XML if
+     * its description contains co-ordinates and size all
+     * of zero
+     * @param classNameBounds a string containing the class name of the Fig
+     *                        followed by the rectangle bounds.
+     * @return if the XML denotes a hidden Fig.
+     */
+    private boolean isHiddenXml(String classNameBounds, FigNodeModelElement node) {
+        if (classNameBounds.endsWith(" 0, 0]")
+               || classNameBounds.endsWith("0,0]")
+               || classNameBounds.endsWith("[]")) {
+            return true;
+        }
+        StringTokenizer st = new StringTokenizer(classNameBounds, ",;[] ");
+        st.nextToken();
+        st.nextToken();
+        int y = Integer.parseInt(st.nextToken());
+        return (y >= node.getY() + node.getHeight());
     }
 
     /**
@@ -615,8 +652,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             } 
             if (f instanceof FigNode || f instanceof FigEdge) {
                 _diagram.add(f);
-            }
-            else {
+            } else {
                 // nested group flag is a flag to repair 
                 // the ^*&(*^*& implementation of GEF's parser
                 nestedGroupFlag = true;
@@ -640,17 +676,5 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         setAttrs(f, attrList);
         return f;
     }
-    
-    
-//    /**
-//     * @return Returns the singleton instance.
-//     */
-//    public static PGMLParser getInstance() {
-//        return INSTANCE;
-//    }
- 
- 
-
-
 } /* end class PGMLParser */
 
