@@ -25,11 +25,9 @@
 package org.argouml.uml.ui;
 
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.JCheckBox;
 
 import org.argouml.model.uml.UmlModelEventPump;
-
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 

@@ -30,68 +30,55 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import java.awt.*;
-import java.util.*;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
-import javax.swing.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
+import org.argouml.application.api.Argo;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLExpressionBodyField;
+import org.argouml.uml.ui.UMLExpressionLanguageField;
+import org.argouml.uml.ui.UMLExpressionModel;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.util.ConfigLoader;
+import ru.novosoft.uml.behavior.state_machines.MGuard;
+import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 
+/**
+ * A property panel for Guards. Rewrote this class to comply to Bob Tarling's layout 
+ * mechanism and to include all valid properties as defined in the UML 1.3 spec.
+ * @since Dec 14, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ */
 public class PropPanelGuard extends PropPanelModelElement {
 
     ////////////////////////////////////////////////////////////////
     // contructors
     public PropPanelGuard() {
-        super("Guard", _guardIcon, 2);
+        super("Guard",_guardIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = MGuard.class;
-
-	addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(nameField,1,0,0);
-
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
+        
+        JList transitionList = new UMLLinkedList(this, new UMLGuardTransitionListModel(this));
+        addField(Argo.localize("UMLMenu", "label.transition"), new JScrollPane(transitionList));
+        
+        add(LabelledLayout.getSeperator());
+    
         UMLExpressionModel expressionModel = new UMLExpressionModel(this,MGuard.class,"expression",
 		    MBooleanExpression.class,"getExpression","setExpression");
-
-        addCaption(Argo.localize("UMLMenu", "label.expression"),2,0,0);
-        addField(new JScrollPane(new UMLExpressionBodyField(expressionModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),2,0,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.language"),3,0,0);
-        addField(new UMLExpressionLanguageField(expressionModel,true),3,0,0);
-
-        addCaption("Transition:",4,0,1);
-	UMLModelElementListModel transitionModel=new UMLReflectionListModel(this,"transition",false,"getTransition",null,null,null);
-	transitionModel.setUpperBound(1);
-        JList transitionList = new UMLList(transitionModel,true);
-	transitionList.setForeground(Color.blue);
-	transitionList.setVisibleRowCount(1);
-	transitionList.setFont(smallFont);
-        addLinkField(new JScrollPane(transitionList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),4,0,0);
+        addField(Argo.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+        addField(Argo.localize("UMLMenu", "label.language"), new UMLExpressionLanguageField(expressionModel,true));        	
 
 	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
 	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu" ,"button.go-back"),"navigateBackAction","isNavigateBackEnabled");
 	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-	//new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
+	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
 
   }
-
-    public MTransition getTransition() {
-        MTransition transition = null;
-        Object target = getTarget();
-        if(target instanceof MGuard) {
-            transition = ((MGuard) target).getTransition();
-        }
-        return transition;
-    }
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("Guard");
-    }
 
 } /* end class PropPanelState */
 

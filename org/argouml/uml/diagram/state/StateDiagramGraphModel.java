@@ -27,24 +27,26 @@
 // $Id$
 package org.argouml.uml.diagram.state;
 
-import org.apache.log4j.Category;
+import java.beans.PropertyChangeEvent;
+import java.beans.VetoableChangeListener;
+import java.util.Iterator;
+import java.util.Vector;
 
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.argouml.model.uml.UmlFactory;
+import org.apache.log4j.Category;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
-
-import java.util.*;
-import java.beans.*;
-
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.*;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MFinalState;
+import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-
-import org.tigris.gef.graph.*;
+import ru.novosoft.uml.model_management.MElementImport;
 
 /** This class defines a bridge between the UML meta-model
  *  representation of the design and the GraphModel interface used by
@@ -266,7 +268,7 @@ implements VetoableChangeListener {
     if (edgeClass == MTransition.class) {
     	MTransition tr = null;
     	MCompositeState comp = fromSV.getContainer();
-    	tr = StateMachinesFactory.getFactory().buildTransition(_machine, fromSV, toSV);
+    	tr = StateMachinesFactory.getFactory().buildTransition(fromSV, toSV);
       addEdge(tr);
       return tr;
     }

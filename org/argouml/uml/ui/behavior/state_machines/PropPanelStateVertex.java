@@ -40,7 +40,9 @@ import javax.swing.JScrollPane;
 import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -73,6 +75,37 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
     // contructors
     public PropPanelStateVertex(String name, int columns) {
 	this(name, null, columns);
+    }
+
+    /**
+     * Constructor for PropPanelStateVertex.
+     * @param name
+     * @param icon
+     * @param orientation
+     */
+    public PropPanelStateVertex(
+        String name,
+        ImageIcon icon,
+        Orientation orientation) {
+        super(name, icon, orientation);
+        JList incomingList = new UMLLinkedList(this, new UMLStateVertexIncomingListModel(this));
+        incomingScroll = new JScrollPane(incomingList);
+        JList outgoingList = new UMLLinkedList(this, new UMLStateVertexOutgoingListModel(this));
+        outgoingScroll = new JScrollPane(outgoingList);
+        
+        // TODO: add a combobox for the CompositeState that contains this StateVertex
+        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
+        new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+        new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+        new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
+        
+    }
+
+    /**
+     * Constructor for PropPanelStateVertex.
+     */
+    public PropPanelStateVertex() {
+        super();
     }
 
     public PropPanelStateVertex(String name,ImageIcon icon, int columns) {

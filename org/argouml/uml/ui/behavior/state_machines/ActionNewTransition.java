@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,46 +22,53 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.uml.ui.behavior.collaborations;
+package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 /**
- * Action to build a new action to some message.
- * @since Oct 3, 2002
+ * Action to create a new transition, either an internal transition or a transition
+ * between two states.
+ * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
- * @stereotype singleton
  */
-public class ActionNewAction extends AbstractActionNewModelElement {
-
-
+public class ActionNewTransition extends AbstractActionNewModelElement {
     
-    public final static ActionNewAction SINGLETON = new ActionNewAction();
+    /**
+     * Key used for storing the source of the transition. If this value is not set,
+     * the action assumes that an internal transition should be constructed.
+     */
+    public final static String SOURCE = "source";
     
-    protected ActionNewAction() {
+     /**
+     * Key used for storing the destination of the transition. If this value is not set,
+     * the action assumes that an internal transition should be constructed.
+     */
+    public final static String DESTINATION = "destination";
+    
+
+    public static ActionNewTransition SINGLETON = new ActionNewTransition();
+    
+    /**
+     * Constructor for ActionNewTransition.
+     */
+    protected ActionNewTransition() {
         super();
-    }    
+    }        
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        CommonBehaviorFactory.getFactory().buildAction((MMessage)getTarget());
-    }
-    
-    /**
-     * @see javax.swing.Action#isEnabled()
-     */
-    public boolean isEnabled() {
-        if (getTarget() != null) {
-            return ((MMessage)getTarget()).getAction() == null;
-        }
-        return false;
+        if (getValue(SOURCE) == null || getValue(DESTINATION) == null) {
+            StateMachinesFactory.getFactory().buildInternalTransition(getTarget());
+        } else {
+            StateMachinesFactory.getFactory().buildTransition(getValue(SOURCE), getValue(DESTINATION));
+        }            
     }
 
 }

@@ -74,8 +74,8 @@ public class ActionRemoveModelElement extends UMLChangeAction {
      * Sets the elementToDelete.
      * @param elementToDelete The elementToDelete to set
      */
-    public void setElementToDelete(MModelElement elementToDelete) {
-        _elementToDelete = elementToDelete;
+    public void setElementToDelete(Object elementToDelete) {
+        _elementToDelete = (MModelElement)elementToDelete;
     }
 
     /**

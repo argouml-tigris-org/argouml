@@ -30,22 +30,27 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.*;
-
+import org.argouml.swingext.Orientation;
+import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLModelElementListModel;
+import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.UMLReflectionListModel;
 import ru.novosoft.uml.MFactory;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
 
 public abstract class PropPanelState extends PropPanelStateVertex {
 
@@ -53,6 +58,7 @@ public abstract class PropPanelState extends PropPanelStateVertex {
     protected JScrollPane exitScroll;
     protected JScrollPane doScroll;
     protected JScrollPane internalTransitionsScroll;
+    protected JScrollPane deferrableEventsScroll;
     protected JList entryList;
     protected JList exitList;
     protected JList doList;
@@ -60,6 +66,40 @@ public abstract class PropPanelState extends PropPanelStateVertex {
 
     public PropPanelState(String name, int columns) {
 	this(name, null, columns);
+    }
+
+    /**
+     * Constructor for PropPanelState.
+     * @param name
+     * @param icon
+     * @param orientation
+     */
+    public PropPanelState(
+        String name,
+        ImageIcon icon,
+        Orientation orientation) {
+        super(name, icon, orientation);
+        
+        JList deferrableList = new UMLLinkedList(this, new UMLStateDeferrableEventListModel(this));
+        deferrableEventsScroll = new JScrollPane(deferrableList);
+        JList entryList = new UMLStateEntryList(this, new UMLStateEntryListModel(this));
+        entryList.setVisibleRowCount(1);
+        entryScroll = new JScrollPane(entryList);
+        JList exitList = new UMLStateExitList(this, new UMLStateExitListModel(this));
+        exitList.setVisibleRowCount(1);
+        exitScroll = new JScrollPane(exitList);
+        JList internalTransitionList = new UMLMutableLinkedList(this, new UMLStateInternalTransition(this), null, ActionNewTransition.SINGLETON);
+        internalTransitionsScroll = new JScrollPane(internalTransitionList);
+        JList doList = new UMLStateDoActivityList(this, new UMLStateDoActivityListModel(this));
+        doList.setVisibleRowCount(1);
+        doScroll = new JScrollPane(doList);
+    }
+
+    /**
+     * Constructor for PropPanelState.
+     */
+    public PropPanelState() {
+        super();
     }
 
     public PropPanelState(String name,ImageIcon icon, int columns) {

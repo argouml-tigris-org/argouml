@@ -28,21 +28,26 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.behavior.collaborations.*;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
-import org.argouml.application.api.*;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
+import org.argouml.application.api.Argo;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLMultiplicityComboBox;
+import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.util.ConfigLoader;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 public class PropPanelClassifierRole extends PropPanelClassifier {

@@ -57,7 +57,9 @@ public class ActionAddExtendExtensionPoint extends AbstractActionAddModelElement
      */
     protected Vector getChoices() {
         Vector ret = new Vector();
-        ret.addAll(((MExtend)getTarget()).getBase().getExtensionPoints());
+        if (getTarget() != null) {
+            ret.addAll(((MExtend)getTarget()).getBase().getExtensionPoints());
+        }
         return ret;
     }
 
