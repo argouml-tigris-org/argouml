@@ -496,7 +496,7 @@ Example:
 </para>
     </sect1>
 
-    <sect1>
+    <sect1 id="components_relationships">
       <title>Relationship of the components</title>
 
       <para>
