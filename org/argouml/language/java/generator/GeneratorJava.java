@@ -559,7 +559,11 @@ public class GeneratorJava
         if (cls.isLeaf()) {
             sb.append("final ");
         }
-
+        
+        // add additional modifiers
+        if (cls.getTaggedValue("src_modifiers") != null)
+            sb.append(" "+cls.getTaggedValue("src_modifiers")+" ");
+        
         // add classifier keyword and classifier name
         sb.append(sClassifierKeyword).append(" ").append(
             generateName(cls.getName()));
