@@ -1,4 +1,4 @@
-// $ANTLR 2.7.1: ../src_new/org/argouml/language/java/generator/java.g -> JavaTokenTypes.txt$
+// $ANTLR 2.7.2a2 (20020112-1): ../src_new/org/argouml/language/java/generator/java.g -> JavaTokenTypes.txt$
 Java    // output token vocab name
 BLOCK=4
 MODIFIERS=5

@@ -1,4 +1,4 @@
-// $ANTLR 2.7.1: "../src_new/org/argouml/uml/reveng/java/java.g" -> "JavaLexer.java"$
+// $ANTLR 2.7.2a2 (20020112-1): "../src_new/org/argouml/uml/reveng/java/java.g" -> "JavaLexer.java"$
 
 package org.argouml.uml.reveng.java;
 

@@ -241,14 +241,18 @@ Property files to be searched:
       <pathelement path="${JAVA_HOME}/lib/tools.jar" />
     </path>
 
+    <path id="antlr.runtime.classpath">
+      <pathelement location="${antlrall.jar.path}" />
+    </path>
+
     <path id="argo.compile.classpath">
       <pathelement location="${xerces.jar.path}" />
       <pathelement location="${nsuml.jar.path}" />
       <pathelement location="${ocl-argo.jar.path}" />
       <pathelement location="${gef.jar.path}" />
-      <pathelement location="${antlrall.jar.path}" />
       <pathelement location="${log4j.jar.path}" />
       <pathelement location="${jh.jar.path}" />
+      <path refid="antlr.runtime.classpath" />
     </path>
 
     <path id="argo.runtime.classpath">
@@ -438,15 +442,15 @@ ${Name} Build file
 
     <java fork="yes" classname="antlr.Tool" classpath="${classpath}">
           <arg line="-o ${argo.src.dir}/org/argouml/uml/reveng/java  ${argo.src.dir}/org/argouml/uml/reveng/java/java.g"/>
-      <classpath>
-        <pathelement location="${antlrall.jar.path}" />
-      </classpath>
+          <classpath>
+	          <path refid="antlr.runtime.classpath"/>
+          </classpath>
     </java>
     <java fork="yes" classname="antlr.Tool" classpath="${classpath}">
           <arg line="-o ${argo.src.dir}/org/argouml/language/java/generator  ${argo.src.dir}/org/argouml/language/java/generator/java.g"/>
-      <classpath>
-        <pathelement location="${antlrall.jar.path}" />
-      </classpath>
+          <classpath>
+	          <path refid="antlr.runtime.classpath"/>
+          </classpath>
     </java>
 
   </target>
