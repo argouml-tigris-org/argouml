@@ -41,18 +41,27 @@ public class OsUtil {
     private OsUtil() {
     }
 
+    /** check whether we deal with a Windows Operating System. */
     public static boolean isWin32() {
         return (System.getProperty("os.name").indexOf("Windows") != -1);
     }
+    
+    /** check whether we deal with a Macintosh. */
+    public static boolean isMac() {
+        return (System.getProperty("mrj.version") != null);
+    }
 
+    /** check whether we deal with a Sun JDK. */
     static boolean isSunJdk() {
         return (System.getProperty("java.vendor").equals("Sun Microsystems Inc."));
     }
 
+    /** check whether we deal with a JDK 1.3.x */
     static boolean isJdk131() {
         return (System.getProperty("java.version").startsWith("1.3.")); 
     }
 
+    /** return proper FileChooser */
     public static JFileChooser getFileChooser() {
         if (isWin32() && isSunJdk() && isJdk131()) {
 	    return new JFileChooser(new Win32FileSystemView());
@@ -61,7 +70,7 @@ public class OsUtil {
 	    return new JFileChooser();
 	}
     }
-
+    /** return proper FileChooser */
     public static JFileChooser getFileChooser(String directory) {
         if (isWin32() && isSunJdk() && isJdk131()) {
 	    return new JFileChooser(directory, new Win32FileSystemView());
