@@ -26,15 +26,19 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 
 /**
+ * The properties panel for a SendAction.
+ * 
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelSendAction extends PropPanelAction {
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelSendAction() {
-        super("SendAction", _callActionIcon);
+        super("SendAction", callActionIcon);
     }
 
 } 

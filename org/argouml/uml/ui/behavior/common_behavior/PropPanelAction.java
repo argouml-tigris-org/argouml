@@ -39,26 +39,40 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 /**
+ * An abstract representatation of the properties panel of an Action.
+ * 
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public abstract class PropPanelAction extends PropPanelModelElement {
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelAction() {
-        this("Action", _callActionIcon);
+        this("Action", callActionIcon);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param name the name of the properties panel
+     * @param icon the icon to be shown next to the name
+     */
     public PropPanelAction(String name, ImageIcon icon) {
         super(name, icon, 
               ConfigLoader.getTabPropsOrientation());
         initialize();
     }
 
+    /**
+     * The initialization of the panel with its fields and stuff.
+     */
     public void initialize() {
         
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
 
 //        UMLExpressionModel expressionModel =
 //            new UMLExpressionModel(
@@ -68,10 +82,14 @@ public abstract class PropPanelAction extends PropPanelModelElement {
 //                (Class) ModelFacade.ACTION_EXPRESSION,
 //                "getScript",
 //                "setScript");
-        UMLExpressionModel2 expressionModel = new UMLScriptExpressionModel(this,"script");
-        addField(Translator.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel, true)));
+        UMLExpressionModel2 expressionModel = 
+            new UMLScriptExpressionModel(this, "script");
+        addField(Translator.localize("UMLMenu", "label.expression"), 
+                new JScrollPane(
+                        new UMLExpressionBodyField(expressionModel, true)));
 
-        addField(Translator.localize("UMLMenu", "label.language"), new UMLExpressionLanguageField(expressionModel, true));
+        addField(Translator.localize("UMLMenu", "label.language"), 
+                new UMLExpressionLanguageField(expressionModel, true));
 
         buttonPanel.add(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));

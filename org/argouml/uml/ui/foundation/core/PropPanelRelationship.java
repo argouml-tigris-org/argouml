@@ -43,6 +43,12 @@ public class PropPanelRelationship extends PropPanelModelElement {
         super("Relationship", ConfigLoader.getTabPropsOrientation());
     }
     
+    /**
+     * The constructor.
+     * 
+     * @param name the name of the panel to be shown at the top
+     * @param orientation the orientation of the panel
+     */
     public PropPanelRelationship(String name, Orientation orientation) {
         super(name, orientation);
     }

@@ -150,36 +150,36 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     protected static ImageIcon signalIcon = lookupIcon("SignalSending");
 
-    protected static ImageIcon _stereotypeIcon = lookupIcon("Stereotype");
+    protected static ImageIcon stereotypeIcon = lookupIcon("Stereotype");
 
-    protected static ImageIcon _guardIcon = lookupIcon("Guard");
+    protected static ImageIcon guardIcon = lookupIcon("Guard");
 
-    protected static ImageIcon _transitionIcon = lookupIcon("Transition");
+    protected static ImageIcon transitionIcon = lookupIcon("Transition");
 
-    protected static ImageIcon _classifierRoleIcon =
+    protected static ImageIcon classifierRoleIcon =
 	lookupIcon("ClassifierRole");
 
-    protected static ImageIcon _associationRoleIcon =
+    protected static ImageIcon associationRoleIcon =
 	lookupIcon("AssociationRole");
 
-    protected static ImageIcon _callActionIcon = lookupIcon("CallAction");
+    protected static ImageIcon callActionIcon = lookupIcon("CallAction");
 
-    protected static ImageIcon _eventIcon = lookupIcon("Event");
+    protected static ImageIcon eventIcon = lookupIcon("Event");
 
-    protected static ImageIcon _interactionIcon = lookupIcon("Interaction");
+    protected static ImageIcon interactionIcon = lookupIcon("Interaction");
 
     // added next one so someone can change the icon independant of callaction
-    protected static ImageIcon _actionIcon = lookupIcon("CallAction");
+    protected static ImageIcon actionIcon = lookupIcon("CallAction");
 
-    protected static ImageIcon _receptionIcon = lookupIcon("Reception");
+    protected static ImageIcon receptionIcon = lookupIcon("Reception");
 
-    protected static ImageIcon _commentIcon = lookupIcon("Note");
+    protected static ImageIcon commentIcon = lookupIcon("Note");
 
-    protected static ImageIcon _messageIcon = lookupIcon("Message");
+    protected static ImageIcon messageIcon = lookupIcon("Message");
 
-    protected static ImageIcon _flowIcon = lookupIcon("Flow");
+    protected static ImageIcon flowIcon = lookupIcon("Flow");
 
-    protected static ImageIcon _stateMachineIcon = lookupIcon("StateMachine");
+    protected static ImageIcon stateMachineIcon = lookupIcon("StateMachine");
 
     private JScrollPane namespaceScroll;
 
@@ -187,7 +187,7 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     private JComboBox stereotypeComboBox;
 
-    private Box _stereotypeBox;
+    private Box stereotypeBox;
 
     private JScrollPane supplierDependencyScroll;
 
@@ -241,11 +241,24 @@ public abstract class PropPanelModelElement extends PropPanel {
     private static UMLModelElementTargetFlowListModel targetFlowListModel =
 	new UMLModelElementTargetFlowListModel();
 
+    /**
+     * The constructor.
+     * 
+     * @param name the name of the properties panel
+     * @param icon the icon to be shown next to the name
+     * @param orientation the orientation
+     */
     public PropPanelModelElement(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, icon, orientation);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param name the name of the properties panel
+     * @param orientation the orientation
+     */
     public PropPanelModelElement(String name, Orientation orientation) {
         super(name, orientation);
     }
@@ -393,13 +406,13 @@ public abstract class PropPanelModelElement extends PropPanel {
      * @return the stereotype box
      */
     protected Box getStereotypeBox() {
-        if (_stereotypeBox == null) {
-            _stereotypeBox = new Box(BoxLayout.X_AXIS);
-            _stereotypeBox.add(new UMLComboBoxNavigator(this, Translator
+        if (stereotypeBox == null) {
+            stereotypeBox = new Box(BoxLayout.X_AXIS);
+            stereotypeBox.add(new UMLComboBoxNavigator(this, Translator
                     .localize("UMLMenu", "tooltip.nav-stereo"),
                     getStereotypeComboBox()));
             JButton stereoTypeButton = new JButton(new AbstractAction(null,
-                    _stereotypeIcon) {
+                    stereotypeIcon) {
 
                 public void actionPerformed(ActionEvent e) {
                     Object newTarget = ExtensionMechanismsFactory.getFactory()
@@ -417,9 +430,9 @@ public abstract class PropPanelModelElement extends PropPanel {
             //toolbar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
             //toolbar.add(stereoTypeButton);
             //_stereotypeBox.add(toolbar);
-            _stereotypeBox.add(stereoTypeButton);
+            stereotypeBox.add(stereoTypeButton);
         }
-        return _stereotypeBox;
+        return stereotypeBox;
     }
 
     /**
@@ -543,7 +556,7 @@ public abstract class PropPanelModelElement extends PropPanel {
      *            the resource name.
      * @return an ImageIcon corresponding to the given resource name.
      */
-    private static ImageIcon lookupIcon(String name) {
+    protected static ImageIcon lookupIcon(String name) {
         return ResourceLoaderWrapper
                 .lookupIconResource(name);
     }

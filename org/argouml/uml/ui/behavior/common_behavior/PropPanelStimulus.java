@@ -49,26 +49,36 @@ import org.argouml.util.ConfigLoader;
 import ru.novosoft.uml.MElementEvent;
 
 /**
+ * The properties panel for a Stimulus.
+ * 
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelStimulus extends PropPanelModelElement {
 
-    protected static ImageIcon _stimulusIcon = ResourceLoaderWrapper.lookupIconResource("Stimulus");
+    private static ImageIcon stimulusIcon = lookupIcon("Stimulus");
 
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelStimulus() {
-        super("Stimulus Properties", _stimulusIcon, ConfigLoader.getTabPropsOrientation());
+        super("Stimulus Properties", stimulusIcon, 
+                ConfigLoader.getTabPropsOrientation());
 
         Class[] namesToWatch = {
 	    (Class) ModelFacade.ACTION
 	};
         setNameEventListening(namesToWatch);
 
-        Class mclass = (Class)ModelFacade.STIMULUS;
+        Class mclass = (Class) ModelFacade.STIMULUS;
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        addField("Action:", new UMLStimulusActionTextField(this, new UMLStimulusActionTextProperty("name")));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+        addField("Action:", new UMLStimulusActionTextField(this, 
+                new UMLStimulusActionTextProperty("name")));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
 
         JList senderList = new UMLLinkedList(new UMLStimulusSenderListModel());
 	senderList.setVisibleRowCount(1);
@@ -79,18 +89,25 @@ public class PropPanelStimulus extends PropPanelModelElement {
 	    new UMLLinkedList(new UMLStimulusReceiverListModel());
 	receiverList.setVisibleRowCount(1);
 	JScrollPane receiverScroll = new JScrollPane(receiverList);
-	addField(Translator.localize("UMLMenu", "label.receiver"), receiverScroll);
+	addField(Translator.localize("UMLMenu", "label.receiver"), 
+            receiverScroll);
         
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"), 
+                getNamespaceComboBox());
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));    
-        buttonPanel.add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionNavigateNamespace()));    
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionRemoveFromModel()));
     }
 
 
     public void removed(MElementEvent mee) {
     }
 
+    /**
+     * @return the sender of this stimulus
+     */
     public Object getSender() {
         Object sender = null;
         Object target = getTarget();
@@ -100,6 +117,9 @@ public class PropPanelStimulus extends PropPanelModelElement {
         return sender;
     }
 
+    /**
+     * @param element the sender of this stimulus
+     */
     public void setSender(Object/*MInstance*/ element) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAStimulus(target)) {
@@ -108,6 +128,9 @@ public class PropPanelStimulus extends PropPanelModelElement {
     }
 
 
+    /**
+     * @return the receiver of this stimulus
+     */
     public Object getReceiver() {
         Object receiver = null;
         Object target = getTarget();
@@ -117,6 +140,9 @@ public class PropPanelStimulus extends PropPanelModelElement {
         return receiver;
     }
 
+    /**
+     * @param element the receiver of this stimulus
+     */
     public void setReceiver(Object/*MInstance*/ element) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAStimulus(target)) {
@@ -124,10 +150,18 @@ public class PropPanelStimulus extends PropPanelModelElement {
         }
     }
 
-    public boolean isAcceptibleAssociation(Object/*MModelElement*/ classifier) {
-        return org.argouml.model.ModelFacade.isAAssociation(classifier);
+    /**
+     * @param modelelement the given modelelement
+     * @return true if it is acceptable, i.e. it is an association
+     */
+    public boolean isAcceptibleAssociation(
+            Object/*MModelElement*/ modelelement) {
+        return org.argouml.model.ModelFacade.isAAssociation(modelelement);
     }
 
+    /**
+     * @return the association of the link of the stimulus
+     */
     public Object getAssociation() {
         Object association = null;
         Object target = getTarget();
@@ -140,13 +174,17 @@ public class PropPanelStimulus extends PropPanelModelElement {
         return association;
     }
 
+    /**
+     * @param element the association of the link of the stimulus
+     */
     public void setAssociation(Object/*MAssociation*/ element) {
         Object target = getTarget();
         if (ModelFacade.isAStimulus(target)) {
             Object stimulus = /*(MStimulus)*/ target;
             Object link = ModelFacade.getCommunicationLink(stimulus);
             if (link == null) {
-                link = UmlFactory.getFactory().getCommonBehavior().createLink();//((MStimulus)stimulus).getFactory().createLink();
+                link = UmlFactory.getFactory().getCommonBehavior().createLink();
+                //((MStimulus)stimulus).getFactory().createLink();
                 if (link != null) {
                     ModelFacade.addStimulus(link, stimulus);
                     ModelFacade.setCommunicationLink(stimulus, /*(MLink)*/link);

@@ -35,18 +35,23 @@ import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for a Dependency.
+ *
+ */
 public class PropPanelDependency extends PropPanelRelationship {
 
     /**
      * The scrollpane with the modelelement that is the supplier of this
      * dependency
      */
-    protected JScrollPane _supplierScroll;
+    private JScrollPane supplierScroll;
+    
     /**
      * The scrollpane with the modelelement that is the client of this
      * dependency
      */
-    protected JScrollPane _clientScroll;
+    private JScrollPane clientScroll;
 
     /**
      * 'default' constructor used if a modelelement is a child of dependency (or
@@ -55,17 +60,25 @@ public class PropPanelDependency extends PropPanelRelationship {
     public PropPanelDependency() {
         this("Dependency", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+        //     "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"), 
+                getNamespaceComboBox());
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.suppliers"), _supplierScroll);
-        addField(Translator.localize("UMLMenu", "label.clients"), _clientScroll);
+        addField(Translator.localize("UMLMenu", "label.suppliers"), 
+                supplierScroll);
+        addField(Translator.localize("UMLMenu", "label.clients"), 
+                clientScroll);
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionNavigateNamespace()));
         buttonPanel
         .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
@@ -77,11 +90,27 @@ public class PropPanelDependency extends PropPanelRelationship {
      */
     protected PropPanelDependency(String name, Orientation orientation) {
         super(name, orientation);
-        JList supplierList = new UMLLinkedList(new UMLDependencySupplierListModel(), true);
-        _supplierScroll = new JScrollPane(supplierList);
+        JList supplierList = new UMLLinkedList(
+                new UMLDependencySupplierListModel(), true);
+        supplierScroll = new JScrollPane(supplierList);
 
-        JList clientList = new UMLLinkedList(new UMLDependencyClientListModel(), true);
-        _clientScroll = new JScrollPane(clientList);
+        JList clientList = new UMLLinkedList(
+                new UMLDependencyClientListModel(), true);
+        clientScroll = new JScrollPane(clientList);
+    }
+
+    /**
+     * @return Returns the supplierScroll.
+     */
+    protected JScrollPane getSupplierScroll() {
+        return supplierScroll;
+    }
+
+    /**
+     * @return Returns the clientScroll.
+     */
+    protected JScrollPane getClientScroll() {
+        return clientScroll;
     }
 
 

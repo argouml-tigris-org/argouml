@@ -44,9 +44,9 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelSubmachineState extends PropPanelCompositeState {
 
     /**
-     * @param name
-     * @param icon
-     * @param orientation
+     * @param name the name of the properties panel
+     * @param icon the icon to be shown next to the name
+     * @param orientation the orientation of the panel
      */
     public PropPanelSubmachineState(String name, ImageIcon icon, 
             Orientation orientation) {
@@ -58,7 +58,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
      * Constructor for PropPanelSubmachineState.
      */
     public PropPanelSubmachineState() {
-        super("Submachine State", _compositeStateIcon, 
+        super("Submachine State", compositeStateIcon, 
                 ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("UMLMenu", "label.name"), 
                 getNameTextField());
@@ -69,7 +69,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
         addField(Translator.localize("UMLMenu", "label.stereotype"), 
                 getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.container"), 
-                containerScroll);
+                getContainerScroll());
         JComboBox submachineBox = new UMLComboBox2(
                 new UMLSubmachineStateComboBoxModel(), 
                 ActionSetSubmachineStateSubmachine.SINGLETON);
@@ -80,9 +80,9 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
         addSeperator();
 
         addField(Translator.localize("UMLMenu", "label.incoming"), 
-                incomingScroll);
+                getIncomingScroll());
         addField(Translator.localize("UMLMenu", "label.outgoing"), 
-                outgoingScroll);
+                getOutgoingScroll());
 
         addSeperator();
 

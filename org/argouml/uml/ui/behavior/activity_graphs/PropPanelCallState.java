@@ -26,7 +26,6 @@ package org.argouml.uml.ui.behavior.activity_graphs;
 
 import javax.swing.ImageIcon;
 
-import org.argouml.i18n.Translator;
 import org.argouml.swingext.Orientation;
 import org.argouml.util.ConfigLoader;
 
@@ -38,17 +37,18 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelCallState extends PropPanelActionState {
 
     /**
-     *  
+     * The constructor.
+     * 
      */
     public PropPanelCallState() {
-        this("CallState", _callStateIcon, ConfigLoader
+        this("CallState", callStateIcon, ConfigLoader
                 .getTabPropsOrientation());
     }
 
     /**
-     * @param name
-     * @param icon
-     * @param orientation
+     * @param name the name of the properties panel
+     * @param icon the icon to be shown next to the name
+     * @param orientation the orientation of the panel
      */
     public PropPanelCallState(String name, ImageIcon icon,
             Orientation orientation) {

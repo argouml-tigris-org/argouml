@@ -25,15 +25,19 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 /**
+ * The properties panel for a CallAction.
+ * 
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelCallAction extends PropPanelAction {
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelCallAction() {
-        super("CallAction", _callActionIcon);
+        super("CallAction", callActionIcon);
     }
 
 } /* end class PropPanelCallAction */

@@ -38,29 +38,37 @@ import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * Theproperties panel for a Association.
+ *
+ */
 public class PropPanelAssociation extends PropPanelRelationship {
 
     /**
      * The scrollpane with the associationends.
      */
-    protected JScrollPane _assocEndScroll;
+    private JScrollPane assocEndScroll;
 
     /**
      * The scrollpane with the associationroles this association plays a role
      * in.
      */
-    protected JScrollPane _associationRoleScroll;
+    private JScrollPane associationRoleScroll;
 
     /**
      * Ths scrollpane with the links that implement this association.
      */
-    protected JScrollPane _linksScroll;
+    private JScrollPane linksScroll;
 
     /**
      * Panel for abstract/leaf/root
      */
-    protected JPanel _modifiersPanel;
+    private JPanel modifiersPanel;
 
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelAssociation() {
         this("Association", ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("UMLMenu", "label.name"),
@@ -72,19 +80,19 @@ public class PropPanelAssociation extends PropPanelRelationship {
                 getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.namespace"),
                 getNamespaceComboBox());
-        add(_modifiersPanel);
+        add(modifiersPanel);
 
         addSeperator();
 
         addField(Translator.localize("UMLMenu", "label.association-ends"),
-                _assocEndScroll);
+                assocEndScroll);
 
         addSeperator();
 
         addField(Translator.localize("UMLMenu", "label.association-roles"),
-                _associationRoleScroll);
+                associationRoleScroll);
         addField(Translator.localize("UMLMenu", "label.association-links"),
-                _linksScroll);
+                linksScroll);
 
         buttonPanel.add(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
@@ -93,17 +101,23 @@ public class PropPanelAssociation extends PropPanelRelationship {
 
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param title the title of the panel 
+     * @param orientation the orientation of the panel
+     */
     protected PropPanelAssociation(String title, Orientation orientation) {
         super(title, orientation);
         initialize();
         JList assocEndList = new UMLLinkedList(
                 new UMLAssociationConnectionListModel());
-        _assocEndScroll = new JScrollPane(assocEndList);
+        assocEndScroll = new JScrollPane(assocEndList);
         JList baseList = new UMLLinkedList(
                 new UMLAssociationAssociationRoleListModel());
-        _associationRoleScroll = new JScrollPane(baseList);
+        associationRoleScroll = new JScrollPane(baseList);
         JList linkList = new UMLLinkedList(new UMLAssociationLinkListModel());
-        _linksScroll = new JScrollPane(linkList);
+        linksScroll = new JScrollPane(linkList);
 
         // TODO: implement the multiple inheritance of an Association
         // (Generalizable element)
@@ -112,12 +126,12 @@ public class PropPanelAssociation extends PropPanelRelationship {
 
     private void initialize() {
 
-        _modifiersPanel = new JPanel(new GridLayout2());
-        _modifiersPanel.setBorder(new TitledBorder(Translator.localize(
+        modifiersPanel = new JPanel(new GridLayout2());
+        modifiersPanel.setBorder(new TitledBorder(Translator.localize(
                 "UMLMenu", "label.modifiers")));
-        _modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
-        _modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
-        _modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
+        modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
+        modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
+        modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
 
     }
 
@@ -125,7 +139,7 @@ public class PropPanelAssociation extends PropPanelRelationship {
      * Adds an associationend to the association.
      */
     protected void addAssociationEnd() {
-        // TODO implement this method as soon as issue 1703 is answered.
+        // TODO: implement this method as soon as issue 1703 is answered.
         throw new UnsupportedOperationException(
                 "addAssociationEnd is not yet implemented");
     }

@@ -30,11 +30,16 @@ import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for a Abstraction.
+ *
+ */
 public class PropPanelAbstraction extends PropPanelDependency {
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
-
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelAbstraction() {
         super("Abstraction", ConfigLoader.getTabPropsOrientation());
 
@@ -51,9 +56,9 @@ public class PropPanelAbstraction extends PropPanelDependency {
         addSeperator();
 
         addField(Translator.localize("UMLMenu", "label.suppliers"), 
-                _supplierScroll);
+                getSupplierScroll());
         addField(Translator.localize("UMLMenu", "label.clients"), 
-                _clientScroll);
+                getClientScroll());
 
         // TODO: add Mapping
         new PropPanelButton(this, buttonPanel, navUpIcon, Translator.localize(

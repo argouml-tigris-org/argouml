@@ -56,26 +56,31 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     /**
      * The combobox for the multiplicity of this type.
      */
-    protected UMLComboBox2 multiplicityComboBox;
+    private UMLComboBox2 multiplicityComboBox;
+    
     /** 
      * Model for the MultiplicityComboBox 
      */
     private static UMLMultiplicityComboBoxModel multiplicityComboBoxModel;
     
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelClassifierRole() {
 	super("ClassifierRole", ConfigLoader.getTabPropsOrientation());
 
 	Class mclass = (Class) ModelFacade.CLASSIFIER_ROLE;
 
 	addField(Translator.localize("UMLMenu", "label.name"),
-		 getNameTextField());
-	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+	    getNameTextField());
+	addField(Translator.localize("UMLMenu", "label.stereotype"), 
+            getStereotypeBox());
 	addField(Translator.localize("UMLMenu", "label.namespace"),
-		 getNamespaceScroll());
+	    getNamespaceScroll());
 
-	addField(Translator.localize("UMLMenu", "label.multiplicity"),getMultiplicityComboBox()); 
+	addField(Translator.localize("UMLMenu", "label.multiplicity"),
+            getMultiplicityComboBox()); 
 	JList baseList =
 	    new UMLMutableLinkedList(new UMLClassifierRoleBaseListModel(),
 				     ActionAddClassifierRoleBase.SINGLETON,
@@ -117,8 +122,11 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 
 	buttonPanel.add(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
-	new PropPanelButton(this, buttonPanel, _receptionIcon, Translator.localize("UMLMenu", "button.new-reception"), getActionNewReception());
-	buttonPanel.add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+	new PropPanelButton(this, buttonPanel, receptionIcon, 
+            Translator.localize("UMLMenu", "button.new-reception"), 
+            getActionNewReception());
+	buttonPanel.add(new PropPanelButton2(this, 
+            new ActionRemoveFromModel()));
     }
 
     /**

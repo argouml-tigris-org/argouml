@@ -37,31 +37,37 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociation;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for an AssociationRole.
+ *
+ */
 public class PropPanelAssociationRole extends PropPanelAssociation {
 
-    ////////////////////////////////////////////////////////////////
-    // attributes
-    protected JComboBox _baseField;
+    private JComboBox baseField;
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelAssociationRole() {
         super("Association Role", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
         addField(Translator.localize("UMLMenu", "label.stereotype"),
 		 getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.namespace"),
 		 getNamespaceScroll());
 
         JComboBox baseComboBox =
-	    new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(), ActionSetAssociationRoleBase.SINGLETON);
+	    new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(), 
+                ActionSetAssociationRoleBase.SINGLETON);
         addField(Translator.localize("UMLMenu", "label.base"), baseComboBox);
 
         addSeperator();
 
-        JList assocEndList =
-	    new UMLLinkedList(new UMLAssociationRoleAssociationEndRoleListModel());
+        JList assocEndList = new UMLLinkedList(
+                new UMLAssociationRoleAssociationEndRoleListModel());
 	// only binary associationroles are allowed
         assocEndList.setVisibleRowCount(2);
         addField(Translator.localize("UMLMenu", "label.associationrole-ends"),

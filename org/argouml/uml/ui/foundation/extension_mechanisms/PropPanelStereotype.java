@@ -55,9 +55,13 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelStereotype extends PropPanelModelElement {
 
-    private static UMLGeneralizableElementSpecializationListModel specializationListModel = new UMLGeneralizableElementSpecializationListModel();
+    private static UMLGeneralizableElementSpecializationListModel 
+        specializationListModel = 
+            new UMLGeneralizableElementSpecializationListModel();
 
-    private static UMLGeneralizableElementGeneralizationListModel generalizationListModel = new UMLGeneralizableElementGeneralizationListModel();
+    private static UMLGeneralizableElementGeneralizationListModel 
+        generalizationListModel = 
+            new UMLGeneralizableElementGeneralizationListModel();
 
     private JScrollPane generalizationScroll;
 
@@ -67,7 +71,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
      * Construct new stereotype properties tab
      */
     public PropPanelStereotype() {
-        super("Stereotype", _stereotypeIcon, ConfigLoader
+        super("Stereotype", stereotypeIcon, ConfigLoader
                 .getTabPropsOrientation());
 
         Class mclass = (Class) ModelFacade.STEREOTYPE;
@@ -83,15 +87,15 @@ public class PropPanelStereotype extends PropPanelModelElement {
         addField(Translator.localize("UMLMenu", "label.namespace"),
                 getNamespaceComboBox());
 
-        JPanel _modifiersPanel = new JPanel(new GridLayout2(0, 2,
+        JPanel modifiersPanel = new JPanel(new GridLayout2(0, 2,
                 GridLayout2.ROWCOLPREFERRED));
-        _modifiersPanel.setBorder(
-                new TitledBorder(Translator.localize("UMLMenu", "label.modifiers")));
-        _modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
-        _modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
-        _modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
+        modifiersPanel.setBorder(new TitledBorder(
+                Translator.localize("UMLMenu", "label.modifiers")));
+        modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
+        modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
+        modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
 
-        add(_modifiersPanel);
+        add(modifiersPanel);
 
         addSeperator();
 
@@ -100,13 +104,18 @@ public class PropPanelStereotype extends PropPanelModelElement {
         addField(Translator.localize("UMLMenu", "label.specializations"),
                 getSpecializationScroll());
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));
-        new PropPanelButton(this, buttonPanel, _stereotypeIcon, Translator
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionNavigateNamespace()));
+        new PropPanelButton(this, buttonPanel, stereotypeIcon, Translator
                 .localize("UMLMenu", "button.new-stereotype"), "newStereotype",
                 null);
-	buttonPanel.add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+	buttonPanel.add(new PropPanelButton2(this, 
+            new ActionRemoveFromModel()));
     }
 
+    /**
+     * Create a new stereotype.
+     */
     public void newStereotype() {
         Object target = getTarget();
         Object newStereo = ExtensionMechanismsFactory.getFactory()

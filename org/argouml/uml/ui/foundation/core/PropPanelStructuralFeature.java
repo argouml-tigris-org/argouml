@@ -38,21 +38,21 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
  */
 public class PropPanelStructuralFeature extends PropPanelFeature {
 
-    private UMLComboBox2 _multiplicityComboBox;
-    private UMLComboBox2 _typeComboBox;
-    private UMLRadioButtonPanel _changeabilityRadioButtonPanel;
-    private UMLCheckBox2 _targetScopeCheckBox;
+    private UMLComboBox2 multiplicityComboBox; 
+    private UMLComboBox2 typeComboBox;
+    private UMLRadioButtonPanel changeabilityRadioButtonPanel;
+    private UMLCheckBox2 targetScopeCheckBox;
 
-    private static UMLStructuralFeatureMultiplicityComboBoxModel multiplicityComboBoxModel;
+    private static UMLStructuralFeatureMultiplicityComboBoxModel 
+        multiplicityComboBoxModel;
     private static UMLStructuralFeatureTypeComboBoxModel typeComboBoxModel;
 
     /**
      * Constructor for PropPanelStructuralFeature.
-     * @param name
-     * @param orientation
+     * @param name the name of the panel, to be shown at the top
+     * @param orientation the orientation of the panel
      */
-    protected PropPanelStructuralFeature(
-					 String name,
+    protected PropPanelStructuralFeature(String name,
 					 Orientation orientation) {
 	super(name, orientation);
 
@@ -63,18 +63,17 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
      * @return UMLMultiplicityComboBox2
      */
     public UMLComboBox2 getMultiplicityComboBox() {
-	if (_multiplicityComboBox == null) {
+	if (multiplicityComboBox == null) {
 	    if (multiplicityComboBoxModel == null) {
 		multiplicityComboBoxModel =
 		    new UMLStructuralFeatureMultiplicityComboBoxModel();
 	    }
-	    _multiplicityComboBox =
-		new UMLMultiplicityComboBox2(
-				 multiplicityComboBoxModel,
-				 ActionSetStructuralFeatureMultiplicity.SINGLETON);
-	    _multiplicityComboBox.setEditable(true);
+	    multiplicityComboBox =
+		new UMLMultiplicityComboBox2(multiplicityComboBoxModel,
+		    ActionSetStructuralFeatureMultiplicity.SINGLETON);
+	    multiplicityComboBox.setEditable(true);
 	}
-	return _multiplicityComboBox;
+	return multiplicityComboBox;
     }
 
     /**
@@ -82,17 +81,17 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
      * @return UMLComboBox2
      */
     public UMLComboBox2 getTypeComboBox() {
-        if (_typeComboBox == null) {
+        if (typeComboBox == null) {
 	    if (typeComboBoxModel == null) {
 		typeComboBoxModel =
 		    new UMLStructuralFeatureTypeComboBoxModel();
 	    }
-            _typeComboBox =
+            typeComboBox =
 		new UMLComboBox2(
 				 typeComboBoxModel,
 				 ActionSetStructuralFeatureType.SINGLETON);
 	}
-	return _typeComboBox;
+	return typeComboBox;
     }
 
     /**
@@ -100,10 +99,13 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
      * @return UMLRadioButtonPanel
      */
     public UMLRadioButtonPanel getChangeabilityRadioButtonPanel() {
-        if (_changeabilityRadioButtonPanel == null) {
-            _changeabilityRadioButtonPanel = new UMLStructuralFeatureChangeabilityRadioButtonPanel(Translator.localize("UMLMenu", "label.changeability"), true);
+        if (changeabilityRadioButtonPanel == null) {
+            changeabilityRadioButtonPanel = 
+                new UMLStructuralFeatureChangeabilityRadioButtonPanel(
+                    Translator.localize("UMLMenu", "label.changeability"), 
+                        true);
         }
-	return _changeabilityRadioButtonPanel;        
+	return changeabilityRadioButtonPanel;        
     }
 
     /**
@@ -111,10 +113,10 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
      * @return UMLCheckBox2
      */
     public UMLCheckBox2 getTargetScopeCheckBox() {
-        if (_targetScopeCheckBox == null) {
-	    _targetScopeCheckBox = new UMLStructuralFeatureTargetScopeCheckBox();
+        if (targetScopeCheckBox == null) {
+	    targetScopeCheckBox = new UMLStructuralFeatureTargetScopeCheckBox();
         }
-        return _targetScopeCheckBox;
+        return targetScopeCheckBox;
     }
 
 }

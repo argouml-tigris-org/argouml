@@ -82,7 +82,7 @@ public class PropPanelInterface extends PropPanelClassifier {
 	      "checkbox.root-uc"),this,new UMLReflectionBooleanProperty(
 	      "isRoot",mclass,"isRoot","setRoot")));
 	*/
-	add( _modifiersPanel);
+	add( getModifiersPanel());
 	add(getNamespaceVisibilityPanel());
 
 	addSeperator();
@@ -109,7 +109,7 @@ public class PropPanelInterface extends PropPanelClassifier {
 	//new PropPanelButton(this,buttonPanel,realizationIcon, 
         //    Translator.localize("UMLMenu", "button.new-realization"),
         //    "addRealization",null);
-	new PropPanelButton(this, buttonPanel, _receptionIcon, 
+	new PropPanelButton(this, buttonPanel, receptionIcon, 
             Translator.localize("UMLMenu", "button.new-reception"), 
             getActionNewReception());
 	buttonPanel

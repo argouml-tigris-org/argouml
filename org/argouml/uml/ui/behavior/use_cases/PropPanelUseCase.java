@@ -85,8 +85,8 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
 	
 	// Modifiers - an abstract use case does not really make any sense
-        _modifiersPanel.remove(0);
-        add(_modifiersPanel);
+        getModifiersPanel().remove(0);
+        add(getModifiersPanel());
         
 
 	JList extensionPoints = new UMLMutableLinkedList(
@@ -125,7 +125,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
                 localize("New Extension Point"),
                 "newExtensionPoint",
                 null);
-        new PropPanelButton(this, buttonPanel, _receptionIcon, 
+        new PropPanelButton(this, buttonPanel, receptionIcon, 
                 Translator.localize("UMLMenu", "button.new-reception"), 
                 getActionNewReception());
         buttonPanel

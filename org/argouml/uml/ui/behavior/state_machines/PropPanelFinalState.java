@@ -34,22 +34,39 @@ package org.argouml.uml.ui.behavior.state_machines;
 import org.argouml.i18n.Translator;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for a FinalState.
+ *
+ */
 public class PropPanelFinalState extends PropPanelState {
 
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelFinalState() {
-        super("Final State", _finalStateIcon, ConfigLoader.getTabPropsOrientation());
+        super("Final State", finalStateIcon, 
+                ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.container"), containerScroll);
-        addField(Translator.localize("UMLMenu", "label.entry"), entryScroll);
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+        //     "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.container"), 
+                getContainerScroll());
+        addField(Translator.localize("UMLMenu", "label.entry"), 
+                getEntryScroll());
         // TODO: maybe we should add a doactivity
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.incoming"), incomingScroll);
-        addField(Translator.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
+        addField(Translator.localize("UMLMenu", "label.incoming"), 
+                getIncomingScroll());
+        addField(Translator.localize("UMLMenu", "label.internal-transitions"), 
+                getInternalTransitionsScroll());
 
     }
 

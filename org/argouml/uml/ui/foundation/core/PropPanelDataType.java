@@ -76,7 +76,7 @@ public class PropPanelDataType extends PropPanelClassifier {
                 getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.namespace"),
                 getNamespaceComboBox());
-        add(_modifiersPanel);
+        add(getModifiersPanel());
 
         addSeperator();
 

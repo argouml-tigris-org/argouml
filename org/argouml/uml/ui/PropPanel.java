@@ -699,14 +699,14 @@ public abstract class PropPanel
     }
 
     /**
-     * @param theTitleLabel
+     * @param theTitleLabel the title of the panel shown at the top
      */
     protected void setTitleLabel(JLabel theTitleLabel) {
         this.titleLabel = theTitleLabel;
     }
 
     /**
-     * @return
+     * @return the title of the panel shown at the top
      */
     protected JLabel getTitleLabel() {
         return titleLabel;

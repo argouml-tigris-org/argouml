@@ -43,7 +43,7 @@ public class PropPanelCallEvent extends PropPanelEvent {
      * 
      */
     public PropPanelCallEvent() {
-        super("Call event", _eventIcon, 
+        super("Call event", eventIcon, 
               ConfigLoader.getTabPropsOrientation());
     }
 

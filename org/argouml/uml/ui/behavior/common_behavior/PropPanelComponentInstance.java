@@ -45,6 +45,8 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
+ * The properties panel for a ComponentInstance. 
+ * 
  * TODO: this property panel needs refactoring to remove dependency on old gui
  * components.
  */

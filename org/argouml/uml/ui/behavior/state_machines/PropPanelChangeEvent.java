@@ -41,7 +41,7 @@ public class PropPanelChangeEvent extends PropPanelEvent {
      * 
      */
     public PropPanelChangeEvent() {
-        super("Change event", _eventIcon, 
+        super("Change event", eventIcon, 
               ConfigLoader.getTabPropsOrientation());
     }
 } 

@@ -44,6 +44,10 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for a Link.
+ *
+ */
 public class PropPanelLink extends PropPanelModelElement {
 
     /**

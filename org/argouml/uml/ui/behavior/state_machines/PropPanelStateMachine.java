@@ -38,6 +38,8 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 /**
+ * The properties panel for a Statemachine.
+ * 
  * @since Dec 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -51,11 +53,20 @@ public class PropPanelStateMachine extends PropPanelModelElement {
 
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param name the title of the properties panel, to be shown at the top
+     * @param orient the orientation of the panel
+     */
     public PropPanelStateMachine(String name, Orientation orient) {
         super(name, orient);
         initialize();
     }
 
+    /**
+     * Initialise the panel with fields and stuff.
+     */
     protected void initialize() {
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());
@@ -71,7 +82,7 @@ public class PropPanelStateMachine extends PropPanelModelElement {
         JList contextList = new UMLLinkedList(
                 new UMLStateMachineContextListModel());
         addField(Translator.localize("UMLMenu",
-                "label.represented-modelelement"), new JScrollPane(contextList));
+            "label.represented-modelelement"), new JScrollPane(contextList));
 
         // the top state
         JList topList = new UMLLinkedList(new UMLStateMachineTopListModel());

@@ -39,48 +39,73 @@ import org.argouml.i18n.Translator;
 import org.argouml.swingext.Orientation;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for a Composite State.
+ *
+ */
 public class PropPanelCompositeState extends PropPanelState {
 
-    protected JList subverticesList = null;
+    private JList subverticesList = null;
 
     /**
      * Constructor for PropPanelCompositeState.
-     * @param name
-     * @param icon
-     * @param orientation
+     * @param name the name of the properties panel
+     * @param icon the icon to be shown next to the name
+     * @param orientation the orientation of the panel
      */
-    public PropPanelCompositeState(String name, ImageIcon icon, Orientation orientation) {
+    public PropPanelCompositeState(String name, ImageIcon icon, 
+            Orientation orientation) {
         super(name, icon, orientation);
         initialize();
     }
 
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelCompositeState() {
-        super("Composite State", _compositeStateIcon, ConfigLoader.getTabPropsOrientation());
+        super("Composite State", compositeStateIcon, 
+                ConfigLoader.getTabPropsOrientation());
         initialize();
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.container"), containerScroll);
-        addField(Translator.localize("UMLMenu", "label.modifiers"), new UMLCompositeStateConcurentCheckBox());
-        addField(Translator.localize("UMLMenu", "label.entry"), entryScroll);
-        addField(Translator.localize("UMLMenu", "label.exit"), exitScroll);
-        addField(Translator.localize("UMLMenu", "label.do-activity"), doScroll);
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+        //     "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.container"), 
+                getContainerScroll());
+        addField(Translator.localize("UMLMenu", "label.modifiers"), 
+                new UMLCompositeStateConcurentCheckBox());
+        addField(Translator.localize("UMLMenu", "label.entry"), getEntryScroll());
+        addField(Translator.localize("UMLMenu", "label.exit"), getExitScroll());
+        addField(Translator.localize("UMLMenu", "label.do-activity"), getDoScroll());
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.incoming"), incomingScroll);
-        addField(Translator.localize("UMLMenu", "label.outgoing"), outgoingScroll);
-        addField(Translator.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
+        addField(Translator.localize("UMLMenu", "label.incoming"), 
+                getIncomingScroll());
+        addField(Translator.localize("UMLMenu", "label.outgoing"), 
+                getOutgoingScroll());
+        addField(Translator.localize("UMLMenu", "label.internal-transitions"), 
+                getInternalTransitionsScroll());
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.subvertex"), new JScrollPane(subverticesList));
+        addField(Translator.localize("UMLMenu", "label.subvertex"), 
+                new JScrollPane(subverticesList));
 
     }
 
+    /**
+     * Initialize the panel with its specific fields, in casu 
+     * the substate vertex list
+     */
     protected void initialize() {
-	subverticesList = new UMLCompositeStateSubvertexList(new UMLCompositeStateSubvertexListModel());
+	subverticesList = new UMLCompositeStateSubvertexList(
+            new UMLCompositeStateSubvertexListModel());
     }
 
 } /* end class PropPanelCompositeState */

@@ -44,6 +44,8 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 /**
+ * The properties panel of an Object.
+ * 
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */

@@ -37,14 +37,20 @@ import org.argouml.util.ConfigLoader;
 
 /**
  * Proppanel for interactions.
+ * 
  * @author jaap.branderhorst@xs4all.nl
  */
 public class PropPanelInteraction extends PropPanelModelElement {
 
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelInteraction() {
         super("Interaction", ConfigLoader.getTabPropsOrientation());
 
-    	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+    	addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
     	addField(Translator.localize("UMLMenu", "label.stereotype"),
 		 getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.namespace"),
@@ -54,17 +60,21 @@ public class PropPanelInteraction extends PropPanelModelElement {
 	    new UMLLinkedList(new UMLInteractionContextListModel());
         contextList.setVisibleRowCount(1);
         JScrollPane contextScroll = new JScrollPane(contextList);
-        addField(Translator.localize("UMLMenu", "label.context"), contextScroll);
+        addField(Translator.localize("UMLMenu", "label.context"), 
+                contextScroll);
 
         addSeperator();
 
         JList messagesList =
 	    new UMLLinkedList(new UMLInteractionMessagesListModel());
       	JScrollPane messagesScroll = new JScrollPane(messagesList);
-        addField(Translator.localize("UMLMenu", "label.messages"), messagesScroll);
+        addField(Translator.localize("UMLMenu", "label.messages"), 
+                messagesScroll);
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateContext()));
-    	buttonPanel.add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionNavigateContext()));
+    	buttonPanel.add(new PropPanelButton2(this, 
+                new ActionRemoveFromModel()));
     }
 
 }
