@@ -246,14 +246,14 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <echo message="Creating the jar file ${build.dir}/${name}.jar"/>
     <filter token="version" value="${version}"/>
     <copyfile src="${manifest}"
-              dest="${classes}/${manifest}"
+              dest="${build.dest}/${manifest}"
               filtering="on"
     />
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
          includes="org/argouml/**"
          excludes="*.txt,*.bat,*.xml,*.sh,${manifest}"
-         manifest="${classes}/${manifest}"/>
+         manifest="${build.dest}/${manifest}"/>
     <copydir src="${lib.dir}"
              dest="${build.dir}"/>
   </target>
