@@ -766,16 +766,16 @@ The Property Panels Component is described in detail in
 	  </listitem>
 
 	  <listitem>
-	    <para>Navigator pane</para>
+	    <para>Navigator Tree</para>
 	    <indexterm>
-	      <primary>Navigator pane</primary>
+	      <primary>Navigator Tree</primary>
 	    </indexterm>
 	    <para>
-This is the navigator pane view of the model.
+This is the tree view of the model.
 </para>
 	    <para>
-The Navigator Pane Component is described in detail in 
-<xref linkend="navigatorpane"></xref>.
+The Navigator Tree Component is described in detail in 
+<xref linkend="navigatortree"></xref>.
 </para>
 	  </listitem>
 
@@ -1625,27 +1625,209 @@ and the property panels for the other object are in
     </sect1>
 
 
-    <sect1 id="navigatorpane">
-      <title>Navigator pane</title>
+    <sect1 id="navigatortree">
+      <title>Navigator tree</title>
       <para>
-Purpose - to provide a tree view of the diagrams and objects in the model.
+Purpose - to provide tree views of the model elements, 
+diagrams and other objects.
 </para>
       <para>
-The Navigator pane will be located in
-<classname>org.argouml.?</classname>
+The Navigator tree will be located in 
+<classname>org.argouml.ui.navigator</classname>.
 </para>
       <para>
-The Navigator pane is a Layer 2 component. See <xref linkend="layer2"></xref>.
+The Navigator tree is a Layer 2 component. See <xref linkend="layer2"></xref>.
 </para>
       <para>
-Currently the Navigator pane is mixed with the GUI framework
-and actions in
-<classname>org.argouml.ui</classname>.
-Parts of it (Go rules) are mixed with Diagrams and Property panels 
-under
-<classname>org.argouml.uml.diagram.ui</classname> and
+Several tree views are provided by means of Perspectives.
+Objects showin in the trees are 
+the model elements, 
+diagrams and 
+other objects (such as 
+profiles, 
+groupings of model elements etc.).
+</para>
+      <para>
+The Navigator tree is currently shown in the Navigator Pane - 
+the upper left hand pane of ArgoUML.
+(See <xref linkend="guiframework"></xref>.)
+</para>
+      <para>
+There is also a Navigator Configurator dialog, which allows the user
+to tailor the existing perspectives and create new perspectives 
+to their needs 
+(although the settings are not persisted).
+</para>
+      <sect2>
+	<title>Details of current implementation</title>
+	<para>
+Some of the classes are actually reused by the other tree view, 
+i.e. the todo/critics list.
+</para>
+	<para>
+The Navigator Tree provides some 'history' capability 
+(although this is disabled presently and should problably be factored out)
+to navigate back to previously selected model elements. 
+</para>
+	<para>
+Currently the Navigator pane is mixed with the GUI framework and actions
+in <classname>org.argouml.ui</classname>.
+The navigator tree is also dependant on "go rules", 
+which are rules that help identify children nodes for and particular parent.
+"Go rules" are mixed with Diagrams and Property panels 
+under <classname>org.argouml.uml.diagram.ui</classname> and 
 <classname>org.argouml.uml.diagram.<replaceable>diagram</replaceable>.ui</classname>.
 </para>
+      </sect2>
+      <sect2>
+	<title>Requirements</title>
+	<para>
+The Navigator must react to user and application events.
+</para>
+	<para>
+User events include
+<orderedlist continuation="restarts" spacing="compact">
+	    <listitem>
+	      <para>
+selection of a node, 
+which must notify the other views to make the same selection.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+right click on a node, which brings up a popup menu.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+selection of another perspective in the Combox box,
+which must change the tree model to that perspective.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+node expansion and collapse.
+</para>
+	    </listitem>
+	  </orderedlist>
+</para>
+	<para>
+Application Events include:
+<orderedlist continuation="restarts" spacing="compact">
+	    <listitem>
+	      <para>
+change of project, the tree must update
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+change in selection in another view, any relevant rows to be highlighted.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+model changed, 
+the tree must update to reflect additions/deletions 
+and name changes in the model.
+</para>
+	    </listitem>
+	  </orderedlist>
+</para>
+      </sect2>
+
+      <sect2>
+	<title>Key Classes</title>
+	<para>
+The Navigator Tree contains Swing components, and there is currently
+no abstraction layer (to help implement a IDE plugin for example.
+</para>
+	<para>
+There is a <classname>JTree</classname> subclass, 
+<classname>DisplayTextTree</classname>, for the tree, with a
+<classname>TreeModel</classname>, Perspective.
+The Perspective is made of several 'Go rules', this enables Argo to
+convert the graph-like structure of a uml model into a tree and it is
+easily extensible.
+<mediaobject>
+	    <imageobject>
+	      <imagedata format="GIF" 
+		         fileref="images/cookbook/classes-navigatortree.gif"/>
+            </imageobject>
+</mediaobject>
+</para>
+	<para>
+There are several different ways of implementing a 
+<classname>TreeModel</classname> in Swing.
+ArgoUML already has a model (the NSUML MModel instance), 
+so we create a class (<classname>NavPerspective</classname>) 
+that encapsulates the MModel instance and 
+implements <classname>TreeModel</classname> 
+(contains methods that enable the JTree to calculate the tree structure).
+This implementation does not build/load a tree model on instantiation,
+rather it provides children nodes for any given parent node 
+when the user requests a node expansion.
+The <classname>NavPerspective</classname> delegates
+the task of calculating child nodes to the Go rules, 
+making the tree model very flexible. 
+However, the price for this (at the moment) is 
+slow node expansion times for large models.
+</para>
+	<para>
+Each node is displayed with a name and an Icon, 
+representing the type of node it is in the UML model. 
+This is done using the 
+<classname>org.argouml.uml.ui.UMLTreeRenderer</classname> (for the Icon),
+and the text is produced in 
+the <methodname>convertValueToText(...)</methodname> method in 
+<classname>DisplayTextTree</classname>.
+</para>
+	<para>
+Event handling is done in 
+<classname>DisplayTextTree</classname> and 
+<classname>NavigatorPane</classname>.
+</para>
+      </sect2>
+      <sect2>
+	<title>How do I ...?</title>
+	<para>
+<itemizedlist>
+	    <listitem>
+	      <para>...add another perspective?</para>
+	      <para>
+<itemizedlist>
+		  <listitem>
+		    <para>
+at runtime perspectives can be changed using the 
+<classname>NavigatorConfigDialog</classname>
+</para>
+		  </listitem>
+		  <listitem>
+		    <para>
+hard code it
+</para>
+		    <para>
+Perspectives are build in the 
+<classname>NavigatorPane</classname>, 
+so you can add your one there. 
+Also create new Go rules that are subclasses of 
+<classname>AbstractGoRule</classname>, 
+then register them with the Perspetive instance using 
+<methodname>addSubTreeModel(TreeModel)</methodname>.
+</para>
+		  </listitem>
+		</itemizedlist>
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>...improve the PopUp menu?</para>
+	      <para>
+Look in the <classname>NavigatorPane</classname> class. 
+The menu is built at runtime in reaction to a mouse event.
+</para>
+	    </listitem>
+	  </itemizedlist>
+</para>
+      </sect2>
     </sect1>
 
 
