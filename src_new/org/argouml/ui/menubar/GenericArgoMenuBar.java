@@ -21,6 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+//$Id$
 
 package org.argouml.ui.menubar;
 
@@ -95,7 +96,7 @@ public class GenericArgoMenuBar extends JMenuBar
     public Toolbar _viewToolbar;
     public Toolbar _createDiagramToolbar;
 
-    protected JMenu _import = null;
+    //protected JMenu _import = null;
 
     /** Edit menu
      */
@@ -192,10 +193,10 @@ public class GenericArgoMenuBar extends JMenuBar
                 _tools.add(module.getMenuItem(context));
                 _tools.setEnabled(true);
             }
-            context = new Object[] { _import, "File:Import" };
-            if (module.inContext(context)) {
-                _import.add(module.getMenuItem(context));
-            }
+            //context = new Object[] { _import, "File:Import" };
+            //if (module.inContext(context)) {
+              //  _import.add(module.getMenuItem(context));
+            //}
             context = new Object[] { _generate, "Generate" };
             if (module.inContext(context)) {
                 _generate.add(module.getMenuItem(context));
@@ -282,10 +283,10 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(saveProjectAsItem,"SaveAs",'A');
         _file.addSeparator();
 
-        _import = new JMenu(menuLocalize("Import"));
-        JMenuItem importProjectAsItem = _import.add(ActionImportFromSources.SINGLETON);
-        appendPluggableMenus(_import, PluggableMenu.KEY_FILE_IMPORT);
-        _file.add(_import);
+        //_import = new JMenu(menuLocalize("Import"));
+        //JMenuItem importProjectAsItem = _import.add(ActionImportFromSources.SINGLETON);
+        //appendPluggableMenus(_import, PluggableMenu.KEY_FILE_IMPORT);
+        _file.add(ActionImportFromSources.SINGLETON);
         _file.addSeparator();
         
         JMenuItem printItem = _file.add(Actions.Print);
