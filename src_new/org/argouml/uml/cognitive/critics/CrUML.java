@@ -154,22 +154,22 @@ public class CrUML extends Critic {
      */
     static {
 	Designer d = Designer.theDesigner();
-	d.startConsidering(DEC_CLASS_SELECTION);
-        d.startConsidering(DEC_BEHAVIOR);
-	d.startConsidering(DEC_NAMING);
-	d.startConsidering(DEC_STORAGE);
-	d.startConsidering(DEC_INHERITANCE);
-	d.startConsidering(DEC_CONTAINMENT);
-	d.startConsidering(DEC_PLANNED_EXTENSIONS);
-	d.startConsidering(DEC_STATE_MACHINES);
-	d.startConsidering(DEC_PATTERNS);
-	d.startConsidering(DEC_RELATIONSHIPS);
-	d.startConsidering(DEC_INSTANCIATION);
-	d.startConsidering(DEC_MODULARITY);
-	d.startConsidering(DEC_EXPECTED_USAGE);
-	d.startConsidering(DEC_METHODS);
-	d.startConsidering(DEC_CODE_GEN);
-	d.startConsidering(DEC_STEREOTYPES);
+	d.getDecisionModel().startConsidering(DEC_CLASS_SELECTION);
+        d.getDecisionModel().startConsidering(DEC_BEHAVIOR);
+	d.getDecisionModel().startConsidering(DEC_NAMING);
+	d.getDecisionModel().startConsidering(DEC_STORAGE);
+	d.getDecisionModel().startConsidering(DEC_INHERITANCE);
+	d.getDecisionModel().startConsidering(DEC_CONTAINMENT);
+	d.getDecisionModel().startConsidering(DEC_PLANNED_EXTENSIONS);
+	d.getDecisionModel().startConsidering(DEC_STATE_MACHINES);
+	d.getDecisionModel().startConsidering(DEC_PATTERNS);
+	d.getDecisionModel().startConsidering(DEC_RELATIONSHIPS);
+	d.getDecisionModel().startConsidering(DEC_INSTANCIATION);
+	d.getDecisionModel().startConsidering(DEC_MODULARITY);
+	d.getDecisionModel().startConsidering(DEC_EXPECTED_USAGE);
+	d.getDecisionModel().startConsidering(DEC_METHODS);
+	d.getDecisionModel().startConsidering(DEC_CODE_GEN);
+	d.getDecisionModel().startConsidering(DEC_STEREOTYPES);
     }
 
 
