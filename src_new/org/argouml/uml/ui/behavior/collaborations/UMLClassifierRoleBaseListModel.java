@@ -24,31 +24,24 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * @since Oct 2, 2002
+ * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLPredecessorListModel extends UMLModelElementListModel2 {
+public class UMLClassifierRoleBaseListModel extends UMLModelElementListModel2 {
 
-   
     /**
-     * Constructor for UMLPredecessorListModel.
+     * Constructor for UMLClassifierRoleBaseListModel.
      * @param container
      */
-    public UMLPredecessorListModel(UMLUserInterfaceContainer container) {
+    public UMLClassifierRoleBaseListModel(UMLUserInterfaceContainer container) {
         super(container);
     }
 
@@ -56,21 +49,16 @@ public class UMLPredecessorListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        MMessage message = (MMessage)getContainer().getTarget();
-        removeAllElements();       
-        Iterator it = message.getPredecessors().iterator();
-        while (it.hasNext()) {
-            addElement(it.next());
-        }       
+        setAllElements(((MClassifierRole)getTarget()).getBases());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
      */
     protected boolean isValid(MModelElement elem) {
-        return elem instanceof MMessage && 
-            ((MMessage)elem).getInteraction() == ((MMessage)getContainer().getTarget()).getInteraction() &&
-            ((MMessage)elem).getActivator() == ((MMessage)getContainer().getTarget()).getActivator();
+        return elem instanceof MClassifier &&
+             (((MClassifier)elem).getClassifierRoles().contains(getTarget()) ||
+                contains(elem));
     }
 
 }

@@ -24,39 +24,60 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
-import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+import java.util.Iterator;
+import java.util.Vector;
 
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.core.MModelElement;
+import org.argouml.application.api.Argo;
+import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
+import org.argouml.uml.ui.AbstractActionAddModelElement;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 
 /**
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLReceiverListModel extends UMLModelElementListModel2 {
+public class ActionAddBase extends AbstractActionAddModelElement {
 
+    public final static ActionAddBase SINGLETON = new ActionAddBase();
     /**
-     * Constructor for UMLReceiverListModel.
-     * @param container
+     * Constructor for ActionAddBase.
      */
-    public UMLReceiverListModel(UMLUserInterfaceContainer container) {
-        super(container);
+    protected ActionAddBase() {
+        super();
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
-    protected void buildModelList() {
-        removeAllElements();
-        addElement(((MMessage)getContainer().getTarget()).getReceiver());
+    protected Vector getChoices() {
+        Vector vec = new Vector();
+        vec.addAll(CollaborationsHelper.getHelper().getAllPossibleBases((MClassifierRole)getTarget()));
+        return vec;
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
      */
-    protected boolean isValid(MModelElement elem) {
-        return false;
+    protected Vector getSelected() {
+        Vector vec = new Vector();
+        vec.addAll(((MClassifierRole)getTarget()).getBases());
+        return vec;
     }
+
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
+     */
+    protected String getDialogTitle() {
+        return Argo.localize("UMLMenu", "dialog.title.add-bases");
+    }
+
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
+     */
+    protected void doIt(Vector selected) {
+        MClassifierRole role = (MClassifierRole)getTarget();
+        CollaborationsHelper.getHelper().setBases(role, selected);
+    }
+        
 
 }

@@ -29,19 +29,22 @@ import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MOperation;
 
 /**
- * @since Oct 3, 2002
+ * The list of operations represented by some collaboration as shown on the 
+ * collaboration proppanel
+ * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLConstraintCollaborationListModel
+public class UMLCollaborationRepresentedOperationListModel
     extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLConstraintCollaborationListModel.
+     * Constructor for UMLCollaborationRepresentedOperationListModel.
      * @param container
      */
-    public UMLConstraintCollaborationListModel(UMLUserInterfaceContainer container) {
+    public UMLCollaborationRepresentedOperationListModel(UMLUserInterfaceContainer container) {
         super(container);
     }
 
@@ -49,14 +52,22 @@ public class UMLConstraintCollaborationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MCollaboration)getTarget()).getConstrainingElements());
+        Object target = getContainer().getTarget();
+        if (target instanceof MCollaboration) {
+            MCollaboration col = (MCollaboration)target;
+            removeAllElements();
+            if (col.getRepresentedOperation() != null)
+                addElement(col.getRepresentedOperation());
+        }
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
      */
     protected boolean isValid(MModelElement elem) {
-        return (elem.getCollaborations1().contains(getTarget()));
+        return elem instanceof MOperation && 
+            (((MCollaboration)getTarget()).getRepresentedOperation() == elem ||
+                contains(elem));
     }
 
 }

@@ -24,25 +24,31 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import java.util.Iterator;
+
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * @since Oct 3, 2002
+ * The list of classifiers represented by some collaboration as shown on the 
+ * collaboration proppanel
+ * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLInteractionCollaborationListModel
+public class UMLCollaborationRepresentedClassifierListModel
     extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLInteractionCollaborationListModel.
+     * Constructor for UMLCollaborationRepresentedClassifierListModel.
      * @param container
+     * @param propertyToSet
      */
-    public UMLInteractionCollaborationListModel(UMLUserInterfaceContainer container) {
+    public UMLCollaborationRepresentedClassifierListModel(
+        UMLUserInterfaceContainer container) {
         super(container);
     }
 
@@ -51,16 +57,15 @@ public class UMLInteractionCollaborationListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MInteraction)getContainer().getTarget()).getContext());
+        addElement(((MCollaboration)getTarget()).getRepresentedClassifier());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
      */
     protected boolean isValid(MModelElement elem) {
-        return (elem instanceof MCollaboration && 
-            (((MCollaboration)elem).getInteractions().contains(getContainer().getTarget()) ||
-            contains(elem)));
+        return elem instanceof MClassifier && 
+            getTarget() == ((MClassifier)elem).getCollaborations();
     }
 
 }

@@ -63,24 +63,24 @@ public class PropPanelCollaboration extends PropPanelNamespace {
             new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
         addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
         
-        UMLLinkedList classifierList = new UMLLinkedList(this, new UMLRepresentedClassifierListModel(this));
+        UMLLinkedList classifierList = new UMLLinkedList(this, new UMLCollaborationRepresentedClassifierListModel(this));
         classifierList.setVisibleRowCount(1);   
         addField(Argo.localize("UMLMenu", "label.representedClassifier"), 
             new JScrollPane(classifierList));
         
-        UMLLinkedList operationList = new UMLLinkedList(this, new UMLRepresentedOperationListModel(this));
+        UMLLinkedList operationList = new UMLLinkedList(this, new UMLCollaborationRepresentedOperationListModel(this));
         operationList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.representedOperation"), 
             new JScrollPane(operationList));
          
         add(LabelledLayout.getSeperator());
         
-        UMLLinkedList interactionList = new UMLLinkedList(this, new UMLInteractionCollaborationListModel(this));
+        UMLLinkedList interactionList = new UMLLinkedList(this, new UMLCollaborationInteractionListModel(this));
         interactionList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.interaction"), 
             new JScrollPane(interactionList));
             
-        UMLLinkedList constrainingList = new UMLLinkedList(this, new UMLConstraintCollaborationListModel(this));
+        UMLLinkedList constrainingList = new UMLLinkedList(this, new UMLCollaborationConstraintListModel(this));
         addField(Argo.localize("UMLMenu", "label.constraining-elements"), 
             new JScrollPane(constrainingList));
             

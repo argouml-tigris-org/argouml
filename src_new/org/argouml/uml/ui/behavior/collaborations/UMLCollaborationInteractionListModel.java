@@ -39,7 +39,7 @@ public class UMLCollaborationInteractionListModel
     extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLCollaborationInteractionListModel.
+     * Constructor for UMLInteractionCollaborationListModel2.
      * @param container
      */
     public UMLCollaborationInteractionListModel(UMLUserInterfaceContainer container) {
@@ -50,16 +50,16 @@ public class UMLCollaborationInteractionListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        removeAllElements();
-        addElement(((MInteraction)getContainer().getTarget()).getContext());
+        setAllElements(((MCollaboration)getContainer().getTarget()).getInteractions());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
      */
     protected boolean isValid(MModelElement elem) {
-        return (elem instanceof MCollaboration && 
-            ((MCollaboration)elem).getInteractions().contains(getContainer().getTarget()));
+        return (elem instanceof MInteraction &&
+            (((MInteraction)elem).getContext() == getTarget()) ||
+                contains(elem));
     }
 
 }

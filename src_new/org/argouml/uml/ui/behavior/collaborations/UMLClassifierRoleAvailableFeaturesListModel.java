@@ -24,25 +24,30 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
-
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * @since Oct 3, 2002
+ * @since Oct 4, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLInteractionCollaborationListModel
+public class UMLClassifierRoleAvailableFeaturesListModel
     extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLInteractionCollaborationListModel.
+     * Constructor for UMLClassifierRoleAvailableFeaturesListModel.
      * @param container
      */
-    public UMLInteractionCollaborationListModel(UMLUserInterfaceContainer container) {
+    public UMLClassifierRoleAvailableFeaturesListModel(UMLUserInterfaceContainer container) {
         super(container);
     }
 
@@ -50,17 +55,48 @@ public class UMLInteractionCollaborationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        removeAllElements();
-        addElement(((MInteraction)getContainer().getTarget()).getContext());
+        setAllElements(CollaborationsHelper.getHelper().allAvailableFeatures((MClassifierRole)getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
      */
     protected boolean isValid(MModelElement elem) {
-        return (elem instanceof MCollaboration && 
-            (((MCollaboration)elem).getInteractions().contains(getContainer().getTarget()) ||
-            contains(elem)));
+        if (elem instanceof MClassifier) {
+            Collection availableFeatures = CollaborationsHelper.getHelper().allAvailableFeatures((MClassifierRole)getTarget());
+            Iterator it = ((MClassifier)elem).getFeatures().iterator();
+            while (it.hasNext()) {
+                MFeature feature = (MFeature)it.next();
+                if (availableFeatures.contains(feature) || contains(feature)) return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
+    public void roleAdded(MElementEvent e) {
+        if (isValid((MModelElement)e.getAddedValue())) {
+            MClassifier clazz = (MClassifier)e.getAddedValue();
+            Iterator it = clazz.getFeatures().iterator();
+            while (it.hasNext()) {
+                addElement(it.next());
+            }
+        }
+    }
+
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
+    public void roleRemoved(MElementEvent e) {
+        if (isValid((MModelElement)e.getRemovedValue())) {
+            MClassifier clazz = (MClassifier)e.getRemovedValue();
+            Iterator it = clazz.getFeatures().iterator();
+            while (it.hasNext()) {
+                removeElement(it.next());
+            }
+        }
     }
 
 }

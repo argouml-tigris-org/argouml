@@ -57,7 +57,8 @@ public class UMLActionListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
      */
     protected boolean isValid(MModelElement elem) {
-        return elem instanceof MAction;
+        return (elem instanceof MAction && 
+            (((MMessage)getTarget()).getAction() == elem || contains(elem)));
     }
 
 }

@@ -71,12 +71,12 @@ public class PropPanelMessage extends PropPanelModelElement {
     addField(Argo.localize("UMLMenu", "label.name"), nameField);
     addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
 
-    JList senderList = new UMLLinkedList(this, new UMLSenderListModel(this));
+    JList senderList = new UMLLinkedList(this, new UMLMessageSenderListModel(this));
     senderList.setVisibleRowCount(1);
     JScrollPane senderScroll = new JScrollPane(senderList);
     addField(Argo.localize("UMLMenu", "label.sender"), senderScroll);
 
-    JList receiverList = new UMLLinkedList(this, new UMLReceiverListModel(this));
+    JList receiverList = new UMLLinkedList(this, new UMLMessageReceiverListModel(this));
     receiverList.setVisibleRowCount(1);
     JScrollPane receiverScroll = new JScrollPane(receiverList);
     addField(Argo.localize("UMLMenu", "label.receiver"), receiverScroll);
@@ -90,7 +90,7 @@ public class PropPanelMessage extends PropPanelModelElement {
     JScrollPane actionScroll = new JScrollPane(actionList);
     addField(Argo.localize("UMLMenu", "label.action"), actionScroll);
     
-    JScrollPane predecessorScroll = new JScrollPane(new UMLMutableLinkedList(this, new UMLPredecessorListModel(this), ActionAddPredecessor.SINGLETON, null));
+    JScrollPane predecessorScroll = new JScrollPane(new UMLMutableLinkedList(this, new UMLMessagePredecessorListModel(this), ActionAddPredecessor.SINGLETON, null));
     addField(Argo.localize("UMLMenu", "label.predecessor"), predecessorScroll);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateInteraction",null);

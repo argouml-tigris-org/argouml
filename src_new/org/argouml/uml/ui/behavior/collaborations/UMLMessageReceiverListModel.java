@@ -27,22 +27,20 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLInteractionCollaborationListModel
-    extends UMLModelElementListModel2 {
+public class UMLMessageReceiverListModel extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLInteractionCollaborationListModel.
+     * Constructor for UMLMessageReceiverListModel.
      * @param container
      */
-    public UMLInteractionCollaborationListModel(UMLUserInterfaceContainer container) {
+    public UMLMessageReceiverListModel(UMLUserInterfaceContainer container) {
         super(container);
     }
 
@@ -51,16 +49,14 @@ public class UMLInteractionCollaborationListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MInteraction)getContainer().getTarget()).getContext());
+        addElement(((MMessage)getContainer().getTarget()).getReceiver());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
      */
     protected boolean isValid(MModelElement elem) {
-        return (elem instanceof MCollaboration && 
-            (((MCollaboration)elem).getInteractions().contains(getContainer().getTarget()) ||
-            contains(elem)));
+        return false;
     }
 
 }

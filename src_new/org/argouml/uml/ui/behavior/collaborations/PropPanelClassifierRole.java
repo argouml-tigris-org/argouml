@@ -61,54 +61,37 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     addField(Argo.localize("UMLMenu", "label.name"), nameField);
     addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
     addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
-    // UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleBase","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
-    /*
-    UMLTypeModel baseModel = new UMLTypeModel(this, "isAcceptibleBase", "base", "getBase", "setBase", false, MClassifier.class, MClassifierRole.class, true);   
-    UMLComboBox clsComboBox = new UMLComboBox(baseModel);
-    */
-    addField(Argo.localize("UMLMenu", "label.base"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"), new UMLTypeComboBox(this, "base")));
-    addField(Argo.localize("UMLMenu", "label.multiplicity"),new UMLMultiplicityComboBox(this,mclass));
+  
+    JList baseList = new UMLMutableLinkedList(this, new UMLClassifierRoleBaseListModel(this), ActionAddBase.SINGLETON, null);
+    
+     addField(Argo.localize("UMLMenu", "label.multiplicity"),new UMLMultiplicityComboBox(this,mclass));
+    // addField(Argo.localize("UMLMenu", "label.base"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"), new UMLTypeComboBox(this, "base")));
+    addField(Argo.localize("UMLMenu", "label.base"), new JScrollPane(baseList));
+   
 
     add(LabelledLayout.getSeperator());
 	
     addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
     addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);	
 	
-    add(LabelledLayout.getSeperator());
-	
     JList connectList = new UMLList(new UMLClassifierRoleAssociationRoleListModel(this,null,true),true);
-    connectList.setForeground(Color.blue);
-    // connectList.setVisibleRowCount(3);
-    connectScroll= new JScrollPane(connectList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    addField(Argo.localize("UMLMenu", "label.association-roles"), 
+        new JScrollPane(connectList));
     
-    // JList availableContents = new UMLList(new UMLClassifierRoleAvailableContentsListModel(this,null,true), true);
-    // availableContents.setForeground(Color.blue);	
-    // JScrollPane availableContentsScroll = new JScrollPane(availableContents,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    
-	// addField(Argo.localize("UMLMenu", "label.available-contents"), availableContentsScroll);
-    addField(Argo.localize("UMLMenu", "label.association-roles"), connectScroll);
+    add(LabelledLayout.getSeperator());
+     
+    JList availableContentsList = new UMLLinkedList(this, new UMLClassifierRoleAvailableContentsListModel(this));
+    addField(Argo.localize("UMLMenu", "label.available-contents"), 
+        new JScrollPane(availableContentsList));   
+        
+    JList availableFeaturesList = new UMLLinkedList(this, new UMLClassifierRoleAvailableFeaturesListModel(this));
+    addField(Argo.localize("UMLMenu", "label.available-features"), 
+        new JScrollPane(availableFeaturesList));   
+    /* 
     JList attributesList = new UMLList(new UMLAttributesClassifierRoleListModel(this, "attributes", true), true);
-    attributesList.setForeground(Color.blue);
-    addField(Argo.localize("UMLMenu", "label.attributes"), new JScrollPane(attributesList));
-	/*
-    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(nameField,1,0,0);
-
-    addCaption("Base:",2,0,0);   	
-    UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleBase","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
-    UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
-    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),clsComboBox),2,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.stereotype"),3,0,0);
-    addField(stereotypeBox,3,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.namespace"),4,0,1);
-    addField(namespaceScroll,4,0,0);
-
-    addCaption("Association Roles:",0,1,0);
-    addField(connectScroll,0,1,1);
+    addField(Argo.localize("UMLMenu", "label.attributes"), 
+        new JScrollPane(attributesList));
     */
-
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
