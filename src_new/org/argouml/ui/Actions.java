@@ -60,7 +60,7 @@ import org.tigris.gef.base.Diagram;
 
 
 /**
- * ArgoUML's global actions.
+ * Manages ArgoUML's global actions. 
  *
  */
 public class Actions implements TargetListener {
@@ -80,6 +80,11 @@ public class Actions implements TargetListener {
         TargetManager.getInstance().addTargetListener(this);
     }
 
+    /**
+     * <code>allActions</code> is the list of 
+     * global AbstractActions in ArgoUML. 
+     * All these are UMLActions!
+     */
     private static Vector allActions = new Vector(100);
 
 
@@ -95,12 +100,12 @@ public class Actions implements TargetListener {
     /**
      * The action to undo.
      */
-    public static UMLAction Undo = new ActionUndo();
+    //public static UMLAction Undo = new ActionUndo();
     
     /**
      * The action to Redo.
      */
-    public static UMLAction Redo = new ActionRedo();
+    //public static UMLAction Redo = new ActionRedo();
 
     //public static UMLAction NavBack = new ActionNavBack();
     //public static UMLAction NavForw = new ActionNavForw();
@@ -120,9 +125,13 @@ public class Actions implements TargetListener {
     //public static UMLAction NextEditTab = new ActionNextEditTab();
     //public static UMLAction NextDetailsTab = new ActionNextDetailsTab();
     
+    /**
+     * The action to show or hide the RapidButtons aka toolbelt buttons
+     * aka buttons on selection aka ...
+     */
     public static UMLAction ShowRapidButtons = new ActionShowRapidButtons();
 
-    public static UMLAction CreateMultiple = new ActionCreateMultiple();
+    //public static UMLAction CreateMultiple = new ActionCreateMultiple();
 
     /**
      * The action to toggle AutoCritique.
@@ -162,24 +171,29 @@ public class Actions implements TargetListener {
     /**
      * The action to send Email to an Expert.
      */
-    public static UMLAction EmailExpert = new ActionEmailExpert();
+    public static UMLAction emailExpert = new ActionEmailExpert();
     
-    public static UMLAction MoreInfo = new ActionMoreInfo();
+    /**
+     * The action that shows information about the selected critic. 
+     * Invoked by pressing the Help button.
+     * Never used. See {@link org.argouml.cognitive.ui.WizStep#doHelp()}.
+     */
+    //public static UMLAction MoreInfo = new ActionMoreInfo();
     
     /**
      * The action to snooze the critics.
      */
-    public static UMLAction Snooze = new ActionSnooze();
+    public static UMLAction snooze = new ActionSnooze();
 
     /**
      * The action to open the SystemInfo dialog box.
      */
-    public static UMLAction SystemInfo = new ActionSystemInfo();
+    public static UMLAction systemInfo = new ActionSystemInfo();
     
     /**
      * The action to open the About ArgoUML dialog box.
      */
-    public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
+    public static UMLAction aboutArgoUML = new ActionAboutArgoUML();
 
     /**
      * @deprecated as of 0.15.3. Use updateAllEnabled(TargetEvent e) instead.
@@ -210,7 +224,14 @@ public class Actions implements TargetListener {
      */
     public static void addAction(AbstractAction newAction) {
         LOG.debug("Adding action: " + newAction.getClass().getName());
-	allActions.addElement(newAction);
+        System.out.println("Adding action: " + newAction.getClass().getName());
+        if (newAction instanceof UMLAction) {
+            allActions.addElement(newAction);
+        } else {
+            LOG.debug("An atempt was made to add an Action to ui.Actions "
+                    + "which is not a UMLAction. See issue 2086. " 
+                    + "Name of the action:" + newAction.getClass().getName());
+        }
     }
 
     /**

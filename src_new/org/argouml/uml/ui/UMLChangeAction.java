@@ -29,6 +29,11 @@ import org.argouml.kernel.ProjectManager;
 import java.awt.event.*;
 
 
+/**
+ * This action marks the current project as changed (dirty), which e.g. means 
+ * that the user is asked if he wants to save, before quitting the program.
+ *
+ */
 public class UMLChangeAction extends UMLAction {
 
     /**
