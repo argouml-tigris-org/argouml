@@ -813,7 +813,25 @@ public class Project implements java.io.Serializable {
             cls.setNamespace(getCurrentNamespace());
         return cls;
     }
-
+    
+    /**
+     * Finds all figs on the diagrams for some project member.
+     * @param member The member we are looking for. This can be a NSUML object but also another object.
+     * @return Collection The collection with the figs.
+     */
+    public Collection findFigsForMember(Object member) {
+    	Collection figs = new ArrayList();
+    	Iterator it = getDiagrams().iterator();
+    	while(it.hasNext()) {
+    		ArgoDiagram diagram = (ArgoDiagram)it.next();
+    		Fig fig = diagram.presentationFor(member);
+    		if (fig != null) {
+    			figs.add(fig);
+    		}
+    	}
+    	return figs;
+    }
+    
 	public MClassifier findTypeInModel(String s, MNamespace ns) {
 		// System.out.println("Looking for type "+s+" in Namespace "+ns.getName());
 		Collection ownedElements = ns.getOwnedElements();
@@ -938,6 +956,14 @@ public class Project implements java.io.Serializable {
     // the case where we have a use case that is not classifier.
 
     protected void trashInternal(Object obj) {
+    	// 2002-07-23
+    	// Jaap Branderhorst
+    	// we should remove the figs from all diagrams too
+    	// get all JGraphs from all diagrams containing the object to do that
+    	ProjectBrowser.TheInstance.getEditorPane().removePresentationFor(obj, getDiagrams());
+    	Iterator it = ProjectBrowser.TheInstance.getProject().getDiagrams().iterator();
+    	
+    	
         if (obj instanceof MUseCase) {
             // System.out.println("trashInternal: "+obj);
             MUseCase me = (MUseCase) obj;
