@@ -51,6 +51,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import java.util.*;
 
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 
 public class MMUtil {
@@ -382,14 +383,55 @@ public class MMUtil {
 
 	public MAbstraction buildRealization(MModelElement client, MModelElement supplier) {
 		MAbstraction realization = new MAbstractionImpl();
-// 		MStereotype realStereo = (MStereotype)STANDARDS.lookup("realize");
-// 		System.out.println("real ist: "+realStereo);
-		MStereotype realStereo = new MStereotypeImpl();
-		realStereo.setName("realize");
+		// 2002-07-13
+		// Jaap Branderhorst
+		// need a singleton for the stereotype.
+		// if the stereotype is allready on the model we should use this
+		// otherwise create a new one
+		// lets get the manager of the stereotypes (the namespace)
+		// we presume that client and supplier live in the same namespace
+		MStereotype realStereo = null;
+		
+		MNamespace namespace = supplier.getNamespace();
+		if (namespace == null) {
+			namespace = client.getNamespace();
+		}
+		
+		if (namespace != null) {
+			realStereo = (MStereotype)namespace.lookup("realize");
+			
+		}	
+		if (realStereo == null) { // no stereotype yet
+			realStereo = new MStereotypeImpl();
+			realStereo.setName("realize");
+			realStereo.setUUID(UUIDManager.SINGLETON.getNewUUID());
+		}
+		
+		if (namespace != null) {
+			realStereo.setNamespace(namespace);
+			realization.setNamespace(namespace);
+		}
+		
+		
+		// next two lines were commented out earlier
+		// MStereotype realStereo = (MStereotype)STANDARDS.lookup("realize");
+    	// System.out.println("real ist: "+realStereo);
+    	// commented next two lines out at change 2002-07-13 (Jaap Branderhorst)
+		// MStereotype realStereo = new MStereotypeImpl();
+		// realStereo.setName("realize");
+		// 2002-07-12
+		// Jaap Branderhorst
+		// added next line to keep GUI and model in sync and to keep a complete model.
+		realStereo.addExtendedElement(realization);
+		// 2002-07-13
+		// Jaap Branderhorst
+		// next piece of code was replaced because i needed the namespace earlier on, commented out
+		/*
 		if (supplier.getNamespace() != null) {
 		    MNamespace ns = supplier.getNamespace();
 		    realization.setNamespace(ns);
-		    realStereo.setNamespace(ns);
+		    // realStereo.setNamespace(ns);
+		    
 		    //		    ns.addOwnedElement(STANDARDS);
 		}
 		else if (client.getNamespace() != null) {
@@ -398,6 +440,7 @@ public class MMUtil {
 		    realStereo.setNamespace(ns);
 		    //		    ns.addOwnedElement(STANDARDS);
 		}
+		*/
 		realization.setStereotype(realStereo);
 		realization.addSupplier(supplier);
 		realization.addClient(client);
