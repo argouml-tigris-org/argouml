@@ -44,7 +44,9 @@ with other users?</a>
 <li><a href="#jwswhatisit">What is JavaWebStart?</a></li>
 <li><a href="#jwshowtoinstall">How do I install Java Web Start?</a></li>
 <li><a href="#jwsbadmime">It says Bad MIME type.</a></li>
-<li><a href="#jwsexpired">Your certificate has expired.</a></li>
+<li><a href="#jwsexpired">The certificate has expired.</a></li>
+<li><a href="#jwscertauth">The certificate cannot be authenticated.</a></li>
+<li><a href="#jwscerttrust">How to trust upcoming Java Web Start deliveries?</li>
 <li><a href="#jwsother">Other problems with Java Web Start.</a></li>
 </ul>
 
@@ -436,11 +438,126 @@ panel. (Select File|Preferences to get there.)
 <img src="images/proxy.gif" alt="Proxy Settings">
 
 
-<DT><a name="jwsexpired" />It says that your certificate has expired.</a>
+<DT><a name="jwsexpired" />The certificate has expired.</a>
 <DD>
-Yeah, sorry about that.  We are looking into getting a new
-certificate.  For now, just click the "Start" button that proceeds
+Yeah, sorry about that.
+You are probably running an old release of ArgoUML
+that we have not signed again with the new certificate
+or we have messed up by making a release with an old certificate.
+For now, just click the "Start" button that proceeds
 with the expired certificate.
+
+<DT><a name="jwscertauth" />The certificate cannot be authenticated</a>
+<DD>
+Yeah, sorry about that.
+The security in Java Web Start relies on certificates that are signed
+by known and trusted root certificates and authorities.
+To acquire such a certificate you need to have
+a registered company that owns the certificate
+and you need to pay some money to get it...
+For the ArgoUML project we don't have a company around that can own
+the certificate so we don't achieve the security to the level that
+the Java Web Start is designed to do.
+That is the reason you get a warning every time you download a new version.
+The <a href="#jwscerttrust">next question</a> is about how you
+avoid the warning.
+
+
+<DT><a name="jwscerttrust" />How to trust upcoming Java Web Start deliveries?</a>
+<DD>
+<h5>For the impatient:</h5>
+<ol>
+<li>Download "argouml-linus-1.cer"
+<li>Use keytool to import the certificate to <tt>jre/javaws/cacerts</tt>
+(Give password: changeit)
+    <pre>
+keytool -import -alias linus@tigris.org -file argouml-linus-1.cer -keystore cacerts
+    </pre>
+<li>Verify the fingerprints.
+</ol>
+
+<h5>If you are somewhat "security aware" and would like to understand
+what you are doing</h5>
+<ol>
+<li>Be sure you are linked to the tigris.org ArgoUml-server, e.g. by putting 
+   "http://argouml.tigris.org/servlets/ProjectDocumentList"
+   into the adressline of your browser. 
+   ( To be honest you can't be sure that it is not a fake what you are seeing
+     unless tigris.org will supply a https://argouml.tigris.org )
+
+<li>Download "argouml-linus-1.cer".
+   ( The self signed certificate of the public key that Linus Tolke
+     uses to make the ArgoUML releases.
+     You must trust that it was put there by Linus Tolke and
+     that it has not been compromised on the tigris server or
+     while moving it from the tigris server to your computer. )
+     
+<li>Note one of the hashcodes:<pre>
+   MD5: F1:A9:ED:79:88:91:19:31:AA:69:EE:A0:8F:AF:4A:43
+   SHA1: F1:A9:ED:79:88:91:19:31:AA:69:EE:A0:8F:AF:4A:43
+   </pre>
+   that are published together with the file on tigris.org.
+   Be sure to get it from there!
+   
+   ( You must trust that the fingerprints where put there by Linus Tolke
+     and that they have not been compromised while on the tigris server or
+     while moving them from the tigris server to your computer. )
+
+<li>Import the certificate to your local installation of Java Web Start.
+   You can do that - for example - performing these steps:
+   <ol>
+   <li>In a terminal window (DOS-Box) change to your Java Web Start folder,
+       usually this would be $JAVA_HOME/jre/javaws (%JAVA_HOME%\jre\javaws)
+   <li>Enter<pre>
+keytool -import -alias linus@tigris.org -file argouml-linus-1.cer -keystore cacerts
+       </pre>
+   <li>If you are asked for the password enter the default "changeit" or
+       the appropriate one that you have assigned
+       to your local JKS-keystore of Java Web Start named "cacerts".
+   <li>You will be asked wether you trust this certificate or not.
+       Compare the locally generated hashcodes (fingerprints) shown 
+       to that read from tigris.org (see step 3).
+       If the fingerprints match and you decide to trust the whole chain
+       of Linus Tolke, Tigris, your internet connection, and your computer
+       enter "Yes" in your language.
+   </ol>
+</ol>
+That's it!
+Now you should not see a message like 
+"Failed to verify the authenticity of this certificate. No
+assertions can be made of the origin or validity of the code. It
+is highly recommended not to install and run this code."
+Now <em>you</em> are trusting the updates from ArgoUML issued by
+Linus Tolke using this certificate.<p>
+
+If you notice that the current (September 2004) certificate
+expires in November 2006 you can conclude that Linus Tolke will
+create a new certificate in the first half of 2006 and then the
+fingerprints will change.
+Another thing that might happen is that Linus Tolke will let someone
+else do the release work and sign the Java Web Start releases with
+a new key.
+In both these cases you will have to do this all over again to trust
+the new certificate.<p>
+
+Further readings:
+<dl>
+<dt>Keytool documentation
+<dd><a href="http://java.sun.com/j2se/1.3/docs/tooldocs/win32/keytool.html">
+http://java.sun.com/j2se/1.3/docs/tooldocs/win32/keytool.html</a>
+
+<dt>Java Web Start FAQ
+<dd><a href="http://java.sun.com/products/javawebstart/faq.html">
+http://java.sun.com/products/javawebstart/faq.html</a>
+
+<dt>Java Web Start whitepapers
+<dd><a href="http://java.sun.com/products/javawebstart/reference/techart/index.html">
+http://java.sun.com/products/javawebstart/reference/techart/index.html</a>
+
+<dt>Java Web Start for developers
+<dd><a href="http://java.sun.com/products/javawebstart/developers.html">
+http://java.sun.com/products/javawebstart/developers.html</a>
+</dl>
 
 
 <DT><a name="jwsother" />Other problems.</a>
