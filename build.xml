@@ -740,7 +740,8 @@ Property files to be searched:
     <java classname="org.argouml.application.Main"
           classpath="${argo.build.classes};${classpath}"
           fork="yes"
-          taskname="argouml">
+          taskname="argouml"
+     	  jvmargs="-Xmx500M">
       <!--sysproperty key="javax.xml.parsers.SAXParserFactory"
                    value="org.apache.xerces.parsers.SAXParser"/-->
       <!-- sysproperty key="log4j.configuration"
