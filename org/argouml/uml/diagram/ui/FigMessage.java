@@ -258,4 +258,12 @@ public class FigMessage extends FigNodeModelElement {
   }
 
  
+	/**
+	 * @see org.tigris.gef.presentation.Fig#delete()
+	 */
+	public void delete() {
+		super.delete();
+		
+	}
+
 } /* end class FigMessage */

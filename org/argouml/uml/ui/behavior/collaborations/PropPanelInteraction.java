@@ -60,7 +60,7 @@ public class PropPanelInteraction extends PropPanelModelElement {
       	messagesList.setBackground(getBackground());
       	messagesList.setForeground(Color.blue);
       	JScrollPane messagesScroll= new JScrollPane(messagesList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 	
-        addField(messagesScroll,2,1,1);
+        addField(messagesScroll,1,1,1);
     	
     	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
         new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");

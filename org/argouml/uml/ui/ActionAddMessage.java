@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.collaboration.ui.*;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
@@ -80,10 +81,13 @@ public class ActionAddMessage extends UMLChangeAction {
         Layer lay = e.getLayerManager().getActiveLayer();
         GraphNodeRenderer gr = e.getGraphNodeRenderer();
         FigNode figMsg = gr.getFigNodeFor(gm, lay, msg);
+        ((FigMessage)figMsg).addPathItemToFigAssociationRole(lay);
+        /*
         lay.add(figMsg);
         FigEdge figRole = (FigEdge)lay.presentationFor(ar);
         figRole.addPathItem(figMsg, new PathConvPercent(figRole, 50, 10));
         figRole.updatePathItemLocations();
+        */
         e.damageAll();                
         return msg;
     }
