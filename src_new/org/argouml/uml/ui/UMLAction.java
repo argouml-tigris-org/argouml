@@ -71,6 +71,22 @@ public class UMLAction extends AbstractAction {
     }
 
     /**
+     * Sets one of this object's properties using the associated key. If the
+     * value has changed, a <code>PropertyChangeEvent</code> is sent to
+     * listeners.
+     *
+     * @param key a <code>String</code> containing the key.
+     * @param value an <code>Object</code> value.
+     */
+    public void putValue(String key, Object value) {
+	if (iconName != null && Action.SMALL_ICON.equals(key)) {
+	    iconName = null;
+	}
+
+	super.putValue(key, value);
+    }
+
+    /**
      * Gets one of this object's properties using the associated key.
      *
      * @param key the name of the property.
