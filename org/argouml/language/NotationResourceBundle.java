@@ -30,6 +30,7 @@ implements PluggableResourceBundle {
 
    static final Object[][] _contents = {
         {"label_use_guillemots", "Use guillemots (\u00ab \u00bb) for stereotypes" },
+        {"label_uml_notation_only", "Only allow strict UML notation text" },
         {"tab_notation", "Notation" }  
    };
 
@@ -57,3 +58,4 @@ implements PluggableResourceBundle {
         return "module.resources.notation";
     }
 }
+
