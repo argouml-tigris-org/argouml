@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2002-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -96,7 +97,6 @@ public class TestItemUID extends TestCase {
 	}
 
 	public void testAssignIDsToObjects() {
-        try {
 		MClass testmc = CoreFactory.getFactory().buildClass();
 		UMLActivityDiagram actdiag = new UMLActivityDiagram();
 		UMLClassDiagram classdiag = new UMLClassDiagram();
@@ -193,12 +193,6 @@ public class TestItemUID extends TestCase {
 		checkAssignIDToObject(figextend, true, true);
 		checkAssignIDToObject(figinclude, true, true);
 		checkAssignIDToObject(figusecase, true, true);
-        }
-        catch(java.lang.InternalError e) {
-            fail("This operating system probably does not support graphical\n"+
-                 "output. The exception message of java.lang.InternalError "+
-                 "is:\n"+e);
-        }
 	}
 
 	private void checkAssignIDToObject(

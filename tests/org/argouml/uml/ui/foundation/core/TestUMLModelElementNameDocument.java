@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -21,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
@@ -31,6 +31,7 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
+import javax.swing.text.BadLocationException;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -85,72 +86,58 @@ public class TestUMLModelElementNameDocument extends TestCase {
         model = null;
     }
     
-    public void testSetName() {
+    public void testSetName()
+	throws BadLocationException
+    {
         elem.setName("test");
-        try {
-            assertEquals("test", model.getText(0, model.getLength()));
-        } catch(Exception ex) {
-            fail();
-        }
+	assertEquals("test", model.getText(0, model.getLength()));
     }
     
-    public void testRemoveName() {
+    public void testRemoveName()
+	throws BadLocationException
+    {
         elem.setName("test");
         elem.setName(null);
-        try {
-           assertEquals("", model.getText(0, model.getLength()));
-        } catch(Exception ex) {
-            fail();
-        } 
+	assertEquals("", model.getText(0, model.getLength()));
     }
     
-    public void testInsertString() {
+    public void testInsertString()
+	throws BadLocationException
+    {
         elem.setName("");
-        try {
-            model.insertString(0, "test", null);
-        } catch (Exception ex) {
-            fail();
-        }
+	model.insertString(0, "test", null);
         assertEquals("test", elem.getName());
     }
     
-    public void testRemoveString() {
-        try {
-            model.insertString(0, "test", null);
-            model.remove(0, model.getLength());
-        } catch (Exception ex) {
-            fail();
-        }
+    public void testRemoveString() 
+	throws BadLocationException
+    {
+	model.insertString(0, "test", null);
+	model.remove(0, model.getLength());
         assertEquals("", elem.getName());
     }
     
-    public void testAppendString() {
+    public void testAppendString()
+	throws BadLocationException
+    {
         elem.setName("test");
-        try {
-            model.insertString(model.getLength(), "test", null);
-        } catch (Exception ex) {
-            fail();
-        }
+	model.insertString(model.getLength(), "test", null);
         assertEquals("testtest", elem.getName());
     }
     
-    public void testInsertStringHalfway() {
+    public void testInsertStringHalfway()
+	throws BadLocationException
+    {
         elem.setName("test");
-        try {
-            model.insertString(1, "test", null);
-        } catch (Exception ex) {
-            fail();
-        }
+	model.insertString(1, "test", null);
         assertEquals("ttestest", elem.getName());
     }
     
-    public void testRemoveStringHalfway() {
+    public void testRemoveStringHalfway()
+	throws BadLocationException
+    {
         elem.setName("test");
-        try {
-            model.remove(1, model.getLength()-2);
-        } catch (Exception ex) {
-            fail();
-        }
+	model.remove(1, model.getLength()-2);
         assertEquals("tt", elem.getName());
     }
 }

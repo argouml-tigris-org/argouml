@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -21,18 +22,19 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.xml.xmi;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.MalformedURLException;
 
 import junit.framework.TestCase;
 
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.IllegalFormatException;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ProjectBrowser;
@@ -69,7 +71,10 @@ public class TestXMIReader extends TestCase {
      * our dear friends of NSUML. However you can use it to test things quite
      * easily :)
      */
-    public void testReadReturnParameter() {        
+    public void testReadReturnParameter()
+	throws IOException, MalformedURLException, IllegalFormatException,
+	       Exception
+    {
         // next statement should be in a ArgoTestCase or something, is allmost 
         // allways needed
         ArgoSecurityManager.getInstance().setAllowExit(true);
@@ -79,22 +84,14 @@ public class TestXMIReader extends TestCase {
         MParameter param = oper.getParameter(0);
         param.setType(p.findType("String"));
         File file = new File("test.zargo");
-        try {
-            p.save(true, file);
-        } catch (Exception ex) {
-            fail(ex.getMessage());
-            return;
-        }
+
+	p.save(true, file);
+
         p = null;
         p = ProjectManager.getManager().makeEmptyProject();
-        try {
-            URL url = file.toURL();
-            ProjectManager.getManager().loadProject(url);
-        } catch (IOException io) {
-            fail(io.getMessage());
-        } catch (Exception ex) {
-            fail(ex.getMessage()); // this should fail if issue 1504 exists
-        }
+
+	URL url = file.toURL();
+	ProjectManager.getManager().loadProject(url);
     }
 
 }
