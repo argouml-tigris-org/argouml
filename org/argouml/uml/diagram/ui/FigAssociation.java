@@ -100,7 +100,7 @@ public class FigAssociation extends FigEdgeModelElement {
      * for loading. Use the FigAssociation(Object, Layer) constructor instead!
      */
     public FigAssociation() {
-   
+        super();
     
         // lets use groups to construct the different text sections at the association
         _middleGroup.addFig(_name);

@@ -32,36 +32,67 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.util.Iterator;
+import java.util.Vector;
+
+import javax.swing.Icon;
+import javax.swing.JMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-
 import org.apache.log4j.Category;
-import org.apache.log4j.helpers.RelativeTimeDateFormat;
-import org.argouml.application.api.*;
-import org.argouml.application.events.*;
-import org.argouml.kernel.*;
+import org.argouml.application.api.Notation;
+import org.argouml.application.api.NotationContext;
+import org.argouml.application.api.NotationName;
+import org.argouml.application.events.ArgoEvent;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.application.events.ArgoNotationEventListener;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoList;
+import org.argouml.kernel.DelayedChangeNotify;
+import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.ui.*;
+import org.argouml.ui.ActionAutoResize;
+import org.argouml.ui.ActionGoToCritique;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.Clarifier;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
-import org.argouml.cognitive.*;
-import org.argouml.uml.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.generator.*;
-import org.argouml.util.*;
+import org.argouml.uml.UUIDManager;
+import org.argouml.uml.ui.ActionProperties;
+import org.argouml.util.Trash;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigEdgePoly;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MRelationship;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 
 

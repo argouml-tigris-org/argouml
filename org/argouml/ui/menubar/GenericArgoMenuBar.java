@@ -24,21 +24,61 @@
 
 package org.argouml.ui.menubar;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.ListIterator;
 
-import javax.swing.*;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.ui.*;
-import org.tigris.gef.util.*;
-
-import org.argouml.application.api.*;
-import org.argouml.application.events.*;
-import org.argouml.ui.*;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.PluggableMenu;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoModuleEvent;
+import org.argouml.application.events.ArgoModuleEventListener;
+import org.argouml.ui.ActionAutoResize;
+import org.argouml.ui.ActionSaveConfiguration;
+import org.argouml.ui.ActionSettings;
+import org.argouml.ui.Actions;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.MultiToolbar;
+import org.argouml.ui.Toolbar;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
-import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.ActionActivityDiagram;
+import org.argouml.uml.ui.ActionClassDiagram;
+import org.argouml.uml.ui.ActionCollaborationDiagram;
+import org.argouml.uml.ui.ActionCopy;
+import org.argouml.uml.ui.ActionCut;
+import org.argouml.uml.ui.ActionDeleteFromDiagram;
+import org.argouml.uml.ui.ActionDeploymentDiagram;
+import org.argouml.uml.ui.ActionEmptyTrash;
+import org.argouml.uml.ui.ActionExit;
+import org.argouml.uml.ui.ActionGenerateAll;
+import org.argouml.uml.ui.ActionGenerateOne;
+import org.argouml.uml.ui.ActionGenerateProjectCode;
+import org.argouml.uml.ui.ActionImportFromSources;
+import org.argouml.uml.ui.ActionNew;
+import org.argouml.uml.ui.ActionOpenProject;
+import org.argouml.uml.ui.ActionPaste;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.ActionSaveGraphics;
+import org.argouml.uml.ui.ActionSaveProject;
+import org.argouml.uml.ui.ActionSaveProjectAs;
+import org.argouml.uml.ui.ActionSequenceDiagram;
+import org.argouml.uml.ui.ActionStateDiagram;
+import org.argouml.uml.ui.ActionUseCaseDiagram;
+import org.argouml.uml.ui.ActionZoom;
+import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.base.CmdAdjustGrid;
+import org.tigris.gef.base.CmdAdjustGuide;
+import org.tigris.gef.base.CmdAdjustPageBreaks;
+import org.tigris.gef.base.CmdSelectAll;
+import org.tigris.gef.base.CmdSelectInvert;
+import org.tigris.gef.base.CmdSelectNext;
+import org.tigris.gef.util.Localizer;
 
 /** GenericArgoMenuBar defines the menubar for all
  *  operating systems which do not explicitely ask
