@@ -73,7 +73,7 @@ public class ActionSaveProject extends UMLAction {
 
   public boolean trySave (boolean overwrite) {
     URL url = ProjectManager.getManager().getCurrentProject().getURL();
-    return trySave(overwrite, new File(url.getFile()));
+    return url == null ? false : trySave(overwrite, new File(url.getFile()));
   }
 
   public boolean trySave(boolean overwrite, File file) {

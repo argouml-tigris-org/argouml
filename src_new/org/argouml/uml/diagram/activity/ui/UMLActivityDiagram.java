@@ -33,6 +33,7 @@ import java.beans.PropertyVetoException;
 import javax.swing.Action;
 
 import org.apache.log4j.Category;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.state.ui.ActionCreatePseudostate;
@@ -221,12 +222,20 @@ public class UMLActivityDiagram extends UMLDiagram {
     _toolBar.add(_diagramName.getJComponent());
   }
   
-  protected static String getNewDiagramName() {
-    String name = null;
-    name = "activity diagram " + _ActivityDiagramSerial;
-    _ActivityDiagramSerial++;
-    return name;
-  }
+   /**
+     * Creates a new diagramname.
+     * @return String
+     */
+    protected static String getNewDiagramName() {
+        String name = null;
+        name = "Activity Diagram " + _ActivityDiagramSerial;
+        _ActivityDiagramSerial++;
+        if (!ProjectManager.getManager().getCurrentProject().isValidDiagramName(name)) {
+            name = getNewDiagramName();
+        }
+        return name;
+    }
+  
 
 
 } /* end class UMLActivityDiagram */

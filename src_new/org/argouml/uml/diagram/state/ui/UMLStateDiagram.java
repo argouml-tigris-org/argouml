@@ -34,6 +34,7 @@ import javax.swing.Action;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -242,9 +243,11 @@ public class UMLStateDiagram extends UMLDiagram {
 
     protected static String getNewDiagramName() {
         String name = null;
-        name = "state diagram " + _StateDiagramSerial;
+        name = "State Diagram " + _StateDiagramSerial;
         _StateDiagramSerial++;
-
+        if (!ProjectManager.getManager().getCurrentProject().isValidDiagramName(name)) {
+            name = getNewDiagramName();
+        }
         return name;
     }
 

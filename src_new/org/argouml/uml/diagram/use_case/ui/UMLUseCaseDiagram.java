@@ -36,7 +36,6 @@
 // 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Replaced dependency
 // relationship following review.
 
-
 package org.argouml.uml.diagram.use_case.ui;
 
 import java.beans.PropertyVetoException;
@@ -44,6 +43,7 @@ import java.beans.PropertyVetoException;
 import javax.swing.Action;
 
 import org.apache.log4j.Category;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.UseCaseDiagramGraphModel;
@@ -63,7 +63,6 @@ import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
-
 /**
  * <p>The base class of the use case diagram.</p>
  *
@@ -81,70 +80,48 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * <p>Tool to add an actor node.</p>
      */
 
-    protected static Action _actionActor =
-        new CmdCreateNode(MActor.class, "Actor");
-
+    protected static Action _actionActor = new CmdCreateNode(MActor.class, "Actor");
 
     /**
      * <p>Tool to add a use case node.</p>
      */
 
-    protected static Action _actionUseCase =
-        new CmdCreateNode(MUseCase.class, "UseCase");
-
+    protected static Action _actionUseCase = new CmdCreateNode(MUseCase.class, "UseCase");
 
     /**
      * <p>Tool to create an association between UML artifacts using a
      *   polyedge.</p>
      */
 
-    protected static Action _actionAssoc =
-        new CmdSetMode(ModeCreatePolyEdge.class,
-                       "edgeClass", MAssociation.class,
-                       "Association");
-
+    protected static Action _actionAssoc = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Association");
 
     /**
      * <p>Tool to create a generalization between UML artifacts using a
      *   polyedge.</p>
      */
 
-    protected static Action _actionGeneralize =
-        new CmdSetMode(ModeCreatePolyEdge.class,
-                       "edgeClass", MGeneralization.class,
-                       "Generalization");
+    protected static Action _actionGeneralize = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MGeneralization.class, "Generalization");
 
     /**
      * <p>Tool to create an extend relationship between UML use cases using a
      *   polyedge.</p>
      */
 
-    protected static Action _actionExtend =
-        new CmdSetMode(ModeCreatePolyEdge.class,
-                       "edgeClass", MExtend.class,
-                       "Extend");
-
+    protected static Action _actionExtend = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MExtend.class, "Extend");
 
     /**
      * <p>Tool to create an include relationship between UML use cases using a
      *   polyedge.</p>
      */
 
-    protected static Action _actionInclude =
-        new CmdSetMode(ModeCreatePolyEdge.class,
-                       "edgeClass", MInclude.class,
-                       "Include");
+    protected static Action _actionInclude = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MInclude.class, "Include");
 
     /**
      * <p>Tool to create a dependency between UML artifacts using a
      *   polyedge.</p>
      */
 
-    protected static Action _actionDependency =
-        new CmdSetMode(ModeCreatePolyEdge.class,
-                       "edgeClass", MDependency.class,
-                       "Dependency");
-
+    protected static Action _actionDependency = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MDependency.class, "Dependency");
 
     /**
      * <p>A static counter of the use case index (used in constructing a unique
@@ -152,7 +129,6 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      */
 
     protected static int _UseCaseDiagramSerial = 1;
-
 
     // constructors
 
@@ -171,10 +147,9 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     public UMLUseCaseDiagram() {
         try {
             setName(getNewDiagramName());
+        } catch (PropertyVetoException pve) {
         }
-        catch (PropertyVetoException pve) { }
     }
-
 
     /**
      * <p>Construct a new use case diagram with in a defined namespace.</p>
@@ -191,12 +166,12 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         this();
         setNamespace(m);
     }
-    
+
     public UMLUseCaseDiagram(String name, MNamespace m) {
         this(m);
         try {
             setName(name);
-        } catch(PropertyVetoException v) {
+        } catch (PropertyVetoException v) {
         }
     }
 
@@ -242,7 +217,6 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         lay.setGraphEdgeRenderer(rend);
     }
 
-
     /**
      * <p>Initialize the toolbar for a use case diagram.</p>
      *
@@ -253,8 +227,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     protected void initToolBar() {
 
-        cat.debug(this.getClass().toString() +
-                            ": making usecase toolbar");
+        cat.debug(this.getClass().toString() + ": making usecase toolbar");
 
         // Create a toolbar
 
@@ -307,13 +280,15 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
         _toolBar.add(_diagramName.getJComponent());
     }
-    
-     protected static String getNewDiagramName() {
-  	String name = null;
-        name = "use case diagram " + _UseCaseDiagramSerial;
-        _UseCaseDiagramSerial++;
 
-    return name;
-  }
+    protected static String getNewDiagramName() {
+        String name = null;
+        name = "Usecase Diagram " + _UseCaseDiagramSerial;
+        _UseCaseDiagramSerial++;
+        if (!ProjectManager.getManager().getCurrentProject().isValidDiagramName(name)) {
+            name = getNewDiagramName();
+        }
+        return name;
+    }
 
 } /* end class UMLUseCaseDiagram */

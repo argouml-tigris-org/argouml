@@ -43,7 +43,7 @@ import org.tigris.gef.base.ModeSelect;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
-public class UMLDiagram extends ArgoDiagram {
+public abstract class UMLDiagram extends ArgoDiagram {
     
 
   protected static Category cat = Category.getInstance(UMLDiagram.class);
@@ -137,7 +137,7 @@ public class UMLDiagram extends ArgoDiagram {
     super.setName(n);
     _diagramName.updateName();
   }
-
+  
   static final long serialVersionUID = -401219134410459387L;
 
 } /* end class UMLDiagram */

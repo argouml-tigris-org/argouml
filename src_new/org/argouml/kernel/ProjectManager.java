@@ -157,8 +157,8 @@ public final class ProjectManager {
         _creatingCurrentProject = true;
         Argo.log.info("making empty project");
         Project p = new Project();
-        p.makeUntitledProject();
         setCurrentProject(p);
+        p.makeUntitledProject();        
         _creatingCurrentProject = false;
         return p;
     }

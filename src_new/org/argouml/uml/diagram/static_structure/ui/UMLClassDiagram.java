@@ -28,10 +28,9 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.beans.PropertyVetoException;
-
 import javax.swing.Action;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -43,6 +42,7 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.ui.ToolBar;
+
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.foundation.core.MAbstraction;
@@ -58,146 +58,120 @@ import ru.novosoft.uml.model_management.MPackage;
 
 public class UMLClassDiagram extends UMLDiagram {
 
-  ////////////////
-  // actions for toolbar
-  // TODO: should these be static?
+    ////////////////
+    // actions for toolbar
+    // TODO: should these be static?
 
+    protected static Action _actionClass = new CmdCreateNode(MClass.class, "Class");
 
+    protected static Action _actionObject = new CmdCreateNode(MInstance.class, "Instance");
 
-	protected static Action _actionClass =
-		new CmdCreateNode(MClass.class, "Class");
+    protected static Action _actionInterface = new CmdCreateNode(MInterface.class, "Interface");
 
-	protected static Action _actionObject =
-		new CmdCreateNode(MInstance.class, "Instance");
+    protected static Action _actionDepend = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MDependency.class, "Dependency");
 
-	protected static Action _actionInterface =
-		new CmdCreateNode(MInterface.class, "Interface");
+    protected static Action _actionPermission = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MPermission.class, "Permission");
 
-	protected static Action _actionDepend =
-		new CmdSetMode(ModeCreatePolyEdge.class,
-					   "edgeClass", MDependency.class,
-					   "Dependency");
-    
-    protected static Action _actionPermission =
-        new CmdSetMode(ModeCreatePolyEdge.class,
-                       "edgeClass", MPermission.class,
-                       "Permission");
+    protected static Action _actionUsage = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MUsage.class, "Usage");
 
-    protected static Action _actionUsage =
-        new CmdSetMode(ModeCreatePolyEdge.class,
-                       "edgeClass", MUsage.class,
-                       "Usage");
+    protected static Action _actionAssoc = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Association");
 
+    protected static Action _actionLink = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MLink.class, "Link");
 
-	protected static Action _actionAssoc =
-		new CmdSetMode(ModeCreatePolyEdge.class,
-					   "edgeClass", MAssociation.class,
-					   "Association");
+    protected static Action _actionGeneralize = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MGeneralization.class, "Generalization");
 
-	protected static Action _actionLink =
-		new CmdSetMode(ModeCreatePolyEdge.class,
-					   "edgeClass", MLink.class,
-					   "Link");
+    protected static Action _actionRealize = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAbstraction.class, "Realization");
 
-	protected static Action _actionGeneralize =
-		new CmdSetMode(ModeCreatePolyEdge.class,
-					   "edgeClass", MGeneralization.class,
-					   "Generalization");
+    protected static Action _actionPackage = new CmdCreateNode(MPackage.class, "Package");
 
-  
-	protected static Action _actionRealize =
-		new CmdSetMode(ModeCreatePolyEdge.class,
-					   "edgeClass", MAbstraction.class,
-					   "Realization");
-   
-	protected static Action _actionPackage =
-		new CmdCreateNode(MPackage.class, "Package");
+    ////////////////////////////////////////////////////////////////
+    // contructors
+    protected static int _ClassDiagramSerial = 1;
 
-
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  protected static int _ClassDiagramSerial = 1;
-
-  protected static String getNewDiagramName() {
-  	String name = null;
-        name = "class diagram " + _ClassDiagramSerial;
+    /**
+     * Creates a new diagramname.
+     * @return String
+     */
+    protected static String getNewDiagramName() {
+        String name = null;
+        name = "Class Diagram " + _ClassDiagramSerial;
         _ClassDiagramSerial++;
+        if (!ProjectManager.getManager().getCurrentProject().isValidDiagramName(name)) {
+            name = getNewDiagramName();
+        }
+        return name;
+    }
 
-    return name;
-  }
+    public UMLClassDiagram() {
+        super();
+    }
 
-  public UMLClassDiagram() {
-  	super();
-    try { setName(getNewDiagramName()); }
-    catch (PropertyVetoException pve) { }
-  }
-  
-  public UMLClassDiagram(String name, MNamespace m) {
-    super(name, m);
-  }
+    public UMLClassDiagram(String name, MNamespace m) {
+        super(name, m);
+    }
 
-  public UMLClassDiagram(MNamespace m) {
-    super(getNewDiagramName(), m);
-  }
+    public UMLClassDiagram(MNamespace m) {
+        this(getNewDiagramName(), m);
+    }
 
-  public void setNamespace(MNamespace m) {
-    super.setNamespace(m);
-    ClassDiagramGraphModel gm = new ClassDiagramGraphModel();
-    gm.setNamespace(m);
-    setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
-    setLayer(lay);
-    ClassDiagramRenderer rend = new ClassDiagramRenderer(); // singleton
-    lay.setGraphNodeRenderer(rend);
-    lay.setGraphEdgeRenderer(rend);
-  }
+    public void setNamespace(MNamespace m) {
+        super.setNamespace(m);
+        ClassDiagramGraphModel gm = new ClassDiagramGraphModel();
+        gm.setNamespace(m);
+        setGraphModel(gm);
+        LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
+        setLayer(lay);
+        ClassDiagramRenderer rend = new ClassDiagramRenderer(); // singleton
+        lay.setGraphNodeRenderer(rend);
+        lay.setGraphEdgeRenderer(rend);
+    }
 
-  /** initialize the toolbar for this diagram type */
-  protected void initToolBar() {
-    _toolBar = new ToolBar();
-    _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+    /** initialize the toolbar for this diagram type */
+    protected void initToolBar() {
+        _toolBar = new ToolBar();
+        _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
 
-    //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-    _toolBar.add(_actionSelect);
-    _toolBar.add(_actionBroom);
-    _toolBar.addSeparator();
+        //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        _toolBar.add(_actionSelect);
+        _toolBar.add(_actionBroom);
+        _toolBar.addSeparator();
 
-    _toolBar.add(_actionPackage);
-    _toolBar.add(_actionClass);
-    _toolBar.add(_actionAssoc);
-    _toolBar.add(_actionDepend);
-    _toolBar.add(_actionPermission);
-    _toolBar.add(_actionUsage);
-    _toolBar.add(_actionGeneralize);
-    _toolBar.addSeparator();
+        _toolBar.add(_actionPackage);
+        _toolBar.add(_actionClass);
+        _toolBar.add(_actionAssoc);
+        _toolBar.add(_actionDepend);
+        _toolBar.add(_actionPermission);
+        _toolBar.add(_actionUsage);
+        _toolBar.add(_actionGeneralize);
+        _toolBar.addSeparator();
 
-//     _toolBar.add(_actionObject);
-//     _toolBar.add(_actionLink);
-//     _toolBar.addSeparator();
+        //     _toolBar.add(_actionObject);
+        //     _toolBar.add(_actionLink);
+        //     _toolBar.addSeparator();
 
-    _toolBar.add(_actionInterface);
-    _toolBar.add(_actionRealize);
-    _toolBar.addSeparator();
+        _toolBar.add(_actionInterface);
+        _toolBar.add(_actionRealize);
+        _toolBar.addSeparator();
 
-    _toolBar.add(ActionAddAttribute.SINGLETON);
-    _toolBar.add(ActionAddOperation.SINGLETON);
-    // TODO: remove attribute and operation?
-    _toolBar.addSeparator();
+        _toolBar.add(ActionAddAttribute.SINGLETON);
+        _toolBar.add(ActionAddOperation.SINGLETON);
+        // TODO: remove attribute and operation?
+        _toolBar.addSeparator();
 
-    _toolBar.add(ActionAddNote.SINGLETON);
-    _toolBar.addSeparator();
+        _toolBar.add(ActionAddNote.SINGLETON);
+        _toolBar.addSeparator();
 
-    _toolBar.add(_actionRectangle);
-    _toolBar.add(_actionRRectangle);
-    _toolBar.add(_actionCircle);
-    _toolBar.add(_actionLine);
-    _toolBar.add(_actionText);
-    _toolBar.add(_actionPoly);
-    _toolBar.add(_actionSpline);
-    _toolBar.add(_actionInk);
-    _toolBar.addSeparator();
+        _toolBar.add(_actionRectangle);
+        _toolBar.add(_actionRRectangle);
+        _toolBar.add(_actionCircle);
+        _toolBar.add(_actionLine);
+        _toolBar.add(_actionText);
+        _toolBar.add(_actionPoly);
+        _toolBar.add(_actionSpline);
+        _toolBar.add(_actionInk);
+        _toolBar.addSeparator();
 
-    _toolBar.add(_diagramName.getJComponent());
-  }
+        _toolBar.add(_diagramName.getJComponent());
+    }
 
 } /* end class UMLClassDiagram */

@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
@@ -94,8 +95,7 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
     public boolean isValidNamespace(MNamespace ns) {
-        if (ns instanceof MCollaboration) return true;
-        return false;
+        return (ns instanceof MCollaboration || ns instanceof MClassifier || ns == ProjectManager.getManager().getCurrentProject().getModel());
     }
 
 }  /* end class ActionSequenceDiagram */
