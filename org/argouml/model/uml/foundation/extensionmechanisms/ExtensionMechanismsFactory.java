@@ -120,7 +120,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
      * @param namespace
      * @return an initialized stereotype.
      */
-    public MStereotype buildStereotype(String text, Object ns) {
+    public Object/*MStereotype*/ buildStereotype(String text, Object ns) {
     	MStereotype stereo = createStereotype();
     	stereo.setName(text);
     	if (ns != null && ns instanceof MNamespace)
@@ -128,7 +128,8 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     	return stereo;
     }
 
-    public MStereotype buildStereotype(MModelElement m, String text) {
+    public MStereotype buildStereotype(Object/*MModelElement*/ modelElement, String text) {
+        MModelElement m = (MModelElement)modelElement;
         // if (m == null && text == null)
 	//  throw new IllegalArgumentException("one of the arguments is null");
         MStereotype stereo = createStereotype();

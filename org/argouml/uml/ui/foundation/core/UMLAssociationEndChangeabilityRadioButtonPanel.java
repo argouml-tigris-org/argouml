@@ -29,9 +29,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 
 /**
@@ -66,8 +66,8 @@ public class UMLAssociationEndChangeabilityRadioButtonPanel extends UMLRadioButt
      */
     public void buildModel() {
         if (getTarget() != null) {
-            MAssociationEnd target = (MAssociationEnd) getTarget();
-            MChangeableKind kind = target.getChangeability();
+            Object target = /*(MAssociationEnd)*/ getTarget();
+            Object kind = ModelFacade.getChangeability(target);
             if (kind == null || kind.equals(MChangeableKind.CHANGEABLE)) {
                 setSelected(ActionSetAssociationEndChangeability.CHANGEABLE_COMMAND);
             } else

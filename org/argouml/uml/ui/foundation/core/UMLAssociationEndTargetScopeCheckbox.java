@@ -26,9 +26,9 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLCheckBox2;
 
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
 /**
@@ -54,8 +54,8 @@ public class UMLAssociationEndTargetScopeCheckbox extends UMLCheckBox2 {
      */
     public void buildModel() {
         if (getTarget() != null) {
-            MAssociationEnd associationEnd = (MAssociationEnd) getTarget();
-            setSelected(MScopeKind.CLASSIFIER.equals(associationEnd.getTargetScope()));
+            Object associationEnd = /*(MAssociationEnd)*/ getTarget();
+            setSelected(MScopeKind.CLASSIFIER.equals(ModelFacade.getTargetScope(associationEnd)));
         }
     }
 }

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -29,13 +28,11 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
  * @since Oct 10, 2002
@@ -61,26 +58,29 @@ public class ActionSetModelElementStereotype extends UMLChangeAction {
      */
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        MStereotype oldStereo = null;
-        MStereotype newStereo = null;
-        MModelElement target = null;
+        Object oldStereo = null;
+        Object newStereo = null;
+        Object target = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2) source;
-            if (org.argouml.model.ModelFacade.isAStereotype(combo.getSelectedItem())) 
-                newStereo = (MStereotype) combo.getSelectedItem();                                
-            if (org.argouml.model.ModelFacade.isAModelElement(combo.getTarget())) {
-                target = (MModelElement) combo.getTarget();
-                oldStereo = target.getStereotype();
+            if (ModelFacade.isAStereotype(combo.getSelectedItem())) 
+                newStereo = /*(MStereotype)*/ combo.getSelectedItem();                                
+            if (ModelFacade.isAModelElement(combo.getTarget())) {
+                target = /*(MModelElement)*/ combo.getTarget();
+                oldStereo = null;
+                if (ModelFacade.getStereotypes(target).size() > 0) {
+                    oldStereo = ModelFacade.getStereotypes(target).iterator().next();
+                }
             }
 	    if ("".equals(combo.getSelectedItem()))
 		newStereo = null;
         }
         if (newStereo != oldStereo && target != null) {
 	    if (newStereo != null) {
-		newStereo = (MStereotype)
+		newStereo = /*(MStereotype)*/
 			ModelManagementHelper.getHelper().getCorrespondingElement(
 				  newStereo,
-				  target.getModel());
+				  ModelFacade.getModel(target));
 	    }
             ExtensionMechanismsHelper.getHelper().setStereoType(target, newStereo);
             super.actionPerformed(e);

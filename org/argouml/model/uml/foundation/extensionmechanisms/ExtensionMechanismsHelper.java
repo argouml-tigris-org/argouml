@@ -175,7 +175,8 @@ public class ExtensionMechanismsHelper {
      * @param m
      * @return Collection
      */
-    public Collection getAllPossibleStereotypes(MModelElement m) {
+    public Collection getAllPossibleStereotypes(Object modelElement) {
+        MModelElement m = (MModelElement)modelElement;
         List ret = new ArrayList();
         if (m == null) return ret;
         Iterator it = getStereotypes().iterator();
@@ -229,7 +230,9 @@ public class ExtensionMechanismsHelper {
      * @param m
      * @param stereo
      */
-    public void setStereoType(MModelElement m, MStereotype stereo) {
+    public void setStereoType(Object modelElement, Object stereotype) {
+        MModelElement m = (MModelElement)modelElement;
+        MStereotype stereo = (MStereotype)stereotype;
         if (stereo != null && m.getModel() != stereo.getModel()) {
             stereo.setNamespace(m.getModel());
         }

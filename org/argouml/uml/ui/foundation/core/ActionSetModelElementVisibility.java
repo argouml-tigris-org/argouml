@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -31,10 +30,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 
 /**
@@ -68,15 +67,16 @@ public class ActionSetModelElementVisibility extends UMLChangeAction {
             String actionCommand = source.getActionCommand();
             Object target = ((UMLRadioButtonPanel) source.getParent()).getTarget();
             if (org.argouml.model.ModelFacade.isAModelElement(target)) {
-                MModelElement m = (MModelElement) target;
-                MVisibilityKind kind = null;
+                Object m = /*(MModelElement)*/ target;
+                Object kind = null;
                 if (actionCommand.equals(PUBLIC_COMMAND)) {
                     kind = MVisibilityKind.PUBLIC;
                 } else if (actionCommand.equals(PROTECTED_COMMAND)) {
                     kind = MVisibilityKind.PROTECTED;
-                } else
+                } else {
                     kind = MVisibilityKind.PRIVATE;
-                m.setVisibility(kind);
+                }
+                ModelFacade.setVisibility(m, kind);
 
             }
         }

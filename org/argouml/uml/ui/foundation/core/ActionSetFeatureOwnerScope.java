@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -29,9 +28,9 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLCheckBox2;
-import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
 /**
@@ -59,11 +58,12 @@ public class ActionSetFeatureOwnerScope extends UMLChangeAction {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
             if (org.argouml.model.ModelFacade.isAFeature(target)) {
-                MFeature m = (MFeature) target;
+                Object m = /*(MFeature)*/ target;
                 if (source.isSelected()) {
-                    m.setOwnerScope(MScopeKind.CLASSIFIER);
-                } else
-                    m.setOwnerScope(MScopeKind.INSTANCE);
+                    ModelFacade.setOwnerScope(m, MScopeKind.CLASSIFIER);
+                } else {
+                    ModelFacade.setOwnerScope(m, MScopeKind.INSTANCE);
+                }
             }
         }
     }

@@ -100,9 +100,9 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     private void updateButton() {
         Object target = getTarget();
         if (ModelFacade.isAGeneralization(target)) {
-            MGeneralization gen = (MGeneralization) target;
-            MGeneralizableElement parent = gen.getParent();
-            MGeneralizableElement child = gen.getChild();
+            Object gen = /*(MGeneralization)*/ target;
+            Object parent = ModelFacade.getParent(gen);
+            Object child = ModelFacade.getChild(gen);
             //
             //   if one and only one of child and parent are set
             //
@@ -174,11 +174,11 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     public void setChild(MGeneralizableElement child) {
         Object target = getTarget();
         if (ModelFacade.isAGeneralization(target)) {
-            MGeneralization gen = (MGeneralization) target;
-            MGeneralizableElement parent = gen.getParent();
-            MGeneralizableElement oldChild = gen.getChild();
+            Object gen = /*(MGeneralization)*/ target;
+            Object parent = ModelFacade.getParent(gen);
+            Object oldChild = ModelFacade.getChild(gen);
             if (child != parent && child != oldChild) {
-                gen.setChild(child);
+                ModelFacade.setChild(gen, child);
             }
             else {
 		//                refresh();
@@ -200,10 +200,10 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     public void setPowertype(MClassifier ptype) {
         Object target = getTarget();
         if (ModelFacade.isAGeneralization(target)) {
-            MGeneralization gen = (MGeneralization) target;
-            MClassifier oldPtype = gen.getPowertype();
+            Object gen = /*(MGeneralization)*/ target;
+            Object oldPtype = ModelFacade.getPowertype(gen);
             if (ptype != oldPtype) {
-                gen.setPowertype(ptype);
+                ModelFacade.setPowertype(gen, ptype);
             }
         }
     }
@@ -212,23 +212,23 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     public void newModelElement() {
         Object target = getTarget();
         if (ModelFacade.isAGeneralization(target)) {
-            MGeneralization gen = (MGeneralization) target;
-            MGeneralizableElement parent = gen.getParent();
-            MGeneralizableElement child = gen.getChild();
+            Object gen = /*(MGeneralization)*/ target;
+            Object parent = ModelFacade.getParent(gen);
+            Object child = ModelFacade.getChild(gen);
             if (parent != null ^ child != null) {
-                MGeneralizableElement known = parent;
+                Object known = parent;
                 if (known == null) known = child;
-                MNamespace ns = known.getNamespace();
+                Object ns = ModelFacade.getNamespace(known);
                 if (ns != null) {
                     try {
-                        MGeneralizableElement newElement = (MGeneralizableElement)
+                        Object newElement = /*(MGeneralizableElement)*/
 			    known.getClass().getConstructor(new Class[] {}).newInstance(new Object[] {});
-                        ns.addOwnedElement(newElement);
+                        ModelFacade.addOwnedElement(ns, newElement);
                         if (parent == null) {
-                            gen.setParent(newElement);
+                            ModelFacade.setParent(gen, newElement);
                         }
                         else {
-                            gen.setChild(newElement);
+                            ModelFacade.setChild(gen, newElement);
                         }
                         _newButton.setEnabled(false);
                         TargetManager.getInstance().setTarget(newElement);

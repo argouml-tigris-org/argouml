@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -29,11 +28,9 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
-
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClassifier;
 
 /**
  * @since Nov 3, 2002
@@ -58,23 +55,23 @@ public class ActionSetAssociationEndType extends UMLChangeAction {
      */
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        MClassifier oldClassifier = null;
-        MClassifier newClassifier = null;
-        MAssociationEnd end = null;
+        Object oldClassifier = null;
+        Object newClassifier = null;
+        Object end = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
             if (org.argouml.model.ModelFacade.isAAssociationEnd(o)) {
-                end = (MAssociationEnd) o;
-                oldClassifier = end.getType();
+                end = /*(MAssociationEnd)*/ o;
+                oldClassifier = ModelFacade.getType(end);
             }
             o = box.getSelectedItem();
             if (org.argouml.model.ModelFacade.isAClassifier(o)) {
-                newClassifier = (MClassifier) o;
+                newClassifier = /*(MClassifier)*/ o;
             }
         }
         if (newClassifier != oldClassifier && end != null && newClassifier != null) {
-            end.setType(newClassifier);
+            ModelFacade.setType(end, newClassifier);
             super.actionPerformed(e);
         }
         

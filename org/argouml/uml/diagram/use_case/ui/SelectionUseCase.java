@@ -50,11 +50,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
 
-import ru.novosoft.uml.behavior.use_cases.MActorImpl;
-import ru.novosoft.uml.behavior.use_cases.MUseCaseImpl;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-
 public class SelectionUseCase extends SelectionWButtons {
     protected static Logger cat =
         Logger.getLogger(SelectionUseCase.class);

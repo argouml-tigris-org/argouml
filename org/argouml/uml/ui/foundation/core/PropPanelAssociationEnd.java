@@ -219,8 +219,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     public void gotoOther() {
         Object target = getTarget();
         if (ModelFacade.isAAssociationEnd(target)) {
-            MAssociationEnd end = (MAssociationEnd) target;
-            TargetManager.getInstance().setTarget(end.getOppositeEnd());
+            Object end = /*(MAssociationEnd)*/ target;
+            TargetManager.getInstance().setTarget(ModelFacade.getOppositeEnd(end));
         }
     }
 

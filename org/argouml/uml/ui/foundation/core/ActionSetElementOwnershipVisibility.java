@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -33,10 +32,10 @@ import javax.swing.JRadioButton;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.UMLButtonGroup;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 
 /**
@@ -67,17 +66,17 @@ public class ActionSetElementOwnershipVisibility extends AbstractAction {
         if (e.getSource() instanceof JRadioButton) {
             Object target = _group.getTarget();
             if (org.argouml.model.ModelFacade.isAModelElement(target)) {
-                MModelElement m = (MModelElement) target;
+                Object m = /*(MModelElement)*/ target;
                 String command = e.getActionCommand();
                 if (command.equals(PUBLIC_ACTION_COMMAND)) {
-                    m.setVisibility(MVisibilityKind.PUBLIC);
+                    ModelFacade.setVisibility(m, MVisibilityKind.PUBLIC);
                     
                 } else
 		    if (command.equals(PRIVATE_ACTION_COMMAND)) {
-			m.setVisibility(MVisibilityKind.PRIVATE);
+			ModelFacade.setVisibility(m, MVisibilityKind.PRIVATE);
 		    } else
 			if (command.equals(PROTECTED_ACTION_COMMAND)) {
-			    m.setVisibility(MVisibilityKind.PROTECTED);
+			    ModelFacade.setVisibility(m, MVisibilityKind.PROTECTED);
 			} else
 			    throw new IllegalArgumentException("Illegal action. Actioncommand was not correct. It was " + command);
             }

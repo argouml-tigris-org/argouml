@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -31,10 +30,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 
 /**
@@ -66,7 +65,7 @@ public class ActionSetStructuralFeatureChangeability extends UMLChangeAction {
 	    String actionCommand = source.getActionCommand();
 	    Object target = ((UMLRadioButtonPanel) source.getParent()).getTarget();
 	    if (org.argouml.model.ModelFacade.isAStructuralFeature(target)) {
-		MStructuralFeature m = (MStructuralFeature) target;
+		Object m = /*(MStructuralFeature)*/ target;
 		MChangeableKind kind = null;
 		if (actionCommand.equals(ADDONLY_COMMAND)) {
 		    kind = MChangeableKind.ADD_ONLY;
@@ -74,7 +73,7 @@ public class ActionSetStructuralFeatureChangeability extends UMLChangeAction {
 		    kind = MChangeableKind.CHANGEABLE;
 		} else
 		    kind = MChangeableKind.FROZEN;
-		m.setChangeability(kind);
+		ModelFacade.setChangeability(m, kind);
 	    }
 	}
     }

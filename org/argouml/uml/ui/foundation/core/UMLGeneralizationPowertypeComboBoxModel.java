@@ -38,8 +38,6 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  * @since Nov 3, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -74,7 +72,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
         Project p = ProjectManager.getManager().getCurrentProject();
         Iterator it = p.getUserDefinedModels().iterator();
         while (it.hasNext()) {
-	    MModel model = (MModel) it.next();
+	    Object model = /*(MModel)*/ it.next();
 	    elements.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(model, MClassifier.class));
         }
         elements.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(p.getDefaultModel(), MClassifier.class));

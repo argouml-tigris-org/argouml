@@ -46,7 +46,6 @@ import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**

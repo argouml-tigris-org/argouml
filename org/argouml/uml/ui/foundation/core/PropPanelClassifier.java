@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -29,6 +28,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
@@ -36,12 +36,6 @@ import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLLinkedList;
-
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.core.MOperation;
 
 abstract public class PropPanelClassifier extends PropPanelNamespace {
 
@@ -109,9 +103,9 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     public void addOperation() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            MOperation newOper =
+            Object newOper =
                 UmlFactory.getFactory().getCore().buildOperation(
-                    (MClassifier) target);
+                    /*(MClassifier)*/ target);
             TargetManager.getInstance().setTarget(newOper);
         }
     }
@@ -119,8 +113,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     public void addAttribute() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            MClassifier cls = (MClassifier) target;
-            MAttribute attr =
+            Object cls = /*(MClassifier)*/ target;
+            Object attr =
                 UmlFactory.getFactory().getCore().buildAttribute(cls);
             TargetManager.getInstance().setTarget(attr);
         }
@@ -142,9 +136,9 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     public void addDataType() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isANamespace(target)) {
-            MNamespace ns = (MNamespace) target;
-            MModelElement ownedElem = CoreFactory.getFactory().createDataType();
-            ns.addOwnedElement(ownedElem);
+            Object ns = /*(MNamespace)*/ target;
+            Object ownedElem = CoreFactory.getFactory().createDataType();
+            ModelFacade.addOwnedElement(ns, ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
         }
     }
