@@ -67,6 +67,10 @@ import ru.novosoft.uml.MFactoryImpl;
  * event in the future.
  * @since Oct 14, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @deprecated by Linus Tolke as of 0.17.1. This class is part of the 
+ *             NSUML-dependant API of the model component. Use the NSUML-free 
+ *             {@link org.argouml.model.Model#getPump()} and the
+ *             {@link org.argouml.model.ModelEventPump} interface.
  */
 public final class UmlModelEventPump implements MElementListener {
 
