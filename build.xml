@@ -219,6 +219,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <!-- "build install"  will not do anything.                           -->
     <property name="developer.bin.dir" value="${argo.bin.dir}"/>
 
+    <property name="xerces.javadoc.link"
+              value="http://xml.apache.org/xerces-j/apiDocs"/>
     <property name="log4j.javadoc.link"
               value="http://jakarta.apache.org/log4j/docs/api"/>
     <property name="jdk.javadoc.link"
@@ -425,6 +427,9 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
       <link offline="true"
             href="${log4j.javadoc.link}"
             packagelistLoc="${log4j.javadoc.link}"/>
+      <link offline="true"
+            href="${xerces.javadoc.link}"
+            packagelistLoc="${xerces.javadoc.link}"/>
 
     </javadoc>
 
