@@ -21,7 +21,7 @@ the UML model.
 The plan is to replace NSUML with some JMI compliant model instead
 (probably MDR),
 and for that reason
-all interfaces to the Model subsystem using NSUML objects are
+all APIs to the Model subsystem using NSUML objects are
 to be replaced by interfaces without NSUML object and
 eventually removed.
 </para>
@@ -85,7 +85,7 @@ The static method to access them is
 <methodname>getFactory</methodname> for the factory
 and <methodname>getHelper</methodname> for the helper.
 </para>
-      <sect2>
+      <sect2 id="model_factories">
 	<title>Factories</title>
 	<para>
 The factories contain at least for each model element a create method.
@@ -115,7 +115,7 @@ all kinds of illegal states of ArgoUML.
 If you want to create an element you shall use the create methods
 in the factories.
 You are strongly advised to use a build method or, if there is
-none that suits your needs, to build one thereby reusing the already
+none that suits your needs, to write a new one reusing the already
 existing build methods and utility methods in the helpers.
 One reason for this is that the event listeners for
 the newly created model element are setup correctly.
@@ -124,7 +124,7 @@ the newly created model element are setup correctly.
 TODO: Am I allowed to call the factories from any thread?
 </para>
       </sect2>
-      <sect2>
+      <sect2 id="model_helpers">
 	<title>Helpers</title>
 	<para>
 The helpers contain all utility methods for manipulating model elements.
@@ -184,9 +184,21 @@ of ArgoUML.
 	    </orderedlist>
 </para>
 	  <para>
-In other paragraphs the model factories and the model helpers are
-already introduced.
-Therefore we won't discuss them here again.
+The model factories and the model helpers are described in 
+<xref linkend="model_factories"/> and
+<xref linkend="model_helpers"/> respectively.
+</para>
+	  <para>
+In the beginning of 2003, in the work to replace NSUML, the need for this
+interface not to use any NSUML classes was seen.
+The <classname>ModelFacade</classname> was introduced to wrap
+model factories,
+model helpers, and
+direct calls to NSUML
+but not the model event pump.
+In April 2004 a <classname>ModelEventPump</classname> was attempted to wrap
+the <classname>UmlModelEventPump</classname>
+using <classname>PropertyChangeEvent</classname>s.
 </para>
 	  <para>
 The model event pump is the gateway between the model elements and the
@@ -203,6 +215,7 @@ Besides this, there are some improvements to the performance of the
 pump made in comparison to the situation without the pump.
 The main improvement is that you can register for just one type of
 event and not for all events fired by some model element.
+In this respect the pump works as a filter.
 </para>
 	  <para>
 <mediaobject>
@@ -397,36 +410,38 @@ FigEdgeModelElement.
 	  </orderedlist>
 	</sect3>
 	<sect3>
-	  <title>The future</title>
+	  <title>Possible investigation points and improvements</title>
 	  <para>
-Some people might wonder if we cannot make a better interface between
-the model and the rest of ArgoUML if we use our own event types.
+Should we use our own event types?
+</para>
+	    <para>
+Should we replace
+the <classname>MElementListener</classname>
+with <classname>PropertyChangeListener</classname> and
+<classname>MElementEvent</classname>
+with <classname>PropertyChangeEvent</classname>?
 
-These people are right. 
-
-There are plans to replace the MElementListener with
-PropertyChangeListeners and using the PropertyChangeEvents instead of
-the MElementEvent.
-
-This has not been done yet since this involves a lot of work and
+One reason we havn't done so yet is that it involves a lot of work and
 testing.
 </para>
 	    <para>
-Next to this, it is likely that the implementation of the Event pump
-itself is going to change.
+Change the implementation of the Event pump
+itself?
 
-Not the API but the implementation! At the moment the event pump does
-not use the AWT Event Thread for dispatching events.
+Not the API but the implementation!
+</para>
+	    <para>
+At the moment the event pump does not use the AWT Event Thread for
+dispatching events.
 
 This can make ArgoUML slow (in the perception of the user). 
 </para>
 	    <para>
-Besides that, the current implementation does not use the standard
+Use the standard
 data structure that Swing uses for event registration
 (i.e. <classname>javax.swing.EventListenerList</classname>).
 
-We are in the process of researching if it is a good thing to use this
-standard instead of our own implementation.
+Would this be an improvement?
 </para>
 	</sect3>
       </sect2>
