@@ -26,6 +26,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import junit.framework.TestCase;
 
+import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
@@ -62,9 +63,12 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        Project p = Project.getCurrentProject();
+        model = new UMLAssociationRoleBaseComboBoxModel();
         MClass class1 = CoreFactory.getFactory().createClass();
         MClass class2 = CoreFactory.getFactory().createClass();
         MModel m = ModelManagementFactory.getFactory().createModel();
+        p.setRoot(m);
         class1.setNamespace(m);
         class2.setNamespace(m);
         bases = new MAssociation[10];
@@ -80,8 +84,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         role2.setNamespace(col);
         elem = CollaborationsFactory.getFactory().buildAssociationRole(role1, role2);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        model = new UMLAssociationRoleBaseComboBoxModel();
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);   
         model.targetChanged(elem);
     }
     

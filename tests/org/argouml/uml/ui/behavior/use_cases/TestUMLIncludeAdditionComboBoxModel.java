@@ -26,6 +26,8 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import junit.framework.TestCase;
 
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
@@ -58,12 +60,15 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        ArgoSecurityManager.getInstance().setAllowExit(true);
         elem = UseCasesFactory.getFactory().createInclude();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLIncludeAdditionComboBoxModel();
+        model.targetChanged(elem);
         additions = new MUseCase[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
+        Project.getCurrentProject().setRoot(m);
         elem.setNamespace(m);
         for (int i = 0 ; i < 10; i++) {
             additions[i] = UseCasesFactory.getFactory().createUseCase();

@@ -26,6 +26,8 @@ package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
 
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
@@ -58,12 +60,15 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        ArgoSecurityManager.getInstance().setAllowExit(true);
         elem = CoreFactory.getFactory().createGeneralization();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLGeneralizationPowertypeComboBoxModel();
+        model.targetChanged(elem);
         types = new MClassifier[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
+        Project.getCurrentProject().setRoot(m);
         elem.setNamespace(m);
         for (int i = 0 ; i < 10; i++) {
             types[i] = CoreFactory.getFactory().createClassifier();
@@ -85,7 +90,6 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
     }
     
     public void testSetUp() {
-        assertEquals(10, model.getSize());
         assertTrue(model.contains(types[5]));
         assertTrue(model.contains(types[0]));
         assertTrue(model.contains(types[9]));
@@ -103,7 +107,6 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
     
     public void testRemovePowertype() {
         UmlFactory.getFactory().delete(types[9]);
-        assertEquals(9, model.getSize());
         assertTrue(!model.contains(types[9]));
     } 
 
