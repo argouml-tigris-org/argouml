@@ -45,6 +45,10 @@ import org.argouml.model.ModelFacade;
 
 public class CrClassMustBeAbstract extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrClassMustBeAbstract() {
 	setHeadline("Class Must be Abstract");
 
@@ -53,6 +57,10 @@ public class CrClassMustBeAbstract extends CrUML {
 	setKnowledgeTypes(Critic.KT_SEMANTICS);
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
 	if (ModelFacade.isAbstract(dm)) return NO_PROBLEM;

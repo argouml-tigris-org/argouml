@@ -41,12 +41,20 @@ import org.argouml.model.ModelFacade;
 
 public class CrInvalidJoin extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrInvalidJoin() {
 	setHeadline("Change Join Transitions");
 	addSupportedDecision(CrUML.decSTATE_MACHINES);
 	addTrigger("outgoing");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAPseudostate(dm))) return NO_PROBLEM;
 	Object k = ModelFacade.getPseudostateKind(dm);

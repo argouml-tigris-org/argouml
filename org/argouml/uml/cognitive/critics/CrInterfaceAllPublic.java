@@ -41,6 +41,10 @@ import org.argouml.model.ModelFacade;
  *  Semantics. OMG document ad/97-08-04. */
 public class CrInterfaceAllPublic extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrInterfaceAllPublic() {
 	setHeadline("Operations in Interfaces must be public");
 	addSupportedDecision(CrUML.decPLANNED_EXTENSIONS);
@@ -48,6 +52,10 @@ public class CrInterfaceAllPublic extends CrUML {
 	addTrigger("behavioralFeature");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAInterface(dm))) return NO_PROBLEM;
 	Object inf = /*(MInterface)*/ dm;
@@ -57,7 +65,8 @@ public class CrInterfaceAllPublic extends CrUML {
 	while (features.hasNext()) {
 	    Object f = /*(MFeature)*/ features.next();
 	    if (ModelFacade.getVisibility(f) == null) return NO_PROBLEM;
-	    if (!ModelFacade.getVisibility(f).equals(ModelFacade.PUBLIC_VISIBILITYKIND))
+	    if (!ModelFacade.getVisibility(f)
+                .equals(ModelFacade.PUBLIC_VISIBILITYKIND))
 		return PROBLEM_FOUND;
 	}
 	return NO_PROBLEM;

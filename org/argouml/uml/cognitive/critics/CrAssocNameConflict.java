@@ -41,6 +41,10 @@ import org.argouml.model.ModelFacade;
 
 public class CrAssocNameConflict extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrAssocNameConflict() {
 	setHeadline("Resolve Association Name Conflict");
 	addSupportedDecision(CrUML.decNAMING);
@@ -48,6 +52,10 @@ public class CrAssocNameConflict extends CrUML {
 	// no good trigger
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isANamespace(dm))) return NO_PROBLEM;
 	Collection oes = ModelFacade.getOwnedElements(dm);

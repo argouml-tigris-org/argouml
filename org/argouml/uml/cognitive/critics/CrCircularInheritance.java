@@ -47,9 +47,13 @@ import org.tigris.gef.util.VectorSet;
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrCircularInheritance extends CrUML {
-    protected static Logger cat =
+    private static final Logger LOG =
 	Logger.getLogger(CrCircularInheritance.class);
 						      
+    /**
+     * The constructor.
+     * 
+     */
     public CrCircularInheritance() {
 	setHeadline("Remove <ocl>self</ocl>'s Circular Inheritance");
 	setPriority(ToDoItem.HIGH_PRIORITY);
@@ -59,6 +63,10 @@ public class CrCircularInheritance extends CrUML {
 	// no need for trigger on "specialization"
     }
 							  
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	boolean problem = NO_PROBLEM;
 	if (ModelFacade.isAGeneralizableElement(dm)) {
@@ -67,17 +75,25 @@ public class CrCircularInheritance extends CrUML {
 	    }
 	    catch (IllegalStateException ex) {
 		problem = PROBLEM_FOUND;
-                cat.info("problem found for: "+this);
+                LOG.info("problem found for: " + this);
 	    }
 	}
 	return problem;
     }
 							      
+    /**
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	VectorSet offs = computeOffenders(dm);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 								  
+    /**
+     * @param dm the object
+     * @return the set of offenders
+     */
     protected VectorSet computeOffenders(Object dm) {
 	VectorSet offs = new VectorSet(dm);
 	VectorSet above = offs.reachable(new SuperclassGen());
@@ -91,6 +107,10 @@ public class CrCircularInheritance extends CrUML {
 	return offs;
     }
 								      
+    /**
+     * @see org.argouml.cognitive.Poster#stillValid(
+     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
@@ -98,9 +118,9 @@ public class CrCircularInheritance extends CrUML {
 	if (!predicate(dm, dsgr)) return false;
 	VectorSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);
-	cat.debug("offs=" + offs.toString() +
-		  " newOffs=" + newOffs.toString() +
-		  " res = " + res);
+	LOG.debug("offs=" + offs.toString() 
+		  + " newOffs=" + newOffs.toString() 
+		  + " res = " + res);
 	return res;
     }
 									  

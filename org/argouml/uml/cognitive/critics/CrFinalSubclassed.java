@@ -42,6 +42,10 @@ import org.argouml.model.ModelFacade;
  */
 public class CrFinalSubclassed extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrFinalSubclassed() {
 	setHeadline("Remove final keyword or remove subclasses");
 	addSupportedDecision(CrUML.decINHERITANCE);
@@ -50,6 +54,10 @@ public class CrFinalSubclassed extends CrUML {
 	addTrigger("isLeaf");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!ModelFacade.isAGeneralizableElement(dm)) {
 	    return NO_PROBLEM;
