@@ -46,30 +46,34 @@ the chapter on diagrams.
       are the subject of separate chapters covering the artifacts that may
       appear on the various diagrams (see <xref linkend="ch.ref.entities"/>
       through <xref linkend="ch.ref.entdeploy"/>).</para>
+  </sect1>
+  
+  <!-- Point out about spawning tabs -->
 
-    <!-- Point out about spawning tabs -->
+  <sect1>
+    <title>Spawning Details Tabs</title>
 
-    <sect2>
-      <title>Spawning Details Tabs</title>
-
-      <para>Tabs in the details pane may be spawned as separate stand alone
-        windows, by &button1; double click on the tab. See
-        <xref linkend="s2.ref.spawn"/> for more information.</para>
-    </sect2>
+    <para>Tabs in the details pane may be spawned as separate stand alone
+      windows, by &button1; double click on the tab. See
+      <xref linkend="s2.ref.spawn"/> for more information.
+    </para>
   </sect1>
 
   <!-- How the mouse behaves in the details pane -->
 
-  <sect1 id="s1.ref.details_mouse">
+  <!-- I do not see the use of such a chapter: 
+  it does not say anything new.
+  Let's remove it! -->
+  <!--sect1 id="s1.ref.details_mouse">
     <title>Mouse Behavior in the Details Pane</title>
 
     <para>Behavior of the mouse in general, and the naming of the buttons is
       covered in the chapter on the overall user interface (see
-      <xref linkend="ch.ref.ui"/>).</para>
+      <xref linkend="ch.ref.ui"/>).</para-->
 
     <!-- Button1 click -->
 
-    <sect2>
+    <!--sect2>
       <title>&Button1; Click</title>
 
       <para>This action is generally used to select an item for subsequent
@@ -80,11 +84,11 @@ the chapter on diagrams.
         pop-up menu (see below), &button1; click is used to select the menu
         entry required. &Button1; click outside the menu area will remove
         it.</para>
-    </sect2>
+    </sect2-->
 
     <!-- Button1 double click -->
 
-    <sect2>
+    <!--sect2>
       <title>&Button1; Double Click</title>
 
       <para>In general this has no effect other than that of &button1; single
@@ -94,11 +98,11 @@ the chapter on diagrams.
       <para>And you can <quote>spawn</quote> a copy of any tab by
         double-clicking on the tab. It will then show as an individual window
         and you can put it where you will on the screen.</para>
-    </sect2>
+    </sect2-->
 
     <!-- Button2 click -->
 
-    <sect2>
+    <!--sect2>
       <title>&Button2; Actions</title>
 
       <para>When used over text field entries in the the properties tab, this
@@ -109,26 +113,26 @@ the chapter on diagrams.
 
       <para>If the entry generating the menu has not yet been highlighted it
         will also be highlighted.</para>
-    </sect2>
+    </sect2-->
 
     <!-- Button2 double click -->
 
-    <sect2>
+    <!--sect2>
       <title>&Button2; Double Click</title>
 
       <para>This has no effect other than that of &button2; single
         click.</para>
-    </sect2>
+    </sect2-->
 
     <!-- Button2 Motion -->
 
-    <sect2>
+    <!--sect2>
       <title>&Button2; Motion</title>
 
       <para>This is used to select items in a context sensitive menu popped up
         by use of &button2; click.</para>
     </sect2>
-  </sect1>
+  </sect1-->
 
   <!-- The To-Do tab -->
 
@@ -159,6 +163,12 @@ the chapter on diagrams.
         </imageobject>
       </mediaobject></screenshot>
     </figure>
+
+    <!-- Point to browse critics menu -->
+
+    <para>Customization of the critics behaviour is possible through the
+      <literal>Browse critics&hellip;</literal> menu (see <xref
+      linkend="s2.ref.menu_browse_critics"/>).</para>
 
     <para>The body of the tab describes the problem found by the critic and
       outlines how it can be fixed. To the left are four buttons.</para>
@@ -233,8 +243,8 @@ the chapter on diagrams.
             </imageobject>
           </mediaobject></screenshot>
         </figure>
-        <!-- TODO: The titlebar of the window is "Dismiss..". Should be
-        "Resolve...". See issue ... -->
+        <!-- TODO: The tooltip of the button is "Dismiss To Do Item...". 
+        Should be "Resolve...". See issue ... -->
 
         <para>At the top are three radio-buttons, 
           of which by default the last is selected,
@@ -255,7 +265,9 @@ the chapter on diagrams.
           dialog.
         </para></tip>
 
-        <caution><para>The reason given is not stored when the project is saved. 
+        <warning><para>The V0.14 version of &argouml; implementation is
+          incomplete:
+          The reason given is not stored when the project is saved. 
           And there is no way to retrieve todo items that were resolved.
           So, it is not usefull to give a reason at all.
           <!-- TODO: Solve this problem... -->
@@ -266,7 +278,7 @@ the chapter on diagrams.
             critic).
           <!-- TODO: Solve this problem... -->
           </para>
-        </caution>
+        </warning>
       </listitem>
 
       <!-- Send Email to expert -->
@@ -279,15 +291,16 @@ the chapter on diagrams.
         This pops up a dialog allowing the user to send Email to an expert
         asking for advice.
         </para>
-        <note>
+        <warning>
           <para>
-This feature is does not send an email in the V0.14 &argouml;. A box opens, to
-enter the email, but the <literal>Send</literal> button does not work.
-<!-- TODO: See enhancement issue 1875. -->  
-The default destination address is
-<literal>users@argouml.tigris.org</literal>.
+            This feature does not send an email in the V0.14 version of &argouml;. 
+            A box opens, to
+            enter the email, but the <literal>Send</literal> button does not work.
+            <!-- TODO: See enhancement issue 1875. -->  
+            The default destination address is
+            <literal>users@argouml.tigris.org</literal>.
           </para>
-        </note>
+        </warning>
       </listitem>
 
       <!-- Snooze the current critic -->
@@ -315,53 +328,78 @@ Initially this
     </itemizedlist>
 
     <!-- All about the wizards -->
+    <sect2>
+      <title>Wizards</title>
+  
+      <para>Some of the more common critics have a <quote>wizard</quote>
+        available to help in fixing the problem. 
+        The  wizard comprises a series of pages (one or more)
+        in the <literal>ToDo&nbsp;Item</literal> tab that step you through
+        the changes. </para>
 
-    <para>Some of the more common critics have a <quote>wizard</quote>
-      available to help in fixing the problem. This comprises a series of pages
-      in the <literal>ToDo&nbsp;Item</literal> tab that step you through
-      the changes. The wizard is driven through the first three buttons at the
-      bottom of the tab.</para>
+      <!-- A picture of a wizard in the details pane. -->
 
-    <itemizedlist>
-      <listitem><para><literal>Back</literal>. This will take you back to the
-        previous step in the wizard. Grayed out if this is the first
-        step.</para></listitem>
+      <figure id="fig.ref.details_wizard" float="1">
+        <title>Example of a <literal>Wizard</literal></title>
 
-      <listitem><para><literal>Next</literal>. This will take you back to the
-        next step in the wizard. Grayed out if this is the last
-        step.</para></listitem>
+        <screenshot><mediaobject>
+          <imageobject>
+            <imagedata format="PNG" align="center"
+                       fileref="images/reference/details_wizard.png"/>
+          </imageobject>
+        </mediaobject></screenshot>
+      </figure>
 
-      <listitem><para><literal>Finish</literal>. This will commit the changes
-        you have made through the wizard. Grayed out until you get to the last
-        step.</para></listitem>
-    </itemizedlist>
+      <para>The wizard is driven through the first three buttons at the
+        bottom of the <literal>ToDo&nbsp;Item</literal> tab.</para>
 
-    <note><para>Not all to-do items have wizards. 
-      If there is no wizard all three buttons will remain grayed
-      out.</para></note>
+      <itemizedlist>
+        <listitem><para><literal>Back</literal>. This will take you back to the
+          previous step in the wizard. Grayed out if this is the first
+          step.</para></listitem>
+  
+        <listitem><para><literal>Next</literal>. This will take you back to the
+          next step in the wizard. Grayed out if this is the last
+          step.</para></listitem>
+          <!-- TODO: The text of the to-do item says: 
+          "To fix this, use the "Next>" button,...".
+          So, should the Next button not have a ">" symbol? I think it is best to add
+          a (nice) graphical symbol for this to the button.
+          Idem for the Back button.        
+          See issue ... -->
+          
+        <listitem><para><literal>Finish</literal>. This will commit the changes
+          you have made through the wizard
+          in previous steps, and/or use the defaults for all next steps. 
+          </para></listitem>
+      </itemizedlist>
+  
+      <note><para>Not all to-do items have wizards. 
+        If there is no wizard all three buttons will remain grayed
+        out.</para></note>
+
+    </sect2>
 
     <!-- The Help button -->
 
-    <para>There is one remaining button at the bottom of the
-      <literal>To&nbsp;Do&nbsp;Item</literal> tab, labeled
-      <literal>Help</literal>. This will fire up a browser to a URL with
-      further help.</para>
+    <sect2>
+      <title>The Help Button</title>
+        
+      <para>There is one remaining button at the bottom of the
+        <literal>To&nbsp;Do&nbsp;Item</literal> tab, labeled
+        <literal>Help</literal>. This will fire up a browser to a URL with
+        further help.</para>
+  
+      <warning><para>In the V0.14 release of &argouml; 
+        the URLs are generally invalid. 
+        <!-- TODO: How do I know? See issue ... -->
+        The few that are valid have no information.
+        <!-- TODO: Make integrated help system. 
+        Remove the Help button from this pane. 
+        See enhancement issue ... -->
+      </para></warning>
 
-    <warning><para>In the V0.14 release of &argouml; the browser does not fire.
-      <!-- TODO: See issue ... -->
-      And the URLs are generally invalid. 
-      <!-- TODO: How do I know? See issue ... -->
-      The few that are valid have no information.
-      <!-- TODO: Make integrated help system. 
-      Remove the Help button from this pane. 
-      See enhancement issue ... -->
-    </para></warning>
-
-    <!-- Point to browse critics menu -->
-
-    <para>Customization of the critics menu is possible through the
-      <literal>Browse critics&hellip;</literal> menu (see <xref
-      linkend="s2.ref.menu_browse_critics"/>).</para>
+    </sect2>
   </sect1>
 
   <!-- The Properties tab -->
