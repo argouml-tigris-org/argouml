@@ -62,8 +62,6 @@ import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -285,24 +283,24 @@ class ColumnSrcName extends ColumnDescriptor {
     ColumnSrcName() { super("SrcName", String.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MAssociation)) return "N/A";
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
-	    if (ae != null && ae.getName() != null)
-		return ae.getName();
-	}
+	if (!ModelFacade.isAAssociation(target)) return "N/A";
+        if (ModelFacade.getConnectionCount(target) != 2) return "";
+        
+        Iterator it = ModelFacade.getConnections(target);
+        Object ae = it.next();
+        if (ae != null && ModelFacade.getName(ae) != null)
+            return ModelFacade.getName(ae);
 	return "";
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MAssociation)) return;
+	if (!(ModelFacade.isAAssociation(target))) return;
 	if (!(value instanceof String)) return;
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
-	    ae.setName((String) value);
-	}
+        if (ModelFacade.getConnectionCount(target) == 2) {
+            Iterator it = ModelFacade.getConnections(target);
+            Object ae = it.next();
+            ModelFacade.setName(ae, (String)value);
+        }
     }  
 } /* end class ColumnSrcName */
 
@@ -311,16 +309,16 @@ class ColumnSrcType extends ColumnDescriptor {
     ColumnSrcType() { super("SrcType", String.class, false); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MAssociation)) return "N/A";
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
+	if (!ModelFacade.isAAssociation(target)) return "N/A";
+	if (ModelFacade.getConnectionCount(target) == 2) {
+            Iterator it = ModelFacade.getConnections(target);
+	    Object ae = it.next();
 	    if (ae != null
-		&& ae.getType() != null
-		&& ae.getType().getName() != null)
+		&& ModelFacade.getType(ae) != null
+		&& ModelFacade.getName(ModelFacade.getType(ae)) != null)
 	    {
 		GeneratorDisplay g = GeneratorDisplay.getInstance();
-		return g.generateClassifierRef(ae.getType());
+		return g.generateClassifierRef(ModelFacade.getType(ae));
 	    }
 	}
 	return "";
@@ -335,27 +333,27 @@ class ColumnSrcMultiplicity extends ColumnDescriptor {
     ColumnSrcMultiplicity() { super("SrcMult", String.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MAssociation)) return "N/A";
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
-	    if (ae != null && ae.getMultiplicity() != null)
-		return GeneratorDisplay.Generate(ae.getMultiplicity());
-	}
+	if (!ModelFacade.isAAssociation(target)) return "N/A";
+        if (ModelFacade.getConnectionCount(target) != 2) return "";
+        
+        Iterator it = ModelFacade.getConnections(target);
+        Object ae = it.next();
+        if (ae != null && ModelFacade.getMultiplicity(ae) != null)
+            return GeneratorDisplay.Generate(ModelFacade.getMultiplicity(ae));
 	return "";
     }
-
+ 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MAssociation)) return;
+	if (!(ModelFacade.isAAssociation(target))) return;
 	if (!(value instanceof String)) return;
-	String s = (String) value;
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
-	    MMultiplicity m = (MMultiplicity)ParserDisplay.SINGLETON.parseMultiplicity(s);
-	    ae.setMultiplicity(m);
-	}
-    }  
+        if (!(ModelFacade.getConnectionCount(target) == 2)) return;
+        
+        Iterator it = ModelFacade.getConnections(target);
+        Object ae = it.next();
+        Object m = ParserDisplay.SINGLETON.parseMultiplicity((String)value);
+        ModelFacade.setMultiplicity(ae, m);
+    }
+    
 } /* end class ColumnSrcMultiplicity */
 
 
@@ -363,26 +361,25 @@ class ColumnSrcNavigability extends ColumnDescriptor {
     ColumnSrcNavigability() { super("SrcNav", Boolean.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MAssociation)) return Boolean.FALSE;
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
-	    boolean nav = ae.isNavigable();
-	    return nav ? Boolean.TRUE : Boolean.FALSE;
-	}
-	return Boolean.FALSE;
+	if (!ModelFacade.isAAssociation(target)) return Boolean.FALSE;
+        if (ModelFacade.getConnectionCount(target) != 2) return Boolean.FALSE;
+        
+        Iterator it = ModelFacade.getConnections(target);
+        Object ae = it.next();
+        boolean nav = ModelFacade.isNavigable(ae);
+        return nav ? Boolean.TRUE : Boolean.FALSE;
     }
-
+ 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MAssociation)) return;
+	if (!(ModelFacade.isAAssociation(target))) return;
 	if (!(value instanceof Boolean)) return;
+        if (!(ModelFacade.getConnectionCount(target) == 2)) return;
+        
 	Boolean b = (Boolean) value;
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
-	    ae.setNavigable(b.booleanValue()); 
-	}
-    }  
+        Iterator it = ModelFacade.getConnections(target);
+        Object ae = it.next();
+        ModelFacade.setNavigable(ae, b.booleanValue()); 
+    }
 } /* end class ColumnSrcNavigability */
 
 
@@ -391,24 +388,26 @@ class ColumnDstName extends ColumnDescriptor {
     ColumnDstName() { super("DstName", String.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MAssociation)) return "N/A";
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
-	    if (ae != null && ae.getName() != null)
-		return ae.getName();
-	}
-	return "";
+	if (!ModelFacade.isAAssociation(target)) return Boolean.FALSE;
+        if (ModelFacade.getConnectionCount(target) != 2) return Boolean.FALSE;
+        
+        Iterator it = ModelFacade.getConnections(target);
+        it.next();
+        Object ae = it.next();
+        if (ae != null && ModelFacade.getName(ae) != null)
+            return ModelFacade.getName(ae);
+        return "";
     }
-
+ 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MAssociation)) return;
+	if (!(ModelFacade.isAAssociation(target))) return;
 	if (!(value instanceof String)) return;
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
-	    ae.setName((String) value);
-	}
+        if (!(ModelFacade.getConnectionCount(target) == 2)) return;
+        
+        Iterator it = ModelFacade.getConnections(target);
+        it.next();
+        Object ae = it.next();
+        ModelFacade.setName(ae, (String)value);
     }
 } /* end class ColumnDstName */
 
@@ -417,21 +416,21 @@ class ColumnDstType extends ColumnDescriptor {
     ColumnDstType() { super("DstType", String.class, false); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MAssociation)) return "N/A";
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
-	    if (ae != null
-		&& ae.getType() != null
-		&& ae.getType().getName() != null)
-	    {
-		GeneratorDisplay g = GeneratorDisplay.getInstance();
-		return g.generateClassifierRef(ae.getType());
-	    }
-	}
-	return "";
+	if (!ModelFacade.isAAssociation(target)) return "N/A";
+        if (ModelFacade.getConnectionCount(target) != 2) return "";
+        
+        Iterator it = ModelFacade.getConnections(target);
+        it.next();
+        Object ae = it.next();
+        if (ae != null
+                && ModelFacade.getType(ae) != null
+                && ModelFacade.getName(ModelFacade.getType(ae)) != null) {
+            GeneratorDisplay g = GeneratorDisplay.getInstance();
+            return g.generateClassifierRef(ModelFacade.getType(ae));
+        }
+        return "";
     }
-
+ 
     public void setValueFor(Object target, Object value) {
     }
 } /* end class ColumnDstType */
@@ -441,27 +440,29 @@ class ColumnDstMultiplicity extends ColumnDescriptor {
     ColumnDstMultiplicity() { super("DstMult", String.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MAssociation)) return "N/A";
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
-	    if (ae != null && ae.getMultiplicity() != null)
-		return GeneratorDisplay.Generate(ae.getMultiplicity());
-	}
-	return "";
+	if (!ModelFacade.isAAssociation(target)) return "N/A";
+        if (ModelFacade.getConnectionCount(target) != 2) return "";
+        
+        Iterator it = ModelFacade.getConnections(target);
+        it.next();
+        Object ae = it.next();
+        if (ae != null && ModelFacade.getMultiplicity(ae) != null) {
+            return GeneratorDisplay.Generate(ModelFacade.getMultiplicity(ae));
+        }
+        return "";
     }
-
+ 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MAssociation)) return;
+	if (!(ModelFacade.isAAssociation(target))) return;
 	if (!(value instanceof String)) return;
-	String s = (String) value;
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
-	    MMultiplicity m = (MMultiplicity)ParserDisplay.SINGLETON.parseMultiplicity(s);
-	    ae.setMultiplicity(m);
-	}
-    }  
+        if (!(ModelFacade.getConnectionCount(target) == 2)) return;
+        
+        Iterator it = ModelFacade.getConnections(target);
+        it.next();
+        Object ae = it.next();
+        Object m = ParserDisplay.SINGLETON.parseMultiplicity((String)value);
+        ModelFacade.setMultiplicity(ae, m);
+    }
 } /* end class ColumnDstMultiplicity */
 
 
@@ -470,26 +471,27 @@ class ColumnDstNavigability extends ColumnDescriptor {
     ColumnDstNavigability() { super("DstNav", Boolean.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MAssociation)) return Boolean.FALSE;
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
-	    boolean nav = ae.isNavigable();
-	    return nav ? Boolean.TRUE : Boolean.FALSE;
-	}
-	return Boolean.FALSE;
+	if (!ModelFacade.isAAssociation(target)) return Boolean.FALSE;
+        if (ModelFacade.getConnectionCount(target) != 2) return Boolean.FALSE;
+        
+        Iterator it = ModelFacade.getConnections(target);
+        it.next();
+        Object ae = it.next();
+        boolean nav = ModelFacade.isNavigable(ae);
+        return nav ? Boolean.TRUE : Boolean.FALSE;
     }
-
+ 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MAssociation)) return;
+	if (!(ModelFacade.isAAssociation(target))) return;
 	if (!(value instanceof Boolean)) return;
+        if (!(ModelFacade.getConnectionCount(target) == 2)) return;
+        
 	Boolean b = (Boolean) value;
-	Vector conns = new Vector(((MAssociation) target).getConnections());
-	if (conns.size() == 2) {
-	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
-	    ae.setNavigable(b.booleanValue());
-	}
-    }  
+        Iterator it = ModelFacade.getConnections(target);
+        it.next();
+        Object ae = it.next();
+        ModelFacade.setNavigable(ae, b.booleanValue());
+    }
 } /* end class ColumnDstNavigability */
 
 class ColumnSupplier extends ColumnDescriptor {
