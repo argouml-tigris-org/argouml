@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<!-- $Id$ -->
+<HTML>
+
+<HEAD>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+	<TITLE>Terminology</TITLE>
+</HEAD>
+
+<BODY>
+
+<DIV id="terminology" class="app">
+
+<H2>Terminology for ArgoUML</H2>
+This is the Terminology for the ArgoUML project and also for the ArgoUML
+product.
+The purpose is to establish a common use of some words to make it easier
+to understand what we are talking about.<p>
+
+The terminology here is to be used for
+<ul>
+<li>All code (class names, variable names, method names)
+<li>All comments throughout the code
+<li>All strings in the UI (in the default language en_US)
+<li>All documents (in the default language en_US)
+<li>All postings to the mailing lists and all other discussions within 
+the ArgoUML project.
+</ul>
+
+<H3>Words</H3>
+<!-- These words are in alphabetic order -->
+
+<dl>
+
+<dt>Add</dt>
+<dd>Add existing object to something.
+</dd>
+
+<dt>Export</dt>
+<dd>Export everything or some part from an existing structure to some format.
+This implies some kind of conversion involved.
+</dd>
+
+<dt>Import</dt>
+<dd>Import some other format into an existing structure.
+This implies that there is some kind of conversion involved and that
+the already existing things are not removed.
+They are either changed or left unchanged by the import.
+An Export, New, Import cycle can lead to information loss because
+of the two conversions involved.
+</dd>
+
+<dt>New</dt>
+<dd>Create a new project or object.
+How does this relate to the Java GUI standards?
+(Don't use Create or Add)
+</dd>
+
+<dt>Open</dt>
+<dd>Open an existing project or saved file.
+How does this relate to the Java GUI standards?
+(Don't use Load, Read, or Import for this).
+</dd>
+
+<dt>Save</dt>
+<dd>Save the existing project to a file.
+The Save operation save everything (it is a no-loss operation).
+A Save, Open cycle does not loose any information.
+(Don't use Export, or Write for this).
+</dd>
+
+</dl>
+
+</DIV>
+
+</BODY>
+</HTML>
