@@ -64,11 +64,15 @@ public class ActionSaveProject extends ActionFileOperations {
     /**
      * The singleton.
      */
-    public static final ActionSaveProject SINGLETON = new ActionSaveProject(); 
+    private static final ActionSaveProject INSTANCE = new ActionSaveProject(); 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    public static ActionSaveProject getInstance() {
+        return INSTANCE;
+    }
+    
     /**
      * The constructor.
      */
@@ -221,12 +225,12 @@ public class ActionSaveProject extends ActionFileOperations {
 	return false;
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() {
-        super.shouldBeEnabled();
-        Project p = ProjectManager.getManager().getCurrentProject();
-        return (p != null && p.needsSave());
-    }
+//    /**
+//     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+//     */
+//    public boolean shouldBeEnabled() {
+//        super.shouldBeEnabled();
+//        Project p = ProjectManager.getManager().getCurrentProject();
+//        return (p != null && p.needsSave());
+//    }
 } /* end class ActionSaveProject */
