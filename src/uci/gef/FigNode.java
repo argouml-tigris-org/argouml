@@ -153,7 +153,7 @@ public class FigNode extends FigGroup {
    *  <A HREF="../features.html#graph_visualization_ports">
    *  <TT>FEATURE: graph_visualization_ports</TT></A>
    */
-  public void addPort(NetPort np, Fig f) {
+  public void bindPort(NetPort np, Fig f) {
     Fig oldPortFig = getPortFig(np);
     if (oldPortFig != null) oldPortFig.setOwner(null); //?
     f.setOwner(np);
