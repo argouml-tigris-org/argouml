@@ -78,11 +78,6 @@ import ru.novosoft.uml.*;
  *   "captions" and matching column of "fields" which are laid out
 
  *   indepently from the other panels.
- *
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by {@link org.argouml.uml.ui.PropPanelButton2},
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
 
  */
 
@@ -99,7 +94,14 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
     private static Object[] _noArgs = {};
 
 
-
+    /** Constructor for a new button in the propertypanel.
+     * @param propPanel the property panel to use (usually this)
+     * @param buttonPanel the button panel to use (usually buttonPanel)
+     * @param icon the icon of this button (choose one from PropPanelModelElement)
+     * @param toolTipText
+     * @param actionMethod string name of the actionMethod, found by reflection
+     * @param enabledMethod string name of the enableMethod, found by reflection
+     */
     public PropPanelButton(PropPanel propPanel,JPanel buttonPanel,
 
         Icon icon,String toolTipText,
@@ -225,7 +227,9 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
     }
 
 
-
+    /** actionPerfomed invokes the defined action via reflection for this
+     *  button.
+     */
     public void actionPerformed(final java.awt.event.ActionEvent event) {
 
         if(_actionMethod != null && _propPanel != null) {
