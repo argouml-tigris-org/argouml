@@ -43,6 +43,7 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.argo.kernel.*;
 import uci.uml.ui.*;
+import uci.uml.util.*;
 import uci.uml.generate.*;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -451,8 +452,12 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     super.setOwner(own);
     if (oldOwner instanceof MModelElement)
       ((MModelElement)oldOwner).removeMElementListener(this);
-    if (own instanceof MModelElement)
-      ((MModelElement)own).addMElementListener(this);
+    if (own instanceof MModelElement) {
+	MModelElement me = (MModelElement)own;
+	me.addMElementListener(this);
+	if ( me.getUUID() == null) 
+	    me.setUUID(UUIDManager.SINGLETON.getNewUUID());
+    }
     modelChanged();
     _readyToEdit = true;
     updateBounds();

@@ -101,24 +101,16 @@ public class MMUtil {
 		return this.buildAssociation(c1, true, c2, true);
 	}
 		
-	public MAssociation buildAssociation(MClassifier c1, boolean nav1, MClassifier c2, boolean nav2) {
-		// try to put AssociationEnds into the same namespace as the corresponding 
-		// Classifier. If it has none, use the Classifier (which is a namespace itself)
-		MNamespace ns = c1.getNamespace();
-		if (ns == null) ns = c1;
-		MAssociation asc = new MAssociationImpl();
+    public MAssociation buildAssociation(MClassifier c1, boolean nav1, MClassifier c2, boolean nav2) {
 		MAssociationEnd ae1 = new MAssociationEndImpl();
 		ae1.setType(c1);
 		ae1.setNavigable(nav1);
-		ae1.setNamespace(ns);
 
-		ns = c2.getNamespace();
-		if (ns == null) ns = c2;
 		MAssociationEnd ae2 = new MAssociationEndImpl();
 		ae2.setType(c2);
 		ae2.setNavigable(nav2);
-		ae2.setNamespace(ns);
 
+		MAssociation asc = new MAssociationImpl();
 		asc.addConnection(ae1);
 		asc.addConnection(ae2);
 

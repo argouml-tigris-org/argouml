@@ -1211,7 +1211,7 @@ class ActionStateDiagram extends UMLChangeAction {
 		sm.setName(contextNameStr + "StateMachine");
 		MCompositeState cs = new MCompositeStateImpl();
 		cs.setName("state_machine_top");
-		cs.setNamespace(cls);
+		//cs.setNamespace(cls);
 		sm.setNamespace(cls);
 		sm.setTop(cs);
 		cls.addBehavior(sm);
@@ -1241,15 +1241,15 @@ class ActionActivityDiagram extends UMLChangeAction {
     Project p = pb.getProject();
     try {
       MNamespace ns=(MNamespace)pb.getDetailsTarget();
-      if (!(ns instanceof MUseCase) && (!(ns instanceof MClass))) return;
-	  String contextNameStr = ns.getName();
+      if (!((ns instanceof MUseCase) || (ns instanceof MClass))) return;
+      String contextNameStr = ns.getName();
       if (contextNameStr == null) contextNameStr = "untitled";
       MActivityGraph am = new MActivityGraphImpl();
-	  am.setName(contextNameStr + "ActivityGraph");
+      am.setName(contextNameStr + "ActivityGraph");
       MCompositeState cs = new MCompositeStateImpl();
-	  cs.setName("activities_top");
-      cs.setNamespace(ns);
-      am.setNamespace(ns);
+      cs.setName("activities_top");
+      //cs.setNamespace(ns);
+      //am.setNamespace(ns);
       am.setTop(cs);
       ns.addBehavior(am);
       UMLActivityDiagram d = new UMLActivityDiagram(ns, am);

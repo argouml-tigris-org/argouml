@@ -177,8 +177,8 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     if (_nodes.contains(sv)) return;
     _nodes.addElement(sv);
 	// needs-more-work: assumes public, user pref for default visibility?
-	if (sv.getNamespace() == null)
-		_namespace.addOwnedElement(sv);
+// 	if (sv.getNamespace() == null)
+// 		_namespace.addOwnedElement(sv);
       // needs-more-work: assumes not nested in another composite state
       MCompositeState top = (MCompositeState) _machine.getTop();
       top.addSubvertex(sv);
@@ -198,8 +198,8 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     if (_edges.contains(tr)) return;
     _edges.addElement(tr);
 	// needs-more-work: assumes public
-	if (tr.getNamespace() == null)
-		_namespace.addOwnedElement(tr);
+// 	if (tr.getNamespace() == null)
+// 		_namespace.addOwnedElement(tr);
 	//_machine.addTransition(tr);
 	tr.setStateMachine(_machine);
     fireEdgeAdded(edge);
@@ -266,7 +266,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
     if (edgeClass == MTransitionImpl.class) {
       MTransition tr = new MTransitionImpl();
-      _namespace.addOwnedElement(tr);
+      // _namespace.addOwnedElement(tr);
 	  _machine.addTransition(tr);
       tr.setSource(fromSV);
       tr.setTarget(toSV);

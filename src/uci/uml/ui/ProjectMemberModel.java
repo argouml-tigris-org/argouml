@@ -112,7 +112,7 @@ public class ProjectMemberModel extends ProjectMember {
       }
 
       // this is TEMP CODE until UUIDs are set when obj is created !!!!!
-      UUIDManager.SINGLETON.createModelUUIDS((MNamespace)_model);
+      // UUIDManager.SINGLETON.createModelUUIDS((MNamespace)_model);
 
       XMIWriter writer = new XMIWriter(_model,fullpath);
       writer.gen();

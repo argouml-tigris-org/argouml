@@ -175,7 +175,7 @@ public class SelectionState extends SelectionWButtons {
 
     MState newNode = new MStateImpl();
     if (!mgm.canAddNode(newNode)) return;
-    mgm.getNamespace().addOwnedElement(newNode);
+    // mgm.getNamespace().addOwnedElement(newNode);
 
     GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
     LayerPerspective lay = (LayerPerspective)
