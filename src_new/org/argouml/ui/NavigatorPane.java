@@ -128,8 +128,8 @@ public class NavigatorPane
         
         toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         toolbar.setFloatable(false);
-        toolbar.add(combo);
         toolbar.add(new ActionPerspectiveConfig());
+        toolbar.add(combo);
         
         ToolBar toolbar2 = new ToolBar();
         
