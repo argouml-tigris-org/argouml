@@ -65,7 +65,6 @@ import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.FindDialog;
@@ -1002,6 +1001,8 @@ public class Project implements java.io.Serializable, TargetListener {
     protected void trashInternal(Object obj) {
         boolean needSave = false;
         if (obj != null) {
+            TargetManager.getInstance().removeTarget(obj);
+            TargetManager.getInstance().removeHistoryElement(obj);
             Trash.SINGLETON.addItemFrom(obj, null);
         }
         if (obj instanceof MBase) { // an object that can be represented
@@ -1025,8 +1026,8 @@ public class Project implements java.io.Serializable, TargetListener {
                 ((Fig)obj).dispose();
                 needSave = true;
             }
-        }
-
+        }        
+        ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
         setNeedsSave(needSave);
     }
 
