@@ -290,7 +290,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
                             //if we want to allow the sequence number to appear
                             /*UMLSequenceDiagram
 			      sd=(UMLSequenceDiagram)
-			      ProjectBrowser.TheInstance.getActiveDiagram();
+			      ProjectBrowser.getInstance().getActiveDiagram();
 			      int num=sd.getNumStimuluss()+1;
 			      stimulus.setName(""+num);*/
                             //otherwise: no sequence number

@@ -403,7 +403,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
         // Having removed an include relationship, mark as needing saving
 
-        Project p = ProjectBrowser.TheInstance.getProject();
+        Project p = ProjectBrowser.getInstance().getProject();
         p.setNeedsSave(true);
 
         // Tell Swing this entry has gone

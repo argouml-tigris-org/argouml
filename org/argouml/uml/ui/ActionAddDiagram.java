@@ -109,9 +109,9 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
         if (isValidNamespace(ns)) {
             ArgoDiagram diagram = createDiagram(ns);
             p.addMember(diagram);
-            ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(diagram);
-            ProjectBrowser.TheInstance.setTarget(diagram);
-            ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
+            ProjectBrowser.getInstance().getNavigatorPane().addToHistory(diagram);
+            ProjectBrowser.getInstance().setTarget(diagram);
+            ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
             super.actionPerformed(e);
         }
         */

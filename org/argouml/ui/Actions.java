@@ -311,7 +311,7 @@ class ActionNavForw extends UMLAction {
 // class ActionNavFavs extends UMLAction {
 //   public ActionNavFavs() { super("Favorites"); }
 //   public boolean shouldBeEnabled() {
-//     Project p = ProjectBrowser.TheInstance.getProject();
+//     Project p = ProjectBrowser.getInstance().getProject();
 //     return super.shouldBeEnabled() && p != null;
 //   }
 // } /* end class ActionNavFavs */
@@ -345,7 +345,7 @@ class ActionNextEditTab extends UMLAction {
 // UMLAction { public ActionNextDetailsTab() {
 // super("action.next-details-tab", NO_ICON); } public void
 // actionPerformed(ActionEvent ae) { ProjectBrowser pb =
-// ProjectBrowser.TheInstance; DetailsPane dp = pb.getDetailsPane();
+// ProjectBrowser.getInstance(); DetailsPane dp = pb.getDetailsPane();
 // dp.selectNextTab(); } //} /* end class ActionNextDetailsTab */
 
 // class ActionPrevDetailsTab extends UMLAction {
@@ -369,7 +369,7 @@ class ActionShowRapidButtons extends UMLAction {
 class ActionCreateMultiple extends UMLAction {
     public ActionCreateMultiple() { super("action.create-multiple", NO_ICON); }
     public boolean shouldBeEnabled() {
-	//Project p = ProjectBrowser.TheInstance.getProject();
+	//Project p = ProjectBrowser.getInstance().getProject();
 	//return super.shouldBeEnabled() && p != null;
 	return false;
     }
