@@ -114,13 +114,15 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <property name="lib.dir" value="../lib"/> 
 
     <property name="classpath" value="${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/xml4j.jar:${lib.dir}/gef.jar"/> 
-    <property name="packages" value="uci.* Acme.*"/>
+    <property name="packages" value="org.argouml.*"/>
 
     <property name="manifest" value="./org/argouml.mf"/>
 
     <property name="build.dir" value="../build"/>
     <property name="build.src" value="../src_new"/>
     <property name="build.dest" value="../build/classes"/>
+
+    <exec command="set user.home=C:\" os="windows" />
 
     <property file="${user.home}/.ant.properties" />
   </target>
@@ -226,7 +228,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <target name="dist-src" depends="package">
     <echo message="Building the source distribution files (zip,tar)"/>
-    <chmod src="${src.dir}/build.sh" perm="ugo+rx" />
+    <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
     <zip zipfile="${Name}-${version}.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.*"/>
     <tar tarfile="${Name}-${version}.tar" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.*"/>
     <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar" />
