@@ -547,7 +547,6 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         // Give up if we don't have a target that is some sort of model
         // element.
-
         Object target = theContainer.getTarget();
 
         if (!(ModelFacade.isAModelElement(target))) {
@@ -556,12 +555,10 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         // Make sure we have a model as well. PJS comments that this needs more
         // work - it should never happen.
-
         Object/*MModelElement*/ element = target;
         Object/*MModel*/        model   = ModelFacade.getModel(element);
 
-        if (model == null) {
-        	// extra attempt
+        if (model == null) { // extra attempt
             LOG.error(this.getClass().toString() + " targetChanged() - "
 		      + "getModel() == null for "
 		      + target.getClass().toString());
@@ -582,24 +579,20 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         // Empty the set and get the profile we can use for creating new
         // entries, formatting etc.
-
         set.clear();
         Profile profile = theContainer.getProfile();
 
         // Add an empty entry if allowed
-
         if (allowVoid) {
             set.add(new UMLComboBoxEntry(null, profile, false));
         }
 
         // Collect elements from the model supplied.
-
         if (model != null) {
             collectElements(model, profile, false);
         }
 
         // Add elements from the model associated with the profile if allowed.
-
         if (addElementsFromProfileModel) {
             Object/*MModel*/ profileModel = profile.getProfileModel();
 
@@ -611,7 +604,6 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // Scan for name collisions, where the short (i.e. formatted) name of
         // entries is identical. Where this is the case, use the long name as
         // the display name.
-
         Iterator iter = set.iterator();
 
         String before = null;
@@ -657,13 +649,11 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         // WARNING. If two entries have identical fully qualified names, only
         // the first will appear in this set!
-
         try {
             Object[] noArgs    = {};
             Object   currentObj = theGetMethod.invoke(theContainer, noArgs);
 
             // Now find this one in the set
-
             Iterator iter2 = set.iterator();
 
             while (iter2.hasNext()) {
@@ -676,7 +666,6 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 // a stereotype.
                 // This is an error while constructing the abstraction
                 // probably.
-
                 if (!(entry.isPhantom())
 		        && (entry.getElement(model) == currentObj)) {
                     theSelectedItem = entry;
@@ -698,9 +687,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         // Finally tell Swing that things may have changed (I'm not sure we
         // shouldn't be using add and remove).
-
         fireContentsChanged(this, 0, set.size() - 1);
-
     }
 
 
