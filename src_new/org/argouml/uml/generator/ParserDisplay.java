@@ -2039,7 +2039,8 @@ public class ParserDisplay extends Parser {
 
 	// don't forget to remove old internals!
 	for (int i = 0; i < oldinternals.size(); i++)
-	    UmlFactory.getFactory().delete(/*(MTransition)*/ oldinternals.elementAt(i));
+	    UmlFactory.getFactory()
+                .delete(/*(MTransition)*/ oldinternals.elementAt(i));
 	internals.addAll(trans);
 	ModelFacade.setInternalTransitions(st, trans);
     }
@@ -2089,6 +2090,7 @@ public class ParserDisplay extends Parser {
      *  @param trans    MTransition. The transition object to which this string
      *                  applies.
      *  @param s        The string to be parsed.
+     *  @return         the transition object
      */
     public Object parseTransition(Object trans, String s) {
 	// strip any trailing semi-colons
@@ -2146,23 +2148,23 @@ public class ParserDisplay extends Parser {
         
         In fact it is even more complicated:
         If a new/changed name is given for a trigger, and a trigger already
-        existed with that name, which was not yet hooked to this transition.
-        It would be necessary in these cases to use the existing object!
+        existed with that name, which was not yet hooked to this transition,
+        then it would be necessary in these cases to use the existing object!
         */
         Object /*MEvent*/ evt = ModelFacade.getTrigger(trans);
 	if (trigger.length() > 0) {
             // case 1 and 2
-            if (evt == null){
+            if (evt == null) {
                 // case 1
                 evt = parseEvent(trigger);
                 if (evt != null) {
                     ModelFacade.setTrigger(trans, /*(MCallEvent)*/ evt);
                 }
-            }else {
+            } else {
                 // case 2
                 ModelFacade.setName(evt, trigger);
             }
-	}else { 
+	} else { 
             // case 3 and 4
 	    ModelFacade.setTrigger(trans, null); // unhook it
             //ModelFacade.removexxxx(evt); // erase it
