@@ -64,19 +64,21 @@ import ru.novosoft.uml.MFactoryImpl;
  * event in the future.
  * @since Oct 14, 2002
  * @author jaap.branderhorst@xs4all.nl
- * @deprecated by Linus Tolke as of 0.17.1. This class is part of the 
- *             NSUML-dependant API of the model component. Use the NSUML-free 
+ * @deprecated by Linus Tolke as of 0.17.1. This class is part of the
+ *             NSUML-dependant API of the model component. Use the NSUML-free
  *             {@link org.argouml.model.Model#getPump()} and the
  *             {@link org.argouml.model.ModelEventPump} interface.
  */
 public final class UmlModelEventPump implements MElementListener {
 
-    /** The Logger. */
-    private static final Logger LOG = 
+    /**
+     * The Logger.
+     */
+    private static final Logger LOG =
 	    Logger.getLogger(UmlModelEventPump.class);
 
     /**
-     * Indicate wether we pump events to listeners yes or no. 
+     * Indicate wether we pump events to listeners yes or no.
      * There is some fault in the NSUML implementation
      * but where...
      */
@@ -137,14 +139,14 @@ public final class UmlModelEventPump implements MElementListener {
 					   Object metaType,
 					   String[] eventNames) {
         Class modelClass = (Class) metaType;
-//      We don't support non-NSUML modeleventlisteners yet, 
+//      We don't support non-NSUML modeleventlisteners yet,
 //      so we return without addition.
         if (!MBase.class.isAssignableFrom(modelClass)) {
             return;
         }
         if (listener == null
             || modelClass == null
-            || eventNames == null           
+            || eventNames == null
             || eventNames.length == 0) {
             throw new IllegalArgumentException("Tried to add illegal class"
 					       + " modeleventlistener to "
@@ -159,21 +161,21 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Convinience method to add a listener that only listens to one specific 
+     * Convinience method to add a listener that only listens to one specific
      * event.
      *
      * @param listener The listener to add
      * @param metaType The listener should listen to instances of this class
-     * @param eventName The name of the event the listener wants to listen 
+     * @param eventName The name of the event the listener wants to listen
      * too.
      */
     public void addClassModelEventListener(MElementListener listener,
 					   Object metaType,
 					   String eventName) {
         Class modelClass = (Class) metaType;
-        // We don't support non-NSUML modeleventlisteners yet, 
+        // We don't support non-NSUML modeleventlisteners yet,
         // so we return without addition.
-        
+
         if (!MBase.class.isAssignableFrom(modelClass)) {
             return;
         }
@@ -191,7 +193,7 @@ public final class UmlModelEventPump implements MElementListener {
      *
      * @param listener The listener to add
      * @param modelClass The listener should listen to instances of this class
-     * @param eventName The name of the event the listener wants to listen 
+     * @param eventName The name of the event the listener wants to listen
      */
     private synchronized void executeAddClassModelEventListener(
 	    MElementListener listener,
@@ -202,11 +204,11 @@ public final class UmlModelEventPump implements MElementListener {
         Collection col =
             ModelManagementHelper.getHelper()
 	        .getAllModelElementsOfKind(modelClass);
-        
+
         if (col == Collections.EMPTY_LIST) {
             col = new ArrayList();
         }
-        
+
         /*
         if (modelClass.isAssignableFrom(MModel.class)) {
             Object root =
@@ -224,15 +226,15 @@ public final class UmlModelEventPump implements MElementListener {
                 listenerMap.put(base, keys[i], listener);
             }
         }
-        // add the class to the 'interested classes list' so the listener is 
+        // add the class to the 'interested classes list' so the listener is
         // added on creation of a modelelement
         for (int i = 0; i < keys.length; i++) {
             classListenerMap.put(modelClass, keys[i], listener);
         }
     }
     /**
-     * Retrieves the  implementation class belonging to some given class. For 
-     * example, retrieves ClassImpl.class if the input was Class.class or 
+     * Retrieves the  implementation class belonging to some given class. For
+     * example, retrieves ClassImpl.class if the input was Class.class or
      * ClassImpl.class.
      * @param inputClass An interface or implementation class from NSUML
      * @return The implementation class from NSUML
@@ -257,7 +259,7 @@ public final class UmlModelEventPump implements MElementListener {
      * Removes a listener that listens to all modelevents fired by instances of
      * modelClass and that have the original name eventNames.
      * @param listener The listener to remove
-     * @param metaType The class the listener does not want to listen to 
+     * @param metaType The class the listener does not want to listen to
      * instances anymore
      * @param eventNames The eventnames the listener does not want to listen to
      * anymore
@@ -265,11 +267,10 @@ public final class UmlModelEventPump implements MElementListener {
     public void removeClassModelEventListener(
 					      MElementListener listener,
 					      Object metaType,
-	
 					      String[] eventNames) {
         Class modelClass = (Class) metaType;
         // we don't support eventlisteners other then NSUML ModelEventListener.
-        // to be forward compatible with other ModelEventListeners, 
+        // to be forward compatible with other ModelEventListeners,
         // we do not throw an exception but
         // simply return.
         if (!MBase.class.isAssignableFrom(modelClass)) {
@@ -292,10 +293,11 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Convinience method to remove a listener that listens to events named 
+     * Convinience method to remove a listener that listens to events named
      * eventName that are fired by instances of modelClass.
+     *
      * @param listener The listener to remove
-     * @param metaType The class the listener does not want to listen to 
+     * @param metaType The class the listener does not want to listen to
      * instances anymore
      * @param eventName The eventname the listener does not want to listen to
      * anymore
@@ -306,7 +308,7 @@ public final class UmlModelEventPump implements MElementListener {
 					      String eventName) {
         Class modelClass = (Class) metaType;
         // we don't support eventlisteners other then NSUML ModelEventListener.
-        // to be forward compatible with other ModelEventListeners, 
+        // to be forward compatible with other ModelEventListeners,
         // we do not throw an exception but
         // simply return.
         if (!MBase.class.isAssignableFrom(modelClass)) {
@@ -323,36 +325,10 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Removes a listener that listens to all modelevents fired by instances of
-     * modelClass.
+     * Executes the removal of a listener to a class.
      *
      * @param listener The listener to remove
-     * @param metaType The class the listener does not want to listen to 
-     * instances anymore
-     */
-    public void removeClassModelEventListener(MElementListener listener,
-					      Object metaType) {
-        Class modelClass = (Class) metaType;
-        // we don't support eventlisteners other then NSUML ModelEventListener.
-        // to be forward compatible with other ModelEventListeners, 
-        // we do not throw an exception but
-        // simply return.
-        if (!MBase.class.isAssignableFrom(modelClass)) {
-            // throw new IllegalArgumentException();
-            return;
-        }
-        if (listener == null
-            || modelClass == null) {
-            throw new IllegalArgumentException("Tried to remove null listener "
-					       + "from null class");
-        }
-        executeRemoveClassModelEventListener(listener, modelClass, null);
-    }
-
-    /**
-     * Executes the removal of a listener to a class
-     * @param listener The listener to remove
-     * @param modelClass The class the listener does not want to listen to 
+     * @param modelClass The class the listener does not want to listen to
      * instances anymore
      * @param eventName The eventname the listener does not want to listen to
      * anymore
@@ -361,8 +337,8 @@ public final class UmlModelEventPump implements MElementListener {
 	    MElementListener listener,
 	    Class modelClass,
 	    String eventName) {
-        // remove all registrations of this listener with all instances of 
-        // modelClass       
+        // remove all registrations of this listener with all instances of
+        // modelClass
         //modelClass = formatClass(modelClass);
         Iterator it =
             ModelManagementHelper.getHelper()
@@ -380,23 +356,23 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Adds a listener to modelevents that are fired by some given modelelement 
-     * and that have the name eventNames.
-     * <p>
+     * Adds a listener to modelevents that are fired by some given modelelement
+     * and that have the name eventNames.<p>
+     *
      * If you want the listener to be registred for remove events (that is: the
      * instance the listener is listening too is removed), then you have to
-     * register for the eventname "remove"
-     * </p>
+     * register for the eventname "remove".
+     *
      * @param listener The listener to add
      * @param modelelement The modelelement the listener should be added too
-     * @param eventNames The array of eventnames the listener should listen 
-     * to
+     * @param eventNames The array of eventnames the listener should listen
+     *                   to.
      */
     public void addModelEventListener(
 				      Object listener,
 				      Object modelelement,
 				      String[] eventNames) {
-        // we just return if the modelelement is not a base. 
+        // we just return if the modelelement is not a base.
         // we don't support non-nsuml elements yet.
         if (modelelement == null || !ModelFacade.isABase(modelelement)) {
             return;
@@ -429,7 +405,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Convenience method to add a listener that only listens to one specific 
+     * Convenience method to add a listener that only listens to one specific
      * event.<p>
      *
      * @param listener The listener to add.
@@ -438,14 +414,14 @@ public final class UmlModelEventPump implements MElementListener {
      */
     public void addModelEventListener(Object listener,
 				      Object modelelement,
-				      String eventName) {    
-        
-        // we just return if the modelelement to add is not a NSUML class. 
+				      String eventName) {
+
+        // we just return if the modelelement to add is not a NSUML class.
         // we don't support other event listeners yet.
         if (modelelement == null || !ModelFacade.isABase(modelelement)) {
             return;
         }
-        if (listener == null          
+        if (listener == null
             || !(listener instanceof MElementListener)
             || eventName == null) {
             throw new IllegalArgumentException();
@@ -473,7 +449,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @param modelelement is the model element
      */
     public void addModelEventListener(Object listener, Object modelelement) {
-        // we just return if the modelelement to add is not a NSUML class. 
+        // we just return if the modelelement to add is not a NSUML class.
         // we don't support other event listeners yet.
         if (modelelement == null || !ModelFacade.isABase(modelelement)) {
             return;
@@ -514,7 +490,7 @@ public final class UmlModelEventPump implements MElementListener {
             return;
         }
         // we don't support eventlisteners other then NSUML ModelEventListener.
-        // to be forward compatible with other ModelEventListeners, 
+        // to be forward compatible with other ModelEventListeners,
         // we do not throw an exception but
         // simply return.
         if (!(handle instanceof MBase)) {
@@ -555,7 +531,7 @@ public final class UmlModelEventPump implements MElementListener {
             return;
         }
         // we don't support eventlisteners other then NSUML ModelEventListener.
-        // to be forward compatible with other ModelEventListeners, 
+        // to be forward compatible with other ModelEventListeners,
         // we do not throw an exception but
         // simply return.
         if (!(handle instanceof MBase)) {
@@ -594,7 +570,7 @@ public final class UmlModelEventPump implements MElementListener {
             return;
         }
         // we don't support eventlisteners other then NSUML ModelEventListener.
-        // to be forward compatible with other ModelEventListeners, 
+        // to be forward compatible with other ModelEventListeners,
         // we do not throw an exception but
         // simply return.
         if (!(handle instanceof MBase)) {
@@ -632,7 +608,7 @@ public final class UmlModelEventPump implements MElementListener {
      * Make all event sources described by the given document
      * available to the UMLModelEventPump. The document must match the
      * pattern given by the following example:
-     * 
+     *
      * <pre>
      * &lt;eventtree&gt;
      *   &lt;source classname="classname of a model element"&gt;
@@ -648,10 +624,10 @@ public final class UmlModelEventPump implements MElementListener {
      * The type is one of the numbers defined in {@link
      * MElementEvent}. Each of the elements can be used multiple
      * times.
-     * 
+     *
      * This operation is particularly provided for use by modules
      * which add custom model elements.
-     * 
+     *
      * @param doc the document, the contents of which should be made available.
      *            This must be preparsed.
      */
@@ -660,18 +636,18 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * <p>Make event types for a single event source available to this 
-     * UMLModelEventPump.
-     * 
-     * <p>This operation is particularly provided for use by modules which add 
+     * Make event types for a single event source available to this
+     * UMLModelEventPump.<p>
+     *
+     * This operation is particularly provided for use by modules which add
      * custom model elements.
-     * 
+     *
      * @param cSource the source class for which to make event types available.
-     * 
+     *
      * @param mpNameMap a map of the event types to add for the source class.
-     *                  The keys are Strings indicating the names of events, 
+     *                  The keys are Strings indicating the names of events,
      *                  while the values are int[] which contain all the event
-     *                  types the indicated event represents. The specific int 
+     *                  types the indicated event represents. The specific int
      *                  values used can be found in {@link MElementEvent}.
      */
     public void addEventSource (Class cSource, Map mpNameMap) {
@@ -695,7 +671,7 @@ public final class UmlModelEventPump implements MElementListener {
 
     private MElementListener[] getListenerList(MElementEvent e) {
         return listenerMap.getListeners((MBase) e.getSource(),
-					new EventKey(e.getType(), 
+					new EventKey(e.getType(),
 						     e.getName()));
     }
 
@@ -794,7 +770,7 @@ public final class UmlModelEventPump implements MElementListener {
 
     /**
      * Clears the hashmaps with listeners. This is only needed by the JUnit
-     * tests. It's an implementation detail that the visibility is public. 
+     * tests. It's an implementation detail that the visibility is public.
      * THIS METHOD SHOULD NOT BE USED OUTSIDE JUNIT TESTS.
      */
     public void cleanUp() {
@@ -811,7 +787,7 @@ public final class UmlModelEventPump implements MElementListener {
     EventListenerHashMap getEventListenerMap() {
         return listenerMap;
     }
-    
+
     /**
      * changes the NSUML event policy in order to stop udating the ui.
      */
@@ -820,7 +796,7 @@ public final class UmlModelEventPump implements MElementListener {
 
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_DISABLED);
     }
-    
+
     /**
      * changes the NSUML event policy in order to start udating the ui.
      */
@@ -830,7 +806,7 @@ public final class UmlModelEventPump implements MElementListener {
         MFactoryImpl.flushEvents();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
     }
-    
+
     /**
      * changes the NSUML event policy to flush model events.
      */
@@ -947,7 +923,7 @@ class EventListenerList {
     /**
      *  The list of EventKey - Listener pairs. It's visibility is default since
      * it's used in AbstractUmlModelFactory in a performant but quite awkward
-     * way from an encapsulation point of view. 
+     * way from an encapsulation point of view.
      */
     private Object[] listenerList = NULL_ARRAY;
 
@@ -1012,7 +988,7 @@ class EventListenerList {
         // if (!Arrays.asList(getListeners(key)).contains(listener)) {
 
         if (listenerList == NULL_ARRAY) {
-            // if this is the first listener added, 
+            // if this is the first listener added,
             // initialize the lists
             listenerList =
                 new Object[] {
@@ -1024,29 +1000,29 @@ class EventListenerList {
                 int i = listenerList.length;
                 Object[] tmp = new Object[i + 3];
                 System.arraycopy(listenerList, 0, tmp, 0, i);
-                
+
                 tmp[i] = key.getType();
                 tmp[i + 1] = key.getName();
-                tmp[i + 2] = listener;            
-                
+                tmp[i + 2] = listener;
+
                 listenerList = tmp;
             }
         }
     }
-    
-    public boolean contains(EventKey key, MElementListener listener) {       
+
+    public boolean contains(EventKey key, MElementListener listener) {
         if (key == null) {
             System.out.println(" KEy null");
         }
         for (int i = listenerList.length - 1; i > 0; i -= 3) {
-            if (listenerList[i] == listener 
-                && ((listenerList[i - 1] == null && key.getName() == null) 
-                    || (listenerList[i - 1] != null 
-                        && listenerList[i - 1].equals(key.getName())) 
-                    && ((listenerList[i - 2] == null && key.getType() == null) 
-                        || (listenerList[i - 2] != null  
+            if (listenerList[i] == listener
+                && ((listenerList[i - 1] == null && key.getName() == null)
+                    || (listenerList[i - 1] != null
+                        && listenerList[i - 1].equals(key.getName()))
+                    && ((listenerList[i - 2] == null && key.getType() == null)
+                        || (listenerList[i - 2] != null
                             && listenerList[i - 2].equals(key.getType()))))) {
-                return true;             
+                return true;
             }
         }
         return false;
@@ -1058,7 +1034,7 @@ class EventListenerList {
      * @param key
      * @param listener
      */
-    public void remove(EventKey key, MElementListener listener) {   
+    public void remove(EventKey key, MElementListener listener) {
         if (key.getName() != null && key.getType() != null) {
             for (int i = listenerList.length - 3; i >= 0; i -= 3) {
                 if (listenerList[i + 2] == listener
@@ -1122,8 +1098,9 @@ class EventListenerList {
     }
 
     /**
-     * Returns the number of listeners that are interested in the given key and 
+     * Returns the number of listeners that are interested in the given key and
      * exist in the given object array.
+     *
      * @param list
      * @param key
      * @return the count of listeners.
@@ -1151,9 +1128,9 @@ class EventListenerList {
     }
 
     /**
-    * Returns the total number of listeners of the supplied type 
+    * Returns the total number of listeners of the supplied type
     * for this listener list.
-    * 
+    *
     * @return The number of listeners.
     */
     public synchronized int getListenerCount(EventKey key) {
@@ -1162,7 +1139,7 @@ class EventListenerList {
 
     /**
      * Returns the total number of listeners for this listener list.
-     * 
+     *
      * @return The number of listeners.
      */
     public synchronized int getListenerCount() {
@@ -1186,9 +1163,9 @@ class EventListenerList {
 }
 
 /**
- * A map containing instances of meta-classes (modelelements) as keys and 
+ * A map containing instances of meta-classes (modelelements) as keys and
  * EventListenerLists as values. The class is a wrapper around an underlying
- * java.util.HashMap and provides some custom methods for easy access to the 
+ * java.util.HashMap and provides some custom methods for easy access to the
  * underlying data structure.
  *
  * @author jaap.branderhorst@xs4all.nl
@@ -1202,7 +1179,7 @@ class EventListenerHashMap {
         new MElementListener[0];
 
     /**
-     * The list of ListenerType - Listener pairs. 
+     * The list of ListenerType - Listener pairs.
      */
     private transient Map listenerMap = new HashMap();
 
@@ -1217,7 +1194,7 @@ class EventListenerHashMap {
     public synchronized void put(
         MBase element,
         EventKey key,
-        MElementListener listener) {     
+        MElementListener listener) {
         EventListenerList list = (EventListenerList) listenerMap.get(element);
         if (list == null) {
             list = new EventListenerList();
@@ -1235,7 +1212,7 @@ class EventListenerHashMap {
     public synchronized void remove(
         MBase element,
         EventKey key,
-        MElementListener listener) {    
+        MElementListener listener) {
         EventListenerList list = (EventListenerList) listenerMap.get(element);
         if (list != null) {
             list.remove(key, listener);
@@ -1295,7 +1272,7 @@ class ClassListenerHashMap {
         new MElementListener[0];
 
     /**
-     * The list of ListenerType - Listener pairs. 
+     * The list of ListenerType - Listener pairs.
      */
     private transient Map listenerMap = new HashMap();
 
@@ -1314,7 +1291,7 @@ class ClassListenerHashMap {
         if (element == null || listener == null) {
             throw new IllegalArgumentException("Modelelement or listener null");
         }
-        EventListenerList list = 
+        EventListenerList list =
             (EventListenerList) listenerMap.get(element.getName());
         if (list == null) {
             list = new EventListenerList();
@@ -1337,7 +1314,7 @@ class ClassListenerHashMap {
         if (element == null || listener == null) {
             throw new IllegalArgumentException("Modelelement or listener null");
         }
-        EventListenerList list = 
+        EventListenerList list =
             (EventListenerList) listenerMap.get(element.getName());
         if (list != null) {
             list.remove(key, listener);
@@ -1367,7 +1344,7 @@ class ClassListenerHashMap {
         }
     }
 
-    /** 
+    /**
      * Returns an EventListenerList with listeners that are interested
      * in certain events of the given meta-class.
      *
@@ -1425,7 +1402,7 @@ class ClassListenerHashMap {
  * @author jaap.branderhorst@xs4all.nl
  */
 class EventTreeDefinition {
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(EventTreeDefinition.class);
     private static final String FILE_NAME = "org/argouml/eventtree.xml";
     private Map definition = new HashMap();
@@ -1442,9 +1419,9 @@ class EventTreeDefinition {
     }
 
     /**
-     * <p>Add all event sources described by the given document.
+     * Add all event sources described by the given document.
      * The document must match  the pattern given by the following example:
-     * 
+     *
      * <pre>
      * &lt;eventtree&gt;
      *   &lt;source classname="classname of a model element"&gt;
@@ -1456,11 +1433,11 @@ class EventTreeDefinition {
      * </pre>
      *
      * The classname is fully qualified.<p>
-     * 
-     * <p>The type is one of the numbers defined in {@link MElementEvent}. Each 
+     *
+     * The type is one of the numbers defined in {@link MElementEvent}. Each
      * of the elements can be used multiple times.
-     * 
-     * @param doc the document, the contents of which should be added to this 
+     *
+     * @param doc the document, the contents of which should be added to this
      *            event tree definition. This must be preparsed.
      */
     synchronized void addSourcesFromDocument (final Document doc) {
@@ -1500,13 +1477,13 @@ class EventTreeDefinition {
 
     /**
      * Add event types for a single source to this event tree.
-     * 
+     *
      * @param cSource the source class for which to add event types.
-     * 
+     *
      * @param mpNameMap a map of the event types to add for the source class.
-     *                  The keys are Strings indicating the names of events, 
+     *                  The keys are Strings indicating the names of events,
      *                  while the values are int[] which contain all the event
-     *                  types the indicated event represents. The specific int 
+     *                  types the indicated event represents. The specific int
      *                  values used can be found in {@link MElementEvent}.
      */
     synchronized void addSource (Class cSource, Map mpNameMap) {
@@ -1552,8 +1529,9 @@ class EventTreeDefinition {
     }
 
     /**
-     * Returns all EventKeys (eventdefinitions) with the given eventName 
+     * Returns all EventKeys (eventdefinitions) with the given eventName
      * that the given modelClass can fire.
+     *
      * @param modelClass
      * @param name
      * @return All event keys.

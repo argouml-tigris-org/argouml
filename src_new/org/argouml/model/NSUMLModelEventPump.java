@@ -460,7 +460,7 @@ class NSUMLClassEventListener extends NSUMLEventListener {
         super(l, modelClass, ev);
 
         UmlModelEventPump.getPump()
-	    .addClassModelEventListener(this, (Class) getElement(),
+	    .addClassModelEventListener(this, getElement(),
 					getEvents());
     }
 
@@ -469,6 +469,7 @@ class NSUMLClassEventListener extends NSUMLEventListener {
      */
     public void delete() {
         UmlModelEventPump.getPump()
-	    .removeClassModelEventListener(this, (Class) getElement());
+	    .removeClassModelEventListener(this, getElement(),
+	            			   getEvents());
     }
 }
