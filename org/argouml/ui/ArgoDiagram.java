@@ -146,4 +146,12 @@ public class ArgoDiagram extends Diagram implements VetoablePropertyChange {
         return fig;
     }
 
+	/**
+	 * @see org.tigris.gef.base.Diagram#initialize(Object)
+	 */
+	public void initialize(Object owner) {
+		super.initialize(owner);
+		ProjectBrowser.TheInstance.setActiveDiagram(this);
+	}
+
 } /* end class ArgoDiagram */
