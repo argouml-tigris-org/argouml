@@ -88,7 +88,7 @@ public class EmailExpertDialog extends ArgoDialog {
         super(ProjectBrowser.getInstance(), "Send Email to an Expert", true);
     }
 
-    protected void addComponents() {
+    protected JPanel addComponents() {
         _okButton.setText("Send");
         
         _to = new JTextField(30);
@@ -101,7 +101,6 @@ public class EmailExpertDialog extends ArgoDialog {
         JLabel subjectLabel = new JLabel("Subject:");
     
         JPanel panel = new JPanel(new LabelledLayout(labelGap, componentGap));
-        mainPanel.add(panel);
 
         toLabel.setLabelFor(_to);
         panel.add(toLabel);
@@ -118,12 +117,10 @@ public class EmailExpertDialog extends ArgoDialog {
         JScrollPane bodyScroller = new JScrollPane(_body);
         bodyScroller.setPreferredSize(new Dimension(100,50));
         panel.add(bodyScroller);
+        
+        return panel;
     }
     
-    protected void addButtons() {
-        // No special buttons for this dialog
-    }
-
   public void setTarget(Object t) {
     _target = (ToDoItem) t;
     Poster p = _target.getPoster();
