@@ -26,11 +26,14 @@ import org.argouml.application.api.*;
 import org.argouml.application.helpers.*;
 import org.argouml.kernel.*;
 import org.argouml.uml.ui.UMLAction;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
-import javax.swing.*;
+import java.io.*;
 import java.util.*;
+import javax.swing.*;
+
 import org.tigris.gef.util.*;
 
 /** Action object for handling Argo settings
@@ -43,11 +46,11 @@ implements SettingsTabPanel {
 
     JTextField _argoRoot = null;
     JTextField _argoHome = null;
+    JTextField _argoExtDir = null;
     JTextField _javaHome = null;
     JTextField _userHome = null;
     JTextField _userDir = null;
     JTextField _startupDir = null;
-    // JTextField _smtp = new JTextField();
 
     public SettingsTabEnvironment() {
         super();
@@ -55,16 +58,15 @@ implements SettingsTabPanel {
 	JPanel top = new JPanel();
     	top.setLayout(new GridBagLayout()); 
 
+        // needs-more-work: I18N
+
 	GridBagConstraints labelConstraints = new GridBagConstraints();
 	labelConstraints.anchor = GridBagConstraints.WEST;
 	labelConstraints.gridy = 0;
 	labelConstraints.gridx = 0;
-	// labelConstraints.ipadx = 16;
-	// labelConstraints.ipady = 4;
 	labelConstraints.gridwidth = 1;
 	labelConstraints.gridheight = 1;
 	labelConstraints.insets = new Insets(2, 20, 2, 4);
-	// labelConstraints.weightx = 0.3;
 
 	GridBagConstraints fieldConstraints = new GridBagConstraints();
 	fieldConstraints.anchor = GridBagConstraints.EAST;
@@ -92,27 +94,34 @@ implements SettingsTabPanel {
 
 	labelConstraints.gridy = 2;
 	fieldConstraints.gridy = 2;
+ 	top.add(createLabel("${argo.ext.dir}"), labelConstraints);
+        _argoExtDir = createTextField();
+	_argoExtDir.setEnabled(false);
+	top.add(_argoExtDir, fieldConstraints);
+
+	labelConstraints.gridy = 3;
+	fieldConstraints.gridy = 3;
   	top.add(createLabel("${java.home}"), labelConstraints);
         _javaHome = createTextField();
 	_javaHome.setEnabled(false);
 	top.add(_javaHome, fieldConstraints);
 
-	labelConstraints.gridy = 3;
-	fieldConstraints.gridy = 3;
+	labelConstraints.gridy = 4;
+	fieldConstraints.gridy = 4;
   	top.add(createLabel("${user.home}"), labelConstraints);
         _userHome = createTextField();
 	_userHome.setEnabled(false);
 	top.add(_userHome, fieldConstraints);
 
-	labelConstraints.gridy = 4;
-	fieldConstraints.gridy = 4;
+	labelConstraints.gridy = 5;
+	fieldConstraints.gridy = 5;
   	top.add(createLabel("${user.dir}"), labelConstraints);
         _userDir = createTextField();
 	_userDir.setEnabled(false);
 	top.add(_userDir, fieldConstraints);
 
-	labelConstraints.gridy = 5;
-	fieldConstraints.gridy = 5;
+	labelConstraints.gridy = 6;
+	fieldConstraints.gridy = 6;
   	top.add(createLabel("Startup directory"), labelConstraints);
         _startupDir = createTextField();
 	_startupDir.setEnabled(false);
@@ -124,6 +133,7 @@ implements SettingsTabPanel {
     public void handleSettingsTabRefresh() {
         _argoRoot.setText(Argo.getArgoRoot());
         _argoHome.setText(Argo.getArgoHome());
+        _argoExtDir.setText(Argo.getArgoHome() + File.separator + "ext");
         _javaHome.setText(System.getProperty("java.home"));
         _userHome.setText(System.getProperty("user.home"));
         _userDir.setText(System.getProperty("user.dir"));

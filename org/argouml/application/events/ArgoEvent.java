@@ -34,14 +34,6 @@ import java.util.*;
 public abstract class ArgoEvent extends EventObject
 implements ArgoEventTypes {
 
-//     public final static int ANY_EVENT                =  1000;
-// 
-    // public final static int ANY_MODULE_EVENT         =  1100;
-    // public final static int MODULE_LOADED            =  1101;
-    // public final static int MODULE_UNLOADED          =  1102;
-// 
-    // public final static int ARGO_EVENT_END           = 99999;
-// 
     protected int _eventType = 0;
 
     public ArgoEvent(int eventType, Object src) {
@@ -51,7 +43,6 @@ implements ArgoEventTypes {
 
     public int getEventType() { return _eventType; }
 
-    // public int eventAny() { return ANY_EVENT; }
     public int getEventStartRange() { return ANY_EVENT; }
 
     public int getEventEndRange() {

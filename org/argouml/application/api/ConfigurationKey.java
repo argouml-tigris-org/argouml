@@ -22,6 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.api;
+import java.beans.*;
 
 /**
  *   This class provides definition and manipulation of configuration keys.
@@ -36,5 +37,10 @@ public interface ConfigurationKey {
   /** Return the actual key used to access the configuration.
    */ 
   public String getKey();
+
+  /** Tells if this configuration key is the one changed in the
+   *  PropertyChangeEvent.
+   */
+  public boolean isChangedProperty(PropertyChangeEvent pce);
 }
 

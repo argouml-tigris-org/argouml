@@ -43,5 +43,15 @@ public interface ArgoModuleEventListener extends ArgoEventListener {
      * Invoked when a module has been unloaded.
      */
     public void moduleUnloaded(ArgoModuleEvent e);
+
+    /**
+     * Invoked when a module has been enabled.
+     */
+    public void moduleEnabled(ArgoModuleEvent e);
+
+    /**
+     * Invoked when a module has been disabled.
+     */
+    public void moduleDisabled(ArgoModuleEvent e);
 }
 

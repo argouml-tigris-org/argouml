@@ -166,7 +166,15 @@ implements ArgoModuleEventListener {
     }
 
     public void moduleUnloaded(ArgoModuleEvent event) {
-        Argo.log.info ("ActionSettings got moduleLoaded()");
+        Argo.log.info ("ActionSettings got moduleUnloaded()");
+    }
+
+    public void moduleEnabled(ArgoModuleEvent event) {
+        Argo.log.info ("ActionSettings got moduleEnabled()");
+    }
+
+    public void moduleDisabled(ArgoModuleEvent event) {
+        Argo.log.info ("ActionSettings got moduleDisabled()");
     }
 
 }

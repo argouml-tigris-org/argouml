@@ -23,6 +23,7 @@
 
 package org.argouml.application.configuration;
 import org.argouml.application.api.*;
+import java.beans.*;
 
 /**
  *   This class provides definition and manipulation of configuration keys.
@@ -30,6 +31,7 @@ import org.argouml.application.api.*;
  *   ConfigurationKey wrapper.
  *
  *   @author Thierry Lach
+ *   @since ARGO0.9.4
  */
 public class ConfigurationKeyImpl 
 implements ConfigurationKey {
@@ -78,6 +80,13 @@ implements ConfigurationKey {
    */ 
   public final String getKey() {
       return _key;
+  }
+
+  /** Compare the configuration key to a string.
+   */
+  public boolean isChangedProperty(PropertyChangeEvent pce) {
+      if (pce == null) return false;
+      return pce.getPropertyName().equals(_key);
   }
 
   public String toString() {

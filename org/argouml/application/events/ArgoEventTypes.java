@@ -38,6 +38,11 @@ public interface ArgoEventTypes {
     public final static int ANY_MODULE_EVENT         =  1100;
     public final static int MODULE_LOADED            =  1101;
     public final static int MODULE_UNLOADED          =  1102;
+    public final static int MODULE_ENABLED           =  1103;
+    public final static int MODULE_DISABLED          =  1104;
+
+    public final static int ANY_NOTATION_EVENT       =  1200;
+    public final static int NOTATION_CHANGED         =  1201;
 
     public final static int ARGO_EVENT_END           = 99999;
 
