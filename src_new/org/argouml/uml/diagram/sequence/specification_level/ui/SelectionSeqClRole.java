@@ -295,18 +295,12 @@ public class SelectionSeqClRole extends SelectionWButtons {
         ce.damaged(this);
     }
 
-    public void mouseEntered(MouseEvent me) {
-        System.out.println("SelectionSeqClRole: mouseEntered");
-        super.mouseEntered(me);
-    }
-
-    public void mouseExited(MouseEvent me) {
-        System.out.println("SelectionSeqClRole: mouseExited");
-        super.mouseExited(me);
-    }
-
-    public void mouseMoved(MouseEvent me) {
-        System.out.println("SelectionSeqClRole: mouseMoved");
-        super.mouseMoved(me);
+    /**
+     * Not used. Only implemented here since SelectionSeqClRole does not comply to the 
+     * rest of the selection with buttons classes.
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
+     */
+    protected Object getNewNode(int buttonCode) {
+        return null;
     }
 } /* end class SelectionClass */
