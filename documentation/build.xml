@@ -238,6 +238,8 @@ After these operations the file will still be visible in the GUI.
 		<property name="printable.xsl" value="../docbook-setup/create-printable.xsl"/>
 		<property name="pdf.xsl"       value="../docbook-setup/create-pdf.xsl"/>
 		<property name="javahelp.xsl"  value="../docbook-setup/create-javahelp.xsl"/>
+		<property name="imglist.xsl"  value="../docbook-setup/create-imglist.xsl"/>
+
 
 		<!-- Copy and change 'antcall' task below for additional DocBook documents -->
 		<antcall target="internal-dispatcher">		
@@ -380,6 +382,7 @@ After these operations the file will still be visible in the GUI.
 	<!-- =================================================================== -->
 	<target name="create-javahelp" if="generate-javahelp">
 		<echo message="Building javahelp documentation for: ${source.dir}/${source.xml}. Please wait ..."/>
+		<style basedir="${source.dir}" style="${imglist.xsl}" in="${source.xml}" out="${source.dir}/imglist.lst"/>
 		<delete dir="${target.dir}"/>
 		<mkdir dir="${target.dir}"/>
 		<style basedir="${source.dir}" style="${javahelp.xsl}" destdir="${target.dir}" includes="${source.xml}"/>

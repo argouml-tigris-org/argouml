@@ -7,34 +7,34 @@ rem $Id$
 rem
 
 rem +-------------------------------------------------------------------------+
-rem | Verify and Set Required Environment Variables                           |
+rem ! Verify and Set Required Environment Variables                           !
 rem +-------------------------------------------------------------------------+
 
 @if "%OS%" == "Windows_NT"  setlocal
 
 rem 	+---------------------------------------------------------------------+
-rem 	| Check for existence of ANT_HOME environment variable                |
+rem 	! Check for existence of ANT_HOME environment variable                !
 rem 	+---------------------------------------------------------------------+
 
 if not "%ANT_HOME%" == "" goto check_JAVA_HOME
 
 rem 		+-------------------------------------------------------------+
-rem 		| ANT_HOME environment variable not found                     |
-rem 		|                                                             |
-rem 		| We will point ANT_HOME to our private copy of Ant           |
+rem 		! ANT_HOME environment variable not found                     !
+rem 		!                                                             !
+rem 		! We will point ANT_HOME to our private copy of Ant           !
 rem 		+-------------------------------------------------------------+
 
 set ANT_HOME=..\lib
 
 :check_JAVA_HOME
 rem 		+-------------------------------------------------------------+
-rem 		| Check for existence of JAVA_HOME environment variable       |
+rem 		! Check for existence of JAVA_HOME environment variable       !
 rem 		+-------------------------------------------------------------+
 
 if "%JAVA_HOME%" == "" goto ERROR_JAVA_HOME
 
 rem 		+-------------------------------------------------------------+
-rem 		| Add Java's tools.jar to the classpath for running Ant       |
+rem 		! Add Java's tools.jar to the classpath for running Ant       !
 rem 		+-------------------------------------------------------------+
 
 set LOCAL_CLASSPATH=
@@ -44,7 +44,7 @@ rem For JDK1.1 only
 rem if exist %JAVA_HOME%\jre\lib\classes.zip  SET LOCAL_CLASSPATH=%LOCAL_CLASSPATH%;%JAVA_HOME%\jre\lib\classes.zip
 
 rem 		+-------------------------------------------------------------+
-rem 		| Add Java's tools.jar to the classpath for running Ant       |
+rem 		! Add Java's tools.jar to the classpath for running Ant       !
 rem 		+-------------------------------------------------------------+
 
 set LOCAL_CLASSPATH=%LOCAL_CLASSPATH%;..\lib\ant.jar
@@ -82,7 +82,7 @@ goto END
 
 
 rem +-------------------------------------------------------------------------+
-rem | Error exit points                                                       |
+rem ! Error exit points                                                       !
 rem +-------------------------------------------------------------------------+
 
 :ERROR_EXITS
@@ -90,7 +90,7 @@ rem +-------------------------------------------------------------------------+
 
 :ERROR_JAVA_HOME
 rem	+--------------------------------------------------------------------+
-rem 	| JAVA_HOME environment variable not found                           |
+rem 	! JAVA_HOME environment variable not found                           !
 rem 	+--------------------------------------------------------------------+
 
 echo ******************************************************************
@@ -104,7 +104,7 @@ goto END
 
 
 rem +-------------------------------------------------------------------------+
-rem | Batch file exit: Cleanup and end                                        |
+rem ! Batch file exit: Cleanup and end                                        !
 rem +-------------------------------------------------------------------------+
 
 :END
