@@ -62,10 +62,14 @@ public class WizAddOperation extends UMLWizard {
 		newName = step1.getText();
 	    }
 	    Object me = getModelElement();
-        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(me);
-        Object model = ProjectManager.getManager().getCurrentProject().getModel();
-        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-	    UmlFactory.getFactory().getCore().buildOperation(me, model, voidType, newName, propertyChangeListeners);
+	    Collection propertyChangeListeners = ProjectManager.getManager()
+	        .getCurrentProject().findFigsForMember(me);
+	    Object model = ProjectManager.getManager()
+	        .getCurrentProject().getModel();
+	    Object voidType = ProjectManager.getManager()
+	        .getCurrentProject().findType("void");
+	    UmlFactory.getFactory().getCore().buildOperation(me, model, 
+	            voidType, newName, propertyChangeListeners);
         }
     }
     
