@@ -27,84 +27,84 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLClassifierComboBoxModel;
-import org.argouml.uml.ui.UMLComboBox;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.AbstractActionAddModelElement;
+import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton2;
+import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.foundation.core.UMLContainerResidentListModel;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * TODO: this property panel needs refactoring to remove dependency on
- *       old gui components.
+ * TODO: this property panel needs refactoring to remove dependency on old gui
+ * components.
  */
-public class PropPanelComponentInstance extends PropPanelModelElement {
+public class PropPanelComponentInstance extends PropPanelInstance {
 
     /**
      * Contructor.
      */
     public PropPanelComponentInstance() {
-        super("Component Instance",
-	      _componentInstanceIcon,
-	      ConfigLoader.getTabPropsOrientation());
+        super("Component Instance", _componentInstanceIcon, ConfigLoader
+                .getTabPropsOrientation());
 
         Class mclass = (Class) ModelFacade.COMPONENT_INSTANCE;
 
-        Class[] namesToWatch =
-        {
-	    (Class) ModelFacade.STEREOTYPE,
-	    (Class) ModelFacade.NAMESPACE,
-	    (Class) ModelFacade.CLASSIFIER};
+        Class[] namesToWatch = { (Class) ModelFacade.STEREOTYPE,
+                (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER };
 
         setNameEventListening(namesToWatch);
 
-        addField(Translator.localize("label.name"),
-		 getNameTextField());
-
-        UMLClassifierComboBoxModel classifierModel =
-	    new UMLClassifierComboBoxModel(this,
-					   "isAcceptibleClassifier",
-					   "classifier",
-					   "getClassifier",
-					   "setClassifier",
-					   false,
-					   (Class) ModelFacade.CLASSIFIER,
-					   true);
-        UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
-        addField("Classifier:",
-		 new UMLComboBoxNavigator(this,
-			 Translator.localize("tooltip.nav-class"),
-			 clsComboBox));
+        addField(Translator.localize("label.name"), getNameTextField());
 
         addField(Translator.localize("label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("label.namespace"),
-		 getNamespaceComboBox());
+        addField(Translator.localize("label.namespace"), getNamespaceComboBox());
 
-        new PropPanelButton(this,
-			    buttonPanel, _navUpIcon,
-			    Translator.localize("button.go-up"),
-			    "navigateUp", null);
-        new PropPanelButton(this,
-			    buttonPanel, _deleteIcon,
-			    Translator.localize("Delete"),
-			    "removeElement", null);
+        addSeperator();
+
+        // TODO: i18n
+        addField("Stimuli sent:", getStimuliSenderScroll());
+
+        //TODO: i18n
+        addField("Stimuli received:", getStimuliReceiverScroll());
+        
+        JList resList = new UMLLinkedList(new UMLContainerResidentListModel());
+        addField(Translator.localize("UMLMenu", "label.residents"), new JScrollPane(resList));
+
+        addSeperator();
+        AbstractActionAddModelElement _action = new ActionAddInstanceClassifier(
+                (Class) ModelFacade.COMPONENT);
+        JScrollPane _classifierScroll = new JScrollPane(
+                new UMLMutableLinkedList(new UMLInstanceClassifierListModel(),
+                        _action, null, null, true));
+        addField(Translator.localize("UMLMenu", "label.classifiers"),
+                _classifierScroll);
+
+        buttonPanel.add(new PropPanelButton2(this,
+                new ActionNavigateContainerElement()));
+        buttonPanel
+                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     /**
      * Callback method from UMLComboBoxModel.
-     *
-     * Note: UMLComboBoxModel uses reflection to find this one so when 
-     * changing it is not enough that the compiler accepts this. All test
-     * cases must also accept this.
-     * Linus has sofar changed the parameter type back from Object to 
-     * MModelElement twice in order to get it to work again.
-     *
-     * @param classifier The classifier to test.
+     * 
+     * Note: UMLComboBoxModel uses reflection to find this one so when changing
+     * it is not enough that the compiler accepts this. All test cases must also
+     * accept this. Linus has sofar changed the parameter type back from Object
+     * to MModelElement twice in order to get it to work again.
+     * 
+     * @param classifier
+     *            The classifier to test.
      * @return <tt>true</tt> if acceptible.
      */
     public boolean isAcceptibleClassifier(MModelElement classifier) {
@@ -113,33 +113,33 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
 
     /**
      * Callback method from UMLComboBoxModel.
-     *
-     * Note: UMLComboBoxModel uses reflection to find this one so when 
-     * changing it is not enough that the compiler accepts this. All test
-     * cases must also accept this.
-     * Linus has sofar changed the parameter type back from Object to 
-     * MClassifier twice in order to get it to work again.
-     *
-     * @param element The classifier to test.
+     * 
+     * Note: UMLComboBoxModel uses reflection to find this one so when changing
+     * it is not enough that the compiler accepts this. All test cases must also
+     * accept this. Linus has sofar changed the parameter type back from Object
+     * to MClassifier twice in order to get it to work again.
+     * 
+     * @param element
+     *            The classifier to test.
      */
     public void setClassifier(MClassifier element) {
         Object target = getTarget();
 
         if (org.argouml.model.ModelFacade.isAInstance(target)) {
-	    Object inst = /*(MInstance)*/ target;
-//            ((MInstance) target).setClassifier((MClassifier) element);
+            Object inst = /* (MInstance) */target;
+            //            ((MInstance) target).setClassifier((MClassifier) element);
 
-	    // delete all classifiers
-	    Collection col = ModelFacade.getClassifiers(inst);
-	    if (col != null) {
-		Iterator iter = col.iterator();
-		if (iter != null && iter.hasNext()) {
-		    Object classifier = /*(MClassifier)*/ iter.next();
-		    ModelFacade.removeClassifier(inst, classifier);
-		}
-	    }
-	    // add classifier
-	    ModelFacade.addClassifier(inst, element);
+            // delete all classifiers
+            Collection col = ModelFacade.getClassifiers(inst);
+            if (col != null) {
+                Iterator iter = col.iterator();
+                if (iter != null && iter.hasNext()) {
+                    Object classifier = /* (MClassifier) */iter.next();
+                    ModelFacade.removeClassifier(inst, classifier);
+                }
+            }
+            // add classifier
+            ModelFacade.addClassifier(inst, element);
 
         }
     }
@@ -153,7 +153,7 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
             if (col != null) {
                 Iterator iter = col.iterator();
                 if (iter != null && iter.hasNext()) {
-                    classifier = /*(MClassifier)*/ iter.next();
+                    classifier = /* (MClassifier) */iter.next();
                 }
             }
 

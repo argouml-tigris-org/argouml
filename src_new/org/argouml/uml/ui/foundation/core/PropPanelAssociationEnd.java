@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -37,7 +38,10 @@ import org.argouml.model.ModelFacade;
 import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.ActionNavigateAssociation;
+import org.argouml.uml.ui.ActionNavigateOppositeAssocEnd;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMultiplicityComboBox2;
@@ -46,8 +50,8 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.util.ConfigLoader;
 
 /**
- * TODO: this property panel needs refactoring to remove dependency on
- *       old gui components.
+ * TODO: this property panel needs refactoring to remove dependency on old gui
+ * components.
  */
 public class PropPanelAssociationEnd extends PropPanelModelElement {
 
@@ -67,12 +71,11 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * The combobox for the multiplicity of this type.
      */
     protected UMLComboBox2 _multiplicityComboBox;
-    
-    /** 
-     * Model for the MultiplicityComboBox 
+
+    /**
+     * Model for the MultiplicityComboBox
      */
     private static UMLMultiplicityComboBoxModel multiplicityComboBoxModel;
-    
 
     /**
      * The checkbox that shows if this association end is navigable.
@@ -125,6 +128,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     /**
      * Constructs the proppanel including initializing all scrollpanes, panels
      * etc. but excluding placing them on the proppanel itself.
+     * 
      * @see org.argouml.uml.ui.PropPanel#PropPanel(String, Orientation)
      */
     protected PropPanelAssociationEnd(String name, Orientation orientation) {
@@ -133,43 +137,59 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     private String _associationLabel;
 
+    protected Icon assocEndorRoleIcon = _assocEndIcon;
+
     /**
      * Constructs the proppanel and places all scrollpanes etc. on the canvas.
+     * 
      * @see java.lang.Object#Object()
      */
     public PropPanelAssociationEnd() {
         super("AssociationEnd", ConfigLoader.getTabPropsOrientation());
         _associationLabel = Translator.localize("UMLMenu", "label.association");
-        Class mclass = (Class)ModelFacade.ASSOCIATION_END;
+        Class mclass = (Class) ModelFacade.ASSOCIATION_END;
         createControls(mclass);
         positionStandardControls();
         positionControls();
     }
 
     protected void createControls(Class mclass) {
-        _typeCombobox = new UMLComboBox2(new UMLAssociationEndTypeComboBoxModel(), ActionSetAssociationEndType.SINGLETON, true);
-        JList associationList = new UMLLinkedList(new UMLAssociationEndAssociationListModel());
+        _typeCombobox = new UMLComboBox2(
+                new UMLAssociationEndTypeComboBoxModel(),
+                ActionSetAssociationEndType.SINGLETON, true);
+        JList associationList = new UMLLinkedList(
+                new UMLAssociationEndAssociationListModel());
         associationList.setVisibleRowCount(1);
         _associationScroll = new JScrollPane(associationList);
         _navigabilityCheckBox = new UMLAssociationEndNavigableCheckBox();
         _orderingCheckBox = new UMLAssociationEndOrderingCheckBox();
         _targetScopeCheckBox = new UMLAssociationEndTargetScopeCheckbox();
-        _aggregationRadioButtonpanel = new UMLAssociationEndAggregationRadioButtonPanel(Translator.localize("UMLMenu", "label.aggregation"), true);
-        _changeabilityRadioButtonpanel = new UMLAssociationEndChangeabilityRadioButtonPanel(Translator.localize("UMLMenu", "label.changeability"), true);
-        _visibilityRadioButtonPanel = new UMLModelElementVisibilityRadioButtonPanel(Translator.localize("UMLMenu", "label.visibility"), true);
-        _specificationScroll = new JScrollPane(new UMLMutableLinkedList(new UMLAssociationEndSpecificationListModel(), ActionAddAssociationSpecification.SINGLETON, null, null, true));
+        _aggregationRadioButtonpanel = new UMLAssociationEndAggregationRadioButtonPanel(
+                Translator.localize("UMLMenu", "label.aggregation"), true);
+        _changeabilityRadioButtonpanel = new UMLAssociationEndChangeabilityRadioButtonPanel(
+                Translator.localize("UMLMenu", "label.changeability"), true);
+        _visibilityRadioButtonPanel = new UMLModelElementVisibilityRadioButtonPanel(
+                Translator.localize("UMLMenu", "label.visibility"), true);
+        _specificationScroll = new JScrollPane(new UMLMutableLinkedList(
+                new UMLAssociationEndSpecificationListModel(),
+                ActionAddAssociationSpecification.SINGLETON, null, null, true));
     }
 
     protected void positionStandardControls() {
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.name"),
+                getNameTextField());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), new
+        // UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
+        // "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
+                getStereotypeBox());
     }
 
     protected void positionControls() {
         addField(_associationLabel, _associationScroll);
         addField(Translator.localize("UMLMenu", "label.type"), _typeCombobox);
-        addField(Translator.localize("UMLMenu", "label.multiplicity"), getMultiplicityComboBox());
+        addField(Translator.localize("UMLMenu", "label.multiplicity"),
+                getMultiplicityComboBox());
 
         addSeperator();
 
@@ -177,10 +197,12 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         panel.add(_navigabilityCheckBox);
         panel.add(_orderingCheckBox);
         panel.add(_targetScopeCheckBox);
-        panel.setBorder(new TitledBorder(Translator.localize("UMLMenu", "label.modifiers")));
+        panel.setBorder(new TitledBorder(Translator.localize("UMLMenu",
+                "label.modifiers")));
         panel.setVisible(true);
         add(panel);
-        addField(Translator.localize("UMLMenu", "label.specification"), _specificationScroll);
+        addField(Translator.localize("UMLMenu", "label.specification"),
+                _specificationScroll);
 
         addSeperator();
 
@@ -188,73 +210,60 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         add(_changeabilityRadioButtonpanel);
         add(_visibilityRadioButtonPanel);
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-        //does this make sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon, Translator.localize("UMLMenu", "button.new-interface"),"newInterface",null);
-        new PropPanelButton(this, buttonPanel, _assocEndIcon, localize("Go to other end"), "gotoOther", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-association-end"), "removeElement", "isDeleteEnabled");
+        buttonPanel.add(new PropPanelButton2(this,
+                new ActionNavigateAssociation()));
+        buttonPanel.add(new PropPanelButton2(this,
+                new ActionNavigateOppositeAssocEnd()
+                        .setIcon(assocEndorRoleIcon)));
+        buttonPanel
+                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+
     }
 
     protected void setAssociationLabel(String label) {
     }
-    
+
     /**
      * Returns the multiplicityComboBox.
+     * 
      * @return UMLMultiplicityComboBox2
      */
     protected UMLComboBox2 getMultiplicityComboBox() {
-	if (_multiplicityComboBox == null) {
-	    if (multiplicityComboBoxModel == null) {
-		multiplicityComboBoxModel =
-		    new UMLAssociationEndMultiplicityComboBoxModel();
-	    }
-	    _multiplicityComboBox =
-		new UMLMultiplicityComboBox2(
-				 multiplicityComboBoxModel,
-				 ActionSetAssociationEndMultiplicity.SINGLETON);
-	    _multiplicityComboBox.setEditable(true);
-	}
-	return _multiplicityComboBox;
-    }
-
-    /**
-     * Happens when the user presses the up button. In this case, ArgoUML navigates
-     * to the association that owns this associationend.
-     * @see org.argouml.uml.ui.foundation.core.PropPanelModelElement#navigateUp()
-     */
-    public void navigateUp() {
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
-            Object assoc = ModelFacade.getAssociation(target);
-            if (assoc != null) {
-                TargetManager.getInstance().setTarget(assoc);
+        if (_multiplicityComboBox == null) {
+            if (multiplicityComboBoxModel == null) {
+                multiplicityComboBoxModel = new UMLAssociationEndMultiplicityComboBoxModel();
             }
+            _multiplicityComboBox = new UMLMultiplicityComboBox2(
+                    multiplicityComboBoxModel,
+                    ActionSetAssociationEndMultiplicity.SINGLETON);
+            _multiplicityComboBox.setEditable(true);
         }
+        return _multiplicityComboBox;
     }
 
     /**
-     * Action behind pressing the button go to other.
-     * TODO: as soon as we don't support JDK 1.2 any more, drop this method and
-     * replace it with an action.
+     * Action behind pressing the button go to other. TODO: as soon as we don't
+     * support JDK 1.2 any more, drop this method and replace it with an action.
      */
     public void gotoOther() {
         Object target = getTarget();
         if (ModelFacade.isAAssociationEnd(target)) {
-            Object end = /*(MAssociationEnd)*/ target;
-            TargetManager.getInstance().setTarget(ModelFacade.getOppositeEnd(end));
+            Object end = /* (MAssociationEnd) */target;
+            TargetManager.getInstance().setTarget(
+                    ModelFacade.getOppositeEnd(end));
         }
     }
 
     /**
      * Checks if the delete button of the associationend panel should be
      * enabled. It should be disabled if there are two or less association ends.
+     * 
      * @return boolean
      */
     public boolean isDeleteEnabled() {
-        if (ModelFacade.isAAssociationEnd(getTarget())) {
-          return ModelFacade.getOtherAssociationEnds(getTarget()).size() > 1;
-        }
+        if (ModelFacade.isAAssociationEnd(getTarget())) { return ModelFacade
+                .getOtherAssociationEnds(getTarget()).size() > 1; }
         return false;
     }
-
 
 } /* end class PropPanelAssociationEnd */

@@ -68,10 +68,15 @@ public abstract class AbstractActionNavigate extends UMLAction {
      * @return the object to navigate to
      */
     protected abstract Object navigateTo(Object source);
+    
+    public boolean isEnabled() {
+        Object target = TargetManager.getInstance().getModelTarget();
+        return ((target != null) && (navigateTo(target) != null));
+    }
 
     /** Perform the work the action is supposed to do. */
     public void actionPerformed(ActionEvent e) {
-        Object target = TargetManager.getInstance().getTarget();
+        Object target = TargetManager.getInstance().getModelTarget();
         if (ModelFacade.isAModelElement(target)) {
             Object elem = /* (MModelElement) */target;
             Object nav = navigateTo(elem);

@@ -35,20 +35,25 @@ import javax.swing.JTextField;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 /**
- * <p>Builds the property panel for an extension point.</p>
- *
- * <p>This is a child of PropPanelModelElement.</p>
+ * <p>
+ * Builds the property panel for an extension point.
+ * </p>
+ * 
+ * <p>
+ * This is a child of PropPanelModelElement.
+ * </p>
  */
 
 public class PropPanelExtensionPoint extends PropPanelModelElement {
-
 
     /**
      * Constructor. Builds up the various fields required.
@@ -67,47 +72,52 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         // nameField, stereotypeBox and namespaceScroll are all set up by
         // PropPanelModelElement.
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-//        addField(Translator.localize("UMLMenu", "label.stereotype"),
-//            new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.name"),
+                getNameTextField());
+        //        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        //            new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
+        // "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
+                getStereotypeBox());
 
         // Our location (a String). We can pass in the get and set methods from
         // NSUML associated with the NSUML type. Allow the location label to
         // expand vertically so we all float to the top.
 
-        JTextField locationField = new UMLTextField2(new UMLExtensionPointLocationDocument());
-        addField(Translator.localize("UMLMenu", "label.location"), locationField);
+        JTextField locationField = new UMLTextField2(
+                new UMLExtensionPointLocationDocument());
+        addField(Translator.localize("UMLMenu", "label.location"),
+                locationField);
 
         addSeperator();
 
-        JList usecaseList = new UMLLinkedList(new UMLExtensionPointUseCaseListModel());
+        JList usecaseList = new UMLLinkedList(
+                new UMLExtensionPointUseCaseListModel());
         usecaseList.setVisibleRowCount(1);
         addField(Translator.localize("UMLMenu", "label.usecase-base"),
-            new JScrollPane(usecaseList));
+                new JScrollPane(usecaseList));
 
-        JList extendList = new UMLLinkedList(new UMLExtensionPointExtendListModel());
+        JList extendList = new UMLLinkedList(
+                new UMLExtensionPointExtendListModel());
         addField(Translator.localize("UMLMenu", "label.extend"),
-            new JScrollPane(extendList));
+                new JScrollPane(extendList));
 
-
-        // Add the toolbar. Just the four basic buttons for now. Note that
-        // navigate up is not to the namespace, but to our local routine that
-        // selects the owning use case.
-
-        new PropPanelButton(this, buttonPanel, _navUpIcon,
-                Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon,
-                            localize("Delete"), "removeElement", null);
+        buttonPanel.add(new PropPanelButton2(this,
+                new ActionNavigateContainerElement()));
+        buttonPanel
+                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
-
     /**
-     * <p>The method for the navigate up button, which takes us to the owning
-     *   use case.</p>
-     *
-     * <p>This is a change from the norm, which is to navigate to the parent
-     *   namespace.</p>
+     * <p>
+     * The method for the navigate up button, which takes us to the owning use
+     * case.
+     * </p>
+     * 
+     * <p>
+     * This is a change from the norm, which is to navigate to the parent
+     * namespace.
+     * </p>
      */
 
     public void navigateUp() {
@@ -115,9 +125,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         // Only works for extension points
 
-        if (!(org.argouml.model.ModelFacade.isAExtensionPoint(target))) {
-            return;
-        }
+        if (!(org.argouml.model.ModelFacade.isAExtensionPoint(target))) { return; }
 
         // Get the owning use case and navigate to it if it exists.
 

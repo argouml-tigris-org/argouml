@@ -30,7 +30,9 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.swingext.Orientation;
-import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
@@ -41,56 +43,62 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelStateMachine extends PropPanelModelElement {
 
-
     /**
      * Constructor for PropPanelStateMachine.
      */
     public PropPanelStateMachine() {
         this("StateMachine", ConfigLoader.getTabPropsOrientation());
-        
+
     }
 
-    public PropPanelStateMachine(String name, Orientation orient ) {
+    public PropPanelStateMachine(String name, Orientation orient) {
         super(name, orient);
         initialize();
     }
 
     protected void initialize() {
-	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+        addField(Translator.localize("UMLMenu", "label.name"),
+                getNameTextField());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), new
+        // UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
+        // "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"),
+                getNamespaceScroll());
 
         // the context in which the statemachine resides
-        JList contextList = new UMLLinkedList(new UMLStateMachineContextListModel());
-        addField(Translator.localize("UMLMenu", "label.represented-modelelement"), new JScrollPane(contextList));
+        JList contextList = new UMLLinkedList(
+                new UMLStateMachineContextListModel());
+        addField(Translator.localize("UMLMenu",
+                "label.represented-modelelement"), new JScrollPane(contextList));
 
         // the top state
         JList topList = new UMLLinkedList(new UMLStateMachineTopListModel());
-        addField(Translator.localize("UMLMenu", "label.top-state"), new JScrollPane(topList));
+        addField(Translator.localize("UMLMenu", "label.top-state"),
+                new JScrollPane(topList));
 
         addSeperator();
 
         // the transitions the statemachine has
-        JList transitionList = new UMLLinkedList(new UMLStateMachineTransitionListModel());
-        addField(Translator.localize("UMLMenu", "label.transition"), new JScrollPane(transitionList));
+        JList transitionList = new UMLLinkedList(
+                new UMLStateMachineTransitionListModel());
+        addField(Translator.localize("UMLMenu", "label.transition"),
+                new JScrollPane(transitionList));
 
         // the submachinestates
-        // maybe this should be a mutable linked list but that's for the future to decide
-        JList submachineStateList = new UMLLinkedList(new UMLStateMachineSubmachineStateListModel());
-        addField(Translator.localize("UMLMenu", "label.submachinestate"), new JScrollPane(submachineStateList));
+        // maybe this should be a mutable linked list but that's for the future
+        // to decide
+        JList submachineStateList = new UMLLinkedList(
+                new UMLStateMachineSubmachineStateListModel());
+        addField(Translator.localize("UMLMenu", "label.submachinestate"),
+                new JScrollPane(submachineStateList));
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon,
-                Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace",
-                            null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon,
-                            localize("Delete"), "removeElement",
-                            null);
-       
-
+        buttonPanel.add(new PropPanelButton2(this,
+                new ActionNavigateNamespace()));
+        buttonPanel
+                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
 }
-
-
 

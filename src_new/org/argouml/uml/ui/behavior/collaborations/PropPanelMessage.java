@@ -38,7 +38,10 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -112,19 +115,16 @@ public class PropPanelMessage extends PropPanelModelElement {
 	addField(Translator.localize("UMLMenu", "label.predecessor"),
 		 predecessorScroll);
 
-	new PropPanelButton(this, buttonPanel, _navUpIcon,
-			    Translator.localize("UMLMenu", "button.go-up"),
-			    "navigateInteraction",
-			    null);
-	new PropPanelButton(this, buttonPanel, _actionIcon,
+        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateContainerElement()));
+        	new PropPanelButton(this, buttonPanel, _actionIcon,
 			    Translator.localize("UMLMenu", "button.new-action"),
 			    "addAction",
 			    "isAddActionEnabled");
 	// ActionNewAction.SINGLETON.setTarget((MModelElement)getTarget());
 	// buttonPanel.add(new PropPanelButton2(this,
 	// ActionNewAction.SINGLETON));
-	new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
-    }
+	buttonPanel
+        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));    }
 
 
 

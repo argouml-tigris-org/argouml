@@ -52,8 +52,8 @@ public class UMLLinkedList extends UMLList2 implements ListSelectionListener {
         UMLModelElementListModel2 dataModel, boolean showIcon) {
         super(dataModel, new UMLLinkedListCellRenderer(showIcon));
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        setForeground(Color.BLUE);
-        setSelectionForeground(Color.BLUE.darker());
+        setForeground(Color.blue);
+        setSelectionForeground(Color.blue.darker());
         _mouseListener = new UMLLinkMouseListener(this);
         addMouseListener(_mouseListener);
         addListSelectionListener(this);

@@ -241,7 +241,7 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
      * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2(UMLComboBoxModel2, UMLAction)
      */
     public UMLEditableComboBox(UMLComboBoxModel2 arg0, UMLAction selectAction) {
-        this(arg0, selectAction, false);
+        this(arg0, selectAction, true);
     }
 
     /**

@@ -35,7 +35,10 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.swingext.GridLayout2;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -92,19 +95,16 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.generalizations"),
+        addField(Translator.localize("UMLMenu", "label.generalizations"), 
                 getGeneralizationScroll());
         addField(Translator.localize("UMLMenu", "label.specializations"),
                 getSpecializationScroll());
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize(
-                "UMLMenu", "button.go-up"), "navigateNamespace", null);
+        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));
         new PropPanelButton(this, buttonPanel, _stereotypeIcon, Translator
                 .localize("UMLMenu", "button.new-stereotype"), "newStereotype",
                 null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator
-                .localize("UMLMenu", "button.delete-stereotype"),
-                "removeElement", null);
+	buttonPanel.add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     public void newStereotype() {
@@ -121,27 +121,12 @@ public class PropPanelStereotype extends PropPanelModelElement {
          */
     }
 
-    public Object getBaseClass() {
-        Object baseClass = "ModelElement";
-        Object target = getTarget();
-        if (ModelFacade.isAStereotype(target)) {
-            baseClass = ModelFacade.getBaseClass(target);
-        }
-        return baseClass;
-    }
-
-    public void setBaseClass(String baseClass) {
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAStereotype(target)) {
-            ModelFacade.setBaseClass(target, baseClass);
-        }
-    }
-
     /**
      * Returns the generalizationScroll.
      * 
      * @return JScrollPane
      */
+    
     protected JScrollPane getGeneralizationScroll() {
         if (generalizationScroll == null) {
             JList list = new UMLLinkedList(generalizationListModel);

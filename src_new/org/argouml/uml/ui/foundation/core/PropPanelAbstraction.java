@@ -25,9 +25,9 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
-
+import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.util.ConfigLoader;
 
 public class PropPanelAbstraction extends PropPanelDependency {
@@ -50,10 +50,8 @@ public class PropPanelAbstraction extends PropPanelDependency {
 
         // TODO: add Mapping
         new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-        // new PropPanelButton(this, buttonPanel, _navBackIcon, Translator.localize("UMLMenu", "button.go-back"), "navigateBackAction", "isNavigateBackEnabled");
-        // new PropPanelButton(this, buttonPanel, _navForwardIcon, Translator.localize("UMLMenu", "button.go-forward"), "navigateForwardAction", "isNavigateForwardEnabled");
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-association"), "removeElement", null);
-
+        buttonPanel
+        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
 } /* end class PropPanelAbstraction */

@@ -28,10 +28,9 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
-
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.ActionNavigateContext;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
@@ -64,23 +63,8 @@ public class PropPanelInteraction extends PropPanelModelElement {
       	JScrollPane messagesScroll = new JScrollPane(messagesList);
         addField(Translator.localize("UMLMenu", "label.messages"), messagesScroll);
 
-    	new PropPanelButton(this, buttonPanel, _navUpIcon,
-    	        Translator.localize("UMLMenu", "button.go-up"),
-			    "navigateUp",
-			    null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon,
-                Translator.localize("UMLMenu", "button.delete-attribute"),
-			    "removeElement",
-			    null);
-
-    }
-
-    /**
-     * Navigates to the owning collaboration
-     * @see org.argouml.uml.ui.foundation.core.PropPanelModelElement#navigateUp()
-     */
-    public void navigateUp() {
-        TargetManager.getInstance().setTarget(ModelFacade.getContext(getTarget()));
+        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateContext()));
+    	buttonPanel.add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
 }

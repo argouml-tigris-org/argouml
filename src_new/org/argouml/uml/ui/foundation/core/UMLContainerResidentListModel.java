@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,33 +24,38 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.ActionNavigateNamespace;
-import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton2;
-import org.argouml.util.ConfigLoader;
+import org.argouml.model.ModelFacade;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 
-public class PropPanelUsage extends PropPanelDependency {
+/**
+ * ListModel for resient relations and containers, such as Node,
+ * ComponentInstance, NodeInstance
+ * 
+ * @author mkl
+ *
+ */
+public class UMLContainerResidentListModel
+    extends UMLModelElementListModel2 {
 
-    public PropPanelUsage() {
-        super("Usage", ConfigLoader.getTabPropsOrientation());
+    /**
+     * Constructor.
+     */
+    public UMLContainerResidentListModel() {
+        super("resident");
+    }
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        setAllElements(ModelFacade.getResidents(getTarget()));
+    }
 
-        addSeperator();
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
+     */
+    protected boolean isValidElement(Object/*MBase*/ o) {
+        return (ModelFacade.isAComponent(o) || ModelFacade.isAInstance(o));
+    }
 
-        addField(Translator.localize("UMLMenu", "label.suppliers"), _supplierScroll);
-        addField(Translator.localize("UMLMenu", "label.clients"), _clientScroll);
-
-        // TODO: add Mapping
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));
-        buttonPanel
-        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));    }
-
-
-
-} /* end class PropPanelUsage */
-
+}

@@ -37,8 +37,9 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLStimulusActionTextField;
 import org.argouml.uml.ui.UMLStimulusActionTextProperty;
@@ -80,22 +81,12 @@ public class PropPanelStimulus extends PropPanelModelElement {
 	JScrollPane receiverScroll = new JScrollPane(receiverList);
 	addField(Translator.localize("UMLMenu", "label.receiver"), receiverScroll);
         
-        addLinkField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete object"), "removeElement", null);
+        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));    
+        buttonPanel.add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
-    public void navigateNamespace() {
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAModelElement(target)) {
-            Object elem = /*(MModelElement)*/ target;
-            Object ns = ModelFacade.getNamespace(elem);
-            if (ns != null) {
-                TargetManager.getInstance().setTarget(ns);
-            }
-        }
-    }
 
     public void removed(MElementEvent mee) {
     }
@@ -170,16 +161,4 @@ public class PropPanelStimulus extends PropPanelModelElement {
             }
         }
     }
-
-    public void removeElement() {
-        Object target = /*(MStimulus)*/ getTarget();
-	Object newTarget = /*(MModelElement)*/ ModelFacade.getNamespace(target);
-
-	UmlFactory.getFactory().delete(target);
-	if (newTarget != null) {
-            TargetManager.getInstance().setTarget(newTarget);
-	}
-
-    }
-
 }

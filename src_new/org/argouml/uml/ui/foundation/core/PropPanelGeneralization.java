@@ -32,9 +32,10 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
@@ -72,8 +73,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
                 getNameTextField());
 
         addField(Translator.localize("UMLMenu", "label.stereotype"),
-                new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
-                        "tooltip.nav-stereo"), getStereotypeComboBox()));
+                getStereotypeBox());
 
         addField(Translator.localize("UMLMenu", "label.discriminator"),
                 getDiscriminatorTextField());
@@ -93,11 +93,10 @@ public class PropPanelGeneralization extends PropPanelModelElement {
                 new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(),
                         ActionSetGeneralizationPowertype.SINGLETON));
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize(
-                "UMLMenu", "button.go-up"), "navigateUp", null);
-        
-        new PropPanelButton(this, buttonPanel, _deleteIcon,
-                localize("Delete generalization"), "removeElement", null);
+        buttonPanel.add(new PropPanelButton2(this,
+                new ActionNavigateContainerElement()));
+        buttonPanel
+                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     public void navigateUp() {

@@ -52,7 +52,7 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
      * @param selectAction
      */
     public UMLSearchableComboBox(UMLComboBoxModel2 arg0, UMLAction selectAction) {
-        this(arg0, selectAction, false);
+        this(arg0, selectAction, true);
     }
 
     /**

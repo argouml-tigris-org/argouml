@@ -104,9 +104,9 @@ public class PropPanelPackage extends PropPanelNamespace  {
         addSeperator();
         addField(Translator.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));
         new PropPanelButton(this, buttonPanel, _packageIcon, Translator.localize("UMLMenu", "button.new-package"), "addPackage", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-package"), "removeElement", "isRemovableElement");
+	buttonPanel.add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
 

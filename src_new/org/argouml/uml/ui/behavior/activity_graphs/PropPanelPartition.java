@@ -43,7 +43,7 @@ public class PropPanelPartition extends PropPanelModelElement {
      * constructor.
      */
     public PropPanelPartition() {
-        super("Swimlane", // TODO: Fix! _partitionIcon,
+        super("Swimlane",  _partitionIcon,
       	      ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("label.name"), getNameTextField());

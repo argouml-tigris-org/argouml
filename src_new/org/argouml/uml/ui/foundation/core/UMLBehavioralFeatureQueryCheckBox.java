@@ -37,16 +37,15 @@ public class UMLBehavioralFeatureQueryCheckBox extends UMLCheckBox2 {
      * Constructor.
      */
     public UMLBehavioralFeatureQueryCheckBox() {
-        super(Translator.localize("query"), ActionSetBehavioralFeatureQuery.SINGLETON, "isQuery");
+        super(Translator.localize("UMLMenu", "label.query"),
+                ActionSetBehavioralFeatureQuery.SINGLETON, "isQuery");
     }
 
     /**
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        if (getTarget() != null)
-            setSelected(ModelFacade.isQuery(getTarget()));
+        if (getTarget() != null) setSelected(ModelFacade.isQuery(getTarget()));
     }
-
 
 }

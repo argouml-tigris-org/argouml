@@ -22,22 +22,21 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JScrollPane;
 
-import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton2;
+import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.util.ConfigLoader;
-import org.argouml.uml.ui.UMLPlainTextDocument;
 
 /**
- * Proppanel for comments (notes). 
- * In UML 1.3, the text of the comment is kept in the name of
- * the MComment. In UML 1.4 and beyond, the MComment has a "body" attribute, 
- * to contain the comment string.
+ * Proppanel for comments (notes). In UML 1.3, the text of the comment is kept
+ * in the name of the MComment. In UML 1.4 and beyond, the MComment has a "body"
+ * attribute, to contain the comment string.
  */
 public class PropPanelComment extends PropPanelModelElement {
 
@@ -47,22 +46,24 @@ public class PropPanelComment extends PropPanelModelElement {
     public PropPanelComment() {
         super("Comment", ConfigLoader.getTabPropsOrientation());
         UMLPlainTextDocument uptd = getNameDocument();
-        
-        /*TODO: This is probably not the right location for switching off 
-          the "filterNewlines". The setting gets lost after selecting a 
-          different ModelElement in the diagram. 
-          BTW, see how it is used in javax.swing.text.PlainDocument 
-          See issue 1812.*/
-        uptd.putProperty("filterNewlines",Boolean.FALSE);
-        
+
+        /*
+         * TODO: This is probably not the right location for switching off the
+         * "filterNewlines". The setting gets lost after selecting a different
+         * ModelElement in the diagram. BTW, see how it is used in
+         * javax.swing.text.PlainDocument See issue 1812.
+         */
+        uptd.putProperty("filterNewlines", Boolean.FALSE);
+
         UMLTextArea2 text = new UMLTextArea2(uptd);
         text.setLineWrap(true);
         text.setRows(5);
         JScrollPane pane = new JScrollPane(text);
         addField("Text: ", pane);
-        
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);   
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-class"), "removeElement", null);      
+        buttonPanel.add(new PropPanelButton2(this,
+                new ActionNavigateContainerElement()));
+        buttonPanel
+                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
 }

@@ -1,16 +1,16 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,41 +22,47 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
-package org.argouml.uml.ui.behavior.common_behavior;
+package org.argouml.uml.ui;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLModelElementListModel2;
+
+import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 
 /**
- * ListModel for the stimuli an instance receives
  * 
  * @author mkl
- *
+ *  
  */
-public class UMLStimulusReceiverListModel extends UMLModelElementListModel2 {
+public class UMLConditionExpressionModel extends UMLExpressionModel2 {
 
-    /**
-     * Constructor.
-     */
-    public UMLStimulusReceiverListModel() {
-        super("receiver");
+    public UMLConditionExpressionModel(UMLUserInterfaceContainer container,
+            String propertyName) {
+        super(container, propertyName);
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
-    protected void buildModelList() {
-        removeAllElements();
-        addElement(ModelFacade.getReceiver(getTarget()));
-        
+    public Object getExpression() {
+        LOG.debug("getting condition");
+        return ModelFacade.getCondition(_container.getTarget());
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
+     * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
-    protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getReceiver(getTarget()) == element;
+    public void setExpression(Object expression) {
+        LOG.debug("setting condidtion");
+        LOG.debug(expression);
+        ModelFacade.setCondition(_container.getTarget(), expression);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
+     */
+    public Object newExpression() {
+        LOG.debug("new boolean expression");
+        return new MBooleanExpression("","");
     }
 
 }

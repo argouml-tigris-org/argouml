@@ -28,7 +28,6 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
@@ -44,9 +43,9 @@ public class PropPanelLinkEnd extends PropPanelModelElement {
         super("Linkend", _assocEndIcon, ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
-                new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
-                        "tooltip.nav-stereo"), getStereotypeComboBox()));
+        
+        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+                
         addField(Translator.localize("UMLMenu", "label.namespace"),
                 getNamespaceScroll());
         addSeperator();

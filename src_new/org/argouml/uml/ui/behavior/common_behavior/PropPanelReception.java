@@ -30,7 +30,9 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.swingext.GridLayout2;
-import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.ActionNavigateContainerElement;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
@@ -84,10 +86,9 @@ public class PropPanelReception extends PropPanelModelElement {
         addField(Translator.localize("UMLMenu", "label.specification"),
                 specificationScroll);
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize(
-                "UMLMenu", "button.go-up"), "navigateUp", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator
-                .localize("UMLMenu", "button.delete-operation"),
-                "removeElement", null);
+        buttonPanel.add(new PropPanelButton2(this,
+                new ActionNavigateContainerElement()));
+        buttonPanel
+                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 }

@@ -36,11 +36,13 @@ import javax.swing.border.TitledBorder;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.GridLayout2;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.ActionAddOperation;
+import org.argouml.uml.ui.ActionNavigateOwner;
+import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLReflectionListModel;
@@ -73,24 +75,21 @@ public class PropPanelOperation extends PropPanelFeature {
 
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());
-        
+
         addField(Translator.localize("UMLMenu", "label.stereotype"),
-		 new UMLComboBoxNavigator(this,
-		         Translator.localize("UMLMenu",
-					     "tooltip.nav-stereo"),
-					  getStereotypeComboBox()));
-       
-        addLinkField(Translator.localize("UMLMenu", "label.owner"),
+                getStereotypeBox());
+
+        addField(Translator.localize("UMLMenu", "label.owner"),
                 getOwnerScroll());
+
+        addSeperator();    
 
         add(getVisibilityPanel());
 
-        addSeperator();
-
-        JPanel _modifiersPanel =
-            new JPanel(new GridLayout2(0,3,GridLayout2.ROWCOLPREFERRED)); 
-        _modifiersPanel.setBorder(
-                new TitledBorder(Translator.localize("UMLMenu", "label.modifiers")));
+        JPanel _modifiersPanel = new JPanel(new GridLayout2(0, 3,
+                GridLayout2.ROWCOLPREFERRED));
+        _modifiersPanel.setBorder(new TitledBorder(Translator.localize(
+                "UMLMenu", "label.modifiers")));
         _modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
         _modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
         _modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
@@ -100,10 +99,10 @@ public class PropPanelOperation extends PropPanelFeature {
         add(_modifiersPanel);
         // TODO: i18n
         add(new UMLOperationConcurrencyRadioButtonPanel("Concurrency:", true));
-        
+
         addSeperator();
 
-        addLinkField(Translator.localize("UMLMenu", "label.parameters"),
+        addField(Translator.localize("UMLMenu", "label.parameters"),
                 getParameterScroll());
 
         JList exceptList = new UMLList(new UMLReflectionListModel(this,
@@ -111,23 +110,19 @@ public class PropPanelOperation extends PropPanelFeature {
                 "addRaisedSignal", null), true);
         exceptList.setForeground(Color.blue);
         exceptList.setFont(smallFont);
-        addLinkField(Translator.localize("UMLMenu", "label.raisedsignals"),
+        addField(Translator.localize("UMLMenu", "label.raisedsignals"),
                 new JScrollPane(exceptList));
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize(
-                "UMLMenu", "button.go-up"), "navigateUp", null);
-        new PropPanelButton(this, buttonPanel, _addOpIcon, Translator.localize(
-                "UMLMenu", "button.new-operation"), "buttonAddOperation", null);
-        // I uncommented this next line. I don't know why it was commented out,
-        // it seems to work just fine...--pjs--
-        new PropPanelButton(this, buttonPanel, _parameterIcon, Translator
-                .localize("UMLMenu", "button.new-parameter"),
-                "buttonAddParameter", null);
+        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateOwner()));
+        buttonPanel
+                .add(new PropPanelButton2(this, ActionAddOperation.SINGLETON));
+        buttonPanel
+                .add(new PropPanelButton2(this, ActionNewParameter.SINGLETON));
         new PropPanelButton(this, buttonPanel, _signalIcon,
                 localize("New Raised Signal"), "buttonAddRaisedSignal", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator
-                .localize("UMLMenu", "button.delete-operation"),
-                "removeElement", null);
+        buttonPanel
+                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+
     }
 
     public Object getReturnType() {
@@ -193,10 +188,6 @@ public class PropPanelOperation extends PropPanelFeature {
         }
     }
 
-    public void addParameter(Integer indexObj) {
-        buttonAddParameter();
-    }
-
     public Collection getRaisedSignals() {
         Collection signals = null;
         Object target = getTarget();
@@ -223,35 +214,6 @@ public class PropPanelOperation extends PropPanelFeature {
                     .getOwner(oper)), newSignal);
             ModelFacade.addRaisedSignal(oper, newSignal);
             TargetManager.getInstance().setTarget(newSignal);
-        }
-    }
-
-    public void buttonAddParameter() {
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAOperation(target)) {
-            Object param = CoreFactory.getFactory().buildParameter(
-                    /* (MOperation) */target);
-            TargetManager.getInstance().setTarget(param);
-            /*
-             * MOperation oper = (MOperation) target; MParameter newParam =
-             * oper.getFactory().createParameter();
-             * newParam.setKind(MParameterDirectionKind.INOUT);
-             * oper.addParameter(newParam); navigateTo(newParam);
-             */
-        }
-    }
-
-    public void buttonAddOperation() {
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAOperation(target)) {
-            Object oper = /* (MOperation) */target;
-            Object owner = ModelFacade.getOwner(oper);
-            if (owner != null) {
-                Object newOper = UmlFactory.getFactory().getCore()
-                        .buildOperation(owner);
-                TargetManager.getInstance().setTarget(newOper);
-
-            }
         }
     }
 

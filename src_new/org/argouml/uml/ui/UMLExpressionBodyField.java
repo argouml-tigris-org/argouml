@@ -49,10 +49,10 @@ public class UMLExpressionBodyField
     protected static Logger cat = 
         Logger.getLogger(UMLExpressionBodyField.class);
 
-    private UMLExpressionModel _model;
+    private UMLExpressionModel2 _model;
     private boolean _notifyModel;
     
-    public UMLExpressionBodyField(UMLExpressionModel model,
+    public UMLExpressionBodyField(UMLExpressionModel2 model,
 				  boolean notifyModel) {
         _model = model;
         _notifyModel = notifyModel;

@@ -63,7 +63,7 @@ public class UMLInitialValueComboBox extends JComboBox
     /** Creates new BooleanChangeListener */
     public UMLInitialValueComboBox(UMLUserInterfaceContainer container) {
         super();
-        setBackground(Color.GREEN.brighter());
+        setBackground(Color.green.brighter());
         _container = container;
         
         for (int i = 0; i < listItems.length; i++) {
