@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+
+<HEAD>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+	<META NAME="GENERATOR" Content="Visual Page 1.1a for Windows">
+	<TITLE>Download Argo/UML Bytecodes</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+
+<P><FONT SIZE="5" COLOR="#008080" FACE="Tahoma"><B>Download Argo/UML Source Code</B></FONT></P>
+<P><FONT SIZE="5" COLOR="#008080" FACE="Tahoma"><B><BR>
+</B></FONT>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="771">
+	<TR>
+		<TD VALIGN="BOTTOM" COLSPAN="2" BGCOLOR="#000099"><FONT COLOR="#CCFFFF" FACE="Tahoma"><B>&nbsp; Final Step:</B></FONT><FONT COLOR="#CCFFCC" FACE="Tahoma"><B> </B></FONT><FONT
+			COLOR="#FFFFFF" FACE="Tahoma"><B>Start Working on Argo/UML</B></FONT></TD>
+		<TD WIDTH="5" VALIGN="TOP" ROWSPAN="3" BGCOLOR="#808080"><IMG SRC="../images/topshadowmask.gif" WIDTH="5" HEIGHT="5" ALIGN="BOTTOM" BORDER="0"></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="10" BGCOLOR="#FFFF99">&nbsp;</TD>
+		<TD WIDTH="755" BGCOLOR="#FFFF99">
+			<P><FONT SIZE="2" FACE="Tahoma"><B><BR>
+			</B></FONT><FONT COLOR="#000066" FACE="Tahoma"><B>Several ways to Compile Argo/UML:</B></FONT>
+			<UL>
+				<LI><A HREF="docs/devfaq.html#makeall"><FONT SIZE="2" FACE="Tahoma">makeall.bat on Windows</FONT></A>
+				<LI><A HREF="docs/devfaq.html#gnumakeunix"><FONT SIZE="2" FACE="Tahoma">GNU make on Unix</FONT></A>
+				<LI><A HREF="docs/devfaq.html#gnumakewin"><FONT SIZE="2" FACE="Tahoma">Gnu make on Windows</FONT></A>
+				<LI><A HREF="docs/devfaq.html#nmakewin"><FONT SIZE="2" FACE="Tahoma">NMake on Windows</FONT></A>
+				<LI><A HREF="docs/devfaq.html#makeide"><FONT SIZE="2" FACE="Tahoma">Java IDE, such as VisualCafe</FONT></A>
+			</UL>
+			<P><FONT COLOR="#000066" FACE="Tahoma"><B>To Run Argo/UML with JDK 1.1.x:</B></FONT>
+			<UL>
+				<LI><FONT SIZE="2" FACE="Tahoma">If you downloaded swing111beta1.zip from java.sun.com, then you will have to unzip
+				it to get swing-1.1.1-beta1/swing.jar</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">If you downloaded the XML4J distribution from www.alphaworks.ibm.com, then you
+				will have to unzip or untar it to get xml4j.jar</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">Start a new command line window.</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">Set your CLASSPATH to include the following in the given order:</FONT>
+				<UL>
+					<LI><FONT SIZE="2" FACE="Tahoma">classes.zip from your JDK distribution</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">the directory argouml070</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">swing-1.1.1-beta2/swing.jar</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">xml4j.jar</FONT>
+				</UL>
+				<LI><FONT SIZE="2" FACE="Tahoma">Make sure that everything is compiled, see instruction links above.</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">Type the command:<BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;<B>java uci.uml.Main</B></FONT><BR>
+				<FONT SIZE="2" FACE="Tahoma">or on some Windows Java implementations type:<B><BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;java -classpath %CLASSPATH% uci.uml.Main</B></FONT>
+			</UL>
+			<P><FONT COLOR="#000066" FACE="Tahoma"><B>To Run Argo/UML with JDK 1.2:</B></FONT></P>
+			<UL>
+				<LI><FONT SIZE="2" FACE="Tahoma">Unzip argouml.zip to get argouml.jar, and unzip XML4J.zip to get xml4j.jar. Do
+				not unarchive these *.jar files.</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">Start a new command line window.</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">Set your CLASSPATH to include the following in the given order:</FONT>
+				<UL>
+					<LI><FONT SIZE="2" FACE="Tahoma">the directory argouml070</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">xml4j.jar</FONT>
+					<LI><FONT SIZE="2" FACE="Tahoma">(note: you do not need swing.jar or classes.zip)</FONT>
+				</UL>
+				<LI><FONT SIZE="2" FACE="Tahoma">Make sure that everything is compiled, see instruction links above.</FONT>
+				<LI><FONT SIZE="2" FACE="Tahoma">Type the command:<BR>
+				&nbsp;&nbsp;&nbsp;&nbsp;<B>java uci.uml.Main</B></FONT>
+			</UL>
+			<P><FONT SIZE="2" FACE="Tahoma"><BR>
+			</FONT><FONT COLOR="#000066" FACE="Tahoma"><B>Keep in Mind:</B></FONT></P>
+
+			<P><FONT SIZE="2" FACE="Tahoma">Argo/UML is a research prototype for exploring the impact of cognitive support
+			features in CASE tools. It will evolve into a full featured CASE tool in the future, but it is not comparable to
+			commercial CASE tools yet. If you believe in the importance of an open-source CASE tool, please </FONT><A HREF="../project.html"><FONT
+			SIZE="2" FACE="Tahoma">help in the development of Argo/UML</FONT></A><FONT SIZE="2" FACE="Tahoma">.</FONT></P>
+			<P><FONT SIZE="2" FACE="Tahoma"><BR>
+			</FONT><A HREF="ds5.html"><FONT SIZE="2" FACE="Tahoma">Back</FONT></A><FONT SIZE="2" FACE="Tahoma"> &nbsp;&nbsp;&nbsp;&nbsp;</FONT></P>
+
+			<P><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT>
+		</TD>
+	</TR>
+	<TR>
+		<TD HEIGHT="5" VALIGN="TOP" COLSPAN="2" BGCOLOR="#808080"><IMG SRC="../images/leftshadowmask.gif" WIDTH="5" HEIGHT="5" ALIGN="BOTTOM" BORDER="0"></TD>
+	</TR>
+</TABLE>
+</P>
+
+
+</BODY>
+
+</HTML>
