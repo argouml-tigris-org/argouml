@@ -27,7 +27,6 @@ package org.argouml.util;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 
 /** In the furture this will be a trash can icon in the project
@@ -35,8 +34,8 @@ import org.argouml.model.ModelFacade;
  * things back out of the trash if you like.  Eventually you empty the
  * trash.  Critics check for relationships between things that will
  * break when the trash is empty.  E.g., Class X's superclass is in
- * the trash, you must fix this before you empty the trash. */
-
+ * the trash, you must fix this before you empty the trash. 
+ */
 public class Trash {
     protected static Logger cat = 
         Logger.getLogger(Trash.class);
@@ -45,16 +44,8 @@ public class Trash {
 
     /** Keys are model objects, values are TrashItems with recovery info */
     public Vector _contents = new Vector();
-    // public MModel Trash_Model = UmlFactory.getFactory().getModelManagement().createModel();
 
-
-    protected Trash() { 
-	boolean saveNeeded = ProjectManager.getManager().getCurrentProject().needsSave();      
-	// Trash_Model.setName("Trash");
-	// the last statement causes the project to think that a save is needed
-	// since it is the trash model it is not needed
-	ProjectManager.getManager().getCurrentProject().setNeedsSave(saveNeeded);
-    }
+    protected Trash() { }
 
     public void addItemFrom(Object obj, Vector places) {
 	if (obj == null) {
