@@ -38,6 +38,7 @@ public class UMLClassifierComboBox extends JComboBox implements ItemListener, UM
     private UMLUserInterfaceContainer _container;
     private String _property;
     private Class _itemClass;
+    private Class _excludeClass;
     private Method _getMethod;
     private Method _setMethod;
     private Set _classifiers;
@@ -45,11 +46,12 @@ public class UMLClassifierComboBox extends JComboBox implements ItemListener, UM
     private boolean _showVoid;
     
     /** Creates new BooleanChangeListener */
-    public UMLClassifierComboBox(UMLUserInterfaceContainer container,Class itemClass,String property,String getMethod,String setMethod,boolean showVoid) {
+    public UMLClassifierComboBox(UMLUserInterfaceContainer container,Class itemClass,Class excludeClass,String property,String getMethod,String setMethod,boolean showVoid) {
         super();
         _container = container;
         _property = property;
         _itemClass = itemClass;
+        _excludeClass = excludeClass;
         _showVoid = showVoid;
         addItemListener(this);
         
@@ -147,7 +149,7 @@ public class UMLClassifierComboBox extends JComboBox implements ItemListener, UM
                 collectClassifiers(model,_classifiers);
                 
                 Profile profile = _container.getProfile();
-                profile.addBuiltinClassifiers(model,_itemClass,_classifiers,_showVoid);
+                profile.addBuiltinClassifiers(model,_itemClass,_excludeClass,_classifiers,_showVoid);
 
                 //
                 //   copy classifiers to Vector
@@ -259,7 +261,9 @@ public class UMLClassifierComboBox extends JComboBox implements ItemListener, UM
             while(iter.hasNext()) {
                 obj = iter.next();
                 if(_itemClass.isInstance(obj)) {
-                    itemSet.add(obj);
+                    if(_excludeClass == null || !_excludeClass.isInstance(obj)) {
+                        itemSet.add(obj);
+                    }
                 }
                 if(obj instanceof MNamespace) {
                     collectClassifiers((MNamespace) obj,itemSet);
