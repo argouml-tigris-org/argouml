@@ -74,6 +74,7 @@ public abstract class PropPanelModelElement extends PropPanel {
     ////////////////////////////////////////////////////////////////
     // constants
 
+    protected static ImageIcon _partitionIcon = lookupIcon("Partition");
     protected static ImageIcon _objectIcon = lookupIcon("Object");
     protected static ImageIcon _componentInstanceIcon =
 	lookupIcon("ComponentInstance");
