@@ -69,7 +69,7 @@ public class DBLoader
 			System.out.println("Loading model: "+modelName);
 			stmt = Conn.createStatement();
             rs = stmt.executeQuery("SELECT uuid FROM tModelElement WHERE name = '" + modelName + "'");
-			if (rs.first())
+			if (rs.next())
 				uuid = rs.getString("uuid");
 
 			return readModel(uuid, modelName, stmt);
@@ -244,13 +244,14 @@ public class DBLoader
 		String query = "SELECT * FROM tGeneralizableElement WHERE uuid = '" + uuid +"'";
 		Statement stmtGE = Conn.createStatement();
 		ResultSet rsGE = stmtGE.executeQuery(query);
-		if (rsGE.first()) {
+		if (rsGE.next()) {
 			me.setRoot(rsGE.getBoolean("isRoot"));
 			me.setLeaf(rsGE.getBoolean("isLeaf"));
 			me.setAbstract(rsGE.getBoolean("isAbstract"));
 		}
 	}
 
+	/** Don't use main(), it's only for testing! */
     public static void main(String[] Args) throws Exception {
 		MModel mymodel = new MModelImpl();
 		DBLoader writer = new DBLoader();
