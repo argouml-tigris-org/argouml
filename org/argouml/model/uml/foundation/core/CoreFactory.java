@@ -1037,7 +1037,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
      */
     public void deleteAssociationEnd(MAssociationEnd elem) {
         MAssociation assoc = elem.getAssociation();
-        if (assoc.getConnections().size() == 2) { // binary association
+        if (assoc != null && assoc.getConnections()!= null &&
+            assoc.getConnections().size() == 2) { // binary association
             UmlFactory.getFactory().delete(assoc);
         }
     }
