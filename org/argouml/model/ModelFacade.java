@@ -5648,6 +5648,15 @@ public class ModelFacade {
      */
     public static void setName(Object handle, String name) {
         if ((handle instanceof MModelElement) && (name != null)) {
+            // This is to aid trapping the bug in issue 
+            // http://argouml.tigris.org/issues/show_bug.cgi?id=2847
+            // Once that issue is resolved this check _could_ be
+            // removed.
+            if (name.indexOf(0xffff) >= 0) {
+                throw new IllegalArgumentException(
+                        "An attempt has been made to set the model element"
+                        + " name to contain the illegal character 0xFFFF");
+            }
             ((MModelElement) handle).setName(name);
             return;
         }
