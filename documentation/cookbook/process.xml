@@ -667,7 +667,11 @@ Do one of the following:
 If the problem is gone, the feature is present put the Issue in
 Status VERIFIED and
 add the version of the ArgoUML used for the test in in the comment.
-</para>
+              </para>
+              <para> Remark: As an additional activity, the 
+                verifier may check if the manual needs to be adapted, and if 
+                so, may REOPEN the issue with an explanation text, and setting 
+                the correct subcomponent (Documentation &amp; Help). </para>
             </listitem>
             <listitem>
               <para>
