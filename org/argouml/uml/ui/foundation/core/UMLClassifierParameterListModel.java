@@ -79,6 +79,12 @@ public class UMLClassifierParameterListModel
         return true; // i.e. yes, we generated a menu
     }
 
+    /**
+     * TODO: Once finished, this class should be extracted in a seperate file, 
+     * for use in other places.
+     * 
+     * @author Michiel
+     */
     class MoveUpAction extends UMLAction {
         private UMLModelElementListModel2 model;
         private int index;
@@ -111,8 +117,10 @@ public class UMLClassifierParameterListModel
     }
     
     /**
+     * TODO: Once finished, this class should be extracted in a seperate file, 
+     * for use in other places.
+     * 
      * @author Michiel
-     *
      */
     class MoveDownAction extends UMLAction {
         private UMLModelElementListModel2 model;
