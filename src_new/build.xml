@@ -579,7 +579,7 @@ Property files to be searched:
   <!-- =================================================================== -->
   <target name="package" depends="jar"
           description="Prepare all jar files, both built and just delivered.">
-    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar xerces.jar jmi.jar"/>
+    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar xerces.jar jmi.jar commons-logging.jar"/>
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar"/>
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar"/>
     <copy file="${i18n.jar.path}" tofile="${argo.build.dir}/i18n.jar"/>
