@@ -30,9 +30,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import javax.swing.JProgressBar;
+import javax.swing.event.EventListenerList;
 import javax.swing.filechooser.FileFilter;
-import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
@@ -47,6 +46,8 @@ public abstract class AbstractFilePersister extends FileFilter
 
     private static final Logger LOG =
         Logger.getLogger(AbstractFilePersister.class);
+    
+    private EventListenerList listenerList = new EventListenerList();
 
     /**
      * The PERSISTENCE_VERSION is increased every time the persistence format
@@ -252,8 +253,44 @@ public abstract class AbstractFilePersister extends FileFilter
      *    java.io.File, javax.swing.JProgressBar, 
      *    javax.swing.text.JTextComponent)
      */
-    public abstract Project doLoad(
-            File file,
-            JProgressBar progressBar,
-            JTextComponent progressText) throws OpenException;
+    public abstract Project doLoad(File file) throws OpenException;
+    
+    /**
+     * Inform listeners of any progress notifications
+     * @param percent the current percentage progress.
+     */
+    protected void fireProgressEvent(long percent) {
+        //LOG.info("PROGRESS " + percent + "%");
+        ProgressEvent event = null;
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == ProgressListener.class) {
+                // Lazily create the event:
+                if (event == null) {
+                    event = new ProgressEvent(this, percent, 100);
+                }
+                ((ProgressListener) listeners[i + 1]).progress(event);
+            }
+        }
+    }
+    
+    /**
+     * Add any object interested in listening to persistence progress
+     * @param listener the interested listener.
+     */
+    public void addProgressListener(ProgressListener listener) {
+        listenerList.add(ProgressListener.class, listener);
+    }
+    
+    /**
+     * Remove any object no longer interested in listening to persistence
+     * progress
+     * @param listener the listener to remove.
+     */
+    public void removeProgressListener(ProgressListener listener) {
+        listenerList.remove(ProgressListener.class, listener);
+    }
 }

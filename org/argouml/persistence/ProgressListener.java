@@ -21,31 +21,19 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.persistence;
 
-import java.io.File;
-
-import org.argouml.kernel.Project;
+import java.util.EventListener;
 
 /**
- * To persist a project to and from file storage.
- *
+ * A listener to be implemented by those interested in ProgressEvents.
  * @author Bob Tarling
  */
-public interface ProjectFilePersister {
-
+public interface ProgressListener extends EventListener {
     /**
-     * @param project the project to save
-     * @param file The file to write.
-     * @throws SaveException if anything goes wrong.
+     * Called when a ProgressEvent is fired.
+     * @param event the ProgressEvent
      */
-    public void save(Project project, File file) throws SaveException;
-
-    /**
-     * @param file the file of the project to load.
-     * @return the Project
-     * 
-     * @throws OpenException when we fail to open from this url
-     */
-    public Project doLoad(File file) throws OpenException;
+    void progress(ProgressEvent event);
 }

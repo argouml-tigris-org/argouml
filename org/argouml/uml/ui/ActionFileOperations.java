@@ -40,6 +40,7 @@ import org.argouml.persistence.LastLoadInfo;
 import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFilePersister;
+import org.argouml.persistence.VersionException;
 import org.argouml.ui.ProjectBrowser;
 
 /**
@@ -155,7 +156,7 @@ public abstract class ActionFileOperations extends AbstractAction {
                             + file.getName()
                             + " is not of a known file type");
                 }
-                p = persister.doLoad(file, null, null);
+                p = persister.doLoad(file);
 
                 ProjectBrowser.getInstance().showStatus(
                     MessageFormat.format(Translator.localize(
@@ -163,6 +164,10 @@ public abstract class ActionFileOperations extends AbstractAction {
                         new Object[] {
                             file.getName(),
                         }));
+            } catch (VersionException ex) {
+                success = false;
+                reportError(ex.getMessage(), showUI);
+                p = oldProject;
             } catch (OpenException ex) {
                 LOG.error("Exception while loading project", ex);
                 success = false;
