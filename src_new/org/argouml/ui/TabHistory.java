@@ -64,6 +64,8 @@ import org.argouml.kernel.HistoryListener;
 public class TabHistory extends TabSpawnable
     implements ListSelectionListener, ListCellRenderer, MouseMotionListener 
 {
+	// TODO Replace deprecated History* with TargetManager
+	
     protected static Category cat = 
         Category.getInstance(TabHistory.class);
 
