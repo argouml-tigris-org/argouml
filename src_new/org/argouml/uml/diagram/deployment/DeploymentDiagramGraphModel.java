@@ -1,9 +1,12 @@
 package org.argouml.uml.diagram.deployment;
+
 import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
 import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.uml.MMUtil;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
 import java.util.*;
 import java.beans.*;
@@ -15,11 +18,13 @@ import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 import org.tigris.gef.graph.*;
-
-import org.argouml.uml.MMUtil;
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Mode;
+import org.tigris.gef.base.ModeManager;
 
 public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 implements VetoableChangeListener  {
@@ -223,6 +228,12 @@ if(_edges.contains(edge)) return false;
     fireEdgeAdded(edge);
   }
 
+    /** Add the given edge to the graph, if valid. */
+    protected Object addEdge(MModelElement edge) {
+        addEdge((Object)edge);
+        return edge;
+    }
+
   public void addNodeRelatedEdges(Object node) {
     if ( node instanceof MClassifier ) {
       Collection ends = ((MClassifier)node).getAssociationEnds();
@@ -288,241 +299,154 @@ if(_edges.contains(edge)) return false;
       throw new UnsupportedOperationException("should not enter here!");
   }
 
-  /** Contruct and add a new edge of the given kind */
-  public Object connect(Object fromPort, Object toPort,
-			java.lang.Class edgeClass) {
-    try {
-      if ((fromPort instanceof MNode) && (toPort instanceof MNode)) {
-	  	MNode fromNo = (MNode) fromPort;
-	    MNode toNo = (MNode) toPort;
-	    if (edgeClass == MAssociation.class) {
-			MAssociation asc = UmlFactory.getFactory().getCore().buildAssociation(fromNo, toNo);
- 	        addEdge(asc);
-		    return asc;
-	    }
-	    else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	  		return null;
-		}
-      }
-      else if ((fromPort instanceof MNodeInstance) && (toPort instanceof MNodeInstance)) {
-		MNodeInstance fromNoI = (MNodeInstance) fromPort;
-		MNodeInstance toNoI = (MNodeInstance) toPort; 
-    	if (edgeClass == MLink.class) {
-    		MLink link = CommonBehaviorFactory.getFactory().buildLink(fromNoI, toNoI);
-    		addEdge(link);
-    		return link;
-    	}
-    	else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	  		return null;
-		}
-      }
-      else if ((fromPort instanceof MComponent) && (toPort instanceof MComponent)) {
-		MComponent fromCom = (MComponent) fromPort;
-		MComponent toCom = (MComponent) toPort; 
-	  	if (edgeClass == MDependency.class) {
-	    	MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromCom, toCom);
-	    	addEdge(dep);
-	    	return dep;
-	  	}
-	  	else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	  		return null;
-		}	
-      }
-      else if ((fromPort instanceof MComponentInstance) && (toPort instanceof MComponentInstance)) {
-		MComponentInstance fromComI = (MComponentInstance) fromPort;
-		MComponentInstance toComI = (MComponentInstance) toPort; 
-	  	if (edgeClass == MDependency.class) {
-	    	MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromComI, toComI);
-	    	addEdge(dep);
-	    	return dep;
-	  	}
-	  	else {
-	      	cat.debug("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	      	return null;
-	    }
-      }
-      else if ((fromPort instanceof MClass) && (toPort instanceof MClass)) {
-	    MClass fromCls = (MClass) fromPort;
-	    MClass toCls = (MClass) toPort;
-	    if (edgeClass == MAssociation.class) {
-	    	MAssociation asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
- 	      	addEdge(asc);
-	      	return asc;
-	    }
- 	    else if (edgeClass == MDependency.class) {
-	      	MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromCls, toCls);
-	      	addEdge(dep);
-	      	return dep;
-	    }
-	    else {
-	      	cat.debug("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	      	return null;
-	    }
-      }
-      else if ((fromPort instanceof MClass) && (toPort instanceof MInterface)) {
-	    MClass fromCls = (MClass) fromPort;
-	    MInterface toIntf = (MInterface) toPort;        
-	    if (edgeClass == MAssociation.class) {
-	      MAssociation asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, toIntf);
- 	      addEdge(asc);
-	      return asc;
-	    }
- 	    else if (edgeClass == MDependency.class) {
-	      MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromCls, toIntf);
-	      addEdge(dep);
-	      return dep;
-	    }
-	    else {
-	      cat.debug("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	      return null;
-	    }
-      }
-      else if ((fromPort instanceof MInterface) && (toPort instanceof MClass)) {
-    	MInterface fromIntf = (MInterface) fromPort;
-	    MClass toCls = (MClass) toPort;
-	    if (edgeClass == MAssociation.class) {
-	      MAssociation asc = UmlFactory.getFactory().getCore().buildAssociation(fromIntf, toCls);
- 	      addEdge(asc);
-	      return asc;
-	    }
- 	    else if (edgeClass == MDependency.class) {
-	      MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromIntf, toCls);
-	      addEdge(dep);
-	      return dep;
-	    }
-	    else {
-	      cat.debug("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	      return null;
-	    }
-      }
-      else if ((fromPort instanceof MInterface) && (toPort instanceof MInterface)) {
-		MInterface fromIntf = (MInterface) fromPort;
-		MInterface toIntf = (MInterface) toPort;
- 		if (edgeClass == MDependency.class) {
-	  		MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromIntf, toIntf);
-	  		addEdge(dep);
-	  		return dep;
-		}
-		else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	  		return null;
-		}
-      }
-      else if ((fromPort instanceof MObject) && (toPort instanceof MObject)) {
-		MObject fromObj = (MObject) fromPort;
-		MObject toObj = (MObject) toPort; 
-    	if (edgeClass == MLink.class) {
-    	  	MLink link = CommonBehaviorFactory.getFactory().buildLink(fromObj, toObj);
-    		addEdge(link);
-    		return link;
-    	}
- 		else if (edgeClass == MDependency.class) {
-	  		// nsuml: using Binding as default
-	  		MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromObj, toObj);
-	  		addEdge(dep);
-	  		return dep;
-		}
-		else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	  		return null;
-		}
-	
-      }
-      // according to the uml spec we can show if an component resides on some node via a dependency
-      // that has the support stereotype
-      else if ((fromPort instanceof MComponent) && (toPort instanceof MNode)) {
-      	MComponent fromObj = (MComponent)fromPort;
-      	MNode toObj = (MNode)toPort;
-      	if (edgeClass == MDependency.class) {
-    	  	MDependency dep = CoreHelper.getHelper().buildSupportDependency(fromObj, toObj);
-	  		addEdge(dep);
-	  		return dep;
-    	}
-    	else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	  		return null;
-		}
-      }
-      else if ((fromPort instanceof MObject) && (toPort instanceof MComponent)) {
-      	MObject fromObj = (MObject)fromPort;
-      	MComponent toObj = (MComponent)toPort;
-      	if (edgeClass == MDependency.class) {
-    	  	MDependency dep = CoreHelper.getHelper().buildSupportDependency(fromObj, toObj);
-	  		addEdge(dep);
-	  		return dep;
-    	}
-    	else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	  		return null;
-		}
-      }
-      else if ((fromPort instanceof MComponentInstance) && (toPort instanceof MNodeInstance)) {
-      	MComponentInstance fromObj = (MComponentInstance)fromPort;
-      	MNodeInstance toObj = (MNodeInstance)toPort;
-      	if (edgeClass == MDependency.class) {
-    	  	MDependency dep = CoreHelper.getHelper().buildSupportDependency(fromObj, toObj);
-	  		addEdge(dep);
-	  		return dep;
-    	}
-    	else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	  		return null;
-		}
-      }
-      else if ((fromPort instanceof MObject) && (toPort instanceof MComponentInstance)) {
-      	MObject fromObj = (MObject)fromPort;
-      	MComponentInstance toObj = (MComponentInstance)toPort;
-      	if (edgeClass == MDependency.class) {
-    	  	MDependency dep = CoreHelper.getHelper().buildSupportDependency(fromObj, toObj);
-	  		addEdge(dep);
-	  		return dep;
-    	}
-    	else {
-	  		cat.debug("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	  		return null;
-		}
-      }
-
-      else {
-	  cat.debug("Incorrect edge");
-	  return null;
-      }
-    }
-    catch (Exception ex) {
-    	ex.printStackTrace();
+    /** Contruct and add a new edge of the given kind */
+    public Object connect(Object fromPort, Object toPort, java.lang.Class edgeClass) {
+        
+        Object connection = null;
+        
+        try {
+            if (edgeClass == MAssociation.class) {
+                connection = connectAssociation((MClassifier)fromPort, (MClassifier)toPort);
+            } else if (edgeClass == MLink.class) {
+                connection = connectLink((MInstance)fromPort, (MInstance)toPort);
+            } else if (edgeClass == MDependency.class) {
+                if ((fromPort instanceof MComponent) && (toPort instanceof MComponent)) {
+                    MComponent fromCom = (MComponent) fromPort;
+                    MComponent toCom = (MComponent) toPort; 
+                    MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromCom, toCom);
+                    addEdge(dep);
+                    return dep;
+                } else if ((fromPort instanceof MComponentInstance) && (toPort instanceof MComponentInstance)) {
+                    MComponentInstance fromComI = (MComponentInstance) fromPort;
+                    MComponentInstance toComI = (MComponentInstance) toPort; 
+                    MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromComI, toComI);
+                    addEdge(dep);
+                    return dep;
+	  	} else if ((fromPort instanceof MClass) && (toPort instanceof MClass)) {
+                    MClass fromCls = (MClass) fromPort;
+                    MClass toCls = (MClass) toPort;
+                    MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromCls, toCls);
+                    addEdge(dep);
+                    return dep;
+                } else if ((fromPort instanceof MClass) && (toPort instanceof MInterface)) {
+                    MClass fromCls = (MClass) fromPort;
+                    MInterface toIntf = (MInterface) toPort;        
+                    MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromCls, toIntf);
+                    addEdge(dep);
+                    return dep;
+                } else if ((fromPort instanceof MInterface) && (toPort instanceof MClass)) {
+                    MInterface fromIntf = (MInterface) fromPort;
+                    MClass toCls = (MClass) toPort;
+                    MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromIntf, toCls);
+                    addEdge(dep);
+                    return dep;
+                } else if ((fromPort instanceof MInterface) && (toPort instanceof MInterface)) {
+                    MInterface fromIntf = (MInterface) fromPort;
+                    MInterface toIntf = (MInterface) toPort;
+                    MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromIntf, toIntf);
+                    addEdge(dep);
+                    return dep;
+                } else if ((fromPort instanceof MObject) && (toPort instanceof MObject)) {
+                    MObject fromObj = (MObject) fromPort;
+                    MObject toObj = (MObject) toPort; 
+                    // nsuml: using Binding as default
+                    MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromObj, toObj);
+                    addEdge(dep);
+                    return dep;
+		} else if ((fromPort instanceof MComponent) && (toPort instanceof MNode)) {
+                    MComponent fromObj = (MComponent)fromPort;
+                    MNode toObj = (MNode)toPort;
+                    MDependency dep = CoreHelper.getHelper().buildSupportDependency(fromObj, toObj);
+                    addEdge(dep);
+                    return dep;
+                } else if ((fromPort instanceof MObject) && (toPort instanceof MComponent)) {
+                    MObject fromObj = (MObject)fromPort;
+                    MComponent toObj = (MComponent)toPort;
+                    MDependency dep = CoreHelper.getHelper().buildSupportDependency(fromObj, toObj);
+                    addEdge(dep);
+                    return dep;
+                } else if ((fromPort instanceof MComponentInstance) && (toPort instanceof MNodeInstance)) {
+                    MComponentInstance fromObj = (MComponentInstance)fromPort;
+                    MNodeInstance toObj = (MNodeInstance)toPort;
+                    MDependency dep = CoreHelper.getHelper().buildSupportDependency(fromObj, toObj);
+                    addEdge(dep);
+                    return dep;
+                } else if ((fromPort instanceof MObject) && (toPort instanceof MComponentInstance)) {
+                    MObject fromObj = (MObject)fromPort;
+                    MComponentInstance toObj = (MComponentInstance)toPort;
+                    MDependency dep = CoreHelper.getHelper().buildSupportDependency(fromObj, toObj);
+                    addEdge(dep);
+                    return dep;
+                }
+            }
+        } catch (ClassCastException ex) {
+            // fail silently as we expect users to accidentally drop on to wrong component
+        }
+        
+        if (connection == null) {
+            cat.debug("Cannot make a "+ edgeClass.getName() +
+                         " between a " + fromPort.getClass().getName() +
+                         " and a " + toPort.getClass().getName());
+            return null;
+        }
+        
+        addEdge(connection);
+        return connection;
     }
 
-    throw new UnsupportedOperationException("should not enter here!");
-  }
+    /** Contruct and add a new association and connect to
+     * the given ports.
+     */
+    private Object connectDependency(MModelElement fromPort, MModelElement toPort) {
+        if ((fromPort instanceof MComponent && toPort instanceof MComponent) ||
+                (fromPort instanceof MComponentInstance && toPort instanceof MComponentInstance) ||
+                (fromPort instanceof MClass && toPort instanceof MClass) ||
+                (fromPort instanceof MClass && toPort instanceof MInterface) ||
+                (fromPort instanceof MInterface && toPort instanceof MClass) ||
+                (fromPort instanceof MInterface && toPort instanceof MInterface) ||
+                (fromPort instanceof MObject && toPort instanceof MObject) ||
+                (fromPort instanceof MComponent && toPort instanceof MNode) ||
+                (fromPort instanceof MObject && toPort instanceof MComponent) ||
+                (fromPort instanceof MComponentInstance && toPort instanceof MNodeInstance) ||
+                (fromPort instanceof MObject && toPort instanceof MComponentInstance)) {
+            return CoreHelper.getHelper().buildSupportDependency(fromPort, toPort);
+        }
+        return null;
+    }
+    /** Contruct and add a new association and connect to
+     * the given ports.
+     */
+    private Object connectLink(MInstance fromPort, MInstance toPort) {
+        if ((fromPort instanceof MNodeInstance && toPort instanceof MNodeInstance) ||
+                (fromPort instanceof MObject && toPort instanceof MObject)) {
+            return CommonBehaviorFactory.getFactory().buildLink(fromPort, toPort);
+        }
+        return null;
+    }
+    /** Contruct and add a new association and connect to
+     * the given ports.
+     */
+    private Object connectAssociation(MModelElement fromPort, MModelElement toPort) {
+        if ((fromPort instanceof MClass && toPort instanceof MClass) ||
+                (fromPort instanceof MNode && toPort instanceof MNode) ||
+                (fromPort instanceof MInterface && toPort instanceof MClass) ||
+                (fromPort instanceof MClass && toPort instanceof MInterface)) {
+            Editor curEditor = Globals.curEditor();
+            ModeManager modeManager = curEditor.getModeManager();
+            Mode mode = (Mode)modeManager.top();
+            Hashtable args = mode.getArgs();
+            boolean unidirectional = false;
+            MAggregationKind aggregation = (MAggregationKind)args.get("aggregation");
+            if (aggregation != null) {
+                unidirectional = ((Boolean)args.get("unidirectional")).booleanValue();
+            } else {
+                aggregation = MAggregationKind.NONE;
+            }
+            return UmlFactory.getFactory().getCore().buildAssociation((MClassifier)fromPort, !unidirectional, aggregation, (MClassifier)toPort, true, MAggregationKind.NONE);
+        }
+        
+        return null;
+    }
 
   public void vetoableChange(PropertyChangeEvent pce) {
     //throws PropertyVetoException

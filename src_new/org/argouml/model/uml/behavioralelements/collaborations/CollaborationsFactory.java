@@ -38,6 +38,7 @@ import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 /**
  * Factory to create UML classes for the UML
@@ -174,7 +175,39 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     	}
     	return null;
     }
-    
+
+    /**
+     * Builds a binary associationrole on basis of two classifierroles,
+     * navigation and aggregation
+     */
+    public MAssociationRole buildAssociationRole(
+            MClassifierRole from,
+            boolean nav1,
+            MAggregationKind agg1,
+            MClassifierRole to, 
+            boolean nav2,
+            MAggregationKind agg2) {
+    	MCollaboration colFrom = (MCollaboration)from.getNamespace();
+    	MCollaboration colTo = (MCollaboration)to.getNamespace();
+    	if (colFrom != null && colFrom.equals(colTo)) {
+    		MAssociationRole role = createAssociationRole();
+    		// we do not create on basis of associations between the bases of the classifierroles
+                MAssociationEndRole fromEnd = buildAssociationEndRole(from);
+                fromEnd.setNavigable(nav1);
+                fromEnd.setAggregation(agg1);
+    		role.addConnection(fromEnd);
+                
+                MAssociationEndRole toEnd = buildAssociationEndRole(to);
+                toEnd.setNavigable(nav2);
+                toEnd.setAggregation(agg2);
+    		role.addConnection(toEnd);
+                
+                colFrom.addOwnedElement(role);
+    		return role;
+    	}
+    	return null;
+    }
+
     /**
      * Builds a message within some interaction related to some assocationrole. The message
      * is added as the last in the interaction sequence. Furthermore, the message is added as the last

@@ -45,7 +45,13 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.model_management.*;
+
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Mode;
+import org.tigris.gef.base.ModeManager;
 
 
 /** This class defines a bridge between the UML meta-model
@@ -69,13 +75,13 @@ implements VetoableChangeListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public MNamespace getNamespace() { return _collab; }
-  public void setNamespace(MNamespace m) {
-    if (!(m instanceof MCollaboration)) {
-      throw new IllegalArgumentException("invalid namespace for CollabDiagramGraphModel");
+    public MNamespace getNamespace() { return _collab; }
+    public void setNamespace(MNamespace m) {
+        if (!(m instanceof MCollaboration)) {
+            throw new IllegalArgumentException("invalid namespace for CollabDiagramGraphModel");
+        }
+        _collab = (MCollaboration) m;
     }
-    _collab = (MCollaboration) m;
-  }
 
 
   ////////////////////////////////////////////////////////////////
@@ -184,19 +190,26 @@ implements VetoableChangeListener {
     fireNodeAdded(node);
   }
 
-  /** Add the given edge to the graph, if valid. */
-  public void addEdge(Object edge) {
-    cat.debug("adding class edge!!!!!!");
-    if (!canAddEdge(edge)) return;
-    _edges.addElement(edge);
-    // TODO: assumes public
-       if (edge instanceof MModelElement &&
-       ((MModelElement)edge).getNamespace() == null) {
-      _collab.addOwnedElement((MModelElement) edge);
+    /** Add the given edge to the graph, if valid. */
+    public void addEdge(Object edge) {
+        cat.debug("adding class edge!!!!!!");
+        if (!canAddEdge(edge)) return;
+        _edges.addElement(edge);
+        // TODO: assumes public
+        if (edge instanceof MModelElement && ((MModelElement)edge).getNamespace() == null) {
+            _collab.addOwnedElement((MModelElement) edge);
+        }
+        fireEdgeAdded(edge);
     }
-    fireEdgeAdded(edge);
-  }
 
+    /** Add the given edge to the graph, if valid. */
+    protected Object addEdge(MModelElement edge) {
+        addEdge((Object)edge);
+        return edge;
+    }
+
+
+  
   public void addNodeRelatedEdges(Object node) {
     if ( node instanceof MClassifier ) {
       Collection ends = ((MClassifier)node).getAssociationEnds();
@@ -250,35 +263,64 @@ implements VetoableChangeListener {
   }
 
 
-  /** Contruct and add a new edge of a kind determined by the ports */
-  public Object connect(Object fromPort, Object toPort) {
-      throw new UnsupportedOperationException("should not enter here! connect2");
-  }
+    /** Contruct and add a new edge of a kind determined by the ports */
+    public Object connect(Object fromPort, Object toPort) {
+        throw new UnsupportedOperationException("should not enter here! connect2");
+    }
 
-  /** Contruct and add a new edge of the given kind */
-  public Object connect(Object fromPort, Object toPort,
-			java.lang.Class edgeClass) {
-    //try {
-      if (edgeClass == MAssociationRole.class &&
-		(fromPort instanceof MClassifierRole && toPort instanceof MClassifierRole)) {
-	    MAssociationRole asr = UmlFactory.getFactory().getCollaborations().buildAssociationRole((MClassifierRole)fromPort, (MClassifierRole)toPort);
-	    addEdge(asr);
-	    return asr;
-      } else
-      if (edgeClass == MGeneralization.class) {
-      	if (fromPort instanceof MClassifierRole && toPort instanceof MClassifierRole) {
-      		MGeneralization gen = CoreFactory.getFactory().buildGeneralization((MClassifierRole)fromPort, (MClassifierRole)toPort);
-      		addEdge(gen);
-      		return gen;
-      	}
-      }
+    /** Contruct and add a new edge of the given kind */
+    public Object connect(Object fromPort, Object toPort,
+                          java.lang.Class edgeClass) {
+        Object connection = null;
+        try {
+            if (edgeClass == MAssociationRole.class) {
+                connection = connectAssociationRole((MClassifierRole)fromPort, (MClassifierRole)toPort);
+            } else if (edgeClass == MGeneralization.class) {
+                if (fromPort instanceof MClassifierRole && toPort instanceof MClassifierRole) {
+                    MGeneralization gen = CoreFactory.getFactory().buildGeneralization((MClassifierRole)fromPort, (MClassifierRole)toPort);
+                    addEdge(gen);
+                    return gen;
+                }
+            }
       
-      else {
-	    cat.debug("Incorrect edge");
-	    return null;
-      }
-      return null;
-  }
+        } catch (ClassCastException ex) {
+            // fail silently as we expect users to accidentally drop on to wrong component
+        }
+        
+        if (connection != null) return connection;
+        
+        cat.debug("Cannot make a "+ edgeClass.getName() +
+                     " between a " + fromPort.getClass().getName() +
+                     " and a " + toPort.getClass().getName());
+        return null;
+    }
+
+    /** Contruct and add a new association and connect to
+     * the given ports.
+     */
+    private Object connectAssociationRole(MClassifierRole fromPort, MClassifierRole toPort) {
+        if (fromPort instanceof MClassifier && toPort instanceof MClassifier) {
+            Editor curEditor = Globals.curEditor();
+            ModeManager modeManager = curEditor.getModeManager();
+            Mode mode = (Mode)modeManager.top();
+            Hashtable args = mode.getArgs();
+            MAggregationKind aggregation = (MAggregationKind)args.get("aggregation");
+            MAssociation asc;
+            if (aggregation != null) {
+                boolean unidirectional = ((Boolean)args.get("unidirectional")).booleanValue();
+                asc = UmlFactory.getFactory().getCollaborations().buildAssociationRole(fromPort, !unidirectional, aggregation, toPort, true, MAggregationKind.NONE);
+            } else {
+                asc = UmlFactory.getFactory().getCollaborations().buildAssociationRole(fromPort, toPort);
+            }
+            return addEdge(asc);
+        }
+        
+        return null;
+    }
+    
+    private Object connectGeneralization(MClassifierRole fromPort, MClassifierRole toPort) {
+        return addEdge(UmlFactory.getFactory().getCore().buildGeneralization(fromPort, toPort));
+    }
 
 
   ////////////////////////////////////////////////////////////////

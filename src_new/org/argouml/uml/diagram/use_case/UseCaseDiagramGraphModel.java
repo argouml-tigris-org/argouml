@@ -547,13 +547,6 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
         fireEdgeAdded(edge);
     }
 
-    /** Add the given edge to the graph, if valid. */
-    protected MModelElement addEdge(MModelElement edge) {
-        addEdge((Object)edge);
-        return edge;
-    }
-
-
     /**
      * <p>Add the various types of edge that may be connected with the given
      *   node.</p>
@@ -740,92 +733,35 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
      *                   <code>null</code> otherwise)
      */
 
-    public Object connect(Object fromPort, Object toPort,
-                          java.lang.Class edgeClass) {
+    public Object connect(Object fromPort, Object toPort, java.lang.Class edgeClass) {
 
-        // Association. Create an association between the two ports, which are
-        // assumed to be actors or use cases. Note that at present we do permit
-        // an association between pairs of use cases.
-
-        if (edgeClass == MAssociation.class) {
-            return connectAssociation((MModelElement)fromPort, (MModelElement)toPort);
+        Object connection = null;
+        
+        try {
+            if (edgeClass == MAssociation.class) {
+                connection = connectAssociation((MModelElement)fromPort, (MModelElement)toPort);
+            } else if (edgeClass == MGeneralization.class) {
+                connection = connectGeneralization((MModelElement)fromPort, (MModelElement)toPort);
+            } else if (edgeClass == MExtend.class) {
+                connection = connectExtend((MUseCase)fromPort, (MUseCase)toPort);
+            } else if (edgeClass == MInclude.class) {
+                connection = connectInclude((MUseCase)fromPort, (MUseCase)toPort);
+            } else if (edgeClass == MDependency.class) {
+                connection = connectDependency((MUseCase)fromPort, (MUseCase)toPort);
+            }
+        } catch (ClassCastException ex) {
+            // fail silently as we expect users to accidentally drop on to wrong component
         }
-
-        // Generalizations, but only between two actors or two use cases
-
-        else if ((edgeClass == MGeneralization.class) &&
-                 (((fromPort instanceof MActor) &&
-                   (toPort instanceof MActor)) ||
-                  ((fromPort instanceof MUseCase) && 
-                   (toPort instanceof MUseCase)))) {
-
-            MClassifier parent = (MClassifier)fromPort;
-            MClassifier child  = (MClassifier)toPort;
-
-            MGeneralization gen =
-                UmlFactory.getFactory().getCore().buildGeneralization(parent, child);
-
-            return addEdge(gen);
-        }
-
-        // Extend, but only between two use cases. Remember we draw from the
-        // extension port to the base port.
-
-        else if ((edgeClass == MExtend.class) &&
-                 ((fromPort instanceof MUseCase) && 
-                  (toPort instanceof MUseCase))) {
-
-            MUseCase base      = (MUseCase)toPort;
-            MUseCase extension = (MUseCase)fromPort;
-
-            MExtend ext =
-                UmlFactory.getFactory().getUseCases().buildExtend(base, extension);
-
-            return addEdge(ext);
-        }
-
-        // Include, but only between two use cases
-
-        else if ((edgeClass == MInclude.class) &&
-                 ((fromPort instanceof MUseCase) && 
-                  (toPort instanceof MUseCase))) {
-
-            MUseCase base     = (MUseCase)fromPort;
-            MUseCase addition = (MUseCase)toPort;
-
-            MInclude inc =
-                UmlFactory.getFactory().getUseCases().buildInclude(base, addition);
-
-            return addEdge(inc);
-        }
-
-        // Dependencies ought to be between anything. The restriction here is
-        // because they were used in the past for include and extend
-        // relationships (now fixed).
-
-        else if ((edgeClass == MDependency.class) &&
-                 ((fromPort instanceof MUseCase) &&
-                  (toPort instanceof MUseCase))) {
-
-            MClassifier client   = (MClassifier)fromPort;
-            MClassifier supplier = (MClassifier)toPort;
-
-            MDependency dep =
-                UmlFactory.getFactory().getCore().buildDependency(client, supplier);
-
-            return addEdge(dep);
-        }
-
-        // We shouldn't be asked for any other sort of edge
-
-        else {
-            cat.debug(this.getClass().toString() + ": connect(" +
-                               fromPort.toString() + ", " +
-                               toPort.toString() + ", " +
-                               edgeClass.toString() +
-                               ") - invalid edge class");
+        
+        if (connection == null) {
+            cat.debug("Cannot make a "+ edgeClass.getName() +
+                         " between a " + fromPort.getClass().getName() +
+                         " and a " + toPort.getClass().getName());
             return null;
         }
+        
+        addEdge(connection);
+        return connection;
     }
 
     /** Contruct and add a new association and connect to
@@ -837,24 +773,43 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
             ModeManager modeManager = curEditor.getModeManager();
             Mode mode = (Mode)modeManager.top();
             Hashtable args = mode.getArgs();
+            boolean unidirectional = false;
             MAggregationKind aggregation = (MAggregationKind)args.get("aggregation");
-            MAssociation asc;
-            MClassifier fromCls = (MClassifier)fromPort;
-            MClassifier toCls = (MClassifier)toPort;
             if (aggregation != null) {
-                boolean unidirectional = ((Boolean)args.get("unidirectional")).booleanValue();
-                asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, !unidirectional, aggregation, toCls, true, MAggregationKind.NONE);
+                unidirectional = ((Boolean)args.get("unidirectional")).booleanValue();
             } else {
-                asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
+                aggregation = MAggregationKind.NONE;
             }
-            return addEdge(asc);
+            return UmlFactory.getFactory().getCore().buildAssociation((MClassifier)fromPort, !unidirectional, aggregation, (MClassifier)toPort, true, MAggregationKind.NONE);
         }
         
         return null;
     }
     
-  
+    private Object connectGeneralization(MModelElement fromPort, MModelElement toPort) {
+        if ((fromPort instanceof MActor && toPort instanceof MActor) ||
+            (fromPort instanceof MUseCase && toPort instanceof MUseCase)) {
 
+            return UmlFactory.getFactory().getCore().buildGeneralization((MClassifier)fromPort, (MClassifier)toPort);
+        }
+        return null;
+    }
+
+    private Object connectExtend(MUseCase fromPort, MUseCase toPort) {
+        // Extend, but only between two use cases. Remember we draw from the
+        // extension port to the base port.
+        // any reason? Does it matter?
+        return UmlFactory.getFactory().getUseCases().buildExtend(toPort, fromPort);
+    }
+    
+    private Object connectDependency(MUseCase fromPort, MUseCase toPort) {
+        return UmlFactory.getFactory().getCore().buildDependency(fromPort, toPort);
+    }
+    
+    private Object connectInclude(MUseCase fromPort, MUseCase toPort) {
+        return UmlFactory.getFactory().getUseCases().buildInclude(fromPort, toPort);
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
     //
     // Methods that implement the VetoableChangeListener interface
