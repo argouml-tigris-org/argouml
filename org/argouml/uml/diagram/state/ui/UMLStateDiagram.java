@@ -45,7 +45,8 @@ import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.ui.ToolBar;
+
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MFinalState;
 import ru.novosoft.uml.behavior.state_machines.MState;
@@ -56,8 +57,6 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
-
-import ru.novosoft.uml.MElementEvent;
 
 public class UMLStateDiagram extends UMLDiagram {
     protected static Category cat = Category.getInstance(UMLStateDiagram.class);
@@ -134,13 +133,11 @@ public class UMLStateDiagram extends UMLDiagram {
 
     }
 
+    /**
+     * The owner of a statediagram is the namespace it's showing.
+     */
     public MModelElement getOwner() {
-        StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
-        Argo.log.info("UMLStateDiagram.getOwner()...GraphModel = " + gm);
-        MStateMachine sm = gm.getMachine();
-        if (sm != null)
-            return sm;
-        Argo.log.info("UMLStateDiagram.getOwner()...NameSpace = " + gm.getNamespace());
+        StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();          
         return gm.getNamespace();
     }
 
