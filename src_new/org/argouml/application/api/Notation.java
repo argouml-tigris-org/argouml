@@ -347,7 +347,7 @@ implements PropertyChangeListener {
      */
     public void propertyChange(PropertyChangeEvent pce) {
 	cat.info ("Notation change:" + pce.getOldValue() + " to " + pce.getNewValue());
-        ArgoEventPump.getInstance().fireEvent(
+        ArgoEventPump.fireEvent(
 	             new ArgoNotationEvent(ArgoEvent.NOTATION_CHANGED, pce));
     }
 
