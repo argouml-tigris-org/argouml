@@ -186,7 +186,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     }
 
     /**
-     * After loading the diagram it?s necessary to connect
+     * After loading the diagram it is necessary to connect
      * every FigMessage to its FigAssociationRole.
      * This is done by adding the FigMessage
      * to the PathItems of its FigAssociationRole.
