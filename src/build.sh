@@ -7,7 +7,6 @@ echo
 
 ANT_HOME=~/bin/jakarta-ant/lib
 LIBS=~/jars
-JAVA_HOME=/usr/remote/jdk12
 CLASSPATH=$ANT_HOME/jaxp.jar:$ANT_HOME/parser.jar:$JAVA_HOME/lib/tools.jar:$JAVA_HOME/lib/classes.zip:$ANT_HOME/ant.jar:$ANT_HOME/xml.jar:$LIBS/nsuml.jar:$LIBS/xml4j.jar:$LIBS/ocl-argo.jar:$CLASSPATH
 
 if [ "$JAVA_HOME" = "" ] ; then
