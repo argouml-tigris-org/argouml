@@ -212,7 +212,7 @@ public class UmlFilePersister extends AbstractFilePersister {
                         new XmlInputStream(url.openStream(), "argo");
 
             ArgoParser parser = new ArgoParser();
-            parser.readProject(url, inputStream, false);
+            parser.readProject(url, inputStream);
             inputStream.close();
             
             List memberList = parser.getMemberList();
