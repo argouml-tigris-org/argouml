@@ -197,7 +197,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- Creates the class package                                           -->
   <!-- =================================================================== -->
   <target name="package" depends="compile">
-    <echo message="Creating the jar file ${build.dir}/${name}.jar"/>
+    <echo message="Creating the jar file ${lib.dir}/${name}.jar"/>
     <jar jarfile="${lib.dir}/${name}.jar"
          basedir="${build.dest}"
          includes="org/argouml/**"
@@ -229,7 +229,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <!-- Creates the source distribution                                            -->
   <!-- =================================================================== -->
-  <target name="dist-src" depends="package">
+  <target name="dist-src" depends="init">
     <echo message="Building the source distribution files (zip,tar)"/>
     <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
     <zip zipfile="${Name}-${version}.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.*"/>
