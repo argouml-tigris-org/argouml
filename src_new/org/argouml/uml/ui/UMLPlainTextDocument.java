@@ -52,7 +52,7 @@ import ru.novosoft.uml.MElementListener;
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class UMLPlainTextDocument extends PlainDocument
-    implements UMLUserInterfaceComponent, MElementListener {
+    implements UMLUserInterfaceComponent {
         
     public static Category cat = Category.getInstance(UMLPlainTextDocument.class);
     

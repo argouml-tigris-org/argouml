@@ -59,7 +59,7 @@ import org.argouml.model.uml.UmlFactory;
  * empty stereotype textfield causes problems with the
  * note layout, I subclass FigNode instead of FigNodeModelElement.
  */
-public class FigComment extends FigNodeModelElement implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener {
+public class FigComment extends FigNodeModelElement implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener {
     protected static Category cat = Category.getInstance(FigComment.class);
 
 
@@ -287,33 +287,6 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
 	    }
 	}
 	else super.propertyChange(pve);
-    }
-
-    public void propertySet(MElementEvent mee) {
-	modelChanged();
-	damage();
-    }
-
-    public void listRoleItemSet(MElementEvent mee) {
-	modelChanged();
-	damage();
-    }
-
-    public void recovered(MElementEvent mee) {
-    }
-
-    public void removed(MElementEvent mee) {
-	this.delete();
-    }
-    
-    public void roleAdded(MElementEvent mee) {
-	modelChanged();
-	damage();
-    }
-
-    public void roleRemoved(MElementEvent mee) {
-	modelChanged();
-	damage();
     }  
 
     public void keyPressed(KeyEvent ke) {
