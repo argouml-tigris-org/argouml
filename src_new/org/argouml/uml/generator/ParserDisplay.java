@@ -46,12 +46,10 @@ import org.argouml.model.uml.DataTypesFactory;
 import org.argouml.model.uml.ExtensionMechanismsFactory;
 import org.argouml.model.uml.ExtensionMechanismsHelper;
 import org.argouml.model.uml.ModelManagementHelper;
-import org.argouml.model.uml.StateMachinesFactory;
+import org.argouml.model.uml.StateMachinesHelper;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.ProfileJava;
 import org.argouml.util.MyTokenizer;
-
-
 
 
 /**
@@ -152,7 +150,7 @@ class PropertySpecialString {
 /**
  * This class is responsible for the parsing of the text that the user entered
  * on the display, i.e. the diagram. Consequently, the UML elements represented
- * by the text are created or adapted.
+ * by the text are created or adapted.<p>
  * 
  * There is a certain relation in namegiving with the class GeneratorDisplay,
  * which generates a textual representation of UML elements for displaying on
@@ -1599,8 +1597,6 @@ public class ParserDisplay extends Parser {
     }
 
 
-
-
     /**
      * Parse user input for state bodies and assign the individual lines to
      * according actions or transistions. The user input consists of multiple
@@ -1609,10 +1605,8 @@ public class ParserDisplay extends Parser {
      * "entry", "do" and "exit". The words "entry", "do" and "exit" are
      * case-independent.
      * 
-     * @param st
-     *            The State object.
-     * @param s
-     *            The string to parse.
+     * @param st  The State object.
+     * @param s   The string to parse.
      */
     public void parseStateBody(Object st, String s) {
         boolean foundEntry = false;
@@ -1746,13 +1740,21 @@ public class ParserDisplay extends Parser {
      *      ChangeEvent: "when(condition)"   <br> 
      *      TimeEvent: "after(duration)"     <br>
      *      CallEvent: "a(parameter-list)".  <br>
-     *      SignalEvent: TODO: Add support for signal events.
+     *      SignalEvent: any string without ().<p>
      * 
-     * @param trans
-     *            The transition object to which this string applies.
-     * @param s
-     *            The string to be parsed.
-     * @return the transition object
+     * Remark: The UML standard does not make a distinction between 
+     * the syntax of a CallEvent and SignalEvent: 
+     * both may have parameters between (). 
+     * For simplicity and user-friendlyness, we chose for this distinction.
+     * If a user wants parameters for a SignalEvent, 
+     * then he may add them in the properties panels, but not on the diagram.<p>
+     * 
+     * An alternative solution would be to create a CallEvent by default, 
+     * and when editing an existing event, do not change the type.
+     * 
+     * @param trans the transition object to which this string applies
+     * @param s     the string to be parsed
+     * @return      the transition object
      * 
      * @see org.argouml.uml.generator.Parser#parseTransition(Object, String)
      */
@@ -1763,7 +1765,7 @@ public class ParserDisplay extends Parser {
         String guardCondition = null;
         String actionExpression = null;
         while (tokenizer.hasMoreTokens()) {
-            String nextToken = tokenizer.nextToken();
+            String nextToken = tokenizer.nextToken().trim();
             if (nextToken.endsWith("]")) {
                 guardCondition = nextToken.substring(0, nextToken.length() - 1);
             } else {
@@ -1779,7 +1781,8 @@ public class ParserDisplay extends Parser {
            
         if (eventSignature != null) {
             try {
-                parseEventSignature(trans, eventSignature);
+                // parseEventSignature(trans, eventSignature);
+                parseTrigger(trans, eventSignature);
             } catch (ParseException e) {
                 LOG.warn(e);
             }
@@ -1791,204 +1794,151 @@ public class ParserDisplay extends Parser {
         }
        
         if (actionExpression != null) {
-            Object action = parseAction(actionExpression.trim());
-            ModelFacade.setEffect(trans, action);
+            parseEffect(trans, actionExpression.trim());
         }
         return trans;
     }
-
+    
+    /**
+     * Parse the Event that is the trigger of the given transition.
+     * 
+     * @param trans the transition which is triggered by the given event
+     * @param trigger the given trigger
+     */
+    private void parseTrigger(Object trans, String trigger) 
+        throws ParseException {
+        // let's look for a TimeEvent, ChangeEvent, CallEvent or SignalEvent
+        String s = "";
+        boolean timeEvent = false;
+        boolean changeEvent = false;
+        boolean callEvent = false;
+        boolean signalEvent = false;
         
-        // //DO NOT DELETE!
-        // //MVW: I still need this to help me create 
-        // //the functionality that is now missing!
-        //
-        //	// strip any trailing semi-colons
-        //	s = s.trim();
-        //	while (s.length() > 0 && s.charAt(s.length() - 1) == ';')
-        //	    s = s.substring(0, s.length() - 1).trim();
-        //
-        //        // strip off the name, and the ":"
-        //	String name = "";
-        //	String trigger = "";
-        //	String guard = "";
-        //	String actions = "";
-        //	if (s.indexOf(":", 0) > -1) {
-        //	    String s1 = s.substring(0, s.indexOf(":"));
-        //	    // the name may not contain a "(", for the case of: a(b:c)
-        //	    // the name may not contain a "/", 
-        //          // for when the action contains a ":"
-        //	    if ((s1.indexOf("(") < 0) && (s1.indexOf("/") < 0)) {
-        //	        name = s1.trim();
-        //	        s = s.substring(s.indexOf(":") + 1).trim();
-        //	    }
-        //        }
-        //
-        //        // get the guard from between the []
-        //	if (s.indexOf("[", 0) > -1 && s.indexOf("]", 0) > -1) {
-        //	    guard = s.substring(s.indexOf("[", 0) + 1, 
-        //              s.indexOf("]")).trim();
-        //	    s = s.substring(0, s.indexOf("[")) 
-        //                  + s.substring(s.indexOf("]") + 1);
-        //	    s = s.trim();
-        //	}
-        //
-        //        // everything behind the "/" is the action
-        //	if (s.indexOf("/", 0) > -1) {
-        //	    actions = s.substring(s.indexOf("/") + 1).trim();
-        //	    s = s.substring(0, s.indexOf("/")).trim();
-        //	}
-        //
-        //        // and the remainder is the trigger name
-        //	trigger = s;
-        //
-        //	// let's look for a TimeEvent, ChangeEvent, 
-        //      // CallEvent or SignalEvent
-        //	boolean timeEvent = false;
-        //	boolean changeEvent = false;
-        //	boolean callEvent = false;
-        //	boolean signalEvent = false;
-        //	String operationName = "";
-        //	if ((s.toLowerCase().startsWith("after"))
-        //	    && (s.indexOf("(", 0) > -1)
-        //	    && (s.indexOf(")", 0) > -1))
-        //	{ //s shall contain the TimeExpression
-        //	    s = s.substring(s.indexOf("(") + 1).trim();
-        //	    s = s.substring(0, s.lastIndexOf(")")).trim();
-        //	    timeEvent = true;
-        //	} else if ((s.toLowerCase().startsWith("when"))
-        //		   && (s.indexOf("(", 0) > -1)
-        //		   && (s.indexOf(")", 0) > -1))
-        //	{ // s shall contain the ChangeExpression
-        //	    s = s.substring(s.indexOf("(") + 1).trim();
-        //	    s = s.substring(0, s.lastIndexOf(")")).trim();
-        //	    changeEvent = true;
-        //	} else if ((s.indexOf("(", 0) > -1)
-        //            && (s.indexOf(")", 0) > -1))
-        //        { // s shall contain the operation
-        //	    operationName = s.substring(0, s.indexOf("(")).trim();
-        //	    callEvent = true;
-        //        } else { // s shall contain the signal
-        //            signalEvent = true;
-        //        }
-        //
-        //	LOG.debug("name=|" + name + "|");
-        //	LOG.debug("trigger=|" + trigger + "|");
-        //	LOG.debug("guard=|" + guard + "|");
-        //	LOG.debug("actions=|" + actions + "|");
-        //
-        //        // use the name we found to (re)name the transition
-        //	ModelFacade.setName(trans, name);
-        //
-        //// /* The following handles the Event that is the trigger of
-        //// this transition.
-        //// We can distinct between 4 cases:
-        //// 1. A trigger is given. None exists yet.
-        //// 2. The name of the trigger was present, but is (the same or)
-        // altered.
-        //// 3. A trigger is not given. None exists yet.
-        //// 4. The name of the trigger was present, but is removed.
-        //// The reaction in these cases should be:
-        //// 1. Create a new trigger, name it, and hook it to the transition.
-        //// 2. Rename the trigger.
-        //// 3. Nop.
-        //// 4. Unhook and erase the existing trigger.
-        ////
-        //// TODO:
-        //// In fact it could be made even more complicated for case 1:
-        //// If the transition did not have a trigger before,
-        //// a trigger-name is given, and a trigger already
-        //// existed with that name,
-        //// then we have to use the existing trigger object!
-        //// */
-        //        Object evt = ModelFacade.getTrigger(trans);
-        //        boolean created_evt = false;
-        //	if (trigger.length() > 0) {
-        //            // case 1 and 2
-        //            if (evt == null) {
-        //                // case 1
-        //                if (timeEvent) { // after(...)
-        //                    evt = UmlFactory.getFactory().getStateMachines()
-        //                                                .buildTimeEvent(s);
-        //                }
-        //                if (changeEvent) { // when(...)
-        //                    evt = UmlFactory.getFactory().getStateMachines()
-        //                                                .buildChangeEvent(s);
-        //                }
-        //                if (callEvent) { // operation(paramlist)
-        //                    evt = UmlFactory.getFactory().getStateMachines()
-        //			            .buildCallEvent(trans, trigger);
-        //                }
-        //                if (signalEvent) { // signalname
-        //                    evt = UmlFactory.getFactory().getStateMachines()
-        //                                   .buildSignalEvent(trigger);
-        //                }
-        //                created_evt = true;
-        //            } else {
-        //                // case 2
-        //                if (!ModelFacade.getName(evt).equals(trigger)) {
-        //                    ModelFacade.setName(evt, trigger);
-        //                    if (timeEvent && !ModelFacade.isATimeEvent(evt)) {
-        //                        UmlFactory.getFactory().delete(evt);
-        //                        evt = UmlFactory.getFactory()
-        //                            .getStateMachines().buildTimeEvent(s);
-        //                        created_evt = true;
-        //                    }
-        //                    if (changeEvent && !ModelFacade
-        //                        .isAChangeEvent(evt)) {
-        //                        UmlFactory.getFactory().delete(evt);
-        //                        evt = UmlFactory.getFactory()
-        //                            .getStateMachines().buildChangeEvent(s);
-        //                        created_evt = true;
-        //                    }
-        //                    if (callEvent && !ModelFacade.isACallEvent(evt)) {
-        //                        UmlFactory.getFactory().delete(evt);
-        //                        evt = UmlFactory.getFactory()
-        //                            .getStateMachines()
-        //                            .buildCallEvent(trans, trigger);
-        //                        created_evt = true;
-        //                    }
-        //                    if (signalEvent && !ModelFacade
-        //                        .isASignalEvent(evt)) {
-        //                        UmlFactory.getFactory().delete(evt);
-        //                        evt = UmlFactory.getFactory()
-        //                            .getStateMachines()
-        //                            .buildSignalEvent(trigger);
-        //                        created_evt = true;
-        //                    }
-        //                }
-        //            }
-        //            if (created_evt && (evt != null)) {
-        //                StateMachinesHelper.getHelper()
-        //                    .setEventAsTrigger(trans, evt);
-        //                
-        //                /* The next part is explained by the following
-        //                 * quote from the UML spec:
-        //                 * "The event declaration has scope within
-        //                 * the package it appears in and may be used in
-        //                 * state diagrams for classes that have visibility
-        //                 * inside the package. An event is not local to
-        //                 * a single class."
-        //                 */
-        //                Object enclosing = StateMachinesHelper.getHelper()
-        //                                            .getStateMachine(trans);
-        //                while ((!ModelFacade.isAPackage(enclosing))
-        //		       && (enclosing != null)) {
-        //                    enclosing = ModelFacade.getNamespace(enclosing);
-        //		}
-        //                if (enclosing != null) {
-        //		    ModelFacade.setNamespace(evt, enclosing);
-        //		}
-        //            }
-        //	} else {
-        //            // case 3 and 4
-        //            if (evt == null) {
-        //                ;// case 3
-        //	    } else {
-        //                // case 4
-        //                UmlFactory.getFactory().delete(evt); // erase it
-        //            }
-        //        }
-        //
+        StringTokenizer tokenizer = new StringTokenizer(trigger, "()");
+        String name = tokenizer.nextToken().trim();
+        if (name.equalsIgnoreCase("after")) {
+            timeEvent = true;
+            if (tokenizer.hasMoreTokens()) {
+                s = tokenizer.nextToken().trim();
+            }
+        } else if (name.equalsIgnoreCase("when")) {
+            changeEvent = true;
+            if (tokenizer.hasMoreTokens()) {
+                s = tokenizer.nextToken().trim();
+            }
+        } else {
+            if (tokenizer.hasMoreTokens()) {
+                callEvent = true;
+                s = tokenizer.nextToken().trim();
+                //parseParamList(event, s, 0);
+            } else {
+                signalEvent = true;
+            }   
+        }
+        
+        /* 
+         * We can distinct between 4 cases:
+         * 1. A trigger is given. None exists yet.
+         * 2. The name of the trigger was present, but is (the same or)
+         * altered.
+         * 3. A trigger is not given. None exists yet.
+         * 4. The name of the trigger was present, but is removed.
+         * The reaction in these cases should be:
+         * 1. Create a new trigger, name it, and hook it to the transition.
+         * 2. Rename the trigger.
+         * 3. Nop.
+         * 4. Unhook and erase the existing trigger.
+         */
+        Object evt = ModelFacade.getTrigger(trans);
+        boolean createdEvent = false;
+        if (trigger.length() > 0) {
+            // case 1 and 2
+            if (evt == null) {
+                // case 1
+                if (timeEvent) { // after(...)
+                    evt = UmlFactory.getFactory().getStateMachines()
+                        .buildTimeEvent(s);
+                }
+                if (changeEvent) { // when(...)
+                    evt = UmlFactory.getFactory().getStateMachines()
+                        .buildChangeEvent(s);
+                }
+                if (callEvent) { // operation(paramlist)
+                    evt = UmlFactory.getFactory().getStateMachines()
+                        .buildCallEvent(trans, trigger);
+                    // and parse the parameter list
+                    parseParamList(evt, s, 0);
+                }
+                if (signalEvent) { // signalname
+                    evt = UmlFactory.getFactory().getStateMachines()
+                        .buildSignalEvent(trigger);
+                }
+                createdEvent = true;
+            } else {
+                // case 2
+                if (!ModelFacade.getName(evt).equals(trigger)) {
+                    ModelFacade.setName(evt, trigger);
+                    if (timeEvent && !ModelFacade.isATimeEvent(evt)) {
+                        UmlFactory.getFactory().delete(evt);
+                        evt = UmlFactory.getFactory().getStateMachines()
+                            .buildTimeEvent(s);
+                        createdEvent = true;
+                    }
+                    if (changeEvent && !ModelFacade
+                            .isAChangeEvent(evt)) {
+                        UmlFactory.getFactory().delete(evt);
+                        evt = UmlFactory.getFactory().getStateMachines()
+                            .buildChangeEvent(s);
+                        createdEvent = true;
+                    }
+                    if (callEvent && !ModelFacade.isACallEvent(evt)) {
+                        UmlFactory.getFactory().delete(evt);
+                        evt = UmlFactory.getFactory().getStateMachines()
+                            .buildCallEvent(trans, trigger);
+                        // and parse the parameter list
+                        parseParamList(evt, s, 0);
+                        createdEvent = true;
+                    }
+                    if (signalEvent && !ModelFacade
+                            .isASignalEvent(evt)) {
+                        UmlFactory.getFactory().delete(evt);
+                        evt = UmlFactory.getFactory().getStateMachines()
+                            .buildSignalEvent(trigger);
+                        createdEvent = true;
+                    }
+                }
+            }
+            if (createdEvent && (evt != null)) {
+                StateMachinesHelper.getHelper().setEventAsTrigger(trans, evt);
+                
+                /* The next part is explained by the following
+                 * quote from the UML spec:
+                 * "The event declaration has scope within
+                 * the package it appears in and may be used in
+                 * state diagrams for classes that have visibility
+                 * inside the package. An event is not local to
+                 * a single class."
+                 */
+                Object enclosing = StateMachinesHelper.getHelper()
+                    .getStateMachine(trans);
+                while ((!ModelFacade.isAPackage(enclosing))
+                        && (enclosing != null)) {
+                    enclosing = ModelFacade.getNamespace(enclosing);
+                }
+                if (enclosing != null) {
+                    ModelFacade.setNamespace(evt, enclosing);
+                }
+            }
+        } else {
+            // case 3 and 4
+            if (evt == null) {
+                ;// case 3
+            } else {
+                // case 4
+                UmlFactory.getFactory().delete(evt); // erase it
+            }
+        }
+    }
 
     /** 
      * Handle the Guard of a Transition.<p>
@@ -2010,7 +1960,7 @@ public class ParserDisplay extends Parser {
      * @param trans the UML element transition
      * @param guard the string that represents the guard expression
      */
-    public void parseGuard(Object trans, String guard) {
+    private void parseGuard(Object trans, String guard) {
         Object g = ModelFacade.getGuard(trans);
         if (guard.length() > 0) {
             if (g == null) {
@@ -2055,55 +2005,56 @@ public class ParserDisplay extends Parser {
         }
     }
     
-    // //DO NOT DELETE!
-    // //MVW: I still need this to help me create 
-    // //the functionality that is now missing!
-    //
-        //        /* handle the Effect (Action)
-        //        We can distinct between 4 cases:
-        //        1. An effect is given. None exists yet.
-        //        2. The expression of the effect was present, but is altered.
-        //        3. An effct is not given. None exists yet.
-        //        4. The expression of the effect was present, but is removed.
-        //        The reaction in these cases should be:
-        //        1. Create a new CallAction, set its name, language & 
-        //        expression, and hook it to the transition.
-        //        2. Change the effect's expression. Leave the actiontype, name 
-        //	  & language untouched.
-        //        3. Nop.
-        //        4. Unhook and erase the existing effect.
-        //        */
-        //	Object effect = ModelFacade.getEffect(trans);
-        //	if (actions.length() > 0) {
-        //	    if (effect == null) { // case 1
-        //	        effect = UmlFactory.getFactory().getCommonBehavior()
-        //		    .createCallAction();
-        //	        ModelFacade.setScript(effect, UmlFactory.getFactory()
-        //		    .getDataTypes().createActionExpression(
-        //                                                   "Java", actions));
-        //	        ModelFacade.setName(effect, "anon");
-        //	        ModelFacade.setEffect(trans, effect);
-        //	    } else { // case 2
-        //                String language = ModelFacade.getLanguage(ModelFacade
-        //		    .getScript(effect));
-        //                ModelFacade.setScript(effect, UmlFactory.getFactory()
-        //		    .getDataTypes().createActionExpression(
-        //                                            language, actions));
-        //	    }
-        //	} else { // case 3 & 4
-        //	    if (effect == null) {
-        //                ;// case 3
-        //            } else {
-        //                // case 4
-        //                UmlFactory.getFactory().delete(effect); // erase it
-        //            }
-        //	}
-        //
-        //	return trans;
+    /** 
+     * Handle the Effect (Action) of a Transition.
+     * 
+     * We can distinct between 4 cases:
+     * 1. An effect is given. None exists yet.
+     * 2. The expression of the effect was present, but is altered.
+     * 3. An effect is not given. None exists yet.
+     * 4. The expression of the effect was present, but is removed.
+     * The reaction in these cases should be:
+     * 1. Create a new CallAction, set its name, language & 
+     * expression, and hook it to the transition.
+     * 2. Change the effect's expression. Leave the actiontype, name 
+     * & language untouched.
+     * 3. Nop.
+     * 4. Unhook and erase the existing effect.
+     *
+     * @param actions the string to be parsed
+     * @param trans the transition that causes the effect (actions)
+     */
+    private void parseEffect(Object trans, String actions) {
+        Object effect = ModelFacade.getEffect(trans);
+        if (actions.length() > 0) {
+            if (effect == null) { // case 1
+                effect = UmlFactory.getFactory().getCommonBehavior()
+                    .createCallAction();
+                ModelFacade.setScript(effect, UmlFactory.getFactory()
+                        .getDataTypes().createActionExpression(
+                                ""/*language*/, actions));
+                ModelFacade.setName(effect, "anon");
+                ModelFacade.setEffect(trans, effect);
+            } else { // case 2
+                String language = ModelFacade.getLanguage(ModelFacade
+                        .getScript(effect));
+                ModelFacade.setScript(effect, UmlFactory.getFactory()
+                        .getDataTypes().createActionExpression(
+                                language, actions));
+            }
+        } else { // case 3 & 4
+            if (effect == null) {
+                ;// case 3
+            } else {
+                // case 4
+                UmlFactory.getFactory().delete(effect); // erase it
+            }
+        }
+    }
 
 
     /**
-     * Parses a line on the form:
+     * Parses a ClassifierRole represented by the following line of the format:
      * 
      * <br>
      * baselist := [base] [, base]* <br>
@@ -2117,13 +2068,11 @@ public class ParserDisplay extends Parser {
      * 
      * (formerly: "name: base" )
      * 
-     * @param cls
-     *            The classifier role to apply any changes to.
-     * @param s
-     *            The String to parse.
+     * @param cls the classifier role to apply any changes to
+     * @param s   the String to parse
      * @throws java.text.ParseException
-     *             when it detects an error in the attribute string. See also
-     *             ParseError.getErrorOffset().
+     *            when it detects an error in the attribute string. See also
+     *            ParseError.getErrorOffset().
      */
     public void parseClassifierRole(Object cls, String s) 
         throws ParseException {
@@ -2249,6 +2198,8 @@ public class ParserDisplay extends Parser {
     }
 
     /**
+     * Parse a Message textual description.<p>
+     * 
      * TODO: - This method is too complex, lets break it up. Parses a message
      * line on the form:
      * 
@@ -2280,13 +2231,11 @@ public class ParserDisplay extends Parser {
      * 'a' - 'z', seqelem, which does not allow a recurrance, and message, which
      * does allow one recurrance near seq2. (formerly: name: action )
      * 
-     * @param mes
-     *            The MMessage to apply any changes to.
-     * @param s
-     *            The String to parse.
+     * @param mes the MMessage to apply any changes to
+     * @param s   the String to parse
      * @throws ParseException
-     *             when it detects an error in the attribute string. See also
-     *             ParseError.getErrorOffset().
+     *            when it detects an error in the attribute string. See also
+     *            ParseError.getErrorOffset().
      */
     public void parseMessage(Object mes, String s) throws ParseException {
         String fname = null;
@@ -3342,15 +3291,15 @@ public class ParserDisplay extends Parser {
      * @param s the string to parse
      * @return the created object
      */
-    public Object parseAction(String s) {
-        Object a = UmlFactory.getFactory().getCommonBehavior()
-                .createCallAction();
-
-        ModelFacade.setScript(a, UmlFactory.getFactory().getDataTypes()
-                .createActionExpression("", s));
-
-        return a;
-    }
+//    public Object parseAction(String s) {
+//        Object a = UmlFactory.getFactory().getCommonBehavior()
+//                .createCallAction();
+//
+//        ModelFacade.setScript(a, UmlFactory.getFactory().getDataTypes()
+//                .createActionExpression("", s));
+//
+//        return a;
+//    }
 
     /**
      * Parses the event-signature. An event-signature has the following syntax:
@@ -3378,45 +3327,47 @@ public class ParserDisplay extends Parser {
      * @param s
      * @return
      */
-    private void parseEventSignature(Object transition, String s)
-        throws ParseException {
-        Object currentEvent = ModelFacade.getTrigger(transition);
-        if (currentEvent != null 
-                && !(ModelFacade.getTransitions(currentEvent).size() > 1 
-                        || ModelFacade.getStates(currentEvent).size() > 0)) {
-            Project p = ProjectManager.getManager().getCurrentProject();
-            p.moveToTrash(currentEvent);
-        }
-        Object event = null;
-        StringTokenizer tokenizer = new StringTokenizer(s, "()");
-        String name = tokenizer.nextToken();
-        if (name.equalsIgnoreCase("after")) {
-            if (tokenizer.hasMoreTokens())
-                event = StateMachinesFactory.getFactory().buildTimeEvent(
-                        tokenizer.nextToken());
-            else
-                event = StateMachinesFactory.getFactory().buildTimeEvent();
-        } else if (name.equalsIgnoreCase("when")) {
-            if (tokenizer.hasMoreTokens()) {
-                event = StateMachinesFactory.getFactory().buildChangeEvent(
-                        tokenizer.nextToken());
-            } else
-                event = StateMachinesFactory.getFactory().buildChangeEvent();
-        } else {
-            event = StateMachinesFactory.getFactory().buildCallEvent();
-            ModelFacade.setName(event, name);
-            if (tokenizer.hasMoreTokens()) {
-                parseParamList(event, tokenizer.nextToken(), 0);
-            }
-        }
-        ModelFacade.setTrigger(transition, event);
-    }
+//    private void parseEventSignature(Object transition, String s)
+//        throws ParseException {
+//        Object currentEvent = ModelFacade.getTrigger(transition);
+//        if (currentEvent != null 
+//                && !(ModelFacade.getTransitions(currentEvent).size() > 1 
+//                        || ModelFacade.getStates(currentEvent).size() > 0)) {
+//            Project p = ProjectManager.getManager().getCurrentProject();
+//            p.moveToTrash(currentEvent);
+//        }
+//        Object event = null;
+//        StringTokenizer tokenizer = new StringTokenizer(s, "()");
+//        String name = tokenizer.nextToken();
+//        if (name.equalsIgnoreCase("after")) {
+//            if (tokenizer.hasMoreTokens())
+//                event = StateMachinesFactory.getFactory().buildTimeEvent(
+//                        tokenizer.nextToken());
+//            else
+//                event = StateMachinesFactory.getFactory().buildTimeEvent();
+//        } else if (name.equalsIgnoreCase("when")) {
+//            if (tokenizer.hasMoreTokens()) {
+//                event = StateMachinesFactory.getFactory().buildChangeEvent(
+//                        tokenizer.nextToken());
+//            } else
+//                event = StateMachinesFactory.getFactory().buildChangeEvent();
+//        } else {
+//            event = StateMachinesFactory.getFactory().buildCallEvent();
+//            ModelFacade.setName(event, name);
+//            if (tokenizer.hasMoreTokens()) {
+//                parseParamList(event, tokenizer.nextToken(), 0);
+//            }
+//        }
+//        ModelFacade.setTrigger(transition, event);
+//    }
 
     /**
-     * Parse a line of the form: "name: base-class"
+     * Parse a textual representatation of an Object, i.e. a line of the form:
+     * <br>       "name: base-classes"
+     * <br> with "base-classes" a comma-seperated list of class names.
      * 
      * @param obj
-     *            the MObject to be parsed.
+     *            the UML Object to be parsed.
      * @param s
      *            the string to be parsed.
      */
