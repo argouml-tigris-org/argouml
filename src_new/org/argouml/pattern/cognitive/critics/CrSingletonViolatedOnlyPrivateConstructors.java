@@ -116,7 +116,7 @@ public class CrSingletonViolatedOnlyPrivateConstructors extends CrUML {
             return NO_PROBLEM;
         }
 
-	Iterator operations = ModelFacade.getOperations(dm);
+	Iterator operations = ModelFacade.getOperations(dm).iterator();
 
 	while (operations.hasNext()) {
 	    Object o = operations.next();

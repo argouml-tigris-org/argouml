@@ -44,6 +44,8 @@ import org.tigris.gef.base.*;
 
 // Diagram model imports:
 import org.argouml.model.uml.foundation.core.*;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.uml.*;
 // import org.argouml.uml.diagram.ui.*;
 // import org.argouml.uml.diagram.deployment.ui.*;
@@ -301,7 +303,8 @@ public class ModelFacade {
      * @returns true if handle is a constructor.
      */
     public static boolean isConstructor(Object handle) {
-        return isStereotype(handle, "create");
+        MStereotype createStereoType = ExtensionMechanismsFactory.getFactory().buildStereotype(new MOperationImpl(), "create");
+        return ExtensionMechanismsHelper.getHelper().isValidStereoType(handle, createStereoType);
     }
 
     /** Recognizer for attributes that are initialized.
@@ -444,13 +447,13 @@ public class ModelFacade {
      *
      * @param handle candidate
      * @param stereotype a string that is the stereotype name.
-     * @returns true if handle is a singleton.
+     * @return true if handle is a singleton.
      */
     public static boolean isStereotype(Object handle, String stereotypename) {
         if (handle instanceof MModelElement) {
             MModelElement element = (MModelElement)handle;
             MStereotype meSt = element.getStereotype();
-
+            
             if (meSt == null)
                 return false;
 
@@ -656,15 +659,13 @@ public class ModelFacade {
     /** The list of operations
      *
      * @param handle classifier to examine.
-     * @return iterator with operations.
+     * @return Collection with operations.
      */
-    public static Iterator getOperations(Object handle) {
+    public static Collection getOperations(Object handle) {
         if (handle instanceof MClassifier) {
             MClassifier c = (MClassifier)handle;
-
-            // TODO: We are converting back and forth between collections and
-            // iterators. I (Linus) prefer iterators.
-            return CoreHelper.getHelper().getOperations(c).iterator();
+            
+            return CoreHelper.getHelper().getOperations(c);
         }
 
         // ...
