@@ -87,7 +87,7 @@ public class DiagramInterface {
      *
      * @return The list of modified diagrams.
      */
-    Vector getModifiedDiagrams() {
+    public Vector getModifiedDiagrams() {
 	return _modifiedDiagrams;
     }
 
