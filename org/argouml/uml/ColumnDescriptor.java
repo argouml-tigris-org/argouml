@@ -286,8 +286,7 @@ class ColumnSrcName extends ColumnDescriptor {
 	if (!ModelFacade.isAAssociation(target)) return "N/A";
         if (ModelFacade.getConnectionCount(target) != 2) return "";
         
-        Iterator it = ModelFacade.getConnections(target);
-        Object ae = it.next();
+        Object ae = ModelFacade.getConnections(target).iterator().next();
         if (ae != null && ModelFacade.getName(ae) != null)
             return ModelFacade.getName(ae);
 	return "";
@@ -297,9 +296,8 @@ class ColumnSrcName extends ColumnDescriptor {
 	if (!(ModelFacade.isAAssociation(target))) return;
 	if (!(value instanceof String)) return;
         if (ModelFacade.getConnectionCount(target) == 2) {
-            Iterator it = ModelFacade.getConnections(target);
-            Object ae = it.next();
-            ModelFacade.setName(ae, (String)value);
+            Object ae = ModelFacade.getConnections(target).iterator().next();
+        ModelFacade.setName(ae, (String)value);
         }
     }  
 } /* end class ColumnSrcName */
@@ -311,9 +309,8 @@ class ColumnSrcType extends ColumnDescriptor {
     public Object getValueFor(Object target) {
 	if (!ModelFacade.isAAssociation(target)) return "N/A";
 	if (ModelFacade.getConnectionCount(target) == 2) {
-            Iterator it = ModelFacade.getConnections(target);
-	    Object ae = it.next();
-	    if (ae != null
+            Object ae = ModelFacade.getConnections(target).iterator().next();
+            if (ae != null
 		&& ModelFacade.getType(ae) != null
 		&& ModelFacade.getName(ModelFacade.getType(ae)) != null)
 	    {
@@ -336,8 +333,7 @@ class ColumnSrcMultiplicity extends ColumnDescriptor {
 	if (!ModelFacade.isAAssociation(target)) return "N/A";
         if (ModelFacade.getConnectionCount(target) != 2) return "";
         
-        Iterator it = ModelFacade.getConnections(target);
-        Object ae = it.next();
+        Object ae = ModelFacade.getConnections(target).iterator().next();
         if (ae != null && ModelFacade.getMultiplicity(ae) != null)
             return GeneratorDisplay.Generate(ModelFacade.getMultiplicity(ae));
 	return "";
@@ -348,8 +344,7 @@ class ColumnSrcMultiplicity extends ColumnDescriptor {
 	if (!(value instanceof String)) return;
         if (!(ModelFacade.getConnectionCount(target) == 2)) return;
         
-        Iterator it = ModelFacade.getConnections(target);
-        Object ae = it.next();
+        Object ae = ModelFacade.getConnections(target).iterator().next();
         Object m = ParserDisplay.SINGLETON.parseMultiplicity((String)value);
         ModelFacade.setMultiplicity(ae, m);
     }
@@ -364,8 +359,7 @@ class ColumnSrcNavigability extends ColumnDescriptor {
 	if (!ModelFacade.isAAssociation(target)) return Boolean.FALSE;
         if (ModelFacade.getConnectionCount(target) != 2) return Boolean.FALSE;
         
-        Iterator it = ModelFacade.getConnections(target);
-        Object ae = it.next();
+        Object ae = ModelFacade.getConnections(target).iterator().next();
         boolean nav = ModelFacade.isNavigable(ae);
         return nav ? Boolean.TRUE : Boolean.FALSE;
     }
@@ -376,8 +370,7 @@ class ColumnSrcNavigability extends ColumnDescriptor {
         if (!(ModelFacade.getConnectionCount(target) == 2)) return;
         
 	Boolean b = (Boolean) value;
-        Iterator it = ModelFacade.getConnections(target);
-        Object ae = it.next();
+        Object ae = ModelFacade.getConnections(target).iterator().next();
         ModelFacade.setNavigable(ae, b.booleanValue()); 
     }
 } /* end class ColumnSrcNavigability */
@@ -391,7 +384,7 @@ class ColumnDstName extends ColumnDescriptor {
 	if (!ModelFacade.isAAssociation(target)) return Boolean.FALSE;
         if (ModelFacade.getConnectionCount(target) != 2) return Boolean.FALSE;
         
-        Iterator it = ModelFacade.getConnections(target);
+        Iterator it = ModelFacade.getConnections(target).iterator();
         it.next();
         Object ae = it.next();
         if (ae != null && ModelFacade.getName(ae) != null)
@@ -404,7 +397,7 @@ class ColumnDstName extends ColumnDescriptor {
 	if (!(value instanceof String)) return;
         if (!(ModelFacade.getConnectionCount(target) == 2)) return;
         
-        Iterator it = ModelFacade.getConnections(target);
+        Iterator it = ModelFacade.getConnections(target).iterator();
         it.next();
         Object ae = it.next();
         ModelFacade.setName(ae, (String)value);
@@ -419,7 +412,7 @@ class ColumnDstType extends ColumnDescriptor {
 	if (!ModelFacade.isAAssociation(target)) return "N/A";
         if (ModelFacade.getConnectionCount(target) != 2) return "";
         
-        Iterator it = ModelFacade.getConnections(target);
+        Iterator it = ModelFacade.getConnections(target).iterator();
         it.next();
         Object ae = it.next();
         if (ae != null
@@ -443,7 +436,7 @@ class ColumnDstMultiplicity extends ColumnDescriptor {
 	if (!ModelFacade.isAAssociation(target)) return "N/A";
         if (ModelFacade.getConnectionCount(target) != 2) return "";
         
-        Iterator it = ModelFacade.getConnections(target);
+        Iterator it = ModelFacade.getConnections(target).iterator();
         it.next();
         Object ae = it.next();
         if (ae != null && ModelFacade.getMultiplicity(ae) != null) {
@@ -457,7 +450,7 @@ class ColumnDstMultiplicity extends ColumnDescriptor {
 	if (!(value instanceof String)) return;
         if (!(ModelFacade.getConnectionCount(target) == 2)) return;
         
-        Iterator it = ModelFacade.getConnections(target);
+        Iterator it = ModelFacade.getConnections(target).iterator();
         it.next();
         Object ae = it.next();
         Object m = ParserDisplay.SINGLETON.parseMultiplicity((String)value);
@@ -474,7 +467,7 @@ class ColumnDstNavigability extends ColumnDescriptor {
 	if (!ModelFacade.isAAssociation(target)) return Boolean.FALSE;
         if (ModelFacade.getConnectionCount(target) != 2) return Boolean.FALSE;
         
-        Iterator it = ModelFacade.getConnections(target);
+        Iterator it = ModelFacade.getConnections(target).iterator();
         it.next();
         Object ae = it.next();
         boolean nav = ModelFacade.isNavigable(ae);
@@ -487,7 +480,7 @@ class ColumnDstNavigability extends ColumnDescriptor {
         if (!(ModelFacade.getConnectionCount(target) == 2)) return;
         
 	Boolean b = (Boolean) value;
-        Iterator it = ModelFacade.getConnections(target);
+        Iterator it = ModelFacade.getConnections(target).iterator();
         it.next();
         Object ae = it.next();
         ModelFacade.setNavigable(ae, b.booleanValue());

@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -36,22 +33,13 @@ import java.util.Enumeration;
 import java.util.Vector;
 import org.argouml.kernel.Project;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlHelper;
+
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
 import org.tigris.gef.util.EnumerationComposite;
 import org.tigris.gef.util.EnumerationEmpty;
 import org.tigris.gef.util.EnumerationSingle;
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.model_management.MElementImport;
-import ru.novosoft.uml.model_management.MPackage;
-
-
-
 
 /** This class gives critics access to parts of the UML model of the
  *  design.  It defines a gen() function that returns the "children"
@@ -79,60 +67,52 @@ public class ChildGenUML implements ChildGenerator {
 
 	if (ModelFacade.isAPackage(o)) {
 	    Vector ownedElements =
-		new Vector(((MPackage) o).getOwnedElements());
+		new Vector(ModelFacade.getOwnedElements(o));
 	    if (ownedElements != null) return ownedElements.elements();
 	}
 
 	if (ModelFacade.isAElementImport(o)) {
-	    MModelElement me = ((MElementImport) o).getModelElement();
+	    Object me = ModelFacade.getModelElement(o);
 	    return new EnumerationSingle(me);  //wasteful!
 	}
 
 	if (ModelFacade.isAModelElement(o)) {
-	    Vector behavior = new Vector(((MModelElement) o).getBehaviors());
-	    if (behavior != null) behavior.elements();
+	    Vector behavior = new Vector(ModelFacade.getBehaviors(o));
+	    if (behavior != null) return behavior.elements();
 	}
 
 	// TODO: associationclasses fit both of the next 2 cases
 
 	if (ModelFacade.isAClassifier(o)) {
-	    MClassifier cls = (MClassifier) o;
 	    EnumerationComposite res = new EnumerationComposite();
-	    res.addSub(new Vector(cls.getFeatures()));
+	    res.addSub(new Vector(ModelFacade.getFeatures(o)));
 
-	    Vector sms = new Vector(cls.getBehaviors());
-	    MStateMachine sm = null;
+	    Vector sms = new Vector(ModelFacade.getBehaviors(o));
+	    Object sm = null;
 	    if (sms != null && sms.size() > 0)
-		sm = (MStateMachine) sms.elementAt(0);
+		sm = sms.elementAt(0);
 	    if (sm != null) res.addSub(new EnumerationSingle(sm));
 	    return res;
 	}
 
 	if (ModelFacade.isAAssociation(o)) {
-	    MAssociation asc = (MAssociation) o;
-	    Vector assocEnds = new Vector(asc.getConnections());
+	    Vector assocEnds = new Vector(ModelFacade.getConnections(o));
 	    if (assocEnds != null) return assocEnds.elements();
 	    //TODO: MAssociationRole
 	}
 
-
-
-
-
 	// // needed?
 	if (ModelFacade.isAStateMachine(o)) {
-	    MStateMachine sm = (MStateMachine) o;
 	    EnumerationComposite res = new EnumerationComposite();
-	    MState top = sm.getTop();
+	    Object top = UmlHelper.getHelper().getStateMachines().getTop(o);
 	    if (top != null) res.addSub(new EnumerationSingle(top));
-	    res.addSub(new Vector(sm.getTransitions()));
+	    res.addSub(new Vector(ModelFacade.getTransitions(o)));
 	    return res;
 	}
 
 	// needed?
 	if (ModelFacade.isACompositeState(o)) {
-	    MCompositeState cs = (MCompositeState) o;
-	    Vector substates = new Vector(cs.getSubvertices());
+	    Vector substates = new Vector(ModelFacade.getSubvertices(o));
 	    if (substates != null) return substates.elements();
 	}
 

@@ -101,7 +101,7 @@ public class CrCrossNamespaceAssoc extends CrUML {
         // Get the Association and its connections.
         // Iterate over all the AssociationEnds and check that each connected
         // classifier is in the same sub-system or model
-        Iterator enum = ModelFacade.getConnections(dm);
+        Iterator enum = ModelFacade.getConnections(dm).iterator();
 
         while (enum.hasNext()) {
             // The next AssociationEnd, and its classifier. Check the

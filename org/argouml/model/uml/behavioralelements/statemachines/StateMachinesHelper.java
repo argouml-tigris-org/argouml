@@ -190,10 +190,14 @@ public class StateMachinesHelper {
         }
     }
     
-    public MState getTop(MStateMachine sm) {
+    public MState getTop(Object sm) {
+        
+        if(!(sm instanceof MStateMachine))
+            throw new IllegalArgumentException();
+        
         if (sm == null)
         	return null;
-        return sm.getTop();
+        return ((MStateMachine)sm).getTop();
     }
     
     /**

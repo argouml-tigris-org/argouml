@@ -121,7 +121,7 @@ public class CrNavFromInterface extends CrUML {
         // there is an end connected to an Interface and 2) an end other than
         // that end is navigable. 
 
-        Iterator enum = ModelFacade.getConnections(dm);
+        Iterator enum = ModelFacade.getConnections(dm).iterator();
 
         boolean haveInterfaceEnd  = false;  // End at an Interface?
         boolean otherEndNavigable = false;  // Navigable other end?

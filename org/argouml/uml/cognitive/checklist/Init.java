@@ -28,17 +28,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import org.argouml.cognitive.checklist.CheckManager;
-import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.behavior.use_cases.MActor;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationClass;
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MInterface;
-import ru.novosoft.uml.foundation.core.MOperation;
-
+import org.argouml.model.ModelFacade;
 
 /** Registers Checklists for different kinds of model elements. If you
  *  add a new checklist, a line must be added here.
@@ -53,16 +43,16 @@ public class Init {
 	ResourceBundle bundle =
 	    ResourceBundle
 	    .getBundle("org.argouml.i18n.UMLCognitiveResourceBundle", locale);
-	addChecklist(bundle,  MClass.class, "ChClass");
-	addChecklist(bundle,  MInterface.class, "ChInterface");
-	addChecklist(bundle,  MAttribute.class, "ChAttribute");
-	addChecklist(bundle,  MOperation.class, "ChOperation");
-	addChecklist(bundle,  MAssociation.class, "ChAssociation");
-	addChecklist(bundle,  MAssociationClass.class, "ChAssociation");
-	addChecklist(bundle,  MState.class, "ChState");
-	addChecklist(bundle,  MTransition.class, "ChTransition");
-	addChecklist(bundle,  MUseCase.class, "ChUseCase");
-	addChecklist(bundle,  MActor.class, "ChActor");
+	addChecklist(bundle, (Class)ModelFacade.CLASS, "ChClass");
+	addChecklist(bundle, (Class)ModelFacade.INTERFACE, "ChInterface");
+	addChecklist(bundle, (Class)ModelFacade.ATTRIBUTE, "ChAttribute");
+	addChecklist(bundle, (Class)ModelFacade.OPERATION, "ChOperation");
+	addChecklist(bundle, (Class)ModelFacade.ASSOCIATION, "ChAssociation");
+	addChecklist(bundle, (Class)ModelFacade.ASSOCIATION_CLASS, "ChAssociation");
+	addChecklist(bundle, (Class)ModelFacade.STATE, "ChState");
+	addChecklist(bundle, (Class)ModelFacade.TRANSITION, "ChTransition");
+	addChecklist(bundle, (Class)ModelFacade.USE_CASE, "ChUseCase");
+	addChecklist(bundle, (Class)ModelFacade.ACTOR, "ChActor");
     }
 
     private static void addChecklist(ResourceBundle bundle,

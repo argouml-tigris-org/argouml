@@ -117,7 +117,7 @@ public class CrDupRoleNames extends CrUML {
 	    return NO_PROBLEM;
 	}
 
-        Iterator enum = ModelFacade.getConnections(dm);
+        Iterator enum = ModelFacade.getConnections(dm).iterator();
 
         // Loop through all the ends, comparing the name against those already
         // seen (ignoring any with no name).

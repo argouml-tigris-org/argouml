@@ -853,6 +853,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized handle " + handle);
     }
 
+    /**
+     * Returns the receiver object of a stimulus
+     * @param handle
+     * @return
+     */
+    public static Object getReceiver(Object handle) {
+        if (handle instanceof MStimulus) {
+            return ((MStimulus) handle).getReceiver();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
     public static Object getKind(Object handle) {
         if (handle instanceof MPseudostate) {
             return ((MPseudostate) handle).getKind();
@@ -1538,11 +1550,11 @@ public class ModelFacade {
     /** The list of Connections or AssociationEnds to an Association.
      *
      * @param handle to the association.
-     * @return an Iterator with all connections.
+     * @return a Collection with all connections.
      */
-    public static Iterator getConnections(Object handle) {
+    public static Collection getConnections(Object handle) {
         if (handle instanceof MAssociation) {
-            return ((MAssociation) handle).getConnections().iterator();
+            return ((MAssociation) handle).getConnections();
         }
 
         // ...
@@ -1738,6 +1750,17 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /**
+     * @param elemImport an Element Import.
+     */
+    public static Object getModelElement(Object elemImport){
+        
+        if(!(elemImport instanceof MElementImport))
+            throw new IllegalArgumentException();
+        
+        return ((MElementImport) elemImport).getModelElement();
+    }
+    
     /** Get the Multiplicity from an AssociationEnd.
      *
      * @param handle Classifier to retrieve from.
@@ -2049,6 +2072,18 @@ public class ModelFacade {
     }
 
     /**
+     * Returns the sender object of a stimulus
+     * @param handle
+     * @return
+     */
+    public static Object getSender(Object handle) {
+        if (handle instanceof MStimulus) {
+            return ((MStimulus) handle).getSender();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /**
      * Returns a collection with all residents belonging to the given
      * node.
      * @param handle
@@ -2136,6 +2171,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /**
+     * Returns the stimuli belonging to some given link
+     * @param handle
+     * @return Object
+     */
+    public static Collection getStimuli(Object handle) {
+        if (isALink(handle)) {
+            return ((MLink) handle).getStimuli();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
     /**
      * Returns a collection with all subvertices belonging to the given
      * composite state.

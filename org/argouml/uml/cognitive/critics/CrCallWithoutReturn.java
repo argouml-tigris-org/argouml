@@ -44,14 +44,10 @@ import org.argouml.uml.diagram.sequence.ui.FigSeqObject;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.tigris.gef.util.VectorSet;
 
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-import ru.novosoft.uml.behavior.common_behavior.MStimulus;
-
 /**
  * A critic to detect when there are components that
  * are not inside a node
  **/
-
 public class CrCallWithoutReturn extends CrUML {
 
     public CrCallWithoutReturn() {
@@ -92,15 +88,17 @@ public class CrCallWithoutReturn extends CrUML {
 	for (int i = 0; i < size; i++) {
 	    if (figs.elementAt(i) instanceof FigSeqLink) {
 		FigSeqLink fsl = (FigSeqLink) figs.elementAt(i);
-		MLink ml = (MLink) fsl.getOwner();
+		Object link = fsl.getOwner();
 		boolean found = false;
-		if (ml.getStimuli() != null) {
-		    Collection col = ml.getStimuli();
+                Collection col = ModelFacade.getStimuli(link);
+		if (col != null) {
 		    Iterator it = col.iterator();
 		    while (it.hasNext()) {
-			MStimulus ms = (MStimulus) it.next();
-			if (ModelFacade.isACallAction(ms.getDispatchAction())
-			    || ModelFacade.isASendAction(ms.getDispatchAction()))
+			Object stimulus = it.next();
+			if (ModelFacade.isACallAction(
+                                ModelFacade.getDispatchAction(stimulus))
+			    || ModelFacade.isASendAction(
+                                    ModelFacade.getDispatchAction(stimulus)))
 			{
 			    found = true;
 			    Vector edges =
@@ -109,17 +107,18 @@ public class CrCallWithoutReturn extends CrUML {
 			    for (int j = 0; j < edges.size(); j++) {
 				FigSeqLink second =
 				    (FigSeqLink) edges.elementAt(j);
-				MLink ml2 = (MLink) second.getOwner();
-				if (ml2.getStimuli() != null) {
-				    Collection col2 = ml2.getStimuli();
+				Collection col2 = ModelFacade.getStimuli(
+                                                    second.getOwner());
+				if (col2 != null) {
 				    Iterator it2 = col2.iterator();
 				    while (it2.hasNext()) {
-					MStimulus ms2 = (MStimulus) it2.next();
-					if ((ModelFacade.isAReturnAction(ms2.getDispatchAction()))
+					Object ms2 = it2.next();
+					if ((ModelFacade.isAReturnAction(
+                                            ModelFacade.getDispatchAction(ms2)))
 					    && (second.getPortNumber(figs)
 						> fsl.getPortNumber(figs))
-					    && (ms.getSender()
-						== ms2.getReceiver()))
+					    && (ModelFacade.getSender(stimulus)
+                                               == ModelFacade.getReceiver(ms2)))
 					{
 					    found = false;
 					}
