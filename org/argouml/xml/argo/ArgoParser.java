@@ -34,6 +34,8 @@ import org.argouml.xml.SAXParserBase;
 import org.argouml.xml.XMLElement;
 import org.xml.sax.*;
 
+/** @stereotype singleton
+ */
 public class ArgoParser extends SAXParserBase {
     protected static Category cat = Category.getInstance(ArgoParser.class);
     
