@@ -87,6 +87,7 @@ public class FigPackage extends FigNodeModelElement {
       }
     };
     _body = new FigText(x, y + textH, width, height - textH);
+    _body.setEditable(false);
     _name.setBounds(x, y, width - indentX, textH + 2);
     _name.setJustification(FigText.JUSTIFY_LEFT);
 
