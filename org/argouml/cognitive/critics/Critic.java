@@ -187,7 +187,8 @@ public class Critic implements Poster, Serializable {
     _knowledgeTypes.addElement("Correctness");
     _decisionCategory = "Checking";
     _emailAddr = "jrobbins@ics.uci.edu";
-    _moreInfoURL = "http://ics.uci.edu/~jrobbins";
+    _moreInfoURL = "http://argouml.tigris.org/documentation/printablehtml/"
+	+ "manual/argomanual.html#critic." + this.getClass().getName();
     _description = "no description is availible";
     _headline = "default critic headline (" + getClass().getName() + ")";
     _priority = ToDoItem.MED_PRIORITY;
