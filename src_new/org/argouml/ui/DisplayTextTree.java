@@ -37,14 +37,18 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Category;
+
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
+
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
@@ -295,6 +299,14 @@ public class DisplayTextTree extends JTree implements TargetListener {
         NavPerspective model = (NavPerspective) getModel();
         if (model instanceof NavPerspective) {
 
+            // Special case for the 'top' state of a state machine
+            // (it is never displayed in the tree(package parspective)), therefore
+            // this method will not work unless we get its statemachine
+            // and set that as the 'changed' object.
+            if(ModelFacade.isAStateVertex(changed)){
+                changed = UmlHelper.getHelper().getStateMachines().getStateMachine(changed);
+            }
+            
             //if the changed object is added to the model
             //in a path that was previously expanded, but is no longer
             // then we need to clear the cache to prevent a model corruption.
@@ -344,8 +356,8 @@ public class DisplayTextTree extends JTree implements TargetListener {
         reexpand();
     }
 
-    /** notifies the tree model that the structure has changed,
-     * this causes the nodes to colapse, then we re-expand the ones
+    /** 
+     * we re-expand the ones
      * that were open before to maintain the same viewable tree.
      *
      * called by doForceUpdate(), setModel()
