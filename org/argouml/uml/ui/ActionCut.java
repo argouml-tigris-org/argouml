@@ -24,6 +24,7 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -51,7 +52,9 @@ public class ActionCut extends UMLAction {
     */
 
     public boolean shouldBeEnabled() { 
-        Iterator it = TargetManager.getInstance().getTargets().iterator();
+        Collection col = TargetManager.getInstance().getTargets();
+        if (col == null) return false;
+        Iterator it = col.iterator();
         boolean returnvalue = true;
         while (it.hasNext()) {
             if (!(it.next() instanceof Fig)) {
