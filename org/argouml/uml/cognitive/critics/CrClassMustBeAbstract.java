@@ -39,8 +39,10 @@ import org.argouml.cognitive.critics.*;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.*;
 
-/** Well-formedness rules [1] and [3] for Class. See page 29 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. */
+/** A critic to detect whether a non abstract class  
+ *  contains abstract operations. It checks whether a non abstract class
+ *  has any abstract operations.
+ */
 
 public class CrClassMustBeAbstract extends CrUML {
 
@@ -55,14 +57,15 @@ public class CrClassMustBeAbstract extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MClass)) return NO_PROBLEM;
     MClass cls = (MClass) dm;
-    if (!cls.isAbstract()) return NO_PROBLEM;
+    if (cls.isAbstract()) return NO_PROBLEM;
     //    Collection beh = getInheritedBehavioralFeatures(cls);
     Collection beh = UmlHelper.getHelper().getCore().getOperationsInh(cls);
     Iterator enum = beh.iterator();
     while (enum.hasNext()) {
       MBehavioralFeature bf = (MBehavioralFeature) enum.next();
-      //TODO: abstract methods are not part of UML, only java
-      //if (bf.getIsAbstract()) return PROBLEM_FOUND;
+      if (bf instanceof MOperation) {
+          if (((MOperation)bf).isAbstract()) return PROBLEM_FOUND;
+      }
     }
     return NO_PROBLEM;
   }
