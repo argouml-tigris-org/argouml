@@ -38,7 +38,10 @@ import org.argouml.application.api.Configuration;
 import org.apache.log4j.Logger;
 /**
  * Provides a model and event management for perspectives(views) of the
- * Explorer.
+ * Explorer. <p>
+ * 
+ * This class defines the complete list of perspective rules, 
+ * and knows the default perspectives and their contents. 
  *
  * @author  alexb
  * @since 0.15.2
@@ -311,6 +314,13 @@ public class PerspectiveManager {
         associationsPerspective.addRule(new GoPackageToClass());
         associationsPerspective.addRule(new GoClassToAssociatedClass());
 
+        ExplorerPerspective residencePerspective =
+            new ExplorerPerspective("combobox.item.residence-centric");
+        residencePerspective.addRule(new GoProjectToModel());
+        residencePerspective.addRule(new GoModelToNode());
+        residencePerspective.addRule(new GoNodeToResidentComponent());
+        residencePerspective.addRule(new GoComponentToResidentModelElement());
+
         ExplorerPerspective statePerspective =
             new ExplorerPerspective("combobox.item.state-centric");
         statePerspective.addRule(new GoProjectToStateMachine());
@@ -334,6 +344,7 @@ public class PerspectiveManager {
         c.add(diagramPerspective);
         c.add(inheritancePerspective);
         c.add(associationsPerspective);
+        c.add(residencePerspective);
         c.add(statePerspective);
         c.add(transitionsPerspective);
         return c;
@@ -365,6 +376,7 @@ public class PerspectiveManager {
 	 new GoClassToSummary(),
 	 new GoCollaborationToDiagram(),
 	 new GoCollaborationToInteraction(),
+         new GoComponentToResidentModelElement(),
 	 new GoCompositeStateToSubvertex(),
 	 new GoDiagramToEdge(),
 	 new GoDiagramToNode(),
@@ -378,9 +390,11 @@ public class PerspectiveManager {
 	 new GoModelToCollaboration(),
 	 new GoModelToDiagrams(),
 	 new GoModelToElements(),
+         new GoModelToNode(),
 	 new GoNamespaceToClassifierAndPackage(),
 	 new GoNamespaceToDiagram(),
 	 new GoNamespaceToOwnedElements(),
+         new GoNodeToResidentComponent(),
 	 new GoOperationToCollaborationDiagram(),
 	 new GoOperationToCollaboration(),
 	 new GoOperationToSequenceDiagram(),
