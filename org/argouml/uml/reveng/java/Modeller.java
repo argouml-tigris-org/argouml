@@ -760,12 +760,14 @@ public class Modeller
 		mClassifier =
 		    getContext(returnType).get(getClassifierName(returnType));
                 
-        Object mdl = ProjectManager.getManager().getCurrentProject().getModel();
-        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(mOperation);
-		mParameter =
-		    UmlFactory.getFactory().getCore()
-		        .buildParameter(mOperation, mdl, voidType, propertyChangeListeners);
+		Object mdl = ProjectManager.getManager()
+		    .getCurrentProject().getModel();
+		Object voidType = ProjectManager.getManager()
+		    .getCurrentProject().findType("void");
+		Collection propertyChangeListeners = ProjectManager.getManager()
+		    .getCurrentProject().findFigsForMember(mOperation);
+		mParameter = UmlFactory.getFactory().getCore().buildParameter(
+		        mOperation, mdl, voidType, propertyChangeListeners);
 		ModelFacade.setName(mParameter, "return");
 		ModelFacade.setKindToReturn(mParameter);
 
@@ -790,12 +792,14 @@ public class Modeller
 	    try {
                 mClassifier =
 		    getContext(typeName).get(getClassifierName(typeName));
-                Object mdl = ProjectManager.getManager().getCurrentProject().getModel();
-                Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-                Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(mOperation);
-                mParameter =
-		    UmlFactory.getFactory().getCore()
-		        .buildParameter(mOperation, mdl, voidType, propertyChangeListeners);
+                Object mdl = ProjectManager.getManager()
+                    .getCurrentProject().getModel();
+                Object voidType = ProjectManager.getManager()
+                    .getCurrentProject().findType("void");
+                Collection propertyChangeListeners = ProjectManager.getManager()
+                    .getCurrentProject().findFigsForMember(mOperation);
+                mParameter = UmlFactory.getFactory().getCore().buildParameter(
+                        mOperation, mdl, voidType, propertyChangeListeners);
 		ModelFacade.setName(mParameter,
 				    (String) parameter.elementAt(2));
 		ModelFacade.setKindToIn(mParameter);
@@ -1125,12 +1129,15 @@ public class Modeller
         Object mOperation = parseState.getOperation(name);
         if (mOperation == null) {
             Object cls = parseState.getClassifier();
-            Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(cls);
-            Object model = ProjectManager.getManager().getCurrentProject().getModel();
-            Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
+            Collection propertyChangeListeners = ProjectManager.getManager()
+                .getCurrentProject().findFigsForMember(cls);
+            Object mdl = ProjectManager.getManager()
+                .getCurrentProject().getModel();
+            Object voidType = ProjectManager.getManager()
+                .getCurrentProject().findType("void");
             mOperation =
         		UmlFactory.getFactory().getCore().buildOperation(
-                        cls, model, voidType, name, propertyChangeListeners);
+                        cls, mdl, voidType, name, propertyChangeListeners);
 //            Iterator it2 =
 //		  ProjectManager.getManager().getCurrentProject()
 //                .findFigsForMember(parseState.getClassifier()).iterator();
@@ -1195,10 +1202,12 @@ public class Modeller
 	}
         if (mAttribute == null) {
             Object cls = parseState.getClassifier();
-            Collection propertyChangeListeners = 
-                ProjectManager.getManager().getCurrentProject().findFigsForMember(cls);
-            Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
-            Object mdl = ProjectManager.getManager().getCurrentProject().getModel();
+            Collection propertyChangeListeners = ProjectManager.getManager()
+                .getCurrentProject().findFigsForMember(cls);
+            Object intType = ProjectManager.getManager()
+                .getCurrentProject().findType("int");
+            Object mdl = ProjectManager.getManager()
+                .getCurrentProject().getModel();
             mAttribute = UmlFactory.getFactory().getCore()
                 .buildAttribute(cls, mdl, intType, propertyChangeListeners);
             ModelFacade.setName(mAttribute, name);
