@@ -786,11 +786,33 @@ Set the Code Formatter to "Java conventions [built-in]".
 
       <listitem>
 	<para>
+TAB character width is 8.
+</para>
+	<para>
+Displayed tab width: 8
+(under
+Window => Preferences,
+Java => Editor
+Tab Appearance).
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
 New file templates.
 </para>
 
 	<para>
-Set the Code Templates for New Java files to
+Set the Code Templates for Overriding methods (under Comments) to
+<programlisting>
+/**
+ * ${see_to_overridden}
+ */
+</programlisting>
+</para>
+
+	<para>
+Set the Code Templates for New Java files (under Code) to
 <programlisting>
 // &dollar;&dollar;Id&dollar;&dollar;
 // Copyright (c) 2004 The Regents of the University of California. All
@@ -833,21 +855,65 @@ Compliance and classfiles => Compiler compliance level: 1.3.
 </para>
 	<para>
 Suggested settings (only things diverting from the Eclipse Defaults are listed):
-<itemizedlist>
-  <listitem>Style => Possible accidental boolean assignment: Warning.</listitem>
-  <listitem>Advanced => Local variable declaration hides another field or variable: Warning.</listitem>
-  <listitem>Advanced => Field declaration hides another field or variable: Warning.</listitem>
-  <listitem>Unused code => Local variable is never read: Warning.</listitem>
-  <listitem>Unused code => Parameter is never read: Warning.</listitem>
-  <listitem>Unused code => Unused or unread private members: Warning.</listitem>
-  <listitem>Unused code => Unnecessary semicolon: Warning.</listitem>
-  <listitem>Unused code => Unnecessary cast or 'instanceof' operation: Warning.</listitem>
-  <listitem>Unused code => Unnecessary declaration of thrown checked exception: Warning.</listitem>
-  <listitem>Javadoc => Malformed javadoc comments: Warning, Private, Report errors in tags.</listitem>
-  <listitem>Javadoc => Missing javadoc tags: Warning, Protected,</listitem>
-  <listitem>Check overriding and implementing methods.</listitem>
-  <listitem>To be continued...</listitem>
-</itemizedlist>
+          <itemizedlist>
+	    <listitem>
+	      <para>
+Style => Possible accidental boolean assignment: Warning.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Advanced => Local variable declaration hides another field or variable:
+Warning.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Advanced => Field declaration hides another field or variable: Warning.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Unused code => Local variable is never read: Warning.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Unused code => Parameter is never read: Warning.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Unused code => Unused or unread private members: Warning.
+</para>
+</listitem>
+	    <listitem>
+	      <para>
+Unused code => Unnecessary semicolon: Warning.
+</para>
+</listitem>
+	    <listitem>
+	      <para>
+Unused code => Unnecessary cast or 'instanceof' operation: Warning.
+</para>
+</listitem>
+	    <listitem>
+	      <para>
+Unused code => Unnecessary declaration of thrown checked exception: Warning.
+</para>
+</listitem>
+	    <listitem>
+	      <para>
+Javadoc => Malformed javadoc comments: Warning, Private, Report errors in tags.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+Javadoc => Missing javadoc tags: Warning, Protected,
+Check overriding and implementing methods.
+</para>
+	    </listitem>
+	  </itemizedlist>
 </para>
       </listitem>
 
@@ -915,6 +981,20 @@ This is the antlr files and the file containing a version.
 
       <listitem>
 	<para>
+Refresh the project.
+</para>
+	<para>
+This must be done after having built using ant to find the newly created
+java files.
+</para>
+	<para>
+Select the top resource of the project in the Explorer (on the left),
+right click and select <command>Refresh</command>.
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
 Set build path.
 </para>
 
@@ -924,7 +1004,7 @@ Enter Java Build Path (under Project => Properties).
 
 	<para>
 Under source:
-Remove <filename class="directory">argouml/src</filename>.
+Remove everything.
 Add <filename class="directory">argouml/src_new</filename>.
 </para>
 	<para>
