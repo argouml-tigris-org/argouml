@@ -90,6 +90,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   new JRadioButton("Rooted at Pane Two Selection");
   protected ButtonGroup   _paneThreeGroup = new ButtonGroup();
 
+  NavigatorPane _navPane;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -97,8 +98,10 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   /**
    * Constructor, initializes all GUI components.
    */
-  public NavigatorConfigDialog(Frame parent) {
+  public NavigatorConfigDialog(Frame parent, NavigatorPane navPane) {
+      
     super(parent, "Configure Perspectives", false);
+    _navPane = navPane;
     int x = parent.getLocation().x + (parent.getSize().width - WIDTH) / 2;
     int y = parent.getLocation().y + (parent.getSize().height - HEIGHT) / 2;
     setLocation(x, y);
@@ -132,7 +135,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
    * Initialize the Perspectives tab panel.
    */
   public void initPersPanel() {
-    _persList.setListData(Converter.convert(NavPerspective.getRegisteredPerspectives()));
+    _persList.setListData(Converter.convert(_navPane.buildPerspectives()));
     _ruleLibList.setListData(new Vector());
     _rulesList.setListData(new Vector());
 
@@ -303,9 +306,9 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
    */
   public void doNewPers() {
     NavPerspective newPers = new NavPerspective("New Perspective " +
-      (NavPerspective.getRegisteredPerspectives().size() + 1));
-    NavPerspective.registerPerspective(newPers);
-    _persList.setListData(Converter.convert(NavPerspective.getRegisteredPerspectives()));
+      (_navPane.buildPerspectives().size() + 1));
+    _navPane.addPerspective(newPers);
+    _persList.setListData(Converter.convert(_navPane.buildPerspectives()));
     _persList.setSelectedValue(newPers, true);
   }
 
@@ -326,27 +329,30 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
       "Are you sure?",
       JOptionPane.YES_NO_OPTION);
     if (response == JOptionPane.YES_OPTION) {
-      NavPerspective.unregisterPerspective(np);
+      _navPane.removePerspective(np);
 
       // Remove it from the UI list
-      _persList.setListData(Converter.convert(NavPerspective.getRegisteredPerspectives()));
+      _persList.setListData(Converter.convert(_navPane.buildPerspectives()));
     }
   }
 
+  /**
+   * not currently supported.
+   */
   public void doDupPers() {
     Object sel = _persList.getSelectedValue();
     if (!(sel instanceof NavPerspective)) {
       cat.warn("doDupPers: unexepected non-NavPerspective");
       return;
     }
-    NavPerspective np = (NavPerspective) sel;
-    try {
-      NavPerspective newNP = (NavPerspective) np.clone();
-      NavPerspective.unregisterPerspective(newNP);
-    }
-    catch (CloneNotSupportedException cnse) {
-        cat.error("exception while cloning NavPerspective", cnse);
-    }
+    //NavPerspective np = (NavPerspective) sel;
+    //try {
+    //  NavPerspective newNP = (NavPerspective) np.clone();
+    //  NavPerspective.unregisterPerspective(newNP);
+    //}
+    //catch (CloneNotSupportedException cnse) {
+    //    cat.error("exception while cloning NavPerspective", cnse);
+    //}
   }
 
   public void doAddRule() {
@@ -411,7 +417,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   public void doOk() {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
-    np.setPerspectives(NavPerspective.getRegisteredPerspectives());
+    //np.setPerspectives(NavPerspective.getRegisteredPerspectives());
     np.updateTree();
     setVisible(false);
     dispose();
@@ -463,12 +469,10 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
    * For testing the dialog.
    * Displays the dialog without needing to load the application.
    */
-  public static void main(String[] args) {
-    NavigatorConfigDialog dialog = new NavigatorConfigDialog( JOptionPane.getRootFrame() );
-    dialog.setLocation(0,0);
-    dialog.setVisible(true);
-  }
+  //public static void main(String[] args) {
+  //  NavigatorConfigDialog dialog = new NavigatorConfigDialog( JOptionPane.getRootFrame(), _navPane );
+  //  dialog.setLocation(0,0);
+  //  dialog.setVisible(true);
+  //}
 
 }
-
-
