@@ -44,30 +44,49 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  */
 public class UMLComboBoxNavigator extends JPanel implements ActionListener {
 
+    private static ImageIcon _icon =
+        ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(
+            "ComboNav");
+    private UMLUserInterfaceContainer _container;
+    private JComboBox _box;
+    private JButton _button;
 
-  private static ImageIcon _icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("ComboNav");
-  private UMLUserInterfaceContainer _container;
-  private JComboBox _box;
-
-
-   /**
-    *  Constructor
-    *  @param container Container, typically a PropPanel
-    *  @param tooltip Tooltip key for button
-    *  @param box Associated combo box
-    */
-    public UMLComboBoxNavigator(UMLUserInterfaceContainer container,
+    /**
+     *  Constructor
+     *  @param container Container, typically a PropPanel
+     *  @param tooltip Tooltip key for button
+     *  @param box Associated combo box
+     */
+    public UMLComboBoxNavigator(
+        UMLUserInterfaceContainer container,
         String tooltip,
         JComboBox box) {
         super(new BorderLayout());
-        JButton button = new JButton(_icon);
+        _button = new JButton(_icon);
         _container = container;
         _box = box;
-        button.setPreferredSize(new Dimension(_icon.getIconWidth()+6,_icon.getIconHeight()+6));
-        button.setToolTipText(container.localize(tooltip));
-        button.addActionListener(this);
-        add(box,BorderLayout.CENTER);
-        add(button,BorderLayout.EAST);
+        _button.setPreferredSize(
+            new Dimension(_icon.getIconWidth() + 6, _icon.getIconHeight() + 6));
+        _button.setToolTipText(container.localize(tooltip));
+        _button.addActionListener(this);
+        box.addActionListener(this);
+        add(_box, BorderLayout.CENTER);
+        add(_button, BorderLayout.EAST);
+        Object item = _box.getSelectedItem();
+        if (item instanceof UMLComboBoxEntry) {
+            UMLComboBoxEntry entry = (UMLComboBoxEntry) item;
+            if (!entry.isPhantom()) {
+                MModelElement target = entry.getElement(null);
+                if (target != null) {
+                    _button.setEnabled(true);
+                } else
+                    _button.setEnabled(false);
+            }
+        } else
+            if (item != null) 
+                _button.setEnabled(true);
+            else
+                _button.setEnabled(false);
     }
 
     /**
@@ -75,17 +94,38 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener {
      *  selected item in the combo box
      */
     public void actionPerformed(final java.awt.event.ActionEvent event) {
-        Object item = _box.getSelectedItem();
-        if(item instanceof UMLComboBoxEntry) {
-            UMLComboBoxEntry entry = (UMLComboBoxEntry) item;
-            if(!entry.isPhantom()) {
-                MModelElement target = entry.getElement(null);
-                if(target != null) {
-                    _container.navigateTo(target);
+        // button action:
+        if (event.getSource() == _button) {
+            Object item = _box.getSelectedItem();
+            if (item instanceof UMLComboBoxEntry) {
+                UMLComboBoxEntry entry = (UMLComboBoxEntry) item;
+                if (!entry.isPhantom()) {
+                    MModelElement target = entry.getElement(null);
+                    if (target != null) {
+                        _container.navigateTo(target);
+                    }
                 }
-            }
-        } else
-            _container.navigateTo(item);
-    }
+            } else
+                if (item != null)
+                    _container.navigateTo(item);
+        }
+        if (event.getSource() == _box) {
+            Object item = _box.getSelectedItem();
+            if (item instanceof UMLComboBoxEntry) {
+                UMLComboBoxEntry entry = (UMLComboBoxEntry) item;
+                if (!entry.isPhantom()) {
+                    MModelElement target = entry.getElement(null);
+                    if (target != null) {
+                        _button.setEnabled(true);
+                    } else
+                        _button.setEnabled(false);
+                }
+            } else
+                if (item != null)
+                    _button.setEnabled(true);
+                else
+                    _button.setEnabled(false);
+        }
 
+    }
 }
