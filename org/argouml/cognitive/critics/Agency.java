@@ -166,7 +166,7 @@ public class Agency extends Observable { //implements java.io.Serialization
         }
         critics.addElement(cr);
         notifyStaticObservers(cr);
-        System.out.println("Registered: " + critics.toString());
+        cat.debug("Registered: " + critics.toString());
         _cachedCritics.remove(clazz);
         addCritic(cr);
     }
