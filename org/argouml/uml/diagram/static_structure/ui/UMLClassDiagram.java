@@ -156,17 +156,7 @@ public class UMLClassDiagram extends UMLDiagram {
         _toolBar.add(_actionPackage);
         _toolBar.add(_actionClass);
 
-        //_toolBar.add(_actionAssociation);
-
-        // TODO Bob Tarling 22 Feb 2003: I should be able to get this working in time
-        // Bobs nasty hack. The PopupToolBoxButton class does not currently work for Windows
-        // look and feel so use the older less pretty style popup instead.
-        if (LookAndFeelMgr.SINGLETON.determineLookAndFeel().equals(LookAndFeelMgr.WINDOWS_PLAF)) {
-            JButton associationButton = _toolBar.add(_actionAssociation);
-            _toolBar.add(buildUglyAssociationPopup(associationButton));
-        } else {
-            _toolBar.add(buildAssociationPopup());
-        }
+        _toolBar.add(buildAssociationPopup());
 
         _toolBar.add(_actionDepend);
         _toolBar.add(_actionPermission);
@@ -190,14 +180,8 @@ public class UMLClassDiagram extends UMLDiagram {
         _toolBar.add(ActionAddNote.SINGLETON);
         _toolBar.addSeparator();
 
-        _toolBar.add(_actionRectangle);
-        _toolBar.add(_actionRRectangle);
-        _toolBar.add(_actionCircle);
-        _toolBar.add(_actionLine);
-        _toolBar.add(_actionText);
-        _toolBar.add(_actionPoly);
-        _toolBar.add(_actionSpline);
-        _toolBar.add(_actionInk);
+        _toolBar.add(buildShapePopup());
+
         _toolBar.addSeparator();
 
         _toolBar.add(_diagramName.getJComponent());
@@ -214,19 +198,17 @@ public class UMLClassDiagram extends UMLDiagram {
         return toolBox;
     }
 
-    private UglyToolBox buildUglyAssociationPopup(JButton associationButton) {
-        ImageIcon dropDownIcon =
-            ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("DropDown", "DropDown");
-
-        UglyToolBox dropDownToolBox = new UglyToolBox(dropDownIcon, associationButton, 0, 2);
-        dropDownToolBox.add(_actionAssociation);
-        dropDownToolBox.add(_actionUniAssociation);
-        dropDownToolBox.add(_actionAggregation);
-        dropDownToolBox.add(_actionUniAggregation);
-        dropDownToolBox.add(_actionComposition);
-        dropDownToolBox.add(_actionUniComposition);
-        return dropDownToolBox;
+    // TODO - add to ancestor (Bob)
+    private PopupToolBoxButton buildShapePopup() {
+        PopupToolBoxButton toolBox = new PopupToolBoxButton(_actionRectangle, 0, 2);
+        toolBox.add(_actionRectangle);
+        toolBox.add(_actionRRectangle);
+        toolBox.add(_actionCircle);
+        toolBox.add(_actionLine);
+        toolBox.add(_actionText);
+        toolBox.add(_actionPoly);
+        toolBox.add(_actionSpline);
+        toolBox.add(_actionInk);
+        return toolBox;
     }
-
-
 } /* end class UMLClassDiagram */
