@@ -87,7 +87,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
                     getTitleLabel().setText("Join State");
             if (ModelFacade.equalsPseudostateKind(kind,
                     ModelFacade.BRANCH_PSEUDOSTATEKIND))
-                    getTitleLabel().setText("Branch State");
+                    getTitleLabel().setText("Choice State");
             if (ModelFacade.equalsPseudostateKind(kind,
                     ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND))
                     getTitleLabel().setText("Deep History State");
