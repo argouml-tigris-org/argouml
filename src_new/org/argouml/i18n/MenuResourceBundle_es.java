@@ -55,8 +55,6 @@ public class MenuResourceBundle_es extends ListResourceBundle {
         {"action.new", "Nuevo" },
         {"action.open-project", "Abrir proyecto..." },
         {"action.save-project", "Guardar proyecto" },
-        {"Load model from DB", "Cargar modelo de la BD" },
-        {"Store model to DB", "Guardar modelo en la BD" },
         {"action.save-project-as", "Guardar proyecto como..." },
         {"action.import-sources", "Importar fuentes..." },
         {"Import", "Importar" },

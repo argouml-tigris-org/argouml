@@ -43,8 +43,6 @@ public class MenuResourceBundle_fr extends ListResourceBundle {
         {"action.new", "Nouveau" },
         {"action.open-project", "Ouvrir un Projet..." },
         {"action.save-project", "Enregistrer le Projet" },
-        {"Load model from DB", "Charger un mod\u00e8le depuis la BD" },
-        {"Store model to DB", "Stocker un mod\u00e8le en BD" },
         {"action.save-project-as", "Enregistrer le Projet Sous..." },
         {"action.import-sources", "Importer depuis les sources..."},
         {"Import", "Importer"},

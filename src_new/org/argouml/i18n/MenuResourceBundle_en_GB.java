@@ -43,8 +43,6 @@ public class MenuResourceBundle_en_GB extends ListResourceBundle {
         {"action.new", "New" },
         {"action.open-project", "Open Project..." },
         {"action.save-project", "Save Project" },
-        {"Load model from DB", "Load Model from DB" },
-        {"Store model to DB", "Store Model to DB" },
         {"action.save-project-as", "Save Project As..." },
         {"action.print", "Print..." },
         {"Save GIF...", "Save GIF..." },
