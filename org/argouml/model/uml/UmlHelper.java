@@ -75,8 +75,10 @@ public class UmlHelper {
      */
     protected void addListenersToMBase(MBase mbase) {
         // UmlModelEventPump.getPump().removeModelEventListener(UmlModelListener.getInstance(), mbase);
-        UmlModelEventPump.getPump().addModelEventListener(UmlModelListener.getInstance(), mbase);
-	Collection elements = mbase.getModelElementContents();
+        // UmlModelEventPump.getPump().addModelEventListener(UmlModelListener.getInstance(), mbase);
+	mbase.addMElementListener(UmlModelListener.getInstance());
+    mbase.addMElementListener(UmlModelEventPump.getPump());
+    Collection elements = mbase.getModelElementContents();
 	if (elements != null) {
 	    Iterator iterator = elements.iterator();
 	    while(iterator.hasNext()) {
