@@ -166,6 +166,11 @@ public abstract class PropPanel
      * @param button the button to be added to the button panel
      */
     protected void addButton(Component button) {
+        // TODO: (MVW) The next line works! 
+        // Add it when we require Java 1.4, 
+        // and stop supporting earlier versions... 
+        // I do not find a way to do this for Java 1.3.  :(
+        //button.setFocusable(false); //MVW
         buttonPanel.add(button);
     }
     
@@ -331,7 +336,6 @@ public abstract class PropPanel
      *             This will change visibility from release 0.16
      * @param t  The object to be set as a target.
      */
-
     public void setTarget(Object t) {
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
 
@@ -529,14 +533,6 @@ public abstract class PropPanel
     public String formatCollection(Iterator iter) {
         Object namespace = getDisplayNamespace();
         return getProfile().formatCollection(iter, namespace);
-    }
-
-    /**
-     * @deprecated As of ArgoUml version 0.13.5, replaced by
-     * {@link TargetManager#navigateBackward()}.
-     */
-    public void navigateBackAction() {
-        TargetManager.getInstance().navigateBackward();
     }
 
     /**
