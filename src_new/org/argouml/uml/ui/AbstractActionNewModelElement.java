@@ -26,7 +26,6 @@
 package org.argouml.uml.ui;
 
 import org.argouml.application.api.Argo;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 3, 2002
@@ -53,7 +52,7 @@ public abstract class AbstractActionNewModelElement extends UMLChangeAction {
      * @param target The target to set
      */
     public void setTarget(Object target) {
-        _target = (MModelElement) target;
+        _target = target;
     }
        
 }
