@@ -30,12 +30,11 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
+import org.argouml.model.ModelFacade;
 
 public class CrNoGuard extends CrUML {
 
@@ -47,13 +46,14 @@ public class CrNoGuard extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MTransition)) return NO_PROBLEM;
-    MTransition tr = (MTransition) dm;
-    MStateVertex sv = tr.getSource();
-    if (!(sv instanceof MPseudostate)) return NO_PROBLEM;
-    MPseudostate ps = (MPseudostate) sv;
-    if (!MPseudostateKind.BRANCH.equals(ps.getKind())) return NO_PROBLEM;
-    MGuard g = tr.getGuard();
+    if (!(ModelFacade.isATransition(dm))) return NO_PROBLEM;
+    Object sv = ModelFacade.getSource(dm);
+    if (!(ModelFacade.isAPseudostate(sv))) return NO_PROBLEM;
+    if (!ModelFacade.
+        equalsPseudostateKind(ModelFacade.getPseudostateKind(sv),
+                              ModelFacade.BRANCH_PSEUDOSTATEKIND))
+        return NO_PROBLEM;
+    MGuard g = (MGuard) ModelFacade.getGuard(dm);
     boolean noGuard = (g == null || g.getExpression() == null ||
 			g.getExpression().getBody() == null ||
 			g.getExpression().getBody() == null ||

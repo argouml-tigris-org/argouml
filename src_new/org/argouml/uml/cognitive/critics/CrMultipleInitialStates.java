@@ -30,76 +30,87 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-
+import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.*;
 
-import org.apache.log4j.Category;
-import org.argouml.cognitive.*;
+import org.apache.log4j.Category;import org.argouml.cognitive.*;
 
 /** A critic to detect when a state has no outgoing transitions. */
 
-public class CrMultipleInitialStates extends CrUML {
-    protected static Category cat = Category.getInstance(CrMultipleInitialStates.class);
+public class CrMultipleInitialStates extends CrUML {    
 
-  public CrMultipleInitialStates() {
-    setHeadline("Remove Extra Initial States");
-    addSupportedDecision(CrUML.decSTATE_MACHINES);
-    addTrigger("parent");
-    addTrigger("kind");
-  }
+    protected static Category cat = 
+        Category.getInstance(CrMultipleInitialStates.class);
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MPseudostate)) return NO_PROBLEM;
-    MPseudostate ps = (MPseudostate) dm;
-    if (ps.getKind() != MPseudostateKind.INITIAL) return NO_PROBLEM;
-    MCompositeState cs = ps.getContainer();
-    if (cs == null) { cat.debug("null parent state"); return NO_PROBLEM; }
-    Collection peers = cs.getSubvertices();
-    int initialStateCount = 0;
-    int size = peers.size();
-    for (Iterator iter = peers.iterator(); iter.hasNext();) {
-      Object sv = iter.next();
-      if (sv instanceof MPseudostate &&
-	  (MPseudostateKind.INITIAL.equals(((MPseudostate)sv).getKind())))
-	initialStateCount++;
+    public CrMultipleInitialStates() {
+        setHeadline("Remove Extra Initial States");
+        addSupportedDecision(CrUML.decSTATE_MACHINES);
+        addTrigger("parent");
+        addTrigger("kind");
     }
-    if (initialStateCount > 1) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
 
-  public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    MPseudostate ps = (MPseudostate) dm;
-    VectorSet offs = computeOffenders(ps);
-    return new ToDoItem(this, offs, dsgr);
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+        if (!(ModelFacade.isAPseudostate(dm))) return NO_PROBLEM;
+        Object k = ModelFacade.getPseudostateKind(dm);
+        if (!ModelFacade.
+            equalsPseudostateKind(k,
+                              ModelFacade.INITIAL_PSEUDOSTATEKIND))
+        return NO_PROBLEM;
 
-  protected VectorSet computeOffenders(MPseudostate ps) {
-    VectorSet offs = new VectorSet(ps);
-    MCompositeState cs = ps.getContainer();
-    if (cs == null) { cat.debug("null parent in still valid"); return offs; }
-    Collection peers = cs.getSubvertices();
-    for (Iterator iter = peers.iterator(); iter.hasNext();) {
-      Object sv = iter.next();
-      if (sv instanceof MPseudostate &&
-	  ((MPseudostate)sv).getKind().equals(MPseudostateKind.INITIAL))
-	offs.addElement(sv);
+        // container state / composite state
+        Object cs = ModelFacade.getContainer(dm);
+        if (cs == null) { 
+            cat.debug("null parent state"); 
+            return NO_PROBLEM; 
+        }
+        Collection peers = ModelFacade.getSubvertices(cs);
+        int initialStateCount = 0;
+        int size = peers.size();
+        for (Iterator iter = peers.iterator(); iter.hasNext();) {
+            Object sv = iter.next();
+            if (ModelFacade.isAPseudostate(sv) &&
+                ModelFacade.
+                equalsPseudostateKind(ModelFacade.getPseudostateKind(sv), 
+                                      ModelFacade.INITIAL_PSEUDOSTATEKIND))
+                initialStateCount++;
+        }
+        if (initialStateCount > 1) return PROBLEM_FOUND;
+        return NO_PROBLEM;
     }
-    return offs;
-  }
 
-  public boolean stillValid(ToDoItem i, Designer dsgr) {
-    if (!isActive()) return false;
-    VectorSet offs = i.getOffenders();
-    MPseudostate dm = (MPseudostate) offs.firstElement();
-    //if (!predicate(dm, dsgr)) return false;
-    VectorSet newOffs = computeOffenders(dm);
-    boolean res = offs.equals(newOffs);
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+        VectorSet offs = computeOffenders(dm);
+        return new ToDoItem(this, offs, dsgr);
+    }
 
-    return res;
-  }
+    protected VectorSet computeOffenders(Object ps) {
+        VectorSet offs = new VectorSet(ps);
+        Object cs = ModelFacade.getContainer(ps);
+        if (cs == null) { 
+            cat.debug("null parent in still valid"); 
+            return offs; }
+        Collection peers = ModelFacade.getSubvertices(cs);
+
+        for (Iterator iter = peers.iterator(); iter.hasNext();) {
+            Object sv = iter.next();
+            if (ModelFacade.isAPseudostate(sv) &&
+                ModelFacade.
+                equalsPseudostateKind(ModelFacade.getPseudostateKind(sv), 
+                                      ModelFacade.INITIAL_PSEUDOSTATEKIND))
+                offs.addElement(sv);
+        }
+
+        return offs;
+    }
+
+    public boolean stillValid(ToDoItem i, Designer dsgr) {
+        if (!isActive()) return false;
+        VectorSet offs = i.getOffenders();
+        Object dm = offs.firstElement();
+        VectorSet newOffs = computeOffenders(dm);
+        boolean res = offs.equals(newOffs);
+        return res;
+    }
 
 } /* end class CrMultipleInitialStates */
 

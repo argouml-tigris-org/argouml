@@ -30,11 +30,8 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-
 import org.argouml.cognitive.*;
+import org.argouml.model.ModelFacade;
 
 /** A critic to detect when a Branch state has the wrong number of
  *  transitions.  Implements constraint [6] on MPseudostate in the UML
@@ -49,12 +46,14 @@ public class CrInvalidBranch extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MPseudostate)) return NO_PROBLEM;
-    MPseudostate ps = (MPseudostate) dm;
-    MPseudostateKind k = ps.getKind();
-    if (!MPseudostateKind.BRANCH.equals(k)) return NO_PROBLEM;
-    Collection outgoing = ps.getOutgoings();
-    Collection incoming = ps.getIncomings();
+    if (!(ModelFacade.isAPseudostate(dm))) return NO_PROBLEM;
+    Object k = ModelFacade.getPseudostateKind(dm);
+    if (!ModelFacade.
+        equalsPseudostateKind(k,
+                              ModelFacade.BRANCH_PSEUDOSTATEKIND))
+        return NO_PROBLEM;
+    Collection outgoing = ModelFacade.getOutgoings(dm);
+    Collection incoming = ModelFacade.getIncomings(dm);
     int nOutgoing = outgoing == null ? 0 : outgoing.size();
     int nIncoming = incoming == null ? 0 : incoming.size();
     if (nIncoming > 1) return PROBLEM_FOUND;
