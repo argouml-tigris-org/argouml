@@ -1803,11 +1803,22 @@ locked to the closest release to where they were found.
 </para>
               </listitem>
 	      <listitem id="reopen_remind_and_later">
-		<para>Other stuff.</para>
+		<para>Reopen RESOLVED/REMIND</para>
 		<para>
 This can also be a good time to change all 
-RESOLVED/REMIND and RESOLVED/LATER.
+RESOLVED/REMIND.
 Search for them and Reopen them.
+</para>
+	      </listitem>
+	      <listitem id="check_for_later">
+		<para>Check RESOLVED/LATER</para>
+		<para>
+It could also be good to check that all
+RESOLVED/LATER has a valid target milstone (must be an upcoming milestone).
+Search for them and Reopen the ones that havn't.
+Also, if the milestone denotes or is going to be resolved in
+the upcoming release, Reopen them with a comment that they are now
+active.
 </para>
 	      </listitem>
 	    </orderedlist>

@@ -33,6 +33,22 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2004-09-16</entry>
+          <entry>
+Changed the meaning of RESOLVED/LATER.
+(See 
+<xref linkend="issuezilla_release_maintenance"/> 
+<xref linkend="reopen_remind_and_later"/> and
+<xref linkend="check_for_later"/> in
+<xref linkend="release_process"/>, and
+<xref linkend="issuezilla_resolutions"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2004-09-15</entry>
           <entry>
 Change to design of new module loader.

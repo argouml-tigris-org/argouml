@@ -129,8 +129,24 @@ Missing javadoc.
         </indexterm>
         <para>
 <itemizedlist>
+	  <listitem>
+	    <para>LATER</para>
+	    <para>
+Used to denote that a certain issue cannot be resolved until
+some special upcoming and planned-for event has happened.
+The event in question is noted in the target milestone.
+</para>
+	    <para>
+Events can be things like, dropping support for a jdk version,
+changing the version of UML that we support, or
+replacing some central mechanism within ArgoUML.
+Once they have a target milestone registered,
+they are considered events.
+</para>
+	  </listitem>
+
             <listitem>
-              <para>LATER and REMIND</para>
+              <para>REMIND</para>
               <para>
 Not used.
 </para>
@@ -169,7 +185,7 @@ RESOLVED for the first group and
 VERIFIED for the third group.
 </para>
 	      <para>
-The RESOLVED/LATER and RESOLVED/REMIND does not fit this.
+The RESOLVED/REMIND does not fit this.
 They risk to be verified because the rest of our process urges
 people to resolve issues that are RESOLVED
 in which case they are probably lost.
@@ -188,7 +204,6 @@ To amend this we have made two things:
 <orderedlist>
 		  <listitem>
 		    <para>Decided that we don't use the
-RESOLVED/LATER and 
 RESOLVED/REMIND
 states.
 </para>
@@ -217,6 +232,18 @@ will pursue it, and your time plan.
 If you don't plan to solve this now,
 leave it in the "up for grabs"-pile (as not resolved).
 Somebody else might want to work with it.
+</para>
+	      <para>
+If you know that an issue cannot be resolved now because it requires
+that another issue is solved before,
+register the other issue as "depends on" and leave the issue in the 
+"up for grabs"-pile (as not resolved).
+</para>
+	      <para>
+If you know that an issue cannot be resolved now because it requires
+some big event to take place,
+put the milestone for that event in the target milestone and
+resolve the issue as RESOLVED/LATER.
 </para>
 	    </sidebar>
             </listitem>
