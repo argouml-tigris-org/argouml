@@ -61,16 +61,6 @@ public class MultiEditorPane
     implements ChangeListener, MouseListener, QuadrantPanel {
     protected static Category cat = Category.getInstance(MultiEditorPane.class);
 
-    protected class DiagramFigDeleter {
-        Fig fig = null;
-        Diagram diagram = null;
-        public DiagramFigDeleter(Fig fig, Diagram diagram) {
-            this.diagram = diagram;
-            this.fig = fig;
-        }
-
-    }
-
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -296,7 +286,6 @@ public class MultiEditorPane
                     Diagram diagram = (Diagram) it.next();
                     Fig aFig = diagram.presentationFor(obj);
                     if (aFig != null) {
-                        // figsToRemove.add(new DiagramFigDeleter(aFig, diagram));
                         tabDia.getJGraph().setDiagram(diagram);
                         if (aFig.getOwner() == obj) {
                             aFig.delete();

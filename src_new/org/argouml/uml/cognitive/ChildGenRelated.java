@@ -55,10 +55,7 @@ public class ChildGenRelated implements ChildGenerator {
 		if (o instanceof MPackage) {
 			Collection ownedElements = ((MPackage)o).getOwnedElements();
 			if (ownedElements != null)
-		 
-				//Enum is not used in Argo, why is it there?
-				//return new Enum(ownedElements.elements(), EOElement.SINGLETON);
-			return null;
+			    return null;
 		}
 		
 		if (o instanceof MClassifier) {
@@ -131,12 +128,3 @@ public class ChildGenRelated implements ChildGenerator {
 		return res.elements();
 	}
 } /* end class ChildGenRelated */
-
-
-class EOElement implements Functor {
-	public static EOElement SINGLETON = new EOElement();
-	public Object apply(Object x) {
-		if (!(x instanceof MElementImport)) return x;
-		return ((MElementImport)x).getModelElement();
-	}
-} /* end class EOElement */
