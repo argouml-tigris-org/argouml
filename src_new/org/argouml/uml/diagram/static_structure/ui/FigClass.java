@@ -803,6 +803,7 @@ public class FigClass extends FigNodeModelElement {
                 rect.y += STEREOHEIGHT;
                 rect.height -= STEREOHEIGHT;
                 setBounds(rect.x, rect.y, rect.width, rect.height);
+                calcBounds();
             }
         } else {
             _stereo.setText(Notation.generateStereotype(this, stereo));
@@ -820,6 +821,7 @@ public class FigClass extends FigNodeModelElement {
                     rect.y -= STEREOHEIGHT;
                     rect.height += STEREOHEIGHT;
                     setBounds(rect.x, rect.y, rect.width, rect.height);
+                    calcBounds();
                 }
 
             }
@@ -1109,10 +1111,14 @@ public class FigClass extends FigNodeModelElement {
                 //cleanup of unused attribute FigText's
                 for (int i = figs.size() - 1; i >= acounter; i--)
                     _attrVec.removeFig((Fig) figs.elementAt(i));
-            }
-            // getUpdatedSize(_attrVec, xpos, ypos, 0, 0);
+            }            
         }
-        updateBounds();
+        Rectangle rect = getBounds();
+        getUpdatedSize(_attrVec, xpos, ypos, 0, 0);
+        // ouch ugly but that's for a next refactoring
+        // TODO make setBounds, calcBounds and updateBounds consistent
+        setBounds(rect.x, rect.y, rect.width, rect.height);
+        damage();
     }
 
     /**
@@ -1171,10 +1177,14 @@ public class FigClass extends FigNodeModelElement {
                 //cleanup of unused operation FigText's
                 for (int i = figs.size() - 1; i >= ocounter; i--)
                     _operVec.removeFig((Fig) figs.elementAt(i));
-            }
-            updateBounds();
+            }            
         }
-
+        Rectangle rect = getBounds();
+        getUpdatedSize(_operVec, xpos, ypos, 0, 0);
+        // ouch ugly but that's for a next refactoring
+        // TODO make setBounds, calcBounds and updateBounds consistent
+        setBounds(rect.x, rect.y, rect.width, rect.height);
+        damage();
     }
 
     /**
@@ -1190,6 +1200,7 @@ public class FigClass extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
+        Rectangle rect = getBounds();
         super.updateNameText();
         if (getOwner() == null) return;
         MClass cls = (MClass)getOwner();
@@ -1197,7 +1208,7 @@ public class FigClass extends FigNodeModelElement {
             _name.setFont(ITALIC_LABEL_FONT);
         else
             _name.setFont(LABEL_FONT);
-        
+        setBounds(rect.x, rect.y, rect.width, rect.height);       
     }
 
 

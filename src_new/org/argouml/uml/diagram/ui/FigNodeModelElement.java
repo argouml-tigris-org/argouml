@@ -569,11 +569,11 @@ public abstract class FigNodeModelElement
         MModelElement me = (MModelElement) getOwner();
         if (me == null)
             return;
-        if (mee == null || mee.getName() == "name" && mee.getSource() == this) {
+        if (mee == null || mee.getName() == "name" && mee.getSource() == getOwner()) {
             updateNameText();
             damage();
         }
-        if (mee == null || mee.getSource() instanceof MStereotype) {
+        if (mee == null || (mee.getSource() == getOwner() && mee.getName().equals("stereotype"))) {
             updateStereotypeText();
             damage();
         }
