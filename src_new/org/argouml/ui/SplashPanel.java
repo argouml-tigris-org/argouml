@@ -41,7 +41,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 
 class SplashPanel extends JPanel {
 
-    ImageIcon splashImage = null;
+    private ImageIcon splashImage = null;
     public SplashPanel(String iconName) {
 	super();
 	splashImage =
