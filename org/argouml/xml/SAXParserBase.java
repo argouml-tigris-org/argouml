@@ -78,19 +78,22 @@ public abstract class SAXParserBase extends HandlerBase {
   // main parsing method
 
   public void parse(URL url) throws Exception {
+      parse(url.openStream());
+  }
+
+  public void parse(InputStream is) throws Exception {
+
     long start, end;
-//    String parserName = System.getProperty("org.xml.sax.parser");
-//    if (parserName == null) parserName = "com.ibm.xml.parsers.SAXParser";
-//    if (_dbg || _verbose)
-//      System.out.println("NOTE: using parser class: " + parserName);
-//    Parser parser = ParserFactory.makeParser(parserName);
+
     SAXParserFactory factory = SAXParserFactory.newInstance();
     factory.setNamespaceAware(false);
     factory.setValidating(false);
     try {
       SAXParser parser = factory.newSAXParser();
-      InputSource input = new InputSource(url.openStream());
-      input.setSystemId(url.toString());
+      InputSource input = new InputSource(is);
+
+      // what is this for?
+      // input.setSystemId(url.toString());
       start = System.currentTimeMillis();
       parser.parse(input,this);
       end = System.currentTimeMillis();

@@ -31,6 +31,9 @@ public class FileFilters {
   public static final SuffixFilter ArgoFilter = new
   SuffixFilter("argo", "Argo project file");
 
+  public static final SuffixFilter ZArgoFilter = new
+  SuffixFilter("zargo", "Zipped Argo Project");
+
   public static final SuffixFilter XMIFilter = new
   SuffixFilter("xmi", "XML Metadata Interchange");
 

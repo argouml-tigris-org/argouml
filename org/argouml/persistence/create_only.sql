@@ -2,6 +2,16 @@
 #----------------
 # data types
 #----------------
+
+# IMPORTANT:
+# all the REFERENCES are wrong, the field name should always be
+# "uuid"
+# and not
+# "XxxId"!
+# when ever anyone wants to include these REFERENCES, make sure you fix this.
+#
+
+
 CREATE TABLE tAggregationKind(
     uuid VARCHAR(50) NOT NULL,
     PRIMARY KEY(uuid)); 
@@ -172,7 +182,8 @@ CREATE TABLE tModelElement(
     name VARCHAR(100),
     namespace INTEGER(5), # REFERENCES tNamespace(NamespaceId),
     stereotype INTEGER(5), # REFERENCES tStereotype(StereotypeId),
-    PackageId INTEGER(5)); # REFERENCES tPackage(PackageId));
+    PackageId INTEGER(5)); # REFERENCES tPackage(PackageId),
+    UMLClassName VARCHAR(100));
 
 CREATE TABLE tAssociation(
     uuid VARCHAR(50) NOT NULL,

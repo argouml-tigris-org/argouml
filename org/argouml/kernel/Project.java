@@ -25,8 +25,11 @@ package org.argouml.kernel;
 
 import java.io.*;
 import java.util.*;
+import java.util.zip.*;
 import java.beans.*;
 import java.net.*;
+
+import org.xml.sax.InputSource;
 
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -178,7 +181,33 @@ public class Project implements java.io.Serializable {
             catch (PropertyVetoException pve) { }
             org.argouml.application.Main.addPostLoadAction(new ResetStatsLater());
         }
-        else {
+	
+        else if(suffix.equals(".zargo")) {
+	    try {
+		ZipInputStream zis = new ZipInputStream(url.openStream());
+		
+		// first read the .argo file from Zip
+		String name = zis.getNextEntry().getName();
+		while(!name.endsWith(".argo")) {
+		    name = zis.getNextEntry().getName();
+		}
+		
+		// the "false" means that members should not be added,
+		// we want to do this by hand from the zipped stream.
+		ArgoParser.SINGLETON.readProject(zis,false);
+		p = ArgoParser.SINGLETON.getProject();
+		
+		zis.close();
+	    } catch (Exception e) {
+		System.out.println("Oops, something went wrong in Project.loadProject "+e );
+		e.printStackTrace();
+	    }
+	    
+	    p.loadZippedProjectMembers(url);
+	    p.postLoad();
+	}
+	
+	else {
             ArgoParser.SINGLETON.readProject(url);
             p = ArgoParser.SINGLETON.getProject();
             p.loadAllMembers();
@@ -186,6 +215,55 @@ public class Project implements java.io.Serializable {
         }
         return p;
   }
+    
+    public void loadZippedProjectMembers(URL url) {
+
+	try {
+	    ZipInputStream zis = new ZipInputStream(url.openStream());
+
+
+	    // first load the Model
+	    String name = zis.getNextEntry().getName();
+	    while(!name.endsWith(".xmi")) {
+		name = zis.getNextEntry().getName();
+	    }
+
+	    System.out.println("Loading Model from "+url);
+
+	    XMIReader xmiReader = new XMIReader();
+	    MModel mmodel = xmiReader.parse(new InputSource(zis));
+	    addMember(mmodel);
+
+            _UUIDRefs = new HashMap(xmiReader.getXMIUUIDToObjectMap());
+
+	    // now close again, reopen and read the Diagrams.
+
+	    PGMLParser.SINGLETON.setOwnerRegistry(_UUIDRefs);
+
+	    //zis.close();
+	    zis = new ZipInputStream(url.openStream());
+	    SubInputStream sub = new SubInputStream(zis);
+
+	    ZipEntry currentEntry = null;
+	    while ( (currentEntry = sub.getNextEntry()) != null) {
+		if (currentEntry.getName().endsWith(".pgml")) {
+		    System.out.println("Now going to load "+currentEntry.getName()+" from ZipInputStream");
+
+		    // "false" means the stream shall not be closed, but it doesn't seem to matter...
+		    Diagram d = PGMLParser.SINGLETON.readDiagram(sub,false);
+		    addMember(d);
+		    // sub.closeEntry();
+		    System.out.println("Finished loading "+currentEntry.getName());
+		}
+	    }
+	    zis.close();
+
+	    
+	} catch (Exception e) {
+	    System.out.println("Oops, something went wrong in Project.loadZippedProjectMembers() "+e );
+	    e.printStackTrace();
+	}
+    }
 
   public static Project makeEmptyProject() {
     System.out.println("making empty project");
@@ -522,21 +600,44 @@ public class Project implements java.io.Serializable {
 //   }
 
   public void saveAllMembers(String path, boolean overwrite) {
+      saveAllMembers(path, overwrite, null, null);
+  }
+
+  public void saveAllMembers(String path, boolean overwrite, Writer writer, ZipOutputStream zos) {
+
+      if (writer == null) {
+	  System.out.println("No Writer specified!");
+	  return;
+      }
+
     int size = _members.size();
-    // make sure to save the XMI file first so we get the id references
-    for (int i = 0; i < size; i++) {
-        ProjectMember p = (ProjectMember) _members.elementAt(i);
-        if (p.getType().equalsIgnoreCase("xmi")) {
-        System.out.println("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
-            p.save(path,overwrite);
-        }
-    }
-    for (int i = 0; i < size; i++) {
-        ProjectMember p = (ProjectMember) _members.elementAt(i);
-        if (!(p.getType().equalsIgnoreCase("xmi"))){
-        System.out.println("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
-            p.save(path,overwrite);
-        }
+    
+    try {
+
+	// make sure to save the XMI file first so we get the id references
+	for (int i = 0; i < size; i++) {
+	    ProjectMember p = (ProjectMember) _members.elementAt(i);
+	    if (!(p.getType().equalsIgnoreCase("xmi"))){
+		System.out.println("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
+		zos.putNextEntry(new ZipEntry(p.getName()));
+		p.save(path,overwrite,writer);
+		writer.flush();
+		zos.closeEntry();
+	    }
+	}
+
+	for (int i = 0; i < size; i++) {
+	    ProjectMember p = (ProjectMember) _members.elementAt(i);
+	    if (p.getType().equalsIgnoreCase("xmi")) {
+		System.out.println("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
+		zos.putNextEntry(new ZipEntry(p.getName()));
+		p.save(path,overwrite,writer);
+	    }
+	}
+
+    } catch (IOException e) {
+	System.out.println("hat nicht geklappt: "+e);
+	e.printStackTrace();
     }
     // needs-more-work: check if each file is dirty
   }

@@ -24,8 +24,10 @@
 package org.argouml.ui;
 
 import java.util.*;
+import java.util.zip.*;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.FileNotFoundException;
@@ -319,8 +321,9 @@ class ActionOpenProject extends UMLAction {
         if (chooser == null) chooser = new JFileChooser();
 
         chooser.setDialogTitle("Open Project");
-        SuffixFilter filter = FileFilters.ArgoFilter;
+        SuffixFilter filter = FileFilters.ZArgoFilter;
         chooser.addChoosableFileFilter(filter);
+        chooser.addChoosableFileFilter(FileFilters.ArgoFilter);
         chooser.addChoosableFileFilter(FileFilters.XMIFilter);
         chooser.setFileFilter(filter);
 
@@ -386,7 +389,7 @@ class ActionSaveProject extends UMLAction {
       //       String path = p.getPathname();
       System.out.println("ActionSaveProject at " + p.getURL());
       //       System.out.println("ActionSaveProject name = " + name);
-      String fullpath = "Untitled.argo";
+      String fullpath = "Untitled.zargo";
       if (p.getURL() != null) fullpath = p.getURL().getFile();
       System.out.println("filename is " + fullpath);
       if (fullpath.charAt(0) == '/' && fullpath.charAt(2) == ':')
@@ -396,15 +399,22 @@ class ActionSaveProject extends UMLAction {
 	System.out.println("Are you sure you want to overwrite " +
 			   fullpath + "?");
       }
-      FileWriter fw = new FileWriter(f);
+
+      ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(f));
+      ZipEntry zipEntry = new ZipEntry(p.getName());
+      zos.putNextEntry(zipEntry);
+      OutputStreamWriter fw = new OutputStreamWriter(zos);
       p.preSave();
       expander.expand(fw, p, "", "");
+      zos.flush();
+      zos.closeEntry();
       String parentDirName = fullpath.substring(0, fullpath.lastIndexOf("/"));
       System.out.println("Dir ==" + parentDirName);
-      p.saveAllMembers(parentDirName, overwrite);
+      p.saveAllMembers(parentDirName, overwrite, fw, zos);
       //needs-more-work: in future allow independent saving
       p.postSave();
       fw.close();
+      zos.close();
       pb.showStatus("Wrote " + p.getURL());
       return true;
     }
@@ -471,7 +481,7 @@ class ActionSaveProjectAs extends UMLAction {
       if (chooser == null) chooser = new JFileChooser();
 
       chooser.setDialogTitle("Save Project: " + p.getName());
-      FileFilter filter = FileFilters.ArgoFilter;
+      FileFilter filter = FileFilters.ZArgoFilter;
       chooser.addChoosableFileFilter(filter);
       chooser.setFileFilter(filter);
 
@@ -482,7 +492,7 @@ class ActionSaveProjectAs extends UMLAction {
 	  //String pathname = chooser.getSelectedFile().getAbsolutePath();
 	  String path = chooser.getSelectedFile().getParent();
 	  String name = chooser.getSelectedFile().getName();
-	  if (!name.endsWith(".argo")) name += ".argo";
+	  if (!name.endsWith(".zargo")) name += ".zargo";
 	  if (!path.endsWith(separator)) path += separator;
 	  pb.showStatus("Writing " + path + name + "...");
 	  p.setFile(chooser.getSelectedFile());
@@ -493,13 +503,26 @@ class ActionSaveProjectAs extends UMLAction {
 	    System.out.println("Are you sure you want to overwrite " +
 			       name + "?");
 	  }
-	  FileWriter fw = new FileWriter(f);
+
+	  ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(f));
+	  ZipEntry zipEntry = new ZipEntry(p.getName());
+	  zos.putNextEntry(zipEntry);
+	  OutputStreamWriter fw = new OutputStreamWriter(zos);
 	  p.preSave();
 	  expander.expand(fw, p, "", "");
-	  p.saveAllMembers(path, overwrite);
-	  //needs-more-work: in future allow indendent saving
+	  fw.flush();
+	  zos.closeEntry();
+// 	  String parentDirName = fullpath.substring(0, fullpath.lastIndexOf("/"));
+// 	  System.out.println("Dir ==" + parentDirName);
+	  p.saveAllMembers(path, overwrite, fw, zos);
+// 	  FileWriter fw = new FileWriter(f);
+// 	  p.preSave();
+// 	  expander.expand(fw, p, "", "");
+// 	  p.saveAllMembers(path, overwrite);
+// 	  //needs-more-work: in future allow indendent saving
 	  p.postSave();
 	  fw.close();
+	  //	  zos.close();
 	  pb.showStatus("Wrote " + path + name);
 	  pb.updateTitle();
 	  return true;
