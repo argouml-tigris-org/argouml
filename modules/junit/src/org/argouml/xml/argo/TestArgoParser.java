@@ -73,20 +73,33 @@ public class TestArgoParser extends TestCase {
             ZargoFilePersister persister = new ZargoFilePersister();
             Project p = persister.loadProject(url);
             assertTrue("Load Status for " + filename + ".",
-                   ArgoParser.SINGLETON.getLastLoadStatus());
+                   ArgoParser.getInstance().getLastLoadStatus());
         } catch (java.net.MalformedURLException e) {
             assertTrue("Incorrect test case, malformed filename: " 
                    + filename + ".", false);
         }	
     }
 
+    /**
+     * Test loading a zargo.
+     * 
+     * @throws Exception when e.g. the filke is not found
+     */
     public void testLoadProject1() throws Exception { 
         loadProject("file:testmodels/Empty.zargo");
     }
+    /**
+     * Test loading a zargo.
+     * 
+     * @throws Exception when e.g. the filke is not found
+     */
     public void testLoadProject2() throws Exception {
         loadProject("file:testmodels/Alittlebitofeverything.zargo");
     }
 
+    /**
+     * Test loading some garbage in a zargo.
+     */
     public void testLoadGarbage() {
         URL url = null;
         boolean loaded = true;
@@ -95,7 +108,7 @@ public class TestArgoParser extends TestCase {
             ZargoFilePersister persister = new ZargoFilePersister();
             Project p = persister.loadProject(url);
             assertTrue("Load Status", 
-                    !ArgoParser.SINGLETON.getLastLoadStatus());
+                    !ArgoParser.getInstance().getLastLoadStatus());
         } catch (java.net.MalformedURLException e) {
             assertTrue("Incorrect test case.", false);
         } catch (Exception io) {

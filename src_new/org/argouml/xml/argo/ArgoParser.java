@@ -24,7 +24,6 @@
 
 package org.argouml.xml.argo;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -68,9 +67,9 @@ public class ArgoParser extends SAXParserBase {
 
     private String lastLoadMessage;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
+    /**
+     * @return the singleton
+     */
     public static final ArgoParser getInstance() {
         return INSTANCE;   
     }

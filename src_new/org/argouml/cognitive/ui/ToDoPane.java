@@ -58,10 +58,10 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.ToDoListEvent;
 import org.argouml.cognitive.ToDoListListener;
 import org.argouml.i18n.Translator;
-import org.argouml.ui.Actions;
 import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
+import org.argouml.ui.cmd.ActionFlatToDo;
 import org.tigris.gef.ui.ToolBar;
 
 /**
@@ -157,7 +157,7 @@ public class ToDoPane extends JPanel
         
         perspectives = new Vector();
         
-        flatView = Actions.flatToDo;
+        flatView = new ActionFlatToDo();
         countLabel = new JLabel(formatCountLabel(999));
         
         toolbar.add(combo);

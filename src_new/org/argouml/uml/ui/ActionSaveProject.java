@@ -45,7 +45,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.XmiFilePersister;
 import org.argouml.kernel.ZargoFilePersister;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.menubar.GenericArgoMenuBar;
+import org.argouml.ui.cmd.GenericArgoMenuBar;
 
 /**
  * Action that saves the project.

@@ -32,7 +32,7 @@ import org.apache.log4j.Logger;
 
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.menubar.GenericArgoMenuBar;
+import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.moduleloader.ModuleInterface;
 
 /** 

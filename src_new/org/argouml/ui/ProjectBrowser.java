@@ -57,7 +57,7 @@ import org.argouml.swingext.BorderSplitPane;
 import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.Orientation;
 import org.argouml.swingext.Vertical;
-import org.argouml.ui.menubar.GenericArgoMenuBar;
+import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
