@@ -63,7 +63,8 @@ public class TabConstraints extends TabSpawnable
 	private JSplitPane _splitter;
 
 	private JButton _addButton = new JButton("Add");
-	private JButton _removeButton = new JButton("Remove");
+	private JButton _editButton = new JButton("Edit");
+	private JButton _removeButton = new JButton("Del");
 
 //   private JButton _ltButton = new JButton("<");
 //   private JButton _leButton = new JButton("<=");
@@ -97,54 +98,32 @@ public class TabConstraints extends TabSpawnable
 		//_table.setTableHeader(null);
 
 		JPanel listButtons = new JPanel();
-		listButtons.setLayout(new GridLayout(1, 2));
+		listButtons.setLayout(new GridLayout(1, 3));
+		//listButtons.setLayout(new FlowLayout());
 		listButtons.add(_addButton);
+		listButtons.add(_editButton);
 		listButtons.add(_removeButton);
 
 		JPanel listPane = new JPanel();
 		listPane.setLayout(new BorderLayout());
 		listPane.add(new JScrollPane(_table), BorderLayout.CENTER);
 		listPane.add(listButtons, BorderLayout.SOUTH);
-		listPane.setMinimumSize(new Dimension(100, 100));
-		listPane.setPreferredSize(new Dimension(200, 100));
-
-		JPanel exprButtons = new JPanel();
-		exprButtons.setBorder(new EtchedBorder());
-		exprButtons.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		//     exprButtons.add(new JLabel("  Insert: "));
-		//     exprButtons.add(_gtButton);
-		//     _gtButton.setMargin(new Insets(0, 0, 0, 0));
-		//     exprButtons.add(_geButton);
-		//     _geButton.setMargin(new Insets(0, 0, 0, 0));
-		//     exprButtons.add(_ltButton);
-		//     _ltButton.setMargin(new Insets(0, 0, 0, 0));
-		//     exprButtons.add(_leButton);
-		//     _leButton.setMargin(new Insets(0, 0, 0, 0));
-		//     exprButtons.add(_eqButton);
-		//     _eqButton.setMargin(new Insets(0, 0, 0, 0));
-		//     exprButtons.add(new SpacerPanel());
-		//     exprButtons.add(_sizeButton);
-		//     _sizeButton.setMargin(new Insets(0, 0, 0, 0));
-		//     exprButtons.add(_asSetButton);
-		//     _asSetButton.setMargin(new Insets(0, 0, 0, 0));
-		//     exprButtons.add(_forAllButton);
-		//     _forAllButton.setMargin(new Insets(0, 0, 0, 0));
-		//     exprButtons.add(_existsButton);
-		//     _existsButton.setMargin(new Insets(0, 0, 0, 0));
+		listPane.setMinimumSize(new Dimension(200, 100));
+		listPane.setPreferredSize(new Dimension(400, 100));
 
 		JPanel exprPane = new JPanel();
 		exprPane.setLayout(new BorderLayout());
 		exprPane.add(_expr, BorderLayout.CENTER);
-		exprPane.add(exprButtons, BorderLayout.SOUTH);
 		_expr.setLineWrap(true);
 		_expr.setWrapStyleWord(true);
 		_expr.setEditable(false);
+		_expr.setEnabled(false);
 
 		setLayout(new BorderLayout());
 		_splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 								   listPane, exprPane);
 		_splitter.setDividerSize(2);
-		_splitter.setDividerLocation(200);
+		_splitter.setDividerLocation(300);
 		add(_splitter, BorderLayout.CENTER);
 		setFont(new Font("Dialog", Font.PLAIN, 10));
 
@@ -162,6 +141,7 @@ public class TabConstraints extends TabSpawnable
 		//     _existsButton.addActionListener(this);
 
 		_addButton.addActionListener(this);
+		_editButton.addActionListener(this);
 		_removeButton.addActionListener(this);
 
 		updateEnabled(null);
@@ -200,6 +180,7 @@ public class TabConstraints extends TabSpawnable
 	/** Enable/disable buttons based on the current selection */
 	protected void updateEnabled(MConstraint selectedConstraint) {
 		_addButton.setEnabled(_target != null);
+		_editButton.setEnabled(selectedConstraint != null);
 		_removeButton.setEnabled(selectedConstraint != null);
 
 		_expr.setEnabled(selectedConstraint != null);
@@ -259,6 +240,33 @@ public class TabConstraints extends TabSpawnable
 				_table.sizeColumnsToFit(1);
 			}
 			return;
+		}
+		if (src == _editButton) {
+		    Vector cs = new Vector(_target.getConstraints());
+                    MConstraint c;
+		    int row = _table.getSelectedRow();
+		    if (row != -1 && row < cs.size()) c = (MConstraint) cs.elementAt(row);
+		    else c = null;
+		    System.out.println("user selected " + row + " = " + c);
+                    _updating = true;
+		    try {
+			DialogConstraint dialog = new DialogConstraint(_target, c, ProjectBrowser.TheInstance);
+			dialog.setVisible(true);
+			String result = dialog.getResultingExpression();
+			if (result != null) {
+			    c.setBody(new MBooleanExpression("OCL", result));
+			    
+			    _table.tableChanged(null);
+			    _table.sizeColumnsToFit(1);
+			    
+			    _expr.setText(result);
+			    _expr.setCaretPosition(0);
+			    
+			}
+		    }
+		    finally { _updating = false; }
+		    updateEnabled(c);
+		    return;
 		}
 		if (src == _removeButton) {
 			int row = _table.getSelectedRow();
