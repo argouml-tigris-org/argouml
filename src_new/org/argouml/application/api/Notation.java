@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -123,8 +123,21 @@ implements PropertyChangeListener {
       return NotationNameImpl.findNotation(s);
   }
 
+  private static boolean reportedNotationProblem = false;
+
   public static NotationName getDefaultNotation() {
-      NotationName n = NotationNameImpl.findNotation(Configuration.getString(KEY_DEFAULT_NOTATION, NOTATION_ARGO.getConfigurationValue()));
+      String notationString = Configuration.getString(KEY_DEFAULT_NOTATION,
+                                NOTATION_ARGO.getConfigurationValue());
+      NotationName n = NotationNameImpl.findNotation(notationString);
+      if (n == null) {
+          if (! reportedNotationProblem) {
+              reportedNotationProblem = true;
+              Argo.log.warn ("Previously set default notation '" +
+                    notationString + "' not found, using '" +
+		    NOTATION_ARGO.getConfigurationValue() + "'");
+          }
+	  n = NOTATION_ARGO;
+      }
       cat.debug ("default notation is " + n.getConfigurationValue());
       return n;
   }
