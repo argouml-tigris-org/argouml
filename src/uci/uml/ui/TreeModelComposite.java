@@ -32,6 +32,8 @@ import com.sun.java.swing.*;
 import com.sun.java.swing.event.*;
 import com.sun.java.swing.tree.*;
 
+import uci.argo.kernel.ToDoItem;
+
 
 public class TreeModelComposite implements TreeModel {
 
@@ -41,6 +43,9 @@ public class TreeModelComposite implements TreeModel {
   protected Vector _subTreeModels = new Vector();
   protected Vector _providedClasses = new Vector();
   protected Object _root;
+  protected boolean _flat;
+  protected Vector _flatChildren = new Vector();
+
   
   ////////////////////////////////////////////////////////////////
   // contructors
@@ -52,6 +57,13 @@ public class TreeModelComposite implements TreeModel {
 
   ////////////////////////////////////////////////////////////////
   // accessors
+
+  public void setFlat(boolean b) {
+    _flat = false;
+    if (b) calcFlatChildren();
+    _flat = b;
+  }
+  public boolean getFlat() { return _flat; }
 
   public void addSubTreeModel(TreeModel tm) {
     if (tm instanceof TreeModelPrereqs) {
@@ -74,6 +86,25 @@ public class TreeModelComposite implements TreeModel {
     
     _subTreeModels.addElement(tm);
   }
+
+  public void calcFlatChildren() {
+    _flatChildren.removeAllElements();
+    addFlatChildren(_root);
+  }
+
+  public void addFlatChildren(Object node) {
+    if (node == null) return;
+    System.out.println("addFlatChildren");
+    // hack for to do items only, should check isLeaf(node), but that
+    // includes empty folders. Really I need alwaysLeaf(node).
+    if ((node instanceof ToDoItem) && !_flatChildren.contains(node)) 
+      _flatChildren.addElement(node);
+    
+    int nKids = getChildCount(node);
+    for (int i = 0; i <nKids; i++) {
+      addFlatChildren(getChild(node, i));
+    }
+  }
   
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
@@ -84,6 +115,9 @@ public class TreeModelComposite implements TreeModel {
 
 
   public Object getChild(Object parent, int index) {
+    if (_flat && parent == _root) {
+      return _flatChildren.elementAt(index);
+    }
     int nSubs = _subTreeModels.size();
     for (int i = 0; i < nSubs; i++) {
       TreeModel tm = (TreeModel) _subTreeModels.elementAt(i);
@@ -96,6 +130,9 @@ public class TreeModelComposite implements TreeModel {
   }
   
   public int getChildCount(Object parent) {
+    if (_flat && parent == _root) {
+      return _flatChildren.size();
+    }
     int childCount = 0;
     int nSubs = _subTreeModels.size();
     for (int i = 0; i < nSubs; i++) {
@@ -106,6 +143,9 @@ public class TreeModelComposite implements TreeModel {
   }
   
   public int getIndexOfChild(Object parent, Object child) {
+    if (_flat && parent == _root) {
+      return _flatChildren.indexOf(child);
+    }
     int childCount = 0;
     int nSubs = _subTreeModels.size();
     for (int i = 0; i < nSubs; i++) {

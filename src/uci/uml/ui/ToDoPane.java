@@ -61,17 +61,27 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
 
   protected ToolBar _toolbar = new ToolBar();
   protected JComboBox _combo = new JComboBox();
+  
   protected ToDoList _root = null;
+  protected Action _flatView = Actions.FlatToDo;
+  protected JToggleButton _flatButton;
   protected ToDoPerspective _curPerspective = null;
   protected JTree _tree = new DisplayTextTree();
-
+  protected boolean _flat = false;
+  
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public ToDoPane() {
     setLayout(new BorderLayout());
-    _toolbar.add(new JLabel("Group by "));
+    _toolbar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    //_toolbar.add(new JLabel("Group by "));
     _toolbar.add(_combo);
+    _flatButton = _toolbar.addToggle(_flatView, "Flat", "Hierarchical", "Flat");
+    ImageIcon hierarchicalIcon = loadIconResource("Hierarchical", "Hierarchical");
+    ImageIcon flatIcon = loadIconResource("Flat", "Flat");
+    _flatButton.setIcon(hierarchicalIcon);
+    _flatButton.setSelectedIcon(flatIcon);
     add(_toolbar, BorderLayout.NORTH);
     add(new JScrollPane(_tree), BorderLayout.CENTER);
     _combo.addItemListener(this);
@@ -118,6 +128,16 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     return _tree.getLastSelectedPathComponent();
   }
 
+  public boolean isFlat() { return _flat; }
+  public void setFlat(boolean b) { _flat = b; }
+  public void toggleFlat() {
+    _flat = !_flat;
+    _flatButton.getModel().setPressed(_flat);
+    if (_flat) _tree.setShowsRootHandles(false);
+    else _tree.setShowsRootHandles(true);
+    updateTree();
+  }
+  
   public Dimension getPreferredSize() { return new Dimension(200, 100); }
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
 
@@ -127,7 +147,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   /** called when the user selects a perspective from the perspective
    *  combo. */
   public void itemStateChanged(ItemEvent e) {
-    updateTree();
+    if (e.getSource() == _combo) updateTree();
   }
 
   /** called when the user selects an item in the tree, by clicking or
@@ -213,9 +233,43 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     else {
       System.out.println("ToDoPane setting tree model");
       _curPerspective.setRoot(_root);
+      _curPerspective.setFlat(_flat);
       _tree.setModel(_curPerspective);
       _tree.show(); // blinks?
     }
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // static methods
+
+  protected static ImageIcon loadIconResource(String imgName, String desc) {
+    ImageIcon res = null;
+    try {
+      java.net.URL imgURL = ToDoPane.class.getResource(imageName(imgName));
+      //System.out.println(imgName);
+      //System.out.println(imgURL);
+      return new ImageIcon(imgURL, desc);
+    }
+    catch (Exception ex) {
+      System.out.println("Exception in loadIconResource");
+      ex.printStackTrace();
+      return new ImageIcon(desc);
+    }
+  }
+
+  protected static String imageName(String name) {
+    return "/uci/Images/" + stripJunk(name) + ".gif";
+  }
+
+
+  protected static String stripJunk(String s) {
+    String res = "";
+    int len = s.length();
+    for (int i = 0; i < len; i++) {
+      char c = s.charAt(i);
+      if (Character.isJavaLetterOrDigit(c)) res += c;
+    }
+    return res;
   }
 
 } /* end class ToDoPane */

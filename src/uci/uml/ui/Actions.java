@@ -65,6 +65,9 @@ public class Actions {
 
   public static UMLAction NavUp = new ActionNavUp();
   public static UMLAction NavDown = new ActionNavDown();
+  public static UMLAction NavBack = new ActionNavBack();
+  public static UMLAction NavForw = new ActionNavForw();
+  public static UMLAction NavFavs = new ActionNavFavs();
   public static UMLAction NextTab = new ActionNextTab();
   public static UMLAction PrevTab = new ActionPrevTab();
   public static UMLAction ShowDiagramTab = new ActionShowDiagramTab();
@@ -100,6 +103,8 @@ public class Actions {
   public static UMLAction OpenDecisions = new ActionOpenDecisions();
   public static UMLAction OpenGoals = new ActionOpenGoals();
   public static UMLAction OpenCritics = new ActionOpenCritics();
+
+  public static UMLAction FlatToDo = new ActionFlatToDo();
 
   public static UMLAction NewToDoItem = new ActionNewToDoItem();
   public static UMLAction Resolve = new ActionResolve();
@@ -275,6 +280,30 @@ class ActionNavDown extends UMLAction {
     return super.shouldBeEnabled() && p != null;
   }
 } /* end class ActionNavDown */
+
+class ActionNavBack extends UMLAction {
+  public ActionNavBack() { super("Back"); }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionNavBack */
+
+class ActionNavForw extends UMLAction {
+  public ActionNavForw() { super("Forward"); }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionNavForw */
+
+class ActionNavFavs extends UMLAction {
+  public ActionNavFavs() { super("Favorites"); }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionNavFavs */
 
 class ActionPrevTab extends UMLAction {
   public ActionPrevTab() { super("Previous Tab"); }
@@ -656,6 +685,15 @@ class ActionOpenCritics extends UMLAction {
   public ActionOpenCritics() { super("Browse Critics..."); }
 } /* end class ActionOpenCritics */
 
+
+class ActionFlatToDo extends UMLAction {
+  public ActionFlatToDo() { super("Toggle Flat View"); }
+  public void actionPerformed(ActionEvent e) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    ToDoPane pane = pb.getToDoPane();
+    pane.toggleFlat();
+  }
+} /* end class ActionFlatToDo */
 
 class ActionNewToDoItem extends UMLAction {
   public ActionNewToDoItem() { super("New To Do Item..."); }

@@ -62,6 +62,10 @@ public class StatusBar extends JPanel implements Runnable {
     _msg.setText(s);
   }
 
+  public void showProgress(int percent) {
+    _progress.setValue(percent);
+  }
+
   public synchronized void doFakeProgress(String s, int work) {
     _statusText = s;
     showStatus(_statusText + "...");

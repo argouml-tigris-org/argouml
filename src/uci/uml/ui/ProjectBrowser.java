@@ -145,7 +145,7 @@ implements IStatusBar {
   public Font defaultFont = new Font("Dialog", Font.PLAIN, 10);
   //  public static JFrame _Frame;
 
-
+  protected JSplitPane _mainSplit, _topSplit, _botSplit;
 
 
   ////////////////////////////////////////////////////////////////
@@ -282,25 +282,21 @@ implements IStatusBar {
     help.setMnemonic('H');
     help.add(_actionAboutArgoUML);
     //_menuBar.setHelpMenu(help);
-    _menuBar.add(help);
-    
+    _menuBar.add(help);    
   }
 
 
-
   protected Component createPanels() {
-    JSplitPane top =
-      new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _navPane, _multiPane);
-    JSplitPane bot =
-      new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _toDoPane, _detailsPane);
-    JSplitPane splitPane =
-      new JSplitPane(JSplitPane.VERTICAL_SPLIT, top, bot);
-    top.setDividerSize(2);
-    top.setDividerLocation(250);
-    bot.setDividerSize(2);
-    splitPane.setDividerSize(2);
-    //bot.setOneTouchExpandable(true);
-    return splitPane;
+    _topSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _navPane, _multiPane);
+    _botSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+			       _toDoPane, _detailsPane);
+    _mainSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _topSplit, _botSplit);
+    _topSplit.setDividerSize(2);
+    _topSplit.setDividerLocation(250);
+    _botSplit.setDividerSize(2);
+    _mainSplit.setDividerSize(2);
+    //_botSplit.setOneTouchExpandable(true);
+    return _mainSplit;
   }
 
   ////////////////////////////////////////////////////////////////
@@ -377,6 +373,24 @@ implements IStatusBar {
   public StatusBar getStatusBar() { return _statusBar; }
   
 
+  public ToDoPane getToDoPane() { return _toDoPane; }
+  public NavigatorPane getNavPane() { return _navPane; }
+
+
+//   ////////////////////////////////////////////////////////////////
+//   // window operations
+  public void setVisible(boolean b) {
+    super.setVisible(b);
+    if (b) uci.gef.Globals.setStatusBar(this);
+  }
+
+//   public void panelHack() {
+//     _topSplit.setDividerLocation(251);
+//     _botSplit.setDividerLocation(151);
+//     _toDoPane.validate();
+//   }
+
+  
   ////////////////////////////////////////////////////////////////
   // IStatusBar
   public void showStatus(String s) { _statusBar.showStatus(s); }
@@ -406,7 +420,7 @@ implements IStatusBar {
 //     Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
 //     _Frame.setLocation(scrSize.width/2 - INITIAL_WIDTH/2,
 // 		      scrSize.height/2 - INITIAL_HEIGHT/2);
-//     _Frame.show();
+//     _Frame.setVisble(true);
 //     _Frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 //     ProjectBrowser pb = new ProjectBrowser("ProjectBrowser");
 //     _Frame.getContentPane().removeAll();
@@ -425,10 +439,17 @@ implements IStatusBar {
 } /* end class ProjectBrowser */
 
 
+
+
+
 ////////////////////////////////////////////////////////////////
 
-// class WindowCloser extends WindowAdapter {
-//   public WindowCloser() { }
-//   public void windowClosing(WindowEvent e) { System.exit(0); }
-// };
 
+// class DelayedPanelHack implements Runnable {
+//   ProjectBrowser _pb;
+
+//   public DelayedPanelHack(ProjectBrowser pb) { _pb = pb; }
+
+//   public void run() { _pb.panelHack(); }
+
+// } /* end class DelayedPanelHack */

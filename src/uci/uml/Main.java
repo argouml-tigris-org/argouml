@@ -1,3 +1,30 @@
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
+
 package uci.uml;
 
 import java.awt.*;
@@ -5,6 +32,7 @@ import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
 import com.sun.java.swing.*;
+import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
 import uci.uml.ui.*;
@@ -50,8 +78,12 @@ public class Main {
 
   public static void main(String args[]) {
     defineMockHistory();
-    com.sun.java.swing.plaf.metal.MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsTheme());
-    ProjectBrowser pb = new ProjectBrowser("ProjectBrowser");
+    MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsTheme());
+    SplashScreen splash = new SplashScreen("Loading Argo/UML...", "Splash");
+    splash.setVisible(true);
+    
+    splash.getStatusBar().doFakeProgress("Creating Project Browser", 100);
+    ProjectBrowser pb = new ProjectBrowser("Argo/UML");
     pb.addWindowListener(new WindowCloser());
     JOptionPane.setRootFrame(pb);
     //pb.setSize(INITIAL_WIDTH, INITIAL_HEIGHT);
@@ -60,10 +92,13 @@ public class Main {
     pb.setLocation(scrSize.width/2 - WIDTH/2,
 		       scrSize.height/2 - HEIGHT/2);
     pb.setSize(WIDTH, HEIGHT);
-    pb.show();
+    splash.getStatusBar().showStatus("Making Mock Project");
     pb.setProject(new MockProject());
     pb.setPerspectives(UMLPerspectives);
     pb.setToDoPerspectives(ToDoPerspectives);
+    splash.getStatusBar().showStatus("Opening Project Browser");
+    pb.setVisible(true);
+    splash.setVisible(false);
 
     pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     //pb.validate();
@@ -107,11 +142,13 @@ class MockProject extends Project {
     super("MockProject");
     Model m1 = makeModel1();
     Model m2 = makeModel2();
+    Model m3 = makeModel3();
     try {
       addDiagram(makeDiagram(m1));
-      addDiagram(makeDiagram(m2));
+      addDiagram(makeDiagram(m3));
       addModel(m1);
       addModel(m2);
+      addModel(m3);
     }
     catch (PropertyVetoException pve) { }
   }
@@ -121,13 +158,18 @@ class MockProject extends Project {
   }
 
   public Model makeModel1() {
-    GraphicsExample ge = new GraphicsExample();
-    return ge.model;
+    HumanResourcesExample hre = new HumanResourcesExample();
+    return hre.model;
   }
 
   public Model makeModel2() {
     ShapesExample she = new ShapesExample();
     return she.model;
+  }
+
+  public Model makeModel3() {
+    WindowExample we = new WindowExample();
+    return we.model;
   }
 
 } /* end class MockProject */

@@ -43,7 +43,51 @@ public class ToolBar extends JToolBar {
     return b;
   }
 
+  public JToggleButton addToggle(Action a) {
+    String name = (String) a.getValue(Action.NAME);
+    Icon icon = (Icon) a.getValue(Action.SMALL_ICON);
+    return addToggle(a, name, icon);
+  }
+  
+  public JToggleButton addToggle(Action a, String name, String iconResourceStr) {
+    Icon icon = loadIconResource(imageName(iconResourceStr), name);
+    //System.out.println(icon);
+    return addToggle(a, name, icon);
+  }
+  
+  public JToggleButton addToggle(Action a, String name, Icon icon) {
+    JToggleButton b = new JToggleButton(icon);
+    b.setToolTipText(name);
+    b.setEnabled(a.isEnabled());
+    b.addActionListener(a);
+    add(b);
+    PropertyChangeListener actionPropertyChangeListener = 
+      createActionToggleListener(b);
+    a.addPropertyChangeListener(actionPropertyChangeListener);
+    // needs-more-work: should buttons appear stuck down while action executes?
+    return b;
+  }
 
+  public JToggleButton addToggle(Action a, String name,
+				 String upRes, String downRes) {
+    ImageIcon upIcon = loadIconResource(imageName(upRes), name);
+    ImageIcon downIcon = loadIconResource(imageName(downRes), name);
+    JToggleButton b = new JToggleButton(upIcon);
+    b.setToolTipText(name);
+    b.setEnabled(a.isEnabled());
+    b.addActionListener(a);
+    b.setPressedIcon(downIcon);
+    b.setMargin(new Insets(0,0,0,0));
+    add(b);
+    PropertyChangeListener actionPropertyChangeListener = 
+      createActionToggleListener(b);
+    a.addPropertyChangeListener(actionPropertyChangeListener);
+    // needs-more-work: should buttons appear stuck down while action executes?
+    return b;
+  }
+
+
+  
   public ButtonGroup addRadioGroup(String name1, ImageIcon oneUp,
 				      ImageIcon oneDown,
 				      String name2, ImageIcon twoUp,
@@ -75,6 +119,36 @@ public class ToolBar extends JToolBar {
     bg.add(b2);
     return bg;
   }
+
+  protected PropertyChangeListener createActionToggleListener(JToggleButton b) {
+	return new ActionToggleChangedListener(b);
+    }
+
+  private class ActionToggleChangedListener implements PropertyChangeListener {
+        JToggleButton button;
+        
+        ActionToggleChangedListener(JToggleButton b) {
+            super();
+            this.button = b;
+        }
+        public void propertyChange(PropertyChangeEvent e) {
+            String propertyName = e.getPropertyName();
+            if (e.getPropertyName().equals(Action.NAME)) {
+                String text = (String) e.getNewValue();
+                button.setText(text);
+                button.repaint();
+            } else if (propertyName.equals("enabled")) {
+                Boolean enabledState = (Boolean) e.getNewValue();
+                button.setEnabled(enabledState.booleanValue());
+                button.repaint();
+            } else if (e.getPropertyName().equals(Action.SMALL_ICON)) {
+                Icon icon = (Icon) e.getNewValue();
+                button.setIcon(icon);
+                button.invalidate();
+                button.repaint();
+            } 
+        }
+    }
 
 
   protected static ImageIcon loadIconResource(String imgName, String desc) {

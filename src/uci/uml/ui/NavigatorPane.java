@@ -53,14 +53,21 @@ implements ItemListener, TreeSelectionListener {
   protected Object _root = null;
   protected NavPerspective _curPerspective = null;
   protected JTree _tree = new DisplayTextTree();
+  protected Action _navBack = Actions.NavBack;
+  protected Action _navForw = Actions.NavForw;
+  protected Action _navFavs = Actions.NavFavs;
   
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public NavigatorPane() {
     setLayout(new BorderLayout());
-    _toolbar.add(new JLabel("Perspective "));
+    //_toolbar.add(new JLabel("Perspective "));
+    _toolbar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
     _toolbar.add(_combo);
+    _toolbar.add(_navBack);
+    _toolbar.add(_navForw);
+    _toolbar.add(_navFavs);
     add(_toolbar, BorderLayout.NORTH);
     add(new JScrollPane(_tree), BorderLayout.CENTER);
     _combo.addItemListener(this);
