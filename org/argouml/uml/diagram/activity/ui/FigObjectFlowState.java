@@ -31,6 +31,7 @@ package org.argouml.uml.diagram.activity.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.beans.PropertyVetoException;
 import java.util.Iterator;
 
 import org.tigris.gef.graph.GraphModel;
@@ -40,10 +41,24 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 
 /** Class to display graphics for a UML ObjectFlowState in a diagram. 
+ * 
+ * The NameFig of this class may either contain the Class name, or
+ * it contains the name of the ClassifierInState AND its state.
+ * In the examples in the UML standard, this is written like 
+ * PurchaseOrder
+ * [approved]
+ * i.e. in 2 lines. The first line is underlined, 
+ * to indicate that it is an instance (object).
  */
 public class FigObjectFlowState extends FigNodeModelElement {
    
+    private static final int PADDING = 8;
+    private static final int OFFSET = 10;
+    private static final int WIDTH = 90;
+    private static final int HEIGHT = 50;
+    
     private FigRect cover;
+    private FigText state;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -52,21 +67,31 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * Main Constructor FigObjectFlowState (called from file loading)
      */
     public FigObjectFlowState() {
-        setBigPort(new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan));
-        cover = new FigRect(10, 10, 90, 50, Color.black, Color.white);
+        setBigPort(new FigRect(OFFSET, OFFSET, WIDTH, HEIGHT, 
+                Color.cyan, Color.cyan));
+        cover = new FigRect(OFFSET, OFFSET, WIDTH, HEIGHT, 
+                Color.black, Color.white);
         getNameFig().setLineWidth(0);
         getNameFig().setFilled(false);
         getNameFig().setUnderline(true);
-        Dimension nameMin = getNameFig().getMinimumSize();
-        getNameFig().setBounds(10, 10, nameMin.width + 20, nameMin.height);
+        getNameFig().setMultiLine(false);
         
+        state = new FigText(OFFSET, OFFSET, WIDTH, 21); // values don't care
+        state.setFont(getLabelFont());
+        state.setTextColor(Color.black);
+        state.setMultiLine(false);
+        state.setAllowsTab(false);
+        state.setLineWidth(0);
+        state.setFilled(false);
+
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
         addFig(cover);
         addFig(getNameFig());
+        addFig(state);
         
         Rectangle r = getBounds();
-        setBounds(r.x, r.y, nameMin.width, nameMin.height);
+        setBounds(r.x, r.y, r.width, r.height);
     }
     
     /**
@@ -99,6 +124,59 @@ public class FigObjectFlowState extends FigNodeModelElement {
         return figClone;
     }
 
+    /**
+     * Get the minimum size.
+     * The space between the 2 text figs is: PADDING.
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
+    public Dimension getMinimumSize() {
+        Dimension tempDim = getNameFig().getMinimumSize();
+        int w = tempDim.width + PADDING * 2;
+        int h = tempDim.height + PADDING;
+        tempDim = state.getMinimumSize();
+        w = Math.max(w, tempDim.width + PADDING * 2);
+        h = h + PADDING + tempDim.height + PADDING;
+
+        return new Dimension(Math.max(w, WIDTH / 2), Math.max(h, HEIGHT / 2));
+    }
+
+    /**
+     * Override setBounds to keep shapes looking right.
+     * The nameFig is nicely centered vertically, 
+     * and stretched out over the full width, 
+     * to allow easy selection with the mouse.
+     * The Fig can only be shrinked to half its original size - so that 
+     * it is not reduceable to a few pixels only.
+     * 
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     */
+    public void setBounds(int x, int y, int w, int h) {
+        if (getNameFig() == null) return;
+        Rectangle oldBounds = getBounds();
+        
+        Dimension nameDim = getNameFig().getMinimumSize();
+        Dimension stateDim = state.getMinimumSize();
+        /* the height of the blank space above and below the text figs: */
+        int blank = (h - PADDING - nameDim.height - stateDim.height) / 2;
+        getNameFig().setBounds(x + PADDING, 
+                y + blank, 
+                w - PADDING * 2, 
+                nameDim.height);
+        state.setBounds(x + PADDING,
+                y + blank + nameDim.height + PADDING,
+                w - PADDING * 2, 
+                stateDim.height);
+        
+        getBigPort().setBounds(x, y, w, h);
+        cover.setBounds(x, y, w, h);
+
+        calcBounds(); 
+        updateEdges();
+        firePropChange("bounds", oldBounds, getBounds());
+    }
+
+
+    
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
@@ -122,6 +200,44 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     public Color getFillColor() { return cover.getFillColor(); }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
+    public void setFilled(boolean f) {
+        cover.setFilled(f);
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFilled()
+     */
+    public boolean getFilled() {
+        return cover.getFilled();
+    }
     
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
+    public void setLineWidth(int w) {
+        cover.setLineWidth(w);
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
+    public int getLineWidth() {
+        return cover.getLineWidth();
+    }
     
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEdited(FigText ft) throws PropertyVetoException {
+        /*if (ft == getNameFig() && this.getOwner() != null) {
+            //TODO: Write this function in ParserDisplay. Uncomment then. 
+            ParserDisplay.SINGLETON.parseObjectFlowState(ft.getText(), 
+                    this.getOwner());
+        } else*/
+        super.textEdited(ft);
+    } 
+
 } /* end class FigObjectFlowState */
