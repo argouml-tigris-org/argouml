@@ -30,9 +30,6 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -42,16 +39,13 @@ import javax.swing.event.ChangeListener;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.QuadrantPanel;
-import org.tigris.swidgets.Horizontal;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.ui.TabDiagram;
 import org.argouml.uml.ui.TabModelTarget;
 import org.argouml.util.ConfigLoader;
-import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
-import org.tigris.gef.presentation.Fig;
+import org.tigris.swidgets.Horizontal;
 
 /**
  * The upper right pane in the ArgoUML user interface.  It may have several
@@ -309,63 +303,6 @@ public class MultiEditorPane
     }
 
     /**
-     * Removes all figs from all diagrams for some object obj. Does not remove
-     * the owner of the objects (does not do a call to dispose).<p>
-     *
-     * TODO: move this to ProjectManager for example, in any case: out
-     * of the GUI.
-     *
-     * @param obj the given object
-     * @param diagrams the list of diagrams
-     */
-    public void removePresentationFor(Object obj, Vector diagrams) {
-        for (int i = 0; i < tabs.getComponentCount(); i++) {
-            Component comp = tabs.getComponentAt(i);
-            if (comp instanceof TabDiagram) {
-                TabDiagram tabDia = (TabDiagram) comp;
-                Iterator it = diagrams.iterator();
-                while (it.hasNext()) {
-                    Diagram diagram = (Diagram) it.next();
-                    Fig aFig = diagram.presentationFor(obj);
-                    if (aFig != null) {
-                        tabDia.getJGraph().setDiagram(diagram);
-                        if (aFig.getOwner() == obj) {
-                            aFig.removeFromDiagram();
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Returns a list with all figs for some object o on the given diagrams.<p>
-     *
-     * TODO: move this to ProjectManager for example, in any case: out
-     * of the GUI
-     *
-     * @param o the given object
-     * @param diagrams the given list of diagrams
-     * @return List the list of figs
-     */
-    public List findPresentationsFor(Object o, Vector diagrams) {
-        List returnList = new ArrayList();
-        for (int i = 0; i < tabs.getComponentCount(); i++) {
-            Component comp = tabs.getComponentAt(i);
-            if (comp instanceof TabDiagram) {
-                Iterator it = diagrams.iterator();
-                while (it.hasNext()) {
-                    Diagram diagram = (Diagram) it.next();
-                    Fig aFig = diagram.presentationFor(o);
-                    if (aFig != null)
-                        returnList.add(aFig);
-                }
-            }
-        }
-        return returnList;
-    }
-
-    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
@@ -392,9 +329,9 @@ public class MultiEditorPane
     }
 
     /**
-     * @return Returns the _tabs.
+     * @return returns the upper right panel tabs (the diagram tabs)
      */
-    protected JTabbedPane getTabs() {
+    public JTabbedPane getTabs() {
         return tabs;
     }
 

@@ -93,9 +93,7 @@ public class ActionAddOperation extends UMLAction {
 	    	.buildOperation(cls, model, voidType, propertyChangeListeners);
         TargetManager.getInstance().setTarget(oper);
 
-        Iterator it =
-	    pb.getEditorPane().findPresentationsFor(cls,
-						    p.getDiagrams()).iterator();
+        Iterator it = p.findPresentationsFor(cls).iterator();
         while (it.hasNext()) {
             PropertyChangeListener listener =
                 (PropertyChangeListener) it.next();

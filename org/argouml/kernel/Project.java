@@ -37,6 +37,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
@@ -46,7 +47,6 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -623,6 +623,25 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
+     * Returns a list with all figs for some UML object on all diagrams.
+     *
+     * @param o the given UML object
+     * @return List the list of figs
+     */
+    public List findPresentationsFor(Object o) {
+        List returnList = new ArrayList();
+        Iterator it = diagrams.iterator();
+        while (it.hasNext()) {
+            Diagram diagram = (Diagram) it.next();
+            Fig aFig = diagram.presentationFor(o);
+            if (aFig != null)
+                returnList.add(aFig);
+        }
+        return returnList;
+    }
+
+    
+    /**
      * Finds a classifier with a certain name.<p>
      *
      * Will only return first classifier with the matching name.
@@ -878,7 +897,6 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param obj The object to be deleted
      * @see org.argouml.kernel.Project#trashInternal(Object)
      */
-    // Attention: whole Trash mechanism should be rethought concerning nsuml
     public void moveToTrash(Object obj) {
         if (Trash.SINGLETON.contains(obj)) {
             return;
@@ -906,10 +924,11 @@ public class Project implements java.io.Serializable, TargetListener {
             Trash.SINGLETON.addItemFrom(obj, null);
         }
         if (ModelFacade.isABase(obj)) { // an object that can be represented
-            ProjectBrowser.getInstance().getEditorPane()
-        		.removePresentationFor(obj, getDiagrams());
-
+            Collection allFigs = getAllPresentationsFor(obj, true); 
+            removeAllFigs(allFigs);
+            
             Model.getUmlFactory().delete(obj);
+
 
             if (obj instanceof ProjectMember
                     && members.contains(obj)) {
@@ -922,8 +941,8 @@ public class Project implements java.io.Serializable, TargetListener {
 
             needSave = true;
 
-            // scan if some diagrams need to be deleted, too
-            // copy diagrams, otherwise ConcurrentModificationException
+            /* Scan if some diagrams need to be deleted, too. */
+            // Copy diagrams, otherwise ConcurrentModificationException.
             Collection c = new ArrayList(diagrams);
             Iterator i = c.iterator();
             while (i.hasNext()) {
@@ -949,14 +968,56 @@ public class Project implements java.io.Serializable, TargetListener {
                 obj = ((Fig) obj).getOwner();
             }
             if (obj instanceof CommentEdge) {
-                ProjectBrowser.getInstance().getEditorPane()
-                    .removePresentationFor(obj, getDiagrams());
+                removeAllFigs(getAllPresentationsFor(obj, false));
                 ((CommentEdge) obj).delete();
             }
         }
         ProjectManager.getManager().setNeedsSave(needSave);
     }
 
+    /**
+     * Get all figs from all diagrams (+ enclosed ones recursively) 
+     * for some object obj. <p>
+     * 
+     * See issue 3042 for an explanation of the 2nd parameter. 
+     *
+     * @param obj the given object
+     * @param includeEnclosedOnes true to return also enclosed figs
+     * @return the figs
+     */
+    private Collection getAllPresentationsFor(Object obj, 
+            boolean includeEnclosedOnes) {
+        Collection c = new ArrayList();
+        Iterator it = diagrams.iterator();
+        while (it.hasNext()) {
+            Diagram diagram = (Diagram) it.next();
+            Fig aFig = diagram.presentationFor(obj);
+            if (aFig != null) {
+                if (aFig.getOwner() == obj) {
+                    if (includeEnclosedOnes) {
+                        Collection encl = aFig.getEnclosedFigs();
+                        if (encl != null) c.addAll(aFig.getEnclosedFigs());
+                    }
+                    c.add(aFig);
+                }
+            }
+        }
+        return c;
+    }
+    
+    /**
+     * @param c a collection of figs
+     */
+    private void removeAllFigs(Collection c) {
+        Iterator i = c.iterator();
+        while (i.hasNext()) {
+            Fig obj = (Fig) i.next();
+            // This should prevent the removeFromDiagram to update the model:
+            obj.setVisible(false); 
+            obj.removeFromDiagram();
+        }
+    }
+    
     /**
      * @param obj the object to be moved from the trash
      * TODO: Is "move" remove or restore?
