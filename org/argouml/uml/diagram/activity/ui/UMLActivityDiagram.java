@@ -184,22 +184,20 @@ public class UMLActivityDiagram extends UMLDiagram {
   }
 
     /**
-     * <p>Initialize the toolbar with buttons required for a use case diagram.</p>
-     * @param toolBar The toolbar to which to add the buttons.
+     * Get the actions from which to create a toolbar or equivilent graphic triggers
      */
-    protected void initToolBar(JToolBar toolBar) {
-        toolBar.add(_actionState);
-        toolBar.add(_actionTransition);
-
-        toolBar.addSeparator();
-
-        toolBar.add(_actionStartPseudoState);
-        toolBar.add(_actionFinalPseudoState);
-        toolBar.add(_actionBranchPseudoState);
-        toolBar.add(_actionForkPseudoState);
-        toolBar.add(_actionJoinPseudoState);
-        toolBar.addSeparator();
-        toolBar.add(ActionAddNote.SINGLETON);
+    protected Object[] getUmlActions() {
+        Object actions[] = {
+            _actionState,
+            _actionTransition, null,
+            _actionStartPseudoState,
+            _actionFinalPseudoState,
+            _actionBranchPseudoState,
+            _actionForkPseudoState,
+            _actionJoinPseudoState, null,
+            ActionAddNote.SINGLETON
+        };
+        return actions;
     }
   
     /**

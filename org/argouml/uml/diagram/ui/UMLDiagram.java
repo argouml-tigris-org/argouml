@@ -23,6 +23,7 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Component;
 import java.beans.PropertyVetoException;
 import java.util.Enumeration;
 
@@ -59,60 +60,57 @@ public abstract class UMLDiagram
     implements MElementListener {
     
 
-  protected static Category cat = Category.getInstance(UMLDiagram.class);
+    protected static Category cat = Category.getInstance(UMLDiagram.class);
   
-  ////////////////////////////////////////////////////////////////
-  // actions for toolbar
+    ////////////////////////////////////////////////////////////////
+    // actions for toolbar
 
-  protected static Action _actionSelect =
-  new CmdSetMode(ModeSelect.class, "Select");
+    protected static Action _actionSelect =
+        new CmdSetMode(ModeSelect.class, "Select");
 
-  protected static Action _actionBroom =
-  new CmdSetMode(ModeBroom.class, "Broom");
+    protected static Action _actionBroom =
+        new CmdSetMode(ModeBroom.class, "Broom");
 
-  protected static Action _actionRectangle =
-  new CmdSetMode(ModeCreateFigRect.class, "Rectangle");
+    protected static Action _actionRectangle =
+        new CmdSetMode(ModeCreateFigRect.class, "Rectangle");
 
-  protected static Action _actionRRectangle =
-  new CmdSetMode(ModeCreateFigRRect.class, "RRect");
+    protected static Action _actionRRectangle =
+        new CmdSetMode(ModeCreateFigRRect.class, "RRect");
 
-  protected static Action _actionCircle =
-  new CmdSetMode(ModeCreateFigCircle.class, "Circle");
+    protected static Action _actionCircle =
+        new CmdSetMode(ModeCreateFigCircle.class, "Circle");
 
-  protected static Action _actionLine =
-  new CmdSetMode(ModeCreateFigLine.class, "Line");
+    protected static Action _actionLine =
+        new CmdSetMode(ModeCreateFigLine.class, "Line");
 
-  protected static Action _actionText =
-  new CmdSetMode(ModeCreateFigText.class, "Text"); 
+    protected static Action _actionText =
+        new CmdSetMode(ModeCreateFigText.class, "Text"); 
 
-  protected static Action _actionPoly =
-  new CmdSetMode(ModeCreateFigPoly.class, "Polygon");
+    protected static Action _actionPoly =
+        new CmdSetMode(ModeCreateFigPoly.class, "Polygon");
 
-  protected static Action _actionSpline =
-  new CmdSetMode(ModeCreateFigSpline.class, "Spline");
+    protected static Action _actionSpline =
+        new CmdSetMode(ModeCreateFigSpline.class, "Spline");
 
-  protected static Action _actionInk =
-  new CmdSetMode(ModeCreateFigInk.class, "Ink");
+    protected static Action _actionInk =
+        new CmdSetMode(ModeCreateFigInk.class, "Ink");
 
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    protected MNamespace  _namespace;
+    protected DiagramInfo _diagramName = new DiagramInfo(this);
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected MNamespace  _namespace;
-  protected DiagramInfo _diagramName = new DiagramInfo(this);
-
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
     public UMLDiagram() { 
   	super();
     }
-
   
     public UMLDiagram(MNamespace ns) {
         this();
         setNamespace(ns);
     }
-  
   
     public UMLDiagram(String diagramName, MNamespace ns) {
         this(ns);
@@ -135,39 +133,41 @@ public abstract class UMLDiagram
 
   public MNamespace getNamespace() { return _namespace; }
   
-  /**
-   * sets the namespace of the Diagram, and
-   * adds the diagram as a listener of its namspace in the UML model.
-   * (so that it can delete itself when the model element is deleted).
-   */
-  public void setNamespace(Object ns) {
-      if (!ModelFacade.isANamespace(ns)) {
-          cat.error("Not a namespace");
-          cat.error(ns);
-          throw new IllegalArgumentException("Given object not a namespace");
-      }      
-      _namespace = (MNamespace)ns;      
-      // add the diagram as a listener to the namspace so
-      // that when the namespace is remove()d the diagram is deleted also.
-      UmlModelEventPump.getPump().addModelEventListener(this, _namespace, UmlModelEventPump.REMOVE);
-  }
+    /**
+     * sets the namespace of the Diagram, and
+     * adds the diagram as a listener of its namspace in the UML model.
+     * (so that it can delete itself when the model element is deleted).
+     */
+    public void setNamespace(Object ns) {
+        if (!ModelFacade.isANamespace(ns)) {
+            cat.error("Not a namespace");
+            cat.error(ns);
+            throw new IllegalArgumentException("Given object not a namespace");
+        }
+        _namespace = (MNamespace)ns;      
+        // add the diagram as a listener to the namspace so
+        // that when the namespace is remove()d the diagram is deleted also.
+        UmlModelEventPump.getPump().addModelEventListener(this, _namespace, UmlModelEventPump.REMOVE);
+    }
   
-  public String getClassAndModelID() {
-     String s = super.getClassAndModelID();
-     if (getOwner() == null) return s;
-     String id = (String) (getOwner().getUUID());
-     return s + "|" + id;
-  }
+    public String getClassAndModelID() {
+        String s = super.getClassAndModelID();
+        if (getOwner() == null) return s;
+        String id = (String) (getOwner().getUUID());
+        return s + "|" + id;
+    }
 
-	// TODO: should be overwritten by each subclass of UMLDiagram
-	public MModelElement  getOwner() { return _namespace; }
+    // TODO: should be overwritten by each subclass of UMLDiagram
+    public MModelElement getOwner() {
+        return _namespace;
+    }
     
-  public void setName(String n) throws PropertyVetoException {
-    super.setName(n);
-    _diagramName.updateName();
-  }
+    public void setName(String n) throws PropertyVetoException {
+        super.setName(n);
+        _diagramName.updateName();
+    }
   
-  static final long serialVersionUID = -401219134410459387L;
+    static final long serialVersionUID = -401219134410459387L;
 
     /**
      * Get the toolbar for the diagram
@@ -202,11 +202,29 @@ public abstract class UMLDiagram
     }
     
     /**
-     * Implement on the ancestor to populate the toolbar with diagram specific buttons.
-     * @param toolbar The toolbar to populate with buttons
+     * <p>Initialize the toolbar with buttons required for a specific diagram</p>
+     * @param toolBar The toolbar to which to add the buttons.
      */
-    abstract protected void initToolBar(JToolBar toolbar);
+    private void initToolBar(JToolBar toolBar) {
+        Object actions[] = getUmlActions();
+        
+        for (int i=0; i < actions.length; ++i) {
+            Object o = actions[i];
+            if (o == null) {
+                toolBar.addSeparator();
+            } else if (o instanceof Action) {
+                toolBar.add((Action)o);
+            } else if (o instanceof Component) {
+                toolBar.add((Component)o);
+            }
+        }
+    }
 
+    /**
+     * Implement on the ancestor to get actions to populate toolbar.
+     */
+    protected abstract Object[] getUmlActions();
+    
     private PopupToolBoxButton buildShapePopup() {
         PopupToolBoxButton toolBox = new PopupToolBoxButton(_actionRectangle, 0, 2);
         toolBox.add(_actionRectangle);

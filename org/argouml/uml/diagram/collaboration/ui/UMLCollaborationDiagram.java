@@ -182,18 +182,19 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     }
 
     /**
-     * <p>Initialize the toolbar with buttons required for a use case diagram.</p>
-     * @param toolBar The toolbar to which to add the buttons.
+     * Get the actions from which to create a toolbar or equivilent graphic triggers
      */
-    protected void initToolBar(JToolBar toolBar) {
-        toolBar.add(_actionClassifierRole);
-        toolBar.addSeparator();
-        toolBar.add(buildAssociationPopup());
-        //toolBar.add(_actionAssoc);
-        toolBar.add(ActionAddMessage.SINGLETON);
-        toolBar.add(_actionGeneralize);
-        toolBar.addSeparator();
-        toolBar.add(ActionAddNote.SINGLETON);
+    protected Object[] getUmlActions() {
+        Object actions[] = {
+            _actionClassifierRole,
+            null,
+            buildAssociationPopup(),
+            ActionAddMessage.SINGLETON,
+            _actionGeneralize,
+            null,
+            ActionAddNote.SINGLETON
+        };
+        return actions;
     }
 
     private PopupToolBoxButton buildAssociationPopup() {
