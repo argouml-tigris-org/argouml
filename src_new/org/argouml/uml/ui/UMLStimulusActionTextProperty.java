@@ -43,7 +43,7 @@ public class UMLStimulusActionTextProperty  {
     
     public void setProperty(UMLUserInterfaceContainer container, String newValue) {
 	Object/*MStimulus*/  stimulus = container.getTarget();
-	if (stimulus != null) {
+	if (ModelFacade.isAStimulus(stimulus)) {
 
 	    String oldValue = getProperty(container);
 	    //
