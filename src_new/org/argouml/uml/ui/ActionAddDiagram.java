@@ -44,7 +44,8 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class ActionAddDiagram extends UMLChangeAction {
-    private Logger log = Logger.getLogger(this.getClass());
+    private static final Logger LOG = 
+        Logger.getLogger(ActionAddDiagram.class);
 
     /**
      * Constructor for ActionAddDiagram.
@@ -68,7 +69,6 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
         if (ModelFacade.isANamespace(target)) {
             ns = target;
         } else {
-
             Object owner = null;
             if (ModelFacade.isABase(target)) {
                 owner = ModelFacade.getModelElementContainer(target);
@@ -81,12 +81,12 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
             UMLDiagram diagram = createDiagram(ns);
             p.addMember(diagram);
             TargetManager.getInstance().setTarget(diagram);
-            //TODO make the explorer listen to project member property
+            //TODO: make the explorer listen to project member property
             //changes...  to eliminate coupling on gui.
             ExplorerEventAdaptor.getInstance().modelElementAdded(ns);
             super.actionPerformed(e);
         } else {
-            log.error("No valid namespace found");
+            LOG.error("No valid namespace found");
             throw new IllegalStateException("No valid namespace found");
         }
         // Issue 1722 Removed following code so we allways get the

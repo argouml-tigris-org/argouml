@@ -28,6 +28,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.apache.log4j.Logger;
 
 /** Action to trigger creation of a deployment diagram.
  *  @stereotype singleton
@@ -39,6 +40,9 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
 
     public static ActionDeploymentDiagram SINGLETON =
         new ActionDeploymentDiagram();
+    
+    private static final Logger LOG = 
+        Logger.getLogger(ActionDeploymentDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -58,8 +62,8 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
         // according to the uml spec
 	handle = ProjectManager.getManager().getCurrentProject().getRoot();   
         if (!ModelFacade.isANamespace(handle)) {
-            cat.error("No namespace as argument");
-            cat.error(handle);
+            LOG.error("No namespace as argument");
+            LOG.error(handle);
             throw new IllegalArgumentException(
 					       "The argument " + handle
 					       + "is not a namespace.");
@@ -75,8 +79,8 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
         // according to the uml spec
         handle = ProjectManager.getManager().getCurrentProject().getRoot(); 
         if (!ModelFacade.isANamespace(handle)) {
-            cat.error("No namespace as argument");
-            cat.error(handle);
+            LOG.error("No namespace as argument");
+            LOG.error(handle);
             throw new IllegalArgumentException(
 					       "The argument " + handle
 					       + "is not a namespace.");
