@@ -81,7 +81,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     // Instance variables
     //
     ///////////////////////////////////////////////////////////////////////////
-    
+
 
     /**
      * <p>The fig that is used for the complete classifier role. Identical in
@@ -124,7 +124,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         _stereo.setLineWidth(0);
         _stereo.setFilled(false);
         _stereo.setJustificationByName("Center");
-        _stereo.setDisplayed(false);
+        _stereo.setVisible(false);
 
         _stereo.setBounds(10, 10, 90, stereoMin.height);
 
@@ -201,7 +201,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     public Object clone() {
         FigClassifierRole figClone = (FigClassifierRole) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        
+
         figClone._bigPort = (FigRect) it.next();
         figClone._cover   = (FigRect) it.next();
         figClone._stereo  = (FigText) it.next();
@@ -234,7 +234,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         // Record the old bounds and get the stereotype
 
         Rectangle   bounds = getBounds();
-        
+
         Object stereo = null;
         if (ModelFacade.getStereotypes(me).size() > 0) {
             stereo = ModelFacade.getStereotypes(me).iterator().next();
@@ -250,9 +250,9 @@ public class FigClassifierRole extends FigNodeModelElement {
             (ModelFacade.getName(stereo) == null) ||
             (ModelFacade.getName(stereo).length() == 0)) {
 
-            if (_stereo.isDisplayed()) {
+            if (_stereo.isVisible()) {
                 bounds.height -= _stereo.getBounds().height;
-                _stereo.setDisplayed(false);
+                _stereo.setVisible(false);
             }
         }
         else {
@@ -262,9 +262,9 @@ public class FigClassifierRole extends FigNodeModelElement {
             // If we weren't currently displayed the effective height was
             // zero. Mark the stereotype as displayed
 
-            if (!(_stereo.isDisplayed())) {
+            if (!(_stereo.isVisible())) {
                 oldHeight = 0;
-                _stereo.setDisplayed(true);
+                _stereo.setVisible(true);
             }
 
             // Set the text and recalculate its bounds
@@ -300,7 +300,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     public boolean getFilled() { return _cover.getFilled(); }
 
     public void setLineWidth(int w) { _cover.setLineWidth(w); }
-    public int getLineWidth() { return _cover.getLineWidth(); }   
+    public int getLineWidth() { return _cover.getLineWidth(); }
 
 
     /**
@@ -314,7 +314,7 @@ public class FigClassifierRole extends FigNodeModelElement {
      */
 
     public Dimension getMinimumSize() {
-      
+
         Dimension bigPortMin = _bigPort.getMinimumSize();
         Dimension coverMin   = _cover.getMinimumSize();
         Dimension stereoMin  = _stereo.getMinimumSize();
@@ -324,7 +324,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         // Work out whether we need to count in the stereotype
 
-        if (_stereo.isDisplayed()) {
+        if (_stereo.isVisible()) {
             newMin.width   = Math.max(newMin.width, stereoMin.width);
             newMin.height += stereoMin.height;
         }
@@ -387,12 +387,12 @@ public class FigClassifierRole extends FigNodeModelElement {
         // Work out the padding each side, depending on whether the stereotype
         // is displayed and set bounds accordingly
 
-        if (_stereo.isDisplayed()) {
+        if (_stereo.isVisible()) {
             int extraEach = (h - nameMin.height - stereoMin.height) / 2;
 
             _stereo.setBounds(x, y + extraEach, w, stereoMin.height);
             getNameFig().setBounds(x, y + stereoMin.height + extraEach, w,
-				   nameMin.height); 
+				   nameMin.height);
         }
         else {
             int extraEach = (h - nameMin.height) / 2;
@@ -412,12 +412,12 @@ public class FigClassifierRole extends FigNodeModelElement {
         _y = y;
         _w = newW;
         _h = newH;
-        
+
         firePropChange("bounds", oldBounds, getBounds());
         updateEdges();
     }
 
-  
+
     ///////////////////////////////////////////////////////////////////////////
     //
     // event handlers

@@ -131,7 +131,7 @@ public class FigPackage extends FigNodeModelElement {
         _stereo.setLineWidth(1);
         _stereo.setEditable(false);
         _stereo.setHeight(STEREOHEIGHT + 1);
-        _stereo.setDisplayed(false);
+        _stereo.setVisible(false);
 
         // A thin rectangle to overlap the boundary line between stereotype
         // and name. This is just 2 pixels high, and we rely on the line
@@ -141,7 +141,7 @@ public class FigPackage extends FigNodeModelElement {
         _stereoLineBlinder =
             new FigRect(11, 10 + STEREOHEIGHT, 58, 2, Color.white, Color.white);
         _stereoLineBlinder.setLineWidth(1);
-        _stereoLineBlinder.setDisplayed(false);
+        _stereoLineBlinder.setVisible(false);
 
         // Mark this as newly created. This is to get round the problem with
         // creating figs for loaded classes that had stereotypes. They are
@@ -249,7 +249,7 @@ public class FigPackage extends FigNodeModelElement {
         super.renderingChanged();
         updateStereotypeText();
     }
-    
+
     protected void updateStereotypeText() {
         Object me = /*(MModelElement)*/ getOwner();
 
@@ -258,7 +258,7 @@ public class FigPackage extends FigNodeModelElement {
         }
 
         Rectangle rect = getBounds();
-        
+
         Object stereo = null;
         if (ModelFacade.getStereotypes(me).size() > 0) {
             stereo = ModelFacade.getStereotypes(me).iterator().next();
@@ -268,9 +268,9 @@ public class FigPackage extends FigNodeModelElement {
         if ((stereo == null)
                 || (ModelFacade.getName(stereo) == null)
                 || (ModelFacade.getName(stereo).length() == 0)) {
-            if (_stereo.isDisplayed()) {
-                _stereoLineBlinder.setDisplayed(false);
-                _stereo.setDisplayed(false);
+            if (_stereo.isVisible()) {
+                _stereoLineBlinder.setVisible(false);
+                _stereo.setVisible(false);
                 //                rect.y      += STEREOHEIGHT;
                 //                rect.height -= STEREOHEIGHT;
             }
@@ -279,12 +279,12 @@ public class FigPackage extends FigNodeModelElement {
             _stereo.setText(Notation.generateStereotype(this, stereo));
 
             if (!_showStereotype) {
-                _stereoLineBlinder.setDisplayed(false);
-                _stereo.setDisplayed(false);
-            } else if (!_stereo.isDisplayed()) {
+                _stereoLineBlinder.setVisible(false);
+                _stereo.setVisible(false);
+            } else if (!_stereo.isVisible()) {
                 if (_showStereotype) {
-                    _stereoLineBlinder.setDisplayed(true);
-                    _stereo.setDisplayed(true);
+                    _stereoLineBlinder.setVisible(true);
+                    _stereo.setVisible(true);
 
                     // Only adjust the stereotype height if we are not
                     // newly created. This gets round the problem of
@@ -342,7 +342,7 @@ public class FigPackage extends FigNodeModelElement {
         // If we have a stereotype displayed, then allow some space for that
         // (width and height)
 
-        if (_stereo.isDisplayed()) {
+        if (_stereo.isVisible()) {
             aSize.width = Math.max(aSize.width, _stereo.getMinimumSize().width);
             aSize.height += STEREOHEIGHT;
         }
@@ -352,9 +352,9 @@ public class FigPackage extends FigNodeModelElement {
         return aSize;
     }
 
-    /** 
+    /**
      * <p>Sets the bounds, but the size will be at least the one returned by
-     *   {@link #getMinimumSize()}.</p> 
+     *   {@link #getMinimumSize()}.</p>
      *
      * <p>If the required height is bigger, then the additional height is
      *   equally distributed among all figs (i.e. compartments), such that the
@@ -362,7 +362,7 @@ public class FigPackage extends FigNodeModelElement {
      *
      * <p>Some of this has "magic numbers" hardcoded in. In particular there is
      *   a knowledge that the minimum height of a name compartment is 21
-     *   pixels.</p> 
+     *   pixels.</p>
      *
      * @param x  Desired X coordinate of upper left corner
      *
@@ -409,7 +409,7 @@ public class FigPackage extends FigNodeModelElement {
 
         int currentY = y;
 
-        if (_stereo.isDisplayed()) {
+        if (_stereo.isVisible()) {
             currentY += STEREOHEIGHT;
         }
 
@@ -463,13 +463,13 @@ public class FigPackage extends FigNodeModelElement {
         modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", mpackage));
         modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mpackage));
 
-        popUpActions.insertElementAt(modifierMenu, 
+        popUpActions.insertElementAt(modifierMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
         ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
 
         if (!_showStereotype) {
-            showMenu.add(new UMLAction("Show Stereotype", UMLAction.NO_ICON) 
+            showMenu.add(new UMLAction("Show Stereotype", UMLAction.NO_ICON)
 	    {
 		public void actionPerformed(ActionEvent ae) {
 		    _showStereotype = true;
@@ -478,7 +478,7 @@ public class FigPackage extends FigNodeModelElement {
 		}
 	    });
         } else {
-            showMenu.add(new UMLAction("Hide Stereotype", UMLAction.NO_ICON) 
+            showMenu.add(new UMLAction("Hide Stereotype", UMLAction.NO_ICON)
 	    {
 		public void actionPerformed(ActionEvent ae) {
 		    _showStereotype = false;
@@ -488,7 +488,7 @@ public class FigPackage extends FigNodeModelElement {
 	    });
         }
 
-        popUpActions.insertElementAt(showMenu, 
+        popUpActions.insertElementAt(showMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
         return popUpActions;
@@ -531,7 +531,7 @@ public class FigPackage extends FigNodeModelElement {
 				&& lDiagram.getName().startsWith(
 								 lsDefaultName)) {
 				me.consume();
-				super.mouseClicked(me);                                   
+				super.mouseClicked(me);
 				TargetManager.getInstance().setTarget(lDiagram);
 				return;
 			    }
@@ -543,7 +543,7 @@ public class FigPackage extends FigNodeModelElement {
 		    if (lFirst != null) {
 			me.consume();
 			super.mouseClicked(me);
-                        
+
 			TargetManager.getInstance().setTarget(lFirst);
 			return;
 		    } else {
@@ -575,7 +575,7 @@ public class FigPackage extends FigNodeModelElement {
 				    lsDefaultName + "_" + lNew.getName();
 
 				lP.addMember(lNew);
-                                
+
 				TargetManager.getInstance().setTarget(lNew);
 				/* change prefix */
 				lNew.setName(diagramName);

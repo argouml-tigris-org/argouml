@@ -169,7 +169,7 @@ public class FigInterface extends FigNodeModelElement {
         _stereo.setEditable(false);
         _stereo.setHeight(STEREOHEIGHT + 1);
         // +1 to have 1 pixel overlap with getNameFig()
-        _stereo.setDisplayed(true);
+        _stereo.setVisible(true);
 
         // A thin rectangle to overlap the boundary line between stereotype
         // and name. This is just 2 pixels high, and we rely on the line
@@ -179,7 +179,7 @@ public class FigInterface extends FigNodeModelElement {
 	    new FigRect(11, 10 + STEREOHEIGHT, 58, 2,
 			Color.white, Color.white);
         _stereoLineBlinder.setLineWidth(1);
-        _stereoLineBlinder.setDisplayed(true);
+        _stereoLineBlinder.setVisible(true);
 
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
@@ -255,16 +255,16 @@ public class FigInterface extends FigNodeModelElement {
         ArgoJMenu addMenu = new ArgoJMenu(BUNDLE, "menu.popup.add");
         addMenu.add(ActionAddOperation.SINGLETON);
         addMenu.add(ActionAddNote.SINGLETON);
-        popUpActions.insertElementAt(addMenu, 
+        popUpActions.insertElementAt(addMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
         ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
-        if (_operVec.isDisplayed()) {
+        if (_operVec.isVisible()) {
             showMenu.add(ActionCompartmentDisplay.HideOperCompartment);
         } else {
             showMenu.add(ActionCompartmentDisplay.ShowOperCompartment);
         }
 
-        popUpActions.insertElementAt(showMenu, 
+        popUpActions.insertElementAt(showMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
         // Block added by BobTarling 7-Jan-2001
@@ -290,7 +290,7 @@ public class FigInterface extends FigNodeModelElement {
 		new ActionModifier("Root", "isRoot", "isRoot", "setRoot",
 				   minterface));
 
-        popUpActions.insertElementAt(modifierMenu, 
+        popUpActions.insertElementAt(modifierMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
         // end of block
 
@@ -306,7 +306,7 @@ public class FigInterface extends FigNodeModelElement {
      * @return true if the operations are visible, false otherwise
      */
     public boolean isOperationVisible() {
-        return _operVec.isDisplayed();
+        return _operVec.isVisible();
     }
 
     public void setOperationVisible(boolean isVisible) {
@@ -314,26 +314,26 @@ public class FigInterface extends FigNodeModelElement {
         int h =
 	    checkSize
 	    ? ((ROWHEIGHT * Math.max(1, _operVec.getFigs(null).size() - 1) + 2)
-	       * rect.height 
+	       * rect.height
 	       / getMinimumSize().height)
 	    : 0;
-        if (_operVec.isDisplayed()) {
+        if (_operVec.isVisible()) {
             if (!isVisible) {
                 damage();
                 Iterator it = _operVec.getFigs(null).iterator();
                 while (it.hasNext()) {
-		    ((Fig) (it.next())).setDisplayed(false);
+		    ((Fig) (it.next())).setVisible(false);
                 }
-                _operVec.setDisplayed(false);
+                _operVec.setVisible(false);
                 setBounds(rect.x, rect.y, rect.width, rect.height - h);
             }
         } else {
             if (isVisible) {
                 Iterator it = _operVec.getFigs(null).iterator();
                 while (it.hasNext()) {
-		    ((Fig) (it.next())).setDisplayed(true);
+		    ((Fig) (it.next())).setVisible(true);
                 }
-                _operVec.setDisplayed(true);
+                _operVec.setVisible(true);
                 setBounds(rect.x, rect.y, rect.width, rect.height + h);
                 damage();
             }
@@ -367,14 +367,14 @@ public class FigInterface extends FigNodeModelElement {
         // If we have a stereotype displayed, then allow some space for that
         // (width and height)
 
-        if (_stereo.isDisplayed()) {
+        if (_stereo.isVisible()) {
             aSize.width = Math.max(aSize.width, _stereo.getMinimumSize().width);
             aSize.height += STEREOHEIGHT;
         }
 
         // Allow space for each of the operations we have
 
-        if (_operVec.isDisplayed()) {
+        if (_operVec.isVisible()) {
 
             // Loop through all the operations, to find the widest (remember
             // the first fig is the box for the whole lot, so ignore it).
@@ -571,20 +571,20 @@ public class FigInterface extends FigNodeModelElement {
         // TODO: in future version of GEF call getFigs returning array
         Vector v = new Vector(_operVec.getFigs(null));
         if (i < 1 || i >= v.size()
-                || !((FigText) v.elementAt(i)).isDisplayed()) {
+                || !((FigText) v.elementAt(i)).isVisible()) {
             return null;
         }
-        
+
         do {
             i--;
             if (i < 1)
                 i = v.size() - 1;
             ft2 = (FigText) v.elementAt(i);
-            if (!ft2.isDisplayed()) {
+            if (!ft2.isVisible()) {
                 ft2 = null;
             }
         } while (ft2 == null);
-        
+
         return ft2;
     }
 
@@ -592,21 +592,21 @@ public class FigInterface extends FigNodeModelElement {
         FigText ft2 = null;
         Vector v = new Vector(_operVec.getFigs(null));
         if (i < 1 || i >= v.size()
-                || !((FigText) v.elementAt(i)).isDisplayed()) {
+                || !((FigText) v.elementAt(i)).isVisible()) {
             return null;
         }
-        
+
         do {
             i++;
             if (i >= v.size()) {
                 i = 1;
             }
             ft2 = (FigText) v.elementAt(i);
-            if (!ft2.isDisplayed()) {
+            if (!ft2.isVisible()) {
                 ft2 = null;
             }
         } while (ft2 == null);
-        
+
         return ft2;
     }
 
@@ -646,7 +646,7 @@ public class FigInterface extends FigNodeModelElement {
         if (getOwner() == null) {
             return;
         }
-        
+
         // operations
         if (mee == null
                 || org.argouml.model.ModelFacade.isAOperation(mee.getSource())
@@ -722,7 +722,7 @@ public class FigInterface extends FigNodeModelElement {
 
             int displayedFigs = 1; //this is for getNameFig()
 
-            if (_operVec.isDisplayed()) {
+            if (_operVec.isVisible()) {
                 displayedFigs++;
             }
 
@@ -754,7 +754,7 @@ public class FigInterface extends FigNodeModelElement {
 
         int currentY = y;
 
-        if (_stereo.isDisplayed()) {
+        if (_stereo.isVisible()) {
             currentY += STEREOHEIGHT;
         }
 

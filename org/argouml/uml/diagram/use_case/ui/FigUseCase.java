@@ -148,14 +148,14 @@ public class FigUseCase extends FigNodeModelElement {
 
     protected FigMyCircle _bigPort;
 
-    /** 
+    /**
      * <p>We don't use _bigPort for the actual graphics of the oval. We define
      *   an identical oval that sits on top of it.</p>
      */
 
     protected FigMyCircle _cover;
 
-    /** 
+    /**
      * <p>The line separating name and extension points.</p>
      */
 
@@ -217,7 +217,7 @@ public class FigUseCase extends FigNodeModelElement {
 
         _epSep = new FigLine(0, 30, 100, 100, Color.black);
 
-        _epSep.setDisplayed(false);
+        _epSep.setVisible(false);
 
         // The surrounding box for the extension points, again with arbitrary
         // bounds for now (but made the same width as the name field, so the
@@ -233,7 +233,7 @@ public class FigUseCase extends FigNodeModelElement {
 
         _epBigPort.setFilled(false);
         _epBigPort.setLineWidth(0);
-        _epBigPort.setDisplayed(false);
+        _epBigPort.setVisible(false);
 
         // The group for the extension points. The first entry in the vector
         // is the overall surrounding box itself. The group is not filled, nor
@@ -243,7 +243,7 @@ public class FigUseCase extends FigNodeModelElement {
 
         _epVec.setFilled(false);
         _epVec.setLineWidth(0);
-        _epVec.setDisplayed(false);
+        _epVec.setVisible(false);
 
         _epVec.addFig(_epBigPort);
 
@@ -266,7 +266,7 @@ public class FigUseCase extends FigNodeModelElement {
 			       _MIN_VERT_PADDING,
 			       nameSize.width,
 			       nameSize.height);
-        
+
         _stereo.setBounds(0, 0, 0, 0);
 
         // The separator. We cheat here. Since the name and extension points
@@ -393,7 +393,7 @@ public class FigUseCase extends FigNodeModelElement {
         addMenu.add(ActionAddExtensionPoint.singleton());
         addMenu.add(ActionAddNote.SINGLETON);
 
-        popUpActions.insertElementAt(addMenu, 
+        popUpActions.insertElementAt(addMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
         // Show menu to display/hide the extension point compartment. Placed
@@ -401,13 +401,13 @@ public class FigUseCase extends FigNodeModelElement {
 
         ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
 
-        if (_epVec.isDisplayed()) {
+        if (_epVec.isVisible()) {
             showMenu.add(ActionCompartmentDisplay.HideExtPointCompartment);
         } else {
             showMenu.add(ActionCompartmentDisplay.ShowExtPointCompartment);
         }
 
-        popUpActions.insertElementAt(showMenu, 
+        popUpActions.insertElementAt(showMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
         // Modifier menu. Placed one before last, so the "Properties" entry is
@@ -435,7 +435,7 @@ public class FigUseCase extends FigNodeModelElement {
 						     "setRoot",
 						     useCase));
 
-        popUpActions.insertElementAt(modifierMenu, 
+        popUpActions.insertElementAt(modifierMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
         return popUpActions;
@@ -449,7 +449,7 @@ public class FigUseCase extends FigNodeModelElement {
      */
 
     public boolean isExtensionPointVisible() {
-        return _epVec.isDisplayed();
+        return _epVec.isVisible();
     }
 
     /**
@@ -474,7 +474,7 @@ public class FigUseCase extends FigNodeModelElement {
         // First case is where the extension points are currently displayed and
         // we are asked to turn them off.
 
-        if (_epVec.isDisplayed() & (!isVisible)) {
+        if (_epVec.isVisible() & (!isVisible)) {
 
             // Tell GEF that we are starting to make a change. Loop through the
             // epVec marking each element as not visible.
@@ -482,13 +482,13 @@ public class FigUseCase extends FigNodeModelElement {
             Iterator it = _epVec.getFigs(null).iterator();
 
             while (it.hasNext()) {
-                ((Fig) (it.next())).setDisplayed(false);
+                ((Fig) (it.next())).setVisible(false);
             }
 
             // Mark the vector itself and the separator as not displayed
 
-            _epVec.setDisplayed(false);
-            _epSep.setDisplayed(false);
+            _epVec.setVisible(false);
+            _epSep.setVisible(false);
 
             // Redo the bounds and then tell GEF the change has finished
 
@@ -501,7 +501,7 @@ public class FigUseCase extends FigNodeModelElement {
         // Second case is where the extension points are not currently
         // displayed and we are asked to turn them on.
 
-        else if ((!_epVec.isDisplayed()) & isVisible) {
+        else if ((!_epVec.isVisible()) & isVisible) {
 
             // Tell GEF that we are starting to make a change. Loop through the
             // epVec marking each element as visible.
@@ -509,13 +509,13 @@ public class FigUseCase extends FigNodeModelElement {
             Iterator it = _epVec.getFigs(null).iterator();
 
             while (it.hasNext()) {
-                ((Fig) (it.next())).setDisplayed(true);
+                ((Fig) (it.next())).setVisible(true);
             }
 
             // Mark the vector itself and the separator as displayed
 
-            _epVec.setDisplayed(true);
-            _epSep.setDisplayed(true);
+            _epVec.setVisible(true);
+            _epSep.setVisible(true);
 
             // Redo the bounds and then tell GEF the change has finished
 
@@ -585,7 +585,7 @@ public class FigUseCase extends FigNodeModelElement {
 
         // Now allow for the extension points, if they are displayed
 
-        if (_epVec.isDisplayed()) {
+        if (_epVec.isVisible()) {
 
             // Allow for a separator (spacer each side + 1 pixel width line)
 
@@ -704,7 +704,7 @@ public class FigUseCase extends FigNodeModelElement {
 
         // Place extension points if they are showing
 
-        if (_epVec.isDisplayed()) {
+        if (_epVec.isVisible()) {
 
             // currY tracks the current vertical position of each element. The
             // separator is _SPACER pixels below the name. Its length is
@@ -1153,7 +1153,7 @@ public class FigUseCase extends FigNodeModelElement {
         // TODO in future version of GEF call getFigs returning array
         Vector v = new Vector(fgVec.getFigs(null));
 
-        if ((i >= v.size()) || (!((FigText) v.elementAt(i)).isDisplayed())) {
+        if ((i >= v.size()) || (!((FigText) v.elementAt(i)).isVisible())) {
             return null;
         }
 
@@ -1165,7 +1165,7 @@ public class FigUseCase extends FigNodeModelElement {
         do {
             i = (i <= 1) ? i - 1 : v.size() - 1;
             cft = (CompartmentFigText) v.elementAt(i);
-        } while (!cft.isDisplayed());
+        } while (!cft.isVisible());
 
         return cft;
     }
@@ -1199,7 +1199,7 @@ public class FigUseCase extends FigNodeModelElement {
 
         Vector v = new Vector(fgVec.getFigs(null));
 
-        if ((i >= v.size()) || (!((FigText) v.elementAt(i)).isDisplayed())) {
+        if ((i >= v.size()) || (!((FigText) v.elementAt(i)).isVisible())) {
             return null;
         }
 
@@ -1211,7 +1211,7 @@ public class FigUseCase extends FigNodeModelElement {
         do {
             i = (i >= (v.size() - 1)) ? 1 : i + 1;
             cft = (CompartmentFigText) v.elementAt(i);
-        } while (!cft.isDisplayed());
+        } while (!cft.isVisible());
 
         return cft;
     }
@@ -1245,7 +1245,7 @@ public class FigUseCase extends FigNodeModelElement {
         ActionAddExtensionPoint.singleton().actionPerformed(null);
 
         // TODO in future version of GEF call getFigs returning array
-        CompartmentFigText ft = 
+        CompartmentFigText ft =
             (CompartmentFigText) new Vector(fg.getFigs(null)).lastElement();
 
         if (ft != null) {
@@ -1452,7 +1452,7 @@ public class FigUseCase extends FigNodeModelElement {
 			      _stereo.getWidth(),
 			      _stereo.getHeight());
         } else {
-            _stereo.setBounds(0, 0, 0, 0);     
+            _stereo.setBounds(0, 0, 0, 0);
         }
         damage();
     }
