@@ -53,7 +53,6 @@ public class FigSimpleState extends FigState {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private FigRRect bigPort;
     private FigRect cover;
     private FigLine divider;
 
@@ -65,16 +64,15 @@ public class FigSimpleState extends FigState {
      * The main constructor
      */
     public FigSimpleState() {
-	bigPort =
-	    new FigRRect(getInitialX() + 1, getInitialY() + 1,
+	setBigPort(new FigRRect(getInitialX() + 1, getInitialY() + 1,
 			 getInitialWidth() - 2, getInitialHeight() - 2,
-			 Color.cyan, Color.cyan);
+			 Color.cyan, Color.cyan));
 	cover =
 	    new FigRRect(getInitialX(), getInitialY(),
 			 getInitialWidth(), getInitialHeight(),
 			 Color.black, Color.white);
 
-	bigPort.setLineWidth(0);
+	getBigPort().setLineWidth(0);
 	getNameFig().setLineWidth(0);
 	getNameFig().setBounds(getInitialX() + 2, getInitialY() + 2,
 			       getInitialWidth() - 4,
@@ -89,7 +87,7 @@ public class FigSimpleState extends FigState {
 			Color.black);   
 
 	// add Figs to the FigNode in back-to-front order
-	addFig(bigPort);
+	addFig(getBigPort());
 	addFig(cover);
 	addFig(getNameFig());
 	addFig(divider);
@@ -121,7 +119,7 @@ public class FigSimpleState extends FigState {
     public Object clone() {
 	FigSimpleState figClone = (FigSimpleState) super.clone();
 	Iterator it = figClone.getFigs(null).iterator();
-	figClone.bigPort = (FigRRect) it.next();
+	figClone.setBigPort((FigRRect) it.next());
 	figClone.cover = (FigRect) it.next();
 	figClone.setNameFig((FigText) it.next());
 	figClone.divider = (FigLine) it.next();
@@ -162,7 +160,7 @@ public class FigSimpleState extends FigState {
 	getInternal().setBounds(x + 2, y + nameDim.height + 4,
 			    w - 4, h - nameDim.height - 6);
 
-	bigPort.setBounds(x, y, w, h);
+	getBigPort().setBounds(x, y, w, h);
 	cover.setBounds(x, y, w, h);
 
 	calcBounds(); //_x = x; _y = y; _w = w; _h = h;

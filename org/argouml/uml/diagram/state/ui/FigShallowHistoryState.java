@@ -61,13 +61,6 @@ public class FigShallowHistoryState extends FigStateVertex {
 
     /** The main label on this icon. */
     private FigText name;
-
-    /**
-     * UML does not really use ports, so just define one big one so that users
-     * can drag edges to or from any point in the icon.
-     */
-    private FigCircle bigPort;
-
     private FigCircle head;
 
     ////////////////////////////////////////////////////////////////
@@ -77,7 +70,7 @@ public class FigShallowHistoryState extends FigStateVertex {
      * Main constructor
      */
     public FigShallowHistoryState() {
-        bigPort = new FigCircle(X, Y, WIDTH, HEIGTH, Color.cyan, Color.cyan);
+        setBigPort(new FigCircle(X, Y, WIDTH, HEIGTH, Color.cyan, Color.cyan));
         head = new FigCircle(X, Y, WIDTH, HEIGTH, Color.black, Color.white);
         name = new FigText(X, Y, WIDTH - 10, HEIGTH - 10);
         name.setText("H");
@@ -86,7 +79,7 @@ public class FigShallowHistoryState extends FigStateVertex {
         name.setLineWidth(0);
 
         // add Figs to the FigNode in back-to-front order
-        addFig(bigPort);
+        addFig(getBigPort());
         addFig(head);
         addFig(name);
 
@@ -118,7 +111,7 @@ public class FigShallowHistoryState extends FigStateVertex {
         FigShallowHistoryState figClone = (FigShallowHistoryState) super
                 .clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone.bigPort = (FigCircle) it.next();
+        figClone.setBigPort((FigCircle) it.next());
         figClone.head = (FigCircle) it.next();
         figClone.name = (FigText) it.next();
         return figClone;
