@@ -32,6 +32,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.Document;
 
+import org.argouml.i18n.Translator;
 import org.tigris.gef.presentation.FigRRect;
 
 /**
@@ -41,9 +42,11 @@ import org.tigris.gef.presentation.FigRRect;
  */
 public class StylePanelFigRRect extends StylePanelFig {
 
-    protected JLabel _roundingLabel = new JLabel("Rounding: ");
+    private JLabel roundingLabel = new JLabel(Translator
+            .localize("label.stylepane.rounding")
+            + ": ");
 
-    protected JTextField _roundingField = new JTextField();
+    private JTextField roundingField = new JTextField();
 
     /**
      * construct a default panel for rounded rectancular elements.
@@ -57,20 +60,20 @@ public class StylePanelFigRRect extends StylePanelFig {
         c.ipadx = 0;
         c.ipady = 0;
 
-        Document roundingDoc = _roundingField.getDocument();
+        Document roundingDoc = roundingField.getDocument();
         roundingDoc.addDocumentListener(this);
 
         c.weightx = 0.0;
         c.gridx = 3;
         c.gridy = 1;
-        gb.setConstraints(_roundingLabel, c);
-        add(_roundingLabel);
+        gb.setConstraints(roundingLabel, c);
+        add(roundingLabel);
 
         c.weightx = 1.0;
         c.gridx = 4;
         c.gridy = 1;
-        gb.setConstraints(_roundingField, c);
-        add(_roundingField);
+        gb.setConstraints(roundingField, c);
+        add(roundingField);
     }
 
     /**
@@ -79,12 +82,15 @@ public class StylePanelFigRRect extends StylePanelFig {
     public void refresh() {
         super.refresh();
         String roundingStr = ((FigRRect) _target).getCornerRadius() + "";
-        _roundingField.setText(roundingStr);
+        roundingField.setText(roundingStr);
     }
 
+    /**
+     * Set the corner rounding.
+     */
     protected void setTargetRounding() {
         if (_target == null) return;
-        String roundingStr = _roundingField.getText();
+        String roundingStr = roundingField.getText();
         if (roundingStr.length() == 0) return;
         int r = Integer.parseInt(roundingStr);
         ((FigRRect) _target).setCornerRadius(r);
@@ -97,7 +103,7 @@ public class StylePanelFigRRect extends StylePanelFig {
      * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
      */
     public void insertUpdate(DocumentEvent e) {
-        Document roundingDoc = _roundingField.getDocument();
+        Document roundingDoc = roundingField.getDocument();
         if (e.getDocument() == roundingDoc) setTargetRounding();
         super.insertUpdate(e);
     }

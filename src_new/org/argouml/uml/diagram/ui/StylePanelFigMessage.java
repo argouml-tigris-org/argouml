@@ -43,12 +43,16 @@ import org.tigris.gef.util.Converter;
 public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
 
     
-    JLabel _arrowLabel = new JLabel("Arrow: ");
+    private JLabel arrowLabel = new JLabel("Arrow: ");
 
-    JComboBox _arrowField = new JComboBox(Converter
+    private JComboBox arrowField = new JComboBox(Converter
             .convert(FigMessage.getArrowDirections()));
 
     
+    /**
+     * The constructor.
+     * 
+     */
     public StylePanelFigMessage() {
         super();
         GridBagLayout gb = (GridBagLayout) getLayout();
@@ -57,31 +61,34 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
         c.ipadx = 0;
         c.ipady = 0;
 
-        _arrowField.addItemListener(this);
+        arrowField.addItemListener(this);
         c.gridy = 4;
-        gb.setConstraints(_arrowLabel, c);
-        add(_arrowLabel);
+        gb.setConstraints(arrowLabel, c);
+        add(arrowLabel);
 
-        gb.setConstraints(_arrowField, c);
-        add(_arrowField);
-        _arrowField.setSelectedIndex(0);
+        gb.setConstraints(arrowField, c);
+        add(arrowField);
+        arrowField.setSelectedIndex(0);
 
-        remove(_fillField);
-        remove(_fillLabel);
+        remove(getFillField());
+        remove(getFillLabel());
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
     public void refresh() {
         super.refresh();
         int direction = ((FigMessage) _target).getArrow();
-        _arrowField.setSelectedItem(FigMessage.getArrowDirections()
+        arrowField.setSelectedItem(FigMessage.getArrowDirections()
                 .elementAt(direction));
     }
 
     public void setTargetArrow() {
-        String ad = (String) _arrowField.getSelectedItem();
+        String ad = (String) arrowField.getSelectedItem();
         int arrowDirection = FigMessage.getArrowDirections().indexOf(ad);
         if (_target == null || arrowDirection == -1) return;
         ((FigMessage) _target).setArrow(arrowDirection);
@@ -91,13 +98,19 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // event handling
 
+    /**
+     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+     */
     public void removeUpdate(DocumentEvent e) {
         insertUpdate(e);
     }
 
+    /**
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
     public void itemStateChanged(ItemEvent e) {
         Object src = e.getSource();
-        if (src == _arrowField)
+        if (src == arrowField)
             setTargetArrow();
         else
             super.itemStateChanged(e);

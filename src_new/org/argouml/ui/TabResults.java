@@ -64,26 +64,26 @@ public class TabResults
 {
     private static final Logger LOG = Logger.getLogger(TabResults.class);
 
-    public static int _numJumpToRelated = 0;
+    private static int numJumpToRelated = 0;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    PredicateFind _pred;
-    ChildGenerator _cg = null;
-    Object _root = null;
-    JSplitPane _mainPane;
-    Vector _results = new Vector();
-    Vector _related = new Vector();
-    Vector _diagrams = new Vector();
-    boolean _showRelated = false;
+    private PredicateFind pred;
+    private ChildGenerator cg = null;
+    private Object root = null;
+    private JSplitPane mainPane;
+    private Vector results = new Vector();
+    private Vector related = new Vector();
+    private Vector diagrams = new Vector();
+    private boolean relatedShown = false;
 
-    JLabel _resultsLabel = new JLabel("Results:");
-    JTable _resultsTable = new JTable(10, 4);
-    TMResults _resultsModel = new TMResults();
+    private JLabel resultsLabel = new JLabel("Results:");
+    private JTable resultsTable = new JTable(10, 4);
+    private TMResults resultsModel = new TMResults();
 
-    JLabel _relatedLabel = new JLabel("Related Elements:");
-    JTable _relatedTable = new JTable(4, 4);
-    TMResults _relatedModel = new TMResults();
+    private JLabel relatedLabel = new JLabel("Related Elements:");
+    private JTable relatedTable = new JTable(4, 4);
+    private TMResults relatedModel = new TMResults();
 
     /**
      * The constructor.
@@ -102,42 +102,42 @@ public class TabResults
     public TabResults(boolean showRelated)
     {
 	super("Results", true);
-	_showRelated = showRelated;
+	relatedShown = showRelated;
 	setLayout(new BorderLayout());
 
 	JPanel resultsW = new JPanel();
-	JScrollPane resultsSP = new JScrollPane(_resultsTable);
+	JScrollPane resultsSP = new JScrollPane(resultsTable);
 	resultsW.setLayout(new BorderLayout());
-	resultsW.add(_resultsLabel, BorderLayout.NORTH);
+	resultsW.add(resultsLabel, BorderLayout.NORTH);
 	resultsW.add(resultsSP, BorderLayout.CENTER);
-	_resultsTable.setModel(_resultsModel);
-	_resultsTable.addMouseListener(this);
-	_resultsTable.addKeyListener(this);
-	_resultsTable.getSelectionModel().addListSelectionListener(
+	resultsTable.setModel(resultsModel);
+	resultsTable.addMouseListener(this);
+	resultsTable.addKeyListener(this);
+	resultsTable.getSelectionModel().addListSelectionListener(
 								   this);
-	_resultsTable.setSelectionMode(
+	resultsTable.setSelectionMode(
 				       ListSelectionModel.SINGLE_SELECTION);
 	resultsW.setMinimumSize(new Dimension(100, 100));
 
 	JPanel relatedW = new JPanel();
-	if (_showRelated) {
-	    JScrollPane relatedSP = new JScrollPane(_relatedTable);
+	if (relatedShown) {
+	    JScrollPane relatedSP = new JScrollPane(relatedTable);
 	    relatedW.setLayout(new BorderLayout());
-	    relatedW.add(_relatedLabel, BorderLayout.NORTH);
+	    relatedW.add(relatedLabel, BorderLayout.NORTH);
 	    relatedW.add(relatedSP, BorderLayout.CENTER);
-	    _relatedTable.setModel(_relatedModel);
-	    _relatedTable.addMouseListener(this);
-	    _relatedTable.addKeyListener(this);
+	    relatedTable.setModel(relatedModel);
+	    relatedTable.addMouseListener(this);
+	    relatedTable.addKeyListener(this);
 	    relatedW.setMinimumSize(new Dimension(100, 100));
 	}
 
-	if (_showRelated) {
-	    _mainPane =
+	if (relatedShown) {
+	    mainPane =
 		new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 			       resultsW,
 			       relatedW);
-	    _mainPane.setDividerSize(2);
-	    add(_mainPane, BorderLayout.CENTER);
+	    mainPane.setDividerSize(2);
+	    add(mainPane, BorderLayout.CENTER);
 	} else {
 	    add(resultsW, BorderLayout.CENTER);
 	}
@@ -152,30 +152,30 @@ public class TabResults
      */
     public void setPredicate(PredicateFind p)
     {
-	_pred = p;
+	pred = p;
     }
     
     /**
-     * @param root the root object for the search
+     * @param r the root object for the search
      */
-    public void setRoot(Object root)
+    public void setRoot(Object r)
     {
-	_root = root;
+	root = r;
     }
     
     public void setGenerator(ChildGenerator gen)
     {
-	_cg = gen;
+	cg = gen;
     }
 
     public void setResults(Vector res, Vector dia)
     {
-	_results = res;
-	_diagrams = dia;
-	_resultsLabel.setText("Results: " + _results.size() + " items");
-	_resultsModel.setTarget(_results, _diagrams);
-	_relatedModel.setTarget(null, null);
-	_relatedLabel.setText("Related Elements: ");
+	results = res;
+	diagrams = dia;
+	resultsLabel.setText("Results: " + results.size() + " items");
+	resultsModel.setTarget(results, diagrams);
+	relatedModel.setTarget(null, null);
+	relatedLabel.setText("Related Elements: ");
     }
 
     /**
@@ -185,20 +185,20 @@ public class TabResults
     {
 	TabResults newPanel = (TabResults) super.spawn();
 	if (newPanel != null) {
-	    newPanel.setResults(_results, _diagrams);
+	    newPanel.setResults(results, diagrams);
 	}
 	return newPanel;
     }
 
     public void doDoubleClick()
     {
-	myDoubleClick(_resultsTable);
+	myDoubleClick(resultsTable);
     }
 
     public void selectResult(int index)
     {
-	if (index < _resultsTable.getRowCount()) {
-	    _resultsTable.getSelectionModel().setSelectionInterval(index,
+	if (index < resultsTable.getRowCount()) {
+	    resultsTable.getSelectionModel().setSelectionInterval(index,
 								   index);
 	}
     }
@@ -257,18 +257,18 @@ public class TabResults
     {
 	Object sel = null;
 	Diagram d = null;
-	if (src == _resultsTable) {
-	    int row = _resultsTable.getSelectionModel().getMinSelectionIndex();
+	if (src == resultsTable) {
+	    int row = resultsTable.getSelectionModel().getMinSelectionIndex();
 	    if (row < 0)
 		return;
-	    sel = _results.elementAt(row);
-	    d = (Diagram) _diagrams.elementAt(row);
-	} else if (src == _relatedTable) {
-	    int row = _relatedTable.getSelectionModel().getMinSelectionIndex();
+	    sel = results.elementAt(row);
+	    d = (Diagram) diagrams.elementAt(row);
+	} else if (src == relatedTable) {
+	    int row = relatedTable.getSelectionModel().getMinSelectionIndex();
 	    if (row < 0)
 		return;
-	    _numJumpToRelated++;
-	    sel = _related.elementAt(row);
+	    numJumpToRelated++;
+	    sel = related.elementAt(row);
 	}
 
 	if (d != null)
@@ -317,21 +317,21 @@ public class TabResults
 	if (lse.getValueIsAdjusting()) {
 	    return;
 	}
-	if (_showRelated) {
+	if (relatedShown) {
 	    int row = lse.getFirstIndex();
-	    Object sel = _results.elementAt(row);
+	    Object sel = results.elementAt(row);
 	    LOG.debug("selected " + sel);
-	    _related.removeAllElements();
+	    related.removeAllElements();
 	    Enumeration elems =
 		ChildGenRelated.getSingleton().gen(sel);
 	    if (elems != null) {
 		while (elems.hasMoreElements()) {
-		    _related.addElement(elems.nextElement());
+		    related.addElement(elems.nextElement());
 		}
 	    }
-	    _relatedModel.setTarget(_related, null);
-	    _relatedLabel.setText("Related Elements: "
-				  + _related.size()
+	    relatedModel.setTarget(related, null);
+	    relatedLabel.setText("Related Elements: "
+				  + related.size()
 				  + " items");
 	}
     }
@@ -344,28 +344,28 @@ public class TabResults
      */
     public void run()
     {
-	_resultsLabel.setText("Searching...");
-	_results.removeAllElements();
-	depthFirst(_root, null);
-	setResults(_results, _diagrams);
-	_resultsLabel.setText("Results: " + _results.size() + " items");
-	_resultsModel.setTarget(_results, _diagrams);
+	resultsLabel.setText("Searching...");
+	results.removeAllElements();
+	depthFirst(root, null);
+	setResults(results, diagrams);
+	resultsLabel.setText("Results: " + results.size() + " items");
+	resultsModel.setTarget(results, diagrams);
     }
 
     public void depthFirst(Object node, Diagram lastDiagram)
     {
 	if (node instanceof Diagram) {
 	    lastDiagram = (Diagram) node;
-	    if (!_pred.matchDiagram(lastDiagram))
+	    if (!pred.matchDiagram(lastDiagram))
 		return;
 	    // diagrams are not placed in search results
 	}
-	Enumeration elems = _cg.gen(node);
+	Enumeration elems = cg.gen(node);
 	while (elems.hasMoreElements()) {
 	    Object c = elems.nextElement();
-	    if (_pred.predicate(c)) {
-		_results.addElement(c);
-		_diagrams.addElement(lastDiagram);
+	    if (pred.predicate(c)) {
+		results.addElement(c);
+		diagrams.addElement(lastDiagram);
 	    }
 	    depthFirst(c, lastDiagram);
 	}

@@ -47,79 +47,83 @@ import org.tigris.gef.ui.ColorRenderer;
 public class StylePanelFigNodeModelElement extends StylePanelFig implements
         ItemListener, FocusListener, KeyListener {
 
-    protected JLabel _shadowLabel = new JLabel(Translator
+    private JLabel shadowLabel = new JLabel(Translator
             .localize("label.stylepane.shadow")
             + ": ");
 
-    protected JComboBox _shadowField = new ShadowComboBox();
+    private JComboBox shadowField = new ShadowComboBox();
 
+    /**
+     * The constructor.
+     * 
+     */
     public StylePanelFigNodeModelElement() {
         super("Fig Appearance");
-        initChoices();
+        initChoices(); //TODO: MVW: Why do this a second time?
         GridBagLayout gb = (GridBagLayout) getLayout();
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.ipadx = 0;
         c.ipady = 0;
 
-        Document bboxDoc = _bboxField.getDocument();
+        Document bboxDoc = getBBoxField().getDocument();
         bboxDoc.addDocumentListener(this);
-        _bboxField.addKeyListener(this);
-        _bboxField.addFocusListener(this);
-        _fillField.addItemListener(this);
-        _lineField.addItemListener(this);
-        _shadowField.addItemListener(this);
+        getBBoxField().addKeyListener(this);
+        getBBoxField().addFocusListener(this);
+        getFillField().addItemListener(this);
+        getLineField().addItemListener(this);
+        shadowField.addItemListener(this);
 
-        _fillField.setRenderer(new ColorRenderer());
-        _lineField.setRenderer(new ColorRenderer());
+        getFillField().setRenderer(new ColorRenderer());
+        getLineField().setRenderer(new ColorRenderer());
 
         c.gridx = 0;
         c.gridwidth = 1;
         c.gridy = 1;
         c.weightx = 0.0;
-        gb.setConstraints(_bboxLabel, c);
-        add(_bboxLabel);
+        gb.setConstraints(getBBoxLabel(), c);
+        add(getBBoxLabel());
         c.gridy = 2;
-        gb.setConstraints(_fillLabel, c);
-        add(_fillLabel);
+        gb.setConstraints(getFillLabel(), c);
+        add(getFillLabel());
         c.gridy = 3;
-        gb.setConstraints(_lineLabel, c);
-        add(_lineLabel);
+        gb.setConstraints(getLineLabel(), c);
+        add(getLineLabel());
         c.gridy = 4;
-        gb.setConstraints(_shadowLabel, c);
-        add(_shadowLabel);
+        gb.setConstraints(shadowLabel, c);
+        add(shadowLabel);
 
         c.weightx = 1.0;
         c.gridx = 1;
         c.gridy = 1;
-        gb.setConstraints(_bboxField, c);
-        add(_bboxField);
+        gb.setConstraints(getBBoxField(), c);
+        add(getBBoxField());
         c.gridy = 2;
-        gb.setConstraints(_fillField, c);
-        add(_fillField);
+        gb.setConstraints(getFillField(), c);
+        add(getFillField());
         c.gridy = 3;
-        gb.setConstraints(_lineField, c);
-        add(_lineField);
+        gb.setConstraints(getLineField(), c);
+        add(getLineField());
         c.gridy = 4;
-        gb.setConstraints(_shadowField, c);
-        add(_shadowField);
+        gb.setConstraints(shadowField, c);
+        add(shadowField);
 
         c.weightx = 0.0;
         c.gridx = 2;
         c.gridy = 1;
-        gb.setConstraints(_spacer, c);
-        add(_spacer);
+        gb.setConstraints(getSpacer(), c);
+        add(getSpacer());
 
         c.gridx = 3;
         c.gridy = 10;
-        gb.setConstraints(_spacer2, c);
-        add(_spacer2);
+        gb.setConstraints(getSpacer2(), c);
+        add(getSpacer2());
 
         c.weightx = 1.0;
         c.gridx = 4;
         c.gridy = 10;
-        gb.setConstraints(_spacer3, c);
-        add(_spacer3);
+        gb.setConstraints(getSpacer3(), c);
+        add(getSpacer3());
     }
 
     /**
@@ -137,17 +141,20 @@ public class StylePanelFigNodeModelElement extends StylePanelFig implements
             int shadowSize = ((FigNodeModelElement) _target).getShadowSize();
 
             if (shadowSize > 0) {
-                _shadowField.setSelectedIndex(shadowSize);
+                shadowField.setSelectedIndex(shadowSize);
             } else {
-                _shadowField.setSelectedIndex(0);
+                shadowField.setSelectedIndex(0);
             }
         }
         // lets redraw the box
         setTargetBBox();
     }
 
+    /**
+     * Handle changes in the shadowfield.
+     */
     public void setTargetShadow() {
-        int i = _shadowField.getSelectedIndex();
+        int i = shadowField.getSelectedIndex();
         if (_target == null || !(_target instanceof FigNodeModelElement))
                 return;
         FigNodeModelElement nodeTarget = (FigNodeModelElement) _target;
@@ -159,10 +166,13 @@ public class StylePanelFigNodeModelElement extends StylePanelFig implements
         }
     }
 
+    /**
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
     public void itemStateChanged(ItemEvent e) {
         super.itemStateChanged(e);
         Object src = e.getSource();
-        if (src == _shadowField) setTargetShadow();
+        if (src == shadowField) setTargetShadow();
 
     }
 

@@ -42,16 +42,20 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.toolbar.ToolBar;
 
+/**
+ * The toDo Tab.
+ *
+ */
 public class TabToDo extends TabSpawnable implements TabToDoTarget {
     ////////////////////////////////////////////////////////////////
     // static variables
-    public static int _numHushes = 0;
+    private static int numHushes = 0;
 
-    public static UMLAction _actionNewToDoItem = Actions.NewToDoItem;
-    public static UMLAction _actionResolve = Actions.Resolve;
-    public static UMLAction _actionEmailExpert = Actions.EmailExpert;
+    private static UMLAction actionNewToDoItem = Actions.NewToDoItem;
+    private static UMLAction actionResolve = Actions.Resolve;
+    private static UMLAction actionEmailExpert = Actions.EmailExpert;
     //public static UMLAction _actionMoreInfo = Actions.MoreInfo;
-    public static UMLAction _actionSnooze = Actions.Snooze;
+    private static UMLAction actionSnooze = Actions.Snooze;
     //public static UMLAction _actionRecordFix = Actions.RecordFix;
     //public static UMLAction _actionReplayFix = Actions.ReplayFix;
     //public static UMLAction _actionFixItNext = Actions.FixItNext;
@@ -67,13 +71,22 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     //JButton _emailExpertButton = new JButton("Email Expert"); //html
     //JButton _snoozeButton = new JButton("Snooze");
     //JTextArea _description = new JTextArea();
-    WizDescription _description = new WizDescription();
-    JPanel _lastPanel = null;
+    private WizDescription description = new WizDescription();
+    private JPanel lastPanel = null;
     private BorderSplitPane splitPane;
     private Object target;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
+    /**
+     * increments the _numHushes.
+     */
+    public static void incrementNumHushes() {
+        numHushes++;
+    }
+
+    /**
+     * The constructor.
+     * 
+     */
     public TabToDo() {
         super("tab.todo-item");
         String position =
@@ -87,10 +100,10 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
 
         JToolBar toolBar = new ToolBar(JToolBar.VERTICAL);
         toolBar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
-        toolBar.add(_actionNewToDoItem);
-        toolBar.add(_actionResolve);
-        toolBar.add(_actionEmailExpert);
-        toolBar.add(_actionSnooze);
+        toolBar.add(actionNewToDoItem);
+        toolBar.add(actionResolve);
+        toolBar.add(actionEmailExpert);
+        toolBar.add(actionSnooze);
         toolBar.setFloatable(false);
         
         add(toolBar, BorderLayout.WEST);
@@ -100,16 +113,22 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         setTarget(null);
     }
 
+    /**
+     * 
+     */
     public void showDescription() {
-        if (_lastPanel != null) {
-            splitPane.remove(_lastPanel);
+        if (lastPanel != null) {
+            splitPane.remove(lastPanel);
         }
-        splitPane.add(_description, BorderSplitPane.CENTER);
-        _lastPanel = _description;
+        splitPane.add(description, BorderSplitPane.CENTER);
+        lastPanel = description;
         validate();
         repaint();
     }
     
+    /**
+     * @param tdp the todo pane
+     */
     public void setTree(ToDoPane tdp) {
         if (getOrientation().equals(Horizontal.getInstance())) {
             splitPane.add(tdp, BorderSplitPane.WEST);
@@ -118,16 +137,19 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         }
     }
 
+    /**
+     * @param ws the panel to be shown
+     */
     public void showStep(JPanel ws) {
-        if (_lastPanel != null) {
-            splitPane.remove(_lastPanel);
+        if (lastPanel != null) {
+            splitPane.remove(lastPanel);
 	}
         if (ws != null) {
             splitPane.add(ws, BorderSplitPane.CENTER);
-            _lastPanel = ws;
+            lastPanel = ws;
         } else {
-            splitPane.add(_description, BorderSplitPane.CENTER);
-            _lastPanel = _description;
+            splitPane.add(description, BorderSplitPane.CENTER);
+            lastPanel = description;
         }
         validate();
         repaint();
@@ -145,7 +167,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         Object t = item;
         target = t;
         // the target of description will allways be set directly by tabtodo
-        _description.setTarget(t);
+        description.setTarget(t);
         Wizard w = null;
         if (t instanceof ToDoItem) {
             w = ((ToDoItem) t).getWizard();
@@ -173,10 +195,13 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         setTarget(TargetManager.getInstance().getTarget());
     }
 
+    /**
+     * @param target ignored
+     */
     protected static void updateActionsEnabled(Object target) {      
-        _actionResolve.updateEnabled(target);
-        _actionEmailExpert.updateEnabled(target);
-        _actionSnooze.updateEnabled(target);
+        actionResolve.updateEnabled(target);
+        actionEmailExpert.updateEnabled(target);
+        actionSnooze.updateEnabled(target);
     }
 
     /**
