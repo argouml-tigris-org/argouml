@@ -97,7 +97,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
 		addField(Argo.localize("UMLMenu", "label.modifiers"),mPanel);
             	
     JList extensionPoints = new UMLMutableLinkedList(new UMLUseCaseExtensionPointListModel(), null, ActionNewUseCaseExtensionPoint.SINGLETON);
-    addField(Argo.localize("UMLMenu", "label.extensionpoints"), 
+    addField(Argo.localize("UMLMenu", "label.extension-points"), 
         new JScrollPane(extensionPoints));
 		
     add(LabelledLayout.getSeperator());
