@@ -58,10 +58,6 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-import ru.novosoft.uml.foundation.data_types.MOrderingKind;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-
-
 public class FigAssociation extends FigEdgeModelElement {
     
    

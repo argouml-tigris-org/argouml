@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -35,8 +34,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.util.Stack;
 import org.argouml.model.ModelFacade;
-
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
    This code piece represents a package declaration.

@@ -43,9 +43,6 @@ import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-
-
 /**
  * <p>Builds the property panel for an extension point.</p>
  *
