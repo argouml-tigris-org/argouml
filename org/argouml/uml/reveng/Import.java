@@ -34,6 +34,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -48,6 +50,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -56,6 +59,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -152,7 +156,7 @@ public class Import {
 
     private ImportStatusScreen iss;
 
-    private Vector problems = new Vector();
+    private StringBuffer problems = new StringBuffer();
     
     private Hashtable attributes = new Hashtable();
 
@@ -383,7 +387,7 @@ public class Import {
         UmlModelEventPump.getPump().stopPumpingEvents();
         
         // now start importing (with an empty problem list)
-        problems.clear();
+        problems = new StringBuffer();
         iss = new ImportStatusScreen("Importing", "Splash");
         SwingUtilities.invokeLater(
 				   new ImportRun(files, b,
@@ -564,16 +568,15 @@ public class Import {
                     parseFile(ProjectManager.getManager().getCurrentProject(),
                         curFile); // Try to parse this file.
 
-                    int tot =
-			(_countFiles
-			 + (_diagram == null
-			    ? 0
-			    : (_diagram.getModifiedDiagrams().size() / 10)));
+                    int tot = _countFiles;
+                    if (_diagram != null) {
+                        tot += _diagram.getModifiedDiagrams().size() / 10;
+                    }
                     iss.setMaximum(tot);
                     int act =
-			_countFiles
-			- _filesLeft.size()
-			- _nextPassFiles.size();
+                        _countFiles
+                        - _filesLeft.size()
+                        - _nextPassFiles.size();
                     iss.setValue(act);
                     ProjectBrowser.getInstance()
                         .getStatusBar().showProgress(100 * act / tot);
@@ -592,18 +595,26 @@ public class Import {
                     StringBuffer sb = new StringBuffer(80);
                     // RuntimeExceptions should be reported here!
                     if (e1 instanceof RuntimeException) {
-                        sb.append("program bug encountered ");
-                        sb.append("in reverese engineering, ");
-                        sb.append("so some elements are not created in the model");
+                        sb.append("Program bug encountered while parsing ");
+                        sb.append(curFile.toString());
+                        sb.append(", so some elements are not created in the model\n");
+                        StringWriter sw = new StringWriter();
+                        PrintWriter pw = new java.io.PrintWriter( sw );
+                        ((Exception) e1).printStackTrace( pw );
+                        sb.append(sw.getBuffer());
                         LOG.error(sb.toString(), e1);
                     }
                     else {
-                        sb.append("uncaught exception encountered ");
-                        sb.append("in reverese engineering, ");
-                        sb.append("so some elements are not created in the model");
+                        sb.append("Uncaught exception encountered while parsing ");
+                        sb.append(curFile.toString());
+                        sb.append(", so some elements are not created in the model\n");
+                        StringWriter sw = new StringWriter();
+                        PrintWriter pw = new java.io.PrintWriter( sw );
+                        ((Exception) e1).printStackTrace( pw );
+                        sb.append(sw.getBuffer());
                         LOG.warn(sb.toString(), e1);
                     }
-                    problems.add(sb.toString());
+                    problems.append(sb);
                 }
                 
                 if (!isCancelled()) {
@@ -639,14 +650,13 @@ public class Import {
                 _st.mark("layout");
                 if (_diagram != null) {
                     for (int i = 0;
-			 i < _diagram.getModifiedDiagrams().size();
-			 i++)
-		    {
+                         i < _diagram.getModifiedDiagrams().size();
+                         i++) {
                         UMLDiagram diagram =
-			    (UMLDiagram) _diagram.getModifiedDiagrams()
-			        .elementAt(i);
-                        ClassdiagramLayouter layouter =
-			    module.getLayout(diagram);
+                            (UMLDiagram) _diagram.getModifiedDiagrams()
+                            .elementAt(i);
+                        ClassdiagramLayouter layouter = 
+                            module.getLayout(diagram);
 
                         layouter.layout();
 
@@ -661,7 +671,8 @@ public class Import {
                 .setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
             // if errors occured, display the collected messages here
-            if (problems != null && problems.size() > 0) {
+            if (problems != null && problems.length() > 0) {
+                System.out.println("THERE ARE PROBLEMS");
                 ProblemsDialog pd = new ProblemsDialog();
                 pd.setVisible(true);
             }
@@ -771,7 +782,6 @@ public class Import {
 
         private JButton closeButton;
         private JLabel northLabel;
-        private JTable problemTable;
 
         public ProblemsDialog() {
             super();
@@ -787,27 +797,12 @@ public class Import {
             getContentPane().add(northLabel, BorderLayout.NORTH);
 
             // the text box containing the problem messages
-            StringBuffer sb = new StringBuffer(80);
-            if (problems != null) {
-                for (Enumeration probs = problems.elements(); probs.hasMoreElements(); ) {
-                    sb.append(((String)probs.nextElement()).trim());
-                    sb.append('\n');
-                }
-            }
-            problemTable = new JTable(new AbstractTableModel() {
-                public int getRowCount() {
-                    return problems.size();
-                }
-                public int getColumnCount() {
-                    return 1;
-                }
-                public Object getValueAt(int row, int col) {
-                    return problems.elementAt(row);
-                }
-            });
-            problemTable.setTableHeader(null);
-            JScrollPane centerPanel = new JScrollPane(problemTable);
-            getContentPane().add(centerPanel, BorderLayout.CENTER);
+            JEditorPane textArea = new JEditorPane();
+            textArea.setText(problems.toString());
+            JPanel centerPanel = new JPanel(new BorderLayout());
+            centerPanel.add(new JScrollPane(textArea));
+            centerPanel.setPreferredSize(new Dimension(300, 200));
+            getContentPane().add(centerPanel);
             
             // close button
             closeButton = new JButton(Translator.localize("button.close"));
