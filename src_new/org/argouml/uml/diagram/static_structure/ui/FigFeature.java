@@ -54,14 +54,17 @@ public class FigFeature extends CompartmentFigText {
 
         /**
          * Does nothing.
-         * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int, org.tigris.gef.presentation.Handle)
+         * @see org.tigris.gef.base.Selection#dragHandle(int, int,
+         * int, int, org.tigris.gef.presentation.Handle)
          */
         public void dragHandle(int mx, int my, int an_x, int an_y, Handle h) {
         }
 
         /**
          * Does nothing.
-         * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle, org.tigris.gef.presentation.Handle)
+         * @see
+         * org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
+         * org.tigris.gef.presentation.Handle)
          */
         public void hitHandle(Rectangle r, Handle h) {
         }
@@ -78,7 +81,8 @@ public class FigFeature extends CompartmentFigText {
                     FigClass classFig = (FigClass) fig;
                     FigGroup group = (FigGroup) getGroup();
                     Object[] figs = group.getFigs().toArray();
-                    for (int i = 1; i < figs.length; i++) { // the first element is no attr or oper
+                    for (int i = 1; i < figs.length; i++) {
+			// the first element is no attr or oper
                         if (figs[i].equals(_content)) {
                             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                                 if (i < figs.length - 1) {

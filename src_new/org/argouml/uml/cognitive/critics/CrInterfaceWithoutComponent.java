@@ -89,7 +89,9 @@ public class CrInterfaceWithoutComponent extends CrUML {
 	    Object obj = figs.elementAt(i);
 	    if (!(obj instanceof FigInterface)) continue;
 	    FigInterface fi = (FigInterface) obj;
-	    if (fi.getEnclosingFig() == null || (!(fi.getEnclosingFig().getOwner() instanceof MComponent))) {
+	    if (fi.getEnclosingFig() == null
+		|| (!(fi.getEnclosingFig().getOwner() instanceof MComponent)))
+	    {
 		if (offs == null) {
 		    offs = new VectorSet();
 		    offs.addElement(dd);

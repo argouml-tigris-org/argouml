@@ -29,8 +29,6 @@ import java.util.Collection;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-
 public class GoStateToIncomingTrans extends AbstractGoRule {
 
     public String getRuleName() { return "State->Incoming Transitions"; }

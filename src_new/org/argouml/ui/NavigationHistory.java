@@ -185,7 +185,10 @@ public class NavigationHistory {
                 //      see if any of the references are still valid
                 //   
                 int index;
-                for (index = _position + 1; index < size && target == null; index++) {
+                for (index = _position + 1;
+		     index < size && target == null;
+		     index++)
+		{
                     ref = (WeakReference) _history.get(index);
                     if (ref != null) {
                         target = ref.get();
@@ -198,8 +201,9 @@ public class NavigationHistory {
                         }
                         else {
                             //
-                            //   these check for phantom model elements
-                            //       those still alive but not attached to anything
+                            //   these check for phantom model
+                            //   elements those still alive but not
+                            //   attached to anything
                             if (ModelFacade.isAFeature(target)) {
                                 if (ModelFacade.getOwner(target) == null) {
                                     target = null;

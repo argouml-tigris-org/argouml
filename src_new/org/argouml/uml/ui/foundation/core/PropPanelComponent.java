@@ -24,10 +24,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.GridLayout;
-
-import javax.swing.JPanel;
-
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;

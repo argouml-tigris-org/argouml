@@ -47,7 +47,9 @@ public class GoStateToDoActivity extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (parent instanceof MState && ((MState) parent).getDoActivity() != null) {
+        if (parent instanceof MState
+	    && ((MState) parent).getDoActivity() != null)
+	{
             Vector children = new Vector();
             
             children.add(((MState) parent).getDoActivity());

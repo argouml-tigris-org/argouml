@@ -27,14 +27,11 @@ package org.argouml.uml.diagram.ui;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
 import java.awt.Rectangle;
-import java.awt.Point;
-import java.awt.Color;
 
 import java.awt.event.MouseEvent;
 
 import java.util.Enumeration;
 
-import org.tigris.gef.base.SelectionReshape;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Layer;
@@ -45,8 +42,6 @@ import org.tigris.gef.base.FigModifyingMode;
 
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
-import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.FigPoly;
 
 /**
  * A general class for rerouting edges, achieved by delegating

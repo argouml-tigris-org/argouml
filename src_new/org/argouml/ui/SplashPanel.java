@@ -42,7 +42,9 @@ class SplashPanel extends JPanel {
     ImageIcon splashImage = null;
     public SplashPanel(String iconName) {
 	super();
-	splashImage = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(iconName);
+	splashImage =
+	    ResourceLoaderWrapper.getResourceLoaderWrapper()
+	    .lookupIconResource(iconName);
 
 	JPanel topNorth = new JPanel(new BorderLayout());
 	topNorth.setPreferredSize(new Dimension(6, 6));

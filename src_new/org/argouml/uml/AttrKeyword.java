@@ -61,7 +61,8 @@ public class AttrKeyword implements java.io.Serializable {
 	MScopeKind sk = attr.getOwnerScope();
 	MChangeableKind ck = attr.getChangeability();
 	// TODO final?
-	if (MScopeKind.CLASSIFIER.equals(sk) && MChangeableKind.FROZEN.equals(ck))
+	if (MScopeKind.CLASSIFIER.equals(sk)
+	    && MChangeableKind.FROZEN.equals(ck))
 	    return STATFIN;
 	else if (MScopeKind.CLASSIFIER.equals(sk))
 	    return STATIC;

@@ -50,7 +50,9 @@ import org.argouml.model.ModelFacade;
  *   where classes have a lot of operations. See the {@link
  *   #predicate2} method for possible solutions.</p>
  *
- * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.oper_name_conflict">ArgoUML User Manual: Change Names or Signatures in &lt;artifact&gt;</a>
+ * @see <a
+ * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.oper_name_conflict">ArgoUML
+ * User Manual: Change Names or Signatures in &lt;artifact&gt;</a>
  */
 
 public class CrOperNameConflict extends CrUML {

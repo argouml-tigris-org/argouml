@@ -58,7 +58,10 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
-public class FigSeqLink extends FigEdgeModelElement implements MElementListener {
+public class FigSeqLink
+    extends FigEdgeModelElement
+    implements MElementListener
+{
 
     // TODO: should be part of some preferences object
     public static boolean SUPPRESS_BIDIRECTIONAL_ARROWS = true;
@@ -92,7 +95,8 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 	_destMult.setTextFilled(false);
 	_destMult.setFilled(false);
 	_destMult.setLineWidth(0);
-	addPathItem(_destMult, new PathConvPercentPlusConst(this, 100, -15, 15));
+	addPathItem(_destMult,
+		    new PathConvPercentPlusConst(this, 100, -15, 15));
 
 	_destRole = new FigText(10, 30, 90, 20);
 	_destRole.setFont(LABEL_FONT);
@@ -100,7 +104,8 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 	_destRole.setTextFilled(false);
 	_destRole.setFilled(false);
 	_destRole.setLineWidth(0);
-	addPathItem(_destRole, new PathConvPercentPlusConst(this, 100, -35, -15));
+	addPathItem(_destRole,
+		    new PathConvPercentPlusConst(this, 100, -35, -15));
 	setBetweenNearestPoints(true);
     }
 
@@ -274,8 +279,9 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
     }
     */
 
-    /** After a new link with a stimulus is added to the model and the figure of the link is created
-     *  the figure of the stimulus has to be created and added to the layer
+    /** After a new link with a stimulus is added to the model and the
+     *  figure of the link is created the figure of the stimulus has
+     *  to be created and added to the layer
      */
     public void  addFigSeqStimulusWithAction() {
   
@@ -311,18 +317,23 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
     /** Sets the activations for every FigSeqObject in this diagram.
      *    Every object must update its activations, when a FigSeqLink
      *    is moved into position. */
-    public void setActivations(FigSeqObject fso, FigSeqObject sourcePort, FigSeqObject destPort, int portNumber) {
+    public void setActivations(FigSeqObject fso, FigSeqObject sourcePort,
+			       FigSeqObject destPort, int portNumber)
+    {
 	if (fso._activations != null && fso._activations.size() > 0) {
 	    int actSize = fso._activations.size();
 	    if ( (fso != sourcePort) && (fso != destPort) ) {
 
 		for (int j = 0; j < actSize; j++) {
-		    FigActivation act = (FigActivation) fso._activations.elementAt(j);
+		    FigActivation act =
+			(FigActivation) fso._activations.elementAt(j);
 		    if (act.getFromPosition() >= portNumber) {
 			act.setFromPosition(act.getFromPosition() + 1);
 			act.setToPosition(act.getToPosition() + 1);
 		    }
-		    else if (act.getFromPosition() < portNumber && act.getToPosition() >= portNumber) {
+		    else if (act.getFromPosition() < portNumber
+			     && act.getToPosition() >= portNumber)
+		    {
 			act.setToPosition(act.getToPosition() + 1);
 		    }
 		    else if (act.getToPosition() < portNumber) {
@@ -331,7 +342,11 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 		    int dynPos = act.getDynVectorPos();
 
 		    fso._dynVector.removeElementAt(dynPos);
-		    String newDynStr = "a|" + act.getFromPosition() + "|" + act.getToPosition() + "|" + act.isFromTheBeg() + "|" + act.isEnd();
+		    String newDynStr =
+			"a|" + act.getFromPosition()
+			+ "|" + act.getToPosition()
+			+ "|" + act.isFromTheBeg()
+			+ "|" + act.isEnd();
 		    fso._dynVector.insertElementAt(newDynStr, dynPos);
 		    fso._dynObjects = fso._dynVector.toString();
 
@@ -344,7 +359,8 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 		FigActivation lowest = null;
 		FigActivation highest = null;
 		for (int k = 0; k < actSize; k++) {
-		    FigActivation fa = (FigActivation) fso._activations.elementAt(k);
+		    FigActivation fa =
+			(FigActivation) fso._activations.elementAt(k);
 		    int pos = fa.getFromPosition();
 		    if (pos < max && pos >= portNumber) {
 			max = pos;
@@ -358,12 +374,18 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 		}
 
 		for (int j = 0; j < actSize; j++) {
-		    FigActivation act = (FigActivation) fso._activations.elementAt(j);
-		    if ( (act.getFromPosition() >= portNumber) && (act.getToPosition() >= portNumber) ) {
+		    FigActivation act =
+			(FigActivation) fso._activations.elementAt(j);
+		    if ((act.getFromPosition() >= portNumber)
+			&& (act.getToPosition() >= portNumber))
+		    {
 			boolean hasOtherAct = false;
 			for (int k = 0; k < actSize; k++) {
-			    FigActivation fa = (FigActivation) fso._activations.elementAt(k);
-			    if (fa.getFromPosition() < portNumber && fa.getToPosition() >= portNumber) {
+			    FigActivation fa =
+				(FigActivation) fso._activations.elementAt(k);
+			    if (fa.getFromPosition() < portNumber
+				&& fa.getToPosition() >= portNumber)
+			    {
 				hasOtherAct = true;
 			    }
 			}
@@ -382,15 +404,23 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 			    }
 			}
 		    }
-		    else if ( (act.getFromPosition() < portNumber) && (act.getToPosition() >= portNumber) ) {
+		    else if ((act.getFromPosition() < portNumber)
+			     && (act.getToPosition() >= portNumber))
+		    {
 			act.setToPosition(act.getToPosition() + 1);
 		    }
-		    else if ( (act.getFromPosition() < portNumber) && (act.getToPosition() < portNumber)) {
+		    else if ((act.getFromPosition() < portNumber)
+			     && (act.getToPosition() < portNumber))
+		    {
 			if (act.isEnd()) {
 			    boolean hasOtherAct = false;
 			    for (int k = 0; k < actSize; k++) {
-				FigActivation fa = (FigActivation) fso._activations.elementAt(k);
-				if (fa.getFromPosition() < portNumber && fa.getToPosition() >= portNumber) {
+				FigActivation fa =
+				    (FigActivation)
+				    fso._activations.elementAt(k);
+				if (fa.getFromPosition() < portNumber
+				    && fa.getToPosition() >= portNumber)
+				{
 				    hasOtherAct = true;
 				}
 			    }
@@ -399,18 +429,22 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 			    }
 			    else {
 				if (highest == act) {
-				    FigActivation newAct = new FigActivation(0, 0, 21, 40, portNumber, portNumber);
+				    FigActivation newAct =
+					new FigActivation(0, 0, 21, 40,
+							  portNumber,
+							  portNumber);
 				    fso._activations.addElement(newAct);
 				    fso.addFig(newAct);
 				    fso.bindPort(fso.getOwner(), newAct);
-				    String dynStr = "a|" + newAct.getFromPosition() + "|" + newAct.getToPosition() + "|" + newAct.isFromTheBeg() + "|" + newAct.isEnd();
+				    String dynStr =
+					"a|" + newAct.getFromPosition()
+					+ "|" + newAct.getToPosition()
+					+ "|" + newAct.isFromTheBeg()
+					+ "|" + newAct.isEnd();
 				    fso._dynVector.addElement(dynStr);
-				    newAct.setDynVectorPos(fso._dynVector.indexOf(dynStr));
+				    newAct.setDynVectorPos(
+					    fso._dynVector.indexOf(dynStr));
 				    fso._dynObjects = fso._dynVector.toString();
-
-				}
-				else {
-				    // do nothing
 				}
 			    }
 			}
@@ -420,18 +454,30 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 		    }
 		    int dynPos = act.getDynVectorPos();
 		    fso._dynVector.removeElementAt(dynPos);
-		    String newDynStr = "a|" + act.getFromPosition() + "|" + act.getToPosition() + "|" + act.isFromTheBeg() + "|" + act.isEnd();
+		    String newDynStr =
+			"a|" + act.getFromPosition()
+			+ "|" + act.getToPosition()
+			+ "|" + act.isFromTheBeg()
+			+ "|" + act.isEnd();
 		    fso._dynVector.insertElementAt(newDynStr, dynPos);
 		    fso._dynObjects = fso._dynVector.toString();
 		}
 	    }
 	}
-	else if (fso._activations != null && fso._activations.size() == 0 && (fso == sourcePort || fso == destPort)) {
-	    FigActivation newAct = new FigActivation(0, 0, 10, 40, portNumber, portNumber);
+	else if (fso._activations != null
+		 && fso._activations.size() == 0
+		 && (fso == sourcePort || fso == destPort))
+	{
+	    FigActivation newAct =
+		new FigActivation(0, 0, 10, 40, portNumber, portNumber);
 	    fso._activations.addElement(newAct);
 	    fso.addFig(newAct);
 	    fso.bindPort(fso.getOwner(), newAct);
-	    String dynStr = "a|" + newAct.getFromPosition() + "|" + newAct.getToPosition() + "|" + newAct.isFromTheBeg() + "|" + newAct.isEnd();
+	    String dynStr =
+		"a|" + newAct.getFromPosition()
+		+ "|" + newAct.getToPosition()
+		+ "|" + newAct.isFromTheBeg()
+		+ "|" + newAct.isEnd();
 	    fso._dynVector.addElement(dynStr);
 	    newAct.setDynVectorPos(fso._dynVector.indexOf(dynStr));
 	    fso._dynObjects = fso._dynVector.toString();
@@ -453,7 +499,9 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 
 		FigSeqLink fsl = (FigSeqLink) contents.elementAt(i);
 
-		if (((fsl.getBounds()).y < getBounds().y) && ((fsl.getBounds()).y > rect.y)) {
+		if (((fsl.getBounds()).y < getBounds().y)
+		    && ((fsl.getBounds()).y > rect.y))
+		{
 
 		    portObj = fsl;
 		    rect = fsl.getBounds();
@@ -517,10 +565,11 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
     /** Removes the port-figs of this FigSeqLink and
      *    updates the Vector _ports of all FigSeqObjects */
     public void updatePorts(FigSeqObject sourceObj, FigSeqObject destObj,
-			    FigDynPort sourceFig, FigDynPort destFig, Vector contents, int size, int portNumber) {
-
-
-	if (sourceFig == sourceObj._lifeline || destFig == destObj._lifeline) return;
+			    FigDynPort sourceFig, FigDynPort destFig,
+			    Vector contents, int size, int portNumber)
+    {
+	if (sourceFig == sourceObj._lifeline || destFig == destObj._lifeline)
+	    return;
      
 	sourceObj._ports.remove(sourceFig);
 	destObj._ports.remove(destFig);
@@ -538,7 +587,8 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 		}
 	    }
 	    for (int i = 0; i < sourceObj._activations.size(); i++) {
-		FigActivation fa = (FigActivation) sourceObj._activations.elementAt(i);
+		FigActivation fa =
+		    (FigActivation) sourceObj._activations.elementAt(i);
 		if (fa.getDynVectorPos() > sourceDynPos) {
 		    fa.setDynVectorPos(fa.getDynVectorPos() - 1);
 		}
@@ -559,7 +609,8 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 		}
 	    }
 	    for (int i = 0; i < destObj._activations.size(); i++) {
-		FigActivation fa = (FigActivation) destObj._activations.elementAt(i);
+		FigActivation fa =
+		    (FigActivation) destObj._activations.elementAt(i);
 		if (fa.getDynVectorPos() > destDynPos) {
 		    fa.setDynVectorPos(fa.getDynVectorPos() - 1);
 		}
@@ -628,15 +679,18 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 
     /** Updates the Vector _activations of all FigSeqObjects */
     public void updateActivations(FigSeqObject sourceObj, FigSeqObject destObj,
-				  FigRect sourceFig, FigRect destFig, Vector contents, int size, int portNumber) {
-
-	if (sourceFig == sourceObj._lifeline || destFig == destObj._lifeline) return;
+				  FigRect sourceFig, FigRect destFig,
+				  Vector contents, int size, int portNumber)
+    {
+	if (sourceFig == sourceObj._lifeline || destFig == destObj._lifeline)
+	    return;
    
 	FigSeqObject fso = null;
 	for (int i = 0; i < getContents().size(); i++) {
 	    if (getContents().elementAt(i) instanceof FigSeqObject) {
 		fso = (FigSeqObject) getContents().elementAt(i);
-		if (fso._terminated && fso._terminateHeight > portNumber) fso._terminateHeight--;
+		if (fso._terminated && fso._terminateHeight > portNumber)
+		    fso._terminateHeight--;
 		if (fso._created && fso._createHeight > portNumber) {
 		    fso._createHeight--;
          
@@ -645,25 +699,40 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 
 		if (fso != getSourceFigNode() && fso != getDestFigNode()) {
 		    for (int j = 0; j < fso._activations.size(); j++) {
-			FigActivation fa = (FigActivation) fso._activations.elementAt(j);
-			if (fa.getFromPosition() > portNumber && fa.getToPosition() > portNumber) {
+			FigActivation fa =
+			    (FigActivation) fso._activations.elementAt(j);
+			if (fa.getFromPosition() > portNumber
+			    && fa.getToPosition() > portNumber)
+			{
 			    fa.setFromPosition(fa.getFromPosition() - 1);
 			    fa.setToPosition(fa.getToPosition() - 1);
 			    int dynPos = fa.getDynVectorPos();
 			    fso._dynVector.removeElementAt(dynPos);
-			    String newDynStr = "a|" + fa.getFromPosition() + "|" + fa.getToPosition() + "|" + fa.isFromTheBeg() + "|" + fa.isEnd();
+			    String newDynStr =
+				"a|" + fa.getFromPosition()
+				+ "|" + fa.getToPosition()
+				+ "|" + fa.isFromTheBeg()
+				+ "|" + fa.isEnd();
 			    fso._dynVector.insertElementAt(newDynStr, dynPos);
 			    fso._dynObjects = fso._dynVector.toString();
 			}
-			else if (fa.getFromPosition() <= portNumber && fa.getToPosition() >= portNumber) {
+			else if (fa.getFromPosition() <= portNumber
+				 && fa.getToPosition() >= portNumber)
+			{
 			    fa.setToPosition(fa.getToPosition() - 1);
 			    int dynPos = fa.getDynVectorPos();
 			    fso._dynVector.removeElementAt(dynPos);
-			    String newDynStr = "a|" + fa.getFromPosition() + "|" + fa.getToPosition() + "|" + fa.isFromTheBeg() + "|" + fa.isEnd();
+			    String newDynStr =
+				"a|" + fa.getFromPosition()
+				+ "|" + fa.getToPosition()
+				+ "|" + fa.isFromTheBeg()
+				+ "|" + fa.isEnd();
 			    fso._dynVector.insertElementAt(newDynStr, dynPos);
 			    fso._dynObjects = fso._dynVector.toString();
 			}
-			else if (fa.getFromPosition() < portNumber && fa.getToPosition() < portNumber) {
+			else if (fa.getFromPosition() < portNumber
+				 && fa.getToPosition() < portNumber)
+			{
 			    // do nothing
 			}
 		    }
@@ -672,7 +741,8 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 		    Vector edges = fso.getFigEdges();
 		    Vector newActivations = (Vector) fso._activations.clone();
 		    for (int j = 0; j < fso._activations.size(); j++) {
-			FigActivation fa = (FigActivation) fso._activations.elementAt(j);
+			FigActivation fa =
+			    (FigActivation) fso._activations.elementAt(j);
 			int from = fa.getFromPosition();
 			int to = fa.getToPosition();
 			boolean figActDeleted = false;
@@ -690,9 +760,12 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 			    fa.setToPosition(to - 1);
 			    int nextNumber = 10000;
 			    for (int k = 0; k < edges.size(); k++) {
-				FigSeqLink fsl = (FigSeqLink) edges.elementAt(k);
+				FigSeqLink fsl =
+				    (FigSeqLink) edges.elementAt(k);
 				int fslNumber = fsl.getPortNumber(contents);
-				if (fslNumber < nextNumber && fslNumber >= portNumber) {
+				if (fslNumber < nextNumber
+				    && fslNumber >= portNumber)
+				{
 				    nextNumber = fslNumber;
 				}
 			    }
@@ -701,9 +774,12 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 			else if (from < portNumber && to == portNumber) {
 			    int nextNumber = 0;
 			    for (int k = 0; k < edges.size(); k++) {
-				FigSeqLink fsl = (FigSeqLink) edges.elementAt(k);
+				FigSeqLink fsl =
+				    (FigSeqLink) edges.elementAt(k);
 				int fslNumber = fsl.getPortNumber(contents);
-				if (fslNumber > nextNumber && fslNumber < portNumber) {
+				if (fslNumber > nextNumber
+				    && fslNumber < portNumber)
+				{
 				    nextNumber = fslNumber;
 				}
 			    }
@@ -717,16 +793,24 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 			if (!figActDeleted) {
 			    int dynPos = fa.getDynVectorPos();
 			    fso._dynVector.removeElementAt(dynPos);
-			    String newDynStr = "a|" + fa.getFromPosition() + "|" + fa.getToPosition() + "|" + fa.isFromTheBeg() + "|" + fa.isEnd();
+			    String newDynStr =
+				"a|" + fa.getFromPosition()
+				+ "|" + fa.getToPosition()
+				+ "|" + fa.isFromTheBeg()
+				+ "|" + fa.isEnd();
 			    fso._dynVector.insertElementAt(newDynStr, dynPos);
 			    fso._dynObjects = fso._dynVector.toString();
 			}
 			else if (figActDeleted) {
 			    int dynPos = fa.getDynVectorPos();
 			    for (int l = 0; l < fso._activations.size(); l++) {
-				FigActivation figAct = (FigActivation) fso._activations.elementAt(l);
+				FigActivation figAct =
+				    (FigActivation)
+				    fso._activations.elementAt(l);
 				if (figAct.getDynVectorPos() > dynPos) {
-				    figAct.setDynVectorPos(figAct.getDynVectorPos() - 1);
+				    figAct.setDynVectorPos((figAct
+							    .getDynVectorPos())
+							   - 1);
 				}
 			    }
 			}
@@ -763,7 +847,8 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 		    }
 		}
 	    }
-	    MCallAction mca = UmlFactory.getFactory().getCommonBehavior().createCallAction();
+	    MCallAction mca =
+		UmlFactory.getFactory().getCommonBehavior().createCallAction();
 	    mca.setAsynchronous(ModelFacade.isAsynchronous(ma));
 	    mca.setName(ModelFacade.getName(ma));
 	    ms.setDispatchAction(mca);
@@ -827,10 +912,10 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 	int size = contents.size();
 	int portNumber = getPortNumber(contents);
 
-	updatePorts(sourceObj, destObj, sourceFig, destFig, contents, size, portNumber);
-	updateActivations(sourceObj, destObj, sourceFig, destFig, contents, size, portNumber);
-    
-
+	updatePorts(sourceObj, destObj, sourceFig, destFig,
+		    contents, size, portNumber);
+	updateActivations(sourceObj, destObj, sourceFig, destFig,
+			  contents, size, portNumber);
     }
   
 
@@ -859,7 +944,9 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 	if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {
 	    ((SequenceDiagramLayout) getLayer()).placeAllFigures();
 	} else {
-	    Diagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	    Diagram diagram =
+		ProjectManager.getManager().getCurrentProject()
+		.getActiveDiagram();
 	    Layer lay = null;
 	    if (diagram != null) {
     		lay = diagram.getLayer();
@@ -873,12 +960,18 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
 			name = ((LayerPerspective) lay).getName();
 		    } else {
 			Editor ed = Globals.curEditor();
-			if (ed != null && ed.getGraphModel() != null && ed.getLayerManager() != null && ed.getLayerManager().getActiveLayer() != null) {
+			if (ed != null
+			    && ed.getGraphModel() != null
+			    && ed.getLayerManager() != null
+			    && ed.getLayerManager().getActiveLayer() != null)
+			{
 			    lay = ed.getLayerManager().getActiveLayer();
 			    name = lay.getName();
 			    gm = ed.getGraphModel();
 			} else
-			    throw new IllegalStateException("No way to get graphmodel. Project corrupted");
+			    throw new IllegalStateException(
+				    "No way to get graphmodel. "
+				    + "Project corrupted");
 		    }
 		    setLayer(new SequenceDiagramLayout(name, gm));
     		}
@@ -916,7 +1009,8 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
      */
     protected Object getDestination() {
         if (getOwner() != null) {
-            return CommonBehaviorHelper.getHelper().getDestination((MLink) getOwner());
+            return CommonBehaviorHelper.getHelper()
+		.getDestination((MLink) getOwner());
         }
         return null;
     }
@@ -926,15 +1020,16 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener 
      */
     protected Object getSource() {
         if (getOwner() != null) {
-            return CommonBehaviorHelper.getHelper().getSource((MLink) getOwner());
+            return CommonBehaviorHelper.getHelper()
+		.getSource((MLink) getOwner());
         }
         return null;
     }
 
     /**
-     * Hack to let the sequence diagrams still do their job. The sequence diagrams
-     * do not update their model correctly and that's why the updating of the
-     * classifiers goes wrong.
+     * Hack to let the sequence diagrams still do their job. The
+     * sequence diagrams do not update their model correctly and
+     * that's why the updating of the classifiers goes wrong.
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateClassifiers()
      */
     protected boolean updateClassifiers() {

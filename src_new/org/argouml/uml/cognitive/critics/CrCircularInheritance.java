@@ -46,7 +46,8 @@ import ru.novosoft.uml.foundation.core.MGeneralizableElement;
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrCircularInheritance extends CrUML {
-    protected static Category cat = Category.getInstance(CrCircularInheritance.class);
+    protected static Category cat =
+	Category.getInstance(CrCircularInheritance.class);
 						      
     public CrCircularInheritance() {
 	setHeadline("Remove <ocl>self</ocl>'s Circular Inheritance");
@@ -81,8 +82,10 @@ public class CrCircularInheritance extends CrUML {
 	VectorSet above = offs.reachable(new SuperclassGen());
 	java.util.Enumeration enum = above.elements();
 	while (enum.hasMoreElements()) {
-	    MGeneralizableElement ge2 = (MGeneralizableElement) enum.nextElement();
-	    VectorSet trans = (new VectorSet(ge2)).reachable(new SuperclassGen());
+	    MGeneralizableElement ge2 =
+		(MGeneralizableElement) enum.nextElement();
+	    VectorSet trans =
+		(new VectorSet(ge2)).reachable(new SuperclassGen());
 	    if (trans.contains(dm)) offs.addElement(ge2);
 	}
 	return offs;

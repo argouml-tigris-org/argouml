@@ -29,7 +29,6 @@
  */
 package org.argouml.uml.diagram.ui;
 
-import java.awt.event.ActionEvent;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;

@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
-import java.beans.PropertyVetoException;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;

@@ -42,10 +42,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import java.util.Hashtable;
 
 import org.apache.log4j.Category;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import ru.novosoft.uml.behavior.use_cases.MActor;
@@ -61,13 +59,8 @@ import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MRelationship;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.model_management.MElementImport;
 
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Mode;
-import org.tigris.gef.base.ModeManager;
 
 /**
  * <p>This class defines a bridge between the UML meta-model representation of

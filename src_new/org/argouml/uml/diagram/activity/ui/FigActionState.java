@@ -63,7 +63,8 @@ public class FigActionState extends FigStateVertex {
     // constructors
 
     public FigActionState() {
-	_bigPort = new FigRRect(10 + 1, 10 + 1, 90 - 2, 25 - 2, Color.cyan, Color.cyan);
+	_bigPort = new FigRRect(10 + 1, 10 + 1, 90 - 2, 25 - 2,
+				Color.cyan, Color.cyan);
 	_cover = new FigRRect(10, 10, 90, 25, Color.black, Color.white);
 
 	_bigPort.setLineWidth(0);

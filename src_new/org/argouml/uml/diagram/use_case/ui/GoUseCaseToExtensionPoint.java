@@ -40,7 +40,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.ui.AbstractGoRule;
 
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MClassifier;
 
 
 /**

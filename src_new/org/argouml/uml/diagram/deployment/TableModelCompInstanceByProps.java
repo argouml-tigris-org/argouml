@@ -53,7 +53,8 @@ public class TableModelCompInstanceByProps extends TableModelComposite {
     }
 
     public Vector rowObjectsFor(Object t) {
-	if (!(t instanceof UMLDeploymentDiagram || t instanceof MNodeInstance)) return new Vector();
+	if (!(t instanceof UMLDeploymentDiagram || t instanceof MNodeInstance))
+	    return new Vector();
 	if (t instanceof UMLDeploymentDiagram) {
 	    UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
 	    Vector nodes = d.getNodes();

@@ -105,7 +105,8 @@ public class PackageCodePiece extends NamedCodePiece
 
 	if (!(mNamespace instanceof MModel)) {
 	    writer.write("package ");
-	    writer.write(GeneratorJava.getInstance().getPackageName(mNamespace));
+	    writer.write(GeneratorJava.getInstance()
+			 .getPackageName(mNamespace));
 	    writer.write(";");
 	}
 	// fast forward original code (overwriting)

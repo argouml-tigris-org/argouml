@@ -32,14 +32,15 @@ import javax.swing.tree.TreeModel;
 import org.apache.log4j.Category;
 
 /**
- * Abstract class to be used as a convenience class for implementing 'go rules'.
- * Go rules are rules to which the navperspectives comply if they are registred
- * with the navperspectives. This usually happens in the static block of
- * NavPerspective.
- * If some modelelement is not showing up in a navperspective, in most cases this
- * means that there is no go rule defined or an incorrect one. Via the abstract method
- * getChildren the children of some tree element in a perspective are returned.
- * Only the returned children are shown for some tree element.
+ * Abstract class to be used as a convenience class for implementing
+ * 'go rules'.  Go rules are rules to which the navperspectives comply
+ * if they are registred with the navperspectives. This usually
+ * happens in the static block of NavPerspective.  If some
+ * modelelement is not showing up in a navperspective, in most cases
+ * this means that there is no go rule defined or an incorrect
+ * one. Via the abstract method getChildren the children of some tree
+ * element in a perspective are returned.  Only the returned children
+ * are shown for some tree element.
  *
  *
  * @author jaap.branderhorst@xs4all.nl
@@ -137,7 +138,8 @@ public abstract class AbstractGoRule implements TreeModel {
     // ------------- not used TreeModel methods -------------
 
     public void addTreeModelListener(
-				     javax.swing.event.TreeModelListener treeModelListener) {
+	    javax.swing.event.TreeModelListener treeModelListener) 
+    {
     }
 
     public Object getRoot() {
@@ -145,7 +147,8 @@ public abstract class AbstractGoRule implements TreeModel {
     }
 
     public void removeTreeModelListener(
-					javax.swing.event.TreeModelListener treeModelListener) {
+	   javax.swing.event.TreeModelListener treeModelListener)
+    {
     }
 
     public void valueForPathChanged(

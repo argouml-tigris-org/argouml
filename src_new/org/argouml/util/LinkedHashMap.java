@@ -27,9 +27,6 @@ package org.argouml.util;
 import java.util.Collection;
 import java.util.Set;
 import java.util.Map;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.ListIterator;
 import java.util.Iterator;
 
 /**

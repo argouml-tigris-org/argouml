@@ -88,6 +88,8 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MPackage;
 
+import tudresden.ocl.parser.node.AConstraintBody;
+
 /** Generator subclass to generate text for display in diagrams in in
  * text fields in the Argo/UML user interface.  The generated code
  * looks a lot like (invalid) Java.  The idea is that other generators
@@ -101,21 +103,27 @@ public class GeneratorJava
     extends Generator implements FileGenerator {
 
     /*
-     * 2002-06-09
-     * changed visibility of VERBOSE_DOCS and LF_BEFORE_CURLY to public instead of private
+     * 2002-06-09 changed visibility of VERBOSE_DOCS and
+     * LF_BEFORE_CURLY to public instead of private
      * Reason: needed for testing
-     * 2002-06-11
-     * removed VERBOSE_DOCS and LF_BEFORE_CURLY and changed them in configurable items (not yet implemented in GUI)
+     *
+     * 2002-06-11 removed VERBOSE_DOCS and LF_BEFORE_CURLY and changed
+     * them in configurable items (not yet implemented in GUI)
      */
 
     protected boolean _verboseDocs = false;
     protected boolean _lfBeforeCurly = false;
     private static final boolean VERBOSE_DOCS = false;
-    private final static String LINE_SEPARATOR = System.getProperty("line.separator");
+    private static final String LINE_SEPARATOR =
+	System.getProperty("line.separator");
     // TODO: make it configurable
     // next two flags shows in what mode we are working
-    private static boolean _isFileGeneration = false; // true when GenerateFile
-    private static boolean _isInUpdateMode = false; // true if GenerateFile in Update Mode
+    /** true when GenerateFile
+     */
+    private static boolean _isFileGeneration = false;
+    /** true if GenerateFile in Update Mode
+     */
+    private static boolean _isInUpdateMode = false; 
 
     private static GeneratorJava SINGLETON = new GeneratorJava();
 
@@ -177,7 +185,8 @@ public class GeneratorJava
         String pathname = path + filename;
         //Argo.log.info("-----" + pathname + "-----");
 
-        //now decide wether file exist and need an update or is to be newly generated
+        //now decide wether file exist and need an update or is to be
+        //newly generated
         File f = new File(pathname);
         _isFileGeneration = true; // used to produce method javadoc
         if (f.exists()) {
@@ -226,10 +235,14 @@ public class GeneratorJava
 				 String packagePath) {
         StringBuffer sb = new StringBuffer(80);
         //TODO: add user-defined copyright
-        if (VERBOSE_DOCS)
-            sb.append("// FILE: ").append(pathname.replace('\\', '/')).append(LINE_SEPARATOR).append(LINE_SEPARATOR);
-        if (packagePath.length() > 0)
-            sb.append("package ").append(packagePath).append(";").append(LINE_SEPARATOR).append(LINE_SEPARATOR);
+        if (VERBOSE_DOCS) {
+            sb.append("// FILE: ").append(pathname.replace('\\', '/'));
+	    sb.append(LINE_SEPARATOR).append(LINE_SEPARATOR);
+	}
+        if (packagePath.length() > 0) {
+            sb.append("package ").append(packagePath).append(";");
+	    sb.append(LINE_SEPARATOR).append(LINE_SEPARATOR);
+	}
         sb.append(generateImports(cls, packagePath));
         return sb.toString();
     }
@@ -302,7 +315,8 @@ public class GeneratorJava
                             importSet.add("java.util.Vector");
                         } else if (
 				   (ftype =
-				    generateImportType(ae2.getType(), packagePath))
+				    generateImportType(ae2.getType(),
+						       packagePath))
 				   != null) {
                             importSet.add(ftype);
                         }
@@ -313,7 +327,8 @@ public class GeneratorJava
         // finally generate the import statements
         for (j = importSet.iterator(); j.hasNext();) {
             ftype = (String) j.next();
-            sb.append("import ").append(ftype).append(";").append(LINE_SEPARATOR);
+            sb.append("import ").append(ftype).append(";");
+	    sb.append(LINE_SEPARATOR);
         }
         if (!importSet.isEmpty()) {
             sb.append(LINE_SEPARATOR);
@@ -375,7 +390,8 @@ public class GeneratorJava
             String s =
                 generateConstraintEnrichedDocComment(op, documented, INDENT);
             if (s != null && s.trim().length() > 0)
-                sb.append(s).append(LINE_SEPARATOR); // should starts as the code piece
+		// should starts as the code piece
+                sb.append(s).append(LINE_SEPARATOR);
         }
 
         // 2002-07-14
@@ -448,12 +464,10 @@ public class GeneratorJava
         sb.append(generateScope(attr));
         sb.append(generateChangability(attr));
         /*
-	 * 2002-07-14
-	 * Jaap Branderhorst
-	 * Generating the multiplicity should not lead to putting the range in the generated code
-	 * (no 0..1 as modifier)
-	 * Therefore removed the multiplicity generation
-	 * START OLD CODE
+	 * 2002-07-14 Jaap Branderhorst Generating the multiplicity
+	 * should not lead to putting the range in the generated code
+	 * (no 0..1 as modifier) Therefore removed the multiplicity
+	 * generation START OLD CODE
 
 	 if (!MMultiplicity.M1_1.equals(attr.getMultiplicity()))
 	 {
@@ -467,7 +481,8 @@ public class GeneratorJava
         MClassifier type = attr.getType();
         MMultiplicity multi = attr.getMultiplicity();
         // handle multiplicity here since we need the type
-        // actually the API of generator is buggy since to generate multiplicity correctly we need the attribute too
+        // actually the API of generator is buggy since to generate
+        // multiplicity correctly we need the attribute too
         if (type != null && multi != null) {
             if (multi.equals(MMultiplicity.M1_1)) {
                 sb.append(generateClassifierRef(type)).append(' ');
@@ -501,7 +516,8 @@ public class GeneratorJava
     public String generatePackage(MPackage p) {
         StringBuffer sb = new StringBuffer(80);
         String packName = generateName(p.getName());
-        sb.append("package ").append(packName).append(" {").append(LINE_SEPARATOR);
+        sb.append("package ").append(packName).append(" {");
+	sb.append(LINE_SEPARATOR);
         Collection ownedElements = p.getOwnedElements();
         if (ownedElements != null) {
             Iterator ownedEnum = ownedElements.iterator();
@@ -544,8 +560,8 @@ public class GeneratorJava
         // Classfier code piece doesn't start with LINE_SEPARATOR
         // so the next line is commented. See Issue 1505
         //sb.append (LINE_SEPARATOR);
-        sb.append(DocumentationManager.getComments(cls)).append(
-								generateConstraintEnrichedDocComment(cls, true, ""));
+        sb.append(DocumentationManager.getComments(cls));
+	sb.append(generateConstraintEnrichedDocComment(cls, true, ""));
 
         // Now add visibility
         sb.append(generateVisibility(cls.getVisibility()));
@@ -564,8 +580,8 @@ public class GeneratorJava
             sb.append(" " + cls.getTaggedValue("src_modifiers") + " ");
 
         // add classifier keyword and classifier name
-        sb.append(sClassifierKeyword).append(" ").append(
-							 generateName(cls.getName()));
+        sb.append(sClassifierKeyword).append(" ");
+	sb.append(generateName(cls.getName()));
 
         // add base class/interface
         String baseClass = generateGeneralization(cls.getGeneralizations());
@@ -604,10 +620,9 @@ public class GeneratorJava
                 } else {
                     classifierkeyword = "interface";
                 }
-                sb.append(LINE_SEPARATOR).append("//end of "
-						 + classifierkeyword
-						 + " "
-						 + cls.getName()).append(LINE_SEPARATOR);
+                sb.append(LINE_SEPARATOR);
+		sb.append("//end of ").append(classifierkeyword);
+		sb.append(" ").append(cls.getName()).append(LINE_SEPARATOR);
             }
             sb.append("}");
         }
@@ -666,8 +681,10 @@ public class GeneratorJava
         //	}
         //	sbPrefix.append('\n');
         // END OLD CODE
-        // which caused problems due to the misuse of the boolean fplain. (verbosedocs has same semantics)
-        // To prevent backward compatibility problems i didnt remove the method but changed to:
+        // which caused problems due to the misuse of the boolean
+        // fplain. (verbosedocs has same semantics) To prevent
+        // backward compatibility problems i didnt remove the method
+        // but changed to:
         sbPrefix.append(generateClassifierEnd(cls));
 
         return sbPrefix;
@@ -675,19 +692,19 @@ public class GeneratorJava
     }
 
     /**
-     * Generates code for a classifier. In case of Java code is generated for classes and interfaces only at the moment.
+     * Generates code for a classifier. In case of Java code is
+     * generated for classes and interfaces only at the moment.
      * @see org.argouml.application.api.NotationProvider#generateClassifier(MClassifier)
      */
     public String generateClassifier(MClassifier cls) {
         /*
-         * 2002-07-11
-         * Jaap Branderhorst
-         * To prevent generation of not requested whitespace etc. the method is reorganized.
-         * First the start of the classifier is generated.
-         * Next the body (method).
-         * Then the end of the classifier.
-         * The last step is to concatenate everything.
-         * Done this because if the body was empty there were still linefeeds.
+         * 2002-07-11 Jaap Branderhorst To prevent generation of not
+         * requested whitespace etc. the method is reorganized.  First
+         * the start of the classifier is generated.  Next the body
+         * (method).  Then the end of the classifier.  The last step
+         * is to concatenate everything.  Done this because if the
+         * body was empty there were still linefeeds.
+
          * Start old code:
 	 StringBuffer sb = generateClassifierStart(cls);
 	 if (sb == null)
@@ -859,7 +876,8 @@ public class GeneratorJava
             if (!strs.isEmpty()) {
                 sb.append(LINE_SEPARATOR);
                 if (_verboseDocs && cls instanceof MClass) {
-                    sb.append(INDENT).append("// Attributes").append(LINE_SEPARATOR);
+                    sb.append(INDENT).append("// Attributes");
+		    sb.append(LINE_SEPARATOR);
                 }
 
                 Iterator strEnum = strs.iterator();
@@ -886,7 +904,8 @@ public class GeneratorJava
             if (!ends.isEmpty()) {
                 sb.append(LINE_SEPARATOR);
                 if (_verboseDocs && cls instanceof MClass) {
-                    sb.append(INDENT).append("// Associations").append(LINE_SEPARATOR);
+                    sb.append(INDENT).append("// Associations");
+		    sb.append(LINE_SEPARATOR);
                 }
 
                 Iterator endEnum = ends.iterator();
@@ -907,7 +926,9 @@ public class GeneratorJava
             Collection elements = cls.getOwnedElements();
             for (Iterator i = elements.iterator(); i.hasNext(); ) {
                 MModelElement element = (MModelElement) i.next();
-                if (element instanceof MClass || element instanceof MInterface) {
+                if (element instanceof MClass
+		    || element instanceof MInterface) 
+		{
                     sb.append(generateClassifier((MClass) element));
                 }
             }
@@ -927,7 +948,8 @@ public class GeneratorJava
             if (!behs.isEmpty()) {
                 sb.append(LINE_SEPARATOR);
                 if (_verboseDocs) {
-                    sb.append(INDENT).append("// Operations").append(LINE_SEPARATOR);
+                    sb.append(INDENT).append("// Operations");
+		    sb.append(LINE_SEPARATOR);
                 }
                 Iterator behEnum = behs.iterator();
 
@@ -969,11 +991,12 @@ public class GeneratorJava
         return sb;
 
     } /**
-       * Generate the body of a method associated with the given operation. This
-       * assumes there's at most one method associated!
+       * Generate the body of a method associated with the given
+       * operation. This assumes there's at most one method
+       * associated!
        *
-       * If no method is associated with the operation, a default method body will
-       * be generated.
+       * If no method is associated with the operation, a default
+       * method body will be generated.
        */
     public String generateMethodBody(MOperation op) {
         //Argo.log.info("generateMethodBody");
@@ -991,7 +1014,8 @@ public class GeneratorJava
                         if (body.equals("\n")) {
                             return LINE_SEPARATOR;
                         }
-                        StringTokenizer tokenizer = new StringTokenizer(body, "\n");
+                        StringTokenizer tokenizer =
+			    new StringTokenizer(body, "\n");
                         StringBuffer bsb = new StringBuffer();
                         while (tokenizer.hasMoreTokens()) {
                             String token = tokenizer.nextToken();
@@ -1047,7 +1071,7 @@ public class GeneratorJava
 
     public String generateTaggedValues(MModelElement e) {
         if (_isInUpdateMode)
-            return ""; // no tagged values are generated in update mode. Fixed issue 1512
+            return ""; // no tagged values are generated in update mode.
         Collection tvs = e.getTaggedValues();
         if (tvs == null || tvs.size() == 0)
             return "";
@@ -1057,12 +1081,14 @@ public class GeneratorJava
         String s = null;
         while (iter.hasNext()) {
             /*
-             * 2002-11-07
-             * Jaap Branderhorst
-             * Was
-             * s = generateTaggedValue((MTaggedValue) iter.next());
-             * which caused problems because the test tags (i.e. tags with name <NotationName.getName()>+TEST_SUFFIX)
-             * were still generated.
+             * 2002-11-07 Jaap Branderhorst Was 
+	     *
+	     * s = generateTaggedValue((MTaggedValue) iter.next()); 
+	     *
+	     * which caused problems because the test tags (i.e. tags with
+             * name <NotationName.getName()>+TEST_SUFFIX) were still
+             * generated.
+	     *
              * New code:
              */
             s = generate((MTaggedValue) iter.next());
@@ -1075,11 +1101,12 @@ public class GeneratorJava
                      * Was:
 		     buf.append("// {");
                      *
-                     * which caused problems with new lines characters in tagged values
-                     * (e.g. comments...). The new version still has some problems with
-                     * tagged values containing "*"+"/" as this closes the comment
-                     * prematurely, but comments should be taken out of the tagged values
-                     * list anyway...
+                     * which caused problems with new lines characters
+                     * in tagged values (e.g. comments...). The new
+                     * version still has some problems with tagged
+                     * values containing "*"+"/" as this closes the
+                     * comment prematurely, but comments should be
+                     * taken out of the tagged values list anyway...
                      */
                     buf.append("/* {");
 
@@ -1117,10 +1144,11 @@ public class GeneratorJava
     }
 
     /**
-     * Enhance/Create the doccomment for the given model element, including tags
-     * for any OCL constraints connected to the model element. The tags generated
-     * are suitable for use with the ocl injector which is part of the Dresden OCL
-     * Toolkit and are in detail:
+     * Enhance/Create the doccomment for the given model element,
+     * including tags for any OCL constraints connected to the model
+     * element. The tags generated are suitable for use with the ocl
+     * injector which is part of the Dresden OCL Toolkit and are in
+     * detail:
      *
      * &nbsp;@invariant for each invariant specified
      * &nbsp;@precondition for each precondition specified
@@ -1166,11 +1194,15 @@ public class GeneratorJava
             MClassifier type = ae.getType();
             if (type != null) {
                 sDocComment.append(" @element-type ").append(type.getName());
-            } else {
-                // REMOVED: 2002-03-11 STEFFEN ZSCHALER: element type unknown is not recognized by the OCL injector...
-                //sDocComment += " @element-type unknown";
-            }
-            sDocComment.append(LINE_SEPARATOR).append(INDENT).append(" */").append(LINE_SEPARATOR);
+            } 
+
+	    // REMOVED: 2002-03-11 STEFFEN ZSCHALER: element type
+	    // unknown is not recognized by the OCL injector...
+	    // else {
+	    //     sDocComment += " @element-type unknown";
+	    // }
+            sDocComment.append(LINE_SEPARATOR).append(INDENT).append(" */");
+	    sDocComment.append(LINE_SEPARATOR);
             return sDocComment.toString();
         } else {
             return (s != null) ? s : "";
@@ -1178,10 +1210,11 @@ public class GeneratorJava
     }
 
     /**
-     * Enhance/Create the doccomment for the given model element, including tags
-     * for any OCL constraints connected to the model element. The tags generated
-     * are suitable for use with the ocl injector which is part of the Dresden OCL
-     * Toolkit and are in detail:
+     * Enhance/Create the doccomment for the given model element,
+     * including tags for any OCL constraints connected to the model
+     * element. The tags generated are suitable for use with the ocl
+     * injector which is part of the Dresden OCL Toolkit and are in
+     * detail:
      *
      * &nbsp;@invariant for each invariant specified
      * &nbsp;@precondition for each precondition specified
@@ -1191,15 +1224,18 @@ public class GeneratorJava
      * @author Steffen Zschaler
      *
      * @param me the model element for which the documentation comment is needed
-     * @param documented if existing tagged values should be generated in addition to javadoc
-     * @param indent indent String (usually blanks) for indentation of generated comments
-     * @return the documentation comment for the specified model element, either
-     * enhanced or completely generated
+     * @param documented if existing tagged values should be generated 
+     *                   in addition to javadoc
+     * @param indent indent String (usually blanks) for indentation of 
+     *               generated comments
+     * @return the documentation comment for the specified model
+     * element, either enhanced or completely generated
      */
-    static public String generateConstraintEnrichedDocComment(
-							      MModelElement me,
-							      boolean documented,
-							      String indent) {
+    public static String generateConstraintEnrichedDocComment(
+            MModelElement me,
+	    boolean documented,
+	    String indent) 
+    {
         if (_isFileGeneration)
             documented = true; // always "documented" if we generate file
         // Retrieve any existing doccomment
@@ -1256,9 +1292,9 @@ public class GeneratorJava
                 return m_llsTags.iterator();
             }
 
-            public void caseAConstraintBody(
-					    tudresden.ocl.parser.node.AConstraintBody node) {
-                // We don't care for anything below this node, so we do not use apply anymore.
+            public void caseAConstraintBody(AConstraintBody node) {
+                // We don't care for anything below this node, so we
+                // do not use apply anymore.
                 String sKind =
                     (node.getStereotype() != null)
 		    ? (node.getStereotype().toString())
@@ -1307,10 +1343,9 @@ public class GeneratorJava
                 otParsed.apply(te);
 
                 for (Iterator j = te.getTags(); j.hasNext();) {
-                    sDocComment.append(' ').append(j.next()).append(
-								    LINE_SEPARATOR).append(
-											   INDENT).append(
-													  " *");
+                    sDocComment.append(' ').append(j.next());
+		    sDocComment.append(LINE_SEPARATOR);
+		    sDocComment.append(INDENT).append(" *");
                 }
             } catch (java.io.IOException ioe) {
                 // Nothing to be done, should not happen anyway ;-)
@@ -1324,7 +1359,9 @@ public class GeneratorJava
 
     public String generateConstraints(MModelElement me) {
 
-        // This method just adds comments to the generated java code. This should be code generated by ocl-argo int he future?
+        // This method just adds comments to the generated java
+        // code. This should be code generated by ocl-argo int he
+        // future?
         Collection cs = me.getConstraints();
         if (cs == null || cs.size() == 0)
             return "";
@@ -1341,7 +1378,8 @@ public class GeneratorJava
                 new java.util.StringTokenizer(constrStr, LINE_SEPARATOR + "\r");
             while (st.hasMoreElements()) {
                 String constrLine = st.nextToken();
-                sb.append(INDENT).append("// ").append(constrLine).append(LINE_SEPARATOR);
+                sb.append(INDENT).append("// ").append(constrLine);
+		sb.append(LINE_SEPARATOR);
             }
         }
         sb.append(LINE_SEPARATOR);
@@ -1379,8 +1417,8 @@ public class GeneratorJava
                  * Added generation of doccomment 2001-09-26 STEFFEN ZSCHALER
                  *
                  */
-                sb.append(INDENT).append(
-					 generateConstraintEnrichedDocComment(a, ae2));
+                sb.append(INDENT);
+		sb.append(generateConstraintEnrichedDocComment(a, ae2));
                 sb.append(generateAssociationEnd(ae2));
             }
         }
@@ -1425,7 +1463,8 @@ public class GeneratorJava
         if (MScopeKind.CLASSIFIER.equals(ae.getTargetScope()))
             sb.append("static ");
         //     String n = ae.getName();
-        //     if (n != null && !String.UNSPEC.equals(n)) s += generateName(n) + " ";
+        //     if (n != null && !String.UNSPEC.equals(n)) 
+	//         s += generateName(n) + " ";
         //     if (ae.isNavigable()) s += "navigable ";
         //     if (ae.getIsOrdered()) s += "ordered ";
         MMultiplicity m = ae.getMultiplicity();
@@ -1518,7 +1557,9 @@ public class GeneratorJava
     public String generateVisibility(MFeature f) {
         String _tagged = f.getTaggedValue("src_visibility");
         if (_tagged != null) {
-            if ( _tagged.trim().equals("") || _tagged.trim().toLowerCase().equals("package") || _tagged.trim().toLowerCase().equals("default"))
+            if (_tagged.trim().equals("")
+		|| _tagged.trim().toLowerCase().equals("package")
+		|| _tagged.trim().toLowerCase().equals("default"))
                 return "";
             else
                 return f.getTaggedValue("src_visibility") + " ";
@@ -1576,11 +1617,13 @@ public class GeneratorJava
     /**
      * Generates "synchronized" keyword for guarded operations.
      * @param op The operation
-     * @return String The synchronized keyword if the operation is guarded, else ""
+     * @return String The synchronized keyword if the operation is guarded, 
+     *                else "".
      */
     public String generateConcurrency(MOperation op) {
         if (op.getConcurrency() != null
-            && op.getConcurrency().getValue() == MCallConcurrencyKind._GUARDED) {
+            && op.getConcurrency().getValue() == MCallConcurrencyKind._GUARDED)
+	{
             return "synchronized ";
         }
         return "";
@@ -1754,13 +1797,16 @@ public class GeneratorJava
        @return the Java package name
     */
     public String getPackageName(Object namespace) {
-        if (namespace == null || !ModelFacade.isANamespace(namespace) || ModelFacade.getNamespace(namespace) == null)
+        if (namespace == null
+	    || !ModelFacade.isANamespace(namespace)
+	    || ModelFacade.getNamespace(namespace) == null)
             return "";
         String packagePath = ModelFacade.getName(namespace);
         while ((namespace = ModelFacade.getNamespace(namespace)) != null) {
             // ommit root package name; it's the model's root
             if (ModelFacade.getNamespace(namespace) != null)
-                packagePath = ModelFacade.getName(namespace) + '.' + packagePath;
+                packagePath =
+		    ModelFacade.getName(namespace) + '.' + packagePath;
         }
         return packagePath;
     }

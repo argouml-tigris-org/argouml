@@ -32,7 +32,8 @@ import javax.swing.event.*;
 import org.argouml.uml.ui.*;
 
 /**
- * An extension of the standard swing JMenu class which provides additional Argo support.
+ * An extension of the standard swing JMenu class which provides
+ * additional Argo support.
  *
  */
 public class ArgoJMenu extends JMenu {
@@ -45,8 +46,8 @@ public class ArgoJMenu extends JMenu {
     public ArgoJMenu(String s) { super(s); }
 
     /**
-     * Creates a new checkbox menu item attached to the specified Action object and appends
-     * it to the end of this menu.
+     * Creates a new checkbox menu item attached to the specified
+     * Action object and appends it to the end of this menu.
      *
      * @param     a      the Action for the checkbox menu item to be added
      * @return          the new checkbox menu item
@@ -54,12 +55,14 @@ public class ArgoJMenu extends JMenu {
     public JCheckBoxMenuItem addCheckItem(Action a) {
 	String name = (String) a.getValue(Action.NAME);
 	Icon icon = (Icon) a.getValue(Action.SMALL_ICON);
-	// Block added by BobTarling 8-Jan-2002
-	// Set the checkbox on or off according to the SELECTED value of the action.
-	// If no SELECTED value is found then this defaults to true in order to remain
-	// compatible with previous versions of this code.
+	// Block added by BobTarling 8-Jan-2002 Set the checkbox on or
+	// off according to the SELECTED value of the action.  If no
+	// SELECTED value is found then this defaults to true in order
+	// to remain compatible with previous versions of this code.
 	Boolean selected = (Boolean) a.getValue("SELECTED");
-	JCheckBoxMenuItem mi = new JCheckBoxMenuItem(name, icon, (selected == null || selected.booleanValue()));
+	JCheckBoxMenuItem mi =
+	    new JCheckBoxMenuItem(name, icon,
+				  (selected == null || selected.booleanValue()));
 	// End of block
 	mi.setHorizontalTextPosition(JButton.RIGHT);
 	mi.setVerticalTextPosition(JButton.CENTER);

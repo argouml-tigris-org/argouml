@@ -32,8 +32,6 @@ import java.util.Vector;
 
 import org.tigris.gef.ocl.TemplateReader;
 
-import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ToDoItem;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.ocl.OCLExpander;

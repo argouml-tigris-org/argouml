@@ -67,7 +67,8 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML Stereotype instance.
      */
     public MStereotype createStereotype() {
-        MStereotype modelElement = MFactory.getDefaultFactory().createStereotype();
+        MStereotype modelElement =
+	    MFactory.getDefaultFactory().createStereotype();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -77,7 +78,8 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML TaggedValue instance.
      */
     public MTaggedValue createTaggedValue() {
-        MTaggedValue modelElement = MFactory.getDefaultFactory().createTaggedValue();
+        MTaggedValue modelElement =
+	    MFactory.getDefaultFactory().createTaggedValue();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -91,11 +93,14 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
         MModelElement m = (MModelElement) mObj;
         String text = (String) textObj;
         MNamespace ns = (MNamespace) nsObj;
-    	if (m == null || text == null || ns == null) throw new IllegalArgumentException("In buildStereotype: one of the arguments is null");
+    	if (m == null || text == null || ns == null)
+	    throw new IllegalArgumentException("one of the arguments is null");
     	MStereotype stereo = createStereotype();
     	stereo.setName(text);
-    	stereo.setBaseClass(ExtensionMechanismsHelper.getHelper().getMetaModelName(m));
-    	MStereotype stereo2 = ExtensionMechanismsHelper.getHelper().getStereotype(ns, stereo);
+    	stereo.setBaseClass(ExtensionMechanismsHelper.getHelper()
+			    .getMetaModelName(m));
+    	MStereotype stereo2 =
+	    ExtensionMechanismsHelper.getHelper().getStereotype(ns, stereo);
     	if (stereo2 != null) {
 	    stereo2.addExtendedElement(m);
 	    UmlFactory.getFactory().delete(stereo);
@@ -123,17 +128,21 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     }
 
     public MStereotype buildStereotype(MModelElement m, String text) {
-        // if (m == null && text == null) throw new IllegalArgumentException("In buildStereotype: one of the arguments is null");
+        // if (m == null && text == null)
+	//  throw new IllegalArgumentException("one of the arguments is null");
         MStereotype stereo = createStereotype();
         stereo.setName(text);
-        stereo.setBaseClass(ExtensionMechanismsHelper.getHelper().getMetaModelName(m));
-        MStereotype stereo2 = ExtensionMechanismsHelper.getHelper().getStereotype(stereo);
+        stereo.setBaseClass(ExtensionMechanismsHelper.getHelper()
+			    .getMetaModelName(m));
+        MStereotype stereo2 =
+	    ExtensionMechanismsHelper.getHelper().getStereotype(stereo);
         if (stereo2 != null) {
             stereo2.addExtendedElement(m);
             UmlFactory.getFactory().delete(stereo);
             return stereo2;
         } else {
-            ProjectManager.getManager().getCurrentProject().getModel().addOwnedElement(stereo);
+            ProjectManager.getManager()
+		.getCurrentProject().getModel().addOwnedElement(stereo);
             if (m != null)
                 stereo.addExtendedElement(m);
             return stereo;

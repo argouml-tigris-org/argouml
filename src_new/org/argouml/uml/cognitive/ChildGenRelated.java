@@ -37,7 +37,6 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.util.*;
 
 /** @stereotype singleton
@@ -64,7 +63,8 @@ public class ChildGenRelated implements ChildGenerator {
 	    Collection assocEnds = cls.getAssociationEnds();
 	    Iterator assocIterator = assocEnds.iterator();
 	    while (assocIterator.hasNext()) {
-		res.add(((MAssociationEnd) assocIterator.next()).getAssociation());
+		res.add(((MAssociationEnd) assocIterator.next())
+			.getAssociation());
 	    }
 
 	    res.addAll(cls.getFeatures());

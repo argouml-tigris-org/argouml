@@ -102,8 +102,11 @@ public class CrCompInstanceWithoutNode extends CrUML {
 		}
 		offs.addElement(fc);
 	    }
-	    else if (fc.getEnclosingFig() != null &&
-		     (((MComponentInstance) fc.getOwner()).getNodeInstance() == null)) {
+	    else if (fc.getEnclosingFig() != null
+		     && ((((MComponentInstance) fc.getOwner())
+			  .getNodeInstance())
+			 == null))
+	    {
 		if (offs == null) {
 		    offs = new VectorSet();
 		    offs.addElement(dd);

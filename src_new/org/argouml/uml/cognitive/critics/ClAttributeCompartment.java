@@ -35,8 +35,10 @@ import org.argouml.cognitive.*;
 import org.argouml.uml.diagram.static_structure.ui.*;
 
 public class ClAttributeCompartment implements Clarifier {
-    protected static Category cat = Category.getInstance(ClAttributeCompartment.class);
-    public static ClAttributeCompartment TheInstance = new ClAttributeCompartment();
+    protected static Category cat =
+	Category.getInstance(ClAttributeCompartment.class);
+    public static ClAttributeCompartment TheInstance =
+	new ClAttributeCompartment();
     public static int WAVE_LENGTH = 4;
     public static int WAVE_HEIGHT = 2;
 									  
@@ -46,13 +48,14 @@ public class ClAttributeCompartment implements Clarifier {
 									      
     public void setFig(Fig f) { _fig = f; }
     public void setToDoItem(ToDoItem i) { }
-										      
+
     public void paintIcon(Component c, Graphics g, int x, int y) {
 	if (_fig instanceof FigClass) {
 	    FigClass fc = (FigClass) _fig;
     
-	    // added by Eric Lefevre 13 Mar 1999: we must check if the FigText for
-	    // attributes is drawn before drawing things over it
+	    // added by Eric Lefevre 13 Mar 1999: we must check if the
+	    // FigText for attributes is drawn before drawing things
+	    // over it
 	    if ( !fc.isAttributeVisible() ) {
 		_fig = null;
 		return;
@@ -71,20 +74,22 @@ public class ClAttributeCompartment implements Clarifier {
 		g.drawLine(i, height + WAVE_HEIGHT, i + WAVE_LENGTH, height);
 		i += WAVE_LENGTH;
 		if (i >= right) break;
-		g.drawLine(i, height, i + WAVE_LENGTH, height + WAVE_HEIGHT / 2);
+		g.drawLine(i, height, i + WAVE_LENGTH,
+			   height + WAVE_HEIGHT / 2);
 		i += WAVE_LENGTH;
 		if (i >= right) break;
-		g.drawLine(i, height + WAVE_HEIGHT / 2, i + WAVE_LENGTH, height);
+		g.drawLine(i, height + WAVE_HEIGHT / 2, i + WAVE_LENGTH,
+			   height);
 		i += WAVE_LENGTH;
 		if (i >= right) break;
 	    }
 	    _fig = null;
 	}
     }
-											  
+
     public int getIconWidth() { return 0; }
     public int getIconHeight() { return 0; }
-												  
+
     public boolean hit(int x, int y) {
 	if (!(_fig instanceof FigClass)) {
 	    cat.debug("not a FigClass");
@@ -96,5 +101,5 @@ public class ClAttributeCompartment implements Clarifier {
 	_fig = null;
 	return res;
     }
-												      
+
 } /* end class ClAttributeCompartment */

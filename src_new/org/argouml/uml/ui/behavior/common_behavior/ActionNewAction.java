@@ -28,7 +28,6 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**

@@ -25,7 +25,6 @@
 // File: CrCompInstanceWithoutNode.java
 // Classes: CrComponentInstanceWithoutClassifier
 // Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
 
 package org.argouml.uml.cognitive.critics;
 
@@ -107,8 +106,11 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
 		}
 		offs.addElement(fc);
 	    }
-	    else if (fc.getEnclosingFig() != null &&
-		     (((MComponentInstance) fc.getOwner()).getNodeInstance() == null)) {
+	    else if (fc.getEnclosingFig() != null 
+		     && ((((MComponentInstance)
+			   fc.getOwner()).getNodeInstance())
+			 == null))
+	    {
 		if (offs == null) {
 		    offs = new VectorSet();
 		    offs.addElement(dd);

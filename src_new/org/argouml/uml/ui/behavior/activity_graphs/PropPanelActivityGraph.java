@@ -22,18 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui.behavior.activity_graphs;
 
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-
-import org.argouml.application.api.Argo;
-
-import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 import org.argouml.uml.ui.behavior.state_machines.*;
 

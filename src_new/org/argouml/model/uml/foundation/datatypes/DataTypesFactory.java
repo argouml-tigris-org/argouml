@@ -25,11 +25,9 @@
 package org.argouml.model.uml.foundation.datatypes;
 
 import org.argouml.model.uml.AbstractUmlModelFactory;
-import org.argouml.model.uml.UmlFactory;
 
 import java.util.List;
 
-import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.foundation.data_types.MActionExpression;
 import ru.novosoft.uml.foundation.data_types.MArgListsExpression;
 import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
@@ -73,7 +71,8 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML ActionExpression instance.
      */
-    public MActionExpression createActionExpression(String language, String body) {
+    public MActionExpression createActionExpression(String language,
+						    String body) {
         MActionExpression expression = new MActionExpression(language, body);
 	super.initialize(expression);
 	return expression;
@@ -83,8 +82,11 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML ArgListsExpression instance.
      */
-    public MArgListsExpression createArgListsExpression(String language, String body) {
-        MArgListsExpression expression = new MArgListsExpression(language, body);
+    public MArgListsExpression createArgListsExpression(String language,
+							String body)
+    {
+        MArgListsExpression expression =
+	    new MArgListsExpression(language, body);
 	super.initialize(expression);
 	return expression;
     }
@@ -93,7 +95,9 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML BooleanExpression instance.
      */
-    public MBooleanExpression createBooleanExpression(String language, String body) {
+    public MBooleanExpression createBooleanExpression(String language,
+						      String body)
+    {
         MBooleanExpression expression = new MBooleanExpression(language, body);
 	super.initialize(expression);
 	return expression;
@@ -113,8 +117,11 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML IterationExpression instance.
      */
-    public MIterationExpression createIterationExpression(String language, String body) {
-        MIterationExpression expression = new MIterationExpression(language, body);
+    public MIterationExpression createIterationExpression(String language,
+							  String body)
+    {
+        MIterationExpression expression =
+	    new MIterationExpression(language, body);
 	super.initialize(expression);
 	return expression;
     }
@@ -123,7 +130,8 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML MappingExpression instance.
      */
-    public MMappingExpression createMappingExpression(String language, String body) {
+    public MMappingExpression createMappingExpression(String language,
+						      String body) {
         MMappingExpression expression = new MMappingExpression(language, body);
 	super.initialize(expression);
 	return expression;
@@ -133,8 +141,11 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML ObjectSetExpression instance.
      */
-    public MObjectSetExpression createObjectSetExpression(String language, String body) {
-        MObjectSetExpression expression = new MObjectSetExpression(language, body);
+    public MObjectSetExpression createObjectSetExpression(String language,
+							  String body)
+    {
+        MObjectSetExpression expression =
+	    new MObjectSetExpression(language, body);
 	super.initialize(expression);
 	return expression;
     }
@@ -143,8 +154,11 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML ProcedureExpression instance.
      */
-    public MProcedureExpression createProcedureExpression(String language, String body) {
-        MProcedureExpression expression = new MProcedureExpression(language, body);
+    public MProcedureExpression createProcedureExpression(String language,
+							  String body)
+    {
+        MProcedureExpression expression =
+	    new MProcedureExpression(language, body);
 	super.initialize(expression);
 	return expression;
     }

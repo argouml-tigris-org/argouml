@@ -63,7 +63,8 @@ public class CmdSetPreferredSize extends Cmd {
         case PREFERRED_SIZE: return "preferred";
         case MINIMUM_SIZE: return "minimum";
         }
-        throw new IllegalArgumentException("CmdSetPreferredSize invoked with incompatible mode: " + r);
+        throw new IllegalArgumentException("CmdSetPreferredSize invoked with "
+					   + "incompatible mode: " + r);
     }
     
     /** set the fig to be resized */
@@ -103,7 +104,10 @@ public class CmdSetPreferredSize extends Cmd {
             fi.startTrans();
             // only resize elements which the user would also be able 
             // to resize.
-            if (fi.isResizable() == true && (!((fi instanceof FigPackage) || (fi instanceof FigCompositeState)))) {
+            if (fi.isResizable() == true
+		&& (!((fi instanceof FigPackage)
+		      || (fi instanceof FigCompositeState))))
+	    {
                 if (_mode == PREFERRED_SIZE)
                     fi.setSize(fi.getPreferedSize());
                 else

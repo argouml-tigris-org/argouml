@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.Dimension;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;

@@ -25,7 +25,6 @@
 package org.argouml.model.uml.modelmanagement;
 
 import org.argouml.model.uml.AbstractUmlModelFactory;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
 import ru.novosoft.uml.MFactory;
@@ -78,7 +77,8 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML ElementImport instance.
      */
     public MElementImport createElementImport() {
-        MElementImport modelElement = MFactory.getDefaultFactory().createElementImport();
+        MElementImport modelElement =
+	    MFactory.getDefaultFactory().createElementImport();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -114,7 +114,8 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML Subsystem instance.
      */
     public MSubsystem createSubsystem() {
-        MSubsystem modelElement = MFactory.getDefaultFactory().createSubsystem();
+        MSubsystem modelElement =
+	    MFactory.getDefaultFactory().createSubsystem();
 	super.initialize(modelElement);
 	return modelElement;
     }

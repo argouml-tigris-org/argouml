@@ -69,7 +69,8 @@ import ru.novosoft.uml.model_management.MPackage;
 public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener 
 {
-    protected static Category cat = Category.getInstance(ClassDiagramGraphModel.class);
+    protected static Category cat =
+	Category.getInstance(ClassDiagramGraphModel.class);
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -307,9 +308,12 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    _model.addOwnedElement((MModelElement) node);
 	}
 	if (node instanceof MInterface) {
-	    cat.debug("Interface stereo: " + MMUtil.STANDARDS.lookup("interface"));
+	    cat.debug("Interface stereo: " +
+		      MMUtil.STANDARDS.lookup("interface"));
 
-	    ((MInterface) node).setStereotype((MStereotype) MMUtil.STANDARDS.lookup("interface"));
+	    ((MInterface) node)
+		.setStereotype((MStereotype)
+			       MMUtil.STANDARDS.lookup("interface"));
 	}
 
 	fireNodeAdded(node);
@@ -322,7 +326,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (!canAddEdge(edge)) return;
         _edges.addElement(edge);
         // TODO: assumes public
-        if (edge instanceof MModelElement && ((MModelElement) edge).getNamespace() == null) {
+        if (edge instanceof MModelElement
+	    && ((MModelElement) edge).getNamespace() == null)
+	{
 	    _model.addOwnedElement((MModelElement) edge);
         }
         fireEdgeAdded(edge);
@@ -366,7 +372,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    }
 	}
 	if ( node instanceof MModelElement ) {
-	    Vector specs = new Vector(((MModelElement) node).getClientDependencies());
+	    Vector specs =
+		new Vector(((MModelElement) node).getClientDependencies());
 	    specs.addAll(((MModelElement) node).getSupplierDependencies());
 	    Iterator iter = specs.iterator();
 	    while (iter.hasNext()) {
@@ -420,7 +427,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      *
      * @return whether or not the rerouting is allowed
      */
-    public boolean canChangeConnectedNode(Object newNode, Object oldNode, Object edge) {
+    public boolean canChangeConnectedNode(Object newNode, Object oldNode,
+					  Object edge)
+    {
 
 	// prevent no changes...
 	if ( newNode == oldNode)
@@ -449,19 +458,25 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * @param edge this is the edge that is being dragged/rerouted
      * @param isSource tells us which end is being rerouted.
      */
-    public void changeConnectedNode(Object newNode, Object oldNode, Object edge, boolean isSource) {
-
-	if (edge instanceof MAssociation) rerouteAssociation(newNode,  oldNode,  edge,  isSource);
-	else if (edge instanceof MGeneralization) rerouteGeneralization(newNode,  oldNode,  edge,  isSource);
-	else if (edge instanceof MDependency) rerouteDependency(newNode,  oldNode,  edge,  isSource);
-	else if (edge instanceof MLink) rerouteLink(newNode,  oldNode,  edge,  isSource);
+    public void changeConnectedNode(Object newNode, Object oldNode,
+				    Object edge, boolean isSource)
+    {
+	if (edge instanceof MAssociation)
+	    rerouteAssociation(newNode,  oldNode,  edge,  isSource);
+	else if (edge instanceof MGeneralization)
+	    rerouteGeneralization(newNode,  oldNode,  edge,  isSource);
+	else if (edge instanceof MDependency)
+	    rerouteDependency(newNode,  oldNode,  edge,  isSource);
+	else if (edge instanceof MLink)
+	    rerouteLink(newNode,  oldNode,  edge,  isSource);
     }
 
     /**
      * helper method for changeConnectedNode
      */
-    private void rerouteAssociation(Object newNode, Object oldNode, Object edge, boolean isSource) {
-
+    private void rerouteAssociation(Object newNode, Object oldNode,
+				    Object edge, boolean isSource)
+    {
 	// check param types: only some connections are legal uml connections:
 
 	if (!(newNode instanceof MClassifier)
@@ -473,13 +488,15 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	MModelElement otherNode = null;
 
 	if (isSource) {
-	    otherNode = CoreHelper.getHelper().getDestination((MRelationship) edge);
+	    otherNode =
+		CoreHelper.getHelper().getDestination((MRelationship) edge);
 	}
 	else {
-	    otherNode = CoreHelper.getHelper().getSource((MRelationship) edge);
+	    otherNode =
+		CoreHelper.getHelper().getSource((MRelationship) edge);
 	}
 
-	if ( (newNode instanceof MInterface) &&
+	if ((newNode instanceof MInterface) &&
 	    (otherNode instanceof MInterface) )
 	    return;
 
@@ -533,8 +550,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * helper method for changeConnectedNode
      * <p>empty at the moment
      */
-    private void rerouteGeneralization(Object newNode, Object oldNode, Object edge, boolean isSource) {
-
+    private void rerouteGeneralization(Object newNode, Object oldNode,
+				       Object edge, boolean isSource)
+    {
       
     }
 
@@ -550,7 +568,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * helper method for changeConnectedNode
      * <p>empty at the moment
      */
-    private void rerouteLink(Object newNode, Object oldNode, Object edge, boolean isSource) {
+    private void rerouteLink(Object newNode, Object oldNode,
+			     Object edge, boolean isSource)
+    {
 
     }
 

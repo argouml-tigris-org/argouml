@@ -31,15 +31,16 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * Abstract class for a layout manager that sets all child components in a single row or single
- * column. PrefferedSize and MinimumSize are calculated.
+ * Abstract class for a layout manager that sets all child components
+ * in a single row or single column. PrefferedSize and MinimumSize are
+ * calculated.
  *
  * @author Bob Tarling
  */
 public abstract class LineLayout implements LayoutManager2 {
 
-    final static public Orientation HORIZONTAL = Horizontal.getInstance();
-    final static public Orientation VERTICAL = Vertical.getInstance();
+    public static final Orientation HORIZONTAL = Horizontal.getInstance();
+    public static final Orientation VERTICAL = Vertical.getInstance();
 
     protected Orientation _orientation;
     protected int _gap = 0;
@@ -69,10 +70,18 @@ public abstract class LineLayout implements LayoutManager2 {
         for (int i = 0; i < nComps; i++) {
             Component comp = parent.getComponent(i);
             if (comp.isVisible()) {
-                preferredSize = _orientation.addLength(preferredSize, _orientation.getLength(comp.getPreferredSize()) + gap);
+                preferredSize =
+		    _orientation.addLength(preferredSize,
+					   _orientation
+					   .getLength(comp.getPreferredSize())
+					   + gap);
                 gap = _gap;
-                if (_orientation.getBreadth(comp.getPreferredSize()) > _orientation.getBreadth(preferredSize)) {
-                    preferredSize = _orientation.setBreadth(preferredSize, comp.getPreferredSize());
+                if (_orientation.getBreadth(comp.getPreferredSize())
+		    > _orientation.getBreadth(preferredSize))
+		{
+                    preferredSize =
+			_orientation.setBreadth(preferredSize,
+						comp.getPreferredSize());
                 }
             }
         }
@@ -87,10 +96,18 @@ public abstract class LineLayout implements LayoutManager2 {
         for (int i = 0; i < nComps; i++) {
             Component comp = parent.getComponent(i);
             if (comp.isVisible()) {
-                minimumSize = _orientation.addLength(minimumSize, _orientation.getLength(comp.getMinimumSize()) + gap);
+                minimumSize =
+		    _orientation.addLength(minimumSize,
+					   _orientation
+					   .getLength(comp.getMinimumSize())
+					   + gap);
                 gap = _gap;
-                if (_orientation.getBreadth(comp.getMinimumSize()) > _orientation.getBreadth(minimumSize)) {
-                    minimumSize = _orientation.setBreadth(minimumSize, comp.getMinimumSize());
+                if (_orientation.getBreadth(comp.getMinimumSize())
+		    > _orientation.getBreadth(minimumSize))
+		{
+                    minimumSize =
+			_orientation.setBreadth(minimumSize,
+						comp.getMinimumSize());
                 }
             }
         }
@@ -100,16 +117,24 @@ public abstract class LineLayout implements LayoutManager2 {
 
     public Dimension maximumLayoutSize(Container parent) {
         int nComps = parent.getComponentCount();
-        Dimension maximumSize = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        Dimension maximumSize =
+	    new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
         int gap = 0;
         for (int i = 0; i < nComps; i++) {
             Component comp = parent.getComponent(i);
             Dimension componentMaxSize = comp.getMaximumSize();
             if (comp.isVisible() && componentMaxSize != null) {
-                maximumSize = _orientation.addLength(maximumSize, _orientation.getLength(componentMaxSize) + gap);
+                maximumSize =
+		    _orientation.addLength(maximumSize,
+					   _orientation
+					   .getLength(componentMaxSize)
+					   + gap);
                 gap = _gap;
-                if (_orientation.getBreadth(componentMaxSize) < _orientation.getBreadth(maximumSize)) {
-                    maximumSize = _orientation.setBreadth(maximumSize, componentMaxSize);
+                if (_orientation.getBreadth(componentMaxSize)
+		    < _orientation.getBreadth(maximumSize))
+		{
+                    maximumSize =
+			_orientation.setBreadth(maximumSize, componentMaxSize);
                 }
             }
         }

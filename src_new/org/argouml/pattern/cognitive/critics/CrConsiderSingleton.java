@@ -43,7 +43,9 @@ import org.argouml.model.ModelFacade;
  * itself of any subclasses), and thus whether it is suitable for declaration
  * as a Singleton (with stereotype &laquo;Singleton&raquo;.<p>
  *
- * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_singleton_violated">ArgoUML User Manual: Singleton Violated</a>
+ * @see <a
+ * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_singleton_violated">
+ * ArgoUML User Manual: Singleton Violated</a>
  */
 public class CrConsiderSingleton extends CrUML {
 

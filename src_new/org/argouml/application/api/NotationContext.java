@@ -31,10 +31,10 @@ package org.argouml.application.api;
  *  @since 0.9.4
  */
 public interface NotationContext {
- /** The context must return a NotationName indicating the notation
-  *  (and version if applicable) that it is using.
-  *
-  *  @return null if the context does not wish to name a specific notation
-  */
+    /** The context must return a NotationName indicating the notation
+     *  (and version if applicable) that it is using.
+     *
+     *  @return null if the context does not wish to name a specific notation
+     */
     public NotationName getContextNotation();
 }

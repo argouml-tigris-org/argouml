@@ -57,7 +57,8 @@ public class CrDupParamName extends CrUML {
 	if (!(dm instanceof MBehavioralFeature)) return NO_PROBLEM;
 	MBehavioralFeature bf = (MBehavioralFeature) dm;
 	Vector params = new Vector(bf.getParameters());
-	params.remove(UmlHelper.getHelper().getCore().getReturnParameter((MOperation) bf));
+	params.remove(UmlHelper.getHelper().getCore()
+		      .getReturnParameter((MOperation) bf));
 	Vector namesSeen = new Vector();
 	Iterator enum = params.iterator();
 	while (enum.hasNext()) {

@@ -24,8 +24,6 @@
 
 package org.argouml.application.security;
 
-import java.lang.SecurityException;
-
 /** An Argo security exception.
  *
  *  @author Thierry Lach

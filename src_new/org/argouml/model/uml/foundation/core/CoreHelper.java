@@ -107,7 +107,7 @@ public class CoreHelper {
      *
      * @param cls  the class you want to have the parents for
      * @return a collection of the parents, each of which is a
-     *					{@link MGeneralizableElement MGeneralizableElement}
+     *         {@link MGeneralizableElement MGeneralizableElement}
      */
     public Collection getAllSupertypes(MClassifier cls) {
         Collection result = new HashSet();
@@ -135,7 +135,7 @@ public class CoreHelper {
      *
      * @param cls  the class you want to have the parents for
      * @return a collection of the parents, each of which is a
-     *					{@link MGeneralizableElement MGeneralizableElement}
+     *         {@link MGeneralizableElement MGeneralizableElement}
      */
     public Collection getSupertypes(Object ogeneralizableelement) {
         Collection result = new HashSet();
@@ -152,9 +152,11 @@ public class CoreHelper {
         return result;
     }
 
-    /** This method returns all opposite AssociationEnds of a given Classifier
+    /** This method returns all opposite AssociationEnds of a given
+     * Classifier
      *
-     * @param classifier the classifier you want to have the opposite association ends for
+     * @param classifier the classifier you want to have the opposite
+     * association ends for
      * @return a collection of the opposite associationends
      */
     public Collection getAssociateEnds(MClassifier classifier) {
@@ -168,9 +170,11 @@ public class CoreHelper {
         return result;
     }
 
-    /** This method returns all opposite AssociationEnds of a given Classifier, including inherited
+    /** This method returns all opposite AssociationEnds of a given
+     * Classifier, including inherited
      *
-     * @param classifier the classifier you want to have the opposite association ends for
+     * @param classifier the classifier you want to have the opposite
+     * association ends for
      * @return a collection of the opposite associationends
      */
     public Collection getAssociateEndsInh(MClassifier classifier) {
@@ -257,7 +261,8 @@ public class CoreHelper {
 	return result;
     }  
 
-    /** This method returns all attributes of a given Classifier, including inherited
+    /** This method returns all attributes of a given Classifier,
+     * including inherited
      *
      * @param classifier the classifier you want to have the attributes for
      * @return a collection of the attributes
@@ -273,7 +278,9 @@ public class CoreHelper {
         }
         return result;
     }
-    /** This method returns all operations of a given Classifier, including inherited
+
+    /** This method returns all operations of a given Classifier,
+     * including inherited
      *
      * @param classifier the classifier you want to have the operations for
      * @return a collection of the operations
@@ -294,7 +301,8 @@ public class CoreHelper {
      * message is logged.
      *
      * @param operation the operation you want to find the return parameter for
-     * @return If this operation has only one paramter with Kind: RETURN, this is it, otherwise null
+     * @return If this operation has only one paramter with Kind: RETURN,
+     *         this is it, otherwise null
      */
     public MParameter getReturnParameter(MOperation operation) {
         Vector returnParams = new Vector();
@@ -366,7 +374,7 @@ public class CoreHelper {
                 && stereo != null
                 && ModelFacade.getName(stereo) != null
                 && ModelFacade.getName(stereo).equals("realize")) {
-		Object i = ModelFacade.getSuppliers(dep).toArray()[0];               
+		Object i = ModelFacade.getSuppliers(dep).toArray()[0];
                 result.add(i);
             }
         }
@@ -377,7 +385,7 @@ public class CoreHelper {
      *
      * @param cls  the class you want to have the children for
      * @return a collection of the children, each of which is a
-     *					{@link MGeneralizableElement MGeneralizableElement}
+     *         {@link MGeneralizableElement MGeneralizableElement}
      */
     public Collection getSubtypes(MClassifier cls) {
         Collection result = new Vector();
@@ -421,10 +429,11 @@ public class CoreHelper {
         Iterator it = p.findFigsForMember(operation).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener) it.next();
-            // UmlModelEventPump.getPump().removeModelEventListener(listener, newReturnParameter);
-            UmlModelEventPump.getPump().addModelEventListener(
-							      listener,
-							      newReturnParameter);
+            // UmlModelEventPump.getPump().removeModelEventListener(listener,
+            // newReturnParameter);
+            UmlModelEventPump.getPump()
+		.addModelEventListener(listener,
+				       newReturnParameter);
         }
     }
     /**
@@ -437,10 +446,10 @@ public class CoreHelper {
         MNamespace model =
             ProjectManager.getManager().getCurrentProject().getModel();
         MStereotype stereo =
-            ExtensionMechanismsFactory.getFactory().buildStereotype(
-								    dep,
-								    "support",
-								    ProjectManager.getManager().getCurrentProject().getModel());
+            ExtensionMechanismsFactory.getFactory()
+	    .buildStereotype(dep, "support",
+			     ProjectManager.getManager()
+			     .getCurrentProject().getModel());
         return dep;
     }
 
@@ -456,7 +465,8 @@ public class CoreHelper {
             if (o instanceof MClassifier) {
                 list.addAll(getAllBehavioralFeatures((MClassifier) o));
             } else {
-                list.addAll(getAllBehavioralFeatures((MModelElement) it.next()));
+                list.addAll(getAllBehavioralFeatures(
+			(MModelElement) it.next()));
             }
         }
         return list;
@@ -861,7 +871,8 @@ public class CoreHelper {
         return col;
     }
     /**
-     * Returns the associationend between some classifier type and some associaton assoc.
+     * Returns the associationend between some classifier type and
+     * some associaton assoc.
      * @param type
      * @param assoc
      * @return MAssociationEnd
@@ -880,8 +891,9 @@ public class CoreHelper {
         return null;
     }
     /**
-     * Returns the contents (owned elements) of this classifier and all its parents
-     * as specified in section 2.5.3.8 of the UML 1.3 spec
+     * Returns the contents (owned elements) of this classifier and
+     * all its parents as specified in section 2.5.3.8 of the UML 1.3
+     * spec
      * @param clazz
      * @return Collection
      */
@@ -926,12 +938,14 @@ public class CoreHelper {
         return list;
     }
     /**
-     * Returns the source of a relation. The source of a relation is defined as
-     * the modelelement that propagates this relation. If there are more then 1
-     * sources, only the first is returned. If there is no source, null is
-     * returned. Examples of sources include classifiers that are types to
-     * associationends, usecases that are bases to extend and include relations
-     * and so on. A source is allways the start from the arrow in the fig, the destination the end.
+     * Returns the source of a relation. The source of a relation is
+     * defined as the modelelement that propagates this relation. If
+     * there are more then 1 sources, only the first is returned. If
+     * there is no source, null is returned. Examples of sources
+     * include classifiers that are types to associationends, usecases
+     * that are bases to extend and include relations and so on. A
+     * source is allways the start from the arrow in the fig, the
+     * destination the end.
      * @param relation
      * @return MModelElement
      */
@@ -972,13 +986,15 @@ public class CoreHelper {
         return null;
     }
     /**
-     * Returns the destination of a relation. The destination of a relation is
-     * defined as the modelelement that receives this relation. If there are
-     * more then 1 destinations, only the first is returned. If there is no
-     * destination, null is returned. Examples of sources include classifiers that
-     * are types to associationends, usecases that are bases to extend and
-     * include relations and so on. In the case of an association, the destination
-     * is defined as the type of the second element in the connections list.
+     * Returns the destination of a relation. The destination of a
+     * relation is defined as the modelelement that receives this
+     * relation. If there are more then 1 destinations, only the first
+     * is returned. If there is no destination, null is
+     * returned. Examples of sources include classifiers that are
+     * types to associationends, usecases that are bases to extend and
+     * include relations and so on. In the case of an association, the
+     * destination is defined as the type of the second element in the
+     * connections list.
      * @param relation
      * @return MModelElement
      */
@@ -1019,9 +1035,9 @@ public class CoreHelper {
         return null;
     }
     /**
-     * Returns the dependencies between some supplier modelelement and some client
-     * modelelement. Does not return the vica versa relationship (dependency 'from
-     * client to supplier'.
+     * Returns the dependencies between some supplier modelelement and
+     * some client modelelement. Does not return the vica versa
+     * relationship (dependency 'from client to supplier'.
      * @param supplier a MModelElement
      * @param client a MModelElement
      * @return Collection
@@ -1076,8 +1092,8 @@ public class CoreHelper {
 				      (MGeneralizableElement) dest,
 				      (MGeneralizableElement) source));
             if (source instanceof MClassifier && dest instanceof MClassifier) {
-                ret.addAll(
-			   getAssociations((MClassifier) source, (MClassifier) dest));
+                ret.addAll(getAssociations((MClassifier) source,
+					   (MClassifier) dest));
             }
         }
         return ret;
@@ -1195,8 +1211,8 @@ public class CoreHelper {
     private boolean isValidNamespace(MStructuralFeature struc, MNamespace ns) {
         if (struc.getType() == null || struc.getOwner() == null)
             return true;
-        return struc.getOwner().getNamespace().getOwnedElements().contains(
-									   struc.getType());
+        return struc.getOwner().getNamespace()
+	    .getOwnedElements().contains(struc.getType());
     }
     
     private boolean isValidNamespace(MAssociation assoc, MNamespace ns) {
@@ -1211,8 +1227,9 @@ public class CoreHelper {
             MNamespace ns1 = (MNamespace) it.next();
             if (it.hasNext()) {
                 MNamespace ns2 = (MNamespace) it.next();
-                // TODO: this contains a small error (ns can be part of hierarchy
-                // of namespaces, that's not taken into account)
+                // TODO: this contains a small error (ns can be part
+                // of hierarchy of namespaces, that's not taken into
+                // account)
                 if (ns == getFirstSharedNamespace(ns1, ns2))
                     return true;
             }
@@ -1246,11 +1263,11 @@ public class CoreHelper {
         if (ns1 == ns2)
             return ns1;
         boolean ns1Owner =
-            ModelManagementHelper.getHelper().getAllNamespaces(ns1).contains(
-									     ns2);
+            ModelManagementHelper.getHelper()
+	    .getAllNamespaces(ns1).contains(ns2);
         boolean ns2Owner =
-            ModelManagementHelper.getHelper().getAllNamespaces(ns2).contains(
-									     ns1);
+            ModelManagementHelper.getHelper()
+	    .getAllNamespaces(ns2).contains(ns1);
         if (ns1Owner)
             return ns1;
         if (ns2Owner)

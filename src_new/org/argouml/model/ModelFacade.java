@@ -87,6 +87,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MSubsystem;
+
 /**
  * Facade object for the Model component in ArgoUML.<p>
  *
@@ -105,15 +106,17 @@ import ru.novosoft.uml.model_management.MSubsystem;
  * All methods in this facade are static.<p>
  *
  * Signature for all recognizers in this Facade:
- * public static boolean isA<TYPE>(Object handle)
- * public static boolean is<PROPERTY>(Object handle)
- * <p>
+ * <ul>
+ * <li>public static boolean isA<TYPE>(Object handle)
+ * <li>public static boolean is<PROPERTY>(Object handle)
+ * </ul>
  *
  * Signature for all getters in this Facade:
- * public static Object get<TYPE>(Object handle) - 1..1
- * public static Iterator get<TYPES>(Object handle) - 0..*
- * public static String getName(Object handle) - Name
- * <p>
+ * <ul>
+ * <li>public static Object get<TYPE>(Object handle) - 1..1
+ * <li>public static Iterator get<TYPES>(Object handle) - 0..*
+ * <li>public static String getName(Object handle) - Name
+ * </ul>
  *
  * @stereotype utility
  * @author Linus Tolke
@@ -313,8 +316,8 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
-    /** Recognizer for bases. A base is an object that is some form of an element
-     *  in the model. MBase in Novosoft terms.
+    /** Recognizer for bases. A base is an object that is some form of
+     *  an element in the model. MBase in Novosoft terms.
      *
      * @param handle candidate
      * @returns true if handle is abstract.
@@ -758,11 +761,14 @@ public class ModelFacade {
      */
     public static boolean isChangeable(Object handle) {
         if (handle != null && handle instanceof MAttribute) {
-            return MChangeableKind.CHANGEABLE.equals(
-						     ((MAttribute) handle).getChangeability());
+	    MChangeableKind changeability = 
+		((MAttribute) handle).getChangeability();
+            return MChangeableKind.CHANGEABLE.equals(changeability);
+						
         } else if (handle != null && handle instanceof MAssociationEnd) {
-            return MChangeableKind.CHANGEABLE.equals(
-						     ((MAssociationEnd) handle).getChangeability());
+	    MChangeableKind changeability = 
+		((MAssociationEnd) handle).getChangeability();
+            return MChangeableKind.CHANGEABLE.equals(changeability);
         }
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
@@ -788,18 +794,22 @@ public class ModelFacade {
      * @returns true if handle is a constructor.
      */
     public static boolean isConstructor(Object handle) {
-        return (
-		CoreHelper.getHelper().isOperation(handle)
-                && ExtensionMechanismsHelper.getHelper().isStereotypeInh(
-									 getStereoType(handle),
-									 "create",
-									 "BehavioralFeature"))
-            || (CoreHelper.getHelper().isMethod(handle)
-                && ExtensionMechanismsHelper.getHelper().isStereotypeInh(
-									 getStereoType(
-										       CoreHelper.getHelper().getSpecification(handle)),
-									 "create",
-									 "BehavioralFeature"));
+	if (isAOperation(handle)) {
+	    if (ExtensionMechanismsHelper.getHelper()
+		.isStereotypeInh(getStereoType(handle),
+				 "create",
+				 "BehavioralFeature"))
+		return true;
+	}
+	if (isAMethod(handle)) {
+	    if (ExtensionMechanismsHelper.getHelper()
+		.isStereotypeInh(getStereoType(CoreHelper.getHelper()
+					       .getSpecification(handle)),
+				 "create",
+				 "BehavioralFeature"))
+		return true;
+	}
+	return false;
     }
 
     /**
@@ -960,10 +970,12 @@ public class ModelFacade {
      * @param handle candidate
      * @param stereotype a string that is the stereotype name.
      * @return true if handle is a singleton.
-     * @deprecated As of ArgoUml version 0.13.5, 
-     *             {@link org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper#isStereotype(Object,String,String)} should be used
-     *	instead. Since this should only ever be used together with predefined
-     *	stereotypes the base class can be found in the UML 1.3 specification.
+     * @deprecated As of ArgoUml version 0.13.5, {@link 
+     * org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper#isStereotype(Object,String,String)}
+     *             should be used instead. Since this should only ever
+     *             be used together with predefined stereotypes the
+     *             base class can *be found in the UML 1.3
+     *             specification.
      */
     public static boolean isStereotype(Object handle, String stereotypename) {
         if (handle instanceof MModelElement) {
@@ -1297,12 +1309,12 @@ public class ModelFacade {
      * @param handle
      * @return Collection
      */
-    public static Collection getIncomings(Object stateVertex) {
-        if (isAStateVertex(stateVertex)) {
-            return ((MStateVertex) stateVertex).getIncomings();
+    public static Collection getIncomings(Object handle) {
+        if (isAStateVertex(handle)) {
+            return ((MStateVertex) handle).getIncomings();
         }
         throw new IllegalArgumentException(
-					   "Unrecognized object " + stateVertex);
+					   "Unrecognized object " + handle);
     }
     
     /**
@@ -1348,10 +1360,11 @@ public class ModelFacade {
     }
     
     /**
-     * Returns the context of some given statemachine or the context of some given interaction
+     * Returns the context of some given statemachine or the context
+     * of some given interaction
      * @param handle the statemachine or the interaction
-     * @return the context of the statemachine or interaction or null if the statemachine or interaction doesn't 
-     * have a context.
+     * @return the context of the statemachine or interaction or null
+     * if the statemachine or interaction doesn't have a context.
      */
     public static Object getContext(Object handle) {
         if (isAStateMachine(handle)) {
@@ -1450,12 +1463,12 @@ public class ModelFacade {
      * @param statevertex
      * @return Collection
      */
-    public static Collection getOutgoings(Object stateVertex) {
-        if (ModelFacade.isAStateVertex(stateVertex)) {
-            return ((MStateVertex) stateVertex).getOutgoings();
+    public static Collection getOutgoings(Object handle) {
+        if (ModelFacade.isAStateVertex(handle)) {
+            return ((MStateVertex) handle).getOutgoings();
         }
         throw new IllegalArgumentException(
-					   "Unrecognized object " + stateVertex);
+					   "Unrecognized object " + handle);
     }
 
     /** The list of Associations Ends connected to this association end
@@ -1835,7 +1848,8 @@ public class ModelFacade {
             Iterator it = ends.iterator();
             Set associations = new HashSet();
             while (it.hasNext()) {
-                associations.add(((MAssociationEnd) it.next()).getAssociation());
+		MAssociationEnd ae = (MAssociationEnd) it.next();
+                associations.add(ae.getAssociation());
             }
             Collection otherEnds = new ArrayList();
             it = associations.iterator();
@@ -1910,8 +1924,8 @@ public class ModelFacade {
     */
     public static Object getTaggedValue(Object modelElement, String name) {
         if (modelElement != null && modelElement instanceof MModelElement) {
-            for (Iterator i =
-		     ((MModelElement) modelElement).getTaggedValues().iterator();
+	    MModelElement me = ((MModelElement) modelElement);
+            for (Iterator i = me.getTaggedValues().iterator();
 		 i.hasNext();
 		 ) {
                 MTaggedValue tv = (MTaggedValue) i.next();
@@ -2001,7 +2015,8 @@ public class ModelFacade {
     }
 
     /**
-     * Adds a method to some operation and copies the op's attributes to the method.
+     * Adds a method to some operation and copies the op's attributes
+     * to the method.
      * @param operation
      * @param method
      */
@@ -2049,9 +2064,12 @@ public class ModelFacade {
      * @param supplier the supplier 
      * @param dependency the dependency
      */
-    public static void addSupplierDependency(Object supplier, Object dependency) {
+    public static void addSupplierDependency(Object supplier,
+					     Object dependency) 
+    {
         if (isAModelElement(supplier) && isADependency(dependency)) {
-            ((MModelElement) supplier).addSupplierDependency((MDependency) dependency);
+	    MModelElement me = (MModelElement) supplier;
+	    me.addSupplierDependency((MDependency) dependency);
         }
     }
 
@@ -2064,7 +2082,8 @@ public class ModelFacade {
         if (a != null
             && cls != null
             && a instanceof MAbstraction
-            && cls instanceof MClassifier) {                
+            && cls instanceof MClassifier)
+	{
             ((MAbstraction) a).addClient((MClassifier) cls);
         }
     }
@@ -2075,8 +2094,13 @@ public class ModelFacade {
      * @param dependency the dependency
      */
     public static void addClientDependency(Object handle, Object dependency) {
-        if (handle != null && dependency != null && isAModelElement(handle) && isADependency(dependency)) {
-            ((MModelElement) handle).addClientDependency((MDependency) dependency);
+        if (handle != null
+	    && dependency != null
+	    && isAModelElement(handle)
+	    && isADependency(dependency)) 
+	{
+	    MModelElement me = (MModelElement) handle;
+	    me.addClientDependency((MDependency) dependency);
         }
     }
 
@@ -2115,9 +2139,10 @@ public class ModelFacade {
      */
     public static void removeOwnedElement(Object handle, Object value) {
         if (handle instanceof MNamespace && value instanceof MModelElement) {
-            ((MNamespace) handle).removeOwnedElement((MModelElement) value);                       
+            ((MNamespace) handle).removeOwnedElement((MModelElement) value);
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
+        throw new IllegalArgumentException("Unrecognized object " + handle 
+					   + " or " + value);
     }
 
     /** This method removes a parameter from an operation.
@@ -2275,11 +2300,12 @@ public class ModelFacade {
      * @param concurrency
      */
     public static void setConcurrency(Object o, short c) {
-        if (o != null && o instanceof MOperation) {
+        if (o instanceof MOperation) {
+	    MOperation oper = (MOperation) o;
             if (c == GUARDED) {
-                ((MOperation) o).setConcurrency(MCallConcurrencyKind.GUARDED);
+                oper.setConcurrency(MCallConcurrencyKind.GUARDED);
             } else if (c == SEQUENTIAL) {
-                ((MOperation) o).setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
+                oper.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
             }
         }
     }
@@ -2294,7 +2320,8 @@ public class ModelFacade {
             ((MStimulus) handle).setDispatchAction((MAction) value);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + value);
     }
     
     /**
@@ -2307,7 +2334,8 @@ public class ModelFacade {
             ((MState) handle).setDoActivity((MAction) value);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + value);
     }
     
     /**
@@ -2320,7 +2348,8 @@ public class ModelFacade {
             ((MTransition) handle).setEffect((MAction) value);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + value);
     }
     
     /**
@@ -2333,7 +2362,8 @@ public class ModelFacade {
             ((MState) handle).setEntry((MAction) value);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + value);
     }
     
     /**
@@ -2346,7 +2376,8 @@ public class ModelFacade {
             ((MState) handle).setExit((MAction) value);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + value);
     }
 
     /**
@@ -2364,11 +2395,11 @@ public class ModelFacade {
             else
 		((MAttribute) o).setChangeability(MChangeableKind.FROZEN);
         } else if (o instanceof MAssociationEnd) {
+	    MAssociationEnd ae = (MAssociationEnd) o;
             if (flag)
-                ((MAssociationEnd) o).setChangeability(
-						      MChangeableKind.CHANGEABLE);
+                ae.setChangeability(MChangeableKind.CHANGEABLE);
             else
-		((MAssociationEnd) o).setChangeability(MChangeableKind.FROZEN);
+		ae.setChangeability(MChangeableKind.FROZEN);
         }
     }
     
@@ -2397,7 +2428,8 @@ public class ModelFacade {
             ((MMessage) message).setAction((MAction) action);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + message  + " or " + action);        
+        throw new IllegalArgumentException("Unrecognized object " + message
+					   + " or " + action);
     }
     
     /**
@@ -2504,15 +2536,15 @@ public class ModelFacade {
      * @param stereo stereotype
      */
     public static void setStereotype(Object m, Object stereo) {
-        if (m != null && m instanceof MModelElement) {
+        if (m instanceof MModelElement) {
+	    MModelElement me = (MModelElement) m;
             if (stereo != null
                 && stereo instanceof MStereotype
-                && ((MModelElement) m).getModel()
-		!= ((MStereotype) stereo).getModel()) {
-                ((MStereotype) stereo).setNamespace(
-						   ((MModelElement) m).getModel());
+                && me.getModel() != ((MStereotype) stereo).getModel()) 
+	    {
+                ((MStereotype) stereo).setNamespace(me.getModel());
             }
-            ((MModelElement) m).setStereotype((MStereotype) stereo);
+            me.setStereotype((MStereotype) stereo);
         }
     }
 

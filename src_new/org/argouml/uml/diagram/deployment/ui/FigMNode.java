@@ -80,7 +80,8 @@ public class FigMNode extends FigNodeModelElement {
     public FigMNode(GraphModel gm, Object node) {
 	this();
 	setOwner(node);
-	if (node instanceof MClassifier && (((MClassifier) node).getName() != null))
+	if (node instanceof MClassifier
+	    && (((MClassifier) node).getName() != null))
 	    _name.setText(((MModelElement) node).getName());
     }
 
@@ -172,7 +173,9 @@ public class FigMNode extends FigNodeModelElement {
 	MModelElement me = (MModelElement) getOwner();
 	if (me == null) return;
 	MStereotype stereo = me.getStereotype();
-	if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0)
+	if (stereo == null
+	    || stereo.getName() == null
+	    || stereo.getName().length() == 0)
 	    _stereo.setText("");
 	else {
 	    _stereo.setText(Notation.generateStereotype(this, stereo));

@@ -49,7 +49,14 @@ import org.tigris.gef.presentation.FigPoly;
  * Class to display a UML note connection to a
  * annotated model element.
  */
-public class FigEdgeNote extends FigEdgeModelElement implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener  {
+public class FigEdgeNote
+    extends FigEdgeModelElement
+    implements VetoableChangeListener,
+	       DelayedVChangeListener,
+	       MouseListener,
+	       KeyListener,
+	       PropertyChangeListener
+{
 
     ////////////////////////////////////////////////////////////////     
     // constants
@@ -76,11 +83,15 @@ public class FigEdgeNote extends FigEdgeModelElement implements VetoableChangeLi
      */
     public FigEdgeNote(Object fromNode, Object toNode) {
         this();
-        Layer lay = ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer();
+        Layer lay =
+	    ProjectManager.getManager().getCurrentProject()
+	    .getActiveDiagram().getLayer();
         setLayer(lay);
         Fig destFig = lay.presentationFor(toNode);
         Fig sourceFig = lay.presentationFor(fromNode);
-        if (destFig == null || sourceFig == null) throw new IllegalStateException("No destfig or sourcefig while creating FigEdgeNode");
+        if (destFig == null || sourceFig == null)
+	    throw new IllegalStateException("No destfig or sourcefig while "
+					    + "creating FigEdgeNode");
         setDestFigNode((FigNode) destFig);
         setDestPortFig(destFig);
         setSourceFigNode((FigNode) sourceFig);

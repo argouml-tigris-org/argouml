@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui.model_management;
 
-import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 
 import org.argouml.swingext.Orientation;

@@ -151,18 +151,20 @@ public class UMLActivityDiagram extends UMLDiagram {
             cat.debug("ActivityGraph without context not yet possible :-(");
     }
 
-    /** method to perform a number of important initializations of an <I>Activity Diagram</I>. 
+    /** method to perform a number of important initializations of an
+     * <I>Activity Diagram</I>.
      * 
      * each diagram type has a similar <I>UMLxxxDiagram</I> class.
      *
      * @param m  MNamespace from the model in NSUML...
      * @param agraph MActivityGraph from the model in NSUML...
-     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to <I>LayerPerspectiveMutable</I>. 
-     *           This class is a child of <I>LayerPerspective</I> and was implemented 
-     *           to correct some difficulties in changing the model. <I>lay</I> is used 
-     *           mainly in <I>LayerManager</I>(GEF) to control the adding, changing and 
-     *           deleting layers on the diagram...
-     *           psager@tigris.org   Jan. 24, 2oo2
+     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to
+     * <I>LayerPerspectiveMutable</I>.  This class is a child of
+     * <I>LayerPerspective</I> and was implemented to correct some
+     * difficulties in changing the model. <I>lay</I> is used mainly
+     * in <I>LayerManager</I>(GEF) to control the adding, changing and
+     * deleting layers on the diagram...  psager@tigris.org Jan. 24,
+     * 2oo2
      */
     public void setup(MNamespace m, MActivityGraph agraph) {
         super.setNamespace(m);
@@ -196,7 +198,8 @@ public class UMLActivityDiagram extends UMLDiagram {
     }
 
     /**
-     * Get the actions from which to create a toolbar or equivilent graphic triggers
+     * Get the actions from which to create a toolbar or equivilent
+     * graphic triggers
      */
     protected Object[] getUmlActions() {
         Object actions[] = {

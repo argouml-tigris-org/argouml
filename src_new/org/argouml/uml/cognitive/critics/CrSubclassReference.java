@@ -81,7 +81,8 @@ public class CrSubclassReference extends CrUML {
 	Collection asc = cls.getAssociationEnds();
 	if (asc == null || asc.size() == 0) return null;
 
-	java.util.Enumeration descendEnum = GenDescendantClasses.SINGLETON.gen(cls);
+	java.util.Enumeration descendEnum =
+	    GenDescendantClasses.SINGLETON.gen(cls);
 	if (!descendEnum.hasMoreElements()) return null;
 	VectorSet descendants = new VectorSet();
 	while (descendEnum.hasMoreElements())

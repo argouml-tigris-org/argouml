@@ -40,7 +40,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -56,7 +55,6 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;

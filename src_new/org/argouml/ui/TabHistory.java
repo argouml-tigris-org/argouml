@@ -69,15 +69,25 @@ public class TabHistory extends TabSpawnable
 
     ////////////////////////////////////////////////////////////////
     // class variables
-    protected ImageIcon _CritiqueIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt0");
-    protected ImageIcon _ResolveIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt100");
-    protected ImageIcon _ManipIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt100");
-    protected ImageIcon _HistoryItemIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Rectangle");
+    protected ImageIcon _CritiqueIcon = lookupIconResource("PostIt0");
+    protected ImageIcon _ResolveIcon = lookupIconResource("PostIt100");
+    protected ImageIcon _ManipIcon = lookupIconResource("PostIt100");
+    protected ImageIcon _HistoryItemIcon = lookupIconResource("Rectangle");
 
     protected static String FILTERS[] = {
 	"All History Items",
 	"History of Selection" 
     };
+
+    /** Get the ImageIcon.
+     *
+     * @param tag of the icon.
+     * @returns the ImageIcon of the tag.
+     */
+    private static ImageIcon lookupIconResource(String tag) {
+	return ResourceLoaderWrapper.getResourceLoaderWrapper()
+	    .lookupIconResource(tag);
+    }
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -164,13 +174,18 @@ public class TabHistory extends TabSpawnable
 
     // This is the only method defined by ListCellRenderer.  We just
     // reconfigure the Jlabel each time we're called.
-
-    public Component getListCellRendererComponent(
-						  JList list,
-						  Object value,            // value to display
-						  int index,               // cell index
-						  boolean isSelected,      // is the cell selected
-						  boolean cellHasFocus)    // the list and the cell have the focus
+    /**
+     *
+     * @param value to display			  
+     * @param index cell index			  
+     * @param isSelected is the cell selected		  
+     * @param cellHasFocus the list and the cell have the focus
+     */
+    public Component getListCellRendererComponent(JList list, 
+						  Object value, 
+						  int index, 
+						  boolean isSelected, 
+						  boolean cellHasFocus)
     {
 	if (!(value instanceof HistoryItem)) {
 	    _label.setText("non HistoryItem");
@@ -188,7 +203,8 @@ public class TabHistory extends TabSpawnable
 	if (hi instanceof HistoryItemManipulation) {
 	    _label.setIcon(_ManipIcon);
 	}
-	else if (hi instanceof org.argouml.cognitive.critics.HistoryItemCritique) {
+	else if (hi
+		 instanceof org.argouml.cognitive.critics.HistoryItemCritique) {
 	    _label.setIcon(_CritiqueIcon);
 	}
 	else if (hi instanceof HistoryItemResolve) {
@@ -298,7 +314,10 @@ class HistoryListModel implements ListModel, HistoryListener {
 	for (int i = listeners.length - 2; i >= 0; i -= 2) {
 	    if (listeners[i] == ListDataListener.class) {
 		if (e == null) {
-		    e = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, index0, index1);
+		    e = new ListDataEvent(this,
+					  ListDataEvent.INTERVAL_ADDED,
+					  index0,
+					  index1);
 		}
 		((ListDataListener) listeners[i + 1]).intervalAdded(e);
 	    }

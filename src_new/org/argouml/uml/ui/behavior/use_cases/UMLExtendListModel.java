@@ -24,23 +24,10 @@
 
 // File: UMLExtendListModel.java
 // Classes: UMLExtendListModel
-// Original Author: not known
-// $$
-
-// 26 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Tidied up, as part of
-// getting the Extends stuff to work. add() method tidied up to put the new
-// relationship at the correct place in the list. buildPopup removed, since the
-// parent implementation is fine.
-
-// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
-// project as needing saving if an extend relationship is added, deleted,
-// changed or moved.
-
 
 package org.argouml.uml.ui.behavior.use_cases;
 
 import java.util.*;
-import java.awt.event.ActionEvent;
 
 import javax.swing.*;
 
@@ -51,16 +38,12 @@ import ru.novosoft.uml.behavior.use_cases.*;
 import org.argouml.ui.*;
 import org.argouml.uml.ui.UMLBinaryRelationListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
-import org.tigris.gef.presentation.Fig;
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
-import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 

@@ -51,7 +51,7 @@ public class ItemUID
     protected static Category cat = Category.getInstance(ItemUID.class);
 
     /** Keeps a reference to the Class object of this class */
-    protected final static Class _myclass = (new ItemUID()).getClass();
+    protected static final Class _myclass = (new ItemUID()).getClass();
 
     /** This actual ID of this instance. */
     protected String _id;

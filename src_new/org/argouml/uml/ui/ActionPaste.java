@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.Component;
 import java.awt.Toolkit;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;

@@ -86,7 +86,8 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
      */
     private Point getCenterRight(FigNode fig) {
         Point center = fig.center();
-        return new Point((int) (center.x + fig.getSize().getWidth() / 2), center.y);
+        return new Point((int) (center.x + fig.getSize().getWidth() / 2),
+			 center.y);
     }
 
     /** return a Point which is just lower than the center of the
@@ -94,7 +95,8 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
      */
     private Point getCenterLow(FigNode fig) {
         Point center = fig.center();
-        return new Point(center.x, (int) (center.y + (fig.getSize().getHeight() / 2)));
+        return new Point(center.x,
+			 (int) (center.y + (fig.getSize().getHeight() / 2)));
     }
 }
 

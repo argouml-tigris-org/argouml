@@ -33,7 +33,8 @@ public interface TabToDoTarget extends TargetListener {
      * Sets the target of the TabToDo
      * @deprecated As of ArgoUml version 0.13.5,
      *             the visibility of this method will change in the future,
-     *             replaced by {@link org.argouml.ui.targetmanager.TargetManager}.
+     *             replaced by 
+     * 		   {@link org.argouml.ui.targetmanager.TargetManager}.
      *             this method will be removed in a couple of releases
      * @param o
      */

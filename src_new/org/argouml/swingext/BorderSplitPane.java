@@ -31,11 +31,14 @@ import javax.swing.JComponent;
 import java.awt.*;
 
 /**
- * A component designed to display its child components in a similar fashion to a component 
- * implementing the standard java class <code>BorderLayout</code> but with each child component
- * seperated by a positional splitterbar.<br />
- * The compass points have been expanded from those available in <code>BorderLayout</code> to
- * the diaganal compass points, NORTHWEST, NORTHEAST, SOUTHEAST, SOUTHWEST.
+ * A component designed to display its child components in a similar
+ * fashion to a component implementing the standard java class
+ * <code>BorderLayout</code> but with each child component seperated
+ * by a positional splitterbar.<p>
+ *
+ * The compass points have been expanded from those available in
+ * <code>BorderLayout</code> to the diaganal compass points,
+ * NORTHWEST, NORTHEAST, SOUTHEAST, SOUTHWEST.
  *
  * @author Bob Tarling
  */
@@ -43,39 +46,39 @@ public class BorderSplitPane extends JComponent {
     /**
      * The north layout constraint (top of container).
      */
-    final public static String NORTH = "North";
+    public static final String NORTH = "North";
     /**
      * The south layout constraint (bottom of container).
      */
-    final public static String SOUTH = "South";
+    public static final String SOUTH = "South";
     /**
      * The east layout constraint (right of container).
      */
-    final public static String EAST = "East";
+    public static final String EAST = "East";
     /**
      * The west layout constraint (left of container).
      */
-    final public static String WEST = "West";
+    public static final String WEST = "West";
     /**
      * The center layout constraint (middle of container).
      */
-    final public static String CENTER = "Center";
+    public static final String CENTER = "Center";
     /**
      * The southwest layout constraint (bottom left of container).
      */
-    final public static String SOUTHWEST = "SouthWest";
+    public static final String SOUTHWEST = "SouthWest";
     /**
      * The southeast layout constraint (bottom right of container).
      */
-    final public static String SOUTHEAST = "SouthEast";
+    public static final String SOUTHEAST = "SouthEast";
     /**
      * The northwest layout constraint (top left of container).
      */
-    final public static String NORTHWEST = "NorthWest";
+    public static final String NORTHWEST = "NorthWest";
     /**
      * The northeast layout constraint (top right of container).
      */
-    final public static String NORTHEAST = "NorthEast";
+    public static final String NORTHEAST = "NorthEast";
 
     private MultipleSplitPane outerSplitPane;
     private MultipleSplitPane topSplitPane;
@@ -85,7 +88,8 @@ public class BorderSplitPane extends JComponent {
     /** Construct a new BorderSplitPane
      */    
     public BorderSplitPane() {
-        outerSplitPane = new MultipleSplitPane(3, MultipleSplitPane.VERTICAL_SPLIT);
+        outerSplitPane =
+	    new MultipleSplitPane(3, MultipleSplitPane.VERTICAL_SPLIT);
         setLayout(new BorderLayout());
         super.add(outerSplitPane, BorderLayout.CENTER);
 
@@ -124,42 +128,48 @@ public class BorderSplitPane extends JComponent {
                 ((Orientable) comp).setOrientation(Horizontal.getInstance());
             }
             topSplitPane.add(comp, "100", 1);
-            if (topSplitPane.getParent() != outerSplitPane) outerSplitPane.add(topSplitPane, 0);
+            if (topSplitPane.getParent() != outerSplitPane)
+		outerSplitPane.add(topSplitPane, 0);
         }
         else if (constraints.toString().equals(NORTHWEST)) {
             if (comp instanceof Orientable) {
                 ((Orientable) comp).setOrientation(Horizontal.getInstance());
             }
             topSplitPane.add(comp, 0);
-            if (topSplitPane.getParent() != outerSplitPane) outerSplitPane.add(topSplitPane, 0);
+            if (topSplitPane.getParent() != outerSplitPane)
+		outerSplitPane.add(topSplitPane, 0);
         }
         else if (constraints.toString().equals(NORTHEAST)) {
             if (comp instanceof Orientable) {
                 ((Orientable) comp).setOrientation(Horizontal.getInstance());
             }
             topSplitPane.add(comp, 2);
-            if (topSplitPane.getParent() != outerSplitPane) outerSplitPane.add(topSplitPane, 0);
+            if (topSplitPane.getParent() != outerSplitPane)
+		outerSplitPane.add(topSplitPane, 0);
         }
         else if (constraints.toString().equals(SOUTH)) {
             if (comp instanceof Orientable) {
                 ((Orientable) comp).setOrientation(Horizontal.getInstance());
             }
             bottomSplitPane.add(comp, "100", 1);
-            if (bottomSplitPane.getParent() != outerSplitPane) outerSplitPane.add(bottomSplitPane, 2);
+            if (bottomSplitPane.getParent() != outerSplitPane)
+		outerSplitPane.add(bottomSplitPane, 2);
         }
         else if (constraints.toString().equals(SOUTHWEST)) {
             if (comp instanceof Orientable) {
                 ((Orientable) comp).setOrientation(Horizontal.getInstance());
             }
             bottomSplitPane.add(comp, 0);
-            if (bottomSplitPane.getParent() != outerSplitPane) outerSplitPane.add(bottomSplitPane, 2);
+            if (bottomSplitPane.getParent() != outerSplitPane)
+		outerSplitPane.add(bottomSplitPane, 2);
         }
         else if (constraints.toString().equals(SOUTHEAST)) {
             if (comp instanceof Orientable) {
                 ((Orientable) comp).setOrientation(Horizontal.getInstance());
             }
             bottomSplitPane.add(comp, 2);
-            if (bottomSplitPane.getParent() != outerSplitPane) outerSplitPane.add(bottomSplitPane, 2);
+            if (bottomSplitPane.getParent() != outerSplitPane)
+		outerSplitPane.add(bottomSplitPane, 2);
         }
         else if (constraints.toString().equals(WEST)) {
             if (comp instanceof Orientable) {

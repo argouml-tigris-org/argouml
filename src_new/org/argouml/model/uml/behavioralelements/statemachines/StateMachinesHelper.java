@@ -93,18 +93,22 @@ public class StateMachinesHelper {
     
 
     /**
-     * Gets the statemachine that contains the given parameter oState. Traverses
-     * the state hierarchy of the statemachine untill the statemachine is reached.
-     * To decouple ArgoUML as much as possible from the NSUML model, the parameter
-     * of the method is of type Object.
-     * @param oState The state for which we want to know the statemachine
-     * @return MStateMachine The statemachine the state belongs too or null if 
-     *  the given parameter is not a state or null itself.
+     * Gets the statemachine that contains the given parameter
+     * oState. Traverses the state hierarchy of the statemachine
+     * untill the statemachine is reached.  To decouple ArgoUML as
+     * much as possible from the NSUML model, the parameter of the
+     * method is of type Object.
+     * @param oState The state for which we want to know the
+     * statemachine
+     * @return MStateMachine The statemachine the state belongs too or
+     * null if the given parameter is not a state or null itself.
      */
     public MStateMachine getStateMachine(Object oStateVertex) {
         if (oStateVertex instanceof MStateVertex) {
             MStateVertex state = (MStateVertex) oStateVertex;
-            if (state instanceof MState && ((MState) state).getStateMachine() != null) {
+            if (state instanceof MState
+		&& ((MState) state).getStateMachine() != null) 
+	    {
                 return ((MState) state).getStateMachine();
             } else
                 return getStateMachine(state.getContainer());
@@ -121,10 +125,12 @@ public class StateMachinesHelper {
      */
     public void setEventAsTrigger(Object transition, Object event) {
         if (transition == null || !(transition instanceof MTransition)) {
-            throw new IllegalArgumentException("Transition either null or not an instance of MTransition");
+            throw new IllegalArgumentException("Transition either null or not "
+					       + "an instance of MTransition");
         }
         if (event == null || !(event instanceof MEvent)) {
-            throw new IllegalArgumentException("Event either null or not an instance of MEvent");
+            throw new IllegalArgumentException("Event either null or not an "
+					       + "instance of MEvent");
         }
         ((MTransition) transition).setTrigger((MEvent) event);
     }
@@ -137,8 +143,11 @@ public class StateMachinesHelper {
      * @return boolean
      */
     public boolean isAddingStatemachineAllowed(Object context) {
-        if (context instanceof MBehavioralFeature || context instanceof MClassifier)
+        if (context instanceof MBehavioralFeature
+	    || context instanceof MClassifier)
+	{
             return true;
+	}
         return false;
     }
     
@@ -152,7 +161,9 @@ public class StateMachinesHelper {
      */
     public Collection getAllPossibleStatemachines(Object oSubmachineState) {
         if (oSubmachineState instanceof MSubmachineState) {
-            Collection statemachines = ModelManagementHelper.getHelper().getAllModelElementsOfKind(MStateMachine.class);
+            Collection statemachines =
+		ModelManagementHelper.getHelper()
+		.getAllModelElementsOfKind(MStateMachine.class);
             statemachines.remove(getStateMachine(oSubmachineState));
             return statemachines;
         }
@@ -168,9 +179,14 @@ public class StateMachinesHelper {
      * property submachine
      * @param oStatemachine The statemachine
      */
-    public void setStatemachineAsSubmachine(Object oSubmachineState, Object oStatemachine) {
-        if (oSubmachineState instanceof MSubmachineState && oStatemachine instanceof MStateMachine) {
-            ((MSubmachineState) oSubmachineState).setSubmachine((MStateMachine) oStatemachine);
+    public void setStatemachineAsSubmachine(Object oSubmachineState,
+					    Object oStatemachine)
+    {
+        if (oSubmachineState instanceof MSubmachineState
+	    && oStatemachine instanceof MStateMachine)
+	{
+	    MSubmachineState mss = (MSubmachineState) oSubmachineState;
+	    mss.setSubmachine((MStateMachine) oStatemachine);
         }
     }
     

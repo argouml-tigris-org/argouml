@@ -34,12 +34,9 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 
 import java.awt.image.BufferedImage;
 
-import javax.swing.ImageIcon;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -49,7 +46,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
  * This should be extended for each decoration style.
  * @author Bob Tarling
  */
-abstract public class DecoratedIcon extends ImageIcon {
+public abstract class DecoratedIcon extends ImageIcon {
     
     public static final int ROLLOVER = 0;
     public static final int STANDARD = 1;
@@ -75,17 +72,23 @@ abstract public class DecoratedIcon extends ImageIcon {
         _buffer = buffer;
         _popupIconWidth = _buffer[0].length;
         _popupIconHeight = _buffer.length;
-        BufferedImage mergedImage = new BufferedImage(_imageIcon.getIconWidth() + _popupIconOffset + _popupIconWidth, _imageIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage mergedImage =
+	    new BufferedImage(_imageIcon.getIconWidth()
+			      + _popupIconOffset + _popupIconWidth,
+			      _imageIcon.getIconHeight(),
+			      BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = mergedImage.createGraphics();
         g2.drawImage(_imageIcon.getImage(), null, null);
         setImage(mergedImage);
     }
 
-    /** Paints the icon. The top-left corner of the icon is drawn at the point
-     * (x, y) in the coordinate space of the graphics context g. If this icon has
-     * no image observer, this method uses the c component as the observer.
+    /** Paints the icon. The top-left corner of the icon is drawn at
+     * the point (x, y) in the coordinate space of the graphics
+     * context g. If this icon has no image observer, this method uses
+     * the c component as the observer.
      *
-     * @param c the component to be used as the observer if this icon has no image observer
+     * @param c the component to be used as the observer if this icon
+     * has no image observer
      * @param g the graphics context
      * @param x the X coordinate of the icon's top-left corner
      * @param y the Y coordinate of the icon's top-left corner

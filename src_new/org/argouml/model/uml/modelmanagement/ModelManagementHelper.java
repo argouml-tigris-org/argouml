@@ -53,7 +53,8 @@ import ru.novosoft.uml.model_management.MSubsystem;
  * @stereotype singleton
  */
 public class ModelManagementHelper {
-    protected static Category cat = Category.getInstance(ModelManagementHelper.class);
+    protected static Category cat =
+	Category.getInstance(ModelManagementHelper.class);
 
     /** Don't allow instantiation.
      */
@@ -223,7 +224,9 @@ public class ModelManagementHelper {
      * @param element
      * @param to
      * @deprecated As of ArgoUml version 0.13.5, 
-     *             You should use {@link #getCorrespondingElement(MModelElement,MModel,boolean)} instead.
+     *             You should use 
+     *          {@link #getCorrespondingElement(MModelElement,MModel,boolean)} 
+     *             instead.
      */
     public void moveElement(MModelElement element, MModel to) {
         MModel currentModel = element.getModel();
@@ -296,9 +299,11 @@ public class ModelManagementHelper {
 	Iterator it = ns.getOwnedElements().iterator();
 	while (it.hasNext()) {
 	    MModelElement e = (MModelElement) it.next();
-	    if (e.getClass() == elem.getClass() &&
-		((elem.getName() == null && e.getName() == null) ||
-		 (elem.getName() != null && elem.getName().equals(e.getName())))) {
+	    if (e.getClass() == elem.getClass()
+		&& ((elem.getName() == null && e.getName() == null)
+		    || (elem.getName() != null
+			&& elem.getName().equals(e.getName()))))
+	    {
 		return (MModelElement) e;
 	    }
 	}

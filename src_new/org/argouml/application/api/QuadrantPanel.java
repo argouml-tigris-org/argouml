@@ -33,14 +33,14 @@ import javax.swing.*;
  */
 public interface QuadrantPanel {
 
-    public final static int Q_TOP           = 1;
-    public final static int Q_BOTTOM        = 2;
-    public final static int Q_LEFT          = 4;
-    public final static int Q_RIGHT         = 8;
-    public final static int Q_TOP_LEFT      = Q_TOP + Q_LEFT;
-    public final static int Q_TOP_RIGHT     = Q_TOP + Q_RIGHT;
-    public final static int Q_BOTTOM_LEFT   = Q_BOTTOM + Q_LEFT;
-    public final static int Q_BOTTOM_RIGHT  = Q_BOTTOM + Q_RIGHT;
+    public static final int Q_TOP           = 1;
+    public static final int Q_BOTTOM        = 2;
+    public static final int Q_LEFT          = 4;
+    public static final int Q_RIGHT         = 8;
+    public static final int Q_TOP_LEFT      = Q_TOP + Q_LEFT;
+    public static final int Q_TOP_RIGHT     = Q_TOP + Q_RIGHT;
+    public static final int Q_BOTTOM_LEFT   = Q_BOTTOM + Q_LEFT;
+    public static final int Q_BOTTOM_RIGHT  = Q_BOTTOM + Q_RIGHT;
 
     public int getQuadrant();
 

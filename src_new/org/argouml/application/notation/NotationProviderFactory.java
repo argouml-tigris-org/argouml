@@ -25,39 +25,21 @@
 // File: NotationProviderFactory.java
 // Classes: NotationProviderFactory
 // Original Author: Thierry Lach
-// $Id$
-
-// 8 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
-// extension points.
-
 
 package org.argouml.application.notation;
+
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 
 import java.util.*;
-// import java.beans.*;
 
-// import javax.swing.*;
-
-// import ru.novosoft.uml.foundation.core.*;
-// import ru.novosoft.uml.foundation.data_types.*;
-// import ru.novosoft.uml.foundation.extension_mechanisms.*;
-// import ru.novosoft.uml.behavior.common_behavior.*;
-// import ru.novosoft.uml.behavior.activity_graphs.*;
-// import ru.novosoft.uml.behavior.state_machines.*;
-// import ru.novosoft.uml.behavior.use_cases.*;
-// import ru.novosoft.uml.behavior.collaborations.*;
-// import ru.novosoft.uml.model_management.*;
-
-// import org.apache.log4j.*;
+import org.argouml.uml.generator.GeneratorDisplay;
 
 /** Provides a factory for handling notation providers.
  *
  *  @author Thierry Lach
  *  @since 0.9.4
  */
-
 public class NotationProviderFactory
     implements ArgoModuleEventListener 
 {
@@ -125,7 +107,7 @@ public class NotationProviderFactory
     public NotationProvider getDefaultProvider() {
 	if (_defaultProvider == null) {
 	    _defaultProvider =
-		(NotationProvider) org.argouml.uml.generator.GeneratorDisplay.getInstance();
+		(NotationProvider) GeneratorDisplay.getInstance();
 	    // TODO:  This must be the provider pointed to by the configuration,
 	    // or UML 13 if none.
 	    // 

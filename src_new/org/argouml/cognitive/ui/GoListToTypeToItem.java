@@ -38,7 +38,7 @@ public class GoListToTypeToItem implements TreeModel {
     // TreeModel implementation
   
     public Object getRoot() {
-	throw new UnsupportedOperationException("getRoot should never be called");
+	throw new UnsupportedOperationException();
     } 
     public void setRoot(Object r) { }
 
@@ -48,7 +48,8 @@ public class GoListToTypeToItem implements TreeModel {
 	}
 	if (parent instanceof KnowledgeTypeNode) {
 	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
-	    java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+	    Enumeration itemEnum =
+		Designer.TheDesigner.getToDoList().elements();
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
 		if (item.containsKnowledgeType(ktn.getName())) {
@@ -57,7 +58,8 @@ public class GoListToTypeToItem implements TreeModel {
 		}	    
 	    }
 	}
-	throw new IndexOutOfBoundsException("getChild shouldnt get here GoListToTypeToItem");
+	throw new IndexOutOfBoundsException("getChild shouldnt get here "
+					    + "GoListToTypeToItem");
     }
   
     public int getChildCount(Object parent) {
@@ -66,7 +68,8 @@ public class GoListToTypeToItem implements TreeModel {
 	}
 	if (parent instanceof KnowledgeTypeNode) {
 	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
-	    java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+	    Enumeration itemEnum =
+		Designer.TheDesigner.getToDoList().elements();
 	    int count = 0;
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
@@ -87,7 +90,8 @@ public class GoListToTypeToItem implements TreeModel {
 	    // found and index == 0
 	    Vector candidates = new Vector();
 	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
-	    java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+	    Enumeration itemEnum =
+		Designer.TheDesigner.getToDoList().elements();
 	    while (itemEnum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) itemEnum.nextElement();
 		if (item.containsKnowledgeType(ktn.getName()))
@@ -100,7 +104,8 @@ public class GoListToTypeToItem implements TreeModel {
 
     public boolean isLeaf(Object node) {
 	if (node instanceof ToDoList) return false;
-	if (node instanceof KnowledgeTypeNode && getChildCount(node) > 0) return false;
+	if (node instanceof KnowledgeTypeNode && getChildCount(node) > 0)
+	    return false;
 	return true;
     }
 

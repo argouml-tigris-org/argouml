@@ -92,7 +92,9 @@ public class ToDoItem implements java.io.Serializable {
 
     ////////////////////////////////////////////////////////////////
     // constructors
-    public ToDoItem(Poster poster, String h, int p, String d, String m, VectorSet offs) {
+    public ToDoItem(Poster poster, String h, int p, String d, String m, 
+		    VectorSet offs) 
+    {
 	_poster = poster;
 	_headline = h;
 	_offenders = offs;
@@ -164,7 +166,8 @@ public class ToDoItem implements java.io.Serializable {
 
     public String getDescription() {
 	if (_cachedExpandedDescription == null) {
-	    _cachedExpandedDescription = _poster.expand(_description, _offenders);
+	    _cachedExpandedDescription = 
+		_poster.expand(_description, _offenders);
 	}
 	return _cachedExpandedDescription;
     }
@@ -313,7 +316,8 @@ public class ToDoItem implements java.io.Serializable {
 
     /** Reply a string for debugging. */
     public String toString() {
-	return this.getClass().getName() + "(" + getHeadline() + ") on " + getOffenders().toString();
+	return this.getClass().getName() 
+	    + "(" + getHeadline() + ") on " + getOffenders().toString();
     }
 
 } /* end class ToDoItem */

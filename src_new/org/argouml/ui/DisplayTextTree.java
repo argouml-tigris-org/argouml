@@ -56,13 +56,6 @@ import org.tigris.gef.presentation.Fig;
 /**
  * This is the JTree that is the gui component view of the model navigation and
  * todo list.
- *
- * <pre>
- * // 26 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Patch to give a better
- * // naming for extension points in convertValueToText.
- * </pre>
- *
- * $Id$
  */
 public class DisplayTextTree extends JTree implements TargetListener {
 
@@ -291,10 +284,10 @@ public class DisplayTextTree extends JTree implements TargetListener {
         NavPerspective model = (NavPerspective) getModel();
         if (model instanceof NavPerspective) {
 
-            // Special case for the 'top' state of a state machine
-            // (it is never displayed in the tree(package parspective)), therefore
-            // this method will not work unless we get its statemachine
-            // and set that as the 'changed' object.
+            // Special case for the 'top' state of a state machine (it
+            // is never displayed in the tree(package parspective)),
+            // therefore this method will not work unless we get its
+            // statemachine and set that as the 'changed' object.
             if (ModelFacade.isAStateVertex(changed)) {
                 changed = UmlHelper.getHelper().getStateMachines().getStateMachine(changed);
             }
@@ -436,21 +429,24 @@ public class DisplayTextTree extends JTree implements TargetListener {
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         setTargets(e.getNewTargets());
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setTargets(e.getNewTargets());
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTargets(e.getNewTargets());
@@ -460,10 +456,11 @@ public class DisplayTextTree extends JTree implements TargetListener {
 } /* end class DisplayTextTree */
 
 /**
- * Because there <strong>may</strong> be many calls from Argo to update the tree view in
- * a very short space of time (eg. during some automatic processing)
- * , this class will discard all update calls
- * except one in order to improve the <strong>performance</strong> of Argo.
+ * Because there <strong>may</strong> be many calls from Argo to
+ * update the tree view in a very short space of time (eg. during some
+ * automatic processing) , this class will discard all update calls
+ * except one in order to improve the <strong>performance</strong> of
+ * Argo.
  *
  * <p>This class is used to defer the actual update until "late"
  * in the invokeLater()-call chain.

@@ -61,7 +61,8 @@ public class NavigatorConfigDialog extends JDialog
 	       MouseListener 
 {
     
-    protected static Category cat = Category.getInstance(NavigatorConfigDialog.class);
+    protected static Category cat =
+	Category.getInstance(NavigatorConfigDialog.class);
 
     public static int _numNavConfig = 0;
     ////////////////////////////////////////////////////////////////
@@ -73,7 +74,8 @@ public class NavigatorConfigDialog extends JDialog
     // instance variables
     protected JTabbedPane  _tabs = new JTabbedPane();
 
-    protected JPanel  _mainButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+    protected JPanel  _mainButtons =
+	new JPanel(new FlowLayout(FlowLayout.RIGHT));
     protected JButton _okButton = new JButton("OK");
 
     protected JPanel  _persPanel = new JPanel();
@@ -89,19 +91,22 @@ public class NavigatorConfigDialog extends JDialog
     protected JPanel  _panesPanel = new JPanel();
     protected JPanel  _paneOnePanel = new JPanel();
     protected JRadioButton  _paneOneNotShown = new JRadioButton("Not Shown");
-    protected JRadioButton  _paneOneTree = new JRadioButton("Rooted at Project");
+    protected JRadioButton  _paneOneTree =
+	new JRadioButton("Rooted at Project");
     protected ButtonGroup   _paneOneGroup = new ButtonGroup();
 
     protected JPanel  _paneTwoPanel = new JPanel();
     protected JRadioButton  _paneTwoNotShown = new JRadioButton("Not Shown");
-    protected JRadioButton  _paneTwoMRU = new JRadioButton("Most Recently Used");
+    protected JRadioButton  _paneTwoMRU =
+	new JRadioButton("Most Recently Used");
     protected JRadioButton  _paneTwoTree =
 	new JRadioButton("Rooted at Pane One Selection");
     protected ButtonGroup   _paneTwoGroup = new ButtonGroup();
 
     protected JPanel  _paneThreePanel = new JPanel();
     protected JRadioButton  _paneThreeNotShown = new JRadioButton("Not Shown");
-    protected JRadioButton  _paneThreeMRU = new JRadioButton("Most Recently Used");
+    protected JRadioButton  _paneThreeMRU =
+	new JRadioButton("Most Recently Used");
     protected JRadioButton  _paneThreeTree =
 	new JRadioButton("Rooted at Pane Two Selection");
     protected ButtonGroup   _paneThreeGroup = new ButtonGroup();
@@ -168,9 +173,10 @@ public class NavigatorConfigDialog extends JDialog
 	gb.setConstraints(persLabel, c);
 	_persPanel.add(persLabel);
 
-	JScrollPane persScroll = new JScrollPane(_persList,
-						 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-						 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	JScrollPane persScroll =
+	    new JScrollPane(_persList,
+			    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	c.gridx = 0;      c.gridy = 1;
 	c.gridwidth = 4;
 	c.weightx = 1.0;  c.weighty = 1.0;
@@ -223,17 +229,19 @@ public class NavigatorConfigDialog extends JDialog
 	c.gridx = 0;      c.gridy = 4;
 	c.weighty = 1.0;
 	c.gridwidth = 2;  c.gridheight = 2;
-	JScrollPane ruleLibScroll = new JScrollPane(_ruleLibList,
-						    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-						    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	JScrollPane ruleLibScroll =
+	    new JScrollPane(_ruleLibList,
+			    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	gb.setConstraints(ruleLibScroll, c);
 	_persPanel.add(ruleLibScroll);
 
 	c.gridx = 3;      c.gridy = 4;
 	c.gridwidth = 2;  c.gridheight = 2;
-	JScrollPane rulesScroll = new JScrollPane(_rulesList,
-						  JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-						  JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	JScrollPane rulesScroll =
+	    new JScrollPane(_rulesList,
+			    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	gb.setConstraints(rulesScroll, c);
 	_persPanel.add(rulesScroll);
 
@@ -285,8 +293,10 @@ public class NavigatorConfigDialog extends JDialog
 	_paneTwoMRU.setEnabled(false);
 	_paneTwoTree.setEnabled(false);
 
-	_paneThreePanel.setBorder(BorderFactory.createTitledBorder("Panel Three"));
-	_paneThreePanel.setLayout(new BoxLayout(_paneThreePanel, BoxLayout.Y_AXIS));
+	_paneThreePanel
+	    .setBorder(BorderFactory.createTitledBorder("Panel Three"));
+	_paneThreePanel
+	    .setLayout(new BoxLayout(_paneThreePanel, BoxLayout.Y_AXIS));
 	_paneThreePanel.add(_paneThreeNotShown);
 	_paneThreePanel.add(_paneThreeMRU);
 	_paneThreePanel.add(_paneThreeTree);
@@ -321,8 +331,9 @@ public class NavigatorConfigDialog extends JDialog
      * are still possible; initPersPanel() mentions the need to allow editing.
      */
     public void doNewPers() {
-	NavPerspective newPers = new NavPerspective("New Perspective " +
-						    (_navPane.buildPerspectives().size() + 1));
+	NavPerspective newPers =
+	    new NavPerspective("New Perspective " +
+			       (_navPane.buildPerspectives().size() + 1));
 	_navPane.addPerspective(newPers);
 	_persList.setListData(Converter.convert(_navPane.buildPerspectives()));
 	_persList.setSelectedValue(newPers, true);
@@ -340,15 +351,18 @@ public class NavigatorConfigDialog extends JDialog
 	NavPerspective np = (NavPerspective) sel;
 
 	// are you sure?
-	int response = JOptionPane.showConfirmDialog(this,
-						     "Remove Perspective, \"" + np.getName() + "\"?",
-						     "Are you sure?",
-						     JOptionPane.YES_NO_OPTION);
+	int response =
+	    JOptionPane.showConfirmDialog(this,
+					  "Remove Perspective, \""
+					  + np.getName() + "\"?",
+					  "Are you sure?",
+					  JOptionPane.YES_NO_OPTION);
 	if (response == JOptionPane.YES_OPTION) {
 	    _navPane.removePerspective(np);
 
 	    // Remove it from the UI list
-	    _persList.setListData(Converter.convert(_navPane.buildPerspectives()));
+	    _persList
+		.setListData(Converter.convert(_navPane.buildPerspectives()));
 	}
     }
 
@@ -486,7 +500,8 @@ public class NavigatorConfigDialog extends JDialog
      * Displays the dialog without needing to load the application.
      */
     //public static void main(String[] args) {
-    //  NavigatorConfigDialog dialog = new NavigatorConfigDialog( JOptionPane.getRootFrame(), _navPane );
+    //  NavigatorConfigDialog dialog =
+    //  new NavigatorConfigDialog( JOptionPane.getRootFrame(), _navPane );
     //  dialog.setLocation(0,0);
     //  dialog.setVisible(true);
     //}

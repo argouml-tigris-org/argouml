@@ -31,7 +31,6 @@ import javax.swing.JToolBar;
 import org.argouml.application.api.Configuration;
 
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.kernel.Wizard;
 import org.argouml.swingext.BorderSplitPane;
 import org.argouml.swingext.Horizontal;
@@ -79,7 +78,9 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     // constructor
     public TabToDo() {
         super("tab.todo-item");
-        String position = Configuration.getString(Configuration.makeKey("layout", "tabtodo"));
+        String position =
+	    Configuration.getString(Configuration.makeKey("layout",
+							  "tabtodo"));
         orientation = 
             ((position.equals("West") || position.equals("East"))
              ? Vertical.getInstance() : Horizontal.getInstance());
@@ -174,7 +175,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
      * Sets the target of the TabToDo
      * @deprecated As of ArgoUml version 0.13.5,
      *             the visibility of this method will change in the future,
-     *             replaced by {@link org.argouml.ui.targetmanager.TargetManager}.
+     *             replaced by 
+     *             {@link org.argouml.ui.targetmanager.TargetManager}.
      * @param Object the new target
      */
     public void setTarget(Object item) {

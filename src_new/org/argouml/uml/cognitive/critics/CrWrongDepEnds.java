@@ -41,9 +41,9 @@ import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.deployment.ui.*;
 
 /**
- * A critic to detect when in a deployment-diagram
- * the supplier or the client of a dependency is a mobject  and inside a figComponent
- * and the other end is a mobject and inside a figComponentInstance
+ * A critic to detect when in a deployment-diagram the supplier or the
+ * client of a dependency is a mobject and inside a figComponent and
+ * the other end is a mobject and inside a figComponentInstance
  **/
 
 public class CrWrongDepEnds extends CrUML {
@@ -78,10 +78,11 @@ public class CrWrongDepEnds extends CrUML {
     }
 
     /**
-     * If there are deps that are going from inside a FigComponent 
-     * to inside a FigComponentInstance the returned vector-set is not null. 
-     * Then in the vector-set are the UMLDeploymentDiagram and all FigDependencies 
-     * with this characteristic and their FigObjects described over the supplier and client. 
+     * If there are deps that are going from inside a FigComponent to
+     * inside a FigComponentInstance the returned vector-set is not
+     * null.  Then in the vector-set are the UMLDeploymentDiagram and
+     * all FigDependencies with this characteristic and their
+     * FigObjects described over the supplier and client.
      **/
     public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
 	Vector figs = dd.getLayer().getContents();
@@ -101,8 +102,11 @@ public class CrWrongDepEnds extends CrUML {
 		    MModelElement moe = (MModelElement) it.next();
 		    if (moe instanceof MObject) {
 			MObject obj_sup = (MObject) moe;
-			if (obj_sup.getElementResidences() != null && (obj_sup.getElementResidences().size() > 0)) count = count + 2;
-			if (obj_sup.getComponentInstance() != null) count = count + 1;
+			if (obj_sup.getElementResidences() != null
+			    && (obj_sup.getElementResidences().size() > 0))
+			    count = count + 2;
+			if (obj_sup.getComponentInstance() != null)
+			    count = count + 1;
 		    }
 		}
 	    }
@@ -113,8 +117,11 @@ public class CrWrongDepEnds extends CrUML {
 		    MModelElement moe = (MModelElement) it.next();
 		    if (moe instanceof MObject) {
 			MObject obj_cli = (MObject) moe;
-			if (obj_cli.getElementResidences() != null && (obj_cli.getElementResidences().size() > 0)) count = count + 2;
-			if (obj_cli.getComponentInstance() != null) count = count + 1;
+			if (obj_cli.getElementResidences() != null
+			    && (obj_cli.getElementResidences().size() > 0))
+			    count = count + 2;
+			if (obj_cli.getComponentInstance() != null)
+			    count = count + 1;
 		    }
 		}
 	    }

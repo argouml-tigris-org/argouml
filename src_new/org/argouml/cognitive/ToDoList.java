@@ -102,7 +102,9 @@ public class ToDoList
      */
     protected Vector _resolvedItems;
     
-    /** A Thread that keeps checking if the items on the list are still valid. */
+    /** A Thread that keeps checking if the items on the list are
+     * still valid. 
+     */
     protected Thread _validityChecker;
     
     /** The designer, used in determining if a ToDoItem is still valid.  */
@@ -384,7 +386,8 @@ public class ToDoList
         }
         
         if (!(item.getPoster() instanceof Critic))
-            throw new UnresolvableException("Unable to resolve with poster of type: "
+            throw new UnresolvableException("Unable to resolve with poster "
+					    + "of type: "
 					    + item.getPoster().getClass());
         
         ResolvedCritic rc = new ResolvedCritic((Critic) item.getPoster(),

@@ -36,13 +36,15 @@ public class ActionSaveConfiguration extends UMLAction {
  
     /** One and only instance.
      */
-    public static ActionSaveConfiguration SINGLETON = new ActionSaveConfiguration();
+    public static ActionSaveConfiguration SINGLETON =
+	new ActionSaveConfiguration();
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
     protected ActionSaveConfiguration() {
-        super(Argo.localize(Argo.MENU_BUNDLE, "action.save-configuration"), false);
+        super(Argo.localize(Argo.MENU_BUNDLE, "action.save-configuration"),
+	      false);
     }
 
     ////////////////////////////////////////////////////////////////

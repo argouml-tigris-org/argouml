@@ -53,7 +53,10 @@ import org.argouml.uml.ui.TabTaggedValues;
  *
  *  @author Linus Tolke
  */
-public class SettingsTabLayout extends SettingsTabHelper implements SettingsTabPanel {
+public class SettingsTabLayout
+    extends SettingsTabHelper
+    implements SettingsTabPanel
+{
 
     private Property	_todo;
     private Property	_properties;
@@ -75,28 +78,38 @@ public class SettingsTabLayout extends SettingsTabHelper implements SettingsTabP
         JPanel top = new JPanel(new BorderLayout());
 
         _todo = createProperty("label.todo-pane", positions, TabToDo.class);
-        _properties = createProperty("label.properties-pane", positions, TabProps.class);
-        _documentation = createProperty("label.documentation-pane", positions, TabDocumentation.class);
-        _style = createProperty("label.style-pane", positions, TabStyle.class);
-        _source = createProperty("label.source-pane", positions, TabSrc.class);
-        _constraints = createProperty("label.constraints-pane", positions, TabConstraints.class);
-        _taggedValues = createProperty("label.tagged-values-pane", positions, TabTaggedValues.class);
+        _properties = createProperty("label.properties-pane",
+				     positions, TabProps.class);
+        _documentation = createProperty("label.documentation-pane",
+					positions, TabDocumentation.class);
+        _style = createProperty("label.style-pane",
+				positions, TabStyle.class);
+        _source = createProperty("label.source-pane",
+				 positions, TabSrc.class);
+        _constraints = createProperty("label.constraints-pane",
+				      positions, TabConstraints.class);
+        _taggedValues = createProperty("label.tagged-values-pane",
+				       positions, TabTaggedValues.class);
         
         Property[] properties = new Property[] {
-            _todo, _properties, _documentation, _style, _source, _constraints, _taggedValues
+            _todo, _properties, _documentation, _style,
+	    _source, _constraints, _taggedValues
         };
         Arrays.sort(properties);
         
         top.add(new JScrollPane(new PropertyTable(
-            properties, paneColumnHeader, positionColumnHeader)), BorderLayout.CENTER);
+						  properties,
+						  paneColumnHeader,
+						  positionColumnHeader)),
+		BorderLayout.CENTER);
        
-        top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));		
+        top.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
         add(top, BorderLayout.CENTER);
 
         JLabel restart = createLabel("label.restart-application");
         restart.setHorizontalAlignment(SwingConstants.CENTER);
         restart.setVerticalAlignment(SwingConstants.CENTER);
-        restart.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));		
+        restart.setBorder(BorderFactory.createEmptyBorder(10, 2, 10, 2));
         add(restart, BorderLayout.SOUTH);
     }
 
@@ -104,10 +117,13 @@ public class SettingsTabLayout extends SettingsTabHelper implements SettingsTabP
      * Create a Property for the position of the given tab pane, selecting
      * the current display value from the user properties file.
      */
-    private Property createProperty(String text, String[] positions, Class tab) {     
+    private Property createProperty(String text, String[] positions,
+				    Class tab)
+    {
         ConfigurationKey key = makeKey(tab);
         String currentValue = Configuration.getString(key, "South");        
-        return new Property(localize(text), String.class, currentValue, positions);
+        return new Property(localize(text), String.class,
+			    currentValue, positions);
     }
 
     private void loadPosition(Property position, Class tab) {     
@@ -122,7 +138,8 @@ public class SettingsTabLayout extends SettingsTabHelper implements SettingsTabP
 
     private ConfigurationKey makeKey(Class tab) {
         String className = tab.getName();
-        String shortClassName = className.substring(className.lastIndexOf('.') + 1).toLowerCase();
+        String shortClassName =
+	    className.substring(className.lastIndexOf('.') + 1).toLowerCase();
         ConfigurationKey key = Configuration.makeKey("layout", shortClassName);
         return key;
     }

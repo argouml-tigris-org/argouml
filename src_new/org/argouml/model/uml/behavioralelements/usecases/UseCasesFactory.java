@@ -24,15 +24,11 @@
 
 package org.argouml.model.uml.behavioralelements.usecases;
 
-import java.util.Iterator;
-
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
@@ -83,7 +79,8 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      *  @return an initialized ExtensionPoint instance.
      */
     public MExtensionPoint createExtensionPoint() {
-        MExtensionPoint modelElement = MFactory.getDefaultFactory().createExtensionPoint();
+        MExtensionPoint modelElement =
+	    MFactory.getDefaultFactory().createExtensionPoint();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -123,7 +120,8 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      *  @return an initialized UseCaseInstance instance.
      */
     public MUseCaseInstance createUseCaseInstance() {
-        MUseCaseInstance modelElement = MFactory.getDefaultFactory().createUseCaseInstance();
+        MUseCaseInstance modelElement =
+	    MFactory.getDefaultFactory().createUseCaseInstance();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -167,12 +165,19 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
 	return extend;
     }
      
-    public MExtend buildExtend(MUseCase base, MUseCase extension, MExtensionPoint point) {
+    public MExtend buildExtend(MUseCase base,
+			       MUseCase extension,
+			       MExtensionPoint point)
+    {
         if (base == null || extension == null) 
-            throw new IllegalArgumentException("Either the base usecase or the extension usecase is null");
+            throw new IllegalArgumentException("Either the base usecase or "
+					       + "the extension usecase is "
+					       + "null");
         if (point != null) {
             if (!base.getExtensionPoints().contains(point)) {
-                throw new IllegalArgumentException("The extensionpoint is no part of the base usecase");
+                throw new IllegalArgumentException("The extensionpoint is no "
+						   + "part of the base "
+						   + "usecase");
             }
         } else
             point = buildExtensionPoint(base);
@@ -198,10 +203,12 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      */
     public MExtensionPoint buildExtensionPoint(Object modelElement) {
         if (!(modelElement instanceof MUseCase)) 
-            throw new IllegalArgumentException("An extension point can only be built on a use case");
+            throw new IllegalArgumentException("An extension point can only "
+					       + "be built on a use case");
 
         MUseCase useCase = (MUseCase) modelElement;
-        MExtensionPoint extensionPoint = UmlFactory.getFactory().getUseCases().createExtensionPoint();
+        MExtensionPoint extensionPoint =
+	    UmlFactory.getFactory().getUseCases().createExtensionPoint();
 
         // Set the owning use case if there is one given.
 
@@ -249,7 +256,8 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      */
     public MInclude buildInclude(MUseCase base, MUseCase addition) {
 
-	MInclude include = UmlFactory.getFactory().getUseCases().createInclude();
+	MInclude include =
+	    UmlFactory.getFactory().getUseCases().createInclude();
   
 	// Set the ends. Because of the NSUML bug we reverse the accessors
 	// here.
@@ -275,7 +283,8 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      * @return MActor
      */
     public MActor buildActor() {
-	MNamespace ns = ProjectManager.getManager().getCurrentProject().getModel();
+	MNamespace ns =
+	    ProjectManager.getManager().getCurrentProject().getModel();
 	return buildActor(ns);
     }
      

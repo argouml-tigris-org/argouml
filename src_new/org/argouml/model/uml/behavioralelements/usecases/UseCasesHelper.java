@@ -31,10 +31,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.ui.ProjectBrowser;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
@@ -93,7 +91,8 @@ public class UseCasesHelper {
      * @return Collection
      */
     public Collection getAllUseCases() {
-    	MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
+    	MNamespace model =
+	    ProjectManager.getManager().getCurrentProject().getModel();
 	return getAllUseCases(model);
     }
 	
@@ -122,7 +121,8 @@ public class UseCasesHelper {
      * @return Collection
      */
     public Collection getAllActors() {
-    	MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
+    	MNamespace model =
+	    ProjectManager.getManager().getCurrentProject().getModel();
 	return getAllActors(model);
     }
 	
@@ -176,8 +176,8 @@ public class UseCasesHelper {
     }
 	
     /**
-     * Returns the extend relation between two usecases base and extension. If there is none
-     * null is returned.
+     * Returns the extend relation between two usecases base and
+     * extension. If there is none null is returned.
      * @param base
      * @param extension
      * @return MExtend
@@ -212,8 +212,8 @@ public class UseCasesHelper {
     }
 	
     /**
-     * Returns the include relation between two usecases base and inclusion. If there is none
-     * null is returned.
+     * Returns the include relation between two usecases base and
+     * inclusion. If there is none null is returned.
      * @param base
      * @param extension
      * @return MExtend
@@ -238,7 +238,8 @@ public class UseCasesHelper {
      */
     public Collection getSpecificationPath(MUseCase uc) {
 	Set set = new HashSet();
-	set.addAll(ModelManagementHelper.getHelper().getAllSurroundingNamespaces(uc));
+	set.addAll(ModelManagementHelper.getHelper()
+		   .getAllSurroundingNamespaces(uc));
 	Set set2 = new HashSet();
 	Iterator it = set.iterator();
 	while (it.hasNext()) {
@@ -251,20 +252,22 @@ public class UseCasesHelper {
     }
     
     /**
-     * Sets the base usecase of a given extend. Updates the extensionpoints of the
-     * extend too.
+     * Sets the base usecase of a given extend. Updates the
+     * extensionpoints of the extend too.
      * @param extend
      * @param base
      */
     public void setBase(MExtend extend, MUseCase base) {
-        if (extend == null || base == null) throw new IllegalArgumentException("Either base or extend null");
+        if (extend == null || base == null)
+	    throw new IllegalArgumentException("Either base or extend null");
         if (base == extend.getBase()) return;
         Iterator it = extend.getExtensionPoints().iterator();
         while (it.hasNext()) {
             MExtensionPoint point = (MExtensionPoint) it.next();
             point.removeExtend(extend);
         }
-        MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(base);
+        MExtensionPoint point =
+	    UseCasesFactory.getFactory().buildExtensionPoint(base);
         extend.setBase(base);
         extend.addExtensionPoint(point);
     }

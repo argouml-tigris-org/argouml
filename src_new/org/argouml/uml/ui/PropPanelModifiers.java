@@ -35,7 +35,6 @@ package org.argouml.uml.ui;
 
 import javax.swing.*;
 import java.awt.*;
-import org.argouml.uml.ui.*;
 
 
 /**

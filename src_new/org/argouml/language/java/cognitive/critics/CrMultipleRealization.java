@@ -40,7 +40,6 @@ import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.cognitive.*;
 import org.argouml.uml.cognitive.critics.*;
-import org.argouml.uml.MMUtil;
 
 // related to issue 570
 
@@ -59,7 +58,8 @@ public class CrMultipleRealization extends CrUML {
 	if (!(dm instanceof MInterface)) return NO_PROBLEM;
 	MInterface inter = (MInterface) dm;
    
-	Collection realize = UmlHelper.getHelper().getCore().getSpecifications(inter);
+	Collection realize =
+	    UmlHelper.getHelper().getCore().getSpecifications(inter);
 
 	if (realize != null && realize.size() > 0) return PROBLEM_FOUND;
 	return NO_PROBLEM;

@@ -155,22 +155,23 @@ public class ResolvedCritic
 	else if (!_critic.equals(rc._critic))
 	    return false;
 
-	if (_offenders != null)
+	if (_offenders == null)
+	    return true;
+
+	if (rc._offenders == null)
+	    return false;
+
+	for (i = 0; i < _offenders.size(); i++)
 	{
-	    if (rc._offenders == null)
+	    if (_offenders.elementAt(i) == null)
+		continue;
+
+	    for (j = 0; j < rc._offenders.size(); j++)
+		if (_offenders.elementAt(i).equals(rc._offenders.elementAt(j)))
+		    break;
+
+	    if (j >= rc._offenders.size())
 		return false;
-	    for (i = 0; i < _offenders.size(); i++)
-	    {
-		if (_offenders.elementAt(i) == null)
-		    continue;
-
-		for (j = 0; j < rc._offenders.size(); j++)
-		    if (_offenders.elementAt(i).equals(rc._offenders.elementAt(j)))
-			break;
-
-		if (j >= rc._offenders.size())
-		    return false;
-	    }
 	}
 
 	return true;
@@ -216,10 +217,10 @@ public class ResolvedCritic
 	    if (id == null)
 	    {
 		if (!canCreate) {
-		    throw new UnresolvableException(
-						    "ItemUID missing or unable " +
-						    "to create for class: " +
-						    obj.getClass());
+		    throw new UnresolvableException("ItemUID missing or "
+						    + "unable to "
+						    + "create for class: " 
+						    + obj.getClass());
 		}
 
 		if (fail == null)
@@ -240,8 +241,8 @@ public class ResolvedCritic
 	}
 
 	if (fail != null)
-	    throw new UnresolvableException(
-					    "Unable to create ItemUID for some class(es): "
+	    throw new UnresolvableException("Unable to create ItemUID for "
+					    + "some class(es): "
 					    + fail);
     }
 

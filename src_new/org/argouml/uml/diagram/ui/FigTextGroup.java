@@ -24,9 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.Graphics;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;

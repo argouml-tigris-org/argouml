@@ -46,9 +46,12 @@ public class PriorityNode {
     public static Vector getPriorities() {
 	if (_PRIORITIES == null) {
 	    _PRIORITIES = new Vector();
-	    _PRIORITIES.addElement(new PriorityNode(high, ToDoItem.HIGH_PRIORITY));
-	    _PRIORITIES.addElement(new PriorityNode(medium, ToDoItem.MED_PRIORITY));
-	    _PRIORITIES.addElement(new PriorityNode(low, ToDoItem.LOW_PRIORITY));
+	    _PRIORITIES.addElement(new PriorityNode(high,
+						    ToDoItem.HIGH_PRIORITY));
+	    _PRIORITIES.addElement(new PriorityNode(medium,
+						    ToDoItem.MED_PRIORITY));
+	    _PRIORITIES.addElement(new PriorityNode(low,
+						    ToDoItem.LOW_PRIORITY));
 	}
 	return _PRIORITIES;
     }

@@ -23,7 +23,6 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.ui;
-import org.argouml.application.ArgoVersion;
 
 import java.awt.*;
 import java.util.*;

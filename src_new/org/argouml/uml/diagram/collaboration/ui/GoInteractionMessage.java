@@ -46,7 +46,8 @@ public class GoInteractionMessage extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
      */
     public Collection getChildren(Object parent) {
-	if (parent instanceof MInteraction) return ((MInteraction) parent).getMessages();
+	if (parent instanceof MInteraction)
+	    return ((MInteraction) parent).getMessages();
 	return null;
     }
 

@@ -44,7 +44,8 @@ public class GoProjectToCollaboration extends AbstractGoRule {
 	    Iterator it = ((Project) parent).getUserDefinedModels().iterator();
 	    while (it.hasNext()) {
 		col.addAll(ModelManagementHelper.getHelper()
-			   .getAllModelElementsOfKind(it.next(), MCollaboration.class));
+			   .getAllModelElementsOfKind(it.next(),
+						      MCollaboration.class));
 	    }
 	}
 	return col;

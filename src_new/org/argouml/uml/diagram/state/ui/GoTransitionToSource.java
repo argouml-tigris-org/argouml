@@ -30,8 +30,6 @@ import java.util.Collection;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-
 public class GoTransitionToSource extends AbstractGoRule {
 
     public String getRuleName() { return "Transition->Source State"; }

@@ -52,7 +52,6 @@ import org.argouml.cognitive.ui.TabToDoTarget;
 import org.argouml.model.ModelFacade;
 import org.argouml.swingext.Orientable;
 import org.argouml.swingext.Orientation;
-import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -65,9 +64,9 @@ import org.argouml.util.ConfigLoader;
  * The lower-right pane of the main Argo/UML window, which shows
  * the details of a selected model element. 
  * 
- * This panel has several tabs that show details of the selected ToDoItem, or the
- * selected model element in the NavigationPane, or the
- * MultiEditorPane.
+ * This panel has several tabs that show details of the selected
+ * ToDoItem, or the selected model element in the NavigationPane, or
+ * the MultiEditorPane.
  *
  * There are requests to have the cursor automatically
  * be set to the primary field.
@@ -76,7 +75,11 @@ import org.argouml.util.ConfigLoader;
  */
 public class DetailsPane
     extends JPanel
-    implements ChangeListener, MouseListener, QuadrantPanel, Orientable, TargetListener {
+    implements ChangeListener, MouseListener,
+	       QuadrantPanel,
+	       Orientable,
+	       TargetListener
+{
 
     protected static Category cat = Category.getInstance(DetailsPane.class);
     ////////////////////////////////////////////////////////////////
@@ -121,8 +124,9 @@ public class DetailsPane
     private Orientation orientation;
 
     /**
-     * The list with targetlisteners, this are the property panels managed by TabProps
-     * It should only contain one listener at a time.
+     * The list with targetlisteners, this are the property panels
+     * managed by TabProps It should only contain one listener at a
+     * time.
      */
     private EventListenerList _listenerList = new EventListenerList();
 
@@ -187,8 +191,8 @@ public class DetailsPane
                 _lastNonNullTab = i;
                 break;
             }
-            // default if there is no tabprops
-            // if there is no tabtodo either, this will result in _lastNonNullTab = -1
+            // default if there is no tabprops if there is no tabtodo
+            // either, this will result in _lastNonNullTab = -1
             if (tabs[i] instanceof TabToDo) {
                 _lastNonNullTab = i;
             }
@@ -554,7 +558,8 @@ public class DetailsPane
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         // we can neglect this, the detailspane allways selects the first target
@@ -564,7 +569,8 @@ public class DetailsPane
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         // how to handle empty target lists?
@@ -574,7 +580,8 @@ public class DetailsPane
     }
 
     /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);

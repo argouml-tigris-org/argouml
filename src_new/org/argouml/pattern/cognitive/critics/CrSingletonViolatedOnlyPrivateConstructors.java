@@ -47,7 +47,8 @@ import org.argouml.model.ModelFacade;
  *
  * <ol>
  *   <li>An static variable to hold the sole instance of the class;
- *   <li>only private constructors to create the sole instance; and (This critic)
+ *   <li>only private constructors to create the sole instance;
+ *       (This critic) and
  *   <li>At least one constructor to override the default constructor.
  * </ol>
  *
@@ -55,7 +56,9 @@ import org.argouml.model.ModelFacade;
  * This version includes an implementation for the second tests above!
  *
  * <p>
- * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_singleton_violated">ArgoUML User Manual: Singleton Violated</a>
+ * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_singleton_violated">
+ * ArgoUML User Manual: Singleton Violated
+ * </a>
  */
 public class CrSingletonViolatedOnlyPrivateConstructors extends CrUML {
 

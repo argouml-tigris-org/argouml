@@ -24,15 +24,13 @@
 
 package org.argouml.application;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.cognitive.Designer;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.util.Trash;
 import org.argouml.application.api.Argo;
+import org.argouml.uml.cognitive.critics.CrUML;
 
 import java.util.Locale;
 
@@ -59,8 +57,8 @@ public class StartCritics implements Runnable {
         Argo.log.info("spawned critiquing thread");
 
         // should be in logon wizard?
-        dsgr.startConsidering(org.argouml.uml.cognitive.critics.CrUML.decINHERITANCE);
-        dsgr.startConsidering(org.argouml.uml.cognitive.critics.CrUML.decCONTAINMENT);
+        dsgr.startConsidering(CrUML.decINHERITANCE);
+        dsgr.startConsidering(CrUML.decCONTAINMENT);
         Designer._userWorking = true;
     }
 

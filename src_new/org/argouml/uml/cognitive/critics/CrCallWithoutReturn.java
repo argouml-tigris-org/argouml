@@ -98,20 +98,29 @@ public class CrCallWithoutReturn extends CrUML {
 		    Iterator it = col.iterator();
 		    while (it.hasNext()) {
 			MStimulus ms = (MStimulus) it.next();
-			if (ms.getDispatchAction() instanceof MCallAction || ms.getDispatchAction() instanceof MSendAction) {
+			if (ms.getDispatchAction() instanceof MCallAction
+			    || ms.getDispatchAction() instanceof MSendAction)
+			{
 			    found = true;
-			    Vector edges = ((FigSeqObject) fsl.getDestFigNode()).getFigEdges();
+			    Vector edges =
+				((FigSeqObject) fsl.getDestFigNode())
+				.getFigEdges();
 			    for (int j = 0; j < edges.size(); j++) {
-				FigSeqLink second = (FigSeqLink) edges.elementAt(j);
+				FigSeqLink second =
+				    (FigSeqLink) edges.elementAt(j);
 				MLink ml2 = (MLink) second.getOwner();
 				if (ml2.getStimuli() != null) {
 				    Collection col2 = ml2.getStimuli();
 				    Iterator it2 = col2.iterator();
 				    while (it2.hasNext()) {
 					MStimulus ms2 = (MStimulus) it2.next();
-					if (ms2.getDispatchAction() instanceof MReturnAction
-					    && second.getPortNumber(figs) > fsl.getPortNumber(figs)
-					    && ms.getSender() == ms2.getReceiver()) {
+					if ((ms2.getDispatchAction()
+					     instanceof MReturnAction)
+					    && (second.getPortNumber(figs)
+						> fsl.getPortNumber(figs))
+					    && (ms.getSender()
+						== ms2.getReceiver()))
+					{
 					    found = false;
 					}
 				    }

@@ -85,7 +85,9 @@ public class FigTransition extends FigEdgeModelElement {
     }
 
     public FigTransition(Object edge) {
-	this(edge, ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer());
+	this(edge,
+	     ProjectManager.getManager().getCurrentProject()
+	     .getActiveDiagram().getLayer());
     }
 
     ////////////////////////////////////////////////////////////////
@@ -127,7 +129,10 @@ public class FigTransition extends FigEdgeModelElement {
     }
   
     private double calculateLength(Point point1, Point point2) {
-  	return Math.sqrt(Math.abs(point1.x - point2.x) * Math.abs(point1.x - point2.x) + Math.abs(point1.y - point2.y) * Math.abs(point1.y - point2.y));
+  	return Math.sqrt((Math.abs(point1.x - point2.x)
+			  * Math.abs(point1.x - point2.x))
+			 + (Math.abs(point1.y - point2.y)
+			    * Math.abs(point1.y - point2.y)));
     }
   
   

@@ -61,7 +61,6 @@ import org.argouml.swingext.DockLayout;
 import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.Orientation;
 import org.argouml.swingext.Vertical;
-import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.menubar.GenericArgoMenuBar;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionExit;
@@ -82,8 +81,8 @@ public class ProjectBrowser
     ////////////////////////////////////////////////////////////////
     // constants
 
-    public final static int DEFAULT_COMPONENTWIDTH = 220;
-    public final static int DEFAULT_COMPONENTHEIGHT = 200;
+    public static final int DEFAULT_COMPONENTWIDTH = 220;
+    public static final int DEFAULT_COMPONENTHEIGHT = 200;
 
     ////////////////////////////////////////////////////////////////
     // class variables
@@ -242,28 +241,40 @@ public class ProjectBrowser
      */
     protected Component createPanels(boolean doSplash) {
         if (doSplash) {
-            _splash.getStatusBar().showStatus("Making Project Browser: Navigator Pane");
+            _splash.getStatusBar().showStatus("Making Project Browser: "
+					      + "Explorer");
             _splash.getStatusBar().incProgress(5);
         }
         _navPane = new NavigatorPane(doSplash);
         /* Work in progress here to allow multiple details panes with 
         ** different contents - Bob Tarling
         */
-        _eastPane  = makeDetailsPane(BorderSplitPane.EAST,  Vertical.getInstance());
-        _southPane = makeDetailsPane(BorderSplitPane.SOUTH, Horizontal.getInstance());
-        _southEastPane = makeDetailsPane(BorderSplitPane.SOUTHEAST, Horizontal.getInstance());
-        _northWestPane = makeDetailsPane(BorderSplitPane.NORTHWEST, Horizontal.getInstance());
-        _northPane = makeDetailsPane(BorderSplitPane.NORTH, Horizontal.getInstance());
-        _northEastPane = makeDetailsPane(BorderSplitPane.NORTHEAST, Horizontal.getInstance());
+        _eastPane  =
+	    makeDetailsPane(BorderSplitPane.EAST,  Vertical.getInstance());
+        _southPane =
+	    makeDetailsPane(BorderSplitPane.SOUTH, Horizontal.getInstance());
+        _southEastPane =
+	    makeDetailsPane(BorderSplitPane.SOUTHEAST,
+			    Horizontal.getInstance());
+        _northWestPane =
+	    makeDetailsPane(BorderSplitPane.NORTHWEST,
+			    Horizontal.getInstance());
+        _northPane =
+	    makeDetailsPane(BorderSplitPane.NORTH, Horizontal.getInstance());
+        _northEastPane =
+	    makeDetailsPane(BorderSplitPane.NORTHEAST,
+			    Horizontal.getInstance());
         
         if (_southPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, _southPane);
         }
         if (_southEastPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST, _southEastPane);
+            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST,
+					   _southEastPane);
         }
         if (_southWestPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHWEST, _southWestPane);
+            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHWEST,
+					   _southWestPane);
         }
         if (_eastPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.EAST, _eastPane);
@@ -272,28 +283,33 @@ public class ProjectBrowser
             detailsPanesByCompassPoint.put(BorderSplitPane.WEST, _westPane);
         }
         if (_northWestPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST, _northWestPane);
+            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST,
+					   _northWestPane);
         }
         if (_northPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.NORTH, _northPane);
         }
         if (_northEastPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST, _northEastPane);
+            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST,
+					   _northEastPane);
         }
         if (_westPane != null) {
             detailsPanesByCompassPoint.put(BorderSplitPane.WEST, _westPane);
         }
         if (_southWestPane != null) {
-            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHWEST, _southWestPane);
+            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHWEST,
+					   _southWestPane);
         }
 
-        // The workarea is all the visible space except the menu, toolbar and status bar.
-        // Workarea is layed out as a BorderSplitPane where the various components that make
-        // up the argo application can be positioned.
+        // The workarea is all the visible space except the menu,
+        // toolbar and status bar.  Workarea is layed out as a
+        // BorderSplitPane where the various components that make up
+        // the argo application can be positioned.
         _workarea = new BorderSplitPane();
         // create the todopane
         if (doSplash) {
-            _splash.getStatusBar().showStatus("Making Project Browser: To Do Pane");
+            _splash.getStatusBar().showStatus("Making Project Browser: "
+					      + "To Do Pane");
             _splash.getStatusBar().incProgress(5);
         }
         _todoPane = new ToDoPane(doSplash);
@@ -318,15 +334,17 @@ public class ProjectBrowser
         //todo.setTree(_todoPane);
         _workarea.add(_todoPane, BorderSplitPane.SOUTHWEST);
         _workarea.add(_editorPane);
-        // Toolbar boundry is the area between the menu and the status bar. It contains
-        // the workarea at centre and the toolbar position north, south, east or west.
+        // Toolbar boundry is the area between the menu and the status
+        // bar. It contains the workarea at centre and the toolbar
+        // position north, south, east or west.
         JPanel toolbarBoundry = new JPanel();
         toolbarBoundry.setLayout(new DockLayout());
         // TODO - should save and restore the last positions of the toolbars
         toolbarBoundry.add(_menuBar.getFileToolbar(), BorderLayout.NORTH);
         toolbarBoundry.add(_menuBar.getEditToolbar(), BorderLayout.NORTH);
         toolbarBoundry.add(_menuBar.getViewToolbar(), BorderLayout.NORTH);
-        toolbarBoundry.add(_menuBar.getCreateDiagramToolbar(), BorderLayout.NORTH);
+        toolbarBoundry.add(_menuBar.getCreateDiagramToolbar(),
+			   BorderLayout.NORTH);
         toolbarBoundry.add(_workarea, BorderLayout.CENTER);
 
         return toolbarBoundry;
@@ -337,42 +355,62 @@ public class ProjectBrowser
     private void restorePanelSizes() {
         if (_northPane != null) {
             _northPane.setPreferredSize(
-					new Dimension(0, Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)));
+		    new Dimension(0,
+				  Configuration.getInteger(
+					  Argo.KEY_SCREEN_NORTH_HEIGHT,
+					  DEFAULT_COMPONENTHEIGHT)));
         }
         if (_southPane != null) {
             _southPane.setPreferredSize(
-					new Dimension(0, Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)));
+		    new Dimension(0,
+				  Configuration.getInteger(
+					  Argo.KEY_SCREEN_SOUTH_HEIGHT,
+					  DEFAULT_COMPONENTHEIGHT)));
         }
         if (_eastPane != null) {
             _eastPane.setPreferredSize(
-				       new Dimension(Configuration.getInteger(Argo.KEY_SCREEN_EAST_WIDTH, DEFAULT_COMPONENTHEIGHT), 0));
+		    new Dimension(Configuration.getInteger(
+					  Argo.KEY_SCREEN_EAST_WIDTH,
+					  DEFAULT_COMPONENTHEIGHT),
+				  0));
         }
         if (_navPane != null) {
             _navPane.setPreferredSize(
-				      new Dimension(Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, DEFAULT_COMPONENTHEIGHT), 0));
+		    new Dimension(Configuration.getInteger(
+					  Argo.KEY_SCREEN_WEST_WIDTH,
+					  DEFAULT_COMPONENTHEIGHT),
+				  0));
         }
 	//        if (_northWestPane != null) {
 	//            _northWestPane.setPreferredSize(new Dimension(
-	//                Configuration.getInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
-	//                Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+	//                Configuration.getInteger(
+	// Argo.KEY_SCREEN_NORTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
+	//                Configuration.getInteger(
+	// Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
 	//            ));
 	//        }
 	//        if (_todoPane != null) {
 	//            _todoPane.setPreferredSize(new Dimension(
-	//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
-	//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+	//                Configuration.getInteger(
+	// Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
+	//                Configuration.getInteger(
+	// Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
 	//            ));
 	//        }
 	//        if (_northEastPane != null) {
 	//            _northEastPane.setPreferredSize(new Dimension(
-	//                Configuration.getInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
-	//                Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+	//                Configuration.getInteger(
+	// Argo.KEY_SCREEN_NORTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
+	//                Configuration.getInteger(
+	// Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
 	//            ));
 	//        }
 	//        if (_southEastPane != null) {
 	//            _southEastPane.setPreferredSize(new Dimension(
-	//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
-	//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+	//                Configuration.getInteger(
+	// Argo.KEY_SCREEN_SOUTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
+	//                Configuration.getInteger(
+	// Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
 	//            ));
 	//        }
     }
@@ -419,15 +457,17 @@ public class ProjectBrowser
      * The method used by the NavigatorPane, MultiEditor and DetailsPane
      * to set the target of the application.
      *
-     * <p>the target is either a Model Element (usually selected in the Navigation pane
-     * or Properties panel) or a Fig (selected in a diagram).
+     * <p>the target is either a Model Element (usually selected in
+     * the Navigation pane or Properties panel) or a Fig (selected in
+     * a diagram).
      *
      * <p>The concept of a selection transaction is used to prevent a change
      * of target in one view creating a call back to this method, which 
      * would then change the target in all views again...
      * </p>
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager#setTarget(Object) TargetManager.getInstance().setTarget(Object)}
+     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
+     * org.argouml.ui.targetmanager.TargetManager#setTarget(Object)
+     * TargetManager.getInstance().setTarget(Object)}
      */
     public void setTarget(Object o) {
 
@@ -496,8 +536,9 @@ public class ProjectBrowser
 
     /** 
      * return the current target in the editor pane
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager#getTarget() TargetManager.getInstance().getTarget()}
+     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
+     * org.argouml.ui.targetmanager.TargetManager#getTarget()
+     * TargetManager.getInstance().getTarget()}
      */
     
     public Object getTarget() {
@@ -510,8 +551,8 @@ public class ProjectBrowser
      * which the classes were imported.
      * It should also default the model name as well.
      *{@link #setTarget}.
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     *             {@link org.argouml.kernel.Project#setActiveDiagram(ArgoDiagram)}
+     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
+     * org.argouml.kernel.Project#setActiveDiagram(ArgoDiagram)}
      */
     public void setActiveDiagram(ArgoDiagram ad) {
         ProjectManager.getManager().getCurrentProject().setActiveDiagram(ad);
@@ -532,7 +573,8 @@ public class ProjectBrowser
     /**
      * Select the tab page containing the todo item
      *
-     * TODO: should introduce an instance variable to go straight to the correct tab instead of trying all
+     * TODO: should introduce an instance variable to go straight to
+     * the correct tab instead of trying all
      */
     public void setToDoItem(Object o) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
@@ -544,11 +586,12 @@ public class ProjectBrowser
     }
 
     /**
-     * Gets the target of the detailspane. This is exactly the same as the target
-     * of the TargetManager. 
+     * Gets the target of the detailspane. This is exactly the same as
+     * the target of the TargetManager.
      *
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager#getTarget() TargetManager.getInstance().getTarget()}
+     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
+     * org.argouml.ui.targetmanager.TargetManager#getTarget()
+     * TargetManager.getInstance().getTarget()}
      * @return the target
      */
     public Object getDetailsTarget() {
@@ -595,7 +638,8 @@ public class ProjectBrowser
                 return tab;
             }
         }
-        throw new IllegalStateException("No " + tabClass.getName() + " tab found");
+        throw new IllegalStateException("No " + tabClass.getName()
+					+ " tab found");
     }
 
     public StatusBar getStatusBar() {
@@ -695,7 +739,9 @@ public class ProjectBrowser
             setTarget(first);
         }
         // making it possible to jump to the modelroot
-        if (first.equals(ProjectManager.getManager().getCurrentProject().getRoot())) {
+        if (first.equals(ProjectManager.getManager().getCurrentProject()
+			 .getRoot()))
+	{
             setTarget(first);
         }
     }
@@ -729,8 +775,9 @@ public class ProjectBrowser
     }
 
     /**
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateBack() TargetManager.getInstance().navigateBack()}
+     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
+     * org.argouml.ui.targetmanager.TargetManager#navigateBack()
+     * TargetManager.getInstance().navigateBack()}
      */
     public boolean navigateBack(boolean attempt) {
         boolean navigated = false;
@@ -741,13 +788,16 @@ public class ProjectBrowser
     }
 
     /**
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateForward() TargetManager.getInstance().navigateForward()}
+     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
+     * org.argouml.ui.targetmanager.TargetManager#navigateForward()
+     * TargetManager.getInstance().navigateForward()}
      */
     public boolean navigateForward(boolean attempt) {
         boolean navigated = false;
         if (attempt) {
-            if (attempt && TargetManager.getInstance().navigateForwardPossible()) {
+            if (attempt
+		&& TargetManager.getInstance().navigateForwardPossible())
+	    {
 		TargetManager.getInstance().navigateForward();
 	    }
         }
@@ -755,34 +805,52 @@ public class ProjectBrowser
     }
 
     /**
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateBackPossible() TargetManager.getInstance().navigateBackPossible()}
+     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
+     * org.argouml.ui.targetmanager.TargetManager#navigateBackPossible()
+     * TargetManager.getInstance().navigateBackPossible()}
      */
     public boolean isNavigateBackEnabled() {
         return TargetManager.getInstance().navigateBackPossible();
     }
 
     /**
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateForwardPossible() TargetManager.getInstance().navigateForwardPossible()}
+     * @deprecated As of ArgoUml version 0.13.5,replaced by {@link
+     * org.argouml.ui.targetmanager.TargetManager#navigateForwardPossible()
+     * TargetManager.getInstance().navigateForwardPossible()}
      */
     public boolean isNavigateForwardEnabled() {
         return TargetManager.getInstance().navigateForwardPossible();
     }
 
     /**
-     * Save the positions of the screen splitters, sizes and postion of main window
-     * in the properties file
+     * Save the positions of the screen splitters, sizes and postion
+     * of main window in the properties file
      */
     public void saveScreenConfiguration() {
-        if (_navPane != null) Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, _navPane.getWidth());
-        if (_eastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH, _eastPane.getWidth());
-        if (_northPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, _northPane.getHeight());
-        if (_southPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, _southPane.getHeight());
-	//        if (_todoPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, _todoPane.getWidth());
-	//        if (_southEastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, _southEastPane.getWidth());
-	//        if (_northWestPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, _northWestPane.getWidth());
-	//        if (_northEastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, _northEastPane.getWidth());
+        if (_navPane != null)
+	    Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH,
+				     _navPane.getWidth());
+        if (_eastPane != null)
+	    Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH,
+				     _eastPane.getWidth());
+        if (_northPane != null)
+	    Configuration.setInteger(Argo.KEY_SCREEN_NORTH_HEIGHT,
+				     _northPane.getHeight());
+        if (_southPane != null)
+	    Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT,
+				     _southPane.getHeight());
+	//        if (_todoPane != null)
+	// Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH,
+	// _todoPane.getWidth());
+	//        if (_southEastPane != null)
+	// Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH,
+	// _southEastPane.getWidth());
+	//        if (_northWestPane != null)
+	// Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH,
+	// _northWestPane.getWidth());
+	//        if (_northEastPane != null)
+	// Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH,
+	// _northEastPane.getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());
@@ -808,8 +876,11 @@ public class ProjectBrowser
      * @return the details pane or null if none is required for the given
      *         compass point.
      */
-    private DetailsPane makeDetailsPane(String compassPoint, Orientation orientation) {
-        DetailsPane detailsPane = new DetailsPane(compassPoint.toLowerCase(), orientation);
+    private DetailsPane makeDetailsPane(String compassPoint,
+					Orientation orientation)
+    {
+        DetailsPane detailsPane =
+	    new DetailsPane(compassPoint.toLowerCase(), orientation);
         if (detailsPane.getTabCount() == 0)
             return null;
         return detailsPane;
@@ -825,7 +896,8 @@ public class ProjectBrowser
     } /* end class WindowCloser */
 
     /**
-     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     * @see
+     * java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
 
@@ -843,9 +915,9 @@ public class ProjectBrowser
         }
 
         // the save state changed
-        else if (
-		 evt.getPropertyName().equals(
-					      ProjectManager.SAVE_STATE_PROPERTY_NAME)) {
+        else if (evt.getPropertyName()
+		 .equals(ProjectManager.SAVE_STATE_PROPERTY_NAME))
+	{
 
             String oldTitle = super.getTitle();
             if (((Boolean) evt.getNewValue()).booleanValue() == true
@@ -901,14 +973,14 @@ public class ProjectBrowser
      * the projectbrowser. 
      * @return the singleton instance of the projectbrowser
      */
-    public synchronized static ProjectBrowser getInstance() {
+    public static synchronized ProjectBrowser getInstance() {
         if (TheInstance == null) {
             TheInstance = new ProjectBrowser("ArgoUML", _Splash);
         }
         return TheInstance;
     }
 
-    public synchronized static void setSplash(boolean splash) {
+    public static synchronized void setSplash(boolean splash) {
         _Splash = splash;
     }
 

@@ -185,9 +185,10 @@ public class WizOperName extends WizMEName {
 		    _oldStereotypeIsSet = true;
 		}
 
-                // We need to find the stereotype with the name "create" and 
-                // the base class BehavioralFeature in the model. If there is none
-                // then we create one and put it there.
+                // We need to find the stereotype with the name
+                // "create" and the base class BehavioralFeature in
+                // the model. If there is none then we create one and
+                // put it there.
 		MModel m = oper.getModel();
                 MStereotype theStereotype = null;
                 for (Iterator iter = m.getOwnedElements().iterator();
@@ -205,7 +206,9 @@ public class WizOperName extends WizMEName {
                     break;
                 }
                 if (theStereotype == null) {
-                    theStereotype = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
+                    theStereotype =
+			UmlFactory.getFactory().getExtensionMechanisms()
+			.createStereotype();
 		    theStereotype.setName("create");
 		    // theStereotype.setStereotype(???);
 		    theStereotype.setBaseClass("BehavioralFeature");
@@ -240,7 +243,9 @@ public class WizOperName extends WizMEName {
     // TODO:
     // Move to MMUtil or some other common place and merge with 
     // UMLComboBoxEntry::findNamespace()
-    private static MNamespace findNamespace(MNamespace phantomNS, MModel targetModel) {
+    private static MNamespace findNamespace(MNamespace phantomNS,
+					    MModel targetModel)
+    {
         MNamespace ns = null;
         MNamespace targetParentNS = null;
         if (phantomNS == null) {

@@ -28,7 +28,6 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MClassifier;
 
 /**
  *  $Revision$

@@ -61,7 +61,8 @@ public class FigLink extends FigEdgeModelElement {
      */
     protected Object getDestination() {
         if (getOwner() != null) {
-            return CommonBehaviorHelper.getHelper().getDestination((MLink) getOwner());
+            return CommonBehaviorHelper.getHelper()
+		.getDestination((MLink) getOwner());
         }
         return null;
     }
@@ -71,7 +72,8 @@ public class FigLink extends FigEdgeModelElement {
      */
     protected Object getSource() {
         if (getOwner() != null) {
-            return CommonBehaviorHelper.getHelper().getSource((MLink) getOwner());
+            return CommonBehaviorHelper.getHelper()
+		.getSource((MLink) getOwner());
         }
         return null;
     }

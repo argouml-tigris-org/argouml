@@ -40,8 +40,8 @@ import javax.swing.JButton;
 import javax.swing.JToolBar;
 
 /**
- * A toolbar class which assumes rollover effects and automatically gives tooltip
- * to any buttons created by adding an action.
+ * A toolbar class which assumes rollover effects and automatically
+ * gives tooltip to any buttons created by adding an action.
  *
  * @author  Bob Tarling
  */
@@ -63,15 +63,18 @@ public class Toolbar extends JToolBar implements MouseListener {
     }
     
     /** Creates a new instance of Toolbar
-     * @param title The title to display in the titlebar when toolbar is floating
+     * @param title The title to display in the titlebar when toolbar
+     * is floating
      */
     public Toolbar(String title) {
         this(title, true);
     }
 
     /** Creates a new instance of Toolbar
-     * @param title The title to display in the titlebar when toolbar is floating
-     * @param floatable true if the toolbar can be dragged to a floating position
+     * @param title The title to display in the titlebar when toolbar
+     * is floating
+     * @param floatable true if the toolbar can be dragged to a
+     * floating position
      */
     public Toolbar(String title, boolean floatable) {
         super();
@@ -95,8 +98,10 @@ public class Toolbar extends JToolBar implements MouseListener {
         // TODO Check for JDK1.4 before calling super class setRollover
         //super.setRollover(rollover);
         this._rollover = rollover;
-        // TODO Check for JDK1.4 before using Boolean.valueOf(rollover)
-        //this.putClientProperty("JToolBar.isRollover", Boolean.valueOf(rollover));
+        // TODO Check for JDK1.4 before using
+        //Boolean.valueOf(rollover)
+        //this.putClientProperty("JToolBar.isRollover",
+        //Boolean.valueOf(rollover));
         Boolean showRollover = Boolean.FALSE;
         if (rollover) showRollover = Boolean.TRUE;
         this.putClientProperty("JToolBar.isRollover",  showRollover);
@@ -131,7 +136,9 @@ public class Toolbar extends JToolBar implements MouseListener {
     public void mouseReleased(MouseEvent me) { }
     public void mouseClicked(MouseEvent me) {
         Object src = me.getSource();
-        if (src instanceof JButton && ((JButton) src).getAction() instanceof ButtonAction) {
+        if (src instanceof JButton
+	    && ((JButton) src).getAction() instanceof ButtonAction)
+	{
             JButton button = (JButton) src;
             ButtonAction action = (ButtonAction) button.getAction();
             if (action.isModal()) {
@@ -144,14 +151,20 @@ public class Toolbar extends JToolBar implements MouseListener {
                     button.setRolloverEnabled(false);
                     normalBack = currentBack;
                 }
-                if (me.getClickCount() >= 2 && action.getLockMethod() == AbstractButtonAction.NONE) {
+                if (me.getClickCount() >= 2
+		    && action.getLockMethod() == AbstractButtonAction.NONE) 
+		{
                     // FIXME Here I need to lock the button in place.
-                    // The button should stay in place until it is pressed again (when
-                    // it is released but not acted on) or any other key in its group
-                    // is pressed.
+                    // The button should stay in place until it is
+                    // pressed again (when it is released but not
+                    // acted on) or any other key in its group is
+                    // pressed.
                 }
-                else if (me.getClickCount() == 1) {
-                }
+                else {
+		    // Fixme, the is the rest of an empty
+		    // if (me.getClickCount() == 1) {
+		    me.getClickCount();
+		}
             }
         }
     }

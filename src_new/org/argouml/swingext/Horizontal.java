@@ -32,32 +32,35 @@ import java.awt.event.*;
 import javax.swing.border.Border;
 
 /**
- * A horizontal implementation of  <code>Orientation</code>.
- * The Singleton pattern is used to ensure that only one instance of this class can exist.<br />
- * <br />
- * <code>Horizontal</code> treats length as width, breadth as height and position as x.<br />
- *<code>
- *&nbsp;&nbsp;&nbsp;&nbsp;HORIZONTAL<br>
- *<br />
- *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A<br>
- *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
- *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;position&nbsp;=&nbsp;y<br>
- *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
- *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;V<br>
- *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-------------+&nbsp;&nbsp;&nbsp;A&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-------------+&nbsp;&nbsp;&nbsp;A<br>
- *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;|<br>
- *&nbsp;<--position-->&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;breadth&nbsp;=&nbsp;height&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;length&nbsp;=&nbsp;height<br>
- *&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;x&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;|<br>
- *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-------------+&nbsp;&nbsp;&nbsp;V&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+-------------+&nbsp;&nbsp;&nbsp;V<br>
- *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<--&nbsp;length-->&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<--breadth--><br>
- *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;width&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=&nbsp;width<br>
- *</code>
+ * A horizontal implementation of <code>Orientation</code>.  The
+ * Singleton pattern is used to ensure that only one instance of this
+ * class can exist.<p>
+ *
+ * <code>Horizontal</code> treats length as width, breadth as height
+ * and position as x.<p>
+ *
+ *<pre>
+ *    HORIZONTAL
+ *
+ *                                                    A
+ *                                                    |
+ *                                                 position = y
+ *                                                    |
+ *                                                    V
+ *                +-------------+   A                 +-------------+   A
+ *                |             |   |                 |             |   |
+ * <--position--> |             | breadth = height    |             | length =
+ *    = x         |             |   |                 |             |   |height
+ *                +-------------+   V                 +-------------+   V
+ *                 <-- length-->                       <--breadth-->
+ *                    = width                             = width
+ *</pre>
  *
  * @author Bob Tarling
  */
 public class Horizontal extends Orientation {
 
-    final static private Horizontal horizontal = new Horizontal();
+    private static final Horizontal horizontal = new Horizontal();
 
     protected Horizontal() {
     }
@@ -65,8 +68,8 @@ public class Horizontal extends Orientation {
     /**
      * Get an instance of a <code>Horizontal</code> object.
      *
-     * @parameter orientation value representing the type of orientation required,
-     * HORIZONTAL or VERTICAL.
+     * @parameter orientation value representing the type of
+     * orientation required, HORIZONTAL or VERTICAL.
      * @return An instance of <code>Orientation</code>.
      */
     public static Orientation getInstance() {
@@ -74,9 +77,14 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Get an instance of an <code>Orientation</code> perpendicular to this instance.<br />
-     * If called on a horizontal instance then a vertical instance is returned.<br />
-     * If called on a vertical instance then a horizontal instance is returned.<br />
+     * Get an instance of an <code>Orientation</code> perpendicular to
+     * this instance.<p>
+     *
+     * If called on a horizontal instance then a vertical instance is
+     * returned.<p>
+     *
+     * If called on a vertical instance then a horizontal instance is
+     * returned.<p>
      *
      * @return A vertical or horizontal orientation.
      */
@@ -87,7 +95,8 @@ public class Horizontal extends Orientation {
     /**
      * Get the length of a <code>Dimension</code>.
      *
-     * @parameter dim The <code>Dimension</code> of which to determine the length
+     * @parameter dim The <code>Dimension</code> of which to determine
+     * the length
      * @return The length of the <code>Dimension</code>.
      */
     public int getLength(Dimension dim) {
@@ -97,7 +106,8 @@ public class Horizontal extends Orientation {
     /**
      * Get the length of a <code>Component</code>.
      *
-     * @parameter comp The <code>Component</code> of which to determine the length
+     * @parameter comp The <code>Component</code> of which to
+     * determine the length
      * @return The length of the <code>Component</code>.
      */
     public int getLength(Component comp) {
@@ -105,9 +115,11 @@ public class Horizontal extends Orientation {
     }
     
     /**
-     * Get the usable length of a <code>Container</code> minus its <code>insets</code>.
+     * Get the usable length of a <code>Container</code> minus its
+     * <code>insets</code>.
      *
-     * @parameter cont The <code>Container</code> of which to determine the length
+     * @parameter cont The <code>Container</code> of which to
+     * determine the length
      * @return The length of the <code>Component</code>.
      */
     public int getLengthMinusInsets(Container cont) {
@@ -118,7 +130,8 @@ public class Horizontal extends Orientation {
     /**
      * Get the breadth of a <code>Dimension</code>.
      *
-     * @parameter dim The <code>Dimension</code> of which to determine the breadth
+     * @parameter dim The <code>Dimension</code> of which to determine
+     * the breadth
      * @return The breadth of the <code>Dimension</code>.
      */
     public int getBreadth(Dimension dim) {
@@ -128,7 +141,8 @@ public class Horizontal extends Orientation {
     /**
      * Get the breadth of a <code>Component</code>.
      *
-     * @parameter comp The <code>Component</code> of which to determine the breadth
+     * @parameter comp The <code>Component</code> of which to
+     * determine the breadth
      * @return The breadth of the <code>Component</code>.
      */
     public int getBreadth(Component comp) {
@@ -138,7 +152,8 @@ public class Horizontal extends Orientation {
     /**
      * Get the position of a <code>Point</code>.
      *
-     * @parameter point The <code>Point</code> of which to determine the position
+     * @parameter point The <code>Point</code> of which to determine
+     * the position
      * @return The position of the <code>Point</code>.
      */
     public int getPosition(Point point) {
@@ -148,7 +163,8 @@ public class Horizontal extends Orientation {
     /**
      * Get the position of a <code>Component</code>.
      *
-     * @parameter comp The <code>Component</code> of which to determine the position
+     * @parameter comp The <code>Component</code> of which to
+     * determine the position
      * @return The position of the <code>Component</code>.
      */
     public int getPosition(Component comp) {
@@ -158,7 +174,8 @@ public class Horizontal extends Orientation {
     /**
      * Get the offset of a <code>Component</code>.
      *
-     * @parameter comp The <code>Component</code> of which to determine the offset.
+     * @parameter comp The <code>Component</code> of which to
+     * determine the offset.
      * @return The position of the <code>Component</code>.
      */
     public int getOffset(Point point) {
@@ -166,11 +183,12 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Determines the last usable position in a <code>Container</code>. This takes into account
-     * the <code>Insets</code> of the <code>Container</code>.
+     * Determines the last usable position in a
+     * <code>Container</code>. This takes into account the
+     * <code>Insets</code> of the <code>Container</code>.
      *
-     * @parameter cont the <code>Container</code> from which to determine the last usable 
-     *                 position.
+     * @parameter cont the <code>Container</code> from which to
+     * determine the last usable position.
      * @return The offset of the <code>Container</code>.
      */
     public int getLastUsablePosition(Container cont) {
@@ -178,11 +196,12 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Determines the first usable offset in a <code>Container</code>. This takes into account
-     * the <code>Insets</code> of the <code>Container</code>.
+     * Determines the first usable offset in a
+     * <code>Container</code>. This takes into account the
+     * <code>Insets</code> of the <code>Container</code>.
      *
-     * @parameter cont the <code>Container</code> from which to determine the first usable 
-     *                 position.
+     * @parameter cont the <code>Container</code> from which to
+     * determine the first usable position.
      * @return The offset of the <code>Container</code>.
      */
     public int getFirstUsableOffset(Container cont) {
@@ -203,7 +222,8 @@ public class Horizontal extends Orientation {
     /**
      * Get the position of a <code>MouseEvent</code>.
      *
-     * @parameter me The <code>MouseEvent</code> of which to determine the position
+     * @parameter me The <code>MouseEvent</code> of which to determine
+     * the position
      * @return The position of the <code>MouseEvent</code>.
      */
     public int getPosition(MouseEvent me) {
@@ -211,8 +231,9 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its length
-     * increased by a given value.
+     * Create a new <code>Dimension</code> from an existing
+     * <code>Dimension</code> with its length increased by a given
+     * value.
      *
      * @parameter original The <code>Dimension</code> to be added to.
      * @parameter add The amount to add to the <code>Dimension</code>.
@@ -225,11 +246,13 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its length
-     * increased by the length of another <code>Dimension</code>.
+     * Create a new <code>Dimension</code> from an existing
+     * <code>Dimension</code> with its length increased by the length
+     * of another <code>Dimension</code>.
      *
      * @parameter original The <code>Dimension</code> to be added to.
-     * @parameter add The <code>Dimension</code> whose length is to be taken as the added value.
+     * @parameter add The <code>Dimension</code> whose length is to be
+     * taken as the added value.
      * @return The resulting <code>Dimension</code>.
      */
     public Dimension addLength(Dimension original, Dimension add) {
@@ -237,11 +260,13 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its length
-     * increased by the length of a <code>Component</code>.
+     * Create a new <code>Dimension</code> from an existing
+     * <code>Dimension</code> with its length increased by the length
+     * of a <code>Component</code>.
      *
      * @parameter original The <code>Dimension</code> to be added to.
-     * @parameter add The <code>Component</code> whose length is to be taken as the added value.
+     * @parameter add The <code>Component</code> whose length is to be
+     * taken as the added value.
      * @return The resulting <code>Dimension</code>.
      */
     public Dimension addLength(Dimension original, Component add) {
@@ -249,11 +274,13 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its length
-     * decreased by a given value.
+     * Create a new <code>Dimension</code> from an existing
+     * <code>Dimension</code> with its length decreased by a given
+     * value.
      *
      * @parameter original The <code>Dimension</code> to be subtracted from.
-     * @parameter subtract The amount to subtract from the <code>Dimension</code>.
+     * @parameter subtract The amount to subtract from the
+     * <code>Dimension</code>.
      * @return The resulting <code>Dimension</code>.
      */
     public Dimension subtractLength(Dimension original, int subtract) {
@@ -261,11 +288,13 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its length
-     * decreased by the length of another <code>Dimension</code>.
+     * Create a new <code>Dimension</code> from an existing
+     * <code>Dimension</code> with its length decreased by the length
+     * of another <code>Dimension</code>.
      *
      * @parameter original The <code>Dimension</code> to be subtracted from.
-     * @parameter subtract The <code>Dimension</code> whose length is to be taken as the subtracted value.
+     * @parameter subtract The <code>Dimension</code> whose length is
+     * to be taken as the subtracted value.
      * @return The resulting <code>Dimension</code>.
      */
     public Dimension subtractLength(Dimension original, Dimension subtract) {
@@ -273,11 +302,13 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its length
-     * decreased by the length of a <code>Component</code>.
+     * Create a new <code>Dimension</code> from an existing
+     * <code>Dimension</code> with its length decreased by the length
+     * of a <code>Component</code>.
      *
      * @parameter original The <code>Dimension</code> to be subtracted from.
-     * @parameter subtract The <code>Component</code> whose length is to be taken as the subtracted value.
+     * @parameter subtract The <code>Component</code> whose length is
+     * to be taken as the subtracted value.
      * @return The resulting <code>Dimension</code>.
      */
     public Dimension subtractLength(Dimension original, Component subtract) {
@@ -285,8 +316,9 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Point</code> from an existing <code>Point</code> with its position
-     * increased by a given value.
+     * Create a new <code>Point</code> from an existing
+     * <code>Point</code> with its position increased by a given
+     * value.
      *
      * @parameter original The <code>Point</code> to be added to.
      * @parameter add The amount to add to the <code>Point</code>.
@@ -299,11 +331,13 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Point</code> from an existing <code>Point</code> with its length
-     * increased by the length of a <code>Dimension</code>.
+     * Create a new <code>Point</code> from an existing
+     * <code>Point</code> with its length increased by the length of a
+     * <code>Dimension</code>.
      *
      * @parameter original The <code>Point</code> to be added to.
-     * @parameter add The <code>Dimension</code> whose length is to be taken as the added value.
+     * @parameter add The <code>Dimension</code> whose length is to be
+     * taken as the added value.
      * @return The resulting <code>Point</code>.
      */
     public Point addToPosition(Point original, Dimension add) {
@@ -311,11 +345,13 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Point</code> from an existing <code>Point</code> with its length
-     * increased by the length of a <code>Component</code>.
+     * Create a new <code>Point</code> from an existing
+     * <code>Point</code> with its length increased by the length of a
+     * <code>Component</code>.
      *
      * @parameter original The <code>Point</code> to be added to.
-     * @parameter add The <code>Dimension</code> whose length is to be taken as the added value.
+     * @parameter add The <code>Dimension</code> whose length is to be
+     * taken as the added value.
      * @return The resulting <code>Point</code>.
      */
     public Point addToPosition(Point original, Component add) {
@@ -323,8 +359,9 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Point</code> from an existing <code>Point</code> with its position
-     * decreased by a given value.
+     * Create a new <code>Point</code> from an existing
+     * <code>Point</code> with its position decreased by a given
+     * value.
      *
      * @parameter original The <code>Point</code> to be added to.
      * @parameter subtract The amount to subtract to the <code>Point</code>.
@@ -335,11 +372,13 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Point</code> from an existing <code>Point</code> with its length
-     * decreased by the length of a <code>Dimension</code>.
+     * Create a new <code>Point</code> from an existing
+     * <code>Point</code> with its length decreased by the length of a
+     * <code>Dimension</code>.
      *
      * @parameter original The <code>Point</code> to be added to.
-     * @parameter subtract The <code>Dimension</code> whose length is to be taken as the subtracted value.
+     * @parameter subtract The <code>Dimension</code> whose length is
+     * to be taken as the subtracted value.
      * @return The resulting <code>Point</code>.
      */
     public Point subtractFromPosition(Point original, Dimension subtract) {
@@ -347,11 +386,13 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Point</code> from an existing <code>Point</code> with its length
-     * decreased by the length of a <code>Component</code>.
+     * Create a new <code>Point</code> from an existing
+     * <code>Point</code> with its length decreased by the length of a
+     * <code>Component</code>.
      *
      * @parameter original The <code>Point</code> to be added to.
-     * @parameter subtract The <code>Component</code> whose length is to be taken as the subtracted value.
+     * @parameter subtract The <code>Component</code> whose length is
+     * to be taken as the subtracted value.
      * @return The resulting <code>Point</code>.
      */
     public Point subtractFromPosition(Point original, Component subtract) {
@@ -359,11 +400,13 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its
-     * length changed to a given value.
+     * Create a new <code>Dimension</code> from an existing
+     * <code>Dimension</code> with its length changed to a given
+     * value.
      *
      * @parameter original The <code>Dimension</code> to be added to.
-     * @parameter length   The length to assign to the new <code>Dimension</code>.
+     * @parameter length The length to assign to the new
+     * <code>Dimension</code>.
      * @return             The resulting <code>Dimension</code>.
      */
     public Dimension setLength(Dimension original, int length) {
@@ -371,24 +414,28 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its
-     * length changed to the length of another given <code>Dimension</code>.
+     * Create a new <code>Dimension</code> from an existing
+     * <code>Dimension</code> with its length changed to the length of
+     * another given <code>Dimension</code>.
      *
      * @parameter original The <code>Dimension</code> to be added to.
-     * @parameter length   The <code>Dimension</code> whose length is to be assigned to the new
-     *                     <code>Dimension</code>.
+     * @parameter length The <code>Dimension</code> whose length is to
+     * be assigned to the new <code>Dimension</code>.
      * @return             The resulting <code>Dimension</code>.
      */
     public Dimension setLength(Dimension original, Dimension length) {
-        return new Dimension((int) length.getWidth(), (int) original.getHeight());
+        return new Dimension((int) length.getWidth(),
+			     (int) original.getHeight());
     }
 
     /**
-     * Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its
-     * breadth changed to a given value.
+     * Create a new <code>Dimension</code> from an existing
+     * <code>Dimension</code> with its breadth changed to a given
+     * value.
      *
      * @parameter original The <code>Dimension</code> to be added to.
-     * @parameter breadth  The breadth to assign to the new <code>Dimension</code>.
+     * @parameter breadth The breadth to assign to the new
+     * <code>Dimension</code>.
      * @return             The resulting <code>Dimension</code>.
      */
     public Dimension setBreadth(Dimension original, int breadth) {
@@ -396,23 +443,26 @@ public class Horizontal extends Orientation {
     }
 
     /**
-     * Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its
-     * breadth changed to the breadth of another given <code>Dimension</code>.
+     * Create a new <code>Dimension</code> from an existing
+     * <code>Dimension</code> with its breadth changed to the breadth
+     * of another given <code>Dimension</code>.
      *
      * @parameter original The <code>Dimension</code> to be added to.
-     * @parameter breadth  The <code>Dimension</code> whose breadth is to be assigned to the new
-     *                     <code>Dimension</code>.
+     * @parameter breadth The <code>Dimension</code> whose breadth is
+     * to be assigned to the new <code>Dimension</code>.
      * @return             The resulting <code>Dimension</code>.
      */
     public Dimension setBreadth(Dimension original, Dimension breadth) {
-        return new Dimension((int) original.getWidth(), (int) breadth.getHeight());
+        return new Dimension((int) original.getWidth(),
+			     (int) breadth.getHeight());
     }
     
     /**
-     * Create a new <code>Point</code> from an existing <code>Point</code> with its
-     * position changed to a given value.
+     * Create a new <code>Point</code> from an existing
+     * <code>Point</code> with its position changed to a given value.
      *
-     * @parameter original The <code>Point</code> whose position is to be modified.
+     * @parameter original The <code>Point</code> whose position is to
+     * be modified.
      * @parameter position The value to assign as the new position.
      * @return             The resulting <code>Point</code>.
      */

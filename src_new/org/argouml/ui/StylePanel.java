@@ -59,8 +59,9 @@ public class StylePanel
     protected Fig _target;
 
     /**
-     * This method must be overriden by implementors if they don't want to refresh
-     * the whole stylepanel every time a property change events is fired.
+     * This method must be overriden by implementors if they don't
+     * want to refresh the whole stylepanel every time a property
+     * change events is fired.
      * @since 8 june 2003, 0.13.6
      * @see org.argouml.ui.TabTarget#refresh(java.beans.PropertyChangeEvent)
      */
@@ -166,7 +167,8 @@ public class StylePanel
     }
 
     /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
     }
@@ -180,7 +182,8 @@ public class StylePanel
     }
 
     /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);

@@ -56,7 +56,9 @@ public class ArgoDialog extends org.argouml.swingext.Dialog {
     /**
      * Creates a new ArgoDialog with the specified optionType.
      */
-    public ArgoDialog(Frame owner, String title, int optionType, boolean modal) {
+    public ArgoDialog(Frame owner,
+		      String title, int optionType, boolean modal)
+    {
         super(owner, title, optionType, modal);
     }
         

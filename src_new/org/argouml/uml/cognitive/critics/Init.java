@@ -101,7 +101,8 @@ public class Init {
     public static Critic crDupParamName = new CrDupParamName();
     public static Critic crDupRoleNames = new CrDupRoleNames();
     public static Critic crFinalSubclassed = new CrFinalSubclassed();
-    public static Critic crIllegalGeneralization = new CrIllegalGeneralization();
+    public static Critic crIllegalGeneralization =
+	new CrIllegalGeneralization();
     public static Critic crAlreadyRealizes = new CrAlreadyRealizes();
     public static Critic crInterfaceAllPublic = new CrInterfaceAllPublic();
     public static Critic crInterfaceOperOnly = new CrInterfaceOperOnly();
@@ -124,7 +125,8 @@ public class Init {
     public static Critic crUselessInterface = new CrUselessInterface();
     public static Critic crDisambigClassName = new CrDisambigClassName();
     public static Critic crDisambigStateName = new CrDisambigStateName();
-    public static Critic crConflictingComposites = new CrConflictingComposites();
+    public static Critic crConflictingComposites =
+	new CrConflictingComposites();
 
     public static Critic crTooManyAssoc = new CrTooManyAssoc();
     public static Critic crTooManyAttr = new CrTooManyAttr();
@@ -134,9 +136,12 @@ public class Init {
     public static Critic crTooManyClasses = new CrTooManyClasses();
 
     public static Critic crNoTransitions = new CrNoTransitions();
-    public static Critic crNoIncomingTransitions = new CrNoIncomingTransitions();
-    public static Critic crNoOutgoingTransitions = new CrNoOutgoingTransitions();
-    public static Critic crMultipleInitialStates = new CrMultipleInitialStates();
+    public static Critic crNoIncomingTransitions =
+	new CrNoIncomingTransitions();
+    public static Critic crNoOutgoingTransitions =
+	new CrNoOutgoingTransitions();
+    public static Critic crMultipleInitialStates =
+	new CrMultipleInitialStates();
     public static Critic crNoInitialState = new CrNoInitialState();
     public static Critic crNoTriggerOrGuard = new CrNoTriggerOrGuard();
     public static Critic crNoGuard = new CrNoGuard();
@@ -153,20 +158,28 @@ public class Init {
     public static Critic crSubclassReference = new CrSubclassReference();
 
     public static Critic crComponentWithoutNode = new CrComponentWithoutNode();
-    public static Critic crCompInstanceWithoutNode = new CrCompInstanceWithoutNode();
-    public static Critic crClassWithoutComponent = new CrClassWithoutComponent();
-    public static Critic crInterfaceWithoutComponent = new CrInterfaceWithoutComponent();
-    public static Critic crObjectWithoutComponent = new CrObjectWithoutComponent();
+    public static Critic crCompInstanceWithoutNode =
+	new CrCompInstanceWithoutNode();
+    public static Critic crClassWithoutComponent =
+	new CrClassWithoutComponent();
+    public static Critic crInterfaceWithoutComponent =
+	new CrInterfaceWithoutComponent();
+    public static Critic crObjectWithoutComponent =
+	new CrObjectWithoutComponent();
     public static Critic crNodeInsideElement = new CrNodeInsideElement();
-    public static Critic crNodeInstanceInsideElement = new CrNodeInstanceInsideElement();
+    public static Critic crNodeInstanceInsideElement =
+	new CrNodeInstanceInsideElement();
     public static Critic crWrongLinkEnds = new CrWrongLinkEnds();
-    public static Critic crInstanceWithoutClassifier = new CrInstanceWithoutClassifier();
+    public static Critic crInstanceWithoutClassifier =
+	new CrInstanceWithoutClassifier();
 
     public static Critic crCallWithoutReturn = new CrCallWithoutReturn();
     public static Critic crReturnWithoutCall = new CrReturnWithoutCall();
     public static Critic crLinkWithoutStimulus = new CrLinkWithoutStimulus();
-    public static Critic crSeqInstanceWithoutClassifier = new CrSeqInstanceWithoutClassifier();
-    public static Critic crStimulusWithWrongPosition = new CrStimulusWithWrongPosition();
+    public static Critic crSeqInstanceWithoutClassifier =
+	new CrSeqInstanceWithoutClassifier();
+    public static Critic crStimulusWithWrongPosition =
+	new CrStimulusWithWrongPosition();
 
     // from UML 1.1 Semantics spec
 
@@ -204,12 +217,12 @@ public class Init {
 
 
     // Compound critics
-    public static CompoundCritic clsNaming = new CompoundCritic(crMissingClassName,
-								crDisambigClassName);
-    public static CompoundCritic noTrans1 = new CompoundCritic(crNoTransitions,
-							       crNoIncomingTransitions);
-    public static CompoundCritic noTrans2 = new CompoundCritic(crNoTransitions,
-							       crNoOutgoingTransitions);
+    public static CompoundCritic clsNaming =
+	new CompoundCritic(crMissingClassName, crDisambigClassName);
+    public static CompoundCritic noTrans1 =
+	new CompoundCritic(crNoTransitions, crNoIncomingTransitions);
+    public static CompoundCritic noTrans2 =
+	new CompoundCritic(crNoTransitions, crNoOutgoingTransitions);
 
     // TODO: under testing - mkl
     //public static Critic crConsiderFacade = new CrConsiderFacade();

@@ -37,7 +37,6 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.util.*;
 
 import org.argouml.kernel.*;
@@ -127,8 +126,9 @@ public class ChildGenFind implements ChildGenerator {
 	    res.addAll(d.getGraphModel().getNodes());
 	    res.addAll(d.getGraphModel().getEdges());
 	    return res.elements();
-	    //return new EnumerationComposite(d.getGraphModel().getNodes().elements(),
-	    //			      d.getGraphModel().getEdges().elements());
+	    //return new
+	    //EnumerationComposite(d.getGraphModel().getNodes().elements(),
+	    //d.getGraphModel().getEdges().elements());
 	}
 
 	if (o instanceof MState) {

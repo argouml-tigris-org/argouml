@@ -63,10 +63,16 @@ public class ActionGoToDetails extends UMLAction {
         if (namedTab instanceof TabToDoTarget) {
             shouldBeEnabled = true;
         } else 
-	    if (namedTab instanceof TabModelTarget && TargetManager.getInstance().getTarget() != null) {
-		shouldBeEnabled = ((TabModelTarget) namedTab).shouldBeEnabled(TargetManager.getInstance().getTarget());
+	    if (namedTab instanceof TabModelTarget
+		&& TargetManager.getInstance().getTarget() != null)
+	    {
+		shouldBeEnabled =
+		    ((TabModelTarget) namedTab)
+		    .shouldBeEnabled(TargetManager.getInstance().getTarget());
 	    } else {
-		shouldBeEnabled = (namedTab != null && TargetManager.getInstance().getTarget() != null);
+		shouldBeEnabled =
+		    (namedTab != null
+		     && TargetManager.getInstance().getTarget() != null);
 	    } 
         
 	return shouldBeEnabled;

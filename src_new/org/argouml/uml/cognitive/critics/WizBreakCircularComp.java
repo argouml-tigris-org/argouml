@@ -50,7 +50,8 @@ import org.argouml.uml.generator.*;
  *  to make non-aggregate. */
 
 public class WizBreakCircularComp extends Wizard {
-    protected static Category cat = Category.getInstance(WizBreakCircularComp.class);
+    protected static Category cat =
+	Category.getInstance(WizBreakCircularComp.class);
 						      
     protected String _instructions1 =
 	"Please select one of the following classes. " +
@@ -71,11 +72,11 @@ public class WizBreakCircularComp extends Wizard {
 									      
     protected MClassifier _selectedCls = null;
     protected MAssociation _selectedAsc = null;
-										      
+
     public WizBreakCircularComp() { }
-											  
+
     public int getNumSteps() { return 3; }
-											      
+
     protected Vector getOptions1() {
 	Vector res = new Vector();
 	if (_item != null) {
@@ -89,7 +90,7 @@ public class WizBreakCircularComp extends Wizard {
 	}
 	return res;
     }
-												  
+ 
     protected Vector getOptions2() {
 	Vector res = new Vector();
 	if (_selectedCls != null) {
@@ -113,7 +114,7 @@ public class WizBreakCircularComp extends Wizard {
 	}
 	return res;
     }
-												      
+
     /** Create a new panel for the given step.  */
     public JPanel makePanel(int newStep) {
 	switch (newStep) {
@@ -137,7 +138,7 @@ public class WizBreakCircularComp extends Wizard {
 	}
 	return null;
     }
-													  
+
     /** Take action at the completion of a step. For example, when the
      *  given step is 0, do nothing; and when the given step is 1, do
      *  the first action.  Argo non-modal wizards should take action as
@@ -184,9 +185,9 @@ public class WizBreakCircularComp extends Wizard {
 	    break;
 	}
     }
-													      
+ 
     public boolean canGoNext() { return canFinish(); }
-														  
+
     public boolean canFinish() {
 	if (!super.canFinish()) return false;
 	if (_step == 0) return true;
@@ -196,6 +197,5 @@ public class WizBreakCircularComp extends Wizard {
 	    return true;
 	return false;
     }
-														      
-														      
+ 
 } /* end class WizBreakCircularComp */

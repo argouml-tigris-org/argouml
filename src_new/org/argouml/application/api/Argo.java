@@ -201,7 +201,8 @@ public class Argo
      */
     public static final String ARGO_CONSOLE_SUPPRESS = "argo.console.suppress";
 
-    /** Standard definition of system variable to add text prefix to console log.
+    /** Standard definition of system variable to add text prefix to
+     * console log.
      */
     public static final String ARGO_CONSOLE_PREFIX = "argo.console.prefix";
 
@@ -212,7 +213,7 @@ public class Argo
      *  custom <code>log4j</code> formatters
      *  to be used on objects displayed on the console log.
      */
-    public final static Logger log;
+    public static final Logger log;
 
     /** Don't let this class be instantiated. */
     private Argo() {

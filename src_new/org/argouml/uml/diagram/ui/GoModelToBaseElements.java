@@ -32,7 +32,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.model_management.MPackage;
 
 public class GoModelToBaseElements extends AbstractGoRule {
     protected static Category cat = Category.getInstance(GoModelToBaseElements.class);

@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
-
 package org.argouml.uml.ui.behavior.use_cases;
 
 import java.util.Collection;
@@ -32,17 +30,11 @@ import java.util.Vector;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
-import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.uml.ui.UMLBinaryRelationListModel;
 import org.argouml.uml.ui.UMLConnectionListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
-import org.tigris.gef.graph.MutableGraphModel;
 
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * Binary relation list model for associations with usecases

@@ -22,10 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.Action;
 
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLCheckBox2;

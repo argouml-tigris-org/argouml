@@ -76,10 +76,10 @@ public class CrObjectWithoutClassifier extends CrUML {
     }
 
     /**
-     * If there are objects that are not inside a component or a component-instance
-     * the returned vector-set is not null. Then in the vector-set
-     * are the UMLDeploymentDiagram and all FigObjects with no
-     * enclosing FigComponent or FigComponentInstance
+     * If there are objects that are not inside a component or a
+     * component-instance the returned vector-set is not null. Then in
+     * the vector-set are the UMLDeploymentDiagram and all FigObjects
+     * with no enclosing FigComponent or FigComponentInstance
      **/
     public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
 	Vector figs = dd.getLayer().getContents();

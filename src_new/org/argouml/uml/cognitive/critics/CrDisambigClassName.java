@@ -62,7 +62,9 @@ public class CrDisambigClassName extends CrUML {
 	//@ if (myName.equals(Name.UNSPEC)) return NO_PROBLEM;
 	String myNameString = myName;
     
-	if (myNameString != null && myNameString.length() == 0) return NO_PROBLEM;
+	if (myNameString != null && myNameString.length() == 0)
+	    return NO_PROBLEM;
+
 	Collection pkgs = cls.getElementImports2();
 	if (pkgs == null) return NO_PROBLEM;
 	for (Iterator iter = pkgs.iterator(); iter.hasNext();) {

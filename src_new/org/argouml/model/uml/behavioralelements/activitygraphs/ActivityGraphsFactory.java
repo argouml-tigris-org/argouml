@@ -81,7 +81,8 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML ActivityGraph instance.
      */
     public MActivityGraph createActivityGraph() {
-        MActivityGraph modelElement = MFactory.getDefaultFactory().createActivityGraph();
+        MActivityGraph modelElement =
+	    MFactory.getDefaultFactory().createActivityGraph();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -91,7 +92,8 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML CallState instance.
      */
     public MCallState createCallState() {
-        MCallState modelElement = MFactory.getDefaultFactory().createCallState();
+        MCallState modelElement =
+	    MFactory.getDefaultFactory().createCallState();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -101,7 +103,8 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML ClassifierInState instance.
      */
     public MClassifierInState createClassifierInState() {
-        MClassifierInState modelElement = MFactory.getDefaultFactory().createClassifierInState();
+        MClassifierInState modelElement =
+	    MFactory.getDefaultFactory().createClassifierInState();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -111,7 +114,8 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML ObjectFlowState instance.
      */
     public MObjectFlowState createObjectFlowState() {
-        MObjectFlowState modelElement = MFactory.getDefaultFactory().createObjectFlowState();
+        MObjectFlowState modelElement =
+	    MFactory.getDefaultFactory().createObjectFlowState();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -121,7 +125,8 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML Partition instance.
      */
     public MPartition createPartition() {
-        MPartition modelElement = MFactory.getDefaultFactory().createPartition();
+        MPartition modelElement =
+	    MFactory.getDefaultFactory().createPartition();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -131,7 +136,8 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
      *  @return an initialized UML SubactivityState instance.
      */
     public MSubactivityState createSubactivityState() {
-        MSubactivityState modelElement = MFactory.getDefaultFactory().createSubactivityState();
+        MSubactivityState modelElement =
+	    MFactory.getDefaultFactory().createSubactivityState();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -142,7 +148,11 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
      * @return MActivityGraph
      */
     public MActivityGraph buildActivityGraph(MModelElement context) {
-    	if (context != null && (context instanceof MBehavioralFeature || context instanceof MClassifier || context instanceof MPackage)) {
+    	if (context != null
+	    && (context instanceof MBehavioralFeature
+		|| context instanceof MClassifier
+		|| context instanceof MPackage)) 
+	{
 	    MActivityGraph graph = createActivityGraph();
 	    graph.setContext(context);
 	    if (context instanceof MNamespace) {
@@ -154,7 +164,8 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
 	    StateMachinesFactory.getFactory().buildCompositeState(graph);
 	    return graph;
     	} else 
-	    throw new IllegalArgumentException("In buildActivityGraph: context null or not legal");
+	    throw new IllegalArgumentException("In buildActivityGraph: "
+					       + "context null or not legal");
     }
     
     public void deleteActionState(Object elem) { }

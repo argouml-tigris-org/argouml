@@ -52,11 +52,15 @@ import org.argouml.cognitive.critics.*;
  * <p>This is the third well-formedness rule for associations in the UML 1.3
  *   standard (see section 2.5.3 of the standard).</p>
  *
- * <p><em>Note</em>. This only applies to 3-way or more associations. There is
- * a separate critic (see {@link org.argouml.uml.cognitive.critics.CrMultipleAgg})
- * which deals with 2-way assocations.</p>
+ * <p><em>Note</em>. This only applies to 3-way or more
+ * associations. There is a separate critic (see {@link
+ * org.argouml.uml.cognitive.critics.CrMultipleAgg}) which deals with
+ * 2-way assocations.</p>
  *
- * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_multiple_agg">ArgoUML User Manual: Two Aggregate ends (roles) in binary Association</a> */
+ * @see <a
+ * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_multiple_agg">ArgoUML
+ * User Manual: Two Aggregate ends (roles) in binary
+ * Association</a> */
 
 public class CrNWayAgg extends CrUML {
 

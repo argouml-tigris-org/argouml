@@ -126,8 +126,10 @@ public class WizNavigable extends Wizard {
 	    }
 	    try {
 		MAssociation asc = (MAssociation) getModelElement();
-		MAssociationEnd ae0 = (MAssociationEnd) asc.getConnections().get(0);
-		MAssociationEnd ae1 = (MAssociationEnd) asc.getConnections().get(1);
+		MAssociationEnd ae0 =
+		    (MAssociationEnd) asc.getConnections().get(0);
+		MAssociationEnd ae1 =
+		    (MAssociationEnd) asc.getConnections().get(1);
 		ae0.setNavigable(choice == 0 || choice == 2);
 		ae1.setNavigable(choice == 1 || choice == 2);
 	    }

@@ -43,7 +43,9 @@ public class GoProjectToStateMachine extends AbstractGoRule {
 	if (parent instanceof Project) {
 	    Iterator it = ((Project) parent).getUserDefinedModels().iterator();
 	    while (it.hasNext()) {
-		col.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(it.next(), MStateMachine.class));
+		col.addAll(ModelManagementHelper.getHelper()
+			   .getAllModelElementsOfKind(it.next(),
+						      MStateMachine.class));
 	    }
 	}
 	return col;

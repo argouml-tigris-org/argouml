@@ -54,7 +54,8 @@ public class TableModelClass_in_DeplByProps extends TableModelComposite {
     }
 
     public Vector rowObjectsFor(Object t) {
-	if (!(t instanceof UMLDeploymentDiagram || t instanceof MComponent)) return new Vector();
+	if (!(t instanceof UMLDeploymentDiagram || t instanceof MComponent))
+	    return new Vector();
 	if (t instanceof UMLDeploymentDiagram) {
 	    UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
 	    Vector nodes = d.getNodes();

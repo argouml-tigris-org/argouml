@@ -58,15 +58,16 @@ import org.tigris.gef.presentation.Fig;
 public final class TargetManager {
 
     /**
-     * The manager of the history of targets. Everytimes the user (or the program)
-     * selects a new target, this is recorded in the history. Via navigateBack and
-     * navigateForward, the user can browse through the history just like in an 
-     * ordinary internet browser.
+     * The manager of the history of targets. Everytimes the user (or
+     * the program) selects a new target, this is recorded in the
+     * history. Via navigateBack and navigateForward, the user can
+     * browse through the history just like in an ordinary internet
+     * browser.
      * @author jaap.branderhorst@xs4all.nl
      */
     private class HistoryManager implements TargetListener {
 
-        private final static int MAX_SIZE = 100;
+        private static final int MAX_SIZE = 100;
 
         /**
          * The history with targets
@@ -94,8 +95,8 @@ public final class TargetManager {
         }
 
         /**
-         * Puts some target into the history (if needed). Updates both the history
-         * as the pointer to indicate the target.
+         * Puts some target into the history (if needed). Updates both
+         * the history as the pointer to indicate the target.
          * @param target The target to put into the history
          */
         private void putInHistory(Object target) {
@@ -154,16 +155,17 @@ public final class TargetManager {
         }
 
         /**
-         * Navigate one target forward in history. Throws an illegalstateException
-         * if not possible.
+         * Navigate one target forward in history. Throws an
+         * illegalstateException if not possible.
          *
          */
         private void navigateForward() {
             if (_currentTarget >= _history.size() - 1)
                 throw new IllegalStateException(
-						"NavigateForward is not allowed "
-						+ "since the targetpointer is pointing at the upper boundary "
-						+ "of the history");
+			"NavigateForward is not allowed "
+			+ "since the targetpointer is pointing at "
+			+ "the upper boundary "
+			+ "of the history");
             setTarget(((WeakReference) _history.get(++_currentTarget)).get());
         }
 
@@ -175,9 +177,10 @@ public final class TargetManager {
         private void navigateBackward() {
             if (_currentTarget == 0) {
                 throw new IllegalStateException(
-						"NavigateBackward is not allowed "
-						+ "since the targetpointer is pointing at the lower boundary "
-						+ "of the history");
+		        "NavigateBackward is not allowed "
+			+ "since the targetpointer is pointing at "
+			+ "the lower boundary "
+			+ "of the history");
             }
             _navigateBackward = true;
             setTarget(((WeakReference) _history.get(--_currentTarget)).get());
@@ -201,13 +204,15 @@ public final class TargetManager {
         }
 
         /**
-         * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+         * @see
+         * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
          */
         public void targetAdded(TargetEvent e) {
         }
 
         /**
-         * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+         * @see
+         * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
          */
         public void targetRemoved(TargetEvent e) {
             // comparable to targetReasserted in this respect.
@@ -216,7 +221,8 @@ public final class TargetManager {
         }
 
         /**
-         * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+         * @see
+         * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
          */
         public void targetSet(TargetEvent e) {
             putInHistory(e.getNewTargets()[0]);
@@ -261,7 +267,8 @@ public final class TargetManager {
                     it.remove();
                 }
 
-                // cannot break here since an object can be multiple times in history
+                // cannot break here since an object can be multiple
+                // times in history
             }
             if (oldCurrentTarget != _currentTarget) {
                 Actions.updateAllEnabled();
@@ -306,11 +313,12 @@ public final class TargetManager {
     private HistoryManager _historyManager = new HistoryManager();
 
     /**
-     * While firing events, the list with targets is not updated yet. Therefore
-     * getTarget() will return the old target. This can get nasty for classes that
-     * do not use the event mechanism yet. The newTarget is a variable that is 
-     * temporarily filled with the new target. When the targets are set, the new 
-     * target is nullified.
+     * While firing events, the list with targets is not updated
+     * yet. Therefore getTarget() will return the old target. This can
+     * get nasty for classes that do not use the event mechanism
+     * yet. The newTarget is a variable that is temporarily filled
+     * with the new target. When the targets are set, the new target
+     * is nullified.
      */
     private Object _newTarget;
 
@@ -419,9 +427,10 @@ public final class TargetManager {
     }
 
     /**
-     * Adds a target to the targets list. If the target is allready in the targets
-     * list no (re)setting will take place. Otherwise the target will be added
-     * and an appropriate TargetEvent will be fired to all interested listeners.
+     * Adds a target to the targets list. If the target is allready in
+     * the targets list no (re)setting will take place. Otherwise the
+     * target will be added and an appropriate TargetEvent will be
+     * fired to all interested listeners.
      * @param target the target to be added.
      */
     public synchronized void addTarget(Object target) {
@@ -568,9 +577,10 @@ public final class TargetManager {
     }
 
     /**
-     * Convenience method to return the target as fig. If the current target 
-     * (retrieved by getTarget) is either a fig itself or the owner of a fig this
-     * fig will be returned. Otherwise null will be returned.
+     * Convenience method to return the target as fig. If the current
+     * target (retrieved by getTarget) is either a fig itself or the
+     * owner of a fig this fig will be returned. Otherwise null will
+     * be returned.
      * @return the target in it's 'fig-form'
      */
     public Fig getFigTarget() {
@@ -598,10 +608,11 @@ public final class TargetManager {
     }
 
     /**
-     * Returns the target in it's 'modelform'. If the target retrieved by getTarget
-     * is an UMLDiagram or a modelelement the target will be returned. If the target
-     * is a fig but owned by a modelelement that modelelement will be returned. 
-     * Otherwise null will be returned.
+     * Returns the target in it's 'modelform'. If the target retrieved
+     * by getTarget is an UMLDiagram or a modelelement the target will
+     * be returned. If the target is a fig but owned by a modelelement
+     * that modelelement will be returned.  Otherwise null will be
+     * returned.
      * @return the target in it's 'modelform'.
      */
     public Object getModelTarget() {
@@ -637,10 +648,11 @@ public final class TargetManager {
     }
 
     /**
-     * Navigates the target pointer one target backward. This implements together
-     * with navigateForward browser like functionality
-     * @throws IllegalStateException If the target pointer is at the beginning of the 
-     * history.
+     * Navigates the target pointer one target backward. This
+     * implements together with navigateForward browser like
+     * functionality
+     * @throws IllegalStateException If the target pointer is at the
+     * beginning of the history.
      */
     public void navigateBackward() throws IllegalStateException {
         _historyManager.navigateBackward();

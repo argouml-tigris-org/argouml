@@ -87,7 +87,8 @@ public class FigPackage extends FigNodeModelElement {
     FigText _body;
 
     /**
-     * Flags that indicates if the stereotype should be shown even if it is specified or not.
+     * Flags that indicates if the stereotype should be shown even if
+     * it is specified or not.
      */
     protected boolean _showStereotype = true;
 
@@ -119,8 +120,11 @@ public class FigPackage extends FigNodeModelElement {
 		    // Draw the shadow                
 		    if (_shadowSize > 0) {
 			for (int i = 0; i < _shadowSize; ++i) {
-			    Color shadow = new Color(0.1f, 0.1f, 0.1f, 
-						     0.5f * (((float) _shadowSize - i) / (float) _shadowSize));                        
+			    Color shadow =
+				new Color(0.1f, 0.1f, 0.1f, 
+					  (0.5f
+					   * (((float) _shadowSize - i)
+					      / (float) _shadowSize)));
 			    g.setColor(shadow);
 
 			    g.drawLine(

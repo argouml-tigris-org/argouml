@@ -45,12 +45,12 @@ public class LayoutHelper {
     public static final int WEST = 32;
     public static final int NORTHWEST = 64;
 
-    static public Point getPointOnPerimeter(Rectangle rect, int direction) 
+    public static Point getPointOnPerimeter(Rectangle rect, int direction) 
     {
         return getPointOnPerimeter(rect, direction, 0, 0);
     }
 
-    static public Point getPointOnPerimeter(Rectangle rect, int direction, 
+    public static Point getPointOnPerimeter(Rectangle rect, int direction, 
 					    double xOff, double yOff)
     {
         double x = 0;
@@ -78,13 +78,13 @@ public class LayoutHelper {
 
     /** get a routing polygon for a straightline between two points
      */
-    static public Polygon getRoutingPolygonStraightLine(Point start, Point end)
+    public static Polygon getRoutingPolygonStraightLine(Point start, Point end)
     {
         return getRoutingPolygonStraightLineWithOffset(start, end, 0);
     }
 
     /** get a routing polygon with a horizontal offset from the two points */
-    static public Polygon getRoutingPolygonStraightLineWithOffset(Point start, 
+    public static Polygon getRoutingPolygonStraightLineWithOffset(Point start, 
                                                 Point end, int offset) 
     {
         Polygon newPoly = new Polygon();

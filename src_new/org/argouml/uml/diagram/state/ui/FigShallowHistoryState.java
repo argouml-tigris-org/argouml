@@ -97,7 +97,8 @@ public class FigShallowHistoryState extends FigStateVertex {
     }
 
     public Object clone() {
-	FigShallowHistoryState figClone = (FigShallowHistoryState) super.clone();
+	FigShallowHistoryState figClone =
+	    (FigShallowHistoryState) super.clone();
 	Vector v = figClone.getFigs();
 	figClone._bigPort = (FigCircle) v.elementAt(0);
 	figClone._head = (FigCircle) v.elementAt(1);

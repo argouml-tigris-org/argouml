@@ -66,10 +66,14 @@ public abstract class FigStateVertex extends FigNodeModelElement {
             return;
         MStateVertex sv = (MStateVertex) getOwner();
         MCompositeState m = null;
-        if (encloser != null && (encloser.getOwner() instanceof MCompositeState)) {
+        if (encloser != null
+	    && (encloser.getOwner() instanceof MCompositeState))
+	{
             m = (MCompositeState) encloser.getOwner();
         } else {
-            m = (MCompositeState) StateMachinesHelper.getHelper().getTop(StateMachinesHelper.getHelper().getStateMachine(sv));
+            m = (MCompositeState)
+		StateMachinesHelper.getHelper()
+		.getTop(StateMachinesHelper.getHelper().getStateMachine(sv));
         }
         if (m != null)
             sv.setContainer(m);

@@ -34,10 +34,11 @@ import java.util.Vector;
 import org.argouml.model.uml.UmlFactory;
 
 /** 
+ * Command to create nodes with the appropriate modelelement. The
+ * modelelement is initialized via the build methods on the uml
+ * factories. If there is no no-parameter build method, the create
+ * method corresponding to the modelelement is used.
  *
- * Command to create nodes with the appropriate modelelement. The modelelement is
- * initialized via the build methods on the uml factories. If there is no no-parameter
- * build method, the create method corresponding to the modelelement is used.
  * @see org.argouml.model.uml.foundation.core.CoreFactory
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -142,9 +143,9 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
                     Method method = (Method) it2.next();
                     String methodname = method.getName();
                     if (methodname.endsWith(classname)
-                        && methodname.substring(0,
-						methodname.lastIndexOf(classname)).equals(
-											  "build")
+                        && (methodname
+			    .substring(0, methodname.lastIndexOf(classname))
+			    .equals("build"))
                         && method.getParameterTypes().length == 0)
 		    {
 			return method.invoke(factory, new Object[] {
@@ -156,10 +157,10 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
                     Method method = (Method) it2.next();
                     String methodname = method.getName();
                     if (methodname.endsWith(classname)
-                        && methodname.substring(
-						0,
-						methodname.lastIndexOf(classname)).equals(
-											  "create")) {
+                        && (methodname
+			    .substring(0, methodname.lastIndexOf(classname))
+			    .equals("create")))
+		    {
                         return method.invoke(factory, new Object[] {
                         });
                     }

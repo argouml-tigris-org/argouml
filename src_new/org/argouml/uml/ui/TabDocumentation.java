@@ -32,7 +32,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.Vertical;
-import org.argouml.util.ConfigLoader;
 import org.tigris.gef.presentation.Fig;
 
 /**

@@ -115,10 +115,10 @@ import ru.novosoft.uml.model_management.MModel;
 public class Project implements java.io.Serializable, TargetListener {
     ////////////////////////////////////////////////////////////////
     // constants
-    public final static String TEMPLATES = "/org/argouml/templates/";
+    public static final String TEMPLATES = "/org/argouml/templates/";
     public static String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
     //public final static String EMPTY_PROJ = "EmptyProject" + FILE_EXT;
-    public final static String UNTITLED_FILE = "Untitled";
+    public static final String UNTITLED_FILE = "Untitled";
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -188,7 +188,8 @@ public class Project implements java.io.Serializable, TargetListener {
         Argo.log.info("making empty project with empty model");
         // Jaap Branderhorst 2002-12-09
         // load the default model
-        // this is NOT the way how it should be since this makes argo depend on Java even more.
+        // this is NOT the way how it should be since this makes argo
+        // depend on Java even more.
         setDefaultModel(ProfileJava.loadProfileModel());
         addSearchPath("PROJECT_DIR");
         setNeedsSave(false);
@@ -197,12 +198,13 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Makes a just created project to an untitled project with a class diagram and 
-     * a usecase diagram and an untitled model.
+     * Makes a just created project to an untitled project with a
+     * class diagram and a usecase diagram and an untitled model.
      */
     protected void makeUntitledProject() {
         if (getRoot() != null)
-            throw new IllegalStateException("Tried to make a non-empty project to an untitled project");
+            throw new IllegalStateException("Tried to make a non-empty project "
+					    + "to an untitled project");
         MModel model =
             UmlFactory.getFactory().getModelManagement().createModel();
         model.setName("untitledModel");
@@ -229,9 +231,9 @@ public class Project implements java.io.Serializable, TargetListener {
     }
     
     /**
-     * Loads a model (XMI only) from a .zargo file. BE ADVISED this method has a side
-     * effect. It sets _UUIDREFS to the model.
-     * <p>
+     * Loads a model (XMI only) from a .zargo file. BE ADVISED this
+     * method has a side effect. It sets _UUIDREFS to the model.
+     * 
      * If there is a problem with the xmi file, an error is set in the
      * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
      * examined by the calling function.
@@ -239,9 +241,11 @@ public class Project implements java.io.Serializable, TargetListener {
      * @deprecated As of ArgoUml version unknown, replaced by unknown.
      * @param url The url with the .zargo file
      * @return MModel The model loaded
-     * @throws IOException Thrown if the model or the .zargo file itself is corrupted in any way.
+     * @throws IOException Thrown if the model or the .zargo file is corrupted.
      */
-    protected MModel loadModelFromXMI(URL url) throws IOException, SAXException, ParserConfigurationException {
+    protected MModel loadModelFromXMI(URL url)
+	throws IOException, SAXException, ParserConfigurationException
+    {
         ZipInputStream zis = new ZipInputStream(url.openStream());
 
         String name = zis.getNextEntry().getName();
@@ -260,7 +264,8 @@ public class Project implements java.io.Serializable, TargetListener {
         } catch (SAXException se) { // duh, this must be catched and handled
             cat.error(se);
             throw se;
-        } catch (ParserConfigurationException pc) { // duh, this must be catched and handled
+        } catch (ParserConfigurationException pc) { 
+	    // duh, this must be catched and handled
             cat.error(pc);
             throw pc;
         }
@@ -271,10 +276,10 @@ public class Project implements java.io.Serializable, TargetListener {
         mmodel = xmiReader.parseToModel(source);        
         if (xmiReader.getErrors()) {
             ArgoParser.SINGLETON.setLastLoadStatus(false);
-            ArgoParser.SINGLETON.setLastLoadMessage(
-						    "XMI file " + url.toString() + " could not be " + "parsed.");
-            cat.error("XMI file " + url.toString() + " could not be " + "parsed.");
-            throw new SAXException("XMI file " + url.toString() + " could not be " + "parsed.");
+            ArgoParser.SINGLETON.setLastLoadMessage("XMI file " + url
+						    + " could not be parsed.");
+            cat.error("XMI file " + url + " could not be parsed.");
+            throw new SAXException("XMI file " + url + " could not be parsed.");
         }
 
         // This should probably be inside xmiReader.parse
@@ -329,7 +334,8 @@ public class Project implements java.io.Serializable, TargetListener {
 				  + currentEntry.getName()
 				  + " from ZipInputStream");
 
-                    // "false" means the stream shall not be closed, but it doesn't seem to matter...
+                    // "false" means the stream shall not be closed,
+                    // but it doesn't seem to matter...
                     ArgoDiagram d =
                         (ArgoDiagram) PGMLParser.SINGLETON.readDiagram(
 								      sub,
@@ -354,8 +360,8 @@ public class Project implements java.io.Serializable, TargetListener {
 	} catch (IOException e) {
             ArgoParser.SINGLETON.setLastLoadStatus(false);
             ArgoParser.SINGLETON.setLastLoadMessage(e.toString());
-            cat.error(
-		      "Oops, something went wrong in Project.loadZippedProjectMembers() ",
+            cat.error("Something went wrong in "
+		      + "Project.loadZippedProjectMembers()",
 		      e);
             throw e;
         }
@@ -405,13 +411,14 @@ public class Project implements java.io.Serializable, TargetListener {
             url = Util.fixURLExtension(url, FileConstants.COMPRESSED_FILE_EXT);
         }
 
-        cat.debug(
-		  "Setting project URL from \"" + _url + "\" to \"" + url + "\".");
+        cat.debug("Setting project URL from \"" + _url 
+		  + "\" to \"" + url + "\".");
 
         _url = url;
     }
 
-    //   public void setFilename(String path, String name) throws PropertyVetoException {
+    //   public void setFilename(String path, String name)
+    //       throws PropertyVetoException {
     //     if (!(name.endsWith(FILE_EXT))) name += FILE_EXT;
     //     if (!(path.endsWith("/"))) path += "/";
     //     URL url = new URL("file://" + path + name);
@@ -555,10 +562,12 @@ public class Project implements java.io.Serializable, TargetListener {
 
         removeDiagram(d);
 
-        // should remove the corresponding ProjectMemberDiagram not the ArgoDiagram from the members
+        // should remove the corresponding ProjectMemberDiagram not
+        // the ArgoDiagram from the members
 
         // _members.removeElement(d);
-        // ehhh lets remove the diagram really and remove it from its corresponding projectmember too
+        // ehhh lets remove the diagram really and remove it from its
+        // corresponding projectmember too
         Iterator it = _members.iterator();
         while (it.hasNext()) {
             Object obj = it.next();
@@ -583,19 +592,6 @@ public class Project implements java.io.Serializable, TargetListener {
         return null;
     }
 
-
-    //   public void loadAllMembers() {
-    //     for (java.util.Enumeration enum = members.elements(); enum.hasMoreElements(); ) {
-    //       ((ProjectMember) enum.nextElement()).load();
-    //     }
-    //   }
-
-    //   public static Project loadEmpty() throws IOException, org.xml.sax.SAXException {
-    //     URL emptyURL = Project.class.getResource(TEMPLATES + EMPTY_PROJ);
-    //     if (emptyURL == null)
-    //       throw new IOException("Unable to get empty project resource.");
-    //     return load(emptyURL);
-    //   }
 
     public void loadMembersOfType(String type) {
         if (type == null)
@@ -679,11 +675,11 @@ public class Project implements java.io.Serializable, TargetListener {
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) _members.elementAt(i);
                 if (!(p.getType().equalsIgnoreCase("xmi"))) {
-                    Argo.log.info(
-				  "Saving member of type: "
-				  + ((ProjectMember) _members.elementAt(i)).getType());
+                    Argo.log.info("Saving member of type: "
+				  + ((ProjectMember) _members.elementAt(i))
+				        .getType());
                     String name = p.getName();
-                    String originalName = name;                                  
+                    String originalName = name;
                     while (names.contains(name)) {
                         name = ++counter + originalName;
                     }
@@ -698,9 +694,9 @@ public class Project implements java.io.Serializable, TargetListener {
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) _members.elementAt(i);
                 if (p.getType().equalsIgnoreCase("xmi")) {
-                    Argo.log.info(
-				  "Saving member of type: "
-				  + ((ProjectMember) _members.elementAt(i)).getType());
+                    Argo.log.info("Saving member of type: "
+				  + ((ProjectMember) _members.elementAt(i))
+				        .getType());
                     stream.putNextEntry(new ZipEntry(p.getName()));
                     p.save(path, overwrite, writer);
                 }
@@ -796,9 +792,10 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Searches for a type/classifier with name s. If defineNew is true, 
-     * a new type is defined if the type/classifier is not found. The newly created
-     * type is added to the currentNamespace and given the name s.
+     * Searches for a type/classifier with name s. If defineNew is
+     * true, a new type is defined if the type/classifier is not
+     * found. The newly created type is added to the currentNamespace
+     * and given the name s.
      * @param s
      * @param defineNew
      * @return MClassifier
@@ -824,18 +821,20 @@ public class Project implements java.io.Serializable, TargetListener {
         if (cls == null && defineNew) {
             cat.debug("new Type defined!");
             cls =
-                UmlFactory.getFactory().getCore().buildClass(
-							     getCurrentNamespace());
+                UmlFactory.getFactory().getCore()
+		    .buildClass(getCurrentNamespace());
             cls.setName(s);
         }
         return cls;
     }
 
     /**
-     * Finds all figs on the diagrams for some project member, including the 
-     * figs containing the member (so for some operation, the containing figclass
-     * is returned).
-     * @param member The member we are looking for. This can be a NSUML object but also another object.
+     * Finds all figs on the diagrams for some project member,
+     * including the figs containing the member (so for some
+     * operation, the containing figclass is returned).
+     * 
+     * @param member The member we are looking for. 
+     *               This can be a NSUML object but also another object.
      * @return Collection The collection with the figs.
      */
     public Collection findFigsForMember(Object member) {
@@ -857,9 +856,8 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public MClassifier findTypeInModel(String s, MNamespace ns) {
         Collection allClassifiers =
-            ModelManagementHelper.getHelper().getAllModelElementsOfKind(
-									ns,
-									MClassifier.class);
+            ModelManagementHelper.getHelper()
+	        .getAllModelElementsOfKind(ns, MClassifier.class);
         Iterator it = allClassifiers.iterator();
         while (it.hasNext()) {
             MClassifier classifier = (MClassifier) it.next();
@@ -909,17 +907,20 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Removes a diagram from the list with diagrams. 
-     * Removes (hopefully) the event listeners for this diagram.
-     * Does not remove the diagram from the project members. This should not be called
-     * directly. Use moveToTrash if you want to remove a diagram.
+     * 
+     * Removes (hopefully) the event listeners for this diagram.  Does
+     * not remove the diagram from the project members. This should
+     * not be called directly. Use moveToTrash if you want to remove a
+     * diagram.
+     * 
      * @param d
      */
     protected void removeDiagram(ArgoDiagram d) {
         _diagrams.removeElement(d);
         if (d instanceof UMLStateDiagram) {
             UMLStateDiagram statediagram = (UMLStateDiagram) d;
-            ProjectManager.getManager().getCurrentProject().moveToTrash(
-									statediagram.getStateMachine());
+            ProjectManager.getManager().getCurrentProject()
+		.moveToTrash(statediagram.getStateMachine());
         }
         d.removeChangeRegistryAsListener(_saveRegistry);
         setNeedsSave(true);
@@ -973,12 +974,15 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * @deprecated As of 28 Apr 2003 (ArgoUml version 0.13.5). Will be protected in future.
+     * @deprecated As of 28 Apr 2003 (ArgoUml version 0.13.5).
+     *             Will be protected in future.
+     * TODO: Replace by?
      */
     public void postLoad() {
         for (int i = 0; i < _diagrams.size(); i++)
 	    ((Diagram) _diagrams.elementAt(i)).postLoad();
-        // issue 1725: the root is not set, which leads to problems with displaying prop panels
+        // issue 1725: the root is not set, which leads to problems
+        // with displaying prop panels
         setRoot((MModel) getModel());
         
         setNeedsSave(false);
@@ -987,8 +991,11 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Moves some object to trash. This mechanisme must be rethought since it only
-     * deletes an object completely from the project
+     * Moves some object to trash. 
+     *
+     * TODO: This mechanism must be rethought since it only deletes an
+     * object completely from the project
+     *
      * @param obj The object to be deleted
      * @see org.argouml.kernel.Project#trashInternal
      */
@@ -1017,8 +1024,8 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Removes some object from the project. Does not update GUI since this method only
-     * handles project management.
+     * Removes some object from the project. Does not update GUI since
+     * this method only handles project management.
      * @param obj
      */
     // Attention: whole Trash mechanism should be rethought concerning nsuml
@@ -1035,9 +1042,8 @@ public class Project implements java.io.Serializable, TargetListener {
             Trash.SINGLETON.addItemFrom(obj, null);
         }
         if (obj instanceof MBase) { // an object that can be represented
-            ProjectBrowser.getInstance().getEditorPane().removePresentationFor(
-									       obj,
-									       getDiagrams());
+            ProjectBrowser.getInstance().getEditorPane()
+		.removePresentationFor(obj, getDiagrams());
             UmlFactory.getFactory().delete((MBase) obj);
             if (_members.contains(obj)) {
                 _members.remove(obj);
@@ -1428,8 +1434,8 @@ public class Project implements java.io.Serializable, TargetListener {
     }
     
     /**
-     * Called to update the current namespace and active diagram after the target 
-     * has changed.
+     * Called to update the current namespace and active diagram after
+     * the target has changed.
      * @param target
      */
     private void setTarget(Object target) {

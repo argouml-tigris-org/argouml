@@ -24,18 +24,6 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import javax.swing.JScrollPane;
-
-import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
-
-import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLExpressionBodyField;
-import org.argouml.uml.ui.UMLExpressionLanguageField;
-import org.argouml.uml.ui.UMLExpressionModel;
-import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-import org.argouml.util.ConfigLoader;
-
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.

@@ -33,7 +33,6 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 import org.tigris.gef.util.*;
-import org.tigris.gef.base.Diagram;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.*;
@@ -189,7 +188,8 @@ public class CrUML extends Critic {
 	StringBuffer beginning = new StringBuffer("");
 	int matchPos = res.indexOf(OCL_START);
 
-	// replace all occurances of OFFENDER with the name of the first offender
+	// replace all occurances of OFFENDER with the name of the
+	// first offender
 	while (matchPos != -1) {
 	    int endExpr = res.indexOf(OCL_END, matchPos + 1);
 	    // check if there is no OCL_END; if so, the critic expression 

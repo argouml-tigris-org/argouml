@@ -52,7 +52,10 @@ public class TableModelObjectByProps extends TableModelComposite {
     }
 
     public Vector rowObjectsFor(Object t) {
-	if (!(t instanceof UMLDeploymentDiagram || t instanceof MComponentInstance || t instanceof MComponent)) return new Vector();
+	if (!(t instanceof UMLDeploymentDiagram
+	      || t instanceof MComponentInstance
+	      || t instanceof MComponent))
+	    return new Vector();
 	if (t instanceof UMLDeploymentDiagram) {
 	    UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
 	    Vector nodes = d.getNodes();

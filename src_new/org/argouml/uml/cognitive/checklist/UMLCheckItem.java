@@ -58,7 +58,8 @@ public class UMLCheckItem extends CheckItem {
 	int searchPos = 0;
 	int matchPos = res.indexOf(OCLEvaluator.OCL_START, searchPos);
 
-	// replace all occurances of OFFENDER with the name of the first offender
+	// replace all occurances of OFFENDER with the name of the
+	// first offender
 	while (matchPos != -1) {
 	    int endExpr = res.indexOf(OCLEvaluator.OCL_END, matchPos + 1);
 	    String expr = res.substring(matchPos + OCLEvaluator.OCL_START.length(),

@@ -138,7 +138,7 @@ public class GenericArgoMenuBar extends JMenuBar
         initMenus();
     }
 
-    static final protected KeyStroke getShortcut(String key) {
+    protected static final KeyStroke getShortcut(String key) {
         return Localizer.getShortcut("CoreMenu", key);
     }
 
@@ -148,7 +148,9 @@ public class GenericArgoMenuBar extends JMenuBar
      * make all components of User interface accessible
      * through keyboard
      */
-    static final protected void setMnemonic(JMenuItem item, String key, char defMnemonic) {
+    protected static final void setMnemonic(JMenuItem item,
+					    String key, char defMnemonic)
+    {
         String localMnemonic = Argo.localize("CoreMenu", "Mnemonic_" + key);
         char mnemonic = defMnemonic;
         if (localMnemonic != null && localMnemonic.length() == 1) {
@@ -157,7 +159,7 @@ public class GenericArgoMenuBar extends JMenuBar
         item.setMnemonic(mnemonic);
     }
 
-    static final protected String menuLocalize(String key) {
+    protected static final String menuLocalize(String key) {
         return Argo.localize("CoreMenu", key);
     }
 
@@ -270,18 +272,24 @@ public class GenericArgoMenuBar extends JMenuBar
         KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, menuShortcut);
         KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, menuShortcut);
         KeyStroke ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, menuShortcut);
-        KeyStroke ctrlMinus = KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, menuShortcut);
-        KeyStroke ctrlEquals = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, menuShortcut);
+        KeyStroke ctrlMinus =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, menuShortcut);
+        KeyStroke ctrlEquals =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, menuShortcut);
 
         
         KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
         KeyStroke F7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
-        KeyStroke altF4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK);
-        KeyStroke altLeft = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.ALT_MASK);
-        KeyStroke altRight = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.ALT_MASK);
+        KeyStroke altF4 =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK);
+        KeyStroke altLeft =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.ALT_MASK);
+        KeyStroke altRight =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.ALT_MASK);
 
         KeyStroke delKey  = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
-        KeyStroke ctrlDel = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, menuShortcut);
+        KeyStroke ctrlDel =
+	    KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, menuShortcut);
 
         JMenuItem mi;
         // File Menu
@@ -307,8 +315,10 @@ public class GenericArgoMenuBar extends JMenuBar
         _file.addSeparator();
 
         //_import = new JMenu(menuLocalize("action.import"));
-        //JMenuItem importProjectAsItem = _import.add(ActionImportFromSources.SINGLETON);
-        //appendPluggableMenus(_import, PluggableMenu.KEY_FILE_IMPORT);
+        //JMenuItem importProjectAsItem =
+        //_import.add(ActionImportFromSources.SINGLETON);
+        //appendPluggableMenus(_import,
+        //PluggableMenu.KEY_FILE_IMPORT);
         _file.add(ActionImportFromSources.SINGLETON);
         _file.addSeparator();
     
@@ -334,9 +344,11 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem selectAllItem = _select.add(new CmdSelectAll());
         setAccelerator(selectAllItem, ctrlA);
         _select.addSeparator();
-        JMenuItem backItem = _select.add(NavigateTargetBackAction.getInstance());
+        JMenuItem backItem =
+	    _select.add(NavigateTargetBackAction.getInstance());
         //setAccelerator(backItem,altLeft);
-        JMenuItem forwardItem = _select.add(NavigateTargetForwardAction.getInstance());
+        JMenuItem forwardItem =
+	    _select.add(NavigateTargetForwardAction.getInstance());
         //setAccelerator(forwardItem,altRight);
         _select.addSeparator();
         JMenuItem selectNextItem = _select.add(new CmdSelectNext(false));
@@ -374,7 +386,8 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem deleteItem = _edit.add(ActionRemoveFromModel.SINGLETON);
         setMnemonic(deleteItem, "Delete", 'D');
         setAccelerator(deleteItem, ctrlDel);
-        // TODO Bob Tarling: no toolbarbutton till a new one is designed for Erase
+        // TODO Bob Tarling: no toolbarbutton till a new one is
+        // designed for Erase
         //_editToolbar.add(ActionRemoveFromModel.SINGLETON);
 
         JMenuItem emptyItem = _edit.add(ActionEmptyTrash.SINGLETON);
@@ -404,8 +417,10 @@ public class GenericArgoMenuBar extends JMenuBar
 
         _view.addSeparator();
 
-        JMenu editTabs = (JMenu) _view.add(new JMenu(menuLocalize("Editor Tabs")));
-        // JMenu detailsTabs = (JMenu) _view.add(new JMenu(menuLocalize("Details Tabs")));
+        JMenu editTabs =
+	    (JMenu) _view.add(new JMenu(menuLocalize("Editor Tabs")));
+        // JMenu detailsTabs = (JMenu) _view.add(new
+        // JMenu(menuLocalize("Details Tabs")));
 
         _view.addSeparator();
         _view.add(new CmdAdjustGrid());
@@ -417,7 +432,8 @@ public class GenericArgoMenuBar extends JMenuBar
         //_showDetailsMenuItem = _view.addCheckItem(Actions.ShowDetails);
 
         _view.addSeparator();
-        _view.add(org.argouml.language.ui.ActionNotation.getInstance().getMenu());
+        _view.add(org.argouml.language.ui.ActionNotation.getInstance()
+		  .getMenu());
 
 
         appendPluggableMenus(_view, PluggableMenu.KEY_VIEW);
@@ -427,7 +443,8 @@ public class GenericArgoMenuBar extends JMenuBar
         //create.add(Actions.CreateMultiple);
         //create.addSeparator();
 
-        _createDiagrams = (JMenu) add(new JMenu(menuLocalize("Create Diagram")));
+        _createDiagrams =
+	    (JMenu) add(new JMenu(menuLocalize("Create Diagram")));
         setMnemonic(_createDiagrams, "Create Diagram", 'C');
         _createDiagramToolbar = new Toolbar("Create Diagram Toolbar");
         _createDiagrams.add(ActionClassDiagram.SINGLETON);
@@ -444,14 +461,17 @@ public class GenericArgoMenuBar extends JMenuBar
         _createDiagramToolbar.add((ActionDeploymentDiagram.SINGLETON));
         _createDiagrams.add(ActionSequenceDiagram.SINGLETON);
         _createDiagramToolbar.add((ActionSequenceDiagram.SINGLETON));
-        appendPluggableMenus(_createDiagrams, PluggableMenu.KEY_CREATE_DIAGRAMS);
+        appendPluggableMenus(_createDiagrams,
+			     PluggableMenu.KEY_CREATE_DIAGRAMS);
 
         _arrange = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("Arrange")));
         setMnemonic(_arrange, "Arrange", 'A');
 
         JMenu align = (JMenu) _arrange.add(new JMenu(menuLocalize("Align")));
-        JMenu distribute = (JMenu) _arrange.add(new JMenu(menuLocalize("Distribute")));
-        JMenu reorder = (JMenu) _arrange.add(new JMenu(menuLocalize("Reorder")));
+        JMenu distribute =
+	    (JMenu) _arrange.add(new JMenu(menuLocalize("Distribute")));
+        JMenu reorder =
+	    (JMenu) _arrange.add(new JMenu(menuLocalize("Reorder")));
         JMenu nudge = (JMenu) _arrange.add(new JMenu(menuLocalize("Nudge")));
 
         _arrange.

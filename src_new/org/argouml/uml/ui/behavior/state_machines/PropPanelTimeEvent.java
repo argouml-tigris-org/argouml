@@ -22,22 +22,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: PropPanelCallEvent.java
 // Classes: PropPanelCallEvent
 // Original Author: oliver.heyden@gentleware.de
-// $Id:
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-
-import org.argouml.application.api.Argo;
-
-import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
 
 public class PropPanelTimeEvent extends PropPanelEvent {

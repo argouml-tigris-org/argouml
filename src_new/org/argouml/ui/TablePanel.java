@@ -118,7 +118,8 @@ public class TablePanel extends TabSpawnable
 	_persCombo = new JComboBox(_tableModels);
 
 	_filterCombo.setEditable(true);
-	_filterCombo.getEditor().getEditorComponent().setBackground(Color.white);
+	_filterCombo.getEditor()
+	    .getEditorComponent().setBackground(Color.white);
 	_filterLabel.setEnabled(false);
 	_filterCombo.setEnabled(false);
 
@@ -233,10 +234,12 @@ public class TablePanel extends TabSpawnable
 			   new DefaultCellEditor(clsVisCombo));
 
 	JComboBox operKeyCombo = new JComboBox(OperKeyword.POSSIBLES);
-	t.setDefaultEditor(OperKeyword.class, new DefaultCellEditor(operKeyCombo));
+	t.setDefaultEditor(OperKeyword.class,
+			   new DefaultCellEditor(operKeyCombo));
 
 	JComboBox attrKeyCombo = new JComboBox(AttrKeyword.POSSIBLES);
-	t.setDefaultEditor(AttrKeyword.class, new DefaultCellEditor(attrKeyCombo));
+	t.setDefaultEditor(AttrKeyword.class,
+			   new DefaultCellEditor(attrKeyCombo));
     }
 
     public void initTableModels() { }
@@ -343,7 +346,9 @@ public class TablePanel extends TabSpawnable
 	if (lse.getValueIsAdjusting()) return;
 	Object src = lse.getSource();
 	if (src == _table.getSelectionModel()) {
-	    int row = ((DefaultListSelectionModel) lse.getSource()).getMinSelectionIndex();
+	    int row =
+		((DefaultListSelectionModel) lse.getSource())
+		.getMinSelectionIndex();
 	    if (_tableModel != null) {
 		Vector rowObjects = _tableModel.getRowObjects();
 		if (row >= 0 && row < rowObjects.size()) {
@@ -370,7 +375,8 @@ public class TablePanel extends TabSpawnable
 
   
     /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
         // TODO Auto-generated method stub
@@ -378,7 +384,8 @@ public class TablePanel extends TabSpawnable
     }
 
     /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         // TODO Auto-generated method stub
@@ -386,7 +393,8 @@ public class TablePanel extends TabSpawnable
     }
 
     /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see
+     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         // TODO Auto-generated method stub

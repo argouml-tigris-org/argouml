@@ -35,9 +35,6 @@ import java.awt.*;
 import java.lang.reflect.*;
 
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.MMUtil;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),

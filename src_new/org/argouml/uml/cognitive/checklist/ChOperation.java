@@ -37,8 +37,9 @@ import ru.novosoft.uml.model_management.*;
  *  design. TODO: the checklist items are categorized, but
  *  those categories are not shown yet in the user interface. 
  *
- *  @deprecated As of ArgoUml version 0.9.1, Now created by loading strings from 
- *     UMLCognitiveResourceBundle into a generic UMLChecklist instance
+ *  @deprecated As of ArgoUml version 0.9.1, Now created by loading
+ *  strings from UMLCognitiveResourceBundle into a generic
+ *  UMLChecklist instance
  *           
  *  @see org.argouml.uml.cognitive.UMLCognitiveResourceBundle
  *  @see UMLChecklist

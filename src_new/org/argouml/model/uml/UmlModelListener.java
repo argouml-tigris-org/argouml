@@ -25,6 +25,7 @@
 package org.argouml.model.uml;
 
 import org.apache.log4j.Category;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 
 import ru.novosoft.uml.MElementEvent;
@@ -119,9 +120,15 @@ public class UmlModelListener implements MElementListener {
 	// Should this be a property change event?
 	//
 
-	if (mee.getAddedValue() != null || mee.getRemovedValue() != null || (mee.getNewValue() != null && !mee.getNewValue().equals(mee.getOldValue()))) {
-	    if (ProjectManager.getManager().getCurrentProject() != null)
-		ProjectManager.getManager().getCurrentProject().setNeedsSave(true);
+	if (mee.getAddedValue() != null
+	    || mee.getRemovedValue() != null
+	    || (mee.getNewValue() != null
+		&& !mee.getNewValue().equals(mee.getOldValue())))
+	{
+	    Project cp = ProjectManager.getManager().getCurrentProject();
+
+	    if (cp != null)
+		cp.setNeedsSave(true);
 	}
 	
 	

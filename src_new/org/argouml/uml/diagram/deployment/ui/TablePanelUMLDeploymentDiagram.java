@@ -22,11 +22,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 // File: TablePanelUMLDeploymentDiagram.java
 // Classes: TablePanelUMLDeploymentDiagram
 // Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
 
 package org.argouml.uml.diagram.deployment.ui;
 
@@ -36,7 +34,6 @@ import java.util.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.text.Document;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import ru.novosoft.uml.foundation.core.*;
@@ -61,11 +58,16 @@ public class TablePanelUMLDeploymentDiagram extends TablePanel {
     JSortedTable _table5 = new JSortedTable();
     JSortedTable _table6 = new JSortedTable();
     JPanel sp2W, sp3W, sp4W, sp5W, sp6W;
-    TableModelComposite _tableModelClass_in_DeplByProps = new TableModelClass_in_DeplByProps();
-    TableModelComposite _tableModelInterface_in_DeplByProps = new TableModelInterface_in_DeplByProps();
-    TableModelComposite _tableModelObjectByProps = new TableModelObjectByProps();
-    TableModelComposite _tableModelComponentByProps = new TableModelComponentByProps();
-    TableModelComposite _tableModelCompInstanceByProps = new TableModelCompInstanceByProps();
+    TableModelComposite _tableModelClass_in_DeplByProps =
+	new TableModelClass_in_DeplByProps();
+    TableModelComposite _tableModelInterface_in_DeplByProps = 
+	new TableModelInterface_in_DeplByProps();
+    TableModelComposite _tableModelObjectByProps =
+	new TableModelObjectByProps();
+    TableModelComposite _tableModelComponentByProps =
+	new TableModelComponentByProps();
+    TableModelComposite _tableModelCompInstanceByProps =
+	new TableModelCompInstanceByProps();
     JPanel _south = new JPanel();
     JScrollPane _sp2, _sp3, _sp4, _sp5, _sp6;
 
@@ -116,23 +118,28 @@ public class TablePanelUMLDeploymentDiagram extends TablePanel {
 
 	sp2W = new JPanel();
 	sp2W.setLayout(new BorderLayout());
-	sp2W.add(new JLabel("Classes of selected component:"), BorderLayout.NORTH);
+	sp2W.add(new JLabel("Classes of selected component:"),
+		 BorderLayout.NORTH);
 	sp2W.add(_sp2, BorderLayout.CENTER);
 	sp3W = new JPanel();
 	sp3W.setLayout(new BorderLayout());
-	sp3W.add(new JLabel("Interfaces of selected component:"), BorderLayout.NORTH);
+	sp3W.add(new JLabel("Interfaces of selected component:"),
+		 BorderLayout.NORTH);
 	sp3W.add(_sp3, BorderLayout.CENTER);
 	sp4W = new JPanel();
 	sp4W.setLayout(new BorderLayout());
-	sp4W.add(new JLabel("Objects of selected component(-instance):"), BorderLayout.NORTH);
+	sp4W.add(new JLabel("Objects of selected component(-instance):"),
+		 BorderLayout.NORTH);
 	sp4W.add(_sp4, BorderLayout.CENTER);
 	sp5W = new JPanel();
 	sp5W.setLayout(new BorderLayout());
-	sp5W.add(new JLabel("Components of selected node:"), BorderLayout.NORTH);
+	sp5W.add(new JLabel("Components of selected node:"),
+		 BorderLayout.NORTH);
 	sp5W.add(_sp5, BorderLayout.CENTER);
 	sp6W = new JPanel();
 	sp6W.setLayout(new BorderLayout());
-	sp6W.add(new JLabel("Component-instances of selected node-instance:"), BorderLayout.NORTH);
+	sp6W.add(new JLabel("Component-instances of selected node-instance:"),
+		 BorderLayout.NORTH);
 	sp6W.add(_sp6, BorderLayout.CENTER);
 
 	_south.add(sp2W);
@@ -177,7 +184,8 @@ public class TablePanelUMLDeploymentDiagram extends TablePanel {
 	if (src == _table2.getSelectionModel()) {
 	    int row = lse.getFirstIndex();
 	    if (_tableModelClass_in_DeplByProps != null) {
-		Vector rowObjects = _tableModelClass_in_DeplByProps.getRowObjects();
+		Vector rowObjects =
+		    _tableModelClass_in_DeplByProps.getRowObjects();
 		if (row >= 0 && row < rowObjects.size()) {
 		    Object sel = rowObjects.elementAt(row);
 		    objectSelected(sel);
@@ -188,7 +196,8 @@ public class TablePanelUMLDeploymentDiagram extends TablePanel {
 	if (src == _table3.getSelectionModel()) {
 	    int row = lse.getFirstIndex();
 	    if (_tableModelInterface_in_DeplByProps != null) {
-		Vector rowObjects = _tableModelInterface_in_DeplByProps.getRowObjects();
+		Vector rowObjects =
+		    _tableModelInterface_in_DeplByProps.getRowObjects();
 		if (row >= 0 && row < rowObjects.size()) {
 		    Object sel = rowObjects.elementAt(row);
 		    objectSelected(sel);
@@ -221,7 +230,8 @@ public class TablePanelUMLDeploymentDiagram extends TablePanel {
 	if (src == _table4.getSelectionModel()) {
 	    int row = lse.getFirstIndex();
 	    if (_tableModelCompInstanceByProps != null) {
-		Vector rowObjects = _tableModelCompInstanceByProps.getRowObjects();
+		Vector rowObjects =
+		    _tableModelCompInstanceByProps.getRowObjects();
 		if (row >= 0 && row < rowObjects.size()) {
 		    Object sel = rowObjects.elementAt(row);
 		    objectSelected(sel);

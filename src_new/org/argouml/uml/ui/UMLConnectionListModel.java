@@ -31,9 +31,7 @@ package org.argouml.uml.ui;
 import javax.swing.*;
 import java.util.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;

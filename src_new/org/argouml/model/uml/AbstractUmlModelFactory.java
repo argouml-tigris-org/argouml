@@ -103,17 +103,17 @@ public abstract class AbstractUmlModelFactory {
      * handle.
      * @param handle the modelelement the listeners are interested in
      */
+    // TODO: The model shall not reference the ProjectBrowser!
     public void addListenersToModelElement(Object handle) {
         if (handle instanceof MBase) {
             MBase base = (MBase) handle;
             UmlModelEventPump pump = UmlModelEventPump.getPump();
-            ((MBase) handle).addMElementListener(pump);
+            base.addMElementListener(pump);
             if (GuiEnabled) {
-                ((MBase) handle).addMElementListener(
-						     ProjectBrowser.getInstance().getNavigatorPane());
+                base.addMElementListener(ProjectBrowser.getInstance()
+					 .getNavigatorPane());
             }
-            ((MBase) handle).addMElementListener(
-						 UmlModelListener.getInstance());
+            base.addMElementListener(UmlModelListener.getInstance());
         }
     }
 

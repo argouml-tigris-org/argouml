@@ -27,7 +27,6 @@ import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.*;
 import org.argouml.application.helpers.*;
 import org.argouml.kernel.*;
-import org.argouml.uml.ui.UMLAction;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -152,7 +151,9 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 
     public String getModuleName() { return "SettingsTabEnvironment"; }
 
-    public String getModuleDescription() { return "Settings Tab for Environment"; }
+    public String getModuleDescription() {
+	return "Settings Tab for Environment";
+    }
 
     /** Use of Module is curious. Does this mean the
      * author of a particular zargo?

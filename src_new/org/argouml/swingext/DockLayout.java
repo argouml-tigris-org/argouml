@@ -86,11 +86,14 @@ public class DockLayout extends BorderLayout {
             int southHeight = getPreferredDimension(south).height;
             int eastWidth = getPreferredDimension(east).width;
             int westWidth = getPreferredDimension(west).width;
-            placeComponents(north, left, top, right - left, northHeight, HORIZONTAL);
+            placeComponents(north, left, top, right - left,
+			    northHeight, HORIZONTAL);
             top += (northHeight + getVgap());
-            placeComponents(south, left, bottom - southHeight, right - left, southHeight, HORIZONTAL);
+            placeComponents(south, left, bottom - southHeight, right - left,
+			    southHeight, HORIZONTAL);
             bottom -= (southHeight + getVgap());
-            placeComponents(east, right - eastWidth, top, eastWidth, bottom - top, VERTICAL);
+            placeComponents(east, right - eastWidth, top, eastWidth,
+			    bottom - top, VERTICAL);
             right -= (eastWidth + getHgap());
             placeComponents(west, left, top, westWidth, bottom - top, VERTICAL);
             left += (westWidth + getHgap());
@@ -112,7 +115,9 @@ public class DockLayout extends BorderLayout {
         return new Dimension(w, h);   
     }   
 
-    private void placeComponents(ArrayList comps, int x, int y, int w, int h, int orientation) {
+    private void placeComponents(ArrayList comps,
+				 int x, int y, int w, int h, int orientation)
+    {
         int offset = 0;      
         Component c = null;      
         if (orientation == HORIZONTAL) {         

@@ -29,7 +29,6 @@ import java.util.Collection;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.foundation.core.MClass;
 
 public class GoClassToAssociatedClass extends AbstractGoRule {
 

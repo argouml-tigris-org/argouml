@@ -49,7 +49,8 @@ import ru.novosoft.uml.behavior.state_machines.MState;
 /** Class to display graphics for a UML MCompositeState in a diagram. */
 
 public class FigCompositeState extends FigState {
-    protected static Category cat = Category.getInstance(FigCompositeState.class);
+    protected static Category cat =
+	Category.getInstance(FigCompositeState.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -72,15 +73,25 @@ public class FigCompositeState extends FigState {
 
     public FigCompositeState() {
         super();
-        _bigPort = new FigRRect(getInitialX() + 1, getInitialY() + 1, getInitialWidth() - 2, getInitialHeight() - 2, Color.cyan, Color.cyan);
-        _cover = new FigRRect(getInitialX(), getInitialY(), getInitialWidth(), getInitialHeight(), Color.black, Color.white);
+        _bigPort = new FigRRect(getInitialX() + 1, getInitialY() + 1,
+				getInitialWidth() - 2, getInitialHeight() - 2,
+				Color.cyan, Color.cyan);
+        _cover = new FigRRect(getInitialX(), getInitialY(),
+			      getInitialWidth(), getInitialHeight(),
+			      Color.black, Color.white);
 
         _bigPort.setLineWidth(0);
         _name.setLineWidth(0);
-        _name.setBounds(getInitialX() + 2, getInitialY() + 2, getInitialWidth() - 4, _name.getBounds().height);
+        _name.setBounds(getInitialX() + 2, getInitialY() + 2,
+			getInitialWidth() - 4, _name.getBounds().height);
         _name.setFilled(false);
 
-        _divider = new FigLine(getInitialX(), getInitialY() + 2 + _name.getBounds().height + 1, getInitialWidth() - 1, getInitialY() + 2 + _name.getBounds().height + 1, Color.black);
+        _divider =
+	    new FigLine(getInitialX(),
+			getInitialY() + 2 + _name.getBounds().height + 1,
+			getInitialWidth() - 1,
+			getInitialY() + 2 + _name.getBounds().height + 1,
+			Color.black);
 
         // add Figs to the FigNode in back-to-front order
         addFig(_bigPort);
@@ -138,9 +149,11 @@ public class FigCompositeState extends FigState {
         Dimension nameDim = _name.getMinimumSize();
 
         _name.setBounds(x + 2, y + 2, w - 4, nameDim.height);
-        _divider.setShape(x, y + nameDim.height + 1, x + w - 1, y + nameDim.height + 1);
+        _divider.setShape(x, y + nameDim.height + 1,
+			  x + w - 1, y + nameDim.height + 1);
 
-        _internal.setBounds(x + 2, y + nameDim.height + 4, w - 4, h - nameDim.height - 6);
+        _internal.setBounds(x + 2, y + nameDim.height + 4,
+			    w - 4, h - nameDim.height - 6);
 
         _bigPort.setBounds(x, y, w, h);
         _cover.setBounds(x, y, w, h);
@@ -192,7 +205,8 @@ public class FigCompositeState extends FigState {
         super.modelChanged(mee);
 
         if (mee.getName().equals("isConcurrent")) {
-            // TODO: this should split the composite state into two regions. This must be implemented
+            // TODO: this should split the composite state into two
+            // regions. This must be implemented
             updateInternal();
         }
 

@@ -35,30 +35,30 @@ package org.argouml.language.java.generator;
    code piece is going to be replaced by a string generated from the
    UML model.
 */
-abstract public class CodePiece
+public abstract class CodePiece
 {
     /**
        Return the string representation for this piece of code.
     */
-    abstract public StringBuffer getText();
+    public abstract StringBuffer getText();
 
     /**
        Return the start position.
     */
-    abstract public int getStartPosition();
+    public abstract int getStartPosition();
 
     /**
        Return the end position.
     */
-    abstract public int getEndPosition();
+    public abstract int getEndPosition();
 
     /**
 	Return the start line
     */
-    abstract public int getStartLine();
+    public abstract int getStartLine();
 
     /**
 	Return the end line
     */
-    abstract public int getEndLine();
+    public abstract int getEndLine();
 }

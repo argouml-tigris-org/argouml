@@ -24,19 +24,8 @@
 
 package org.argouml.application.security;
 
-// Import classes fully qualified to ensure that
-// no one can short-circuit our intended inheritance.
-import java.lang.System;
-import java.lang.Class;
-import java.lang.ClassLoader;
-import java.lang.String;
-import java.lang.Exception;
-import java.lang.ClassNotFoundException;
-import java.lang.SecurityManager;
 import java.util.jar.JarFile;
 import java.util.jar.JarEntry;
-import java.util.jar.Manifest;
-import java.util.jar.Attributes;
 import java.io.DataInputStream;
 
 

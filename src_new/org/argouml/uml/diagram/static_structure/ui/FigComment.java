@@ -72,7 +72,14 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  * empty stereotype textfield causes problems with the
  * note layout, I subclass FigNode instead of FigNodeModelElement.
  */
-public class FigComment extends FigNodeModelElement implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener {
+public class FigComment 
+    extends FigNodeModelElement
+    implements VetoableChangeListener,
+	       DelayedVChangeListener,
+	       MouseListener,
+	       KeyListener,
+	       PropertyChangeListener
+{
     protected static Category cat = Category.getInstance(FigComment.class);
 
     ////////////////////////////////////////////////////////////////
@@ -93,7 +100,9 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
 
     static {
         LABEL_FONT = MetalLookAndFeel.getSubTextFont();
-        ITALIC_LABEL_FONT = new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());
+        ITALIC_LABEL_FONT = new Font(LABEL_FONT.getFamily(),
+				     Font.ITALIC,
+				     LABEL_FONT.getSize());
     }
 
     ////////////////////////////////////////////////////////////////
@@ -177,9 +186,12 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
      */
     public FigComment(MModelElement element) {
         this(); // Construct the figure.
-        MComment node = UmlFactory.getFactory().getCore().createComment(); // Create a new Comment node.
+	// Create a new Comment node.
+        MComment node =
+	    UmlFactory.getFactory().getCore().createComment();
         setOwner(node); // Set it as the owner of the figure.
-        element.addComment(node); // Tell the annotated element, that it has a comment now.
+	// Tell the annotated element, that it has a comment now.
+        element.addComment(node);
 
         // Notes in state diagrams need a special treatment, cause
         // the nodes in them don't necessary have a namespace, where
@@ -187,13 +199,19 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
         // Andreas Rueckert <a_rueckert@gmx.net>
         if (element instanceof MStateVertex) {
 
-            ProjectBrowser pb = ProjectBrowser.getInstance(); // If the current target is a state diagram, we have to
-            if (pb.getTarget() instanceof UMLStateDiagram) { // check, if we are editing the diagram.
-                StateDiagramGraphModel gm = (StateDiagramGraphModel) (((UMLStateDiagram) pb.getTarget()).getGraphModel());
-                node.setNamespace(gm.getNamespace()); // We are editing, so we set the Namespace directly.
+	    // If the current target is a state diagram, we have to
+	    // check, if we are editing the diagram.
+            ProjectBrowser pb = ProjectBrowser.getInstance(); 
+            if (pb.getTarget() instanceof UMLStateDiagram) { 
+                StateDiagramGraphModel gm =
+		    (StateDiagramGraphModel)
+		    (((UMLStateDiagram) pb.getTarget()).getGraphModel());
+		// We are editing, so we set the Namespace directly.
+                node.setNamespace(gm.getNamespace());
             }
         } else {
-            node.setNamespace(element.getNamespace()); // Add the comment to the same namespace as the annotated element.
+	    // Add the comment to the same namespace as the annotated element.
+            node.setNamespace(element.getNamespace());
         }
 
         storeNote(placeString()); // Set the default text for this figure type.
@@ -248,7 +266,10 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
         }
         if (me.isConsumed())
             return;
-        if (me.getClickCount() >= 2 && !(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK)) {
+        if (me.getClickCount() >= 2
+	    && !(me.isPopupTrigger()
+		 || me.getModifiers() == InputEvent.BUTTON3_MASK))
+	{
             if (getOwner() == null)
                 return;
             Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));
@@ -261,10 +282,12 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
     public void vetoableChange(PropertyChangeEvent pce) {
         Object src = pce.getSource();
         if (src == getOwner()) {
-            DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
+            DelayedChangeNotify delayedNotify =
+		new DelayedChangeNotify(this, pce);
             SwingUtilities.invokeLater(delayedNotify);
         } else
-            cat.debug("FigNodeModelElement got vetoableChange" + " from non-owner:" + src);
+            cat.debug("FigNodeModelElement got vetoableChange"
+		      + " from non-owner:" + src);
     }
 
     public void delayedVetoableChange(PropertyChangeEvent pce) {
@@ -279,7 +302,9 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
     public void propertyChange(PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
-        if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
+        if (pName.equals("editing")
+	    && Boolean.FALSE.equals(pve.getNewValue()))
+	{
             try {
                 startTrans();
                 //parse the text that was edited
@@ -292,7 +317,8 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
                 setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
                 endTrans();
             } catch (PropertyVetoException ex) {
-                cat.error("could not parse and use the text entered in figcomment", ex);
+                cat.error("could not parse and use the text entered "
+			  + "in figcomment", ex);
             }
         } else
             super.propertyChange(pve);
@@ -396,7 +422,9 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
      * @return The note from the associated model element.
      */
     public final String retrieveNote() {
-        return (getOwner() != null) ? ((MModelElement) getOwner()).getName() : null;
+        return (getOwner() != null)
+	    ? ((MModelElement) getOwner()).getName()
+	    : null;
     }
 
     public boolean getUseTrapRect() {
@@ -415,7 +443,8 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
 
         // And add the gaps around the textfield to get the minimum
         // size of the note.
-        return new Dimension(textMinimumSize.width + 4 + gapY, textMinimumSize.height + 4);
+        return new Dimension(textMinimumSize.width + 4 + gapY,
+			     textMinimumSize.height + 4);
     }
 
     public void setBounds(int x, int y, int w, int h) {

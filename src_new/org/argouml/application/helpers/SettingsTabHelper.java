@@ -26,7 +26,6 @@ package org.argouml.application.helpers;
 import org.argouml.application.api.*;
 import org.argouml.ui.*;
 import org.argouml.kernel.*;
-import org.argouml.uml.ui.UMLAction;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
@@ -46,7 +45,7 @@ public abstract class SettingsTabHelper extends JPanel
 
     /** Default localization key for Settings
      */
-    public final static String SETTINGS_BUNDLE = "CoreSettings";
+    public static final String SETTINGS_BUNDLE = "CoreSettings";
 
     /** String naming the resource bundle to use for localization.
      */

@@ -31,11 +31,6 @@
 package org.argouml.swingext;
 
 import java.awt.GridLayout;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-import java.util.Iterator;
-import javax.swing.Action;
-import javax.swing.JButton;
 
 /**
  * A toolbar where buttons are shown in a grid instead of a row.

@@ -32,9 +32,7 @@ package org.argouml.uml.ui.behavior.activity_graphs;
 import org.argouml.application.api.Argo;
 
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.behavior.state_machines.PropPanelState;
-import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.argouml.util.ConfigLoader;
 
 /** User interface panel shown at the bottom of the screen that allows

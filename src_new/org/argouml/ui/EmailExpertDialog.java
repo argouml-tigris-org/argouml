@@ -27,7 +27,6 @@ package org.argouml.ui;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -52,7 +51,8 @@ import org.argouml.swingext.LabelledLayout;
  * within argo.
  */
 public class EmailExpertDialog extends ArgoDialog {
-    protected static Category cat = Category.getInstance(EmailExpertDialog.class);
+    protected static Category cat =
+	Category.getInstance(EmailExpertDialog.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables

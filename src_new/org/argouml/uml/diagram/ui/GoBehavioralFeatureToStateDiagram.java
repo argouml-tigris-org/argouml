@@ -36,7 +36,6 @@ import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
-import ru.novosoft.uml.foundation.core.MOperation;
 
 /**
  * 

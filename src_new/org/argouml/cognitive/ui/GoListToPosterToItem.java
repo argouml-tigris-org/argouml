@@ -40,7 +40,7 @@ public class GoListToPosterToItem implements TreeModel {
     // TreeModel implementation
   
     public Object getRoot() {
-	throw new UnsupportedOperationException("getRoot should never be called");
+	throw new UnsupportedOperationException();
     } 
     public void setRoot(Object r) { }
 
