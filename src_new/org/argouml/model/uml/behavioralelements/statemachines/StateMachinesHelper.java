@@ -43,7 +43,6 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 /**
  * Helper class for UML BehavioralElements::StateMachines Package.
  *
- * Current implementation is a placeholder.
  * 
  * @since ARGO0.11.2
  * @author Thierry Lach
