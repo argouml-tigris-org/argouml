@@ -105,6 +105,7 @@ public class UmlModelListener implements MElementListener {
      */
     public void roleRemoved (MElementEvent mee) {
         logger.debug("roleRemoved(" + mee + ")");
+        
 	notifyModelChanged(mee);
     }
 
@@ -118,9 +119,12 @@ public class UmlModelListener implements MElementListener {
 	//
 	// Should this be a property change event?
 	//
+
 	if (mee.getAddedValue() != null || mee.getRemovedValue() != null || !mee.getOldValue().equals(mee.getNewValue())) {
 		ProjectBrowser.TheInstance.getNavPane().forceUpdate();
+		ProjectBrowser.TheInstance.getProject().setNeedsSave(true);
 	}
+	
 	
     }
 }
