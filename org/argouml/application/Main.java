@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -74,6 +74,25 @@ public class Main {
     public static final String DEFAULT_LOGGING_CONFIGURATION =
         "org/argouml/resource/default.lcf";
 
+    private static final String STATBUNDLE =
+	"org/argouml/i18n/statusmsg.properties";	
+
+    // Resourcebundle-keys
+    private static final String LBLBUNDLE =
+	"org/argouml/i18n/label.properties";
+		
+    private static final String LBLBUNDLE_PROJECTBROWSER_TITLE = 
+	"label.projectbrowser-title";
+	
+    private static final String STATBUNDLE_BAR_DEFAULTPROJECT = 
+	"statusmsg.bar.defaultproject";
+    private static final String STATBUNDLE_BAR_READINGPROJECT = 
+	"statusmsg.bar.readingproject";
+    private static final String STATBUNDLE_BAR_OPEN_PROJECT_BROWSER = 
+	"statusmsg.bar.open-project-browser";
+    private static final String STATBUNDLE_BAR_LOADMODULES = 
+	"statusmsg.bar.loadmodules";
+		
     ////////////////////////////////////////////////////////////////
     // static variables
 
@@ -268,9 +287,18 @@ public class Main {
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
             if (urlToOpen == null)
-                splash.getStatusBar().showStatus("Making Default Project");
+            {
+		splash.getStatusBar().showStatus(Argo.localize(STATBUNDLE, STATBUNDLE_BAR_DEFAULTPROJECT));	
+            }
             else
-                splash.getStatusBar().showStatus("Reading " + projectName);
+            {
+		Object[] msgArgs = {
+		    projectName
+		};
+		splash.getStatusBar().showStatus(Translator.messageFormat(STATBUNDLE,
+									  STATBUNDLE_BAR_READINGPROJECT,
+									  msgArgs));
+            }
 
             splash.getStatusBar().showProgress(40);
         }
@@ -299,11 +327,11 @@ public class Main {
         st.mark("perspectives");
 
         if (urlToOpen == null)
-            pb.setTitle("Untitled");
+	    pb.setTitle(Argo.localize(LBLBUNDLE, 
+				      LBLBUNDLE_PROJECTBROWSER_TITLE));	
 
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
-            splash.getStatusBar().showStatus("Loading modules");
             splash.getStatusBar().showProgress(75);
         }
 
@@ -315,7 +343,8 @@ public class Main {
 
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
-            splash.getStatusBar().showStatus("Opening Project Browser");
+	    splash.getStatusBar().showStatus(Argo.localize(STATBUNDLE,
+							   STATBUNDLE_BAR_OPEN_PROJECT_BROWSER));	
             splash.getStatusBar().showProgress(95);
         }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,7 @@ package org.argouml.i18n;
 
 import java.io.InputStream;
 import java.io.IOException;
-
+import java.text.MessageFormat;				
 import java.util.Locale;
 import java.util.Properties;
 
@@ -139,13 +139,30 @@ public class Translator {
         }
     }
 
-    /** Helper for localization to eliminate the need to import
-     *  the gef util library. 
+    /** 
+     * Helper for localization to eliminate the need to import
+     * the gef util library. 
+     *
      * @param bundle a binding to a bundle of i18n resources
      * @param key the key to loacalize
      * @return the translation
      */
     public static String localize(String bundle, String key) {
         return org.argouml.application.api.Argo.localize(bundle, key);
+    }
+
+    /**
+     * Generates an localized String with Arguments
+     *
+     * @param bundle a binding to a bundle of i18n resources
+     * @param key the key to localize
+     * @param args the args as Objects, inserted in the localized String
+     * @return the localized String with inserted arguments
+     */
+    public static String messageFormat(String bundle, 
+				       String key, Object[] args)
+    {
+    	MessageFormat msgFmt = new MessageFormat(localize(bundle, key));
+	return msgFmt.format(args);
     }
 }
