@@ -349,6 +349,20 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         ModelFacade.setOperation(action, oper);
         return action;
     }
+    
+    /**
+     * Builds a new uninterpreted action. If the argument is an action state,
+     * the new action is set as the entry action.
+     * @param actionState
+     * @return
+     */
+    public Object buildUninterpretedAction(Object actionState) {
+        Object action = createUninterpretedAction();
+        if (ModelFacade.isAActionState(actionState)) {
+            ModelFacade.setEntry(actionState, action);
+        }
+        return action;
+    }
 
     /** 
      * Builds a Link between two Instances
@@ -386,7 +400,7 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
                     + "interaction does not have "
                     + "a context");
         return action;
-    }
+    }       
 
     /**
      * Builds a signal belonging to some behavioralfeature

@@ -31,12 +31,14 @@ package org.argouml.uml.diagram.activity.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.beans.PropertyVetoException;
 import java.util.Iterator;
 
 import org.argouml.application.api.Notation;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
+import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
@@ -252,5 +254,16 @@ public class FigActionState extends FigStateVertex {
     protected void updateNameText() {
         if (getOwner() != null)
             getNameFig().setText(Notation.generate(this, getOwner()));
+    }
+    
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     */
+    protected void textEdited(FigText ft) throws PropertyVetoException {
+        if (ft == getNameFig() && this.getOwner() != null) {
+            ParserDisplay.SINGLETON.parseActionState(ft.getText(), this.getOwner());
+        } else
+            super.textEdited(ft);
     }
 } /* end class FigActionState */

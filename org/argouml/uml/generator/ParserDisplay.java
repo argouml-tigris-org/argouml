@@ -38,14 +38,18 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.foundation.datatypes.DataTypesFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ProfileJava;
 import org.argouml.util.MyTokenizer;
+
+
 
 
 /**
@@ -3568,5 +3572,24 @@ public class ParserDisplay extends Parser {
         if (obj != null)
             UmlFactory.getFactory().delete(obj);
     }
+    
+    
 
+    /**
+     * An action state figure shows the action expression of the entry action according to the
+     * UML spec.
+     * @see org.argouml.uml.generator.Parser#parseActionState(java.lang.String, java.lang.Object)
+     */
+    public Object parseActionState(String s, Object actionState) {
+        Object entry = ModelFacade.getEntry(actionState);
+        String language = "";
+        if (entry == null) {
+            entry = CommonBehaviorFactory.getFactory().buildUninterpretedAction(actionState);
+        } else {
+            language = ModelFacade.getLanguage(ModelFacade.getScript(entry));
+        }
+        Object actionExpression = DataTypesFactory.getFactory().createActionExpression(language, s);
+        ModelFacade.setScript(entry, actionExpression);
+       return actionState;
+    }
 } /* end class ParserDisplay */
