@@ -28,13 +28,13 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import java.util.Iterator;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.ModelFacade;
 
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
 
 // Use Model through ModelFacade
-import org.argouml.model.ModelFacade;
 
 /**
  * <p> A critic to detect navigation from an Interface to a Class in an

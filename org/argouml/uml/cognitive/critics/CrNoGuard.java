@@ -29,13 +29,12 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
-import ru.novosoft.uml.behavior.state_machines.*;
-
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
+
+
+import ru.novosoft.uml.behavior.state_machines.MGuard;
 
 public class CrNoGuard extends CrUML {
 

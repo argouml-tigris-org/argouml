@@ -24,19 +24,16 @@
 
 package org.argouml.uml.cognitive.checklist;
 
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.tigris.gef.util.*;
-
 import org.apache.log4j.Category;
-import org.argouml.cognitive.checklist.*;
+
+
+
+import org.argouml.cognitive.checklist.CheckItem;
 //
 //  slightly different from its GEF counterpart
 //
 import org.argouml.ocl.OCLEvaluator;
+import org.tigris.gef.util.Predicate;
 
 /** A special kind of CheckItem that can replace OCL expressions with
  *  their values in the generated advice.

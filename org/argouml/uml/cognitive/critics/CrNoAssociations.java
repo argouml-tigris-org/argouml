@@ -28,13 +28,13 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import java.util.Iterator;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.ModelFacade;
 
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
 
 // Uses Model through ModelFacade
-import org.argouml.model.ModelFacade;
 
 /** A critic to detect when a class can never have instances (of
  *  itself or any subclasses). */

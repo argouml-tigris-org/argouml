@@ -29,10 +29,10 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
-import org.argouml.cognitive.*;
+import java.util.Collection;
+import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
+
 
 /** A critic to detect when a Branch state has the wrong number of
  *  transitions.  Implements constraint [6] on MPseudostate in the UML

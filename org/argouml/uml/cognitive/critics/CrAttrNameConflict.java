@@ -31,16 +31,16 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import javax.swing.*;
-
-import java.util.Vector;
 import java.util.Iterator;
+import java.util.Vector;
 
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
+import javax.swing.Icon;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.ModelFacade;
+
 
 // Using Model through Facade
-import org.argouml.model.ModelFacade;
 
 
 /** Check the:

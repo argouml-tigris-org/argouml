@@ -24,14 +24,17 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.ui.Clarifier;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
 
-import org.tigris.gef.presentation.*;
 
-import org.argouml.ui.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.cognitive.*;
 
 public class ClClassName implements Clarifier {
     public static ClClassName TheInstance = new ClClassName();

@@ -32,11 +32,11 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.model.ModelFacade;
+import ru.novosoft.uml.foundation.core.MGeneralization;
 
-import ru.novosoft.uml.foundation.core.*;
 
-import org.argouml.cognitive.*;
 
 /** Well-formedness rule [1] for MGeneralization. See page 32 of UML 1.1
  *  Semantics. OMG document ad/97-08-04.
@@ -55,7 +55,7 @@ public class CrIllegalGeneralization extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(org.argouml.model.ModelFacade.isAGeneralization(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isAGeneralization(dm))) return NO_PROBLEM;
 	MGeneralization gen = (MGeneralization) dm;
 	Object cls1 = gen.getParent();
 	Object cls2 = gen.getChild();

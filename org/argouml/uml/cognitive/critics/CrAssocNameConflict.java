@@ -32,13 +32,16 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.ModelFacade;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
 
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
 
 /** Well-formedness rule [2] for MNamespace. See page 33 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
@@ -53,7 +56,7 @@ public class CrAssocNameConflict extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(org.argouml.model.ModelFacade.isANamespace(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isANamespace(dm))) return NO_PROBLEM;
 	MNamespace ns = (MNamespace) dm;
 	Collection oes = ns.getOwnedElements();
 	if (oes == null) return NO_PROBLEM;
@@ -61,7 +64,7 @@ public class CrAssocNameConflict extends CrUML {
 	Iterator enum = oes.iterator();
 	while (enum.hasNext()) {
 	    MModelElement me = (MModelElement) enum.next();
-	    if (!(org.argouml.model.ModelFacade.isAAssociation(me))) continue;
+	    if (!(ModelFacade.isAAssociation(me))) continue;
 	    // TODO: not implemented yet
 	}
 	return NO_PROBLEM;

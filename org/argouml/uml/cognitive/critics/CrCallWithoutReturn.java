@@ -33,20 +33,19 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.argouml.cognitive.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.sequence.ui.FigSeqLink;
 import org.argouml.uml.diagram.sequence.ui.FigSeqObject;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-
 import org.tigris.gef.util.VectorSet;
 
-
-
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 
 /**
  * A critic to detect when there are components that
@@ -100,8 +99,8 @@ public class CrCallWithoutReturn extends CrUML {
 		    Iterator it = col.iterator();
 		    while (it.hasNext()) {
 			MStimulus ms = (MStimulus) it.next();
-			if (org.argouml.model.ModelFacade.isACallAction(ms.getDispatchAction())
-			    || org.argouml.model.ModelFacade.isASendAction(ms.getDispatchAction()))
+			if (ModelFacade.isACallAction(ms.getDispatchAction())
+			    || ModelFacade.isASendAction(ms.getDispatchAction()))
 			{
 			    found = true;
 			    Vector edges =
@@ -116,7 +115,7 @@ public class CrCallWithoutReturn extends CrUML {
 				    Iterator it2 = col2.iterator();
 				    while (it2.hasNext()) {
 					MStimulus ms2 = (MStimulus) it2.next();
-					if ((org.argouml.model.ModelFacade.isAReturnAction(ms2.getDispatchAction()))
+					if ((ModelFacade.isAReturnAction(ms2.getDispatchAction()))
 					    && (second.getPortNumber(figs)
 						> fsl.getPortNumber(figs))
 					    && (ms.getSender()

@@ -30,15 +30,16 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import java.util.Vector;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.ModelFacade;
+import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.argouml.uml.diagram.static_structure.ui.FigInterface;
+import org.tigris.gef.util.VectorSet;
 
-import ru.novosoft.uml.foundation.core.*;
 
-import org.tigris.gef.util.*;
 
-import org.argouml.cognitive.*;
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.uml.diagram.deployment.ui.*;
 
 /**
  * A critic to detect when a interface in a deployment-diagram
@@ -91,7 +92,7 @@ public class CrInterfaceWithoutComponent extends CrUML {
 	    if (!(obj instanceof FigInterface)) continue;
 	    FigInterface fi = (FigInterface) obj;
 	    if (fi.getEnclosingFig() == null
-		|| (!(org.argouml.model.ModelFacade.isAComponent(fi.getEnclosingFig().getOwner()))))
+		|| (!(ModelFacade.isAComponent(fi.getEnclosingFig().getOwner()))))
 	    {
 		if (offs == null) {
 		    offs = new VectorSet();

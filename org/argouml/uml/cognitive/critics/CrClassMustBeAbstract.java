@@ -31,12 +31,12 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
-
+import java.util.Iterator;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
+
+
 
 /** A critic to detect whether a non abstract class  
  *  contains abstract operations. It checks whether a non abstract class

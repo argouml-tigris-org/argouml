@@ -29,10 +29,10 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
+import java.util.Collection;
+import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
-import org.argouml.cognitive.*;
+
 
 /** A critic to detect when an initial state has more than one
  *  outgoing transitions.  Implements a constraint from the UML

@@ -28,11 +28,12 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
-// Uses Model through ModelFacade
+import java.util.Iterator;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
+
+// Uses Model through ModelFacade
 
 /**
  * <p>A critic to check that the classifiers associated with the ends of an

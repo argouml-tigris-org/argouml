@@ -30,12 +30,13 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.Vector;
+import org.argouml.cognitive.Designer;
+import org.argouml.model.ModelFacade;
 
-import org.argouml.cognitive.*;
 
 // Use Model through Facade
-import org.argouml.model.ModelFacade;
 
 /**
  * <p> A critic to check that the ends of an association all have distinct
