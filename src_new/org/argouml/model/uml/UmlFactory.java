@@ -52,7 +52,7 @@ import org.xml.sax.SAXException;
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-public class UmlFactory extends AbstractModelFactory {
+public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Log4j logging category.
      */

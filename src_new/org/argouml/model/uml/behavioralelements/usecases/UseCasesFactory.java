@@ -23,7 +23,7 @@
 
 package org.argouml.model.uml.behavioralelements.usecases;
 
-import org.argouml.model.uml.AbstractModelFactory;
+import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
@@ -41,7 +41,7 @@ import ru.novosoft.uml.behavior.use_cases.MUseCaseInstance;
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-public class UseCasesFactory extends AbstractModelFactory {
+public class UseCasesFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */

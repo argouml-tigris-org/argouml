@@ -23,7 +23,7 @@
 
 package org.argouml.model.uml.modelmanagement;
 
-import org.argouml.model.uml.AbstractModelFactory;
+import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
@@ -37,7 +37,7 @@ import ru.novosoft.uml.model_management.*;
  * @author Thierry Lach
  */
 
-public class ModelManagementFactory extends AbstractModelFactory {
+public class ModelManagementFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */

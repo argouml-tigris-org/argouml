@@ -23,7 +23,7 @@
 
 package org.argouml.model.uml.foundation.datatypes;
 
-import org.argouml.model.uml.AbstractModelFactory;
+import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
 import java.util.List;
@@ -49,7 +49,7 @@ import ru.novosoft.uml.foundation.data_types.MTypeExpression;
  * @author Thierry Lach
  */
 
-public class DataTypesFactory extends AbstractModelFactory {
+public class DataTypesFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */

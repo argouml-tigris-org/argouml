@@ -23,7 +23,7 @@
 
 package org.argouml.model.uml.behavioralelements.commonbehavior;
 
-import org.argouml.model.uml.AbstractModelFactory;
+import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
@@ -57,7 +57,7 @@ import ru.novosoft.uml.behavior.common_behavior.MUninterpretedAction;
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-public class CommonBehaviorFactory extends AbstractModelFactory {
+public class CommonBehaviorFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */

@@ -34,7 +34,7 @@ import org.apache.log4j.Category;
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-public class ModelListener implements MElementListener {
+public class UmlModelListener implements MElementListener {
 
     /** Log4j logging category.
      */
@@ -42,18 +42,18 @@ public class ModelListener implements MElementListener {
 
     /** Singleton instance.
      */
-    private static ModelListener SINGLETON = new ModelListener();
+    private static UmlModelListener SINGLETON = new UmlModelListener();
 
     /** Singleton instance access method.
      */
-    public static ModelListener getInstance() {
+    public static UmlModelListener getInstance() {
         return SINGLETON;
     }
 
     /** Don't allow instantiation.
      * Create the logger.
      */
-    private ModelListener() {
+    private UmlModelListener() {
         logger = Category.getInstance("org.argouml.model.uml.listener");
     }
 

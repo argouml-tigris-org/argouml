@@ -34,7 +34,7 @@ import org.apache.log4j.Category;
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-public abstract class AbstractModelFactory {
+public abstract class AbstractUmlModelFactory {
 
     /** Log4j logging category.
      */
@@ -43,13 +43,13 @@ public abstract class AbstractModelFactory {
 
     /** Default constructor.
      */
-    protected AbstractModelFactory() {
+    protected AbstractUmlModelFactory() {
     }
 
     protected void initialize(Object o) {
         logger.debug("initialize(" + o + ")");
 	if (o instanceof MBase) {
-            ((MBase)o).addMElementListener(ModelListener.getInstance());
+            ((MBase)o).addMElementListener(UmlModelListener.getInstance());
 	}
     }
 

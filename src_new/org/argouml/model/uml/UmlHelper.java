@@ -44,7 +44,7 @@ public class UmlHelper {
 
     /** 
      *  Ensures that all of the elements in a model are registered
-     *  to the ModelListener.  This is useful when the MModel is
+     *  to the UmlModelListener.  This is useful when the MModel is
      *  not created by the UmlFactory.
      */
     public static void addListenersToModel(MModel model) {
@@ -52,10 +52,10 @@ public class UmlHelper {
     }
 
     /** 
-     *  Internal recursive worker to add ModelListener.
+     *  Internal recursive worker to add UmlModelListener.
      */
     protected static void addListenersToMBase(MBase mbase) {
-        mbase.addMElementListener(ModelListener.getInstance());
+        mbase.addMElementListener(UmlModelListener.getInstance());
 	Collection elements = mbase.getModelElementContents();
 	if (elements != null) {
 	    Iterator iterator = elements.iterator();

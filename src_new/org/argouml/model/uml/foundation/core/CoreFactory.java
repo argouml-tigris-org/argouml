@@ -23,7 +23,7 @@
 
 package org.argouml.model.uml.foundation.core;
 
-import org.argouml.model.uml.AbstractModelFactory;
+import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
@@ -65,7 +65,7 @@ import ru.novosoft.uml.foundation.core.MUsage;
  * @author Thierry Lach
  */
 
-public class CoreFactory extends AbstractModelFactory {
+public class CoreFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */

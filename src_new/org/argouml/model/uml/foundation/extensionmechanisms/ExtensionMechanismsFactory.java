@@ -23,7 +23,7 @@
 
 package org.argouml.model.uml.foundation.extensionmechanisms;
 
-import org.argouml.model.uml.AbstractModelFactory;
+import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
@@ -38,7 +38,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
  * @author Thierry Lach
  */
 
-public class ExtensionMechanismsFactory extends AbstractModelFactory {
+public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */

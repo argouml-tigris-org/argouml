@@ -23,7 +23,7 @@
 
 package org.argouml.model.uml.behavioralelements.activitygraphs;
 
-import org.argouml.model.uml.AbstractModelFactory;
+import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
@@ -42,7 +42,7 @@ import ru.novosoft.uml.behavior.activity_graphs.MSubactivityState;
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-public class ActivityGraphsFactory extends AbstractModelFactory {
+public class ActivityGraphsFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */

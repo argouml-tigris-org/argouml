@@ -23,7 +23,7 @@
 
 package org.argouml.model.uml.behavioralelements.collaborations;
 
-import org.argouml.model.uml.AbstractModelFactory;
+import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
@@ -41,7 +41,7 @@ import ru.novosoft.uml.behavior.collaborations.MMessage;
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-public class CollaborationsFactory extends AbstractModelFactory {
+public class CollaborationsFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */

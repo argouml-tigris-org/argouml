@@ -23,7 +23,7 @@
 
 package org.argouml.model.uml.behavioralelements.statemachines;
 
-import org.argouml.model.uml.AbstractModelFactory;
+import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
@@ -52,7 +52,7 @@ import ru.novosoft.uml.behavior.state_machines.MTransition;
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-public class StateMachinesFactory extends AbstractModelFactory {
+public class StateMachinesFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */
