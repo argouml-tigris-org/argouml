@@ -291,39 +291,32 @@ class ActionOpenProject extends UMLAction {
 
     try {
 
-      String directory = Globals.getLastDirectory();
-      JFileChooser chooser = new JFileChooser(directory);
-     	
-      if (chooser == null) chooser = new JFileChooser();
+      RememberingJFileChooser chooser = new RememberingJFileChooser();
 
       chooser.setDialogTitle("Open Project");
       FileFilter filter = FileFilters.ArgoFilter;
       chooser.addChoosableFileFilter(filter);
       chooser.setFileFilter(filter);
 
-      int retval = chooser.showOpenDialog(pb);
-      if (retval == 0) {
-	File theFile = chooser.getSelectedFile();
-	if (theFile != null) {
-	  String path = chooser.getSelectedFile().getParent();
-	  String filename = chooser.getSelectedFile().getName();
-          filename = path + separator + filename;
-	  if (!filename.endsWith(Project.FILE_EXT)) {
-	    filename += Project.FILE_EXT;
-	    theFile = new File(filename);
-	  }
-	  Globals.setLastDirectory(path);
-	  if (filename != null) {
-	    pb.showStatus("Reading " + path + filename + "...");
-	    URL url = Util.fileToURL(theFile);
-	    ArgoParser.SINGLETON.readProject(url);
-	    p = ArgoParser.SINGLETON.getProject();
-	    p.loadAllMembers();
-	    p.postLoad();
-	    pb.setProject(p);
-	    pb.showStatus("Read " + filename);
-	    return;
-	  }
+      File theFile = chooser.fileToOpen(pb);
+      if (theFile != null) {
+	String path = chooser.getSelectedFile().getParent();
+	String filename = chooser.getSelectedFile().getName();
+	filename = path + separator + filename;
+	if (!filename.endsWith(Project.FILE_EXT)) {
+	  filename += Project.FILE_EXT;
+	  theFile = new File(filename);
+	}
+	if (filename != null) {
+	  pb.showStatus("Reading " + path + filename + "...");
+	  URL url = Util.fileToURL(theFile);
+	  ArgoParser.SINGLETON.readProject(url);
+	  p = ArgoParser.SINGLETON.getProject();
+	  p.loadAllMembers();
+	  p.postLoad();
+	  pb.setProject(p);
+	  pb.showStatus("Read " + filename);
+	  return;
 	}
       }
     }
@@ -425,55 +418,38 @@ class ActionSaveProjectAs extends UMLAction {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p =  pb.getProject();
     try {
-      JFileChooser chooser = null;
-      try {
-	if (p != null && p.getURL() != null &&
-	    p.getURL().getFile().length()>0) {
-	  String filename = p.getURL().getFile();
-	  if (!filename.startsWith("/FILE1/+/"))
-	    chooser  = new JFileChooser(p.getURL().getFile());
-	}
-      }
-      catch (Exception ex) {
-	System.out.println("exception in opening JFileChooser");
-	ex.printStackTrace();
-      }
-      if (chooser == null) chooser = new JFileChooser();
-
+      RememberingJFileChooser chooser = new RememberingJFileChooser();
       chooser.setDialogTitle("Save Project: " + p.getName());
       FileFilter filter = FileFilters.ArgoFilter;
       chooser.addChoosableFileFilter(filter);
       chooser.setFileFilter(filter);
 
-      int retval = chooser.showSaveDialog(pb);
-      if(retval == 0) {
-	File theFile = chooser.getSelectedFile();
-	if (theFile != null) {
-	  //String pathname = chooser.getSelectedFile().getAbsolutePath();
-	  String path = chooser.getSelectedFile().getParent();
-	  String name = chooser.getSelectedFile().getName();
-	  if (!name.endsWith(".argo")) name += ".argo";
-	  if (!path.endsWith(separator)) path += separator;
-	  pb.showStatus("Writing " + path + name + "...");
-	  p.setFile(chooser.getSelectedFile());
-	  //p.setPathname(path);
-	  File f = new File(path + name);
-	  p.setURL(Util.fileToURL(f));
-	  if (f.exists() && !overwrite) {
-	    System.out.println("Are you sure you want to overwrite " +
-			       name + "?");
-	  }
-	  FileWriter fw = new FileWriter(f);
-	  p.preSave();
-	  expander.expand(fw, p, "", "");
-	  p.saveAllMembers(path, overwrite);
-	  //needs-more-work: in future allow indendent saving
-	  p.postSave();
-	  fw.close();
-	  pb.showStatus("Wrote " + path + name);
-	  pb.updateTitle();
-	  return true;
+      File theFile = chooser.fileToSave(pb);
+      if (theFile != null) {
+	//String pathname = chooser.getSelectedFile().getAbsolutePath();
+	String path = chooser.getSelectedFile().getParent();
+	String name = chooser.getSelectedFile().getName();
+	if (!name.endsWith(".argo")) name += ".argo";
+	if (!path.endsWith(separator)) path += separator;
+	pb.showStatus("Writing " + path + name + "...");
+	p.setFile(chooser.getSelectedFile());
+	//p.setPathname(path);
+	File f = new File(path + name);
+	p.setURL(Util.fileToURL(f));
+	if (f.exists() && !overwrite) {
+	  System.out.println("Are you sure you want to overwrite " +
+			     name + "?");
 	}
+	FileWriter fw = new FileWriter(f);
+	p.preSave();
+	expander.expand(fw, p, "", "");
+	p.saveAllMembers(path, overwrite);
+	//needs-more-work: in future allow indendent saving
+	p.postSave();
+	fw.close();
+	pb.showStatus("Wrote " + path + name);
+	pb.updateTitle();
+	return true;
       }
     }
     catch (FileNotFoundException ignore) {
@@ -643,21 +619,7 @@ class ActionSaveGIF extends UMLAction {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       Project p =  pb.getProject();
       try {
-	JFileChooser chooser = null;
-	try {
-	  if ( p != null && p.getURL() != null &&
-	       p.getURL().getFile().length() > 0 ) {
-	    String filename = p.getURL().getFile();
-	    if( !filename.startsWith( "/FILE1/+/" ) )
-	      chooser  = new JFileChooser( p.getURL().getFile() );
-	  }
-	}
-	catch( Exception ex ) {
-	    System.out.println( "exception in opening JFileChooser" );
-	    ex.printStackTrace();
-	  }
-
-	if( chooser == null ) chooser = new JFileChooser();
+        RememberingJFileChooser chooser = new RememberingJFileChooser();
 
 	chooser.setDialogTitle( "Save Diagram as GIF: " + defaultName );
 	FileFilter filter = FileFilters.GIFFilter;
@@ -666,29 +628,26 @@ class ActionSaveGIF extends UMLAction {
 	File def = new File(  defaultName + ".gif" ); // is .GIF preferred?
 	chooser.setSelectedFile( def );
 
-	int retval = chooser.showSaveDialog( pb );
-	if( retval == 0 ) {
-	  File theFile = chooser.getSelectedFile();
-	  if( theFile != null ) {
-	    String path = theFile.getParent();
-	    String name = theFile.getName();
-	    if( !path.endsWith( separator ) ) path += separator;
-	    pb.showStatus( "Writing " + path + name + "..." );
-	    if( theFile.exists() && !overwrite ) {
-	      System.out.println( "Are you sure you want to overwrite " + name + "?");
-	      String t = "Overwrite " + path + name;
-	      int response =
-		JOptionPane.showConfirmDialog(pb, t, t,
-					      JOptionPane.YES_NO_OPTION);
-	      if (response == JOptionPane.NO_OPTION) return false;
-	    }
-	    FileOutputStream fo = new FileOutputStream( theFile );
-	    cmd.setStream( fo );
-	    cmd.doIt();
-	    fo.close();
-	    pb.showStatus( "Wrote " + path + name );
-	    return true;
+	File theFile = chooser.fileToSave( pb );
+	if( theFile != null ) {
+	  String path = theFile.getParent();
+	  String name = theFile.getName();
+	  if( !path.endsWith( separator ) ) path += separator;
+	  pb.showStatus( "Writing " + path + name + "..." );
+	  if( theFile.exists() && !overwrite ) {
+	    System.out.println( "Are you sure you want to overwrite " + name + "?");
+	    String t = "Overwrite " + path + name;
+	    int response =
+	      JOptionPane.showConfirmDialog(pb, t, t,
+					    JOptionPane.YES_NO_OPTION);
+	    if (response == JOptionPane.NO_OPTION) return false;
 	  }
+	  FileOutputStream fo = new FileOutputStream( theFile );
+	  cmd.setStream( fo );
+	  cmd.doIt();
+	  fo.close();
+	  pb.showStatus( "Wrote " + path + name );
+	  return true;
 	}
       }
       catch( FileNotFoundException ignore ) 
@@ -732,21 +691,7 @@ class ActionSaveGraphics extends UMLAction {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       Project p =  pb.getProject();
       try {
-	JFileChooser chooser = null;
-	try {
-	  if ( p != null && p.getURL() != null &&
-	       p.getURL().getFile().length() > 0 ) {
-	    String filename = p.getURL().getFile();
-	    if( !filename.startsWith( "/FILE1/+/" ) )
-	      chooser  = new JFileChooser( p.getURL().getFile() );
-	  }
-	}
-	catch( Exception ex ) {
-	    System.out.println( "exception in opening JFileChooser" );
-	    ex.printStackTrace();
-	  }
-
-	if( chooser == null ) chooser = new JFileChooser();
+        RememberingJFileChooser chooser = new RememberingJFileChooser();
 
 	chooser.setDialogTitle( "Save Diagram as Graphics: " + defaultName );
 	chooser.addChoosableFileFilter( FileFilters.GIFFilter );
@@ -759,46 +704,43 @@ class ActionSaveGraphics extends UMLAction {
 			      + FileFilters.GIFFilter._suffix );
 	chooser.setSelectedFile( def );
 
-	int retval = chooser.showSaveDialog( pb );
-	if( retval == 0 ) {
-	  File theFile = chooser.getSelectedFile();
-	  if( theFile != null ) {
-	    String path = theFile.getParent();
-	    String name = theFile.getName();
-	    String extension=SuffixFilter.getExtension(name);
+	File theFile = chooser.fileToSave( pb );
+	if( theFile != null ) {
+	  String path = theFile.getParent();
+	  String name = theFile.getName();
+	  String extension=SuffixFilter.getExtension(name);
 
-	    CmdSaveGraphics cmd=null;
-	    if (FileFilters.PSFilter._suffix.equals(extension)) 
-		cmd = new CmdSavePS();
-	    else if (FileFilters.EPSFilter._suffix.equals(extension)) 
-		cmd = new CmdSaveEPS();
-	    else if (FileFilters.GIFFilter._suffix.equals(extension)) 
-		cmd = new CmdSaveGIF();
-	    else if (FileFilters.SVGFilter._suffix.equals(extension)) 
-		cmd = new CmdSaveSVG();
-	    else {
-		pb.showStatus("Unknown graphics file type withextension "
-			      +extension);
-		return false;
-	    }
-
-	    if( !path.endsWith( separator ) ) path += separator;
-	    pb.showStatus( "Writing " + path + name + "..." );
-	    if( theFile.exists() && !overwrite ) {
-	      System.out.println( "Are you sure you want to overwrite " + name + "?");
-	      String t = "Overwrite " + path + name;
-	      int response =
-		JOptionPane.showConfirmDialog(pb, t, t,
-					      JOptionPane.YES_NO_OPTION);
-	      if (response == JOptionPane.NO_OPTION) return false;
-	    }
-	    FileOutputStream fo = new FileOutputStream( theFile );
-	    cmd.setStream(fo);
-	    cmd.doIt();
-	    fo.close();
-	    pb.showStatus( "Wrote " + path + name );
-	    return true;
+	  CmdSaveGraphics cmd=null;
+	  if (FileFilters.PSFilter._suffix.equals(extension)) 
+	    cmd = new CmdSavePS();
+	  else if (FileFilters.EPSFilter._suffix.equals(extension)) 
+	    cmd = new CmdSaveEPS();
+	  else if (FileFilters.GIFFilter._suffix.equals(extension)) 
+	    cmd = new CmdSaveGIF();
+	  else if (FileFilters.SVGFilter._suffix.equals(extension)) 
+	    cmd = new CmdSaveSVG();
+	  else {
+	    pb.showStatus("Unknown graphics file type withextension "
+			  +extension);
+	    return false;
 	  }
+
+	  if( !path.endsWith( separator ) ) path += separator;
+	  pb.showStatus( "Writing " + path + name + "..." );
+	  if( theFile.exists() && !overwrite ) {
+	    System.out.println( "Are you sure you want to overwrite " + name + "?");
+	    String t = "Overwrite " + path + name;
+	    int response =
+	      JOptionPane.showConfirmDialog(pb, t, t,
+					    JOptionPane.YES_NO_OPTION);
+	    if (response == JOptionPane.NO_OPTION) return false;
+	  }
+	  FileOutputStream fo = new FileOutputStream( theFile );
+	  cmd.setStream(fo);
+	  cmd.doIt();
+	  fo.close();
+	  pb.showStatus( "Wrote " + path + name );
+	  return true;
 	}
       }
       catch( FileNotFoundException ignore ) 
@@ -965,7 +907,7 @@ class ActionRemoveFromModel extends UMLChangeAction {
 
     Collection beh = me.getBehaviors();
     if (beh != null && beh.size() > 0)
-      confirmStr += "\nIt's subdiagram will also be removed.";
+      confirmStr += "\nIts subdiagram will also be removed.";
 
     if (confirmStr.equals("")) return true;
     String name = me.getName();
@@ -1993,3 +1935,37 @@ class ActionCompartmentDisplay extends UMLAction {
   }
   public boolean shouldBeEnabled() { return true; }
 } /* end class ActionCompartmentDisplay */
+
+class RememberingJFileChooser extends JFileChooser {
+  public RememberingJFileChooser() {
+    String d = Globals.getLastDirectory();
+    setCurrentDirectory(new File(d));
+  }
+
+  public File fileToOpen(Component c) {
+    int retval = showOpenDialog(c);
+    if (retval != APPROVE_OPTION) return null;
+  
+    File file = getSelectedFile();
+    if (file != null) updateLastDirectory(file);
+    return file;
+  }
+
+  public File fileToSave(Component c) {
+    int retval = showSaveDialog(c);
+    if (retval != APPROVE_OPTION) return null;
+  
+    File file = getSelectedFile();
+    if (file != null) updateLastDirectory(file);
+    return file;
+  }
+
+  // update LastDirectory using the parent of file, or "." if none
+  private void updateLastDirectory(File file) {
+    String last = file.getParent();
+    if (last == null) last = "."; 
+    Globals.setLastDirectory(last);
+    System.out.println("File was " + file.getName() + "Set last directory " + last);
+  }
+
+}
