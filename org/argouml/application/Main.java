@@ -229,6 +229,8 @@ public class Main {
     //
     //  sets locale for menus
     //
+    Locale.setDefault(new Locale(System.getProperty("user.language"),
+				 System.getProperty("user.region")));
     UMLAction.setLocale(Locale.getDefault());
     ProjectBrowser pb = new ProjectBrowser("ArgoUML", splash.getStatusBar());
     phase1 = System.currentTimeMillis();
