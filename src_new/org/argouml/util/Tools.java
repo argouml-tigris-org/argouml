@@ -113,8 +113,8 @@ String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.
 	sb.append("Language: ");
 	sb.append(System.getProperty("user.language", "unknown"));
 	sb.append('\n');
-	sb.append("Region: ");
-	sb.append(System.getProperty("user.region", "unknown"));
+	sb.append("Country: ");
+	sb.append(System.getProperty("user.country", "unknown"));
 	sb.append('\n');
 	sb.append('\n');
 
