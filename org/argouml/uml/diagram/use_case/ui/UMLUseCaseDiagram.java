@@ -305,7 +305,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
         // Finally the name of the diagram
 
-        _toolBar.add(_diagramName);
+        _toolBar.add(_diagramName.getJComponent());
     }
     
      protected static String getNewDiagramName() {

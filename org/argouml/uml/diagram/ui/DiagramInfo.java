@@ -55,7 +55,7 @@ public class DiagramInfo extends JComponent {
   // instance variables
 
   protected Diagram _diagram = null;
-  protected JLabel _name = new JLabel("");
+    private JLabel _name = null;
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -63,16 +63,22 @@ public class DiagramInfo extends JComponent {
   public DiagramInfo(Diagram d) {
     _diagram = d;
     //setBorder(new EtchedBorder());
-    setLayout(new BorderLayout());
-    _name.setFont(MetalLookAndFeel.getSubTextFont());
-    add(_name, BorderLayout.CENTER);
-    updateName();
   }
 
+    public JComponent getJComponent() {
+	_name = new JLabel("");
+	setLayout(new BorderLayout());
+	_name.setFont(MetalLookAndFeel.getSubTextFont());
+	add(_name, BorderLayout.CENTER);
+	return this;
+    }
 
   ////////////////////////////////////////////////////////////////
   // updates
   public void updateName() {
+      if (_name == null)
+	  return;
+
     String type = "Diagram";
     if (_diagram instanceof UMLClassDiagram)
       type = "Class Diagram";
