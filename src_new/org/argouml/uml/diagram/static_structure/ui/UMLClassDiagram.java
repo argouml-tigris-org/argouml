@@ -50,7 +50,7 @@ public class UMLClassDiagram extends UMLDiagram {
 
     ////////////////
     // actions for toolbar
-    // TODO: should these be static?
+    // TODO: These should not be static.
 
     protected static Action _actionClass = new RadioAction(
 	new CmdCreateNode(ModelFacade.CLASS, "Class"));
