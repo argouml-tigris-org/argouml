@@ -35,6 +35,7 @@ import javax.swing.border.EtchedBorder;
 import org.apache.log4j.Category;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.TabModelTarget;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.ModeSelect;
@@ -248,6 +249,30 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
             validate();
             repaint();
         }
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        // TODO Auto-generated method stub
+
     }
 
 }

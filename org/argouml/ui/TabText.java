@@ -32,6 +32,7 @@ import javax.swing.tree.*;
 import javax.swing.text.*;
 
 import org.argouml.application.api.*;
+import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.*;
 
 import org.argouml.swingext.Toolbar;
@@ -147,5 +148,29 @@ implements TabModelTarget, DocumentListener {
   public void changedUpdate(DocumentEvent e) {
     if (_parseChanges) parseText(_text.getText());
   }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
 
 } /* end class TabText */

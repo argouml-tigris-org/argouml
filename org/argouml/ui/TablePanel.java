@@ -40,6 +40,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.ui.*;
 
 import org.apache.log4j.Category;
+import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.*;
@@ -345,6 +346,30 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
   }
 
   
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
 } /* end class TablePanel */
 
 

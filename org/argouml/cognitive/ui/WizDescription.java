@@ -32,6 +32,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.ui.targetmanager.TargetManager;
 
 public class WizDescription extends WizStep {
 
@@ -55,59 +56,60 @@ public class WizDescription extends WizStep {
   public void setTarget(Object item) {
     String message = "";
     super.setTarget(item);
-    if (_target == null) {
+    Object target = TargetManager.getInstance().getTarget();
+    if (target == null) {
       _description.setText(Argo.localize("Cognitive", "message.no-item-selected"));
     }
-    else if (_target instanceof ToDoItem) {
-      ToDoItem tdi = (ToDoItem) _target;
+    else if (target instanceof ToDoItem) {
+      ToDoItem tdi = (ToDoItem) target;
       _description.setEnabled(true);
       _description.setText(tdi.getDescription());
       _description.setCaretPosition(0);
     }
-    else if (_target instanceof PriorityNode) {
+    else if (target instanceof PriorityNode) {
       message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-priority"),
-                       new Object [] { _target.toString() });
+                       new Object [] { target.toString() });
       _description.setText(message);
 
       return;
     }
-    else if (_target instanceof Critic) {
+    else if (target instanceof Critic) {
       message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-critic"),
-                       new Object [] { _target.toString() });
+                       new Object [] { target.toString() });
       _description.setText(message);
 
       return;
     }
-    else if (_target instanceof MModelElement) {
+    else if (target instanceof MModelElement) {
       message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-model"),
-                       new Object [] { _target.toString() });
+                       new Object [] { target.toString() });
       _description.setText(message);
 
       return;
     }
-    else if (_target instanceof Decision) {
+    else if (target instanceof Decision) {
       message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-decision"),
-                       new Object [] { _target.toString() });
+                       new Object [] { target.toString() });
       _description.setText(message);
 
       return;
     }
-    else if (_target instanceof Goal) {
+    else if (target instanceof Goal) {
       message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-goal"),
-                       new Object [] { _target.toString() });
+                       new Object [] { target.toString() });
       _description.setText(message);
 
       return;
     }
-    else if (_target instanceof KnowledgeTypeNode) {
+    else if (target instanceof KnowledgeTypeNode) {
       message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-knowledge"),
-                       new Object [] { _target.toString() });
+                       new Object [] { target.toString() });
       _description.setText(message);
 
       return;

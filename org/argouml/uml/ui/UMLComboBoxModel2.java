@@ -151,7 +151,7 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#roleAdded(MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        if (isValidEvent(e)) {
+        if (getTarget() != null && isValidEvent(e)) {
             Object o = getChangedElement(e);
             if (o instanceof Collection) { // this should not happen but
                     // you never know with NSUML

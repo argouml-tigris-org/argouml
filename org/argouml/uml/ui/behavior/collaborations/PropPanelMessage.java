@@ -127,4 +127,6 @@ public class PropPanelMessage extends PropPanelModelElement {
         }
     }
 
+    
+
 } /* end class PropPanelMessage */

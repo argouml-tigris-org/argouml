@@ -128,6 +128,7 @@ public abstract class UMLPlainTextDocument extends PlainDocument
      * @param target The target to set
      */
     public final void setTarget(Object target) {
+        
         if (target instanceof MBase) {
             if (_target != null)
                 UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, getEventName());
@@ -171,7 +172,7 @@ public abstract class UMLPlainTextDocument extends PlainDocument
     protected abstract String getProperty();
     
     private final void setFiring(boolean firing) {
-        if (firing)
+        if (firing && _target != null)
             UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, _eventName);
         else
             UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _eventName);

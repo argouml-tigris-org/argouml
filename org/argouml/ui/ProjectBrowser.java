@@ -504,7 +504,7 @@ public class ProjectBrowser
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         if (it.hasNext()) {
             DetailsPane detailsPane = (DetailsPane) it.next();
-            return detailsPane.getTarget();
+            return TargetManager.getInstance().getTarget();
         }
         throw new IllegalStateException("No detailspane present");
     }

@@ -42,6 +42,8 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.kernel.Wizard;
 import org.argouml.ui.SpacerPanel;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.util.osdep.StartBrowser;
 
 /** Each Critic may provide a Wizard to help fix the problem it
@@ -71,8 +73,6 @@ implements TabToDoTarget, ActionListener, DocumentListener {
   JButton _finishButton = new JButton(Argo.localize(BUNDLE, "button.finish"));
   JButton _helpButton = new JButton(Argo.localize(BUNDLE, "button.help"));
   JPanel  _buttonPanel = new JPanel();
-
-  Object _target;
 
     static final protected void setMnemonic(JButton b, String key) {
 	String m = Argo.localize(BUNDLE, key);
@@ -120,19 +120,18 @@ implements TabToDoTarget, ActionListener, DocumentListener {
   // accessors
 
   public void setTarget(Object item) {
-    _target = item;
     enableButtons();
   }
 
   public void enableButtons() {
-    if (_target == null) {
+    if (TargetManager.getInstance().getTarget() == null) {
       _backButton.setEnabled(false);
       _nextButton.setEnabled(false);
       _finishButton.setEnabled(false);
       _helpButton.setEnabled(false);
     }
-    else if (_target instanceof ToDoItem) {
-      ToDoItem tdi = (ToDoItem) _target;
+    else if (TargetManager.getInstance().getTarget() instanceof ToDoItem) {
+      ToDoItem tdi = (ToDoItem) TargetManager.getInstance().getTarget();
       Wizard w = getWizard();
       _backButton.setEnabled(w != null ? w.canGoBack() : false);
       _nextButton.setEnabled(w != null ? w.canGoNext() : false);
@@ -145,13 +144,19 @@ implements TabToDoTarget, ActionListener, DocumentListener {
     }
   }
 
-  public Object getTarget() { return _target; }
+  /**
+      * Returns the target of the TabToDo
+      * @deprecated this method will be removed in a couple of releases
+      * Use TargetManager.getInstance().getTarget() instead
+      * @return The current target of the TabToDo
+      */
+  public Object getTarget() { return TargetManager.getInstance().getTarget(); }
 
-  public void refresh() { setTarget(_target); }
+  public void refresh() { setTarget(TargetManager.getInstance().getTarget()); }
 
   public Wizard getWizard() {
-    if (_target instanceof ToDoItem) {
-      return ((ToDoItem)_target).getWizard();
+    if (TargetManager.getInstance().getTarget() instanceof ToDoItem) {
+      return ((ToDoItem)TargetManager.getInstance().getTarget()).getWizard();
     }
     return null;
   }
@@ -181,8 +186,8 @@ implements TabToDoTarget, ActionListener, DocumentListener {
     }
   }
   public void doHelp() {
-    if (!(_target instanceof ToDoItem)) return;
-    ToDoItem item = (ToDoItem) _target;
+    if (!(TargetManager.getInstance().getTarget() instanceof ToDoItem)) return;
+    ToDoItem item = (ToDoItem) TargetManager.getInstance().getTarget();
     String urlString = item.getMoreInfoURL();
     StartBrowser.openUrl(urlString);
   }
@@ -191,7 +196,7 @@ implements TabToDoTarget, ActionListener, DocumentListener {
     // awkward: relying on getParent() is fragile.
     TabToDo ttd = (TabToDo) getParent(); //???
     JPanel ws = getWizard().getCurrentPanel();
-    if (ws instanceof WizStep) ((WizStep)ws).setTarget(_target);
+    if (ws instanceof WizStep) ((WizStep)ws).setTarget(TargetManager.getInstance().getTarget());
     ttd.showStep(ws);
   }
 
@@ -218,5 +223,32 @@ implements TabToDoTarget, ActionListener, DocumentListener {
   public void changedUpdate(DocumentEvent e) {
     // Apparently, this method is never called.
   }
+
+  /**
+    * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+    */
+   public void targetAdded(TargetEvent e) {
+       // we can neglect this, the wizstep allways selects the first target
+       // in a set of targets. The first target can only be 
+       // changed in a targetRemoved or a TargetSet event
+
+   }
+
+   /**
+    * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+    */
+   public void targetRemoved(TargetEvent e) {
+       // how to handle empty target lists?
+       // probably the wizstep should only show an empty pane in that case
+       setTarget(e.getNewTargets()[0]);
+
+   }
+
+   /**
+    * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+    */
+   public void targetSet(TargetEvent e) {
+       setTarget(e.getNewTargets()[0]);
+   }
 
 } /* end class WizStep */

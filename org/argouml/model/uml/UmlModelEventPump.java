@@ -120,8 +120,9 @@ public final class UmlModelEventPump implements MElementListener {
             || eventNames == null
             || !MBase.class.isAssignableFrom(modelClass)
             || eventNames.length == 0)
-            throw new IllegalArgumentException("Tried to add illegal class" +
-                " modeleventlistener to possible null class");
+            throw new IllegalArgumentException(
+                "Tried to add illegal class"
+                    + " modeleventlistener to possible null class");
         for (int i = 0; i < eventNames.length; i++) {
             executeAddClassModelEventListener(
                 listener,
@@ -147,8 +148,8 @@ public final class UmlModelEventPump implements MElementListener {
             || eventName == null
             || !MBase.class.isAssignableFrom(modelClass)
             || eventName.equals(""))
-            throw new IllegalArgumentException("Illegal argument to " +
-                "addClassModelEventListener");
+            throw new IllegalArgumentException(
+                "Illegal argument to " + "addClassModelEventListener");
         executeAddClassModelEventListener(listener, modelClass, eventName);
     }
 
@@ -238,8 +239,8 @@ public final class UmlModelEventPump implements MElementListener {
             || eventNames == null
             || !MBase.class.isAssignableFrom(modelClass)
             || eventNames.length == 0)
-            throw new IllegalArgumentException("Illegal argument to " +
-                "removeClassModelEventListener");
+            throw new IllegalArgumentException(
+                "Illegal argument to " + "removeClassModelEventListener");
         for (int i = 0; i < eventNames.length; i++) {
             executeRemoveClassModelEventListener(
                 listener,
@@ -265,8 +266,8 @@ public final class UmlModelEventPump implements MElementListener {
             || modelClass == null
             || eventName == null
             || !MBase.class.isAssignableFrom(modelClass))
-            throw new IllegalArgumentException("Illegal argument to " +
-                "removeClassModelEventListener");
+            throw new IllegalArgumentException(
+                "Illegal argument to " + "removeClassModelEventListener");
         executeRemoveClassModelEventListener(listener, modelClass, eventName);
     }
 
@@ -285,8 +286,8 @@ public final class UmlModelEventPump implements MElementListener {
         if (listener == null
             || modelClass == null
             || !MBase.class.isAssignableFrom(modelClass))
-            throw new IllegalArgumentException("Tried to remove null listener " +
-                "from null class");
+            throw new IllegalArgumentException(
+                "Tried to remove null listener " + "from null class");
         executeRemoveClassModelEventListener(listener, modelClass, null);
     }
 
@@ -354,14 +355,15 @@ public final class UmlModelEventPump implements MElementListener {
         Object listener,
         Object modelelement,
         String[] eventNames) {
-        if (listener == null
-            || modelelement == null
+            if (modelelement == null) return;
+        if (listener == null          
             || eventNames == null
             || eventNames.length == 0
             || !(listener instanceof MElementListener)
             || !(modelelement instanceof MBase))
-            throw new IllegalArgumentException("Wrong argument types while " +
-                "adding a modelelement listener");
+            throw new IllegalArgumentException(
+                "Wrong argument types while "
+                    + "adding a modelelement listener");
         for (int i = 0; i < eventNames.length; i++) {
             EventKey[] keys =
                 _definition.getEventTypes(
@@ -387,13 +389,14 @@ public final class UmlModelEventPump implements MElementListener {
         Object listener,
         Object modelelement,
         String eventName) {
+            if (modelelement == null) return;
         if (listener == null
-            || modelelement == null
             || eventName == null
             || !(listener instanceof MElementListener)
             || !(modelelement instanceof MBase))
-            throw new IllegalArgumentException("Wrong argument types while " +
-                "adding a modelelement listener");
+            throw new IllegalArgumentException(
+                "Wrong argument types while "
+                    + "adding a modelelement listener");
         EventKey[] keys =
             _definition.getEventTypes(modelelement.getClass(), eventName);
         for (int i = 0; i < keys.length; i++) {
@@ -414,6 +417,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @param modelElement
      */
     public void addModelEventListener(Object listener, Object modelelement) {
+        if (modelelement == null) return;
         if (listener == null
             || modelelement == null
             || !(listener instanceof MElementListener)
@@ -440,6 +444,8 @@ public final class UmlModelEventPump implements MElementListener {
         MElementListener listener,
         Object handle,
         String[] eventNames) {
+        if (handle == null)
+            return;
         if (!(handle instanceof MBase))
             throw new IllegalArgumentException("Handle is not a valid modelelement");
         MBase modelElement = (MBase) handle;
@@ -470,6 +476,8 @@ public final class UmlModelEventPump implements MElementListener {
     public void removeModelEventListener(
         MElementListener listener,
         Object handle) {
+        if (handle == null)
+            return;
         if (!(handle instanceof MBase))
             throw new IllegalArgumentException("Handle is not a valid modelelement");
         MBase modelElement = (MBase) handle;
@@ -494,6 +502,8 @@ public final class UmlModelEventPump implements MElementListener {
         MElementListener listener,
         Object handle,
         String eventName) {
+        if (handle == null)
+            return;
         if (!(handle instanceof MBase))
             throw new IllegalArgumentException("Handle is not a valid modelelement");
         MBase modelElement = (MBase) handle;
