@@ -28,6 +28,10 @@
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
+// 12 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Code corrected and
+// tidied up as part of fix to issue 619.
+
+
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
@@ -42,116 +46,380 @@ import ru.novosoft.uml.model_management.*;
 import org.argouml.kernel.*;
 import org.tigris.gef.util.*;
 
-/** A non-modal wizard to help the user change navigability
- *  of an association. */
+
+/**
+ * <p>A non-modal wizard to assist the user in changing aggregation of an
+ *   association.</p>
+ *
+ * <p>Earlier version always imposed composite aggregation. This version allows
+ *   the user to choose.</p>
+ *
+ * <p><em>Note</em>. This only applies to binary associations. A separate
+ *   wizard is needed for 3-way (or more) associations.</p>
+ *
+ * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_multiple_agg">ArgoUML User Manual: Two Aggregate ends (roles) in binary Association</a>
+ */
+
 
 public class WizAssocComposite extends Wizard {
 
-  protected String _instructions =
-  "Please select one of the following containment options.";
-  protected String _option0 = "Start Contains End";
-  protected String _option1 = "End Contains Start";
-  protected String _option2 = "No Containment";
+    /**
+     * <p>The initial instructions on the Step 1 screen. May be set to a
+     * different string through the {@link #setInstructions} method.</p>
+     */
 
-  protected WizStepChoice _step1 = null;
+    private String _instructions =
+        "Please select one of the following aggregation options:";
 
-  protected MAggregationKind _orig0 = MAggregationKind.NONE;
-  protected MAggregationKind _orig1 = MAggregationKind.NONE;
 
-  public WizAssocComposite() { }
+    /**
+     * <p>Contains the {@link WizStepChoice} that is used to get the user's
+     * desired options. Not created until we get to that step.</p>
+     */
 
-  public int getNumSteps() { return 1; }
+    private WizStepChoice _step1Choice = null;
 
-  public MModelElement getModelElement() {
-    if (_item != null) {
-      VectorSet offs = _item.getOffenders();
-      if (offs.size() >= 1) {
-	MModelElement me = (MModelElement) offs.elementAt(0);
-	return me;
-      }
+
+    /**
+     * <p>The {@link ru.novosoft.uml.foundation.core.MAssociation
+     *   MAssociation}{@link WizStepChoice} that triggered the critic. Null
+     *   until set when it is first needed.</p>
+     */
+
+    private MAssociation _triggerAsc = null;
+
+
+    /**
+     * <p>Constructor for the wizard. Currently does nothing.</p>
+     *
+     *  @return  Nothing, since this is a constructor
+     */
+
+    public WizAssocComposite() { }
+
+
+    /**
+     * <p>Returns the number of steps in this wizard.</p>
+     *
+     * @return  The number of steps (excluding the initial explanation) in this
+     *          wizard (1).
+     *
+     * @see Wizard
+     */
+
+    public int getNumSteps() { return 1; }
+
+
+    /**
+     * <p>Tries to identify the 
+     *   {@link ru.novosoft.uml.foundation.core.MAssociation MAssociation} that
+     *   triggered the critic.</p> 
+     *
+     * <p>The first time it is called, it will initialise the trigger from the
+     *   ToDoItem. If there, it is assumed to be the first trigger of the
+     *   ToDoItem and to be an association. If found, the value is stored in
+     *   the private field {@link #_triggerAsc}.</p>
+     *
+     * <p>On all subsequent calls, if a non-null value is found in {@link
+     *   #_triggerAsc} that is returned.</p>
+     *
+     * @return  the {@link ru.novosoft.uml.foundation.core.MAssociation
+     *          MAssociation} that triggered the critic, or <code>null</code>
+     *          if there was none.
+     */
+
+    private MAssociation _getTriggerAsc() {
+
+        // If we don't have it, find the trigger. If this fails it will keep
+        // its default value of null
+
+        if ((_triggerAsc == null) && (_item != null)) {
+            VectorSet offs = _item.getOffenders();
+
+            if (offs.size() >= 1) {
+                _triggerAsc = (MAssociation)offs.elementAt(0);
+            }
+        }
+
+        return _triggerAsc;
     }
-    return null;
-  }
 
-  public Vector getOptions() {
-    Vector res = new Vector();
-    MAssociation asc = (MAssociation) getModelElement();
-    Iterator iter = asc.getConnections().iterator();
-    MAssociationEnd ae0 = (MAssociationEnd) iter.next();
-    MAssociationEnd ae1 = (MAssociationEnd) iter.next();
-    MClassifier cls0 = ae0.getType();
-    MClassifier cls1 = ae1.getType();
 
-    String start = "Start";
-    String end = "End";
+    /**
+     * <p>Returns a vector of options to be used in creating a {@link
+     *   WizStepChoice} that will exercise the options.</p>
+     *
+     * <p>We provide five options, shared aggregation in each direction,
+     *   composite aggregation in each direction and no aggregation at all.</p>
+     *
+     * <p>It is possible that a very malicious user could delete the triggering
+     *   association just before we get to this point. For now we don't bother
+     *   to trap this. It will raise an exception, and then everything will
+     *   carry on happily.</p>
+     *
+     * @return  A {@link Vector} of the options or <code>null</code> if the
+     *          association that triggered the critic is no longer there.
+     */
 
-    if (cls0 != null && !"".equals(cls0.getName()))
-      start = cls0.getName();
+    private Vector _buildOptions() {
 
-    if (cls1 != null && !"".equals(cls1.getName()))
-      end =cls1.getName();
+        // The association that triggered the critic. Its just possible the
+        // association is no longer there, in which case we return null
 
-    _option0 = start + " Contains " + end;
-    _option1 = end + " Contains " + start;
+        MAssociation asc = _getTriggerAsc();
 
-    // needs-more-work: put in class names
-    res.addElement(_option0);
-    res.addElement(_option1);
-    res.addElement(_option2);
-    return res;
-  }
+        if( asc == null ) {
+            return null;
+        }
 
-  public void setInstructions(String s) { _instructions = s; }
+        // A vector in which to build the result
 
-  /** Create a new panel for the given step.  */
-  public JPanel makePanel(int newStep) {
-    switch (newStep) {
-    case 1:
-      if (_step1 == null) {
-	_step1 = new WizStepChoice(this, _instructions, getOptions());
-	_step1.setTarget(_item);
-      }
-      return _step1;
-    }
-    return null;
-  }
+        Vector res = new Vector();
 
-  /** Take action at the completion of a step. For example, when the
-   *  given step is 0, do nothing; and when the given step is 1, do
-   *  the first action.  Argo non-modal wizards should take action as
-   *  they do along, as soon as possible, they should not wait until
-   *  the final step. */
-  public void doAction(int oldStep) {
-    //System.out.println("doAction " + oldStep);
-    switch (oldStep) {
-    case 1:
-      int choice = -1;
-      if (_step1 != null) choice = _step1.getSelectedIndex();
-      if (choice == -1) {
-	System.out.println("nothing selected, should not get here");
-	return;
-      }
-      try {
-	MAssociation asc = (MAssociation) getModelElement();
+        // Get the ends from the association (we know there are two), and the
+        // types associated with them.
+
         Iterator iter = asc.getConnections().iterator();
+
         MAssociationEnd ae0 = (MAssociationEnd) iter.next();
         MAssociationEnd ae1 = (MAssociationEnd) iter.next();
-	ae0.setAggregation(choice == 0 ? MAggregationKind.COMPOSITE : _orig0);
-	ae1.setAggregation(choice == 1 ? MAggregationKind.COMPOSITE : _orig1);
-      }
-      catch (Exception pve) {
-	System.out.println("could not set Containment");
-      }
-    }
-  }
 
-  public boolean canFinish() {
-    if (!super.canFinish()) return false;
-    if (_step == 0) return true;
-    if (_step == 1 && _step1 != null && _step1.getSelectedIndex() != -1)
-      return true;
-    return false;
-  }
+        MClassifier cls0 = ae0.getType();
+        MClassifier cls1 = ae1.getType();
+
+        // Get the names of the two ends. If there are none (i.e they are
+        // currently anonymous), use the ArgoUML convention of "(anon)" for the
+        // names
+
+        String start = "(anon)";
+        String end   = "(anon)";
+
+        if ((cls0 != null) && (!(cls0.getName().equals("")))) {
+            start = cls0.getName();
+        }
+
+        if ((cls1 != null) && (!(cls1.getName().equals("")))) {
+            end = cls1.getName();
+        }
+
+        // Now create the five options
+
+        res.addElement (start + " is a composite aggregation of " + end);
+        res.addElement (start + " is a shared aggregation of " + end);
+
+        res.addElement (end + " is a composite aggregation of " + start);
+        res.addElement (end + " is a shared aggregation of " + start);
+
+        res.addElement ("No aggregation");
+
+        return res;
+    }
+
+    /**
+     * <p>Set the initial instruction string for the choice. May be called by
+     *   the creator of the wizard to override the default.</p>
+     */
+
+    public void setInstructions(String s) { _instructions = s; }
+
+
+    /**
+     * <p>Create a {@link JPanel} for the given step.</p>
+     *
+     * <p>We use a {@link WizStepChoice} to handle the choice selection for the
+     *   user. We only create the panel once, saving it in a private field
+     *   (<code>_step1Choice</code>) for subsequent use.</p>
+     *
+     * <p><em>Note</em>. If the association has been deleted, then we may not
+     *   be able to create a vector of options. Under these circumstances we
+     *   also return null.</p>
+     *
+     * @param  newStep  The index of the step for which a panel is needed.
+     *
+     * @return          The created {@link JPanel} or <code>null</code> if no
+     *                  options were available.
+     *
+     * @see Wizard
+     */
+
+    public JPanel makePanel(int newStep) {
+
+        switch (newStep) {
+
+        case 1:
+
+            // First step. Create the panel if not already done and options are
+            // available. Otherwise it retains its default value of null.
+
+            if (_step1Choice == null) {
+                Vector opts = _buildOptions() ;
+
+                if (opts != null) {
+                    _step1Choice = new WizStepChoice(this, _instructions,
+                                                     opts);
+                    _step1Choice.setTarget(_item);
+                }
+            }
+
+            return _step1Choice;
+        }
+
+        // Default (any other step) is to return nothing
+
+        return null;
+    }
+
+
+    /**
+     * <p>Take action at the completion of a step.</p>
+     *
+     * <p>The guideline for ArgoUML non-modal wizards is to act immediately,
+     *   not wait for the finish. This method may also be invoked when finish
+     *   is triggered for any steps whose panels didn't get created.</p>
+     *
+     * <p>The observation is that this seems to be trigged when there is any
+     *   change on the panel (e.g choosing an option), not just when "next" is
+     *   pressed. Coded accordingly</p>
+     *
+     * <p>We allow for the association that caused the problem having by now
+     *   been deleted, and hence an exception may be raised. We catch this
+     *   politely.</p>
+     *
+     * @param  oldStep  The index of the step just completed (0 for the first
+     *                  information panel)
+     *
+     * @see Wizard
+     */
+
+    public void doAction(int oldStep) {
+
+        switch (oldStep) {
+
+        case 1:
+
+            // Just completed the first step where we make our choices. First
+            // see if we have a choice. We always should, so print a rude
+            // message if we don't
+
+            int choice = -1;
+
+            if (_step1Choice != null) {
+                choice = _step1Choice.getSelectedIndex();
+            }
+
+            if (choice == -1) {
+                System.out.println("WizAssocComposite: nothing selected, " +
+                                   "should not get here");
+                return;
+            }
+
+            // It is quite possible that the cause of the problem has by now
+            // been deleted, in which case we will throw an exception if we try
+            // to change things. Catch this tidily.
+
+            try {
+
+                // Set the appropriate aggregation on each end
+
+                Iterator iter = _getTriggerAsc().getConnections().iterator();
+
+                MAssociationEnd ae0 = (MAssociationEnd) iter.next();
+                MAssociationEnd ae1 = (MAssociationEnd) iter.next();
+
+                switch (choice) {
+
+                case 0:
+
+                    // Start is a composite aggregation of end
+
+                    ae0.setAggregation(MAggregationKind.COMPOSITE);
+                    ae1.setAggregation(MAggregationKind.NONE);
+                    break ;
+
+                case 1:
+
+                    // Start is a shared aggregation of end
+
+                    ae0.setAggregation(MAggregationKind.AGGREGATE);
+                    ae1.setAggregation(MAggregationKind.NONE);
+                    break ;
+
+                case 2:
+
+                    // End is a composite aggregation of start
+
+                    ae0.setAggregation(MAggregationKind.NONE);
+                    ae1.setAggregation(MAggregationKind.COMPOSITE);
+                    break ;
+
+                case 3:
+
+                    // End is a shared aggregation of start
+
+                    ae0.setAggregation(MAggregationKind.NONE);
+                    ae1.setAggregation(MAggregationKind.AGGREGATE);
+                    break ;
+
+                case 4:
+
+                    // No aggregation
+
+                    ae0.setAggregation(MAggregationKind.NONE);
+                    ae1.setAggregation(MAggregationKind.NONE);
+                    break ;
+                }
+            }
+            catch (Exception pve) {
+
+                // Someone took our association away.
+
+                System.out.println("WizAssocComposite: could not set " +
+                                   "aggregation."); 
+            }
+        }
+    }
+
+    /**
+     * <p>Determine if we have sufficient information to finish.</p>
+     *
+     * <p>We can't finish if our parent {@link Wizard} can't finish.</p>
+     *
+     * <p>We can finish if we're on step 0.</p>
+     *
+     * <p>We can finish if we're on step 1 and have made a choice.</p>
+     *
+     * @return  <code>true</code> if we can finish, otherwise
+     *          <code>false</code>.
+     *
+     * @see Wizard
+     */
+
+    public boolean canFinish() {
+
+        // Can't finish if our parent can't
+
+        if (!super.canFinish()) {
+            return false;
+        }
+
+        // Can finish if it's step 0
+
+        if (_step == 0) {
+            return true;
+        }
+
+        // Can finish if we're on step1 and have actually made a choice
+
+        if ((_step == 1) && 
+            (_step1Choice != null) &&
+            (_step1Choice.getSelectedIndex() != -1)) {
+            return true;
+        }
+
+        // Otherwise we can't finish
+
+        return false;
+    }
 
 
 } /* end class WizAssocComposite */

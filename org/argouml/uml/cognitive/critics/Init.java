@@ -21,6 +21,18 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: Init.java
+// Classes: Init
+// Original Author: jrobbins@ics.uci.edu
+// $Id$
+
+// 8 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). CrCrossNamespaceAssoc
+// registration corrected to Association, rather than AssociationClass
+
+// 12 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). CrDupRoleNames
+// registration put back in (was commented out)
+
+
 package org.argouml.uml.cognitive.critics;
 
 import ru.novosoft.uml.foundation.core.*;
@@ -218,9 +230,9 @@ public class Init {
       Agency.register(crCircularInheritance, genElementCls);
       Agency.register(crCircularComposition, classCls);
       Agency.register(crClassMustBeAbstract, classCls); //needs-more-work
-      Agency.register(crCrossNamespaceAssoc, assocClassCls);
+      Agency.register(crCrossNamespaceAssoc, assocCls); // Jeremy Bennett fix
       Agency.register(crDupParamName, operCls);
-//      Agency.register(crDupRoleNames, assocCls);
+      Agency.register(crDupRoleNames, assocCls);  // Jeremy Bennett fix
       Agency.register(crFinalSubclassed, classCls);
       Agency.register(crIllegalGeneralization, genCls);
       Agency.register(crAlreadyRealizes, classCls);
