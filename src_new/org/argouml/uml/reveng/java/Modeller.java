@@ -129,9 +129,14 @@ public class Modeller
 	    parseState.addPackageContext(mPackage);
 	}
 	else {
-	    MClassifier mClassifier =
-		(new PackageContext(null, mPackage)).get(classifierName);
-	    parseState.addClassifierContext(mClassifier);
+	    try {
+		MClassifier mClassifier =
+		    (new PackageContext(null, mPackage)).get(classifierName);
+		parseState.addClassifierContext(mClassifier);
+	    }
+	    catch(ClassifierNotFoundException e) {
+		// Postpone the problems to the actual class parsing.
+	    }
 	}
     }
 
