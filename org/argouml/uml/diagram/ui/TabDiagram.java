@@ -218,14 +218,14 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
      */
     public void setToolBar(ToolBar toolbar) {
         if (!Arrays.asList(getComponents()).contains(toolbar) ) {
-            /*
             if (_target != null) {
-                remove(((TabDiagram)getTarget())._target.getToolBar());
-            }   
-            */       
+                remove(((UMLDiagram)getTarget()).getToolBar());
+            }    
             add(toolbar, BorderLayout.NORTH);
+            
             invalidate();
             validate();
+            repaint();
         }
     }
 
