@@ -53,6 +53,7 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -202,10 +203,10 @@ public class FigComment
 	    // If the current target is a state diagram, we have to
 	    // check, if we are editing the diagram.
             ProjectBrowser pb = ProjectBrowser.getInstance(); 
-            if (pb.getTarget() instanceof UMLStateDiagram) { 
+            if (TargetManager.getInstance().getTarget() instanceof UMLStateDiagram) { 
                 StateDiagramGraphModel gm =
 		    (StateDiagramGraphModel)
-		    (((UMLStateDiagram) pb.getTarget()).getGraphModel());
+		    (((UMLStateDiagram) TargetManager.getInstance().getTarget()).getGraphModel());
 		// We are editing, so we set the Namespace directly.
                 node.setNamespace(gm.getNamespace());
             }
