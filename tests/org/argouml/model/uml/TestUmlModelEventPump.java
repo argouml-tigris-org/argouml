@@ -451,6 +451,12 @@ public class TestUmlModelEventPump extends TestCase {
      * Tests if a listener that is legally added and then removed, really is removed.
      */
     public void testRemoveLegalListener() {
+        
+        int existingListeners = UmlModelEventPump.getPump()
+                                    .getEventListenerMap().getListeners(
+                                        elem,
+					new EventKey(2, "isRoot")).length;
+        
         UmlModelEventPump.getPump().addModelEventListener(
 							  listener2,
 							  elem,
@@ -463,8 +469,7 @@ public class TestUmlModelEventPump extends TestCase {
 							     new String[] {
 								 "isRoot"
 							     });
-        assertEquals(
-		     0,
+        assertEquals(existingListeners,
 		     UmlModelEventPump.getPump().getEventListenerMap().getListeners(
 										    elem,
 										    new EventKey(2, "isRoot")).length);
