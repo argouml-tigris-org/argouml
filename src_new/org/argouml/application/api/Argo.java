@@ -242,11 +242,7 @@ public class Argo
      *  the gef util library.
      */
     public static String localize(String bundle, String key) {
-        if (Translator.isValidBundle(key)) {
-            return Translator.localize(key, bundle);
-        } else {
-            return org.tigris.gef.util.Localizer.localize(bundle, key);
-        }
+        return org.argouml.i18n.Translator.localize(bundle, key);
     }
 
     /** Returns a vector of plugins of the class type passed

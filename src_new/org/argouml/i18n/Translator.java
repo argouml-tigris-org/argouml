@@ -148,7 +148,11 @@ public class Translator {
      * @return the translation
      */
     public static String localize(String bundle, String key) {
-        return org.argouml.application.api.Argo.localize(bundle, key);
+        if (org.workingfrog.i18n.util.Translator.isValidBundle(key)) {
+            return org.workingfrog.i18n.util.Translator.localize(key, bundle);
+        } else {
+            return org.tigris.gef.util.Localizer.localize(bundle, key);
+        }
     }
 
     /**
