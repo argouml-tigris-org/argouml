@@ -377,6 +377,7 @@ public class Init {
       Agency.register(crOppEndConflict, assocEndCls);
       Agency.register(new CrMultiComposite(), assocEndCls);
       Agency.register(new CrNameConflict(), namespaceCls);
+      Agency.register(crAlreadyRealizes, classCls);
 
       // under testing
       // Agency.register(crConsiderFacade, packageCls);
