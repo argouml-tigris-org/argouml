@@ -253,7 +253,7 @@ public class ClassdiagramLayouter implements Layouter {
         weightAndPlaceClasses();
         
         // center rows
-        centerPlacedRows();
+        //centerPlacedRows();
         
         ClassdiagramEdge.setVGap(_vGap);
         ClassdiagramEdge.setHGap(_hGap);
@@ -375,25 +375,60 @@ public class ClassdiagramLayouter implements Layouter {
             
             // Now all the elements in this row are sorted and we can place them within the column.
             for(int i=0; i < pos.length; i++) {
+                // Required to sort the next rows.
+                rowObject[pos[i]].setColumn(i);  
                 
-                rowObject[pos[i]].setColumn(i);  // Required to sort the next rows.
-                
-                // If we have enough elements in this row and this node has no links,
+                // If we have enough elements in this row and 
+                // this node has no links,
                 // move it down in the diagram
                 if( (i > _vMax)
-                && (rowObject[pos[i]].getUplinks().size() == 0)
-                && (rowObject[pos[i]].getDownlinks().size() == 0)) {
-                    
-                    if(getColumns(rows-1) > _vMax) {  // If there are already too many elements in that row
-                        rows++;                       // add a new empty row.
-                    }
-                    rowObject[pos[i]].setRank(rows - 1);  // Place the object in the last row.
-                } else {
+                    && (rowObject[pos[i]].getUplinks().size() == 0)
+                    && (rowObject[pos[i]].getDownlinks().size() == 0)) 
+                    {
+                        // If there are already too many elements in that row
+                        if(getColumns(rows-1) > _vMax) { 
+                            // add a new empty row.
+                            rows++;  
+                        }
+                        // Place the object in the last row.
+                        rowObject[pos[i]].setRank(rows - 1);  
+                    } 
+                else {
                     // Now set the position within the diagram.
-                    rowObject[pos[i]].setLocation(new Point(xPos, yPos));
+                    ClassdiagramNode curNode = rowObject[pos[i]];
+                    Vector downlinks = curNode.getDownlinks();
+                    int bumperX = 0;
+                    int currentWidth = 
+                        (int)(curNode.getSize().getWidth());
+                    double xOffset = currentWidth;
+
+                    if (downlinks != null && downlinks.size()>1 &&
+                        curNode.getUplinks().size() == 0) {
+                        System.out.println("Downlinks size: " + downlinks.size());
+                        xOffset = 0;
+                        for (int j=0; j<downlinks.size(); j++) {
+                            ClassdiagramNode node = (ClassdiagramNode)
+                                downlinks.get(j);
+                            xOffset+=node.getSize().getWidth();
+                        }
+                        xOffset += ((downlinks.size()-1) * getHGap());
+                        bumperX = (int)(xOffset / 2) - (int)(currentWidth/2);
+                    }
+                    curNode.
+                        setLocation(new Point(Math.max(xPos + bumperX, 
+                                                       curNode.
+                                                       getPlacementHint()), 
+                                              yPos));
+                    
+                    // put placement hint into a downlink
+                    if (downlinks.size()==1) {
+                        ((ClassdiagramNode)downlinks.get(0)).
+                            setPlacementHint(xPos + bumperX);
+                    }
                     
                     // Advance the horizontal position by the width of this figure.
-                    xPos += rowObject[pos[i]].getSize().getWidth() + getHGap();
+                    xPos += Math.max(curNode.getPlacementHint(),
+                                xOffset + getHGap());
                 }
             }
             

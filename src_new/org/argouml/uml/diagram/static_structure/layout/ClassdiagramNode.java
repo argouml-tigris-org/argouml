@@ -220,6 +220,18 @@ class ClassdiagramNode implements LayoutedNode {
         return ( _downlinks.size()==0 && _uplinks.size()==0 && _sidelinks.size()>0);
     }
 
+    /** A placementhint gives an indication where it might be feasible to
+     *  place this node. It is used by the layouter, and there
+     *  is no guarantee that it will be used.
+     *  @param hint x coordinate of the desired placement
+     */
+    public void setPlacementHint(int hint) {
+        placementHint = hint;
+    }
+
+    /** get the current placementhint. */
+    public int getPlacementHint() { return placementHint; }
+
     // Attributes
 
     /**
@@ -292,6 +304,9 @@ class ClassdiagramNode implements LayoutedNode {
      * as close as possible to the respective(s) nodes they share an association to
      */
     private boolean _movable = false;
+
+    private int placementHint = -1;
+  
 }
 
 
