@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -78,7 +78,8 @@ public class UMLSpecializationListModel extends UMLModelElementListModel  {
     }
     
     public boolean buildPopup(JPopupMenu popup,int index) {
-        UMLListMenuItem open = new UMLListMenuItem("Open",this,"open",index);
+        UMLUserInterfaceContainer container = getContainer();
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
         //
         //  if there are no real elements (just a none placeholder)
         //     then disable the Open popup

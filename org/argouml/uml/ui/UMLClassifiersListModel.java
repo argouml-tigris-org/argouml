@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -75,29 +75,30 @@ public class UMLClassifiersListModel extends UMLOwnedElementListModel  {
      *  @returns "true" if popup menu should be displayed
      */
     public boolean buildPopup(JPopupMenu popup,int index) {
-        UMLListMenuItem open = new UMLListMenuItem("Open...",this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem("Delete",this,"delete",index);
+        UMLUserInterfaceContainer container = getContainer();
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
         if(getModelElementSize() <= 0) {
             open.setEnabled(false);
             delete.setEnabled(false);
         }
 
         popup.add(open);
-        JMenu addmenu = new JMenu("Add");
-        addmenu.add(new UMLListMenuItem("Actor...",this,"addActor",index));
-        addmenu.add(new UMLListMenuItem("Class...",this,"addClass",index));
-        addmenu.add(new UMLListMenuItem("Datatype...",this,"addDatatype",index));
-        addmenu.add(new UMLListMenuItem("Exception...",this,"addException",index));
-        addmenu.add(new UMLListMenuItem("Interface...",this,"addInterface",index));
-        addmenu.add(new UMLListMenuItem("Signal...",this,"addSignal",index));
-        addmenu.add(new UMLListMenuItem("UseCase...",this,"addUseCase",index));
+        JMenu addmenu = new JMenu(container.localize("Add"));
+        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_Actor"),this,"addActor",index));
+        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_Class"),this,"addClass",index));
+        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_Datatype"),this,"addDatatype",index));
+        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_Exception"),this,"addException",index));
+        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_Interface"),this,"addInterface",index));
+        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_Signal"),this,"addSignal",index));
+        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_UseCase"),this,"addUseCase",index));
         popup.add(addmenu);
         popup.add(delete);
 
-        UMLListMenuItem moveUp = new UMLListMenuItem("Move Up",this,"moveUp",index);
+        UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"),this,"moveUp",index);
         if(index == 0) moveUp.setEnabled(false);
         popup.add(moveUp);
-        UMLListMenuItem moveDown = new UMLListMenuItem("Move Down",this,"moveDown",index);
+        UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"),this,"moveDown",index);
         if(index == getSize()-1) moveDown.setEnabled(false);
         popup.add(moveDown);
         return true;

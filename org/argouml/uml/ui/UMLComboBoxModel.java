@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -149,7 +149,25 @@ public class UMLComboBoxModel extends AbstractListModel implements
     public void targetChanged() {
         Object target = _container.getTarget();
         if(target instanceof MModelElement) {
-            MModel model = ((MModelElement) target).getModel();
+            MModelElement element = (MModelElement) target;
+            MModel model = element.getModel();
+            //
+            //   should not need to do this
+            //
+            if(_model == null) {
+                System.out.println("Error: getModel() == null for " + target.getClass().toString() + " in UMLComboBoxModel");
+                if(element instanceof MFeature) {
+                    MModelElement owner = ((MFeature) element).getOwner();
+                    if(owner != null) {
+                        _model = owner.getModel();
+                        System.out.println("(target.getOwner().getModel() == null) = " + new Boolean(_model == null).toString());
+                    }
+                    else {
+                        System.out.println("target.getOwner() == null");
+                    }
+                }
+            }
+
             if(model != _model) {
                 _model = model;
                 _set.clear();
@@ -157,7 +175,9 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 if(_allowVoid) {
                     _set.add(new UMLComboBoxEntry(null,profile,false));
                 }
-                collectElements(_model,profile,false);
+                if(_model != null) {
+                    collectElements(_model,profile,false);
+                }
                 if(_addElementsFromProfileModel) {
                     MModel profileModel = profile.getProfileModel();
                     if(profileModel != null) {

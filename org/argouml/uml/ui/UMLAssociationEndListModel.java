@@ -128,8 +128,9 @@ public class UMLAssociationEndListModel extends UMLModelElementListModel  {
     
     //  see superclass documentation
     public boolean buildPopup(JPopupMenu popup,int index) {
-        UMLListMenuItem open = new UMLListMenuItem("Open",this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem("Delete",this,"delete",index);
+        UMLUserInterfaceContainer container = getContainer();
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
         int size = getModelElementSize();
         if(size <= 0) {
             open.setEnabled(false);
@@ -140,13 +141,13 @@ public class UMLAssociationEndListModel extends UMLModelElementListModel  {
            
 
         popup.add(open);
-        popup.add(new UMLListMenuItem("Add",this,"add",index));
+        popup.add(new UMLListMenuItem(container.localize("Add"),this,"add",index));
         popup.add(delete);
 
-        UMLListMenuItem moveUp = new UMLListMenuItem("Move Up",this,"moveUp",index);
+        UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"),this,"moveUp",index);
         if(index == 0) moveUp.setEnabled(false);
         popup.add(moveUp);
-        UMLListMenuItem moveDown = new UMLListMenuItem("Move Down",this,"moveDown",index);
+        UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"),this,"moveDown",index);
         if(index == getSize()-1) moveDown.setEnabled(false);
         popup.add(moveDown);
         return true;

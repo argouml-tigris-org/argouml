@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -108,15 +108,16 @@ public class UMLClassifierListModel extends UMLModelElementCachedListModel  {
     }
     
     public boolean buildPopup(JPopupMenu popup,int index) {
-        UMLListMenuItem open = new UMLListMenuItem("Open",this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem("Delete",this,"delete",index);
+        UMLUserInterfaceContainer container = getContainer();
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
         if(getModelElementSize() <= 0) {
             open.setEnabled(false);
             delete.setEnabled(false);
         }
 
         popup.add(open);
-        popup.add(new UMLListMenuItem("Add",this,"add",index));
+        popup.add(new UMLListMenuItem(container.localize("Add"),this,"add",index));
         popup.add(delete);
 
         return true;

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -151,7 +151,8 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
      *  @returns "true" if popup menu should be displayed
      */
     public boolean buildPopup(JPopupMenu popup,int index) {
-        UMLListMenuItem open = new UMLListMenuItem("Open...",this,"open",index);
+        UMLUserInterfaceContainer container = getContainer();
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
         int size = getModelElementSize();
         if(size == 0) {
             open.setEnabled(false);
@@ -159,7 +160,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
         popup.add(open);
         
         if(_deleteMethod != null) {
-            UMLListMenuItem delete = new UMLListMenuItem("Delete",this,"delete",index);
+            UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
             if(size <= 0) {
                 delete.setEnabled(false);
             }
@@ -167,7 +168,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
         }
         
         if(_addMethod != null) {
-            UMLListMenuItem add = new UMLListMenuItem("Add...",this,"add",index);
+            UMLListMenuItem add = new UMLListMenuItem(container.localize("Add"),this,"add",index);
             int upper = getUpperBound();
             if(upper >= 0 && size >= upper) {
                 add.setEnabled(false);
@@ -176,10 +177,10 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
         }
 
         if(_setMethod != null) {
-            UMLListMenuItem moveUp = new UMLListMenuItem("Move Up",this,"moveUp",index);
+            UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"),this,"moveUp",index);
             if(index == 0) moveUp.setEnabled(false);
             popup.add(moveUp);
-            UMLListMenuItem moveDown = new UMLListMenuItem("Move Down",this,"moveDown",index);
+            UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"),this,"moveDown",index);
             if(index == getSize()-1) moveDown.setEnabled(false);
             popup.add(moveDown);
         }

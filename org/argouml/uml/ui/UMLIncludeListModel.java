@@ -98,15 +98,16 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     
 
     public boolean buildPopup(JPopupMenu popup,int index) {
-        UMLListMenuItem open = new UMLListMenuItem("Open",this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem("Delete",this,"delete",index);
+        UMLUserInterfaceContainer container = getContainer();
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
         if(getModelElementSize() <= 0) {
             open.setEnabled(false);
             delete.setEnabled(false);
         }
 
         popup.add(open);
-        popup.add(new UMLListMenuItem("Add",this,"add",index));
+        popup.add(new UMLListMenuItem(container.localize("Add"),this,"add",index));
         popup.add(delete);
 
         return true;

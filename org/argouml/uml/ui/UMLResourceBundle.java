@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,6 +43,13 @@ public class UMLResourceBundle extends ResourceBundle {
     private Hashtable _map = null;
 
     public UMLResourceBundle() {
+        put("Add_Menu_Actor","Actor...");
+        put("Add_Menu_Class","Class...");
+        put("Add_Menu_Datatype","Datatype...");
+        put("Add_Menu_Exception","Exception...");
+        put("Add_Menu_Interface","Interface...");
+        put("Add_Menu_Signal","Signal...");
+        put("Add_Menu_UseCase","Use Case...");
     }
 
     public Enumeration getKeys() {
