@@ -31,6 +31,7 @@ import org.argouml.application.api.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MModelImpl;
@@ -119,22 +120,19 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             if (sureRemove(target)) {
                 // Argo.log.info("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
                 // move the pointer to the target in the NavPane to some other target (up)
-                ProjectBrowser pb = ProjectBrowser.TheInstance;
-                TreePath path = pb.getNavigatorPane().getParentPath();
-                if (path != null) {
-                    Object o = path.getLastPathComponent();
-                    Project pr = ProjectManager.getManager().getCurrentProject();
-                    if (o instanceof MModel && // root model
-                        o.equals(pr.getModel()) &&
-                        target instanceof Diagram) {
-                        int targetIndex = 
-                            pr.getDiagrams().indexOf(target);
-                        o = targetIndex == 0? pr.getDiagrams().get(1): 
-                            pr.getDiagrams().get(targetIndex-1);
-                    }
-                    ProjectBrowser.TheInstance.setTarget(o);
+                if (target instanceof Fig) {
+                    target = ((Fig)target).getOwner();                    
+                }
+                Object newTarget = null;
+                if (target instanceof MBase) {
+                    newTarget = ((MBase)target).getModelElementContainer();
+                } else
+                if (target instanceof ArgoDiagram) {
+                    newTarget = ProjectManager.getManager().getCurrentProject().getRoot();
                 }
                 ProjectManager.getManager().getCurrentProject().moveToTrash(target); 
+                if (newTarget != null) 
+                    ProjectBrowser.TheInstance.setTarget(newTarget);
             } 
             		
         }
