@@ -37,6 +37,7 @@ import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 
 /**
+ * Rule for Operation->Collaboration Diagram.
  * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -67,6 +68,9 @@ public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule {
         return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         // TODO: What?
 	return null;

@@ -31,10 +31,20 @@ import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
+/**
+ * Rule for Transition->Source State.
+ *
+ */
 public class GoTransitionToSource extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() { return "Transition->Source State"; }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) { 
 	if (ModelFacade.isATransition(parent)) {
 	    Collection col = new ArrayList();
@@ -44,6 +54,9 @@ public class GoTransitionToSource extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isATransition(parent)) {
 	    Set set = new HashSet();

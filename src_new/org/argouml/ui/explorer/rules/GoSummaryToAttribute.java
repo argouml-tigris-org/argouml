@@ -31,6 +31,7 @@ import java.util.Set;
 import org.argouml.model.ModelFacade;
 
 /**
+ * Rule for Summary->Attribute.
  * This class is a Go Rule for the "Class - centric" Navigation perspective.
  *
  * @author  alexb, d00mst
@@ -38,10 +39,16 @@ import org.argouml.model.ModelFacade;
  */
 public class GoSummaryToAttribute extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
 	return "Summary->Attribute";
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
 	if (parent instanceof AttributesNode) {
 	    return ModelFacade.getAttributes(((AttributesNode) parent)
@@ -50,6 +57,9 @@ public class GoSummaryToAttribute extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (parent instanceof AttributesNode) {
 	    Set set = new HashSet();

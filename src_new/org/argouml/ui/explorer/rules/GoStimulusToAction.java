@@ -32,8 +32,15 @@ import java.util.Vector;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
+/**
+ * Rule for Stimulus->Action.
+ *
+ */
 public class GoStimulusToAction extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
         if (!ModelFacade.isAStimulus(parent))
             return null;
@@ -45,6 +52,9 @@ public class GoStimulusToAction extends AbstractPerspectiveRule {
 
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isAStimulus(parent)) {
 	    Set set = new HashSet();
