@@ -171,6 +171,14 @@ How this is done is described in
 
       <sect2>
 	<title>Which tools do I need to build ArgoUML?</title>
+	<indexterm>
+	  <primary>Building</primary>
+	  <secondary>tools</secondary>
+	</indexterm>
+	<indexterm>
+	  <primary>Tools</primary>
+	  <secondary>needed for building</secondary>
+	</indexterm>
 	<itemizedlist>
 	  <listitem>
 	    <para>
@@ -187,9 +195,13 @@ JDK, at least version 1.2.2 (includes the java compiler)
       </sect2>
       <sect2>
 	<title>Which tools are used to build ArgoUML?</title>
+	<indexterm>
+	  <primary>Tools</primary>
+	  <secondary>used</secondary>
+	</indexterm>
 	<para>
 These tools are provided within the development environment that you
-get when you check out from cvs.
+get when you check out from CVS.
 </para>
 	<itemizedlist>
 	  <listitem>
@@ -223,13 +235,12 @@ fop for generating pdf versions of the docbook format.
 	<title>What libraries are needed and used in the build process?</title>
 	<para>
 These libraries are provided within the development environment that
-you get when you check out cvs.
+you get when you check out CVS.
 </para>
 	<itemizedlist>
 	  <listitem>
 	    <indexterm>
-	      <primary>Libraries</primary>
-	      <secondary>NSUML</secondary>
+	      <primary>NSUML</primary>
 	    </indexterm>
 	    <para>
 nsuml, the Novosoft UML library.
@@ -247,8 +258,7 @@ the insides of NSUML.
 
 	  <listitem>
 	    <indexterm>
-	      <primary>Libraries</primary>
-	      <secondary>GEF</secondary>
+	      <primary>GEF</primary>
 	    </indexterm>
 
 	    <para>
@@ -281,10 +291,17 @@ or how it is used but I don't know where to find it.
 
  </sect1>
     <sect1 id="cvs_checkout">
-      <title id="cvs_checkout_term">Download from the cvs repository</title>
+      <title id="cvs_checkout_term">Download from the CVS repository</title>
+      <indexterm>
+	<primary>CVS</primary>
+	<secondary>checking out from</secondary>
+      </indexterm>
+      <indexterm>
+	<primary>Checking out from CVS</primary>
+      </indexterm>
       <para>
-The cvs repository at Tigris is accessable using the pserver protocol.
-The cvs root is <filename>/cvs</filename> at cvs.tigris.org.
+The CVS repository at Tigris is accessable using the pserver protocol.
+The CVS root is <filename>/cvs</filename> at cvs.tigris.org.
 You use your Tigris login and Tigris password.
 </para>
       <para>
@@ -330,6 +347,10 @@ see how everything is used for a purpose in the project.
     </sect1>
  <sect1 id="Build">
      <title id="Build_term">Build Process</title>
+      <indexterm>
+	<primary>Building</primary>
+	<secondary>ArgoUML</secondary>
+      </indexterm>
      <para>
      The ArgoUML build process is driven by ant, and it is highly recommend that you stick to that. There are people known to build from JBuilder or Netbeans, but always make sure that your work compile with the plain vanilla build process.
      </para>
@@ -348,15 +369,19 @@ There is one of those in every separately built directory
 
       <sect2>
 	<title>How ant is run from the ArgoUML development environment</title>
+	<indexterm>
+	  <primary>ant</primary>
+	  <secondary>how it is used</secondary>
+	</indexterm>
 	<para>
 For your convenience the ant tool of the correct version is present in the
-cvs repository of ArgoUML in the file 
+CVS repository of ArgoUML in the file 
 <filename class="libraryfile">argouml/lib/ant.jar</filename>.
 </para>
 	<para>
 Normally ant is started with the command
 <command>ant <replaceable>parameter</replaceable></command>
-but the ArgoUML cvs repository does not contain that convenience program
+but the ArgoUML CVS repository does not contain that convenience program
 so you would instead have to write:
 <command>java -Dant.home=<replaceable>/your/checked/out/copy/of/argouml</replaceable> -classpath <replaceable>a:complex:classpath</replaceable> -jar ant.jar <replaceable>parameter</replaceable></command>.
 </para>
@@ -380,6 +405,14 @@ how <filename>build.bat</filename> is written.
 </para>
 	<sect3>
 	  <title>Compiling for Unix</title>
+	  <indexterm>
+	    <primary>Compiling</primary>
+	    <secondary>Unix</secondary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>Unix</primary>
+	    <secondary>compilation</secondary>
+	  </indexterm>
 	  <para>
 Here is what you need to do in order to compile and run 
 your checked out copy of ArgoUML under Unix.
@@ -428,6 +461,14 @@ or want to compile and run again.
 	</sect3>
 	<sect3>
 	  <title>Compiling for Windows</title>
+	  <indexterm>
+	    <primary>Compiling</primary>
+	    <secondary>Windows</secondary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>Windows</primary>
+	    <secondary>Compilation</secondary>
+	  </indexterm>
 	  <orderedlist>
 	    <listitem>
 	      <para>
@@ -462,6 +503,14 @@ or want to compile and run again.
 	</sect3>
 	<sect3>
 	  <title>Building javadoc</title>
+	  <indexterm>
+	    <primary>Javadoc</primary>
+	    <secondary>building</secondary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>Building</primary>
+	    <secondary>javadoc</secondary>
+	  </indexterm>
 	  <para>
 By running ant again using <command>build prepare-docs</command>
 the javadoc documentation is generated and put into
@@ -481,8 +530,12 @@ This describes how the documentation arrives on the web site.
 </para>
 	<sect3 id="how_the_web_site_works">
 	  <title>How the ArgoUML web site works</title>
+	  <indexterm>
+	    <primary>Web Site</primary>
+	    <secondary>maintaining</secondary>
+	  </indexterm>
 	  <para>
-Tigris provides the ArgoUML site to be edited through cvs. Everything
+Tigris provides the ArgoUML site to be edited through CVS. Everything
 that is checked in under <filename>argouml/www</filename>
 becomes immediatly available at the url 
 <ulink url="http://argouml.tigris.org/">http://argouml.tigris.org/</ulink>
@@ -499,6 +552,13 @@ This is the way the site is maintained and updated.
 	</sect3>
 	<sect3>
 	  <title>The ArgoUML documentation</title>
+	  <indexterm>
+	    <primary>Documentation</primary>
+	  </indexterm>
+	  <indexterm>
+	    <primary>Web Site</primary>
+	    <secondary>documentation</secondary>
+	  </indexterm>
 	  <para>
 For the ArgoUML project the same documenation shall be available in both
 html, pdf and javahelp. To this end the documentation is written in
@@ -537,7 +597,7 @@ and a copy of the <filename class="directory">argouml/www</filename>.
 To be on the safe side, this could be the whole of ArgoUML.
 </para>
 	      <para>
-If wanted, the cvs repository could be tagged and then the tag
+If wanted, the CVS repository could be tagged and then the tag
 can be checked out. This makes it possible to know exactly 
 how a certain version of the documentation was generated.
 </para>
@@ -582,7 +642,7 @@ The same for <filename class="directory">printablehtml</filename> and
 	      <para>
 No longer used files in 
 <filename class="directory">argouml/www/documentation</filename>
-are removed from cvs and new files are added.
+are removed from CVS and new files are added.
 </para>
 	      <para><command>cvs -n update</command></para>
 	      <para>Watch for "Missing" and "Unknown" files.</para>
@@ -596,7 +656,7 @@ The "Unknown" files are scheduled to be added by:
 </para>
 	      <para>
 This removing of missing files and adding of unknown files may seem
-backward but it is from the perspective of cvs.
+backward but it is from the perspective of CVS.
 The missing files are the ones that were present in the previous
 version of the documentation and that does not have a replacement,
 either because that chapter does not exist anymore or that the tool
@@ -622,6 +682,10 @@ The pdf book is uploaded to the download page.
 	</sect3>
 	<sect3>
 	  <title>How developers work with documentation</title>
+	  <indexterm>
+	    <primary>Documentation</primary>
+	    <secondary>work with</secondary>
+	  </indexterm>
 	  <para>
 Developers that work with the documentation or with the tools 
 to generate the documentation (or anyone else interested in this)
@@ -631,7 +695,7 @@ the result in
 It is only the last part about checking in and upploading the result
 under
 <filename class="directory">argouml/www/documentation</filename>
-that requires write access in the cvs and synchronisation with the
+that requires write access in the CVS and synchronisation with the
 rest of the project.
 </para>
 	  <para>
@@ -663,6 +727,10 @@ contains all the required pictures for all the books.
       </sect2>
       <sect2>
 	<title>Troubleshooting the development build</title>
+	<indexterm>
+	  <primary>Troubleshooting</primary>
+	  <secondary>development build</secondary>
+	</indexterm>
 	<sect3>
 	  <title>Compiling failed. Any suggestions?</title>
 	  <para>
@@ -693,6 +761,10 @@ If nothing helps, ask the
 	</sect3>
 	<sect3>
 	  <title>Can't commit my changes?</title>
+	  <indexterm>
+	    <primary>Troubleshooting</primary>
+	    <secondary>commiting changes</secondary>
+	  </indexterm>
 	  <para>
 You need to have a developer role in the ArgoUML project.
 If you don't then you are at the mercy of a person that does.
@@ -720,6 +792,9 @@ can continue working with the same checked out copy.
 
     <sect1 id="release_process">
       <title>Making a release</title>
+      <indexterm>
+	<primary>Making a release</primary>
+      </indexterm>
       <para>
 To simplify for the person that is actually doing the release work
 and to make sure that everything is done in the exact same way 
@@ -755,11 +830,11 @@ For release 0.9.8 it should look like this:
 </para>
 	  </listitem>
 	  <listitem>
-	    <para>Tag the whole cvs directory with the freeze tag!</para>
+	    <para>Tag the whole CVS repository with the freeze tag!</para>
 	    <para>
 Normally this tag is "VERSION_<replaceable>X_Y_Z</replaceable>_F",
 e.g. VERSION_0_9_7_F.
-The according command line cvs command is 
+The according command line CVS command is 
 <command>cvs rtag VERSION_<replaceable>X_Y_Z</replaceable>_F argouml</command>.
 In case you make a mistake doing that (you shouldn't really), 
 you need to remove the tag you mistakenly put there and start over.
@@ -811,7 +886,7 @@ If the tests did not pass See <xref linkend="release_process_test_failed"/>.
 	    <para>
 This tag is "VERSION_<replaceable>X_Y_Z</replaceable>",
 e.g. VERSION_0_9_7.
-The according command line cvs command is 
+The according command line CVS command is 
 <command>cvs tag VERSION_<replaceable>X_Y_Z</replaceable></command>
 when your are standing in the
 <filename class="directory">argouml</filename>-directory.
@@ -856,6 +931,10 @@ which require a login so just inform him.
 </para>
       <sect2 id="release_process_test_failed">
 	<title>The release did not work</title>
+	<indexterm>
+	  <primary>Troubleshooting</primary>
+	  <secondary>during the release work</secondary>
+	</indexterm>
 	<para>
 This shouldn't happen! This really shouldn't happen!
 </para>
@@ -877,14 +956,20 @@ Delay the release waiting for the developer to fix the problem.
 
  <sect1 id="mailing_lists">
      <title>Mailing Lists</title>
-     <indexterm><primary>mailinglist</primary></indexterm>
-     <indexterm><primary>mailinglist</primary><secondary>developer</secondary></indexterm>
-     <indexterm><primary>mailinglist</primary><secondary>cvs</secondary></indexterm>
-     <indexterm><primary>mailinglist</primary><secondary>issues</secondary></indexterm>
+     <indexterm><primary>Mailing lists</primary></indexterm>
+     <indexterm><primary>Developers' Mailing List</primary></indexterm>
      <para>All developers <emphasis>MUST</emphasis> subscribe to the mailinglist for developers. Please find the details at: <ulink url="http://argouml.tigris.org/servlets/ProjectMailingListList">http://argouml.tigris.org/servlets/ProjectMailingListList</ulink>
      </para>
+      <indexterm>
+	<primary>CVS</primary>
+	<secondary>Mailing list</secondary>
+      </indexterm>
+      <indexterm>
+	<primary>Issues</primary>
+	<secondary>Mailing list</secondary>
+      </indexterm>
      <para>
-It is also recommended to join the CVS and Issues mailinglists.
+It is also recommended to join the CVS and Issues mailing lists.
 Both give you a good idea of what is going on.
 Developers should also work with Issuezilla registering or fixing 
 problems found by themselves and others.
@@ -963,8 +1048,8 @@ or a newly generated project (see Project.makeEmptyProject()).
 
     <sect1 id="bigger_components">
     <title>The bigger picture, ArgoUML and supporting libraries</title>
-<indexterm><primary>libraries</primary></indexterm>
-<indexterm><primary>components</primary></indexterm>
+<indexterm><primary>Libraries</primary></indexterm>
+<indexterm><primary>Components</primary></indexterm>
     <para>
 <mediaobject>
 					<imageobject>
@@ -984,6 +1069,10 @@ or a newly generated project (see Project.makeEmptyProject()).
       <title>NS-UML</title>
       <sect2>
 	<title>Tip for understanding NS-UML (from Jeremy Bennett)</title>
+	<indexterm>
+	  <primary>NSUML</primary>
+	  <secondary>understanding</secondary>
+	</indexterm>
       <para>
 I found that building a javadoc for the NSUML source was quite helpful.
 There are some comments in key places, and it allows you to see what
@@ -1039,6 +1128,10 @@ ru.novosoft.uml.xmi
       </sect2>
       <sect2>
 	<title>Tip for understanding NS-UML (from Ryan Ismert)</title>
+	<indexterm>
+	  <primary>NSUML</primary>
+	  <secondary>understanding</secondary>
+	</indexterm>
 	<para>
 The file docs/guide/NS_Uml_Api.html that comes in the NSUML source is
 very helpful.
@@ -1483,6 +1576,15 @@ Beware that there might be more than one Fig Element per
 
 <sect1 id="critics">
 <title>Critics and other cognitive tools</title>
+      <indexterm>
+	<primary>Critics</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Check lists</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Wizards</primary>
+      </indexterm>
       <para id="comp-critics-purpose">
 Purpose - to provide cognitive help for the User.
 This help is based on the current model that the User works with.
@@ -1808,6 +1910,9 @@ have any effect.
 
     <sect1 id="notation">
       <title>Notation</title>
+      <indexterm>
+	<primary>Notation</primary>
+      </indexterm>
       <para id="comp-notation-purpose">
 Purpose - to provide the different possibilities on how
 classes, methods and attributes are to be shown in diagrams
@@ -1890,6 +1995,9 @@ Use the PluggableNotation api!
 
     <sect1 id="diagrams">
       <title>Diagrams</title>
+      <indexterm>
+	<primary>Diagrams</primary>
+      </indexterm>
       <!--
 Howto for creating prop panels.
 
@@ -3154,6 +3262,9 @@ advice that the model has changed.
 
 <sect1 id="reverse">
 <title>Reverse Engineering</title>
+      <indexterm>
+	<primary>Reverse Engineering</primary>
+      </indexterm>
 <sect2 id="howdoi_reverse">
 <title>How do I ...?</title>
 <para>...</para></sect2>
@@ -3190,7 +3301,7 @@ of an AST and the frequent GC while parsing many source files.
 </para>
       </sect2>
       <sect2>
-	<title>Which model/diagramm elements are generated?</title>
+	<title>Which model/diagram elements are generated?</title>
 	<para>
 The *context classes hold the current context for a package, class
 etc. When the required information for a object is available, the
@@ -3316,6 +3427,9 @@ F E D
 
     <sect1 id="detailspanel">
       <title>Details Panel</title>
+      <indexterm>
+	<primary>Details Panel</primary>
+      </indexterm>
       <sect2 id="howdoi_detailspanel">
 	<title>How do I ...?</title>
 	<para>
@@ -3350,6 +3464,9 @@ Remove the line for the tab from
 
 <sect1 id="help">
 <title>Help System</title>
+      <indexterm>
+	<primary>Help system</primary>
+      </indexterm>
 <sect2 id="howdoi_help">
 <title>How do I ...?</title>
 <para>...</para></sect2>
@@ -3357,6 +3474,21 @@ Remove the line for the tab from
 
 <sect1 id="internationalization">
 <title>Internationalization</title>
+      <indexterm>
+	<primary>Internationalization</primary>
+      </indexterm>
+      <indexterm>
+	<primary>i18n</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Localization</primary>
+      </indexterm>
+      <indexterm>
+	<primary>l10n</primary>
+      </indexterm>
+      <indexterm>
+	<primary>ResourceBundles</primary>
+      </indexterm>
       <para>
 In ArgoUML internationalization (sometimes called i18n) is done using
 the ListResourceBundle-classes and parts of it is handled by the 
@@ -3625,6 +3757,15 @@ as the package root.
 
     <sect1>
       <title>The JUnit module</title>
+      <indexterm>
+	<primary>JUnit testing</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Unit testing of ArgoUML</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Testing ArgoUML</primary>
+      </indexterm>
       <para>
 The JUnit module is an ArgoUML module that is used to contain all 
 Unit Test Cases.
@@ -3633,7 +3774,7 @@ not be distributed with the ArgoUML distribution.
 They have their use in the hands of the developers of ArgoUML.
 </para>
       <para>
-The module is available from cvs under
+The module is available from CVS under
 <filename class="directory">modules/junit</filename>
 and the used version of the JUnit framework is also available there
 (under <filename class="directory">modules/junit/lib</filename>).
@@ -3655,6 +3796,9 @@ containing all the Unit Test Cases for that class.
 </para>
       <sect2 id="run_junit_testcases">
 	<title>How to run the test cases</title>
+	<indexterm>
+	  <primary>JUnit testing</primary>
+	</indexterm>
 	<para>
 This is a simple description on how to run the JUnit Test Cases.
 </para>
@@ -3667,7 +3811,7 @@ directory.
 	  </listitem>
 	  <listitem>
 	    <para>
-Build ArgoUML in src_new as described in the
+Build ArgoUML as a package in src_new as described in the
 <xref endterm="Build_term" linkend="Build"></xref>
 </para>
 	  </listitem>
@@ -3735,6 +3879,16 @@ all the test cases, give the class name of your test case instead of
       </sect2>
       <sect2>
 	<title>How to write a test case</title>
+	<indexterm>
+	  <primary>Unit testing of ArgoUML</primary>
+	</indexterm>
+	<indexterm>
+	  <primary>Testing ArgoUML</primary>
+	</indexterm>
+	<indexterm>
+	  <primary>Testcases</primary>
+	  <secondary>writing</secondary>
+	</indexterm>
 	<para>
 Now this will make all you java-enthusiasts go nuts!
 We have both classnames and method names that need to have a special
@@ -3781,6 +3935,10 @@ guarantee that no features will ever be lost.
 </para>
 	<example>
 	  <title>A complete example</title>
+	  <indexterm>
+	    <primary>Testcases</primary>
+	    <secondary>an example</secondary>
+	  </indexterm>
 	  <para>
 <programlisting>
 package org.argouml.uml.ui;
@@ -3836,6 +3994,9 @@ public class TestUMLAction extends TestCase {
       </sect2>
       <sect2>
 	<title>The TestAll class</title>
+	<indexterm>
+	  <primary>Testing ArgoUML</primary>
+	</indexterm>
 	<para>
 The TestAll class goes through all directories under 
 <filename class="directory">modules/junit/build/classes</filename>
@@ -3867,7 +4028,7 @@ in just this way.
   <chapter>
     <title>CVS repository contents</title>
     <para>
-This chapter describes what parts of the cvs repository is used for
+This chapter describes what parts of the CVS repository is used for
 what purpose.
 This is a rather terse collection.
 Further details on specific part can sometimes be found elsewhere in
@@ -3883,7 +4044,7 @@ everything is in alfabetical order.
 	  <para><filename class="directory">build</filename></para>
 	  <para>Directory where the built things end up.</para>
 	  <para>
-There is actually no real need to keep this in cvs.
+There is actually no real need to keep this in CVS.
 It is there just as a place holder.
 </para>
 	</listitem>
@@ -4054,7 +4215,7 @@ developed alongside the product and that has a persistant value.
 	<para>The cookbook</para>
       </listitem>
       <listitem>
-	<para>The web site in cvs</para>
+	<para>The web site in CVS</para>
       </listitem>
       <listitem>
 	<para>The manual and quick-guide</para>
@@ -4170,7 +4331,7 @@ description of processes that achieves that level.
 
 	  <row>
 	    <!-- Bit -->
-	    <entry>The web site in cvs</entry>
+	    <entry>The web site in CVS</entry>
 
 	    <!-- Audience -->
 	    <entry>
@@ -4277,8 +4438,20 @@ the issues discussed recently in the user community.
 
 <chapter id="cvs">
 <title>Employed CVS standards</title>
+    <indexterm>
+      <primary>CVS</primary>
+      <secondary>standards</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>Standards</primary>
+      <secondary>CVS</secondary>
+    </indexterm>
 <sect1 id="branches">
 <title>Creating and using branches</title>
+      <indexterm>
+	<primary>CVS</primary>
+	<secondary>branches</secondary>
+      </indexterm>
 <para>We use the following standards in Argo/UML:
 <itemizedlist>
           <listitem><para>Released versions get the tag <emphasis>VERSION_X_X_X</emphasis></para></listitem>
@@ -4293,7 +4466,7 @@ the issues discussed recently in the user community.
           </listitem>
 </itemizedlist>
 </para>
-      <para>Merging branches together is causing some work. So please use them sparingly and announce your attention before on the mailinglist.
+      <para>Merging branches together is causing some work. So please use them sparingly and announce your attention before on the mailing list.
 </para>
       <sect2 id="howdoi_cvs">
 	<title>How do I ...?</title>
@@ -4301,15 +4474,15 @@ the issues discussed recently in the user community.
 	  <itemizedlist>
 	    <listitem>
 	      <para>
-...get my update or patch into cvs if I don't have cvs write rights?
+...get my update or patch into CVS if I don't have CVS write rights?
 </para>
 	      <para>
 Contact any of the active developers on the list and send them your
 updates. They're very nice about it the first few times.
 </para>
 	      <para>
-Supposing that you have checked out cvs as guest, then after you have
-mailed a diff or file to an active developer, and he has entered it in cvs
+Supposing that you have checked out CVS as guest, then after you have
+mailed a diff or file to an active developer, and he has entered it in CVS
 your checked out copy contains the change but is not in sync and
 the next <command>cvs update</command> will result in an merge error.
 The simplest way to solve this is to do remove all files modified by you
@@ -4321,7 +4494,7 @@ CVS repository and you can start with the next update.
 	    <listitem>
 	      <para>...get a list of the currently active working branches?</para>
 	      <para>
-You can't from cvs. You need to follow the announcements of created
+You can't from CVS. You need to follow the announcements of created
 and discontinued branches on the mailing list to know what branches are
 interesting.
 	      </para>
@@ -4476,6 +4649,14 @@ code works also with the additions on that branch.
 
   <chapter id="standards">
     <title>Standards for coding in ArgoUML</title>
+    <indexterm>
+      <primary>Coding</primary>
+      <secondary>Standards</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>Standards</primary>
+      <secondary>Coding</secondary>
+    </indexterm>
     <para>
 The coding style for ArgoUML is the following
 </para>
@@ -4574,6 +4755,10 @@ When in doubt, follow Sun java style conventions.
 <title>Further Reading</title>
 <sect1 id="robbins">
 <title>Jason Robbins Dissertation</title>
+      <indexterm>
+	<primary>Jason Robbins</primary>
+	<secondary>Dissertation</secondary>
+      </indexterm>
       <para>
 Cognitive Support Features for Software Development Tools
 </para>
@@ -4615,6 +4800,10 @@ combination of heuristic and empirical techniques.
 </sect1>
     <sect1 id="skinner">
       <title>Martin Skinners Dissertation</title>
+      <indexterm>
+	<primary>Martin Skinner</primary>
+	<secondary>Dissertation</secondary>
+      </indexterm>
       <para>
 Enhancing a UML Modelling Tool with Context-Based Constraints for Components
 </para>
@@ -4660,6 +4849,9 @@ LINK: <ulink url="http://www.cocons.org/publications/CCL_plugin_for_ArgoUML.pdf"
 
   <chapter>
     <title>Processes for the ArgoUML project</title>
+    <indexterm>
+      <primary>Processes</primary>
+    </indexterm>
     <para>
 This chapter contains processes used when working with the 
 ArgoUML project.
@@ -4684,6 +4876,9 @@ quality most of the 270 issues that are currently RESOLVED
 </para>
     <sect1>
       <title>The big picture for Issues</title>
+      <indexterm>
+	<primary>Issues</primary>
+      </indexterm>
       <para>
 Here is the big picture of the life of an Issue.
 </para>
@@ -4700,6 +4895,10 @@ the Resolved level and further down.
 
     <sect1 id="resolve_issue">
       <title>How to resolve an Issue</title>
+      <indexterm>
+	<primary>Issues</primary>
+	<secondary>Resolving</secondary>
+      </indexterm>
       <para>
 This can be performed by persons that has the Developer role 
 in the project.
@@ -4808,6 +5007,21 @@ according to the rule for creating Issues.
 
     <sect1 id="verify_resolved_fixed">
       <title>How to verify an Issue that is FIXED</title>
+      <indexterm>
+	<primary>Issues</primary>
+	<secondary>Verifying</secondary>
+	<tertiary>Fixed</tertiary>
+      </indexterm>
+      <indexterm>
+	<primary>Issues</primary>
+	<secondary>Verifying</secondary>
+	<tertiary>WORKSFORME</tertiary>
+      </indexterm>
+      <indexterm>
+	<primary>Issues</primary>
+	<secondary>Verifying</secondary>
+	<tertiary>Works for me</tertiary>
+      </indexterm>
       <para>
 This can be performed by anyone.
 There might be special skills involved but it differs widely depending
@@ -4873,6 +5087,26 @@ Do this as many times as you like until there are no Issues left.
 
     <sect1 id="verify_resolved_invalid">
       <title>How to verify an Issue that is rejected</title>
+      <indexterm>
+	<primary>Issues</primary>
+	<secondary>Resolving</secondary>
+	<tertiary>Rejected</tertiary>
+      </indexterm>
+      <indexterm>
+	<primary>Issues</primary>
+	<secondary>Resolving</secondary>
+	<tertiary>Invalid</tertiary>
+      </indexterm>
+      <indexterm>
+	<primary>Issues</primary>
+	<secondary>Resolving</secondary>
+	<tertiary>Wontfix</tertiary>
+      </indexterm>
+      <indexterm>
+	<primary>Issues</primary>
+	<secondary>Resolving</secondary>
+	<tertiary>Duplicate</tertiary>
+      </indexterm>
       <para>
 This can be performed by anyone.
 There might be special skills involved but it differs widely depending
@@ -4922,6 +5156,10 @@ Do this as many times as you like until there are no Issues left.
     </sect1>
     <sect1 id="close_verified_issue">
       <title>How to Close an Issue</title>
+      <indexterm>
+	<primary>Issues</primary>
+	<secondary>Closing</secondary>
+      </indexterm>
       <para>
 This is performed by the person that originally raised the Issue
 or by the QA responsible for that area.
@@ -4986,6 +5224,10 @@ join or move each section into the
 </para>
     <sect1>
       <title>How to make Screen Grabs</title> 
+      <indexterm>
+	<primary>Screen Grabs</primary>
+	<secondary>How to make them</secondary>
+      </indexterm>
   <para>There's nothing like show and tell when using software! Everyone likes screen grabs...here's how you can help out!</para> 
   <para>Make screen grabs as you go! And here's how...</para> 
       <sect2>
@@ -5043,6 +5285,13 @@ join or move each section into the
     </sect1>
   </chapter>
 
+  <chapter>
+    <title>Index</title>
+    <para>
+</para>
+    <index>
+    </index>
+  </chapter>
 
 
 </book>
