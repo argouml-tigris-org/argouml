@@ -72,8 +72,11 @@ abstract class Context
 	if(parent instanceof MModel) {
 	    return mPackage.getName();
 	}
-	else {
+	else if(parent != null) {
 	    return getJavaName((MPackage)parent) + "." + mPackage.getName();
+	}
+	else {
+	    return "";
 	}
     }
 }
