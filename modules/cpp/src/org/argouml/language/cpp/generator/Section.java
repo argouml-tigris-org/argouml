@@ -31,8 +31,6 @@
 
 package org.argouml.language.cpp.generator;
 
-import org.argouml.uml.generator.AbstractSection;
-
 /**
  * Reading and writing preserved sections from the code
  */

@@ -106,6 +106,8 @@ round-trip engineering for C++ projects.
     <property name="argo.build.src" value="${argo.root}/src_new"/>
 
     <property name="module.lib.dir" value="${module.root}/lib"/>
+    
+    <property name="commons-io.jar.path" value="${module.lib.dir}/commons-io-1.0.jar"/>
 
     <property name="manifest" value="manifest.mf"/>
     <property name="manifest.src" value="${module.src.dir}/org/${manifest}"/>
@@ -147,6 +149,13 @@ round-trip engineering for C++ projects.
           <include name="gef.jar" />
       </fileset>
     </path>
+      
+    <path id="module.compile-tests.classpath">
+      <pathelement location="${module.build.dest}"/>
+      <path refid="module.compile.classpath"/>
+      <pathelement location="${junit.jar.path}"/>
+      <pathelement location="${commons-io.jar.path}"/>   
+    </path>  
     
     <path id="ant.optional.classpath">
       <pathelement location="${ant.home}/optional.jar"/>
@@ -169,7 +178,7 @@ round-trip engineering for C++ projects.
   </target>
 
   <!-- Note this file can only make Ant display values set in the file correctly, -->
-  <!-- but external values in the environment or properties file will be operational.  -->
+  <!-- but external values in the envionment or properties file will be operational.  -->
 
   <!-- =================================================================== -->
   <!-- Prepares the build directory                                        -->
@@ -275,10 +284,7 @@ round-trip engineering for C++ projects.
            deprecation="false"
            optimize="false">
       <classpath>
-        <pathelement location="${module.build.dest}"/>
-        <!-- reuse the ArgoUML properties -->
-        <path refid="module.compile.classpath"/>
-        <pathelement location="${junit.jar.path}"/>
+        <path refid="module.compile-tests.classpath"/>
       </classpath>
      </javac>
   </target>
@@ -296,9 +302,7 @@ round-trip engineering for C++ projects.
           <!-- use different log4j configuration for testing -->
       <sysproperty key="log4j.configuration" value="org/argouml/resource/full_console.lcf"/>
       <classpath>
-        <path refid="module.compile.classpath"/>
-        <pathelement location="${module.build.dest}"/>
-        <pathelement location="${junit.jar.path}"/>
+        <path refid="module.compile-tests.classpath"/>
         <pathelement location="${module.tests.classes}"/>
       </classpath>
       <formatter type="xml"/>

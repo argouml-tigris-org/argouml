@@ -168,6 +168,3 @@ comment to the end of the file.
 - TODO: It would be nice to raise a dialog if no template files are found
 - TODO: It woul be important to generate defined types (which could be realised 
   as enum)
-- TODO: Create a unit tests target in the Ant script for the module classes
-
-
