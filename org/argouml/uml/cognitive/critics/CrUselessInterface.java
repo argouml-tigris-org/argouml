@@ -41,6 +41,10 @@ import org.argouml.model.ModelFacade;
 
 public class CrUselessInterface extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrUselessInterface() {
 	setHeadline("Define Class to Implement <ocl>self</ocl>");
 	addSupportedDecision(CrUML.decINHERITANCE);
@@ -49,6 +53,10 @@ public class CrUselessInterface extends CrUML {
 	addTrigger("realization");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!ModelFacade.isAInterface(dm))
 	    return NO_PROBLEM;

@@ -49,7 +49,6 @@ import org.tigris.gef.util.VectorSet;
  * @see org.argouml.cognitive.Designer
  * @see org.argouml.cognitive.DecisionModel
  */
-
 public class CrUML extends Critic {
     private static final Logger LOG = Logger.getLogger(CrUML.class);
     
@@ -124,9 +123,6 @@ public class CrUML extends Critic {
     }
 
 
-
-    ////////////////////////////////////////////////////////////////
-    // constructor
     /**
      * The constructor for this class. 
      */
@@ -166,6 +162,10 @@ public class CrUML extends Critic {
 	setResource(className.substring(className.lastIndexOf('.') + 1));
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#predicate(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate(Object dm, Designer dsgr) {
 	Project p = ProjectManager.getManager().getCurrentProject();
 	if (p.isInTrash(dm)) {

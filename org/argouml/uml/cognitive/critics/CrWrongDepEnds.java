@@ -46,11 +46,19 @@ import org.tigris.gef.util.VectorSet;
 
 public class CrWrongDepEnds extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrWrongDepEnds() {
 	setHeadline("Wrong location-types");
 	addSupportedDecision(CrUML.decPATTERNS);
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
@@ -59,12 +67,20 @@ public class CrWrongDepEnds extends CrUML {
 	return PROBLEM_FOUND;
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
 	VectorSet offs = computeOffenders(dd);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#stillValid(
+     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
@@ -81,7 +97,10 @@ public class CrWrongDepEnds extends CrUML {
      * null.  Then in the vector-set are the UMLDeploymentDiagram and
      * all FigDependencies with this characteristic and their
      * FigObjects described over the supplier and client.
-     **/
+     *
+     * @param dd the diagram to check
+     * @return the set of offenders
+     */
     public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
 	Collection figs = dd.getLayer().getContents(null);
 	VectorSet offs = null;
@@ -104,12 +123,13 @@ public class CrWrongDepEnds extends CrUML {
 		while (it.hasNext()) {
 		    Object moe = /*(MModelElement)*/ it.next();
 		    if (ModelFacade.isAObject(moe)) {
-			Object obj_sup = /*(MObject)*/ moe;
-			if (ModelFacade.getElementResidences(obj_sup) != null
-			        && (ModelFacade.getElementResidences(obj_sup).size() > 0)) {
+			Object objSup = /*(MObject)*/ moe;
+			if (ModelFacade.getElementResidences(objSup) != null
+			    && (ModelFacade.getElementResidences(objSup).size()
+			                                        > 0)) {
 			    count += 2;
                         }
-			if (ModelFacade.getComponentInstance(obj_sup) != null) {
+			if (ModelFacade.getComponentInstance(objSup) != null) {
 			    count++;
                         }
 		    }
@@ -121,12 +141,13 @@ public class CrWrongDepEnds extends CrUML {
 		while (it.hasNext()) {
 		    Object moe = /*(MModelElement)*/ it.next();
 		    if (ModelFacade.isAObject(moe)) {
-			Object obj_cli = /*(MObject)*/ moe;
-			if (ModelFacade.getElementResidences(obj_cli) != null
-			        && (ModelFacade.getElementResidences(obj_cli).size() > 0)) {
+			Object objCli = /*(MObject)*/ moe;
+			if (ModelFacade.getElementResidences(objCli) != null
+			    && (ModelFacade.getElementResidences(objCli).size()
+			                                            > 0)) {
 			    count += 2;
                         }
-			if (ModelFacade.getComponentInstance(obj_cli) != null) {
+			if (ModelFacade.getComponentInstance(objCli) != null) {
 			    count++;
                         }
 		    }
