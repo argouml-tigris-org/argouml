@@ -2623,6 +2623,22 @@ public class GeneratorCpp extends Generator2
 	return sb.toString();
     }
 
+    /**
+     * Generates the String representation for an Event.
+     *
+     * @param modelElement Model element to generate notation for.
+     *
+     * @return Generated notation for model element.
+     */
+    public String generateEvent(Object modelElement) {
+        if (!ModelFacade.isAEvent(modelElement)) {
+            throw new ClassCastException(modelElement.getClass()
+                    + " has wrong object type, Event required");
+        }
+
+        return "";
+    }
+
     public String generateVisibility(Object handle) {
 	if (handle instanceof MAttribute) return "";
 	if (ModelFacade.isAFeature(handle))

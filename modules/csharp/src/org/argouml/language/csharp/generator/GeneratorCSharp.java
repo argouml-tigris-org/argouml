@@ -1290,6 +1290,21 @@ public class GeneratorCSharp extends Generator2
 	    generateAction(m.getAction());
     }
 
+    /**
+     * Generates the String representation for an Event.
+     *
+     * @param modelElement Model element to generate notation for.
+     *
+     * @return Generated notation for model element.
+     */
+    public String generateEvent(Object modelElement) {
+        if (!ModelFacade.isAEvent(modelElement)) {
+            throw new ClassCastException(modelElement.getClass()
+                    + " has wrong object type, Event required");
+        }
+
+        return "";
+    }
 
     /**
        Update a source code file.
