@@ -116,14 +116,15 @@ public class ExplorerEventAdaptor
      * Listens to events coming from the project manager, config manager, and
      * uml model, passes those events on to the explorer model.
      *
-     *  @since ARGO0.11.2
+     * @since ARGO0.11.2
      *
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(java.beans.PropertyChangeEvent pce) {
 
         // We don't care if the save state has changed
-        if (pce.getPropertyName().equals(ProjectManager.SAVE_STATE_PROPERTY_NAME)) {
+        if (pce.getPropertyName().equals(
+                ProjectManager.SAVE_STATE_PROPERTY_NAME)) {
             return;
         }
         

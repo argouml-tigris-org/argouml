@@ -29,11 +29,23 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 
 /**
- * A single listener that listens to all UML ModelElement events and change
- * the NeedsSave information on the project.
+ * This class captures the information about the "change flag" of 
+ * the current project. Initially, the "change flag" is clear, 
+ * which means that there is nothing in the project to save. 
+ * The "change flag" is set by every change made to its UML model, 
+ * which means that the project becomes 'dirty', i.e. it needs saving. <p>
+ * 
+ * The UmlModelListener is a single listener that listens to all 
+ * UML ModelElement events and changes
+ * the "change flag" information of the Save action. <p>
+ * 
+ * This class only keeps an eye on changes to the UML model - i.e. 
+ * it does not notice changes done to e.g. the graph like moving an edge 
+ * (when they do not also change the UML model), settings or the diagrams. 
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
@@ -91,6 +103,7 @@ public class UmlModelListener implements PropertyChangeListener {
         {
             if (saveAction != null) {
                 saveAction.setEnabled(true);
+                ProjectManager.getManager().notifySavePropertyChanged(true);
             }
         }
     

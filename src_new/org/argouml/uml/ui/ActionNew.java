@@ -74,7 +74,7 @@ public class ActionNew extends ActionFileOperations {
         
         if (!askConfirmationAndSave()) return;
         
-        // TODO yuk! Why is this needed? In fact how can anyone select
+        // TODO: yuk! Why is this needed? In fact how can anyone select
         // the new action if there is a dialog?
 	// We should remove all open dialogs. They have as parent the
 	// ProjectBrowser
