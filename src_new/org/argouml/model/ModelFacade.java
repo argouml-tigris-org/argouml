@@ -361,6 +361,10 @@ public class ModelFacade {
      *
      * This will allow abstraction of the create mechanism at a single point.
      *
+     * TODO: Document the intention of this function.
+     * It is not used anywhere in ArgoUML. 
+     * BTW: Does it work? I (MVW) once did a test, and it didn't.
+     *
      * @param entity Class to create -
      * must implement {@link org.argouml.model.UmlModelEntity}
      * @return the created object or null if it cannot create the class.
