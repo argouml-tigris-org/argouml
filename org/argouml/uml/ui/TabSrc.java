@@ -50,17 +50,21 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
   // constructor
   private final Category cat = Category.getInstance(TabSrc.class);
 
-  private NotationName _notationName = null;
+  // private NotationName _notationName = null;
 
   /** Create a tab that contains a toolbar.
    *  Then add a notation selector onto it.
    */
   public TabSrc() {
-    super("Source", true);
-    _notationName = null;
-    _toolbar.add(NotationComboBox.getInstance());
+    // needs-more-work:  Temporarily remove toolbar until src selection
+    // is working better.
+    //
+    //super("Source", true);
+    super("Source", false);
+    // _notationName = null;
+    // _toolbar.add(NotationComboBox.getInstance());
     NotationComboBox.getInstance().addItemListener(this);
-    _toolbar.addSeparator();
+    // _toolbar.addSeparator();
     ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
   }
 
@@ -81,7 +85,8 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
       modelObject = ((FigEdge)_target).getOwner();
     if (modelObject == null) return null;
     cat.debug("TabSrc getting src for " + modelObject);
-    return Notation.generate(this, modelObject, true);
+    // return Notation.generate(this, modelObject, true);
+    return GeneratorJava.Generate(modelObject);
   }
 
   protected void parseText(String s) {
@@ -99,7 +104,7 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
   public void setTarget(Object t) {
 
     cat.debug ("TabSrc.setTarget()");
-    _notationName = null;
+    // _notationName = null;
     _shouldBeEnabled = false;
     if (t instanceof MModelElement) _shouldBeEnabled = true;
     if (t instanceof Fig) {
@@ -107,18 +112,18 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
 	_shouldBeEnabled = true;
     }
     // If the target is a notation context, use its notation.
-    if (t instanceof NotationContext) {
-        _notationName = ((NotationContext)t).getContextNotation();
-        cat.debug ("Target is notation context with notation name: " +
-	          _notationName);
-    }
-    else {
-        // needs-more-work:  Get it from the combo box
-	cat.debug ("ComboBox.getSelectedItem() '" + NotationComboBox.getInstance().getSelectedItem() + "'");
-	_notationName = Notation.findNotation((String)(NotationComboBox.getInstance().getSelectedItem()));
-    }
-    cat.debug ("Going to set target(" + t + "), notation name:" +
-               _notationName); 
+    // if (t instanceof NotationContext) {
+        // _notationName = ((NotationContext)t).getContextNotation();
+        // cat.debug ("Target is notation context with notation name: " +
+	          // _notationName);
+    // }
+    // else {
+        // // needs-more-work:  Get it from the combo box
+	// cat.debug ("ComboBox.getSelectedItem() '" + NotationComboBox.getInstance().getSelectedItem() + "'");
+	// _notationName = Notation.findNotation((String)(NotationComboBox.getInstance().getSelectedItem()));
+    // }
+    // cat.debug ("Going to set target(" + t + "), notation name:" +
+               // _notationName); 
     super.setTarget(t);
   }
 
@@ -150,7 +155,12 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
   public void refresh() { setTarget(_target); }
 
   public NotationName getContextNotation() {
-      return _notationName;
+      // needs-more-work: This is a short term fix
+      // Eventually src needs to show in proper notations
+      //
+      // return _notationName;
+      //
+      return Notation.NOTATION_JAVA;
   }
 
 } /* end class TabSrc */
