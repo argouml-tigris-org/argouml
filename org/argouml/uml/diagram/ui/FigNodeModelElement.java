@@ -85,8 +85,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   // constructors
 
   public FigNodeModelElement() {
-    _name = new FigText(10, 10, 90, 21);
-    _name.setExpandOnly(true);
+    _name = new FigText(10, 10, 90, 21, true);
     _name.setFont(LABEL_FONT);
     _name.setTextColor(Color.black);
     // _name.setFilled(false);
@@ -94,8 +93,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     _name.setAllowsTab(false);
     _name.setText(placeString());
 
-    _stereo = new FigText(10,10,90,15);
-    _stereo.setExpandOnly(true);
+    _stereo = new FigText(10,10,90,15, true);
     _stereo.setFont(LABEL_FONT);
     _stereo.setTextColor(Color.black);
     _stereo.setFilled(false);
