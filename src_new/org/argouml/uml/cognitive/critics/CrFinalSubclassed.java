@@ -59,7 +59,7 @@ public class CrFinalSubclassed extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAGeneralizableElement(dm))) return NO_PROBLEM;
 	if (!(ModelFacade.isLeaf(dm))) return NO_PROBLEM;
-	Iterator enum = ModelFacade.getSpecializations(dm);
+	Iterator enum = ModelFacade.getSpecializations(dm).iterator();
 	if (enum.hasNext()) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }

@@ -126,7 +126,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	// then Generalizable Element
 	if (ModelFacade.isAGeneralizableElement(port)) {
           
-	    Iterator it = ModelFacade.getSpecializations(port);
+	    Iterator it = ModelFacade.getSpecializations(port).iterator();
 	    while (it.hasNext()) {
 		edges.add(it.next());
 	    }
@@ -202,8 +202,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	}
 	// then Generalizable Element
 	if (ModelFacade.isAGeneralizableElement(port)) {
-          
-	    Iterator it = ModelFacade.getGeneralizations(port);
+	    Iterator it = ModelFacade.getGeneralizations(port).iterator();
 	    while (it.hasNext()) {
 		edges.add(it.next());
 	    }
@@ -343,7 +342,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    }
 	}
 	if ( org.argouml.model.ModelFacade.isAGeneralizableElement(node) ) {
-	    Collection gn = ((MGeneralizableElement) node).getGeneralizations();
+	    Collection gn = ModelFacade.getGeneralizations(node);
 	    Iterator iter = gn.iterator();
 	    while (iter.hasNext()) {
 		MGeneralization g = (MGeneralization) iter.next();

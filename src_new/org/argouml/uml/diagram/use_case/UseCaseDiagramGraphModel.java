@@ -598,7 +598,7 @@ public class UseCaseDiagramGraphModel
 
             // The generalizations
 
-            Collection gn = ((MGeneralizableElement) node).getGeneralizations();
+            Collection gn = ModelFacade.getGeneralizations(node);
 
             Iterator iter = gn.iterator();
 

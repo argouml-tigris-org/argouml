@@ -254,12 +254,10 @@ public class ClassdiagramLayouter implements Layouter {
                     }
                 }
                 
-                if ( ModelFacade.isAGeneralizableElement(node) ) {
+                if (ModelFacade.isAGeneralizableElement(node) ) {
+                    Iterator iter = ModelFacade.getGeneralizations(node).iterator();
                                         
-                    for (Iterator iter = ModelFacade.getGeneralizations(node);
-			 iter.hasNext();
-			 )
-		    {
+                    while(iter.hasNext()) {
                         Object g = iter.next();
                         ClassdiagramNode superNode = 
                             getClassdiagramNode4owner(ModelFacade.getParent(g));
@@ -269,10 +267,8 @@ public class ClassdiagramLayouter implements Layouter {
                         }
                     }
                     
-                    for (Iterator iter = ModelFacade.getSpecializations(node);
-			 iter.hasNext();
-			 )
-		    {
+                    iter = ModelFacade.getSpecializations(node).iterator();
+                    while (iter.hasNext()) {
                         Object s = iter.next();
                         ClassdiagramNode subNode = 
                             getClassdiagramNode4owner(ModelFacade.getChild(s));
