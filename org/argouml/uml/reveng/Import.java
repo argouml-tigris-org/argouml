@@ -39,6 +39,8 @@ import org.argouml.ui.*;
 import org.argouml.application.api.*;
 import org.argouml.util.logging.*;
 
+import org.apache.log4j.Category;
+
 /**
  * This is the main class for all import classes.
  *
@@ -62,6 +64,10 @@ public class Import {
     /** The files that needs a second RE pass. */
     private static Vector secondPassFiles;
 
+    // log4j logging
+    private static Category cat = Category.getInstance(org.argouml.uml.reveng.Import.class);
+
+    
     /**
      * Get the panel that lets the user set reverse engineering
      * parameters.
@@ -156,6 +162,14 @@ public class Import {
 		catch(Exception e1) {
 		    Argo.log.debug(e1);
 		    nextPassFiles.addElement(curFile);
+                    
+                    // RuntimeExceptions should be reported here!
+                    if(e1 instanceof RuntimeException)
+                        cat.error("program bug encountered in reverese engineering\n"
+                              +e1);
+                    else
+                        cat.warn("exception encountered in reverese engineering\n"
+                              +e1);
 		}
 	    }
 
@@ -309,6 +323,9 @@ class ImportRun implements Runnable {
     Vector _nextPassFiles;
     SimpleTimer _st;
 
+    // log4j logging
+    private static Category cat = Category.getInstance(org.argouml.uml.reveng.ImportRun.class);
+    
     public ImportRun(ImportStatusScreen iss, Project p, DiagramInterface d,
 		     Vector f) {
 	_iss = iss;
@@ -344,8 +361,17 @@ class ImportRun implements Runnable {
 		pb.getStatusBar().showProgress(100 * act/tot);
 	    }
 	    catch(Exception e1) {
-		Argo.log.debug(e1);
+		//Argo.log.debug(e1);
 		_nextPassFiles.addElement(curFile);
+                
+                // RuntimeExceptions should be reported here!
+                if(e1 instanceof RuntimeException)
+                    cat.error("program bug encountered in reverese engineering, the project file will be corrupted\n"
+                              +e1);
+                else
+                    cat.warn("exception encountered in reverese engineering, the project file will be corrupted\n"
+                              +e1);
+                e1.printStackTrace();
 	    }
 
 	    SwingUtilities.invokeLater(this);
