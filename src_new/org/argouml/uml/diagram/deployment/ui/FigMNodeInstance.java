@@ -84,6 +84,8 @@ public class FigMNodeInstance extends FigNodeModelElement {
   public FigMNodeInstance(GraphModel gm, Object node) {
     this();
     setOwner(node);
+    if (node instanceof MClassifier && (((MClassifier)node).getName() != null))
+	_name.setText(((MModelElement)node).getName());
   }
 
   public String placeString() { return "new NodeInstance"; }
