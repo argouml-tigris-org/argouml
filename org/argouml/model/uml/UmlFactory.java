@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -355,7 +355,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
         elements.put(Uml.COMPONENT_INSTANCE,
             new ObjectCreateInfo(
                 MComponentInstance.class,
-                CoreFactory.getFactory(),
+                CommonBehaviorFactory.getFactory(),
                 "createComponentInstance"));
         elements.put(Uml.INSTANCE,
             new ObjectCreateInfo(MInstance.class, factory, "createInstance"));
@@ -1082,7 +1082,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
                                                           new Class[] {} );
         }
         catch (Exception e) {
-            cat.error("Failed to invoke create method on factory.");
+            cat.error("Failed to invoke create method on factory.", e);
             return null;
             // TODO decide if we want to throw an exception instead
             // throw new InvalidObjectRequestException
@@ -1097,7 +1097,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
             // TODO decide if we want to throw an exception instead
             // throw new InvalidObjectRequestException
             //("Cannot execute creator method", entity, e);
-            cat.error("Failed to invoke create method on factory.");
+            cat.error("Failed to invoke create method on factory.", e);
             return null;
         }
         UmlFactory.getFactory().initialize(obj);
