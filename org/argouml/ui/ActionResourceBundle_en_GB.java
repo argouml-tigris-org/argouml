@@ -39,14 +39,14 @@ import java.awt.event.*;
 public class ActionResourceBundle_en_GB extends ListResourceBundle {
   
   static final Object[][] _contents = {
-    {"template.save_project.confirm_overwrite", "Are you sure you want to overwrite %0?"},
-    {"template.save_project.status_writing", "Writing %0..."},
-    {"template.save_project.status_wrote", "Wrote %0"},
+    {"template.save_project.confirm_overwrite", "Are you sure you want to overwrite {0}?"},
+    {"template.save_project.status_writing", "Writing {0}..."},
+    {"template.save_project.status_wrote", "Wrote {0}"},
     {"template.save_project.file_not_found",
-       "A problem occurred while saving: \"%0\".\n" +
+       "A problem occurred while saving: \"{0}\".\n" +
        "Your file might be corrupted."},
     {"template.save_project.io_exception",
-       "A problem occurred while saving: \"%0\".\n" +
+       "A problem occurred while saving: \"{0}\".\n" +
        "Your file might be corrupted."},
     {"text.save_project.confirm_overwrite_title", "Confirm overwrite"},
     {"text.save_project.file_not_found_title", "Problem while saving"},
