@@ -671,7 +671,7 @@ ${Name} Build file
         <!-- can be done either intentionally or accidentally.      -->
         <!-- ====================================================== -->
 
-        <include name="default.properties"/>
+        <property file="default.properties"/>
 
         <!-- ====================================================== -->
         <!-- Make sure that none of the other property files        -->
