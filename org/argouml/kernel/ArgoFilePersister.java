@@ -29,13 +29,25 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.PipedReader;
+import java.io.PipedWriter;
 import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
@@ -212,18 +224,54 @@ public class ArgoFilePersister extends AbstractFilePersister {
      */
     protected void loadProjectMembers(Project project, URL theUrl) 
         throws OpenException {
+        
         try {
-            String filename = theUrl.toString();
-            filename = filename.substring(0, filename.length() - 4) + "xmi";
-            theUrl = new URL(filename);
-            loadModel(project, theUrl);
+            String xslt = "XSLT to extract XMI";
+            Source xsltSource = new StreamSource(new StringReader(xslt));
+            Source inputSource = new StreamSource(theUrl.openStream());
+
+            Transformer transformer = TransformerFactory.newInstance().newTransformer(xsltSource);
+            
+            PipedReader pipedReader = new PipedReader();
+            Writer pipedWriter = new PipedWriter(pipedReader);
+            StreamResult result = new StreamResult(pipedWriter);
+            
+            transformer.transform(inputSource, result);
+            
+            InputSource is = new InputSource(pipedReader);
+            loadModel(project, is);
+            
         } catch (SAXException e) {
             throw new OpenException(e);
         } catch (IOException e) {
             throw new OpenException(e);
+        } catch (TransformerException e) {
+            throw new OpenException(e);
         } catch (ParserConfigurationException e) {
             throw new OpenException(e);
         }
+    }
+
+    /**
+     * Transform a string of XML data according to the service required
+     * @param xml The original XML
+     * @param xsltStreamSource the transformation stream
+     * @return the transformed XML
+     * @throws TransformerException on XSLT transformation error
+     */
+    public static final String transform(String xml, StreamSource xsltStreamSource)
+            throws TransformerException {
+
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer(xsltStreamSource);
+        Source input = new StreamSource(new StringReader(xml));
+
+        StringWriter writer = new StringWriter();
+        Result result = new StreamResult(writer);
+
+        transformer.transform(input, result);
+        String transformation = writer.toString();
+        return transformation;
     }
     
     /**
