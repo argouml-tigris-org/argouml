@@ -26,22 +26,48 @@ package org.argouml.uml.generator;
 
 import java.text.ParseException;
 
+/**
+ * Parent of ParserDisplay.
+ * TODO: Explain the purpose of this class!
+ * TODO: Why do these functions return the object they receive?
+ */
 public abstract class Parser {
 
+    /**
+     * @param s  the input string to be parsed
+     * @return the extensionpoint
+     */
     public abstract Object parseExtensionPoint(String s);
+    
+    /**
+     * @param s the input string to be parsed
+     * @param op the operation
+     * @throws ParseException when the input is invalid and should be rejected
+     */
     public abstract void parseOperation(String s, Object op)
 	throws ParseException;
+    
+    /**
+     * @param s   the input string to be parsed
+     * @param attr the attribute
+     * @throws ParseException when the input is invalid and should be rejected
+     */
     public abstract void parseAttribute(String s, Object attr)
 	throws ParseException;
 
+    /**
+     * @param trans the transition
+     * @param s  the input string to be parsed
+     * @return the transition
+     */
     public abstract Object parseTransition(Object trans, String s);
     
     /**
-     * Parse a given string s with the information given from the action state actionState and update
-     * this actionState.
-     * @param actionState
-     * @param s
-     * @return
+     * Parse a given string s with the information given from 
+     * the action state actionState and update this actionState.
+     * @param actionState the input actionstate
+     * @param s the input string
+     * @return the actionstate
      */
     public abstract Object parseActionState(String s, Object actionState );
 } /* end class Parser */

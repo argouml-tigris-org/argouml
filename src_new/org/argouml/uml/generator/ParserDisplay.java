@@ -511,7 +511,7 @@ public class ParserDisplay extends Parser {
      *            MOperation The operation on which the editing happened
      * @param text
      *            The string to parse
-     * @throws ParseException 
+     * @throws ParseException for invalid input
      */
     public void parseOperationFig(Object cls, Object op, String text)
         throws ParseException {
@@ -577,7 +577,7 @@ public class ParserDisplay extends Parser {
      *            MAttribute The attribute on which the editing happened
      * @param text
      *            The string to parse
-     * @throws ParseException
+     * @throws ParseException for invalid input
      */
     public void parseAttributeFig(Object cls, Object at, String text)
         throws ParseException {
@@ -802,7 +802,7 @@ public class ParserDisplay extends Parser {
                 token = st.nextToken();
                 if (" ".equals(token) || "\t".equals(token)
                         || ",".equals(token)) {
-                    // Do nothing
+                    ;// Do nothing
                 } else if ("<<".equals(token)) {
                     if (stereotype != null)
                         throw new ParseException("Operations cannot have two "
@@ -1737,8 +1737,11 @@ public class ParserDisplay extends Parser {
      * Parse a transition description line of the form: "event-signature
      * [guard-condition] / action-expression" If the last character of this line
      * is a ";", then it is ignored. The "event-signature" may be one of the 4
-     * formats: ChangeEvent: "when(condition)" TimeEvent: "after(duration)"
-     * CallEvent: "a(parameter-list)" TODO: Add support for signal events.
+     * formats: 
+     *      ChangeEvent: "when(condition)" 
+     *      TimeEvent: "after(duration)"
+     *      CallEvent: "a(parameter-list)". 
+     *      SignalEvent: TODO: Add support for signal events.
      * 
      * @param trans
      *            The transition object to which this string applies.
@@ -2107,7 +2110,7 @@ public class ParserDisplay extends Parser {
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
                 if (" ".equals(token) || "\t".equals(token)) {
-                    // Do nothing
+                    ;// Do nothing
                 } else if ("/".equals(token)) {
                     hasSlash = true;
                     hasColon = false;
@@ -2725,7 +2728,7 @@ public class ParserDisplay extends Parser {
                 swapRoles = true;
 
             if (compareMsgNumbers(mname, gname)) {
-                // Do nothing
+                ;// Do nothing
             } else if (isMsgNumberStartOf(gname, mname)) {
                 throw new ParseException("Cannot move a message into the "
                         + "subtree rooted at self", 0);
@@ -3586,14 +3589,13 @@ public class ParserDisplay extends Parser {
         Object entry = ModelFacade.getEntry(actionState);
         String language = "";
         if (entry == null) {
-            entry =
-		CommonBehaviorFactory.getFactory()
-		    .buildUninterpretedAction(actionState);
+            entry = CommonBehaviorFactory.getFactory()
+                .buildUninterpretedAction(actionState);
         } else {
             language = ModelFacade.getLanguage(ModelFacade.getScript(entry));
         }
-        Object actionExpression =
-	    DataTypesFactory.getFactory().createActionExpression(language, s);
+        Object actionExpression = DataTypesFactory.getFactory()
+            .createActionExpression(language, s);
         ModelFacade.setScript(entry, actionExpression);
        return actionState;
     }
