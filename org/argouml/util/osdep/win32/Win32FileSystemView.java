@@ -30,9 +30,10 @@
 //
 package org.argouml.util.osdep.win32;
 
-import javax.swing.filechooser.*; 
-import java.io.*; 
-import java.util.*; 
+import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
+import javax.swing.filechooser.FileSystemView;
 
 /** This class is necessary due to an annoying bug on Windows NT where 
  *  instantiating a JFileChooser with the default FileSystemView will 

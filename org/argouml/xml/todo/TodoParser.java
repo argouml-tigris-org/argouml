@@ -24,19 +24,20 @@
 
 package org.argouml.xml.todo;
 
-import org.argouml.application.api.*;
-import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
-
+import java.util.Vector;
+import org.apache.log4j.Category;
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ToDoItem;
+
 import org.argouml.cognitive.ResolvedCritic;
-import org.tigris.gef.util.VectorSet;
+import org.argouml.cognitive.ToDoItem;
+import org.xml.sax.SAXException;
+
 import org.argouml.xml.SAXParserBase;
 import org.argouml.xml.XMLElement;
-import org.xml.sax.*;
-import org.apache.log4j.Category;
+import org.tigris.gef.util.VectorSet;
 
 // Needs-more-work: Reuse the offender Vector.
 

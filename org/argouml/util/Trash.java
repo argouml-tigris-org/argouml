@@ -30,9 +30,6 @@ import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 
-// import ru.novosoft.uml.foundation.core.MModelElement;
-// import ru.novosoft.uml.model_management.MModel;
-
 /** In the furture this will be a trash can icon in the project
  * browser.  Deleting an object moves it to the trash.  You can move
  * things back out of the trash if you like.  Eventually you empty the

@@ -29,9 +29,10 @@
 
 package org.argouml.util;
 
-import org.tigris.gef.graph.*;
-
 import org.argouml.kernel.ProjectManager;
+
+import org.tigris.gef.graph.GraphEvent;
+import org.tigris.gef.graph.GraphListener;
 
 /** This class holds the information about the saving state of the current project.
  *  The state is changed by every change made to its diagrams.
