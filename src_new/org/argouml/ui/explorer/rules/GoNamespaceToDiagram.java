@@ -58,10 +58,9 @@ public class GoNamespaceToDiagram extends AbstractPerspectiveRule {
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
-    public Collection getChildren(Object parent) {
-        if (Model.getFacade().isANamespace(parent)) {
+    public Collection getChildren(Object namespace) {
+        if (Model.getFacade().isANamespace(namespace)) {
             List returnList = new ArrayList();
-            Object namespace = parent; //MNamespace
             Project proj = ProjectManager.getManager().getCurrentProject();
             Iterator it = proj.getDiagrams().iterator();
             while (it.hasNext()) {
