@@ -1,4 +1,4 @@
-// $ANTLR 2.7.1: "../src_new/org/argouml/uml/reveng/java/java.g" -> "JavaRecognizer.java"$
+// $ANTLR 2.7.1: "java.g" -> "JavaRecognizer.java"$
 
 package org.argouml.uml.reveng.java;
 
@@ -563,11 +563,19 @@ public JavaRecognizer(ParserSharedInputState state) {
 		superClassName=superClassClause();
 		ic=implementsClause();
 		if ( inputState.guessing==0 ) {
-			getModeller().addClass(className.getText(), modifiers, superClassName, ic, javadoc);
+			
+					if (!isInCompoundStatement()) {
+						getModeller().addClass(className.getText(), modifiers, superClassName, ic, javadoc);
+					}
+					
 		}
 		classBlock();
 		if ( inputState.guessing==0 ) {
-			getModeller().popClassifier();
+			
+					if (!isInCompoundStatement()) {
+					 	getModeller().popClassifier();
+					}
+					
 		}
 	}
 	
