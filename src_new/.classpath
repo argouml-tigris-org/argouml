@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
     <classpathentry
-        excluding="bin/|CVS/|templates/|tests/|.classpath|.cvsignore|.project|.project.bak|argouml.LICENSE.txt|argouml.log|build.bat|build.sh|build.xml|default.properties|README_COMPILE.txt|README_database.sql|README.txt|tlach-build.xml"
+        excluding="bin/|CVS/|templates/|tests/|.classpath|.cvsignore|.project|.project.bak|argouml.LICENSE.txt|argouml.log|build.bat|build.sh|build.xml|default.properties|README_COMPILE.txt|README_database.sql|README.txt|tlach-build.xml|build/"
         kind="src" path=""/>
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
     <classpathentry kind="src" path="/api"/>
