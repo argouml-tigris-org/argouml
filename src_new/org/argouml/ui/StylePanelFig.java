@@ -34,23 +34,26 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Rectangle;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-import org.tigris.gef.ui.*;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.text.Document;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.ui.ColorRenderer;
 
 public class StylePanelFig extends StylePanel
 implements ItemListener, FocusListener, KeyListener {
@@ -355,20 +358,54 @@ implements ItemListener, FocusListener, KeyListener {
             new java.util.StringTokenizer(bboxStr, ", ");
 
         try {
+            boolean changed = false;
+            if (!st.hasMoreTokens()) return _target.getBounds();
             res.x      = Integer.parseInt(st.nextToken());
+            if (!st.hasMoreTokens()) {
+                res.y = _target.getBounds().y;
+                res.width = _target.getBounds().width;
+                res.height = _target.getBounds().height;
+                return res;
+            }
             res.y      = Integer.parseInt(st.nextToken());
-            res.width  = Integer.parseInt(st.nextToken());
+            if (!st.hasMoreTokens()) {
+                res.width = _target.getBounds().width;
+                res.height = _target.getBounds().height;
+                return res;
+            }
+            res.width  = Integer.parseInt(st.nextToken());            
+            if ((res.width + res.x) > 6000 ) {
+                res.width = 6000 - res.x;
+                changed = true;
+            }
+            if (!st.hasMoreTokens()) {
+                res.width = _target.getBounds().width;
+                return res;
+            }
             res.height = Integer.parseInt(st.nextToken());
+            if ((res.height + res.y) > 1000) {
+                res.height = 1000;
+                changed = true;
+            }
+            if ((res.height + res.y) > 6000) {
+                res.height = 6000 - res.y;
+                changed = true;
+            }
+            if (changed) {
+                StringBuffer sb = new StringBuffer();
+                sb.append(Integer.toString(res.x));
+                sb.append(",");
+                sb.append(Integer.toString(res.y));
+                sb.append(",");
+                sb.append(Integer.toString(res.width));
+                sb.append(",");
+                sb.append(Integer.toString(res.height));                
+                _bboxField.setText(sb.toString());
+            }
         }
         catch (NumberFormatException ex) {
             return null;
-        }
-        catch (Exception ex) {
-            cat.error(getClass().toString() + 
-                               ": parseBBox - could not parse bounds '" +
-                               bboxStr + "'", ex);
-            return null;
-        }
+        }        
 
         return res;
     }
