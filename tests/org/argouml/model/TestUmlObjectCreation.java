@@ -84,278 +84,275 @@ import ru.novosoft.uml.model_management.MPackageImpl;
 
 public class TestUmlObjectCreation extends TestCase {
 
-    private UmlFactory factory = null;
+    public TestUmlObjectCreation(String n) { super(n); }
 
-	public TestUmlObjectCreation(String n) { super(n); }
+    private void runObjectFactoryType(boolean useProxy,
+				      UmlModelEntity c,
+				      Class expected,
+				      Object legacy,
+				      boolean runTest) {
+	// First test the traditional proxy
+	UmlFactory.getFactory().setJmiProxyCreated(useProxy);
 
-	private void runObjectFactoryType(boolean useProxy,
-	                                  UmlModelEntity c,
-	                                  Class expected,
-	                                  Object legacy,
-	                                  boolean runTest) {
-		// First test the traditional proxy
-		UmlFactory.getFactory().setJmiProxyCreated(useProxy);
-
-		assertTrue("Not a valid entity: " + c.getClass(),
-				   c instanceof UmlModelEntity);
+	assertTrue("Not a valid entity: " + c.getClass(),
+		   c instanceof UmlModelEntity);
 		
-		Object o = null;
-		o = ModelFacade.create(c);
-		assertNotNull("Could not create " + c.getClass().getName(), o);
+	Object o = null;
+	o = ModelFacade.create(c);
+	assertNotNull("Could not create " + c.getClass().getName(), o);
 		
-		// Make sure that the new create() mechanism gives the same class as the legacy create
-		if (legacy != null) {
-			if (useProxy) {
-				if (Proxy.isProxyClass(o.getClass())) {
-					InvocationHandler ih = Proxy.getInvocationHandler(o);
-					// This assumes that all objects must be proxied
-					assertTrue(o.getClass().getName() + " is not a proxy", ih instanceof RefBaseObjectProxy);
-					Object proxiedObject = RefBaseObjectProxy.getProxiedObject((RefBaseObjectProxy)ih);
-					assertEquals("Not the correct class", proxiedObject.getClass(), legacy.getClass());
-				}
-				else {
-					fail("Did not get a proxy class for " + legacy.getClass());
-				}
-			}
-			else {
-				assertEquals("Not the same class", o.getClass(), legacy.getClass());
-			}
+	// Make sure that the new create() mechanism gives the same
+	// class as the legacy create
+	if (legacy != null) {
+	    if (useProxy) {
+		if (Proxy.isProxyClass(o.getClass())) {
+		    InvocationHandler ih = Proxy.getInvocationHandler(o);
+		    // This assumes that all objects must be proxied
+		    assertTrue(o.getClass().getName() + " is not a proxy",
+			       ih instanceof RefBaseObjectProxy);
+		    Object proxiedObject =
+			RefBaseObjectProxy.getProxiedObject((RefBaseObjectProxy) ih);
+		    assertEquals("Not the correct class",
+				 proxiedObject.getClass(),
+				 legacy.getClass());
 		}
+		else {
+		    fail("Did not get a proxy class for " + legacy.getClass());
+		}
+	    }
+	    else {
+		assertEquals("Not the same class",
+			     o.getClass(),
+			     legacy.getClass());
+	    }
 	}
+    }
 	
-	private void testObjectFactoryType(UmlModelEntity c, Class expected, Object legacy, boolean runTest) {
+    private void testObjectFactoryType(UmlModelEntity c,
+				       Class expected,
+				       Object legacy,
+				       boolean runTest) {
         // Certain objects cannot be instantiated by NSUML.
-        // We allow these to be part of the test list for completeness, but do not test them.
-        if (! runTest) {
-        	return;
+        // We allow these to be part of the test list for
+        // completeness, but do not test them.
+        if (!runTest) {
+	    return;
         }
-		runObjectFactoryType(false, c, expected, legacy, runTest);
-		runObjectFactoryType(true, c, expected, legacy, runTest);
+	runObjectFactoryType(false, c, expected, legacy, runTest);
+	runObjectFactoryType(true, c, expected, legacy, runTest);
     }
 
-	public void testObjectFactory() {
-		testObjectFactoryType(
-			Uml.ABSTRACTION,
-			MAbstractionImpl.class,
-			CoreFactory.getFactory().createAbstraction(),
-			true);
-		testObjectFactoryType(
-			Uml.ASSOCIATION,
-			MAssociationImpl.class,
-			CoreFactory.getFactory().createAssociation(),
-			true);
-		testObjectFactoryType(
-			Uml.ASSOCIATION_ROLE,
-			MAssociationRoleImpl.class,
-			CollaborationsFactory.getFactory().createAssociationRole(),
-			true);
-		testObjectFactoryType(
-			Uml.DEPENDENCY,
-			MDependencyImpl.class,
-			CoreFactory.getFactory().createDependency(),
-			true);
-		testObjectFactoryType(
-			Uml.EXTEND,
-			MExtendImpl.class,
-			UseCasesFactory.getFactory().createExtend(),
-			true);
-		testObjectFactoryType(
-			Uml.GENERALIZATION,
-			MGeneralizationImpl.class,
-			CoreFactory.getFactory().createGeneralization(),
-			true);
-		testObjectFactoryType(
-			Uml.INCLUDE,
-			MIncludeImpl.class,
-			UseCasesFactory.getFactory().createInclude(),
-			true);
-		testObjectFactoryType(
-			Uml.LINK,
-			MLinkImpl.class,
-			CommonBehaviorFactory.getFactory().createLink(),
-			true);
-		testObjectFactoryType(
-			Uml.PERMISSION,
-			MPermissionImpl.class,
-			CoreFactory.getFactory().createPermission(),
-			true);
-		testObjectFactoryType(
-			Uml.USAGE,
-			MUsageImpl.class,
-			CoreFactory.getFactory().createUsage(),
-			true);
-		testObjectFactoryType(
-			Uml.TRANSITION,
-			MTransitionImpl.class,
-			StateMachinesFactory.getFactory().createTransition(),
-			true);
-		testObjectFactoryType(
-			Uml.ACTOR,
-			MActorImpl.class,
-			UseCasesFactory.getFactory().createActor(),
-			true);
-		testObjectFactoryType(
-			Uml.CLASS,
-			MClassImpl.class,
-			CoreFactory.getFactory().createClass(),
-			true);
-		testObjectFactoryType(
-			Uml.CLASSIFIER,
-			MClassifierImpl.class,
-			CoreFactory.getFactory().createClassifier(),
-			true);
-		testObjectFactoryType(
-			Uml.CLASSIFIER_ROLE,
-			MClassifierRoleImpl.class,
-			CollaborationsFactory.getFactory().createClassifierRole(),
-			true);
-		testObjectFactoryType(
-			Uml.COMPONENT,
-			MComponentImpl.class,
-			CoreFactory.getFactory().createComponent(),
-			true);
-		testObjectFactoryType(
-			Uml.INSTANCE,
-			MInstanceImpl.class,
-			CommonBehaviorFactory.getFactory().createInstance(),
-			true);
-		testObjectFactoryType(
-			Uml.INTERFACE,
-			MInterfaceImpl.class,
-			CoreFactory.getFactory().createInterface(),
-			true);
-		testObjectFactoryType(
-			Uml.NODE,
-			MNodeImpl.class,
-			CoreFactory.getFactory().createNode(),
-			true);
-		testObjectFactoryType(
-			Uml.NODE_INSTANCE,
-			MNodeInstanceImpl.class,
-			CommonBehaviorFactory.getFactory().createNodeInstance(),
-			true);
-		testObjectFactoryType(
-			Uml.OBJECT,
-			MObjectImpl.class,
-			CommonBehaviorFactory.getFactory().createObject(),
-			true);
-		testObjectFactoryType(
-			Uml.PACKAGE,
-			MPackageImpl.class,
-			ModelManagementFactory.getFactory().createPackage(),
-			true);
-		testObjectFactoryType(
-			Uml.STATE,
-			MStateImpl.class,
-			StateMachinesFactory.getFactory().createState(),
-			true);
-		testObjectFactoryType(
-			Uml.COMPOSITE_STATE,
-			MCompositeStateImpl.class,
-			StateMachinesFactory.getFactory().createCompositeState(),
-			true);
-		testObjectFactoryType(
-			Uml.PSEUDOSTATE,
-			MPseudostateImpl.class,
-			StateMachinesFactory.getFactory().createPseudostate(),
-			true);
-		testObjectFactoryType(
-			Uml.USE_CASE,
-			MUseCaseImpl.class,
-			UseCasesFactory.getFactory().createUseCase(),
-			true);
-		testObjectFactoryType(
-			Uml.ACTION,
-			MActionImpl.class,
-			CommonBehaviorFactory.getFactory().createAction(),
-			true);
-		testObjectFactoryType(
-			Uml.ASSOCIATION_END,
-			MAssociationEndImpl.class,
-			CoreFactory.getFactory().createAssociationEnd(),
-			true);
-		testObjectFactoryType(
-			Uml.CALL_ACTION,
-			MCallActionImpl.class,
-			CommonBehaviorFactory.getFactory().createCallAction(),
-			true);
-		testObjectFactoryType(
-			Uml.NAMESPACE,
-			MNamespaceImpl.class,
-			CoreFactory.getFactory().createNamespace(),
-			true);
-		testObjectFactoryType(
-			Uml.RECEPTION,
-			MReceptionImpl.class,
-			CommonBehaviorFactory.getFactory().createReception(),
-			true);
-		testObjectFactoryType(
-			Uml.STEREOTYPE,
-			MStereotypeImpl.class,
-			ExtensionMechanismsFactory.getFactory().createStereotype(),
-			true);
-		testObjectFactoryType(
-			Uml.ATTRIBUTE,
-			MAttributeImpl.class,
-			CoreFactory.getFactory().createAttribute(),
-			true);
-		testObjectFactoryType(
-			Uml.OPERATION,
-			MOperationImpl.class,
-			CoreFactory.getFactory().createOperation(),
-			true);
-		testObjectFactoryType(
-			Uml.DATATYPE,
-			MDataTypeImpl.class,
-			CoreFactory.getFactory().createDataType(),
-			true);
+    public void testObjectFactory() {
+	testObjectFactoryType(
+			      Uml.ABSTRACTION,
+			      MAbstractionImpl.class,
+			      CoreFactory.getFactory().createAbstraction(),
+			      true);
+	testObjectFactoryType(
+			      Uml.ASSOCIATION,
+			      MAssociationImpl.class,
+			      CoreFactory.getFactory().createAssociation(),
+			      true);
+	testObjectFactoryType(
+			      Uml.ASSOCIATION_ROLE,
+			      MAssociationRoleImpl.class,
+			      CollaborationsFactory.getFactory().createAssociationRole(),
+			      true);
+	testObjectFactoryType(
+			      Uml.DEPENDENCY,
+			      MDependencyImpl.class,
+			      CoreFactory.getFactory().createDependency(),
+			      true);
+	testObjectFactoryType(
+			      Uml.EXTEND,
+			      MExtendImpl.class,
+			      UseCasesFactory.getFactory().createExtend(),
+			      true);
+	testObjectFactoryType(
+			      Uml.GENERALIZATION,
+			      MGeneralizationImpl.class,
+			      CoreFactory.getFactory().createGeneralization(),
+			      true);
+	testObjectFactoryType(
+			      Uml.INCLUDE,
+			      MIncludeImpl.class,
+			      UseCasesFactory.getFactory().createInclude(),
+			      true);
+	testObjectFactoryType(
+			      Uml.LINK,
+			      MLinkImpl.class,
+			      CommonBehaviorFactory.getFactory().createLink(),
+			      true);
+	testObjectFactoryType(
+			      Uml.PERMISSION,
+			      MPermissionImpl.class,
+			      CoreFactory.getFactory().createPermission(),
+			      true);
+	testObjectFactoryType(
+			      Uml.USAGE,
+			      MUsageImpl.class,
+			      CoreFactory.getFactory().createUsage(),
+			      true);
+	testObjectFactoryType(
+			      Uml.TRANSITION,
+			      MTransitionImpl.class,
+			      StateMachinesFactory.getFactory().createTransition(),
+			      true);
+	testObjectFactoryType(
+			      Uml.ACTOR,
+			      MActorImpl.class,
+			      UseCasesFactory.getFactory().createActor(),
+			      true);
+	testObjectFactoryType(
+			      Uml.CLASS,
+			      MClassImpl.class,
+			      CoreFactory.getFactory().createClass(),
+			      true);
+	testObjectFactoryType(
+			      Uml.CLASSIFIER,
+			      MClassifierImpl.class,
+			      CoreFactory.getFactory().createClassifier(),
+			      true);
+	testObjectFactoryType(
+			      Uml.CLASSIFIER_ROLE,
+			      MClassifierRoleImpl.class,
+			      CollaborationsFactory.getFactory().createClassifierRole(),
+			      true);
+	testObjectFactoryType(
+			      Uml.COMPONENT,
+			      MComponentImpl.class,
+			      CoreFactory.getFactory().createComponent(),
+			      true);
+	testObjectFactoryType(
+			      Uml.INSTANCE,
+			      MInstanceImpl.class,
+			      CommonBehaviorFactory.getFactory().createInstance(),
+			      true);
+	testObjectFactoryType(
+			      Uml.INTERFACE,
+			      MInterfaceImpl.class,
+			      CoreFactory.getFactory().createInterface(),
+			      true);
+	testObjectFactoryType(
+			      Uml.NODE,
+			      MNodeImpl.class,
+			      CoreFactory.getFactory().createNode(),
+			      true);
+	testObjectFactoryType(
+			      Uml.NODE_INSTANCE,
+			      MNodeInstanceImpl.class,
+			      CommonBehaviorFactory.getFactory().createNodeInstance(),
+			      true);
+	testObjectFactoryType(
+			      Uml.OBJECT,
+			      MObjectImpl.class,
+			      CommonBehaviorFactory.getFactory().createObject(),
+			      true);
+	testObjectFactoryType(
+			      Uml.PACKAGE,
+			      MPackageImpl.class,
+			      ModelManagementFactory.getFactory().createPackage(),
+			      true);
+	testObjectFactoryType(
+			      Uml.STATE,
+			      MStateImpl.class,
+			      StateMachinesFactory.getFactory().createState(),
+			      true);
+	testObjectFactoryType(
+			      Uml.COMPOSITE_STATE,
+			      MCompositeStateImpl.class,
+			      StateMachinesFactory.getFactory().createCompositeState(),
+			      true);
+	testObjectFactoryType(
+			      Uml.PSEUDOSTATE,
+			      MPseudostateImpl.class,
+			      StateMachinesFactory.getFactory().createPseudostate(),
+			      true);
+	testObjectFactoryType(
+			      Uml.USE_CASE,
+			      MUseCaseImpl.class,
+			      UseCasesFactory.getFactory().createUseCase(),
+			      true);
+	testObjectFactoryType(
+			      Uml.ACTION,
+			      MActionImpl.class,
+			      CommonBehaviorFactory.getFactory().createAction(),
+			      true);
+	testObjectFactoryType(
+			      Uml.ASSOCIATION_END,
+			      MAssociationEndImpl.class,
+			      CoreFactory.getFactory().createAssociationEnd(),
+			      true);
+	testObjectFactoryType(
+			      Uml.CALL_ACTION,
+			      MCallActionImpl.class,
+			      CommonBehaviorFactory.getFactory().createCallAction(),
+			      true);
+	testObjectFactoryType(
+			      Uml.NAMESPACE,
+			      MNamespaceImpl.class,
+			      CoreFactory.getFactory().createNamespace(),
+			      true);
+	testObjectFactoryType(
+			      Uml.RECEPTION,
+			      MReceptionImpl.class,
+			      CommonBehaviorFactory.getFactory().createReception(),
+			      true);
+	testObjectFactoryType(
+			      Uml.STEREOTYPE,
+			      MStereotypeImpl.class,
+			      ExtensionMechanismsFactory.getFactory().createStereotype(),
+			      true);
+	testObjectFactoryType(
+			      Uml.ATTRIBUTE,
+			      MAttributeImpl.class,
+			      CoreFactory.getFactory().createAttribute(),
+			      true);
+	testObjectFactoryType(
+			      Uml.OPERATION,
+			      MOperationImpl.class,
+			      CoreFactory.getFactory().createOperation(),
+			      true);
+	testObjectFactoryType(
+			      Uml.DATATYPE,
+			      MDataTypeImpl.class,
+			      CoreFactory.getFactory().createDataType(),
+			      true);
 
-		testObjectFactoryType(
-			Uml.ACTION_EXPRESSION,
-			MActionExpression.class,
-            null,
-			true);
-		testObjectFactoryType(
-			Uml.COMPONENT_INSTANCE,
-			MComponentInstanceImpl.class,
-			CommonBehaviorFactory.getFactory().createComponentInstance(),
-			true);
+	testObjectFactoryType(
+			      Uml.ACTION_EXPRESSION,
+			      MActionExpression.class,
+			      null,
+			      true);
+	testObjectFactoryType(
+			      Uml.COMPONENT_INSTANCE,
+			      MComponentInstanceImpl.class,
+			      CommonBehaviorFactory.getFactory().createComponentInstance(),
+			      true);
 
 
-		// NSUML cannot instantiate a State Vertex object
-		testObjectFactoryType(
-			Uml.STATE_VERTEX,
-			MStateVertexImpl.class,
-			DataTypesFactory.getFactory(),
-			false);
+	// NSUML cannot instantiate a State Vertex object
+	testObjectFactoryType(
+			      Uml.STATE_VERTEX,
+			      MStateVertexImpl.class,
+			      DataTypesFactory.getFactory(),
+			      false);
 
-		// NSUML cannot instantiate an Event object
-		testObjectFactoryType(Uml.EVENT, MEventImpl.class, null, false);
+	// NSUML cannot instantiate an Event object
+	testObjectFactoryType(Uml.EVENT, MEventImpl.class, null, false);
 
-	}
+    }
 
-	/** @see junit.framework.TestCase#setUp()
+    /** @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+	super.setUp();
+
+	/* Running the tests here causes instantiation errors from the
+	 * navigator pane.  This is a temporary hack until the object
+	 * model is cleaned up.
 	 */
-	protected void setUp() throws Exception {
-		super.setUp();
-
-		/* Running the tests here causes instantiation errors from the navigator pane.
-		 * This is a temporary hack until the object model is cleaned up.
-		 */
-		NavigatorPane.setInstance(null);
-		assertNull("Still getting NavigatorPane", NavigatorPane.getInstance());
-
-		// Get the factory instance
-		factory = UmlFactory.getFactory();
-		assertNotNull("Did not get Factory", factory);
-		assertEquals("Did not get the correct Factory",
-					 factory.getClass(), UmlFactory.class);
-	}
-
-	/** @see junit.framework.TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
+	NavigatorPane.setInstance(null);
+	assertNull("Still getting NavigatorPane", NavigatorPane.getInstance());
+    }
 }
