@@ -2208,13 +2208,16 @@ This is the navigator pane view of the model.
 	  </listitem>
 
 	  <listitem>
-	    <para>Pluggable interface</para>
+	    <para>Module loader</para>
+	    <indexterm>
+	      <primary>Module loader</primary>
+	    </indexterm>
 	    <indexterm>
 	      <primary>Pluggable interface</primary>
 	    </indexterm>
 	    <para>
-This is the interface where it is possible to plug in all other stuff
-into ArgoUML.
+This is the load mechanism for loading all Layer 3 and 
+other modules into ArgoUML.
 </para>
 	  </listitem>
 	</itemizedlist>
@@ -2230,7 +2233,7 @@ to layer 0 and 1 components.
       <para>
 These components are primarily connected through the 
 pluggable interfaces meaning that they can be
-individually disabled.
+individually disabled using the module loader.
 </para>
 
       <para>
@@ -2273,6 +2276,16 @@ and code generation.
 	    </indexterm>
 	    <para>
 This is the critics.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>OCL</para>
+	    <indexterm>
+	      <primary>OCL</primary>
+	    </indexterm>
+	    <para>
+This is the editing of the OCL strings.
 </para>
 	  </listitem>
 
@@ -4939,9 +4952,6 @@ F E D
 
     <sect1 id="guiframework">
       <title>The GUI Framework</title>
-    <para>
-This section is not yet updated to discuss layers.
-</para>
       <indexterm>
 	<primary>GUI Framework</primary>
       </indexterm>
@@ -4967,11 +4977,6 @@ This is implemented directly on top of the Swing and Java2.
 
       <sect2 id="howdoi_detailspanel">
 	<title>How do I ...?</title>
-	<warning>
-	  <para>
-This is totally outdated and does not fit the new component organization.
-</para>
-	</warning>
 	<para>
 	  <itemizedlist>
 	    <listitem>
@@ -5447,8 +5452,152 @@ it is better to rely on this simpler mechanism to guarantee correctness.
 &cookbooklogging;
 
 
-    <sect1 id="general">
-      <title>General information</title>
+    <sect1 id="jre">
+      <title>JRE with utils</title>
+      <para>
+Purpose - to provide the infrastructure to run everything.
+</para>
+      <para>
+The JRE is a Layer 0 component. See <xref linkend="layer1"></xref>.
+It is not distributed with ArgoUML but considered to be 
+a precondition in the same respect as the user's host.
+</para>
+      <para>
+This is a Java3 JRE so swing and awt can be used together with
+reflection.
+</para>
+    </sect1>
+
+    <sect1 id="todoitems">
+      <title>To do items</title>
+      <indexterm>
+	<primary>To do items</primary>
+      </indexterm>
+      <para>
+Purpose - To keep track of the To do items.
+Items are generated and removed automatically by the critics.
+They could also be created by other means.
+</para>
+      <para>
+The To do items are located in
+<classname>org.argouml.?</classname>
+</para>
+      <para>
+The To do items is a Layer 1 component. See <xref linkend="layer1"></xref>.
+</para>
+    </sect1>
+
+
+    <sect1 id="propertypanels">
+      <title>Property panels</title>
+      <para>
+Purpose - to provide a form view of the diagrams and objects in the model.
+The contents of the model is modifyable.
+</para>
+      <para>
+The Property panels will be located in
+<classname>org.argouml.?</classname>.
+</para>
+      <para>
+The Property panels is a Layer 2 component. See <xref linkend="layer2"></xref>.
+</para>
+      <para>
+Currently the PropPanels for the diagrams is in
+<classname>org.argouml.uml.diagram.ui</classname>
+and the property panels for the other object are in
+<classname>org.argouml.uml.ui.<replaceable>NS-UML path</replaceable></classname>.
+</para>
+    </sect1>
+
+
+    <sect1 id="navigatorpane">
+      <title>Navigator pane</title>
+      <para>
+Purpose - to provide a tree view of the diagrams and objects in the model.
+</para>
+      <para>
+The Navigator pane will be located in
+<classname>org.argouml.?</classname>
+</para>
+      <para>
+The Navigator pane is a Layer 2 component. See <xref linkend="layer2"></xref>.
+</para>
+      <para>
+Currently the Navigator pane is mixed with the GUI framework
+and actions in
+<classname>org.argouml.ui</classname>.
+Parts of it (Go rules) are mixed with Diagrams and Property panels 
+under
+<classname>org.argouml.uml.diagram.ui</classname> and
+<classname>org.argouml.uml.diagram.<replaceable>diagram</replaceable>.ui</classname>.
+</para>
+    </sect1>
+
+
+    <sect1 id="moduleloader">
+      <title>Module loader</title>
+      <para>
+Purpose - to provide the mechanisms to load (and unload) the Layer 3
+and auxiliary modules.
+</para>
+      <para>
+The Module loader will be located in
+<classname>org.argouml.?</classname>.
+</para>
+      <para>
+The Module loader is a Layer 2 component. See <xref linkend="layer2"></xref>.
+</para>
+      <para>
+Currently the module loader is located in
+<classname>org.argouml.application.modules.ModuleLoader</classname>
+with interfaces in
+<classname>org.aroguml.application.api</classname>.
+</para>
+      <para>
+This just handles the enabling and disabling of every module.
+It is then the modules responsibility to connect and register to
+the component or components it is going to work with using that
+components Facade or Plugin interface.
+</para>
+      <para>
+For details see <xref linkend="modules_and_plugins"></xref>.
+</para>
+    </sect1>
+
+
+    <sect1 id="ocl">
+      <title>OCL</title>
+      <indexterm>
+	<primary>OCL</primary>
+      </indexterm>
+      <indexterm>
+	<primary>Constraints</primary>
+      </indexterm>
+      <para>
+Purpose - To allow for editing of strings in the OCL language.
+</para>
+      <para>
+The OCL is located in
+<classname>org.argouml.ocl</classname>.
+</para>
+      <para>
+The OCL is a Layer 3 component. See <xref linkend="layer3"></xref>.
+</para>
+      <para>
+	<indexterm>
+	  <primary>Dresden OCL Toolkit</primary>
+	</indexterm>
+Currently this component is more or less only 
+Dresden OCL Toolkit
+and adaptation.
+</para>
+    </sect1>
+
+  </chapter>
+
+  <chapter id="general">
+    <title>General information</title>
+
       <para>
 This section is not yet updated to discuss layers.
 </para>
@@ -5456,7 +5605,8 @@ This section is not yet updated to discuss layers.
 This section explains some general concepts which come in handy, when 
 programming in ArgoUML.
 </para>
-      <sect2 id="howdoi_general">
+
+    <sect1 id="howdoi_general">
 	<title>How do I ...?</title>
 	<para>
 <itemizedlist>
@@ -5487,7 +5637,6 @@ Beware that there might be more than one Fig Element per
 	    </listitem>
 	  </itemizedlist>
 </para> 
-      </sect2>
     </sect1>
 
 &cookbookmodules;
