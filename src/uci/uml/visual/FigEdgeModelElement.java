@@ -51,7 +51,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
  *  look like arcs and that have editiable names. */
 
 public abstract class FigEdgeModelElement extends FigEdgePoly
-implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener  { 
+implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener  {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -412,5 +412,15 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	    damage();
 	}
 
+  // notify GraphModel of deletion.
+  public void delete() {
+    LayerPerspective lay = (LayerPerspective)getLayer();
+    if ( lay != null && getOwner() != null ) {
+      GraphModel gm = lay.getGraphModel();
+      if ( gm != null && gm instanceof MutableGraphModel )
+        ((MutableGraphModel)gm).removeEdge(getOwner());
+    }
+    super.delete();
+  }
 
 } /* end class FigEdgeModelElement */

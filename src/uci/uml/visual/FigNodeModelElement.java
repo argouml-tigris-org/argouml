@@ -347,7 +347,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 		if (!_readyToEdit) {
 			if (getOwner() instanceof MModelElement) {
 				MModelElement own = (MModelElement) getOwner();
-				own.setName(""); 
+				own.setName("");
 				_readyToEdit = true;
 			}
 			else {
@@ -369,7 +369,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     if (!_readyToEdit) {
       if (getOwner() instanceof MModelElement) {
 	MModelElement me = (MModelElement) getOwner();
-	me.setName(""); 
+	me.setName("");
 	_readyToEdit = true;
       }
       else {
@@ -457,4 +457,16 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     _readyToEdit = true;
     updateBounds();
   }
+
+  // notify GraphModel of deletion.
+  public void delete() {
+    LayerPerspective lay = (LayerPerspective)getLayer();
+    if ( lay != null && getOwner() != null ) {
+      GraphModel gm = lay.getGraphModel();
+      if ( gm != null && gm instanceof MutableGraphModel )
+        ((MutableGraphModel)gm).removeNode(getOwner());
+    }
+    super.delete();
+  }
+
 } /* end class FigNodeModelElement */
