@@ -37,11 +37,6 @@ import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
 import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.tigris.gef.util.VectorSet;
-import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
-
-
-
-
 /**
  * A critic to detect when there are component-instances that
  * are not inside a node-instance
@@ -99,9 +94,9 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
 	    if (!(obj instanceof FigComponentInstance)) continue;
 	    FigComponentInstance figComponentInstance = (FigComponentInstance) obj;
 	    if (figComponentInstance != null) {
-		MComponentInstance coi = (MComponentInstance) figComponentInstance.getOwner();
+		Object coi = /*(MComponentInstance)*/ figComponentInstance.getOwner();
 		if (coi != null) {
-		    Collection col = coi.getClassifiers();
+		    Collection col = ModelFacade.getClassifiers(coi);
 		    if (col.size() > 0) continue;     
 		}       
 		if (offs == null) {

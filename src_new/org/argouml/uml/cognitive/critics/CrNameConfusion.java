@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -41,12 +40,6 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
-
-
-
 /** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
@@ -62,28 +55,28 @@ public class CrNameConfusion extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAModelElement(dm))) return NO_PROBLEM;
-	MModelElement me = (MModelElement) dm;
+	Object me = /*(MModelElement)*/ dm;
 	VectorSet offs = computeOffenders(me);
 	if (offs.size() > 1) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
 
-    public VectorSet computeOffenders(MModelElement dm) {
-	MNamespace ns = dm.getNamespace();
+    public VectorSet computeOffenders(Object/*MModelElement*/ dm) {
+	Object ns = ModelFacade.getNamespace(dm);
 	VectorSet res = new VectorSet(dm);
-	String n = dm.getName();
+	String n = ModelFacade.getName(dm);
 	if (n == null || n.equals("")) return res;
 	String dmNameStr = n;
 	if (dmNameStr == null || dmNameStr.length() == 0) return res;
 	String stripped2 = strip(dmNameStr);
 	if (ns == null) return res;
-	Collection oes = ns.getOwnedElements();
+	Collection oes = ModelFacade.getOwnedElements(ns);
 	if (oes == null) return res;
 	Iterator enum = oes.iterator();
 	while (enum.hasNext()) {
-	    MModelElement me2 = (MModelElement) enum.next();
+	    Object me2 = /*(MModelElement)*/ enum.next();
 	    if (me2 == dm) continue;
-	    String meName = me2.getName();
+	    String meName = ModelFacade.getName(me2);
 	    if (meName == null || meName.equals("")) continue;
 	    String compareName = meName;
 	    if (confusable(stripped2, strip(compareName)) &&
@@ -95,7 +88,7 @@ public class CrNameConfusion extends CrUML {
     }
 
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	MModelElement me = (MModelElement) dm;
+	Object me = /*(MModelElement)*/ dm;
 	VectorSet offs = computeOffenders(me);
 	return new ToDoItem(this, offs, dsgr);
     }
@@ -103,7 +96,7 @@ public class CrNameConfusion extends CrUML {
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
-	MModelElement dm = (MModelElement) offs.firstElement();
+	Object dm = /*(MModelElement)*/ offs.firstElement();
 	if (!predicate(dm, dsgr)) return false;
 	VectorSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);

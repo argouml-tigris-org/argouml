@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -36,11 +34,6 @@ package org.argouml.uml.cognitive.critics;
 import javax.swing.Icon;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
-
-
-
 /** A critic to detect whether a model element name is legally formed.
  */
 public class CrIllegalName extends CrUML {
@@ -53,8 +46,8 @@ public class CrIllegalName extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAModelElement(dm))) return NO_PROBLEM;
-	MModelElement me = (MModelElement) dm;
-	String meName = me.getName();
+	Object me = /*(MModelElement)*/ dm;
+	String meName = ModelFacade.getName(me);
 	if (meName == null || meName.equals("")) return NO_PROBLEM;
 	String nameStr = meName;
 	int len = nameStr.length();

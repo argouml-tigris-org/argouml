@@ -31,20 +31,15 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.kernel.Wizard;
+import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
-
-
 /** A non-modal wizard to help the user change navigability
  *  of an association. */
 
@@ -63,11 +58,11 @@ public class WizNavigable extends Wizard {
 								      
     public int getNumSteps() { return 1; }
 									  
-    public MModelElement getModelElement() {
+    public Object getModelElement() {
 	if (_item != null) {
 	    VectorSet offs = _item.getOffenders();
 	    if (offs.size() >= 1) {
-		MModelElement me = (MModelElement) offs.elementAt(0);
+		Object me = /*(MModelElement)*/ offs.elementAt(0);
 		return me;
 	    }
 	}
@@ -76,17 +71,19 @@ public class WizNavigable extends Wizard {
 									      
     public Vector getOptions() {
 	Vector res = new Vector();
-	MAssociation asc = (MAssociation) getModelElement();
-	MAssociationEnd ae0 = (MAssociationEnd) asc.getConnections().get(0);
-	MAssociationEnd ae1 = (MAssociationEnd) asc.getConnections().get(1);
-	MClassifier cls0 = ae0.getType();
-	MClassifier cls1 = ae1.getType();
+	Object asc = /*(MAssociation)*/ getModelElement();
+	Object ae0 = /*(MAssociationEnd)*/new ArrayList(ModelFacade.getConnections(asc)).get(0);
+	Object ae1 = /*(MAssociationEnd)*/new ArrayList(ModelFacade.getConnections(asc)).get(1);
+	Object cls0 = ModelFacade.getType(ae0);
+	Object cls1 = ModelFacade.getType(ae1);
 			
-	if (cls0 != null && !"".equals(cls0.getName()))
-	    _option0 = "Navigable Toward " + cls0.getName();
+	if (cls0 != null && !"".equals(ModelFacade.getName(cls0))) {
+	    _option0 = "Navigable Toward " + ModelFacade.getName(cls0);
+        }
 									   
-	if (cls1 != null && !"".equals(cls1.getName()))
-	    _option1 = "Navigable Toward " + cls1.getName();
+	if (cls1 != null && !"".equals(ModelFacade.getName(cls1))) {
+	    _option1 = "Navigable Toward " + ModelFacade.getName(cls1);
+        }
  
 	// TODO: put in class names
 	res.addElement(_option0);
@@ -125,13 +122,13 @@ public class WizNavigable extends Wizard {
 		throw new Error("nothing selected, should not get here");
 	    }
 	    try {
-		MAssociation asc = (MAssociation) getModelElement();
-		MAssociationEnd ae0 =
-		    (MAssociationEnd) asc.getConnections().get(0);
-		MAssociationEnd ae1 =
-		    (MAssociationEnd) asc.getConnections().get(1);
-		ae0.setNavigable(choice == 0 || choice == 2);
-		ae1.setNavigable(choice == 1 || choice == 2);
+		Object asc = /*(MAssociation)*/ getModelElement();
+		Object ae0 =
+		    /*(MAssociationEnd)*/ new ArrayList(ModelFacade.getConnections(asc)).get(0);
+		Object ae1 =
+		    /*(MAssociationEnd)*/ new ArrayList(ModelFacade.getConnections(asc)).get(1);
+		ModelFacade.setNavigable(ae0, choice == 0 || choice == 2);
+		ModelFacade.setNavigable(ae1, choice == 1 || choice == 2);
 	    }
 	    catch (Exception pve) {
 		cat.error("could not set navigablity", pve);

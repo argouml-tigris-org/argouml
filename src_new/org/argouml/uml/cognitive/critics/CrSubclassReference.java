@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -30,6 +29,7 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -41,11 +41,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.GenDescendantClasses;
 
 import org.tigris.gef.util.VectorSet;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MClassifier;
-
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
 
@@ -62,14 +57,14 @@ public class CrSubclassReference extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
-	MClass cls = (MClass) dm;
+	Object cls = /*(MClass)*/ dm;
 	VectorSet offs = computeOffenders(cls);
 	if (offs != null) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
 
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	MClassifier cls = (MClassifier) dm;
+	Object cls = /*(MClassifier)*/ dm;
 	VectorSet offs = computeOffenders(cls);
 	return new ToDoItem(this, offs, dsgr);
     }
@@ -77,15 +72,15 @@ public class CrSubclassReference extends CrUML {
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
-	MClassifier dm = (MClassifier) offs.firstElement();
+	Object dm = /*(MClassifier)*/ offs.firstElement();
 	//if (!predicate(dm, dsgr)) return false;
 	VectorSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);
 	return res;
     }
 
-    public VectorSet computeOffenders(MClassifier cls) {
-	Collection asc = cls.getAssociationEnds();
+    public VectorSet computeOffenders(Object/*MClassifier*/ cls) {
+	Collection asc = ModelFacade.getAssociationEnds(cls);
 	if (asc == null || asc.size() == 0) return null;
 
 	Enumeration descendEnum =
@@ -99,15 +94,15 @@ public class CrSubclassReference extends CrUML {
 	int nAsc = asc.size();
 	VectorSet offs = null;
 	for (Iterator iter = asc.iterator(); iter.hasNext();) {
-	    MAssociationEnd ae = (MAssociationEnd) iter.next();
-	    MAssociation a = ae.getAssociation();
-	    List conn = a.getConnections();
+	    Object ae = /*(MAssociationEnd)*/ iter.next();
+	    Object a = ModelFacade.getAssociation(ae);
+	    List conn = new ArrayList(ModelFacade.getConnections(a));
 	    if (conn.size() != 2) continue;
-	    MAssociationEnd otherEnd = (MAssociationEnd) conn.get(0);
+	    Object otherEnd = /*(MAssociationEnd)*/ conn.get(0);
 	    if (ae == conn.get(0))
-		otherEnd = (MAssociationEnd) conn.get(1);
-	    if (!otherEnd.isNavigable()) continue;
-	    MClassifier otherCls = otherEnd.getType();
+		otherEnd = /*(MAssociationEnd)*/ conn.get(1);
+	    if (!ModelFacade.isNavigable(otherEnd)) continue;
+	    Object otherCls = ModelFacade.getType(otherEnd);
 	    if (descendants.contains(otherCls)) {
 		if (offs == null) {
 		    offs = new VectorSet();

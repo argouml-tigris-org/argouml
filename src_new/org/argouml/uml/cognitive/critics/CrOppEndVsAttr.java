@@ -35,11 +35,6 @@ import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MStructuralFeature;
-
 /** Well-formedness rule [2] for MClassifier. See page 29 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
@@ -60,9 +55,9 @@ public class CrOppEndVsAttr extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(ModelFacade.isAClassifier(dm)))
             return NO_PROBLEM;
-        MClassifier cls = (MClassifier) dm;
+        Object cls = /*(MClassifier)*/ dm;
         Vector namesSeen = new Vector();
-        Collection str = cls.getFeatures();
+        Collection str = ModelFacade.getFeatures(cls);
 
         Iterator enum = str.iterator();
 
@@ -73,9 +68,9 @@ public class CrOppEndVsAttr extends CrUML {
             if (!(ModelFacade.isAStructuralFeature(o)))
                 continue;
 
-            MStructuralFeature sf = (MStructuralFeature) o;
+            Object sf = /*(MStructuralFeature)*/ o;
 
-            String sfName = sf.getName();
+            String sfName = ModelFacade.getName(sf);
             if ("".equals(sfName))
                 continue;
 
@@ -87,14 +82,14 @@ public class CrOppEndVsAttr extends CrUML {
 
         }
 
-        Collection assocEnds = cls.getAssociationEnds();
+        Collection assocEnds = ModelFacade.getAssociationEnds(cls);
 
         enum = assocEnds.iterator();
         // warn about inheritied name conflicts, different critic?
         while (enum.hasNext()) {
-            MAssociationEnd myAe = (MAssociationEnd) enum.next();
-            MAssociation asc = (MAssociation) myAe.getAssociation();
-            Collection conn = asc.getConnections();
+            Object myAe = /*(MAssociationEnd)*/ enum.next();
+            Object asc = /*(MAssociation)*/ ModelFacade.getAssociation(myAe);
+            Collection conn = ModelFacade.getConnections(asc);
 
             if (ModelFacade.isAAssociationRole(asc))
                 conn = ModelFacade.getConnections(asc);
@@ -103,10 +98,10 @@ public class CrOppEndVsAttr extends CrUML {
 
             Iterator enum2 = conn.iterator();
             while (enum2.hasNext()) {
-                MAssociationEnd ae = (MAssociationEnd) enum2.next();
-                if (ae.getType() == cls)
+                Object ae = /*(MAssociationEnd)*/ enum2.next();
+                if (ModelFacade.getType(ae) == cls)
                     continue;
-                String aeName = ae.getName();
+                String aeName = ModelFacade.getName(ae);
                 if ("".equals(aeName))
                     continue;
                 String aeNameStr = aeName;

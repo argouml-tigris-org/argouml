@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,13 +37,6 @@ import javax.swing.Icon;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MElementImport;
-
-
-
 public class CrDisambigStateName extends CrUML {
 
     public CrDisambigStateName() {
@@ -57,27 +49,27 @@ public class CrDisambigStateName extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAState(dm))) return NO_PROBLEM;
-	MState s = (MState) dm;
-	String myName = s.getName();
+	Object state = /*(MState)*/ dm;
+	String myName = ModelFacade.getName(state);
 	// TODO: should define a CompoundCritic
 	if (myName == null || myName.equals("")) return NO_PROBLEM;
 	String myNameString = myName;
 	if (myNameString.length() == 0) return NO_PROBLEM;
-	Collection pkgs = s.getElementImports2();
+	Collection pkgs = ModelFacade.getElementImports2(state);
 	if (pkgs == null) return NO_PROBLEM;
 	for (Iterator iter = pkgs.iterator(); iter.hasNext();) {
-	    MElementImport imp = (MElementImport) iter.next();
-	    MNamespace ns = imp.getPackage();
+	    Object imp = /*(MElementImport)*/ iter.next();
+	    Object ns = ModelFacade.getPackage(imp);
 	    if (ns == null) return NO_PROBLEM;
-	    Collection oes = ns.getOwnedElements();
+	    Collection oes = ModelFacade.getOwnedElements(ns);
 	    if (oes == null) return NO_PROBLEM;
 	    Iterator enum = oes.iterator();
 	    while (enum.hasNext()) {
-		MElementImport eo = (MElementImport) enum.next();
-		MModelElement me = (MModelElement) eo.getModelElement();
+		Object eo = /*(MElementImport)*/ enum.next();
+		Object me = /*(MModelElement)*/ ModelFacade.getModelElement(eo);
 		if (!(ModelFacade.isAClassifier(me))) continue;
-		if (me == s) continue;
-		String meName = me.getName();
+		if (me == state) continue;
+		String meName = ModelFacade.getName(me);
 		if (meName == null || meName.equals("")) continue;
 		if (meName.equals(myNameString)) return PROBLEM_FOUND;
 	    }

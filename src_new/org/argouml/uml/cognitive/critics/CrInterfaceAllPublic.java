@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -37,8 +36,6 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.core.MInterface;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 
 
@@ -58,14 +55,14 @@ public class CrInterfaceAllPublic extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAInterface(dm))) return NO_PROBLEM;
-	MInterface inf = (MInterface) dm;
-	Collection bf = inf.getFeatures();
+	Object inf = /*(MInterface)*/ dm;
+	Collection bf = ModelFacade.getFeatures(inf);
 	if (bf == null) return NO_PROBLEM;
 	Iterator enum = bf.iterator();
 	while (enum.hasNext()) {
-	    MFeature f = (MFeature) enum.next();
-	    if (f.getVisibility() == null) return NO_PROBLEM;
-	    if (!f.getVisibility().equals(MVisibilityKind.PUBLIC))
+	    Object f = /*(MFeature)*/ enum.next();
+	    if (ModelFacade.getVisibility(f) == null) return NO_PROBLEM;
+	    if (!ModelFacade.getVisibility(f).equals(MVisibilityKind.PUBLIC))
 		return PROBLEM_FOUND;
 	}
 	return NO_PROBLEM;

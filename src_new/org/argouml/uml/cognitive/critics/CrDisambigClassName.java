@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -40,13 +39,6 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MElementImport;
-
-
-
 /** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
@@ -62,28 +54,28 @@ public class CrDisambigClassName extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
-	MClassifier cls = (MClassifier) dm;
-	String myName = cls.getName();
+	Object cls = /*(MClassifier)*/ dm;
+	String myName = ModelFacade.getName(cls);
 	//@ if (myName.equals(Name.UNSPEC)) return NO_PROBLEM;
 	String myNameString = myName;
     
 	if (myNameString != null && myNameString.length() == 0)
 	    return NO_PROBLEM;
 
-	Collection pkgs = cls.getElementImports2();
+	Collection pkgs = ModelFacade.getElementImports2(cls);
 	if (pkgs == null) return NO_PROBLEM;
 	for (Iterator iter = pkgs.iterator(); iter.hasNext();) {
-	    MElementImport imp = (MElementImport) iter.next();
-	    MNamespace ns = imp.getPackage();
-	    Collection siblings = ns.getOwnedElements();
+	    Object imp = /*(MElementImport)*/ iter.next();
+	    Object ns = ModelFacade.getPackage(imp);
+	    Collection siblings = ModelFacade.getOwnedElements(ns);
 	    if (siblings == null) return NO_PROBLEM;
 	    Iterator enum = siblings.iterator();
 	    while (enum.hasNext()) {
-		MElementImport eo = (MElementImport) enum.next();
-		MModelElement me = (MModelElement) eo.getModelElement();
+		Object eo = /*(MElementImport)*/ enum.next();
+		Object me = /*(MModelElement)*/ ModelFacade.getModelElement(eo);
 		if (!(ModelFacade.isAClassifier(me))) continue;
 		if (me == cls) continue;
-		String meName = me.getName();
+		String meName = ModelFacade.getName(me);
 		if (meName == null || meName.equals("")) continue;
 		if (meName.equals(myNameString)) return PROBLEM_FOUND;
 	    }
@@ -98,8 +90,8 @@ public class CrDisambigClassName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = w.getToDoItem();
-	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
-	    String sug = me.getName();
+	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
+	    String sug = ModelFacade.getName(me);
 	    String ins = "Change the name to something different.";
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);

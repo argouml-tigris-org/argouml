@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -37,11 +36,6 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MOperation;
-
-
-
 public class CrMissingOperName extends CrUML {
 
     public CrMissingOperName() {
@@ -53,8 +47,8 @@ public class CrMissingOperName extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAOperation(dm))) return NO_PROBLEM;
-	MOperation oper = (MOperation) dm;
-	String myName = oper.getName();
+	Object oper = /*(MOperation)*/ dm;
+	String myName = ModelFacade.getName(oper);
 	if (myName == null || myName.equals("")) return PROBLEM_FOUND;
 	if (myName.length() == 0) return PROBLEM_FOUND;
 	return NO_PROBLEM;
@@ -63,14 +57,14 @@ public class CrMissingOperName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = w.getToDoItem();
-	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String ins = "Set the name of this attribute.";
 	    String sug = "AttributeName";
 	    if (ModelFacade.isAOperation(me)) {
-		MOperation a = (MOperation) me;
+		Object a = /*(MOperation)*/ me;
 		int count = 1;
-		if (a.getOwner() != null)
-		    count = a.getOwner().getFeatures().size();
+		if (ModelFacade.getOwner(a) != null)
+		    count = ModelFacade.getFeatures(ModelFacade.getOwner(a)).size();
 		sug = "oper" + (count + 1);
 	    }
 	    ((WizMEName) w).setInstructions(ins);

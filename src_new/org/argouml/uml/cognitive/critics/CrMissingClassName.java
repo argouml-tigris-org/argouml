@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,10 +37,6 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
-
-
 /** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
@@ -56,8 +51,8 @@ public class CrMissingClassName extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAModelElement(dm))) return NO_PROBLEM;
-	MModelElement e = (MModelElement) dm;
-	String myName = e.getName();
+	Object e = /*(MModelElement)*/ dm;
+	String myName = ModelFacade.getName(e);
 	if (myName == null || myName.equals("") ||
 	    myName == null || myName.length() == 0)
 	    return PROBLEM_FOUND;
@@ -71,13 +66,13 @@ public class CrMissingClassName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = w.getToDoItem();
-	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String ins = "Set the name of this class.";
 	    String sug = "ClassName";
 	    int count = 1;
-	    if (me.getNamespace() != null)
-		count = me.getNamespace().getOwnedElements().size();
-	    sug = me.getUMLClassName() + (count + 1);
+	    if (ModelFacade.getNamespace(me) != null)
+		count = ModelFacade.getOwnedElements(ModelFacade.getNamespace(me)).size();
+	    sug = ModelFacade.getUMLClassName(me) + (count + 1);
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);
 	}

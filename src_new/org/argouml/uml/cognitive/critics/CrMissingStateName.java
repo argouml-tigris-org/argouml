@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -40,9 +39,6 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 public class CrMissingStateName extends CrUML {
     
     public CrMissingStateName() {
@@ -68,14 +64,14 @@ public class CrMissingStateName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = w.getToDoItem();
-	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String ins = "Set the name of this state.";
 	    String sug = "StateName";
 	    if (org.argouml.model.ModelFacade.isAStateVertex(me)) {
-		MStateVertex sv = (MStateVertex) me;
+		Object sv = /*(MStateVertex)*/ me;
 		int count = 1;
-		if (sv.getContainer() != null)
-		    count = sv.getContainer().getSubvertices().size();
+		if (ModelFacade.getContainer(sv) != null)
+		    count = ModelFacade.getSubvertices(ModelFacade.getContainer(sv)).size();
 		sug = "S" + (count + 1);
 	    }
 	    ((WizMEName) w).setInstructions(ins);

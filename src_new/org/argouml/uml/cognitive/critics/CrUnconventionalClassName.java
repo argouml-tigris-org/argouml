@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,11 +37,6 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
-
-
 public class CrUnconventionalClassName extends CrUML {
 
     public CrUnconventionalClassName() {
@@ -55,8 +49,8 @@ public class CrUnconventionalClassName extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClass(dm)) && !(ModelFacade.isAInterface(dm)))
 	    return NO_PROBLEM;
-	MClassifier cls = (MClassifier) dm;
-	String myName = cls.getName();
+	Object cls = /*(MClassifier)*/ dm;
+	String myName = ModelFacade.getName(cls);
 	if (myName == null || myName.equals("")) return NO_PROBLEM;
 	String nameStr = myName;
 	if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
@@ -72,8 +66,8 @@ public class CrUnconventionalClassName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = w.getToDoItem();
-	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
-	    String sug = me.getName();
+	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
+	    String sug = ModelFacade.getName(me);
 	    sug = sug.substring(0, 1).toUpperCase() + sug.substring(1);
 	    String ins = "Change the class name to start with an " +
 		"uppercase letter.";

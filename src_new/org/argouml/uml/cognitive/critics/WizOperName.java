@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -43,13 +42,7 @@ import org.argouml.cognitive.ui.WizStepCue;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.model_management.MPackage;
-
 /** A wizard to help the user change the name of an operation to a better name.
  * Same as WizMEName expect that it handles the special case where 
  * the operation instead should be made a constructor of the class.
@@ -76,7 +69,7 @@ public class WizOperName extends WizMEName {
     protected WizStepChoice _step1 = null;
     protected WizStepCue _step2 = null;
 
-    protected MStereotype _oldStereotype;
+    protected Object _oldStereotype;
     protected boolean _oldStereotypeIsSet = false;
 
     public WizOperName() { super(); }
@@ -149,10 +142,10 @@ public class WizOperName extends WizMEName {
 	    _panels.remove(origStep);
 	}
 	if (origStep == 1) {
-	    MOperation oper = (MOperation) getModelElement();
+	    Object oper = /*(MOperation)*/ getModelElement();
 
 	    if (_oldStereotypeIsSet) {
-		oper.setStereotype(_oldStereotype);
+		ModelFacade.setStereotype(oper, _oldStereotype);
 	    }
 	}
     }
@@ -179,10 +172,13 @@ public class WizOperName extends WizMEName {
 
 	    case 0:
 		_stereotypePathChosen = true;
-		MOperation oper = (MOperation) getModelElement();
+		Object oper = /*(MOperation)*/ getModelElement();
 
 		if (!_oldStereotypeIsSet) {
-		    _oldStereotype = oper.getStereotype();
+		    _oldStereotype = null;
+		    if (ModelFacade.getStereotypes(oper).size() > 0) {
+                        _oldStereotype = ModelFacade.getStereotypes(oper).iterator().next();
+                    }
 		    _oldStereotypeIsSet = true;
 		}
 
@@ -190,18 +186,18 @@ public class WizOperName extends WizMEName {
                 // "create" and the base class BehavioralFeature in
                 // the model. If there is none then we create one and
                 // put it there.
-		MModel m = oper.getModel();
-                MStereotype theStereotype = null;
-                for (Iterator iter = m.getOwnedElements().iterator();
+		Object m = ModelFacade.getModel(oper);
+                Object theStereotype = null;
+                for (Iterator iter = ModelFacade.getOwnedElements(m).iterator();
                      iter.hasNext();) {
-                    MModelElement candidate = (MModelElement) iter.next();
+                    Object candidate = /*(MModelElement)*/ iter.next();
 		    if (!(ModelFacade.isAStereotype(candidate)))
                         continue;
-                    MStereotype ster = (MStereotype) candidate;
-                    MNamespace ns = ster.getNamespace();
-                    if (!("create".equals(ster.getName())))
+                    Object ster = /*(MStereotype)*/ candidate;
+                    Object ns = ModelFacade.getNamespace(ster);
+                    if (!("create".equals(ModelFacade.getName(ster))))
                         continue;
-                    if (!("BehavioralFeature".equals(ster.getBaseClass())))
+                    if (!("BehavioralFeature".equals(ModelFacade.getBaseClass(ster))))
                         continue;
                     theStereotype = ster;
                     break;
@@ -210,16 +206,16 @@ public class WizOperName extends WizMEName {
                     theStereotype =
 			UmlFactory.getFactory().getExtensionMechanisms()
 			.createStereotype();
-		    theStereotype.setName("create");
+		    ModelFacade.setName(theStereotype, "create");
 		    // theStereotype.setStereotype(???);
-		    theStereotype.setBaseClass("BehavioralFeature");
-		    MNamespace targetNS = findNamespace(oper.getNamespace(),
-							oper.getModel());
-                    targetNS.addOwnedElement(theStereotype);
+		    ModelFacade.setBaseClass(theStereotype, "BehavioralFeature");
+		    Object targetNS = findNamespace(ModelFacade.getNamespace(oper),
+							ModelFacade.getModel(oper));
+                    ModelFacade.addOwnedElement(targetNS, theStereotype);
 		}
 
 		try {
-		    oper.setStereotype(theStereotype);
+		    ModelFacade.setStereotype(oper, theStereotype);
 		}
 		catch (Exception pve) {
 		    cat.error("could not set stereotype", pve);
@@ -244,35 +240,34 @@ public class WizOperName extends WizMEName {
     // TODO:
     // Move to MMUtil or some other common place and merge with 
     // UMLComboBoxEntry::findNamespace()
-    private static MNamespace findNamespace(MNamespace phantomNS,
-					    MModel targetModel)
-    {
-        MNamespace ns = null;
+    private static Object findNamespace(Object/*MNamespace*/ phantomNS,
+					Object/*MModel*/ targetModel) {
+        Object ns = null;
         MNamespace targetParentNS = null;
         if (phantomNS == null) {
             return targetModel;
         }
-        MNamespace parentNS = phantomNS.getNamespace();
+        Object/*MNamespace*/ parentNS = ModelFacade.getNamespace(phantomNS);
         if (parentNS == null) {
             return targetModel;
         }
         else {
-            targetParentNS = findNamespace(parentNS, targetModel);
+            targetParentNS = (MNamespace)findNamespace(parentNS, targetModel);
             //
             //   see if there is already an element with the same name
             //
-            Collection ownedElements = targetParentNS.getOwnedElements();
-            String phantomName = phantomNS.getName();
+            Collection ownedElements = ModelFacade.getOwnedElements(targetParentNS);
+            String phantomName = ModelFacade.getName(phantomNS);
             String targetName;
             if (ownedElements != null) {
-                MModelElement ownedElement;
+                Object ownedElement;
                 Iterator iter = ownedElements.iterator();
                 while (iter.hasNext()) {
-                    ownedElement = (MModelElement) iter.next();
-                    targetName = ownedElement.getName();
+                    ownedElement = /*(MModelElement)*/ iter.next();
+                    targetName = ModelFacade.getName(ownedElement);
                     if (targetName != null && phantomName.equals(targetName)) {
                         if (ModelFacade.isAPackage(ownedElement)) {
-                            ns = (MPackage) ownedElement;
+                            ns = /*(MPackage)*/ ownedElement;
                             break;
                         }
                     }
@@ -280,8 +275,8 @@ public class WizOperName extends WizMEName {
             }
             if (ns == null) {
                 ns = targetParentNS.getFactory().createPackage();
-                ns.setName(phantomName);
-                targetParentNS.addOwnedElement(ns);
+                ModelFacade.setName(ns, phantomName);
+                ModelFacade.addOwnedElement(targetParentNS, ns);
             }
         }
         return ns;

@@ -34,9 +34,6 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
 
@@ -51,13 +48,13 @@ public class CrUnnavigableAssoc extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAAssociation(dm))) return NO_PROBLEM;
-	MAssociation asc = (MAssociation) dm;
-	Collection conn = asc.getConnections();
+	Object asc = /*(MAssociation)*/ dm;
+	Collection conn = ModelFacade.getConnections(asc);
 	if (ModelFacade.isAAssociationRole(asc))
 	    conn = ModelFacade.getConnections(asc);
 	for (Iterator iter = conn.iterator(); iter.hasNext();) {
-	    MAssociationEnd ae = (MAssociationEnd) iter.next();
-	    if (ae.isNavigable()) return NO_PROBLEM;
+	    Object ae = /*(MAssociationEnd)*/ iter.next();
+	    if (ModelFacade.isNavigable(ae)) return NO_PROBLEM;
 	}
 	return PROBLEM_FOUND;
     }

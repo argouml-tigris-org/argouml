@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,11 +37,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.util.VectorSet;
-import ru.novosoft.uml.behavior.common_behavior.MInstance;
-
-
-
-
 /**
  * A critic to detect when an object in a deployment-diagram
  * is not inside a component or a component-instance
@@ -94,9 +88,9 @@ public class CrInstanceWithoutClassifier extends CrUML {
 	    if (!(obj instanceof FigNodeModelElement)) continue;
 	    FigNodeModelElement fn = (FigNodeModelElement) obj;
 	    if (fn != null && (ModelFacade.isAInstance(fn.getOwner()))) {
-		MInstance minst = (MInstance) fn.getOwner();
+		Object minst = /*(MInstance)*/ fn.getOwner();
 		if (minst != null) {
-		    Collection col = minst.getClassifiers();
+		    Collection col = ModelFacade.getClassifiers(minst);
 		    if (col.size() > 0) continue;     
 		}       
 		if (offs == null) {

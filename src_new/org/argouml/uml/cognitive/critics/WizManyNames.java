@@ -38,8 +38,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ui.WizStepManyTextFields;
 import org.argouml.kernel.Wizard;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
+import org.argouml.model.ModelFacade;
 
 /** A non-modal wizard to help the user change the name of a
  *  MModelElement to a better name. */
@@ -70,8 +69,8 @@ public class WizManyNames extends Wizard {
 		Vector names = new Vector();
 		int size = _mes.size();
 		for (int i = 0; i < size; i++) {
-		    MModelElement me = (MModelElement) _mes.elementAt(i);
-		    names.addElement(me.getName());
+		    Object me = /*(MModelElement)*/ _mes.elementAt(i);
+		    names.addElement(ModelFacade.getName(me));
 		}
 		_step1 = new WizStepManyTextFields(this, _instructions, names);
 	    }
@@ -94,8 +93,8 @@ public class WizManyNames extends Wizard {
 	    try {
 		int size = _mes.size();
 		for (int i = 0; i < size; i++) {
-		    MModelElement me = (MModelElement) _mes.elementAt(i);
-		    me.setName((String) newNames.elementAt(i));
+		    Object me = /*(MModelElement)*/ _mes.elementAt(i);
+		    ModelFacade.setName(me, (String) newNames.elementAt(i));
 		}
 	    }
 	    catch (Exception pve) {
