@@ -29,7 +29,7 @@
 		<key>MainClass</key>
 		<string>org.argouml.application.Main</string>
 		<key>JVMVersion</key>
-		<string>1.4.1</string>
+		<string>1.4+</string>
 		<key>ClassPath</key>
 			<array>
 			<string>$JAVAROOT/antlrall.jar</string>
