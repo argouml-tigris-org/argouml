@@ -152,14 +152,20 @@ public final class ProjectManager {
     }
 
     /**
-     * Sets the current project (the project that is viewable in the projectbrowser).
-     * This method fires a propertychanged event. 
+     * Sets the current project (the project that is viewable in the 
+     * projectbrowser).
+     * This method fires a propertychanged event.<p>
+     *
+     * If the argument is null, then the current project will be forgotten 
+     * about.
+     * 
      * @param newProject The new project.
      */
     public void setCurrentProject(Project newProject) {
         Project oldProject = _currentProject;        
         _currentProject = newProject;
-        if (_currentProject.getActiveDiagram() == null) {
+        if (_currentProject != null
+	    && _currentProject.getActiveDiagram() == null) {
             Vector diagrams = _currentProject.getDiagrams();
             if (diagrams != null && !diagrams.isEmpty())
                 _currentProject.setActiveDiagram((ArgoDiagram)_currentProject.getDiagrams().get(0));
