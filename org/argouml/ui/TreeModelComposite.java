@@ -179,6 +179,8 @@ implements TreeModel, Cloneable {
    * to return false even if <I>node</I> has no children.  A directory in a
    * filesystem, for example, may contain no files; the node representing
    * the directory is not a leaf, but it also has no children.
+   * <P>
+   * If none of the subTreeModels is not a leaf, then we are not a leaf.
    *
    * @param   node    a node in the tree, obtained from this data source
    * @return  true if <I>node</I> is a leaf

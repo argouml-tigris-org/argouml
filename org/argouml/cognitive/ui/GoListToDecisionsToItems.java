@@ -47,39 +47,45 @@ public class GoListToDecisionsToItems implements TreeModelPrereqs {
       return getDecisions().elementAt(index);
     }
     if (parent instanceof Decision) {
-      // instead of makning a new vector, decrement index, return when
-      // found and index == 0
-      Vector candidates = new Vector();
       Decision dec = (Decision) parent;
       java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
       while (itemEnum.hasMoreElements()) {
 	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.getPoster().supports(dec)) candidates.addElement(item);
+	if (item.getPoster().supports(dec)) {
+            if (index == 0) return item;
+            index--;
+        }
       }
-      return candidates.elementAt(index);
     }
     System.out.println("getChild shouldnt get here GoListToDecisionsToItems");
     return null;
   }
   
-  public int getChildCount(Object parent) {
+  private int getChildCountCond(Object parent, boolean stopafterone) {
     if (parent instanceof ToDoList) {
       return getDecisions().size();
     }
     if (parent instanceof Decision) {
-      // instead of makning a new vector, decrement index, return when
-      // found and index == 0
-      Vector candidates = new Vector();
       Decision dec = (Decision) parent;
       java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+      int count = 0;
       while (itemEnum.hasMoreElements()) {
 	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.getPoster().supports(dec)) candidates.addElement(item);
+	if (item.getPoster().supports(dec)) count++;
+        if (stopafterone && count > 0) break;
       }
-      return candidates.size();
+      return count;
     }
     return 0;
   }
+  
+    public int getChildCount(Object parent) {
+        return getChildCountCond(parent, false);
+    }
+    private boolean hasChildren(Object parent) {
+        return getChildCountCond(parent, true) > 0;
+    }
+      
   
   public int getIndexOfChild(Object parent, Object child) {
     if (parent instanceof ToDoList) {
@@ -102,7 +108,7 @@ public class GoListToDecisionsToItems implements TreeModelPrereqs {
 
   public boolean isLeaf(Object node) {
     if (node instanceof ToDoList) return false;
-    if (node instanceof Decision && getChildCount(node) > 0) return false;
+    if (node instanceof Decision && hasChildren(node)) return false;
     return true;
   }
 

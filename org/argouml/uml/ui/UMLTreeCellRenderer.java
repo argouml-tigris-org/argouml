@@ -122,12 +122,14 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
           if (icon != null) lab.setIcon(icon);
 
-          String tip = (value == null) ? "null" : value.toString();
+          String tip;
           if (value instanceof MModelElementImpl)
               tip = ((MModelElementImpl)value).getUMLClassName() + ": " +
-                  ((MModelElementImpl)value).getName();
-          lab.setToolTipText(tip + " ");
-          tree.setToolTipText(tip + " ");
+                  ((MModelElementImpl)value).getName() + " ";
+	  else 
+	      tip = (value == null) ? "null " : value.toString() + " ";
+          lab.setToolTipText(tip);
+          tree.setToolTipText(tip);
 
       }
       return r;

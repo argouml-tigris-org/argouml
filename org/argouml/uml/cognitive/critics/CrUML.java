@@ -99,7 +99,7 @@ public class CrUML extends Critic {
   public static final Decision decSTATE_MACHINES = new
   Decision("decision.mstate-machines", 5);
 
-  public static String CRITICS_SITE = "http://www.ics.uci.edu/pub/arch/uml/critics/";
+  public static final String CRITICS_SITE = "http://www.ics.uci.edu/pub/arch/uml/critics/";
 
   /** Static initializer for this class. Called when the class is
    *  loaded (which is before any subclass instances are instanciated). */
@@ -228,11 +228,15 @@ public class CrUML extends Critic {
     return super.predicate(dm, dsgr);
   }
 
-  public String getMoreInfoURL(VectorSet offenders, Designer dsgr) {
-    String clsName = getClass().getName();
-    clsName = clsName.substring(clsName.lastIndexOf(".") + 1);
-    return CRITICS_SITE + clsName + ".html";
-  }
+    private String _cachedMoreInfoURL = null;
+    public String getMoreInfoURL(VectorSet offenders, Designer dsgr) {
+	if (_cachedMoreInfoURL == null) {
+	    String clsName = getClass().getName();
+	    clsName = clsName.substring(clsName.lastIndexOf(".") + 1);
+	    _cachedMoreInfoURL = CRITICS_SITE + clsName + ".html";
+	}
+	return _cachedMoreInfoURL;
+    }
 
   ////////////////////////////////////////////////////////////////
   // display related methods

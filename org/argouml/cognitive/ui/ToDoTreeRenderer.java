@@ -100,9 +100,9 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
 					      expanded, leaf, row, hasFocus);
       }
 
-      String tip = lab.getText();
-      lab.setToolTipText(tip + " ");
-      tree.setToolTipText(tip + " ");
+      String tip = lab.getText() + " ";
+      lab.setToolTipText(tip);
+      tree.setToolTipText(tip);
 
       if (!sel)
 	lab.setBackground(getBackgroundNonSelectionColor());

@@ -47,17 +47,15 @@ public class GoListToTypeToItem implements TreeModelPrereqs {
       return KnowledgeTypeNode.getTypes().elementAt(index);
     }
     if (parent instanceof KnowledgeTypeNode) {
-      // instead of makning a new vector, decrement index, return when
-      // found and index == 0
-      Vector candidates = new Vector();
       KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
       java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
       while (itemEnum.hasMoreElements()) {
 	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.containsKnowledgeType(ktn.getName()))
-	    candidates.addElement(item);
+	if (item.containsKnowledgeType(ktn.getName())) {
+	    if (index == 0) return item;
+	    index--;
+	}	    
       }
-      return candidates.elementAt(index);
     }
     System.out.println("getChild shouldnt get here GoListToTypeToItem");
     return null;
@@ -68,17 +66,15 @@ public class GoListToTypeToItem implements TreeModelPrereqs {
       return KnowledgeTypeNode.getTypes().size();
     }
     if (parent instanceof KnowledgeTypeNode) {
-      // instead of makning a new vector, decrement index, return when
-      // found and index == 0
-      Vector candidates = new Vector();
       KnowledgeTypeNode ktn = (KnowledgeTypeNode) parent;
       java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+      int count = 0;
       while (itemEnum.hasMoreElements()) {
 	ToDoItem item = (ToDoItem) itemEnum.nextElement();
 	if (item.containsKnowledgeType(ktn.getName()))
-	    candidates.addElement(item);
+	    count++;
       }
-      return candidates.size();
+      return count;
     }
     return 0;
   }

@@ -66,7 +66,8 @@ public class ToDoItem implements java.io.Serializable {
   /** Who posted this item (e.g., a Critic, or the designer)? */
   private Poster _poster;
 
-  /** One line description of issue. */
+  /** One line description of issue.
+   */
   private String _headline;
 
   /** How important is this issue? Enough to interrupt the designer? */
@@ -78,7 +79,10 @@ public class ToDoItem implements java.io.Serializable {
   /** URL for background (textbook?) knowledge about the domain. */
   private String _moreInfoURL;
 
-  /** Which part of the design does this issue affect? */
+  /** Which part of the design this issue affects
+   *
+   * This is set by the constructor and cannot change.
+   */
   private VectorSet _offenders;
 
   private Icon _clarifier = null;
@@ -128,18 +132,35 @@ public class ToDoItem implements java.io.Serializable {
     _wizard = c.makeWizard(this);
   }
 
+
+    // Cached expansions
+    private String _cachedExpandedHeadline = null;
+    private String _cachedExpandedDescription = null;
+
   ////////////////////////////////////////////////////////////////
   // accessors
 
   public String getHeadline() {
-    return _poster.expand(_headline, _offenders);
+      if (_cachedExpandedHeadline == null) {
+	  _cachedExpandedHeadline = _poster.expand(_headline, _offenders);
+      }
+      return _cachedExpandedHeadline;
   }
-  public void setHeadline(String h) { _headline = h; }
+  public void setHeadline(String h) { 
+      _headline = h; 
+      _cachedExpandedHeadline = null;
+  }
 
   public String getDescription() {
-    return _poster.expand(_description, _offenders);
+      if (_cachedExpandedDescription == null) {
+	  _cachedExpandedDescription = _poster.expand(_description, _offenders);
+      }
+      return _cachedExpandedDescription;
   }
-  public void setDescription(String d) { _description = d; }
+  public void setDescription(String d) {
+      _description = d;
+      _cachedExpandedDescription = null;
+  }
 
   public String getMoreInfoURL() { return _moreInfoURL; }
   public void setMoreInfoURL(String m) { _moreInfoURL = m; }
