@@ -126,7 +126,6 @@ implements ItemListener, DocumentListener {
       _deploymentLocationField.setText(null);
     }
 
-
     // construct bases string (comma separated)
     String baseStr = "";
     Collection col = coi.getClassifiers(); 
