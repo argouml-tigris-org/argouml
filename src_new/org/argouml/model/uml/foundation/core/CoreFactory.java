@@ -910,5 +910,23 @@ public class CoreFactory extends AbstractUmlModelFactory {
         else if (client.getNamespace() != null) usage.setNamespace(client.getNamespace());
         return usage;
     }
+    
+    /**
+     * Builds a comment inluding a reference to the given modelelement to comment. 
+     * If the element is null, the comment is still build since it is not 
+     * mandatory to have an annotated element in the comment.
+     * @param elementToComment
+     * @return MComment
+     */
+    public MComment buildComment(MModelElement elementToComment) {
+        MComment comment = createComment();
+        if (elementToComment != null) {
+            comment.addAnnotatedElement(elementToComment);
+            comment.setNamespace(elementToComment.getModel());
+        } else
+            comment.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+        
+        return comment;
+    }
 }
 

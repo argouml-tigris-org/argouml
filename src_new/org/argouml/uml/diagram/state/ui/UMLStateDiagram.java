@@ -49,7 +49,7 @@ import org.argouml.uml.diagram.state.*;
 import org.argouml.application.api.*;
 // get the note from the class diagram
 import org.argouml.uml.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.FigNote;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
 
 public class UMLStateDiagram extends UMLDiagram {
 

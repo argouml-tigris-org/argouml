@@ -23,19 +23,33 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.tigris.gef.base.*;
-import org.tigris.gef.graph.*;
-import org.tigris.gef.presentation.*;
-import ru.novosoft.uml.foundation.core.*;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
+
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MComment;
+import ru.novosoft.uml.foundation.core.MModelElement;
+
+
 
 
 public class ActionAddNote extends UMLChangeAction {
+    
+    protected static final int DISTANCE = 80;
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -52,7 +66,67 @@ public class ActionAddNote extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    public void actionPerformed(ActionEvent ae) {	
+    public void actionPerformed(ActionEvent ae) {
+        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        Object target = pb.getDetailsTarget();
+        if (target == null) {
+            target = pb.getTarget();
+            if (target == null || !(target instanceof MModelElement)) return;
+        }
+        MModelElement elem = (MModelElement)target;
+        MComment comment = CoreFactory.getFactory().buildComment(elem);
+        
+        // calculate the position of the comment
+        Fig elemFig = pb.getActiveDiagram().presentationFor(elem);
+        if (elemFig == null) return;
+        int x = 0;
+        int y = 0;
+        Diagram diagram = pb.getActiveDiagram();
+        Layer lay = diagram.getLayer();
+        Rectangle drawingArea = pb.getEditorPane().getBounds();
+        FigComment fig = new FigComment(diagram.getGraphModel(), comment);
+        if (elemFig instanceof FigNode) {
+            x = elemFig.getX() + elemFig.getWidth() + DISTANCE;
+            y = elemFig.getY();
+            if (x + fig.getWidth() > drawingArea.getX()) {
+                x = elemFig.getX() - fig.getWidth() - DISTANCE ;
+                if (x < 0) {
+                    x = elemFig.getX();
+                    y = elemFig.getY() - fig.getHeight() - DISTANCE;
+                    if (y < 0) {
+                        y = elemFig.getY() + elemFig.getHeight() + DISTANCE;
+                        if (y + fig.getHeight() > drawingArea.getHeight()) {
+                            comment.remove();
+                            return;
+                        }
+                    }
+                }
+            }
+        } else
+        if (elemFig instanceof FigEdge) {
+            // we cannot do this yet since we have to modify all our edges probably
+            /*
+            Point startPoint = new Point(elemFig.getX(), elemFig.getY());
+            Point endPoint = new Point(elemFig.getX() + elemFig.getWidth(), 
+                elemFig.getY() + elemFig.getHeight());
+            */
+            comment.remove();
+            return;
+        }
+        fig.setLocation(x, y);
+        lay.add(fig);
+        FigEdgeNote edge = new FigEdgeNote(elem, comment);
+        lay.add(edge);
+        lay.sendToBack(edge);
+        edge.damage();
+        fig.damage();
+        elemFig.damage();
+        
+        
+        
+           
+        /*
+         * this needs refactoring badly
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Object target = pb.getDetailsTarget();
 	Object d = pb.getTarget();
@@ -73,7 +147,7 @@ public class ActionAddNote extends UMLChangeAction {
 
 	// There are 2 FigNote classes in the project now, so I have to
 	// use the fully qualified typename here.
-	org.argouml.uml.diagram.static_structure.ui.FigNote note = new org.argouml.uml.diagram.static_structure.ui.FigNote(objectWithNote);
+	org.argouml.uml.diagram.static_structure.ui.FigComment note = new org.argouml.uml.diagram.static_structure.ui.FigComment(objectWithNote);
 
 	// place the note a few pixels right of the selected figure
 	Fig f = null;  // The figure for the associated object.
@@ -140,7 +214,9 @@ public class ActionAddNote extends UMLChangeAction {
 		f.damage();
 	    }
 	}
+    */
 	super.actionPerformed(ae);
+    
     }
 
     public boolean shouldBeEnabled() {
