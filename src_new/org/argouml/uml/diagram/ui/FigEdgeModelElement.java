@@ -904,18 +904,6 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * Overridden to notify project that save is needed when edge is moved.
-     * @see org.tigris.gef.presentation.FigEdgePoly#setPoint(Handle, int, int)
-     */
-    public void setPoint(Handle h, int x, int y) {
-        super.setPoint(h, x, y);
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p != null) {      
-            p.setNeedsSave(true);
-        }
-    }
-
-    /**
      * @return Returns the lABEL_FONT.
      */
     public static Font getLabelFont() {

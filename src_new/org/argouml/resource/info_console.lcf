@@ -4,7 +4,7 @@
 #
 log4j.rootCategory=DEBUG, FULL
 #
-log4j.category.org.argouml=INFO
+log4j.category.org.argouml=INFOlog4j.category.org.tigris.gef=INFO
 # 
 log4j.appender.FULL=org.apache.log4j.ConsoleAppender
 log4j.appender.FULL.layout=org.apache.log4j.PatternLayout
