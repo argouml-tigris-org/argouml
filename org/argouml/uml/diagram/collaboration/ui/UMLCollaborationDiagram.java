@@ -132,4 +132,34 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     _toolBar.add(_diagramName);
   }
 
+
+  /**  After loading the diagram it´s necessary to connect
+    *  every FigMessage to its FigAssociationRole. 
+    *  This is done by adding the FigMessage 
+    *  to the PathItems of its FigAssociationRole */  
+  public void postLoad() {
+
+    super.postLoad();
+
+    Collection messages;
+    Iterator msgIterator;
+    Collection ownedElements = getNamespace().getOwnedElements();
+    Iterator oeIterator = ownedElements.iterator();   
+    Layer lay = getLayer();
+    while(oeIterator.hasNext()) {
+	MModelElement me = (MModelElement)oeIterator.next();
+	if (me instanceof MAssociationRole) {
+           messages= ((MAssociationRole) me).getMessages();
+           msgIterator= messages.iterator();
+           while(msgIterator.hasNext()) {
+             MMessage message = (MMessage)msgIterator.next();            
+             FigMessage figMessage = (FigMessage) lay.presentationFor(message);
+             if ( figMessage != null ) {
+               figMessage.addPathItemToFigAssociationRole(lay);
+             }
+           }
+       }
+    }
+  }
+
 } /* end class UMLCollaborationDiagram */

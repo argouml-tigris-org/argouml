@@ -165,7 +165,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     if (figures != null && (size > 0)) {
       for (int i=0; i<size; i++) {
         Object o = figures.elementAt(i);
-        if (o instanceof FigNodeModelElement) {
+        if (o instanceof FigNodeModelElement && o != getEnclosingFig() ) {
           FigNodeModelElement fignode = (FigNodeModelElement) o;
           Vector enclosed = fignode.getEnclosedFigs();
           fignode.elementOrdering(enclosed);
