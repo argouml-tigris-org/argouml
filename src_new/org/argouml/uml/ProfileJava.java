@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,7 +56,8 @@ public class ProfileJava extends Profile {
 	getProfileModel();
     }
 
-    public String formatElement(Object/*MModelElement*/ element, Object namespace) {
+    public String formatElement(Object/*MModelElement*/ element,
+				Object namespace) {
 	String value = null;
 	if (element == null) {
 	    value = "";
@@ -114,7 +115,8 @@ public class ProfileJava extends Profile {
 	return name;
     }
 
-    protected String defaultAssocName(Object/*MAssociation*/ assoc, Object ns) {
+    protected String defaultAssocName(Object/*MAssociation*/ assoc,
+				      Object ns) {
 	StringBuffer buf = new StringBuffer();
 	Iterator iter = ModelFacade.getConnections(assoc).iterator();
 	for (int i = 0; iter.hasNext(); i++) {
@@ -137,7 +139,8 @@ public class ProfileJava extends Profile {
 	return buf.toString();
     }
 
-    protected String defaultName(Object/*MModelElement*/ element, Object namespace) {
+    protected String defaultName(Object/*MModelElement*/ element,
+				 Object namespace) {
 	String name = null;
 	if (ModelFacade.isAAssociationEnd(element)) {
 	    name = defaultAssocEndName(element, namespace);
@@ -220,6 +223,7 @@ public class ProfileJava extends Profile {
 	//
 	String defaultModelFileName =
 	    System.getProperty("argo.defaultModel");
+
 	//
 	//   if the property was set
 	//
@@ -251,13 +255,19 @@ public class ProfileJava extends Profile {
 	//        load the default
 	if (is == null) {
 	    defaultModelFileName = "/org/argouml/default.xmi";
-	    is =
-		new Object().getClass().getResourceAsStream(defaultModelFileName);
+
+	    // Notice that the class that we run getClass() in needs to be
+	    // in the same ClassLoader that the default.xmi.
+	    // If we run using Java Web Start then we have every ArgoUML
+	    // file in the same jar (i.e. the same ClassLoader).
+	    is = 
+		new Object() { }
+		.getClass().getResourceAsStream(defaultModelFileName);
+
 	    if (is == null) {
 		try {
-		    is =
-			new FileInputStream(
-					    defaultModelFileName.substring(1));
+		    is = 
+			new FileInputStream(defaultModelFileName.substring(1));
 		} catch (FileNotFoundException ex) {
 		    cat.error("Default model ("
 			      + defaultModelFileName
@@ -266,13 +276,15 @@ public class ProfileJava extends Profile {
 		}
 	    }
 	}
+
 	if (is != null) {
 	    try {
 		XMIReader xmiReader = new XMIReader();
 		//
 		//   would really like to turn validation off to save
 		//      a lot of scary messages
-		Object/*MModel*/ model = xmiReader.parseToModel(new InputSource(is));
+		Object/*MModel*/ model =
+		    xmiReader.parseToModel(new InputSource(is));
 		// 2002-07-18 Jaap Branderhorst changed the loading of
 		// the projectfiles to solve hanging of argouml if a
 		// project is corrupted. Issue 913 Created xmireader
@@ -283,12 +295,13 @@ public class ProfileJava extends Profile {
 					  + defaultModelFileName
 					  + " could not be parsed.");
 		}
+
 		return model;
 	    } catch (Exception ex) {
 		cat.error("Error reading " + defaultModelFileName + "\n", ex);
 	    }
 	}
+
 	return null;
     }
-		
 }
