@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -34,8 +33,6 @@ import tudresden.ocl.check.types.Type2;
 import tudresden.ocl.check.*;
 
 import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
-
 import org.apache.log4j.Category;
 import org.argouml.kernel.*;
 import org.argouml.model.ModelFacade;
@@ -351,18 +348,18 @@ class ArgoAny implements Any, Type2 {
 	{
 	    return false;
 	}
-	List operationParameters = operation.getParameters();
-	if (!(((MParameter) operationParameters.get(0)).getKind().getValue()
-	      == MParameterDirectionKind._RETURN))
-	{
+
+        List operationParameters = operation.getParameters();
+	if (!ModelFacade.isReturn(operationParameters.get(0))) {
 	    System.err.println(
-			       "ArgoFacade$ArgoAny expects the first operation parameter to be the return type; this isn't the case"
-			       );
+                "ArgoFacade$ArgoAny expects the first operation parameter to be the return type; this isn't the case"
+	    );
 	}
-	if (!(((MParameter) operationParameters.get(0)).getKind().getValue()
-	      == MParameterDirectionKind._RETURN
-	      && operationParameters.size() == (callParams.length + 1)))
-	{
+	if (!
+            (ModelFacade.isReturn(operationParameters.get(0))
+	      && operationParameters.size() == (callParams.length + 1)
+            )
+           ) {
 	    return false;
 	}
 	Iterator paramIter = operationParameters.iterator();
@@ -382,5 +379,3 @@ class ArgoAny implements Any, Type2 {
 	return true;
     }
 }
-
-

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -37,6 +36,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.argouml.cognitive.*;
+import org.argouml.model.ModelFacade;
 
 /** A critic to detect when a state has no outgoing transitions. */
 
@@ -49,9 +49,9 @@ public class CrNoIncomingTransitions extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(org.argouml.model.ModelFacade.isAStateVertex(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isAStateVertex(dm))) return NO_PROBLEM;
 	MStateVertex sv = (MStateVertex) dm;
-	if (org.argouml.model.ModelFacade.isAState(sv)) {
+	if (ModelFacade.isAState(sv)) {
 	    MStateMachine sm = ((MState) sv).getStateMachine();
 	    if (sm != null && sm.getTop() == sv) return NO_PROBLEM;
 	}
@@ -59,10 +59,8 @@ public class CrNoIncomingTransitions extends CrUML {
 	Collection incoming = sv.getIncomings();
 
 	boolean needsIncoming = incoming == null || incoming.size() == 0;
-	if (org.argouml.model.ModelFacade.isAPseudostate(sv)) {
-	    MPseudostateKind k = ((MPseudostate) sv).getKind();
-	    if (k.equals(MPseudostateKind.INITIAL)) needsIncoming = false;
-
+	if (ModelFacade.isAPseudostate(sv)) {
+	    if (ModelFacade.getKind(sv).equals(MPseudostateKind.INITIAL)) needsIncoming = false;
 	}
 
 	if (needsIncoming) return PROBLEM_FOUND;
