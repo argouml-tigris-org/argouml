@@ -109,7 +109,7 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
       remove(_toolBar);
     }
     _toolBar = d.getToolBar();
-    System.out.println("setting toolbar in NORTH panel");
+    //System.out.println("setting toolbar in NORTH panel");
     add(_toolBar, BorderLayout.NORTH);
     setVisible(true);
     //layout();
@@ -131,7 +131,7 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
   // events
 
   public void selectionChanged(GraphSelectionEvent gse) {
-    System.out.println("TabDiagram got editor selection event");
+    //System.out.println("TabDiagram got editor selection event");
     Vector sels = gse.getSelections();
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     if (sels.size() == 1) pb.setDetalsTarget(sels.elementAt(0));

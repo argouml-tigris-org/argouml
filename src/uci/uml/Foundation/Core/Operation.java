@@ -31,13 +31,14 @@ package uci.uml.Foundation.Core;
 
 import java.util.*;
 import java.beans.PropertyVetoException;
+
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Data_Types.Name;
 import uci.uml.generate.*;
 
 public class Operation extends BehavioralFeature {
   public Uninterpreted _specification;
-  public Boolean _isPolymorphic;
+  public boolean _isPolymorphic;
   public CallConcurrencyKind _concurrency;
   //% public Method _method[];
   public Vector _method;
@@ -87,12 +88,14 @@ public class Operation extends BehavioralFeature {
   }
 
   public Uninterpreted getSpecification() { return _specification; }
-  public void setSpecification(Uninterpreted x) {
+  public void setSpecification(Uninterpreted x) throws PropertyVetoException {
+    fireVetoableChange("specification", _specification, x);
     _specification = x;
   }
   
-  public Boolean getIsPolymorphic() { return _isPolymorphic; }
-  public void setIsPolymorphic(Boolean x) {
+  public boolean getIsPolymorphic() { return _isPolymorphic; }
+  public void setIsPolymorphic(boolean x) throws PropertyVetoException {
+    fireVetoableChange("isPolymorphic", _isPolymorphic, x);
     _isPolymorphic = x;
   }
 
@@ -102,14 +105,19 @@ public class Operation extends BehavioralFeature {
   }
   
   public Vector getMethod() { return _method; }
-  public void setMethod(Vector x) {
+  public void setMethod(Vector x) throws PropertyVetoException {
+    if (_method == null) _method = new Vector();
+    fireVetoableChange("method", _method, x);
     _method = x;
   }
-  public void addMethod(Method x) {
+  public void addMethod(Method x) throws PropertyVetoException {
     if (_method == null) _method = new Vector();
+    fireVetoableChange("method", _method, x);
     _method.addElement(x);
   }
-  public void removeMethod(Method x) {
+  public void removeMethod(Method x) throws PropertyVetoException {
+    if (_method == null) return;
+    fireVetoableChange("method", _method, x);
     _method.removeElement(x);
   }
 

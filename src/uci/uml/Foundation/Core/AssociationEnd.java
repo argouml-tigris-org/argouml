@@ -120,15 +120,17 @@ public class AssociationEnd extends ModelElementImpl {
 
   public Vector getQualifier() { return _qualifier; }
   public void setQualifier(Vector x) throws PropertyVetoException {
+    if (_qualifier == null) _qualifier = new Vector();
     fireVetoableChange("qualifier", _qualifier, x);    
     _qualifier = x;
   }
   public void addQualifier(Attribute x) throws PropertyVetoException {
-    fireVetoableChange("qualifier", _qualifier, x);    
     if (_qualifier == null) _qualifier = new Vector();
+    fireVetoableChange("qualifier", _qualifier, x);    
     _qualifier.addElement(x);
   }
   public void removeQualifier(Attribute x) throws PropertyVetoException {
+    if (_qualifier == null) return;
     fireVetoableChange("qualifier", _qualifier, x);    
     _qualifier.removeElement(x);
   }
@@ -145,15 +147,17 @@ public class AssociationEnd extends ModelElementImpl {
 
   public Vector getSpecification() { return _specification; }
   public void setSpecification(Vector x) throws PropertyVetoException {
+    if (_specification == null) _specification = new Vector();
     fireVetoableChange("specification", _specification, x);    
     _specification = x;
   }
   public void addSpecification(Classifier x) throws PropertyVetoException {
-    fireVetoableChange("specification", _specification, x);    
     if (_specification == null) _specification = new Vector();
+    fireVetoableChange("specification", _specification, x);    
     _specification.addElement(x);
   }
   public void removeSpecification(Classifier x) throws PropertyVetoException {
+    if (_specification == null) return;
     fireVetoableChange("specification", _specification, x);    
     _specification.removeElement(x);
   }
@@ -167,15 +171,17 @@ public class AssociationEnd extends ModelElementImpl {
   
   public Vector getLinkEnd() { return _linkEnd; }
   public void setLinkEnd(Vector x) throws PropertyVetoException {
+    if (_linkEnd == null) _linkEnd = new Vector();
     fireVetoableChange("linkEnd", _linkEnd, x);    
     _linkEnd = x;
   }
   public void addLinkEnd(LinkEnd x) throws PropertyVetoException {
-    fireVetoableChange("linkEnd", _linkEnd, x);    
     if (_linkEnd == null) _linkEnd = new Vector();
+    fireVetoableChange("linkEnd", _linkEnd, x);    
     _linkEnd.addElement(x);
   }
   public void removeLinkEnd(LinkEnd x) throws PropertyVetoException {
+    if (_linkEnd == null) return;
     fireVetoableChange("linkEnd", _linkEnd, x);    
     _linkEnd.removeElement(x);
   }

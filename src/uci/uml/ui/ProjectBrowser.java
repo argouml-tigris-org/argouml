@@ -292,7 +292,7 @@ implements IStatusBar {
 			       _toDoPane, _detailsPane);
     _mainSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _topSplit, _botSplit);
     _topSplit.setDividerSize(2);
-    _topSplit.setDividerLocation(250);
+    _topSplit.setDividerLocation(270);
     _botSplit.setDividerSize(2);
     _mainSplit.setDividerSize(2);
     //_botSplit.setOneTouchExpandable(true);

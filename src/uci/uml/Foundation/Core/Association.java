@@ -86,6 +86,7 @@ implements IAssociation {
 
   public Vector getConnection() { return _connection; }
   public void setConnection(Vector x) throws PropertyVetoException {
+    if (_connection == null) _connection = new Vector();    
     fireVetoableChange("connection", _connection, x);
     _connection = x;
     java.util.Enumeration enum = _connection.elements();
@@ -95,12 +96,13 @@ implements IAssociation {
     }
   }
   public void addConnection(AssociationEnd x) throws PropertyVetoException {
-    fireVetoableChange("connection", _connection, x);
     if (_connection == null) _connection = new Vector();
+    fireVetoableChange("connection", _connection, x);
     _connection.addElement(x);
     x.setAssociation(this);
   }
   public void removeConnection(AssociationEnd x) throws PropertyVetoException {
+    if (_connection == null) return;
     fireVetoableChange("connection", _connection, x);
     _connection.removeElement(x);
   }
@@ -114,15 +116,17 @@ implements IAssociation {
 
   public Vector getLink() { return _link; }
   public void setLink(Vector x) throws PropertyVetoException {
+    if (_link == null) _link = new Vector();
     fireVetoableChange("link", _link, x);
     _link = x;
   }
   public void addLink(Link x) throws PropertyVetoException {
-    fireVetoableChange("link", _link, x);
     if (_link == null) _link = new Vector();
+    fireVetoableChange("link", _link, x);
     _link.addElement(x);
   }
   public void removeLink(Link x) throws PropertyVetoException {
+    if (_link == null) return;
     fireVetoableChange("link", _link, x);
     _link.removeElement(x);
   }

@@ -62,7 +62,7 @@ umlClasses:
 argoumlClasses:
 	@if [ -d uml/ui ] ; \
 	then echo "\n\nCOMPILING ARGO/UML ================" ; \
-	cd uml ; \
+	cd uml; make classes; \
 	cd ui; make classes; cd .. ; \
 	cd visual; make classes; cd .. ; \
 	cd .. ; \

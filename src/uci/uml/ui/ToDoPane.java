@@ -153,7 +153,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   /** called when the user selects an item in the tree, by clicking or
    *  otherwise. */
   public void valueChanged(TreeSelectionEvent e) {
-    System.out.println("ToDoPane valueChanged");
+    //System.out.println("ToDoPane valueChanged");
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     ProjectBrowser.TheInstance.setToDoItem(getSelectedObject());
@@ -231,7 +231,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     _curPerspective = tm;
     if (_curPerspective == null) _tree.hide();
     else {
-      System.out.println("ToDoPane setting tree model");
+      //System.out.println("ToDoPane setting tree model");
       _curPerspective.setRoot(_root);
       _curPerspective.setFlat(_flat);
       _tree.setModel(_curPerspective);

@@ -35,6 +35,7 @@ import java.awt.*;
 import java.util.*;
 import java.beans.*;
 import com.sun.java.swing.*;
+import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.gef.*;
 import uci.graph.*;
@@ -49,25 +50,35 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 
   public final int MARGIN = 2;
   
-  FigText _clss;
-  FigText _attr;
-  FigText _oper;
-  FigRect _bigPort;
+  protected FigText _clss;
+  protected FigText _attr;
+  protected FigText _oper;
+  protected FigRect _bigPort;
   
   public FigClass(GraphModel gm, Object node) {
     super(node);
     if (node instanceof ElementImpl)
       ((ElementImpl)node).addVetoableChangeListener(this);
 
+    Font labelFont = MetalLookAndFeel.getSubTextFont();
+
     Color handleColor = Globals.getPrefs().getHandleColor();
-    _bigPort = new FigRect(8, 8, 92, 62, handleColor, Color.lightGray);
-    _clss = new FigText(10,10,90,20, Color.black, "Dialog", 9);
+    _bigPort = new FigRect(8, 8, 91, 61, handleColor, Color.lightGray);
+    _clss = new FigText(10, 10, 90, 20);
+    _clss.setFont(labelFont);
+    _clss.setTextColor(Color.black);
     _clss.setExpandOnly(true);
     //_clss.setText((new GeneratorDisplay()).generateClassifierRef((Classifier)node));
-    _attr = new FigText(10,30,90,20, Color.black, "Dialog", 9);
+
+    _attr = new FigText(10, 30, 90, 20);
+    _attr.setFont(labelFont);
+    _attr.setTextColor(Color.black);
     _attr.setExpandOnly(true);
     _attr.setJustification("Left");
-    _oper = new FigText(10,50,90,20, Color.black, "Dialog", 9);
+
+    _oper = new FigText(10, 50, 90, 20);
+    _oper.setFont(labelFont);
+    _oper.setTextColor(Color.black);
     _oper.setExpandOnly(true);
     _oper.setJustification("Left");
     addFig(_bigPort);
@@ -125,7 +136,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     // throws PropertyVetoException 
     System.out.println("FigClass got a delayed change notification!");
     Object src = pce.getSource();
-    if (src == getOwner()) updateText();
+    updateText();
   }
 
 
@@ -159,6 +170,17 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     _clss.setText(clsNameStr);
     _attr.setText(attrStr);
     _oper.setText(operStr);
+
+    if (cls.getIsAbstract()) {
+        Font italicFont = MetalLookAndFeel.getSubTextFont();
+        italicFont = new Font(italicFont.getFamily(),
+			      Font.ITALIC, italicFont.getSize());
+        _clss.setFont(italicFont);
+    }
+    else {
+        Font labelFont = MetalLookAndFeel.getSubTextFont();
+        _clss.setFont(labelFont);
+    }
     
     Rectangle bbox = getBounds();
     setBounds(bbox.x, bbox.y, bbox.width, bbox.height);

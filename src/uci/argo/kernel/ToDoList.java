@@ -64,7 +64,7 @@ implements Runnable, java.io.Serializable {
   /** Start a Thread to delete old items from the ToDoList. */
   public void spawnValidityChecker(Designer d) {
     _designer = d;
-    _validityChecker = new Thread(this);
+    _validityChecker = new Thread(this, "ValidityCheckingThread");
     _validityChecker.setDaemon(true);
     _validityChecker.start();
   }

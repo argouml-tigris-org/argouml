@@ -123,8 +123,8 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       if (pb != null) {
 	Object mainTarget = pb.getTarget();
-	if (value != mainTarget) lab.setBorder(null);
-	else lab.setBorder(LineBorder.createGrayLineBorder());
+	if (value != mainTarget) lab.setBorder(new LineBorder(Color.white, 1));
+	else lab.setBorder(new LineBorder(Color.gray, 1));
       }
     }
     return r;

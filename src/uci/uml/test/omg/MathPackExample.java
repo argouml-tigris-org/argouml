@@ -65,13 +65,14 @@ public class MathPackExample {
       mathPackClass.addFeature(op4);
 
       model.addPublicOwnedElement(mathPackClass);
-      
-      System.out.println(GeneratorDisplay.Generate(model));
     }
     catch (PropertyVetoException ex) {
       System.out.println("an veto execption occured in MathPackExample");
     }
-
   }
 
-}
+  public void print() {
+    System.out.println(GeneratorDisplay.Generate(model));
+  }
+
+} /* end class MathPackExample */

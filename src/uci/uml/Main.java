@@ -84,6 +84,9 @@ public class Main {
     if (argv.contains("-big")) {
       MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsBigTheme());
     }
+    else if (argv.contains("-huge")) {
+      MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsHugeTheme());
+    }
     else {
       MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsTheme());
     }

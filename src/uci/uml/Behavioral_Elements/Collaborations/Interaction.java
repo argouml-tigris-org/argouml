@@ -41,19 +41,30 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 
 //needs-more-work: switch to Vector 
 public class Interaction extends ModelElementImpl {
-  public Message _message[];
+  public Vector _message;
   public Collaboration _context;
-  public Link _link[];
-  public Instance _instances[];
+  public Vector _link;
+  public Vector _instances;
   
   public Interaction() { }
   public Interaction(Name name) { super(name); }
   public Interaction(String nameStr) { super(new Name(nameStr)); }
 
-  public Message[] getMessage() { return _message; }
-  public void setMessage(Message[] x) throws PropertyVetoException {
+  public Vector getMessage() { return _message; }
+  public void setMessage(Vector x) throws PropertyVetoException {
+    if (_message == null) _message = new Vector();
     fireVetoableChange("message", _message, x);
     _message = x;
+  }
+  public void addMessage(Message x) throws PropertyVetoException {
+    if (_message == null) _message = new Vector();
+    fireVetoableChange("message", _message, x);
+    _message.addElement(x);
+  }
+  public void removeMesage(Message x) throws PropertyVetoException {
+    if (_message == null) return;
+    fireVetoableChange("message", _message, x);
+    _message.removeElement(x);
   }
 
   public Collaboration getContext() { return _context; }
@@ -62,16 +73,38 @@ public class Interaction extends ModelElementImpl {
     _context = x;
   }
 
-  public Link[] getLink() { return _link; }
-  public void setLink(Link[] x) throws PropertyVetoException {
+  public Vector getLink() { return _link; }
+  public void setLink(Vector x) throws PropertyVetoException {
+    if (_link == null) _link = new Vector();
     fireVetoableChange("link", _link, x);
     _link = x;
   }
+  public void addLink(Link x) throws PropertyVetoException {
+    if (_link == null) _link = new Vector();
+    fireVetoableChange("link", _link, x);
+    _link.addElement(x);
+  }
+  public void removeLink(Link x) throws PropertyVetoException {
+    if (_link == null) return;
+    fireVetoableChange("link", _link, x);
+    _link.removeElement(x);
+  }
 
-  public Instance[] getInstances() { return _instances; }
-  public void setInstances(Instance[] x) throws PropertyVetoException {
+  public Vector getInstances() { return _instances; }
+  public void setInstances(Vector x) throws PropertyVetoException {
+    if (_instances == null) _instances = new Vector();
     fireVetoableChange("instances", _instances, x);
     _instances = x;
+  }
+  public void addInstance(Instance x) throws PropertyVetoException {
+    if (_instances == null) _instances = new Vector();
+    fireVetoableChange("instance", _instances, x);
+    _instances.addElement(x);
+  }
+  public void removeInstance(Instance x) throws PropertyVetoException {
+    if (_instances == null) return;
+    fireVetoableChange("instance", _instances, x);
+    _instances.removeElement(x);
   }
   
 }

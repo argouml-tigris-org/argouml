@@ -76,6 +76,7 @@ public class MMAction extends ModelElementImpl {
 
   public Vector getMessage() { return _message; }
   public void setMessage(Vector x) throws PropertyVetoException {
+    if (_message == null) _message = new Vector();
     fireVetoableChange("message", _message, x);
     _message = x;
   }
@@ -85,6 +86,7 @@ public class MMAction extends ModelElementImpl {
     _message.addElement(x);
   }
   public void removeMessage(Message x) throws PropertyVetoException {
+    if (_message == null) return;
     fireVetoableChange("message", _message, x);
     _message.removeElement(x);
   }
@@ -108,6 +110,13 @@ public class MMAction extends ModelElementImpl {
     fireVetoableChange("script", _script, x);
     _script = x;
   }
+
+  public String getOCLTypeStr() {
+    return "Action";
+    // drop the MM prefix, it is just used
+    // to prevent confusion with java.lang.Class
+  }
+
   
 }
   

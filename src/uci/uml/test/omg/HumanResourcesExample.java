@@ -106,13 +106,6 @@ public class HumanResourcesExample {
 		       "Person.employer=Person.department.employer");
       assoc3.addConstraint(worksForCompanyConstraint);
     
-      System.out.println(personClass.dbgString());
-      System.out.println(deptClass.dbgString());
-      System.out.println(companyClass.dbgString());
-      System.out.println(assoc1.dbgString());
-      System.out.println(assoc2.dbgString());
-      System.out.println(assoc3.dbgString());
-
       model.addPublicOwnedElement(companyClass);
       model.addPublicOwnedElement(personClass);
       model.addPublicOwnedElement(deptClass);
@@ -125,6 +118,15 @@ public class HumanResourcesExample {
     }
   }
 
+  public void print() {
+      System.out.println(personClass.dbgString());
+      System.out.println(deptClass.dbgString());
+      System.out.println(companyClass.dbgString());
+      System.out.println(assoc1.dbgString());
+      System.out.println(assoc2.dbgString());
+      System.out.println(assoc3.dbgString());
+  }
+  
 } /* end class HumanResourcesExample */
 
 

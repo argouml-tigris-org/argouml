@@ -56,6 +56,7 @@ public class ClassifierInState extends Classifier {
 
   public Vector getObjectFlowState() { return _objectFlowState; }
   public void setObjectFlowState(Vector x) throws PropertyVetoException {
+    if (_objectFlowState == null) _objectFlowState = new Vector();
     fireVetoableChange("objectFlowState", _objectFlowState, x);
     _objectFlowState = x;
   }
@@ -64,7 +65,8 @@ public class ClassifierInState extends Classifier {
     fireVetoableChange("objectFlowState", _objectFlowState, x);
     _objectFlowState.addElement(x);
   }
-  public void removeObjectFlowState(ObjectFlowState x)throws PropertyVetoException {
+  public void removeObjectFlowState(ObjectFlowState x)
+       throws PropertyVetoException {
     if (_objectFlowState == null) return;
     fireVetoableChange("objectFlowState", _objectFlowState, x);
     _objectFlowState.removeElement(x);

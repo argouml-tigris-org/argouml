@@ -37,7 +37,7 @@ import uci.uml.Foundation.Data_Types.*;
 
 
 public abstract class BehavioralFeature extends Feature {
-  public Boolean _isQuery;
+  public boolean _isQuery;
   //% public Parameter parameter[];
   public Vector _parameter;
   //% public MMException raisedException[];
@@ -47,39 +47,43 @@ public abstract class BehavioralFeature extends Feature {
   public BehavioralFeature(Name name) { super(name); }
   public BehavioralFeature(String nameStr) { super(new Name(nameStr)); }
   
-  public Boolean getIsQuery() { return _isQuery; }
-  public void setIsQuery(Boolean x) throws PropertyVetoException {
+  public boolean getIsQuery() { return _isQuery; }
+  public void setIsQuery(boolean x) throws PropertyVetoException {
     fireVetoableChange("isQuery", _isQuery, x);
     _isQuery = x;
   }
   
   public Vector getParameter() { return _parameter; }
   public void setParameter(Vector x) throws PropertyVetoException {
+    if (_parameter == null) _parameter = new Vector();
     fireVetoableChange("parameter", _parameter, x);
     _parameter = x;
   }
   public void addParameter(Parameter x) throws PropertyVetoException {
-    fireVetoableChange("parameter", _parameter, x);
     if (_parameter == null) _parameter = new Vector();
+    fireVetoableChange("parameter", _parameter, x);
     _parameter.addElement(x);
   }
   public void removeParameter(Parameter x) throws PropertyVetoException {
+    if (_parameter == null) return;
     fireVetoableChange("parameter", _parameter, x);
     _parameter.removeElement(x);
   }
 
   public Vector getRaisedException() { return _raisedException; }
   public void setRaisedException(Vector x) throws PropertyVetoException {
+    if (_raisedException == null) _raisedException = new Vector();
     fireVetoableChange("raisedException", _raisedException, x);
     _raisedException = x;
   }
   public void addRaisedException(MMException x) throws PropertyVetoException {
-    fireVetoableChange("raisedException", _raisedException, x);
     if (_raisedException == null) _raisedException = new Vector();
+    fireVetoableChange("raisedException", _raisedException, x);
     _raisedException.addElement(x);
   }
   public void removeRaisedException(MMException x)
        throws PropertyVetoException {
+    if (_raisedException == null) return;
     fireVetoableChange("raisedException", _raisedException, x);
     _raisedException.removeElement(x);
   }

@@ -53,6 +53,7 @@ public abstract class StateVertex extends ModelElementImpl {
 
   public Vector getOutgoing() { return _outgoing; }
   public void setOutgoing(Vector x) throws PropertyVetoException {
+    if (_outgoing == null) _outgoing = new Vector();
     fireVetoableChange("outgoing", _outgoing, x);
     _outgoing = x;
   }
@@ -70,6 +71,7 @@ public abstract class StateVertex extends ModelElementImpl {
   
   public Vector getIncoming() { return _incoming; }
   public void setIncoming(Vector x) throws PropertyVetoException {
+    if (_incoming == null) _incoming = new Vector();
     fireVetoableChange("incoming", _incoming, x);
     _incoming = x;
   }

@@ -29,6 +29,7 @@ package uci.gef;
 
 import java.util.*;
 import java.awt.*;
+import java.beans.*;
 
 import uci.gef.*;
 import uci.graph.*;
@@ -45,6 +46,7 @@ public class Diagram {
   protected String _comments = "(no comments given)";
   protected LayerPerspective _lay;
   protected ToolBar _toolBar;
+  public transient Vector vetoListeners;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -79,10 +81,16 @@ public class Diagram {
   public void setToolBar(ToolBar tb) { _toolBar = tb; }
 
   public String getComments() { return _comments; }
-  public void setComments(String c) { _comments = c; }
+  public void setComments(String c) throws PropertyVetoException {
+    fireVetoableChange("comments", _comments, c);
+    _comments = c;
+  }
 
   public String getName() { return _name; }
-  public void setName(String n) { _name = n; }
+  public void setName(String n) throws PropertyVetoException {
+    fireVetoableChange("name", _name, n);
+    _name = n;
+  }
 
   public void setGraphModel(GraphModel gm) { getLayer().setGraphModel(gm); }
   public GraphModel getGraphModel() { return getLayer().getGraphModel(); }
@@ -90,5 +98,71 @@ public class Diagram {
   public LayerPerspective getLayer() { return _lay; }
   public void setLayer(LayerPerspective lay) { _lay = lay; }
 
-  
+
+  ////////////////////////////////////////////////////////////////
+  // VetoableChangeSupport
+
+  public synchronized void
+  addVetoableChangeListener(VetoableChangeListener listener) {
+    if (vetoListeners == null)
+      vetoListeners = new Vector();
+    vetoListeners.removeElement(listener);
+    vetoListeners.addElement(listener);
+  }
+
+  public synchronized void
+  removeVetoableChangeListener(VetoableChangeListener listener) {
+    if (vetoListeners == null) return;
+    vetoListeners.removeElement(listener);
+  }
+
+  public void fireVetoableChange(String propertyName, 
+				 boolean oldValue, boolean newValue) 
+       throws PropertyVetoException {
+	 fireVetoableChange(propertyName,
+			    new Boolean(oldValue),
+			    new Boolean(newValue));
+  }
+
+  public void fireVetoableChange(String propertyName, 
+				 int oldValue, int newValue) 
+       throws PropertyVetoException {
+	 fireVetoableChange(propertyName,
+			    new Integer(oldValue),
+			    new Integer(newValue));
+  }
+
+
+
+  public void fireVetoableChange(String propertyName, 
+				 Object oldValue, Object newValue) 
+       throws PropertyVetoException {
+	 if (vetoListeners == null) return;
+    if (oldValue != null && oldValue.equals(newValue)) return;
+    PropertyChangeEvent evt =
+      new PropertyChangeEvent(this,
+			      propertyName, oldValue, newValue);
+    try {
+      for (int i = 0; i < vetoListeners.size(); i++) {
+	VetoableChangeListener target = 
+	  (VetoableChangeListener) vetoListeners.elementAt(i);
+	target.vetoableChange(evt);
+      }
+    } catch (PropertyVetoException veto) {
+      // Create an event to revert everyone to the old value.
+      evt = new PropertyChangeEvent(this, propertyName, newValue, oldValue);
+      for (int i = 0; i < vetoListeners.size(); i++) {
+	try {
+	  VetoableChangeListener target =
+	    (VetoableChangeListener) vetoListeners.elementAt(i);
+	  target.vetoableChange(evt);
+	} catch (PropertyVetoException ex) {
+	  // We just ignore exceptions that occur during reversions.
+	}
+      }
+      // And now rethrow the PropertyVetoException.
+      throw veto;
+    }    
+  }
+
 } /* end class Diagram */

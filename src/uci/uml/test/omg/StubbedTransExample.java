@@ -83,15 +83,15 @@ public class StubbedTransExample {
       sm.addTransition(t08 = new Transition(w, d));
 
       model.addPublicOwnedElement(stubbedClass);
-      
-      System.out.println(stubbedClass.dbgString());
-      System.out.println(sm.dbgString());
     }
     catch (PropertyVetoException ex) {
       System.out.println("an veto execption occured in StubbedTransExample");
     }
+  }
 
-
+  public void print() {
+    System.out.println(stubbedClass.dbgString());
+    System.out.println(sm.dbgString());
   }
 
 } /* end class StubbedTransExample */

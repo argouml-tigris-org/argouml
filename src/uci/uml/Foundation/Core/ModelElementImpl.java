@@ -93,13 +93,14 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public Vector getConstraint() { return _constraint; }
   public void setConstraint(Vector x)
   throws PropertyVetoException {
+    if (_constraint == null) _constraint = new Vector();
     fireVetoableChange("constraint", _constraint, x);
     _constraint = x;
   }
   public void addConstraint(Constraint x)
   throws PropertyVetoException {
-    fireVetoableChange("constraint", _constraint, x);
     if (_constraint == null) _constraint = new Vector();
+    fireVetoableChange("constraint", _constraint, x);
     _constraint.addElement(x);
   }
   public void removeConstraint(Constraint x)
@@ -112,13 +113,14 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public Vector getProvision() { return _provision; }
   public void setProvision(Vector x)
   throws PropertyVetoException {
+    if (_provision == null) _provision = new Vector();
     fireVetoableChange("provision", _provision, x);
     _provision = x;
   }
   public void addProvision(Dependency x)
   throws PropertyVetoException {
-    fireVetoableChange("provision", _provision, x);
     if (_provision == null) _provision = new Vector();
+    fireVetoableChange("provision", _provision, x);
     _provision.addElement(x);
   }
   public void removeProvision(Dependency x)
@@ -131,13 +133,14 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public Vector getRequirement() { return _requirement; }
   public void setRequirement(Vector x)
   throws PropertyVetoException {
+    if (_requirement == null) _requirement = new Vector();
     fireVetoableChange("requirement", _requirement, x);
     _requirement = x;
   }
   public void addRequirement(Dependency x)
   throws PropertyVetoException {
-    fireVetoableChange("requirement", _requirement, x);
     if (_requirement == null) _requirement = new Vector();
+    fireVetoableChange("requirement", _requirement, x);
     _requirement.addElement(x);
   }
   public void removeRequirement(Dependency x)
@@ -152,13 +155,14 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   }
   public void setTemplateparameter(Vector x)
   throws PropertyVetoException {
+    if (_templateParameter == null) _templateParameter = new Vector();
     fireVetoableChange("templateParameter", _templateParameter, x);
     _templateParameter = x;
   }
   public void addTemplateparameter(ModelElement x)
   throws PropertyVetoException {
-    fireVetoableChange("templateParameter", _templateParameter, x);
     if (_templateParameter == null) _templateParameter = new Vector();
+    fireVetoableChange("templateParameter", _templateParameter, x);
     _templateParameter.addElement(x);
   }
   public void removeTemplateparameter(ModelElement x)
@@ -189,13 +193,14 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public Vector getElementReference() { return _elementReference; }
   public void setElementReference(Vector x)
   throws PropertyVetoException {
+    if (_elementReference == null) _elementReference = new Vector();
     fireVetoableChange("elementReference", _elementReference, x);
     _elementReference = x;
   }
   public void addElementReference(ElementReference x)
   throws PropertyVetoException {
-    fireVetoableChange("elementReference", _elementReference, x);
     if (_elementReference == null) _elementReference = new Vector();
+    fireVetoableChange("elementReference", _elementReference, x);
     _elementReference.addElement(x);
   }
   public void removeElementReference(ElementReference x)
@@ -208,13 +213,14 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public Vector getStereotype() { return _stereotype; }
   public void setStereotype(Vector x)
   throws PropertyVetoException {
+    if (_stereotype == null) _stereotype = new Vector();
     fireVetoableChange("stereotype", _stereotype, x);
     _stereotype = x;
   }
   public void addStereotype(Stereotype x)
   throws PropertyVetoException {
-    fireVetoableChange("stereotype", _stereotype, x);
     if (_stereotype == null) _stereotype = new Vector();
+    fireVetoableChange("stereotype", _stereotype, x);
     _stereotype.addElement(x);
   }
   public void removeStereotype(Stereotype x)
@@ -231,13 +237,14 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public Vector getBehavior() { return _behavior; }
   public void setBehavior(Vector x)
   throws PropertyVetoException {
+    if (_behavior == null) _behavior = new Vector();
     fireVetoableChange("behavior", _behavior, x);
     _behavior = x;
   }
   public void addBehavior(StateMachine x)
   throws PropertyVetoException {
-    fireVetoableChange("behavior", _behavior, x);
     if (_behavior == null) _behavior = new Vector();
+    fireVetoableChange("behavior", _behavior, x);
     _behavior.addElement(x);
   }
   public void removeBehavior(StateMachine x)

@@ -135,15 +135,12 @@ implements ItemListener, TreeSelectionListener {
   }
 
 
-  // needs-more-work: what should the difference be between a single
-  // and double click?
-
   /** called when the user clicks once on an item in the tree. */ 
   public void mySingleClick(int row, TreePath path) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     if (getSelectedObject() == null) return;
-    System.out.println("single: " + getSelectedObject().toString());
+    //System.out.println("single: " + getSelectedObject().toString());
     ProjectBrowser.TheInstance.select(getSelectedObject());
   }
 
@@ -152,15 +149,16 @@ implements ItemListener, TreeSelectionListener {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     if (getSelectedObject() == null) return;
-    System.out.println("double: " + getSelectedObject().toString());
+    //System.out.println("double: " + getSelectedObject().toString());
     ProjectBrowser.TheInstance.setTarget(getSelectedObject());
+    repaint();
   }
 
   ////////////////////////////////////////////////////////////////
   // internal methods
 
   protected void updateTree() {
-    System.out.println("updateTree!");
+    //System.out.println("updateTree!");
     NavPerspective tm = (NavPerspective) _combo.getSelectedItem();
     //if (tm == _curPerspective) return;
       _curPerspective = tm;
@@ -169,7 +167,7 @@ implements ItemListener, TreeSelectionListener {
 	_tree.hide();
       }
       else {
-      System.out.println("updateTree _curPerspective=" + _curPerspective.toString());
+	//System.out.println("updateTree _curPerspective=" + _curPerspective.toString());
 	_curPerspective.setRoot(_root);
 	_tree.setModel(_curPerspective);
 	_tree.show(); // blinks?

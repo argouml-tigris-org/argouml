@@ -54,8 +54,8 @@ public class ShapesExample {
       polygonClass = new MMClass("Polygon");
       ellipseClass = new MMClass("Ellipse");
       splineClass = new MMClass("Spline");
-      shapeClass.setIsAbstract(Boolean.TRUE);
-      splineClass.setIsAbstract(Boolean.TRUE); // bug that a critic can find
+      shapeClass.setIsAbstract(true);
+      splineClass.setIsAbstract(true); // bug that a critic can find
 
       // using this Generalization constructor also modifies the classes
       g1 = new Generalization(polygonClass, shapeClass);
@@ -69,14 +69,16 @@ public class ShapesExample {
       model.addPublicOwnedElement(g1); //?
       model.addPublicOwnedElement(g2); //?
       model.addPublicOwnedElement(g3); //?
-
-      System.out.println(GeneratorDisplay.Generate(model));
     }
     catch (PropertyVetoException ex) {
       System.out.println("an veto execption occured in ShapesExample");
     }
   }
 
+  public void print() {
+    System.out.println(GeneratorDisplay.Generate(model));
+  }
+  
 } /* end class ShapesExample */
 
 

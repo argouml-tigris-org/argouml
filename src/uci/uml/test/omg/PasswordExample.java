@@ -77,15 +77,15 @@ public class PasswordExample {
       typingPassword.addInternalTransition(help);
 
       model.addPublicOwnedElement(passwordClass);
-      
-      System.out.println(passwordClass.dbgString());
-      System.out.println(sm.dbgString());
     }
     catch (PropertyVetoException ex) {
       System.out.println("an veto execption occured in PasswordExample");
     }
-
-
   }
 
+  public void print() {
+    System.out.println(passwordClass.dbgString());
+    System.out.println(sm.dbgString());
+  }
+  
 } /* end class PasswordExample */

@@ -54,6 +54,7 @@ public class Signal extends GeneralizableElementImpl implements Request {
 
   public Vector getReception() { return _reception; }
   public void setReception(Vector x) throws PropertyVetoException{
+    if (_reception == null) _reception = new Vector();
     fireVetoableChange("reception", _reception, x);
     _reception = x;
   }
@@ -63,12 +64,14 @@ public class Signal extends GeneralizableElementImpl implements Request {
     _reception.addElement(x);
   }
   public void removeReception(Reception x) throws PropertyVetoException {
+    if (_reception == null) return;
     fireVetoableChange("reception", _reception, x);
     _reception.removeElement(x);
   }
 
   public Vector getParameter() { return _parameter; }
   public void setParameter(Vector x) throws PropertyVetoException {
+    if (_parameter == null) _parameter = new Vector();
     fireVetoableChange("parameter", _parameter, x);
     _parameter = x;
   }
@@ -78,12 +81,14 @@ public class Signal extends GeneralizableElementImpl implements Request {
     _parameter.addElement(x);
   }
   public void removeParameter(Parameter x) throws PropertyVetoException {
+    if (_parameter == null) return;
     fireVetoableChange("parameter", _parameter, x);
     _parameter.removeElement(x);
   }
 
   public Vector getOccurrence() { return _occurrence; }
   public void setOccurrence(Vector x) throws PropertyVetoException {
+    if (_occurrence == null) _occurrence = new Vector();
     fireVetoableChange("occurances", _occurrence, x);
     _occurrence = x;
   }
@@ -93,12 +98,14 @@ public class Signal extends GeneralizableElementImpl implements Request {
     _occurrence.addElement(x);
   }
   public void removeOccurrence(SignalEvent x) throws PropertyVetoException {
+    if (_occurrence == null) return;
     fireVetoableChange("occurances", _occurrence, x);
     _occurrence.removeElement(x);
   }
 
   public Vector getRaises() { return _raises; }
   public void setRaises(Vector x) throws PropertyVetoException {
+    if (_raises == null) _raises = new Vector();
     fireVetoableChange("raises", _raises, x);
     _raises = x;
   }
@@ -108,6 +115,7 @@ public class Signal extends GeneralizableElementImpl implements Request {
     _raises.addElement(x);
   }
   public void removeRaises(SendAction x) throws PropertyVetoException {
+    if (_raises == null) return;
     fireVetoableChange("raises", _raises, x);
     _raises.removeElement(x);
   }
@@ -129,6 +137,7 @@ public class Signal extends GeneralizableElementImpl implements Request {
 
   public Vector getAction() { return _action; }
   public void setAction(Vector x) throws PropertyVetoException {
+    if (_action == null) _action = new Vector();
     fireVetoableChange("action", _action, x);
     _action = x;
   }
@@ -138,6 +147,7 @@ public class Signal extends GeneralizableElementImpl implements Request {
     _action.addElement(x);
   }
   public void removeAction(MMAction x) throws PropertyVetoException {
+    if (_action == null) return;
     fireVetoableChange("action", _action, x);
     _action.removeElement(x);
   }

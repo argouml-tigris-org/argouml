@@ -56,6 +56,7 @@ public class Partition extends ModelElementImpl{
 
   public Vector getContents() { return _contents; }
   public void setContents(Vector x) throws PropertyVetoException {
+    if (_contents == null) _contents = new Vector();
     fireVetoableChange("contents", _contents, x);
     _contents = x;
   }

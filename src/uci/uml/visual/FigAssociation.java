@@ -30,6 +30,7 @@ package uci.uml.visual;
 import java.awt.*;
 import java.beans.*;
 import com.sun.java.swing.*;
+import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.gef.*;
 import uci.uml.ui.*;
@@ -40,9 +41,9 @@ import uci.uml.generate.*;
 public class FigAssociation extends FigEdgeLine
 implements VetoableChangeListener, DelayedVetoableChangeListener {
 
-    FigText _name;
-    FigText _source_end;
-    FigText _dest_end;
+  protected FigText _name;
+  protected FigText _source_end;
+  protected FigText _dest_end;
 
   public FigAssociation(Object edge) {
     super();
@@ -51,26 +52,36 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     if (edge instanceof ElementImpl)
       ((ElementImpl)edge).addVetoableChangeListener(this);
 
-    _name = new FigText(10,30,90,20, Color.black, "Dialog", 9);
+    Font labelFont = MetalLookAndFeel.getSubTextFont();
+    
+    
+    _name = new FigText(10, 30, 90, 20);
+    _name.setFont(labelFont);
+    _name.setTextColor(Color.black);
     _name.setTextFilled(false);
     _name.setFilled(false);
     _name.setLineWidth(0);
 
     addPathItem(_name, new PathConvPercent(this, (float).50, 0));
 
-    _source_end = new FigText(10,30,90,20, Color.black, "Dialog", 9);
+    _source_end = new FigText(10, 30, 90, 20);
+    _source_end.setFont(labelFont);
+    _source_end.setTextColor(Color.black);
     _source_end.setTextFilled(false);
     _source_end.setFilled(false);
     _source_end.setLineWidth(0);
     addPathItem(_source_end, new PathConvPercent(this, (float).20, 0));
 
-    _dest_end = new FigText(10,30,90,20, Color.black, "dialog", 9);
+    _dest_end = new FigText(10, 30, 90, 20);
+    _dest_end.setFont(labelFont);
+    _dest_end.setTextColor(Color.black);
     _dest_end.setTextFilled(false);
     _dest_end.setFilled(false);
     _dest_end.setLineWidth(0);
     addPathItem(_dest_end, new PathConvPercent(this, (float).80, 0));
 
     setBetweenNearestPoints(true);
+    updateText();
   }
 
 
@@ -97,7 +108,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     // throws PropertyVetoException 
     System.out.println("FigAssociation got a delayed change notification!");
     Object src = pce.getSource();
-    if (src == getOwner()) updateText();
+    updateText();
   }
 
   protected void updateText() {

@@ -30,8 +30,10 @@
 package uci.uml.Foundation.Core;
 
 import java.util.*;
+import java.beans.*;
+import uci.uml.Foundation.Data_Types.*;
 
-public abstract class Dependency extends ModelElementImpl {
+public class Dependency extends ModelElementImpl {
   public String _description;
   //% public ModelElement _supplier[];
   public Vector _supplier;
@@ -42,6 +44,20 @@ public abstract class Dependency extends ModelElementImpl {
   public Dependency _owningDependency;
   
   public Dependency() { }
+  public Dependency(Name name) { super(name); }
+  public Dependency(String nameStr) { super(new Name(nameStr)); }
+
+  public Dependency(ModelElement aSupplier, ModelElement aClient) {
+    super(new Name(aSupplier.getName().getBody() + "-->" +
+		   aClient.getName().getBody())); 
+    // needs-more-work
+    //try {
+      addSupplier(aSupplier);
+      addClient(aClient);
+    //}
+    //catch (PropertyVetoException pve) { }
+  }
+
   
   public String getDescription() { return _description; }
   public void setDescription(String x) {

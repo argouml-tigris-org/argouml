@@ -182,18 +182,18 @@ public class DialingExample {
       sm.addTransition(t14);
 
       model.addPublicOwnedElement(phoneClass);
-      
-      //System.out.println(playerClass.dbgString());
-      //System.out.println(teamClass.dbgString());
-      //System.out.println(yearClass.dbgString());
-      System.out.println(phoneClass.dbgString());
-      System.out.println(sm.dbgString());
     }
     catch (PropertyVetoException ex) {
       System.out.println("an veto execption occured in DialingExample");
     }
-
-
   }
 
+  public void print() {
+    //System.out.println(playerClass.dbgString());
+    //System.out.println(teamClass.dbgString());
+    //System.out.println(yearClass.dbgString());
+    System.out.println(phoneClass.dbgString());
+    System.out.println(sm.dbgString());
+  }
+  
 } /* end class DialingExample */

@@ -108,14 +108,17 @@ implements VetoableChangeListener {
       ((ElementImpl)node).addVetoableChangeListener(this);
     if (node instanceof Project)
       ((Project)node).addVetoableChangeListener(this);
-    // diagram
+    if (node instanceof Diagram)
+      ((Diagram)node).addVetoableChangeListener(this);
+
     TreeModel tm = getModel();
     int childCount = tm.getChildCount(node);
     for (int i = 0; i < childCount; i++) {
       Object child = tm.getChild(node, i);
       if (child instanceof ElementImpl) 
 	((ElementImpl)child).addVetoableChangeListener(this);
-      //diagram
+      if (child instanceof Diagram)
+	((Diagram)child).addVetoableChangeListener(this);
     }
   }
   
@@ -132,12 +135,16 @@ implements VetoableChangeListener {
       ((ElementImpl)newModel.getRoot()).addVetoableChangeListener(this);
     if (newModel.getRoot() instanceof Project)
       ((Project)newModel.getRoot()).addVetoableChangeListener(this);
+    if (newModel.getRoot() instanceof Diagram)
+      ((Diagram)newModel.getRoot()).addVetoableChangeListener(this);
+
     int childCount = newModel.getChildCount(newModel.getRoot());
     for (int i = 0; i < childCount; i++) {
       Object child = newModel.getChild(newModel.getRoot(), i);
       if (child instanceof ElementImpl) 
 	((ElementImpl)child).addVetoableChangeListener(this);
-      //diagram
+      if (child instanceof Diagram) 
+	((Diagram)child).addVetoableChangeListener(this);
     }
     reexpand();
   }

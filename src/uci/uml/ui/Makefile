@@ -42,31 +42,47 @@ CLASSES = \
 	DisplayTextTree.class \
 	DocumentationManager.class \
 	EmailExpertDialog.class \
+	GoAssocToSource.class \
+	GoAssocToTarget.class \
+	GoClassToAggrClass.class \
+	GoClassToAssocdClass.class \
+	GoClassToCompositeClass.class \
 	GoClassifierToBeh.class \
 	GoClassifierToStr.class \
 	GoDiagramToEdge.class \
 	GoDiagramToNode.class \
+	GoElementToMachine.class \
+	GoFilteredChildren.class \
 	GoGenElementToDerived.class \
 	GoListToDecisionsToItems.class \
 	GoListToGoalsToItems.class \
 	GoListToPriorityToItem.class \
+	GoMachineToStartState.class \
+	GoMachineToState.class \
+	GoMachineToTrans.class \
+	GoModelToActor.class \
+	GoModelToAssociation.class \
 	GoModelToBaseElements.class \
+	GoModelToClass.class \
 	GoModelToDiagram.class \
 	GoModelToElements.class \
+	GoModelToUseCase.class \
 	GoProjectDiagram.class \
 	GoProjectModel.class \
+	GoStateToIncomingTrans.class \
+	GoStateToOutgoingTrans.class \
+	GoStateToSubstate.class \
+	GoTransToSourceState.class \
+	GoTransToTargetState.class \
 	GoalsDialog.class \
 	JasonsTheme.class \
+	JasonsBigTheme.class \
+	JasonsHugeTheme.class \
 	Menu.class \
 	ModelElementRenderer.class \
 	MultiEditorPane.class \
-	NavAssociation.class \
-	NavContainment.class \
-	NavDiagramCentric.class \
-	NavInheritance.class \
-	NavPackageCentric.class \
+	NavigatorConfigDialog.class \
 	NavPerspective.class \
-	NavStrictContainment.class \
 	NavigatorPane.class \
 	PriorityNode.class \
 	Project.class \
@@ -75,6 +91,7 @@ CLASSES = \
 	PropPanelAssoc.class \
 	PropPanelAttr.class \
 	PropPanelClass.class \
+	PropPanelDiagram.class \
 	PropPanelInterface.class \
 	PropPanelModel.class \
 	PropPanelActor.class \
@@ -83,7 +100,9 @@ CLASSES = \
 	PropPanelState.class \
 	PropPanelPseudostate.class \
 	SpacerPanel.class \
+	SplashScreen.class \
 	StatusBar.class \
+	TabConstraints.class \
 	TabDiagram.class \
 	TabDocs.class \
 	TabHash.class \
@@ -93,6 +112,7 @@ CLASSES = \
 	TabSpawnable.class \
 	TabSrc.class \
 	TabTable.class \
+	TabTaggedValues.class \
 	TabText.class \
 	TabToDo.class \
 	TabToDoTarget.class \

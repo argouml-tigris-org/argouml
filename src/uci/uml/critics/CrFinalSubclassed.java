@@ -58,7 +58,7 @@ public class CrFinalSubclassed extends CrUML {
     while (enum.hasMoreElements()) {
       Generalization g = (Generalization) enum.nextElement();
       GeneralizableElement base = g.getSupertype();
-      if (base.getIsLeaf().booleanValue()) return PROBLEM_FOUND;
+      if (base.getIsLeaf()) return PROBLEM_FOUND;
     }
     return NO_PROBLEM;
   }

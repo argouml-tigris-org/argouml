@@ -32,13 +32,22 @@ include ../../../Makefile.config
 GEN = 
 
 CLASSES = \
+	ComplexTransExample.class \
+	ConcurrentSubstatesExample.class \
+	DialingExample.class \
 	GraphicsExample.class \
 	HumanResourcesExample.class \
+	ImplementationExample.class \
 	Main.class \
 	MathPackExample.class \
+	PackageExample.class \
+	PasswordExample.class \
 	ShapesExample.class \
 	SoccerExample.class \
+	StubbedTransExample.class \
+	TelephoneCatalogExample.class \
 	WindowExample.class
+
 
 all: $(GEN) $(CLASSES)
 

@@ -40,5 +40,6 @@ public class Instance extends ModelElementImpl {
 
   public Instance() { }
   public Instance(Name name) { super(name); }
+  public Instance(String nameStr) { super(new Name(nameStr)); }
 
 }

@@ -150,8 +150,8 @@ public class GeneratorDisplay extends Generator {
     else classifierKeyword = "class?"; }
     String s = "";
     s += generateVisibility(cls.getElementOwnership());
-    if (cls.getIsAbstract().booleanValue()) s += "abstract ";
-    if (cls.getIsLeaf().booleanValue()) s += "final ";
+    if (cls.getIsAbstract()) s += "abstract ";
+    if (cls.getIsLeaf()) s += "final ";
     s += classifierKeyword + " " + generatedName + " ";
     String baseClass = generateGeneralzation(cls.getGeneralization());
     if (!baseClass.equals("")) s += "extends " + baseClass + " ";

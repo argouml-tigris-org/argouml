@@ -53,6 +53,7 @@ public class CompositeState extends State {
 
   public Vector getSubstate() { return _substate; }
   public void setSubstate(Vector x) throws PropertyVetoException {
+    if (_substate == null) _substate = new Vector();
     fireVetoableChange("substate", _substate, x);
     _substate = x;
   }

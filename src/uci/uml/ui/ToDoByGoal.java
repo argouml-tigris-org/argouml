@@ -61,7 +61,7 @@ implements ToDoListListener {
   // ToDoListListener implementation
 
   public void toDoItemAdded(ToDoListEvent tde) {
-    System.out.println("toDoItemAdded");
+    //System.out.println("toDoItemAdded");
     ToDoItem item = tde.getToDoItem();
     Object path[] = new Object[2];
     path[0] = Designer.TheDesigner.getToDoList();
@@ -73,7 +73,7 @@ implements ToDoListListener {
     while (enum.hasMoreElements()) {
       Goal g = (Goal) enum.nextElement();
       path[1] = g;
-      System.out.println("toDoItemAdded firing new item!");
+      //System.out.println("toDoItemAdded firing new item!");
       childIndices[0] = getIndexOfChild(g, item);
       children[0] = item;
       fireTreeNodesInserted(this, path, childIndices, children);
@@ -81,7 +81,7 @@ implements ToDoListListener {
   }
 
   public void toDoItemRemoved(ToDoListEvent tde) {
-    System.out.println("toDoItemAdded");
+    //System.out.println("toDoItemAdded");
     ToDoList list = Designer.TheDesigner.getToDoList(); //source?
     ToDoItem item = tde.getToDoItem();
     Object path[] = new Object[2];
@@ -91,7 +91,7 @@ implements ToDoListListener {
     java.util.Enumeration enum = post.getSupportedGoals().elements();
     while (enum.hasMoreElements()) {
       Goal g = (Goal) enum.nextElement();
-      System.out.println("toDoItemRemoved updating decision node!");
+      //System.out.println("toDoItemRemoved updating decision node!");
       path[1] = g;
       //fireTreeNodesChanged(this, path, childIndices, children);
       fireTreeStructureChanged(path);

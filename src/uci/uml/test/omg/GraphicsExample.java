@@ -109,12 +109,6 @@ public class GraphicsExample {
       polygonClass.addAssociationEnd(ae21);
       graphicsBundleClass.addAssociationEnd(ae22);
       
-      System.out.println(polygonClass.dbgString());
-      System.out.println(pointClass.dbgString());
-      System.out.println(graphicsBundleClass.dbgString());
-      System.out.println(assoc1.dbgString());
-      System.out.println(assoc2.dbgString());
-
       model.addPublicOwnedElement(polygonClass);
       model.addPublicOwnedElement(pointClass);
       model.addPublicOwnedElement(graphicsBundleClass);
@@ -124,7 +118,14 @@ public class GraphicsExample {
     catch (PropertyVetoException ex) {
       System.out.println("an veto execption occured in GraphicsExample");
     }
-
   }
 
+  public void print() {
+    System.out.println(polygonClass.dbgString());
+    System.out.println(pointClass.dbgString());
+    System.out.println(graphicsBundleClass.dbgString());
+    System.out.println(assoc1.dbgString());
+    System.out.println(assoc2.dbgString());
+  }
+  
 } /* end class GraphicsExample */

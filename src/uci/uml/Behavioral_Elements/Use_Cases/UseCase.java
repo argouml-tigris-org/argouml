@@ -46,6 +46,7 @@ public class UseCase extends Classifier {
   
   public Vector getExtensionPoint() { return _extensionPoint; }
   public void setExtensionPoint(Vector x) throws PropertyVetoException {
+    if (_extensionPoint == null) _extensionPoint = new Vector();
     fireVetoableChange("extensionPoint", _extensionPoint, x);
     _extensionPoint = x;
   }
@@ -55,9 +56,34 @@ public class UseCase extends Classifier {
     _extensionPoint.addElement(x);
   }
   public void removeExtensionPoint(String x) throws PropertyVetoException {
+    if (_extensionPoint == null) return;
     fireVetoableChange("extensionPoint", _extensionPoint, x);
     _extensionPoint.removeElement(x);
   }
+
+  public String dbgString() {
+    String s = "";
+    Vector v;
+    java.util.Enumeration enum;
+
+    s += getOCLTypeStr() + "(" + getName().getBody().toString() + ")[";
+
+    String stereos = dbgStereotypes();
+    if (stereos != "") s += "\n" + stereos;
+
+    String tags = dbgTaggedValues();
+    if (tags != "") s += "\n" + tags;
+
+    if ((v = getExtensionPoint()) != null) {
+      s += "\n  extension points:";
+      enum = v.elements();
+      while (enum.hasMoreElements())
+	s += "\n  | " + ((String)enum.nextElement()).toString();
+    }
+    s += "\n]";
+    return s;
+  }
+
 
 }
 

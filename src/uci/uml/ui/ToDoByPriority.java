@@ -51,7 +51,7 @@ implements ToDoListListener {
   // ToDoListListener implementation
 
   public void toDoItemAdded(ToDoListEvent tde) {
-    System.out.println("toDoItemAdded");
+    //System.out.println("toDoItemAdded");
     ToDoItem item = tde.getToDoItem();
     Object path[] = new Object[2];
     path[0] = Designer.TheDesigner.getToDoList();
@@ -64,7 +64,7 @@ implements ToDoListListener {
       PriorityNode pn = (PriorityNode) enum.nextElement();
       if (pri != pn.getPriority()) continue;
       path[1] = pn;
-      System.out.println("toDoItemAdded firing new item!");
+      //System.out.println("toDoItemAdded firing new item!");
       childIndices[0] = getIndexOfChild(pn, item);
       children[0] = item;
       fireTreeNodesInserted(this, path, childIndices, children);
@@ -72,7 +72,7 @@ implements ToDoListListener {
   }
 
   public void toDoItemRemoved(ToDoListEvent tde) {
-    System.out.println("toDoItemAdded");
+    //System.out.println("toDoItemRemoved");
     ToDoList list = Designer.TheDesigner.getToDoList(); //source?
     ToDoItem item = tde.getToDoItem();
     Object path[] = new Object[2];
@@ -83,7 +83,7 @@ implements ToDoListListener {
     while (enum.hasMoreElements()) {
       PriorityNode pn = (PriorityNode) enum.nextElement();
       if (pri != pn.getPriority()) continue;      
-      System.out.println("toDoItemRemoved updating PriorityNode");
+      //System.out.println("toDoItemRemoved updating PriorityNode");
       path[1] = pn;
       //fireTreeNodesChanged(this, path, childIndices, children);
       fireTreeStructureChanged(path);

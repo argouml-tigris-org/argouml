@@ -30,17 +30,22 @@
 package uci.uml.Foundation.Core;
 
 import java.util.*;
+import java.beans.*;
+
 import uci.uml.Foundation.Data_Types.*;
 
 public class MMClass extends Classifier {
-  public Boolean _isActive;
+  public boolean _isActive;
     
   public MMClass() { }
   public MMClass(Name name) { super(name); }
   public MMClass(String nameStr) { super(new Name(nameStr)); }
   
-  public Boolean getIsactive(){ return _isActive; }
-  public void setIsactive(Boolean x) { _isActive = x; }
+  public boolean getIsActive(){ return _isActive; }
+  public void setIsActive(boolean x) throws PropertyVetoException {
+    fireVetoableChange("isActive", _isActive, x);
+    _isActive = x;
+  }
 
   public String getOCLTypeStr() {
     return "Class";

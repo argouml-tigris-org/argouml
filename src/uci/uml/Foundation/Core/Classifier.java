@@ -61,6 +61,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   public Vector getBehavioralFeature() { return _behavioralFeature; }
   public void setBehavioralFeature(Vector x)
   throws PropertyVetoException {
+    if (_behavioralFeature == null) _behavioralFeature = new Vector();
     fireVetoableChange("behavioralFeature", _behavioralFeature, x);
     _behavioralFeature = x;
     java.util.Enumeration enum = _behavioralFeature.elements();
@@ -71,13 +72,14 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
   public void addBehavioralFeature(Feature x)
   throws PropertyVetoException {
-    fireVetoableChange("behavioralFeature", _behavioralFeature, x);
     if (_behavioralFeature == null) _behavioralFeature = new Vector();
+    fireVetoableChange("behavioralFeature", _behavioralFeature, x);
     _behavioralFeature.addElement(x);
     x.setOwner(this);
   }
   public void removeBehavioralFeature(Feature x)
   throws PropertyVetoException {
+    if (_behavioralFeature == null) return;
     fireVetoableChange("behavioralFeature", _behavioralFeature, x);
     _behavioralFeature.removeElement(x);
   }
@@ -87,6 +89,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
   public void setStructuralFeature(Vector x)
   throws PropertyVetoException {
+    if (_structuralFeature == null) _structuralFeature = new Vector();
     fireVetoableChange("structuralFeature", _structuralFeature, x);
     _structuralFeature = x;
     java.util.Enumeration enum = _structuralFeature.elements();
@@ -97,13 +100,14 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
   public void addStructuralFeature(StructuralFeature x)
   throws PropertyVetoException {
-    fireVetoableChange("structuralFeature", _structuralFeature, x);
     if (_structuralFeature == null) _structuralFeature = new Vector();
+    fireVetoableChange("structuralFeature", _structuralFeature, x);
     _structuralFeature.addElement(x);
     x.setOwner(this);
   }
   public void removeStructuralFeature(StructuralFeature x)
   throws PropertyVetoException {
+    if (_structuralFeature == null) return;
     fireVetoableChange("structuralFeature", _structuralFeature, x);
     _structuralFeature.removeElement(x);
   }
@@ -111,17 +115,19 @@ public abstract class Classifier extends GeneralizableElementImpl {
   public Vector getSpecification() { return _specification; }
   public void setSpecification(Vector x)
   throws PropertyVetoException {
+    if (_specification == null) _specification = new Vector();
     fireVetoableChange("specification", _specification, x);
     _specification = x;
   }
   public void addSpecification(Classifier x)
   throws PropertyVetoException {
-    fireVetoableChange("specification", _specification, x);
     if (_specification == null) _specification = new Vector();
+    fireVetoableChange("specification", _specification, x);
     _specification.addElement(x);
   }
   public void removeSpecification(Classifier x)
   throws PropertyVetoException {
+    if (_specification == null) return;
     fireVetoableChange("specification", _specification, x);
     _specification.removeElement(x);
   }
@@ -129,17 +135,19 @@ public abstract class Classifier extends GeneralizableElementImpl {
   public Vector getRealization() { return _realization; }
   public void setRealization(Vector x)
   throws PropertyVetoException {
+    if (_realization == null) _realization = new Vector();
     fireVetoableChange("realization", _realization, x);
     _realization = x;
   }
   public void addRealization(Classifier x)
   throws PropertyVetoException {
-    fireVetoableChange("realization", _realization, x);
     if (_realization == null) _realization = new Vector();
+    fireVetoableChange("realization", _realization, x);
     _realization.addElement(x);
   }
   public void removeRealization(Classifier x)
   throws PropertyVetoException {
+    if (_realization == null) return;
     fireVetoableChange("realization", _realization, x);
     _realization.removeElement(x);
   }
@@ -149,17 +157,19 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
   public void setAssociationEnd(Vector x)
   throws PropertyVetoException {
+    if (_associationEnd == null) _associationEnd = new Vector();
     fireVetoableChange("associationEnd", _associationEnd, x);
     _associationEnd = x;
   }
   public void addAssociationEnd(AssociationEnd x)
   throws PropertyVetoException {
-    fireVetoableChange("associationEnd", _associationEnd, x);
     if (_associationEnd == null) _associationEnd = new Vector();
+    fireVetoableChange("associationEnd", _associationEnd, x);
     _associationEnd.addElement(x);
   }
   public void removeAssociationEnd(AssociationEnd x)
   throws PropertyVetoException {
+    if (_associationEnd == null) return;
     fireVetoableChange("associationEnd", _associationEnd, x);
     _associationEnd.removeElement(x);
   }
@@ -167,17 +177,19 @@ public abstract class Classifier extends GeneralizableElementImpl {
   public Vector getParticipant() { return _participant; }
   public void setParticipant(Vector x)
   throws PropertyVetoException {
+    if (_participant == null) _participant = new Vector();
     fireVetoableChange("participant", _participant, x);
     _participant = x;
   }
   public void addParticipant(AssociationEnd x)
   throws PropertyVetoException {
-    fireVetoableChange("participant", _participant, x);
     if (_participant == null) _participant = new Vector();
+    fireVetoableChange("participant", _participant, x);
     _participant.addElement(x);
   }
   public void removeParticipant(AssociationEnd x)
   throws PropertyVetoException {
+    if (_participant == null) return;
     fireVetoableChange("participant", _participant, x);
     _participant.removeElement(x);
   }

@@ -128,15 +128,16 @@ public class ConcurrentSubstatesExample {
       sm.addTransition(t10);
 
       model.addPublicOwnedElement(courseClass);
-      
-      System.out.println(courseClass.dbgString());
-      System.out.println(sm.dbgString());
     }
     catch (PropertyVetoException ex) {
-      System.out.println("an veto execption occured in ConcurrentSubstatesExample");
+      System.out.println("an veto execption in ConcurrentSubstatesExample");
     }
-
-
   }
+
+  public void print() {       
+    System.out.println(courseClass.dbgString());
+    System.out.println(sm.dbgString());
+  }
+
 
 } /* end class ConcurrentSubstatesExample */

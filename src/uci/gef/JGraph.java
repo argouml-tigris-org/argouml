@@ -180,6 +180,12 @@ public class JGraph extends JPanel implements Cloneable {
     return _editor.getGraphEdgeRenderer();
   }
 
+  /** When the JGraph is hidden, hide its internal pane */
+  public void setVisible(boolean b) {
+    super.setVisible(b);
+    _drawingPane.setVisible(b);
+  }
+  
   /** Tell Swing/AWT that JGraph handles tab-order itself. */
   public boolean isManagingFocus() { return true; }
 

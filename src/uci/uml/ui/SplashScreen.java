@@ -34,7 +34,7 @@ import uci.ui.IStatusBar;
 
 
 // JWindow? I don't want a frame or close widgets
-public class SplashScreen extends JWindow
+public class SplashScreen extends JFrame
 implements IStatusBar {
 
   protected StatusBar _statusBar = new StatusBar();

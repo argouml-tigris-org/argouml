@@ -37,6 +37,7 @@ import com.sun.java.swing.event.*;
 import com.sun.java.swing.tree.*;
 //import com.sun.java.swing.border.*;
 
+import uci.gef.Diagram;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Behavioral_Elements.Use_Cases.*;
@@ -49,6 +50,7 @@ implements TabModelTarget {
   Object _target;
   boolean _shouldBeEnabled = false;
   JPanel blankPane = new JPanel();
+  PropPanelDiagram diagramPane = new PropPanelDiagram();
   PropPanelModel modelPane = new PropPanelModel();
   PropPanelClass classPane = new PropPanelClass();
   PropPanelInterface interfacePane = new PropPanelInterface();
@@ -75,7 +77,13 @@ implements TabModelTarget {
   public void setTarget(Object t) {
     _target = t;
     if (_lastPanel != null) remove(_lastPanel);
-    if (_target instanceof Model) {
+    if (_target instanceof Diagram) {
+      _shouldBeEnabled = true;
+      diagramPane.setTarget(_target);
+      add(diagramPane, BorderLayout.NORTH);
+      _lastPanel = diagramPane;
+    }
+    else if (_target instanceof Model) {
       _shouldBeEnabled = true;
       modelPane.setTarget(_target);
       add(modelPane, BorderLayout.NORTH);

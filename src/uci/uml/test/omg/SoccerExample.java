@@ -80,17 +80,17 @@ public class SoccerExample {
       model.addPublicOwnedElement(teamClass);
       model.addPublicOwnedElement(yearClass);
       model.addPublicOwnedElement(recordAC);
-      
-      //System.out.println(playerClass.dbgString());
-      //System.out.println(teamClass.dbgString());
-      //System.out.println(yearClass.dbgString());
-      System.out.println(recordAC.dbgString());
     }
     catch (PropertyVetoException ex) {
       System.out.println("an veto execption occured in SoccerExample");
     }
-
-
   }
 
+  public void print() {
+    //System.out.println(playerClass.dbgString());
+    //System.out.println(teamClass.dbgString());
+    //System.out.println(yearClass.dbgString());
+    System.out.println(recordAC.dbgString());
+  }
+  
 } /* end class GraphicsExample */

@@ -67,6 +67,7 @@ public class State extends StateVertex {
 
   public Vector getDeferredEvent() { return _deferredEvent; }
   public void setDeferredEvent(Vector x) throws PropertyVetoException {
+    if (_deferredEvent == null) _deferredEvent = new Vector();
     fireVetoableChange("deferredEvent", _deferredEvent, x);
     _deferredEvent = x;
   }
@@ -94,6 +95,7 @@ public class State extends StateVertex {
 
   public Vector getStateVariable() { return _stateVariable; }
   public void setStateVariable(Vector x) throws PropertyVetoException {
+    if (_stateVariable == null) _stateVariable = new Vector();
     fireVetoableChange("stateVariable", _stateVariable, x);
     _stateVariable = x;
   }
@@ -111,6 +113,7 @@ public class State extends StateVertex {
   public Vector getClassifierInState() { return _classifierInState; }
   public void setClassifierInState(Vector x) throws PropertyVetoException {
     fireVetoableChange("classifierInState", _classifierInState, x);
+    if (_classifierInState == null) _classifierInState = new Vector();
     _classifierInState = x;
   }
   public void addClassifierInState(ClassifierInState x)
@@ -128,6 +131,7 @@ public class State extends StateVertex {
 
   public Vector getInternalTransition() { return _internalTransition; }
   public void setInternalTransition(Vector x) throws PropertyVetoException {
+    if (_internalTransition == null) _internalTransition = new Vector();
     fireVetoableChange("internalTransition", _internalTransition, x);
     _internalTransition = x;
   }

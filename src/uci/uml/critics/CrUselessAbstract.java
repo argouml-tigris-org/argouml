@@ -52,12 +52,12 @@ public class CrUselessAbstract extends CrUML {
     MMClass cls, c;
     if (!(dm instanceof MMClass)) return false;
     cls = (MMClass) dm;
-    if (!cls.isAbstract()) return false;  // original class was not abstract
+    if (!cls.getIsAbstract()) return false;  // original class was not abstract
     Set derived = (new Set(cls)).reachable(new ChildGenDerivedClasses());
     Enumeration enum = derived.elements();
     while (enum.hasMoreElements()) {
       c = (MMClass) enum.nextElement();
-      if (!c.isAbstract()) return false;  // found a concrete subclass
+      if (!c.getIsAbstract()) return false;  // found a concrete subclass
     }
     return true; // no concrete subclasses defined, this class is "useless"
   }

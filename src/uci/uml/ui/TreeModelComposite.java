@@ -78,8 +78,8 @@ implements TreeModel, Cloneable {
 	Object pre = preEnum.nextElement();
 	// needs-more-work: check superclasses
 	if (!_providedClasses.contains(pre)) {
-	  System.out.println("You cannot add " + tm +
-			     " until something provides " + pre);
+	  //System.out.println("You cannot add " + tm +
+	  //		     " until something provides " + pre);
 	  //return;
 	}
       }

@@ -265,9 +265,14 @@ public class PropSheetCategory extends PropSheet {
   }
 
 
+  protected boolean inRecursion = false;
+  
   /** Display the value of a given property */
   public void setComponentValue(PropertyDescriptor pd, Component comp) {
     //System.out.println("setComponentValue");
+
+    if (inRecursion) return;
+    
     Object value = null;
     try {
        Method getter = pd.getReadMethod();
@@ -281,45 +286,46 @@ public class PropSheetCategory extends PropSheet {
 
     if (comp == null) System.out.println("tag is null");
     
-    
-     if (comp instanceof PropertyEditor)
-       ((PropertyEditor)comp).setValue(value);
-     else if (comp instanceof PropertyText) {
-       ((PropertyText)comp).setText(value.toString());
-     }
-     else if (comp instanceof PropertySelector) {
-       //System.out.println("setComponentValue case 2:" + value);
-       String tag = value.toString();
-       if (value instanceof Boolean) {
-	 if (((Boolean)value).booleanValue()) tag = "True";
-	 else tag = "False";
-       }
-       if (tag == null) System.out.println("tag is null");
-       ((PropertySelector)comp).setSelectedItem(tag);
-//        Vector items = (Vector) _enumProps.get(pd);
-//        if (items != null && items.contains(value))
-//  	((Choice)comp).select(items.indexOf(value));
-     }
-//     else if (value instanceof Integer && comp instanceof TextComponent) {
-//       TextComponent tc = (TextComponent) comp;
-//       tc.setText(((Integer) value).toString());
-//     }
-//     else if (value instanceof Boolean && comp instanceof Checkbox) {
-//       ((Checkbox)comp).setState(value.equals(Boolean.TRUE));
-//     }
-     else if (comp instanceof Label)
-       ((Label)comp).setText(value.toString());
-     else {
-       PropertyEditor editor = (PropertyEditor) _pdsEditors.get(pd);
-       //System.out.println("editor = " + editor);
-       if (editor != null) {
-	 _ignorePropChanges = true;
-	 //System.out.println("safe update?");
-	 editor.setValue(value);
-	 _ignorePropChanges = false;
-       }
-       //else System.out.println("xxx");
-     }
+    inRecursion = true;
+    if (comp instanceof PropertyEditor)
+      ((PropertyEditor)comp).setValue(value);
+    else if (comp instanceof PropertyText) {
+      ((PropertyText)comp).setText(value.toString());
+    }
+    else if (comp instanceof PropertySelector) {
+      //System.out.println("setComponentValue case 2:" + value);
+      String tag = value.toString();
+      if (value instanceof Boolean) {
+	if (((Boolean)value).booleanValue()) tag = "True";
+	else tag = "False";
+      }
+      if (tag == null) System.out.println("tag is null");
+      ((PropertySelector)comp).setSelectedItem(tag);
+      //        Vector items = (Vector) _enumProps.get(pd);
+      //        if (items != null && items.contains(value))
+      //  	((Choice)comp).select(items.indexOf(value));
+    }
+    //     else if (value instanceof Integer && comp instanceof TextComponent) {
+    //       TextComponent tc = (TextComponent) comp;
+    //       tc.setText(((Integer) value).toString());
+    //     }
+    //     else if (value instanceof Boolean && comp instanceof Checkbox) {
+    //       ((Checkbox)comp).setState(value.equals(Boolean.TRUE));
+    //     }
+    else if (comp instanceof Label)
+      ((Label)comp).setText(value.toString());
+    else {
+      PropertyEditor editor = (PropertyEditor) _pdsEditors.get(pd);
+      //System.out.println("editor = " + editor);
+      if (editor != null) {
+	_ignorePropChanges = true;
+	//System.out.println("safe update?");
+	editor.setValue(value);
+	_ignorePropChanges = false;
+      }
+      //else System.out.println("xxx");
+    }
+    inRecursion = false;    
   }
 
 
@@ -327,13 +333,11 @@ public class PropSheetCategory extends PropSheet {
   // update methods
 
   public void addNotify() {
-    if (_keysComps != null)
-      super.addNotify();
+    if (_keysComps != null) super.addNotify();
   }
 
   public boolean canEdit(Object item) {
-    return item != null &&
-      super.canEdit(item);
+    return item != null && super.canEdit(item);
   }
 
   public void updateComponents() {

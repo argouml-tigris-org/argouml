@@ -103,7 +103,7 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
    *  critics that are relevant to this designer's work. */
   public void spawnCritiquer(Object root) {
     /* needs-more-work really should be a separate class */
-    _critiquer = new Thread(this);
+    _critiquer = new Thread(this, "CritiquingThread");
     _critiquer.setDaemon(true);
     _critiquer.start();
     _CritiquingRoot = root;

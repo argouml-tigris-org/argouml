@@ -58,17 +58,19 @@ public class ElementImpl implements Element {
   public Vector getCharacteristic() { return _characteristic; }
   public void setCharacteristic(Vector x)
   throws PropertyVetoException {
+    if (_characteristic == null) _characteristic = new Vector();
     fireVetoableChange("characteristic", _characteristic, x);
     _characteristic = x;
   }
   public void addCharacteristic(TaggedValue x)
   throws PropertyVetoException {
-    fireVetoableChange("characteristic", _characteristic, x);
     if (_characteristic == null) _characteristic = new Vector();
+    fireVetoableChange("characteristic", _characteristic, x);
     _characteristic.addElement(x);
   }
   public void removeCharacteristic(TaggedValue x)
   throws PropertyVetoException {
+    if (_characteristic == null) return;
     fireVetoableChange("characteristic", _characteristic, x);
     _characteristic.removeElement(x);
   }
@@ -90,17 +92,19 @@ public class ElementImpl implements Element {
   public Vector getTaggedValue() { return _taggedValue; }
   public void setTaggedValue(Vector x)
   throws PropertyVetoException {
+    if (_taggedValue == null) _taggedValue = new Vector();
     fireVetoableChange("taggedValue", _taggedValue, x);
     _taggedValue = x;
   }
   public void addTaggedValue(TaggedValue x)
   throws PropertyVetoException {
-    fireVetoableChange("taggedValue", _taggedValue, x);
     if (_taggedValue == null) _taggedValue = new Vector();
+    fireVetoableChange("taggedValue", _taggedValue, x);
     _taggedValue.addElement(x);
   }
   public void removeTaggedValue(TaggedValue x)
   throws PropertyVetoException {
+    if (_taggedValue == null) return;
     fireVetoableChange("taggedValue", _taggedValue, x);
     _taggedValue.removeElement(x);
   }

@@ -66,7 +66,7 @@ implements ItemListener {
   JLabel _typeLabel = new JLabel("Return Type: ");
   JComboBox _typeField = new JComboBox();
   JLabel _argsLabel = new JLabel("Arguments: ");
-  JTable _argsTable = new JTable(2, 4);
+  JTable _argsTable = new JTable(4, 2);
   SpacerPanel _spacer = new SpacerPanel();
 
   ////////////////////////////////////////////////////////////////

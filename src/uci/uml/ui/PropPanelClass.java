@@ -156,9 +156,9 @@ implements ItemListener, DocumentListener {
     VisibilityKind vk = cls.getElementOwnership().getVisibility();
     _visField.setSelectedItem(vk);
 
-    if (cls.getIsAbstract().booleanValue())
+    if (cls.getIsAbstract())
       _keywordsField.setSelectedItem("abstract");
-    else if (cls.getIsLeaf().booleanValue())
+    else if (cls.getIsLeaf())
       _keywordsField.setSelectedItem("final");
     else 
       _keywordsField.setSelectedItem("None");
@@ -204,16 +204,16 @@ implements ItemListener, DocumentListener {
     MMClass cls = (MMClass) _target;
     try {
       if (keys.equals("None")) {
-	cls.setIsAbstract(Boolean.FALSE);
-	cls.setIsLeaf(Boolean.FALSE);
+	cls.setIsAbstract(false);
+	cls.setIsLeaf(false);
       }
       else if (keys.equals("abstract")) {
-	cls.setIsAbstract(Boolean.TRUE);
-	cls.setIsLeaf(Boolean.FALSE);
+	cls.setIsAbstract(true);
+	cls.setIsLeaf(false);
       }
       else if (keys.equals("final")) {
-	cls.setIsAbstract(Boolean.FALSE);
-      cls.setIsLeaf(Boolean.TRUE);
+	cls.setIsAbstract(false);
+      cls.setIsLeaf(true);
       }
     }
     catch (PropertyVetoException pve) {

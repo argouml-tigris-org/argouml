@@ -43,6 +43,7 @@ public class MMException extends Signal {
 
   public Vector getContext() { return _context; }
   public void setContext(Vector x) throws PropertyVetoException {
+    if (_context == null) _context = new Vector();
     fireVetoableChange("context", _context, x);
     _context = x;
   }
@@ -52,8 +53,16 @@ public class MMException extends Signal {
     _context.addElement(x);
   }
   public void removeContext(BehavioralFeature x) throws PropertyVetoException {
+    if (_context == null) return;
     fireVetoableChange("context", _context, x);
     _context.removeElement(x);
   }
   
+  public String getOCLTypeStr() {
+    return "Exception";
+    // drop the MM prefix, it is just used
+    // to prevent confusion with java.lang.Class
+  }
+
 }
+

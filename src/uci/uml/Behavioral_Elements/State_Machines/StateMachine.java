@@ -78,6 +78,7 @@ public class StateMachine extends ModelElementImpl {
 
   public Vector getTransitions() { return _transitions; }
   public void setTransitions(Vector x) throws PropertyVetoException {
+    if (_transitions == null) _transitions = new Vector();
     fireVetoableChange("transitions", _transitions, x);
     _transitions = x;
   }
@@ -94,6 +95,7 @@ public class StateMachine extends ModelElementImpl {
 
   public Vector getSubmachineState() { return _submachineState; }
   public void setSubmachineState(Vector x) throws PropertyVetoException {
+    if (_submachineState == null) _submachineState = new Vector();
     fireVetoableChange("submachineState", _submachineState, x);
     _submachineState = x;
   }
@@ -102,7 +104,8 @@ public class StateMachine extends ModelElementImpl {
     fireVetoableChange("submachineState", _submachineState, x);
     _submachineState.addElement(x);
   }
-  public void removeSubmachineState(SubmachineState x)throws PropertyVetoException {
+  public void removeSubmachineState(SubmachineState x)
+       throws PropertyVetoException {
     if (_submachineState == null) return;
     fireVetoableChange("submachineState", _submachineState, x);
     _submachineState.removeElement(x);

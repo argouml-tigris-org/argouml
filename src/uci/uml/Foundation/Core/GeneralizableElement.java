@@ -33,20 +33,20 @@ import java.util.*;
 import java.beans.PropertyVetoException;
 
 public interface GeneralizableElement extends Namespace {
-  //    public Boolean _isRoot;
-  //    public Boolean _isLeaf;
-  //    public Boolean _isAbstract;
+  //    public boolean _isRoot;
+  //    public boolean _isLeaf;
+  //    public boolean _isAbstract;
   //    public Generalization _generalization[];
   //    public Generalization _specialization[];
     
-  public Boolean getIsRoot();
-  public void setIsRoot(Boolean x) throws PropertyVetoException;
+  public boolean getIsRoot();
+  public void setIsRoot(boolean x) throws PropertyVetoException;
   
-  public Boolean getIsLeaf();
-  public void setIsLeaf(Boolean x) throws PropertyVetoException;
+  public boolean getIsLeaf();
+  public void setIsLeaf(boolean x) throws PropertyVetoException;
   
-  public Boolean getIsAbstract();
-  public void setIsAbstract(Boolean x) throws PropertyVetoException;
+  public boolean getIsAbstract();
+  public void setIsAbstract(boolean x) throws PropertyVetoException;
   
   public Vector getGeneralization();
   public void setGeneralization(Vector x) throws PropertyVetoException;

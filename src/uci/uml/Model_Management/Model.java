@@ -51,6 +51,7 @@ public class Model extends GeneralizableElementImpl implements Package {
     return _referencedElement;
   }
   public void setReferencedElement(Vector x) throws PropertyVetoException {
+    if (_referencedElement == null) _referencedElement = new Vector();
     fireVetoableChange("referencedElemement", _referencedElement, x);
     _referencedElement = x;
   }
@@ -59,7 +60,8 @@ public class Model extends GeneralizableElementImpl implements Package {
     fireVetoableChange("referencedElemement", _referencedElement, x);
     _referencedElement.addElement(x);
   }
-  public void removeReferencedElement(ModelElement x) throws PropertyVetoException {
+  public void removeReferencedElement(ModelElement x)
+       throws PropertyVetoException {
     if (_referencedElement == null) return;
     fireVetoableChange("referencedElemement", _referencedElement, x);
     _referencedElement.removeElement(x);

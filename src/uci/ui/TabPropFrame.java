@@ -99,7 +99,7 @@ implements ChangeListener, ActionListener {
     //{{INIT_CONTROLS
     getContentPane().setLayout(new BorderLayout(0,0));
     addNotify();
-    resize(insets().left + insets().right + 250,insets().top + insets().bottom + 406);
+    resize(insets().left + insets().right + 300,insets().top + insets().bottom + 406);
     getContentPane().setFont(new Font("Dialog", Font.PLAIN, 10));
     getContentPane().setBackground(new Color(12632256));
     tabPanel = new JTabbedPane();

@@ -58,6 +58,7 @@ public class ActionSequence extends ModelElementImpl {
 
   public Vector getAction() { return _action; }
   public void setAction(Vector x) throws PropertyVetoException {
+    if (_action == null) _action = new Vector();
     fireVetoableChange("action", _action, x);
     _action = x;
   }

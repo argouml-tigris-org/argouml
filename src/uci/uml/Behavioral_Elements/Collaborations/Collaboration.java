@@ -45,8 +45,8 @@ public class Collaboration extends NamespaceImpl {
   //public AssociationRole /ownedElement[];
   public Operation _representedOperation;
   //public ClassifierRole /ownedElement[];
-  public Interaction _interaction[];
-  public ModelElement _constrainingElement[];
+  public Vector _interaction;
+  public Vector _constrainingElement;
     
   public Collaboration() { }
   public Collaboration(Name name) { super(name); }
@@ -61,19 +61,40 @@ public class Collaboration extends NamespaceImpl {
     _representedOperation = x;
   }
 
-  public Interaction[] getInteraction() { return _interaction; }
-  public void setInteraction(Interaction[] x) throws PropertyVetoException {
+  public Vector getInteraction() { return _interaction; }
+  public void setInteraction(Vector x) throws PropertyVetoException {
     fireVetoableChange("interaction", _interaction, x);
     _interaction = x;
   }
+  public void addInteraction(Interaction x) throws PropertyVetoException {
+    if (_interaction == null) _interaction = new Vector();
+    fireVetoableChange("interaction", _interaction, x);
+    _interaction.addElement(x);
+  }
+  public void removeInteraction(Interaction x) throws PropertyVetoException {
+    if (_interaction == null) return;
+    fireVetoableChange("interaction", _interaction, x);
+    _interaction.removeElement(x);
+  }
 
-  public ModelElement[] getConstrainingElement() {
+  public Vector getConstrainingElement() {
     return _constrainingElement;
   }
-  public void setConstrainingElement(ModelElement[] x)
+  public void setConstrainingElement(Vector x)
        throws PropertyVetoException {
     fireVetoableChange("constrainingElement", _constrainingElement, x);
     _constrainingElement = x;
+  }
+  public void addConstrainingElement(ModelElement x) 
+  throws PropertyVetoException {
+    if (_constrainingElement == null) _constrainingElement = new Vector();
+    fireVetoableChange("constrainingElement", _constrainingElement, x);
+    _constrainingElement.addElement(x);
+  }
+  public void removeConstrainingElement(ModelElement x) throws PropertyVetoException {
+    if (_constrainingElement == null) return;
+    fireVetoableChange("constrainingElement", _constrainingElement, x);
+    _constrainingElement.removeElement(x);
   }
   
 

@@ -57,7 +57,7 @@ implements ChangeListener, MouseListener {
   // constructors
 
   public MultiEditorPane() {
-    System.out.println("mainkng MultiEditorPane");
+    System.out.println("making MultiEditorPane");
     _tabPanels.addElement(new TabUMLDisplay());
     _tabPanels.addElement(new TabSrc());
     _tabPanels.addElement(new TabDiagram());
@@ -138,7 +138,7 @@ implements ChangeListener, MouseListener {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     if (_lastTab != null) { _lastTab.setVisible(false); }
-    System.out.println("MultiEditorPane state changed");
+    //System.out.println("MultiEditorPane state changed");
     _lastTab = _tabs.getSelectedComponent();
     _lastTab.setVisible(true);
   }

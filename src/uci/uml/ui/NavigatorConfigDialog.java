@@ -81,13 +81,15 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   protected JPanel  _paneTwoPanel = new JPanel();
   protected JRadioButton  _paneTwoNotShown = new JRadioButton("Not Shown");
   protected JRadioButton  _paneTwoMRU = new JRadioButton("Most Recently Used");
-  protected JRadioButton  _paneTwoTree = new JRadioButton("Rooted at Pane One");
+  protected JRadioButton  _paneTwoTree =
+  new JRadioButton("Rooted at Pane One Selection");
   protected ButtonGroup   _paneTwoGroup = new ButtonGroup();
 
   protected JPanel  _paneThreePanel = new JPanel();
   protected JRadioButton  _paneThreeNotShown = new JRadioButton("Not Shown");
   protected JRadioButton  _paneThreeMRU = new JRadioButton("Most Recently Used");
-  protected JRadioButton  _paneThreeTree = new JRadioButton("Rooted at Pane Two");
+  protected JRadioButton  _paneThreeTree =
+  new JRadioButton("Rooted at Pane Two Selection");
   protected ButtonGroup   _paneThreeGroup = new ButtonGroup();
 
 
@@ -277,7 +279,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     _paneTwoMRU.setEnabled(false);
     _paneTwoTree.setEnabled(false);
  
-    _paneThreePanel.setBorder(BorderFactory.createTitledBorder("Panel Two"));
+    _paneThreePanel.setBorder(BorderFactory.createTitledBorder("Panel Three"));
     _paneThreePanel.setLayout(new BoxLayout(_paneThreePanel, BoxLayout.Y_AXIS));
     _paneThreePanel.add(_paneThreeNotShown);
     _paneThreePanel.add(_paneThreeMRU);

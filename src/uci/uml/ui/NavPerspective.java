@@ -145,11 +145,11 @@ implements Serializable, TreeModel, Cloneable {
     transitionPaths.addSubTreeModel(new GoElementToMachine());
 
     //transitionPaths.addSubTreeModel(new GoMachineToStartState());
-    GoFilteredChildren machinesToStartStates =
+    GoFilteredChildren machineToStartState =
       new GoFilteredChildren("State Machine->Start States",
 			     new GoMachineToState(),
 			     PredIsStartState.TheInstance);
-    transitionPaths.addSubTreeModel(machinesToStartStates);
+    transitionPaths.addSubTreeModel(machineToStartState);
 
     GoFilteredChildren compositeToStartStates =
       new GoFilteredChildren("State->Starting Substates",
@@ -205,7 +205,9 @@ implements Serializable, TreeModel, Cloneable {
     registerRule(new GoElementToMachine());
     registerRule(new GoMachineToTrans());
     registerRule(new GoMachineToState());
-    registerRule(new GoMachineToStartState());
+    registerRule(machineToStartState);
+    registerRule(new GoStateToSubstate());
+    registerRule(compositeToStartStates);
     registerRule(new GoStateToIncomingTrans());
     registerRule(new GoStateToOutgoingTrans());
     registerRule(new GoTransToSourceState());

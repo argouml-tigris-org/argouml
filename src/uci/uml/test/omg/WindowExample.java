@@ -58,7 +58,7 @@ public class WindowExample {
       model = new Model("WindowExample");
       
       windowClass = new MMClass("Window");
-      windowClass.setIsAbstract(Boolean.TRUE);
+      windowClass.setIsAbstract(true);
       tvs.addElement(tv1 = new TaggedValue("author", "Joe"));
       tvs.addElement(tv2 = new TaggedValue("status", "tested"));
     
@@ -105,14 +105,14 @@ public class WindowExample {
       windowClass.setBehavioralFeature(ops);
 
       model.addPublicOwnedElement(windowClass);
-
-      System.out.println(windowClass.dbgString());
     }
     catch (PropertyVetoException ex) {
       System.out.println("an veto execption occured in WindowExample");
     }
+  }
 
-
+  public void print() {
+    System.out.println(windowClass.dbgString());
   }
 
 } /* end class WindowExample */

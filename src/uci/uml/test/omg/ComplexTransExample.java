@@ -85,8 +85,6 @@ public class ComplexTransExample {
 
       model.addPublicOwnedElement(complexClass);
       
-      System.out.println(complexClass.dbgString());
-      System.out.println(sm.dbgString());
     }
     catch (PropertyVetoException ex) {
       System.out.println("an veto execption occured in ComplexTransExample");
@@ -95,4 +93,9 @@ public class ComplexTransExample {
 
   }
 
+
+  public void print() {
+    System.out.println(complexClass.dbgString());
+    System.out.println(sm.dbgString());
+  }
 } /* end class ComplexTransExample */
