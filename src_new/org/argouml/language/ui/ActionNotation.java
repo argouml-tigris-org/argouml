@@ -48,12 +48,12 @@ implements MenuListener {
 
     private JMenu _menu = null;
 
-
     public final static ActionNotation getInstance() { return SINGLETON; }
 
     public ActionNotation() {
 	super("Notation", NO_ICON);
-	_menu = new JMenu(this);
+	_menu = new JMenu("Notation");
+	_menu.add(this);
 	_menu.addMenuListener(this);
     }
 
