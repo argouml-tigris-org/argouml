@@ -142,6 +142,12 @@ public class Import {
 	    throw new RuntimeException("Internal error. Default import module not found");
         JComponent chooser = module.getChooser(this);
         dialog = new JDialog(pb, "Import sources");
+        dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                disposeDialog();
+            }
+        });
+            
         dialog.setModal(true);
         dialog.getParent().setEnabled(false);
         
@@ -174,6 +180,8 @@ public class Import {
      *
      */
     public void disposeDialog() {
+        dialog.getParent().setEnabled(true);
+        dialog.setVisible(false);
         dialog.dispose();
     }
     
