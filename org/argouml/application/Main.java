@@ -145,7 +145,6 @@ public class Main {
     //
     Locale.setDefault(new Locale(System.getProperty("user.language"),
 				 System.getProperty("user.region")));
-    UMLAction.setLocale(Locale.getDefault());
 	ResourceLoader.addResourceExtension("gif");
 	ResourceLoader.addResourceLocation("/org/argouml/Images");
 	ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
@@ -155,6 +154,7 @@ public class Main {
 	Localizer.addResource("CoreMenu","org.argouml.ui.MenuResourceBundle");
 	Localizer.addResource("UMLMenu","org.argouml.uml.ui.UMLResourceBundle");
 	Localizer.addResource("Cognitive","org.argouml.uml.cognitive.UMLCognitiveResourceBundle");
+	Localizer.addResource("Tree","org.argouml.ui.TreeResourceBundle");
 
     start = System.currentTimeMillis();
     SplashScreen splash = new SplashScreen("Loading ArgoUML...", "Splash");
@@ -335,10 +335,8 @@ public class Main {
 class StartCritics implements Runnable {
   public void run() {
     Designer dsgr = Designer.theDesigner();
-    Locale locale = Locale.getDefault();
-    CrUML.setLocale(locale);
     org.argouml.uml.cognitive.critics.Init.init();
-    org.argouml.uml.cognitive.checklist.Init.init(locale);
+    org.argouml.uml.cognitive.checklist.Init.init(Locale.getDefault());
     ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = pb.getProject();
     dsgr.spawnCritiquer(p);

@@ -130,37 +130,11 @@ public class CrUML extends Critic {
   public CrUML() {
   }
 
-  private static Locale _locale;
-  private static ResourceBundle _bundle;
-  public static void setLocale(Locale locale) {
-     _locale = locale;
-  }
-  public static Locale getLocale() {
-    return _locale;
-  }
-
   public void setResource(String key) {
-    if(_bundle == null) {
-        if(_locale == null) {
-            _locale = Locale.getDefault();
-        }
-        _bundle = ResourceBundle.getBundle(
-            "org.argouml.uml.cognitive.UMLCognitiveResourceBundle",_locale);
-    }
-    try {
-        String head = _bundle.getString(key + "_head");
+        String head = Localizer.localize("Cognitive",key + "_head");
         super.setHeadline(head);
-    }
-    catch(MissingResourceException e) {
-        e.printStackTrace();
-    }
-    try {
-        String desc = _bundle.getString(key + "_desc");
+        String desc = Localizer.localize("Cognitive",key + "_desc");
         super.setDescription(desc);
-    }
-    catch(MissingResourceException e) {
-        e.printStackTrace();
-    }
   }
 
 /*

@@ -72,8 +72,6 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _associationRoleIcon = ResourceLoader.lookupIconResource("AssociationRole");
     protected static ImageIcon _callActionIcon = ResourceLoader.lookupIconResource("CallAction");
 
-    private static ResourceBundle _umlBundle = null;
-
     protected JList namespaceList;
     protected JScrollPane namespaceScroll;
     protected UMLTextField nameField;
@@ -145,19 +143,6 @@ abstract public class PropPanelModelElement extends PropPanel {
                 navigateTo(ns);
             }
         }
-    }
-
-    /**
-     * Loads the resource bundle for all UML related PropPanel's
-     * if not already loaded.
-     */
-    public ResourceBundle getResourceBundle() {
-        if(_umlBundle == null) {
-            _umlBundle =
-                ResourceBundle.getBundle
-                    ("org.argouml.uml.ui.UMLResourceBundle",Locale.getDefault());
-        }
-        return _umlBundle;
     }
 
 }

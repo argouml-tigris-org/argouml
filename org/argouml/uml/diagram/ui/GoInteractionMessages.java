@@ -33,10 +33,13 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 
 import org.argouml.ui.*;
+import org.tigris.gef.util.Localizer;
 
 public class GoInteractionMessages implements TreeModelPrereqs {
 
-  public String toString() { return "Interaction->Messages"; }
+  public String toString() {
+    return Localizer.localize ("Tree", "Interaction->Messages");
+  }
 
   public Object getRoot() {
     System.out.println("getRoot should never be called");

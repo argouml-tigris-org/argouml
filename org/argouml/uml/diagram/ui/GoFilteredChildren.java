@@ -47,7 +47,7 @@ public class GoFilteredChildren implements TreeModelPrereqs {
   ////////////////////////////////////////////////////////////////
   // constructor
   public GoFilteredChildren(String name, TreeModelPrereqs tm, Predicate pred) {
-    _name = name;
+    _name = Localizer.localize ("Tree", name);
     _tm = tm;
     _pred = pred;
   }

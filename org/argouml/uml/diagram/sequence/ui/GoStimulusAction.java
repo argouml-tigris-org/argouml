@@ -33,10 +33,13 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
 import org.argouml.ui.*;
+import org.tigris.gef.util.Localizer;
 
 public class GoStimulusAction implements TreeModelPrereqs {
 
-  public String toString() { return "Stimulus->Action"; }
+  public String toString() {
+    return Localizer.localize ("Tree", "Stimulus->Action");
+  }
 
   public Object getRoot() {
     System.out.println("getRoot should never be called");

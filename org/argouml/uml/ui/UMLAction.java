@@ -41,10 +41,9 @@ import org.tigris.gef.util.*;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
+import org.tigris.gef.util.Localizer;
 
 public class UMLAction extends AbstractAction {
-
-  private static ResourceBundle _menuResource;
 
   public static boolean HAS_ICON = true;
   public static boolean NO_ICON = false;
@@ -55,13 +54,13 @@ public class UMLAction extends AbstractAction {
   }
 
   public UMLAction(String name, boolean global, boolean hasIcon) {
-    super(localize(name));
+    super(Localizer.localize("CoreMenu", name));
     if (hasIcon) {
       Icon icon = ResourceLoader.lookupIconResource(name);
       if (icon != null) putValue(Action.SMALL_ICON, icon);
       else { System.out.println("icon not found: " + name); }
     }
-    putValue(Action.SHORT_DESCRIPTION, localize(name) + " ");
+    putValue(Action.SHORT_DESCRIPTION, Localizer.localize("CoreMenu", name) + " ");
     if (global) Actions.addAction(this);
   }
 
@@ -109,59 +108,13 @@ public class UMLAction extends AbstractAction {
     }
     return res;
   }
-
-  /**
-   * This method is called as part of the ProjectBrowser constructor
-   * to set the locale for the menus.
-   */
-  static public void setLocale(Locale locale) {
-    _menuResource =
-            ResourceBundle.getBundle("org.argouml.ui.MenuResourceBundle",locale);
-  }
-  /**
-   *    This function returns a resource bundle for the menu
-   *    based on the current locale.
-   *
-   *    The implementation of this function leaves much to be
-   *      desired.  However, significant additional effort
-   *      is not justified until menu architecture is reworked
-   */
-  static final private ResourceBundle getResourceBundle() {
-    if(_menuResource == null) {
-        _menuResource =
-            ResourceBundle.getBundle("org.argouml.ui.MenuResourceBundle",Locale.getDefault());
-    }
-    return _menuResource;
-  }
-
-  /**
-   *    This function returns a localized string corresponding
-   *    to the specified key.
-   *
-   */
-  static final public String localize(String key) {
-    String localized = null;
-    try {
-        localized =  getResourceBundle().getString(key);
-    }
-    catch(MissingResourceException e) {}
-    if(localized == null) {
-        localized = key;
-    }
-    return localized;
-  }
-
   /**
    *    This function returns a localized menu shortcut key
    *    to the specified key.
    *
    */
   static final public KeyStroke getShortcut(String key) {
-    try {
-        return (KeyStroke) getResourceBundle().getObject(key);
-    }
-    catch(MissingResourceException e) {}
-    return null;
+    return Localizer.getShortcut("CoreMenu",key);
   }
 
   /**
@@ -170,12 +123,7 @@ public class UMLAction extends AbstractAction {
    *
    */
   static final public String getMnemonic(String key) {
-    String mnemonic = null;
-    try {
-        mnemonic =  getResourceBundle().getString(key);
-    }
-    catch(MissingResourceException e) {}
-    return mnemonic;
+    return Localizer.localize("CoreMenu",key);
   }
 
 

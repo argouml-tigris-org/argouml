@@ -151,11 +151,11 @@ implements IStatusBar, NavigationListener {
   }
 
   static final protected KeyStroke getShortcut(String key) {
-    return UMLAction.getShortcut(key);
+    return Localizer.getShortcut("CoreMenu",key);
   }
 
   static final protected void setMnemonic(JMenuItem item,String key,char defMnemonic) {
-    String localMnemonic = UMLAction.getMnemonic("Mnemonic_" + key);
+    String localMnemonic = Localizer.localize("CoreMenu","Mnemonic_" + key);
     char mnemonic = defMnemonic;
     if(localMnemonic != null && localMnemonic.length() == 1) {
         mnemonic = localMnemonic.charAt(0);
@@ -164,7 +164,7 @@ implements IStatusBar, NavigationListener {
   }
 
   static final protected String menuLocalize(String key) {
-    return UMLAction.localize(key);
+    return Localizer.localize("CoreMenu",key);
   }
 
   static final protected void setAccelerator(JMenuItem item,KeyStroke keystroke) {
@@ -174,21 +174,21 @@ implements IStatusBar, NavigationListener {
   }
 
   protected void initMenus() {
-    KeyStroke ctrlN = UMLAction.getShortcut("Shortcut_New");
-    KeyStroke ctrlO = UMLAction.getShortcut("Shortcut_Open");
-    KeyStroke ctrlS = UMLAction.getShortcut("Shortcut_Save");
-    KeyStroke ctrlP = UMLAction.getShortcut("Shortcut_Print");
-    KeyStroke ctrlA = UMLAction.getShortcut("Shortcut_Select_All");
-    KeyStroke ctrlC = UMLAction.getShortcut("Shortcut_Copy");
-    KeyStroke ctrlV = UMLAction.getShortcut("Shortcut_Paste");
-    KeyStroke ctrlX = UMLAction.getShortcut("Shortcut_Cut");
-    KeyStroke ctrlR = UMLAction.getShortcut("Shortcut_Remove_From_Diagram");
+    KeyStroke ctrlN = Localizer.getShortcut("CoreMenu","Shortcut_New");
+    KeyStroke ctrlO = Localizer.getShortcut("CoreMenu","Shortcut_Open");
+    KeyStroke ctrlS = Localizer.getShortcut("CoreMenu","Shortcut_Save");
+    KeyStroke ctrlP = Localizer.getShortcut("CoreMenu","Shortcut_Print");
+    KeyStroke ctrlA = Localizer.getShortcut("CoreMenu","Shortcut_Select_All");
+    KeyStroke ctrlC = Localizer.getShortcut("CoreMenu","Shortcut_Copy");
+    KeyStroke ctrlV = Localizer.getShortcut("CoreMenu","Shortcut_Paste");
+    KeyStroke ctrlX = Localizer.getShortcut("CoreMenu","Shortcut_Cut");
+    KeyStroke ctrlR = Localizer.getShortcut("CoreMenu","Shortcut_Remove_From_Diagram");
 
-    KeyStroke F3 = UMLAction.getShortcut("Shortcut_Find");
-    KeyStroke F7 = UMLAction.getShortcut("Shortcut_Generate_All");
-    KeyStroke altF4 = UMLAction.getShortcut("Shortcut_Exit");
+    KeyStroke F3 = Localizer.getShortcut("CoreMenu","Shortcut_Find");
+    KeyStroke F7 = Localizer.getShortcut("CoreMenu","Shortcut_Generate_All");
+    KeyStroke altF4 = Localizer.getShortcut("CoreMenu","Shortcut_Exit");
 
-    KeyStroke delKey = UMLAction.getShortcut("Shortcut_Delete");
+    KeyStroke delKey = Localizer.getShortcut("CoreMenu","Shortcut_Delete");
 
     JMenuItem mi;
     // File Menu

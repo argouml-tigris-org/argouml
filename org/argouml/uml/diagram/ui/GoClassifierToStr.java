@@ -32,11 +32,14 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.ui.*;
+import org.tigris.gef.util.Localizer;
 import org.argouml.uml.MMUtil;
 
 public class GoClassifierToStr implements TreeModelPrereqs {
 
-  public String toString() { return "Class->MAttribute"; }
+  public String toString() {
+    return Localizer.localize ("Tree", "Class->Attribute");
+  }
   
   public Object getRoot() {
     System.out.println("getRoot should never be called");
