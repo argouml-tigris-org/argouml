@@ -106,6 +106,20 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
     _panels.put(FigRealization.class, spfeme);
   }
 
+   /** Adds a style panel to the internal list. This allows a plugin to
+   *  add and register a new style panel at run-time. This property style will
+   *  then be displayed in the detatils pane whenever an element of the given 
+   *  metaclass is selected.
+   *
+   * @param c the metaclass whose details show be displayed in the property panel p
+   * @param s an instance of the style panel for the metaclass m
+   *
+   */
+  public void addPanel(Class c, StylePanel s) {
+    _panels.put(c,s);
+  }
+
+
   ////////////////////////////////////////////////////////////////
   // accessors
   public void setTarget(Fig t) {
