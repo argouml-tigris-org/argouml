@@ -43,9 +43,13 @@ import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 import org.argouml.uml.*;
 
-/** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
-
+/** A critic to detect if a class has instance variables.
+ *  The critic fires currently only if a class or its base classes have
+ *  no attributes at all.
+ *  This is not neccesarily correct and the critic will have to deal with
+ *  static attributes or attributes which are defined in a base class but are 
+ *  private.
+ */
 public class CrNoInstanceVariables extends CrUML {
 
   public CrNoInstanceVariables() {
@@ -61,14 +65,26 @@ public class CrNoInstanceVariables extends CrUML {
     if ((cls.getStereotype()!=null) && "utility".equals(cls.getStereotype().getName()) )
       return NO_PROBLEM;
     Collection str = getInheritedStructuralFeatures(cls,0);
+    
     if (str == null) return PROBLEM_FOUND;
+
+    // fixes bug #614
+    // mkl: I honestly do not quite understand the code below. 
+    // It makes the critic fire always, because the scope of an attribute is
+    // always null (currently - 2002-03-01).
+    // The if statement below makes the critic fire much less, but it
+    // might ignore states where it would be useful to fire the critic.
+    
+    if (str.size() > 0) return NO_PROBLEM;
+    
+    
     Iterator enum = str.iterator();
     while (enum.hasNext()) {
       MStructuralFeature sf = (MStructuralFeature) enum.next();
       MChangeableKind ck = sf.getChangeability();
       MScopeKind sk = sf.getOwnerScope();
       if (MScopeKind.INSTANCE.equals(sk))
-	return NO_PROBLEM;
+          return NO_PROBLEM;
     }
     //needs-more-work?: don't count static or constants?
     return PROBLEM_FOUND;
