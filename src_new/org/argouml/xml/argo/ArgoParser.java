@@ -66,11 +66,11 @@ public class ArgoParser extends SAXParserBase {
     // needs-more-work: should be able to merge an existing project into
     // the current one.
 
-    public synchronized void readProject(URL url) {
+    public synchronized void readProject(URL url) throws IOException {
         readProject(url, true);
     }
 
-    public synchronized void readProject(URL url, boolean addMembers) {
+    public synchronized void readProject(URL url, boolean addMembers) throws IOException {
       
         _url = url;
 
@@ -80,6 +80,8 @@ public class ArgoParser extends SAXParserBase {
             Argo.log.info("Couldn't open InputStream in ArgoParser.load("+url+") "+e);
             e.printStackTrace();
             lastLoadMessage = e.toString();
+            // we need to forward this up - mkl
+            throw e;
         }
     }
 
