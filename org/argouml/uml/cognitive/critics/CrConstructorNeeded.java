@@ -28,12 +28,10 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
 
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
-
-// Uses Model through ModelFacade.
+import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -87,7 +85,7 @@ public class CrConstructorNeeded extends CrUML {
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
      *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.  
      */
-    
+
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only look at classes
@@ -95,39 +93,44 @@ public class CrConstructorNeeded extends CrUML {
             return NO_PROBLEM;
         }
 
-	// Types don't need a constructor.
-	if (ModelFacade.isType(dm)) {
-	    return NO_PROBLEM;
-	}
+        // Types don't need a constructor.
+        if (ModelFacade.isType(dm)) {
+            return NO_PROBLEM;
+        }
 
         // Check for uninitialised instance variables and
         // constructor.
+        Collection operations = ModelFacade.getOperations(dm);
+        if (operations.isEmpty()) {
+            return PROBLEM_FOUND;
+        }
 
-        Iterator opers = ModelFacade.getOperations(dm);
+        Iterator opers = operations.iterator();
 
-	while (opers.hasNext()) {
-	    if (ModelFacade.isConstructor(opers.next())) {
-		// There is a constructor.
-		return NO_PROBLEM;
-	    }
-	}
+        while (opers.hasNext()) {
+            if (ModelFacade.isConstructor(opers.next())) {
+                // There is a constructor.
+                return NO_PROBLEM;
+            }
+        }
 
-	Iterator attrs = ModelFacade.getAttributes(dm);
+        Iterator attrs = ModelFacade.getAttributes(dm);
 
-	while (attrs.hasNext()) {
-	    Object attr = attrs.next();
+        while (attrs.hasNext()) {
+            Object attr = attrs.next();
 
-	    if (!ModelFacade.isInstanceScope(attr))
-		continue;
+            if (!ModelFacade.isInstanceScope(attr))
+                continue;
 
-	    if (ModelFacade.isInitialized(attr))
-		continue;
+            if (ModelFacade.isInitialized(attr))
+                continue;
 
-	    // We have found one with instance scope that is not initialized.
-	    return PROBLEM_FOUND;
-	}
+            // We have found one with instance scope that is not initialized.
+            return PROBLEM_FOUND;
+        }
 
-	return NO_PROBLEM;
+        // yeah right...we don't have an operation (and thus no 
+        return NO_PROBLEM;
     }
 
 } /* end class CrConstructorNeeded */

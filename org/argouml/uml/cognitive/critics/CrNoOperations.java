@@ -84,7 +84,7 @@ public class CrNoOperations extends CrUML {
 
     private boolean findInstanceOperationInInherited(Object dm, int depth)
     {
-	Iterator enum = ModelFacade.getOperations(dm);
+	Iterator enum = ModelFacade.getOperations(dm).iterator();
 
 	while (enum.hasNext()) {
 	    if (ModelFacade.isInstanceScope(enum.next()))
