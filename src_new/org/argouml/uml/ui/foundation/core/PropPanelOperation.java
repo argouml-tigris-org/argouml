@@ -33,7 +33,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
@@ -77,12 +77,12 @@ public class PropPanelOperation extends PropPanelModelElement {
 	};
         setNameEventListening(namesToWatch);
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
         addField(
-		 Argo.localize("UMLMenu", "label.stereotype"),
+                Translator.localize("UMLMenu", "label.stereotype"),
 		 new UMLComboBoxNavigator(
 					  this,
-					  Argo.localize("UMLMenu", "tooltip.nav-stereo"),
+		         Translator.localize("UMLMenu", "tooltip.nav-stereo"),
 					  getStereotypeBox()));
 
         JList ownerList = new UMLList(
@@ -103,10 +103,10 @@ public class PropPanelOperation extends PropPanelModelElement {
 			    ownerList,
 			    JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        addField(Argo.localize("UMLMenu", "label.owner"), ownerScroll);
+        addField(Translator.localize("UMLMenu", "label.owner"), ownerScroll);
 
         addField(
-		 Argo.localize("UMLMenu", "label.visibility"),
+                Translator.localize("UMLMenu", "label.visibility"),
 		 new UMLVisibilityPanel(this, mclass, 2, false));
 
         addSeperator();
@@ -115,7 +115,7 @@ public class PropPanelOperation extends PropPanelModelElement {
             new JPanel(new GridLayout2(0, 2, GridLayout2.ROWCOLPREFERRED));
         modPanel.add(
 		     new UMLCheckBox(
-				     Argo.localize("UMLMenu", "checkbox.abstract-lc"),
+		             Translator.localize("UMLMenu", "checkbox.abstract-lc"),
 				     this,
 				     new UMLReflectionBooleanProperty(
 								      "isAbstract",
@@ -124,7 +124,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 								      "setAbstract")));
         modPanel.add(
 		     new UMLCheckBox(
-				     Argo.localize("UMLMenu", "checkbox.final-lc"),
+		             Translator.localize("UMLMenu", "checkbox.final-lc"),
 				     this,
 				     new UMLReflectionBooleanProperty(
 								      "isLeaf",
@@ -161,7 +161,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 								       ModelFacade.SCOPEKIND,
 								       ModelFacade.CLASSIFIER_SCOPEKIND,
 								       ModelFacade.INSTANCE_SCOPEKIND)));
-        addField(Argo.localize("UMLMenu", "label.modifiers"), modPanel);
+        addField(Translator.localize("UMLMenu", "label.modifiers"), modPanel);
 
         JPanel concurPanel =
             new JPanel(new GridLayout2(0, 2, GridLayout2.ROWCOLPREFERRED));
@@ -226,7 +226,7 @@ public class PropPanelOperation extends PropPanelModelElement {
         paramList.setForeground(Color.blue);
         paramList.setFont(smallFont);
         addField(
-		 Argo.localize("UMLMenu", "label.parameters"),
+                Translator.localize("UMLMenu", "label.parameters"),
 		 new JScrollPane(paramList));
 
         JList exceptList =
@@ -243,21 +243,21 @@ public class PropPanelOperation extends PropPanelModelElement {
         exceptList.setForeground(Color.blue);
         exceptList.setFont(smallFont);
         addField(
-		 Argo.localize("UMLMenu", "label.raisedsignals"),
+                Translator.localize("UMLMenu", "label.raisedsignals"),
 		 new JScrollPane(exceptList));
 
         new PropPanelButton(
 			    this,
 			    buttonPanel,
 			    _navUpIcon,
-			    Argo.localize("UMLMenu", "button.go-up"),
+				Translator.localize("UMLMenu", "button.go-up"),
 			    "navigateUp",
 			    null);
         new PropPanelButton(
 			    this,
 			    buttonPanel,
 			    _addOpIcon,
-			    Argo.localize("UMLMenu", "button.add-new-operation"),
+				Translator.localize("UMLMenu", "button.add-new-operation"),
 			    "buttonAddOperation",
 			    null);
         // I uncommented this next line. I don't know why it was commented out, it seems to work just fine...--pjs--
@@ -265,7 +265,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 			    this,
 			    buttonPanel,
 			    _parameterIcon,
-			    Argo.localize("UMLMenu", "button.add-parameter"),
+				Translator.localize("UMLMenu", "button.add-parameter"),
 			    "buttonAddParameter",
 			    null);
         new PropPanelButton(
@@ -279,7 +279,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 			    this,
 			    buttonPanel,
 			    _deleteIcon,
-			    Argo.localize("UMLMenu", "button.delete-operation"),
+				Translator.localize("UMLMenu", "button.delete-operation"),
 			    "removeElement",
 			    null);
     }

@@ -35,8 +35,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -84,7 +84,7 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
         compositeList.setVisibleRowCount(1);
         containerScroll = new JScrollPane(compositeList);
         
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);      
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);      
         new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
         
     }

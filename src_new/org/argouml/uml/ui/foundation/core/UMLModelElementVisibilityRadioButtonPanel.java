@@ -28,7 +28,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
@@ -42,9 +42,9 @@ public class UMLModelElementVisibilityRadioButtonPanel extends UMLRadioButtonPan
     private static Map labelTextsAndActionCommands = new HashMap();
 
     static {
-        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.visibility-public"), ActionSetModelElementVisibility.PUBLIC_COMMAND);
-        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.visibility-protected"), ActionSetModelElementVisibility.PROTECTED_COMMAND);
-        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.visibility-private"), ActionSetModelElementVisibility.PRIVATE_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.visibility-public"), ActionSetModelElementVisibility.PUBLIC_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.visibility-protected"), ActionSetModelElementVisibility.PROTECTED_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.visibility-private"), ActionSetModelElementVisibility.PRIVATE_COMMAND);
     }
 
     /**

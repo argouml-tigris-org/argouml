@@ -27,7 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.KeyEvent;
 import javax.swing.JRadioButton;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLButtonGroup;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
@@ -41,11 +41,11 @@ public abstract class UMLVisibilityButtonGroup extends UMLButtonGroup {
    
     
     private JRadioButton _privateButton = 
-        new JRadioButton(Argo.localize("UMLMenu", "checkbox.visibility.private-lc"));
+        new JRadioButton(Translator.localize("UMLMenu", "checkbox.visibility.private-lc"));
     private JRadioButton _protectedButton =
-        new JRadioButton(Argo.localize("UMLMenu", "checkbox.visibility.protected-lc"));
+        new JRadioButton(Translator.localize("UMLMenu", "checkbox.visibility.protected-lc"));
     private JRadioButton _publicButton =
-        new JRadioButton(Argo.localize("UMLMenu", "checkbox.visibility.public-lc"));
+        new JRadioButton(Translator.localize("UMLMenu", "checkbox.visibility.public-lc"));
         
     /**
      * Constructor for UMLVisibilityButtonGroup.

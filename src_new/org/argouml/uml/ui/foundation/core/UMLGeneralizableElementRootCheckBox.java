@@ -25,8 +25,8 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
@@ -43,7 +43,7 @@ public class UMLGeneralizableElementRootCheckBox extends UMLCheckBox2 {
      * @param propertySetName
      */
     public UMLGeneralizableElementRootCheckBox() {
-        super(Argo.localize("UMLMenu", "label.root"), ActionSetGeneralizableElementRoot.SINGLETON, "isRoot");
+        super(Translator.localize("UMLMenu", "label.root"), ActionSetGeneralizableElementRoot.SINGLETON, "isRoot");
     }
 
     /**

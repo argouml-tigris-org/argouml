@@ -25,10 +25,10 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import java.util.Vector;
 
-import org.argouml.application.api.Argo;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
@@ -69,7 +69,7 @@ public class ActionAddAssociationSpecification extends AbstractActionAddModelEle
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
-        return Argo.localize("UMLMenu", "dialog.title.add-specifications");
+        return Translator.localize("UMLMenu", "dialog.title.add-specifications");
     }
 
     /**

@@ -28,7 +28,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 import java.util.Collection;
 import java.util.Vector;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 /**
@@ -70,7 +70,7 @@ public class ActionAddExtendExtensionPoint extends AbstractActionAddModelElement
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
-        return Argo.localize("UMLMenu", "dialog.title.add-extensionpoints");
+        return Translator.localize("UMLMenu", "dialog.title.add-extensionpoints");
     }
 
     /**

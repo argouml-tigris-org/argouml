@@ -24,9 +24,10 @@
 
 package org.argouml.uml.ui.model_management;
 
-import org.argouml.application.api.*;
+import org.argouml.application.api.PluggablePropertyPanel;
 import org.argouml.util.ConfigLoader;
 import org.argouml.application.ArgoVersion;
+import org.argouml.i18n.Translator;
 import org.argouml.model.uml.*;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.*;
@@ -51,9 +52,9 @@ public class PropPanelSubsystem extends PropPanelPackage
     public PropPanelSubsystem() {
         super("Subsystem", ConfigLoader.getTabPropsOrientation());
 
-        addField(Argo.localize("UMLMenu", "label.available-features"), getFeatureScroll());
+        addField(Translator.localize("UMLMenu", "label.available-features"), getFeatureScroll());
 
-        new PropPanelButton(this, buttonPanel, _addOpIcon, Argo.localize("UMLMenu", "button.add-operation"), "addOperation", null);
+        new PropPanelButton(this, buttonPanel, _addOpIcon, Translator.localize("UMLMenu", "button.add-operation"), "addOperation", null);
     
     }
 

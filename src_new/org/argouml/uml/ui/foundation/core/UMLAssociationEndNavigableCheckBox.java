@@ -25,8 +25,8 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
@@ -44,7 +44,7 @@ public class UMLAssociationEndNavigableCheckBox extends UMLCheckBox2 {
      * @param propertySetName
      */
     public UMLAssociationEndNavigableCheckBox() {
-        super(Argo.localize("UMLMenu", "label.navigable"), ActionSetAssociationEndNavigable.SINGLETON, "isNavigable");
+        super(Translator.localize("UMLMenu", "label.navigable"), ActionSetAssociationEndNavigable.SINGLETON, "isNavigable");
     }
 
     /**

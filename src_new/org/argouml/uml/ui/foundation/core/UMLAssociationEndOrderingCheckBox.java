@@ -25,7 +25,7 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLCheckBox2;
 
@@ -44,7 +44,7 @@ public class UMLAssociationEndOrderingCheckBox extends UMLCheckBox2 {
      * @param propertySetName
      */
     public UMLAssociationEndOrderingCheckBox() {
-        super(Argo.localize("UMLMenu", "label.ordering"), ActionSetAssociationEndOrdering.SINGLETON, "ordering");
+        super(Translator.localize("UMLMenu", "label.ordering"), ActionSetAssociationEndOrdering.SINGLETON, "ordering");
     }
 
     /**
