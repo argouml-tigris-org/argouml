@@ -44,15 +44,7 @@ public abstract class FigLink
     extends FigEdgeModelElement
     implements Comparable {
 
-    /**
-     * Flag to indicate if this figlink is drawn for the first time.
-     */
-    private boolean _computeRouteFirstTime = true;
-
-    /**
-     * Flag to indicate if the activations have been layed out
-     */
-    private boolean _activationsLayedOut = false;
+    private int computeRouteNumbersOfTime = 0;
 
     /**
      * Contructs a new figlink and sets the owner of the figlink.
@@ -95,10 +87,25 @@ public abstract class FigLink
      * @see org.tigris.gef.presentation.FigEdge#computeRoute()
      */
     public void computeRoute() {
-        if (!_computeRouteFirstTime && !_activationsLayedOut) {
+        if (computeRouteNumbersOfTime == 0) {
+            computeRouteNumbersOfTime++;
+        } else if (computeRouteNumbersOfTime == 1) {
+            FigPoly p = ((FigPoly) _fig);
+            Point srcPt = getSourcePortFig().center();
+            Point dstPt = getSourcePortFig().center();
+            Point centerPnt =
+                new Point(
+                    (int) (srcPt.getX() > dstPt.getX()
+                        ? (dstPt.getX() + (srcPt.getX() - dstPt.getX()))
+                        : (srcPt.getX() + (dstPt.getX() - srcPt.getX()))),
+                    (int) srcPt.getY());
+            srcPt = getSourcePortFig().connectionPoint(centerPnt);
+            dstPt = getDestPortFig().connectionPoint(centerPnt);
+            setEndPoints(srcPt, dstPt);
             layoutEdge();
-        }
-        if (!_computeRouteFirstTime) {
+            computeRouteNumbersOfTime++;
+            calcBounds();
+        } else if (computeRouteNumbersOfTime > 1) {
             FigPoly p = ((FigPoly) _fig);
 
             Point srcPt = getSourcePortFig().center();
@@ -120,13 +127,9 @@ public abstract class FigLink
                             p.getPoints(p.getNumPoints() - 2));
                 }
             }
-
             setEndPoints(srcPt, dstPt);
+            calcBounds();
         }
-        _computeRouteFirstTime = false;
-
-        calcBounds();
-
     }
 
     /**
@@ -150,7 +153,6 @@ public abstract class FigLink
     protected void layoutEdge() {
         layoutActivations();
         ((SequenceDiagramLayout) getLayer()).updateActivations();
-        _activationsLayedOut = true;
         Globals.curEditor().damageAll();
     }
 

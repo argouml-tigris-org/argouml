@@ -36,7 +36,6 @@ import org.tigris.gef.base.ModeCreate;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigNode;
 
@@ -74,6 +73,7 @@ public class ModeCreateLink extends ModeCreate {
             snapY,
             Globals.getPrefs().getRubberbandColor());
     }
+    
     public String instructions() {
         return "Drag to define a link to another port";
     }
@@ -176,14 +176,13 @@ public class ModeCreateLink extends ModeCreate {
                 // (determined by the GraphEdgeRenderer).
 
                 if (null != _newEdge) {
-                    LayerManager lm = ce.getLayerManager();
+                    LayerManager lm = ce.getLayerManager();                    
                     ce.damaged(_newItem);
                     _sourceFigNode.damage();
                     destFigNode.damage();
                     _newItem = null;
-
-                    FigEdge fe =
-                        (FigEdge) ce
+                    FigLink fe =
+                        (FigLink) ce
                             .getLayerManager()
                             .getActiveLayer()
                             .presentationFor(
@@ -191,7 +190,7 @@ public class ModeCreateLink extends ModeCreate {
                     fe.setSourcePortFig(_startPortFig);
                     fe.setSourceFigNode(_sourceFigNode);
                     fe.setDestPortFig(destPortFig);
-                    fe.setDestFigNode(destFigNode);
+                    fe.setDestFigNode(destFigNode);                    
                     //					set the new edge in place
                     if (_sourceFigNode != null)
                         _sourceFigNode.updateEdges();
