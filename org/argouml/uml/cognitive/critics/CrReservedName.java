@@ -204,11 +204,8 @@ public class CrReservedName extends CrUML {
         String nameStr = meName;
         if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
 
-        // Dont critique the built-in java types, they are supposed to
-        // have those "reserved" names.
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Object type = p.findTypeInModel(nameStr, p.getDefaultModel());
-        if (type != null) return NO_PROBLEM;
+	if (isBuiltin(nameStr))
+	    return NO_PROBLEM;
 
         java.util.Enumeration enum = _umlReserved.elements();
         while (enum.hasMoreElements()) {
@@ -218,6 +215,19 @@ public class CrReservedName extends CrUML {
 
         return NO_PROBLEM;
     }
+
+    /** Dont critique the built-in java types, they are supposed to
+     * have those "reserved" names.
+     *
+     * @param the name of the type to test.
+     * @returns true if it is a builtin.
+     */
+    private boolean isBuiltin(String name) {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Object type = p.findTypeInDefaultModel(name);
+        return type != null;
+    }
+
 
     public Icon getClarifier() { return ClClassName.TheInstance; }
 
