@@ -31,11 +31,17 @@
 
 package org.argouml.uml.cognitive.critics;
 
+
+import javax.swing.Icon;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
+
+/** A critic to detect whether an attribute has a name
+ **/
 public class CrMissingAttrName extends CrUML {
 
     public CrMissingAttrName() {
@@ -49,9 +55,14 @@ public class CrMissingAttrName extends CrUML {
 	if (!(ModelFacade.isAAttribute(dm))) return NO_PROBLEM;
 	Object attr = /*(MAttribute)*/ dm;
 	String myName = ModelFacade.getName(attr);
-	if (myName == null || myName.equals("")) return PROBLEM_FOUND;
+	if (myName == null || 
+            "".equals(myName)) return PROBLEM_FOUND;
 	if (myName.length() == 0) return PROBLEM_FOUND;
 	return NO_PROBLEM;
+    }
+    
+    public Icon getClarifier() {
+	return ClAttributeCompartment.TheInstance;
     }
 
     public void initWizard(Wizard w) {
