@@ -42,13 +42,6 @@ public class DBWriter
 
     public DBWriter ()
     {
-
-// 	DBName = props.getProperty("db");
-// 	DBUrl += props.getProperty("host") + "/";
-// 	DBUrl += DBName;
-// 	DBUrl += "?" + "user=" + props.getProperty("user");
-// 	DBUrl += "&" + "password=" + props.getProperty("password");
-
 	props = new Properties();
 	configFile =  System.getProperty("argo.dbconfig", "/db.ini");
 	try {

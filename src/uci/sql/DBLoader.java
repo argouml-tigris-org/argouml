@@ -47,22 +47,15 @@ public class DBLoader
     {
 	props = new Properties();
 	configFile =  System.getProperty("argo.dbconfig", "/db.ini");
-	System.out.println(configFile);
 	try {
 	    InputStream is = new FileInputStream(configFile);
 	    props.load(is);
 	}	
 	catch (IOException e) {
-	    System.out.println("Could not load DB properties from /db.ini");
+	    System.out.println("Could not load DB properties from " + configFile);
 	    System.out.println(e);
-	    errorMessage("Could not load DB properties from /db.ini", e);
+	    errorMessage("Could not load DB properties from " + configFile, e);
 	}
-
-	DBName = props.getProperty("db");
-	DBUrl += props.getProperty("host") + "/";
-	DBUrl += DBName;
-	DBUrl += "?" + "user=" + props.getProperty("user");
-	DBUrl += "&" + "password=" + props.getProperty("password");
 
 	try {
 	    Class.forName(props.getProperty("driver")).newInstance();	    
@@ -72,11 +65,38 @@ public class DBLoader
 	    System.out.println(e);
 	    errorMessage("Could not load the database driver!",e);
 	}
-	try {Conn = DriverManager.getConnection(DBUrl);}
-	catch (SQLException e) {
+
+	String dbURL = "jdbc:mysql://";
+	dbURL += props.getProperty("host") + ":";
+	dbURL += props.getProperty("port") + "/";
+	dbURL += props.getProperty("db");
+	String dbUser = props.getProperty("user");
+	String dbPassword = props.getProperty("password");
+	String dbConnectFormat = props.getProperty("dbConnectFormat");
+
+
+ 
+	try {
+	    if (dbConnectFormat.equals("1")) {
+		Conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
+	    } else if (dbConnectFormat.equals("2")) {
+		Conn = DriverManager.getConnection(dbURL + "?user=" + dbUser + ";password=" + dbPassword);
+	    } else if (dbConnectFormat.equals("3")) {
+		Properties connprops = new Properties();
+		connprops.put("user", dbUser);
+		connprops.put("password", dbPassword);
+		Conn = DriverManager.getConnection(dbURL, connprops);
+	    } else if (dbConnectFormat.equals("4")) {
+		Conn = DriverManager.getConnection(dbURL + "?user="
+                                                + dbUser + "&password=" + dbPassword);
+	    } else {
+		errorMessage("Unknown dbConnectFormat choice:" + dbConnectFormat, null);
+	    }
+	}
+
+	catch (Exception e) {
 	    System.out.println("Could not connect to database!");
-	    System.out.println(e.getMessage());
-	    System.out.println(e.getSQLState());
+	    System.out.println(e);
 	    errorMessage("Could not connect to database!",e);
 	}
     }
