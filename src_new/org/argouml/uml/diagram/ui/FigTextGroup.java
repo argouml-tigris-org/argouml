@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigText;
 
@@ -22,7 +23,7 @@ public class FigTextGroup extends FigGroup {
      * Adds a FigText to the list with figs. Makes sure that the figtexts do not overlap.
 	 * @see org.tigris.gef.presentation.FigGroup#addFig(Fig)
 	 */
-	public void addFig(FigText f) {
+	public void addFig(Fig f) {
 		super.addFig(f);
         updateFigTexts();
         calcBounds();
@@ -57,6 +58,7 @@ public class FigTextGroup extends FigGroup {
 	 * @see org.tigris.gef.presentation.Fig#calcBounds()
 	 */
 	public void calcBounds() {
+		updateFigTexts();
         if (!supressCalcBounds) {
     		super.calcBounds();
             // get the widest of all textfigs
