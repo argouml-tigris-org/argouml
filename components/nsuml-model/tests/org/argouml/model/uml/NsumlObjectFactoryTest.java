@@ -26,7 +26,7 @@ package org.argouml.model.uml;
 import junit.framework.TestCase;
 
 import org.argouml.api.InvalidObjectRequestException;
-import org.argouml.api.model.ObjectFactoryManager;
+import org.argouml.api.ObjectFactoryManager;
 import org.argouml.api.model.uml.Uml;
 import org.argouml.api.model.uml.UmlObjectFactory;
 
@@ -39,9 +39,9 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
 
-public class TestObjectFactory extends TestCase {
+public class NsumlObjectFactoryTest extends TestCase {
 
-    public TestObjectFactory(String n) { super(n); }
+    public NsumlObjectFactoryTest(String n) { super(n); }
 
     private void testObjectFactoryType(Class c, Class expected, boolean runTest) {
         // Certain objects cannot be instantiated by NSUML.
