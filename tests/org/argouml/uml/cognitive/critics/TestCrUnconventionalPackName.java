@@ -29,58 +29,23 @@ import junit.framework.TestCase;
 
 
 /**
- * Tests for the CrUnconventionalAttrName class.
  * 
  * @author mkl
  *
  */
-public class TestCrUnconventionalAttrName extends TestCase {
+public class TestCrUnconventionalPackName extends TestCase {
     
-
-    private CrUnconventionalAttrName cr = new CrUnconventionalAttrName();
+    private CrUnconventionalPackName cr = new CrUnconventionalPackName();
     
-    /**
-     * The constructor.
-     * 
-     * @param arg0 the name of the test
-     */
-    public TestCrUnconventionalAttrName(String arg0) {
+    public TestCrUnconventionalPackName(String arg0) {
         super(arg0);
     }
 
-    /**
-     * Not giving a name should not result in a suggestion.
-     */
     public void testNullName() {
-        assertEquals("", cr.computeSuggestion(null));
+        assertEquals("packageName", cr.computeSuggestion(null));
     }
     
-    /**
-     * A name not starting with a capital should capitalize the first character.
-     */
-    public void testNoUnderscoreName() {
-        assertEquals("test", cr.computeSuggestion("Test"));
-    }
-    
-    /**
-     * A name not starting with a capital should capitalize 
-     * the first non-underscore character.
-     */
-    public void testSmallUnderscoreName() {
-        assertEquals("_x", cr.computeSuggestion("_X"));
-    }
-    
-    /**
-     * ...and only the first character, not the 2nd.
-     */
-    public void testLongUnderscoreName() {
-        assertEquals("_xx", cr.computeSuggestion("_Xx"));
-    }
-    
-    /**
-     * A name that consists of a single underscore should remain untouched.
-     */
-    public void testOnlyUnderscoreName() {
-        assertEquals("_", cr.computeSuggestion("_"));
+    public void testSmallName() {
+        assertEquals("x", cr.computeSuggestion("X"));
     }
 }
