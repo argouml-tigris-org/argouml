@@ -108,7 +108,7 @@ abstract public class PropPanel
     ////////////////////////////////////////////////////////////////
     // instance vars
     private Object _target;
-    private Object/*MModelElement*/ _modelElement;
+    private MModelElement _modelElement;
     private static Profile _profile;
 
     private ResourceBundle _bundle = null;
@@ -387,7 +387,7 @@ abstract public class PropPanel
     }
 
     public final MModelElement getModelElement() {
-        return (MModelElement)_modelElement;
+        return _modelElement;
     }
 
     public void refresh() {
@@ -626,7 +626,7 @@ abstract public class PropPanel
     public void targetRemoved(TargetEvent e) {
         // how to handle empty target lists?
         // probably the TabProps should only show an empty pane in that case
-        setTarget(e.getNewTargets()[0]);
+        setTarget(e.getNewTarget());
         fireTargetRemoved(e);
 
     }
@@ -635,7 +635,7 @@ abstract public class PropPanel
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTargets()[0]);
+        setTarget(e.getNewTarget());
         fireTargetSet(e);
 
     }

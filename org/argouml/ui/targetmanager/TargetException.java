@@ -23,6 +23,9 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.argouml.ui.targetmanager;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
 /**
  * @author gebruiker
  *
@@ -30,6 +33,9 @@ package org.argouml.ui.targetmanager;
  * Window>Preferences>Java>Code Generation>Code and Comments
  */
 public class TargetException extends RuntimeException {
+
+    /** The cause of this exception, or null */
+    private Throwable cause;
 
     /**
      * 
@@ -47,6 +53,56 @@ public class TargetException extends RuntimeException {
 	// TODO Auto-generated constructor stub
     }
 
-	
+    /**
+     * @param message
+     * @since 0.15.2
+     */
+    public TargetException(String message, Throwable cause) {
+	super(message);
+	this.cause = cause;
+    }
 
+    /*
+     * @see java.lang.RuntimeException#toString
+     */
+    public String toString() {
+	if (cause == null)
+		return super.toString();
+	else
+		return super.toString() + " caused by: " + cause.toString();
+    }
+
+    /*
+     * @see java.lang.RuntimeException#printStackTrace()
+     */
+    public void printStackTrace() {
+	super.printStackTrace();
+	if (cause != null) {
+	    System.err.println("Caused by:");
+	    cause.printStackTrace();
+	}
+    }
+
+    /*
+     * @see java.lang.RuntimeException#printStackTrace(PrintStream)
+     */
+    public void printStackTrace(PrintStream s) {
+	super.printStackTrace();
+	if (cause != null) {
+	    s.println("Caused by:");
+	    cause.printStackTrace();
+	}
+    }
+
+    /*
+     * @see java.lang.RuntimeException#printStackTrace(PrintWriter)
+     */
+    public void printStackTrace(PrintWriter s) {
+	super.printStackTrace();
+	if (cause != null) {
+	    s.println("Caused by:");
+	    cause.printStackTrace();
+	}
+    }
 }
+
