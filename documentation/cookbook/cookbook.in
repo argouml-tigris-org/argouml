@@ -45,13 +45,13 @@ This version of the cookbook is loosely connected to the version
 </para>
     </abstract>
          <authorgroup>
+             <editor>
+                 <firstname>Linus</firstname>
+                 <surname>Tolke</surname>
+             </editor>
              <author>
                  <firstname>Markus</firstname>
                  <surname>Klink</surname>
-             </author>
-             <author>
-                 <firstname>Linus</firstname>
-                 <surname>Tolke</surname>
              </author>
          </authorgroup>
          <legalnotice>
