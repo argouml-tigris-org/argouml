@@ -387,6 +387,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
       <fileset dir="${lib.dir}" />
     </copy>
     <copy file="${src.dir}/README.txt" tofile="${build.dir}/README.txt" />
+    <copy file="${src.dir}/bin/argouml.sh" todir="${build.dir}" />
   </target>
 
   <!-- =================================================================== -->
@@ -467,7 +468,13 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
     <zip zipfile="../${Name}-${version}.zip" basedir="${build.dir}" includes="gef.jar log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
-    <tar tarfile="../${Name}-${version}.tar" basedir="${build.dir}" includes="gef.jar log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
+    <tar tarfile="../${Name}-${version}.tar" basedir="${build.dir}" includes="gef.jar log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt">
+    <!--
+      <tarfileset mode="555">
+	<include name="argouml.sh">
+      </tarfileset>
+    -->
+    </tar>
     <gzip zipfile="../${Name}-${version}.tar.gz" src="../${Name}-${version}.tar" />
     <delete file="../${Name}-${version}.tar"/>
   </target>
@@ -521,6 +528,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
             <include name="Fop.java"/>
             <include name="Fop.class"/>
             <include name="README.txt"/>
+            <include name="argouml.sh"/>
         </fileset>
     </delete>
   </target>
