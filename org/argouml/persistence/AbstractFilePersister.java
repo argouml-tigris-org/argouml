@@ -53,7 +53,7 @@ public abstract class AbstractFilePersister extends FileFilter
      * This controls conversion of old persistence version files to be
      * converted to the current one, keeping ArgoUML backwards compatible.
      */
-    protected static final int PERSISTENCE_VERSION = 2;
+    protected static final int PERSISTENCE_VERSION = 3;
     
     /**
      * Supply the encoding to be used throughout the persistence
