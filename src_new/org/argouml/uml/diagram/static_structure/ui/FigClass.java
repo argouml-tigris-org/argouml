@@ -160,7 +160,7 @@ public class FigClass extends FigNodeModelElement {
    * Build a collection of menu items relevant for a right-click popup menu on a Package.
    *
    * @param     me     a mouse event
-   * @returns           a collection of menu items
+   * @return           a collection of menu items
    */
   public Vector getPopUpActions(MouseEvent me) {
     Vector popUpActions = super.getPopUpActions(me);

@@ -54,7 +54,7 @@ abstract class Context
        all, a datatype is created and added to the model.
 
        @param className The name of the classifier to find.
-       @returns Found classifier.
+       @return Found classifier.
     */
     abstract public MClassifier get(String name)
 	throws ClassifierNotFoundException;
@@ -66,7 +66,7 @@ abstract class Context
        Get the complete java name for a package.
        
        @param mPackage The package.
-       @returns Package name in java format
+       @return Package name in java format
     */
     protected String getJavaName(MPackage mPackage)
     {

@@ -79,7 +79,7 @@ public interface UMLUserInterfaceContainer extends NavigationListener {
     /**
      *     Returns a localized string corresponding to the key
      *     @param key key for resource bundle, typically english literal
-     *     @returns localized string for key based on system settings and configuration file
+     *     @return localized string for key based on system settings and configuration file
      */
     public String localize(String key);    
 }

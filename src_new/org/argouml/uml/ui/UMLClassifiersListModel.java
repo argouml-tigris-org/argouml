@@ -72,7 +72,7 @@ public class UMLClassifiersListModel extends UMLOwnedElementListModel  {
      *
      *  @param popup popup menu
      *  @param index index of selected list item
-     *  @returns "true" if popup menu should be displayed
+     *  @return "true" if popup menu should be displayed
      */
     public boolean buildPopup(JPopupMenu popup,int index) {
         UMLUserInterfaceContainer container = getContainer();

@@ -83,8 +83,6 @@ public class CrConstructorNeeded extends CrUML {
      * to found for the current locale. Provides a design issue category
      * (STORAGE) and adds triggers for metaclasses "behaviouralFeature" and
      * "structuralFeature".</p>
-     *
-     * @return  nothing returned since this is a constructor
      */
 
     public CrConstructorNeeded() {

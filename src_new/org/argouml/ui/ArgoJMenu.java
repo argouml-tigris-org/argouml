@@ -48,7 +48,7 @@ public class ArgoJMenu extends JMenu {
     * it to the end of this menu.
     *
     * @param     a      the Action for the checkbox menu item to be added
-    * @returns          the new checkbox menu item
+    * @return          the new checkbox menu item
     */
   public JCheckBoxMenuItem addCheckItem(Action a) {
     String name = (String) a.getValue(Action.NAME);
