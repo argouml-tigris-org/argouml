@@ -25,9 +25,6 @@ package org.argouml.cognitive.ui;
 
 import java.util.*;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-
 import org.tigris.gef.util.*;
 
 import org.apache.log4j.Category;
@@ -39,7 +36,7 @@ implements ToDoListListener {
         Category.getInstance(ToDoByPoster.class);
 
   public ToDoByPoster() {
-    super("todo.perspective.poster");
+    super("combobox.todo-perspective-poster");
     addSubTreeModel(new GoListToPosterToItem());
   }
 

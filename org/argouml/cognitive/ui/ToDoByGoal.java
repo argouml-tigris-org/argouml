@@ -25,9 +25,6 @@ package org.argouml.cognitive.ui;
 
 import java.util.*;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-
 import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
@@ -38,7 +35,7 @@ implements ToDoListListener {
 
 
   public ToDoByGoal() {
-    super("todo.perspective.goal");
+    super("combobox.todo-perspective-goal");
     addSubTreeModel(new GoListToGoalsToItems());
   }
 

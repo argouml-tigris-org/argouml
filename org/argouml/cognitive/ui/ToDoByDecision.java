@@ -25,11 +25,6 @@ package org.argouml.cognitive.ui;
 
 import java.util.*;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-
-import org.tigris.gef.util.*;
-
 import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
@@ -40,7 +35,7 @@ implements ToDoListListener {
 
 
   public ToDoByDecision() {
-    super("todo.perspective.decision");
+    super("combobox.todo-perspective-decision");
     addSubTreeModel(new GoListToDecisionsToItems());
   }
 

@@ -25,9 +25,6 @@ package org.argouml.cognitive.ui;
 
 import java.util.*;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-
 import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
@@ -37,7 +34,7 @@ implements ToDoListListener {
         Category.getInstance(ToDoByPriority.class);
 
   public ToDoByPriority() {
-    super("todo.perspective.priority");
+    super("combobox.todo-perspective-priority");
     addSubTreeModel(new GoListToPriorityToItem());
   }
 
