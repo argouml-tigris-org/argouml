@@ -52,6 +52,7 @@ import org.tigris.gef.base.Globals;
  */
 public class Modeller
 {
+    /** logger */    
     protected static Logger cat = Logger.getLogger(Modeller.class);
     /** Current working model. */
     private Object model;
@@ -85,11 +86,15 @@ public class Modeller
 
     /** the name of the file being parsed */
     private String fileName;
-    /**
-       Create a new modeller.
-
-       @param model The model to work with.
-    */
+    /** Create a new modeller.
+     * @param diagram the interface to the diagram to add nodes and edges to
+     * @param _import
+     * @param noAssociations whether associations are modelled as attributes
+     * @param arraysAsDatatype whether darrays are modelled as dataypes
+     * @param fileName the current file name
+     *
+     * @param model The model to work with.
+     */
     public Modeller(Object model,
 		    DiagramInterface diagram,
 		    Import _import,
@@ -287,19 +292,17 @@ public class Modeller
 	}
     }
 
-    /**
-       Called from the parser when a class declaration is found.
-
-       @param name The name of the class.
-       @param modifiers A sequence of class modifiers.
-       @param superclass Zero or one string with the name of the
-       superclass. Can be fully qualified or
-       just a simple class name.
-       @param interfaces Zero or more strings with the names of implemented
-       interfaces. Can be fully qualified or just a
-       simple interface name.
-       @param javadoc The javadoc comment. null or "" if no comment available.
-    */
+    /**        Called from the parser when a class declaration is found.
+     * @param name The name of the class.
+     * @param modifiers A sequence of class modifiers.
+     * @param superclassName Zero or one string with the name of the
+     *        superclass. Can be fully qualified or
+     *        just a simple class name.
+     * @param interfaces Zero or more strings with the names of implemented
+     *        interfaces. Can be fully qualified or just a
+     *        simple interface name.
+     * @param javadoc The javadoc comment. null or "" if no comment available.
+     */
     public void addClass(String name,
                          short modifiers,
                          String superclassName,
@@ -638,7 +641,8 @@ public class Modeller
 
 	if (returnType == null) {
 	    // Constructor
-	    ModelFacade.setStereotype(mOperation, getStereotype("create"));
+	    ModelFacade.setStereotype(mOperation, 
+                getStereotype(mOperation, "create", "BehavioralFeature" ));
 	}
 	else {
 	    try {
@@ -738,15 +742,13 @@ public class Modeller
         ModelFacade.addFeature(ModelFacade.getOwner(op), method);
     }
 
-    /**
-       Called from the parser when an attribute is found.
-
-       @param modifiers A sequence of attribute modifiers.
-       @param typeSpec The attribute's type.
-       @param variable The name of the attribute.
-       @param initializer The initial value of the attribute.
-       @param javadoc The javadoc comment. null or "" if no comment available.
-    */
+    /**        Called from the parser when an attribute is found.
+     * @param modifiers A sequence of attribute modifiers.
+     * @param typeSpec The attribute's type.
+     * @param name The name of the attribute.
+     * @param initializer The initial value of the attribute.
+     * @param javadoc The javadoc comment. null or "" if no comment available.
+     */
     public void addAttribute (short modifiers,
                               String typeSpec,
                               String name,
@@ -1066,6 +1068,31 @@ public class Modeller
 	}
 
 	return mStereotype;
+    }
+    
+    /** find the first suitable stereotype with baseclass for a given object.
+     * @param me
+     * @param name
+     * @param baseClass
+     * @return the stereotype if found
+     *
+     * @throws IllegalArgumentException if the desired stereotypes for the modelelement and baseclass was not found. No
+     * stereotype is created.
+     */
+    private Object getStereotype(Object me, String name, String baseClass) {
+        Collection stereos =
+            UmlHelper.getHelper().getExtensionMechanisms().getAllPossibleStereotypes(me);
+        if (stereos != null && stereos.size() > 0) {
+            Iterator iter = stereos.iterator();
+            while (iter.hasNext()) {
+                Object mStereotype = iter.next();
+                if (UmlHelper.getHelper().
+                    getExtensionMechanisms().isStereotypeInh(mStereotype, name, baseClass))
+                        return mStereotype;
+            }
+        }
+        throw new IllegalArgumentException("Could not find a suitable stereotype for " +
+            me + " " + name + " " + baseClass);
     }
 
     /**
@@ -1494,6 +1521,11 @@ public class Modeller
 	}
     }
 
+    /** this method currently does nothing
+     * TODO: why?
+     * @param method
+     * @param obj
+     */    
     public void addCall(String method, String obj) {
 //	if (obj.equals(""))
 //	    cat.debug("Add call to method " + method);
