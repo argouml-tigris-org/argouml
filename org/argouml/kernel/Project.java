@@ -29,6 +29,7 @@ import java.beans.VetoableChangeSupport;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
@@ -353,13 +354,7 @@ public class Project implements java.io.Serializable, TargetListener {
                     try {
                         pm.load(sub);
                     } catch (IOException ioe) {
-                        cat.error("exception whilst loading todo"+
-                        " list project member",
-                        ioe);
                     } catch (org.xml.sax.SAXException se) {
-                        cat.error("exception whilst loading todo"+
-                        " list project member",
-                        se);
                     }
                     addMember(pm);
                 }
@@ -627,6 +622,33 @@ public class Project implements java.io.Serializable, TargetListener {
         loadMembersOfType("html");
     }
 
+    // frank: additional helper. Is there already another function doing this?
+    /**
+     * copies one file src to another, raising file exceptions
+     * if there are some problems
+     */
+
+    private File copyFile( File dest, File src)
+        throws java.io.FileNotFoundException, java.io.IOException {
+        
+        // first delete dest file
+        if( dest.exists()) dest.delete();
+
+        FileInputStream fis  = new FileInputStream(src);
+        FileOutputStream fos = new FileOutputStream(dest);
+        byte[] buf = new byte[1024];
+        int i = 0;
+        while((i=fis.read(buf))!=-1) {
+            fos.write(buf, 0, i);
+        }
+        fis.close();
+        fos.close();
+        
+        dest.setLastModified(src.lastModified());
+        
+        return dest;
+    }
+
     /**
      * There are known issues with saving, particularly
      * losing the xmi at save time. see issue
@@ -647,6 +669,13 @@ public class Project implements java.io.Serializable, TargetListener {
         }
 
         preSave();
+        
+        // frank: first backup the existing file to name+"#"
+        File tempFile = new File( file.getAbsolutePath() + "#");
+        File backupFile = new File( file.getAbsolutePath() + "~");
+        if( tempFile.exists()) tempFile.delete();
+        if( file.exists()) copyFile(tempFile, file);
+        // frank end
 
         ZipOutputStream stream =
             new ZipOutputStream(new FileOutputStream(file));
@@ -700,12 +729,33 @@ public class Project implements java.io.Serializable, TargetListener {
                     p.save(path, overwrite, writer);
                 }
             }
+            
+            // if save did not raise an exception 
+            // and name+"#" exists move name+"#" to name+"~"
+            // this is the correct backup file
+            if( backupFile.exists()) backupFile.delete();
+            if( tempFile.exists() && !backupFile.exists()) tempFile.renameTo(backupFile);
+            if( tempFile.exists()) tempFile.delete();
 
         } catch (IOException e) {
             cat.debug("hat nicht geklappt: " + e);
-            e.printStackTrace();
+            // frank: deleted it because we are propagating the exception
+            //e.printStackTrace();
+            
+            // frank: close from outside, file have to be closed before
+            // deleting it
+            writer.close();
+            
+            // frank: in case of exception 
+            // delete name and mv name+"#" back to name if name+"#" exists
+            // this is the "rollback" to old file
+            file.delete();
+            tempFile.renameTo( file);
+            // we have to give a message to user and set the system to unsaved!
+            throw e;
         }
 
+        
         //TODO: in future allow independent saving
         writer.close();
         // zos.close();
