@@ -44,6 +44,10 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.Generator2;
 
 /**
+ * This dialog appears when selecting 
+ * <code>Generation -> Settings for Generate for Project...</code>
+ * in the menu.<p>
+ * 
  * Provides support for setting a "src_path" tagged value used in Java
  * round trip engineering.
  */
