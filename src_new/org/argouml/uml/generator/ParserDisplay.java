@@ -35,6 +35,8 @@ package org.argouml.uml.generator;
 import java.beans.*;
 import java.util.*;
 
+import javax.swing.plaf.multi.MultiButtonUI;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MExpression;
@@ -56,11 +58,17 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
 import org.argouml.uml.diagram.static_structure.*;
 import org.argouml.uml.diagram.deployment.*;
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 
 public class ParserDisplay extends Parser {
 
   public static ParserDisplay SINGLETON = new ParserDisplay();
+  /**
+   * The standard error etc. logger
+   */
+  protected static final Category _cat = 
+    Category.getInstance(ParserDisplay.class);
 
   ////////////////////////////////////////////////////////////////
   // parsing methods
@@ -106,7 +114,7 @@ public class ParserDisplay extends Parser {
         }
     }
 
-
+/* not used ?
   public void parseOperationCompartment(MClassifier cls, String s) {
     java.util.StringTokenizer st = new java.util.StringTokenizer(s, "\n\r");
     Vector newOps = new Vector();
@@ -132,8 +140,13 @@ public class ParserDisplay extends Parser {
 	for (int i=0; i<newOps.size(); i++){
 	    MOperation oper=(MOperation)newOps.elementAt(i);
 	    cls.addFeature(oper);
+        cls.getModel();
+        oper.getModel();
+        MMUtil.SINGLETON.getReturnParameter(oper).getModel();
+        MMUtil.SINGLETON.getReturnParameter(oper).getType().getModel();  
 	}
   }
+*/
 
   public void parseOperationFig(MClassifier cls, MOperation op, String text) {
     if (cls == null || op == null)
@@ -144,6 +157,20 @@ public class ParserDisplay extends Parser {
     if (s != null && s.length() > 0) {
       MOperation newOp = parseOperation(s);
       if (newOp != null) {
+        if (MMUtil.SINGLETON.getReturnParameter(newOp).getType().getModel() == null) {
+            MNamespace model = null;
+            if (cls.getModel() != null) {
+                model = cls.getModel();
+            } else {
+                // somewhere there has been a misstake.
+                // lets try to repair it
+                model = ProjectBrowser.TheInstance.getProject().getModel();
+                model.addOwnedElement(cls);
+                // but better tell the developer (and maybe the user if he watches)
+                _cat.error("The MClass " + cls.toString() + " returned null on getModel!");
+            }
+            model.addOwnedElement(MMUtil.SINGLETON.getReturnParameter(newOp).getType()); 
+        }   
         newOp.setAbstract(op.isAbstract());
         newOp.setOwnerScope(op.getOwnerScope());
         if (i != -1) {
@@ -339,18 +366,20 @@ public class ParserDisplay extends Parser {
 
 
   /** Parse a line of the form:
-   *  [visibility] [keywords] name(params) ": " returntype[;] */
+   *  visibility name (parameter list) : return-type-expression {property-string}
+   * Same as in UML 1.3 spec. 
+   */
    /* (formerly: [visibility] [keywords] returntype name(params)[;] ) */
   public MOperation parseOperation(String s) {
     s = s.trim();
     if (s.endsWith(";")) s = s.substring(0, s.length()-1);
     MOperation res = MMUtil.SINGLETON.buildOperation();
     s = parseOutVisibility(res, s);
-    s = parseOutKeywords(res, s);
+    // s = parseOutKeywords(res, s);
     s = parseOutName(res, s);
     s = parseOutParams(res, s);
-    s = parseOutColon(s);
     s = parseOutReturnType(res, s);
+    s = parseOutProperties(res, s);
     s = s.trim();
     if (s.length() > 2)
       System.out.println("leftover in parseOperation=|" + s + "|");
@@ -358,8 +387,40 @@ public class ParserDisplay extends Parser {
   }
 
 
+/**
+ * Parses a string for multiplicity and sets the multiplicity with the given 
+ * attribute.
+ * @param f
+ * @param s
+ * @return String
+ */
+   protected String parseOutMultiplicity(MAttribute f, String s) {
+    s = s.trim();
+    String multiString = "";
+    int colonappereance = s.indexOf(':');
+    int equalappereance = s.indexOf('=');
+    int braceappereance = s.indexOf('{');
+    if (colonappereance < 0) { // no type def
+        if (equalappereance < 0) { // no initial value
+            if (braceappereance < 0) { // no property string
+                multiString = s;
+            } else {
+                multiString = s.substring(0, braceappereance-1).trim();
+            }
+        } else {
+            multiString = s.substring(0, equalappereance-1).trim();
+        }
+    } else {
+        multiString = s.substring(0, colonappereance-1).trim();
+    }
+    f.setMultiplicity(new MMultiplicity(multiString));
+    return s.substring(multiString.length(), s.length());
+   }
+   
    /** Parse a line of the form:
-    *  [visibility] [keywords] name ": " type [= init] [;] */
+    * visibility name [multiplicity] : type-expression = initial-value {property-string}
+    * Same as in the UML 1.3 spec. 
+    */
    /* (formerly: [visibility] [keywords] type name [= init] [;] ) */
   public MAttribute parseAttribute(String s) {
       s = s.trim();
@@ -369,47 +430,206 @@ public class ParserDisplay extends Parser {
       }
       MAttribute newAttribute = MMUtil.SINGLETON.buildAttribute();
       s = parseOutVisibility(newAttribute, s);
-      s = parseOutKeywords(newAttribute, s);
       s = parseOutName(newAttribute, s);
-      s = parseOutColon(s);
+      s = parseOutMultiplicity(newAttribute, s);
+      // s = parseOutColon(s);
       s = parseOutType(newAttribute, s);
       s = parseOutInitValue(newAttribute, s);
+      s = parseOutProperties(newAttribute, s);
       if (s.length() > 2){
           System.out.println("Value left over in parseAttribute=|" + s + "|");
       }
       return newAttribute;
   }
-
-
-  public String parseOutVisibility(MFeature f, String s) {
+  
+/**
+ * Parses the properties for some attribute a out of a string s. The properties 
+ * are all keywords between the braces at the end of a string notation of an 
+ * attribute.
+ * @param a
+ * @param s
+ * @return String
+ */
+  protected String parseOutProperties(MAttribute a, String s) {
     s = s.trim();
-    int firstSpace = s.indexOf(" ");
-    if (firstSpace == -1) firstSpace = s.length();
-    String visStr = s.substring(0, firstSpace);
-    MVisibilityKind vk = MVisibilityKind.PUBLIC;
-    if (visStr.equals("public") || s.startsWith("+"))
-      vk = MVisibilityKind.PUBLIC;
-    else if (visStr.equals("private") || s.startsWith("-"))
-      vk = MVisibilityKind.PRIVATE;
-    else if (visStr.equals("protected") || s.startsWith("#"))
-      vk = MVisibilityKind.PROTECTED;
-	//    else if (visStr.equals("package") || s.startsWith("~"))
-	// vk = MVisibilityKind.PACKAGE;
-    else {
-      System.out.println("unknown visibility \"" + visStr +
-			 "\", using default");
-      return s;
-    }
-     f.setVisibility(vk);
-
-    if (s.startsWith("+") || s.startsWith("-") ||
-	s.startsWith("#") || s.startsWith("~"))
-      s = s.substring(1);
-    else
-      s = s.substring(firstSpace+1);
+    if (s.indexOf("{") >= 0) {
+        StringTokenizer tokenizer = new StringTokenizer(
+            s.substring(s.indexOf("{")+1, s.indexOf("}")), ",");
+        List properties = new ArrayList();
+        while (tokenizer.hasMoreElements()) {
+            properties.add(tokenizer.nextToken().trim());
+        }
+        for (int i = 0; i < properties.size(); i++) {
+            if (properties.get(i).equals("frozen")) {
+                a.setChangeability(MChangeableKind.FROZEN);
+            } else {
+                String propertyStr = (String)properties.get(i);
+                String tagStr = "";
+                String valueStr = "";
+                if (propertyStr.indexOf("=")>=0) {
+                    tagStr = propertyStr.substring(0, propertyStr.indexOf("=")-1);
+                    valueStr = propertyStr.substring(propertyStr.indexOf("="+1, propertyStr.length()));
+                }
+                MTaggedValue tag = new MTaggedValueImpl();
+                tag.setTag(tagStr);
+                tag.setValue(valueStr);
+                a.addTaggedValue(tag);
+            }
+        }
+        return s.substring(s.indexOf("}"), s.length());
+    }          
     return s;
   }
+  
+  protected String parseOutProperties(MOperation op, String s) {
+    s = s.trim();
+    if (s.indexOf("{") >= 0) {
+        StringTokenizer tokenizer = new StringTokenizer(
+            s.substring(s.indexOf("{")+1, s.indexOf("}")), ",");
+        List properties = new ArrayList();
+        while (tokenizer.hasMoreElements()) {
+            properties.add(tokenizer.nextToken().trim());
+        }
+        for (int i = 0; i < properties.size(); i++) {
+            if (properties.get(i).equals("query")) {
+                op.setQuery(true);
+            } else {
+                if (properties.get(i).equals("sequential") || 
+                    properties.get(i).equals("concurrency=sequential")) {
+                        op.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
+                } else {
+                    if (properties.get(i).equals("guarded") ||
+                        properties.get(i).equals("concurrency=guarded")) {
+                        op.setConcurrency(MCallConcurrencyKind.GUARDED);
+                    } else {
+                        if (properties.get(i).equals("concurrent") || 
+                            properties.get(i).equals("concurrency=concurrent")) {
+                                op.setConcurrency(MCallConcurrencyKind.CONCURRENT);
+                        } else {
+                            String propertyStr = (String)properties.get(i);
+                            String tagStr = "";
+                            String valueStr = "";
+                            if (propertyStr.indexOf("=")>=0) {
+                                tagStr = propertyStr.substring(0, propertyStr.indexOf("=")-1);
+                                valueStr = propertyStr.substring(propertyStr.indexOf("="+1, propertyStr.length()));
+                            }
+                            MTaggedValue tag = new MTaggedValueImpl();
+                            tag.setTag(tagStr);
+                            tag.setValue(valueStr);
+                            op.addTaggedValue(tag);
+                        }
+                    }
+                }
+            }
+        }
+        return s.substring(s.indexOf("}"), s.length());
+    }          
+    return s;
+  }
+  /*
+  public String parseOutMultiplicity(MFeature f, String s) {
 
+    s = s.trim();
+    MMultiplicity multi = new MMultiplicity();
+    boolean startMulti = false; // start of a multiplicity
+    boolean inRange = false;    // true if we are in a range
+    boolean formerNumber = false;   // true if last char was a number
+    boolean inMultiString = true;  // true if we are still parsing a multi
+                                     // string\
+    boolean inDots = false      // true if we are in ..
+    int dotCounter = 0;          // number of dots we passed
+    StringBuffer startMultiSb = new StringBuffer();
+    StringBuffer endMultiSb = new StringBuffer();
+    for (int i = 0; i < s.length(); i++) {
+        char c = s.charAt(i);
+        switch (c) {
+            case '0' : case '1' : case '2' : case '3' :
+            case '4' : case '5' : case '6' : case '7' :
+            case '8' : case '9' : case '*' :
+                if (!inRange && inMultiString) { // we start possibly a range
+                    startMulti = true;
+                    startMultiSb.append(c);
+                }
+                if (inRange && inMultiString) { // end range
+                    if (inDots) {               // first char of endrange
+                        inDots = false;
+                        endMultiSb = new StringBuffer();
+                    }
+                    endMultiSb.append(c);
+                }
+                break;
+            case '.' :  
+                if (!inDots && inMultiString) {
+                    inDots = true;
+                    dotCounter = 0;
+                }
+                dotCounter++; 
+                break;
+            case ',' :
+                if (inMultiString) { // we have an end sign of a mutiplicity
+                    
+                break;
+            case ' ' :
+                break;
+            default : // some other character
+                inMultiString = false; //only here if we stopped parsing the
+                                        // multistring
+                break;
+        }
+  }
+*/
+
+/**
+ * Parses a string for visibilitykind. Visibilitykind can both be specified 
+ * using the standard #, +, - and the keywords public, private, protected.
+ * @param f The feature the visibility is part of
+ * @param s The string that possibly identifies some visibility
+ * @return String The string s WITHOUT the visibility signs. 
+ */
+  public String parseOutVisibility(MFeature f, String s) {
+    s = s.trim();
+    // We only support UML 1.3 notation in this parser
+    // get the first char
+    String visStr = s.substring(0, 1);
+    if (visStr.equals("#")) {
+        f.setVisibility(MVisibilityKind.PROTECTED);
+        return s.substring(1, s.length());
+    } else {
+        if (visStr.equals("-")) {
+            f.setVisibility(MVisibilityKind.PRIVATE);
+            return s.substring(1, s.length());
+        } else {
+            if (visStr.equals("+")) {
+                f.setVisibility(MVisibilityKind.PUBLIC);
+                return s.substring(1, s.length());
+            } 
+        }
+    }
+    // public, private, protected as keyword
+    int firstSpace = s.indexOf(' ');
+    visStr = s.substring(0, firstSpace);
+    if (visStr.equals("public")) {
+        f.setVisibility(MVisibilityKind.PUBLIC);
+        return s.substring(firstSpace, s.length());
+    } else {
+        if (visStr.equals("protected")) {
+            f.setVisibility(MVisibilityKind.PROTECTED);
+            return s.substring(firstSpace, s.length());
+        } else {
+            if (visStr.equals("private")) {
+                f.setVisibility(MVisibilityKind.PRIVATE);
+                return s.substring(firstSpace, s.length());
+            } else {
+                return s;
+            }
+        }
+    }
+    
+  }
+
+/*
+ * removed next method since it is obsolete. We now use the standard notation
+ * for UML 1.3 as defined in the spec.
   public String parseOutKeywords(MFeature f, String s) {
     s = s.trim();
     int firstSpace = s.indexOf(" ");
@@ -432,30 +652,16 @@ public class ParserDisplay extends Parser {
 
     return parseOutKeywords(f, s.substring(firstSpace+1));
   }
+*/
 
-  public String parseOutReturnType(MOperation op, String s) {
-    s = s.trim();
-    //int firstSpace = s.indexOf(" ");
-    //if (firstSpace == -1) return s;
-    //String rtStr = s.substring(0, firstSpace);
-    String rtStr = (s.length()>0) ? s : "void";
-    //if (rtStr.indexOf("(") > 0) {
-	//	// must be CONSTRUCTOR, must be included in nsuml later on!
-    //   op.setStereotype(new MStereotypeImpl());
-    //  return s;
-    //}
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
-    MClassifier rt = p.findType(rtStr);
-
-    //System.out.println("setting return type: " + rtStr +" "+rt);
-    MParameter param = MMUtil.SINGLETON.buildParameter();
-    param.setType(rt);
-    MMUtil.SINGLETON.setReturnParameter(op,param);
-    //return s.substring(firstSpace+1);
-    return "";
-  }
-
+    /**
+     * Parses the parameters with an operation. The string containing the 
+     * parameters must be the first string within the given string s. It must 
+     * start with ( and the end of the string containing the parameters is ).
+     * @param op
+     * @param s
+     * @return String
+     */
 	public String parseOutParams(MOperation op, String s) {
 		s = s.trim();
 		String leftOver = s;
@@ -472,10 +678,24 @@ public class ParserDisplay extends Parser {
 		return leftOver;
 	}
 
+/**
+ * Parses the name of modelelement me from some input string s. The name must be
+ * the first word of the string. 
+ * @param me
+ * @param s
+ * @return String
+ */
   public String parseOutName(MModelElement me, String s) {
     s = s.trim();
-    if (s.equals("") || s.charAt(0) == '=') return s;
-    java.util.StringTokenizer st = new java.util.StringTokenizer(s, ": \t()[]=;");
+    if (s.equals("") || s.charAt(0) == '=') { //duh there is no name
+        if (me.getName() == null || me.getName().equals("")) {
+            me.setName("anno");
+        } 
+        return s;
+    }
+    // next sign can be: ' ', '=', ':', '{', '}', '\n', '[', ']', '(', ')'
+    // any of these indicate that name is to an end.    
+    java.util.StringTokenizer st = new java.util.StringTokenizer(s, ": \t()[]{}=;");
     if (!st.hasMoreTokens()) {
       System.out.println("name not parsed");
       return s;
@@ -488,43 +708,87 @@ public class ParserDisplay extends Parser {
     int namePos = s.indexOf(nameStr);
     return s.substring(namePos + nameStr.length());
   }
-
-
+    
+    /**
+     * Parses the user given string s for the type of an attribute. The string 
+     * should start with :. The part between : and { (if there are properties) 
+     * or the end of the string if there are no properties.
+     * @param attr
+     * @param s
+     * @return String
+     */
 	public String parseOutType(MAttribute attr, String s) {
-            int equalIndex = s.indexOf("=");
-            String typeStr = "";
-            String retStr  = "";
-
-            int i, len = s.length();
-            for (i = 0; ((i <= len) && (i != equalIndex)); i++) {
-		typeStr = (i > 0) ? s.substring(0, i) : "";
-		retStr = (i < len) ? s.substring(i, len) : "";
-            }
-            Project p = ProjectBrowser.TheInstance.getProject();
+        s = s.trim();       
+        if (s.startsWith(":")) { // we got ourselves a type expression
             MClassifier type = null;
-            type = p.findType(typeStr);
+            s = s.substring(1, s.length()).trim();
+            String typeExpr = "";
+            StringTokenizer tokenizer = new StringTokenizer(s, " ={");
+            typeExpr = tokenizer.nextToken();
+            Project p = ProjectBrowser.TheInstance.getProject();
+            type = p.findType(typeExpr);
+            if (type == null) { // no type defined yet
+                type = MMUtil.SINGLETON.buildClass(typeExpr);                
+            }
+            if (attr.getNamespace() != null) {
+                type.setNamespace(attr.getNamespace());
+            }
             attr.setType(type);
+            s = s.substring(typeExpr.length(), s.length());
+        }
+        return s;
+    }
+    
+    
+    /**
+     * Parses the return type for an operation.
+     * @param op
+     * @param s
+     * @return String
+     */
+    protected String parseOutReturnType(MOperation op, String s) {
+        s = s.trim();       
+        if (s.startsWith(":")) { // we got ourselves a type expression
+            MClassifier type = null;
+            s = s.substring(1, s.length()).trim();
+            String typeExpr = "";
+            StringTokenizer tokenizer = new StringTokenizer(s, " ={");
+            typeExpr = tokenizer.nextToken();
+            Project p = ProjectBrowser.TheInstance.getProject();
+            type = p.findType(typeExpr);
+            if (type == null) { // no type defined yet
+                type = MMUtil.SINGLETON.buildClass(typeExpr); 
+                // the owner of this type should be the model in which
+                // the class that contains the operation lives
+                // since we don't know that class, the model is not set here
+                // but in the method that calls parseOperation(String s)               
+            }
+            MParameter param = MMUtil.SINGLETON.buildParameter();
+            MMUtil.SINGLETON.setReturnParameter(op,param);
+            param.setType(type);
+            s = s.substring(typeExpr.length(), s.length());
+        }
+        return s;
+    }
 
-            return retStr;
-	}
 
-
-    public String parseOutInitValue(MAttribute attr, String s) {
+    protected String parseOutInitValue(MAttribute attr, String s) {
         s = s.trim();
         int equalsIndex = s.indexOf("=");
-        if (s.trim().length() == 0) return ""; // trim it here...pjs
-
-        String initStr = s.substring(1, s.length()); //move past "=" to end of "initvalue"--pjs--
-        MExpression initExpr = new MExpression("Java", initStr);
-        attr.setInitialValue(initExpr);
-        return "";
-  }
-
-  private String parseOutColon(String s) {
-	s = s.trim();
-	if (s.length()>0 && s.charAt(0) == ':')
-		return s.substring(1);
-	return "";
+        int braceIndex = s.indexOf("{");
+        if (equalsIndex >=0 && ((braceIndex >= 0 && braceIndex>equalsIndex) || 
+            (braceIndex < 0 && equalsIndex >=0 ))) { // we have ourselves some init
+                                                    // expression
+            s = s.substring(equalsIndex, s.length());
+            String initExprStr = s.substring(s.indexOf("=")+1, (braceIndex <0)?
+                s.length():s.indexOf("{"));
+            MExpression initExpr = 
+                new MExpression(Notation.getDefaultNotation().toString(),
+                    initExprStr);
+            attr.setInitialValue(initExpr);
+            return s.substring(initExprStr.length(), s.length());
+        }
+        return s;
   }
 
   public MParameter parseParameter(String s) {
