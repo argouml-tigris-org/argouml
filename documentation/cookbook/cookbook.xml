@@ -283,6 +283,32 @@ ArgoUML as a modelling tool.
 </para>
       </sect2>
     </sect1>
+
+    <sect1 id="mailing_lists">
+      <title>Mailing Lists</title>
+      <indexterm><primary>Mailing lists</primary></indexterm>
+      <indexterm><primary>Developers' Mailing List</primary></indexterm>
+      <para>
+All developers <emphasis>MUST</emphasis> subscribe to the mailinglist
+for developers. Please find the details at: 
+<ulink url="http://argouml.tigris.org/servlets/ProjectMailingListList">http://argouml.tigris.org/servlets/ProjectMailingListList</ulink>
+</para>
+      <indexterm>
+	<primary>CVS</primary>
+	<secondary>Mailing list</secondary>
+      </indexterm>
+      <indexterm>
+	<primary>Issues</primary>
+	<secondary>Mailing list</secondary>
+      </indexterm>
+      <para>
+It is also recommended to join the CVS and Issues mailing lists.
+Both give you a good idea of what is going on.
+Developers should also work with Issuezilla registering or fixing 
+problems found by themselves and others.
+     </para>
+    </sect1>
+
   </chapter>
 
      <chapter id="buildingandtools">
@@ -1733,27 +1759,6 @@ update your checked out copy and continue the release work.
 
 </sect1>
 
- <sect1 id="mailing_lists">
-     <title>Mailing Lists</title>
-     <indexterm><primary>Mailing lists</primary></indexterm>
-     <indexterm><primary>Developers' Mailing List</primary></indexterm>
-     <para>All developers <emphasis>MUST</emphasis> subscribe to the mailinglist for developers. Please find the details at: <ulink url="http://argouml.tigris.org/servlets/ProjectMailingListList">http://argouml.tigris.org/servlets/ProjectMailingListList</ulink>
-     </para>
-      <indexterm>
-	<primary>CVS</primary>
-	<secondary>Mailing list</secondary>
-      </indexterm>
-      <indexterm>
-	<primary>Issues</primary>
-	<secondary>Mailing list</secondary>
-      </indexterm>
-     <para>
-It is also recommended to join the CVS and Issues mailing lists.
-Both give you a good idea of what is going on.
-Developers should also work with Issuezilla registering or fixing 
-problems found by themselves and others.
-     </para>
- </sect1>
 </chapter>
 
   <chapter id="requirements">
