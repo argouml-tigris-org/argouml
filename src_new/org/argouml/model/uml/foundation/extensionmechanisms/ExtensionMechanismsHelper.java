@@ -121,8 +121,7 @@ public class ExtensionMechanismsHelper {
      */
     public Collection getAllPossibleStereotypes(MModelElement m) {
         List ret = new ArrayList();
-        if (m == null || m.getNamespace() == null) return ret;
-        MNamespace ns = m.getNamespace();
+        if (m == null) return ret;
         Iterator it = getStereotypes().iterator();
         String baseClass = getMetaModelName(m);
         while (it.hasNext()) {

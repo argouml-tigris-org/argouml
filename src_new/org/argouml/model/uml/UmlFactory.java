@@ -375,6 +375,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
             getModelManagement().deleteElementImport((MElementImport)elem);
         }       
        elem.remove();
+       UmlModelEventPump.getPump().cleanUp(elem);
     }
      
     /**

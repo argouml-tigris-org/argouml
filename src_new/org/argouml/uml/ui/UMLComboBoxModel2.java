@@ -97,6 +97,7 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#propertySet(MElementEvent)
      */
     public void propertySet(MElementEvent e) {
+        /*
         if (isValidRoleAdded(e)) { 
             Object o = getChangedElement(e);
             if (o instanceof Collection) {
@@ -108,6 +109,7 @@ public abstract class UMLComboBoxModel2
             }
             setSelectedItem(getSelectedModelElement());
         } else
+        */
         if (isValidPropertySet(e)) {
             setSelectedItem(getSelectedModelElement());
         }
@@ -184,6 +186,7 @@ public abstract class UMLComboBoxModel2
         // the change (the actual old and new target)
         // this must be implemented in the whole of argo one time or another
         // to improve performance and reduce errors
+        
         setTarget(getContainer().getTarget());
         removeAllElements();
         buildModelList();
@@ -199,6 +202,7 @@ public abstract class UMLComboBoxModel2
     public void targetReasserted() {
         // in the current implementation of argouml, history is not implemented
         // this event is for future releases
+        targetChanged();
     }
     
     /**
@@ -353,26 +357,53 @@ public abstract class UMLComboBoxModel2
     public void addElement(Object o) {
         if (!_objects.contains(o)) {
             _objects.add(o);
+            fireIntervalAdded(this, _objects.size()-1, _objects.size()-1);
+            /*
+            if ( _objects.size() == 1 && _selectedObject == null && o != null ) {
+                setSelectedItem( o );
+            }
+            */
         }
     }
     
     public void setSelectedItem(Object o) {
-        if (_objects.contains(o)) {
+        if ((_selectedObject != null && !_selectedObject.equals( o )) || _selectedObject == null && o != null) {
             _selectedObject = o;
-        } else
-            _selectedObject = null;
+            fireContentsChanged(this, -1, -1);
+        }
     }
     
     public void removeElement(Object o) {
+        /*
+        int index = _objects.indexOf(o);
         _objects.remove(o);
         if (_selectedObject == o) {
             _selectedObject = null;
         } 
+        fireIntervalRemoved(this, index-1, index);
+        */
+        int index = _objects.indexOf(o);
+        if ( getElementAt( index ) == _selectedObject ) {
+            if ( index == 0 ) {
+                setSelectedItem( getSize() == 1 ? null : getElementAt( index + 1 ) );
+            }
+            else {
+                setSelectedItem( getElementAt( index - 1 ) );
+            }
+        }
+        _objects.remove(index);
+
+        fireIntervalRemoved(this, index, index);
     }
     
     public void removeAllElements() {
-        _objects.clear();
-        _selectedObject = null;
+        int startIndex = 0;
+        int endIndex = _objects.size()-1;
+        if (!_objects.isEmpty()) {
+            _objects.clear();
+            _selectedObject = null;
+            fireIntervalRemoved(this, startIndex, endIndex);
+        }
     }
     
     public Object getSelectedItem() {
