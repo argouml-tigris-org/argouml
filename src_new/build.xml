@@ -173,6 +173,9 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="docs.dir" value="${build.dir}/doc"/>
     <property name="snapshot.dir" value="../www/snapshots"/>
 
+    <property name="argo.bin.dir" value="${build.dir}/bin"/>
+    <property name="argo.bin.src" value="${build.src}/bin"/>
+
     <available classname="org.tigris.gef.base.Globals"
 	       classpath="${classpath}"
                property="has.gef" />
@@ -186,16 +189,35 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 	       classpath="${classpath}"
                property="has.antlr" />
 
-    <!-- This does not appear to do anything anymore -->
-    <!-- exec executable="set user.home=C:\" os="windows" /-->
+    <!-- ===============================================================  -->
+    <!-- Load user properties.                                            -->
+    <!--                                                                  -->
+    <!-- Any property set before this cannot be changed                   -->
+    <!-- Check for argo-specific properties before generic ant properties -->
+    <!-- Since .ant.properties is rather generic, we check for            -->
+    <!-- .argo.ant.properties first, to allow setting properties that     -->
+    <!-- we know will be argo-oriented, then the more generic             -->
+    <!-- .ant.properties, which could be used by other ant buildfiles.    -->
+    <!-- ===============================================================  -->
 
-    <!-- Load user properties.  Any property set before this cannot be changed -->
+    <property file="${user.home}/.argo.ant.properties"/>
     <property file="${user.home}/.ant.properties"/>
 
-    <!-- The following can be set in .ant.properties to some other value -->
+    <!-- The following can be set in .argo.ant.properties                 -->
+    <!--     or .ant.properties to some other value                       -->
     <property name="debug" value="off"/>
     <property name="optimize" value="on"/>
     <property name="deprecation" value="off"/>
+
+    <!-- developer.lib.dir is the developer snapshot directory.           -->
+    <!-- If it is not set, it defaults to build.dir, and "build install"  -->
+    <!-- will not do anything.                                            -->
+    <property name="developer.lib.dir" value="${build.dir}"/>
+
+    <!-- developer.bin.dir is the developer snapshot directory.           -->
+    <!-- If it is not set, it defaults to argo.bin.dir, and               -->
+    <!-- "build install"  will not do anything.                           -->
+    <property name="developer.bin.dir" value="${argo.bin.dir}"/>
 
     <property name="log4j.javadoc.link"
               value="http://jakarta.apache.org/log4j/docs/api"/>
@@ -478,6 +500,23 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     </java>
   </target>
 
+  <!-- =================================================================== -->
+  <!-- Move the jar file into the user execution directory.                -->
+  <!-- =================================================================== -->
+  <target name="developer_snapshot" depends="package">
+    <copy file="${build.dir}/${name}.jar" todir="${developer.lib.dir}"/>
+
+    <filter token="argojarfile" value="${developer.lib.dir}/${name}.jar"/>
+    <copy todir="${argo.bin.dir}" filtering="on" >
+        <fileset dir="${developer.bin.dir}">
+	    <include name="argouml.bat"/>
+	    <include name="argouml.sh"/>
+        </fileset>
+    </copy>
+  </target>
+
 </project>
 
 <!-- End of file -->
+
+
