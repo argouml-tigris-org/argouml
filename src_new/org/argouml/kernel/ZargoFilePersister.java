@@ -238,7 +238,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
                 // the "false" means that members should not be added,
                 // we want to do this by hand from the zipped stream.
                 ArgoParser parser = new ArgoParser();
-                parser.readProject(url, zis, false);
+                parser.readProject(url, zis);
                 p = parser.getProject();
                 // clear up project refs:
                 parser.setProject(null); 

@@ -54,8 +54,6 @@ public class ArgoParser extends SAXParserBase {
 
     private ArgoTokenTable tokens = new ArgoTokenTable();
 
-    private boolean addMembers = true;
-
     private URL url;
     private ArrayList memberList = new ArrayList();
 
@@ -76,25 +74,7 @@ public class ArgoParser extends SAXParserBase {
      * @throws ParserConfigurationException in case of a parser problem
      * @throws SAXException when parsing xml
      */
-    public void readProject(URL theUrl) throws IOException,
-            ParserConfigurationException, SAXException {
-
-        if (theUrl == null) {
-            throw new IllegalArgumentException("A URL must be supplied");
-        }
-
-        InputStream is = theUrl.openStream();
-        readProject(theUrl, is, true);
-    }
-
-    /**
-     * @param theUrl the url of the project to read
-     * @param addTheMembers true if the members are to be added
-     * @throws IOException for a file problem
-     * @throws ParserConfigurationException in case of a parser problem
-     * @throws SAXException when parsing xml
-     */
-    public void readProject(URL theUrl, boolean addTheMembers)
+    public void readProject(URL theUrl)
         throws IOException, ParserConfigurationException, SAXException {
 
         if (theUrl == null) {
@@ -102,7 +82,7 @@ public class ArgoParser extends SAXParserBase {
         }
         InputStream is = theUrl.openStream();
 
-        readProject(theUrl, is, addTheMembers);
+        readProject(theUrl, is);
     }
 
     /**
@@ -113,15 +93,13 @@ public class ArgoParser extends SAXParserBase {
      * @throws ParserConfigurationException in case of a parser problem
      * @throws SAXException when parsing xml
      */
-    public void readProject(URL theUrl, InputStream is, boolean addTheMembers)
+    public void readProject(URL theUrl, InputStream is)
         throws IOException, SAXException, ParserConfigurationException {
 
         if (theUrl == null || is == null) {
             throw new IllegalArgumentException(
                     "A URL and an input stream must be supplied");
         }
-
-        addMembers = addTheMembers;
 
         url = theUrl;
 
@@ -285,9 +263,6 @@ public class ArgoParser extends SAXParserBase {
     protected void handleMember(XMLElement e) throws SAXException {
         LOG.info("Handle member");
         memberList.add(e.getAttribute("type"));
-        if (addMembers) {
-            loadProjectMember(e);
-        }
     }
 
     /**
@@ -298,34 +273,6 @@ public class ArgoParser extends SAXParserBase {
             return;
         String historyfile = e.getAttribute("name").trim();
         project.setHistoryFile(historyfile);
-    }
-
-    /**
-     * @param project the project to load into
-     * @param theUrl the URL to load from
-     * @throws OpenException if opening the URL fails
-     */
-    private void loadProjectMember(XMLElement element) 
-        throws SAXException {
-
-        String name = element.getAttribute("name").trim();
-        String type = element.getAttribute("type").trim();
-        
-        MemberFilePersister memberParser = null;
-        
-        if (type.equals("xmi")) {
-            LOG.info("Creating XML loader");
-            //memberParser = new ModelMemberFilePersister(url, project);
-        } else if (type.equals("pgml")) {
-            LOG.info("Creating PGML loader");
-            //memberParser = new DiagramMemberFilePersister(url, project);
-        } else if (type.equals("todo")) {
-            LOG.info("Creating todo loader");
-            //memberParser = new TodoListMemberFilePersister(url, project);
-        }
-        LOG.info("Loading member");
-        //memberParser.load(attributeMap);
-        LOG.info("Member loaded");
     }
 
     /**
