@@ -174,14 +174,8 @@ public class ZargoFilePersister extends UmlFilePersister {
                     }
                     names.add(name);
                     stream.putNextEntry(new ZipEntry(name));
-                    MemberFilePersister persister = null;
-                    if (projectMember instanceof ProjectMemberDiagram) {
-                        persister = new DiagramMemberFilePersister();
-                    } else if (projectMember instanceof ProjectMemberTodoList) {
-                        persister = new TodoListMemberFilePersister();
-                    } else if (projectMember instanceof ProjectMemberModel) {
-                        persister = new ModelMemberFilePersister();
-                    }
+                    MemberFilePersister persister = 
+                        getMemberFilePersister(projectMember);
                     persister.save(projectMember, writer, null);
                     writer.flush();
                     stream.closeEntry();
@@ -199,14 +193,8 @@ public class ZargoFilePersister extends UmlFilePersister {
                     }
                     stream.putNextEntry(
                             new ZipEntry(projectMember.getZipName()));
-                    MemberFilePersister persister = null;
-                    if (projectMember instanceof ProjectMemberDiagram) {
-                        persister = new DiagramMemberFilePersister();
-                    } else if (projectMember instanceof ProjectMemberTodoList) {
-                        persister = new TodoListMemberFilePersister();
-                    } else if (projectMember instanceof ProjectMemberModel) {
-                        persister = new ModelMemberFilePersister();
-                    }
+                    MemberFilePersister persister = 
+                        getMemberFilePersister(projectMember);
                     persister.save(projectMember, writer, null);
                 }
             }

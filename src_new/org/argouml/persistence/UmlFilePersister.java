@@ -241,14 +241,8 @@ public class UmlFilePersister extends AbstractFilePersister
                               + ((ProjectMember) project.getMembers()
                                     .get(i)).getType());
                     }
-                    MemberFilePersister persister = null;
-                    if (projectMember instanceof ProjectMemberDiagram) {
-                        persister = PersistenceManager.getInstance().getDiagramMemberFilePersister();
-                    } else if (projectMember instanceof ProjectMemberTodoList) {
-                        persister = new TodoListMemberFilePersister();
-                    } else if (projectMember instanceof ProjectMemberModel) {
-                        persister = new ModelMemberFilePersister();
-                    }
+                    MemberFilePersister persister
+                        = getMemberFilePersister(projectMember);
                     persister.save(projectMember, writer, indent);
                 }
             }
@@ -263,14 +257,8 @@ public class UmlFilePersister extends AbstractFilePersister
                               + ((ProjectMember) project.getMembers().
                                     get(i)).getType());
                     }
-                    MemberFilePersister persister = null;
-                    if (projectMember instanceof ProjectMemberDiagram) {
-                        persister = new DiagramMemberFilePersister();
-                    } else if (projectMember instanceof ProjectMemberTodoList) {
-                        persister = new TodoListMemberFilePersister();
-                    } else if (projectMember instanceof ProjectMemberModel) {
-                        persister = new ModelMemberFilePersister();
-                    }
+                    MemberFilePersister persister
+                        = getMemberFilePersister(projectMember);
                     persister.save(projectMember, writer, indent);
                 }
             }
@@ -339,15 +327,9 @@ public class UmlFilePersister extends AbstractFilePersister
 
             LOG.info(memberList.size() + " members");
 
-            MemberFilePersister persister = null;
             for (int i = 0; i < memberList.size(); ++i) {
-                if (memberList.get(i).equals("pgml")) {
-                    persister = new DiagramMemberFilePersister();
-                } else if (memberList.get(i).equals("todo")) {
-                    persister = new TodoListMemberFilePersister();
-                } else if (memberList.get(i).equals("xmi")) {
-                    persister = new ModelMemberFilePersister();
-                }
+                MemberFilePersister persister
+                    = getMemberFilePersister((String) memberList.get(i));
                 LOG.info("Loading member with "
                         + persister.getClass().getName());
                 inputStream.reopen(persister.getMainTag());
@@ -541,5 +523,40 @@ public class UmlFilePersister extends AbstractFilePersister
         long length = event.getLength();
         long proportion = (position * percentPhasesLeft) / length;
         fireProgressEvent(percentPhasesComplete + proportion);
+    }
+
+    /**
+     * Get a MemberFilePersister based on a given ProjectMember
+     * @param pm the project member
+     * @return the persister
+     */
+    protected MemberFilePersister getMemberFilePersister(ProjectMember pm) {
+        MemberFilePersister persister = null;
+        if (pm instanceof ProjectMemberDiagram) {
+            persister = PersistenceManager.getInstance()
+                .getDiagramMemberFilePersister();
+        } else if (pm instanceof ProjectMemberTodoList) {
+            persister = new TodoListMemberFilePersister();
+        } else if (pm instanceof ProjectMemberModel) {
+            persister = new ModelMemberFilePersister();
+        }
+        return persister;
+    }
+    
+    /**
+     * Get a MemberFilePersister based on a given ProjectMember
+     * @param pm the project member
+     * @return the persister
+     */
+    private MemberFilePersister getMemberFilePersister(String tag) {
+        MemberFilePersister persister = null;
+        if (tag.equals("pgml")) {
+            persister = new DiagramMemberFilePersister();
+        } else if (tag.equals("todo")) {
+            persister = new TodoListMemberFilePersister();
+        } else if (tag.equals("xmi")) {
+            persister = new ModelMemberFilePersister();
+        }
+        return persister;
     }
 }
