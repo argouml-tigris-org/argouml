@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -322,7 +322,7 @@ class ColumnSrcMultiplicity extends ColumnDescriptor {
         if (!(ModelFacade.getConnectionCount(target) == 2)) return;
         
         Object ae = ModelFacade.getConnections(target).iterator().next();
-        Object m = ParserDisplay.SINGLETON.parseMultiplicity((String)value);
+        Object m = UmlFactory.getFactory().getDataTypes().createMultiplicity((String)value);
         ModelFacade.setMultiplicity(ae, m);
     }
     
@@ -843,8 +843,10 @@ class ColumnTrigger extends ColumnDescriptor {
 	if (!(value instanceof String)) return;
 	Object tr = /*(MTransition)*/ target;
 	String s = (String) value;
-	ParserDisplay pd = ParserDisplay.SINGLETON;
-	ModelFacade.setTrigger(tr, pd.parseEvent(s));
+	Object ce =
+	    UmlFactory.getFactory().getStateMachines().buildCallEvent();
+	ModelFacade.setName(ce, s);
+	ModelFacade.setTrigger(tr, ce);
     }
 } /* end class ColumnTrigger */
 
@@ -868,8 +870,9 @@ class ColumnGuard extends ColumnDescriptor {
 	if (!(value instanceof String)) return;
 	Object tr = /*(MTransition)*/ target;
 	String s = (String) value;
-	ParserDisplay pd = ParserDisplay.SINGLETON;
-	ModelFacade.setGuard(tr, pd.parseGuard(s));
+	Object guard = UmlFactory.getFactory().getStateMachines().createGuard();
+	ModelFacade.setExpression(guard, UmlFactory.getFactory().getDataTypes().createBooleanExpression("Java", s));
+	ModelFacade.setGuard(tr, guard);
     }
 } /* end class ColumnGuard */
 
@@ -892,8 +895,11 @@ class ColumnEffect extends ColumnDescriptor {
 	if (!(value instanceof String)) return;
 	Object tr = /*(MTransition)*/ target;
 	String s = (String) value;
-	ParserDisplay pd = ParserDisplay.SINGLETON;
-	ModelFacade.setEffect(tr, pd.parseAction(s));
+	Object action =
+	    UmlFactory.getFactory().getCommonBehavior().createCallAction();
+	ModelFacade.setScript(action,
+			      UmlFactory.getFactory().getDataTypes().createActionExpression("Java", s));
+	ModelFacade.setEffect(tr, action);
     }
 } /* end class ColumnEffect */
 
