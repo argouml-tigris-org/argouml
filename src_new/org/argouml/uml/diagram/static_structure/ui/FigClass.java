@@ -33,8 +33,10 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
@@ -789,17 +791,24 @@ public class FigClass extends FigNodeModelElement
             damage();
         }
         if (mee != null && mee.getPropertyName().equals("parameter") 
-                && ModelFacade.isAOperation(mee.getSource())) { ;
-            //TODO: MVW: Do not know how to replace this. Is it used? When?
-//            if (mee.getAddedValue() != null) {
-//                Model.getPump().addModelEventListener(this, 
-//                        mee.getAddedValue(), new String[] {
-//                            "name", "kind", "type", "defaultValue"});
-//            }
-//            if (mee.getRemovedValue() != null) {
-//                Model.getPump().addModelEventListener(this, 
-//                        mee.getRemovedValue());
-//            }
+                && ModelFacade.isAOperation(mee.getSource())) {
+            /* Copy the lists, since we will alter them below. */
+            ArrayList oldP = new ArrayList((List) mee.getOldValue());
+            ArrayList newP = new ArrayList((List) mee.getNewValue());
+            if (oldP.size() != newP.size()) {
+                if (newP.containsAll(oldP)) {
+                    // the list grew bigger somehow... (parameter added)
+                    newP.removeAll(oldP);
+                    /* Ensure we will get an event for the name change of 
+                     * the newly created attribute: */
+                    Model.getPump().addModelEventListener(this, newP.get(0), 
+                        new String[] {"name", "kind", "type", "defaultValue"});
+                } else {
+                    // the list shrunk somehow... (parameter removed)
+                    oldP.removeAll(newP);
+                    Model.getPump().removeModelEventListener(this, oldP.get(0));
+                }
+            }
         }
         if (mee == null || mee.getPropertyName().equals("isAbstract")) {
             updateAbstract();
