@@ -61,16 +61,10 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MPermission;
 import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.foundation.core.MUsage;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.MElementImport;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
-
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Mode;
-import org.tigris.gef.base.ModeManager;
 
 /** This class defines a bridge between the UML meta-model
  *  representation of the design and the GraphModel interface used by
@@ -261,8 +255,7 @@ implements VetoableChangeListener  {
         if (!canAddEdge(edge)) return;
         _edges.addElement(edge);
         // TODO: assumes public
-        if (edge instanceof MModelElement &&
-           ((MModelElement)edge).getNamespace() == null) {
+        if (edge instanceof MModelElement && ((MModelElement)edge).getNamespace() == null) {
           _model.addOwnedElement((MModelElement) edge);
         }
         fireEdgeAdded(edge);
@@ -318,162 +311,6 @@ implements VetoableChangeListener  {
       }
     }
   }
-
-
-  /** Return true if the two given ports can be connected by a
-   * kind of edge to be determined by the ports. */
-  public boolean canConnect(Object fromP, Object toP) { return true; }
-
-
-  /** Contruct and add a new edge of a kind determined by the ports */
-  public Object connect(Object fromPort, Object toPort) {
-      throw new UnsupportedOperationException("should not enter here!");
-  }
-
-    /** Contruct and add a new edge of the given kind and connect
-     * the given ports.
-     */
-    public Object connect(Object fromPort, Object toPort, java.lang.Class edgeClass) {
-        cat.debug("connecting: " + fromPort + " and " + toPort + " with " + edgeClass);
-
-        Object connection = null;
-        try {
-            if (edgeClass == MPermission.class) {
-                connection = (connectPermission((MModelElement)fromPort, (MModelElement)toPort));
-            } else if (edgeClass == MUsage.class) {
-                connection = (connectUsage((MModelElement)fromPort, (MModelElement)toPort));
-            } else if (edgeClass == MGeneralization.class) {
-                connection = (connectGeneralization((MModelElement)fromPort, (MModelElement)toPort));
-            } else if (edgeClass == MAssociation.class) {
-                connection = (connectAssociation((MModelElement)fromPort, (MModelElement)toPort));
-            } else if (edgeClass == MDependency.class) {
-                connection = (connectDependancy((MModelElement)fromPort, (MModelElement)toPort));
-            } else if (edgeClass == MAbstraction.class) {
-                connection = (connectAbstraction((MClass)fromPort, (MInterface)toPort));
-            } else if (edgeClass == MLink.class) {
-                connection = (connectLink((MInstance)fromPort, (MInstance)toPort));
-            }
-            // else if (edgeClass == MAbstractionImpl.class) {
-            //    return connectAbstractionImpl((MInterface)fromPort, (MClass)toPort);
-            //}
-        } catch (ClassCastException ex) {
-            // fail silently as we expect users to accidentally drop on to wrong component
-        }
-        
-        if (connection == null) {
-            cat.debug("Cannot make a "+ edgeClass.getName() +
-                         " between a " + fromPort.getClass().getName() +
-                         " and a " + toPort.getClass().getName());
-            return null;
-        }
-        
-        addEdge(connection);
-        return connection;
-    }
-
-    /** Contruct and add a new permission and connect to
-     * the given ports.
-     */
-    private Object connectPermission(MModelElement fromPort, MModelElement toPort) {
-        return UmlFactory.getFactory().getCore().buildPermission(fromPort, toPort);
-    }
-
-    /** Contruct and add a new usage and connect to
-     * the given ports.
-     */
-    private Object connectUsage(MModelElement fromPort, MModelElement toPort) {
-        return UmlFactory.getFactory().getCore().buildUsage(fromPort, toPort);
-    }
-
-    /** Contruct and add a new generalization and connect to
-     * the given ports.
-     */
-    private Object connectGeneralization(MModelElement fromPort, MModelElement toPort) {
-        
-        if (fromPort instanceof MClass && toPort instanceof MClass)
-            return CoreFactory.getFactory().buildGeneralization((MClass)fromPort, (MClass)toPort);
-        
-        if (fromPort instanceof MInterface && toPort instanceof MInterface)
-            return CoreFactory.getFactory().buildGeneralization((MInterface)fromPort, (MInterface)toPort);
-        
-        return null;
-    }
-    
-    /** Contruct and add a new association and connect to
-     * the given ports.
-     */
-    private Object connectAssociation(MModelElement fromPort, MModelElement toPort) {
-        if (fromPort instanceof MClass && toPort instanceof MClass) {
-            Editor curEditor = Globals.curEditor();
-            ModeManager modeManager = curEditor.getModeManager();
-            Mode mode = (Mode)modeManager.top();
-            Hashtable args = mode.getArgs();
-            MAggregationKind aggregation = (MAggregationKind)args.get("aggregation");
-            MAssociation asc;
-            MClass fromCls = (MClass)fromPort;
-            MClass toCls = (MClass)toPort;
-            if (aggregation != null) {
-                boolean unidirectional = ((Boolean)args.get("unidirectional")).booleanValue();
-                asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, !unidirectional, aggregation, toCls, true, MAggregationKind.NONE);
-            } else {
-                asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
-            }
-            return asc;
-        }
-        if (fromPort instanceof MClass && toPort instanceof MInterface)
-            return UmlFactory.getFactory().getCore().buildAssociation((MClass)fromPort, false, (MInterface)toPort, true);
-        
-        if (fromPort instanceof MInterface && toPort instanceof MClass)
-            return UmlFactory.getFactory().getCore().buildAssociation((MInterface)fromPort, true, (MClass)toPort, false);
-        
-        return null;
-    }
-    
-    /** Contruct and add a new dependancy and connect to
-     * the given ports.
-     */
-    private Object connectDependancy(MModelElement fromPort, MModelElement toPort) {
-        
-        if (fromPort instanceof MPackage && toPort instanceof MPackage)
-            // TODO: assumes public, user pref for default visibility?
-            //do I have to check the namespace here? (Toby)
-            // nsuml: using Usage as default
-            return UmlFactory.getFactory().getCore().buildDependency((MPackage)fromPort, (MPackage)toPort);
-        
-        if (fromPort instanceof MClass && toPort instanceof MClass)
-            return UmlFactory.getFactory().getCore().buildDependency((MClass)fromPort, (MClass)toPort);
-        
-        if (fromPort instanceof MClass && toPort instanceof MInterface)
-            return UmlFactory.getFactory().getCore().buildDependency((MClass)fromPort, (MInterface)toPort);
-        
-        if (fromPort instanceof MInterface && toPort instanceof MClass)
-            return UmlFactory.getFactory().getCore().buildDependency((MInterface)fromPort, (MClass)toPort);
-        
-        if (fromPort instanceof MInterface && toPort instanceof MInterface)
-            return UmlFactory.getFactory().getCore().buildDependency((MInterface)fromPort, (MInterface)toPort);
-        
-        return null;
-    }
-
-    /** Contruct and add a new abstraction and connect to
-     * the given class and interface
-     */
-    private Object connectAbstraction(MClass fromCls, MInterface toIntf) {
-        return UmlFactory.getFactory().getCore().buildRealization(fromCls, toIntf);
-    }
-
-    /** Contruct and add a new link and connect to
-     * the given instances
-     */
-    private Object connectLink(MInstance fromInst, MInstance toInst) {
-        return UmlFactory.getFactory().getCommonBehavior().buildLink(fromInst, toInst);
-    }
-
-    //public Object connectAbstractionImpl(MInterface fromIntf, MClass toCls) {
-    //    MAbstraction real = MMUtil.SINGLETON.buildRealization(toCls, fromIntf);
-    //    addEdge(real);
-    //    return real;
-    //}
 
   ////////////////////////////////////////////////////////////////
   // VetoableChangeListener implementation
