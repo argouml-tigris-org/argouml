@@ -110,7 +110,13 @@ public class CoreHelper {
      * @return a collection of the parents, each of which is a
      *         {@link MGeneralizableElement MGeneralizableElement}
      */
-    public Collection getAllSupertypes(MClassifier cls) {
+    public Collection getAllSupertypes(Object cls1) {
+        
+        if(!(cls1 instanceof MClassifier))
+            throw new IllegalArgumentException();
+        
+        MClassifier cls = (MClassifier)cls1;
+        
         Collection result = new HashSet();
         Collection add = getSupertypes(cls);
         do {
@@ -178,7 +184,13 @@ public class CoreHelper {
      * association ends for
      * @return a collection of the opposite associationends
      */
-    public Collection getAssociateEndsInh(MClassifier classifier) {
+    public Collection getAssociateEndsInh(Object classifier1) {
+        
+        if(!(classifier1 instanceof MClassifier))
+            throw new IllegalArgumentException();
+        
+        MClassifier classifier = (MClassifier)classifier1;
+        
         Collection result = new ArrayList();
         result.addAll(getAssociateEnds(classifier));
         Iterator parents = classifier.getParents().iterator();
@@ -268,10 +280,14 @@ public class CoreHelper {
      * @param classifier the classifier you want to have the attributes for
      * @return a collection of the attributes
      */
-    public Collection getAttributesInh(MClassifier classifier) {
+    public Collection getAttributesInh(Object classifier) {
+        
+        if(!(classifier instanceof MClassifier))
+            throw new IllegalArgumentException();
+        
         Collection result = new ArrayList();
         result.addAll(ModelFacade.getStructuralFeatures(classifier));
-        Iterator parents = classifier.getParents().iterator();
+        Iterator parents = ((MClassifier)classifier).getParents().iterator();
         while (parents.hasNext()) {
             MClassifier parent = (MClassifier) parents.next();
             cat.debug("Adding attributes for: " + parent);
@@ -305,7 +321,13 @@ public class CoreHelper {
      * @return If this operation has only one paramter with Kind: RETURN,
      *         this is it, otherwise null
      */
-    public MParameter getReturnParameter(MOperation operation) {
+    public MParameter getReturnParameter(Object operation1) {
+        
+        if(!(operation1 instanceof MOperation))
+            throw new IllegalArgumentException();
+        
+        MOperation operation = (MOperation)operation1;
+        
         Vector returnParams = new Vector();
         MParameter firstReturnParameter = null;
         Iterator params = operation.getParameters().iterator();

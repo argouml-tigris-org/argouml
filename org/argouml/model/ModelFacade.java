@@ -97,6 +97,7 @@ import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MElement;
 import ru.novosoft.uml.foundation.core.MElementResidence;
 import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MFlow;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
@@ -1215,6 +1216,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /**
+     * Recognizer for MBehaviouralFeature's that are queries.
+     */
+    public static boolean isQuery(Object handle){
+        
+        if (!(handle instanceof MBehavioralFeature)) {
+            throw new IllegalArgumentException();
+        }
+        
+        return ((MBehavioralFeature)handle).isQuery();
+    }
+    
     /** Recognizer for attributes with protected
      *
      * @param handle candidate
