@@ -51,12 +51,14 @@ public class FigActor extends FigNodeModelElement {
 
     //These are the positions of child figs inside this fig
     //They mst be added in the constructor in this order.
-    private static final int HEAD_POSN = 1;
-    private static final int BODY_POSN = 2;
-    private static final int ARMS_POSN = 3;
-    private static final int LEFT_LEG_POSN = 4;
-    private static final int RIGHT_LEG_POSN = 5;
-    private static final int NAME_POSN = 6;
+    //For now the name must not be last as this would force
+    //zero width lines (until GEF is fixed)
+    private static final int NAME_POSN = 1;
+    private static final int HEAD_POSN = 2;
+    private static final int BODY_POSN = 3;
+    private static final int ARMS_POSN = 4;
+    private static final int LEFT_LEG_POSN = 5;
+    private static final int RIGHT_LEG_POSN = 6;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -83,15 +85,35 @@ public class FigActor extends FigNodeModelElement {
 
         // add Figs to the FigNode in back-to-front order
         addFig(bigPort);
+        addFig(getNameFig());
         addFig(head);
         addFig(body);
         addFig(arms);
         addFig(leftLeg);
         addFig(rightLeg);
-        addFig(getNameFig());
         setBigPort(bigPort);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
+    public void setLineWidth(int width) {
+        // Miss out the text fix, this should have no line
+        getFigAt(HEAD_POSN).setLineWidth(width);
+        getFigAt(BODY_POSN).setLineWidth(width);
+        getFigAt(ARMS_POSN).setLineWidth(width);
+        getFigAt(LEFT_LEG_POSN).setLineWidth(width);
+        getFigAt(RIGHT_LEG_POSN).setLineWidth(width);
+    }
+    
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
+    public void setFilled(boolean filled) {
+        // Only the head should be filled (not the text)
+        getFigAt(HEAD_POSN).setFilled(filled);
+    }
+    
     /**
      * <p>Constructor for use if this figure is created for an existing actor
      *   node in the metamodel.</p>
