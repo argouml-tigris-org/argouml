@@ -28,36 +28,74 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.model_management.*;
 
-import org.argouml.uml.ui.*;
-
-/** User interface panel shown at the bottom of the screen that allows
- *  the user to edit the properties of the selected UML model
- *  element. Actors have no properties other than name, so this is a
- *  trivial class.  Needs-More-Work: cut and paste base class code
- *  from PropPanelClass.*/
 
 public class PropPanelActor extends PropPanel {
+
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelActor() {
-    super("Actor Properties");
+    super("Actor Properties",2);
+
+    Class mclass = MActor.class;
+    
+    addCaption(new JLabel("Name:"),0,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+
+    
+    addCaption(new JLabel("Stereotype:"),1,0,0);
+    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
+    addField(stereotypeBox,1,0,0);
+    
+    addCaption(new JLabel("Extends:"),2,0,0);
+
+    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+    addLinkField(extendsList,2,0,0);
+    
+    addCaption(new JLabel("Modifiers:"),3,0,0);
+
+    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
+    modifiersPanel.add(new UMLCheckBox("Abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox("Final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox("Root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    addField(modifiersPanel,3,0,0);
+
+    addCaption(new JLabel("Namespace:"),4,0,0);
+    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+    addLinkField(namespaceList,4,0,0);
+    
+    addCaption(new JLabel("Derived:"),5,0,1);
+    JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
+    //derivedList.setBackground(getBackground());
+    derivedList.setForeground(Color.blue);    
+    derivedList.setVisibleRowCount(1);
+    addField(new JScrollPane(derivedList),5,0,1);
+    
+    addCaption(new JLabel("Associations:"),0,1,0.5);
+    JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
+    connectList.setForeground(Color.blue);
+    connectList.setVisibleRowCount(1);
+    addField(new JScrollPane(connectList),0,1,0.5);
+    
+    addCaption(new JLabel("Implements:"),1,1,0.5);
+    JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
+    implementsList.setBackground(getBackground());
+    implementsList.setForeground(Color.blue);    
+    addField(implementsList,1,1,0.5);
+
+    
+    
   }
 
-
-} /* end class PropPanelActor */
+  
+} /* end class PropActor */

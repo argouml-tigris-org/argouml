@@ -27,193 +27,97 @@
 // $Id$
 
 package org.argouml.uml.ui.behavior.collaborations;
-
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.table.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
+import org.argouml.uml.ui.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.uml.ui.*;
+public class PropPanelClassifierRole extends PropPanel {
 
-/** User interface panel shown at the bottom of the screen that allows
- *  the user to edit the properties of the selected UML model element.
- *  Needs-More-Work: cut and paste base class code from
- *  PropPanelClass. */
-
-public class PropPanelClassifierRole extends PropPanel
-implements ItemListener {
-
-  ////////////////////////////////////////////////////////////////
-  // constants
-
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _baseLabel = new JLabel("Base: ");
-  SpacerPanel _spacer = new SpacerPanel();
-  SpacerPanel _placeHolder = new SpacerPanel();
-
-  //JTextField _baseField = new JTextField();
-  JComboBox _baseField = new JComboBox();
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelClassifierRole() {
-    super("ClassifierRole Properties");
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 0; c.ipady = 0;
+    super("ClassifierRole Properties",2);
 
-    //_baseField.addItemListener(this);
+    Class mclass = MClassifierRole.class;
+    
+    addCaption(new JLabel("Name:"),0,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    // add all widgets and labels
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1;
-    c.weightx = 0.0;
-    gb.setConstraints(_baseLabel, c);
-    add(_baseLabel);
+    
+    addCaption(new JLabel("Stereotype:"),1,0,0);
+    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
+    addField(stereotypeBox,1,0,0);
+    
+    addCaption(new JLabel("Extends:"),2,0,0);
 
-    c.weightx = 1.0;
-    c.gridx = 1;
-    c.gridy = 1;
-    _baseField.setMinimumSize(new Dimension(120, 20));
-    gb.setConstraints(_baseField, c);
-    add(_baseField);
-    //_baseField.getDocument().addDocumentListener(this);
-    _baseField.addItemListener(this);
-    _baseField.setFont(_stereoField.getFont());
-    _baseField.setEditable(true);
-    _baseField.getEditor().getEditorComponent().setBackground(Color.white);
+    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+    extendsList.setBackground(getBackground());
+    extendsList.setForeground(Color.blue);
+    addField(extendsList,2,0,0);
+    
+    addCaption(new JLabel("Implements:"),3,0,0);
+    JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
+    implementsList.setBackground(getBackground());
+    implementsList.setForeground(Color.blue);    
+    addField(implementsList,3,0,0);
 
+    addCaption(new JLabel("Modifiers:"),4,0,0);
 
-    c.gridx = 2;
-    c.gridwidth = 1;
-    c.weightx = 0;
-    c.gridy = 0;
-    gb.setConstraints(_spacer, c);
-    add(_spacer);
+    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
+    modifiersPanel.add(new UMLCheckBox("public",this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
+    modifiersPanel.add(new UMLCheckBox("abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox("final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox("root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    addField(modifiersPanel,4,0,0);
 
-    c.gridx = 3;
-    c.gridwidth = 3;
-    c.gridheight = 5;
-    c.weightx = 1;
-    c.gridy = 1;
-    gb.setConstraints(_placeHolder, c);
-    add(_placeHolder);
-
-    // register interest in change events from all widgets
+    addCaption(new JLabel("Namespace:"),5,0,0);
+    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+    namespaceList.setBackground(getBackground());
+    namespaceList.setForeground(Color.blue);
+    addField(namespaceList,5,0,0);
+    
+    addCaption(new JLabel("Derived:"),6,0,1);
+    JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
+    //derivedList.setBackground(getBackground());
+    derivedList.setForeground(Color.blue);    
+    derivedList.setVisibleRowCount(1);
+    JScrollPane derivedScroll = new JScrollPane(derivedList);
+    addField(derivedScroll,6,0,1);
+    
+    addCaption(new JLabel("Operations:"),0,1,0.25);
+    JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
+    opsList.setForeground(Color.blue);
+    opsList.setVisibleRowCount(1);
+    JScrollPane opsScroll = new JScrollPane(opsList);
+    addField(opsScroll,0,1,0.25);
+    
+    addCaption(new JLabel("Attributes:"),1,1,0.25);
+    JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
+    attrList.setForeground(Color.blue);
+    attrList.setVisibleRowCount(1);
+    JScrollPane attrScroll= new JScrollPane(attrList);
+    addField(attrScroll,1,1,0.25);
+    
+    addCaption(new JLabel("Associations:"),2,1,0.25);
+    JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
+    connectList.setForeground(Color.blue);
+    connectList.setVisibleRowCount(1);
+    addField(new JScrollPane(connectList),2,1,0.25);
+    
+    
+    
+    addCaption(new JLabel("Owned Elements:"),3,1,0.25);
+    JList innerList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
+    innerList.setForeground(Color.blue);
+    innerList.setVisibleRowCount(1);
+    addField(new JScrollPane(innerList),3,1,0.25);
+    
   }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  /** Set the values to be shown in all widgets based on model */
-  protected void setTargetInternal(Object t) {
-    super.setTargetInternal(t);
-    MClassifierRole cr = (MClassifierRole) t;
-    if (cr.getBases() != null) {
-		Vector bases = new Vector(cr.getBases());
-		Component ed = _baseField.getEditor().getEditorComponent();
-		if (bases.size() == 1)
-		   ((JTextField)ed).setText(((MClassifier)bases.elementAt(0)).getName());
-		
-		else if (bases.size() == 0)
-		   ((JTextField)ed).setText("(anon)");
-		
-		else
-		   ((JTextField)ed).setText("(multiple bases)");
-		
-	}
-    // set the values to be shown in all widgets based on model
-
-    //_tableModel.setTarget(cr);
-    //TableColumn descCol = _extPts.getColumnModel().getColumn(0);
-    //descCol.setMinWidth(50);
-    validate();
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-
-  /** The user typed some text */
- /* public void insertUpdate(DocumentEvent e) {
-    super.insertUpdate(e);
-    if (e.getDocument() == _baseField.getDocument()) {
-      setTargetBaseString(_baseField.getText().trim());
-    }
-  }
-
-  public void removeUpdate(DocumentEvent e) { 
-	  // insertUpdate(e); 
-  }
-
-  public void changedUpdate(DocumentEvent e) {
-    // Apparently, this method is never called.
-  }
   
-  */
-
-  /** The user modified one of the widgets */
-  public void itemStateChanged(ItemEvent e) {
-    // check for each widget, and update the model with new value
-    if (e.getStateChange() == ItemEvent.SELECTED) {
-		  Object src = e.getSource();
-		  
-		  if (src == _namespaceField) {
-		      //  System.out.println("namespacefield event");
-			  // what to do here?
-			  //setTargetInternal();
-		  }
-		  else if (src == _stereoField) {
-		      //System.out.println("stereofield event");
-			  setTargetStereotype();
-		  }
-		  else if (src == _baseField) {
-		      //  System.out.println("baseField event");
-			  	Component ed = _baseField.getEditor().getEditorComponent();
-				String baseName = ((JTextField)ed).getText();
-	
-			  setTargetBaseString(baseName.trim());
-		  }
-	  }
-  }
-
-  protected void setTargetBaseString(String s) {
-	  if (_target == null) return;
-	  if (_inChange) return;
-	  	  MClassifierRole cr = (MClassifierRole) _target;
-
-	  Project p = ProjectBrowser.TheInstance.getProject();
-	  MClassifier type = p.findType(s);
-	  if (type != null) {
-		  cr.setBases(new Vector());
-		  cr.addBase(type);
-	  }
-	  else {
-		  // generate critic here? (Toby)
-		  Component ed = _baseField.getEditor().getEditorComponent();
-		  ((JTextField)ed).setText("(no such type)");
-	  }
-  }
-			
-
 } /* end class PropPanelClassifierRole */
-
 

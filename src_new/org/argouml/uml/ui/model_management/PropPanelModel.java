@@ -23,26 +23,15 @@
 
 package org.argouml.uml.ui.model_management;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-
-import org.argouml.uml.ui.*;
-
-public class PropPanelModel extends PropPanel {
+public class PropPanelModel extends PropPanelPackage {
   ////////////////////////////////////////////////////////////////
   // instance vars
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelModel() {
-    super("Model Properties");
+    super();
   }
 
   

@@ -47,8 +47,6 @@ public class PropPanelRealization extends PropPanelTwoEnds {
   public PropPanelRealization() {
     super("Realization");
 
-    remove(_nameField);
-    remove(_nameLabel);    
   }
 
 	//nsuml take care!

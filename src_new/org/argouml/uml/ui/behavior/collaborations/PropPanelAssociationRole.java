@@ -23,370 +23,105 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.collaborations.*;
+import javax.swing.*;
+import org.argouml.uml.ui.*;
+import java.awt.*;
+import java.util.*;
 
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.generator.ParserDisplay;
-
-public class PropPanelAssociationRole extends PropPanelTwoEnds
-implements ItemListener, ChangeListener {
+public class PropPanelAssociationRole extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constants
-//   public static final MVisibilityKind VISIBILITIES[] = {
-//     MVisibilityKind.PUBLIC, MVisibilityKind.PRIVATE,
-//     MVisibilityKind.PROTECTED, MVisibilityKind.PACKAGE };
-
-  public static final MMultiplicity MULTS[] = {
-    MMultiplicity.M1_1, MMultiplicity.M0_1,
-    MMultiplicity.M1_N, MMultiplicity.M0_N };
-
-  public static final MAggregationKind AGGREGATES[] = {
-    MAggregationKind.NONE, MAggregationKind.AGGREGATE,
-    MAggregationKind.COMPOSITE };
   
-  
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _roleALabel = new JLabel("Role Name: ");
-  JTextField _roleAField = new JTextField();
-  JLabel _multALabel = new JLabel("Multiplicity: ");
-  JComboBox _multAField = new JComboBox(MULTS);
-  JLabel _aggALabel = new JLabel("Aggregation: ");
-  JComboBox _aggAField = new JComboBox(AGGREGATES);
-  JLabel _navALabel = new JLabel("Navigable: ");
-  JCheckBox _navAField = new JCheckBox("");
-//   JLabel _visALabel = new JLabel("Visibility: ");
-//   JComboBox _visAField = new JComboBox(VISIBILITIES);
-
-  JLabel _roleBLabel = new JLabel("Role Name: ");
-  JTextField _roleBField = new JTextField();
-  JLabel _multBLabel = new JLabel("Multiplicity: ");
-  JComboBox _multBField = new JComboBox(MULTS);
-  JLabel _aggBLabel = new JLabel("Aggregation: ");
-  JComboBox _aggBField = new JComboBox(AGGREGATES);
-//   JLabel _visBLabel = new JLabel("Visibility: ");
-//   JComboBox _visBField = new JComboBox(VISIBILITIES);
-  JLabel _navBLabel = new JLabel("Navigable: ");
-  JCheckBox _navBField = new JCheckBox("");
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelAssociationRole() {
-    super("AssociationRole Properties");
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 0; c.ipady = 0;
-
-
-    _multAField.setEditable(true);
-    _multBField.setEditable(true);
-    _multAField.getEditor().getEditorComponent().setBackground(Color.white);
-    _multBField.getEditor().getEditorComponent().setBackground(Color.white);
-
-
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 4;
-    gb.setConstraints(_roleALabel, c);
-    add(_roleALabel);
-    c.gridy = 5;
-    gb.setConstraints(_multALabel, c);
-    add(_multALabel);
-    c.gridy = 6;
-    gb.setConstraints(_aggALabel, c);
-    add(_aggALabel);
-    c.gridy = 7;
-    gb.setConstraints(_navALabel, c);
-    add(_navALabel);
-
-    c.gridx = 1;
-    c.gridwidth = 1;
-    c.gridy = 4;
-    c.weightx = 1.0;
-    gb.setConstraints(_roleAField, c);
-    add(_roleAField);
-    c.gridy = 5;
-    gb.setConstraints(_multAField, c);
-    add(_multAField);
-    c.gridy = 6;
-    gb.setConstraints(_aggAField, c);
-    add(_aggAField);
-    c.gridy = 7;
-    gb.setConstraints(_navAField, c);
-    add(_navAField);
-
-    c.weightx = 0.0;
-    c.gridx = 3;
-    c.gridwidth = 1;
-    c.gridy = 4;
-    gb.setConstraints(_roleBLabel, c);
-    add(_roleBLabel);
-    c.gridy = 5;
-    gb.setConstraints(_multBLabel, c);
-    add(_multBLabel);
-    c.gridy = 6;
-    gb.setConstraints(_aggBLabel, c);
-    add(_aggBLabel);
-    c.gridy = 7;
-    gb.setConstraints(_navBLabel, c);
-    add(_navBLabel);
-
-    c.gridx = 4;
-    c.gridwidth = 1;
-    c.gridy = 4;
-    c.weightx = 1.0;
-    gb.setConstraints(_roleBField, c);
-    add(_roleBField);
-    c.gridy = 5;
-    gb.setConstraints(_multBField, c);
-    add(_multBField);
-    c.gridy = 6;
-    gb.setConstraints(_aggBField, c);
-    add(_aggBField);
-    c.gridy = 7;
-    gb.setConstraints(_navBField, c);
-    add(_navBField);
-
-    _roleAField.addKeyListener(this);
-    _roleBField.addKeyListener(this);
-    _roleAField.addFocusListener(this);
-    _roleBField.addFocusListener(this);
-
-//     _visAField.addItemListener(this);
-//     _visBField.addItemListener(this);
-    _multAField.addItemListener(this);
-    _multBField.addItemListener(this);
-
-    _aggAField.addItemListener(this);
-    _aggBField.addItemListener(this);
-
-    _navAField.addChangeListener(this);
-    _navBField.addChangeListener(this);
-
-
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  protected void setTargetInternal(Object t) {
-    super.setTargetInternal(t);
-    MAssociationRole asc = (MAssociationRole) t;
-    Vector conns = new Vector(asc.getConnections());
-    if (conns == null) return; //set fields to blanks?
-    if (conns.size() != 2) return; //set fields to blanks?
-    MAssociationEndRole endA = (MAssociationEndRole) conns.elementAt(0);
-    MAssociationEndRole endB = (MAssociationEndRole) conns.elementAt(1);
-
-    String roleAStr = endA.getName();
-    //if (roleAStr ==null) roleAStr = "(anon)";
-    String roleBStr = endB.getName();
-    //if (roleBStr == null) roleBStr = "(anon)";
+    super("Association Role Properties",2);
     
-//     MVisibilityKind vkA = endA.getVisibility();
-//     _visAField.setSelectedItem(vkA);
-//     MVisibilityKind vkB = endB.getVisibility();
-//     _visBField.setSelectedItem(vkB);
+    Class mclass = MAssociationRole.class;
 
-    MMultiplicity mA = endA.getMultiplicity();
-    MMultiplicity mB = endB.getMultiplicity();
+    addCaption(new JLabel("Name:"),0,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    MAggregationKind akA = endA.getAggregation();
-    MAggregationKind akB = endB.getAggregation();
+    addCaption(new JLabel("Stereotype:"),1,0,0);
+    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
+    addField(stereotypeBox,1,0,0);
 
-    boolean navA = endA.isNavigable();
-    boolean navB = endB.isNavigable();
+    addCaption(new JLabel("Namespace:"),2,0,0);
+    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+    namespaceList.setBackground(getBackground());
+    namespaceList.setForeground(Color.blue);
+    addField(namespaceList,2,0,0);
+        
+    addCaption(new JLabel("Modifiers:"),3,0,0);
+    
+    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
+    modifiersPanel.add(new UMLCheckBox("Abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox("Final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox("Root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    addField(modifiersPanel,3,0,0);
+        
+    addCaption(new JLabel("Extends:"),4,0,0);
 
-    _roleAField.setText(roleAStr);
-    _roleBField.setText(roleBStr);
-    _multAField.setSelectedItem(mA);
-    _multBField.setSelectedItem(mB);
-    _aggAField.setSelectedItem(akA);
-    _aggBField.setSelectedItem(akB);
-    _navAField.getModel().setSelected(navA);
-    _navBField.getModel().setSelected(navB);
+    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+    extendsList.setBackground(getBackground());
+    extendsList.setForeground(Color.blue);
+    addField(extendsList,4,0,0);
+    
+    addCaption(new JLabel("Derived:"),5,0,1);
+    JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
+    //derivedList.setBackground(getBackground());
+    derivedList.setForeground(Color.blue);    
+    derivedList.setVisibleRowCount(1);
+    addField(new JScrollPane(derivedList),5,0,1);
+    
+    
+    addCaption(new JLabel("AssociationRole Ends:"),0,1,1);
+    JList assocEndList = new UMLList(new UMLReflectionListModel(this,"connection",true,"getAssociationEnds","setAssociationEnds","addAssociationEnd",null),true);
+    assocEndList.setBackground(getBackground());
+    assocEndList.setForeground(Color.blue);
+    addField(assocEndList,0,1,1);
+        
+
   }
 
-  public String getSourceLabel() {
-    if (!(_target instanceof MAssociationRole)) return "non AssociationRole";
-    return "Classifier:";
-  }
-  public String getSourceValue() {
-    if (!(_target instanceof MAssociationRole)) return "non AssociationRole";
-    MAssociationRole a = (MAssociationRole) _target;
-    MAssociationEndRole ae = (MAssociationEndRole)((Object[])a.getConnections().toArray())[0];
-    if (ae == null) return "null ae";
-    MClassifier type = ae.getType();
-    if (type == null) return "null type";
-    return type.getName();
-  }
-  public String getDestLabel() {
-    if (!(_target instanceof MAssociationRole)) return "non AssociationRoleEnd";
-    return "Classifier:";
-  }
-  public String getDestValue() {
-    if (!(_target instanceof MAssociationRole)) return "non AssociationRole";
-    MAssociationRole a = (MAssociationRole) _target;
-    MAssociationEndRole ae = (MAssociationEndRole)((Object[])a.getConnections().toArray())[1];
-    if (ae == null) return "null ae";
-    MClassifier type = ae.getType();
-    if (type == null) return "null type";
-    return type.getName();
-  }
-  
-
-  
-
-
-  public void setTargetVisibility() {
-    if (_target == null) return;
-    if (_inChange) return;
-//     MVisibilityKind vk = (MVisibilityKind) _visField.getSelectedItem();
-//     MAttribute attr = (MAttribute) _target;
-//     attr.setVisibility(vk);
-  }
-
-  public void setMult() {
-    if (_target == null) return;
-    MMultiplicity mA, mB;
-    Object mAs = _multAField.getSelectedItem();
-    Object mBs = _multBField.getSelectedItem();
-
-    if (mAs == null || mBs == null) return;
-
-    // will be a String if I allow editing, needs-more-work: implement
-    // parsing of multiplicities
-    if (mAs instanceof String)
-      mAs = ParserDisplay.SINGLETON.parseMultiplicity((String)mAs);
-    if (mBs instanceof String)
-      mBs = ParserDisplay.SINGLETON.parseMultiplicity((String)mBs);
-
-    if (mAs instanceof MMultiplicity) mA = (MMultiplicity) mAs;
-    else mA = MMultiplicity.M1_1; // needs-more-work: parse
-
-    if (mBs instanceof MMultiplicity) mB = (MMultiplicity) mBs;
-    else mB = MMultiplicity.M1_1; // needs-more-work: parse
-
-    MAssociationRole asc = (MAssociationRole) _target;
-    Vector conns = new Vector(asc.getConnections());
-    if (conns == null || conns.size() != 2) return;
-    MAssociationEndRole endA = (MAssociationEndRole) conns.elementAt(0);
-    MAssociationEndRole endB = (MAssociationEndRole) conns.elementAt(1);
-	endA.setMultiplicity(mA);
-	endB.setMultiplicity(mB);
-  }
-
-  public void setAgg() {
-    if (_target == null) return;
-    MAggregationKind aggA = (MAggregationKind) _aggAField.getSelectedItem();
-    MAggregationKind aggB = (MAggregationKind) _aggBField.getSelectedItem();
-    //if (aggA == null || aggB == null) return;
-    MAssociationRole asc = (MAssociationRole) _target;
-    Vector conns = new Vector(asc.getConnections());
-    if (conns == null || conns.size() != 2) return;
-    MAssociationEndRole endA = (MAssociationEndRole) conns.elementAt(0);
-    MAssociationEndRole endB = (MAssociationEndRole) conns.elementAt(1);
-	endA.setAggregation(aggA);
-	endB.setAggregation(aggB);
-  }
-
-  public void setNav() {
-    if (_target == null) return;
-    boolean navA = _navAField.getModel().isSelected();
-    boolean navB = _navBField.getModel().isSelected();
-    //System.out.println("navA=" + navA + " navB=" + navB);
-    MAssociationRole asc = (MAssociationRole) _target;
-    Vector conns = new Vector(asc.getConnections());
-    if (conns == null || conns.size() != 2) return;
-    MAssociationEndRole endA = (MAssociationEndRole) conns.elementAt(0);
-    MAssociationEndRole endB = (MAssociationEndRole) conns.elementAt(1);
-	endA.setNavigable(navA);
-	endB.setNavigable(navB);
-  }
-  
-  public void setRoleNames() {
-    if (_target == null) return;
-    String roleAStr = _roleAField.getText();
-    String roleBStr = _roleBField.getText();
-    if (roleBStr == null || roleBStr == null) return;
-    //System.out.println("roleA=" + roleAStr + " roleB=" + roleBStr);
-    MAssociationRole asc = (MAssociationRole) _target;
-    Vector conns = new Vector(asc.getConnections());
-    if (conns == null || conns.size() != 2) return;
-    MAssociationEndRole endA = (MAssociationEndRole) conns.elementAt(0);
-    MAssociationEndRole endB = (MAssociationEndRole) conns.elementAt(1);
-	endA.setName(roleAStr);
-	endB.setName(roleBStr);
-  }
-
-  
-
-  
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-    public void focusLost(FocusEvent e){
-	super.focusLost(e);
-	if (e.getComponent() == _roleAField || e.getComponent() == _roleBField)
-	    setRoleNames();
-    }  
-  
-  public void stateChanged(ChangeEvent e) {
-    //System.out.println("got stateChanged");
-    Object src = e.getSource();
-    if (src == _navAField || src == _navBField) setNav();
-  }
-
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-//     if (src == _visAField) {
-//       System.out.println("assoc vis A now is " +
-// 			 _visAField.getSelectedItem());
-//       //setTargetKeywords();
-//     }
-//     else if (src == _visBField) {
-//       System.out.println("assoc vis B now is " +
-// 			 _visBField.getSelectedItem());
-//       //setTargetKeywords();
-//     }
-    if (src == _multAField) {
-      //System.out.println("assoc mult A now is " +
-      //_multAField.getSelectedItem());
-      setMult();
-    }
-    else if (src == _multBField) {
-      //System.out.println("assoc mult B now is " +
-      //_multBField.getSelectedItem());
-      setMult();
-    }
-    if (src == _aggAField) {
-      //System.out.println("assoc agg A now is " +
-      //_aggAField.getSelectedItem());
-      setAgg();
-    }
-    else if (src == _aggBField) {
-      //System.out.println("assoc agg B now is " +
-      //_aggBField.getSelectedItem());
-      setAgg();
+    public Collection getAssociationEnds() {
+        Collection ends = null;
+        Object target = getTarget();
+        if(target instanceof MAssociationRole) {
+            ends = ((MAssociationRole) target).getConnections();
+        }
+        return ends;
     }
     
-  }
-
+    public void setAssociationEnds(Collection ends) {
+        Object target = getTarget();
+        if(target instanceof MAssociationRole) {
+            java.util.List list = null;
+            if(ends instanceof java.util.List) {
+                list = (java.util.List) ends;
+            }
+            else {
+                list = new ArrayList(ends);
+            }
+            ((MAssociationRole) target).setConnections(list);
+        }
+    }
+    
+    public Object addAssociationEnd(Integer index) {
+        Object target = getTarget();
+        MAssociationEndRole newEnd = null;
+        if(target instanceof MAssociationRole) {
+            newEnd = new MAssociationEndRoleImpl();
+            ((MAssociationRole) target).addConnection(newEnd);
+        }
+        return newEnd;
+    }
+        
 
 } /* end class PropPanelAssociationRole */

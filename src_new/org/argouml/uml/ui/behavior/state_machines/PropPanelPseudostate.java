@@ -31,62 +31,75 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-
 import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-
 import org.argouml.uml.ui.*;
-
-/** User interface panel shown at the bottom of the screen that allows
- *  the user to edit the properties of the selected UML model
- *  element. */
+import java.util.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 public class PropPanelPseudostate extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
-  // constants
-  // needs-more-work 
-
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _nmwLabel = new JLabel("Needs-more-work PropPanelPseudostate");
-
-  // declare and initialize all widgets
-
-  ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelPseudostate() {
-    super("Pseudostate Properties");
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 0; c.ipady = 0;
+    super("Pseudostate Properties",2);
 
-    remove(_nameLabel);
-    remove(_nameField);
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1;
-    gb.setConstraints(_nmwLabel, c);
-    add(_nmwLabel);
+    Class mclass = MPseudostate.class;
+    
+    addCaption(new JLabel("Name:"),0,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    // add all widgets and labels
+    addCaption(new JLabel("Kind:"),1,0,0);
+    
+    JPanel kindPanel = new JPanel(new GridLayout(0,2));
+    ButtonGroup kindGroup = new ButtonGroup();
+    UMLRadioButton junctionButton = new UMLRadioButton("junction",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.JUNCTION,null));
+    kindPanel.add(junctionButton);
+    kindGroup.add(junctionButton);
+    
+    UMLRadioButton branchButton = new UMLRadioButton("branch",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.BRANCH,null));
+    kindPanel.add(branchButton);
+    kindGroup.add(branchButton);
+    
+    UMLRadioButton forkButton = new UMLRadioButton("fork",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.FORK,null));
+    kindPanel.add(forkButton);
+    kindGroup.add(forkButton);
+    
+    UMLRadioButton joinButton = new UMLRadioButton("join",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.JOIN,null));
+    kindPanel.add(joinButton);
+    kindGroup.add(joinButton);
 
-    // register interest in change events from all widgets
+    UMLRadioButton deepButton = new UMLRadioButton("deep history",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.DEEP_HISTORY,null));
+    kindPanel.add(deepButton);
+    kindGroup.add(deepButton);
+    
+    UMLRadioButton shallowButton = new UMLRadioButton("shallow history",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.SHALLOW_HISTORY,null));
+    kindPanel.add(shallowButton);
+    kindGroup.add(shallowButton);
+    
+    UMLRadioButton initialButton = new UMLRadioButton("initial",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.INITIAL,null));
+    kindPanel.add(initialButton);
+    kindGroup.add(initialButton);
+    
+    UMLRadioButton finalButton = new UMLRadioButton("final",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.FINAL,null));
+    kindPanel.add(finalButton);
+    kindGroup.add(finalButton);
+    addField(kindPanel,1,0,0);
+    
+
+    addCaption(new JLabel("Namespace:"),2,0,0);
+    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+    namespaceList.setBackground(getBackground());
+    namespaceList.setForeground(Color.blue);
+    addField(namespaceList,2,0,0);
+    
+    addCaption(new JLabel("Incoming:"),0,1,0);
+    addCaption(new JLabel("Outgoing:"),1,1,1);
+    
+    
   }
 
-  ////////////////////////////////////////////////////////////////
-  // event handlers
 
 } /* end class PropPanelPseudostate */
+

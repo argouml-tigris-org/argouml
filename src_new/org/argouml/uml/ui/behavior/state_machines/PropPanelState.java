@@ -31,314 +31,59 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.table.*;
-import javax.swing.plaf.metal.*;
-import javax.swing.border.*;
-
 import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.uml.generator.*;
 import org.argouml.uml.ui.*;
-
-/** User interface panel shown at the bottom of the screen that allows
- *  the user to edit the properties of the selected UML model
- *  element. */
+import java.util.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 public class PropPanelState extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
-  // constants
-  // needs-more-work 
-
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _entryLabel = new JLabel("Entry: ");
-  JTextField _entryField = new JTextField();
-  JLabel _exitLabel = new JLabel("Exit: ");
-  JTextField _exitField = new JTextField();
-
-  JLabel _internalLabel = new JLabel("Internal Transitions");
-  TableModelInternalTrans _tableModel = null;
-  JTable _internalTable = new JTable(4, 1);
-
-  ////////////////////////////////////////////////////////////////
   // contructors
-  public PropPanelState() {
-    super("State Properties");
-    _tableModel = new TableModelInternalTrans(this);
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weighty = 0.0;
-    c.weightx = 0.0;
-    c.ipadx = 0; c.ipady = 0;
+    public PropPanelState() {
+        super("State Properties",2);
 
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1;
-    gb.setConstraints(_entryLabel, c);
-    add(_entryLabel);
+        Class mclass = MState.class;
+    
+        addCaption(new JLabel("Name:"),0,0,0);
+        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    c.gridy = 2;
-    gb.setConstraints(_exitLabel, c);
-    add(_exitLabel);
+        addCaption(new JLabel("Stereotype:"),1,0,0);
+        JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
+        addField(stereotypeBox,1,0,0);
 
-    _entryField.setMinimumSize(new Dimension(120, 20));
-    c.weightx = 1.0;
-    c.gridx = 1;
-    c.gridy = 1;
-    gb.setConstraints(_entryField, c);
-    add(_entryField);
+        addCaption(new JLabel("State Machine:"),2,0,0);
+        JList stateList = new UMLList(new UMLReflectionListModel(this,"statemachine",false,"getStateMachine",null,null,null),true);
+        stateList.setBackground(getBackground());
+        stateList.setForeground(Color.blue);
+        addField(stateList,2,0,0);
+        
+        addCaption(new JLabel("Namespace:"),3,0,0);
+        JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+        namespaceList.setBackground(getBackground());
+        namespaceList.setForeground(Color.blue);
+        addField(namespaceList,3,0,0);
+    
 
-    c.gridy = 2;
-    gb.setConstraints(_exitField, c);
-    add(_exitField);
-
-    _internalTable.setModel(_tableModel);
-
-    Font labelFont = MetalLookAndFeel.getSubTextFont();
-    _internalTable.setFont(labelFont);
-
-    _internalTable.setIntercellSpacing(new Dimension(0, 1));
-    _internalTable.setShowVerticalLines(false);
-    //_internalTable.getSelectionModel().addListSelectionListener(this);
-    _internalTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-
-//     TableColumn descCol = _internalTable.getColumnModel().getColumn(0);
-//     descCol.setMinWidth(50);
-
-    SpacerPanel spacer1 = new SpacerPanel();
-    c.gridx = 0;
-    c.gridy = 11;
-    c.weighty = 1.0;
-    gb.setConstraints(spacer1, c);
-    add(spacer1);
-
-    SpacerPanel spacer2 = new SpacerPanel();
-    c.weightx = 0.0;
-    c.gridx = 2;
-    c.gridy = 0;
-    gb.setConstraints(spacer2, c);
-    add(spacer2);
-
-    c.gridx = 3;
-    c.gridwidth = 1;
-    c.gridy = 0;
-    c.weightx = 1.0;
-    c.weighty = 0.0;
-    gb.setConstraints(_internalLabel, c);
-    add(_internalLabel);
-
-    c.gridy = 1;
-    c.gridheight = 12; //GridBagConstraints.REMAINDER;
-    c.weightx = 1.0;
-    c.weighty = 1.0;
-    JScrollPane scroll =
-      new JScrollPane(_internalTable,
-		      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-		      JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    scroll.setPreferredSize(new Dimension(300, 200));
-    gb.setConstraints(scroll, c);
-    add(scroll);
-    _internalTable.setTableHeader(null);
-
-    _entryField.addKeyListener(this);
-    _entryField.addFocusListener(this);
-    _exitField.addKeyListener(this);
-    _exitField.addFocusListener(this);
-
-    resizeColumns();
+        addCaption(new JLabel("Incoming:"),0,1,0);
+        addCaption(new JLabel("Outgoing:"),1,1,1);
+    
+    
   }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  /** Set the values to be shown in all widgets based on model */
-  protected void setTargetInternal(Object t) {
-    super.setTargetInternal(t);
-    MState st = (MState) t;
-
-    _entryField.setText(GeneratorDisplay.Generate(st.getEntry()));
-    _exitField.setText(GeneratorDisplay.Generate(st.getExit()));
-
-    _tableModel.setTarget(st);
-    _internalTable.sizeColumnsToFit(-1);
-//     TableColumn descCol = _internalTable.getColumnModel().getColumn(0);
-//     descCol.setMinWidth(50);
-    resizeColumns();
-    validate();
-  }
-
-  public void resizeColumns() {
-    _internalTable.sizeColumnsToFit(0);
-  }
-
-
-  public void setTargetEntry() {
-    if (_inChange) return;
-    MState s = (MState) _target;
-    String newText = _entryField.getText();
-	MActionExpression expr = new MActionExpression("Java",newText);
-	MUninterpretedAction action = new MUninterpretedActionImpl();
-	action.setScript(expr);
-	s.setEntry(action);
-  }
-
-  public void setTargetExit() {
-    if (_inChange) return;
-    MState s = (MState) _target;
-    String newText = _exitField.getText();
-	MActionExpression expr = new MActionExpression("Java",newText);
-	MUninterpretedAction action = new MUninterpretedActionImpl();
-	action.setScript(expr);
-	s.setExit(action);
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-    public void focusLost(FocusEvent e){
-	super.focusLost(e);
-	if (e.getComponent() == _entryField)
-	    setTargetEntry();
-	else if (e.getComponent() == _exitField)
-	    setTargetExit();
+    public MStateMachine getStateMachine() {
+        MStateMachine machine = null;
+        Object target = getTarget();
+        if(target instanceof MState) {
+            machine = ((MState) target).getStateMachine();
+        }
+        return machine;
     }
+
 
 } /* end class PropPanelState */
 
 
-class TableModelInternalTrans extends AbstractTableModel
-implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
-  ////////////////
-  // instance varables
-  MState _target;
-  PropPanelState _panel;
-
-  ////////////////
-  // constructor
-  public TableModelInternalTrans(PropPanelState p) { _panel = p; }
-
-  ////////////////
-  // accessors
-  public void setTarget(MState s) {
-    if (_target instanceof MElementImpl)
-      ((MModelElementImpl)_target).removeMElementListener(this);
-    _target = s;
-    if (_target instanceof MElementImpl)
-      ((MModelElementImpl)_target).addMElementListener(this);
-    fireTableStructureChanged();
-    _panel.resizeColumns();
-  }
-
-  ////////////////
-  // TableModel implemetation
-  public int getColumnCount() { return 1; }
-
-  public String  getColumnName(int c) {
-    if (c == 0) return "Description";
-    return "XXX";
-  }
-
-  public Class getColumnClass(int c) {
-    return String.class;
-  }
-
-  public boolean isCellEditable(int row, int col) {
-    return col == 0;
-  }
-
-  public int getRowCount() {
-    if (_target == null) return 0;
-    Vector trans = new Vector(_target.getInternalTransitions());
-    if (trans == null) return 1;
-    return trans.size() + 1;
-  }
-
-  public Object getValueAt(int row, int col) {
-    Vector trans = new Vector(_target.getInternalTransitions());
-    if (trans == null) return "";
-    if (row >= trans.size()) return ""; // blank line allows adding
-    MTransition t = (MTransition) trans.elementAt(row);
-    String tStr = GeneratorDisplay.Generate(t);
-    if (col == 0) return tStr;
-    else return "UC-" + row*2+col; // for debugging
-  }
-
-  public void setValueAt(Object aValue, int rowIndex, int columnIndex)  { 
-   //System.out.println("setting table value " + rowIndex + ", " + columnIndex);
-    if (columnIndex != 0) return;
-    if (!(aValue instanceof String)) return;
-    String val = (String) aValue;
-    val = val.trim();
-    Vector trans = new Vector(((MState)_target).getInternalTransitions());
-    if (trans == null) trans = new Vector();
-    MTransition newTrans = ParserDisplay.SINGLETON.parseTransition(val);
-    if (newTrans != null) {
-	MState st = (MState) _target;
-	newTrans.setSource(st);
-	newTrans.setTarget(st);
-	newTrans.setStateMachine(st.getStateMachine());
-	//newTrans.setState(st);
-    }
-    else {
-      System.out.println("newTrans is null!");
-      fireTableStructureChanged();
-      _panel.resizeColumns();
-      return;
-    }
-
-    if (rowIndex == trans.size()) trans.addElement(newTrans);
-    else if (val.equals("")) trans.removeElementAt(rowIndex);
-    else trans.setElementAt(newTrans, rowIndex);
-
-    ((MState)_target).setInternalTransitions(trans); 
-
-    fireTableStructureChanged();
-    _panel.resizeColumns();
-  }
-
-  ////////////////
-  // event handlers
-
-	public void propertySet(MElementEvent mee) {
-	}
-	public void listRoleItemSet(MElementEvent mee) {
-	}
-	public void recovered(MElementEvent mee) {
-	}
-	public void removed(MElementEvent mee) {
-	}
-	public void roleAdded(MElementEvent mee) {
-	}
-	public void roleRemoved(MElementEvent mee) {
-	}
-
-  public void vetoableChange(PropertyChangeEvent pce) {
-    DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-    SwingUtilities.invokeLater(delayedNotify);
-  }
-
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    fireTableStructureChanged();
-    _panel.resizeColumns();
-  }
-
-
-} /* end class TableModelInternalTrans */
 

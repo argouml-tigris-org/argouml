@@ -22,292 +22,252 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-
-import java.awt.*;
-import java.awt.event.*;
+import org.argouml.ui.*;
+import org.argouml.uml.*;
 import java.util.*;
-import java.beans.*;
+import java.awt.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.model_management.*;
 
-import org.argouml.ui.*;
 
-/** This is an abstract superclass for panels that go in the
- *  "Properties" tab in the Argo/UML user interface.
- *
- * @see TabProps */
-
-public class PropPanel extends TabSpawnable
-implements TabModelTarget, DocumentListener, KeyListener, FocusListener, MElementListener{
+/**
+ *   This abstract class provides the basic layout and event dispatching
+ *   support for all Property Panels.  The property panel is layed out
+ *   as a number (specified in the constructor) of equally sized panels 
+ *   that split the available space.  Each panel has a column of 
+ *   "captions" and matching column of "fields" which are laid out
+ *   indepently from the other panels.
+ */
+abstract public class PropPanel extends TabSpawnable
+implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
   ////////////////////////////////////////////////////////////////
   // instance vars
-  protected Object _target;
-  protected boolean _inChange = false;
-  protected JLabel _nameLabel = new JLabel("Name: ");
-  protected JTextField _nameField = new JTextField();
-  protected JLabel _stereoLabel = new JLabel("Stereotype: ");
-  protected JComboBox _stereoField = new JComboBox();
-  protected JLabel _namespaceLabel = new JLabel("Namespace: ");
-  protected JComboBox _namespaceField = new JComboBox();
+  private Object _target;
+  private MModelElement _modelElement;
+  private Profile _profile;
+  private LinkedList _navListeners = new LinkedList();
+
+  private Vector _panels = new Vector();
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public PropPanel(String title) {
-    super(title);
-    _stereoField.setEditable(true);
-    _stereoField.getEditor().getEditorComponent().setBackground(Color.white);
-    _namespaceField.setEditable(true);
-    _namespaceField.getEditor().getEditorComponent().setBackground(Color.white);
+    /**
+     *    Constructs the PropPanel.
+     *    @param title Title of panel
+     *    @param panelCount number of horizontal panels
+     */
+    public PropPanel(String title,int panelCount) {
+        super(title);
+        setLayout(new BorderLayout());
 
-    GridBagLayout gb = new GridBagLayout();
-    setLayout(gb);
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.HORIZONTAL;
-    c.weightx = 0.0;
-    c.weighty = 0.0;
-    c.ipadx = 3; c.ipady = 3;
-
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 0;
-    gb.setConstraints(_nameLabel, c);
-    add(_nameLabel);
-    c.gridy = 9;
-    gb.setConstraints(_stereoLabel, c);
-    add(_stereoLabel);
-    c.gridy = 10;
-    gb.setConstraints(_namespaceLabel, c);
-    add(_namespaceLabel);
-
-
-    _nameField.setMinimumSize(new Dimension(120, 20));
-    c.weightx = 1.0;
-    c.gridx = 1;
-    //c.gridwidth = GridBagConstraints.REMAINDER;
-    c.gridy = 0;
-    gb.setConstraints(_nameField, c);
-    add(_nameField);
-    c.gridy = 9;
-    gb.setConstraints(_stereoField, c);
-    add(_stereoField);
-    c.gridy = 10;
-    gb.setConstraints(_namespaceField, c);
-    add(_namespaceField);
-
-    _nameField.getDocument().addDocumentListener(this);
-    _nameField.setFont(_stereoField.getFont());
-
-    _stereoField.addKeyListener(this);
-    _stereoField.addFocusListener(this);
-//     ed = _namespaceField.getEditor().getEditorComponent();
-//     Document nsDoc = ((JTextField)ed).getDocument();
-//     nsDoc.addDocumentListener(this);
-    _namespaceField.addKeyListener(this);
-    _namespaceField.addFocusListener(this);
-  }
-
-  protected SetTargetRunner setTargetRunner = new SetTargetRunner();
-
-  class SetTargetRunner implements Runnable {
-    public boolean scheduled = false;
-    public void run() {
-      setTarget(_target);
-      scheduled = false;
+        JPanel center = new JPanel(new GridLayout(1,0));
+        JPanel panel;
+        for(long i = 0; i < panelCount; i++) {
+            panel = new JPanel(new GridBagLayout());
+            _panels.add(panel);
+            center.add(panel);
+        }
+        add(center,BorderLayout.CENTER);
     }
-  }
-
-  protected void scheduleSetTarget() {
-    if (!setTargetRunner.scheduled) {
-      SwingUtilities.invokeLater(setTargetRunner);
+    
+    /**
+     *   Adds a component to the captions of the specified panel.
+     *   @param component Component to be added (typically a JLabel)
+     *   @param row row index, zero-based.
+     *   @param panel panel index, zero-based.
+     *   @param weighty specifies how to distribute extra vertical space,
+     *      see GridBagConstraint for details on usage.
+     */
+    public void addCaption(Component component,int row,int panel,double weighty)
+    {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridy = row;
+        gbc.weighty = weighty;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 1;
+        gbc.gridx = 0;
+        gbc.weightx = 0;
+        gbc.fill = GridBagConstraints.NONE;
+        
+        JPanel pane = (JPanel) _panels.elementAt(panel);
+        GridBagLayout layout = (GridBagLayout) pane.getLayout();
+        layout.setConstraints(component,gbc);
+        pane.add(component);
+    }    
+    
+    /**
+     *   Adds a component to the fields of the specified panel.
+     *   @param component Component to be added
+     *   @param row row index, zero-based.
+     *   @param panel panel index, zero-based.
+     *   @param weighty specifies how to distribute extra vertical space,
+     *      see GridBagConstraint for details on usage.
+     */
+   public void addField(Component component,int row,int panel,double weighty)
+    {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridy = row;
+        gbc.weighty = weighty;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 1;
+        gbc.gridx = 1;
+        gbc.weightx = 1;
+        if(weighty == 0)
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+        else
+            gbc.fill = GridBagConstraints.BOTH;
+        
+        JPanel pane = (JPanel) _panels.elementAt(panel);
+        GridBagLayout layout = (GridBagLayout) pane.getLayout();
+        layout.setConstraints(component,gbc);
+        pane.add(component);
+    }    
+     
+    /**
+     *   Adds a component to the fields of the specified panel
+     *     and sets the background and color to indicate
+     *     the field is a link.
+     *   @param component Component to be added
+     *   @param row row index, zero-based.
+     *   @param panel panel index, zero-based.
+     *   @param weighty specifies how to distribute extra vertical space,
+     *      see GridBagConstraint for details on usage.
+     */
+    final public void addLinkField(Component component,int row,int panel,double weighty)
+    {
+        component.setBackground(getBackground());
+        component.setForeground(Color.blue);
+        addField(component,row,panel,weighty);
     }
-  }
+    
+
+
+    public Profile getProfile() {
+        if(_profile == null) {
+            _profile = new ProfileJava();
+        }
+        return _profile;
+    }
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void setTarget(Object t) {
-    try {
-      _inChange = true;
-      setTargetInternal(t);
-    }
-    finally {
-      _inChange = false;
-    }
-  }
-
-  protected void setTargetInternal(Object t) {
-    if (! t.equals(_target)) {
-     if ( _target instanceof MBase )
-       ((MBase)t).removeMElementListener(this);
-    _target = t;
-     if ( _target instanceof MBase )
-       ((MBase)t).addMElementListener(this);
-    }
-    MModelElement me = (MModelElement) _target;
-    String n = me.getName();
-    // this is a small hack to get the text to update for an empty string
-    if ((n == null) || n.equals("")) _nameField.setText(" ");
-    _nameField.setText(n);
-    _nameField.setCaretPosition(0);
-    MStereotype stereo = me.getStereotype();
-    JTextField ed = (JTextField) _stereoField.getEditor().getEditorComponent();
-    if (stereo != null) {
-      String stereoName = stereo.getName();
-      // needs-more-work: select from list
-      _stereoField.setSelectedItem(stereo);
-      ed.setText(stereoName);
-    }
-    else {
-      _stereoField.setSelectedItem(null);
-      ed.setText("");
-    }
-    MNamespace ns = me.getNamespace();
-    ed = (JTextField) _namespaceField.getEditor().getEditorComponent();
-    if (ns != null) {
-      String namespaceName = ns.getName();
-      while (ns.getNamespace() != null) {
-	namespaceName = ns.getNamespace().getName() +
-	  "." + namespaceName;
-	ns = ns.getNamespace();
-      }
-      
-      // needs-more-work: select from list
-      _namespaceField.setSelectedItem(ns);
-      ed.setText(namespaceName);
-    }
-    else {
-      _namespaceField.setSelectedItem(null);
-      ed.setText("");
-    }
-  }
-
-  public Object getTarget() { return _target; }
-
-  public void refresh() { setTarget(_target); }
-
-  public boolean shouldBeEnabled() { return _target instanceof MModelElement; }
-
-
-  protected void setTargetName() {
-    if (_target == null) return;
-    if (_inChange) return;
-	String newName = _nameField.getText();
-	((MModelElement)_target).setName(newName);
-  }
-
-  protected void setTargetStereotype() {
-    if (_target == null) return;
-    if (_inChange) return;
-	MModelElement me = (MModelElement) _target;
-	// needs-more-work: find predefined stereotype
-	Component ed = _stereoField.getEditor().getEditorComponent();
-	String stereoName = ((JTextField)ed).getText();
-	MNamespace m = ProjectBrowser.TheInstance.getProject().getCurrentNamespace();
-	MStereotype s = null;
-   	Object eo = m.lookup(stereoName);
-	if (eo != null && eo instanceof MStereotype)
-		s = (MStereotype) eo;
-	else {
-		s = new MStereotypeImpl();
-		s.setName(stereoName);
-		m.addOwnedElement(s);
-	}
-	me.setStereotype(s);
-  }
-	
-  ////////////////////////////////////////////////////////////////
-  // DocumentListener implementation
-
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    if (e.getDocument() == _nameField.getDocument()) setTargetName();
-    Component ed = _stereoField.getEditor().getEditorComponent();
-    Document stereoDoc = ((JTextField)ed).getDocument();
-    if (e.getDocument() == stereoDoc) setTargetStereotype();
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-	// ItemListener implementation
- //  public void itemStateChanged(ItemEvent e) {
-// 	  if (e.getStateChange() == ItemEvent.SELECTED) {
-// 		  Object src = e.getSource();
-// 		  if (src == _namespaceField) {
-// 		      //System.out.println("namespacefield event");
-// 			  // what to do here?
-// 			  //setTargetInternal();
-// 		  }
-// 		  else if (src == _stereoField) {
-// 		      //System.out.println("stereofield event");
-// 			  setTargetStereotype();
-// 		  }
-// 	  }
-//   }
-
-	// MElementListener implementation
-
-	public void propertySet(MElementEvent mee) {
-           if (( mee.getName().equals("name"))
-           &&  ( mee.getType() == MElementEvent.ATTRIBUTE_SET )
-           &&  ( !_nameField.hasFocus())) { 
-	     scheduleSetTarget();	
-           }
-           
-	}
-	public void listRoleItemSet(MElementEvent mee) {
-	}
-	public void recovered(MElementEvent mee) {
-	}
-	public void removed(MElementEvent mee) {
-	}
-	public void roleAdded(MElementEvent mee) {
-	}
-	public void roleRemoved(MElementEvent mee) {
-	}
-
-    /** KeyListener Implementation */
-    public void keyPressed(KeyEvent e) { }
-
-    public void keyReleased(KeyEvent e) { 
-
-	if(e.getKeyCode() == KeyEvent.VK_ENTER) {	    
-	    JComponent jc = (JComponent)e.getComponent();
-	    jc.transferFocus();
-	}
+    public void setTarget(Object t) {
+        if(!t.equals(_target)) {
+            if ( _target instanceof MBase ) {
+                ((MBase)_target).removeMElementListener(this);
+            }
+            _target = t;
+            _modelElement = null;
+            if(_target instanceof MModelElement) {
+                _modelElement = (MModelElement) _target;
+            }
+            
+    
+            //
+            //   this will add listener after update is complete
+            //
+            SwingUtilities.invokeLater(new UMLChangeDispatch(this,-1));
+        }
     }
 
+    public Object getTarget() { return _target; }
+    
+    public MModelElement getModelElement() {
+        return _modelElement;
+    }
 
-    public void keyTyped(KeyEvent e) { }
+    public void refresh() { 
+        SwingUtilities.invokeLater(new UMLChangeDispatch(this,0));
+    }
 
-    /** focus listener implementation */
+    public boolean shouldBeEnabled() { return (_modelElement != null); }
 
-    public void focusLost(FocusEvent e){
-	Component src = e.getComponent();
-	if (src == _namespaceField) {
-	    //System.out.println("namespacefield event");
-	    // what to do here?
-	    //setTargetInternal();
-	}
-	else if (src == _stereoField) {
-	    System.out.println("stereofield event");
-	    setTargetStereotype();
-	}
+
+    public void propertySet(MElementEvent mee) {
+        UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
+        dispatch.propertySet(mee);
+        SwingUtilities.invokeLater(dispatch);
+    }
+
+    public void listRoleItemSet(MElementEvent mee) {
+        UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
+        dispatch.listRoleItemSet(mee);
+        SwingUtilities.invokeLater(dispatch);
     }
     
-    public void focusGained(FocusEvent e){}
+    public void recovered(MElementEvent mee) {
+        UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
+        dispatch.recovered(mee);
+        SwingUtilities.invokeLater(dispatch);
+    }
+    
+    public void removed(MElementEvent mee) {
+        UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
+        dispatch.removed(mee);
+        SwingUtilities.invokeLater(dispatch);
+    }
+    
+    public void roleAdded(MElementEvent mee) {
+        UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
+        dispatch.roleAdded(mee);
+        SwingUtilities.invokeLater(dispatch);
+    }
+    
+    public void roleRemoved(MElementEvent mee) {
+        UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
+        dispatch.roleRemoved(mee);
+        SwingUtilities.invokeLater(dispatch);
+    }
 
-
+        
+    public String formatElement(MModelElement element) {
+        MNamespace ns = null;
+        if(_modelElement != null) {
+             ns = _modelElement.getNamespace();
+        }
+        return getProfile().formatElement(element,ns);
+    }
+    
+    public String formatNamespace(MNamespace ns) {
+        return getProfile().formatElement(ns,null);
+    }
+    
+    
+    
+    public String formatCollection(Iterator iter) {
+        MNamespace ns = null;
+        if(_modelElement != null) {
+            ns = _modelElement.getNamespace();
+        }
+        return getProfile().formatCollection(iter,ns);
+    }
+    
+    public void navigateTo(Object element) {
+        Iterator iter = _navListeners.iterator();
+        while(iter.hasNext()) {
+            ((NavigationListener) iter.next()).navigateTo(element);
+        }
+    }
+    public void open(Object element) {
+        Iterator iter = _navListeners.iterator();
+        while(iter.hasNext()) {
+            ((NavigationListener) iter.next()).open(element);
+        }
+    }
+    /**    Registers a listener for navigation events.
+     */
+    public void addNavigationListener(NavigationListener navListener) {
+        _navListeners.add(navListener);
+    }
+        
+    public void removeNavigationListener(NavigationListener navListener) {
+        _navListeners.remove(navListener);
+    }
 } /* end class PropPanel */

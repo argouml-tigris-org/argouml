@@ -29,70 +29,49 @@
 // $Id$
 
 package org.argouml.uml.ui.behavior.common_behavior;
-
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
+import org.argouml.uml.ui.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
-import org.argouml.uml.ui.*;
-
-/** User interface panel shown at the bottom of the screen that allows
- *  the user to edit the properties of the selected UML model
- *  element. */
 
 public class PropPanelInstance extends PropPanel {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  // needs-more-work 
-
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _nmwLabel = new JLabel("Needs-more-work PropPanelInstance");
-
-  // declare and initialize all widgets
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelInstance() {
-    super("Instance Properties");
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 0; c.ipady = 0;
+    super("Instance Properties",2);
 
+    Class mclass = MInstance.class;
+    
+    addCaption(new JLabel("Name:"),0,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1;
-    gb.setConstraints(_nmwLabel, c);
-    add(_nmwLabel);
+    
+    addCaption(new JLabel("Stereotype:"),1,0,0);
+    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
+    addField(stereotypeBox,1,0,0);
+    
 
-    // add all widgets and labels
-
-    // register interest in change events from all widgets
+    addCaption(new JLabel("Namespace:"),2,0,1);
+    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+    namespaceList.setBackground(getBackground());
+    namespaceList.setForeground(Color.blue);
+    addField(namespaceList,5,0,0);
+    
+    addCaption(new JLabel("Arguments:"),0,1,0);
+    addCaption(new JLabel("Receives:"),1,1,0);
+    addCaption(new JLabel("Sends:"),2,1,0);
+    addCaption(new JLabel("Classifiers:"),3,1,0);
+    addCaption(new JLabel("Links:"),4,1,1);
   }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+  
+  
+} /* end class PropPanelComponentInstance */
 
-  /** Set the values to be shown in all widgets based on model */
-  protected void setTargetInternal(Object t) {
-    super.setTargetInternal(t);
-    MInstance tt = (MInstance) t;
-    // set the values to be shown in all widgets based on model
-  }
 
-} /* end class PropPanelState */
+

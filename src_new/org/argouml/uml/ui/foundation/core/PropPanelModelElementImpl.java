@@ -22,18 +22,10 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui.foundation.core;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-
 import org.argouml.uml.ui.*;
+import ru.novosoft.uml.foundation.core.*;
+import javax.swing.*;
+
 
 public class PropPanelModelElementImpl extends PropPanel {
   ////////////////////////////////////////////////////////////////
@@ -42,7 +34,18 @@ public class PropPanelModelElementImpl extends PropPanel {
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelModelElementImpl() {
-    super("ModelElement Properties");
+    super("ModelElement Properties",2);
+    
+    Class mclass = MModelElement.class;
+    
+    addCaption(new JLabel("Name:"),0,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+
+    
+    addCaption(new JLabel("Stereotype:"),1,0,1);
+    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
+    addField(stereotypeBox,1,0,0);
+    
   }
 
 } /* end class PropPanelModelElementImpl */

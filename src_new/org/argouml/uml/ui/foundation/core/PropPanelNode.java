@@ -30,54 +30,75 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-
 import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-
 import org.argouml.uml.ui.*;
-
-/** User interface panel shown at the bottom of the screen that allows
- *  the user to edit the properties of the selected UML model
- *  element. */
+import java.util.*;
 
 public class PropPanelNode extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
-  // constants
-
-  
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-
-  ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelNode() {
-    super("Node Properties");
-    GridBagLayout gb = (GridBagLayout) getLayout();    
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.ipadx = 0; c.ipady = 0;
+    super("Node Properties",2);
 
+    Class mclass = MNode.class;
+    
+    addCaption(new JLabel("Name:"),0,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
+    addCaption(new JLabel("Extends:"),1,0,0);
+
+    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+    extendsList.setBackground(getBackground());
+    extendsList.setForeground(Color.blue);
+    addField(extendsList,1,0,0);
+    
+    addCaption(new JLabel("Modifiers:"),2,0,0);
+    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
+    modifiersPanel.add(new UMLCheckBox("abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox("final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox("root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    addField(modifiersPanel,2,0,0);
+
+    addCaption(new JLabel("Namespace:"),3,0,0);
+    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+    namespaceList.setBackground(getBackground());
+    namespaceList.setForeground(Color.blue);
+    addField(namespaceList,3,0,0);
+    
+    addCaption(new JLabel("Derived:"),4,0,1);
+    JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
+    derivedList.setForeground(Color.blue);    
+    derivedList.setVisibleRowCount(1);
+    addField(new JScrollPane(derivedList),4,0,1);
+    
+    addCaption(new JLabel("Components:"),0,1,1);
+    JList compList = new UMLList(new UMLReflectionListModel(this,"component",true,"getResidents","setResidents",null,null),true);
+    compList.setForeground(Color.blue);
+    compList.setVisibleRowCount(1);
+    addField(new JScrollPane(compList),0,1,1);
+        
+    
+    
   }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  protected void setTargetInternal(Object t) {
-    super.setTargetInternal(t);
+  public Collection getResidents() {
+    Collection components = null;
+    Object target = getTarget();
+    if(target instanceof MNode) {
+        components = ((MNode) target).getResidents();
+    }
+    return components;
   }
 
-  static final long serialVersionUID = 5574833923466612432L;
-  
+    public void setResidents(Collection components) {
+        Object target = getTarget();
+        if(target instanceof MNode) {
+            ((MNode) target).setResidents(components);
+        }
+    }
+        
+
 } /* end class PropPanelNode */
+

@@ -23,57 +23,106 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-
+import org.argouml.uml.ui.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
+import javax.swing.*;
+import java.awt.*;
 
-import org.argouml.uml.diagram.ui.*;
-
-public class PropPanelGeneralization extends PropPanelTwoEnds {
+public class PropPanelGeneralization extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public PropPanelGeneralization() {
-    super("Generalization");
-
-    remove(_nameField);
-    remove(_nameLabel);    
-  }
-
-  public String getSourceLabel() {
-    if (!(_target instanceof MGeneralization)) return "non gen";
-    return "Superclass:";
-  }
-  public String getSourceValue() {
-    if (!(_target instanceof MGeneralization)) return "non gen";
-    MGeneralization g = (MGeneralization) _target;
-    MGeneralizableElement sup = g.getParent();
-    if (sup == null) return "null";
-    return sup.getName();
-  }
-  public String getDestLabel() {
-    if (!(_target instanceof MGeneralization)) return "non gen";
-    return "Subclass:";
-  }
-  public String getDestValue() {
-    if (!(_target instanceof MGeneralization)) return "non gen";
-    MGeneralization g = (MGeneralization) _target;
-    MGeneralizableElement sub = g.getChild();
-    if (sub == null) return "null";
-    return sub.getName();
-  }
+    super("Generalization",2);
   
+    Class mclass = MGeneralization.class;
+    
+    addCaption(new JLabel("Name:"),0,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
+    
+    addCaption(new JLabel("Stereotype:"),1,0,0);
+    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
+    addField(stereotypeBox,1,0,0);
+    
+    addCaption(new JLabel("Discriminator:"),2,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"discriminator","getDiscriminator","setDiscriminator")),2,0,0);
+
+    addCaption(new JLabel("Namespace:"),3,0,1);
+    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+    namespaceList.setBackground(getBackground());
+    namespaceList.setForeground(Color.blue);
+    addField(namespaceList,3,0,0);
+        
+    
+    
+    addCaption(new JLabel("Parent:"),0,1,0);
+    //
+    //   misuse of classifier, but only temporary
+    //
+    addField(new UMLClassifierComboBox(this,MGeneralizableElement.class,"parent","getParentElement","setParentElement",false),0,1,0);
+
+    addCaption(new JLabel("Child:"),1,1,0);
+    addField(new UMLClassifierComboBox(this,MGeneralizableElement.class,"child","getChild","setChild",false),1,1,0);
+
+    addCaption(new JLabel("Powertype:"),2,1,1);
+    addField(new UMLClassifierComboBox(this,MClassifier.class,"powertype","getPowertype","setPowertype",true),2,1,0);
+
+
+}
+
+    public MGeneralizableElement getParentElement() {
+        MGeneralizableElement parent = null;
+        Object target = getTarget();
+        if(target instanceof MGeneralization) {
+            parent = ((MGeneralization) target).getParent();
+        }
+        return parent;
+    }
+    
+    public void setParentElement(MGeneralizableElement parent) {
+        Object target = getTarget();
+        if(target instanceof MGeneralization) {
+            ((MGeneralization) target).setParent(parent);
+        }
+    }
+    
+    public MGeneralizableElement getChild() {
+        MGeneralizableElement child = null;
+        Object target = getTarget();
+        if(target instanceof MGeneralization) {
+            child = ((MGeneralization) target).getChild();
+        }
+        return child;
+    }
+    
+    public void setChild(MGeneralizableElement child) {
+        Object target = getTarget();
+        if(target instanceof MGeneralization) {
+            ((MGeneralization) target).setChild(child);
+        }
+    }
+    
+    public MClassifier getPowertype() {
+        MClassifier ptype = null;
+        Object target = getTarget();
+        if(target instanceof MGeneralization) {
+            ptype = ((MGeneralization) target).getPowertype();
+        }
+        return ptype;
+    }
+    
+    public void setPowertype(MClassifier ptype) {
+        Object target = getTarget();
+        if(target instanceof MGeneralization) {
+            ((MGeneralization) target).setPowertype(ptype);
+        }
+    }
+    
+    
+    
   
 } /* end class PropPanelGeneralization */

@@ -23,296 +23,247 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
+import java.util.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
-
-import org.tigris.gef.util.*;
-
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 import org.argouml.uml.ui.*;
-import org.argouml.uml.MMUtil;
-
-public class PropPanelOperation extends PropPanel
-implements ItemListener {
-
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public static final String VISIBILITIES[] = {
-    MVisibilityKind.PUBLIC.getName(), MVisibilityKind.PRIVATE.getName(),
-    MVisibilityKind.PROTECTED.getName() };
-
-	//PACKAGE in nsuml???
-  public static final String ATTRKEYWORDS[] = {
-    "None", "static", "final", "static final", "synchronized",
-    "static synchronized", "final synchronized", "static final synchronized"
-  };
-
-  
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _visLabel = new JLabel("Visibility: ");
-  JComboBox _visField = new JComboBox(VISIBILITIES);
-  JLabel _keywordsLabel = new JLabel("Keywords: ");
-  JComboBox _keywordsField = new JComboBox(ATTRKEYWORDS);
-  JLabel _typeLabel = new JLabel("Return Type: ");
-  JComboBox _typeField = new JComboBox();
-  JLabel _argsLabel = new JLabel("Arguments: ");
-  JTable _argsTable = new JTable();
-  SpacerPanel _spacer = new SpacerPanel();
-
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public PropPanelOperation() {
-    super("Operation Properties");
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 0; c.ipady = 0;
 
 
-    //_visField.getEditor().getEditorComponent().setBackground(Color.white);
-    //_keywordsField.getEditor().getEditorComponent().setBackground(Color.white);
-    _typeField.setEditable(true);
-    _typeField.getEditor().getEditorComponent().setBackground(Color.white);    
+public class PropPanelOperation extends PropPanel {
 
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1;
-    gb.setConstraints(_visLabel, c);
-    add(_visLabel);
-    c.gridy = 2;
-    gb.setConstraints(_keywordsLabel, c);
-    add(_keywordsLabel);
-    c.gridy = 3;
-    gb.setConstraints(_typeLabel, c);
-    add(_typeLabel);
+    public PropPanelOperation() {
+        super("Operation Properties",2);
 
+        Class mclass = MOperation.class;
+
+        addCaption(new JLabel("Name:"),0,0,0);
+        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+
+        addCaption(new JLabel("Stereotype:"),1,0,0);
+        JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
+        addField(stereotypeBox,1,0,0);
+
+        addCaption(new JLabel("Visibility:"),2,0,0);
+        addField(new UMLVisibilityPanel(this,mclass,3,false),2,0,0);
+        
+        addCaption(new JLabel("Modifiers:"),3,0,0);
+        JPanel modPanel = new JPanel(new GridLayout(0,3));
+        modPanel.add(new UMLCheckBox("abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+        modPanel.add(new UMLCheckBox("final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+        modPanel.add(new UMLCheckBox("root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+        modPanel.add(new UMLCheckBox("query",this,new UMLReflectionBooleanProperty("isQuery",mclass,"isQuery","setQuery")));
+        modPanel.add(new UMLCheckBox("static",this,new UMLEnumerationBooleanProperty("ownerscope",mclass,"getOwnerScope","setOwnerScope",MScopeKind.class,MScopeKind.CLASSIFIER,MScopeKind.INSTANCE)));
+        addField(modPanel,3,0,0);
+        
+        addCaption(new JLabel("Concurrency:"),4,0,0);
+        JPanel concurPanel = new JPanel(new GridLayout(0,2));
+        ButtonGroup group = new ButtonGroup();
+        UMLRadioButton sequential = new UMLRadioButton("sequential",this,new UMLEnumerationBooleanProperty("concurrency",mclass,"getConcurrency","setConcurrency",MCallConcurrencyKind.class,MCallConcurrencyKind.SEQUENTIAL,null));
+        group.add(sequential);
+        concurPanel.add(sequential);
+        
+        UMLRadioButton synchd = new UMLRadioButton("synchronized",this,new UMLEnumerationBooleanProperty("concurrency",mclass,"getConcurrency","setConcurrency",MCallConcurrencyKind.class,MCallConcurrencyKind.GUARDED,null));
+        group.add(synchd);
+        concurPanel.add(synchd);
+        
+        UMLRadioButton concur = new UMLRadioButton("concurrent",this,new UMLEnumerationBooleanProperty("concurrency",mclass,"getConcurrency","setConcurrency",MCallConcurrencyKind.class,MCallConcurrencyKind.CONCURRENT,null));
+        group.add(concur);
+        concurPanel.add(concur);
+        addField(concurPanel,4,0,0);
+        
+        
+        addCaption(new JLabel("Owner:"),5,0,1);
+        JList namespaceList = new UMLList(new UMLReflectionListModel(this,"owner",false,"getOwner",null,null,null),true);
+        namespaceList.setBackground(getBackground());
+        namespaceList.setForeground(Color.blue);
+        addField(namespaceList,5,0,0);
+        
+        addCaption(new JLabel("Return type:"),0,1,0);
+        addField(new UMLClassifierComboBox(this,MClassifier.class,"type","getReturnType","setReturnType",true),0,1,0);
+
+        
+        
+        addCaption(new JLabel("Parameters:"),1,1,.5);
+        JList paramList = new UMLList(new UMLReflectionListModel(this,"parameter",true,"getParameters","setParameters","addParameter",null),true);
+        paramList.setForeground(Color.blue);
+        paramList.setVisibleRowCount(1);
+        addField(new JScrollPane(paramList),1,1,0.5);
+        
+        addCaption(new JLabel("Exceptions:"),2,1,.5);
+        JList exceptList = new UMLList(new UMLReflectionListModel(this,"signal",true,"getRaisedSignals","setRaisedSignals","addRaisedSignal",null),true);
+        exceptList.setForeground(Color.blue);
+        exceptList.setVisibleRowCount(1);
+        addField(new JScrollPane(exceptList),2,1,0.5);
+        
+        
+    }
+
+    public MClassifier getReturnType() {
+        MClassifier type = null;
+        Object target = getTarget();
+        if(target instanceof MOperation) {
+            java.util.List params = ((MOperation) target).getParameters();
+            if(params != null) {
+                Iterator iter = params.iterator();
+                MParameter param;
+                while(iter.hasNext()) {
+                    param = (MParameter) iter.next();
+                    if(param.getKind() == MParameterDirectionKind.RETURN) {
+                        type = param.getType();
+                        break;
+                    }
+                }
+            }
+        }
+        return type;
+    }
     
-    c.weightx = 1.0;
-    c.gridx = 1;
-    //c.gridwidth = GridBagConstraints.REMAINDER;
-    c.gridy = 1;
-    gb.setConstraints(_visField, c);
-    add(_visField);
-    c.gridy = 2;
-    gb.setConstraints(_keywordsField, c);
-    add(_keywordsField);
-    c.gridy = 3;
-    gb.setConstraints(_typeField, c);
-    add(_typeField);
-
-    c.weightx = 0.0;
-    c.gridx = 2;
-    c.gridy = 0;
-    gb.setConstraints(_spacer, c);
-    add(_spacer);
+    public void setReturnType(MClassifier type) {
+        Object target = getTarget();
+        if(target instanceof MOperation) {
+            MOperation oper = (MOperation) target;
+            Collection params = oper.getParameters();
+            MParameter param;
+            //
+            //   remove first (hopefully only) return parameters
+            //   
+            if(type == null) {
+                if(params != null) {
+                    Iterator iter = params.iterator();
+                    while(iter.hasNext()) {
+                        param = (MParameter) iter.next();
+                        if(param.getKind() == MParameterDirectionKind.RETURN) {
+                            oper.removeParameter(param);
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MParameter retParam = null;
+                if(params != null) {
+                    Iterator iter = params.iterator();
+                    while(iter.hasNext()) {
+                        param = (MParameter) iter.next();
+                        if(param.getKind() == MParameterDirectionKind.RETURN) {
+                            retParam = param;
+                            break;
+                        }
+                    }
+                }
+                if(retParam == null) {
+                    retParam = new MParameterImpl();
+                    retParam.setKind(MParameterDirectionKind.RETURN);
+                    oper.addParameter(retParam);
+                }
+                retParam.setType(type);
+            }
+        }
+    }
     
-
-    c.weightx = 1.0;
-    c.gridwidth = 3;
-    c.gridx = 3;
-    //c.gridwidth = GridBagConstraints.REMAINDER;
-    c.gridy = 0;
-    gb.setConstraints(_argsLabel, c);
-    add(_argsLabel);
-    c.gridy = 1;
-    c.gridheight = GridBagConstraints.REMAINDER;
-    gb.setConstraints(_argsTable, c);
-    add(_argsTable);
-
-    _visField.addItemListener(this);
-    _keywordsField.addItemListener(this);
-    _typeField.addItemListener(this);
-
-    remove(_namespaceLabel);
-    remove(_namespaceField);
-  }
-
-
-  
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  protected void setTargetInternal(Object t) {
-    super.setTargetInternal(t);
-    MOperation oper = (MOperation) _target;
-
-    Vector offeredTypes = getOfferedTypes();
-    if (offeredTypes != null)
-      _typeField.setModel(new DefaultComboBoxModel(Converter.convert(offeredTypes)));
-
-    MVisibilityKind vk = oper.getVisibility();
-	if (vk != null)
-		_visField.setSelectedItem(vk.getName());
-
-    MScopeKind sk = oper.getOwnerScope();
-    MCallConcurrencyKind ck = oper.getConcurrency();
-    // needs-more-work: concurrency
-    // needs-more-work: final methods?
-    if (MScopeKind.CLASSIFIER.equals(sk)) {
-      if (MCallConcurrencyKind.GUARDED.equals(ck))
-	_keywordsField.setSelectedItem("static synchronized");
-      else
-	_keywordsField.setSelectedItem("static");
+    public java.util.List getParameters() {
+        java.util.List params = null;
+        Object target = getTarget();
+        if(target instanceof MOperation) {
+            params = ((MOperation) target).getParameters();
+        }
+        return params;
     }
-    else {
-      if (MCallConcurrencyKind.GUARDED.equals(ck))
-	_keywordsField.setSelectedItem("synchronized");
-      else
-	_keywordsField.setSelectedItem("None");
+    
+    public void setParameters(Collection newParams) {
+        Object target = getTarget();
+        if(target instanceof MOperation) {
+            if(newParams instanceof java.util.List) {
+                ((MOperation) target).setParameters((java.util.List) newParams);
+            }
+            else {
+                ((MOperation) target).setParameters(new ArrayList(newParams));
+            }
+        }
+    }
+    
+    public void addParameter(Integer indexObj) {
+        int index = indexObj.intValue();
+        java.util.List oldParams = getParameters();
+        java.util.List newParams = null;
+        MParameter newParam = new MParameterImpl();
+        //
+        //  if you don't set one, you get an exception in the critics
+        //
+        newParam.setKind(MParameterDirectionKind.INOUT);
+        newParam.setName("param" + index);
+        if(oldParams == null || oldParams.size() == 0) {
+            newParams = new LinkedList();
+            newParams.add(newParam);
+        }
+        else {
+            newParams = new ArrayList(oldParams.size()+1);
+            MParameter returnParam = null;
+            boolean added = false;
+            Iterator iter = oldParams.iterator();
+            for(int i = 0; iter.hasNext(); i++) {
+                MParameter param = (MParameter) iter.next();
+                if(param.getKind() == MParameterDirectionKind.RETURN) {
+                    returnParam = param;
+                }
+                else {
+                    newParams.add(param);
+                    if(index == i) {
+                        newParams.add(newParam);
+                        added = true;
+                    }
+                }
+                if(!added) {
+                    newParams.add(newParam);
+                }
+                if(returnParam != null) {
+                    newParams.add(returnParam);
+                }
+            }
+        }
+        setParameters(newParams);
     }
 
-	Vector parameters = new Vector(oper.getParameters());
-
-	MParameter returnParameter = MMUtil.SINGLETON.getReturnParameter(oper);
-	if (returnParameter != null && returnParameter.getType() != null && returnParameter.getType().getName() != null)
-		_typeField.setSelectedItem(returnParameter.getType().getName());
-
-	DefaultTableModel _argsModel = new DefaultTableModel(0,2);
-	parameters.remove(returnParameter);
-
-	for (int i = 0; i<parameters.size();i++) {
-		MParameter p = (MParameter)parameters.elementAt(i);
-		String[] row = {p.getName(), p.getType().getName()};
-		_argsModel.addRow(row);
-	}
-	_argsTable.setModel(_argsModel);
-  }
-
-
-
-  public void setTargetVisibility() {
-    if (_target == null) return;
-    if (_inChange) return;
-    MVisibilityKind vk = MVisibilityKind.forName((String)_visField.getSelectedItem());
-    MOperation oper = (MOperation) _target;
-	oper.setVisibility(vk);
-  }
-
-  // needs-more-work: how to model abstract methods?
-  // needs-more-work: how to model final methods?
-  
-  public void setTargetKeywords() {
-    if (_target == null) return;
-    if (_inChange) return;
-    String keys = (String) _keywordsField.getSelectedItem();
-    if (keys == null) {
-      //System.out.println("keywords are null");
-      return;
+    public Object getOwner() {
+        Object owner = null;
+        Object target = getTarget();
+        if(target instanceof MOperation) {
+            owner = ((MOperation) target).getOwner();
+        }
+        return owner;
     }
-    MOperation oper = (MOperation) _target;
-	if (keys.equals("None")) {
-		oper.setOwnerScope(MScopeKind.INSTANCE);
-		oper.setConcurrency(MCallConcurrencyKind.CONCURRENT);
-	}
-	else if (keys.equals("static")) {
-		oper.setOwnerScope(MScopeKind.CLASSIFIER);
-		oper.setConcurrency(MCallConcurrencyKind.CONCURRENT);
-	}
-	else if (keys.equals("final")) {
-		oper.setOwnerScope(MScopeKind.INSTANCE);
-		oper.setConcurrency(MCallConcurrencyKind.CONCURRENT);
-	}
-	else if (keys.equals("static final")) {
-		oper.setOwnerScope(MScopeKind.INSTANCE);
-		oper.setConcurrency(MCallConcurrencyKind.CONCURRENT);
-	}
-	else if (keys.equals("synchronized")) {
-		oper.setOwnerScope(MScopeKind.INSTANCE);
-		oper.setConcurrency(MCallConcurrencyKind.GUARDED);
-	}
-	else if (keys.equals("static synchronized")) {
-		oper.setOwnerScope(MScopeKind.CLASSIFIER);
-		oper.setConcurrency(MCallConcurrencyKind.GUARDED);
-	}
-	else if (keys.equals("final synchronized")) {
-		oper.setOwnerScope(MScopeKind.INSTANCE);
-		oper.setConcurrency(MCallConcurrencyKind.GUARDED);
-	}
-	else if (keys.equals("static final synchronized")) {
-		oper.setOwnerScope(MScopeKind.CLASSIFIER);
-		oper.setConcurrency(MCallConcurrencyKind.GUARDED);
-	}
-  }
-
-  public void setTargetType() {
-    if (_target == null) return;
-    if (_inChange) return;
-    MOperation op = (MOperation) _target;
-    Object rtObj = _typeField.getSelectedItem();
-    MClassifier rt = null;
-    if (rtObj instanceof String) {
-      String rtStr = (String) _typeField.getSelectedItem();
-      ProjectBrowser pb = ProjectBrowser.TheInstance;
-      Project p = pb.getProject();
-      rt = p.findType(rtStr);
+     
+    public Collection getRaisedSignals() {
+        Collection signals = null;
+        Object target = getTarget();
+        if(target instanceof MOperation) {
+            signals = ((MOperation) target).getRaisedSignals();
+        }
+        return signals;
     }
-    else if (rtObj instanceof MClassifier) {
-      rt = (MClassifier) rtObj;
+    
+    public void setRaisedSignals(Collection signals) {
+        Object target = getTarget();
+        if(target instanceof MOperation) {
+            ((MOperation) target).setRaisedSignals(signals);
+        }
     }
-    else {
-      // watch out for null rtObj
-//       System.out.println("selected return type was a " + rtObj.getClass());
-//       System.out.println("selected return type is " + rtObj);
-      // needs-more-work: selected predefined class
+    
+    public void addRaisedSignal(Integer index) {
+        MSignal newSignal = new MSignalImpl();
+        Object target = getTarget();
+        if(target instanceof MOperation) {
+            ((MOperation) target).addRaisedSignal(newSignal);
+        }
     }
-    if (rt != null) {
-	//System.out.println("Props setting return type: " + rt);
-		MParameter p = new MParameterImpl();
-		p.setType(rt);
-		MMUtil.SINGLETON.setReturnParameter(op,p);
-    }
-  }
-
-
-  public static Vector getOfferedTypes() {
-    // needs-more-work: should update when project changes
-    Project p = ProjectBrowser.TheInstance.getProject();
-    Vector types = p.getDefinedTypesVector();
-    Vector res = new Vector();
-    for (int i = 0; i<types.size();i++) {
-	res.add(((MClassifier)types.get(i)).getName());
-    }
-    return res;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-  public void itemStateChanged(ItemEvent e) {
-	  if (e.getStateChange() == ItemEvent.SELECTED) {
-		  Object src = e.getSource();
-		  if (src == _keywordsField) {
-			  //       System.out.println("attr keywords now is " +
-			  // 			 _keywordsField.getSelectedItem());
-			  setTargetKeywords();
-		  }
-		  else if (src == _visField) {
-			  //       System.out.println("attr MVisibilityKind now is " +
-			  // 			 _visField.getSelectedItem());
-			  setTargetVisibility();
-		  }
-		  else if (src == _typeField) {
-			  //       System.out.println("attr type now is " +
-			  // 			 _typeField.getSelectedItem());
-			  setTargetType();
-		  }
-	  }
-  }
-
-  
+    
 } /* end class PropPanelOperation */
+

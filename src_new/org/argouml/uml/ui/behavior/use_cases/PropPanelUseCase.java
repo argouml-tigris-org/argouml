@@ -28,263 +28,105 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.table.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.model_management.*;
 
-import org.argouml.kernel.*;
-import org.argouml.uml.ui.*;
 
-/** User interface panel shown at the bottom of the screen that allows
- *  the user to edit the properties of the selected UML model element.
- *  Needs-More-Work: cut and paste base class code from
- *  PropPanelClass. */
 
 public class PropPanelUseCase extends PropPanel {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  // needs-more-work 
 
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _extPtsLabel = new JLabel("Extension Points");
-  TableModelExtensions _tableModel = null;
-  JTable _extPts = new JTable(4, 1);
-  // declare and initialize all widgets
-
-  ////////////////////////////////////////////////////////////////
-  // contructors
   public PropPanelUseCase() {
-    super("UseCase Properties");
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 0; c.ipady = 0;
+    super("UseCase Properties",2);
 
-    _tableModel = new TableModelExtensions(this);
-    _extPts.setModel(_tableModel);
+    Class mclass = MUseCase.class;
+    
+    addCaption(new JLabel("Name:"),0,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    Font labelFont = MetalLookAndFeel.getSubTextFont();
-    _extPts.setFont(labelFont);
+    
+    addCaption(new JLabel("Stereotype:"),1,0,0);
+    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
+    addField(stereotypeBox,1,0,0);
+    
+    addCaption(new JLabel("Modifiers:"),2,0,0);
 
-    _extPts.setIntercellSpacing(new Dimension(0, 1));
-    _extPts.setShowVerticalLines(false);
-    //_extPts.getSelectionModel().addListSelectionListener(this);
-    _extPts.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+    JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
+    modifiersPanel.add(new UMLCheckBox("Abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox("Final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox("Root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    addField(modifiersPanel,2,0,0);
 
-    //TableColumn descCol = _extPts.getColumnModel().getColumn(0);
-    //descCol.setMinWidth(50);
+    
+    //
+    //  Generalization was labeled "Extends" in PropPanelClass and others 
+    //     but since extension has a specific meaning in use cases a
+    //     different term had to be used
+    //
+    addCaption(new JLabel("Generalizations:"),3,0,0);
+    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+    extendsList.setBackground(getBackground());
+    extendsList.setForeground(Color.blue);
+    addField(extendsList,3,0,0);
+    
+    addCaption(new JLabel("Includes:"),4,0,0);
+    JList includeList = new UMLList(new UMLIncludeListModel(this,"include",true),true);
+    includeList.setBackground(getBackground());
+    includeList.setForeground(Color.blue);
+    addField(includeList,4,0,0);
+    
 
+    addCaption(new JLabel("Extends:"),5,0,0);
+    JList extendList = new UMLList(new UMLExtendListModel(this,"extend",true),true);
+    extendList.setBackground(getBackground());
+    extendList.setForeground(Color.blue);
+    addField(extendList,5,0,0);
+    
+    addCaption(new JLabel("Namespace:"),6,0,1);
+    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
+    namespaceList.setBackground(getBackground());
+    namespaceList.setForeground(Color.blue);
+    addField(namespaceList,6,0,0);
+    
+    
+    
+    addCaption(new JLabel("Associations:"),0,1,0.25);
+    JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
+    connectList.setForeground(Color.blue);
+    connectList.setVisibleRowCount(1);
+    addField(new JScrollPane(connectList),0,1,0.25);
+    
 
-//     SpacerPanel spacer1 = new SpacerPanel();
-//     c.gridx = 0;
-//     c.gridy = 11;
-//     c.weighty = 1.0;
-//     gb.setConstraints(spacer1, c);
-//     add(spacer1);
-
-
-//     SpacerPanel spacer2 = new SpacerPanel();
-//     c.weightx = 0.0;
-//     c.gridx = 2;
-//     c.gridy = 0;
-//     gb.setConstraints(spacer2, c);
-//     add(spacer2);
-
-    // add all widgets and labels
-    JPanel rightPanel = new JPanel();
-    rightPanel.setLayout(new BorderLayout());
-    rightPanel.add(_extPtsLabel, BorderLayout.NORTH);
-
-    c.gridx = 0;
-    c.gridwidth = 2;
-//     c.gridy = 0;
-//     c.weighty = 0.0;
-//     gb.setConstraints(_extPtsLabel, c);
-//     add(_extPtsLabel);
-
-    //c.gridy = 1;
-    c.gridy = 11;
-    c.gridheight = GridBagConstraints.REMAINDER;
-    c.weightx = 0.0;
-    c.weighty = 10.0;
-    JScrollPane scroll = new JScrollPane(_extPts,
-					 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-					 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//     gb.setConstraints(scroll, c);
-//     add(scroll);
-    rightPanel.add(scroll, BorderLayout.CENTER);
-    gb.setConstraints(rightPanel, c);
-    add(rightPanel);
-    _extPts.setTableHeader(null);
-
-    // register interest in change events from all widgets
+    
+    addCaption(new JLabel("Operations:"),1,1,0.25);
+    JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
+    opsList.setForeground(Color.blue);
+    opsList.setVisibleRowCount(1);
+    JScrollPane opsScroll = new JScrollPane(opsList);
+    addField(opsScroll,1,1,0.25);
+    
+    addCaption(new JLabel("Attributes:"),2,1,0.25);
+    JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
+    attrList.setForeground(Color.blue);
+    attrList.setVisibleRowCount(1);
+    JScrollPane attrScroll= new JScrollPane(attrList);
+    addField(attrScroll,2,1,0.25);
+    
+    
+    
+    addCaption(new JLabel("Extension Points:"),3,1,0.25);
+    JList extensionPoints = new UMLList(new UMLExtensionPointListModel(this,null,true),true);
+    extensionPoints.setForeground(Color.blue);
+    extensionPoints.setVisibleRowCount(1);
+    addField(new JScrollPane(extensionPoints),3,1,0.25);
+    
   }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  /** Set the values to be shown in all widgets based on model */
-  protected void setTargetInternal(Object t) {
-    super.setTargetInternal(t);
-    MUseCase uc = (MUseCase) t;
-    // set the values to be shown in all widgets based on model
-
-    _tableModel.setTarget(uc);
-//     TableColumn descCol = _extPts.getColumnModel().getColumn(0);
-//     descCol.setMinWidth(50);
-    resizeColumns();
-    validate();
-  }
-
-  public void resizeColumns() {
-    _extPts.sizeColumnsToFit(0);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-
-  /** The user typed some text */
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    // check if it was one of my text fields
-    super.insertUpdate(e);
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
-  /** The user modified one of the widgets */
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-    // check for each widget, and update the model with new value
-  }
-
-
+  
 } /* end class PropPanelUseCase */
-
-
-class TableModelExtensions extends AbstractTableModel
-implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
-  ////////////////
-  // instance varables
-  MUseCase _target;
-  PropPanelUseCase _panel;
-
-  ////////////////
-  // constructor
-  public TableModelExtensions(PropPanelUseCase panel) {
-    _panel = panel;
-  }
-
-  ////////////////
-  // accessors
-  public void setTarget(MUseCase uc) {
-    if (_target instanceof MModelElementImpl)
-      ((MModelElementImpl)_target).removeMElementListener(this);
-    _target = uc;
-    if (_target instanceof MElementImpl)
-      ((MModelElementImpl)_target).addMElementListener(this);
-    fireTableStructureChanged();
-  }
-
-  ////////////////
-  // TableModel implemetation
-  public int getColumnCount() { return 1; }
-
-  public String  getColumnName(int c) {
-    if (c == 0) return "Description";
-    return "XXX";
-  }
-
-  public Class getColumnClass(int c) {
-    return String.class;
-  }
-
-  public boolean isCellEditable(int row, int col) {
-    return col == 0;
-  }
-
-  public int getRowCount() {
-    if (_target == null) return 0;
-    Vector extPts = new Vector(_target.getExtensionPoints());
-    if (extPts == null) return 0;
-    return extPts.size() + 1;
-  }
-
-  public Object getValueAt(int row, int col) {
-    Vector extPts = new Vector(_target.getExtensionPoints());
-    if (extPts == null) return "no extension points";
-    if (row == extPts.size()) return ""; // blank line allows adding
-    String ext = (String) extPts.elementAt(row);
-    if (col == 0) return ext;
-    else return "UC-" + row*2+col; // for debugging
-  }
-
-  public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
-    //System.out.println("setting table value " + rowIndex + ", " + columnIndex);
-    if (columnIndex != 0) return;
-    if (!(aValue instanceof String)) return;
-    String val = (String) aValue;
-    Vector extPts = new Vector(_target.getExtensionPoints());
-    if (rowIndex >= extPts.size()) {
-      extPts.addElement(val);
-      fireTableStructureChanged();
-      _panel.resizeColumns();
-    }
-    else if (val.equals("")) {
-      extPts.removeElementAt(rowIndex);
-      fireTableStructureChanged();
-      _panel.resizeColumns();
-    }
-    else extPts.setElementAt(val, rowIndex);
-  }
-
-	////////////////
-	// event handlers
-	public void propertySet(MElementEvent mee) {
-	}
-	public void listRoleItemSet(MElementEvent mee) {
-	}
-	public void recovered(MElementEvent mee) {
-	}
-	public void removed(MElementEvent mee) {
-	}
-	public void roleAdded(MElementEvent mee) {
-	}
-	public void roleRemoved(MElementEvent mee) {
-	}
-	public void vetoableChange(PropertyChangeEvent pce) {
-		DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-		SwingUtilities.invokeLater(delayedNotify);
-	}
-	
-	public void delayedVetoableChange(PropertyChangeEvent pce) {
-		fireTableStructureChanged();
-		_panel.resizeColumns();
-	}
-	
-	
-} /* end class TableModelExtensions */
-
