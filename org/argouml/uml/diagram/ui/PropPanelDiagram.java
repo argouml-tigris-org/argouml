@@ -24,10 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.JTextField;
 
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
@@ -39,11 +36,7 @@ import org.argouml.uml.ui.UMLTextField;
 import org.argouml.uml.ui.UMLTextProperty;
 import org.argouml.util.ConfigLoader;
 
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-
-public class PropPanelDiagram extends PropPanel 
-implements ChangeListener{
+public class PropPanelDiagram extends PropPanel {
 
     /**
      * Constructs a proppanel with a given name.
@@ -58,18 +51,7 @@ implements ChangeListener{
 						       "getName",
 						       "setName"));
         
-
         addField(Argo.localize("UMLMenu", "label.name"), field);
-        
-        JSlider zoom = new JSlider(JSlider.HORIZONTAL,
-                                      0, 500, 100);
-        zoom.setMajorTickSpacing(50);
-        zoom.setMinorTickSpacing(5);
-        zoom.setPaintTicks(true);
-        zoom.setPaintLabels(true);
-
-        zoom.addChangeListener(this);
-        addField(Argo.localize("UMLMenu", "label.zoom"), zoom);
     }
     
     /**
@@ -99,19 +81,5 @@ implements ChangeListener{
             }
         }
     }
-
-public void stateChanged(ChangeEvent e) {
-    JSlider source = (JSlider)e.getSource();
-    //if (!source.getValueIsAdjusting()) {
-        double zoomPercentage = (double)source.getValue()/100.0d;
-        
-        Editor ed = (Editor) Globals.curEditor();
-        if (ed == null) return;
-        if(zoomPercentage <= 0.0) return;
-        
-        ed.setScale(zoomPercentage);
-        ed.damageAll();
-    //}
-}
 
 } /* end class PropPanelDiagram */
