@@ -3749,7 +3749,7 @@ public class NSUMLModelFacade implements Facade {
      */
     public Object getSubmachine(Object handle) {
         if (handle instanceof MSubmachineState) {
-            return ((MSubmachineState) handle).getStateMachine();
+            return ((MSubmachineState) handle).getSubmachine();
         }
 	return illegalArgumentObject(handle);
     }
@@ -4458,6 +4458,39 @@ public class NSUMLModelFacade implements Facade {
 	return illegalArgumentCollection(container);
     }
 
+    /**
+     *  Return the Stub State's referenced state.
+     *  @param o Stub State
+     *  @return referenced state
+     */
+    public String getReferenceState(Object o) {
+        if (o instanceof MStubState) {
+            return ((MStubState) o).getReferenceState();
+        }
+        return illegalArgumentString(o);
+    }
+
+    /**
+     * Returns all states that can be recursively contained by the given State.
+     * To decouple ArgoUML as much as possible from
+     * the NSUML model, the parameter of the method is of type Object.
+     * @param oState The Composite state we are searching the
+     * states for.
+     * @return Collection The collection with found states.
+     */
+
+    public Collection getAllPossibleSubvertices(Object oState) {
+        ArrayList v = new ArrayList();
+        ArrayList v2 = new ArrayList();
+        if (isACompositeState(oState)) {
+            v.addAll(getSubvertices(oState));
+            v2 = (ArrayList)v.clone();
+            Iterator it = v2.iterator();
+            while (it.hasNext())
+                v.addAll(getAllPossibleSubvertices(it.next()));
+        }
+        return v;
+    }
 
     ////////////////////////////////////////////////////////////////
     // Other querying methods
@@ -4479,7 +4512,7 @@ public class NSUMLModelFacade implements Facade {
         if (handle instanceof MClassifier) {
             return ((MClassifier) handle).lookup(name);
         }
-	return illegalArgumentObject(handle);
+        return illegalArgumentObject(handle);
     }
 
     ////////////////////////////////////////////////////////////////

@@ -2225,7 +2225,7 @@ public interface Facade {
     Collection getSubvertices(Object handle);
 
     /**
-     * Returns the submachie of a submachine state.
+     * Returns the submachine of a submachine state.
      *
      * @param handle is the submachine state
      * @return submachine
@@ -2538,6 +2538,24 @@ public interface Facade {
      * @return The partitions (a collection).
      */
     Collection getPartitions(Object container);
+
+    /**
+     *  Return the Stub State's referenced state.
+     *  @param o Stub State
+     *  @return referenced state
+     */
+    public String getReferenceState(Object o);
+
+    /**
+     * Returns all states that can be recursively contained by the given State.
+     * To decouple ArgoUML as much as possible from
+     * the NSUML model, the parameter of the method is of type Object.
+     * @param oState The Composite state we are searching the
+     * states for.
+     * @return Collection The collection with found states.
+     */
+
+    public Collection getAllPossibleSubvertices(Object oState);
 
     ////////////////////////////////////////////////////////////////
     Object lookupIn(Object handle, String name);

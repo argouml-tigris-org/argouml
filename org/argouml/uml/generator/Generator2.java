@@ -239,6 +239,11 @@ public abstract class Generator2
     public abstract String generateState(Object m);
 
     /**
+     * @see NotationProvider2#generateSubmachine(Object)
+     */
+    public abstract String generateSubmachine(Object m);
+
+    /**
      * @see NotationProvider2#generateTransition(Object)
      */
     public abstract String generateTransition(Object m);

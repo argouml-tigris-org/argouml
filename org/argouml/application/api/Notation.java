@@ -293,6 +293,11 @@ public final class Notation implements PropertyChangeListener {
         return getProvider(notation).generateState(m);
     }
 
+    private static String generateSubmachine(NotationName notation,
+                      Object/*MSubmachineState*/ m) {
+        return getProvider(notation).generateSubmachine(m);
+    }
+
     private static String generateObjectFlowState(NotationName notation,
           Object/*MObjectFlowState*/ m) {
         return getProvider(notation).generateObjectFlowState(m);
@@ -700,7 +705,6 @@ public final class Notation implements PropertyChangeListener {
         if (o == null) {
             return "";
 	}
-
         //added to support association roles
         if (Model.getFacade().isAAssociationRole(o)) {
             return generateAssociationRole(nn, o);
@@ -713,6 +717,9 @@ public final class Notation implements PropertyChangeListener {
 
         if (Model.getFacade().isAOperation(o)) {
             return generateOperation(nn, o, false);
+	}
+        if (Model.getFacade().isASubmachineState(o)) {
+            return generateSubmachine(nn, o);
 	}
         if (Model.getFacade().isAAttribute(o)) {
             return generateAttribute(nn, o, false);
@@ -784,7 +791,6 @@ public final class Notation implements PropertyChangeListener {
         if (Model.getFacade().isAModelElement(o)) {
             return generateName(nn, Model.getFacade().getName(o));
 	}
-
         return o.toString();
     }
 
