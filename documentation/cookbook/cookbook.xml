@@ -1559,24 +1559,10 @@ so in reality this is more of an ambition than a fact.
 	<sect3 id="comp-critics-to-comp-internationalization">
 	  <title>Critics uses Internationalization</title>
 	  <para>
-<classname>org.argouml.uml.cognitive.UMLCognitiveResourceBundle<replaceable>_ll_RR</replaceable></classname></para>
+<classname>UMLCognitiveResourceBundle<replaceable>_ll_RR</replaceable></classname></para>
 	  <para>
 Since the whole module contains a lot of texts describing
 things for the user there should be a lot of issues here.
-This area is however not clear to the author of 
-this part of the Cookbook at this time (Linus Tolke in January 2002).
-</para>
-	  <para>
-From the file above I would guess that the intentions are that
-each package org.argouml.<replaceable>x</replaceable>.cognitive
-including all subpackages should have the set of classes
-<classname>org.argouml.<replaceable>x</replaceable>.cognitive.<replaceable>same x but capitalized</replaceable>CognitiveResourceBundle<replaceable>_ll_RR</replaceable></classname>.
-If so I would expect
-<classname>org.argouml.cognitive.CognitiveResourceBundle</classname>,
-<classname>org.argouml.language.java.cognitive.LanguageJavaCognitiveResourceBundled</classname>,
-and
-<classname>org.argouml.pattern.cognitive.PatternCognitiveResourceBundled</classname>
-with friends to be created futher down the road.
 </para>
 	</sect3>
 	<sect3 id="comp-critics-to-comp-plugins">
@@ -1742,8 +1728,7 @@ return <constant>NO_PROBLEM</constant> or
 Having written the code you need to add the text for the headline and
 description to the cognitive resource bundles. 
 These are in the package 
-<classname>org.argouml.uml.cognitive</classname> (for all critics,
-not just UML related ones), 
+<classname>org.argouml.i18n</classname>, 
 in the files
 <filename>UMLCognitiveResourceBundle.java</filename>
 <filename>UMLCognitiveResourceBundle_en_GB.java</filename>,
@@ -3407,21 +3392,14 @@ Country: unknown
 		</listitem>
 		<listitem>
 		  <para>
-Look at the files
-<filename>org/argouml/uml/ui/UMLResourceBundle.java</filename>,
-<filename>org/argouml/uml/cognitive/UMLCognitiveResourceBundle.java</filename>,
-<filename>org/argouml/ui/ActionResourceBundle.java</filename>,
-<filename>org/argouml/ui/SettingsResourceBundle.java</filename>,
-<filename>org/argouml/ui/MenuResourceBundle.java</filename>,
-<filename>org/argouml/ui/DiagramResourceBundle.java</filename>,
-<filename>org/argouml/ui/TreeResourceBundle.java</filename>, and
-<filename>org/argouml/language/NotationResourceBundle.java</filename>
+Look at the files in
+<filename class="directory">org/argouml/i18n</filename>,
 under <filename class="directory">argouml/src_new</filename>.
 </para>
 		</listitem>
 		<listitem>
 		  <para>
-Translate all the texts in those files.
+Translate all the texts in each of these classes of files.
 </para>
 		  <para>
 This is a lot of extremely qualified work including searching well-known
@@ -3440,15 +3418,17 @@ ArgoUML web site.
 		</listitem>
 		<listitem>
 		  <para>
-Create the files with the translations. They will have the names:
-<filename>org/argouml/uml/ui/UMLResourceBundle_<replaceable>language code</replaceable>.java</filename>,
-<filename>org/argouml/uml/cognitive/UMLCognitiveResourceBundle_<replaceable>language code</replaceable>.java</filename>,
-<filename>org/argouml/ui/ActionResourceBundle_<replaceable>language code</replaceable>.java</filename>,
-<filename>org/argouml/ui/SettingsResourceBundle_<replaceable>language code</replaceable>.java</filename>,
-<filename>org/argouml/ui/MenuResourceBundle_<replaceable>language code</replaceable>.java</filename>,
-<filename>org/argouml/ui/DiagramResourceBundle_<replaceable>language code</replaceable>.java</filename>,
-<filename>org/argouml/ui/TreeResourceBundle_<replaceable>language code</replaceable>.java</filename>, and
-<filename>org/argouml/language/NotationResourceBundle_<replaceable>language code</replaceable>.java</filename>.
+Create the files with the translations and store them in
+<filename class="directory">argouml/src_new/org/argouml/i18n</filename>.
+They will have the names:
+<filename>UMLResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>UMLCognitiveResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>ActionResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>SettingsResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>MenuResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>DiagramResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>TreeResourceBundle_<replaceable>language code</replaceable>.java</filename>, and
+<filename>NotationResourceBundle_<replaceable>language code</replaceable>.java</filename>.
 </para>
 		  <para>
 State your name clearly as author of all these files and add a couple of
@@ -3511,7 +3491,7 @@ spot the modification.
 </para>
 	      <para>
 There eledgedly are tools in the java world to spot this kind of changes.
-Until we have the tools and processes in place to handle the
+Until we have the tools and processes in place to handle them
 it is better to rely on this simpler mechanism to guarantee correctness.
 </para>
 	    </listitem>
