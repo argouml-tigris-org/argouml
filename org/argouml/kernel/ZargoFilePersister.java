@@ -238,10 +238,8 @@ public class ZargoFilePersister extends AbstractFilePersister {
                 // the "false" means that members should not be added,
                 // we want to do this by hand from the zipped stream.
                 ArgoParser parser = new ArgoParser();
-                parser.readProject(url, zis);
-                p = parser.getProject();
-                // clear up project refs:
-                parser.setProject(null); 
+                p = new Project(url);
+                parser.readProject(p, zis);
                 zis.close();
             } catch (IOException e) {
                 // exception can occur both due to argouml code as to J2SE
@@ -255,8 +253,6 @@ public class ZargoFilePersister extends AbstractFilePersister {
         } catch (IOException e) {
             throw new OpenException(e);
         } catch (SAXException e) {
-            throw new OpenException(e);
-        } catch (ParserConfigurationException e) {
             throw new OpenException(e);
         }
     }

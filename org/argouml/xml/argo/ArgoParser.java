@@ -69,39 +69,17 @@ public class ArgoParser extends SAXParserBase {
     // main parsing methods
 
     /**
-     * @param theUrl the url of the project to read
-     * @throws IOException for a file problem
-     * @throws ParserConfigurationException in case of a parser problem
-     * @throws SAXException when parsing xml
-     */
-    public void readProject(URL theUrl)
-        throws IOException, ParserConfigurationException, SAXException {
-
-        if (theUrl == null) {
-            throw new IllegalArgumentException("A URL must be supplied");
-        }
-        InputStream is = theUrl.openStream();
-
-        readProject(theUrl, is);
-    }
-
-    /**
-     * @param theUrl the url of the project to read
+     * @param theProject the project to populate
      * @param is the inputStream
      * @param addTheMembers true if the members are to be added
-     * @throws IOException for a file problem
-     * @throws ParserConfigurationException in case of a parser problem
-     * @throws SAXException when parsing xml
+     * @throws SAXException on error when parsing xml
      */
-    public void readProject(URL theUrl, InputStream is)
-        throws IOException, SAXException, ParserConfigurationException {
+    public void readProject(Project theProject, InputStream is) throws SAXException {
 
-        if (theUrl == null || is == null) {
+        if (is == null) {
             throw new IllegalArgumentException(
-                    "A URL and an input stream must be supplied");
+                    "An input stream must be supplied");
         }
-
-        url = theUrl;
 
         LastLoadInfo.getInstance().setLastLoadMessage("OK");
         LastLoadInfo.getInstance().setLastLoadStatus(true);
@@ -109,7 +87,7 @@ public class ArgoParser extends SAXParserBase {
         try {
             LOG.info("=======================================");
             LOG.info("== READING PROJECT " + url);
-            project = new Project(url);
+            this.project = theProject;
             parse(is);
         } catch (SAXException e) {
             LastLoadInfo.getInstance().setLastLoadStatus(false);
@@ -122,13 +100,13 @@ public class ArgoParser extends SAXParserBase {
             LOG.error("Exception reading project================");
             LOG.error(is.toString());
             LastLoadInfo.getInstance().setLastLoadMessage(e.toString());
-            throw e;
+            throw new SAXException(e);
         } catch (ParserConfigurationException e) {
             LastLoadInfo.getInstance().setLastLoadStatus(false);
             LOG.error("Exception reading project================");
             LOG.error(is.toString());
             LastLoadInfo.getInstance().setLastLoadMessage(e.toString());
-            throw e;
+            throw new SAXException(e);
         }
     }
     
