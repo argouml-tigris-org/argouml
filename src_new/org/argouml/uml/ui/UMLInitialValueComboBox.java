@@ -168,7 +168,8 @@ public class UMLInitialValueComboBox extends JComboBox
         if(eventProp.equals("owner") || eventProp.equals("name")) {
             return;
         }
-	if("initialValue".equals(eventProp))
+	if("initialValue".equals(eventProp) ||
+	   "defaultValue".equals(eventProp))
 	    targetChanged();
 //	else
 //	    update();
