@@ -736,16 +736,13 @@ Property files to be searched:
   <target name="run" depends="compile"
           description="Compile and run the newly compiled ArgoUML.">
     <echo message="--- Executing ${Name} ---"/>
-    <!-- Uncomment the sysproperty and change the value if you want -->
     <java classname="org.argouml.application.Main"
           classpath="${argo.build.classes};${classpath}"
           fork="yes"
           taskname="argouml"
      	  jvmargs="-Xmx500M">
-      <!--sysproperty key="javax.xml.parsers.SAXParserFactory"
-                   value="org.apache.xerces.parsers.SAXParser"/-->
-      <!-- sysproperty key="log4j.configuration"
-                   value="org/argouml/resource/configuration.lcf"/-->
+        <sysproperty key="log4j.configuration"
+                   value="org/argouml/resource/error_console.lcf"/>
         <classpath>
 	  <pathelement location="${argo.build.classes}"/>
 	  <path refid="argo.runtime.classpath"/>
@@ -756,14 +753,11 @@ Property files to be searched:
   <target name="debug" depends="compile"
           description="Compile and run the newly compiled ArgoUML with debug level logging.">
     <echo message="--- Executing ${Name} ---"/>
-    <!-- Uncomment the sysproperty and change the value if you want -->
     <java classname="org.argouml.application.Main"
           classpath="${argo.build.classes};${classpath}"
           fork="yes"
           taskname="argouml"
     	  jvmargs="-Xmx500M">
-      <!--sysproperty key="javax.xml.parsers.SAXParserFactory"
-                   value="org.apache.xerces.parsers.SAXParser"/-->
         <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/full_console.lcf"/>
         <classpath>
@@ -776,14 +770,11 @@ Property files to be searched:
   <target name="info" depends="compile"
           description="Compile and run the newly compiled ArgoUML with debug level logging.">
     <echo message="--- Executing ${Name} ---"/>
-    <!-- Uncomment the sysproperty and change the value if you want -->
     <java classname="org.argouml.application.Main"
           classpath="${argo.build.classes};${classpath}"
           fork="yes"
           taskname="argouml"
     	  jvmargs="-Xmx500M">
-      <!--sysproperty key="javax.xml.parsers.SAXParserFactory"
-                   value="org.apache.xerces.parsers.SAXParser"/-->
         <sysproperty key="log4j.configuration"
                    value="org/argouml/resource/info_console.lcf"/>
         <classpath>
