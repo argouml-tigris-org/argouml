@@ -38,10 +38,12 @@ import org.argouml.uml.MMUtil;
 import org.tigris.gef.base.Diagram;
 
 import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.behavior.activity_graphs.MPartition;
+import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
@@ -52,7 +54,9 @@ import ru.novosoft.uml.behavior.common_behavior.MActionSequence;
 import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
+import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
 import ru.novosoft.uml.behavior.common_behavior.MDataValue;
+import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
@@ -63,7 +67,9 @@ import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
 import ru.novosoft.uml.behavior.common_behavior.MSendAction;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
+import ru.novosoft.uml.behavior.state_machines.MCallEvent;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MFinalState;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.behavior.state_machines.MState;
@@ -326,6 +332,15 @@ public class ModelFacade {
         return handle instanceof MAssociationRole;
     }
 
+    /** Recognizer for AssociationEndRole
+     *
+     * @param handle candidate
+     * @returns true if handle is an AssociationEndRole
+     */
+    public static boolean isAAssociationEndRole(Object handle) {
+        return handle instanceof MAssociationEndRole;
+    }
+
     /** Recognizer for Attribute
      *
      * @param handle candidate
@@ -361,6 +376,15 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Recognizer for ActivityGraph
+     *
+     * @param handle candidate
+     * @returns true if handle is ActivityGraph.
+     */
+    public static boolean isAActivityGraph(Object handle) {
+        return handle instanceof MActivityGraph;
+    }
+
     /** Recognizer for bases. A base is an object that is some form of
      *  an element in the model. MBase in Novosoft terms.
      *
@@ -387,6 +411,15 @@ public class ModelFacade {
      */
     public static boolean isACallAction(Object handle) {
         return handle instanceof MCallAction;
+    }
+
+    /** Recognizer for CallEvent
+     *
+     * @param handle candidate
+     * @returns true if handle is a CallEvent
+     */
+    public static boolean isACallEvent(Object handle) {
+        return handle instanceof MCallEvent;
     }
 
     /** Recognizer for Class
@@ -452,6 +485,24 @@ public class ModelFacade {
         return handle instanceof MComponentInstance;
     }
 
+    /** Recognizer for Constraint
+     *
+     * @param handle candidate
+     * @returns true if handle is a Constraint
+     */
+    public static boolean isAConstraint(Object handle) {
+        return handle instanceof MConstraint;
+    }
+
+    /** Recognizer for CreateAction
+     *
+     * @param handle candidate
+     * @returns true if handle is a CreateAction
+     */
+    public static boolean isACreateAction(Object handle) {
+        return handle instanceof MCreateAction;
+    }
+
     /** Recognizer for DataType
      *
      * @param handle candidate
@@ -479,6 +530,15 @@ public class ModelFacade {
         return handle instanceof MDependency;
     }
 
+    /** Recognizer for DestroyAction
+     *
+     * @param handle candidate
+     * @returns true if handle is a DestroyAction
+     */
+    public static boolean isADestroyAction(Object handle) {
+        return handle instanceof MDestroyAction;
+    }
+
     /** Recognizer for CompositeState
      *
      * @param handle candidate
@@ -488,13 +548,40 @@ public class ModelFacade {
         return handle instanceof MCompositeState;
     }
 
-    /** Recognizer for Expression
+    /** Recognizer for Element
      *
      * @param handle candidate
-     * @returns true if handle is an Expression
+     * @returns true if handle is an Element
      */
     public static boolean isAElement(Object handle) {
         return handle instanceof MElement;
+    }
+
+    /** Recognizer for ElementImport
+     *
+     * @param handle candidate
+     * @returns true if handle is an ElementImport
+     */
+    public static boolean isAElementImport(Object handle) {
+        return handle instanceof MElementImport;
+    }
+
+    /** Recognizer for ElementListener
+     *
+     * @param handle candidate
+     * @returns true if handle is an ElementListener
+     */
+    public static boolean isAElementListener(Object handle) {
+        return handle instanceof MElementListener;
+    }
+
+    /** Recognizer for ElementResidence
+     *
+     * @param handle candidate
+     * @returns true if handle is an ElementResidence
+     */
+    public static boolean isAElementResidence(Object handle) {
+        return handle instanceof MElementResidence;
     }
 
     /** Recognizer for Expression
@@ -535,6 +622,15 @@ public class ModelFacade {
         return handle instanceof MFeature;
     }
 
+    /** Recognizer for FinalState
+     *
+     * @param handle candidate
+     * @returns true if handle is a FinalState
+     */
+    public static boolean isAFinalState(Object handle) {
+        return handle instanceof MFinalState;
+    }
+
     /** Recognizer for Flow
      *
      * @param handle candidate
@@ -542,6 +638,15 @@ public class ModelFacade {
      */
     public static boolean isAFlow(Object handle) {
         return handle instanceof MFlow;
+    }
+
+    /** Recognizer for Guard
+     *
+     * @param handle candidate
+     * @returns true if handle is a Guard
+     */
+    public static boolean isAGuard(Object handle) {
+        return handle instanceof MGuard;
     }
 
     /** Recognizer for GeneralizableElement
@@ -645,6 +750,15 @@ public class ModelFacade {
         return handle instanceof MModelElement;
     }
 
+    /** Recognizer for Multiplicity
+     *
+     * @param handle candidate
+     * @returns true if handle is a Multiplicity
+     */
+    public static boolean isAMultiplicity(Object handle) {
+        return handle instanceof MMultiplicity;
+    }
+
     /** Recognizer for Namespace
      *
      * @param handle candidate
@@ -690,6 +804,15 @@ public class ModelFacade {
      */
     public static boolean isAObject(Object handle) {
         return handle instanceof MObject;
+    }
+
+    /** Recognizer for Parameter
+     *
+     * @param handle candidate
+     * @returns true if handle is a Parameter
+     */
+    public static boolean isAParameter(Object handle) {
+        return handle instanceof MParameter;
     }
 
     /**
