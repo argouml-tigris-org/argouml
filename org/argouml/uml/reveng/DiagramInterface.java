@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -52,17 +53,21 @@ import ru.novosoft.uml.model_management.MPackage;
 
 /**
  * Instances of this class interface the current diagram.
+ * <p>
+ * This class is used by the import mechanism to create packages, 
+ * interfaces and classes within the diagrams. 
+ * It is also used to find the correct diagram to work in.
  *
- * @author <a href="mailto:a_rueckert@gmx.net">Andreas Rueckert</a>
- * @version 1.0
- * @since 1.0
+ * @author Andreas Rueckert
+ * @since 0.9
  */
 public class DiagramInterface {
     
     Editor _currentEditor = null;
 
-    // To know what diagrams we have to layout after the import,
-    // we store them in this Vector.
+    /** To know what diagrams we have to layout after the import,
+     * we store them in this Vector.
+     */
     Vector _modifiedDiagrams = new Vector();
 
     /**
@@ -119,13 +124,17 @@ public class DiagramInterface {
      */
     public void addPackage(MPackage newPackage) {
 	if(!isInDiagram(newPackage)) {
-	    GraphModel gm            = Globals.curEditor().getGraphModel();
+	    ClassDiagramGraphModel gm =
+		(ClassDiagramGraphModel)getEditor().getGraphModel();
 	    LayerPerspective lay     = (LayerPerspective)getEditor().getLayerManager().getActiveLayer();
 	    FigPackage newPackageFig = new FigPackage( gm, newPackage);
 
-	    getEditor().add( newPackageFig);
-	    lay.putInPosition( (Fig)newPackageFig);
-	    getEditor().damaged( newPackageFig);
+	    if (gm.canAddNode(newPackage)) {
+		getEditor().add(newPackageFig);
+		gm.addNode(newPackage);
+		lay.putInPosition((Fig)newPackageFig);
+		getEditor().damaged(newPackageFig);
+	    }
 	}
     }
 
@@ -138,11 +147,12 @@ public class DiagramInterface {
      *         false otherwise.
      */
     public boolean isInDiagram(MPackage p) {
-	if(ProjectBrowser.TheInstance.getTarget() instanceof Diagram) {
-	    return ((Diagram)(ProjectBrowser.TheInstance.getTarget())).getNodes().contains(p);
+	Object target = ProjectBrowser.TheInstance.getTarget();
+	if(target instanceof Diagram) {
+	    return (((Diagram)target).getNodes()).contains(p);
 	} else {
-	    if(ProjectBrowser.TheInstance.getTarget() instanceof ProjectMemberDiagram) {
-		return ((ProjectMemberDiagram)ProjectBrowser.TheInstance.getTarget()).getDiagram().getNodes().contains(p);
+	    if(target instanceof ProjectMemberDiagram) {
+		return ((ProjectMemberDiagram)target).getDiagram().getNodes().contains(p);
 	    } else {
 		return false;
 	    }
