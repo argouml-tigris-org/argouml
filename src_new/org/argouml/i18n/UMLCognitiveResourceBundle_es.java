@@ -24,7 +24,6 @@
 
 package org.argouml.i18n;
 import java.util.*;
-import org.argouml.util.*;
 
 /* 
  * SPECIAL CHARACTER CODES //////////////////////////////////////////

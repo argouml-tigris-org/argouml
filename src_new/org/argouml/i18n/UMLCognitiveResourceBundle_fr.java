@@ -24,7 +24,6 @@
 
 package org.argouml.i18n;
 import java.util.*;
-import org.argouml.util.*;
 
 /**
  *   This class is the default member of a resource bundle that
@@ -96,8 +95,6 @@ public class UMLCognitiveResourceBundle_fr extends ListResourceBundle {
         {"taggedvaluespane.label.tag", "Marqueur"},
         {"taggedvaluespane.label.value", "Valeur"},
 
-        {"button.ok", "OK"},
-        {"button.cancel", "Annuler"},
         {"button.open", "Ouvrir"},
         {"button.back", "Pr\u00e9c\u00e9dent"},
         {"button.next", "Suivant"},

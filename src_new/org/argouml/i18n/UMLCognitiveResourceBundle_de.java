@@ -24,7 +24,6 @@
 
 package org.argouml.i18n;
 import java.util.*;
-import org.argouml.util.*;
 
 /**
  *   This class is the default member of a resource bundle that
