@@ -30,7 +30,6 @@
  */
 
 package org.argouml.application.api;
-import org.argouml.application.modules.*;
 
 import java.util.Vector;
 

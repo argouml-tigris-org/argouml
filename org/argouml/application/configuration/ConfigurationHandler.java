@@ -27,9 +27,7 @@ package org.argouml.application.configuration;
 import org.argouml.application.api.*;
 import java.beans.*;
 import java.io.*;
-import java.util.*;
 import java.net.*;
-import org.apache.log4j.*;
 
 /**
  *   This class provides a user configuration based upon properties.

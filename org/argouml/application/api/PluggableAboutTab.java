@@ -24,9 +24,6 @@
 
 package org.argouml.application.api;
 
-import org.argouml.ui.*;
-
-
 /**  
  * A module interface which identifies an ArgoUML plug-in used 
  * as a tab in the about dialog.
