@@ -24,18 +24,11 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -46,6 +39,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.Generator;
 
@@ -53,100 +47,44 @@ import org.argouml.uml.generator.Generator;
  * Provides support for setting a "src_path" tagged value used in Java 
  * round trip engineering.
  */
-public class SourcePathDialog extends JDialog implements ActionListener {
+public class SourcePathDialog extends ArgoDialog implements ActionListener {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
     private SrcPathTableModel _srcPathTableModel = new SrcPathTableModel();
 
     protected JTable _srcPathTable;
-    protected JButton _cancelButton;
-    protected JButton _okButton;
-    protected JScrollPane _srcPathScrollPane;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
     public SourcePathDialog() {
         super(
-	      ProjectBrowser.getInstance(),
-	      Translator.localize("action.generate-code-for-project"));
+            ProjectBrowser.getInstance(),
+            Translator.localize("action.generate-code-for-project"),
+            ArgoDialog.OK_CANCEL_OPTION,
+            true);
 
-        GridBagConstraints gridBagConstraints;
-
-        _cancelButton = new JButton();
-        _okButton = new JButton();
-        _srcPathScrollPane = new JScrollPane();
         _srcPathTable = new JTable();
-
-        getContentPane().setLayout(new GridBagLayout());
-
-        _cancelButton.setText("Cancel");
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        gridBagConstraints.anchor = GridBagConstraints.EAST;
-        getContentPane().add(_cancelButton, gridBagConstraints);
-
-        _okButton.setText("Ok");
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        gridBagConstraints.anchor = GridBagConstraints.EAST;
-        getContentPane().add(_okButton, gridBagConstraints);
-
         _srcPathTable.setModel(_srcPathTableModel);
         _srcPathTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-        _srcPathTable.setShowVerticalLines(false);
-        _srcPathTable.setIntercellSpacing(new Dimension(0, 1));
         TableColumn elemCol = _srcPathTable.getColumnModel().getColumn(0);
         elemCol.setMinWidth(0);
         elemCol.setMaxWidth(0);
-        elemCol = null;
-        _srcPathScrollPane.setViewportView(_srcPathTable);
-
-        gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-        gridBagConstraints.fill = GridBagConstraints.BOTH;
-        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-        gridBagConstraints.weighty = 2.0;
-        getContentPane().add(_srcPathScrollPane, gridBagConstraints);
-
-        pack();
-
-        // Center Dialog on Screen -- todo: this should be a support function
-        ProjectBrowser pb = ProjectBrowser.getInstance();
-        Rectangle pbBox = pb.getBounds();
-        setLocation(
-		    pbBox.x + (pbBox.width - this.getWidth()) / 2,
-		    pbBox.y + (pbBox.height - this.getHeight()) / 2);
-
-        getRootPane().setDefaultButton(_okButton);
-        _okButton.addActionListener(this);
-        _cancelButton.addActionListener(this);
+        
+        setContent(new JScrollPane(_srcPathTable));
     }
 
     ////////////////////////////////////////////////////////////////
     // event handlers
 
     public void actionPerformed(ActionEvent e) {
-        // Cancel Button ------------------------------------------
-        if (e.getSource() == _cancelButton) {
-            buttonCancelActionPerformed();
-        }
-        // Ok Button ------------------------------------------
-        if (e.getSource() == _okButton) {
+        super.actionPerformed(e);
+        
+        // OK Button ------------------------------------------
+        if (e.getSource() == getOkButton()) {
             buttonOkActionPerformed();
         }
-    }
-
-    public void buttonCancelActionPerformed() {
-        setVisible(false);
-        dispose();
     }
 
     public void buttonOkActionPerformed() {
@@ -159,7 +97,6 @@ public class SourcePathDialog extends JDialog implements ActionListener {
                 ModelFacade.setTaggedValue(elem, "src_path", path);
             }
         }
-        buttonCancelActionPerformed();
     }
 } /* end class SourcePathDialog */
 
