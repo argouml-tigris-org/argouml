@@ -147,21 +147,18 @@ public class GeneratorJava extends Generator {
     if (returnType == null && !nameStr.equals(clsName)) s += "void ";
     else if (returnType != null) s += generateClassifierRef(returnType) + " ";
 
-
     // name and params
+    Vector params = new Vector(op.getParameters());
+	params.remove(rp);
     s += nameStr + "(";
-    Collection params = op.getParameters();
-    if (params != null) {
-      Iterator enum = params.iterator();
-      boolean first = true;
-      while (enum.hasNext()) {
-	MParameter p = (MParameter) enum.next();
-	// how to do that in nsuml?  if (MParameter.RETURN_NAME.equals(p.getName())) continue;
-	if (true) continue;
-	if (!first) s += ", ";
-	s += generateParameter(p);
-	first = false;
-      }
+	if (params != null) {
+		boolean first = true;
+		for (int i=0; i < params.size(); i++) {
+			MParameter p = (MParameter) params.elementAt(i);
+			if (!first) s += ", ";
+			s += generateParameter(p);
+			first = false;
+		}
     }
     s += ")";
     return s;

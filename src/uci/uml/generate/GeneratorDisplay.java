@@ -67,25 +67,26 @@ public class GeneratorDisplay extends Generator {
     String clsName = generateName(op.getOwner().getName());
 
     // pick out return type
-    //??? how to be done with nsuml?
-    //MClassImpl returnType = op.getReturnType();
-    //if (returnType == null && !nameStr.equals(clsName)) s += "void?? ";
-    //else if (returnType != null) s += generateClassifierRef(returnType) + " ";
+	MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
+	if (rp != null) {
+		MClassifier returnType = rp.getType();
+		if (returnType == null && !nameStr.equals(clsName)) s += "void?? ";
+		else if (returnType != null) s += generateClassifierRef(returnType) + " ";
+	} else s += "void?? ";
+		
 
     // name and params
-    Collection params = op.getParameters();
+    Vector params = new Vector(op.getParameters());
+	params.remove(rp);
     s += nameStr + "(";
 	if (params != null) {
-      Iterator enum = params.iterator();
-      boolean first = true;
-      while (enum.hasNext()) {
-	MParameter p = (MParameter) enum.next();
-	// not in nsuml: if (MParameter.RETURN_NAME.equals(p.getName())) continue;
-	if (true) continue;
-	if (!first) s += ", ";
-	s += generateParameter(p);
-	first = false;
-      }
+		boolean first = true;
+		for (int i=0; i < params.size(); i++) {
+			MParameter p = (MParameter) params.elementAt(i);
+			if (!first) s += ", ";
+			s += generateParameter(p);
+			first = false;
+		}
     }
     s += ")";
     return s;

@@ -33,6 +33,7 @@ package uci.uml.critics;
 import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
+import uci.uml.util.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
@@ -42,7 +43,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 public class CrDupParamName extends CrUML {
 
   public CrDupParamName() {
-    setHeadline("Duplicate MParameter Name");
+    setHeadline("Duplicate Parameter Name");
     sd("Each parameter of an operation must have a unique name. \n\n"+
        "Clean and unambigous naming is needed for code generation and to "+
        "achieve clear and maintainable designs.\n\n"+
@@ -56,7 +57,8 @@ public class CrDupParamName extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MBehavioralFeature)) return NO_PROBLEM;
     MBehavioralFeature bf = (MBehavioralFeature) dm;
-    List params = bf.getParameters();
+    Vector params = new Vector(bf.getParameters());
+	params.remove(MMUtil.SINGLETON.getReturnParameter((MOperation)bf));
     Vector namesSeen = new Vector();
     Iterator enum = params.iterator();
     while (enum.hasNext()) {

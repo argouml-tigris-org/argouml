@@ -212,6 +212,6 @@ public class MMUtil {
 			}
 		}
 		newReturnParameter.setKind(MParameterDirectionKind.RETURN);
-		operation.addParameter(newReturnParameter);
+		operation.addParameter(0, newReturnParameter);
 	}
 }

@@ -43,7 +43,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.behavior.activity_graphs.*;
 
-/** Class to display graphics for a UML MState in a diagram. */
+/** Class to display graphics for a UML State in a diagram. */
 
 public class FigInitialState extends FigStateVertex {
 

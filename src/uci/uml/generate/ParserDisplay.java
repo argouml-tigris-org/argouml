@@ -62,6 +62,11 @@ public class ParserDisplay extends Parser {
 	features.removeAll(MMUtil.SINGLETON.getOperations(cls));
 	features.addAll(newOps);
 	cls.setFeatures(features);
+	Collection ops = MMUtil.SINGLETON.getOperations(cls);
+	Iterator iter = ops.iterator();
+	while (iter.hasNext()) {
+		System.out.println(MMUtil.SINGLETON.getReturnParameter((MOperation)iter.next()));
+	}
 
   }
 
@@ -187,7 +192,7 @@ public class ParserDisplay extends Parser {
     Project p = pb.getProject();
     MClassifier rt = p.findType(rtStr);
     
-    //System.out.println("setting return type: " + rtStr);
+    //System.out.println("setting return type: " + rtStr +" "+rt);
     MParameter param = new MParameterImpl();
     param.setType(rt);
     MMUtil.SINGLETON.setReturnParameter(op,param);
@@ -198,15 +203,15 @@ public class ParserDisplay extends Parser {
 		s = s.trim();
 		String leftOver = s;
 		java.util.StringTokenizer st = new java.util.StringTokenizer(s, "(),");
-		List params = new ArrayList();
+		// List params = new ArrayList();
 		while (st.hasMoreTokens()) {
 			String token = st.nextToken();
 			MParameter p = parseParameter(token);
-			if (p != null) params.add(p);
+			if (p != null) op.addParameter(p);
 			if (!st.hasMoreTokens())
 				leftOver = s.substring(s.indexOf(token) + token.length());
 		}
-		op.setParameters(params);
+		// op.setParameters(params);
 		
 		return leftOver;
 	}
