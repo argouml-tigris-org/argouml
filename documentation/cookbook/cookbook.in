@@ -2598,16 +2598,16 @@ Enhancing an UML Modelling Tool with Context-Based Constraints for Components
 	<para lang="de">
 Noch vor der Erstellung eines detaillierten Entwurfs hilft ein
 Spezifikationsmodell eines komponenten-basierten Systems dabei, Probleme
-so frï¿½h im Entwicklungsprozess wie mï¿½glich zu entdecken. Die Sprache
+so früh im Entwicklungsprozess wie möglich zu entdecken. Die Sprache
 CCL ('Component Constraint Language') wurde bei CIS entwickelt und
 erlaubt den Entwickler 'Contextbased Constraints' dem
-Spezifikationsmodell hinzuzufï¿½gen. Dadurch entsteht ein Modell, das
-ï¿½ber die Beschreibung der statische Struktur des Systems
+Spezifikationsmodell hinzuzufügen. Dadurch entsteht ein Modell, das
+über die Beschreibung der statische Struktur des Systems
 hinausgeht. Zur Zeit existiert allerdings kein Werkzeug, dass das
 Komponentenspezifikationsmodell in den Entwicklungsprozess
 integriert. Ziel dieser Diplomarbeit war der Entwurf eines solchen
 Werkzeugs, um die Philosophie des Continuous Software Engineering
-(CSE) zu unterstï¿½tzten.
+(CSE) zu unterstützten.
 
 </para>
 	<para>
