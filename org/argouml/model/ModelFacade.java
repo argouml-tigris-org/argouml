@@ -127,6 +127,7 @@ import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MExpression;
+import ru.novosoft.uml.foundation.data_types.MExpressionEditor;
 import ru.novosoft.uml.foundation.data_types.MIterationExpression;
 import ru.novosoft.uml.foundation.data_types.MMessageDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
@@ -4466,9 +4467,9 @@ public class ModelFacade {
     }
 
     /**
-     * Sets a body of some method.
-     * @param method
-     * @param expression
+     * Sets a body of some method or expression.
+     * @param method, expression
+     * @param body
      */
     public static void setBody(Object m, Object expr) {
         if (m != null
@@ -4477,10 +4478,46 @@ public class ModelFacade {
             ((MMethod)m).setBody((MProcedureExpression)expr);
             return;
         }
+        if (m instanceof MExpression) {
+            MExpression expression = (MExpression) m;
+            MExpressionEditor expressionEditor = (MExpressionEditor)
+                UmlFactory.getFactory().getDataTypes().createExpressionEditor(m);
+            expressionEditor.setBody((String)expr);
+            expression = expressionEditor.toExpression();
+            return;
+        }
         throw new IllegalArgumentException("Unrecognized object : " +
             getClassNull(m) + " or " + getClassNull(expr));
     }
 
+    /**
+     * Sets the language of an expression.
+     * @param expression
+     * @param lang
+     */
+    public static void setLanguage(Object m, String expr) {
+        if (m instanceof MExpression) {
+            MExpression expression = (MExpression) m;
+            MExpressionEditor expressionEditor = (MExpressionEditor)
+                UmlFactory.getFactory().getDataTypes().
+                    createExpressionEditor(m);
+            expressionEditor.setLanguage(expr);
+            m = expressionEditor.toExpression();
+           
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object : " +
+            getClassNull(m) + " or " + getClassNull(expr));
+    }
+    
+    public static String getLanguage(Object expr) {
+        if (expr instanceof MExpression) {
+            return ((MExpression) expr).getLanguage();
+        }
+        throw new IllegalArgumentException("Unrecognized object : " +
+            getClassNull(expr));
+    }
+    
     /**
      * Sets a default value of some parameter.
      * @param parameter
