@@ -116,11 +116,12 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
     */
   public boolean shouldBeEnabled(Object target) {
 
-      if (!(target instanceof MModelElement)) {
-        return false;
+      if ((target instanceof MClass) ||
+          (target instanceof MFeature)) {
+          return true;
       } 
       else
-          return true;
+          return false;
   }
   
   /**
