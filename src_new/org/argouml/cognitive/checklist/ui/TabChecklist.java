@@ -170,10 +170,10 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   // accessors
   public void setTarget(MModelElement t) {
     if (_target instanceof MElement)
-      ((MModelElementImpl)_target).removeMElementListener(this);
+      ((MModelElement)_target).removeMElementListener(this);
     _target = t;
     if (_target instanceof MElement)
-      ((MModelElementImpl)_target).addMElementListener(this);
+      ((MModelElement)_target).addMElementListener(this);
     fireTableStructureChanged();
   }
 

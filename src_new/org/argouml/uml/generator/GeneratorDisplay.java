@@ -559,7 +559,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
     if (classifiers == null) return "";
     Iterator clsEnum = classifiers.iterator();
     while (clsEnum.hasNext()) {
-      s += generateClassifierRef((MClassImpl)clsEnum.next());
+      s += generateClassifierRef((MClass)clsEnum.next());
       if (clsEnum.hasNext()) s += ", ";
     }
     return s;

@@ -103,7 +103,7 @@ public class TMResults extends AbstractTableModel {
       }
     }
     if (rowObj instanceof MModelElement) {
-      MModelElementImpl me = (MModelElementImpl) rowObj;
+      MModelElement me = (MModelElement) rowObj;
       Diagram d = null;
       if (_diagrams != null) d = (Diagram) _diagrams.elementAt(row);
       switch (col) {

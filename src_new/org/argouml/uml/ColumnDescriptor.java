@@ -150,7 +150,7 @@ class ColumnName extends ColumnDescriptor {
       String res = ((MModelElement) target).getName();
       String ocl = "";
       if (target instanceof MElement)
-	ocl = ((MElementImpl)target).getUMLClassName();
+	ocl = ((MElement)target).getUMLClassName();
       if (res == null || res.length() == 0) res = "(anon " + ocl +")";
       return res;
     }
