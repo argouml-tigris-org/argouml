@@ -138,7 +138,7 @@ public abstract class Generator
              * generateTaggedValue(sometag)
              */
             if (_testModus
-                && ((MTaggedValue) o).getTag().equals(
+                && ModelFacade.getTag(o).equals(
                     getNotation().getName() + TEST_SUFFIX)) {
                 return "";
             }
