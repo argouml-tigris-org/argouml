@@ -41,6 +41,29 @@ public class ConfigurationFactory
     private static ConfigurationHandler _handler = 
 	new ConfigurationProperties();
 
+    /**
+     * Initialize the factory singleton based on system
+     * property argo.ConfigurationFactory, or use the default
+     * if not set.
+     */
+    static {
+        String name = System.getProperty("argo.ConfigurationFactory");
+	ConfigurationFactory newFactory = null;
+	if (name != null) {
+            try {
+                newFactory = 
+		    (ConfigurationFactory) Class.forName(name).newInstance();
+            }
+	    catch (Exception e) {
+	        System.out.println ("Can't create configuration factory " +
+	                            name + ", using default factory");
+            }
+	}
+	if (newFactory == null)
+	    newFactory = new ConfigurationFactory();
+	SINGLETON = newFactory;
+    }
+
     /** Private constructor to not allow instantiation.
      */
     private ConfigurationFactory() {
@@ -64,29 +87,6 @@ public class ConfigurationFactory
     public ConfigurationHandler getConfigurationHandler() {
 	// TODO:  Allow other configuration handlers.
 	return _handler;
-    }
-
-    /**
-     * Initialize the factory singleton based on system
-     * property argo.ConfigurationFactory, or use the default
-     * if not set.
-     */
-    static {
-        String name = System.getProperty("argo.ConfigurationFactory");
-	ConfigurationFactory newFactory = null;
-	if (name != null) {
-            try {
-                newFactory = 
-		    (ConfigurationFactory) Class.forName(name).newInstance();
-            }
-	    catch (Exception e) {
-	        System.out.println ("Can't create configuration factory " +
-	                            name + ", using default factory");
-            }
-	}
-	if (newFactory == null)
-	    newFactory = new ConfigurationFactory();
-	SINGLETON = newFactory;
     }
 
 } /* end class ConfigurationFactory */
