@@ -24,20 +24,20 @@
 
 package org.argouml.ui.menubar;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.KeyEvent;
 
-import javax.swing.*;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.ui.*;
-import org.tigris.gef.util.*;
-
-import org.argouml.application.api.*;
-import org.argouml.application.events.*;
-import org.argouml.ui.*;
-import org.argouml.uml.ui.*;
+import org.argouml.ui.ActionGoToDetails;
+import org.argouml.ui.ActionGoToEdit;
+import org.argouml.ui.Actions;
+import org.argouml.uml.ui.ActionLayout;
+import org.tigris.gef.base.CmdAlign;
+import org.tigris.gef.base.CmdDistribute;
+import org.tigris.gef.base.CmdNudge;
+import org.tigris.gef.base.CmdReorder;
 
 
 class InitMenusLater implements Runnable {
@@ -141,7 +141,7 @@ class InitMenusLater implements Runnable {
     tab1Item.setAccelerator(alt1);
     JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("Properties"));
     tab2Item.setAccelerator(alt2);
-    JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("Javadocs"));
+    JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("Documentation"));
     tab3Item.setAccelerator(alt3);
     JMenuItem tab4Item = detailsTabs.add(new ActionGoToDetails("Source"));
     tab4Item.setAccelerator(alt4);
