@@ -25,8 +25,10 @@ package org.argouml.ui;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.JTabbedPane;
+import javax.swing.JPanel;
 
+import org.argouml.cognitive.ui.TabToDoTarget;
+import org.argouml.uml.ui.TabModelTarget;
 import org.argouml.uml.ui.UMLAction;
 
 public class ActionGoToDetails extends UMLAction {
@@ -42,20 +44,27 @@ public class ActionGoToDetails extends UMLAction {
     _tabName = tabName;
   }
 
+    /**
+     * Should return true as the pane where the user can navigate to supports
+     * the current target.
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() {
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
-        /*
-        DetailsPane pane = pb.getDetailsPane();
-        JTabbedPane pane2 = pane.getTabs();
-        int index = pane2.indexOfTab(_tabName);
-        if (index >= 0) {
-            return pane2.isEnabledAt(index);
-        } 
-        return false;
-        */
+        super.shouldBeEnabled();
+        ProjectBrowser pb = ProjectBrowser.TheInstance;       
         if (!super.shouldBeEnabled() || pb == null) return false;
-        boolean b = (pb.getNamedTab(_tabName) != null);
-        return b;
+        JPanel namedTab = pb.getNamedTab(_tabName);
+        boolean shouldBeEnabled = false;
+        if (namedTab instanceof TabToDoTarget) {
+            shouldBeEnabled = true;
+        } else 
+        if (namedTab instanceof TabModelTarget) {
+            shouldBeEnabled = ((TabModelTarget)namedTab).shouldBeEnabled();
+        } else {
+            shouldBeEnabled = namedTab != null;
+        } 
+        
+       return shouldBeEnabled;
     }
 
     public void actionPerformed(ActionEvent ae) {
