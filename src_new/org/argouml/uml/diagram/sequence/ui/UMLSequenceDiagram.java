@@ -27,6 +27,7 @@ package org.argouml.uml.diagram.sequence.ui;
 import java.beans.PropertyVetoException;
 import java.util.Hashtable;
 
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
@@ -106,7 +107,14 @@ public class UMLSequenceDiagram extends UMLDiagram {
         }
         return name;
     }
-
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
+     */
+    public String getLabelName() {
+        return Translator.localize("label.sequence-diagram");
+    }
+    
     /**
      * Must return an array of actions via which the model can be
      * manipulated. To use the 'nested actions' feature (like the

@@ -35,6 +35,7 @@ import java.util.Iterator;
 import javax.swing.Action;
 
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
@@ -231,7 +232,14 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         }
         return name;
     }
-
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
+     */
+    public String getLabelName() {
+        return Translator.localize("label.colaboration-diagram");
+    }
+    
     /**
      * @return Returns the actionClassifierRole.
      */

@@ -33,6 +33,7 @@ import java.beans.PropertyVetoException;
 import javax.swing.Action;
 
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
@@ -179,6 +180,13 @@ public class UMLDeploymentDiagram extends UMLDiagram {
             name = getNewDiagramName();
         }
         return name;
+    }
+        
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
+     */
+    public String getLabelName() {
+        return Translator.localize("label.deployment-diagram");
     }
     
     //////////////////////////////
