@@ -100,13 +100,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         // selects the owning use case.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-        new PropPanelButton(this, buttonPanel, _navBackIcon,
-                            Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction",
-                            "isNavigateBackEnabled");
-        new PropPanelButton(this, buttonPanel, _navForwardIcon,
-                            Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction",
-                            "isNavigateForwardEnabled");
+                            Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);       
         new PropPanelButton(this, buttonPanel, _deleteIcon,
                             localize("Delete"), "removeElement", null); 
     }

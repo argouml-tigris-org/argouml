@@ -28,7 +28,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
 
 public class PropPanelAbstraction extends PropPanelDependency {
@@ -50,8 +49,8 @@ public class PropPanelAbstraction extends PropPanelDependency {
 
         // TODO: add Mapping
         new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-        new PropPanelButton(this, buttonPanel, _navBackIcon, Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction", "isNavigateBackEnabled");
-        new PropPanelButton(this, buttonPanel, _navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction", "isNavigateForwardEnabled");
+        // new PropPanelButton(this, buttonPanel, _navBackIcon, Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction", "isNavigateBackEnabled");
+        // new PropPanelButton(this, buttonPanel, _navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction", "isNavigateForwardEnabled");
         new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-association"), "removeElement", null);
 
     }

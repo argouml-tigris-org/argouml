@@ -74,9 +74,7 @@ public class PropPanelGuard extends PropPanelModelElement {
         addField(Argo.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
         addField(Argo.localize("UMLMenu", "label.language"), new UMLExpressionLanguageField(expressionModel,true));        	
 
-	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu" ,"button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);	
 	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
 
   }

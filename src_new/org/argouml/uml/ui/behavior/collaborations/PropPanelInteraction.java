@@ -60,9 +60,7 @@ public class PropPanelInteraction extends PropPanelModelElement {
       	JScrollPane messagesScroll= new JScrollPane(messagesList); 	
         addField(Argo.localize("UMLMenu", "label.messages"), messagesScroll);
     	
-    	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-        new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-        new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);       
         new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-attribute"),"removeElement",null);
     	
 	}
