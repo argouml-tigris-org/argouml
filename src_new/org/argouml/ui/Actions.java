@@ -39,6 +39,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 import javax.swing.filechooser.*;
+import javax.help.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -118,7 +119,12 @@ public class Actions {
   public static UMLAction Snooze = new ActionSnooze();
 
   public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
-
+  public static UMLAction Quickguide = 
+      new ActionHelp("QuickGuide","quickguide.hs");
+  public static UMLAction Manual = 
+      new ActionHelp("Manual","manual.hs");
+  public static UMLAction FAQ = 
+      new ActionHelp("FAQ","faq.hs");
 
   public static void updateAllEnabled() {
     java.util.Enumeration actions = _allActions.elements();
@@ -433,5 +439,50 @@ class ActionAboutArgoUML extends UMLAction {
   public boolean shouldBeEnabled() { return true; }
 } /* end class ActionAboutArgoUML */
 
+/** display a help manual */
+class ActionHelp extends UMLAction {
+
+    private HelpSet mainHS = null;
+    private HelpBroker mainHB = null;
+    private String helpsetName = null;
 
 
+    public ActionHelp(String menuName, String helpsetName) { 
+        super(menuName, NO_ICON); 
+        this.helpsetName = helpsetName;
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        try {
+            ClassLoader cl = ActionHelp.class.getClassLoader();
+            URL url = HelpSet.findHelpSet(cl, helpsetName);
+            mainHS = new HelpSet(cl, url);
+        } catch (Exception ee) {
+            System.out.println ("Help Set "+helpsetName+" not found");
+            return;
+        } catch (ExceptionInInitializerError ex) {
+            System.err.println("initialization error:");
+            ex.getException().printStackTrace();
+        }
+        JFrame helpFrame = new JFrame();
+        showHelp(helpFrame, mainHS, null);
+    }
+
+    public void showHelp(java.awt.Component comp, 
+                            javax.help.HelpSet hs,
+                         String helpID) {
+        DefaultHelpBroker hb = new DefaultHelpBroker();
+        hb.setHelpSet(hs);
+        Window window = null;
+        if (comp instanceof Window)
+            window = (Window)comp;
+        else
+            window = (Window)SwingUtilities.getAncestorOfClass(Window.class,comp);
+        if (window != null)
+            hb.setActivationWindow(window);
+        if (helpID != null)
+            hb.setCurrentID(helpID);
+        hb.setDisplayed(true);
+    }
+    public boolean shouldbeEnabled() { return true; }
+}
