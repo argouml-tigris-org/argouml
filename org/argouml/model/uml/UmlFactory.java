@@ -24,8 +24,10 @@
 
 package org.argouml.model.uml;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -42,6 +44,7 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsF
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 
 import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.behavior.activity_graphs.MCallState;
 import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
@@ -54,6 +57,7 @@ import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
@@ -96,6 +100,7 @@ import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.behavior.use_cases.MUseCaseInstance;
+import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationClass;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
@@ -127,6 +132,7 @@ import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.core.MTemplateParameter;
 import ru.novosoft.uml.foundation.core.MUsage;
+import ru.novosoft.uml.foundation.data_types.MActionExpression;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
@@ -224,6 +230,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
      */
     private static final UmlFactory SINGLETON = new UmlFactory();
 
+	private static Hashtable elements;
+
     /** Singleton instance access method.
      */
     public static UmlFactory getFactory() {
@@ -234,6 +242,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
      */
     private UmlFactory() {
         buildValidConnectionMap();
+		initializeFactoryMethods();
     }
 
     private void buildValidConnectionMap() {
@@ -275,6 +284,184 @@ public class UmlFactory extends AbstractUmlModelFactory {
             }
         }
     }
+
+	private void initializeFactoryMethods() {
+		MFactory factory = MFactory.getDefaultFactory();
+		elements = new Hashtable(80);
+		elements.put(
+			Uml.ABSTRACTION,
+			new ObjectCreateInfo(
+				MAbstraction.class,
+				factory,
+				"createAbstraction"));
+		elements.put(
+			Uml.ASSOCIATION,
+			new ObjectCreateInfo(
+				MAssociation.class,
+				factory,
+				"createAssociation"));
+		elements.put(
+			Uml.ASSOCIATION_ROLE,
+			new ObjectCreateInfo(
+				MAssociationRole.class,
+				factory,
+				"createAssociationRole"));
+		elements.put(
+			Uml.DEPENDENCY,
+			new ObjectCreateInfo(
+				MDependency.class,
+				factory,
+				"createDependency"));
+		elements.put(
+			Uml.EXTEND,
+			new ObjectCreateInfo(MExtend.class, factory, "createExtend"));
+		elements.put(
+			Uml.GENERALIZATION,
+			new ObjectCreateInfo(
+				MGeneralization.class,
+				factory,
+				"createGeneralization"));
+		elements.put(
+			Uml.INCLUDE,
+			new ObjectCreateInfo(MInclude.class, factory, "createInclude"));
+		elements.put(
+			Uml.LINK,
+			new ObjectCreateInfo(MLink.class, factory, "createLink"));
+		elements.put(
+			Uml.PERMISSION,
+			new ObjectCreateInfo(
+				MPermission.class,
+				factory,
+				"createPermission"));
+		elements.put(
+			Uml.USAGE,
+			new ObjectCreateInfo(MUsage.class, factory, "createUsage"));
+		elements.put(
+			Uml.TRANSITION,
+			new ObjectCreateInfo(
+				MTransition.class,
+				factory,
+				"createTransition"));
+		elements.put(
+			Uml.ACTOR,
+			new ObjectCreateInfo(MActor.class, factory, "createActor"));
+		elements.put(
+			Uml.CLASS,
+			new ObjectCreateInfo(MClass.class, factory, "createClass"));
+		elements.put(
+			Uml.CLASSIFIER,
+			new ObjectCreateInfo(
+				MClassifier.class,
+				factory,
+				"createClassifier"));
+		elements.put(
+			Uml.CLASSIFIER_ROLE,
+			new ObjectCreateInfo(
+				MClassifierRole.class,
+				factory,
+				"createClassifierRole"));
+		elements.put(
+			Uml.COMPONENT,
+			new ObjectCreateInfo(MComponent.class, factory, "createComponent"));
+		elements.put(
+			Uml.COMPONENT_INSTANCE,
+			new ObjectCreateInfo(
+				MComponentInstance.class,
+				CoreFactory.getFactory(),
+				"createComponentInstance"));
+		elements.put(
+			Uml.INSTANCE,
+			new ObjectCreateInfo(MInstance.class, factory, "createInstance"));
+		elements.put(
+			Uml.INTERFACE,
+			new ObjectCreateInfo(MInterface.class, factory, "createInterface"));
+		elements.put(
+			Uml.NODE,
+			new ObjectCreateInfo(MNode.class, factory, "createNode"));
+		elements.put(
+			Uml.NODE_INSTANCE,
+			new ObjectCreateInfo(
+				MNodeInstance.class,
+				factory,
+				"createNodeInstance"));
+		elements.put(
+			Uml.OBJECT,
+			new ObjectCreateInfo(MObject.class, factory, "createObject"));
+		elements.put(
+			Uml.PACKAGE,
+			new ObjectCreateInfo(MPackage.class, factory, "createPackage"));
+		elements.put(
+			Uml.STATE,
+			new ObjectCreateInfo(MState.class, factory, "createState"));
+		elements.put(
+			Uml.COMPOSITE_STATE,
+			new ObjectCreateInfo(
+				MCompositeState.class,
+				factory,
+				"createCompositeState"));
+		elements.put(
+			Uml.PSEUDOSTATE,
+			new ObjectCreateInfo(
+				MPseudostate.class,
+				factory,
+				"createPseudostate"));
+		elements.put(
+			Uml.USE_CASE,
+			new ObjectCreateInfo(MUseCase.class, factory, "createUseCase"));
+		elements.put(
+			Uml.ACTION,
+			new ObjectCreateInfo(MAction.class, factory, "createAction"));
+		elements.put(
+			Uml.ASSOCIATION_END,
+			new ObjectCreateInfo(
+				MAssociationEnd.class,
+				factory,
+				"createAssociationEnd"));
+		elements.put(
+			Uml.CALL_ACTION,
+			new ObjectCreateInfo(
+				MCallAction.class,
+				factory,
+				"createCallAction"));
+		elements.put(
+			Uml.NAMESPACE,
+			new ObjectCreateInfo(MNamespace.class, factory, "createNamespace"));
+		elements.put(
+			Uml.RECEPTION,
+			new ObjectCreateInfo(MReception.class, factory, "createReception"));
+		elements.put(
+			Uml.STEREOTYPE,
+			new ObjectCreateInfo(
+				MStereotype.class,
+				factory,
+				"createStereotype"));
+		elements.put(
+			Uml.ATTRIBUTE,
+			new ObjectCreateInfo(MAttribute.class, factory, "createAttribute"));
+		elements.put(
+			Uml.OPERATION,
+			new ObjectCreateInfo(MOperation.class, factory, "createOperation"));
+		elements.put(
+			Uml.MODEL,
+			new ObjectCreateInfo(MModel.class, factory, "createModel"));
+		elements.put(
+			Uml.DATATYPE,
+			new ObjectCreateInfo(MDataType.class, factory, "createDataType"));
+
+		// NSUML does not have a factory method for this
+		elements.put(
+			Uml.ACTION_EXPRESSION,
+			new ObjectCreateInfo(
+				MActionExpression.class,
+				this,
+				"createActionExpression"));
+
+		// NSUML cannot instantiate an Event object
+		// elements.put(Uml.EVENT, new NsumlObjectInfo(factory,MEvent.class, "createEvent"));
+
+		// NSUML cannot instantiate a State Vertex object
+		// elements.put(Uml.STATE_VERTEX, new NsumlObjectInfo(factory,MStateVertex.class, "createStateVertex"));
+	}
     
     /** Create a new connection model element (a relationship or link)
      *  between any existing node model elements.
@@ -829,5 +1016,113 @@ public class UmlFactory extends AbstractUmlModelFactory {
      */
     public void doCopyBase(MBase source, MBase target) {
     }
+    
+	class ObjectCreateInfo {
+	
+		private Object factory;
+
+		private String createMethod;
+
+		private Class javaClass;
+
+//		ObjectCreateInfo (Class javaClass, Object fact, String meth) {
+//			this(javaClass, fact, meth, fact, meth);
+//		}
+		
+		ObjectCreateInfo (Class javaClass, Object fact, String meth) {
+			this.javaClass = javaClass;
+			this.factory = fact;
+			this.createMethod = meth;
+		}
+		/**
+		 * @return
+		 */
+		public Class getJavaClass() {
+			return javaClass;
+		}
+
+		/**
+		 * @return
+		 */
+		public String getCreateMethod() {
+			return createMethod;
+		}
+
+		/**
+		 * @return
+		 */
+		public Object getFactory() {
+			return factory;
+		}
+
+	}
+
+	/** Create an empty but initialized instance of a UML ActionExpression.
+	 *  
+	 *  @return an initialized UML ActionExpression instance.
+	 */
+	public MActionExpression createActionExpression() {
+		MActionExpression expression = new MActionExpression("", "");
+		DataTypesFactory.getFactory().initialize(expression);
+		return expression;
+	}
+
+	/** Create a UML object from the implementation.
+	 * 
+	 * This will allow abstraction of the create mechanism at a single point.
+	 * 
+	 * @param entity name to create - must be implemented in {@link org.argouml.model.uml.Uml.Entity}
+	 * @throws InvalidObjectRequestException if it cannot create the class.
+	 */
+	public Object create(String entity) {
+		throw new RuntimeException("Not yet implemented");
+		// return create((Class) Uml.getUmlClassList().get(entity));
+	}
+
+	/** Create a UML object from the implementation.
+	 * 
+	 * This will allow abstraction of the create mechanism at a single point.
+	 * 
+	 * @param entity Class to create - must implement {@link org.argouml.model.uml.Uml.Entity}
+	 * @throws InvalidObjectRequestException if it cannot create the class.
+	 */
+	public Object create(Class entity) {
+		ObjectCreateInfo oi = (ObjectCreateInfo) elements.get(entity);
+		if (oi == null) {
+			return null;
+			// TODO decide if we want to throw an exception instead
+			// throw new InvalidObjectRequestException("Cannot identify the object type", entity);
+		}
+		String mName = oi.getCreateMethod();
+		// System.out.println("Method: " + mName);
+		Method method = null;
+		try {
+			method = oi.getFactory().getClass().getMethod(oi.getCreateMethod(),
+														  new Class[] {} );
+		}
+		catch (Exception e) {
+			return null;
+			// TODO decide if we want to throw an exception instead
+			// throw new InvalidObjectRequestException("Cannot find creator method", entity, e);
+		}
+
+		Object obj = null;
+		try {
+			obj = method.invoke(oi.getFactory(), new Object[] {} );
+		}
+		catch (Exception e) {
+			return null;
+			// TODO decide if we want to throw an exception instead
+			// throw new InvalidObjectRequestException("Cannot execute creator method", entity, e);
+		}
+		// TODO Figure out how to put in a generic callback to initialize
+		// AbstractUmlModelFactory.initialize(expression);
+		return obj;
+		// return RefBaseObjectProxy.newInstance(obj);
+	}
+
+
+
+
 }
 
