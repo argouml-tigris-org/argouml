@@ -147,10 +147,17 @@ are provided in org.argouml.uml.ui.
       </listitem>
       
       <listitem>
-        <para> A drop down box of options that can be selected, with an icon to 
-          the right allowing navigation to the property panel for the currently 
-          selected item. For example the Stereotype field. Supported by the 
-          <literal>UMLComboBoxNavigator</literal> class. Used e.g. for 
+        <para> A drop down box of options that can be selected. This one exists 
+          in several versions, each having different possibilities. The most 
+          simple version is the <literal>UMLComboBox2</literal>. </para>
+        <para>The <literal>UMLEditableComboBox</literal> allows editing the 
+          selected item.  </para>
+        <para>The <literal>UMLSearchableComboBox</literal> allows editing the 
+          selected item. See e.g. the Operation combobox on the callevent 
+          properties panel. </para>
+        <para> Then there is a variant with a seperate button for navigation to 
+          the property panel for the currently selected item. This is supported 
+          by the<literal>UMLComboBoxNavigator</literal> class. Used e.g. for 
           the stereotype field.</para>
       </listitem>
       
