@@ -587,8 +587,7 @@ public abstract class FigNodeModelElement
         //     MModelElement me = (MModelElement) getOwner();
         //     if (me == null) return;
         //     try { me.setName(new Name(_name.getText())); }
-        //     catch (PropertyVetoException pve) { }
-        System.out.println();
+        //     catch (PropertyVetoException pve) { }  
     }
 
     ////////////////////////////////////////////////////////////////

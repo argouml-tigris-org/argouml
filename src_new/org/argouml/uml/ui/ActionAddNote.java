@@ -122,7 +122,7 @@ public class ActionAddNote extends UMLChangeAction {
                           
       
 	super.actionPerformed(ae);
-    TargetManager.getInstance().setTarget(fig.getOwner());
+    TargetManager.getInstance().setTarget(fig.getOwner()); 
     
     }
 
