@@ -431,6 +431,14 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         return null;
     }
     
+    /**
+     * Build a transition between a source state and a target state. The
+     * parameters are of type Object to decouple the factory and NSUML as much
+     * as possible.
+     * @param source The source state
+     * @param target The target state
+     * @return MTransition The resulting transition between source an state
+     */
     public MTransition buildTransition(Object source, Object target) {
         if (source instanceof MState && target instanceof MState) {
             MTransition trans = createTransition();
@@ -438,6 +446,22 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
             trans.setTarget((MState)target);
             trans.setStateMachine(StateMachinesHelper.getHelper().getStateMachine(source));
             return trans;
+        }
+        return null;
+    }
+    
+    /**
+     * Builds a guard condition with a given transition. The guard condition is
+     * empty by default. The parameter is of type Object to decouple the factory
+     * and NSUML as much as possible.
+     * @param transition The transition that owns the resulting guard condition
+     * @return MGuard The resulting guard condition
+     */
+    public MGuard buildGuard(Object transition) {
+        if (transition instanceof MTransition) {
+            MGuard guard = createGuard();
+            guard.setTransition((MTransition)transition);
+            return guard;
         }
         return null;
     }

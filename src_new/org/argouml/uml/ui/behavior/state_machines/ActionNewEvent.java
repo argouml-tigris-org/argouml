@@ -22,11 +22,10 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.uml.ui.behavior.common_behavior;
+package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -34,75 +33,46 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class ActionNewAction extends AbstractActionNewModelElement {
-    
+public abstract class ActionNewEvent extends AbstractActionNewModelElement {
+
     /**
-     * The constant defining the role the action to be created plays for its parent. 
-     * For example, if one wishes to create an entry action for a state, this is 
-     * filled with "entry". The values are defined in the interface Roles
+     * The constant defining the role the event to be created plays for its
+     * parent. For example, if one wishes to create a trigger event for a
+     * transition, this is filled with "trigger". The values are defined in the
+     * interface Roles
      */
     public final static String ROLE = "role";
-    
+
     public static interface Roles {
-        
+
         /**
-         * The entry activity for some state
+         * The trigger for some transition
          */
-        public final static String ENTRY = "entry";
-        /**
-         * The exit activity for some state
-         */
-        public final static String EXIT = "exit";
-        /**
-         * The doactivity with some state
-         */
-        public final static String DO = "do"; 
-        /**
-         * The action with some message
-         */
-        public final static String ACTION = "action";
-        
-        /**
-         * The effect of some transition
-         */
-        public final static String EFFECT = "effect";
-    }    
-    
+        public final static String TRIGGER = "trigger";
+
+    }
     /**
-     * Constructor for ActionNewAction.
+     * Constructor for ActionNewEvent.
      */
-    protected ActionNewAction() {
+    protected ActionNewEvent() {
         super();
     }
-    
+
     /**
-     * Implementors should create a concrete action like a CallAction in this method.
+     * Implementors should create a concrete event like an instance of
+     * SignalEvent in this method.
      * @return Object
      */
-    protected abstract Object createAction();
+    protected abstract Object createEvent();
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Object action = createAction();
-        if (getValue(ROLE).equals(Roles.EXIT)) {
-            StateMachinesHelper.getHelper().setActionAsExit(getTarget(), action);
-        } else
-        if (getValue(ROLE).equals(Roles.ENTRY)) {
-            StateMachinesHelper.getHelper().setActionAsEntry(getTarget(), action);
-        } else
-        if (getValue(ROLE).equals(Roles.DO)) {
-            StateMachinesHelper.getHelper().setActionAsDoActivity(getTarget(), action);
-        } else
-        if (getValue(ROLE).equals(Roles.ACTION)) {
-            CollaborationsHelper.getHelper().setActionAsAction(getTarget(), action);
-        } else
-        if (getValue(ROLE).equals(Roles.EFFECT)) {
-            StateMachinesHelper.getHelper().setActionAsEffect(getTarget(), action);
+        Object event = createEvent();
+        if (getValue(ROLE).equals(Roles.TRIGGER)) {
+            StateMachinesHelper.getHelper().setEventAsTrigger(getTarget(), event);
         }
-        
     }
-
 }
