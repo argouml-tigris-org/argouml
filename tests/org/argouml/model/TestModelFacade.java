@@ -27,11 +27,14 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.jmi.reflect.RefBaseObject;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.argouml.model.uml.Uml;
+import org.argouml.model.uml.UmlFactory;
 
 /**
  * @author Thierry Lach
@@ -81,18 +84,42 @@ public class TestModelFacade extends TestCase {
 		try {
 			methodIsA = ModelFacade.class.getDeclaredMethod("isA" + objectType, classes);
 
+			// Test with null
 			args[0] = null;
 			rc = null;
 			rc = (Boolean)methodIsA.invoke(facade, args);
 			assertNotNull("isA" + objectType + " called with null", rc);
 			assertTrue("isA" + objectType + " called with null", ! rc.booleanValue());
 
+			// Test with an object
 			args[0] = new Object();
 			rc = null;
 			rc = (Boolean)methodIsA.invoke(facade, args);
 			assertNotNull("isA" + objectType + " called with new Object()", rc);
 			assertTrue("isA" + objectType + " called with new Object()", ! rc.booleanValue());
 			assertTrue("Should not be able to call isA" + objectType, ! hasFacade);
+
+			// Test after creating the class using create() without proxy
+			UmlFactory.getFactory().setJmiProxyCreated(false);
+			Object testObject = UmlFactory.getFactory().create(umlClass);
+			assertNotNull("Unable to create '" + umlClass + "'", testObject);
+			args[0] = testObject;
+			rc = null;
+			rc = (Boolean)methodIsA.invoke(facade, args);
+			assertTrue("isA" + objectType + " called with new Object()", ! rc.booleanValue());
+			assertTrue("Should not be able to call isA" + objectType, ! hasFacade);
+
+			// Test after creating the class using create() without proxy
+			UmlFactory.getFactory().setJmiProxyCreated(true);
+			testObject = UmlFactory.getFactory().create(umlClass);
+			assertNotNull("Unable to create '" + umlClass + "'", testObject);
+			args[0] = testObject;
+			rc = null;
+			rc = (Boolean)methodIsA.invoke(facade, args);
+			assertTrue("Not JMI interface", testObject instanceof RefBaseObject);
+			assertTrue("isA" + objectType + " called with new Object()", ! rc.booleanValue());
+			assertTrue("Should not be able to call isA" + objectType, ! hasFacade);
+
 		}
 		catch (Exception e) {
 			assertTrue("Cannot execute ModelFacade.isA" + objectType + " because of " + e, hasFacade);
