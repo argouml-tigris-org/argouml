@@ -33,6 +33,11 @@ import uci.gef.*;
  * @see Example */
 public class NodeWall extends SampleNode {
 
+  ////////////////////////////////////////////////////////////////
+  // instance variables
+
+  PortPower powerPort1, powerPort2;
+  
    /** Initialize a new NodeWall from the given default node and
     *  application specific model. <p>
     *
@@ -45,9 +50,8 @@ public class NodeWall extends SampleNode {
     *  copies?<p> */
 
   public void initialize(NetNode deft, Object model) {
-      portList = new NetPort[2];
-      portList[0] = new PortPower(this, PortPower.SOCKET);
-      portList[1] = new PortPower(this, PortPower.SOCKET);
+    addPort(powerPort1 = new PortPower(this, PortPower.SOCKET));
+    addPort(powerPort2 = new PortPower(this, PortPower.SOCKET));
    }
 
   public FigNode makePresentation(Layer lay) {
@@ -59,8 +63,8 @@ public class NodeWall extends SampleNode {
     temp_list.addElement(obj2);
     temp_list.addElement(obj3);
     FigNode fn = new FigNode(this, temp_list);
-    fn.addPort(portList[0], obj2);
-    fn.addPort(portList[1], obj3);
+    fn.bindPort(powerPort1, obj2);
+    fn.bindPort(powerPort2, obj3);
     return fn;
   }
 
