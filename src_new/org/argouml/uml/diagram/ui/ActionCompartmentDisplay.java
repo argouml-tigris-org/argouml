@@ -83,63 +83,55 @@ public class ActionCompartmentDisplay extends UMLAction {
     /**
      * Static instance to show the attribute compartment of a class.
      */
-    public static UMLAction ShowAttrCompartment =
+    private static final UMLAction SHOW_ATTR_COMPARTMENT =
         new ActionCompartmentDisplay(true, "action.show-attribute-compartment");
-
 
     /**
      * Static instance to hide the attribute compartment of a class.
      */
-    public static UMLAction HideAttrCompartment =
+    private static final UMLAction HIDE_ATTR_COMPARTMENT =
         new ActionCompartmentDisplay(false, 
                 "action.hide-attribute-compartment");
-
 
     /**
      * Static instance to show the operation compartment of a class.
      */
-
-    public static UMLAction ShowOperCompartment =
+    private static final UMLAction SHOW_OPER_COMPARTMENT =
         new ActionCompartmentDisplay(true, "action.show-operation-compartment");
-
 
     /**
      * Static instance to hide the operation compartment of a class.
      */
-    public static UMLAction HideOperCompartment =
+    private static final UMLAction HIDE_OPER_COMPARTMENT =
         new ActionCompartmentDisplay(false, 
 				     "action.hide-operation-compartment");
-
 
     /**
      * Static instance to show the extension point compartment of a use
      * case.
      */
-    public static UMLAction ShowExtPointCompartment =
+    private static final UMLAction SHOW_EXTPOINT_COMPARTMENT =
         new ActionCompartmentDisplay(true,
                                      "action.show-extension-point-compartment");
-
 
     /**
      * Static instance to hide the extension point compartment of a use
      *   case.
      */
-    public static UMLAction HideExtPointCompartment =
+    private static final UMLAction HIDE_EXTPOINT_COMPARTMENT =
         new ActionCompartmentDisplay(false,
                                      "action.hide-extension-point-compartment");
-
 
     /**
      * Static instance to show both compartments of a class.
      */
-    public static UMLAction ShowAllCompartments =
+    private static final UMLAction SHOW_ALL_COMPARTMENTS =
         new ActionCompartmentDisplay(true, "action.show-all-compartments");
-
 
     /**
      * Static instance to hide both compartments of a class.
      */
-    public static UMLAction HideAllCompartments =
+    private static final UMLAction HIDE_ALL_COMPARTMENTS =
         new ActionCompartmentDisplay(false, "action.hide-all-compartments");
 
 
@@ -245,6 +237,70 @@ public class ActionCompartmentDisplay extends UMLAction {
 
     public boolean shouldBeEnabled() {
 	return true;
+    }
+
+
+    /**
+     * @return the action to show the attribute compartment
+     */
+    public static UMLAction showAttrCompartment() {
+        return SHOW_ATTR_COMPARTMENT;
+    }
+
+
+    /**
+     * @return the action to hide the attribute compartment
+     */
+    public static UMLAction hideAttrCompartment() {
+        return HIDE_ATTR_COMPARTMENT;
+    }
+
+
+    /**
+     * @return the action to show the operation compartment
+     */
+    public static UMLAction showOperCompartment() {
+        return SHOW_OPER_COMPARTMENT;
+    }
+
+
+    /**
+     * @return the action to hide the operation compartment
+     */
+    public static UMLAction hideOperCompartment() {
+        return HIDE_OPER_COMPARTMENT;
+    }
+
+
+    /**
+     * @return the action to show the extension point compartment
+     */
+    public static UMLAction showExtPointCompartment() {
+        return SHOW_EXTPOINT_COMPARTMENT;
+    }
+
+
+    /**
+     * @return the action to hide the extension point compartment
+     */
+    public static UMLAction hideExtPointCompartment() {
+        return HIDE_EXTPOINT_COMPARTMENT;
+    }
+
+
+    /**
+     * @return the action to show all the compartments
+     */
+    public static UMLAction showAllCompartments() {
+        return SHOW_ALL_COMPARTMENTS;
+    }
+
+
+    /**
+     * @return the action to hide all compartments
+     */
+    public static UMLAction hideAllCompartments() {
+        return HIDE_ALL_COMPARTMENTS;
     }
 
 } /* end class ActionCompartmentDisplay */

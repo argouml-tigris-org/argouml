@@ -394,9 +394,9 @@ public class FigUseCase extends FigNodeModelElement {
         ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
 
         if (epVec.isVisible()) {
-            showMenu.add(ActionCompartmentDisplay.HideExtPointCompartment);
+            showMenu.add(ActionCompartmentDisplay.hideExtPointCompartment());
         } else {
-            showMenu.add(ActionCompartmentDisplay.ShowExtPointCompartment);
+            showMenu.add(ActionCompartmentDisplay.showExtPointCompartment());
         }
 
         popUpActions.insertElementAt(showMenu,
