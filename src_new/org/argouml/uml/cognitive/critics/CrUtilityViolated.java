@@ -65,7 +65,7 @@ public class CrUtilityViolated extends CrUML {
                 if (!ModelFacade.isAInterface(o)) {
                     Iterator it2 = ModelFacade.getAttributes(o).iterator();
                     while (it2.hasNext()) {
-                        if (ModelFacade.isInstanceScope(it.next())) {
+                        if (ModelFacade.isInstanceScope(it2.next())) {
                             problem = PROBLEM_FOUND;
                             break;
                         }
