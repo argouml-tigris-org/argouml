@@ -30,7 +30,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLTextField;
@@ -83,28 +82,5 @@ public class PropPanelDiagram extends PropPanel {
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetAdded(TargetEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetRemoved(TargetEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetSet(TargetEvent e) {
-        // TODO Auto-generated method stub
-
-    }
 
 } /* end class PropPanelDiagram */
