@@ -64,7 +64,7 @@ import org.tigris.gef.util.PredicateType;
  *
  * The search is buggy and needs work.
  */
-public class FindDialog extends JDialog
+public class FindDialog extends ArgoDialog
     implements ActionListener, MouseListener {
 
     ////////////////////////////////////////////////////////////////
@@ -108,9 +108,9 @@ public class FindDialog extends JDialog
     }
     
     public FindDialog() {
-        super(ProjectBrowser.getInstance(), "Search");
-        getContentPane().setLayout(new BorderLayout());
-
+        super(ProjectBrowser.getInstance(), "Search", false);
+        
+        JPanel mainPanel = new JPanel(new BorderLayout());
 
         initNameLocTab();
         _tabs.addTab("Name and Location", _nameLocTab);
@@ -133,11 +133,11 @@ public class FindDialog extends JDialog
         JPanel north = new JPanel();
         north.setLayout(new BorderLayout());
         north.add(_tabs, BorderLayout.CENTER);
-        getContentPane().add(north, BorderLayout.NORTH);
+        mainPanel.add(north, BorderLayout.NORTH);
 
         initHelpTab();
         _results.addTab("Help", _help);
-        getContentPane().add(_results, BorderLayout.CENTER);
+        mainPanel.add(_results, BorderLayout.CENTER);
 
         //     JPanel south = new JPanel();
         //     south.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -158,7 +158,9 @@ public class FindDialog extends JDialog
         //     _spawn.addActionListener(this);
         //     _go.addActionListener(this);
         //     _close.addActionListener(this);
-        setSize(new Dimension(480, 550));
+        //setSize(new Dimension(480, 550));
+        
+        setContent(mainPanel);
     }
 
     public void initNameLocTab() {
@@ -279,12 +281,6 @@ public class FindDialog extends JDialog
         _help.add(new JScrollPane(helpText), BorderLayout.CENTER);
     }
 
-    public void setVisible(boolean b) {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
-        setLocation(pb.getBounds().x + 100, pb.getBounds().x + 100);
-        super.setVisible(b);
-    }
-
     public void initTagValsTab() {
         //  _tag         = new JTextField();
         //  _val         = new JTextField();
@@ -323,6 +319,7 @@ public class FindDialog extends JDialog
     ////////////////////////////////////////////////////////////////
     // event handlers
     public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
         if (e.getSource() == _search) doSearch();
         if (e.getSource() == _clearTabs) doClearTabs();
         //     if (e.getSource() == _spawn) doSpawn();
