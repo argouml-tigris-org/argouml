@@ -96,7 +96,6 @@ public class FigAssociationRole extends FigAssociation {
      */
     public void addMessage(FigMessage message) {
     	messages.addFig(message);
-    	// damage();
     	updatePathItemLocations();
     	messages.damage();
     }
@@ -133,7 +132,7 @@ class FigMessageGroup extends FigGroup {
     }
 
     protected void updateFigPositions() {
-    	Collection figs = getFigs(null);
+    	Collection figs = getFigs(null); // the figs that make up this group
         Iterator it = figs.iterator();
     	if (!figs.isEmpty()) {
             FigMessage previousFig = null;
