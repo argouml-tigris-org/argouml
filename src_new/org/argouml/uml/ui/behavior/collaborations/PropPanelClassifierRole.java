@@ -37,6 +37,7 @@ import org.argouml.uml.ui.UMLMultiplicityComboBox2;
 import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -107,6 +108,8 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 	addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
 	addButton(new PropPanelButton2(getActionNewReception(), 
                 lookupIcon("Reception")));
+	addButton(new PropPanelButton2(new ActionNewStereotype(), 
+	        lookupIcon("Stereotype")));
 	addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
                 lookupIcon("Delete")));
     }

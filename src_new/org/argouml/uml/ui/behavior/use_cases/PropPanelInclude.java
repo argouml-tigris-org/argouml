@@ -33,6 +33,7 @@ import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -75,6 +76,8 @@ public class PropPanelInclude extends PropPanelModelElement {
 
         // Add the toolbar buttons:
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
+        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+                lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
                 lookupIcon("Delete")));;
     }

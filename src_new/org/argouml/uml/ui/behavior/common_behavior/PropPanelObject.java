@@ -33,6 +33,7 @@ import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 
@@ -77,6 +78,8 @@ public class PropPanelObject extends PropPanelInstance {
 
 
 	addButton(new PropPanelButton2(new ActionNavigateNamespace()));	
+	addButton(new PropPanelButton2(new ActionNewStereotype(), 
+	        lookupIcon("Stereotype")));
 	addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
 	        lookupIcon("Delete")));;
 	

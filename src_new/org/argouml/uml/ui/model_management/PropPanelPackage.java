@@ -38,12 +38,14 @@ import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.foundation.core.ActionAddDataType;
 import org.argouml.uml.ui.foundation.core.PropPanelNamespace;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementGeneralizationListModel;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationListModel;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Orientation;
@@ -128,6 +130,10 @@ public class PropPanelPackage extends PropPanelNamespace  {
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
         addButton(new PropPanelButton2(new ActionAddPackage(), 
                 lookupIcon("Package")));
+        addButton(new PropPanelButton2(new ActionAddDataType(), 
+                lookupIcon("DataType")));
+        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+                lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
                 lookupIcon("Delete")));
     }

@@ -37,6 +37,7 @@ import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLTextField2;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -97,6 +98,8 @@ public class PropPanelGeneralization extends PropPanelModelElement {
                         ActionSetGeneralizationPowertype.getInstance()));
 
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
+        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+                lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
                 lookupIcon("Delete")));
     }

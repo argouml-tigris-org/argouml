@@ -37,6 +37,7 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLStimulusActionTextField;
 import org.argouml.uml.ui.UMLStimulusActionTextProperty;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.MElementEvent;
@@ -86,7 +87,9 @@ public class PropPanelStimulus extends PropPanelModelElement {
         addField(Translator.localize("label.namespace"), 
                 getNamespaceComboBox());
 
-        addButton(new PropPanelButton2(new ActionNavigateNamespace()));    
+        addButton(new PropPanelButton2(new ActionNavigateNamespace()));  
+        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+                lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel()));
     }
 

@@ -43,6 +43,7 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMultiplicityComboBox2;
 import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Orientation;
@@ -217,9 +218,10 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         addButton(new PropPanelButton2(new ActionNavigateAssociation()));
         addButton(new PropPanelButton2(new ActionNavigateOppositeAssocEnd(),
                 lookupIcon("AssociationEnd")));
+        addButton(new PropPanelButton2(new ActionNewStereotype(), 
+                lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
                 lookupIcon("Delete")));;
-
     }
 
     /**
