@@ -33,9 +33,7 @@ import javax.swing.UIManager;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ResourceLoader;
 
-import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
-import ru.novosoft.uml.foundation.core.MComment;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /**
@@ -222,7 +220,7 @@ public final class ResourceLoaderWrapper {
          icon = (Icon) _iconCache.get(value.getClass());
 
 
-        if (value instanceof MPseudostate) {
+        if (ModelFacade.isAPseudostate(value) ) {
             MPseudostate ps = (MPseudostate) value;
             MPseudostateKind kind = ps.getKind();
             if (MPseudostateKind.INITIAL.equals(kind))
@@ -243,11 +241,11 @@ public final class ResourceLoaderWrapper {
             icon = _RealizeIcon;
         }
         // needs more work: sending and receiving icons
-        if (value instanceof MSignal) {
+        if (ModelFacade.isASignal(value)) {
             icon = _SignalIcon;
         }
 
-        if (value instanceof MComment) {
+        if (ModelFacade.isAComment(value)) {
             icon = _CommentIcon;
         }
 

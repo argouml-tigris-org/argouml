@@ -55,6 +55,7 @@ import ru.novosoft.uml.behavior.common_behavior.MObject;
 import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
 import ru.novosoft.uml.behavior.common_behavior.MSendAction;
+import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
@@ -177,7 +178,7 @@ public class ModelFacade {
     public static final Object OPERATION          = MOperation.class;
     
     public static final Object MODELELEMENT       = MModelElement.class;
-    
+   
     
     /** Constructor that forbids instantiation.
      */
@@ -554,6 +555,15 @@ public class ModelFacade {
         return handle instanceof MPackage;
     }
 
+    /** Recognizer for Pseudostate
+     *
+     * @param handle candidate
+     * @returns true if handle is a Pseudostate
+     */
+    public static boolean isAPseudostate(Object handle) {
+        return handle instanceof MPseudostate;
+    }
+
     /** Recognizer for Reception
      *
      * @param handle candidate
@@ -588,6 +598,15 @@ public class ModelFacade {
      */
     public static boolean isASendAction(Object handle) {
         return handle instanceof MSendAction;
+    }
+
+    /** Recognizer for Signal
+     *
+     * @param handle candidate
+     * @returns true if handle is a Signal
+     */
+    public static boolean isASignal(Object handle) {
+        return handle instanceof MSignal;
     }
 
     /** Recognizer for StateMachine
