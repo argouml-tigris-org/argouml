@@ -29,7 +29,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JPopupMenu;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
+//import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * <p>
@@ -69,11 +69,11 @@ public class UMLMutableLinkedList extends UMLLinkedList {
         public PopupMenu() {
             super();
             if (isAdd()) {
-		_addAction.setTarget((MModelElement) getTarget());
+		_addAction.setTarget(getTarget());
 		add(_addAction);
             }
             if (isNew()) {
-		_newAction.setTarget((MModelElement) getTarget());
+		_newAction.setTarget(getTarget());
 		add(_newAction);
             }
             if (isNew() || isAdd())

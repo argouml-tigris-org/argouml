@@ -74,7 +74,7 @@ abstract public class UMLBinaryRelationListModel
     public void add(int index) {
         Object target = getSource();
         if (ModelFacade.isAModelElement(target)) {
-            Object/*MModelElement*/ melement = (MModelElement) target;
+            Object/*MModelElement*/ melement = target;
             Vector choices = new Vector();
             Vector selected = new Vector();
             choices.addAll(getChoices());
@@ -113,7 +113,7 @@ abstract public class UMLBinaryRelationListModel
                 }
                 it = selected.iterator();
                 while (it.hasNext()) {
-                    Object/*MModelElement*/ othermelement = (MModelElement) it.next();
+                    Object/*MModelElement*/ othermelement = it.next();
                     if (!dialog.getSelected().contains(othermelement)) {
                         Object/*MModelElement*/ connector =
                             getRelation(melement, othermelement);
@@ -134,9 +134,8 @@ abstract public class UMLBinaryRelationListModel
     public void delete(int index) {
         Object target = getSource();
         if (org.argouml.model.ModelFacade.isAModelElement(target)) {
-            Object/*MModelElement*/ melement = (MModelElement) target;
-            Object/*MModelElement*/ othermelement =
-                (MModelElement) getModelElementAt(index);
+            Object/*MModelElement*/ melement = target;
+            Object/*MModelElement*/ othermelement = getModelElementAt(index);
             Object/*MModelElement*/ relation = getRelation(melement, othermelement);
             Object pt = TargetManager.getInstance().getTarget();
             TargetManager.getInstance().setTarget(relation);

@@ -32,7 +32,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-import ru.novosoft.uml.foundation.data_types.MChangeableKind;
+//import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 
 /**
  * @author jaap.branderhorst@xs4all.nl
@@ -68,16 +68,15 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
         if (getTarget() != null) {
             Object target = /*(MStructuralFeature)*/ getTarget();
             Object/*MChangeableKind*/ kind = ModelFacade.getChangeability(target);
-            if (kind == null || kind.equals(MChangeableKind.ADD_ONLY)) {
+            if (kind == null || kind.equals(ModelFacade.ADD_ONLY_CHANGEABLEKIND)) {
                 setSelected(ActionSetStructuralFeatureChangeability.ADDONLY_COMMAND);
-            } else
-		if (kind.equals(MChangeableKind.CHANGEABLE)) {
-		    setSelected(ActionSetStructuralFeatureChangeability.CHANGEABLE_COMMAND); 
-		} else
-		    if (kind.equals(MChangeableKind.FROZEN)) {
-			setSelected(ActionSetStructuralFeatureChangeability.FROZEN_COMMAND);
-		    } else
-			setSelected(ActionSetStructuralFeatureChangeability.CHANGEABLE_COMMAND);
+            } else if (kind.equals(ModelFacade.CHANGEABLE_CHANGEABLEKIND)) {
+                setSelected(ActionSetStructuralFeatureChangeability.CHANGEABLE_COMMAND); 
+            } else if (kind.equals(ModelFacade.FROZEN_CHANGEABLEKIND)) {
+                setSelected(ActionSetStructuralFeatureChangeability.FROZEN_COMMAND);
+            } else {
+                setSelected(ActionSetStructuralFeatureChangeability.CHANGEABLE_COMMAND);
+            }
         }
     }
 }

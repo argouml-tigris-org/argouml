@@ -28,8 +28,8 @@ package org.argouml.uml.ui;
 import javax.swing.ComboBoxModel;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MModelElement;
+//import ru.novosoft.uml.MBase;
+//import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * A searchable combobox. Searchable means that the user has only to type the
@@ -87,13 +87,13 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
             Object element = model.getElementAt(i);
             if (org.argouml.model.ModelFacade.isABase(element)) {
                 if (getRenderer() instanceof UMLListCellRenderer2) {
-                    String labelText = ((UMLListCellRenderer2) getRenderer()).makeText((MBase) element);
+                    String labelText = ((UMLListCellRenderer2) getRenderer()).makeText(element);
                     if (labelText != null && labelText.startsWith(text)) {                        
                         return element;
                     }
                 }
                 if (org.argouml.model.ModelFacade.isAModelElement(element)) {
-                    Object/*MModelElement*/ elem = (MModelElement) element;
+                    Object/*MModelElement*/ elem = element;
                     String name = ModelFacade.getName(elem);
                     if (name != null && name.startsWith(text)) {
                         return element;

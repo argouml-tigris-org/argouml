@@ -66,7 +66,7 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
         Object/*MModelElement*/ element = null;
         java.util.List cache = getCache();
         if (cache != null) {
-            element = (MModelElement) cache.get(index);
+            element = cache.get(index);
         }
         return (MModelElement)element;
     }

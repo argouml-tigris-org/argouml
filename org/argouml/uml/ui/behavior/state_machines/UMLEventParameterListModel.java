@@ -25,9 +25,10 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.behavior.state_machines.MEvent;
+//import ru.novosoft.uml.behavior.state_machines.MEvent;
 
 /**
  * A list model for the parameters belonging to an event
@@ -49,14 +50,15 @@ public class UMLEventParameterListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MEvent) getTarget()).getParameters());
+        //setAllElements(((MEvent)getTarget()).getParameters());
+        setAllElements(ModelFacade.getParameters(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ((MEvent) getTarget()).getParameters().contains(element);
+        return ModelFacade.getParameters(getTarget()).contains(element);
     }
 
 }

@@ -55,10 +55,8 @@ public class AssociationNamespaceWellformednessRule
     /**
      * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(MBase,Object)
      */
-    public boolean isWellformed(MBase element, Object newValue) {
-	if (element instanceof MAssociation
-	    && newValue instanceof MClassifier)
-	{
+    public boolean isWellformed(Object/*MBase*/ element, Object newValue) {
+	if (element instanceof MAssociation && newValue instanceof MClassifier) {
 	    MAssociation a = (MAssociation) element;
 	    MClassifier c = (MClassifier) newValue;
 	    if (a.getNamespace().equals(c.getNamespace())) {

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -31,7 +30,7 @@ import java.lang.reflect.*;
 import org.apache.log4j.Logger;
 import org.argouml.model.uml.AbstractWellformednessRule;
 import org.argouml.model.uml.UmlHelper;
-import ru.novosoft.uml.MBase;
+//import ru.novosoft.uml.MBase;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
@@ -111,10 +110,9 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
 			arg = _trueArg[0];
 		    }
 		    if (arg != null) {
-			if (!_wellformednessRules[i].isWellformed((MBase) element, arg)) {
+			if (!_wellformednessRules[i].isWellformed(element, arg)) {
 			    throw new PropertyVetoException( _wellformednessRules[i].getUserMessage(),
 							     new PropertyChangeEvent(element, getPropertyName(), new Boolean(!newState), new Boolean(newState)));
-		    					
 			}
 		    }
 		}

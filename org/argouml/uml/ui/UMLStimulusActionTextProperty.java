@@ -26,7 +26,7 @@ package org.argouml.uml.ui;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.common_behavior.MStimulus;
+//import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 
 /**
  * TODO: this class should be moved to package
@@ -43,7 +43,7 @@ public class UMLStimulusActionTextProperty  {
     
     
     public void setProperty(UMLUserInterfaceContainer container, String newValue) {
-	Object/*MStimulus*/  stimulus = (MStimulus) container.getTarget();
+	Object/*MStimulus*/  stimulus = container.getTarget();
 	if (stimulus != null) {
 
 	    String oldValue = getProperty(container);
@@ -70,7 +70,7 @@ public class UMLStimulusActionTextProperty  {
     
     public String getProperty(UMLUserInterfaceContainer container) {
         String value = null;       
-	Object/*MStimulus*/ stimulus = (MStimulus) container.getTarget();
+	Object/*MStimulus*/ stimulus = container.getTarget();
 	if (stimulus != null) {
 	    Object action = ModelFacade.getDispatchAction(stimulus);
 	    if (action != null) value = ModelFacade.getName(action);

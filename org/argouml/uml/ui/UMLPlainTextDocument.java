@@ -37,7 +37,7 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.MBase;
+//import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
@@ -132,22 +132,15 @@ public abstract class UMLPlainTextDocument
      */
     public final void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
-
-            if (org.argouml.model.ModelFacade.isABase(target)) {
-                if (_target != null)
-                    UmlModelEventPump.getPump().removeModelEventListener(
-									 this,
-									 (MBase) _target,
-									 getEventName());
-                _target = target;
-                // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, getEventName());
-                UmlModelEventPump.getPump().addModelEventListener(
-								  this,
-								  (MBase) _target,
-								  getEventName());
-                handleEvent();
+        if (ModelFacade.isABase(target)) {
+            UmlModelEventPump eventPump = UmlModelEventPump.getPump();
+            if (_target != null) {
+                eventPump.removeModelEventListener(this,_target, getEventName());
             }
+            _target = target;
+            // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, getEventName());
+            eventPump.addModelEventListener(this, _target, getEventName());
+            handleEvent();
         }
     }
 
@@ -182,16 +175,13 @@ public abstract class UMLPlainTextDocument
     protected abstract String getProperty();
 
     private final void setFiring(boolean firing) {
-        if (firing && _target != null)
-            UmlModelEventPump.getPump().addModelEventListener(
-							      this,
-							      (MBase) _target,
-							      _eventName);
-        else
-            UmlModelEventPump.getPump().removeModelEventListener(
-								 this,
-								 (MBase) _target,
-								 _eventName);
+        UmlModelEventPump eventPump = UmlModelEventPump.getPump();
+        if (firing && _target != null) {
+            eventPump.addModelEventListener(this, _target, _eventName);
+        }
+        else {
+            eventPump.removeModelEventListener(this, _target, _eventName);
+        }
         _firing = firing;
     }
 

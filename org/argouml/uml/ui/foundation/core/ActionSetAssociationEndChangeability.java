@@ -34,7 +34,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-import ru.novosoft.uml.foundation.data_types.MChangeableKind;
+//import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 
 /**
  * 
@@ -68,13 +68,14 @@ public class ActionSetAssociationEndChangeability extends UMLChangeAction {
             Object target = ((UMLRadioButtonPanel) source.getParent()).getTarget();
             if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
                 Object m = /*(MAssociationEnd)*/ target;
-                MChangeableKind kind = null;
+                Object/*MChangeableKind*/ kind = null;
                 if (actionCommand.equals(CHANGEABLE_COMMAND)) {
-                    kind = MChangeableKind.CHANGEABLE;
+                    kind = ModelFacade.CHANGEABLE_CHANGEABLEKIND;
                 } else if (actionCommand.equals(ADDONLY_COMMAND)) {
-                    kind = MChangeableKind.ADD_ONLY;
-                } else
-                    kind = MChangeableKind.FROZEN;
+                    kind = ModelFacade.ADD_ONLY_CHANGEABLEKIND;
+                } else {
+                    kind = ModelFacade.FROZEN_CHANGEABLEKIND;
+                }
                 ModelFacade.setChangeability(m, kind);
             }
         }

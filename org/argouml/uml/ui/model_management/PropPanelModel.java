@@ -29,9 +29,8 @@ import org.argouml.util.ConfigLoader;
 import org.argouml.application.ArgoVersion;
 import ru.novosoft.uml.model_management.MModelImpl;
 
-public class PropPanelModel extends PropPanelPackage
-    implements PluggablePropertyPanel 
-{
+public class PropPanelModel extends PropPanelPackage 
+        implements PluggablePropertyPanel {
     ////////////////////////////////////////////////////////////////
     // instance vars
 

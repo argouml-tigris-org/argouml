@@ -32,7 +32,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+//import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 
 /**
  * 
@@ -68,17 +68,15 @@ public class UMLModelElementVisibilityRadioButtonPanel extends UMLRadioButtonPan
         if (getTarget() != null) {
             Object target = /*(MModelElement)*/ getTarget();
             Object kind = ModelFacade.getVisibility(target);
-            if (kind == null || kind.equals(MVisibilityKind.PUBLIC)) {
+            if (kind == null || kind.equals(ModelFacade.PUBLIC_VISIBILITYKIND)) {
                 setSelected(ActionSetModelElementVisibility.PUBLIC_COMMAND);
-            } else
-		if (kind.equals(MVisibilityKind.PROTECTED)) {
-		    setSelected(ActionSetModelElementVisibility.PROTECTED_COMMAND); 
-		} else
-		    if (kind.equals(MVisibilityKind.PRIVATE)) {
-			setSelected(ActionSetModelElementVisibility.PRIVATE_COMMAND);
-		    } else
-			setSelected(ActionSetModelElementVisibility.PUBLIC_COMMAND);
+            } else if (kind.equals(ModelFacade.PROTECTED_VISIBILITYKIND)) {
+                setSelected(ActionSetModelElementVisibility.PROTECTED_COMMAND); 
+            } else if (kind.equals(ModelFacade.PRIVATE_VISIBILITYKIND)) {
+                setSelected(ActionSetModelElementVisibility.PRIVATE_COMMAND);
+            } else {
+                setSelected(ActionSetModelElementVisibility.PUBLIC_COMMAND);
+            }
         }
     }
-
 }

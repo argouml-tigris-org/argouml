@@ -61,10 +61,8 @@ public class AssociationEndAggregationWellformednessRule
      * aggregation or composite.
      * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(MBase,Object)
      */
-    public boolean isWellformed(MBase element, Object newValue) {
-	if (element instanceof MAssociationEnd
-	    && newValue instanceof MAggregationKind)
-	{
+    public boolean isWellformed(Object/*MBase*/ element, Object newValue) {
+	if (element instanceof MAssociationEnd && newValue instanceof MAggregationKind) {
 	    MAssociationEnd modelelement = (MAssociationEnd) element;
 	    MAggregationKind aggregation = (MAggregationKind) newValue;
 	    if (aggregation.equals(MAggregationKind.NONE)) return true;

@@ -32,7 +32,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
-import ru.novosoft.uml.foundation.data_types.MScopeKind;
+//import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
 /**
  * 
@@ -61,7 +61,11 @@ public class ActionSetAssociationEndTargetScope extends UMLChangeAction {
             Object target = source.getTarget();
             if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
                 Object m = /*(MAssociationEnd)*/ target;
-                ModelFacade.setTargetScope(m, source.isSelected() ? MScopeKind.CLASSIFIER : MScopeKind.INSTANCE);               
+                if (source.isSelected()) {
+                    ModelFacade.setTargetScope(m, ModelFacade.CLASSIFIER_SCOPEKIND);
+                } else {
+                    ModelFacade.setTargetScope(m, ModelFacade.INSTANCE_SCOPEKIND);
+                }
             }
         }
     }

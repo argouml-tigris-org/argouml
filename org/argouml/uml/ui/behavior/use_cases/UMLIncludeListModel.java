@@ -233,7 +233,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
             Object target  = ModelFacade.getBase(include);
 
             if (target != null) {
-                value = super.formatElement((MModelElement)target);
+                value = super.formatElement(target);
             }
         }
         else {

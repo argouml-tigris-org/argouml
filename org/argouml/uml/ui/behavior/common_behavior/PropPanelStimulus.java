@@ -51,6 +51,7 @@ import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
+
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.

@@ -36,8 +36,8 @@ import javax.swing.JList;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MModelElement;
+//import ru.novosoft.uml.MBase;
+//import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 /**
@@ -71,7 +71,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
         if (org.argouml.model.ModelFacade.isABase(value)) {
-            String text = makeText((MBase) value);            
+            String text = makeText(value);            
             label.setText(text);
             if (_showIcon) {
                 Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(value);
@@ -99,18 +99,17 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      */
     public String makeText(Object value) {
         String name = null;
-        if (org.argouml.model.ModelFacade.isAModelElement(value)) {
-            Object/*MModelElement*/ elem = (MModelElement) value;
+        if (ModelFacade.isAModelElement(value)) {
+            Object/*MModelElement*/ elem = value;
             name = ModelFacade.getName(elem);
             if (name == null || name.equals("")) {
                 name = "(anon " + makeTypeName(elem) + ")";
             }
-        } else 
-	    if (org.argouml.model.ModelFacade.isAMultiplicity(value)) {
-		name = value.toString();
-	    } else {                    
-		name = makeTypeName(value);
-	    }
+        } else if (ModelFacade.isAMultiplicity(value)) {
+            name = value.toString();
+        } else {                    
+            name = makeTypeName(value);
+        }
         return name;
 
     }
