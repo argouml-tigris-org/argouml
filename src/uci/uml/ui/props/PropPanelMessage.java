@@ -166,6 +166,7 @@ implements ItemListener, DocumentListener {
 	
 	MAction action = new MActionImpl();
 	action.setScript(new MActionExpression("Java",s));
+	action.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 	((MMessage)_target).setAction(action); 
     /*try {
       ((MUninterpretedAction)((MMessage)_target).getAction()).setBody(s);

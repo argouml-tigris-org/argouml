@@ -446,6 +446,7 @@ public class ParserDisplay extends Parser {
   public MAction parseAction(String s) {
 	  MAction a = new MActionImpl();
 	  a.setScript(new MActionExpression("Java",s));
+	  a.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 	  return a;
   }
 
@@ -464,6 +465,7 @@ public class ParserDisplay extends Parser {
   public MEvent parseEvent(String s) {
 	MSignalEvent se = new MSignalEventImpl();
 	se.setName(s);
+	se.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
     return se;
   }
 
