@@ -198,6 +198,15 @@ public class ModelFacade {
         return handle instanceof MGeneralizableElement;
     }
 
+    /** Recognizer for GeneralizableElement
+     *
+     * @param handle candidate
+     * @returns true if handle is a GeneralizableElement
+     */
+    public static boolean isAGeneralization(Object handle) {
+        return handle instanceof MGeneralization;
+    }
+
     /** Recognizer for Interaction
      *
      * @param handle candidate
@@ -331,7 +340,7 @@ public class ModelFacade {
             handle,
             createStereoType);
     }
-    
+
     /**
      * Returns true if a given associationend is a composite.
      * @param handle
@@ -341,9 +350,10 @@ public class ModelFacade {
         if (isAAssociationEnd(handle)) {
             boolean composite = false;
             MAssociationEnd end = (MAssociationEnd)handle;
-            if (end.getAggregation() != null && end.getAggregation().equals(MAggregationKind.COMPOSITE))
+            if (end.getAggregation() != null
+                && end.getAggregation().equals(MAggregationKind.COMPOSITE))
                 composite = true;
-            return composite;          
+            return composite;
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -908,7 +918,7 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-    
+
     /**
      * Returns the upper bound of the multiplicity of the given handle (an
      * associationend).
@@ -925,7 +935,6 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-   
 
     /**
      * Returns the transitions belonging to the given handle. The handle can be

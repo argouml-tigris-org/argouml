@@ -54,29 +54,29 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
-import ru.novosoft.uml.behavior.state_machines.MCompositeStateImpl;
-import ru.novosoft.uml.behavior.state_machines.MPseudostateImpl;
-import ru.novosoft.uml.behavior.state_machines.MStateImpl;
-import ru.novosoft.uml.behavior.state_machines.MStateVertexImpl;
-import ru.novosoft.uml.behavior.state_machines.MTransitionImpl;
-import ru.novosoft.uml.behavior.use_cases.MActorImpl;
-import ru.novosoft.uml.behavior.use_cases.MUseCaseImpl;
-import ru.novosoft.uml.foundation.core.MAssociationClassImpl;
-import ru.novosoft.uml.foundation.core.MAssociationEndImpl;
-import ru.novosoft.uml.foundation.core.MAssociationImpl;
-import ru.novosoft.uml.foundation.core.MAttributeImpl;
-import ru.novosoft.uml.foundation.core.MClassImpl;
-import ru.novosoft.uml.foundation.core.MClassifierImpl;
-import ru.novosoft.uml.foundation.core.MDataTypeImpl;
-import ru.novosoft.uml.foundation.core.MGeneralizableElementImpl;
-import ru.novosoft.uml.foundation.core.MGeneralizationImpl;
-import ru.novosoft.uml.foundation.core.MInterfaceImpl;
-import ru.novosoft.uml.foundation.core.MModelElementImpl;
-import ru.novosoft.uml.foundation.core.MNamespaceImpl;
-import ru.novosoft.uml.foundation.core.MOperationImpl;
-import ru.novosoft.uml.foundation.core.MParameterImpl;
-import ru.novosoft.uml.model_management.MModelImpl;
-import ru.novosoft.uml.model_management.MPackageImpl;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.behavior.use_cases.MActor;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationClass;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MDataType;
+import ru.novosoft.uml.foundation.core.MGeneralizableElement;
+import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.gen.mmm.MPackage;
+import ru.novosoft.uml.model_management.MModel;
 
 /** Registers critics for use in Argo/UML.  This class is called at
  *  system startup time. If you add a new critic, you need to add a
@@ -216,33 +216,33 @@ public class Init {
   /** static initializer, register all appropriate critics */
   public static void init() {
 //     try {
-      java.lang.Class modelCls = MModelImpl.class;
-      java.lang.Class packageCls = MPackageImpl.class;
-      java.lang.Class modelElementCls = MModelElementImpl.class;
-      java.lang.Class classCls = MClassImpl.class;
-      java.lang.Class classifierCls = MClassifierImpl.class;
-      java.lang.Class interfaceCls = MInterfaceImpl.class;
-      java.lang.Class attrCls = MAttributeImpl.class;
-      java.lang.Class paramCls = MParameterImpl.class;
-      java.lang.Class operCls = MOperationImpl.class;
-      java.lang.Class iassocCls = MAssociationImpl.class;
-      java.lang.Class assocCls = MAssociationImpl.class;
-      java.lang.Class assocEndCls = MAssociationEndImpl.class;
-      java.lang.Class assocClassCls = MAssociationClassImpl.class;
-      java.lang.Class namespaceCls = MNamespaceImpl.class;
-      java.lang.Class genElementCls = MGeneralizableElementImpl.class;
-      java.lang.Class genCls = MGeneralizationImpl.class;
-      java.lang.Class datatypeCls = MDataTypeImpl.class;
+      java.lang.Class modelCls = MModel.class;
+      java.lang.Class packageCls = MPackage.class;
+      java.lang.Class modelElementCls = MModelElement.class;
+      java.lang.Class classCls = MClass.class;
+      java.lang.Class classifierCls = MClassifier.class;
+      java.lang.Class interfaceCls = MInterface.class;
+      java.lang.Class attrCls = MAttribute.class;
+      java.lang.Class paramCls = MParameter.class;
+      java.lang.Class operCls = MOperation.class;
+      java.lang.Class iassocCls = MAssociation.class;
+      java.lang.Class assocCls = MAssociation.class;
+      java.lang.Class assocEndCls = MAssociationEnd.class;
+      java.lang.Class assocClassCls = MAssociationClass.class;
+      java.lang.Class namespaceCls = MNamespace.class;
+      java.lang.Class genElementCls = MGeneralizableElement.class;
+      java.lang.Class genCls = MGeneralization.class;
+      java.lang.Class datatypeCls = MDataType.class;
 
-      java.lang.Class useCaseCls = MUseCaseImpl.class;
-      java.lang.Class actorCls = MActorImpl.class;
+      java.lang.Class useCaseCls = MUseCase.class;
+      java.lang.Class actorCls = MActor.class;
 
-      java.lang.Class stateVertexCls = MStateVertexImpl.class;
-      java.lang.Class stateCls = MStateImpl.class;
-      java.lang.Class compositieStateCls = MCompositeStateImpl.class;
-      java.lang.Class pseudostateCls = MPseudostateImpl.class;
-      java.lang.Class transitionCls = MTransitionImpl.class;
-      //java.lang.Class stateMachineCls = MStateMachineImpl.class;
+      java.lang.Class stateVertexCls = MStateVertex.class;
+      java.lang.Class stateCls = MState.class;
+      java.lang.Class compositieStateCls = MCompositeState.class;
+      java.lang.Class pseudostateCls = MPseudostate.class;
+      java.lang.Class transitionCls = MTransition.class;
+      //java.lang.Class stateMachineCls = MStateMachine.class;
 
       java.lang.Class diagramCls        = UMLDiagram.class;
       java.lang.Class classDiagramCls   = UMLClassDiagram.class;
