@@ -38,6 +38,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
+import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 
@@ -136,6 +137,8 @@ implements TabModelTarget {
 
 class TableModelTaggedValues extends AbstractTableModel
 implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
+  private static final String BUNDLE = "Cognitive";
+
   ////////////////
   // instance varables
   MModelElement _target;
@@ -162,8 +165,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   public int getColumnCount() { return 2; }
 
   public String  getColumnName(int c) {
-    if (c == 0) return "Tag";
-    if (c == 1) return "Value";
+    if (c == 0) return Argo.localize(BUNDLE, "taggedvaluespane.label.tag");
+    if (c == 1) return Argo.localize(BUNDLE, "taggedvaluespane.label.value");
     return "XXX";
   }
 

@@ -77,6 +77,25 @@ public class UMLCognitiveResourceBundle_fr extends ListResourceBundle {
         {"todopane.label.item", " {0} \u00c9l\u00e9ment "},
         {"todopane.label.items", " {0} \u00c9l\u00e9ments "},
 
+        {"docpane.label.documentation", "Documentation"},
+        {"docpane.label.author", "Auteur"},
+        {"docpane.label.version", "Version"},
+        {"docpane.label.since", "Depuis"},
+        {"docpane.label.deprecated", "D\u00e9conseill\u00e9"},
+        {"docpane.label.see", "Voir"},
+
+        {"stylepane.label.bounds", "Limites"},
+        {"stylepane.label.fill", "Remplissage"},
+        {"stylepane.label.no-fill", "Pas de remplissage"},
+        {"stylepane.label.line", "Trait"},
+        {"stylepane.label.no-line", "Pas de trait"},
+        {"stylepane.label.shadow", "Ombrage"},
+        {"stylepane.label.no-shadow", "Pas d'ombrage"},
+        {"stylepane.label.custom", "Personnaliser"},
+
+        {"taggedvaluespane.label.tag", "Marqueur"},
+        {"taggedvaluespane.label.value", "Valeur"},
+
         {"button.ok", "OK"},
         {"button.cancel", "Annuler"},
         {"button.open", "Ouvrir"},

@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.application.api.*;
 import org.argouml.ui.*;
 import ru.novosoft.uml.foundation.core.*;
 import javax.swing.*;
@@ -48,26 +49,27 @@ import javax.swing.*;
  */
 public class TabDocumentation extends PropPanel {
 
+  private static final String BUNDLE = "Cognitive";
     ////////////////////////////////////////////////////////////////
   // constructor
   public TabDocumentation() {
     super("Documentation",2);
-        addCaption("Author:",1,0,0);
+        addCaption(Argo.localize(BUNDLE, "docpane.label.author") + ":",1,0,0);
         addField(new UMLTextField(this,new UMLTaggedTextProperty("author")),1,0,0);
 //unknown where this information is stored; it does not go to myproject.argo (xml file)
-        addCaption("Version:",2,0,0);
+        addCaption(Argo.localize(BUNDLE, "docpane.label.version") + ":",2,0,0);
         addField(new UMLTextField(this,new UMLTaggedTextProperty("version")),2,0,0);
 
-        addCaption("Since:",3,0,0);
+        addCaption(Argo.localize(BUNDLE, "docpane.label.since") + ":",3,0,0);
         addField(new UMLTextField(this,new UMLTaggedTextProperty("since")),3,0,0);
 
-        addCaption("Deprecated:",4,0,0);
+        addCaption(Argo.localize(BUNDLE, "docpane.label.deprecated") + ":",4,0,0);
         addField(new UMLCheckBox("",this,new UMLTaggedBooleanProperty("deprecated")),4,0,0);
 
-        addCaption("See:",5,0,1);
+        addCaption(Argo.localize(BUNDLE, "docpane.label.see") + ":",5,0,1);
         addField(new UMLTextArea(this,new UMLTaggedTextProperty("see")),5,0,1);
 
-        addCaption("Documentation:",0,1,1);
+        addCaption(Argo.localize(BUNDLE, "docpane.label.documentation") + ":",0,1,1);
         UMLTextArea _doc = new UMLTextArea(this,new UMLTaggedTextProperty("documentation"));
         _doc.setLineWrap(true);
         _doc.setWrapStyleWord(true);
