@@ -22,62 +22,25 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+
 package org.argouml.uml.ui;
 
-import java.awt.event.ActionEvent;
-
-import javax.swing.Action;
-import javax.swing.Icon;
-
-import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.targetmanager.TargetManager;
+
 
 /**
- * 
+ * Navigate to container of the element.
+ * @see org.argouml.model.ModelFacade#getModelElementContainer(Object)
  * @author mkl
- *  
+ *
  */
-public abstract class AbstractActionNavigate extends UMLAction {
-
-    public AbstractActionNavigate() {
-        this(Translator.localize(
-                "UMLMenu", "button.go-up"), true);
-    }
+public class ActionNavigateContainerElement extends AbstractActionNavigate {
 
     /**
-     * @param name
-     * @param hasIcon
+     * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
-    public AbstractActionNavigate(String name, boolean hasIcon) {
-        super(name, true, hasIcon);
-        putValue(Action.SMALL_ICON, ResourceLoaderWrapper.lookupIconResource("NavigateUp"));
+    protected Object navigateTo(Object source) {
+        return ModelFacade.getModelElementContainer(source);
     }
-    
-    public AbstractActionNavigate setIcon(Icon newIcon) {
-        putValue(Action.SMALL_ICON, newIcon);        
-        return this;
-    }
-    /**
-     * Abstract method to do the navigation. The actual navigation is performed
-     * by actionPerformed.
-     * 
-     * @param source
-     *            the object to navigate from
-     * @return the object to navigate to
-     */
-    protected abstract Object navigateTo(Object source);
 
-    /** Perform the work the action is supposed to do. */
-    public void actionPerformed(ActionEvent e) {
-        Object target = TargetManager.getInstance().getTarget();
-        if (ModelFacade.isAModelElement(target)) {
-            Object elem = /* (MModelElement) */target;
-            Object nav = navigateTo(elem);
-            if (nav != null) {
-                TargetManager.getInstance().setTarget(nav);
-            }
-        }
-    }
 }
