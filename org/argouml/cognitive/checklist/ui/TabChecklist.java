@@ -30,6 +30,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
 
 import javax.swing.JLabel;
@@ -47,16 +48,13 @@ import org.argouml.cognitive.checklist.CheckItem;
 import org.argouml.cognitive.checklist.CheckManager;
 import org.argouml.cognitive.checklist.Checklist;
 import org.argouml.cognitive.checklist.ChecklistStatus;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.TabModelTarget;
 import org.tigris.gef.presentation.Fig;
-
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
 
 /**
  * Tab to show the checklist for a certain element.
@@ -83,7 +81,6 @@ public class TabChecklist extends TabSpawnable
 	Font labelFont = LookAndFeelMgr.getInstance().getSmallFont();
 	table.setFont(labelFont);
 
-	//_table.setRowSelectionAllowed(false);
 	table.setIntercellSpacing(new Dimension(0, 1));
 	table.setShowVerticalLines(false);
 	table.getSelectionModel().addListSelectionListener(this);
@@ -95,7 +92,6 @@ public class TabChecklist extends TabSpawnable
 	checkCol.setMaxWidth(30);
 	checkCol.setWidth(30);
 	descCol.setPreferredWidth(900);
-	//descCol.setWidth(900);
 	table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 	table.sizeColumnsToFit(-1);
 
@@ -153,16 +149,7 @@ public class TabChecklist extends TabSpawnable
 
 	tableModel.setTarget(target);
 
-	TableColumn checkCol = table.getColumnModel().getColumn(0);
-	TableColumn descCol = table.getColumnModel().getColumn(1);
-	checkCol.setMinWidth(20);
-	checkCol.setMaxWidth(30);
-	checkCol.setWidth(30);
-	//descCol.setWidth(900);
-	descCol.setPreferredWidth(900);
-	table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 	resizeColumns();
-	validate();
     }
 
     /**
@@ -203,7 +190,15 @@ public class TabChecklist extends TabSpawnable
      * Resize the columns to fit.
      */
     public void resizeColumns() {
-	table.sizeColumnsToFit(0);
+        TableColumn checkCol = table.getColumnModel().getColumn(0);
+        TableColumn descCol = table.getColumnModel().getColumn(1);
+        checkCol.setMinWidth(20);
+        checkCol.setMaxWidth(30);
+        checkCol.setWidth(30);
+        descCol.setPreferredWidth(900);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        table.sizeColumnsToFit(0);
+        validate();
     }
 
     ////////////////////////////////////////////////////////////////
@@ -253,7 +248,7 @@ public class TabChecklist extends TabSpawnable
  * The table model for checklists.
  */
 class TableModelChecklist extends AbstractTableModel
-    implements VetoableChangeListener, MElementListener {
+    implements VetoableChangeListener, PropertyChangeListener {
     /**
      * Logger.
      */
@@ -278,17 +273,23 @@ class TableModelChecklist extends AbstractTableModel
 
     ////////////////
     // accessors
-    private UmlModelEventPump getPump() {
-	return UmlModelEventPump.getPump();
-    }
 
+    /**
+     * This function is called when the target is changed (by the user). 
+     * It updates the items, and causes events to arrive when the UML model 
+     * of the new target gets updated.<p>
+     * 
+     * Limited to the target name changes, to reduce the number of events fired.
+     * 
+     * @param t the new target
+     */
     public void setTarget(Object t) {
 	if (ModelFacade.isAElement(target)) {
-	    getPump().removeModelEventListener(this, target);
+	    Model.getPump().removeModelEventListener(this, target);
 	}
 	target = t;
 	if (ModelFacade.isAElement(target)) {
-	    getPump().addModelEventListener(this, target);
+	    Model.getPump().addModelEventListener(this, target, "name");
 	}
 	fireTableStructureChanged();
     }
@@ -308,7 +309,7 @@ class TableModelChecklist extends AbstractTableModel
 	    return "X";
 	}
 	if (c == 1) {
-	    return "Description";
+	    return Translator.localize("tab.checklist.description");
 	}
 	return "XXX";
     }
@@ -395,42 +396,7 @@ class TableModelChecklist extends AbstractTableModel
 
     ////////////////
     // event handlers
-    /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
-     */
-    public void propertySet(MElementEvent mee) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
-     */
-    public void listRoleItemSet(MElementEvent mee) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(MElementEvent mee) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(MElementEvent mee) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(MElementEvent mee) {
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(MElementEvent mee) {
-    }
-
+    
     /**
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
@@ -441,5 +407,13 @@ class TableModelChecklist extends AbstractTableModel
                 panel.resizeColumns();
             }
         });
+    }
+    
+    /**
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        fireTableStructureChanged();
+        panel.resizeColumns();
     }
 } /* end class TableModelChecklist */
