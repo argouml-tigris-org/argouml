@@ -240,6 +240,20 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
       trans.setTarget(dest);
       return trans;
     }
+    
+	/**
+	 * Builds a compositestate as top for some statemachine
+	 * @param statemachine
+	 * @return MCompositeState
+	 */
+    public MCompositeState buildCompositeState(MStateMachine statemachine) {
+    	if (statemachine != null ) {
+    		MCompositeState state = createCompositeState();
+    		state.setStateMachine(statemachine);
+    		return state;
+    	} else
+    		throw new IllegalArgumentException("In buildCompositeState: statemachine is null");
+    }
 
 }
 
