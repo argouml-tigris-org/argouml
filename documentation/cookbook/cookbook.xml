@@ -70,6 +70,23 @@ Rueckert.  Thank you!
 </para>
     </sect1>
   
+    <sect1 id="project">
+      <title>About the project</title>
+      <para>
+ArgoUML is an open source project, so it depends on
+people that volunteer to work on it. Especially in the
+area of development there is still so much to do!
+Everyone who wants to contribute needs to know the
+what, where and how to write good quality code, but
+getting into it is a big challenge since there are
+hundreds of Java files. 
+This developer Cookbook is dedicated to all interested programmers and
+should help to transfer the knowledge from the old experts to them.
+Please feel free to send more questions and/or answers to the 
+<ulink url="mailto:dev@argouml.tigris.org">dev mailing list</ulink>!
+</para>
+    </sect1>
+
     <sect1>
       <title>About this Cookbook...</title>
       <para>
@@ -120,6 +137,51 @@ How to convince your project to use ArgoUML as a modelling tool.
      <para>It is also recommended that you check out GEF from <ulink url="http://gef.tigris.org">gef.tigris.org</ulink> because many things in Argo relate to GEF and it is quite handy to have the source code available. Especially since during development cycles new gef libraries to not as frequently get checked into the argouml modules, so it is useful to build the current version for yourself in order to avoid build errors.</para>
      <para>If you want to - but that is really more of a gimmick - get yourself the source of the NSUML library to. But that is not strictly required.
  </para>
+
+      <sect2>
+	<title>Which tools do I need to build ArgoUML?</title>
+	<itemizedlist>
+	  <listitem>
+	    <para>
+CVS for obtaining the latest files via internet
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+ANT, the Java make tool to manage compiling and packaging
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+JDK, at least version 1.2.2 (includes the java compiler)
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+libs: nsuml.jar, ocl-argo.jar, gef.jar, antlrall.jar
+</para>
+	  </listitem>
+	</itemizedlist>
+	<para>
+The four libs can be found in cvs.
+For compiling/building, a simple 'build package'
+should be sufficient.
+</para>
+      </sect2>
+      <sect2>
+	<title>Compiling failed. Any suggestions?</title>
+	<para>
+Most compiling problems arise from wrong versions: maybe ANT
+or JDK, but most often one of the four libs. A look on the error
+messages can help. Get the appropriate version (or, e.g. in the
+case of gef.jar, get the sources through CVS and build it on
+your own). Another reason for problems is an unclean local
+source tree: if yours is in doubt, remove it completely and
+get it all again through CVS. If nothing helps, ask the
+<ulink url="mailto:dev@argouml.tigris.org">experts</ulink>!
+</para>
+      </sect2>
+
  </sect1>
  <sect1 id="Build">
      <title>Build Process</title>
@@ -433,6 +495,74 @@ revert to the previous version of the tool.
 </chapter>
 <chapter id="components">
     <title>ArgoUML Components</title>
+
+    <sect1>
+      <title>Argo Initialization</title>
+      <sect2>
+	<title>Which sources are involved?</title>
+	<para>
+Relative to the directory org/argouml, they are mainly:
+</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>
+application/Main.java,
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+kernel/Project.java + xml/argo/ArgoParser.java,
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+ui/{ProjectBrowser.java,*Pane.java},
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+cognitive/{Designer.java,ui/ToDoPane.java}.
+</para>
+	  </listitem>
+	</itemizedlist>
+      </sect2>
+      <sect2>
+	<title>What is loaded/initialized?</title>
+	<para>
+It all begins in org.argouml.application.Main: set up
+main application frame (org.argouml.ui.ProjectBrowser), the
+project (org.argouml.kernel.Project), numerous classes, and
+finally as a background thread: cognitive support
+(org.argouml.cognitive.Designer) and some more classes.
+</para>
+	<para>
+The ProjectBrowser initializes the menu, toolbar, status bar
+and the four main areas:
+navigation pane (org.argouml.ui.NavigatorPane),
+editor pane (org.argouml.ui.MultiEditorPane),
+to do pane (org.argouml.cognitive.ui.ToDoPane), and
+details pane (org.argouml.ui.DetailsPane). Then, the actual
+project is set to either a read from file project
+(see ArgoParser.SINGLETON.readProject(URL) and
+ArgoParser.SINGLETON.getProject() in org.argouml.xml.argo.ArgoParser)
+or a newly generated project (see Project.makeEmptyProject()).
+</para>
+      </sect2>
+    </sect1>
+
+    <sect1>
+      <title>Which Objects live during a typical session?</title>
+      <para>
+(Project, Designer, Globals, NavPane, ToDoPane, ...)
+</para>
+    </sect1>
+    <sect1>
+      <title>What is their task?</title>
+      <para>
+(visual component, model, controller, ...)
+</para>
+    </sect1>
+
     <sect1 id="bigger_components">
     <title>The bigger picture, ArgoUML and supporting libraries</title>
     <para>
@@ -577,6 +707,161 @@ programming in Argo/UML.
 <sect2 id="howdoi_reverse">
 <title>How do I ...?</title>
 <para>...</para></sect2>
+
+      <sect2>
+	<title>Which sources are involved?</title>
+	<para>
+The package org.argouml.uml.reveng is supposed to hold those classes
+that are common to all RE packages. At the moment this is the Import
+class which is mainly responsible to recognize directories, get their
+content and parse every known source file in them. These are only java
+files at them moment, but there might be other languages like C++ in
+the future. With this concept you could mix several languages within
+a project. The DiagramInterface is used to visualize generated NSUML
+metamodel objects then.
+</para>
+	<para>
+The package org.argouml.uml.reveng.java holds the Java specific parts
+of the current RE code. C++ RE might go to org.argouml.uml.reveng.cc,
+or so...
+</para>
+      </sect2>
+      <sect2>
+	<title>How is the grammar of the target language implemented?</title>
+	<para>
+It's a Antlr (<ulink url="http://www.antlr.org">http://www.antlr.org</ulink>)
+grammar, based on the Antlr Java parser
+example. The main difference is the missing AST (Abstract Syntax Tree)
+generation and treeparser. So the original example generates a AST
+(a treelike data structure) and then traverses this tree, while the
+ArgoUML code parses the source file and generates NSUML objects
+directly from the sources. This was done to avoid the memory usage
+of an AST and the frequent GC while parsing many source files.
+</para>
+      </sect2>
+      <sect2>
+	<title>Which model/diagramm elements are generated?</title>
+	<para>
+The *context classes hold the current context for a package, class
+etc. When the required information for a object is available, the
+corresponding NSUML object is created and passed to the DiagramInterface
+to visualize it.
+</para>
+      </sect2>
+      <sect2>
+	<title>Which layout algorithm is used?</title>
+	<para>
+The classes in org.argouml.uml.diagram.static_structure.layout.* hold
+the Classdiagram layout code. No layout for other diagram types yet.
+It's based on a ranking scheme for classes and interfaces. The rank of
+a class/interface depends on the total number of (direct or indirect)
+superclasses. So if class B extends A (with rank(A)=0), then rank(B)=1.
+If C extends B, then rank(C)=2 since it has 2 superclasses A,B. An
+implemented interface is treated similar to a extended class. The
+objects are placed in rows then, that depend on their rank.
+rank(0)=1st row. rank(1) =2nd row (below the 1st one) etc. Example:
+</para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/examples/example1.gif" format="GIF"/>
+	  </imageobject>
+	</mediaobject>
+	<para>
+In the next diagramm, a link goes to a object that is not in the row
+above:
+</para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/examples/example2.gif" format="GIF"/>
+	  </imageobject>
+	</mediaobject>
+	<para>
+In this case, insert virtual objects which are linked to the actual
+target and link to them:
+</para>
+	<mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/examples/example2.gif" format="GIF"/>
+	  </imageobject>
+	</mediaobject>
+	<para>
+The object are sorted within their row then to minimize crossing links
+then. Compute the average value of the vertical positions of all linked
+object in the row above. Example: we have 2 ranks 0 and 1 with 3
+classes each:
+</para>
+	<blockquote>
+	  <para>
+A B C : rank 0
+</para>
+	  <para>
+D E F : rank 1
+</para>
+	</blockquote>
+	<para>
+We give the superclasses an index in their rank (assuming that they are
+already sorted):
+</para>
+	<blockquote>
+	  <para>
+A:0, B:1, C:2
+</para>
+	</blockquote>
+	<para>
+D, E, F have the following links (A, B, C could be interfaces, so I allow
+links to multiple superclasses here):
+</para>
+	<blockquote>
+	  <para>
+D -> C
+</para>
+	  <para>
+E -> A and C
+</para>
+	  <para>
+F -> A and B
+</para>
+	</blockquote>
+	<para>
+Compute the average value of the indexes:
+</para>
+	<blockquote>
+	  <para>
+D = 2 (C has index 2 / 1 link)
+</para>
+	  <para>
+E = 0 + 2 / 2 = 1 (A=0, C=2 divide by 2 links)
+</para>
+	  <para>
+F = 0 + 1 / 2 = 0.5 (A=0, B=1, 2 links)
+</para>
+	</blockquote>
+	<para>
+Then sort the subclasses by that value:
+</para>
+	<blockquote>
+	  <para>
+F(is 0.5), E(is 1), D(is 2)
+</para>
+	</blockquote>
+	<para>
+So the placement is:
+</para>
+	<blockquote>
+	  <para>
+A B C
+</para>
+	  <para>
+(here are the links, but I can't hardly paint them as ASCIIs)
+</para>
+	  <para>
+F E D
+</para>
+	</blockquote>
+</sect2>
+
+
+
 </sect1>
 
 <sect1 id="help">
@@ -803,221 +1088,78 @@ The dissertation of Jason Robbins is a <emphasis>MUST READ</emphasis> for everyo
     <para>
 The following chapters are moved here from the User FAQ. They need rework.
 </para>
- <qandaset defaultlabel="none">
- <qandadiv>
-  <title>Screen Grabs</title> 
- <qandaentry>
- <question>
+    <sect1>
+      <title>How to make Screen Grabs</title> 
   <para>There's nothing like show and tell when using software! Everyone likes screen grabs...here's how you can help out!</para> 
-  </question>
- <answer>
-  <para/> 
-  <para/> 
   <para>Make screen grabs as you go! And here's how...</para> 
-  <para>MS Windows</para> 
+      <sect2>
+	<title>MS Windows</title>
   <para>You can use the PrintScreen key to copy the screen to the clipboard (as a bitmap), and then you can paste it into another application (such as MS Word, PowerPoint, etc. (maybe Paint, too)) using the Paste function (ctrl-v). MS Word may (depending on your version) allow you to save the document as an HTML page, which creates an html source file and gif files for all the embedded images (i.e. your pasted screen shot).</para> 
   <para>To capture a single window instead of the entire screen, use Alt-PrintScreen.</para> 
   <para>Image resolution is determined by screen size, for best results: 256 colors by 800X600 is good for a full screen capture.</para> 
   <para>Thanks to Derek for that little tip!</para> 
   <para>Do a search on any of your favorite freeware sites for more elaborate applications. Snagit from techsmith has been recommended</para> 
-  <para>Linux</para> 
+      </sect2>
+      <sect2>
+	<title>Linux</title> 
   <para>There's a number of screen shots apps under Linux though they escape me now!</para> 
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <chapter>
-  <title>Argouml\application\api</title> 
- <qandaset>
- <qandadiv>
+      </sect2>
+    </sect1>
+    <sect1>
   <title>Argouml\application\api class diagram screen grab</title> 
- <qandaentry>
- <question>
-  <para>I'd like to see a class diagram for the api. Where is it?</para> 
-  </question>
- <answer>
-  <para>Right here!</para> 
  <mediaobject>
  <imageobject>
   <imagedata format="PNG" fileref="images/screenshots/Argoapi.png"/> 
   </imageobject>
   </mediaobject>
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <!--  end chapter api
-  --> 
- <!-- start chapter  application config 
-  --> 
- <chapter>
-  <title>org\Argouml\application\configuration</title> 
- <qandaset defaultlabel="none">
- <qandadiv>
+    </sect1>
+    <sect1>
   <title>org\Argouml\application\configuration class diagram screen grab</title> 
- <qandaentry>
- <question>
-  <para>Is there a screen grab for the application configuration?</para> 
-  </question>
- <answer>
-  <para>Yes!</para> 
  <mediaobject>
  <imageobject>
   <imagedata format="PNG" fileref="images/screenshots/Argoconfig.png"/> 
   </imageobject>
   </mediaobject>
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <!-- end chapter  application config 
-  --> 
- <!-- start chapter Argouml\cognitive\checklist 
-  --> 
- <chapter>
-  <title>org\Argouml\cognitive\checklist</title> 
- <qandaset defaultlabel="none">
- <qandadiv>
+    </sect1>
+    <sect1>
   <title>org\Argouml\application\configuration class diagram screen grab</title> 
- <qandaentry>
- <question>
-  <para>Is there a screen grab for the Argouml\cognitive\checklist?</para> 
-  </question>
- <answer>
-  <para/> 
-  <para/> 
-  <para>Yes!</para> 
- <!--  copy and paste working pieces!
-  --> 
  <mediaobject>
  <imageobject>
   <imagedata format="PNG" fileref="images/screenshots/Argocogchklist.png"/> 
   </imageobject>
   </mediaobject>
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <!--  end Chapter cognitive checklist
-  --> 
- <!--  start Chapter cognitive critics
-  --> 
- <chapter>
-  <title>org\Argouml\cognitive\critics</title> 
- <qandaset defaultlabel="none">
- <qandadiv>
+    </sect1>
+    <sect1>
  <title>org\Argouml\cognitive\critics class diagram screen grab</title> 
- <qandaentry>
- <question>
-  <para>Is there a screen grab for the org\Argouml\cognitive\critics?</para> 
-  </question>
- <answer>
-  <para/> 
-  <para/> 
-  <para>Yes!</para> 
  <mediaobject>
  <imageobject>
   <imagedata format="PNG" fileref="images/screenshots/Argocogcritics.png"/> 
   </imageobject>
   </mediaobject>
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <!--  end Chapter Argocogcritics.png
-  --> 
- <!--  start chapter Argouml\cognitive\ui
-  --> 
- <chapter>
-  <title>org\Argouml\cognitive\critics\ui</title> 
- <qandaset defaultlabel="none">
- <qandadiv>
+    </sect1>
+    <sect1>
   <title>org\Argouml\cognitive\critics\ui class diagram screen grab</title> 
- <qandaentry>
- <question>
-  <para>Is there a screen grab for the org\Argouml\cognitive\critics\ui?</para> 
-  </question>
- <answer>
-  <para/> 
-  <para/> 
-  <para>No! But feel free to generate one and submit it!</para> 
- <!-- 
-  <mediaobject>
-					<imageobject>
-						<imagedata format="PNG" fileref="images/screenshots/Argocogcritics.png"/>
-					</imageobject>
-				</mediaobject>
-
-  --> 
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <!--  end chapter cog ui
- --> 
- <!--  start chapter Argouml\kernel
-  --> 
- <chapter>
-  <title>src_new\org\Argouml\kernel</title> 
- <qandaset defaultlabel="none">
- <qandadiv>
+      <para>
+Could anyone add this one?
+</para>
+    </sect1>
+    <sect1>
   <title>src_new\org\Argouml\kernel class diagram screen grab</title> 
- <qandaentry>
- <question>
-  <para>Is there a screen grab for the src_new\org\Argouml\kernel?</para> 
-  </question>
- <answer>
-  <para/> 
-  <para/> 
-  <para>Yes!</para> 
  <mediaobject>
  <imageobject>
   <imagedata format="PNG" fileref="images/screenshots/Argokernel.png"/> 
   </imageobject>
   </mediaobject>
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
-  </chapter>
- <!--  end chapter kernel
-  --> 
-<!--  start chapter Argouml\ocl
-  --> 
-<chapter>
-  <title>src_new\org\Argouml\ocl</title> 
-<qandaset defaultlabel="none">
-<qandadiv>
+    </sect1>
+    <sect1>
   <title>src_new\org\Argouml\ocl class diagram screen grab</title> 
-<qandaentry>
-<question>
-  <para>Is there a screen grab for the src_new\org\Argouml\ocl?</para> 
-  </question>
-<answer>
-  <para/> 
-  <para/> 
-  <para>Yes!</para> 
 <mediaobject>
 <imageobject>
   <imagedata format="PNG" fileref="images/screenshots/Argoocl.png"/> 
   </imageobject>
   </mediaobject>
-  </answer>
-  </qandaentry>
-  </qandadiv>
-  </qandaset>
+    </sect1>
   </chapter>
-<!--  end chapter ocl
-  --> 
-<!--  I did all of this manually and I'll tell you it's a pain 
-  --> 
-
 </book>
 
 
