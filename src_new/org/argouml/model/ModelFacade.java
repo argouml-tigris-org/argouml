@@ -4623,6 +4623,9 @@ public class ModelFacade {
      * @param base is the base
      */
     public static void setBase(Object handle, Object base) {
+	checkExists(handle);
+	checkExists(base);
+
         if (handle instanceof MAssociationRole
             && base instanceof MAssociation) {
             ((MAssociationRole) handle).setBase((MAssociation) base);
@@ -5530,6 +5533,9 @@ public class ModelFacade {
     }
 
     public static void setExtension(Object handle, Object ext) {
+	checkExists(handle);
+	checkExists(ext);
+
         if (handle instanceof MExtend
             && (ext == null || ext instanceof MUseCase)) {
             ((MExtend) handle).setExtension((MUseCase) ext);
@@ -5684,6 +5690,9 @@ public class ModelFacade {
     }
 
     public static void setAddition(Object handle, Object useCase) {
+	checkExists(handle);
+	checkExists(useCase);
+
         if (handle instanceof MInclude) {
             ((MInclude) handle).setAddition((MUseCase) useCase);
             return;
@@ -6339,6 +6348,23 @@ public class ModelFacade {
 
     ////////////////////////////////////////////////////////////////
     // Convenience methods
+
+    /**
+     * Tests if an element is marked removed.
+     *
+     * <p>Model specific: NSUML is littered with calls to a function also
+     * named checkExists. That function is however a NOP (it is empty in
+     * MBaseImpl, and it is final so it cannot be overridden anywhere).
+     *
+     * @param obj the element to test.
+     * @throws IllegalStateException iff obj is marked removed.
+     */
+    private static void checkExists(Object obj) {
+	if ((obj instanceof MBase) && ((MBase) obj).isRemoved()) {
+	    throw new IllegalStateException("Operation on a removed object ["
+					    + obj + "]");
+	}
+    }
 
     /**
      * The empty set.
