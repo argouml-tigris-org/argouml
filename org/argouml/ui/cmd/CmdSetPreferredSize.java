@@ -29,6 +29,7 @@ import java.util.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
 
@@ -51,7 +52,8 @@ public class CmdSetPreferredSize extends Cmd {
      * @param mode one of the defined constants
      */
     public CmdSetPreferredSize(int mode) {
-        super("Set " + wordFor(mode) + " size");
+        super(Argo.
+              localize(Argo.MENU_BUNDLE,"Set " + wordFor(mode) + " size"));
         _mode = mode;
     }
 
