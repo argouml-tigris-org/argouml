@@ -10,13 +10,6 @@ A description of all the toolbar entries
 <chapter id="ch.ref.toolbar">
   <title>The Toolbar</title>
 
-
-  <section>
-    <title>Introduction</title>
-    <para>
-      This chapter will in the near future describe the toolbar.
-    </para>
-
     <section>
       <title>File operations</title>
       <para>These buttons have identical functions as their counterparts in the
@@ -320,6 +313,4 @@ A description of all the toolbar entries
       </itemizedlist>
     </section>
     
-
-  </section>
 </chapter>

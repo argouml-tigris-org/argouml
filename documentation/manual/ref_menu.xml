@@ -742,18 +742,16 @@ Or should this be offered as a 3rd choice? -->
     </sect2>
   </sect1>
 
+
+
   <!-- The Edit menu entries -->
 
-  
-
-  
   <sect1>
     <title>The Edit Menu</title>
 
-    &notupdatedfor014disclaimer;
-    
     <para>This menu provides support for selecting artifacts on the editing
-      pane; an undo/redo function; cut, copy and paste functions; removal of
+      pane; <!--an undo/redo function;-->
+      cut, copy and paste functions; removal of
       artifacts from diagrams and the model; and control of user
       settings.</para>
 
@@ -763,7 +761,7 @@ Or should this be offered as a 3rd choice? -->
       <title>The Select Sub-Menu</title>
 
       <para>This sub-menu provides for selection of items on the editing
-        menu. It has four entries.</para>
+        menu. It has the following entries.</para>
 
       <itemizedlist>
         <listitem>
@@ -782,18 +780,32 @@ Or should this be offered as a 3rd choice? -->
 
         <listitem>
           <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/navigate_back.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
             <literal>Navigate Back</literal>. &argouml; keeps a record of the
-            artifacts that you have been viewing while navigating the model. This
-            button moves you back to the previous one viewed. If there are no more
+            artifacts that you have been selecting while navigating the model. This
+            button moves you back to the previous one selected. If there are no more
             previous artifacts, the button is grayed out.
           </para>
         </listitem>
         
         <listitem>
           <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/navigate_forward.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
             <literal>Navigate Forward</literal>. &argouml; keeps a record of the
-            artifacts that you have been viewing while navigating the model. This
-            button moves you forward to the next one viewed (after you have used
+            artifacts that you have been selecting while navigating the model. This
+            button moves you forward to the next one selected (after you have used
             the Navigate Back button to move back). If there are no more next
             artifacts, the button is grayed out.
           </para>
@@ -801,30 +813,35 @@ Or should this be offered as a 3rd choice? -->
 
         <listitem>
           <para><literal>Select Previous</literal>. &argouml; has a
-          concept of the ordering of artifacts on a diagram. This
-          selects the item prior to the currently selected item in that
+          concept of the ordering of artifacts on a diagram. 
+          <!--visible in the "Package-centric" view in the explorer ??? -->. 
+          This selects the item prior to the currently selected item in that
           ordering.</para>
-
-          <caution><para>The behavior of this menu function can be very
-          strange, selecting items that do not appear to be on any
-          diagram. It is probably best avoided.</para></caution></listitem>
 
         <listitem><para><literal>Select Next</literal>. Similarly this
           selects the item following the currently selected item in that
           ordering.</para>
 
-          <caution><para>Again the behavior of this menu function can be very
-          strange, selecting items that do not appear to be on any diagram. It
-          is probably best avoided.</para></caution></listitem>
-
         <listitem><para><literal>Invert Selection</literal>. This inverts the
-          current selection (i.e. everything that was selected is de-selected
-          and everything that was not selected is selected).</para></listitem>
-      </itemizedlist>
+          current selection. More exact: everything that was selected is de-selected
+          and everything that was not selected 
+          within the current diagram is selected.
+          </para>
+        </listitem>
+      </itemizedlist>  
+      <caution>
+        <para>
+          The behavior of the <literal>Select Next</literal> 
+          and <literal>Select Previous</literal> menu functions can be very
+          strange, selecting items that do not appear to be on any
+          diagram. It is probably best avoided.
+        </para>
+      </caution>
+
     </sect2>
 
     <!-- Undo -->
-
+<!--
     <sect2>
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center" fileref="images/icons/undo.gif"/>
@@ -835,9 +852,9 @@ Or should this be offered as a 3rd choice? -->
       <warning><para>In the current implementation of &argouml; this function
         is not available and is permanently grayed out.</para></warning>
     </sect2>
-
+-->
     <!-- Redo -->
-
+<!--
     <sect2>
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center" fileref="images/icons/redo.gif"/>
@@ -849,7 +866,7 @@ Or should this be offered as a 3rd choice? -->
       <warning><para>In the current implementation of &argouml; this function
         is not available and is permanently grayed out.</para></warning>
     </sect2>
-
+-->
     <!-- Cut selection -->
 
     <sect2 id="s2.ref.menu_cut">
@@ -866,12 +883,12 @@ Or should this be offered as a 3rd choice? -->
       </indexterm>
       <para>Shortcut Ctrl-X.</para>
 
-      <para>This should take the currently selected items, remove them from the
+      <para>This takes the currently selected items, remove them from the
         diagram, and place them on the clipboard for subsequent pasting.</para>
 
-      <warning><para>In the current implementation of &argouml; there are
+      <warning><para>In the V0.14 implementation of &argouml; there are
         some difficulties with clipboard based functions. This menu option is
-        permanently grayed out.</para></warning>
+        best avoided.</para></warning>
     </sect2>
 
     <!-- Copy selection -->
@@ -890,18 +907,12 @@ Or should this be offered as a 3rd choice? -->
       </indexterm>
       <para>Shortcut Ctrl-C.</para>
 
-      <para>This should take the currently selected items and make a copy of
+      <para>This takes the currently selected items and make a copy of
         them on the clipboard for subsequent pasting.</para>
 
-      <warning><para>If the original item is deleted from the model or removed
-        from the diagram, subsequent pasting will produce a copy that has no
-        namespace, and cannot be properly saved.</para>
-
-      <para>In addition pasting back to the diagram from which the copy was
-        made will replace the original, rather than duplicating it.</para>
-
-      <para>In the light of this, the copy function is best
-        avoided.</para></warning>
+      <warning><para>In the V0.14 implementation of &argouml; there are
+        some difficulties with clipboard based functions. This menu option is
+        best avoided.</para></warning>
     </sect2>
 
     <!-- Paste selection -->
@@ -920,25 +931,21 @@ Or should this be offered as a 3rd choice? -->
       </indexterm>
       <para>Shortcut Ctrl-V.</para>
 
-      <para>This should paste the item(s) last cut or copied to the clipboard
+      <para>This pastes the item(s) last cut or copied to the clipboard
 on to the current diagram in the drawing pane.
-</para>
+      </para>
 
-      <warning><para>If the original item has since been deleted from the model
-        or removed from the diagram, pasting will produce a copy that has no
-        namespace, and cannot be properly saved.</para>
-
-      <para>In addition pasting back to the diagram from which the copy was
-        made will replace the original, rather than duplicating it.</para>
-
-      <para>In the light of this, the paste function is best
-        avoided.</para></warning>
+      <warning><para>In the V0.14 implementation of &argouml; there are
+        some difficulties with clipboard based functions. This menu option is
+        best avoided.</para></warning>
     </sect2>
 
     <!-- Remove artifact from the diagram -->
 
     <sect2 id="s2.menu_edit_remove_from_diagram">
-      <title>Remove From Diagram</title>
+      <title><guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center" fileref="images/icons/remove_from_diagram.gif"/>
+        </imageobject></inlinemediaobject></guiicon>Remove From Diagram</title>
 
       <indexterm>
 	<primary>Remove From Diagram</primary>
@@ -952,19 +959,14 @@ on to the current diagram in the drawing pane.
       <para>This removes the currently selected item(s) from the diagram, but
         not from the model.</para>
 
-      <caution><para>In previous versions of &argouml; there was a problem
-        where, in some circumstances, the item(s) were deleted from the model
-        completely, not just from the diagram.</para>
-
-      <para><emphasis>This is now believed to be fixed, but you should consider
-        saving your model prior to using this
-        function.</emphasis></para></caution>
     </sect2>
 
     <!-- Remove artifact from the model -->
 
     <sect2>
-      <title>Delete From Model</title>
+      <title><guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center" fileref="images/icons/delete_from_model.gif"/>
+        </imageobject></inlinemediaobject></guiicon>Delete From Model</title>
 
       <indexterm>
 	<primary>Delete From Model</primary>
@@ -978,11 +980,20 @@ on to the current diagram in the drawing pane.
       <para>This function deletes the selected item(s) from the model
         completely.</para>
 
-      <caution><para>In the current version of &argouml; the item(s) may not
-        disappear from diagrams other than the current one. However the copies
-        on other diagrams will have no associated properties. They should be
-        deleted, or will disappear after the model is saved and
-        reloaded.</para></caution>
+      <para>If the item to be deleted is also present on another diagram than
+        the current one, the dialog box from figure x appears.</para>
+      <figure id="fig.ref.menu_remove_from_model" float="1">
+        <title>The dialog for confirmation of <literal>Remove from Model</literal>.
+        </title>
+
+        <screenshot><mediaobject>
+          <imageobject>
+            <imagedata format="PNG" align="center"
+                       fileref="images/reference/confirm_remove.png"/>
+          </imageobject>
+        </mediaobject></screenshot>
+      </figure>
+
     </sect2>
 
     <!-- Empty trash (what does this actually do?) -->
@@ -992,6 +1003,7 @@ on to the current diagram in the drawing pane.
 
       <para>This menu function has no discernible effect. It is believed to
         invoke a garbage collection in the Java system.</para>
+      <!-- TODO: enter an issue to remove this useless menu item ... -->
     </sect2>
 
     <!-- Settings for Argo/UML -->
@@ -1006,7 +1018,7 @@ on to the current diagram in the drawing pane.
       <!-- Example of the import sources dialog -->
 
       <figure id="fig.ref.menu_settings" float="1">
-        <title>The dialog for <literal>Settings</literal>.</title>
+        <title>The dialog for <literal>Settings - Preferences</literal>.</title>
 
         <screenshot><mediaobject>
           <imageobject>
@@ -1021,7 +1033,7 @@ on to the current diagram in the drawing pane.
         bottom of the dialog box.</para>
 
       <itemizedlist>
-        <listitem><para><literal>OK</literal>. Selecting this button (&button1;
+        <listitem><para><literal>OK</literal>. Activating this button (&button1;
           click) applies the chosen settings and exits the
           dialog.</para></listitem>
 
@@ -1034,10 +1046,16 @@ on to the current diagram in the drawing pane.
         <listitem><para><literal>Apply</literal>. Selecting this button
           (&button1; click) applies the chosen settings and remains in the
           dialog.</para></listitem>
+<!-- TODO: check if this works. If not, add a warning & issue reference -->
       </itemizedlist>
 
+      <para>Closing the dialog (with the close button in the top corner in the
+        border of the window) causes the same effect as <literal>Cancel</literal>.
+      </para>
+      
       <para>These settings can be saved for use by subsequent &argouml;
         sessions (see <xref linkend="s2.ref.menu_save_config"/>).</para>
+<!-- TODO: Are these settings stored per file, or per user, or lost after exiting ArgoUML? -->
 
       <!-- Preferences -->
 
@@ -1045,12 +1063,12 @@ on to the current diagram in the drawing pane.
         <title>Preferences Tab</title>
 
         <para>Selecting the <literal>Preferences</literal> tab (&button1; click
-          on the tab) gives four options as check boxes.</para>
-
+          on the tab) gives the following options as check boxes.</para>
+      
         <itemizedlist>
           <listitem><para><literal>Show Splash Panel</literal> (set by
             default). If enabled &argouml; will show a small panel with a
-            picture while loading.</para>
+            picture while starting up.</para>
 
           <tip><para>The splash panel can be seen by using the Help menu (see
             <xref linkend="s2.ref.menu_help_about"/>).</para></tip></listitem>
@@ -1064,16 +1082,17 @@ on to the current diagram in the drawing pane.
             default). If enabled usage statistics are reported on the
             console.</para>
 
-          <caution><para>In the current version of &argouml; there is only a
+          <caution><para>In the V0.14 version of &argouml; there is only a
+<!-- TODO: Check if this is true. Does it indeed apply to V0.14? -->
             very small amount of information, which may be missed amongst the
             other console output.</para></caution></listitem>
 
           <listitem><para><literal>Report on Load Times</literal> (clear by
             default). If enabled load times at start up for the various phases
-            of initialization are reported.</para>
+            of initialization are reported on the console.</para>
 
-          <caution><para>These times are only of use to developers&mdash;they
-            have no meaning to the ordinary user.</para></caution></listitem>
+          <tip><para>These times are only of use to developers&mdash;they
+            have no meaning to the ordinary user.</para></tip></listitem>
         </itemizedlist>
       </sect3>
 
@@ -1084,16 +1103,30 @@ on to the current diagram in the drawing pane.
 
         <para>Selecting the <literal>Environment</literal> tab (&button1; click
           on the tab) lists seven environmental items. Note that none of these
-          can be set&mdash;this tab is just a matter of record.</para>
+          can be set &mdash; this tab is just a matter of record.</para>
+          
+        <figure float="1">
+          <title>The dialog for <literal>Settings - Environment</literal>.</title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="PNG" align="center"
+                       fileref="images/reference/menu_settings_environment.png"/>
+            </imageobject>
+          </mediaobject></screenshot>
+        </figure>
 
         <itemizedlist>
-          <listitem><para><literal>${argo.root}</literal>. The directory
-            holding the top level argo class definitions. By default the
-            <literal>classes</literal> sub-directory of the &argouml; build
-            directory.</para></listitem>
+          <listitem><para><literal>${argo.root}</literal>. 
+          The full path to the &argouml; program, i.e. the 
+            <literal>argouml.jar</literal> file.
+            </para>
+          </listitem>
 
-          <listitem><para><literal>${argo.home}</literal>. The &argouml; build
-            directory.</para></listitem>
+          <listitem><para><literal>${argo.home}</literal>. The &argouml; home
+            directory which contains the "jar" files needed by &argouml;.
+            </para>
+          </listitem>
 
           <listitem><para><literal>${argo.ext.dir}</literal>. The directory
             holding &argouml; extensions&mdash;by default the
@@ -1104,13 +1137,18 @@ on to the current diagram in the drawing pane.
             of the Java Runtime Environment (JRE).</para></listitem>
 
           <listitem><para><literal>${user.home}</literal>. The user's home
-            directory.</para></listitem>
+            directory. 
+            Used for storing the <literal>argo.user.properties</literal> file.
+            </para>
+          </listitem>
 
           <listitem><para><literal>${user.dir}</literal>. The directory from
             which &argouml; was started.</para></listitem>
-
-          <listitem><para><literal>startup directory</literal>. The directory
+<!-- TODO: What is the difference with the argo.home ? --> 
+            
+          <listitem><para><literal>Startup Directory</literal>. The directory
             in which &argouml; starts file searches etc.</para></listitem>
+<!-- TODO: What is the difference with the user.home ? --> 
         </itemizedlist>
       </sect3>
 
@@ -1122,12 +1160,23 @@ on to the current diagram in the drawing pane.
         <para>This tab allows the user to record additional information of use
           to the system. There are two text boxes provided.</para>
 
+          <figure float="1">
+          <title>The dialog for <literal>Settings - User</literal>.</title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="PNG" align="center"
+                       fileref="images/reference/menu_settings_user.png"/>
+            </imageobject>
+          </mediaobject></screenshot>
+        </figure>
+
         <itemizedlist>
           <listitem><para><literal>Full Name:</literal>. Allows the user to
-          record their full name.</para></listitem>
+          record her full name.</para></listitem>
 
           <listitem><para><literal>Email Address:</literal>. Allows the user to
-          record their Email address.</para></listitem>
+          record his Email address.</para></listitem>
         </itemizedlist>
 
         <para>This information is used when requesting to-do help by
@@ -1140,31 +1189,110 @@ on to the current diagram in the drawing pane.
         <title>Notation Tab</title>
 
         <para>This tab allows the user to specify certain notation
-          settings. It comprises two check boxes.</para>
+          settings, i.e. how things are shown on diagrams. 
+          It comprises the following check boxes.</para>
+
+          <figure float="1">
+          <title>The dialog for <literal>Settings - Notation</literal>.</title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="PNG" align="center"
+                       fileref="images/reference/menu_settings_notation.png"/>
+            </imageobject>
+          </mediaobject></screenshot>
+        </figure>
 
         <itemizedlist>
-          <listitem><para><literal>Only allow strict UML notation
-            text</literal> (clear by default). This feature is for future use.
+          <listitem><para><literal>Use only UML notation</literal> 
+            (clear by default). This feature is for future use.
             One possibility is that a designer may create a diagram and indicate
             that the notation of the diagram is Java. Someone viewing the
             diagram with strict UML notation checked will
             <emphasis>only</emphasis> see UML notation in the classes no matter
             what notation the designer has used. See also <xref
             linkend="s2.ref.menu_notation"/>).</para>
-
-          <warning><para>This is not currently supported and is not a
+<!-- TODO: How is this working in cooperation with the View-Notation-... menu?
+It has been discussed somewhere before...
+-->
+          <warning><para>This is not currently (V0.14) supported and is not a
             commitment to the feature of assigning a notation to a diagram
             either.</para></warning></listitem>
 
-          <listitem><para><literal>Use guillemots (&laquo; &raquo;) for
-            stereotypes</literal> (clear by default). By default &argouml; uses
-            pairs of <quote>less than</quote> and <quote>greater than</quote>
-            (&lt;&lt; &gt;&gt;) characters for stereotypes If this box is
+          <listitem><para><literal>Use guillemots</literal> (&laquo; &raquo;) for
+            stereotypes (clear by default). By default &argouml; uses
+            pairs of <emphasis>less than</emphasis> and <emphasis>greater than</emphasis>
+            (&lt;&lt; &gt;&gt;) characters for stereotypes. If this box is
             checked stereotypes on diagrams are shown between true guillemots
             (&laquo; &raquo;).</para>
+<!-- TODO: Why do we have this feature? Is there any reason not to use
+guillemots? -->
+<!-- TODO: The change is not updated on the visible diagram. See issue ... -->
+          </listitem>
+          
+          <listitem><para><literal>Show visibility</literal>
+<!-- TODO: fill in ...           (clear/set by default) -->
+          </para></listitem>
+          
+          <listitem><para><literal>Show multiplicity</literal>
+<!-- TODO: fill in ...           (clear/set by default) -->
+          </para></listitem>
+          
+          <listitem><para><literal>Show initial value</literal>
+<!-- TODO: fill in ...           (clear/set by default) -->
+          </para></listitem>
+          
+          <listitem><para><literal>Show properties</literal>
+<!-- TODO: fill in ...           (clear/set by default) -->
+          </para></listitem>
+          
+          <listitem><para><literal>Show stereotypes in navigator</literal>
+<!-- TODO: This is the old term "navigator". Should be "explorer". 
+See issue ... -->
+<!-- TODO: fill in ...           (clear/set by default) -->
+          </para></listitem>
+          
+          <listitem><para><literal>Default shadow width</literal>
+<!-- TODO: fill in ...           (clear/set by default) -->
+          </para></listitem>
+        </itemizedlist>
+      </sect3>
 
-          <caution><para>This feature is not fully implemented in the current
-            version of &argouml;.</para></caution></listitem>
+      <!-- Appearance tab -->
+
+      <sect3 id="s3.ref.menu_settings_appearance">
+        <title>Appearance Tab</title>
+
+        <para>This tab allows the user to specify the LAF (Look And Feel) and theme,
+          i.e. what the complete &argouml; UI looks like. 
+          It comprises the following combo boxes.</para>
+
+          <figure float="1">
+          <title>The dialog for <literal>Settings - Appearance</literal>.</title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="PNG" align="center"
+                       fileref="images/reference/menu_settings_appearance.png"/>
+            </imageobject>
+          </mediaobject></screenshot>
+        </figure>
+
+        <itemizedlist>
+          <listitem><para><literal>Look and Feel</literal>. 
+              The choice made here
+              influences the complete User Interface. 
+              It only becomes effective when &argouml; is exited and restarted.
+            </para>
+          </listitem>
+
+          <listitem><para><literal>Metal Theme</literal>. 
+              This item is downlighted if the Metal LAF is not chosen.
+              The choice made here
+              influences the complete User Interface. 
+              It only becomes effective when &argouml; is exited and restarted.
+            </para>
+          </listitem>
         </itemizedlist>
       </sect3>
     </sect2>
@@ -1174,6 +1302,8 @@ on to the current diagram in the drawing pane.
 
   <sect1>
     <title>The View Menu</title>
+
+    &notupdatedfor014disclaimer;
 
     <para>This menu is used for actions that affect how the various panes are
       viewed.</para>
@@ -1787,6 +1917,8 @@ artifact.
   <sect1 id="s1.ref.create.diagram.menu">
     <title>The Create Diagram Menu</title>
 
+    &notupdatedfor014disclaimer;
+
     <para>This menu provides for creating the various types of UML diagrams
       supported by &argouml;.</para>
 
@@ -1951,6 +2083,8 @@ artifact.
 
   <sect1 id="s1.ref.menu_arrange">
     <title>The Arrange Menu</title>
+
+    &notupdatedfor014disclaimer;
 
     <para>This menu provides a range of functions to help in the alignment of
       artifacts on diagrams within the editing pane. In general the menu
@@ -2185,6 +2319,8 @@ artifact.
   <sect1>
     <title>The Generation Menu</title>
 
+    &notupdatedfor014disclaimer;
+
     <para>This menu provides support for code generation from UML diagrams. The
       functionality is built around the structural information of class
       diagrams.</para>
@@ -2274,6 +2410,8 @@ artifact.
 
   <sect1 id="s1.ref.menu_critique">
     <title>The Critique Menu</title>
+
+    &notupdatedfor014disclaimer;
 
     <para>This menu controls one of &argouml;'s unique features&mdash;the use
       of critics to guide the designer. The theory behind this is well
@@ -3061,6 +3199,8 @@ The original
   <sect1>
     <title>The Tools Menu</title>
 
+    &notupdatedfor014disclaimer;
+
     <para>This menu provides a generic menu attachment point for any plug-ins
       provided with &argouml;. The standard system has no plug-ins, so this
       menu entry is grayed out by default.</para>
@@ -3070,6 +3210,8 @@ The original
 
   <sect1>
     <title>The Help Menu</title>
+
+    &notupdatedfor014disclaimer;
 
     <para>This menu provides help on the use of &argouml;. At present it has a
       single entry.</para>
