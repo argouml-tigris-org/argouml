@@ -115,8 +115,8 @@ implements PluggablePropertyPanel {
     new PropPanelButton(this,buttonPanel,_actorIcon,localize("Add actor"),"addActor",null);
     new PropPanelButton(this,buttonPanel,_useCaseIcon, Argo.localize("UMLMenu", "button.add-usecase"),"addUseCase",null);
     new PropPanelButton(this,buttonPanel,_packageIcon, Argo.localize("UMLMenu", "button.add-subpackage"),"addPackage",null);
-    new PropPanelButton(this,buttonPanel,_generalizationIcon, Argo.localize("UMLMenu", "button.add-generalization"),"addGeneralization",null);
-    new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
+    // new PropPanelButton(this,buttonPanel,_generalizationIcon, Argo.localize("UMLMenu", "button.add-generalization"),"addGeneralization",null);
+    // new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
     new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-package"),"removeElement",null);
 
   }
