@@ -38,10 +38,10 @@ import java.awt.*;
 import java.beans.*;
 import javax.swing.*;
 
-import org.apache.log4j.Category;
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.MElementEvent;
 
-// TODO get rid.
-import ru.novosoft.uml.*;
+import org.apache.log4j.Category;
 
 /** This class models the designer who is building a complex design in
  * some application domain and needs continuous feedback to aid in the
