@@ -1069,6 +1069,10 @@ public class Project implements java.io.Serializable {
     			removeProjectMemberDiagram((ArgoDiagram)obj);
     			needSave = true;
     		}
+    		if (obj instanceof Fig) {
+    			((Fig)obj).dispose();
+    			needSave = true;
+    		}
     	}
     	
     	setNeedsSave(needSave);	
