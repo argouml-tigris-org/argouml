@@ -45,12 +45,13 @@ import org.argouml.util.Tools;
  */
 public class AboutBox extends JDialog {
 
+    /** Insets in pixels  */
+    private static final int INSET_PX = 3;
+    
     ////////////////////////////////////////////////////////////////
     // instance variables
 
     private JTabbedPane tabs = new JTabbedPane();
-    /** Insets in pixels  */
-    private int insetPx = 3;
 
     /** Shared splash panel */
     private SplashPanel splashPanel = null;
@@ -84,7 +85,7 @@ public class AboutBox extends JDialog {
 	a.setEditable(false);
 	a.setLineWrap(true);
 	a.setWrapStyleWord(true);
-	a.setMargin(new Insets(insetPx, insetPx, insetPx, insetPx));
+	a.setMargin(new Insets(INSET_PX, INSET_PX, INSET_PX, INSET_PX));
 	a.setText(text);
 	a.setCaretPosition(0);
 	return new JScrollPane(a);
