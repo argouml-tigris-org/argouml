@@ -24,17 +24,27 @@
 
 package org.argouml.uml.ui;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
+import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsHelper;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-/** Action to trigger creation of a new activity diagram.
- *  @stereotype singleton
+/** 
+ * Action to trigger creation of a new activity diagram.<p>
+ * 
+ * This used to extend the ActionStateDiagram, but lead to problems 
+ * implementing shouldBeEnabled() and isValidNamespace().
+ * 
+ * @stereotype singleton
  */
-public class ActionActivityDiagram extends ActionStateDiagram {
+public class ActionActivityDiagram extends ActionAddDiagram {
 
+    private static final Logger LOG = 
+        Logger.getLogger(ActionStateDiagram.class);
+    
     /**
      * The singleton.
      */
@@ -49,7 +59,7 @@ public class ActionActivityDiagram extends ActionStateDiagram {
     }
 
     /**
-     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
+     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(java.lang.Object)
      */
     public UMLDiagram createDiagram(Object ns) {
         Object target = TargetManager.getInstance().getModelTarget();
@@ -64,19 +74,33 @@ public class ActionActivityDiagram extends ActionStateDiagram {
     }
 
     /**
+     * An ActivityGraph specifies the dynamics of<br>
+     *       (i) a Package, or<br>
+     *      (ii) a Classifier (including UseCase), or<br>
+     *     (iii) a BehavioralFeature.<p>
+     * 
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        return super.shouldBeEnabled()
-	    || ModelFacade.isAPackage(TargetManager.getInstance()
-	            .getModelTarget());
+        Object obj = TargetManager.getInstance().getModelTarget();
+        return super.shouldBeEnabled() 
+            && ActivityGraphsHelper.getHelper()
+                .isAddingActivityGraphAllowed(obj);
     }
 
+
     /**
-     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(Object)
+     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(java.lang.Object)
      */
     public boolean isValidNamespace(Object handle) {
-        return super.isValidNamespace(handle) || ModelFacade.isAPackage(handle);
+        if (!ModelFacade.isANamespace(handle)) {
+            LOG.error("No namespace as argument");
+            LOG.error(handle);
+            throw new IllegalArgumentException(
+                "The argument " + handle + "is not a namespace.");
+        }
+        return ActivityGraphsHelper.getHelper()
+            .isAddingActivityGraphAllowed(handle);
     }
 
 } /* end class ActionActivityDiagram */
