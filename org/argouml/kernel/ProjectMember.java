@@ -24,16 +24,6 @@
 
 package org.argouml.kernel;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
-
-import org.argouml.persistence.SaveException;
-
 /**
  * A member of the project.
  *
@@ -59,11 +49,6 @@ public abstract class ProjectMember {
         project = theProject;
         setName(theName);
     }
-
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
 
     /**
      * In contrast to {@link #getName} returns the member's name without the
@@ -93,7 +78,7 @@ public abstract class ProjectMember {
      *
      * @return the member's name including the project's base name
      */
-    public String getName() {
+    protected String getName() {
         if (name == null)
             return null;
         
@@ -111,7 +96,7 @@ public abstract class ProjectMember {
     /**
      * @param s the name of the member
      */
-    public void setName(String s) { 
+    protected void setName(String s) {
         name = s;
         
         if (name == null) {
@@ -139,11 +124,6 @@ public abstract class ProjectMember {
     }
 
     /**
-     * @return the project that owns this member
-     */
-    public Project getProject() { return project; }
-
-    /**
      * @return a short string defining the member type. 
      * Usually equals the file extension.
      */
@@ -158,53 +138,9 @@ public abstract class ProjectMember {
     // actions
 
     /**
-     * Save the projectmember as XML to the given writer.
-     * @param writer The Writer to which appen the save.
-     * @param indent The offset to which to indent the XML
-     * @throws SaveException if the save fails
-     */
-    public abstract void save(Writer writer, Integer indent) 
-        throws SaveException;
-
-    /**
-     * Send an existing file of XML to the PrintWriter.
-     * @param writer the PrintWriter.
-     * @param file the File
-     * @param indent How far to indent in the writer.
-     * @throws SaveException on any errors.
-     */
-    protected void addXmlFileToWriter(PrintWriter writer, File file, int indent)
-        throws SaveException {
-        try {
-            String padding = "                                          "
-                .substring(0, indent);
-            BufferedReader reader = 
-                new BufferedReader(new FileReader(file));
-            
-            // Skip the <?xml... first line
-            String line = reader.readLine();
-            while (line != null && (line.startsWith("<?xml ") 
-                    || line.startsWith("<!DOCTYPE "))) {
-                line = reader.readLine();
-            }
-            
-            while (line != null) {
-                (writer).print(padding);
-                (writer).println(line);
-                line = reader.readLine();
-            }
-            reader.close();
-        } catch (FileNotFoundException e) {
-            throw new SaveException(e);
-        } catch (IOException e) {
-            throw new SaveException(e);
-        }
-    }
-    
-    /**
      * Remove this member from its project.
      */
-    public void remove() {
+    protected void remove() {
         name = null;
         project = null;
     }

@@ -27,6 +27,7 @@ package org.argouml.ui;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.Vector;
 
@@ -41,7 +42,13 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
+import org.argouml.persistence.DiagramMemberFilePersister;
+import org.argouml.persistence.MemberFilePersister;
+import org.argouml.persistence.ModelMemberFilePersister;
+import org.argouml.persistence.TodoListMemberFilePersister;
 import org.argouml.uml.ProjectMemberModel;
+import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.ui.UMLAction;
 
 /**
@@ -212,7 +219,16 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
                 currentProject.getMembers().getMember(ProjectMemberModel.class);
 
             try {
-                member.save(new FileWriter(selectedFile), null);
+                Writer writer = new FileWriter(selectedFile);
+                MemberFilePersister persister = null;
+                if (member instanceof ProjectMemberDiagram) {
+                    persister = new DiagramMemberFilePersister();
+                } else if (member instanceof ProjectMemberTodoList) {
+                    persister = new TodoListMemberFilePersister();
+                } else if (member instanceof ProjectMemberModel) {
+                    persister = new ModelMemberFilePersister();
+                }
+                persister.save(member, writer, null);
             } catch (Exception ex) {
                 String sMessage =
                     MessageFormat.format(Translator.localize(

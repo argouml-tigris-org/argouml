@@ -35,7 +35,9 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
+import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.uml.diagram.ProjectMemberDiagram;
 
 /**
  * To persist to and from XMI file storage.
@@ -110,7 +112,15 @@ public class XmiFilePersister extends AbstractFilePersister {
                               + ((ProjectMember) project.getMembers()
                                     .get(i)).getType());
                     }
-                    projectMember.save(writer, null);
+                    MemberFilePersister persister = null;
+                    if (projectMember instanceof ProjectMemberDiagram) {
+                        persister = new DiagramMemberFilePersister();
+                    } else if (projectMember instanceof ProjectMemberTodoList) {
+                        persister = new TodoListMemberFilePersister();
+                    } else if (projectMember instanceof ProjectMemberModel) {
+                        persister = new ModelMemberFilePersister();
+                    }
+                    persister.save(projectMember, writer, null);
                 }
             }
             

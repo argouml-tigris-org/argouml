@@ -24,52 +24,19 @@
 
 package org.argouml.uml;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
-
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.XmiWriter;
-import org.argouml.persistence.SaveException;
-import org.xml.sax.SAXException;
 
 /**
  * @author Piotr Kaminski
  */
 public class ProjectMemberModel extends ProjectMember {
 
-    private static final Logger LOG =
-        Logger.getLogger(org.argouml.uml.ProjectMemberModel.class);
-
-    ////////////////////////////////////////////////////////////////
-    // constants
-
     private static final String MEMBER_TYPE = "xmi";
     private static final String FILE_EXT = "." + MEMBER_TYPE;
     
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private Object model;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    /**
-     * The constructor.
-     * TODO: This constructor is never user. Remove?
-     * 
-     * @param name the name of the model
-     * @param p the project
-     */
-    public ProjectMemberModel(String name, Project p) {
-        super(name, p);
-    }
 
     /**
      * The constructor.
@@ -86,9 +53,6 @@ public class ProjectMemberModel extends ProjectMember {
         
         setModel(m);
     }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
 
     /**
      * @return the model
@@ -115,42 +79,5 @@ public class ProjectMemberModel extends ProjectMember {
      */
     public String getFileExtension() {
         return FILE_EXT;
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // actions
-
-    /**
-     * Save the project model to XMI.
-     * @see org.argouml.kernel.ProjectMember#save(java.io.Writer, Integer)
-     */
-    public void save(Writer w, Integer indent) throws SaveException {
-        if (w == null) {
-            throw new IllegalArgumentException("No Writer specified!");
-        }
-
-        File tempFile = null;
-        Writer writer = null;
-        if (indent != null) {
-            try {
-                tempFile = File.createTempFile("xmi", null);
-                tempFile.deleteOnExit();
-                writer = new FileWriter(tempFile);
-            } catch (IOException e) {
-                throw new SaveException(e);
-            }
-        } else {
-            writer = w;
-        }
-
-        try {
-            XmiWriter xmiWriter = new XmiWriter(model, writer);
-            xmiWriter.write();
-        } catch (SAXException ex) {
-            throw new SaveException(ex);
-        }
-        if (indent != null) {
-            addXmlFileToWriter((PrintWriter) w, tempFile, indent.intValue());
-        }
     }
 } /* end class ProjectMemberModel */

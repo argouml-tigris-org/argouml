@@ -24,16 +24,23 @@
 
 package org.argouml.persistence;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.HashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
 import org.argouml.model.uml.XmiReader;
+import org.argouml.model.uml.XmiWriter;
+import org.argouml.uml.ProjectMemberModel;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -112,5 +119,42 @@ public class ModelMemberFilePersister extends MemberFilePersister {
      */
     public String getMainTag() {
         return "XMI";
+    }
+    
+    /**
+     * Save the project model to XMI.
+     * @see org.argouml.kernel.ProjectMember#save(org.argouml.kernel.ProjectMember, java.io.Writer, Integer)
+     */
+    public void save(ProjectMember member, Writer w, Integer indent) throws SaveException {
+        if (w == null) {
+            throw new IllegalArgumentException("No Writer specified!");
+        }
+
+        ProjectMemberModel pmm = (ProjectMemberModel)member;
+        Object model = pmm.getModel();
+        
+        File tempFile = null;
+        Writer writer = null;
+        if (indent != null) {
+            try {
+                tempFile = File.createTempFile("xmi", null);
+                tempFile.deleteOnExit();
+                writer = new FileWriter(tempFile);
+            } catch (IOException e) {
+                throw new SaveException(e);
+            }
+        } else {
+            writer = w;
+        }
+
+        try {
+            XmiWriter xmiWriter = new XmiWriter(model, writer);
+            xmiWriter.write();
+        } catch (SAXException ex) {
+            throw new SaveException(ex);
+        }
+        if (indent != null) {
+            addXmlFileToWriter((PrintWriter) w, tempFile, indent.intValue());
+        }
     }
 }

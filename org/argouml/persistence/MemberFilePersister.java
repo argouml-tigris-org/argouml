@@ -24,9 +24,17 @@
 
 package org.argouml.persistence;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.Writer;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectMember;
 
 /**
  * A base class file persister for project members.
@@ -49,4 +57,52 @@ public abstract class MemberFilePersister {
      * @return tag name.
      */
     public abstract String getMainTag();
+    
+    /**
+     * Save the projectmember as XML to the given writer.
+     * @param member The project member to save.
+     * @param writer The Writer to which appen the save.
+     * @param indent The offset to which to indent the XML
+     * @throws SaveException if the save fails
+     */
+    abstract public void save(
+            ProjectMember member, 
+            Writer writer, 
+            Integer indent) throws SaveException;
+        
+    /**
+     * Send an existing file of XML to the PrintWriter.
+     * @param writer the PrintWriter.
+     * @param file the File
+     * @param indent How far to indent in the writer.
+     * @throws SaveException on any errors.
+     */
+    protected void addXmlFileToWriter(PrintWriter writer, File file, int indent)
+        throws SaveException {
+        try {
+            String padding = "                                          "
+                .substring(0, indent);
+            BufferedReader reader = 
+                new BufferedReader(new FileReader(file));
+            
+            // Skip the <?xml... first line
+            String line = reader.readLine();
+            while (line != null && (line.startsWith("<?xml ") 
+                    || line.startsWith("<!DOCTYPE "))) {
+                line = reader.readLine();
+            }
+            
+            while (line != null) {
+                (writer).print(padding);
+                (writer).println(line);
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (FileNotFoundException e) {
+            throw new SaveException(e);
+        } catch (IOException e) {
+            throw new SaveException(e);
+        }
+    }
+    
 }
