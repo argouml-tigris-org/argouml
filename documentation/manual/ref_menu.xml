@@ -538,7 +538,7 @@ Selecting <literal>Yes</literal> reloads the last saved file.
               <literal>Import source file encoding: </literal>. 
               The value <literal>Cp1252</literal> is often the default.
               This string represents the 
-              <literal>coded character set identifier (CCSID)<literal>.
+              <literal>coded character set identifier (CCSID)</literal>.
               </para>
           </listitem>
         </itemizedlist>
@@ -1168,21 +1168,24 @@ on to the current diagram in the drawing pane.
             classes internally during start up so that instantiation is quicker
             when they are needed.</para></listitem>
 
-          <listitem><para><literal>Report Usage Statistics</literal> (set by
-            default). If enabled usage statistics are reported on the
-            console.</para>
+          <listitem>
+            <para><literal>Report Usage Statistics</literal> (set by default). 
+              This setting has no effect in V0.18 of ArgoUML.
+            </para>
+          </listitem>
 
-          <warning><para>In the V0.14 version of &argouml; there is only a
-<!-- TODO: Check if this is true. Does it indeed apply to V0.14? -->
-            very small amount of information, which may be missed amongst the
-            other console output.</para></warning></listitem>
-
-          <listitem><para><literal>Report on Load Times</literal> (clear by
-            default). If enabled load times at start up for the various phases
-            of initialization are reported on the console.</para>
-
-          <tip><para>These times are only of use to developers&mdash;they
-            have no meaning to the ordinary user.</para></tip></listitem>
+          <listitem>
+          	<para><literal>Report on Load Times</literal> (clear by default). 
+          	  If enabled, load times at start up for the various phases
+              of initialization are reported 
+              when the "info" level of logging is switched on 
+              &mdash; something a user is not able to do.
+			  These times are only visible for and 
+              of use to developers &mdash; they
+              have no meaning to the ordinary user.
+              <!-- See issue 3120 to remove this. -->
+            </para>
+          </listitem>
         </itemizedlist>
       </sect3>
 
@@ -1391,6 +1394,36 @@ guillemots? -->
             </para>
           </listitem>
         </itemizedlist>
+      </sect3>
+
+      <!-- Modules tab -->
+
+      <sect3 id="s3.ref.menu_settings_modules">
+        <title>Modules Tab</title>
+
+        <para>This tab shows a list of modules that are installed,
+        which may be enabled or disabled. 
+        Since this is a new concept for &argouml;, it currently contains
+        a module named ArgoTestLoadableModules, 
+        which is just a module that allows to test the concept. 
+        It adds a useless button on the Tools menu, nothing else.</para>
+
+		<para>Notice also that this is a "new" modules concept 
+		so the old Pluggable modules do not work this way, and are not listed.
+		</para>
+
+        <!--
+        <figure float="1">
+          <title>The dialog for <literal>Settings - Modules</literal>.</title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="PNG" align="center"
+                       fileref="images/reference/menu_settings_modules.png"/>
+            </imageobject>
+          </mediaobject></screenshot>
+        </figure>
+        -->
       </sect3>
     </sect2>
   </sect1>
