@@ -82,25 +82,25 @@ implements SettingsTabPanel {
 	checkConstraints.gridy = 0;
 	labelConstraints.gridy = 0;
 	fieldConstraints.gridy = 0;
-        _splash = createCheckBox("label_splash");
+        _splash = createCheckBox("label.splash");
 	top.add(_splash, checkConstraints);
 	top.add(new JLabel(""), labelConstraints);
 	top.add(new JLabel(""), fieldConstraints);
 
 	checkConstraints.gridy = 1;
-        _preload = createCheckBox("label_preload");
+        _preload = createCheckBox("label.preload");
  	top.add(_preload, checkConstraints);
 
 	checkConstraints.gridy = 2;
-        _edem = createCheckBox("label_edem");
+        _edem = createCheckBox("label.edem");
  	top.add(_edem, checkConstraints);
 
 	checkConstraints.gridy = 3;
-        _profile = createCheckBox("label_profile");
+        _profile = createCheckBox("label.profile");
  	top.add(_profile, checkConstraints);
 
 	checkConstraints.gridy = 4;
-        _reloadRecent = createCheckBox("label_reload_recent");
+        _reloadRecent = createCheckBox("label.reload-recent");
  	top.add(_reloadRecent, checkConstraints);
 
 	add(top, BorderLayout.NORTH);
@@ -132,6 +132,6 @@ implements SettingsTabPanel {
     public String getModuleVersion() { return "0.9.4"; }
     public String getModuleKey() { return "module.settings.preferences"; }
 
-    public String getTabKey() { return "tab_preferences"; }
+    public String getTabKey() { return "tab.preferences"; }
 }
 

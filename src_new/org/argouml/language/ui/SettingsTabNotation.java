@@ -80,7 +80,7 @@ implements SettingsTabPanel {
 	checkConstraints.gridy = 0;
 	labelConstraints.gridy = 0;
 	fieldConstraints.gridy = 0;
-        _allowNotations = createCheckBox("label_uml_notation_only");
+        _allowNotations = createCheckBox("label.uml-notation-only");
 	top.add(_allowNotations, checkConstraints);
 	top.add(new JLabel(""), labelConstraints);
 	top.add(new JLabel(""), fieldConstraints);
@@ -88,19 +88,19 @@ implements SettingsTabPanel {
 	checkConstraints.gridy = 1;
 	labelConstraints.gridy = 1;
 	fieldConstraints.gridy = 1;
-        _useGuillemots = createCheckBox("label_use_guillemots");
+        _useGuillemots = createCheckBox("label.use-guillemots");
 	top.add(_useGuillemots, checkConstraints);
 
 	// checkConstraints.gridy = 1;
-        // _preload = createCheckBox("label_preload");
+        // _preload = createCheckBox("label.preload");
  	// top.add(_preload, checkConstraints);
 
 	// checkConstraints.gridy = 2;
-        // _edem = createCheckBox("label_edem");
+        // _edem = createCheckBox("label.edem");
  	// top.add(_edem, checkConstraints);
 
 	// checkConstraints.gridy = 3;
-        // _profile = createCheckBox("label_profile");
+        // _profile = createCheckBox("label.profile");
  	// top.add(_profile, checkConstraints);
 
 	add(top, BorderLayout.NORTH);
@@ -125,7 +125,7 @@ implements SettingsTabPanel {
   public String getModuleAuthor() { return "ArgoUML Core"; }
   public String getModuleVersion() { return "0.9.4"; }
   public String getModuleKey() { return "module.settings.notation"; }
-  public String getTabKey() { return "tab_notation"; }
+  public String getTabKey() { return "tab.notation"; }
   public String getTabResourceBundleKey() { return "NotationResourceBundle"; }
 
 }

@@ -122,7 +122,7 @@ implements SettingsTabPanel {
 
 	labelConstraints.gridy = 6;
 	fieldConstraints.gridy = 6;
-  	top.add(createLabel("label_startup_directory"), labelConstraints);
+  	top.add(createLabel("label.startup-directory"), labelConstraints);
         _startupDir = createTextField();
 	_startupDir.setEnabled(false);
 	top.add(_startupDir, fieldConstraints);
@@ -165,7 +165,7 @@ implements SettingsTabPanel {
 
     public String getModuleKey() { return "module.settings.environment"; }
 
-    public String getTabKey() { return "tab_environment"; }
+    public String getTabKey() { return "tab.environment"; }
 
 }
 

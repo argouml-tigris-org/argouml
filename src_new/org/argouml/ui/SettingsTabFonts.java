@@ -87,19 +87,19 @@ implements SettingsTabPanel {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 
 	checkConstraints.gridy = 0;
-	_normal = createRadioButton(_bg, "label_fonts_normal",
+	_normal = createRadioButton(_bg, "label.fonts.normal",
 				    pb.isCurrentTheme("normal"));
 	top.add(_normal, checkConstraints);
 	top.add(new JLabel(""), labelConstraints);
 	top.add(new JLabel(""), fieldConstraints);
 
 	checkConstraints.gridy = 1;
-        _big = createRadioButton(_bg, "label_fonts_big",
+        _big = createRadioButton(_bg, "label.fonts.big",
 				 pb.isCurrentTheme("big"));
  	top.add(_big, checkConstraints);
 
 	checkConstraints.gridy = 2;
-        _huge = createRadioButton(_bg, "label_fonts_huge",
+        _huge = createRadioButton(_bg, "label.fonts.huge",
 				  pb.isCurrentTheme("huge"));
  	top.add(_huge, checkConstraints);
 
@@ -131,6 +131,6 @@ implements SettingsTabPanel {
     public String getModuleVersion() { return "0.9.8"; }
     public String getModuleKey() { return "module.settings.fonts"; }
 
-    public String getTabKey() { return "tab_fonts"; }
+    public String getTabKey() { return "tab.fonts"; }
 }
 
