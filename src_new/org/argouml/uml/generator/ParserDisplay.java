@@ -2086,7 +2086,7 @@ public class ParserDisplay extends Parser {
                     if (timeEvent && !ModelFacade.isATimeEvent(evt)) {
                         Object model = ProjectManager.getManager()
                             .getCurrentProject().getModel();
-                        Model.getUmlFactory().delete(evt);
+                        delete(evt);
                         evt = Model.getStateMachinesFactory()
                             .buildTimeEvent(s, model);
                         createdEvent = true;
@@ -2094,13 +2094,13 @@ public class ParserDisplay extends Parser {
                     if (changeEvent && !ModelFacade.isAChangeEvent(evt)) {
                         Object model = ProjectManager.getManager()
                             .getCurrentProject().getModel();
-                        Model.getUmlFactory().delete(evt);
+                        delete(evt);
                         evt = Model.getStateMachinesFactory()
                             .buildChangeEvent(s, model);
                         createdEvent = true;
                     }
                     if (callEvent && !ModelFacade.isACallEvent(evt)) {
-                        Model.getUmlFactory().delete(evt);
+                        delete(evt);
                         Object model = ProjectManager.getManager()
                             .getCurrentProject().getModel();
                         evt = Model.getStateMachinesFactory()
@@ -2113,7 +2113,7 @@ public class ParserDisplay extends Parser {
                             .isASignalEvent(evt)) {
                         Object model = ProjectManager.getManager()
                             .getCurrentProject().getModel();
-                        Model.getUmlFactory().delete(evt);
+                        delete(evt);
                         evt = Model.getStateMachinesFactory()
                             .buildSignalEvent(trigger, model);
                         createdEvent = true;
@@ -2147,7 +2147,7 @@ public class ParserDisplay extends Parser {
                 ;// case 3
             } else {
                 // case 4
-                Model.getUmlFactory().delete(evt); // erase it
+                delete(evt); // erase it
             }
         }
     }
@@ -2213,7 +2213,7 @@ public class ParserDisplay extends Parser {
                 ;// case 3
             } else {
                 // case 4
-                Model.getUmlFactory().delete(g); // erase it
+                delete(g); // erase it
             }
         }
     }
@@ -2261,7 +2261,7 @@ public class ParserDisplay extends Parser {
                 ;// case 3
             } else {
                 // case 4
-                Model.getUmlFactory().delete(effect); // erase it
+                delete(effect); // erase it
             }
         }
     }
@@ -3747,13 +3747,13 @@ public class ParserDisplay extends Parser {
     /**
      * This deletes modelelements, and swallows null without barking.
      *
-     * @author MVW
+     * @author mvw@tigris.org
      * @param obj
      *            the modelelement to be deleted
      */
     private void delete(Object obj) {
         if (obj != null) {
-            Model.getUmlFactory().delete(obj);
+            ProjectManager.getManager().getCurrentProject().moveToTrash(obj);
         }
     }
 
@@ -3826,7 +3826,7 @@ public class ParserDisplay extends Parser {
                     // so let's reduce it to a Classifier.
                     Model.getCoreHelper().setType(objectFlowState,
                             ModelFacade.getType(c));
-                    Model.getUmlFactory().delete(c);
+                    delete(c);
                     return; // the model is changed - our job is done
                 }
                 Collection states = ModelFacade.getInStates(c);
