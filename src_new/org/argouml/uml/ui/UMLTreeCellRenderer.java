@@ -41,7 +41,6 @@ import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.util.*;
-import org.argouml.cognitive.critics.CriticUtils;
 
 /** UMTreeCellRenderer determines how the entries in the Navigationpane will be
  *  represented graphically. In particular it makes decisions about the icons
@@ -61,7 +60,9 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
   protected ImageIcon _BranchIcon = ResourceLoader.lookupIconResource("Branch");
   protected ImageIcon _FinalStateIcon = ResourceLoader.lookupIconResource("FinalState");
 
-    protected ImageIcon _RealizeIcon = ResourceLoader.lookupIconResource("Realization");
+  protected ImageIcon _RealizeIcon = ResourceLoader.lookupIconResource("Realization");
+
+    protected ImageIcon _SignalIcon = ResourceLoader.lookupIconResource("SignalSending");
 
   protected Hashtable _iconCache = new Hashtable();
 
@@ -98,6 +99,10 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
           if (value instanceof MAbstraction) {
                   icon = _RealizeIcon;
           }
+          // needs more work: sending and receiving icons
+          if (value instanceof MSignal) {
+              icon = _SignalIcon;
+          }
           if (icon == null) {
               String clsPackName = value.getClass().getName();
               if (clsPackName.startsWith("org") || clsPackName.startsWith("ru")) {
@@ -111,9 +116,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                       cName = cName.substring(0,cName.length() -4 );
                   icon = ResourceLoader.lookupIconResource(cName);
                   if (icon != null) _iconCache.put(value.getClass(), icon);
-                  if (icon == null) System.out.println("value.getClass(): " +
-                                                       value.getClass() + 
-                                                       "cName: " + cName);
+                  if (icon == null) System.out.println("UMLTreeCellRenderer: using default Icon for " + cName);
               }
           }
 
