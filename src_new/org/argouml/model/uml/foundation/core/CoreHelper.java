@@ -71,6 +71,7 @@ import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MModel;
@@ -1448,5 +1449,44 @@ public class CoreHelper {
             }
         }
         return col;
+    }
+    
+    public final boolean hasCompositeEnd(Object association)
+    {
+        if(!(association instanceof MAssociation))
+            throw new IllegalArgumentException();
+        
+        MAssociation association1 = (MAssociation)association;
+        
+	List ends = association1.getConnections();
+	for (Iterator iter = ends.iterator(); iter.hasNext();) {
+	    MAssociationEnd end = (MAssociationEnd) iter.next();
+	    if (end.getAggregation() == MAggregationKind.COMPOSITE)
+		return true;
+	};
+	return false;
+    }
+    
+    /**
+     *
+     * @param kindType the MAggregationKind as a string in lower case letter,
+     *                 eg: composite.
+     */
+    public final boolean equalsAggregationKind(Object associationEnd,
+                                               String kindType)
+    {
+        if(!(associationEnd instanceof MAssociationEnd))
+            throw new IllegalArgumentException();
+        
+        MAssociationEnd associationEnd1 = (MAssociationEnd)associationEnd;
+        
+        if(kindType.equals("composite")){
+            return MAggregationKind.COMPOSITE.equals(
+                            associationEnd1.getAggregation());
+        }
+        else{
+            throw new IllegalArgumentException("kindType: "+kindType+
+                            " not supported");
+        }
     }
 }
