@@ -1,9 +1,26 @@
-/*
- * Created on 13-Oct-2004
- *
- * TODO To change the template for this generated file go to
- * Window - Preferences - Java - Code Style - Code Templates
- */
+//$Id$
+//Copyright (c) 1996-2004 The Regents of the University of California. All
+//Rights Reserved. Permission to use, copy, modify, and distribute this
+//software and its documentation without fee, and without a written
+//agreement is hereby granted, provided that the above copyright notice
+//and this paragraph appear in all copies.  This software program and
+//documentation are copyrighted by The Regents of the University of
+//California. The software program and documentation are supplied "AS
+//IS", without any accompanying services from The Regents. The Regents
+//does not warrant that the operation of the program will be
+//uninterrupted or error-free. The end-user understands that the program
+//was developed for research purposes and is advised not to rely
+//exclusively on the program for any reason.  IN NO EVENT SHALL THE
+//UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+//SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+//ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+//THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+//SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+//WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+//MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+//PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+//CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+//UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.argouml.xml.argo;
 
 import java.io.BufferedInputStream;
@@ -38,7 +55,7 @@ class XmlInputStream extends BufferedInputStream {
      * @param tag the tag name from which to start reading
      */
     public XmlInputStream(InputStream in, String theTag) {
-        this(in,theTag,null);
+        this(in, theTag, null);
     }
     
     /**
@@ -170,10 +187,10 @@ class XmlInputStream extends BufferedInputStream {
         int i;
         boolean found;
         while (true) {
-            mark(tagName.length() + 3);
+            mark(1000);
             // Keep reading till we get the left bracket of an opening tag
             while (realRead() != '<') {
-                mark(tagName.length() + 3);
+                mark(1000);
             }
             found = true;
             // Compare each following character to see
@@ -187,27 +204,35 @@ class XmlInputStream extends BufferedInputStream {
             int terminator = realRead();
             // We also want to match with the right bracket of the tag or
             // some other terminator
-            if (found && isNameTerminator((char) terminator)) {
+            if (found && !isNameTerminator((char) terminator)) {
+                found = false;
+            }
+            
+            if (found) {
                 // We've found the matching tag but do we have
-                // the correct instance?
-                if (attributes == null) {
-                    reset();
-                    return;
-                } else {
+                // the correct instance with matching attributes?
+                if (attributes != null) {
                     Map attributesFound = new HashMap();
                     if (terminator != '>') {
                         attributesFound = readAttributes();
                     }
+                    // Search all attributes found to those expected.
+                    // If any don't match then turn off the found flag
+                    // so that we search for the next matching tag.
                     Iterator it = attributes.entrySet().iterator();
-                    while (it.hasNext()) {
-                        Map.Entry pair = (Map.Entry)it.next();
-                        if (!pair.getValue().equals(attributesFound.get(pair.getKey()))) {
-                            continue;
+                    while (found && it.hasNext()) {
+                        Map.Entry pair = (Map.Entry) it.next();
+                        if (!pair.getValue().equals(
+                                attributesFound.get(pair.getKey()))) {
+                            found = false;
                         }
                     }
-                    reset();
-                    return;
                 }
+            }
+            
+            if (found) {
+                reset();
+                return;
             }
         }
     }
@@ -224,37 +249,45 @@ class XmlInputStream extends BufferedInputStream {
      * @throws IOException
      */
     private Map readAttributes() throws IOException {
-        HashMap attributes = new HashMap();
+        HashMap attributesFound = new HashMap();
         int character;
         while ((character = realRead()) != '>') {
-            if (!Character.isWhitespace((char)character)) {
-                StringBuffer attributeName = new StringBuffer(character);
-                while ((character = realRead()) != '=' && !Character.isWhitespace((char)character)) {
-                    attributeName.append(character);
+            if (!Character.isWhitespace((char) character)) {
+                StringBuffer attributeName = new StringBuffer();
+                attributeName.append((char) character);
+                while ((character = realRead()) != '='
+                        && !Character.isWhitespace((char) character)) {
+                    attributeName.append((char) character);
                 }
                 // Skip any whitespace till we should be on an equals sign.
-                while (Character.isWhitespace((char)character)) {
+                while (Character.isWhitespace((char) character)) {
                     character = realRead();
                 }
                 if (character != '=') {
-                    throw new IOException("Expected = sign after attribute " + attributeName);
+                    throw new IOException(
+                            "Expected = sign after attribute "
+                            + attributeName);
                 }
                 // Skip any whitespace till we should be on a quote symbol.
                 int quoteSymbol = realRead();
-                while (Character.isWhitespace((char)quoteSymbol)) {
+                while (Character.isWhitespace((char) quoteSymbol)) {
                     quoteSymbol = realRead();
                 }
                 if (quoteSymbol != '"' && quoteSymbol != '\'') {
-                    throw new IOException("Expected \" or ' around attribute value after attribute " + attributeName);
+                    throw new IOException(
+                            "Expected \" or ' around attribute value after "
+                            + "attribute " + attributeName);
                 }
-                StringBuffer attributeValue = new StringBuffer(character);
+                StringBuffer attributeValue = new StringBuffer();
                 while ((character = realRead()) != quoteSymbol) {
-                    attributeValue.append(character);
+                    attributeValue.append((char) character);
                 }
-                attributes.put(attributeName.toString(), attributeValue.toString());
+                attributesFound.put(
+                        attributeName.toString(),
+                        attributeValue.toString());
             }
         }
-        return attributes;
+        return attributesFound;
     }
                     
     private int realRead() throws IOException {
