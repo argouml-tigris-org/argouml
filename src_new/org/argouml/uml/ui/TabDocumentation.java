@@ -29,9 +29,9 @@ import javax.swing.JScrollPane;
 import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.swingext.Horizontal;
-import org.argouml.swingext.LabelledLayout;
-import org.argouml.swingext.Vertical;
+import org.tigris.swidgets.Horizontal;
+import org.tigris.swidgets.LabelledLayout;
+import org.tigris.swidgets.Vertical;
 import org.tigris.gef.presentation.Fig;
 
 /**

@@ -30,8 +30,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
-import org.argouml.swingext.GridLayout2;
-import org.argouml.swingext.Orientation;
+import org.tigris.swidgets.GridLayout2;
+import org.tigris.swidgets.Orientation;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;

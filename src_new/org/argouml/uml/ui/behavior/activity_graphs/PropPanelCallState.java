@@ -26,7 +26,7 @@ package org.argouml.uml.ui.behavior.activity_graphs;
 
 import javax.swing.ImageIcon;
 
-import org.argouml.swingext.Orientation;
+import org.tigris.swidgets.Orientation;
 import org.argouml.util.ConfigLoader;
 
 /**

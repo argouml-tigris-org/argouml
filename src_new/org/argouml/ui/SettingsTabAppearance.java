@@ -40,7 +40,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
-import org.argouml.swingext.LabelledLayout;
+import org.tigris.swidgets.LabelledLayout;
 
 /**
  *  Provides settings for altering the appearance of the Argo application.

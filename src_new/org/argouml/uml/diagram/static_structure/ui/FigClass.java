@@ -167,12 +167,12 @@ public class FigClass extends FigNodeModelElement
         getNameFig().setFilled(true);
 
         // Attributes inside. First one is the attribute box itself.
-        FigCompartment attributeFigCompartment = 
+        FigCompartment attributesFigCompartment = 
             new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
 
         // this rectangle marks the operation section; all operations
         // are inside it
-        FigCompartment operatorFigCompartment = 
+        FigCompartment operationsFigCompartment = 
             new FigOperationsCompartment(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
@@ -219,8 +219,8 @@ public class FigClass extends FigNodeModelElement
         addFig(getNameFig());
         addFig(bigPort);
         addFig(stereoLineBlinder);
-        addFig(operatorFigCompartment);
-        addFig(attributeFigCompartment);
+        addFig(operationsFigCompartment);
+        addFig(attributesFigCompartment);
 
         setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)

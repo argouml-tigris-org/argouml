@@ -25,7 +25,7 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.swingext.Orientation;
+import org.tigris.swidgets.Orientation;
 import org.argouml.util.ConfigLoader;
 
 /**

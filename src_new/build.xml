@@ -48,7 +48,7 @@ Compilation instructions for ArgoUML
 If you want to compile ArgoUML, you need to have following:
 - JAVA_HOME correctly set to where Java2 jdk is installed
 - the additional libraries (nsuml.jar, ocl-argo.jar, xml4j.jar,
-  gef.jar, i18n.jar, antlrall.jar, toolbar.jar) in argouml/lib
+  gef.jar, i18n.jar, antlrall.jar, toolbar.jar, swidgets.jar) in argouml/lib
   when these are right the command
      build compile
 will do the job.
@@ -169,6 +169,7 @@ Property files to be searched:
       <pathelement location="${gef.jar.path}"/>
       <pathelement location="${i18n.jar.path}"/>
       <pathelement location="${log4j.jar.path}"/>
+      <pathelement location="${swidgets.jar.path}"/>
       <pathelement location="${toolbar.jar.path}"/>
       <pathelement location="${commons-logging.jar.path}"/>
       <path refid="antlr.runtime.classpath"/>
@@ -182,6 +183,7 @@ Property files to be searched:
       <pathelement location="${gef.jar.path}"/>
       <pathelement location="${i18n.jar.path}"/>
       <pathelement location="${log4j.jar.path}"/>
+      <pathelement location="${swidgets.jar.path}"/>
       <pathelement location="${toolbar.jar.path}"/>
       <pathelement location="${commons-logging.jar.path}"/>
       <path refid="antlr.runtime.classpath"/>
@@ -228,6 +230,9 @@ Property files to be searched:
     <available classname="org.tigris.toolbar.ToolBar"
                classpathref="argo.compile.classpath"
                property="has.toolbar"/>
+    <available classname="org.tigris.swidgets.FlexiGridLayout"
+               classpathref="argo.compile.classpath"
+               property="has.swidgets"/>
     <available classname="antlr.ANTLRException"
                classpathref="argo.compile.classpath"
                property="has.antlr"/>
@@ -473,11 +478,15 @@ Property files to be searched:
   <!-- =================================================================== -->
 
   <target name="prerequisites"
-          depends="prepare,check.gef.localizer,check.gef,check.toolbar,check.log4j,check.antlr" >
+          depends="prepare,check.swidgets,check.gef.localizer,check.gef,check.toolbar,check.log4j,check.antlr" >
   </target>
 
   <target depends="prepare" name="check.toolbar" unless="has.toolbar">
     <fail message="toolbar library does not appear to be in the classpath."/>
+  </target>
+
+  <target depends="prepare" name="check.swidgets" unless="has.swidgets">
+    <fail message="swidgets library does not appear to be in the classpath."/>
   </target>
 
   <target depends="prepare" name="check.gef" unless="has.gef">
@@ -581,7 +590,7 @@ Property files to be searched:
   <!-- =================================================================== -->
   <target name="package" depends="jar"
           description="Prepare all jar files, both built and just delivered.">
-    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar xml-apis.jar xercesImpl.jar jmi.jar commons-logging.jar"/>
+    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar xml-apis.jar xercesImpl.jar jmi.jar swidgets.jar commons-logging.jar"/>
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar"/>
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar"/>
     <copy file="${i18n.jar.path}" tofile="${argo.build.dir}/i18n.jar"/>
@@ -589,6 +598,7 @@ Property files to be searched:
     <copy file="${commons-logging.jar.path}" tofile="${argo.build.dir}/commons-logging.jar"/>
     <copy file="${nsuml.jar.path}" tofile="${argo.build.dir}/nsuml.jar"/>
     <copy file="${jmi.jar.path}" tofile="${argo.build.dir}/jmi.jar"/>
+    <copy file="${swidgets.jar.path}" tofile="${argo.build.dir}/swidgets.jar"/>
     <copy file="${toolbar.jar.path}" tofile="${argo.build.dir}/toolbar.jar"/>
     <copy file="${ocl-argo.jar.path}" tofile="${argo.build.dir}/ocl-argo.jar"/>
     <copy file="${xercesImpl.jar.path}" tofile="${argo.build.dir}/xercesImpl.jar"/>
@@ -1377,6 +1387,7 @@ you will have to resurrect them using cvs update.
     <signjar jar="${jwsdir}/commons-logging.jar" alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/nsuml.jar"           alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/ocl-argo.jar"        alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/swidgets.jar"        alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/toolbar.jar"         alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/xercesImpl.jar"      alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/xml-apis.jar"        alias="argouml" storepass="secret"/>

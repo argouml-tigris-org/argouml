@@ -31,9 +31,10 @@ import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.uml.ModelManagementFactory;
-import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLLinkedList;
+
+import org.tigris.swidgets.Orientation;
 
 /**
  * The abstract properties panel for a Namespace.

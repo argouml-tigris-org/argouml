@@ -29,6 +29,7 @@
     <jar href="nsuml.jar"/>
     <jar href="log4j.jar"/>
     <jar href="i18n.jar"/>
+    <jar href="swidgets.jar"/>
     <jar href="toolbar.jar"/>
     <jar href="jmi.jar"/>
     <jar href="commons-logging.jar"/>

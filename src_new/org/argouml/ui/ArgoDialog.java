@@ -29,7 +29,7 @@ import java.awt.Frame;
 import javax.swing.AbstractButton;
 
 import org.argouml.i18n.Translator;
-import org.argouml.swingext.Dialog;
+import org.tigris.swidgets.Dialog;
 
 /**
  * A dialog with localized buttons.

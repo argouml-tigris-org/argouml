@@ -36,8 +36,8 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.i18n.Translator;
-import org.argouml.swingext.Orientable;
-import org.argouml.swingext.Orientation;
+import org.tigris.swidgets.Orientable;
+import org.tigris.swidgets.Orientation;
 import org.argouml.uml.diagram.ui.TabDiagram;
 import org.argouml.uml.ui.TabModelTarget;
 

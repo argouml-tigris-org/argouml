@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 import javax.swing.ImageIcon;
 
 import org.argouml.i18n.Translator;
-import org.argouml.swingext.Orientation;
+import org.tigris.swidgets.Orientation;
 import org.argouml.util.ConfigLoader;
 
 /**
