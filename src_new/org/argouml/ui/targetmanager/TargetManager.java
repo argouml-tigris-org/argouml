@@ -342,8 +342,6 @@ public final class TargetManager {
      * @param o The new target, null clears all targets.
      */
     public synchronized void setTarget(Object o) {
-	RuntimeException exception;
-
 	if (isInTargetTransaction())
 	    return;
 
@@ -357,14 +355,12 @@ public final class TargetManager {
 	_targets.clear();
 	if (o != null)
 	    _targets.add(o);
-	exception = internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
+	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
 
         endTargetTransaction();
-	if (exception != null)
-	    throw new TargetException("Exception dispatching events", exception);
     }
 
-    private RuntimeException internalOnSetTarget(String eventName, Object oldTargets[]) {
+    private void internalOnSetTarget(String eventName, Object oldTargets[]) {
 	TargetEvent event = new TargetEvent(this, eventName, oldTargets, _targets.toArray());
 
 	if (_targets.size() > 0) {
@@ -375,15 +371,20 @@ public final class TargetManager {
 	    _modelTarget = null;
 	}
 
-	if (TargetEvent.TARGET_SET.equals(eventName))
-	    return fireTargetSet(event);
-	else if (TargetEvent.TARGET_ADDED.equals(eventName))
-	    return fireTargetAdded(event);
-	else if (TargetEvent.TARGET_REMOVED.equals(eventName))
-	    return fireTargetRemoved(event);
+	if (TargetEvent.TARGET_SET.equals(eventName)) {
+	    fireTargetSet(event);
+	    return;
+	}
+	else if (TargetEvent.TARGET_ADDED.equals(eventName)) {
+	    fireTargetAdded(event);
+	    return;
+	}
+	else if (TargetEvent.TARGET_REMOVED.equals(eventName)) {
+	    fireTargetRemoved(event);
+	    return;
+	}
 
 	_log.error("Unknown eventName: " + eventName);
-	return null;
     }
 
     /**
@@ -394,9 +395,8 @@ public final class TargetManager {
      * notifications that the target(s) has just changed.
      *
      * @return The current target, or null if no target is selected
-     * @throws TargetException isn't thrown, obsolete declaration.
      */
-    public synchronized Object getTarget() throws TargetException {
+    public synchronized Object getTarget() {
 	return _targets.size() > 0 ? _targets.get(0) : null;
     }
 
@@ -412,7 +412,6 @@ public final class TargetManager {
      * @param targetsList The new targets list.
      */
     public synchronized void setTargets(Collection targetsList) {
-	RuntimeException exception;
 	Iterator ntarg;
 
 	if (isInTargetTransaction())
@@ -455,11 +454,9 @@ public final class TargetManager {
 	    _targets.add(targ);
 	}
 
-	exception = internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
+	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
 
 	endTargetTransaction();
-	if (exception != null)
-	    throw new TargetException("Exception dispatching events", exception);
     }
 
     /**
@@ -471,8 +468,6 @@ public final class TargetManager {
      * @param target the target to be added.
      */
     public synchronized void addTarget(Object target) {
-	RuntimeException exception;
-
 	if (isInTargetTransaction())
 	    return;
 
@@ -483,11 +478,9 @@ public final class TargetManager {
 
 	Object[] oldTargets = _targets.toArray();
 	_targets.add(target);
-	exception = internalOnSetTarget(TargetEvent.TARGET_ADDED, oldTargets);
+	internalOnSetTarget(TargetEvent.TARGET_ADDED, oldTargets);
 
 	endTargetTransaction();
-	if (exception != null)
-	    throw new TargetException("Exception dispatching events", exception);
     }
 
     /**
@@ -498,8 +491,6 @@ public final class TargetManager {
      * @param target The target to remove.
      */
     public synchronized void removeTarget(Object target) {
-	RuntimeException exception;
-
         if (isInTargetTransaction())
 	    return;
 
@@ -510,11 +501,9 @@ public final class TargetManager {
 
 	Object[] oldTargets = _targets.toArray();
 	_targets.remove(target);
-	exception = internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
+	internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
 
 	endTargetTransaction();
-	if (exception != null)
-	    throw new TargetException("Exception dispatching events", exception);
     }
 
     /**
@@ -550,8 +539,7 @@ public final class TargetManager {
         _listenerList.remove(TargetListener.class, listener);
     }
 
-    private RuntimeException fireTargetSet(TargetEvent targetEvent) {
-	RuntimeException exception = null;
+    private void fireTargetSet(TargetEvent targetEvent) {
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
@@ -561,14 +549,17 @@ public final class TargetManager {
 		    ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
 		}
 	    } catch (RuntimeException e) {
-		exception = e;
+		_log.warn("While calling targetSet for "
+			  + targetEvent
+			  + " in "
+			  + listeners[i + 1]
+			  + " an error is thrown.",
+			  e);
 	    }
         }
-	return exception;
     }
 
-    private RuntimeException fireTargetAdded(TargetEvent targetEvent) {
-	RuntimeException exception = null;
+    private void fireTargetAdded(TargetEvent targetEvent) {
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
@@ -578,14 +569,17 @@ public final class TargetManager {
 		    ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
 		}
 	    } catch (RuntimeException e) {
-		exception = e;
+		_log.warn("While calling targetAdded for "
+			  + targetEvent
+			  + " in "
+			  + listeners[i + 1]
+			  + " an error is thrown.",
+			  e);
 	    }
         }
-	return exception;
     }
 
-    private RuntimeException fireTargetRemoved(TargetEvent targetEvent) {
-	RuntimeException exception = null;
+    private void fireTargetRemoved(TargetEvent targetEvent) {
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
@@ -595,10 +589,14 @@ public final class TargetManager {
 		    ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
 		}
 	    } catch (RuntimeException e) {
-		exception = e;
+		_log.warn("While calling targetRemoved for "
+			  + targetEvent
+			  + " in "
+			  + listeners[i + 1]
+			  + " an error is thrown.",
+			  e);
 	    }
         }
-	return exception;
     }
 
     private void startTargetTransaction() {
