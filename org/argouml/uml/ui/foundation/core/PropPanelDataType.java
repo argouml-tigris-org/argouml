@@ -198,10 +198,7 @@ public class PropPanelDataType extends PropPanelClassifier {
                             if (!match) {
                                 stereo =
                                     Model.getExtensionMechanismsFactory()
-                                        .createStereotype();
-                                Model.getCoreHelper().setName(
-                                        stereo,
-                                        "enumeration");
+                                        .buildStereotype("enumeration");
                                 Model.getCoreHelper().addOwnedElement(
                                         model,
                                         stereo);

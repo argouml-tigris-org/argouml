@@ -26,7 +26,9 @@ package org.argouml.model.uml;
 
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.ExtensionMechanismsFactory;
+import org.argouml.uml.cognitive.critics.WizOperName;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -48,6 +50,8 @@ public class ExtensionMechanismsFactoryImpl
 	extends AbstractUmlModelFactory
 	implements ExtensionMechanismsFactory {
 
+    private static final Logger LOG = Logger.getLogger(ExtensionMechanismsFactoryImpl.class);
+    
     /**
      * The model implementation.
      */
@@ -66,12 +70,17 @@ public class ExtensionMechanismsFactoryImpl
      * Create an empty but initialized instance of a UML Stereotype.
      *
      * @return an initialized UML Stereotype instance.
+     * @deprecated this is not used in the code but removing it currently
+     * breaks tests ran by (grrr) reflection.
+     * We do not want a public method that will create an un-named
+     * stereotype with no namespace.
      */
-    public Object/*MStereotype*/ createStereotype() {
+    public Object createStereotype() {
+        LOG.error("Creating a stereotype with a deprecated method");
         MStereotype modelElement =
 	    MFactory.getDefaultFactory().createStereotype();
-	super.initialize(modelElement);
-	return modelElement;
+    	super.initialize(modelElement);
+        return modelElement;
     }
 
     /**
@@ -116,8 +125,7 @@ public class ExtensionMechanismsFactoryImpl
         MModelElement me = (MModelElement) theModelElementObject;
         String text = (String) theName;
         MNamespace ns = (MNamespace) theNamespaceObject;
-    	MStereotype stereo = (MStereotype) createStereotype();
-    	stereo.setName(text);
+    	MStereotype stereo = (MStereotype) buildStereotype(text);
     	stereo.setBaseClass(nsmodel.getExtensionMechanismsHelper()
 			    .getMetaModelName(me));
     	MStereotype stereo2 =
@@ -149,8 +157,7 @@ public class ExtensionMechanismsFactoryImpl
             Object model,
             Collection models) {
         MModelElement me = (MModelElement) theModelElementObject;
-        MStereotype stereo = (MStereotype) createStereotype();
-        stereo.setName(theName);
+        MStereotype stereo = (MStereotype) buildStereotype(theName);
         stereo.setBaseClass(nsmodel.getExtensionMechanismsHelper()
 			    .getMetaModelName(me));
         MStereotype stereo2 =
@@ -168,6 +175,26 @@ public class ExtensionMechanismsFactoryImpl
         }
         return stereo;
     }
+    
+    /**
+     * Builds an initialized stereotype with no namespace.
+     * @deprecated Bob Tarling 28/2/2005 Presumably a stereotype
+     * must have a namespace so this method is unsafe. Use
+     * buildStereotype(String, Object).  Not willing to do this
+     * close to 0.18 release.
+     *
+     * @param text is the name of the stereotype
+     * @return an initialized stereotype.
+     */
+    public Object buildStereotype(String text) {
+        MStereotype stereotype =
+            MFactory.getDefaultFactory().createStereotype();
+        super.initialize(stereotype);
+        stereotype.setName(text);
+        LOG.info("Created a new stereotype of <<" + text + ">>");
+        return stereotype;
+    }
+
 
     /**
      * Builds an initialized stereotype.
@@ -177,8 +204,10 @@ public class ExtensionMechanismsFactoryImpl
      * @return an initialized stereotype.
      */
     public Object/*MStereotype*/ buildStereotype(String text, Object ns) {
-    	MStereotype stereo = (MStereotype) createStereotype();
-    	stereo.setName(text);
+        // TODO: Should throw IllegalArgumentException if ns not
+        // instanceof MNamespace or text is not null and no empty.
+        // Not willing to do this close to 0.18 release.
+        MStereotype stereo = (MStereotype) buildStereotype(text);
     	if (ns != null && ns instanceof MNamespace) {
     	    stereo.setNamespace((MNamespace) ns);
     	}
@@ -206,7 +235,7 @@ public class ExtensionMechanismsFactoryImpl
         if (!(elem instanceof MStereotype)) {
             throw new IllegalArgumentException();
         }
-
+        // TODO: implement
     }
 
     /**
@@ -216,7 +245,7 @@ public class ExtensionMechanismsFactoryImpl
         if (!(elem instanceof MTaggedValue)) {
             throw new IllegalArgumentException();
         }
-
+        // TODO: implement
     }
 
     /**
@@ -234,9 +263,9 @@ public class ExtensionMechanismsFactoryImpl
             throw new IllegalArgumentException("namespace");
         }
 
-        MStereotype st = (MStereotype) createStereotype();
-	((MNamespace) ns).addOwnedElement(st);
-	doCopyStereotype((MStereotype) source, st);
+        MStereotype st = (MStereotype) buildStereotype(null);
+        ((MNamespace) ns).addOwnedElement(st);
+        doCopyStereotype((MStereotype) source, st);
 	return st;
     }
 

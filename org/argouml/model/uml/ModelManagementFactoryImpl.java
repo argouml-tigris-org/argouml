@@ -24,6 +24,8 @@
 
 package org.argouml.model.uml;
 
+import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
 import org.argouml.model.ModelManagementFactory;
 
 import ru.novosoft.uml.MFactory;
@@ -45,6 +47,11 @@ import ru.novosoft.uml.model_management.MSubsystem;
 public class ModelManagementFactoryImpl
 	extends AbstractUmlModelFactory
 	implements ModelManagementFactory {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(ModelManagementFactoryImpl.class);
 
     /**
      * The root model.
@@ -81,6 +88,7 @@ public class ModelManagementFactoryImpl
      * @param rootModel the new root model.
      */
     public void setRootModel(Object rootModel) {
+        LOG.info("Setting the root model to " + rootModel);
         this.rootModel = (MModel)rootModel;
     }
     
