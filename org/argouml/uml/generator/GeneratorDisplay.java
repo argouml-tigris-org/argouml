@@ -1158,19 +1158,23 @@ public class GeneratorDisplay extends Generator2 {
     // }
 
     /**
+     * This function is never used, so I commented it out.
+     * 
      * @return
      */
-    public boolean canParse() {
+    /*public boolean canParse() {
         return true;
-    }
+    }*/
 
     /**
+     * This function is never used, so I commented it out.
+     * 
      * @param o
      * @return
      */
-    public boolean canParse(Object o) {
+    /*public boolean canParse(Object o) {
         return true;
-    }
+    }*/
 
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleName()
