@@ -416,8 +416,7 @@ public class ClassdiagramLayouter implements Layouter {
                     }
                     curNode.
                         setLocation(new Point(Math.max(xPos + bumperX, 
-                                                       curNode.
-                                                       getPlacementHint()), 
+                                                       curNode.getUplinks().size() == 1 ? curNode.getPlacementHint() : -1), 
                                               yPos));
                     
                     // put placement hint into a downlink
