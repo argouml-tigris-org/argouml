@@ -33,13 +33,12 @@ package org.argouml.uml.cognitive.critics;
 import java.util.*;
 import javax.swing.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-
 import org.argouml.kernel.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
+import org.argouml.model.ModelFacade;
+
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class CrUnconventionalPackName extends CrUML {
 
@@ -51,9 +50,9 @@ public class CrUnconventionalPackName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MModel)) return NO_PROBLEM;
-    MModel m = (MModel) dm;
-    String myName = m.getName();
+    if (!(ModelFacade.isAPackage(dm))) return NO_PROBLEM;
+
+    String myName = ModelFacade.getName(dm);
     if (myName == null || myName.equals("")) return NO_PROBLEM;
     String nameStr = myName;
     if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
