@@ -45,12 +45,25 @@ import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.swingext.ActionUtilities;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.CmdPrint;
 import org.tigris.gef.base.Diagram;
 
-public class Actions {
+public class Actions implements TargetListener{
+    
+    private static Actions _instance = new Actions();
+    
+    public static Actions getInstance() {
+        return _instance;
+    }
+    
+    private Actions() {
+        TargetManager.getInstance().addTargetListener(this);
+    }
 
   static Vector _allActions = new Vector(100);
 
@@ -105,6 +118,30 @@ public class Actions {
     
     public static boolean isGlobalAction(AbstractAction action) {
         return _allActions.contains(action);
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        updateAllEnabled();
+
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        updateAllEnabled();
+
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        updateAllEnabled();
+
     }
 
 }  /* end class Actions */

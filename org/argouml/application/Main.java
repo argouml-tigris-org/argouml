@@ -47,6 +47,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.Actions;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
@@ -396,6 +397,9 @@ public class Main {
 
                 MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
 
+                // Initialize the UMLActions
+                Actions.getInstance();
+                
                 // initialize the correct theme
                 LookAndFeelMgr.SINGLETON.setCurrentTheme(themeMemory);
 
