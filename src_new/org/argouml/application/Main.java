@@ -207,6 +207,15 @@ public class Main {
             }
         }
 
+	// Register the default notation.
+	org.argouml.uml.generator.GeneratorDisplay.getInstance();
+
+	// Initialize NSUML
+	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+
+	// Initialize the UMLActions
+	Actions.getInstance();
+                
 	// The reason the gui is initialized before the commands are run
 	// is that some of the commands will use the projectbrowser.
 	st.mark("initialize gui");
@@ -501,14 +510,6 @@ public class Main {
     
     private static void initializeGUI(boolean doSplash, String themeMemory) 
     {
-	// Register the default notation.
-	org.argouml.uml.generator.GeneratorDisplay.getInstance();
-
-	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-
-	// Initialize the UMLActions
-	Actions.getInstance();
-                
 	// initialize the correct look and feel
 	LookAndFeelMgr.SINGLETON.initializeLookAndFeel();
 	if (themeMemory != null)
