@@ -54,6 +54,7 @@ import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
 import org.argouml.uml.ui.UMLAction;
+import org.argouml.util.osdep.OsUtil;
 import org.tigris.gef.base.CmdPrint;
 import org.tigris.gef.base.Diagram;
 
@@ -605,9 +606,27 @@ class ActionEmailExpert extends ToDoItemAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	EmailExpertDialog dialog = new EmailExpertDialog();
-	dialog.setTarget(getRememberedTarget());
-	dialog.show();
+        if (OsUtil.isWin32()) {
+            ToDoItem target = (ToDoItem) getRememberedTarget();
+            Poster p = target.getPoster();
+            String to = p.getExpertEmail();
+            String subject = target.getHeadline();
+            subject = subject.replaceAll("\\s", "%20");
+            Designer dsgr = Designer.TheDesigner;
+            try {                
+                //MVW: This works under MSWindows only, I guess.
+                Runtime.getRuntime().exec(
+                    "cmd /c start mailto:" + to 
+                    + "?subject=" + subject 
+                    + "&body=" + dsgr); 
+            } catch (Exception ex) {
+                /*ignore for now*/;
+            }
+        } else {
+            EmailExpertDialog dialog = new EmailExpertDialog();
+            dialog.setTarget(getRememberedTarget());
+            dialog.show();
+        }
     }
 
     /**
