@@ -152,6 +152,9 @@ public class UMLClassDiagram extends UMLDiagram {
     // needs-more-work: remove attribute and operation?
     _toolBar.addSeparator();
 
+    _toolBar.add(Actions.AddNote);
+    _toolBar.addSeparator();
+
     _toolBar.add(_actionRectangle);
     _toolBar.add(_actionRRectangle);
     _toolBar.add(_actionCircle);

@@ -120,6 +120,17 @@ public class FigInterface extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // Fig implemetation
 
+  public Vector getPopUpActions(MouseEvent me) {
+    Vector popUpActions = super.getPopUpActions(me);
+    JMenu addMenu = new JMenu("Add");
+    addMenu.add(Actions.AddOperation);
+    addMenu.add(Actions.AddNote);
+    popUpActions.insertElementAt(addMenu,
+				 popUpActions.size() - 1);
+
+    return popUpActions;
+  }
+
   public Selection makeSelection() {
     return new SelectionInterface(this);
   }
@@ -144,17 +155,9 @@ public class FigInterface extends FigNodeModelElement {
     _stereoFake.setLineWidth(0);
     _name.setLineWidth(0);
   }
-  // stop group setFilled from override stereo/name fill.
-  public void setFilled(boolean f) {
-    super.setFilled(f);
-    _stereo.setFilled(false);
-    _name.setFilled(false);
-  }
 
-  // stop group setLineWidth from overriding stereo/name line width.
   public void setLineWidth(int w) {
     super.setLineWidth(w);
-    _stereo.setLineWidth(0);
     _stereoFake.setLineWidth(0);
     _name.setLineWidth(0);
   }

@@ -142,6 +142,7 @@ public class FigClass extends FigNodeModelElement {
     JMenu addMenu = new JMenu("Add");
     addMenu.add(Actions.AddAttribute);
     addMenu.add(Actions.AddOperation);
+    addMenu.add(Actions.AddNote);
     popUpActions.insertElementAt(addMenu,
 				 popUpActions.size() - 1);
     JMenu showMenu = new JMenu("Show");
