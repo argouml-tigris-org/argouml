@@ -78,7 +78,9 @@ public class TreeResourceBundle extends ListResourceBundle {
         { "Interaction->Messages", "Interaction->Messages" },
         { "Project->Diagram", "Project->Diagram" },
         { "Link->Stimuli", "Link->Stimuli" },
-        { "Stimulus->Action", "Stimulus->Action" }
+        { "Stimulus->Action", "Stimulus->Action" },
+	{ "Properties", "Properties" },
+	{ "Add to Diagram", "Add to Diagram"}
    };
 
      public Object[][] getContents() {
