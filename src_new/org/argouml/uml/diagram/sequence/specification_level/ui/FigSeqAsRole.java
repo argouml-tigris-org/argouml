@@ -169,11 +169,11 @@ public class FigSeqAsRole extends FigEdgeModelElement implements MElementListene
         }
     }
 
-    protected void modelChanged() {
+    protected void modelChanged(MElementEvent me) {
         MAssociationRole ml = (MAssociationRole)getOwner();
         if (ml == null) return;
         String mlNameStr = Notation.generate(this, ml.getName());
-        super.modelChanged();
+        super.modelChanged(me);
         Vector contents = getContents();
         Collection ends = ml.getConnections();
         if (ends != null && ends.size() == 2) {
@@ -816,4 +816,3 @@ public class FigSeqAsRole extends FigEdgeModelElement implements MElementListene
     }
 
 } /* end class FigSeqAsRole */
-
