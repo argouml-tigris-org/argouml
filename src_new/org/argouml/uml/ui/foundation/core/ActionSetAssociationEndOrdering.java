@@ -22,17 +22,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
-//import ru.novosoft.uml.foundation.data_types.MOrderingKind;
 
 /**
  * 
@@ -41,14 +39,15 @@ import org.argouml.uml.ui.UMLCheckBox2;
  */
 public class ActionSetAssociationEndOrdering extends UMLChangeAction {
 
-    public static final ActionSetAssociationEndOrdering SINGLETON = new ActionSetAssociationEndOrdering();
+    public static final ActionSetAssociationEndOrdering SINGLETON = 
+	new ActionSetAssociationEndOrdering();
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
      * @param s
      */
     protected ActionSetAssociationEndOrdering() {
-        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
+        super(Translator.localize("Set"), true, NO_ICON);
     }
     
     /**

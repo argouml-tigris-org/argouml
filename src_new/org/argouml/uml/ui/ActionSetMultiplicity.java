@@ -27,7 +27,7 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 /**
  * Framework action to set the multiplicity of some modelelement.
@@ -41,7 +41,7 @@ public abstract class ActionSetMultiplicity extends UMLChangeAction {
      * @param s
      */
     protected ActionSetMultiplicity() {
-        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
+        super(Translator.localize("Set"), true, NO_ICON);
     }
             
     /**

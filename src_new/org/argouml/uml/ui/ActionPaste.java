@@ -70,18 +70,18 @@ public class ActionPaste
      *
      */
     private ActionPaste() {
-        super(Translator.localize("CoreMenu", LOCALIZE_KEY));
+        super(Translator.localize(LOCALIZE_KEY));
         Icon icon =
             ResourceLoaderWrapper
 	    .getResourceLoaderWrapper()
 	    .lookupIconResource(
 				Translator.getImageBinding(LOCALIZE_KEY),
-				Translator.localize("CoreMenu", LOCALIZE_KEY));
+				Translator.localize(LOCALIZE_KEY));
         if (icon != null)
             putValue(Action.SMALL_ICON, icon);
         putValue(
 		 Action.SHORT_DESCRIPTION,
-		 Translator.localize("CoreMenu", LOCALIZE_KEY) + " ");
+		 Translator.localize(LOCALIZE_KEY) + " ");
         // setEnabled((Globals.clipBoard != null &&
         // !Globals.clipBoard.isEmpty()) ||
         // !isSystemClipBoardEmpty());

@@ -22,10 +22,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 /**
  * Base class for remove actions. Remove actions can remove an element from the 
@@ -49,7 +48,7 @@ public class AbstractActionRemoveElement extends UMLChangeAction {
      * @param s
      */
     protected AbstractActionRemoveElement() {
-        this(Argo.localize("CoreMenu", "Delete From Model"));
+        this(Translator.localize("Delete From Model"));
     }
     
     protected AbstractActionRemoveElement(String name) {

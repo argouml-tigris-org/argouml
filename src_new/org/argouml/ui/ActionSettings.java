@@ -33,6 +33,7 @@ import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
 
+import org.argouml.i18n.Translator;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggableSettingsTab;
 import org.argouml.application.api.SettingsTabPanel;
@@ -70,7 +71,7 @@ public class ActionSettings extends UMLAction
     protected ArgoDialog dlg = null;
 
     protected ActionSettings() {
-        super(Argo.localize(Argo.MENU_BUNDLE, "action.settings"), HAS_ICON);
+        super(Translator.localize("action.settings"), HAS_ICON);
     }
 
     /** Helper for localization.

@@ -22,29 +22,30 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLCheckBox2;
+
 /**
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class ActionSetCompositeStateConcurrent extends UMLChangeAction {
 
-    public static final ActionSetCompositeStateConcurrent SINGLETON = new ActionSetCompositeStateConcurrent();
+    public static final ActionSetCompositeStateConcurrent SINGLETON =
+	new ActionSetCompositeStateConcurrent();
 
     /**
      * Constructor for ActionSetCompositeStateConcurrent.
      * @param s
      */
     protected ActionSetCompositeStateConcurrent() {
-        super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
+        super(Translator.localize("action.set"), true, NO_ICON);
     }
     
     /**

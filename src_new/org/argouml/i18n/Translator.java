@@ -44,9 +44,6 @@ public class Translator {
     private static Logger cat = 
         Logger.getLogger(Translator.class);
 
-    /** Key for menu resource bundle. */
-    //public static final String MENU_BUNDLE = "CoreMenu";
-
     /** Binding between new key names and old ones needed by gef. */
     private static Properties images = null;
 
@@ -70,8 +67,6 @@ public class Translator {
 			      "org.tigris.gef.base.BaseResourceBundle");
         Localizer.addResource("GefPres",
 			      "org.tigris.gef.presentation.PresentationResourceBundle");
-        Localizer.addResource("CoreMenu",
-			      "org.argouml.i18n.MenuResourceBundle");
         Localizer.addResource("UMLMenu",
 			      "org.argouml.i18n.UMLResourceBundle");
         Localizer.addResource("Cognitive",
@@ -153,6 +148,16 @@ public class Translator {
         } else {
             return org.tigris.gef.util.Localizer.localize(bundle, key);
         }
+    }
+
+    /**
+     * Helper for those that don't want to give the bundle.
+     *
+     * @param key to localize
+     * @return the translation
+     */
+    public static String localize(String key) {
+	return localize("DUMMYBUNDLE", key);
     }
 
     /**

@@ -192,10 +192,8 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
         // show a chooser dialog for the file name, only xmi is allowed
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle(Translator.localize(
-				       "CoreMenu",
 				       "action.export-project-as-xmi"));
         chooser.setApproveButtonText(Translator.localize(
-				             "CoreMenu",
 					     "filechooser.export"));
         chooser.setFileFilter(new FileFilter() 
 	    {
