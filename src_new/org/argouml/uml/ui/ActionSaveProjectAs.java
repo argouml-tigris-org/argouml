@@ -93,7 +93,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         }
 
         String sChooserTitle =
-            Argo.localize("Actions", "text.save_as_project.chooser_title");
+            Argo.localize("Actions", "filechooser.save-as-project");
         chooser.setDialogTitle(sChooserTitle + p.getName());
         chooser.setFileFilter(FileFilters.CompressedFileFilter);
 
