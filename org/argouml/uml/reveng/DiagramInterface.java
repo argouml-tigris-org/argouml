@@ -24,12 +24,14 @@
 package org.argouml.uml.reveng; 
 
 import java.beans.*;
+import java.util.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.*;
+import org.argouml.uml.diagram.static_structure.*;
 import org.argouml.uml.diagram.static_structure.ui.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
@@ -45,6 +47,10 @@ import ru.novosoft.uml.model_management.*;
 public class DiagramInterface {
     
     Editor _currentEditor = null;
+
+    // To know what diagrams we have to layout after the import,
+    // we store them in this Vector.
+    Vector _modifiedDiagrams = new Vector();
 
     /**
      * Creates a new DiagramInterface
@@ -63,7 +69,35 @@ public class DiagramInterface {
     Editor getEditor() {
 	return _currentEditor;
     }
+    
+    /**
+     * Mark a diagram as modified, so we can layout it, after the
+     * import is complete.
+     *
+     * @param diagram The diagram to mark as modified.
+     */
+    void markDiagramAsModified(Object diagram) {
+	if(!_modifiedDiagrams.contains(diagram)) {  // If the diagram is not already marked,
+	    _modifiedDiagrams.add(diagram);         // add it to the list.
+	}
+    }
 
+    /**
+     * Get the list of modified diagrams.
+     * 
+     * @return The list of modified diagrams.
+     */
+    Vector getModifiedDiagrams() {
+	return _modifiedDiagrams;
+    }
+
+    /**
+     * Reset the list of modified diagrams.
+     */
+    void resetModifiedDiagrams() {
+	_modifiedDiagrams = new Vector();
+    }
+    
     /**
      * Add a package to the current diagram. If the package already has
      * a representation in the current diagram, it is not(!) added.
@@ -72,7 +106,7 @@ public class DiagramInterface {
      */
     public void addPackage(MPackage newPackage) {
 	if(!isInDiagram(newPackage)) {
-	    GraphModel gm            = getEditor().getGraphModel();
+	    GraphModel gm            = Globals.curEditor().getGraphModel();
 	    LayerPerspective lay     = (LayerPerspective)getEditor().getLayerManager().getActiveLayer(); 
 	    FigPackage newPackageFig = new FigPackage( gm, newPackage); 
 
@@ -138,10 +172,19 @@ public class DiagramInterface {
 	    // Andreas: These lines did cost me a few hours of debugging.
 	    // Why is it that findMemberByName sometimes returns a ProjectMemberDiagram, but in other
 	    // cases a UMLDiagram?
-	    if(m instanceof ProjectMemberDiagram)
+	    if(m instanceof ProjectMemberDiagram) {
 		ProjectBrowser.TheInstance.setTarget(((ProjectMemberDiagram)m).getDiagram());
-	    else
+
+		// This is sorta hack, since we don't know yet if anything will
+		// be added later.
+		markDiagramAsModified(((ProjectMemberDiagram)m).getDiagram());
+	    } else {
 		ProjectBrowser.TheInstance.setTarget(m);
+
+		// This is sorta hack, since we don't know yet if anything will
+		// be added later.
+		markDiagramAsModified(m);
+	    }
 
 	} else {  // Otherwise
 	    addClassDiagram(p, name);  // create a new classdiagram for the package.
@@ -164,6 +207,10 @@ public class DiagramInterface {
 	    p.addMember(d);
 	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
 	    ProjectBrowser.TheInstance.setTarget(d);
+
+	    // This is sorta hack, since we don't know yet if anything will
+	    // be added later.
+	    markDiagramAsModified(d);
 	}
 	catch (PropertyVetoException pve) { }
     }
@@ -179,6 +226,7 @@ public class DiagramInterface {
 	FigClass newClassFig = new FigClass( gm, newClass); 
 	
 	getEditor().add( newClassFig);
+	((ClassDiagramGraphModel)gm).addNodeRelatedEdges( newClass);
 	lay.putInPosition( (Fig)newClassFig);
 	getEditor().damaged( newClassFig);
     }
@@ -194,10 +242,9 @@ public class DiagramInterface {
 	FigInterface     newInterfaceFig = new FigInterface( gm, newInterface); 
 
 	getEditor().add( newInterfaceFig);
+	((ClassDiagramGraphModel)gm).addNodeRelatedEdges( newInterface);
 	lay.putInPosition( (Fig)newInterfaceFig);
 	getEditor().damaged( newInterfaceFig);		
-
-
     }
 }
 
