@@ -67,7 +67,7 @@ public class UMLTypeModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Set elements = new HashSet();
         Project p = ProjectBrowser.TheInstance.getProject();
-        Iterator it = p.getModels().iterator();
+        Iterator it = p.getUserDefinedModels().iterator();
         while (it.hasNext()) {
            MModel model = (MModel)it.next();
            elements.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(model, MClassifier.class));
@@ -109,7 +109,7 @@ public class UMLTypeModel extends UMLComboBoxModel2 {
     
     private void move(MModelElement elem) {
         Project p = ProjectBrowser.TheInstance.getProject();
-        if (p.getModels().contains(elem.getModel())) throw new IllegalStateException("in move: modelelement allready in models");
+        if (p.getUserDefinedModels().contains(elem.getModel())) throw new IllegalStateException("in move: modelelement allready in models");
         if (elem.getNamespace() != elem.getModel()) {
             move(elem.getNamespace());
         } else

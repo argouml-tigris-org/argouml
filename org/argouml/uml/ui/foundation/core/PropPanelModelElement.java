@@ -110,13 +110,13 @@ abstract public class PropPanelModelElement extends PropPanel {
         Class mclass = MModelElement.class;
         
         nameField = new UMLTextField2(this, new UMLModelElementNameDocument(this));
-        // stereotypeBox = new UMLComboBox2(this, new UMLModelElementStereotypeComboBoxModel(this), ActionSetModelElementStereotype.SINGLETON);
+        stereotypeBox = new UMLComboBox2(this, new UMLModelElementStereotypeComboBoxModel(this), ActionSetModelElementStereotype.SINGLETON);
         
         
 
         // nameField=new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName"));
 
-        stereotypeBox = new UMLStereotypeComboBox(this);
+        // stereotypeBox = new UMLStereotypeComboBox(this);
 
         namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
         namespaceList.setBackground(getBackground());

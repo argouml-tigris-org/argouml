@@ -668,7 +668,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	    if (eo.getNamespace() != null) {
                 _project.setCurrentNamespace(eo.getNamespace());
             } else
-                _project.setCurrentNamespace((MNamespace)_project.getModels().get(0));
+                _project.setCurrentNamespace((MNamespace)_project.getUserDefinedModels().get(0));
 	}
 	Actions.updateAllEnabled();
     }

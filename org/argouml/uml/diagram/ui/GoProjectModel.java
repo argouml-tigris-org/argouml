@@ -48,7 +48,7 @@ public class GoProjectModel extends AbstractGoRule {
 
   public Object getChild(Object parent, int index) {
     if (parent instanceof Project) {
-      return ((Project)parent).getModels().elementAt(index);
+      return ((Project)parent).getUserDefinedModels().elementAt(index);
     }
     throw new UnsupportedOperationException("getChild should never get here");
   }
@@ -60,14 +60,14 @@ public class GoProjectModel extends AbstractGoRule {
 
   public int getChildCount(Object parent) {
     if (parent instanceof Project) {
-      return ((Project) parent).getModels().size();
+      return ((Project) parent).getUserDefinedModels().size();
     }
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
     if (parent instanceof Project) {
-      Vector models = ((Project)parent).getModels();
+      Vector models = ((Project)parent).getUserDefinedModels();
       if (models.contains(child)) return models.indexOf(child);
     }
     return -1;

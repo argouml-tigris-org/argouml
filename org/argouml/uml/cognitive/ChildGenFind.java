@@ -56,7 +56,7 @@ public class ChildGenFind implements ChildGenerator {
     if (o instanceof Project) {
       Project p = (Project) o;
 	  Vector res = new Vector();
-	  res.addAll(p.getModels());
+	  res.addAll(p.getUserDefinedModels());
 	  res.addAll(p.getDiagrams());
 	  return res.elements();
       // return new EnumerationComposite(p.getModels().elements(),

@@ -759,8 +759,24 @@ public class Project implements java.io.Serializable {
     public void setNeedsSave(boolean newValue) { _saveRegistry.setChangeFlag(newValue); }
     public boolean needsSave() { return _saveRegistry.hasChanged(); }
 
-    public Vector getModels() { return _models; }
+    /**
+     * Returns all models defined by the user. I.e. this does not return the
+     * default model but all other models.
+     * @return Vector
+     */
+    public Vector getUserDefinedModels() { return _models; }
 
+    /**
+     * Returns all models, including the default model (default.xmi).
+     * @return Collection
+     */
+    public Collection getModels() {
+        Set ret = new HashSet();
+        ret.addAll(_models);
+        ret.add(_defaultModel);
+        return ret;
+    }
+    
 	public MNamespace getModel() {
 		if (_models.size() != 1) return null;
 		return (MNamespace)_models.elementAt(0);

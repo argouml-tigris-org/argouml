@@ -56,7 +56,7 @@ public class ActionAddTopLevelPackage extends UMLChangeAction {
     public void actionPerformed(ActionEvent ae) {
 	Project p = ProjectBrowser.TheInstance.getProject();
 	try {
-	    int numPacks = p.getModels().size();
+	    int numPacks = p.getUserDefinedModels().size();
 	    String nameStr = "package_" + (numPacks + 1);
 	    MModel model = UmlFactory.getFactory().getModelManagement().createModel();
 	    model.setName(nameStr);

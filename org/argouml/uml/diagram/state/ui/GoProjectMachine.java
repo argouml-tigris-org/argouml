@@ -68,7 +68,7 @@ public class GoProjectMachine extends AbstractGoRule {
   public Collection getChildren(Object parent) {
     if (!(parent instanceof Project)) return null;
     Vector res = new Vector();
-    Vector models = ((Project)parent).getModels();
+    Vector models = ((Project)parent).getUserDefinedModels();
     if (models == null) return null;
     java.util.Enumeration enum = models.elements();
     while (enum.hasMoreElements()) {
