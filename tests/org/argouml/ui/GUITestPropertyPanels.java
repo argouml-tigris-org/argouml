@@ -61,6 +61,9 @@ import org.tigris.gef.util.EnumerationEmpty;
 import org.tigris.gef.util.EnumerationSingle;
 import org.tigris.swidgets.Horizontal;
 
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MModel;
+
 /**
  * GuiTestPropertyPanels attempts to load a project file and iterates through
  * all known modelelements of this project. For each modelelement it creates
@@ -142,10 +145,10 @@ public class GUITestPropertyPanels extends TestCase {
         ZargoFilePersister persister = new ZargoFilePersister();
         p = persister.doLoad(testfile);
         ProjectManager.getManager().setCurrentProject(p);
-
+        Object model = p.getRoot();
         Collection me = Model.getUmlHelper().getModelManagement().
-	    getAllModelElementsOfKind((Class) ModelFacade.MODELELEMENT);
-
+	    getAllModelElementsOfKind(model, ModelFacade.MODELELEMENT);
+        
         Enumeration meEnum = getAllModelElements(p);
 
         Iterator iter = me.iterator();
