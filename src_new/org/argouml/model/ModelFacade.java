@@ -3373,6 +3373,19 @@ public class ModelFacade {
     }
 
     /**
+     *  Return the UUID of this element
+     *  @param base base element (MBase type)
+     *  @return UUID
+     */
+    public static void setUUID(Object base, String uuid) {
+        if (isABase(base)) {
+            ((MBase) base).setUUID(uuid);
+        }
+        //
+        throw new IllegalArgumentException("Unrecognized object " + base);
+    }
+    
+    /**
      * Sets a tagged value of some modelelement.
      * @param model element
      * @param tag
