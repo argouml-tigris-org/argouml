@@ -36,6 +36,7 @@ public class TestUMLModelElementSupplierDependencyListModel
 
     private Object from;
     private Object to;
+    private Object namespace;
 
     /**
      * Constructor for TestUMLModelElementSupplierDependencyListModel.
@@ -52,8 +53,20 @@ public class TestUMLModelElementSupplierDependencyListModel
     public void setUp() throws Exception {
         super.setUp();
 
-        from = Model.getCoreFactory().createClass();
-        to = Model.getCoreFactory().createClass();
+        namespace = Model.getCoreFactory().createNamespace();
+        from = Model.getCoreFactory().buildClass("from", namespace);
+        to = Model.getCoreFactory().buildClass("to", namespace);
+    }
+
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
+    public void tearDown() throws Exception {
+        Model.getUmlFactory().delete(from);
+        Model.getUmlFactory().delete(to);
+        Model.getUmlFactory().delete(namespace);
+
+        super.tearDown();
     }
 
     /**

@@ -145,7 +145,10 @@ public final class CheckNSUMLModelHelper {
 	    }
 	    Method m;
 	    try {
-		m = f.getClass().getMethod("create" + names[i], classes);
+		m =
+		    f.getClass().getDeclaredMethod(
+		            "create" + names[i],
+		            classes);
 	    } catch (NoSuchMethodException e) {
 		TestCase.fail("Method create" + names[i]
 			      + " does not exist in " + f);
@@ -300,9 +303,13 @@ public final class CheckNSUMLModelHelper {
                         } else {
                             Object inter =
                                 Model.getCoreFactory().createInterface();
-                            MStereotype stereo3 = (MStereotype)
-                                Model.getExtensionMechanismsFactory()
-                                    .buildStereotype(inter, "test3", ns);
+                            MStereotype stereo3 =
+                                (MStereotype)
+                                	Model.getExtensionMechanismsFactory()
+                                		.buildStereotype(
+                                		        inter,
+                                		        "test3",
+                                		        ns);
                             TestCase.assertTrue(
                                 "Unexpected invalid stereotype",
                                 !Model.getExtensionMechanismsHelper()

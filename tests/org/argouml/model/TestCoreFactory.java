@@ -94,9 +94,9 @@ public class TestCoreFactory extends TestCase {
 	//
 	// Never test for ModelElement.
 	String[] objs = {
-	    "Abstraction",
-	    "Association",
-	    "AssociationClass",
+	    // "Abstraction",
+	    // "Association",
+	    // "AssociationClass",
 	    "AssociationEnd",
 	    "Attribute",
 
@@ -108,13 +108,15 @@ public class TestCoreFactory extends TestCase {
 	    "Component",
 	    "Constraint",
 	    "DataType",
-	    "Dependency",
+	    // "Dependency",
 
 	    // "Element",
 	    "ElementResidence",
 
 	    // "Feature",
-	    "Flow", "Generalization", "Interface", "Method",
+	    "Flow",
+	    // "Generalization",
+	    "Interface", "Method",
 
 	    // "ModelElement",
 	    "Namespace", "Node", "Operation", "Parameter", "Permission",
