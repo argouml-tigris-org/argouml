@@ -992,8 +992,11 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	* @return MDependency
 	*/
 	public MDependency buildDependency(
-		MModelElement client,
-		MModelElement supplier) {
+		Object clientObj,
+		Object supplierObj) {
+                    
+                MModelElement client = (MModelElement)clientObj;
+                MModelElement supplier = (MModelElement)supplierObj;
 		if (client == null
 			|| supplier == null
 			|| client.getNamespace() == null
@@ -1016,8 +1019,11 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	* @return MPermission
 	*/
 	public MPermission buildPermission(
-		MModelElement client,
-		MModelElement supplier) {
+		Object clientObj,
+		Object supplierObj) {
+                    
+                MModelElement client = (MModelElement)clientObj;
+                MModelElement supplier = (MModelElement)supplierObj;
 		if (client == null
 			|| supplier == null
 			|| client.getNamespace() == null
