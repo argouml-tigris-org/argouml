@@ -1155,16 +1155,25 @@ public abstract class FigNodeModelElement
     protected void updateStereotypeText() {
         Object stereotype = null;
         if (getOwner() == null) {
-            LOG.warn("Owner of [" + this.toString() + "/"
-		     + this.getClass() + "] is null.");
+            LOG.warn("Owner of [" + this.toString() + "/" + this.getClass()
+                    + "] is null.");
             LOG.warn("I return...");
-	    return;
+            return;
         }
         if (ModelFacade.getStereotypes(getOwner()).size() > 0) {
-            stereotype =
-		ModelFacade.getStereotypes(getOwner()).iterator().next();
+            stereotype = ModelFacade.getStereotypes(getOwner()).iterator()
+                    .next();
         }
-        stereo.setText(Notation.generate(this, stereotype));
+        if (stereotype == null) {
+            stereo.setText("");
+            return;
+        }
+        String stereoStr = ModelFacade.getName(stereotype);
+        if (stereoStr == null || stereoStr.length() == 0)
+            stereo.setText("");
+        else {
+            stereo.setText(Notation.generate(this, stereotype));
+        }
     }
 
     /**

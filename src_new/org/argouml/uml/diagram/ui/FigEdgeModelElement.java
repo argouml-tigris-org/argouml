@@ -603,7 +603,7 @@ public abstract class FigEdgeModelElement
             return;
         }
         String stereoStr = ModelFacade.getName(stereotype);
-        if (stereoStr.length() == 0)
+        if (stereoStr == null || stereoStr.length() == 0)
             stereo.setText("");
         else {
             stereo.setText(Notation.generateStereotype(this, stereotype));
