@@ -121,10 +121,7 @@ public class Main {
         /* set properties for application behaviour */
         System.setProperty("gef.imageLocation", "/org/argouml/Images");
 
-        /* TODO: disable apple menu bar to enable proper running
-	 * of Mac OS X java web start 
-	 */
-        System.setProperty("com.apple.macos.useScreenMenuBar", "false");
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
 
         /* FIX: set the application name for Mac OS X */
         System.setProperty("com.apple.mrj.application.apple.menu.about.name",
