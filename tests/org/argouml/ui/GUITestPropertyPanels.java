@@ -24,18 +24,18 @@
 
 package org.argouml.ui;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+// import com.sun.image.codec.jpeg.JPEGCodec;
+// import com.sun.image.codec.jpeg.JPEGEncodeParam;
+// import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
-import java.awt.image.BufferedImage;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Graphics2D;
+// import java.awt.image.BufferedImage;
+// import java.awt.Component;
+// import java.awt.Dimension;
+// import java.awt.Image;
+// import java.awt.Graphics2D;
 import java.io.File;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
+// import java.io.ByteArrayOutputStream;
+// import java.io.FileOutputStream;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -59,11 +59,11 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
+// import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.swingext.Horizontal;
 import org.argouml.ui.targetmanager.TargetEvent;
-import org.argouml.ui.targetmanager.TargetManager;
+// import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
 
 /**
@@ -80,10 +80,11 @@ public class GUITestPropertyPanels extends TestCase {
     private static Project p = null;
     private static String _projectFile;
     private Object _modelElement;
-    private String BUNDLE = "UMLMenu";
     
-    private DetailsPane _pane;
-    private JPanel _todoPane;
+    /**
+     * For an explanation on why this is static @see #setUp
+     */
+    private static DetailsPane theDetailsPane = null;
     private JPanel _propertyPane;
     
     // we need the translator to work in order to access
@@ -105,19 +106,26 @@ public class GUITestPropertyPanels extends TestCase {
     }
     
     /**
+     * Here we are actually violating the test independance since we keep
+     * the DetailsPane from test to test. The reason to do this is to make
+     * it possible to run the tests with less memory requirements.
+     *
+     * Hopefully someone might eventually fix the DetailsPane so that it is
+     * garbage collected properly and this is no longer needed.
+     *
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
-        _pane = new DetailsPane("detail", Horizontal.getInstance());
-        
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-        //UmlFactory.getFactory().setGuiEnabled(false);
-        
+	if (theDetailsPane == null) {
+	    theDetailsPane =
+		new DetailsPane("detail", Horizontal.getInstance());
+	}
     }
-    
+
+
     public static Test suite() throws Exception {
-        
+
         // constains instances of each modelelement
         // used for testing so that we only use each modelelement
         // once
@@ -125,17 +133,18 @@ public class GUITestPropertyPanels extends TestCase {
         ChildGenerator cg = new ChildGenModelElements();
         
         TestSuite suite =
-        new TestSuite("Tests to access proppanels for all known model elements");
+	    new TestSuite("Tests to access proppanels "
+			  + "for all known model elements");
         
         p = ProjectManager.getManager().makeEmptyProject();
         File testfile =
-        new File(_projectFile);
+	    new File(_projectFile);
         
         p = ProjectManager.getManager().loadProject(testfile.toURL());
         ProjectManager.getManager().setCurrentProject(p);
         
         Collection me = UmlHelper.getHelper().getModelManagement().
-        getAllModelElementsOfKind((Class)ModelFacade.MODELELEMENT);
+	    getAllModelElementsOfKind((Class) ModelFacade.MODELELEMENT);
         
         Enumeration meEnum = getAllModelElements(p);
         
@@ -145,9 +154,10 @@ public class GUITestPropertyPanels extends TestCase {
             Object obj = meEnum.nextElement();
             if (ModelFacade.isAModelElement(obj)) {
                 if (!meMap.containsKey(obj.getClass())) {
-                    suite.addTest(new GUITestPropertyPanels(obj,
-                    "PropPanel" + ModelFacade.getUMLClassName(obj)));
-                    meMap.put(obj.getClass(),obj);
+                    suite.addTest(new GUITestPropertyPanels(
+			    obj,
+			    "PropPanel" + ModelFacade.getUMLClassName(obj)));
+                    meMap.put(obj.getClass(), obj);
                 }
             }
         }
@@ -160,7 +170,8 @@ public class GUITestPropertyPanels extends TestCase {
         return getAllModelElements(me, elem);
     }
     
-    private static Enumeration getAllModelElements(Object me, Enumeration elem) {
+    private static Enumeration getAllModelElements(Object me,
+						   Enumeration elem) {
         ChildGenUML cg = new ChildGenUML();
         
         elem = new EnumerationComposite(elem, new EnumerationSingle(me));
@@ -176,20 +187,21 @@ public class GUITestPropertyPanels extends TestCase {
     
     
     protected void runTest() throws Throwable {
+	System.out.println("runTest called in " + this + ":" + this.hashCode());
         testPropertyTab();
     }
     
     public void testPropertyTab() throws Throwable {
+	System.out.println("testPropertyTab called in " + this + ":" + this.hashCode());
         TargetEvent e =
-        new TargetEvent(
-        this,
-        TargetEvent.TARGET_SET,
-        new Object[] { null },
-        new Object[] { _modelElement });
-        _pane.targetSet(e);
+	    new TargetEvent(this,
+			    TargetEvent.TARGET_SET,
+			    new Object[] { null },
+			    new Object[] { _modelElement });
+        theDetailsPane.targetSet(e);
         
         _propertyPane = /*TabProps */
-            _pane.getNamedTab(Translator.localize("tab.properties"));
+            theDetailsPane.getNamedTab(Translator.localize("tab.properties"));
         
         // currently this is in this try block as it does not work
         // _propertyPanel always has size 0,0
@@ -250,7 +262,7 @@ class ChildGenModelElements implements ChildGenerator {
             return EnumerationEmpty.theInstance();
         
         EnumerationComposite res =
-        new EnumerationComposite(new EnumerationSingle(o));
+	    new EnumerationComposite(new EnumerationSingle(o));
         
         
         // now we deal only with modelelements
