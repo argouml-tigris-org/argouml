@@ -1154,16 +1154,59 @@ Initially this
 
   <!-- The Checklist tab -->
 
-  <!--sect1>
+  <sect1>
     <title>Checklist Tab</title>
 
-    <para>&argouml; provides the concept that the user can maintain a checklist
-      of things to do. The <literal>Checklist</literal> tab will eventually
-      provide the mechanism to do this.</para>
+    <para>Conducting design reviews and inspections 
+      is one of the most effective ways of detecting errors 
+      during software development. 
+      A design review typically consists of a small number of designers, 
+      implementers, or other project stakeholders holding a meeting 
+      to review a software development artifact. 
+      Many development organizations have developed checklists 
+      of common design problems for use in design review meetings. 
+      Recent research indicated that reviewers inspecting code 
+      without meeting, makeing use of these checklists, 
+      are just as effective as design review meetings.
+    </para>
+    <para>
+      Hence, a checklist feature has been added to &argouml;, 
+      that is much in the spirit of design review checklists. 
+      However, &argouml;'s checklists are integrated 
+      into the design tool user interface and the design task.
+    </para>
+    
+    <para>A software designer using &argouml; can see 
+      a review checklist for any design element. 
+      The <quote>Checklist</quote> tab presents a list of check-off items 
+      that is appropriate to the currently selected design element. 
+      For example, when a class is selected in a design diagram, 
+      the checklist tab shows items that prompt 
+      critical thinking about classes. See the figure below.
+      Designers may check off items as they consider them. 
+      Checked items are kept in the list to show 
+      what has already been considered, 
+      while unchecked items prompt the designer to consider new design issues. 
+      &argouml; supplies many different checklists 
+      with many possible items.
+    </para>
 
-    <caution><para>In the current release of &argouml; this tab is not
-      implemented, and is always grayed out.</para></caution>
-  </sect1-->
+    <figure id="fig.ref.detpane_checklist" float="1">
+      <title>An example of a checklist for a class.</title>
+      <screenshot>
+        <mediaobject>
+          <imageobject>
+            <imagedata format="PNG" align="center"
+              fileref="images/reference/detpane_checklist.png"/>
+          </imageobject>
+        </mediaobject>
+      </screenshot>
+    </figure>
+    
+    <!--caution><para>In the V0.14 release of &argouml;, this tab is not
+      completely implemented. E.g. the checks are not saved.
+    </para></caution-->
+  </sect1>
 </chapter>
 
 <!-- Local stuff for Emacs - please do not delete
