@@ -28,7 +28,9 @@ import java.beans.PropertyVetoException;
 import javax.swing.Action;
 
 import org.apache.log4j.Category;
+
 import org.argouml.ui.ArgoDiagram;
+
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.ModeBroom;
 import org.tigris.gef.base.ModeCreateFigCircle;
@@ -40,6 +42,8 @@ import org.tigris.gef.base.ModeCreateFigRect;
 import org.tigris.gef.base.ModeCreateFigSpline;
 import org.tigris.gef.base.ModeCreateFigText;
 import org.tigris.gef.base.ModeSelect;
+import org.tigris.gef.ui.ToolBar;
+
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
@@ -140,4 +144,14 @@ public abstract class UMLDiagram extends ArgoDiagram {
   
   static final long serialVersionUID = -401219134410459387L;
 
+  /**
+   * create a new toolbar each time.
+   * solves the issue of when you have spawned diagrams (by double
+   * clicking on the diagram tab).
+   */
+  public ToolBar getToolBar() {
+    initToolBar();
+    return _toolBar;
+  }
+    
 } /* end class UMLDiagram */
