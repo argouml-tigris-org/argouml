@@ -28,10 +28,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-
-
 /**
  * @since Oct 5, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -62,8 +58,8 @@ public class UMLAssociationEndRoleBaseListModel
     protected boolean isValidElement(MBase base) {
         if (!ModelFacade.isAAssociationEnd(base)) return false;
         
-        MAssociationEndRole assocEndRole = (MAssociationEndRole) getTarget();
-        MAssociationRole assocRole = (MAssociationRole) assocEndRole.getAssociation();
-        return assocRole.getBase().getConnections().contains(base);
+        Object assocEndRole = /*(MAssociationEndRole)*/ getTarget();
+        Object assocRole = /*(MAssociationRole)*/ ModelFacade.getAssociation(assocEndRole);
+        return ModelFacade.getConnections(ModelFacade.getBase(assocRole)).contains(base);
     }
 }

@@ -29,8 +29,6 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-
 /**
  * The model behind the UMLMessageActivatorComboBox. I don't use the UMLComboBoxModel
  * since this mixes the GUI and the model too much and is much more maintainance 
@@ -54,7 +52,7 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAMessage(target)) {
-            MMessage mes = (MMessage) target;
+            Object mes = /*(MMessage)*/ target;
             removeAllElements();
             // fill the list with items
             setElements(CollaborationsHelper.getHelper().getAllPossibleActivators(mes));

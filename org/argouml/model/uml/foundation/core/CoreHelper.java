@@ -812,7 +812,8 @@ public class CoreHelper {
      * @param classifier
      * @return Collection
      */
-    public Collection getAssociatedClassifiers(MClassifier classifier) {
+    public Collection getAssociatedClassifiers(Object/*MClassifier*/ aclassifier) {
+        MClassifier classifier = (MClassifier)aclassifier;
         if (classifier == null)
             return new ArrayList();
         List list = new ArrayList();

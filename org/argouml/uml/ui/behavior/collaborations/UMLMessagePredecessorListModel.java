@@ -31,8 +31,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-
 /**
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -52,9 +50,9 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        MMessage message = (MMessage) getTarget();
+        Object message = /*(MMessage)*/ getTarget();
         removeAllElements();       
-        Iterator it = message.getPredecessors().iterator();
+        Iterator it = ModelFacade.getPredecessors(message).iterator();
         while (it.hasNext()) {
             addElement(it.next());
         }       

@@ -47,8 +47,6 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 
 
@@ -190,16 +188,16 @@ public class PropPanelExtend extends PropPanelModelElement {
         Object target = getTarget();
 
         if (org.argouml.model.ModelFacade.isAExtend(target)) {
-            MExtend    extend    = (MExtend) target;
-            MNamespace ns        = extend.getNamespace();
+            Object    extend    = /*(MExtend)*/ target;
+            Object ns = ModelFacade.getNamespace(extend);
 
             if (ns != null) {
-                if (extend.getBase() != null) {
+                if (ModelFacade.getBase(extend) != null) {
 
-		    MExtensionPoint extensionPoint =
-			UseCasesFactory.getFactory().buildExtensionPoint(extend.getBase());
+		    Object extensionPoint =
+			UseCasesFactory.getFactory().buildExtensionPoint(ModelFacade.getBase(extend));
 
-		    extend.addExtensionPoint(extensionPoint);
+		    ModelFacade.addExtensionPoint(extend, extensionPoint);
                 }
 
             }

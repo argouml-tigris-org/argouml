@@ -40,7 +40,6 @@ import org.argouml.uml.ui.UMLTextProperty;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -109,11 +108,11 @@ public class PropPanelReception extends PropPanelModelElement {
     public void setOwner(MClassifier owner) {
         Object target = getTarget();
         if (ModelFacade.isAReception(target)) {
-            MReception rec = (MReception) target;
-            if (rec.getOwner() != null) {
-                rec.setOwner(null);
+            Object rec = /*(MReception)*/ target;
+            if (ModelFacade.getOwner(rec) != null) {
+                ModelFacade.setOwner(rec, null);
             }
-            rec.setOwner(owner);
+            ModelFacade.setOwner(rec, owner);
         }
     }
 }

@@ -51,12 +51,9 @@ import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -102,8 +99,8 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public void navigateNamespace() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAModelElement(target)) {
-            MModelElement elem = (MModelElement) target;
-            MNamespace ns = elem.getNamespace();
+            Object elem = /*(MModelElement)*/ target;
+            Object ns = ModelFacade.getNamespace(elem);
             if (ns != null) {
                 TargetManager.getInstance().setTarget(ns);
             }
@@ -165,13 +162,13 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public void setAssociation(MAssociation element) {
         Object target = getTarget();
         if (ModelFacade.isAStimulus(target)) {
-            MStimulus stimulus = (MStimulus) target;
+            Object stimulus = /*(MStimulus)*/ target;
             Object link = ModelFacade.getCommunicationLink(stimulus);
             if (link == null) {
-                link = stimulus.getFactory().createLink();
+                link = ((MStimulus)stimulus).getFactory().createLink();
                 if (link != null) {
                     ModelFacade.addStimulus(link, stimulus);
-                    stimulus.setCommunicationLink((MLink)link);
+                    ModelFacade.setCommunicationLink(stimulus, /*(MLink)*/link);
                 }
             }
             Object oldAssoc = ModelFacade.getAssociation(link);
@@ -185,8 +182,8 @@ public class PropPanelStimulus extends PropPanelModelElement {
     }
 
     public void removeElement() {
-        MStimulus target = (MStimulus) getTarget();
-	MModelElement newTarget = (MModelElement) target.getNamespace();
+        Object target = /*(MStimulus)*/ getTarget();
+	Object newTarget = /*(MModelElement)*/ ModelFacade.getNamespace(target);
 
 	UmlFactory.getFactory().delete(target);
 	if (newTarget != null) {

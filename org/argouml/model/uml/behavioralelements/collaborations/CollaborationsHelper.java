@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
@@ -162,10 +163,12 @@ public class CollaborationsHelper {
      * @param to
      * @return MAssociationRole
      */
-    public MAssociationRole getAssocationRole(MClassifierRole from,
-					      MClassifierRole to) 
-    {
-	if (from == null || to == null) return null;
+    public Object/*MAssociationRole*/ getAssocationRole(Object afrom,
+					      Object ato) {
+	if (afrom == null || ato == null) return null;
+        MClassifierRole from = (MClassifierRole) afrom;
+        MClassifierRole to = (MClassifierRole) ato;
+        
 	Iterator it = from.getAssociationEnds().iterator();
 	while (it.hasNext()) {
 	    MAssociationEnd end = (MAssociationEnd) it.next();
@@ -192,7 +195,8 @@ public class CollaborationsHelper {
      * @param mes
      * @return Collection
      */
-    public Collection getAllPossibleActivators(MMessage mes) {
+    public Collection getAllPossibleActivators(Object ames) {
+        MMessage mes = (MMessage)ames;
 	if (mes == null || mes.getInteraction() == null) return new ArrayList();
 	MInteraction inter = mes.getInteraction();                              
 	Collection predecessors = mes.getPredecessors();
@@ -246,7 +250,9 @@ public class CollaborationsHelper {
      * @param mes
      * @param activator
      */
-    public void setActivator(MMessage mes, MMessage activator) {
+    public void setActivator(Object ames, Object anactivator) {
+        MMessage mes = (MMessage) ames;
+        MMessage activator = (MMessage) anactivator;
 	if (mes == null || activator == null)
 	    throw new IllegalArgumentException("In setActivator: either "
 					       + "message or activator "
@@ -295,7 +301,8 @@ public class CollaborationsHelper {
      * @param message
      * @return Collection
      */
-    public Collection getAllPossiblePredecessors(MMessage message) {
+    public Collection getAllPossiblePredecessors(Object amessage) {
+        MMessage message = (MMessage)amessage;
         if (message == null)
 	    throw new IllegalArgumentException("In getAllPossiblePredecessors: "
 					       + "argument message is null");
@@ -314,44 +321,6 @@ public class CollaborationsHelper {
     }
     
     /**
-     * Returns all possible bases for some classifierrole taking into
-     * account the wellformednessrules as defined in section 2.10.3 of
-     * the UML 1.3 spec.
-     * @param role
-     * @return Collection
-     */
-    public Collection getAllPossibleBases(MClassifierRole role) {
-        if (role == null || role.getNamespace() == null)
-	    return new ArrayList();
-        MCollaboration coll = (MCollaboration) role.getNamespace();
-        MNamespace ns = coll.getNamespace();
-        Collection returnList =
-	    ModelManagementHelper.getHelper()
-	    .getAllModelElementsOfKind(ns, MClassifier.class);
-        returnList.removeAll(ModelManagementHelper.getHelper()
-			     .getAllModelElementsOfKind(ns,
-							MClassifierRole.class));
-        if (role.getName() == null || role.getName().equals("")) {
-            List listToRemove = new ArrayList();
-            Iterator it = returnList.iterator();
-            while (it.hasNext()) {
-                MClassifier clazz = (MClassifier) it.next();
-                if (!clazz.getClassifierRoles().isEmpty()) {
-                    Iterator it2 = clazz.getClassifierRoles().iterator();
-                    while (it2.hasNext()) {
-                        MClassifierRole role2 = (MClassifierRole) it2.next();
-                        if (role2.getNamespace() == coll) {
-                            listToRemove.add(clazz);
-                        }
-                    }
-                }
-            }
-            returnList.removeAll(listToRemove);
-        }                        
-        return returnList;
-    }
-    
-    /**
      * Adds a base to the given classifierrole. If the 
      * classifierrole does not have a name yet and there is only one base,
      * the name of the classifierrole is set to the name of the given base
@@ -360,14 +329,16 @@ public class CollaborationsHelper {
      * @param role
      * @param base
      */
-    public void addBase(MClassifierRole role, MClassifier base) {
+    public void addBase(Object/*MClassifierRole*/ arole, Object/*MClassifier*/ abase) {
+        MClassifierRole role = (MClassifierRole)arole;
+        MClassifier base = (MClassifier)abase;
         if (role == null || base == null)
 	    throw new IllegalArgumentException("In addBase: either the role "
 					       + "or the base is null");
         // wellformednessrule: if the role does not have a name, the role shall
         // be the only one with the particular base
-        if (role.getName() == null || role.getName().equals("")) {
-            MCollaboration collab = (MCollaboration) role.getNamespace();
+        if (ModelFacade.getName(role) == null || ModelFacade.getName(role).equals("")) {
+            Object/*MCollaboration*/ collab = ModelFacade.getNamespace(role);
             Collection roles =
 		ModelManagementHelper.getHelper()
 		.getAllModelElementsOfKind(collab, MClassifierRole.class);
@@ -381,8 +352,8 @@ public class CollaborationsHelper {
 						       + "a name");
             }
         }
-        role.addBase(base);
-        if (role.getBases().size() == 1) {
+        ModelFacade.addBase(role, base);
+        if (ModelFacade.getBases(role).size() == 1) {
             role.setAvailableContentses(base.getOwnedElements());
             role.setAvailableFeatures(base.getFeatures());
         } else {
@@ -409,14 +380,14 @@ public class CollaborationsHelper {
      * @param role
      * @param bases
      */
-    public void setBases(MClassifierRole role, Collection bases) {
+    public void setBases(Object/*MClassifierRole*/ role, Collection bases) {
         if (role == null || bases == null)
 	    throw new IllegalArgumentException("In setBases: either the role "
 					       + "or the collection bases is "
 					       + "null");
-        Iterator it = role.getBases().iterator();
+        Iterator it = ModelFacade.getBases(role).iterator();
         while (it.hasNext()) {
-            role.removeBase((MClassifier) it.next());
+            ModelFacade.removeBase(role, it.next());
         }
         it = bases.iterator();
         while (it.hasNext()) {
@@ -432,7 +403,8 @@ public class CollaborationsHelper {
      * @param role
      * @return Collection
      */
-    public Collection allAvailableFeatures(MClassifierRole role) {
+    public Collection allAvailableFeatures(Object arole) {
+        MClassifierRole role = (MClassifierRole) arole;
         if (role == null) return new ArrayList();
         List returnList = new ArrayList();
         Iterator it = role.getParents().iterator();
@@ -458,7 +430,8 @@ public class CollaborationsHelper {
      * @param role
      * @return Collection
      */
-    public Collection allAvailableContents(MClassifierRole role) {
+    public Collection allAvailableContents(Object/*MClassifierRole*/ arole) {
+        MClassifierRole role = (MClassifierRole)arole;
         if (role == null) return new ArrayList();
         List returnList = new ArrayList();
         Iterator it = role.getParents().iterator();
@@ -474,6 +447,16 @@ public class CollaborationsHelper {
             returnList.addAll(((MClassifier) it.next()).getOwnedElements());
         }
         return returnList;
+    }
+    
+    public Collection getAllPossibleBases(Object role) {
+        if (role instanceof MClassifierRole) {
+            return getAllPossibleBases((MClassifierRole)role);
+        } else if (role instanceof MAssociationRole) {
+            return getAllPossibleBases((MAssociationRole)role);
+        } else {
+            throw new IllegalArgumentException("Illegal type " + role);
+        }
     }
     
     /**
@@ -543,12 +526,52 @@ public class CollaborationsHelper {
     } 
     
     /**
+     * Returns all possible bases for some classifierrole taking into
+     * account the wellformednessrules as defined in section 2.10.3 of
+     * the UML 1.3 spec.
+     * @param role
+     * @return Collection
+     */
+    public Collection getAllPossibleBases(MClassifierRole role) {
+        if (role == null || ModelFacade.getNamespace(role) == null)
+	    return new ArrayList();
+        Object/*MCollaboration*/ coll = ModelFacade.getNamespace(role);
+        Object/*MNamespace*/ ns = ModelFacade.getNamespace(coll);
+        Collection returnList =
+	    ModelManagementHelper.getHelper()
+	    .getAllModelElementsOfKind(ns, MClassifier.class);
+        returnList.removeAll(ModelManagementHelper.getHelper()
+			     .getAllModelElementsOfKind(ns,
+							MClassifierRole.class));
+        if (ModelFacade.getName(role) == null || ModelFacade.getName(role).equals("")) {
+            List listToRemove = new ArrayList();
+            Iterator it = returnList.iterator();
+            while (it.hasNext()) {
+                MClassifier clazz = (MClassifier) it.next();
+                if (!clazz.getClassifierRoles().isEmpty()) {
+                    Iterator it2 = clazz.getClassifierRoles().iterator();
+                    while (it2.hasNext()) {
+                        MClassifierRole role2 = (MClassifierRole) it2.next();
+                        if (role2.getNamespace() == coll) {
+                            listToRemove.add(clazz);
+                        }
+                    }
+                }
+            }
+            returnList.removeAll(listToRemove);
+        }                        
+        return returnList;
+    }
+    
+    /**
      * Sets the base of some associationrole, including the attached
      * assocationendroles.  Checks for wellformedness first.
      * @param role
      * @param base
      */
-    public void setBase(MAssociationRole role, MAssociation base) {
+    public void setBase(Object arole, Object abase) {
+        MAssociationRole role = (MAssociationRole)arole;
+        MAssociation base = (MAssociation)abase;
         if (role == null) throw  new IllegalArgumentException("role is null");
         if (base != null && !getAllPossibleBases(role).contains(base)) { 
             throw new IllegalArgumentException("base is not allowed for "

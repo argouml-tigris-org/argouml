@@ -398,7 +398,8 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     /**
      * Builds a reception belonging to some signal
      */
-    public MReception buildReception(MSignal signal) {
+    public MReception buildReception(Object asignal) {
+        MSignal signal = (MSignal)asignal;
         if (signal == null)
             return null;
         MReception reception = createReception();

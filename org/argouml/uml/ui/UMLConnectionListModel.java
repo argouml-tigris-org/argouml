@@ -97,9 +97,9 @@ public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
      */
-    protected MModelElement getRelation(MModelElement from, MModelElement to) {
+    protected Object getRelation(Object from, Object to) {
 	// this could get awkward but we assume that there is only one association
-	return (MModelElement) ((CoreHelper.getHelper().getAssociations((MClassifier) from, (MClassifier) to)).toArray())[0];
+	return ((CoreHelper.getHelper().getAssociations((MClassifier) from, (MClassifier) to)).toArray())[0];
     }
 
     /**

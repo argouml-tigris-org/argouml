@@ -1958,6 +1958,13 @@ public class ModelFacade {
         return null;
     }
     
+    public static Object getExtensionPoint(Object handle, int index) {
+        if (handle instanceof MExtend) {
+            return ((MExtend) handle).getExtensionPoint(index);
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /**
      * Returns all extends of a use case
      * @param handle
@@ -3823,6 +3830,12 @@ public class ModelFacade {
         }
     }
 
+    public static void removeContext(Object handle, Object context) {
+        if (handle instanceof MSignal && context instanceof MBehavioralFeature) {
+            ((MSignal)handle).removeContext((MBehavioralFeature)context);
+        }
+    }
+
     /** This method classifier from an instance
      *
      * @param handle
@@ -3908,6 +3921,14 @@ public class ModelFacade {
             && message instanceof MMessage) {
             ((MMessage)handle).removePredecessor((MMessage)message);
         }
+    }
+
+    public static void removeReception(Object handle, Object reception) {
+        if (handle instanceof MSignal && reception instanceof MReception) {
+            ((MSignal)handle).removeReception((MReception)reception);
+        }
+        throw new IllegalArgumentException(
+            "Unrecognized object " + handle + " or " + reception);
     }
 
     /**
@@ -4027,6 +4048,15 @@ public class ModelFacade {
         }
     }
 
+    public static void setIncludes(Object target, Collection includes) {
+        if (target instanceof MUseCase) {
+            ((MUseCase)target).setIncludes(includes);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + includes);
+    }
+    
     /**
      * Sets an initial value of some attribute.
      * @param attribute
@@ -4308,6 +4338,15 @@ public class ModelFacade {
         }
     }
     
+    public static void setOwner(Object handle, Object owner) {
+        if (handle instanceof MFeature && (owner == null || owner instanceof MClassifier)) {
+            ((MFeature)handle).setOwner((MClassifier)owner);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + owner);
+    }
+
     public static void setOperation(Object handle, Object operation) {
         if (handle instanceof MCallAction) {
             ((MCallAction)handle).setOperation((MOperation)operation);
@@ -4317,6 +4356,8 @@ public class ModelFacade {
             ((MCallEvent)handle).setOperation((MOperation)operation);
             return;
         }
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + operation);
     }
 
     /**
@@ -4428,6 +4469,12 @@ public class ModelFacade {
         }
     }
 
+    public static void setCommunicationLink(Object o, Object c) {
+        if (o instanceof MStimulus && c instanceof MLink) {
+            ((MStimulus)o).setCommunicationLink((MLink)c);
+        }
+    }
+
     /**
      * Set the concurrency of some operation.
      * @param operation
@@ -4459,6 +4506,14 @@ public class ModelFacade {
 					   + " or " + concurrencyKind);
     }
 
+    public static void setConcurent(Object handle, boolean concurrent) {
+        if (handle instanceof MCompositeState) {
+            ((MCompositeState)handle).setConcurent(concurrent);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /**
      * Set the concurrency of some operation.
      * @param operation
@@ -4486,6 +4541,12 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + handle
 					   + " or " + compositeState);
+    }
+
+    public static void setContexts(Object handle, Collection c) {
+        if (handle instanceof MSignal) {
+            ((MSignal)handle).setContexts(c);
+        }
     }
 
     /**
@@ -4571,6 +4632,16 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + handle
 					   + " or " + value);
+    }
+
+    public static void setExtension(Object handle, Object ext) {
+        if (handle instanceof MExtend
+            && (ext == null || ext instanceof MUseCase)) {
+            ((MExtend) handle).setExtension((MUseCase) ext);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + ext);
     }
 
     /**
@@ -4879,6 +4950,25 @@ public class ModelFacade {
 					   + " or " + sender);
     }
 
+    public static void setSignal(Object target, Object signal) {
+        if (signal == null || signal instanceof MSignal) {
+            if (target instanceof MSendAction) {
+                ((MSendAction)target).setSignal((MSignal)signal);
+                return;
+            }
+            if (target instanceof MReception) {
+                ((MReception)target).setSignal((MSignal)signal);
+                return;
+            }
+            if (target instanceof MSignalEvent) {
+                ((MSignalEvent)target).setSignal((MSignal)signal);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + signal);
+    }
+    
     /**
      * Sets the source state of some message.
      * @param target the message

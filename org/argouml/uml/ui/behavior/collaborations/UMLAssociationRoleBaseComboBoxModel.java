@@ -30,7 +30,6 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
@@ -53,7 +52,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        setElements(CollaborationsHelper.getHelper().getAllPossibleBases((MAssociationRole) getTarget())); 
+        setElements(CollaborationsHelper.getHelper().getAllPossibleBases(/*(MAssociationRole)*/ getTarget())); 
     }
 
     /**
@@ -70,7 +69,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(Object element) {
-        return CollaborationsHelper.getHelper().getAllPossibleBases((MAssociationRole) getTarget()).contains(element);
+        return CollaborationsHelper.getHelper().getAllPossibleBases(/*(MAssociationRole)*/ getTarget()).contains(element);
     }
 
 }

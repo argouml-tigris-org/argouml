@@ -133,12 +133,12 @@ public class PropPanelMessage extends PropPanelModelElement {
 
 
 
-    public MCallAction addAction() {
-    	MCallAction action = null;
+    public Object addAction() {
+    	Object action = null;
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAMessage(target)) {
             action =
-		(MCallAction) CommonBehaviorFactory.getFactory().buildAction((MMessage) target);
+		/*(MCallAction)*/ CommonBehaviorFactory.getFactory().buildAction(/*(MMessage)*/ target);
         }
         return action;
     }

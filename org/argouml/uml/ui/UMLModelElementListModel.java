@@ -522,9 +522,7 @@ abstract public class UMLModelElementListModel
      *  @param index index of element to move up.
      *  @return new collection
      */
-    public static java.util.List moveUpUtil(
-        Collection oldCollection,
-        int index) {
+    public static Collection moveUpUtil(Collection oldCollection, int index) {
         int size = oldCollection.size();
         ArrayList newCollection = new ArrayList(size);
         int i;

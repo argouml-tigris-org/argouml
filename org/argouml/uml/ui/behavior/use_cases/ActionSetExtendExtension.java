@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -28,11 +27,9 @@ package org.argouml.uml.ui.behavior.use_cases;
 import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
-
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 /**
  * @since Oct 6, 2002
@@ -58,32 +55,28 @@ public class ActionSetExtendExtension extends UMLChangeAction {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();
-        MUseCase newExtension = null;
-        MUseCase oldExtension = null;
-        MExtend extend = null;
+        Object newExtension = null;
+        Object oldExtension = null;
+        Object extend = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2) source;
-            newExtension = (MUseCase) combo.getSelectedItem();
+            newExtension = /*(MUseCase)*/ combo.getSelectedItem();
             Object o = combo.getTarget();
             if (org.argouml.model.ModelFacade.isAExtend(o)) {
-                extend = (MExtend) o;
+                extend = /*(MExtend)*/ o;
                 o = combo.getSelectedItem();
                 if (org.argouml.model.ModelFacade.isAUseCase(o)) {
-                    newExtension = (MUseCase) o;
-                    oldExtension = extend.getExtension();
+                    newExtension = /*(MUseCase)*/ o;
+                    oldExtension = ModelFacade.getExtension(extend);
                     if (newExtension != oldExtension) {
-                        extend.setExtension(newExtension);
+                        ModelFacade.setExtension(extend, newExtension);
                     }
                 } else {
                     if (o != null && o.equals("")) {
-                        extend.setExtension(null);
+                        ModelFacade.setExtension(extend, null);
                     }
                 }
-
             }
-
         }
-
     }
-
 }

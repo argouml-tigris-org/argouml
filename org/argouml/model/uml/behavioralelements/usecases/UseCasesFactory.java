@@ -141,7 +141,9 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      * @return           The new extend relationship or <code>null</code> if it
      *                   can't be created.
      */
-    public MExtend buildExtend(MUseCase base, MUseCase extension) {
+    public MExtend buildExtend(Object abase, Object anextension) {
+        MUseCase base = (MUseCase) abase;
+        MUseCase extension = (MUseCase) anextension;
 
 	MExtend extend = UmlFactory.getFactory().getUseCases().createExtend();
 	// Set the ends
@@ -166,10 +168,12 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
 	return extend;
     }
      
-    public MExtend buildExtend(MUseCase base,
-			       MUseCase extension,
-			       MExtensionPoint point)
-    {
+    public MExtend buildExtend(Object abase,
+			       Object anextension,
+			       Object apoint) {
+        MUseCase base = (MUseCase) abase;
+        MUseCase extension = (MUseCase) anextension;
+        MExtensionPoint point = (MExtensionPoint) apoint;
         if (base == null || extension == null) 
             throw new IllegalArgumentException("Either the base usecase or "
 					       + "the extension usecase is "
@@ -255,8 +259,9 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      * @return           The new include relationship or <code>null</code> if
      *                   it can't be created.
      */
-    public MInclude buildInclude(MUseCase base, MUseCase addition) {
-
+    public MInclude buildInclude(Object/*MUseCase*/ abase, Object/*MUseCase*/ anaddition) {
+        MUseCase base = (MUseCase) abase;
+        MUseCase addition = (MUseCase) anaddition;
 	MInclude include =
 	    UmlFactory.getFactory().getUseCases().createInclude();
   

@@ -131,7 +131,7 @@ public class UMLSpecializationListModel extends UMLBinaryRelationListModel {
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
      */
-    protected MModelElement getRelation(MModelElement from, MModelElement to) {
+    protected Object getRelation(Object from, Object to) {
 	return CoreHelper.getHelper().getGeneralization((MGeneralizableElement) to, (MGeneralizableElement) from);
     }
 

@@ -40,7 +40,6 @@ import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.MutableGraphModel;
 
 import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -109,23 +108,23 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
         gm.connect(to, from, MExtend.class);
         List list = new ArrayList();
         list.add(getTarget());
-        MExtend e = UseCasesHelper.getHelper().getExtends((MUseCase) from, (MUseCase) to);
-        UmlFactory.getFactory().delete(e.getExtensionPoint(0));
-        e.setExtensionPoints(list);
+        Object e = UseCasesHelper.getHelper().getExtends(/*(MUseCase)*/ from, /*(MUseCase)*/ to);
+        UmlFactory.getFactory().delete(ModelFacade.getExtensionPoint(e, 0));
+        ModelFacade.setExtensionPoints(e, list);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
      */
     protected void build(MModelElement from, MModelElement to) {
-        UseCasesFactory.getFactory().buildExtend((MUseCase) to, (MUseCase) from, (MExtensionPoint) getTarget());    
+        UseCasesFactory.getFactory().buildExtend(/*(MUseCase)*/ to, /*(MUseCase)*/ from, /*(MExtensionPoint)*/ getTarget());    
     }
 
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
      */
-    protected MModelElement getRelation(MModelElement from, MModelElement to) {
-        return UseCasesHelper.getHelper().getExtends((MUseCase) from, (MUseCase) to);
+    protected Object getRelation(Object from, Object to) {
+        return UseCasesHelper.getHelper().getExtends(/*(MUseCase)*/ from, /*(MUseCase)*/ to);
     }
 
     /**

@@ -30,8 +30,6 @@ import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-
 /**
  * Action to build a new action to some message.
  * @since Oct 3, 2002
@@ -54,7 +52,7 @@ public class ActionNewAction extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        CommonBehaviorFactory.getFactory().buildAction((MMessage) getTarget());
+        CommonBehaviorFactory.getFactory().buildAction(/*(MMessage)*/ getTarget());
     }
     
     /**

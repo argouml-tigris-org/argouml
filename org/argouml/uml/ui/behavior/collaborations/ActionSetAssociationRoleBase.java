@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -33,9 +32,6 @@ import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHel
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.foundation.core.MAssociation;
-
 /**
  * @since Oct 4, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -65,7 +61,7 @@ public class ActionSetAssociationRoleBase extends UMLChangeAction {
             UMLComboBox2 source = (UMLComboBox2) e.getSource();
             selected = source.getSelectedItem();
             if (org.argouml.model.ModelFacade.isAAssociation(selected) && org.argouml.model.ModelFacade.isAAssociationRole(source.getTarget())) {
-                CollaborationsHelper.getHelper().setBase((MAssociationRole) source.getTarget(), (MAssociation) selected);
+                CollaborationsHelper.getHelper().setBase(source.getTarget(), selected);
             }
         }
     }
