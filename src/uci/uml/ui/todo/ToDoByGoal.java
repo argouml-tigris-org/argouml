@@ -47,6 +47,39 @@ implements ToDoListListener {
   ////////////////////////////////////////////////////////////////
   // ToDoListListener implementation
 
+  public void toDoItemsChanged(ToDoListEvent tde) {
+    //System.out.println("toDoItemsChanged");
+    Vector items = tde.getToDoItems();
+    int nItems = items.size();
+    Object path[] = new Object[2];
+    path[0] = Designer.TheDesigner.getToDoList();
+
+    Vector goals = Designer.TheDesigner.getGoals();
+    java.util.Enumeration enum = goals.elements();
+    while (enum.hasMoreElements()) {
+      Goal g = (Goal) enum.nextElement();
+      path[1] = g;
+      int nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	if (!item.supports(g)) continue;
+	nMatchingItems++;
+      }
+      if (nMatchingItems == 0) continue;
+      int childIndices[] = new int[nMatchingItems];
+      Object children[] = new Object[nMatchingItems];
+      nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	if (!item.supports(g)) continue;
+	childIndices[nMatchingItems] = getIndexOfChild(g, item);
+	children[nMatchingItems] = item;
+	nMatchingItems++;
+      }
+      fireTreeNodesChanged(this, path, childIndices, children);
+    }
+  }
+
   public void toDoItemsAdded(ToDoListEvent tde) {
     //System.out.println("toDoItemAdded");
     Vector items = tde.getToDoItems();

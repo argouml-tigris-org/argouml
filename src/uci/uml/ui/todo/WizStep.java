@@ -49,7 +49,7 @@ import uci.uml.ui.*;
  */
 
 public class WizStep extends JPanel
-implements TabToDoTarget, ActionListener {
+implements TabToDoTarget, ActionListener, DocumentListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -174,7 +174,7 @@ implements TabToDoTarget, ActionListener {
   }
 
   ////////////////////////////////////////////////////////////////
-  // event handlers
+  // ActionListener implementation
 
   public void actionPerformed(ActionEvent ae) {
     Object src = ae.getSource();
@@ -182,6 +182,19 @@ implements TabToDoTarget, ActionListener {
     else if (src == _nextButton) doNext();
     else if (src == _finishButton) doFinsh();
     else if (src == _helpButton) doHelp();
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // DocumentListener implementation
+
+  public void insertUpdate(DocumentEvent e) {
+    enableButtons();
+  }
+
+  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
+
+  public void changedUpdate(DocumentEvent e) {
+    // Apparently, this method is never called.
   }
 
 } /* end class WizStep */

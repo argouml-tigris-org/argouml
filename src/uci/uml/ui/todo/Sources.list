@@ -17,5 +17,8 @@ SOURCES= \
 	WizDescription.java \
 	WizStep.java \
 	WizStepChoice.java \
-	WizStepTextField.java
+	WizStepConfirm.java \
+	WizStepCue.java \
+	WizStepTextField.java \
+	WizStepManyTextFields.java
 

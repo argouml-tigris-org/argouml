@@ -131,6 +131,7 @@ public abstract class Wizard implements java.io.Serializable {
       if (p != null) _panels.addElement(p);
     }
     _started = true;
+    if (_item != null) _item.changed();
   }
 
   public boolean canGoBack() { return _step > 0; }
@@ -139,6 +140,7 @@ public abstract class Wizard implements java.io.Serializable {
     _step--;
     if (_step < 0) _step = 0;
     undoAction(_step);
+    if (_item != null) _item.changed();
   }
 
   public boolean canFinish() { return true; }
@@ -148,8 +150,10 @@ public abstract class Wizard implements java.io.Serializable {
   public void finish() {
     _started = true;
     int numSteps = getNumSteps();
-    for (int i = _step; i <= numSteps; i++)
+    for (int i = _step; i <= numSteps; i++) {
       doAction(i);
+      if (_item != null) _item.changed();
+    }
     // needs-more-work: do all following steps
     // needs-more-work: resolve item from ToDoList
     _finished = true;
@@ -163,7 +167,7 @@ public abstract class Wizard implements java.io.Serializable {
    *  user without any automation.  Such a Wizard could be easily
    *  authored, stored in an XML file, and effiecntly presented by
    *  reusing a single panel with a single JTextArea. */
-  public abstract JPanel makePanel(int newStep);  
+  public abstract JPanel makePanel(int newStep);
 
   /** Take action at the completion of a step. For example, when the
    *  given step is 0, do nothing; and when the given step is 1, do

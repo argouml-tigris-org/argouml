@@ -47,6 +47,39 @@ implements ToDoListListener {
   ////////////////////////////////////////////////////////////////
   // ToDoListListener implementation
 
+  public void toDoItemsChanged(ToDoListEvent tde) {
+    //System.out.println("toDoItemsChanged");
+    Vector items = tde.getToDoItems();
+    int nItems = items.size();
+    Object path[] = new Object[2];
+    path[0] = Designer.TheDesigner.getToDoList();
+
+    java.util.Enumeration enum = KnowledgeTypeNode.getTypes().elements();
+    while (enum.hasMoreElements()) {
+      KnowledgeTypeNode ktn = (KnowledgeTypeNode) enum.nextElement();
+      String kt = ktn.getName();
+      path[1] = ktn;
+      int nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	if (!item.containsKnowledgeType(kt)) continue;
+	nMatchingItems++;
+      }
+      if (nMatchingItems == 0) continue;
+      int childIndices[] = new int[nMatchingItems];
+      Object children[] = new Object[nMatchingItems];
+      nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	if (!item.containsKnowledgeType(kt)) continue;
+	childIndices[nMatchingItems] = getIndexOfChild(ktn, item);
+	children[nMatchingItems] = item;
+	nMatchingItems++;
+      }
+      fireTreeNodesChanged(this, path, childIndices, children);
+    }
+  }
+
   public void toDoItemsAdded(ToDoListEvent tde) {
     //System.out.println("toDoItemAdded");
     Vector items = tde.getToDoItems();

@@ -4,8 +4,11 @@ SOURCES= \
 	ClClassName.java \
 	ClOperationCompartment.java \
 	WizAssocComposite.java \
+	WizBreakCircularComp.java \
 	WizMEName.java \
 	WizNavigable.java \
+	WizCueCards.java \
+	WizManyNames.java \
 	CrAlreadyRealizes.java \
 	CrAssocNameConflict.java \
 	CrAttrNameConflict.java \

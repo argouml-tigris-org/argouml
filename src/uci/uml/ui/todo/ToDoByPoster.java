@@ -42,9 +42,44 @@ implements ToDoListListener {
     super("By Poster");
     addSubTreeModel(new GoListToPosterToItem());
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // ToDoListListener implementation
+
+  public void toDoItemsChanged(ToDoListEvent tde) {
+    //System.out.println("toDoItemsChanged");
+    Vector items = tde.getToDoItems();
+    int nItems = items.size();
+    Object path[] = new Object[2];
+    path[0] = Designer.TheDesigner.getToDoList();
+
+    Set posters = Designer.theDesigner().getToDoList().getPosters();
+    java.util.Enumeration enum = posters.elements();
+    while (enum.hasMoreElements()) {
+      Poster p = (Poster) enum.nextElement();
+      path[1] = p;
+      int nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	Poster post = item.getPoster();
+	if (post != p) continue;
+	nMatchingItems++;
+      }
+      if (nMatchingItems == 0) continue;
+      int childIndices[] = new int[nMatchingItems];
+      Object children[] = new Object[nMatchingItems];
+      nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	Poster post = item.getPoster();
+	if (post != p) continue;
+	childIndices[nMatchingItems] = getIndexOfChild(p, item);
+	children[nMatchingItems] = item;
+	nMatchingItems++;
+      }
+      fireTreeNodesChanged(this, path, childIndices, children);
+    }
+  }
 
   public void toDoItemsAdded(ToDoListEvent tde) {
     //System.out.println("toDoItemAdded");

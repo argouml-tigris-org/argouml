@@ -48,7 +48,7 @@ public class ToDoPane extends JPanel
 implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener {
   ////////////////////////////////////////////////////////////////
   // constants
-  
+
   public static int WIDTH = 690;
   public static int HEIGHT = 520;
   public static int INITIAL_WIDTH = 400;
@@ -64,7 +64,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
 
   protected ToolBar _toolbar = new ToolBar();
   protected JComboBox _combo = new JComboBox();
-  
+
   protected ToDoList _root = null;
   protected Action _flatView = Actions.FlatToDo;
   protected JToggleButton _flatButton;
@@ -95,7 +95,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     add(_toolbar, BorderLayout.NORTH);
     add(new JScrollPane(_tree), BorderLayout.CENTER);
     _combo.addItemListener(this);
-    
+
     _tree.setRootVisible(false);
     _tree.setShowsRootHandles(true);
     _tree.addTreeSelectionListener(this);
@@ -237,8 +237,15 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   ////////////////////////////////////////////////////////////////
   // ToDoListListener implementation
 
+  public void toDoItemsChanged(ToDoListEvent tde) {
+    if (_curPerspective instanceof ToDoListListener)
+      ((ToDoListListener)_curPerspective).toDoItemsChanged(tde);
+    //updateCountLabel();
+    //paintImmediately(getBounds());
+  }
+
   public void toDoItemsAdded(ToDoListEvent tde) {
-    if (_curPerspective instanceof ToDoListListener) 
+    if (_curPerspective instanceof ToDoListListener)
       ((ToDoListListener)_curPerspective).toDoItemsAdded(tde);
     updateCountLabel();
     //paintImmediately(getBounds());
@@ -251,7 +258,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     //paintImmediately(getBounds());
   }
 
-  public void toDoListChanged(ToDoListEvent tde) { 
+  public void toDoListChanged(ToDoListEvent tde) {
     if (_curPerspective instanceof ToDoListListener)
       ((ToDoListListener)_curPerspective).toDoListChanged(tde);
     updateCountLabel();

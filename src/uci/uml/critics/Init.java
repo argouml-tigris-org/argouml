@@ -65,7 +65,7 @@ public class Init {
   public static Critic crNWayAgg = new CrNWayAgg();
   public static Critic crNavFromInterface = new CrNavFromInterface();
   public static Critic crUnnavigableAssoc = new CrUnnavigableAssoc();
-  public static Critic crNameConflict = new CrNameConflict();
+  //public static Critic crNameConflict = new CrNameConflict();
   public static Critic crNameConflictAC = new CrNameConflictAC();
   public static Critic crMissingClassName = new CrMissingClassName();
   public static Critic crMissingAttrName = new CrMissingAttrName();
@@ -209,7 +209,7 @@ public class Init {
       Agency.register(crUnnavigableAssoc, assocCls);
       Agency.register(crNWayAgg, assocCls);
       Agency.register(crNavFromInterface, assocCls);
-      Agency.register(crNameConflict, namespaceCls);
+      //Agency.register(crNameConflict, namespaceCls);
       Agency.register(crNameConflictAC, assocClassCls);
 
       // Agency.register(crMissingClassName, classCls);

@@ -45,12 +45,13 @@ import uci.uml.ui.*;
  * @see uci.argo.kernel.Wizard
  */
 
-public class WizStepTextField extends WizStep {
+public class WizStepCue extends WizStep {
   JTextArea _instructions = new JTextArea();
-  JLabel _label = new JLabel("Value:");
-  JTextField _field = new JTextField(20);
 
-  public WizStepTextField() {
+  public WizStepCue(Wizard w, String cue) {
+    // store wizard?
+    _instructions.setText(cue);
+
     _instructions.setEditable(false);
     _instructions.setBorder(null);
     _instructions.setBackground(_mainPanel.getBackground());
@@ -69,14 +70,15 @@ public class WizStepTextField extends WizStep {
     SpacerPanel image = new SpacerPanel(50, 100);
     image.setBorder(new EtchedBorder());
     c.gridx = 0;
-    c.gridheight = 4;
+    c.gridheight = GridBagConstraints.REMAINDER;
     c.gridy = 0;
+    c.anchor = GridBagConstraints.NORTH;
     gb.setConstraints(image, c);
     _mainPanel.add(image);
 
     c.weightx = 1.0;
     c.gridx = 2;
-    c.gridheight = 1;
+    c.gridheight = GridBagConstraints.REMAINDER;
     c.gridwidth = 3;
     c.gridy = 0;
     c.fill = GridBagConstraints.HORIZONTAL;
@@ -88,42 +90,13 @@ public class WizStepTextField extends WizStep {
     c.weightx = 0.0;
     c.gridwidth = 1;
     c.fill = GridBagConstraints.NONE;
-    SpacerPanel spacer = new SpacerPanel();
-    gb.setConstraints(spacer, c);
-    _mainPanel.add(spacer);
-
-    c.gridx = 2;
-    c.gridy = 2;
-    c.weightx = 0.0;
-    c.gridwidth = 1;
-    gb.setConstraints(_label, c);
-    _mainPanel.add(_label);
-
-    c.weightx = 1.0;
-    c.fill = GridBagConstraints.HORIZONTAL;
-    c.gridx = 3;
-    c.gridy = 2;
-    gb.setConstraints(_field, c);
-    _mainPanel.add(_field);
-
-//     c.gridx = 1;
-//     c.gridy = 3;
-//     c.gridheight = GridBagConstraints.REMAINDER;
-//     SpacerPanel spacer2 = new SpacerPanel();
-//     gb.setConstraints(spacer2, c);
-//     _mainPanel.add(spacer2);
-
-    _field.getDocument().addDocumentListener(this);
+    SpacerPanel spacer2 = new SpacerPanel();
+    gb.setConstraints(spacer2, c);
+    _mainPanel.add(spacer2);
   }
 
-  public WizStepTextField(Wizard w, String instr, String lab, String val) {
-    this();
-    // store wizard?
-    _instructions.setText(instr);
-    _label.setText(lab);
-    _field.setText(val);
-  }
 
-  public String getText() { return _field.getText(); }
+} /* end class WizStepCue */
 
-} /* end class WizStepTextField */
+
+

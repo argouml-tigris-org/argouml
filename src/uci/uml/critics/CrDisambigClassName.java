@@ -88,5 +88,19 @@ public class CrDisambigClassName extends CrUML {
     return ClClassName.TheInstance;
   }
 
+  public void initWizard(Wizard w) {
+    if (w instanceof WizMEName) {
+      ToDoItem item = w.getToDoItem();
+      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
+      String sug = me.getName().getBody();
+      String ins = "Change the name to something different.";
+      ((WizMEName)w).setInstructions(ins);
+      ((WizMEName)w).setSuggestion(sug);
+      ((WizMEName)w).setMustEdit(true);
+    }
+  }
+  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+
+
 } /* end class CrDisambigClassName.java */
 

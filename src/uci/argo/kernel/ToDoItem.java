@@ -222,11 +222,18 @@ public class ToDoItem implements java.io.Serializable {
     }
   }
 
-   /** The user has double-clicked or otherwise indicated that they
-    *  want to do something active with this item. By default, just
-    *  re-select it, subclasses may choose to do more (e.g., navigate to
-    *  the offending item if it is not visible). */
-   public void action() { deselect(); select(); }
+  /** The user has double-clicked or otherwise indicated that they
+   *  want to do something active with this item. By default, just
+   *  re-select it, subclasses may choose to do more (e.g., navigate to
+   *  the offending item if it is not visible). */
+  public void action() { deselect(); select(); }
+
+  /** Notify the user interface that this ToDoItem has
+   *  changed. Currently, this is used to update the progress bar. */
+  public void changed() {
+    ToDoList list = Designer.theDesigner().getToDoList();
+    list.fireToDoItemChanged(this);
+  }
 
 
   ////////////////////////////////////////////////////////////////

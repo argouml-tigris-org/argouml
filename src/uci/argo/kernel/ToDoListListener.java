@@ -27,6 +27,7 @@ package uci.argo.kernel;
 
 public interface ToDoListListener extends java.util.EventListener {
   void toDoListChanged(ToDoListEvent tde);
+  void toDoItemsChanged(ToDoListEvent tde);
   void toDoItemsAdded(ToDoListEvent tde);
   void toDoItemsRemoved(ToDoListEvent tde);
 } /* end interface ToDoListListener */

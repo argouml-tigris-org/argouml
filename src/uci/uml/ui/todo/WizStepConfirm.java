@@ -39,18 +39,16 @@ import uci.uml.ui.*;
 
 
 /** A simple non-modal wizard step that shows instructions and prompts
- *  the user to enter a string. 
+ *  the user to confirm an action.
  *
  * @see uci.argo.kernel.Critic
  * @see uci.argo.kernel.Wizard
  */
 
-public class WizStepTextField extends WizStep {
+public class WizStepConfirm extends WizStep {
   JTextArea _instructions = new JTextArea();
-  JLabel _label = new JLabel("Value:");
-  JTextField _field = new JTextField(20);
 
-  public WizStepTextField() {
+  public WizStepConfirm() {
     _instructions.setEditable(false);
     _instructions.setBorder(null);
     _instructions.setBackground(_mainPanel.getBackground());
@@ -92,38 +90,12 @@ public class WizStepTextField extends WizStep {
     gb.setConstraints(spacer, c);
     _mainPanel.add(spacer);
 
-    c.gridx = 2;
-    c.gridy = 2;
-    c.weightx = 0.0;
-    c.gridwidth = 1;
-    gb.setConstraints(_label, c);
-    _mainPanel.add(_label);
-
-    c.weightx = 1.0;
-    c.fill = GridBagConstraints.HORIZONTAL;
-    c.gridx = 3;
-    c.gridy = 2;
-    gb.setConstraints(_field, c);
-    _mainPanel.add(_field);
-
-//     c.gridx = 1;
-//     c.gridy = 3;
-//     c.gridheight = GridBagConstraints.REMAINDER;
-//     SpacerPanel spacer2 = new SpacerPanel();
-//     gb.setConstraints(spacer2, c);
-//     _mainPanel.add(spacer2);
-
-    _field.getDocument().addDocumentListener(this);
   }
 
-  public WizStepTextField(Wizard w, String instr, String lab, String val) {
+  public WizStepConfirm(Wizard w, String instr) {
     this();
     // store wizard?
     _instructions.setText(instr);
-    _label.setText(lab);
-    _field.setText(val);
   }
 
-  public String getText() { return _field.getText(); }
-
-} /* end class WizStepTextField */
+} /* end class WizStepConfirm */

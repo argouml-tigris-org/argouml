@@ -45,19 +45,19 @@ import uci.uml.ui.todo.KnowledgeTypeNode;
 public class ToDoTreeRenderer extends BasicTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
   // class variables
-  public ImageIcon _PostIt0 = loadIconResource("PostIt0");
-  public ImageIcon _PostIt25 = loadIconResource("PostIt25");
-  public ImageIcon _PostIt50 = loadIconResource("PostIt50");
-  public ImageIcon _PostIt75 = loadIconResource("PostIt75");
-  public ImageIcon _PostIt99 = loadIconResource("PostIt99");
+  public ImageIcon _PostIt0     = loadIconResource("PostIt0");
+  public ImageIcon _PostIt25    = loadIconResource("PostIt25");
+  public ImageIcon _PostIt50    = loadIconResource("PostIt50");
+  public ImageIcon _PostIt75    = loadIconResource("PostIt75");
+  public ImageIcon _PostIt99    = loadIconResource("PostIt99");
+  public ImageIcon _PostIt100   = loadIconResource("PostIt100");
   public ImageIcon _MultiPostIt = loadIconResource("MultiPostIt");
-  
 
   protected UMLTreeCellRenderer _navRenderer = new UMLTreeCellRenderer();
-  
+
   ////////////////////////////////////////////////////////////////
   // TreeCellRenderer implementation
-  
+
   public Component getTreeCellRendererComponent(JTree tree, Object value,
 						boolean sel,
 						boolean expanded,
@@ -77,6 +77,7 @@ public class ToDoTreeRenderer extends BasicTreeCellRenderer {
 	else if (item.getProgress() <= 50) lab.setIcon(_PostIt50);
 	else if (item.getProgress() <= 75) lab.setIcon(_PostIt75);
 	else if (item.getProgress() <= 100) lab.setIcon(_PostIt99);
+	else lab.setIcon(_PostIt100);
       }
       else if (value instanceof Decision) {
 	lab.setIcon(MetalIconFactory.getTreeFolderIcon());

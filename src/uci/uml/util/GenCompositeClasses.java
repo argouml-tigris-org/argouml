@@ -39,7 +39,7 @@ import uci.uml.Foundation.Data_Types.*;
  *  NavPerspectives. */
 
 public class GenCompositeClasses implements ChildGenerator {
-  public static GenAncestorClasses SINGLETON = new GenAncestorClasses();
+  public static GenCompositeClasses SINGLETON = new GenCompositeClasses();
 
   public java.util.Enumeration gen(Object o) {
     if (!(o instanceof Classifier)) return EnumerationEmpty.theInstance();

@@ -58,7 +58,7 @@ public class CrCircularComposition extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Classifier)) return NO_PROBLEM;
     Classifier cls = (Classifier) dm;
-    Set reach = (new Set(cls)).reachable(new GenCompositeClasses());
+    Set reach = (new Set(cls)).reachable(GenCompositeClasses.SINGLETON);
     if (reach.contains(cls)) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
@@ -75,7 +75,7 @@ public class CrCircularComposition extends CrUML {
     Enumeration enum = above.elements();
     while (enum.hasMoreElements()) {
       Classifier cls2 = (Classifier) enum.nextElement();
-      Set trans = (new Set(cls2)).reachable(new GenCompositeClasses());
+      Set trans = (new Set(cls2)).reachable(GenCompositeClasses.SINGLETON);
       if (trans.contains(dm)) offs.addElement(cls2);
     }
     return offs;
@@ -93,6 +93,10 @@ public class CrCircularComposition extends CrUML {
 //  		       " res = " + res);
     return res;
   }
-  
+
+  public Class getWizardClass(ToDoItem item) {
+    return WizBreakCircularComp.class;
+  }
+
 } /* end class CrCircularComposition.java */
 

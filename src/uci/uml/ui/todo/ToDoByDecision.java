@@ -51,6 +51,39 @@ implements ToDoListListener {
   ////////////////////////////////////////////////////////////////
   // ToDoListListener implementation
 
+  public void toDoItemsChanged(ToDoListEvent tde) {
+    System.out.println("toDoItemChanged");
+    Vector items = tde.getToDoItems();
+    int nItems = items.size();
+    Object path[] = new Object[2];
+    path[0] = Designer.TheDesigner.getToDoList();
+
+    Vector decs = Designer.TheDesigner.getDecisions();
+    java.util.Enumeration enum = decs.elements();
+    while (enum.hasMoreElements()) {
+      Decision dec = (Decision) enum.nextElement();
+      int nMatchingItems = 0;
+      path[1] = dec;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	if (!item.supports(dec)) continue;
+	nMatchingItems++;
+      }
+      if (nMatchingItems == 0) continue;
+      int childIndices[] = new int[nMatchingItems];
+      Object children[] = new Object[nMatchingItems];
+      nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	if (!item.supports(dec)) continue;
+	childIndices[nMatchingItems] = getIndexOfChild(dec, item);
+	children[nMatchingItems] = item;
+	nMatchingItems++;
+      }
+      fireTreeNodesChanged(this, path, childIndices, children);
+    }
+  }
+
   public void toDoItemsAdded(ToDoListEvent tde) {
     //System.out.println("toDoItemAdded");
     Vector items = tde.getToDoItems();
@@ -111,10 +144,10 @@ implements ToDoListListener {
 
   public void toDoListChanged(ToDoListEvent tde) { }
 
-  
+
 //   public static Decision decisionUNCATEGORIZED =
 //   new Decision("Uncategorized", 1);
-  
+
 //   protected boolean isNeeded(ToDoPseudoNode node) {
 //     PredicateDecision pd = (PredicateDecision) node.getPredicate();
 //     Decision d = pd.getDecision();
@@ -126,7 +159,6 @@ implements ToDoListListener {
 //     return false;
 //   }
 
-  
 //   protected Vector addNewPseudoNodes(ToDoItem item) {
 //     Vector newNodes = new Vector();
 //     Vector decs = item.getPoster().getSupportedDecisions();

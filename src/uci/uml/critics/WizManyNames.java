@@ -23,8 +23,8 @@
 
 
 
-// File: WzMEName.java
-// Classes: WzMEName
+// File: WizManyNames.java
+// Classes: WizManyNames
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -45,69 +45,39 @@ import uci.uml.Model_Management.*;
 /** A non-modal wizard to help the user change the name of a
  *  ModelElement to a better name. */
 
-public class WizMEName extends Wizard {
+public class WizManyNames extends Wizard {
 
   protected String _instructions =
   "Please change the name of the offending model element.";
   protected String _label = "Name:";
-  protected String _suggestion = "suggestion";
-  protected String _origSuggest = "suggestion";
-  protected boolean _mustEdit = false;
+  public Vector _mes = null;
 
-  protected WizStepTextField _step1 = null;
+  protected WizStepManyTextFields _step1 = null;
 
-  public WizMEName() { }
+  public WizManyNames() { }
 
   public int getNumSteps() { return 1; }
 
-  public ModelElement getModelElement() {
-    if (_item != null) {
-      Set offs = _item.getOffenders();
-      if (offs.size() >= 1) {
-	ModelElement me = (ModelElement) offs.elementAt(0);
-	return me;
-      }
-    }
-    return null;
-  }
-
-  public String getSuggestion() {
-    if (_suggestion != null) return _suggestion;
-    ModelElement me = getModelElement();
-    if (me != null) {
-      Name n = me.getName();
-      return n.getBody();
-    }
-    return "";
-  }
-  public void setSuggestion(String s) { _origSuggest = _suggestion = s; }
+  public void setMEs(Vector mes) { _mes = mes; }
 
   public void setInstructions(String s) { _instructions = s; }
-
-  public void setMustEdit(boolean b) { _mustEdit = b; }
 
   /** Create a new panel for the given step.  */
   public JPanel makePanel(int newStep) {
     switch (newStep) {
     case 1:
       if (_step1 == null) {
-	_step1 = new WizStepTextField(this, _instructions,
-				      _label, getSuggestion());
+	Vector names = new Vector();
+	int size = _mes.size();
+	for (int i = 0; i < size; i++) {
+	  ModelElement me = (ModelElement) _mes.elementAt(i);
+	  names.addElement(me.getName().getBody());
+	}
+	_step1 = new WizStepManyTextFields(this, _instructions, names);
       }
       return _step1;
     }
     return null;
-  }
-
-  /** Return false iff the user has not edited the text and they were
-   *  required to. */
-  public boolean canGoNext() {
-    if (!super.canGoNext()) return false;
-    if (_step1 != null) {
-      boolean changed = _origSuggest.equals(_step1.getText());
-      if (_mustEdit && !changed) return false;
-    }
-    return true;
   }
 
   /** Take action at the completion of a step. For example, when the
@@ -119,11 +89,14 @@ public class WizMEName extends Wizard {
     //System.out.println("doAction " + oldStep);
     switch (oldStep) {
     case 1:
-      String newName = _suggestion;
-      if (_step1 != null) newName = _step1.getText();
+      Vector newNames = null;
+      if (_step1 != null) newNames = _step1.getStrings();
       try {
-	ModelElement me = getModelElement();
-	me.setName(new Name(newName));
+	int size = _mes.size();
+	for (int i = 0; i < size; i++) {
+	  ModelElement me = (ModelElement) _mes.elementAt(i);
+	  me.setName(new Name((String)newNames.elementAt(i)));
+	}
       }
       catch (PropertyVetoException pve) {
 	System.out.println("could not set name");
@@ -132,4 +105,4 @@ public class WizMEName extends Wizard {
   }
 
 
-} /* end class WizMEName */
+} /* end class WizManyNames */

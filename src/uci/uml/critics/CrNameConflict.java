@@ -35,6 +35,7 @@ import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Model_Management.*;
 
 /** Well-formedness rule [1] for Namespace. See page 33 of UML 1.1
@@ -57,6 +58,9 @@ public class CrNameConflict extends CrUML {
 
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Namespace)) return NO_PROBLEM;
+//     if (dm instanceof MMClass) return NO_PROBLEM;
+//     if (dm instanceof Interface) return NO_PROBLEM;
+//     if (dm instanceof State) return NO_PROBLEM;
     Namespace ns = (Namespace) dm;
     Vector oes = ns.getOwnedElement();
     if (oes == null) return NO_PROBLEM;
@@ -75,6 +79,20 @@ public class CrNameConflict extends CrUML {
     }
     return NO_PROBLEM;
   }
+
+  public void initWizard(Wizard w) {
+    if (w instanceof WizMEName) {
+      ToDoItem item = w.getToDoItem();
+      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
+      String sug = me.getName().getBody();
+      String ins = "Change the name to something different.";
+      ((WizMEName)w).setInstructions(ins);
+      ((WizMEName)w).setSuggestion(sug);
+      ((WizMEName)w).setMustEdit(true);
+    }
+  }
+  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+
 
 } /* end class CrNameConflict.java */
 

@@ -45,6 +45,41 @@ public class ToDoByOffender extends ToDoPerspective {
   ////////////////////////////////////////////////////////////////
   // ToDoListListener implementation
 
+  public void toDoItemsChanged(ToDoListEvent tde) {
+    //System.out.println("toDoItemsChanged");
+    Vector items = tde.getToDoItems();
+    int nItems = items.size();
+    Object path[] = new Object[2];
+    path[0] = Designer.TheDesigner.getToDoList();
+
+    Set allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
+    java.util.Enumeration enum = allOffenders.elements();
+    while (enum.hasMoreElements()) {
+      Object off = enum.nextElement();
+      path[1] = off;
+      int nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	Set offenders = item.getOffenders();
+	if (!offenders.contains(off)) continue;
+	nMatchingItems++;
+      }
+      if (nMatchingItems == 0) continue;
+      int childIndices[] = new int[nMatchingItems];
+      Object children[] = new Object[nMatchingItems];
+      nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	Set offenders = item.getOffenders();
+	if (!offenders.contains(off)) continue;
+	childIndices[nMatchingItems] = getIndexOfChild(off, item);
+	children[nMatchingItems] = item;
+	nMatchingItems++;
+      }
+      fireTreeNodesChanged(this, path, childIndices, children);
+    }
+  }
+
   public void toDoItemsAdded(ToDoListEvent tde) {
     //System.out.println("toDoItemAdded");
     Vector items = tde.getToDoItems();

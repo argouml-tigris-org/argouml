@@ -209,7 +209,7 @@ implements TabModelTarget, DocumentListener {
   }
 
   ////////////////////////////////////////////////////////////////
-  // event handling
+  // DocumentListener implementation
 
   public void insertUpdate(DocumentEvent e) {
     //System.out.println(getClass().getName() + " insert");
@@ -225,5 +225,5 @@ implements TabModelTarget, DocumentListener {
     //System.out.println(getClass().getName() + " changed");
     // Apparently, this method is never called.
   }
-  
+
 } /* end class PropPanel */
