@@ -56,7 +56,7 @@ public class StylePanelFig extends StylePanel implements ItemListener,
         FocusListener, KeyListener {
 
     private static final Logger LOG = Logger
-            .getLogger(StylePanelFigNodeModelElement.class);
+            .getLogger(StylePanelFig.class);
 
     private static final String CUSTOM_ITEM = Translator
             .localize("label.stylepane.custom")
@@ -424,7 +424,8 @@ public class StylePanelFig extends StylePanel implements ItemListener,
         Object c = fillField.getSelectedItem();
         if (getPanelTarget() == null || c == null) return;
         Color oldColor = getPanelTarget().getFillColor();
-        if (c instanceof Color) getPanelTarget().setFillColor((Color) c);
+        if (c instanceof Color) 
+            getPanelTarget().setFillColor((Color) c);
         getPanelTarget().setFilled(c instanceof Color);
         getPanelTarget().endTrans();
         if (!c.equals(oldColor)) {
