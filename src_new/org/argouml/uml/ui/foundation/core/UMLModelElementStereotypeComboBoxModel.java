@@ -28,7 +28,6 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -52,7 +51,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(MBase o) {
+    protected boolean isValidElement(Object o) {
         return o instanceof MStereotype 
             && ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)getTarget(), (MStereotype)o);
     }

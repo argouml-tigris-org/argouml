@@ -21,53 +21,52 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
-package org.argouml.uml.ui.foundation.core;
+// $Id$
+package org.argouml.uml.ui;
 
-import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.uml.ui.UMLComboBoxModel2;
-
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 
 /**
- * @since Nov 6, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * An editable and searchable combobox to edit the multiplicity attribute of
+ * some modelelement.
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 5, 2003
  */
-public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
+public class UMLMultiplicityComboBox2 extends UMLSearchableComboBox {
 
     /**
-     * Constructor for UMLFeatureOwnerComboBoxModel.
-     * @param container
-     * @param propertySetName
-     * @param clearable
+     * Constructor for UMLMultiplicityComboBox2.
+     * @param arg0
+     * @param selectAction
      */
-    public UMLFeatureOwnerComboBoxModel() {
-        super("owner", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
+    public UMLMultiplicityComboBox2(UMLComboBoxModel2 arg0, UMLAction selectAction) {
+        super(arg0, selectAction);
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
+     * On enter, the text the user has filled in the textfield is first checked
+     * to see if it's a valid multiplicity. If so then that is the multiplicity
+     * to be set. If not, the combobox searches for a multiplicity starting with
+     * the given text. If there is no multiplicity starting with the given text,
+     * the old value is reset in the comboboxeditor.
+     * @see org.argouml.uml.ui.UMLEditableComboBox#doOnEdit(java.lang.Object)
      */
-    protected boolean isValidElement(Object element) {
-        return element instanceof MClassifier;
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
-     */
-    protected void buildModelList() {
-        setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class));
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
-     */
-    protected Object getSelectedModelElement() {
-        return ((MFeature)getTarget()).getOwner();
+    protected void doOnEdit(Object item) {
+        String text = (String)item;
+        MMultiplicity multi = null;
+        try {
+            multi = new MMultiplicity(text);
+        }
+        catch (IllegalArgumentException e) {
+            Object o = search(text);
+            if (o != null && o instanceof MMultiplicity) {
+                multi = (MMultiplicity)o;
+            }
+        }
+        if (multi != null) {
+            setSelectedItem(multi);
+        } else
+            getEditor().setItem(getSelectedItem());
     }
 
 }

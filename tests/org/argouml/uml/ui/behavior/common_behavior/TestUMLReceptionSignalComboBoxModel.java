@@ -108,11 +108,11 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         assertNull(model.getSelectedItem());
     }
     
-// For some reason this test does not work. Please fix!
-//     public void testRemoveSignal() {
-// 	   UmlFactory.getFactory().delete(signals[9]);
-// 	   assertEquals(9, model.getSize());
-// 	   assertTrue(!model.contains(signals[9]));
-//     } 
+
+    public void testRemoveSignal() {
+        UmlFactory.getFactory().delete(signals[9]);
+        assertEquals(9, model.getSize());
+        assertTrue(!model.contains(signals[9]));
+    } 
 
 }

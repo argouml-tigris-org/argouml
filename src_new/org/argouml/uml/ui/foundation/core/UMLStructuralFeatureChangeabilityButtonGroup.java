@@ -25,12 +25,13 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
+
 import javax.swing.JRadioButton;
 
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLButtonGroup;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
-import ru.novosoft.uml.foundation.core.MFeature;
+
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 

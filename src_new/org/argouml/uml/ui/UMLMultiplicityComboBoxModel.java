@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,54 +21,74 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
-package org.argouml.uml.ui.foundation.core;
+// $Id$
+package org.argouml.uml.ui;
 
-import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.uml.ui.UMLComboBoxModel2;
+import java.util.ArrayList;
+import java.util.List;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 
 /**
- * @since Oct 10, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * A model for multiplicities. This model is instantiated with a few default
+ * values. 
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 5, 2003
  */
-public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
+public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
+    
+    private static List multiplicityList = new ArrayList();
+    
+    static {
+        multiplicityList.add(MMultiplicity.M0_N);
+        multiplicityList.add(MMultiplicity.M0_1);
+        multiplicityList.add(MMultiplicity.M1_1);
+        multiplicityList.add(MMultiplicity.M1_N);
+    }  
 
     /**
-     * Constructor for UMLModelElementNamespaceComboBoxModel.
-     * @param container
+     * Constructor for UMLMultiplicityComboBoxModel.
+     * @param propertySetName
+     * @param clearable
      */
-    public UMLModelElementNamespaceComboBoxModel() {
-        super("namespace", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
+    public UMLMultiplicityComboBoxModel(String propertySetName) {
+        super(propertySetName, false);
     }
-    
+
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(Object o) {
-        return o instanceof MNamespace && CoreHelper.getHelper().isValidNamespace((MModelElement)getTarget(), (MNamespace)o);
+    protected boolean isValidElement(Object element) {
+        return element instanceof MMultiplicity;
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        setElements(CoreHelper.getHelper().getAllPossibleNamespaces((MModelElement)getTarget()));
-    }
+        setElements(multiplicityList);
+    }    
 
     /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#addElement(java.lang.Object)
      */
-    protected Object getSelectedModelElement() {
-        if (getTarget() != null) {
-            return ((MModelElement)getTarget()).getNamespace();
+    public void addElement(Object o) {
+        if (!multiplicityList.contains(o)) {
+            multiplicityList.add(o);
         }
-        return null;
+        super.addElement(o);        
+    }    
+
+    
+
+    /**
+     * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
+     */
+    public void setSelectedItem(Object anItem) {
+        if (!contains(anItem)) {
+            addElement(anItem);
+        }
+        super.setSelectedItem(anItem);        
     }
 
 }

@@ -24,7 +24,6 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 
 /**

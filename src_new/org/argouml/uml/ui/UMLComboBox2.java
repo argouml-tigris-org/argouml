@@ -35,9 +35,7 @@ import javax.swing.JComboBox;
  */
 public class UMLComboBox2
     extends JComboBox
-    implements TargetChangedListener {
-        
-    private Object _target;
+    implements TargetChangedListener {       
     
     /**
      * Constructor for UMLMessageActivatorComboBox.
@@ -72,7 +70,6 @@ public class UMLComboBox2
      * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
      */
     public void targetChanged(Object newTarget) {
-        setTarget(newTarget);
         ((UMLComboBoxModel2)getModel()).targetChanged(newTarget);
     }
 
@@ -81,8 +78,6 @@ public class UMLComboBox2
      * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
      */
     public void targetReasserted(Object newTarget) {
-        if (_target != newTarget)
-            setTarget(newTarget);
         ((UMLComboBoxModel2)getModel()).targetReasserted(newTarget);
     }
 
@@ -108,15 +103,8 @@ public class UMLComboBox2
      * @return Object
      */
     public Object getTarget() {
-        return _target;
+        return ((UMLComboBoxModel2)getModel()).getTarget();
     }
 
-    /**
-     * Sets the target.
-     * @param target The target to set
-     */
-    public void setTarget(Object target) {
-        _target = target;
-    }
-
+    
 }
