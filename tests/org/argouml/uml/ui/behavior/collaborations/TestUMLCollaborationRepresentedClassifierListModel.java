@@ -28,8 +28,6 @@ import junit.framework.TestCase;
 
 import org.argouml.model.Model;
 
-import ru.novosoft.uml.MFactoryImpl;
-
 /**
  * @since Oct 28, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -37,7 +35,6 @@ import ru.novosoft.uml.MFactoryImpl;
 public class TestUMLCollaborationRepresentedClassifierListModel
     extends TestCase {
 
-    private int oldEventPolicy;
     private Object elem;
     private UMLCollaborationRepresentedClassifierListModel model;
 
@@ -56,8 +53,6 @@ public class TestUMLCollaborationRepresentedClassifierListModel
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getCollaborationsFactory().createCollaboration();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLCollaborationRepresentedClassifierListModel();
         model.setTarget(elem);
     }
@@ -68,7 +63,6 @@ public class TestUMLCollaborationRepresentedClassifierListModel
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
 

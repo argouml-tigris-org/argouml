@@ -37,8 +37,6 @@ import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.tigris.gef.graph.presentation.JGraph;
 
-import ru.novosoft.uml.MFactoryImpl;
-
 /**
  * @author jaap.branderhorst@xs4all.nl
  * @since Apr 13, 2003
@@ -141,8 +139,7 @@ public class TestTabDiagram extends TestCase {
                         new FigClass(diagrams[i].getGraphModel(), clazz));
                     ProjectBrowser.getInstance().setTarget(diagrams[i]);
                 }
-                MFactoryImpl.setEventPolicy(
-                    MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+
                 // real test
                 long currentTime = (new Date()).getTime();
                 Collection propertyChangeListeners =

@@ -28,15 +28,12 @@ import junit.framework.TestCase;
 
 import org.argouml.model.Model;
 
-import ru.novosoft.uml.MFactoryImpl;
-
 /**
  * @since Oct 30, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TestUMLInteractionCollaborationListModel extends TestCase {
 
-    private int oldEventPolicy;
     private Object elem;
     private UMLInteractionContextListModel model;
 
@@ -55,8 +52,6 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getCollaborationsFactory().createInteraction();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLInteractionContextListModel();
         model.setTarget(elem);
     }
@@ -67,7 +62,6 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
 

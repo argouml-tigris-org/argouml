@@ -30,8 +30,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 
-import ru.novosoft.uml.MFactoryImpl;
-
 /**
  * Testing the ProjectBrowser.
  * The reason for this being a GUITest is that all the tests rely on
@@ -44,7 +42,8 @@ import ru.novosoft.uml.MFactoryImpl;
 public class GUITestProjectBrowser extends TestCase {
 
     /**
-     * Constructor
+     * Constructor.
+     *
      * @param arg0 name of the test case
      */
     public GUITestProjectBrowser(String arg0) {
@@ -91,10 +90,12 @@ public class GUITestProjectBrowser extends TestCase {
 	ProjectBrowser.setSplash(true);
     }
 
-    /** Test the existance of public static members.
+    /**
+     * Test the existance of public static members.
      */
     public void compileTestPublicStaticMembers() {
-	int r = ProjectBrowser.DEFAULT_COMPONENTWIDTH
+	int r =
+	    ProjectBrowser.DEFAULT_COMPONENTWIDTH
 	        + ProjectBrowser.DEFAULT_COMPONENTHEIGHT;
     }
 
@@ -118,7 +119,6 @@ public class GUITestProjectBrowser extends TestCase {
      * The method has been deprecated.
      */
     public void testSetTarget() {
-	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
 	Object package1 =
 	    Model.getModelManagementFactory().buildPackage("test1", null);
 	Object package2 =
@@ -143,8 +143,7 @@ public class GUITestProjectBrowser extends TestCase {
     /**
      * Test the existance of deprecated methods.
      */
-    public void compileExistDeprecated()
-    {
+    public void compileExistDeprecated() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	pb.getTarget();
     }
