@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -70,17 +70,24 @@ public class UMLAction extends AbstractAction {
         setEnabled(shouldBeEnabled());
     }
 
+    /**
+     * Gets one of this object's properties using the associated key.
+     *
+     * @param key the name of the property.
+     * @return the value of the property.
+     * @see #putValue(String, Object)
+     */
     public Object getValue(String key) {
 	if (iconName != null && Action.SMALL_ICON.equals(key)) {
 	    Icon icon =
 		ResourceLoaderWrapper
-		.getResourceLoaderWrapper()
-		.lookupIconResource(Translator.getImageBinding(iconName),
-				    Translator.localize(iconName)
-				    );
-	    if (icon != null)
+		    .getResourceLoaderWrapper()
+		    .lookupIconResource(Translator.getImageBinding(iconName),
+				    Translator.localize(iconName));
+
+	    if (icon != null) {
 		putValue(Action.SMALL_ICON, icon);
-	    else {
+	    } else {
 		cat.debug("icon not found: " + iconName);
 	    }
 	    iconName = null;
@@ -144,7 +151,7 @@ public class UMLAction extends AbstractAction {
      *    to the specified key.
      *
      */
-    static final public String getMnemonic(String key) {
+    public static final String getMnemonic(String key) {
         return Translator.localize(key);
     }
 
