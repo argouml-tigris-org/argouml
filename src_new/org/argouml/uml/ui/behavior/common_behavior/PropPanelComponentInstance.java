@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,6 +42,10 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
+// The NS-UML imports cannot be removed until we move to UMLComboBoxModel2
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
+
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -73,11 +77,11 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
         new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
     }
 
-    public boolean isAcceptibleClassifier(Object/*MModelElement*/ classifier) {
+    public boolean isAcceptibleClassifier(MModelElement classifier) {
         return org.argouml.model.ModelFacade.isAClassifier(classifier);
     }
 
-    public void setClassifier(Object/*MClassifier*/ element) {
+    public void setClassifier(MClassifier element) {
         Object target = getTarget();
 
         if (org.argouml.model.ModelFacade.isAInstance(target)) {
