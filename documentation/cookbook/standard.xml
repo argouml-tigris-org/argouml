@@ -636,10 +636,10 @@ updates of the version of a subproduct.
         <surname>Tolke</surname>
       </author>
     </sect1info>
-    <title>Settings for Eclipse</title>
+    <title>Settings for Eclipse 2</title>
     <para>
-These style guides correspond to the following settings in Eclipse:
-      </para>
+These style guides correspond to the following settings in Eclipse 2:
+</para>
     <itemizedlist>
       <listitem>
         <para>In Preferences => Java => Code Formatter => New Lines</para>
@@ -757,6 +757,204 @@ These style guides correspond to the default java settings in Emacs:
 </programlisting>
     </para>
   </sect1>
+
+  <sect1>
+    <sect1info>
+      <author>
+	<firstname>Linus</firstname>
+	<surname>Tolke</surname>
+      </author>
+    </sect1info>
+    <title>How to work with Eclipse 3</title>
+    <para>
+If you are running Eclipse 3 the development environment fitting ArgoUML
+is achieved using the following steps.
+These steps only go so far as to the building of ArgoUML itself.
+I (Linus Tolke) hope that we will eventually add steps that sets up also
+the JUnit test cases and
+the modules.
+</para>
+    <itemizedlist>
+      <listitem>
+	<para>
+Code conventions.
+</para>
+	<para>
+Set the Code Formatter to "Java conventions [built-in]".
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+New file templates.
+</para>
+
+	<para>
+Set the Code Templates for New Java files to
+<programlisting>
+// &dollar;&dollar;Id&dollar;&dollar;
+// Copyright (c) 2004 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+${package_declaration}
+
+${typecomment}
+${type_declaration}
+</programlisting>
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+Compiler options.
+</para>
+	<para>
+Compliance and classfiles => Compiler compliance level: 1.3.
+</para>
+	<para>
+Suggested settings (only things diverting from the Eclipse Defaults listed:
+Style => Possible accidental boolean assignment: Warning.
+Advanced => Local variable declaration hides another field or variable: Warning.
+Advanced => Field declaration hides another field or variable: Warning.
+Unused code => Local variable is never read: Warning.
+Unused code => Parameter is never read: Warning.
+Unused code => Unused or unread private members: Warning.
+Unused code => Unnecessary semicolon: Warning.
+Unused code => Unnecessary cast or 'instanceof' operation: Warning.
+Unused code => Unnecessary declaration of thrown checked exception: Warning.
+Javadoc => Malformed javadoc comments: Warning, Private, Report errors in tags.
+Javadoc => Missing javadoc tags: Warning, Protected,
+Check overriding and implementing methods.
+To be continued...
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+CVS Repository.
+</para>
+	<para>
+Host: cvs.tigris.org
+Repository path: /cvs
+User: <replaceable>Your Tigris user.</replaceable>
+Password: <replaceable>Your Tigris password.</replaceable>
+Connection type: pserver
+Use Default Port.
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+Check out.
+</para>
+	<para>
+Unfold the CVS Repository and within it, HEAD.
+</para>
+	<para>
+Select the argouml project and do Check Out As.
+Check out as a project configured using the New Project Wizard.
+Finish.
+Select Java Project.
+Choose name: argouml.
+Ignore the build path settings. We will come back to them later.
+</para>
+	<para>
+This takes a while.
+The download is around 60Meg.
+If you are on a modem or other low bandwidth connection,
+this is not recommended since you will download
+all of the web site,
+the source for the documentation, and
+all modules,
+things that you could do without unless you would want to work on them.
+If you find a way to do this with less bandwidth use,
+please help improving this description.
+Theoretically we can come down to around 16Meg which would take around
+five hours on a 56K modem.
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+Build using ant.
+</para>
+	<para>
+Browse to <filename>argouml/src_new/build.xml</filename>
+and do 
+<command>Run ant</command> on it.
+Select compile (default target) and Run.
+</para>
+	<para>
+There are some files that are built using rules in the
+<filename>build.xml</filename> file.
+This is the antlr files and the file containing a version.
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+Set build path.
+</para>
+
+	<para>
+Enter Java Build Path (under Project => Properties).
+</para>
+
+	<para>
+Under source:
+Remove <filename class="directory">argouml/src</filename>.
+Add <filename class="directory">argouml/src_new</filename>.
+</para>
+	<para>
+Under Libraries:
+Add JARs:
+all files in <filename class="directory">argouml/lib</filename>
+Add JARs:
+the file <filename>argouml/tools/ant-1.4.1/lib/xerces-1.2.3.jar</filename>
+</para>
+	<para>
+Eclipse shall rebuild.
+Verify that there are no errors, just warnings left among the problems.
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
+Select the class with the main method.
+</para>
+	<para>
+It is in
+<filename>argouml/src_new/org/argouml/application/Main.java</filename>.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+Verify that you can start ArgoUML from the debugger within Eclipse.
+</para>
+      </listitem>
+    </itemizedlist>
+  </sect1>
+
 </chapter>
 
 
