@@ -63,7 +63,8 @@ public class CustomSeparator {
      * then you may block all other separators.
      */
     protected CustomSeparator() {
-	match = pattern = new char[0];
+	pattern = new char[0];
+	match = pattern;
     }
 
     /**
