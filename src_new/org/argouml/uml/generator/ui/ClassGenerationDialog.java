@@ -63,7 +63,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.FileGenerator;
-import org.argouml.uml.generator.Generator;
+import org.argouml.uml.generator.Generator2;
 import org.argouml.util.osdep.OsUtil;
 import org.tigris.gef.util.Converter;
 
@@ -82,8 +82,8 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
     private JTable _classTable;
     private JComboBox _outputDirectoryComboBox;
 
-    /** Used to select the next language column in case 
-     * the "Select All" button is pressed. 
+    /** Used to select the next language column in case
+     * the "Select All" button is pressed.
      */
     private int languageHistory = 0;
 
@@ -107,7 +107,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
         JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
 
         // Class Table
-        
+
         _classTableModel = new TableModelClassChecks();
         _classTableModel.setTarget(nodes, _languages);
         _classTable = new JTable(_classTableModel);
@@ -120,7 +120,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
         _classTable.setPreferredScrollableViewportSize(new Dimension(300, 300));
 
         // Select Buttons
-        
+
         JButton selectAllButton = new JButton();
         nameButton(selectAllButton, "button.select-all");
         selectAllButton.addActionListener(new ActionListener() {
@@ -146,14 +146,14 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
         selectPanel.add(selectButtons);
 
         JPanel centerPanel = new JPanel(new BorderLayout(0, 2));
-        centerPanel.add(new JLabel(Translator.localize(BUNDLE, 
+        centerPanel.add(new JLabel(Translator.localize(BUNDLE,
             "label.available-classes")), BorderLayout.NORTH);
         centerPanel.add(new JScrollPane(_classTable), BorderLayout.CENTER);
         centerPanel.add(selectPanel, BorderLayout.SOUTH);
         contentPanel.add(centerPanel, BorderLayout.CENTER);
 
         // Output Directory
-        
+
         _outputDirectoryComboBox =
             new JComboBox(Converter.convert(new Vector(getClasspathEntries())));
 
@@ -180,13 +180,13 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
             outputPanel.add(browseButton, BorderLayout.EAST);
             southPanel.add(outputPanel, BorderLayout.NORTH);
         }
-        
+
         // Compile Checkbox
 
         //_compileCheckBox = new JCheckBox();
-        //nameButton(_compileCheckBox, "checkbox.compile-generated-source");       
+        //nameButton(_compileCheckBox, "checkbox.compile-generated-source");
         // TODO: Implement the compile feature. For now, disable the checkbox.
-        //_compileCheckBox.setEnabled(false);     
+        //_compileCheckBox.setEnabled(false);
         //southPanel.add(_compileCheckBox, BorderLayout.SOUTH);
 
         contentPanel.add(southPanel, BorderLayout.SOUTH);
@@ -202,7 +202,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
         super.nameButtons();
         nameButton(getOkButton(), "button.generate");
     }
-    
+
     private void setClassTableColumnWidths() {
         TableColumn column = null;
         Component c = null;
@@ -280,17 +280,17 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
                 fileNames[i] = new Vector();
                 NotationName language = (NotationName) _languages.get(i);
                 FileGenerator generator =
-                    (FileGenerator) Generator.getGenerator(language);
+                    (FileGenerator) Generator2.getGenerator(language);
                 Set nodes = _classTableModel.getChecked(language);
                 for (Iterator iter = nodes.iterator(); iter.hasNext();) {
                     Object node = iter.next();
                     if (ModelFacade.isAClassifier(node)) {
                         if (isPathInModel) {
-                            path = Generator.getCodePath(node);
+                            path = Generator2.getCodePath(node);
                             if (path == null) {
                                 Object parent = ModelFacade.getNamespace(node);
                                 while (parent != null) {
-                                    path = Generator.getCodePath(parent);
+                                    path = Generator2.getCodePath(parent);
                                     if (path != null)
                                         break;
                                     parent = ModelFacade.getNamespace(parent);
@@ -305,7 +305,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
                             fileNames[i].add(fn);
                             // save the selected language in the model
                             // TODO 1: no support of multiple checked
-                            // languages 
+                            // languages
                             //
                             // TODO 2: it's a change in the model ->
                             // save needed!
@@ -359,7 +359,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
             cat.info("user pressed cancel");
         }
     }
-    
+
     class TableModelClassChecks extends AbstractTableModel {
         ////////////////
         // instance varables
@@ -408,7 +408,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
                 }
             }
             fireTableStructureChanged();
-            
+
             getOkButton().setEnabled(_classes.size() > 0 && getChecked().size() > 0);
         }
 
@@ -416,16 +416,16 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
             NotationName lang,
             Object cls) {
             if (lang == null) {
-                return false;                
+                return false;
             }
             if (cls == null) {
                 return false;
-            } 
-            
+            }
+
             Object taggedValue = ModelFacade.getTaggedValue(cls, "src_lang");
             if (taggedValue == null) {
                 return false;
-            } 
+            }
             String savedLang = ModelFacade.getValueOfTag(taggedValue);
             return (lang.getConfigurationValue().equals(savedLang));
         }
@@ -525,7 +525,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
                 else
                     _checked[columnIndex].remove(cls);
             }
-            
+
             if (val && !getOkButton().isEnabled()) {
                 getOkButton().setEnabled(true);
             }
@@ -536,15 +536,15 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
         }
 
         /** Sets or clears all checkmarks for the (next) language for all classes
-         *  @param value If false then all checkmarks are cleared for all 
-         *  languages. 
-         *  If true then all are cleared, except for one language column, 
-         *  these are all set. 
+         *  @param value If false then all checkmarks are cleared for all
+         *  languages.
+         *  If true then all are cleared, except for one language column,
+         *  these are all set.
          */
         public void setAllChecks(boolean value) {
             int rows = getRowCount();
             int checks = getLanguagesCount();
-            
+
             if (rows == 0) {
                 return;
             }
@@ -564,6 +564,6 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
             if (value) if (++languageHistory >= checks) languageHistory = 0;
             getOkButton().setEnabled(value);
         }
-    } /* end class TableModelClassChecks */    
+    } /* end class TableModelClassChecks */
 } /* end class ClassGenerationDialog */
 

@@ -33,43 +33,66 @@
 
 package org.argouml.application.api;
 
+import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.state_machines.MGuard;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.data_types.MExpression;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.model_management.MPackage;
+
+/*
+ * @deprecated by Thomas Neustupny as of 0.15.6. Replaced by the NSUML free
+ *             version NotationProvider2.
+ */
 public interface NotationProvider {
 
     public NotationName getNotation();
 
-    public String generateExtensionPoint(Object op);
-    public String generateOperation(Object op, boolean documented);
-    public String generateAttribute(Object attr, boolean documented);
-    public String generateParameter(Object parameter);
+    public String generateExtensionPoint(MExtensionPoint op);
+    public String generateOperation(MOperation op, boolean documented);
+    public String generateAttribute(MAttribute attr, boolean documented);
+    public String generateParameter(MParameter parameter);
     public String generateName(String name);
-    public String generatePackage(Object pkg);
-    public String generateExpression(Object expr);
-    public String generateClassifier(Object cls);
-    public String generateStereotype(Object s);
-    public String generateTaggedValue(Object s);
-    public String generateAssociation(Object a);
-    public String generateAssociationEnd(Object ae);
-    public String generateMultiplicity(Object m);
-    public String generateState(Object m);
-    public String generateStateBody(Object stt);
-    public String generateTransition(Object m);
-    public String generateVisibility(Object m);
+    public String generatePackage(MPackage pkg);
+    public String generateExpression(MExpression expr);
+    public String generateClassifier(MClassifier cls);
+    public String generateStereotype(MStereotype s);
+    public String generateTaggedValue(MTaggedValue s);
+    public String generateAssociation(MAssociation a);
+    public String generateAssociationEnd(MAssociationEnd ae);
+    public String generateMultiplicity(MMultiplicity m);
+    public String generateState(MState m);
+    public String generateStateBody(MState stt);
+    public String generateTransition(MTransition m);
+    public String generateVisibility(MVisibilityKind m);
     public String generateAction(Object m);
-    public String generateGuard(Object m);
-    public String generateMessage(Object m);
+    public String generateGuard(MGuard m);
+    public String generateMessage(MMessage m);
     public String generateClassifierRef(Object m);
-    public String generateAssociationRole(Object m);
+    public String generateAssociationRole(MAssociationRole m);
 
     /** Can the notation be parsed for this object?
      *  @param o the object to be tested.
      *  @return <code>true</code> if it can be parsed
-     *          <code>false</code> if not
+     *          <code>false</code> if not 
      */
     public boolean canParse(Object o);
 
     /** Can the notation be parsed at all?
      *  @return <code>true</code> if it can be parsed
-     *          <code>false</code> if not
+     *          <code>false</code> if not 
      */
     public boolean canParse();
 
