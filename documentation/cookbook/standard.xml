@@ -122,23 +122,29 @@ It is here just for the emphasis.
 
       <listitem>
         <para>
-Use deprecation when removing public methods.
+Use deprecation when removing public and protected
+classes, 
+methods and
+attributes.
 </para>
         <para>
-Whenever you have a public method in a class or a public class 
+Whenever you have a public or protected method or attribute in a class or
+a public class 
 that you want to 
 remove,
 change the signature in an incompatible way, or 
 make change visibility for
 you shall always deprecate it first.
-After the next stable release you (or someone else) can remove 
-that method.
+After the next stable release you (or someone else) can remove it.
 </para>
         <para>
 In the future, when the subsystems are well defined and it is clear
-what public methods and classes that are part of a certain subsystem's
+what public or protected 
+methods, attributes or classes 
+that are part of a certain subsystem's
 exported interface 
-we can allow an exception to this rule for public methods and classes 
+we can allow an exception to this rule for 
+methods, attributes and classes 
 that are not.
 (See <xref linkend="subsystems_relationships"></xref>.)
 </para>
