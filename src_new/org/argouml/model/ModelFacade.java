@@ -4222,21 +4222,6 @@ public class ModelFacade {
     }
 
     /**
-     * Returns the stereotype belonging to some given model element.
-     *
-     * @param handle is a model element
-     * @return Object
-     * @deprecated 0.15 in favor of getStereotypes since UML 1.5 supports
-     * multiple stereotypes
-     */
-    public static Object getStereoType(Object handle) {
-        if (isAModelElement(handle)) {
-            return ((MModelElement) handle).getStereotype();
-        }
-	return illegalArgumentObject(handle);
-    }
-
-    /**
      * Returns the stereotypes belonging to some given model element.<p>
      *
      * Note! For UML version 1.3 there can only be one stereotype
@@ -4248,7 +4233,7 @@ public class ModelFacade {
      * @param handle The model element.
      * @return a Collection with all stereotypes or empty if none.
      */
-    public static Collection getStereotypes(Object handle) {
+    public static List getStereotypes(Object handle) {
         if (isAModelElement(handle)) {
             // This returns a collection as we have an eye on the future
             // and multiple stereotypes in UML1.5
@@ -4257,11 +4242,10 @@ public class ModelFacade {
                 List list = new ArrayList(1);
                 list.add(stereo);
                 return list;
-            } else {
-                return Collections.EMPTY_LIST;
             }
+            return Collections.EMPTY_LIST;
         }
-	return illegalArgumentCollection(handle);
+        return illegalArgumentList(handle);
     }
 
     /**
@@ -7785,8 +7769,20 @@ public class ModelFacade {
      * @return Collection for use in the return statement.
      */
     private static Collection illegalArgumentCollection(Object arg) {
-	illegalArgument(arg);
-	return null;
+        illegalArgument(arg);
+        return null;
+    }
+
+    /**
+     * Method that throws an error when a ModelFacade method is called with
+     * an incorrect argument.<p>
+     *
+     * @param arg is the incorrect argument.
+     * @return List for use in the return statement.
+     */
+    private static List illegalArgumentList(Object arg) {
+        illegalArgument(arg);
+        return null;
     }
 
     /**

@@ -998,28 +998,28 @@ public class GUITestParserDisplay extends TestCase {
             ParserDisplay.SINGLETON.parseAttribute(text, feature);
             assertTrue(
             	   text + " gave wrong stereotype "
-            	   + (ModelFacade.getStereoType(feature) != null
-            	      ? ModelFacade.getName(ModelFacade.getStereoType(feature))
+            	   + (ModelFacade.getStereotypes(feature).size() > 0
+            	      ? ModelFacade.getName(ModelFacade.getStereotypes(feature).get(0))
             	      : "(null)"),
-            	   (val == null && ModelFacade.getStereoType(feature) == null)
+            	   (val == null && ModelFacade.getStereotypes(feature).size() == 0)
             	   || (val != null
-            	       && ModelFacade.getStereoType(feature) != null
+            	       && ModelFacade.getStereotypes(feature).size() > 0
             	       && val.equals(ModelFacade.getName(
-            	               ModelFacade.getStereoType(feature)))));
+            	               ModelFacade.getStereotypes(feature).get(0)))));
         } else if (ModelFacade.isAOperation(feature)) {
             ParserDisplay.SINGLETON.parseOperation(text, feature);
             assertTrue(
                    text
                    + " gave wrong stereotype "
-                   + (ModelFacade.getStereoType(feature) != null
+                   + (ModelFacade.getStereotypes(feature).size() > 0
                       ? ModelFacade.getName(
-                              ModelFacade.getStereoType(feature))
+                              ModelFacade.getStereotypes(feature).get(0))
                       : "(null)"),
-                   (val == null && ModelFacade.getStereoType(feature) == null)
+                   (val == null && ModelFacade.getStereotypes(feature).size() == 0)
                    || (val != null
-                       && ModelFacade.getStereoType(feature) != null
+                       && ModelFacade.getStereotypes(feature).size() > 0
                        && val.equals(ModelFacade.getName(
-                               ModelFacade.getStereoType(feature)))));
+                               ModelFacade.getStereotypes(feature).get(0)))));
         }
     }
 
