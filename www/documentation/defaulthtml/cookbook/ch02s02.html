@@ -11,27 +11,40 @@ where <i class="replaceable"><tt>login</tt></i> is your Tigris login.
 This needs to be done for the first checkout.
 After that the root will be remembered by the checked out copy.
 </p><p>
+        If you use one of the CVS clients with a graphical userinterface,
+        (like WinCVS, GruntSpud,...)
+        then configuration will be done by filling in fields. These fields mean
+        the following:
+      </p><div class="itemizedlist"><ul type="disc"><li><p>
+            Type: pserver
+          </p></li><li><p>
+            User: Your Tigris login name
+          </p></li><li><p>
+            Host: cvs.tigris.org
+          </p></li><li><p>
+            Repository: /cvs
+          </p></li></ul></div><p>
+        If you used the commandline CVS client before, then your Tigris password 
+        is stored in the file <tt class="filename">~/.cvspass</tt>. 
+        Some graphical UI CVS clients are
+        able to use this password, in others you'll have to enter it again.
+      </p><p>
 The next thing to do is to login. It is done using the command:
 <b class="command">cvs login</b>.
 This only needs to be done once and then the account on your machine
 remembers this.
 </p><p>
 Then you do the actual checking out.
-<b class="command">cvs checkout <i class="replaceable"><tt>modulename</tt></i></b>.
+<b class="command">cvs checkout <i class="replaceable"><tt>directory</tt></i></b>.
 </p><p>
-The CVS module you need to check out to build ArgoUML is
-<i class="parameter"><tt>argouml_src</tt></i>.
-This will check out the directories
+The CVS repository directories you need to check out to work with ArgoUML are
 <tt class="filename">argouml/lib</tt>,
 <tt class="filename">argouml/tools</tt>,
-<tt class="filename">argouml/src</tt>,
 <tt class="filename">argouml/src_new</tt>,
 and
 <tt class="filename">argouml/tests</tt>.
 </p><p>
-If you want to build the documentation you check out the module
-<i class="parameter"><tt>argouml_doc</tt></i>.
-This will check out the directories
+If you want to build the documentation you check out the directories
 <tt class="filename">argouml/lib</tt>
 <tt class="filename">argouml/tools</tt>
 and
