@@ -49,7 +49,6 @@ else
 <![endif]><!--[if gte mso 9]><xml>
  <x:WorksheetOptions>
   <x:Zoom>72</x:Zoom>
-  <x:Selected/>
   <x:ProtectContents>False</x:ProtectContents>
   <x:ProtectObjects>False</x:ProtectObjects>
  </x:WorksheetOptions>
@@ -188,11 +187,11 @@ else
       <x:Name>Open DEFECTs that noone works with</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1</x:Data>
+       <x:Data>Data!$C$1:$D$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$3</x:Data>
+       <x:Data>Data!$C$3:$D$3</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -204,11 +203,11 @@ else
       <x:Name>Resolved DEFECTs in 0.9.6</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1</x:Data>
+       <x:Data>Data!$C$1:$D$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$4</x:Data>
+       <x:Data>Data!$C$4:$D$4</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -220,11 +219,11 @@ else
       <x:Name>Resolved DEFECTs in 0.9.7</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1</x:Data>
+       <x:Data>Data!$C$1:$D$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$5</x:Data>
+       <x:Data>Data!$C$5:$D$5</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -236,11 +235,11 @@ else
       <x:Name>Older resolved DEFECTs</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1</x:Data>
+       <x:Data>Data!$C$1:$D$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$6</x:Data>
+       <x:Data>Data!$C$6:$D$6</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -252,11 +251,11 @@ else
       <x:Name>The list of Open DEFECTs that someone works with</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1</x:Data>
+       <x:Data>Data!$C$1:$D$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$7</x:Data>
+       <x:Data>Data!$C$7:$D$7</x:Data>
       </x:Value>
      </x:Series>
      <x:PlotVisible/>
@@ -277,7 +276,7 @@ else
      </x:Number>
      <x:TickLabelPosition>Low</x:TickLabelPosition>
      <x:TickMarkSkip>1</x:TickMarkSkip>
-     <x:Type>Automatic</x:Type>
+     <x:Type>Category</x:Type>
     </x:Axis>
     <x:Axis>
      <x:Placement>Left</x:Placement>
@@ -285,6 +284,7 @@ else
      <x:ScaleID>1</x:ScaleID>
      <x:MajorGridlines/>
      <x:CrossingAxis>0</x:CrossingAxis>
+     <x:CrossesAt>Minimum</x:CrossesAt>
      <x:CrossBetween>Between</x:CrossBetween>
      <x:Font>
       <x:FontName>Arial</x:FontName>
@@ -319,7 +319,7 @@ else
    stroked="f" strokecolor="window [65]" strokeweight="1emu" o:insetmode="auto">
    <v:fill color2="window [65]"/>
    <v:textbox>
-    <div style='text-align:center'><font class=font12>D</font></div>
+    <div style='text-align:center'><font class=font8>D</font></div>
    </v:textbox>
    <x:ClientData ObjectType="Text">
     <x:AutoFill>False</x:AutoFill>

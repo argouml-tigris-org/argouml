@@ -49,6 +49,7 @@ else
 <![endif]><!--[if gte mso 9]><xml>
  <x:WorksheetOptions>
   <x:Zoom>72</x:Zoom>
+  <x:Selected/>
   <x:ProtectContents>False</x:ProtectContents>
   <x:ProtectObjects>False</x:ProtectObjects>
  </x:WorksheetOptions>
@@ -187,11 +188,11 @@ else
       <x:Name>Open issues that noone works with</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1:$C$1</x:Data>
+       <x:Data>Data!$C$1:$D$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$8:$C$8</x:Data>
+       <x:Data>Data!$C$8:$D$8</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -203,11 +204,11 @@ else
       <x:Name>Resolved issues in 0.9.6</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1:$C$1</x:Data>
+       <x:Data>Data!$C$1:$D$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$9:$C$9</x:Data>
+       <x:Data>Data!$C$9:$D$9</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -219,11 +220,11 @@ else
       <x:Name>Resolved issues in 0.9.7</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1:$C$1</x:Data>
+       <x:Data>Data!$C$1:$D$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$10:$C$10</x:Data>
+       <x:Data>Data!$C$10:$D$10</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -235,11 +236,11 @@ else
       <x:Name>Rejected issues</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1:$C$1</x:Data>
+       <x:Data>Data!$C$1:$D$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$11:$C$11</x:Data>
+       <x:Data>Data!$C$11:$D$11</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -251,11 +252,11 @@ else
       <x:Name>Older resolved issues</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1:$C$1</x:Data>
+       <x:Data>Data!$C$1:$D$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$12:$C$12</x:Data>
+       <x:Data>Data!$C$12:$D$12</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -267,11 +268,11 @@ else
       <x:Name>Verified issues</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1:$C$1</x:Data>
+       <x:Data>Data!$C$1:$D$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$13:$C$13</x:Data>
+       <x:Data>Data!$C$13:$D$13</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -283,11 +284,11 @@ else
       <x:Name>The list of all Open issues for Other</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1:$C$1</x:Data>
+       <x:Data>Data!$C$1:$D$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$14:$C$14</x:Data>
+       <x:Data>Data!$C$14:$D$14</x:Data>
       </x:Value>
      </x:Series>
      <x:Series>
@@ -299,11 +300,11 @@ else
       <x:Name>The list of Open issues that someone works with</x:Name>
       <x:Category>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$1:$C$1</x:Data>
+       <x:Data>Data!$C$1:$D$1</x:Data>
       </x:Category>
       <x:Value>
        <x:DataSource>0</x:DataSource>
-       <x:Data>Data!$C$15:$C$15</x:Data>
+       <x:Data>Data!$C$15:$D$15</x:Data>
       </x:Value>
      </x:Series>
      <x:PlotVisible/>
@@ -324,7 +325,7 @@ else
      </x:Number>
      <x:TickLabelPosition>Low</x:TickLabelPosition>
      <x:TickMarkSkip>1</x:TickMarkSkip>
-     <x:Type>Automatic</x:Type>
+     <x:Type>Category</x:Type>
     </x:Axis>
     <x:Axis>
      <x:Placement>Left</x:Placement>
@@ -332,6 +333,7 @@ else
      <x:ScaleID>1</x:ScaleID>
      <x:MajorGridlines/>
      <x:CrossingAxis>0</x:CrossingAxis>
+     <x:CrossesAt>Minimum</x:CrossesAt>
      <x:CrossBetween>Between</x:CrossBetween>
      <x:Font>
       <x:FontName>Arial</x:FontName>
@@ -366,7 +368,7 @@ else
    stroked="f" strokecolor="window [65]" strokeweight="1emu" o:insetmode="auto">
    <v:fill color2="window [65]"/>
    <v:textbox>
-    <div style='text-align:center'><font class=font9>D</font></div>
+    <div style='text-align:center'><font class=font11>D</font></div>
    </v:textbox>
    <x:ClientData ObjectType="Text">
     <x:AutoFill>False</x:AutoFill>
