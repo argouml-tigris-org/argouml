@@ -394,10 +394,18 @@ classDefinition[String javadoc, short modifiers]
 		superClassName=superClassClause
 		// it might implement some interfaces...
 		ic=implementsClause
-		{getModeller().addClass(className.getText(), modifiers, superClassName, ic, javadoc);}  
+		{
+		if (!isInCompoundStatement()) {
+			getModeller().addClass(className.getText(), modifiers, superClassName, ic, javadoc);
+		}
+		}
 		// now parse the body of the class
 		classBlock
-		{getModeller().popClassifier();}
+		{
+		if (!isInCompoundStatement()) {
+		 	getModeller().popClassifier();
+		}
+		}
 	;
 
 superClassClause returns [String superClassName = null]
