@@ -25,12 +25,20 @@ package org.argouml.model.uml.behavioralelements.collaborations;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ProjectBrowser;
 
+import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
+import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
@@ -87,6 +95,70 @@ public class CollaborationsHelper {
 			
 		}
 		return list;
+	}
+	
+	public Collection getAllPossibleAssociationRoles(MClassifierRole role) {
+		if (role == null || role.getBases().isEmpty()) return new ArrayList();
+		Iterator it = role.getBases().iterator();
+		Set associations = new HashSet();
+		while (it.hasNext()) {
+			MClassifier base = (MClassifier)it.next();
+			associations.addAll(CoreHelper.getHelper().getAssociations(base));
+		}
+		return associations;
+	}
+	
+	/**
+	 * Returns all classifierroles associated via associationroles to some 
+	 * classifierrole role
+	 * @param role
+	 * @return Collection
+	 */
+	public Collection getClassifierRoles(MClassifierRole role) {
+		if (role == null) return new ArrayList();
+		List roles = new ArrayList();
+		Iterator it = role.getAssociationEnds().iterator();
+		while (it.hasNext()) {
+			MAssociationEnd end = (MAssociationEnd)it.next();
+			if (end instanceof MAssociationEndRole) {
+				MAssociation assoc = end.getAssociation();
+				Iterator it2 = assoc.getConnections().iterator();
+				while (it2.hasNext()) {
+					MAssociationEnd end2 = (MAssociationEnd)it2.next();
+					MClassifier classifier = end2.getType();
+					if (classifier != role && classifier instanceof MClassifierRole) {
+						roles.add(classifier);
+					}
+				}
+			}
+		}
+		return roles;
+	}
+	
+	/**
+	 * Returns the first found associationrole between two classifierroles.
+	 * @param from
+	 * @param to
+	 * @return MAssociationRole
+	 */
+	public MAssociationRole getAssocationRole(MClassifierRole from, MClassifierRole to) {
+		if (from == null || to == null) return null;
+		Iterator it = from.getAssociationEnds().iterator();
+		while (it.hasNext()) {
+			MAssociationEnd end = (MAssociationEnd)it.next();
+			if (end instanceof MAssociationEndRole) {
+				MAssociation assoc = end.getAssociation();
+				Iterator it2 = assoc.getConnections().iterator();
+				while (it2.hasNext()) {
+					MAssociationEnd end2 = (MAssociationEnd)it2.next();
+					MClassifier classifier = end2.getType();
+					if (classifier == to) {
+						return (MAssociationRole)assoc;
+					}
+				}
+			}
+		}
+		return null;
 	}
 }
 

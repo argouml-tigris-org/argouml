@@ -535,14 +535,14 @@ public class CoreHelper {
 	 * @param clazz
 	 * @return Collection
 	 */
-	public Collection getExtendedClasses(MClassifier clazz) {
+	public Collection getExtendedClassifiers(MClassifier clazz) {
 		if (clazz == null) return new ArrayList();
 		Iterator it = clazz.getGeneralizations().iterator();
 		List list = new ArrayList();
 		while (it.hasNext()) {
 			MGeneralization gen = (MGeneralization)it.next();
 			MGeneralizableElement parent = gen.getParent();
-			if (parent instanceof MClass) {
+			if (parent instanceof MClassifier) {
 				list.add(parent);
 			}
 		}
@@ -574,6 +574,25 @@ public class CoreHelper {
 	 * @return Collection
 	 */
 	public Collection getExtendingClasses(MClassifier clazz) {
+		if (clazz == null) return new ArrayList();
+		Iterator it = clazz.getSpecializations().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			MGeneralization gen = (MGeneralization)it.next();
+			MGeneralizableElement client = gen.getChild();
+			if (client instanceof MClassifier) {
+				list.add(client);
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * Returns all classifiers that extend some classifier clazz.
+	 * @param clazz
+	 * @return Collection
+	 */
+	public Collection getExtendingClassifiers(MClassifier clazz) {
 		if (clazz == null) return new ArrayList();
 		Iterator it = clazz.getSpecializations().iterator();
 		List list = new ArrayList();
@@ -753,6 +772,21 @@ public class CoreHelper {
 			
 		}
 		return list;
+	}
+	
+	/**
+	 * Returns all associations for some classifier
+	 * @param classifier
+	 * @return Collection
+	 */
+	public Collection getAssociations(MClassifier classifier) {
+		if (classifier == null) return new ArrayList();
+		Iterator it = classifier.getAssociationEnds().iterator();
+		List associations = new ArrayList();
+		while (it.hasNext()) {
+			associations.add(((MAssociationEnd)it.next()).getAssociation());
+		}
+		return associations;
 	}
 		
 		

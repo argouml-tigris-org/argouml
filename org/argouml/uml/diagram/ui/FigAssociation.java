@@ -97,6 +97,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _middleGroup.addFig(_stereo);
     addPathItem(_middleGroup, new PathConvPercent(this, 50, 10));
     
+    
     _srcMult = new FigText(10, 10, 90, 20);
     _srcMult.setFont(LABEL_FONT);
     _srcMult.setTextColor(Color.black);
