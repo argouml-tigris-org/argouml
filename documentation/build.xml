@@ -1,0 +1,391 @@
+<?xml version="1.0"?>
+<!-- ======================================================================= -->
+<!-- ArgoUML Manuals & Documentation Build file                              -->
+<!-- Author: Kunle Odutola  31-March-2001                                    -->
+<!--                                                                         -->
+<!-- Parts borrowed from the ArgoUML build file                              -->
+<!--                                                                         -->
+<!-- ======================================================================= -->
+<!-- 
+
+About this file
+===============
+
+This file is the build file for ArgoUML Manuals & Documentation. It contains the instructions that are read by a build tool to automate the process of creating the various files that constitute the Manual & Documentation. This build file is designed to be read by ANT - the 100% Java build tool from the Apache guys.
+|
+@SEE http://jakarta.apache.org/ant/
+
+
+About ArgoUML
+=============
+ArgoUML is an Open Source, 100% Pure Java tool for designing and documenting software systems using UML. ArgoUML was conceived by Jason Robbins while at UCL and was subsequently released as an open source product. ArgoUML is now hosted at Tigris by Jason.
+|
+@SEE http://www.argouml.org/
+
+
+Frequently Asked Questions
+==========================
+
+1. What tools do I need to use this build file?
+
+	You need the following to be able to build the ArgoUML Manuals and Documentation:
+	- The Java 2 SDK installed on your machine. It is recommended that you 
+	  install JDK version 1.2.2 or later. Note that you need the JDK and 
+	  not just the JRE. Many tools such as javadoc are only available in 
+	  the JDK.
+	- The ArgoUML manual's source files. This are available in the ArgoUML
+	  source distribution and in CVS. Please visit "http://www.argouml.org/"
+	  for download information. This file is a part of the ArgoUML source.
+	- "Ant" the Java build tool (http://jakarta.apache.org/ant/). The Ant jar
+	  file(s) are included in the ArgoUML source distribution and CVS but, 
+	  you might want to install Ant fully in any case.
+	- The DocBook system (http://www.docbook.org/). Included in the ArgoUML
+	  source distribution and CVS.
+	- "FOP" the XML-to-PDF formatter (http://xml.apache.org/fop/). Included 
+	  in the ArgoUML source distribution and CVS.
+
+2. I have all the tools what next ?
+
+	You need to ensure that you've set up your environment correctly for the 
+	build process to work. Please note that environment variables should be 
+	setup up in your shell (using AUTOEXEC.BAT on Windows 9x/Me or .login on
+	Linux/Unix) and not in a batch file for it to work. To set up your 
+	environment, check the following:
+	a)	Set an environment variable called JAVA_HOME to your JDK's 
+	   installation directory. This needed by the build tool Ant.
+	   Examples of what you might do:
+ 	        	On Windows       -  set JAVA_HOME=D:\jdk1.3
+ 	        	On Linux\Unix    -  export JAVA_HOME=/usr/local/jdk1.3
+	b) If you've installed Ant yourself then you need to: 
+	   i)	 Set the environment variable ANT_HOME to the Ant install directory.
+ 	         	On Windows       -  set ANT_HOME=D:\Applications\Ant
+ 	         	On Linux\Unix    -  export ANT_HOME=/usr/local/ant
+	   ii) Add ANT_HOME/bin to your PATH :-
+	         	On Windows 		-	set PATH=%PATH%;%ANT_HOME%\bin
+					On Linux/Unix		-	export PATH=$(PATH);$(ANT_HOME)/bin
+	
+3. What the instructions for building the manual ?
+
+	a) Read and follow the instructions for the following FAQs:
+			i)	 "What tools do I need to use this build file?"
+			ii) "I have all the tools, what next?"
+   b) Change your current working directory to the directory where this file 
+      is located under the ArgoUML installation directory (or under the 
+      ArgoUML checkout directory if you are using CVS)
+	c)	Type the following command:
+        build        ( alternatively you may type 'ant' without the quotes if )
+                     ( you installed Ant yourself                             )
+	d)	This will display a "build usage help page" that describes the different 
+	   build targets available with this file and how to invoke them.
+	
+
+Property Settings
+=================
+
+You may place a simple text file named ".ant.properties" in your home directory with which you can change certain properties. For example, by adding a line to .ant.properties you can change the compiler to be used
+
+build.compiler=jikes
+(without a blank after "jikes"!).
+
+This will force Ant to compile with jikes if you have it on your system. The other alternatives for this setting are;
+
+build.compiler=modern
+to use the most up-to-date version available to you which for Sun is currently javac from jdk1.3
+
+or the default if no explicit setting is made anywhere;
+
+build.compiler=classic
+to use a compiler/Virtual Machine combination compatible with jdk1.2.
+
+On machines using Windows the home directory is selected to be C:\ so the instructions in the build file will look there for .ant.properties.
+
+The filename is necessary for commonality with UNIX/LINUX systems but you will not be able to save or rename a file to this form of name using the Windows GUI directly. At least two workarounds are possible
+(i) use Notepad (NOT Wordpad) to create, edit, rename or save the file
+(ii) go into a DOS window and use the DOS command Edit to create, edit, rename or save the file.
+After these operations the file will still be visible in the GUI.
+
+
+============================================================================ -->
+
+<project name="ArgoDocs" default="help" basedir="..">
+	<target name="init">
+		<tstamp/>
+		<property name="Name"              value="ArgoDocs"/>
+		<property name="name"              value="argodocs"/>
+		<property name="version"           value="0.1"/>
+		<property name="year"              value="2001"/>
+		<echo message="------------------ ${Name} v${version} [${year}] ---------------"/>
+		<property name="documentation.dir" value="${basedir}/documentation"/>
+		<property name="build.dir"         value="${basedir}/build"/>
+		<property name="output.dir"        value="${build.dir}/documentation"/>
+		<property name="printablehtml.dir" value="${output.dir}/printablehtml"/>
+		<property name="defaulthtml.dir"   value="${output.dir}/defaulthtml"/>
+		<property name="pdf.dir"           value="${output.dir}/pdf"/>
+		<property name="dist.dir"          value="${basedir}/dist"/>
+		<taskdef name="fop"                classname="Fop"/>
+	</target>
+	<!-- =================================================================== -->
+	<!-- Generate a help screen                                              -->
+	<!-- =================================================================== -->
+	<target name="help" depends="init">
+		<echo message="${name}-${version} build file, available targets:"/>
+		<echo message="-------------------------------------------------------------------"/>
+		<echo message="defaulthtml   : Build chunked   HTML docs to ARGO_HOME/build/documentation/ "/>
+		<echo message="printablehtml : Build printable HTML docs to ARGO_HOME/build/documentation/ "/>
+		<echo message="pdf           : Build Acrobat   PDF  docs to ARGO_HOME/build/documentation/ "/>
+		<echo message="docs          : Build PDF and HTML docs to ARGO_HOME/build/documentation/ "/>
+		<echo message="dist          : Create/Update .ZIP and .TGZ archives in ARGO_HOME/dist/ "/>
+		<echo message="clean         : Clean deployment and distribution. "/>
+		<echo message="                                                        "/>
+		<echo message="-------------------------------------------------------------------"/>
+		<echo message="	 USAGE: build &lt;target&gt; "/>
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- Prepares the build directory                                        -->
+	<!-- =================================================================== -->
+	<target name="prepare" depends="init">
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${output.dir}"/>
+		<mkdir dir="${defaulthtml.dir}"/>
+		<mkdir dir="${printablehtml.dir}"/>
+		<mkdir dir="${pdf.dir}"/>
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- defaulthtml: Create default HTML documentation                      -->
+	<!-- =================================================================== -->
+	<target name="defaulthtml" depends="prepare">
+		<!-- Set switch for "create-defaulthtml" target to ensure that it runs -->
+		<property name="generate-defaulthtml" value="true" />
+		<!-- Call "internal-scheduler" target to start the process -->
+		<antcall target="internal-scheduler"/>		
+	</target>
+
+	<!-- =================================================================== -->
+	<!-- printablehtml: Create printable HTML documentation                  -->
+	<!-- =================================================================== -->
+	<target name="printablehtml" depends="prepare">
+		<!-- Set switch for "create-printablehtml" target to ensure that it runs -->
+		<property name="generate-printablehtml" value="true" />
+		<!-- Call "internal-scheduler" target to start the process -->
+		<antcall target="internal-scheduler"/>		
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- pdf: Create PDF documentation                                       -->
+	<!-- =================================================================== -->
+	<target name="pdf" depends="prepare">
+		<!-- Set switch for "create-pdf" target to ensure that it runs -->
+		<property name="generate-pdf" value="true" />
+		<!-- Call "internal-scheduler" target to start the process -->
+		<antcall target="internal-scheduler"/>		
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- docs: Generates pdf and html documentation                          -->
+	<!-- =================================================================== -->
+	<target name="docs" depends="prepare">
+		<!-- Set switch for pdf, defaulthtml and printablehtml builders       -->
+		<property name="generate-defaulthtml" value="true" />
+		<property name="generate-printablehtml" value="true" />
+		<property name="generate-pdf" value="true" />
+		<!-- Call "internal-scheduler" target to start the process -->
+		<antcall target="internal-scheduler"/>		
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- internal-scheduler: Contains the definition of all the documents    -->
+	<!--                     that could possibly be built in this system.    -->
+	<!--                                                                     -->
+	<!--                     It's function is to pass the details of the     -->
+	<!--                     documents that it knows to the target named     -->
+	<!--                     "internal-dispatcher" one-at-a-time.            -->
+	<!--                                                                     -->
+	<!--                     This is where the details of new documents are  -->
+	<!--                     added and, details of old documents removed.    -->
+	<!-- =================================================================== -->
+	<target name="internal-scheduler">
+		<!-- First we set up some properties to make our job easier           -->
+		<property name="chunked.xsl"   value="../docbook-setup/create-chunked.xsl"/>
+		<property name="printable.xsl" value="../docbook-setup/create-printable.xsl"/>
+		<property name="pdf.xsl"       value="../docbook-setup/create-pdf.xsl"/>
+		
+		<!-- Copy and change 'antcall' task below for additional DocBook documents -->
+		<antcall target="internal-dispatcher">		
+			<param name="doc.subdir"  value="quick-guide"/> <!-- sub-dir of 'documentation' with xml file -->
+			<param name="doc.prefix"  value="quickguide"/>  <!-- DocBook filename without xml extension   -->
+		</antcall>
+		<antcall target="internal-dispatcher">		
+			<param name="doc.subdir"  value="faq"/>         <!-- sub-dir of 'documentation' with xml file -->
+			<param name="doc.prefix"  value="faq"/>         <!-- DocBook filename without xml extension   -->
+		</antcall>
+		<antcall target="internal-dispatcher">		
+			<param name="doc.subdir"  value="manual"/>      <!-- sub-dir of 'documentation' with xml file -->
+			<param name="doc.prefix"  value="argomanual"/>  <!-- DocBook filename without xml extension   -->
+		</antcall>
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- internal-dispatcher: Sets up the correct environment for building   -->
+	<!--                      the documents and them dispatches the request  -->
+	<!--                      to build to each of the following targets:     -->
+	<!--                        create-defaulthtml:   for multi-page HTML    -->
+	<!--                        create-printablehtml: for single-page HTML   -->
+	<!--                        create-pdf:           for PDF output         -->
+	<!--                                                                     -->
+	<!--                     Each target is driven by a switch set in the    -->
+	<!--                     top level target that the user invoked.         -->
+	<!--                                                                     -->
+	<!--                     This target does the following:                 -->
+	<!--                      a. sets up relevant properties                 -->
+	<!--                      b. copies the 'images' dir to 'source' dir     -->
+	<!--                      c. calls 'create-XXXX' targets sequentially    -->
+	<!--                      d. removes the previously copied 'images' dir  -->
+	<!-- =================================================================== -->
+	<target name="internal-dispatcher">
+		<!-- We copy the 'images' directory into our source directory.
+			  (this is to allow each output directory to be self-contained). 
+			  Of course it also means that more space is used up by these 
+		     multiple copies of the images directory.                         -->
+		<copy todir="${documentation.dir}/${doc.subdir}">
+			<fileset dir="${documentation.dir}" includes="images/**" /> 
+		</copy>
+
+		<antcall target="create-defaulthtml">		
+			<param name="source.dir"  value="${documentation.dir}/${doc.subdir}"/>
+			<param name="source.xml"  value="${doc.prefix}.xml"/>
+			<param name="source.xsl"  value="${chunked.xsl}"/>
+			<param name="target.dir"  value="${defaulthtml.dir}/${doc.subdir}"/>
+			<param name="target.html" value="${doc.prefix}.html"/>
+		</antcall>
+		<antcall target="create-printablehtml">		
+			<param name="source.dir"  value="${documentation.dir}/${doc.subdir}"/>
+			<param name="source.xml"  value="${doc.prefix}.xml"/>
+			<param name="source.xsl"  value="${printable.xsl}"/>
+			<param name="target.dir"  value="${printablehtml.dir}/${doc.subdir}"/>
+		</antcall>
+		<antcall target="create-pdf">		
+			<param name="source.dir"  value="${documentation.dir}/${doc.subdir}"/>
+			<param name="source.xml"  value="${doc.prefix}.xml"/>
+			<param name="source.xsl"  value="${pdf.xsl}"/>
+			<param name="source.fo"   value="${doc.prefix}.fo"/>
+			<param name="target.dir"  value="${pdf.dir}/${doc.subdir}"/>
+			<param name="target.pdf"  value="${doc.prefix}.pdf"/>
+		</antcall>
+
+		<!-- Delete the redundant images directory from the source directory  -->
+		<delete dir="${documentation.dir}/${doc.subdir}/images"/>
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- create-defaulthtml: Generates the online, paged html documentation  -->
+	<!-- =================================================================== -->
+	<target name="create-defaulthtml" if="generate-defaulthtml">
+		<echo message="Building html documentation for: ${source.dir}/${source.xml}. Please wait ..."/>
+		<mkdir dir="${target.dir}"/>
+		<style basedir="${source.dir}" style="${source.xsl}" destdir="${target.dir}" includes="${source.xml}"/>
+		<!-- 'destdir' parameter was ignored due to chunking, we need to move
+		     all chunked html files to destdir manually. Chunked HTML files 
+		     are created in current working directory. This is the directory 
+		     that contains the build.xml file for us.                         -->
+		<move todir="${target.dir}">
+			<fileset dir="${documentation.dir}" includes="*.html"/>
+		</move>
+		<!-- Delete empty .html file (with same name as .xml file) created 
+		     in destination directory by style task                           -->
+		<delete file="${target.dir}/${target.html}"/>
+		<!-- Copy remaining stylesheets, images and static HTML also          -->
+		<copy todir="${target.dir}">
+			<fileset dir="${source.dir}" includes="*.html,*.css,images/**" /> 
+		</copy>
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- create-printablehtml: Generates the printable html documentation    -->
+	<!-- =================================================================== -->
+	<target name="create-printablehtml" if="generate-printablehtml">
+		<mkdir dir="${target.dir}"/>
+		<style basedir="${source.dir}" destdir="${target.dir}" style="${source.xsl}" includes="${source.xml}"/>
+		<!-- Copy stylesheets, images, and static HTML -->
+		<copy todir="${target.dir}">
+			<fileset dir="${source.dir}" includes="*.html,*.css,images/**" />
+		</copy>
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- create-pdf: Generates the pdf documentation                         -->
+	<!-- =================================================================== -->
+	<target name="create-pdf" if="generate-pdf">
+		<mkdir dir="${target.dir}"/>
+		<echo message="Building pdf documentation for: ${source.dir}/${source.xml}. Please wait ..."/>
+		<delete file="${source.dir}/${source.fo}"/>
+		<style basedir="${source.dir}" destdir="${source.dir}" style="${source.xsl}" includes="${source.xml}" extension=".fo" />
+		<fop fofile="${source.dir}/${source.fo}" pdffile="${target.dir}/${target.pdf}"/>
+		<delete file="${source.dir}/${source.fo}"/>
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- towebsite: ftp to website                                           -->
+	<!-- =================================================================== -->
+	<target name="towebsite" depends="defaulthtml">
+		<ftp server="ftp-server-here" remotedir="path-to-doco" userid="user" password="password">
+			<fileset dir="${defaulthtml.dir}"/>
+		</ftp>
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- dist: Creates the distribution                                      -->
+	<!-- =================================================================== -->
+	<!--
+	<target name="dist" depends="docs">
+		<copy todir="${dist.dir}/docs">
+			<fileset dir="${build.dir}/docs"/>
+		</copy>
+	</target>
+	-->
+	
+	<!-- =================================================================== -->
+	<!-- Packages the distribution with ZIP                                  -->
+	<!-- =================================================================== -->
+	<!--
+	<target name="dist-zip" depends="dist">
+		<copy todir="${basedir}/${name}-${version}">
+			<fileset dir="${dist.dir}"/>
+		</copy>
+		<zip zipfile="${name}-${version}.zip" basedir="${basedir}" includes="${name}-${version}/**"/>
+		<delete dir="${basedir}/${name}-${version}"/>
+	</target>
+	-->
+	
+	<!-- =================================================================== -->
+	<!-- Packages the distribution with TAR-GZIP                             -->
+	<!-- =================================================================== -->
+	<!--
+	<target name="dist-tgz" depends="dist">
+		<copy todir="${basedir}/${name}-${version}">
+			<fileset dir="${dist.dir}"/>
+		</copy>
+		<tar tarfile="${name}-${version}.tar" basedir="${basedir}" includes="${name}-${version}/**"/>
+		<gzip zipfile="${name}-${version}.tar.gz" src="${name}-${version}.tar"/>
+		<delete dir="${basedir}/${name}-${version}"/>
+	</target>
+	-->
+	
+	<!-- =================================================================== -->
+	<!-- Cleans up generated stuff                                           -->
+	<!-- =================================================================== -->
+	<target name="clean" depends="init">
+		<delete dir="${output.dir}"/>
+		<!-- <delete dir="${dist.dir}"/> -->
+	</target>
+	
+	<!-- =================================================================== -->
+	<!-- Total cleanup                                                       -->
+	<!-- =================================================================== -->
+	<target name="total-clean" depends="clean">
+		<delete file="${name}-${version}.zip"/>
+		<delete file="${name}-${version}.tar"/>
+		<delete file="${name}-${version}.tar.gz"/>
+	</target>	
+</project>
