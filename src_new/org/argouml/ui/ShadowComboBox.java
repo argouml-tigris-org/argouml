@@ -43,14 +43,12 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 **/
 public class ShadowComboBox extends JComboBox {
 
-    private static final String BUNDLE = "Cognitive";
-
     private static ShadowFig[]  _shadowFigs = null;
 
     public ShadowComboBox() {
         super();
         
-        addItem(Translator.localize(BUNDLE, "stylepane.label.no-shadow"));
+        addItem(Translator.localize("label.stylepane.no-shadow"));
         addItem("1");
         addItem("2");
         addItem("3");

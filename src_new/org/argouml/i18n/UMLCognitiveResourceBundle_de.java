@@ -64,50 +64,6 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         {"decision.storage", "Speicher"},
         {"decision.uncategorized", "Nicht kategorisiert"},
 
-        {"knowledge.completeness", "Vollst\u00e4ndigkeit"},
-        {"knowledge.consistency", "Konsistenz"},
-        {"knowledge.correctness", "Fehlerfreiheit"},
-        {"knowledge.designers", "Designer's"},
-        {"knowledge.experiential", "Experimentell"},
-        {"knowledge.optimization", "Optimierung"},
-        {"knowledge.organizational", "organisatorisch"},
-        {"knowledge.presentation", "Darstellung"},
-        {"knowledge.semantics", "Semantik"},
-        {"knowledge.syntax", "Syntax"},
-        {"knowledge.tool", "Werkzeug"},
-
-        {"mnemonic.button.back", "V"},
-        {"mnemonic.button.next", "N"},
-        {"mnemonic.button.finish", "F"},
-        {"mnemonic.button.help", "H"},
-
-        {"message.no-item-selected", 
-         "Keine \"Zu bearbeiten\"-Elemente ausgew\u00e4hlt"},
-         
-        {"message.branch-critic", 
-         "Dieser Zweig enth\u00e4lt durch den Hinweis: \n{0} generierte " +
-         "\"Zu bearbeiten\"-Elemente."},
-         
-        {"message.branch-decision", 
-         "Dieser Zweig enth\u00e4lt \"Zu bearbeiten\"-Elemente " +
-         "bez\u00fcglich der Entscheidung:\n{0}."},
-         
-        {"message.branch-goal", 
-         "Dieser Zweig enth\u00e4lt \"Zu bearbeiten\"-Elemente " +
-         "bez\u00fcglich des Zieles:\n{0}."},
-         
-        {"message.branch-knowledge", 
-         "Dieser Zweig enth\u00e4lt \"Zu bearbeiten\"-Elemente, die {0} " +
-         "verkn\u00fcpfte Kenntnisse liefern."},
-         
-        {"message.branch-model", 
-         "Dieser Zweig enth\u00e4lt \"Zu bearbeiten\"-Elemente " +
-         "bez\u00fcglich des Modellelementes:\n{0}."},
-         
-        {"message.branch-priority", 
-         "Dieser Zweig enth\u00e4lt {0} priorisierte " +
-         "\"Zu bearbeiten\"-Elemente."},
-
 	// Critics text
         { "CrAssocNameConflict_head" ,
 	  "L\u00f6sen Sie den Konflikt bei den Assoziationsnamen auf" },

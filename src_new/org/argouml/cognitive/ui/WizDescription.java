@@ -68,7 +68,8 @@ public class WizDescription extends WizStep {
 	Object target = item;
 	if (target == null) {
 	    _description.setEditable(false);
-	    _description.setText(localize("message.no-item-selected"));
+	    _description.setText(
+                Translator.localize("message.item.no-item-selected"));
 	}
 	else if (target instanceof ToDoItem) {
 	    ToDoItem tdi = (ToDoItem) target;
@@ -79,7 +80,7 @@ public class WizDescription extends WizStep {
 	}
 	else if (target instanceof PriorityNode) {
 	    message = MessageFormat. 
-                format(localize("message.branch-priority"),
+                format(Translator.localize("message.item.branch-priority"),
                        new Object [] {
 			   target.toString() 
 		       });
@@ -90,7 +91,7 @@ public class WizDescription extends WizStep {
 	}
 	else if (target instanceof Critic) {
 	    message = MessageFormat. 
-                format(localize("message.branch-critic"),
+                format(Translator.localize("message.item.branch-critic"),
                        new Object [] {
 			   target.toString() 
 		       });
@@ -101,7 +102,7 @@ public class WizDescription extends WizStep {
 	}
 	else if (org.argouml.model.ModelFacade.isAModelElement(target)) {
 	    message = MessageFormat. 
-                format(localize("message.branch-model"),
+                format(Translator.localize("message.item.branch-model"),
                        new Object [] {
 			   target.toString() 
 		       });
@@ -112,7 +113,7 @@ public class WizDescription extends WizStep {
 	}
 	else if (target instanceof Decision) {
 	    message = MessageFormat. 
-                format(localize("message.branch-decision"),
+                format(Translator.localize("message.item.branch-decision"),
                        new Object [] {
 			   target.toString() 
 		       });
@@ -122,7 +123,7 @@ public class WizDescription extends WizStep {
 	}
 	else if (target instanceof Goal) {
 	    message = MessageFormat. 
-                format(localize("message.branch-goal"),
+                format(Translator.localize("message.item.branch-goal"),
                        new Object [] {
 			   target.toString() 
 		       });
@@ -132,7 +133,7 @@ public class WizDescription extends WizStep {
 	}
 	else if (target instanceof KnowledgeTypeNode) {
 	    message = MessageFormat. 
-                format(localize("message.branch-knowledge"),
+                format(Translator.localize("message.item.branch-knowledge"),
                        new Object [] {
 			   target.toString() 
 		       });
@@ -145,10 +146,4 @@ public class WizDescription extends WizStep {
 	    return;
 	}
     }
-
-
-    private static String localize(String label) {
-	return Translator.localize("Cognitive", label);
-    }
-
 } /* end class WizDescription */

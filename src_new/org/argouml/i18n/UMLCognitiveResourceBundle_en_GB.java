@@ -85,23 +85,6 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         {"decision.storage", "Storage"},
         {"decision.uncategorized", "Uncategorised"},
 
-        {"knowledge.completeness", "Completeness"},
-        {"knowledge.consistency", "Consistency"},
-        {"knowledge.correctness", "Correctness"},
-        {"knowledge.designers", "Designer's"},
-        {"knowledge.experiential", "Experiential"},
-        {"knowledge.optimization", "Optimisation"},
-        {"knowledge.organizational", "Organisational"},
-        {"knowledge.presentation", "Presentation"},
-        {"knowledge.semantics", "Semantics"},
-        {"knowledge.syntax", "Syntax"},
-        {"knowledge.tool", "Tool"},
-
-        {"mnemonic.button.back", "B"},
-        {"mnemonic.button.next", "N"},
-        {"mnemonic.button.finish", "F"},
-        {"mnemonic.button.help", "H"},
-
 	// Critics text
         { "CrAssocNameConflict_head" ,
                 "Resolve Association Name Conflict" },
