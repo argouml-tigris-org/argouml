@@ -24,8 +24,9 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.Color;
+
 import javax.swing.Action;
-import javax.swing.Icon;
 import javax.swing.JButton;
 
 import ru.novosoft.uml.MElementEvent;
@@ -36,7 +37,6 @@ import ru.novosoft.uml.MElementEvent;
  */
 public class PropPanelButton2 extends JButton implements UMLUserInterfaceComponent {
 
-    private Action _action = null;
     private UMLUserInterfaceContainer _container = null;
     
     /**
@@ -46,78 +46,11 @@ public class PropPanelButton2 extends JButton implements UMLUserInterfaceCompone
     public PropPanelButton2(UMLUserInterfaceContainer container, Action a) {
         super(a);
         setText(""); // just the icon and possibly a tooltip
+        setBackground(Color.RED);
         setContainer(container);
     }
 
-    /**
-     * Factory method which sets the <code>ActionEvent</code>
-     * source's properties according to values from the
-     * <code>Action</code> instance.  The properties 
-     * which are set may differ for subclasses.  By default,
-     * the properties which get set are <code>Text</code>, <code>Icon
-     * Enabled</code>, <code>ToolTipText</code> and <code>Mnemonic</code>.
-     * <p>
-     * If the <code>Action</code> passed in is <code>null</code>, 
-     * the following things will occur:
-     * <ul>
-     * <li>the text is set to <code>null</code>,
-     * <li>the icon is set to <code>null</code>,
-     * <li>enabled is set to true,
-     * <li>the tooltip text is set to <code>null</code>
-     * </ul>
-     *
-     * @param a the <code>Action</code> from which to get the properties,
-     *      or <code>null</code>
-     * @see Action
-     * @see #setAction
-     */
-    protected void configurePropertiesFromAction(Action a) {
-        setText((a != null ? (String) a.getValue(Action.NAME) : null));
-        setIcon((a != null ? (Icon) a.getValue(Action.SMALL_ICON) : null));
-        setEnabled((a != null ? a.isEnabled() : true));
-        setToolTipText((a != null ? (String) a.getValue(Action.SHORT_DESCRIPTION) : null));    
-        if (a != null)  {
- 	    // TODO: When no longer requiring support for JDK1.2 this constant
-	    // can be changed to Action.MNEMONIC_KEY.
-	    final String MNEMONIC_KEY = "MnemonicKey";
-            Integer i = (Integer) a.getValue(MNEMONIC_KEY);
-            if (i != null)
-                setMnemonic(i.intValue());
-        }
-    }
-    
-    /**
-     * Returns the action.
-     * @return Action
-     */
-    public Action     getAction() {
-        return _action;
-    }
-
-    /**
-     * Sets the action.
-     * @param action The action to set
-     */
-    public void setAction(Action action) {
-        _action = action;
-        removeActionListener(action);
-        addActionListener(action);
-        configurePropertiesFromAction(action);     
-         
-    }
-    
-    
-
-    /**
-     * @see java.awt.Component#isEnabled()
-     */
-    public boolean isEnabled() {
-        if (_action != null) {
-            return _action.isEnabled();
-        } else
-            return super.isEnabled();
-    }
-
+ 
     /**
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
      */

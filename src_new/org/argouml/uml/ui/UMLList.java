@@ -45,6 +45,7 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
         super(listModel);
         _umlListModel = listModel;
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
+        setBackground(Color.GREEN.brighter());
 
         if (navigate) {
             addMouseListener(this);

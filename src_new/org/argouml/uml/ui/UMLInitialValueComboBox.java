@@ -23,11 +23,15 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JComboBox;
+
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
-import java.awt.event.*;
-import javax.swing.*;
-import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.MElementEvent;
 
 /**
@@ -59,6 +63,7 @@ public class UMLInitialValueComboBox extends JComboBox
     /** Creates new BooleanChangeListener */
     public UMLInitialValueComboBox(UMLUserInterfaceContainer container) {
         super();
+        setBackground(Color.GREEN.brighter());
         _container = container;
         
         for (int i = 0; i < listItems.length; i++) {

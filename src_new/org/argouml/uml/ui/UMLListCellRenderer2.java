@@ -86,8 +86,10 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
                 // ----- setup similar to the super() implementation -----
                 setComponentOrientation(list.getComponentOrientation());
                 if (isSelected) {
+                    setForeground(list.getSelectionForeground());
                     setBackground(list.getSelectionBackground());
                 } else {
+                    setForeground(list.getForeground());
                     setBackground(list.getBackground());
                 }
 
