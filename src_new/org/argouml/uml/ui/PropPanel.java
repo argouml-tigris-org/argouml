@@ -621,6 +621,9 @@ public abstract class PropPanel
         // we can neglect this, the TabProps allways selects the first target
 	// in a set of targets. The first target can only be
 	// changed in a targetRemoved or a TargetSet event
+        if (listenerList == null) {
+            listenerList = registrateTargetListeners(this);
+        }
         fireTargetAdded(e);
     }
 
