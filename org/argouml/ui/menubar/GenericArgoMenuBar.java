@@ -494,12 +494,12 @@ public class GenericArgoMenuBar extends JMenuBar
         //create.add(Actions.CreateMultiple);
         //create.addSeparator();
 
-	// ------------------------------------- Create Diagrams Menu
+	// ------------------------------------- Create Menu
 		
         _createDiagrams =
 	    (JMenu) add(new JMenu(menuLocalize("Create Diagram")));
         setMnemonic(_createDiagrams, "Create Diagram", 'C');
-        _createDiagramToolbar = new ToolBar("Create Diagram Toolbar");
+        _createDiagramToolbar = new ToolBar("Create Toolbar");
         _createDiagramToolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
         JMenuItem classDiagram = _createDiagrams.add(ActionClassDiagram.SINGLETON);
         setMnemonic(classDiagram, "Class Diagram", 'C');
