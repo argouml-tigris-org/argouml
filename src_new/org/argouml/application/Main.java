@@ -298,7 +298,10 @@ public class Main {
         // Touch the trash
         Trash.SINGLETON.getSize();
 
+        Designer.disableCritiquing();
+        Designer.clearCritiquing();
         ProjectManager.getManager().setCurrentProject(p);
+        Designer.enableCritiquing();
 
 	st.mark("perspectives");
 
