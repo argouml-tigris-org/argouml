@@ -31,8 +31,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * @since Oct 5, 2002
@@ -60,7 +58,7 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
         Object extend = /*(MExtend)*/ getTarget();
         if (extend == null) return;
         Project p = ProjectManager.getManager().getCurrentProject();
-        MNamespace model = (MModel) p.getRoot();
+        Object model = p.getRoot();
         setElements(Model.getModelManagementHelper()
                 .getAllModelElementsOfKindWithModel(model, ModelFacade.USE_CASE));
         if (ModelFacade.getExtension(extend) != null) {
