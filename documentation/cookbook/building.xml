@@ -1583,49 +1583,20 @@ specifically to do this.
 </para>
 	  </listitem>
 	  <listitem>
-	    <para>Upload the files onto the tigris website!</para>
-	    <para>
-Only a project owner can do that.
-Please write the descriptions of the files like this:
-<itemizedlist>
-		<listitem>
-		  <para>libraries</para>
-		  <para>
-libraries needed to compile
-</para>
-		</listitem>
-		<listitem>
-		  <para>sources</para>
-		  <para>
-source code without libraries.
-If you want to build ArgoUML from source, the cvs version is recommended.
-</para>
-                  <para>
-For the gnu version add also: Unpack with GNU-tar.
-</para>
-		</listitem>
-		<listitem>
-		  <para>complete set</para>
-		  <para>
-binary distribution, including all libraries
-</para>
-		</listitem>
-		<listitem>
-		  <para>application bundle</para>
-		  <para>
-binary distribution, runnable as application bundle
-</para>
-		</listitem>
-	      </itemizedlist>
+            <para>Build documentation and copy it.</para>
+            <para>
+The pdf versions of the documentation shall be copied from the
+<filename>build/documentation/pdf/*/*.pdf</filename>
+to
+<filename>argouml-<replaceable>version</replaceable>/basename-<replaceable>version</replaceable></filename>.
 </para>
 	  </listitem>
 	  <listitem>
+	    <para>Upload the files onto the tigris website!</para>
 	    <para>
-Contact Jason Robbins to make the new Webstart version available!
-</para>
-	    <para>
-Jason Robbins takes care of the signing and publishing of the
-Webstart version.
+A tree with all files is located in 
+<filename>argouml-<replaceable>version</replaceable></filename>.
+This complete tree is uploaded to argouml-uploade on the site.
 </para>
 	  </listitem>
 	  <listitem>
