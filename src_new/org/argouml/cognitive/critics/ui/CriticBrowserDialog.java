@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-03 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 import javax.swing.text.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.ProjectBrowser;
@@ -43,17 +42,21 @@ import org.argouml.application.api.*;
 
 /** Dialog box to list all critics and allow editing of some of their
  *  properties.  TODO: knowledge type, supported goals,
- *  supported decisions, critic network. */
+ *  supported decisions, critic network, localize labels. */
 public class CriticBrowserDialog extends JDialog
 implements ActionListener, ListSelectionListener, ItemListener, DocumentListener {
     
-    protected static Category cat = Category.getInstance(CriticBrowserDialog.class);
+  protected static Category cat = Category.getInstance(CriticBrowserDialog.class);
     
   public static int _numCriticBrowser = 0;
 
   ////////////////////////////////////////////////////////////////
   // constants
   private static final String BUNDLE = "Cognitive";
+
+  private static final String DESC_WIDTH_TEXT = "This is Sample Text for determining Column Width";
+  
+  private static final int NUM_COLUMNS = 25;
 
   static final String high = Argo.localize(BUNDLE, "level.high");
   static final String medium = Argo.localize(BUNDLE, "level.medium");
@@ -70,17 +73,17 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
   protected JLabel _clsNameLabel   = new JLabel("Critic Class: ");
   protected JLabel _headlineLabel  = new JLabel("Headline: ");
   protected JLabel _priorityLabel  = new JLabel("Priority: ");
-  protected JLabel _moreInfoLabel  = new JLabel("MoreInfo: ");
+  protected JLabel _moreInfoLabel  = new JLabel("More Info: ");
   protected JLabel _descLabel      = new JLabel("Description: ");
   protected JLabel _clarifierLabel = new JLabel("Use Clarifier: ");
 
   TableModelCritics _tableModel  = new TableModelCritics();
-  protected JTable _table        = new JTable(30, 3);
-  protected JLabel _className    = new JLabel("");
-  protected JTextField _headline = new JTextField("", 40);
+  protected JTable _table        = new JTable();
+  protected JTextField _className= new JTextField("", NUM_COLUMNS);
+  protected JTextField _headline = new JTextField("", NUM_COLUMNS);
   protected JComboBox _priority  = new JComboBox(PRIORITIES);
-  protected JTextField _moreInfo = new JTextField("", 35);
-  protected JTextArea _desc      = new JTextArea("", 6, 40);
+  protected JTextField _moreInfo = new JTextField("", NUM_COLUMNS);
+  protected JTextArea _desc      = new JTextArea("", 6, NUM_COLUMNS);
   protected JComboBox _useClar   = new JComboBox(USE_CLAR);
 
   protected JButton _okButton      = new JButton("OK");
@@ -98,30 +101,16 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     super(ProjectBrowser.getInstance(), "Critics");
 
     Container mainContent = getContentPane();
-//     GridBagLayout gb = new GridBagLayout();
-//     GridBagConstraints c = new GridBagConstraints();
-//     c.fill = GridBagConstraints.BOTH;
-//     c.weightx = 0.0;
-//     c.ipadx = 3; c.ipady = 3;
+    mainContent.setLayout(new BorderLayout());
 
-
-    JPanel content = new JPanel();
-    mainContent.add(content, BorderLayout.CENTER);
-    //content.setLayout(gb);
-    content.setLayout(null);
+    // Critics Table
+    
+    JPanel tablePanel = new JPanel(new BorderLayout(5, 5));
+    tablePanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 
     _tableModel.setTarget(Agency.getCritics());
     _table.setModel(_tableModel);
     _table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    Font labelFont = MetalLookAndFeel.getSubTextFont();
-    _table.setFont(labelFont);
-
-//     _table.setMinimumSize(new Dimension(150, 80));
-//     _table.setPreferredSize(new Dimension(200, 150));
-//     _table.setSize(new Dimension(200, 150));
-
-    //_table.setRowSelectionAllowed(false);
-    _table.setIntercellSpacing(new Dimension(0, 1));
     _table.setShowVerticalLines(false);
     _table.getSelectionModel().addListSelectionListener(this);
     _table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
@@ -132,137 +121,104 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     checkCol.setMinWidth(35);
     checkCol.setMaxWidth(35);
     checkCol.setWidth(30);
-    descCol.setMinWidth(200);
-    descCol.setWidth(200);
+	int descWidth = _table.getFontMetrics(_table.getFont()).stringWidth(DESC_WIDTH_TEXT);
+    descCol.setMinWidth(descWidth);
+    descCol.setWidth(descWidth);
     actCol.setMinWidth(50);
     actCol.setMaxWidth(50);
     actCol.setWidth(50);
 
-    _criticsLabel.setBounds(2, 2, 300, 25);
-    content.add(_criticsLabel);
-//     c.gridy = 1;
-//     c.gridheight = 11; //GridBagConstraints.REMAINDER
+    tablePanel.add(_criticsLabel, BorderLayout.NORTH);
     JScrollPane tableSP = new JScrollPane(_table);
-    JPanel p = new JPanel();
-    p.setLayout(new BorderLayout());
-    p.setPreferredSize(new Dimension(310, 150));
-    p.setSize(new Dimension(310, 150));
-    p.setMaximumSize(new Dimension(310, 150));
-    p.add(tableSP, BorderLayout.CENTER);
-//     tableSP.setPreferredSize(new Dimension(310, 100));
-//     tableSP.setSize(new Dimension(310, 100));
-//     tableSP.setMaximumSize(new Dimension(310, 100));
-//     gb.setConstraints(p, c);
-    p.setBounds(2, 2 + 2 + 25, 340, 300);
-    content.add(p);
+	tablePanel.add(tableSP, BorderLayout.CENTER);
 
-//     c.gridx = 1;
-//     c.gridy = 0;
-//     c.gridwidth = 1;
-//     c.gridheight = 1;
-//     SpacerPanel spacer = new SpacerPanel();
-//     gb.setConstraints(spacer, c);
-//     content.add(spacer);
+	// Set tableSP's preferred height to 0 so that details height is used in pack()
+	tableSP.setPreferredSize(new Dimension(
+			checkCol.getWidth() + descCol.getWidth() + actCol.getWidth() + 20, 0));
+	
+	mainContent.add(tablePanel, BorderLayout.CENTER);
 
-//     c.weightx = 0.0;
-//     c.gridx = 2;
-//     c.gridy = 1;
-//     gb.setConstraints(_clsNameLabel, c);
-    _clsNameLabel.setBounds(360, 2, 100, 25);
-    content.add(_clsNameLabel);
+	// Critic Details panel
 
-//     c.gridy = 2;
-//     gb.setConstraints(_headlineLabel, c);
-    _headlineLabel.setBounds(360, 2+25+2, 100, 25);
-    content.add(_headlineLabel);
+	JPanel detailsPanel = new JPanel(new GridBagLayout());
+	detailsPanel.setBorder(BorderFactory.createCompoundBorder(
+			BorderFactory.createEmptyBorder(5, 0, 0, 5), 
+			BorderFactory.createTitledBorder("Critic Details")));
+	
+	GridBagConstraints labelConstraints = new GridBagConstraints();
+	labelConstraints.anchor = GridBagConstraints.EAST;
+	labelConstraints.gridy = 0;
+	labelConstraints.gridx = 0;
+	labelConstraints.gridwidth = 1;
+	labelConstraints.gridheight = 1;
+	labelConstraints.insets = new Insets(0, 10, 5, 4);
 
-//     c.gridy = 3;
-//     gb.setConstraints(_priorityLabel, c);
-    _priorityLabel.setBounds(360, 2*3+25*2, 100, 25);
-    content.add(_priorityLabel);
+	GridBagConstraints fieldConstraints = new GridBagConstraints();
+	fieldConstraints.anchor = GridBagConstraints.WEST;
+	fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
+	fieldConstraints.gridy = 0;
+	fieldConstraints.gridx = 1;
+	fieldConstraints.gridwidth = 3;
+	fieldConstraints.gridheight = 1;
+	fieldConstraints.weightx = 1.0;
+	fieldConstraints.insets = new Insets(0, 4, 5, 10);
+	
+	_className.setEditable(false);
+	_className.setBorder(null);
+	labelConstraints.gridy = 0;
+	fieldConstraints.gridy = 0;
+    detailsPanel.add(_clsNameLabel, labelConstraints);
+	detailsPanel.add(_className, fieldConstraints);
+	
+	labelConstraints.gridy = 1;
+	fieldConstraints.gridy = 1;
+	detailsPanel.add(_headlineLabel, labelConstraints);
+	detailsPanel.add(_headline, fieldConstraints);
 
-//     c.gridy = 4;
-//     gb.setConstraints(_moreInfoLabel, c);
-    _moreInfoLabel.setBounds(360, 2*4 + 25*3, 100, 25);
-    content.add(_moreInfoLabel);
+	labelConstraints.gridy = 2;
+	fieldConstraints.gridy = 2;
+	detailsPanel.add(_priorityLabel, labelConstraints);
+	detailsPanel.add(_priority, fieldConstraints);
 
-//     c.gridy = 5;
-//     gb.setConstraints(_descLabel, c);
-    _descLabel.setBounds(360, 2*5 + 25*4, 100, 25);
-    content.add(_descLabel);
+	labelConstraints.gridy = 3;
+	fieldConstraints.gridy = 3;
+	detailsPanel.add(_moreInfoLabel, labelConstraints);
+	JPanel moreInfoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+	moreInfoPanel.add(_moreInfo);
+	moreInfoPanel.add(new JLabel(" ")); // spacing
+	moreInfoPanel.add(_goButton);
+	detailsPanel.add(moreInfoPanel, fieldConstraints);
 
-//     c.gridy = 8;
-//     gb.setConstraints(_clarifierLabel, c);
-    _clarifierLabel.setBounds(360, 2 + (2+25)*5 + 85, 100, 25);
-    content.add(_clarifierLabel);
+	labelConstraints.gridy = 4;
+	fieldConstraints.gridy = 4;
+	labelConstraints.anchor = GridBagConstraints.NORTHEAST;
+	detailsPanel.add(_descLabel, labelConstraints);
+	labelConstraints.anchor = GridBagConstraints.EAST;
+	detailsPanel.add(new JScrollPane(_desc), fieldConstraints);
 
+	labelConstraints.gridy = 5;
+	fieldConstraints.gridy = 5;
+	detailsPanel.add(_clarifierLabel, labelConstraints);
+	detailsPanel.add(_useClar, fieldConstraints);
 
-//     c.weightx = 1.0;
-//     c.gridx = 3;
-//     c.gridy = 1;
-//     c.gridwidth = 2;
-//     gb.setConstraints(_className, c);
-    _className.setBounds(465, 2, 320, 25);
-    content.add(_className);
-
-//     c.gridy = 2;
-//     gb.setConstraints(_headline, c);
-    _headline.setBounds(465, 2 + (2+25)*1, 320, 25);
-    content.add(_headline);
-
-//     c.gridy = 3;
-//     gb.setConstraints(_priority, c);
-    _priority.setBounds(465, 2 + (2+25)*2, 320, 25);
-    content.add(_priority);
-
-//     c.gridy = 4;
-//     c.gridwidth = 1;
-//     gb.setConstraints(_moreInfo, c);
-    _moreInfo.setBounds(465, 2 + (2+25)*3, 320-60, 25);
-    content.add(_moreInfo);
-
-//     c.weightx = 0.0;
-//     c.gridx = 4;
-//     c.gridy = 4;
-//     c.gridwidth = 1;
-//     gb.setConstraints(_goButton, c);
-    _goButton.setBounds(465+320-60, 2 + (2+25)*3, 60, 25);
-    content.add(_goButton);
-
-//     c.weightx = 1.0;
-//     c.gridx = 3;
-//     c.gridy = 5;
-//     c.gridwidth = 2;
-    JScrollPane descSP = new JScrollPane(_desc);
-//     gb.setConstraints(descSP, c);
-    descSP.setBounds(465, 2 + (2+25)*4, 320, 25+85);
-    content.add(descSP);
-
-//     c.gridy = 8;
-//     gb.setConstraints(_useClar, c);
-    _useClar.setBounds(465, 2 + (2+25)*5 + 85, 320, 25);
-    content.add(_useClar);
-
-//     c.gridy = 9;
-    JPanel buttonPanel = new JPanel();
-    //buttonPanel.setLayout(new GridLayout(1, 3));
+	labelConstraints.gridy = 6;
+	fieldConstraints.gridy = 6;
+    JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     buttonPanel.add(_wakeButton);
     buttonPanel.add(_configButton);
     buttonPanel.add(_networkButton);
-//     gb.setConstraints(buttonPanel, c);
-    buttonPanel.setBounds(465, 2 + (2+25)*6+85, 320, 25+5+5);
-    content.add(buttonPanel);
+	detailsPanel.add(new JLabel(""), labelConstraints);
+    detailsPanel.add(buttonPanel, fieldConstraints);
 
-//     c.gridx = 2;
-//     c.gridy = 10;
-//     c.gridwidth = GridBagConstraints.REMAINDER;
-    JPanel buttonPane = new JPanel();
-    buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-    buttonPane.add(_okButton);
-//     gb.setConstraints(buttonPane, c);
-//     buttonPane.setBounds(465, 2 + (2+25)*7 + 5+85, 320, 25+5);
-    buttonPane.setBounds(465, 360 - (25 + 5) - 35, 320, 25+5+5);
-    content.add(buttonPane);
+	JPanel detailsContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+	detailsContainer.add(detailsPanel);
+	mainContent.add(detailsContainer, BorderLayout.EAST);	
+    
+    // South buttons
+    JPanel buttonPane = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+	buttonPane.add(_okButton);
+    mainContent.add(buttonPane, BorderLayout.SOUTH);
+	_okButton.setMnemonic('O');
 
     _goButton.addActionListener(this);
     _okButton.addActionListener(this);
@@ -275,6 +231,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     _priority.addItemListener(this);
     _useClar.addItemListener(this);
 
+	_goButton.setEnabled(false);
     _wakeButton.setEnabled(false);
     _networkButton.setEnabled(false);
     _configButton.setEnabled(false);
@@ -282,9 +239,17 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     _desc.setLineWrap(true);
     _desc.setWrapStyleWord(true);
 
-    setLocation(100, 150);
-    setSize(465+320+10, 360);
-    setResizable(false);
+    setResizable(true);
+    
+    pack();
+    
+    // Center on parent
+	Dimension size = getSize();
+	Dimension p = getParent().getSize();
+	int x = (getParent().getX() - size.width) + (int) ((size.width + p.width) / 2d);
+	int y = (getParent().getY() - size.height) + (int) ((size.height + p.height) / 2d);
+	setLocation(x, y);
+    
     _numCriticBrowser++;
   }
 
