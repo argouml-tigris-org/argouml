@@ -45,7 +45,6 @@ public class GoElementToMachine extends AbstractPerspectiveRule {
     }
   
     public Set getDependencies(Object parent) {
-	// TODO: enough?
         if (ModelFacade.isAModelElement(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);

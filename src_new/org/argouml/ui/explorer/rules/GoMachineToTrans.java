@@ -30,7 +30,7 @@ import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
-public class GoMachineToTrans extends AbstractPerspectiveRule{
+public class GoMachineToTrans extends AbstractPerspectiveRule {
 
     public String getRuleName() {
 	return "Statemachine->Transition";
@@ -44,7 +44,6 @@ public class GoMachineToTrans extends AbstractPerspectiveRule{
     }
 
     public Set getDependencies(Object parent) {
-	// TODO: enough?
         if (ModelFacade.isAStateMachine(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);

@@ -44,7 +44,6 @@ public class GoClassToAssociatedClass extends AbstractPerspectiveRule {
     }
 
     public Set getDependencies(Object parent) {
-	// TODO: enough?
         if (ModelFacade.isAClass(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);

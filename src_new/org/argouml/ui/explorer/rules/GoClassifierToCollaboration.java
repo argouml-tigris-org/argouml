@@ -54,7 +54,6 @@ public class GoClassifierToCollaboration extends AbstractPerspectiveRule {
     }
 
     public Set getDependencies(Object parent) {
-	// TODO: enough?
         if (ModelFacade.isAClassifier(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
