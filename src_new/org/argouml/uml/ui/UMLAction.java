@@ -39,7 +39,7 @@ import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.util.*;
 
-import org.argouml.application.api.*;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 
@@ -54,13 +54,16 @@ public class UMLAction extends AbstractAction {
   }
 
   public UMLAction(String name, boolean global, boolean hasIcon) {
-    super(Argo.localize("CoreMenu", name));
+    super(Translator.localize("CoreMenu", name));
     if (hasIcon) {
-      Icon icon = ResourceLoader.lookupIconResource(name);
+      Icon icon = ResourceLoader.lookupIconResource(
+        Translator.getImageBinding(name),
+        Translator.localize("CoreMenu", name));
       if (icon != null) putValue(Action.SMALL_ICON, icon);
       else { System.out.println("icon not found: " + name); }
     }
-    putValue(Action.SHORT_DESCRIPTION, Argo.localize("CoreMenu", name) + " ");
+    putValue(Action.SHORT_DESCRIPTION,
+      Translator.localize("CoreMenu", name) + " ");
     if (global) Actions.addAction(this);
   }
 
@@ -123,7 +126,7 @@ public class UMLAction extends AbstractAction {
    *
    */
   static final public String getMnemonic(String key) {
-    return Argo.localize("CoreMenu",key);
+    return Translator.localize("CoreMenu",key);
   }
 
 
