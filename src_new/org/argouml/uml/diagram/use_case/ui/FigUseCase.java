@@ -32,28 +32,46 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.use_cases.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
+import javax.swing.JMenu;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
+import org.argouml.application.api.Notation;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.ui.*;
-import org.argouml.uml.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.generator.*;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.ui.CompartmentFigText;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.generator.ParserDisplay;
+import org.argouml.uml.ui.ActionAddExtensionPoint;
+import org.argouml.uml.ui.ActionAddNote;
+import org.argouml.uml.ui.ActionCompartmentDisplay;
+import org.argouml.uml.ui.ActionModifier;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigCircle;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 
 /**

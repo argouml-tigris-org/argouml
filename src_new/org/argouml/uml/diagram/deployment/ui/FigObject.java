@@ -28,26 +28,26 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.beans.PropertyVetoException;
+import java.util.Vector;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.model_management.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.generator.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.generator.ParserDisplay;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
+import ru.novosoft.uml.behavior.common_behavior.MObject;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MComponent;
+import ru.novosoft.uml.foundation.core.MElementResidence;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /** Class to display graphics for a UML Object in a diagram. */
 
@@ -174,36 +174,6 @@ public class FigObject extends FigNodeModelElement {
     }
   }
 
-  protected void modelChanged(MElementEvent mee) {
-    super.modelChanged(mee);
-    MObject obj = (MObject) getOwner();
-    if (obj == null) return;
-    String nameStr = "";
-    if (obj.getName() != null) {
-      nameStr = obj.getName().trim();
-    }
-
-    Vector bases = new Vector(obj.getClassifiers());
- 
-    String baseString = "";
-
-    if (obj.getClassifiers() != null && obj.getClassifiers().size()>0) {
-
-	baseString += ((MClassifier)bases.elementAt(0)).getName();
-        for(int i=1; i<bases.size(); i++)
-	    baseString += ", "  + ((MClassifier)bases.elementAt(i)).getName();
-    }
-
-    if (_readyToEdit) {
-      if( nameStr == "" && baseString == "")
-	_name.setText("");
-      else
-	  _name.setText(nameStr.trim() + " : " + baseString);
-    }
-    Dimension nameMin = _name.getMinimumSize();
-    Rectangle r = getBounds();
-    setBounds(r.x, r.y, nameMin.width+10, nameMin.height+4);
-  }
 
   public void setEnclosingFig(Fig encloser) {
     super.setEnclosingFig(encloser);
@@ -238,5 +208,38 @@ public class FigObject extends FigNodeModelElement {
   }
 
   static final long serialVersionUID = -185736690375678962L;
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
+     */
+    protected void updateNameText() {
+        MObject obj = (MObject) getOwner();
+    if (obj == null) return;
+    String nameStr = "";
+    if (obj.getName() != null) {
+      nameStr = obj.getName().trim();
+    }
+
+    Vector bases = new Vector(obj.getClassifiers());
+ 
+    String baseString = "";
+
+    if (obj.getClassifiers() != null && obj.getClassifiers().size()>0) {
+
+    baseString += ((MClassifier)bases.elementAt(0)).getName();
+        for(int i=1; i<bases.size(); i++)
+        baseString += ", "  + ((MClassifier)bases.elementAt(i)).getName();
+    }
+
+    if (_readyToEdit) {
+      if( nameStr == "" && baseString == "")
+    _name.setText("");
+      else
+      _name.setText(nameStr.trim() + " : " + baseString);
+    }
+    Dimension nameMin = _name.getMinimumSize();
+    Rectangle r = getBounds();
+    setBounds(r.x, r.y, nameMin.width+10, nameMin.height+4);
+    }
 
 } /* end class FigObject */

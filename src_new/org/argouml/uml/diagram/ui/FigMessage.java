@@ -27,29 +27,28 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.beans.PropertyVetoException;
 import java.text.ParseException;
-import java.beans.*;
-import javax.swing.*;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-import org.tigris.gef.base.PathConvPercent;
-import org.tigris.gef.base.Layer;
-
-import org.argouml.application.api.*;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.uml.generator.*;
-import org.argouml.util.Trash;
+import org.argouml.application.api.Notation;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.collaboration.ui.FigAssociationRole;
+import org.argouml.uml.generator.ParserDisplay;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 /** Class to display graphics for a UML collaboration in a diagram. */
 
@@ -224,15 +223,6 @@ public class FigMessage extends FigNodeModelElement {
 	super.textEdited(ft);
   }
 
-  protected void modelChanged(MElementEvent mee) {
-    super.modelChanged(mee);
-    MMessage mes = (MMessage) getOwner();
-    if (mes == null) return;
-    _name.setText(Notation.generate(this, mes));
-	updateArrow();	
-	
-  }
-  
 /**
  * Determines the direction of the message arrow. Deetermination of the 
  * type of arrow happens in modelchanged
@@ -289,5 +279,22 @@ public class FigMessage extends FigNodeModelElement {
 	}
 
     
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
+     */
+    protected void updateNameText() {
+        MMessage mes = (MMessage) getOwner();
+        if (mes == null) return;
+        _name.setText(Notation.generate(this, mes));
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
+     */
+    public void renderingChanged() {
+        super.renderingChanged();
+        updateArrow();
+    }
 
 } /* end class FigMessage */

@@ -28,22 +28,24 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.awt.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.state_machines.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.beans.PropertyVetoException;
+import java.util.Vector;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.uml.generator.*;
+import org.argouml.application.api.Notation;
+import org.argouml.uml.generator.ParserDisplay;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.FigLine;
+import org.tigris.gef.presentation.FigRRect;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
 
 /** Class to display graphics for a UML MCompositeState in a diagram. */
 
@@ -215,17 +217,23 @@ public class FigCompositeState extends FigStateVertex {
 
   /** Update the text labels */
   protected void modelChanged(MElementEvent mee) {
-    super.modelChanged(mee);
-    cat.debug("FigCompositeState modelChanged");
-    MState s = (MState) getOwner();
-    if (s == null) return;
-    String newText = Notation.generateStateBody(this, s);
-    _internal.setText(newText);
+    if (mee == null) {
+        updateInternal();
+        super.modelChanged(mee);
+    } else
+    if (mee.getName().equals("isConcurrent") || mee.getName().equals("subvertex") ||
+        mee.getName().equals("classifierInState") || mee.getName().equals("classifierInState") ||
+        mee.getName().equals("deferrableEvent") || mee.getName().equals("internalTransition") ||
+        mee.getName().equals("doActivity") || mee.getName().equals("entry") || mee.getName().equals("exit") ||
+        mee.getName().equals("stateMachine") ||
+        mee.getName().equals("incoming") || mee.getName().equals("outgoing")) {
+            updateInternal();
+    } else
+    if (mee.getSource() instanceof MTransition && mee.getName().equals("name")) {
+        updateInternal();
+    } else
+        super.modelChanged(mee);
 
-    calcBounds();
-    Rectangle rect = getBounds();
-    setBounds(rect.x, rect.y, rect.width, rect.height);
-    firePropChange("bounds", rect, getBounds());
   }
 
   public void textEdited(FigText ft) throws PropertyVetoException {
@@ -236,6 +244,20 @@ public class FigCompositeState extends FigStateVertex {
       String s = ft.getText();
       ParserDisplay.SINGLETON.parseStateBody(st, s);
     }
+  }
+  
+  /**
+   * Updates the text inside the composite state
+   */
+  protected void updateInternal() {
+        MState s = (MState) getOwner();
+    if (s == null) return;
+    String newText = Notation.generateStateBody(this, s);
+    _internal.setText(newText);
+
+    calcBounds();
+    Rectangle rect = getBounds();
+    setBounds(rect.x, rect.y, rect.width, rect.height);
   }
 
 

@@ -519,7 +519,8 @@ public class FigClassifierRole extends FigNodeModelElement {
      */
     protected void modelChanged(MElementEvent mee) {
         // base should get it's own figtext and it's own update method
-        if (mee.getName().equals("base") && mee.getSource() == getOwner()) { 
+        // TODO: remove the mee == null as soon as everything is migrated
+        if (mee == null || mee.getName().equals("base") && mee.getSource() == getOwner()) { 
             updateNameText();
         } else
             super.modelChanged(mee);

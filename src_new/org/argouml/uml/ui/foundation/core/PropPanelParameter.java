@@ -24,23 +24,31 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.*;
-import java.util.Iterator;
-import java.util.Vector;
+import java.awt.GridLayout;
 
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.*;
-
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.*;
-import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
+import org.argouml.uml.ui.UMLInitialValueComboBox;
+import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLRadioButton;
+import org.argouml.uml.ui.UMLReflectionListModel;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 public class PropPanelParameter extends PropPanelModelElement {
 
