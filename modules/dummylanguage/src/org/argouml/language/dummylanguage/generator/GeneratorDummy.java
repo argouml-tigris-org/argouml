@@ -110,8 +110,11 @@ public class GeneratorDummy extends Generator implements PluggableNotation {
 	return "Transition(" + m.getName() + ")";
     }
     public String generateAction(MAction m) {
-	return "Action(" + m.getName() + ")";
+		return "Action(" + m.getName() + ")";
     }
+	public String generateAction(Object m) {
+		return "Action(" + m.toString() + ")";
+	}
     public String generateGuard(MGuard m) {
 	return "Guard(" + m.getName() + ")";
     }
@@ -130,6 +133,7 @@ public class GeneratorDummy extends Generator implements PluggableNotation {
     public String getModuleKey() { 
 	return "module.language.generator.dummylanguage"; 
     }
+
 
 } /* end class GeneratorJava */
 
