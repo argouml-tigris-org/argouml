@@ -84,8 +84,18 @@ public class DisplayTextTree extends JTree {
      * override default JTree implementation to display the
      * appropriate text for any object that will be displayed in
      * the todo list.
-     *
+     * 
+     * @param value the given object
+     * @param selected ignored
+     * @param expanded ignored
+     * @param leaf ignored
+     * @param row ignored
+     * @param hasFocus ignored
+     * 
      * @return the value converted to text.
+     *
+     * @see javax.swing.JTree#convertValueToText(java.lang.Object, 
+     * boolean, boolean, boolean, int, boolean)
      */
     public String convertValueToText(
         Object value,
@@ -156,6 +166,8 @@ public class DisplayTextTree extends JTree {
 
     /**
      * called in reexpand()
+     *
+     * @return a Vector containing all expanded paths
      */
     protected Vector getExpandedPaths() {
 

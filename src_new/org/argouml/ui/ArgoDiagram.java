@@ -39,20 +39,27 @@ import org.tigris.gef.presentation.Fig;
 
 public class ArgoDiagram extends Diagram {
 
-    ItemUID _id;
+    private ItemUID id;
 
-    // hack to use vetocheck in constructing names
-    protected static ArgoDiagram TheInstance = new ArgoDiagram(); 
+    /**
+     * hack to use vetocheck in constructing names
+     */
+    private static ArgoDiagram theInstance = new ArgoDiagram(); 
   
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
+    /**
+     * The constructor.
+     */
     public ArgoDiagram() { 
         super();
         // really dirty hack to remove unwanted listeners
         getLayer().getGraphModel().removeGraphEventListener(getLayer());
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param diagramName the name of the diagram
+     */
     public ArgoDiagram(String diagramName) {
   	// next line patch to issue 596 (hopefully)
   	super(diagramName);
@@ -70,17 +77,26 @@ public class ArgoDiagram extends Diagram {
 	super.setName(n);
     }
 
-    public void setItemUID(ItemUID id) {
-	_id = id;
+    /**
+     * @param i the new id
+     */
+    public void setItemUID(ItemUID i) {
+	id = i;
     }
 
+    /**
+     * @return the item UID
+     */
     public ItemUID getItemUID() {
-	return _id;
+	return id;
     }
 
     ////////////////////////////////////////////////////////////////
     // event management
 
+    /**
+     * @param change
+     */
     public void addChangeRegistryAsListener( ChangeRegistry change ) {
 	getGraphModel().addGraphEventListener( change );
     }
@@ -149,9 +165,13 @@ public class ArgoDiagram extends Diagram {
 	ProjectManager.getManager().getCurrentProject().setActiveDiagram(this);
     }
     
+    /**
+     * This will mark the entire visible area of all Editors to be repaired
+     *  from any damage - i.e. repainted.
+     */
     public void damage() {
-        if (getLayer() != null && getLayer().getEditors(null) != null) {
-            Iterator it = getLayer().getEditors(null).iterator();
+        if (getLayer() != null && getLayer().getEditors() != null) {
+            Iterator it = getLayer().getEditors().iterator();
             while (it.hasNext()) {
                 ((Editor) it.next()).damageAll();
             }

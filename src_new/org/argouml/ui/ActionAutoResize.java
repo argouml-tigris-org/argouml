@@ -37,10 +37,16 @@ public class ActionAutoResize extends UMLAction {
 
     private static boolean autoResize = false;
   
+    /**
+     * The constructor.
+     */
     public ActionAutoResize() {
         super("action.toggle-auto-resizing",  NO_ICON);
     }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
         autoResize = !autoResize;
     }
