@@ -59,7 +59,7 @@ public class PropPanelAttribute extends PropPanel {
         addField(stereotypeBox,3,0,0);
 
         addCaption(new JLabel("Owner:"),4,0,1);
-        JList ownerList = new UMLList(new UMLReflectionListModel(this,"owner",false,"getOwner",null,null,null),false);
+        JList ownerList = new UMLList(new UMLReflectionListModel(this,"owner",false,"getOwner",null,null,null),true);
         addLinkField(ownerList,4,0,0);
         
         
