@@ -124,12 +124,12 @@ public class LookAndFeelMgr {
     }
     
     public String determineLookAndFeel() {
-        //if ("true".equals(System.getProperty("force.nativelaf","false"))) {
+        if ("true".equals(System.getProperty("force.nativelaf","false"))) {
             return UIManager.getSystemLookAndFeelClassName();
-        //}
-        //else {
-        //    return METAL_PLAF;
-        //}
+        }
+        else {
+            return METAL_PLAF;
+        }
     }
     
     public void setCurrentTheme(String arg) {
