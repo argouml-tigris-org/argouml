@@ -116,13 +116,10 @@ public class PropPanelObject extends PropPanelModelElement {
 
 	    // at the moment , we only deal with one classifier
 	    Collection col = ((MInstance)target).getClassifiers();
-	    if (col != null) {
 		Iterator iter = col.iterator();
-		if (iter != null && iter.hasNext()) {
+		if (iter.hasNext()) {
 		    classifier = (MClassifier)iter.next();
-		}
-	    }
-		    
+        }
         }
         return classifier;
     }
@@ -132,6 +129,13 @@ public class PropPanelObject extends PropPanelModelElement {
 	
         if(target instanceof MInstance) {
 	    MInstance inst = (MInstance)target;
+	    Vector classifiers = new Vector();
+	    if (element != null) {
+	    	classifiers.add(element);
+	    }
+	    inst.setClassifiers(classifiers);
+        }
+	    /*
 //            ((MInstance) target).setClassifier((MClassifier) element);
 
 	    // delete all classifiers
@@ -143,10 +147,18 @@ public class PropPanelObject extends PropPanelModelElement {
 		    inst.removeClassifier(classifier);
 		}
 	    }
+	    
+	    Iterator it = inst.getClassifiers().iterator();
+	    while (it.hasNext()) {
+	    	inst.removeClassifier((MClassifier)it.next());
+	    }
 	    // add classifier
-	    inst.addClassifier( element);
+	    if (element != null) {
+	    	inst.addClassifier( element);
+	    }
 
         }
+        */
     }
     
      

@@ -116,7 +116,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 	    
 	    if(afterEntry != null) afterEntry.checkCollision(currentStr,null);		   
 	    
-	    fireContentsChanged(this,0,getSet().size());		  
+	   	// fireContentsChanged(this,0,getSet().size());	  
 
 	//
 	//   get current value
@@ -134,6 +134,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 			    
 	    }
 	}
+	 fireContentsChanged(this,0,getSet().size());	
     }
 
 
