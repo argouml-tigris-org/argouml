@@ -169,6 +169,8 @@ public class ZoomSliderButton extends PopupButton {
         } 
         
         super.showPopup();
+        
+        _slider.requestFocus();
     }
 
     /**
