@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,50 +34,50 @@ import org.argouml.cognitive.*;
 
 public class GoListToDecisionsToItems implements TreeModel {
   
-  ////////////////////////////////////////////////////////////////
-  // TreeModel implementation
+    ////////////////////////////////////////////////////////////////
+    // TreeModel implementation
   
-  public Object getRoot() {
-      throw new UnsupportedOperationException("getRoot should never be called");
-  } 
-  public void setRoot(Object r) { }
+    public Object getRoot() {
+	throw new UnsupportedOperationException("getRoot should never be called");
+    } 
+    public void setRoot(Object r) { }
 
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof ToDoList) {
-      return getDecisions().elementAt(index);
-    }
-    if (parent instanceof Decision) {
-      Decision dec = (Decision) parent;
-      java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
-      while (itemEnum.hasMoreElements()) {
-	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.getPoster().supports(dec)) {
-            if (index == 0) return item;
-            index--;
-        }
-      }
-    }
+    public Object getChild(Object parent, int index) {
+	if (parent instanceof ToDoList) {
+	    return getDecisions().elementAt(index);
+	}
+	if (parent instanceof Decision) {
+	    Decision dec = (Decision) parent;
+	    java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+	    while (itemEnum.hasMoreElements()) {
+		ToDoItem item = (ToDoItem) itemEnum.nextElement();
+		if (item.getPoster().supports(dec)) {
+		    if (index == 0) return item;
+		    index--;
+		}
+	    }
+	}
 
-    throw new IndexOutOfBoundsException("getChild shouldn't get here GoListToDecisionsToItems");
-  }
+	throw new IndexOutOfBoundsException("getChild shouldn't get here GoListToDecisionsToItems");
+    }
   
-  private int getChildCountCond(Object parent, boolean stopafterone) {
-    if (parent instanceof ToDoList) {
-      return getDecisions().size();
+    private int getChildCountCond(Object parent, boolean stopafterone) {
+	if (parent instanceof ToDoList) {
+	    return getDecisions().size();
+	}
+	if (parent instanceof Decision) {
+	    Decision dec = (Decision) parent;
+	    java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+	    int count = 0;
+	    while (itemEnum.hasMoreElements()) {
+		ToDoItem item = (ToDoItem) itemEnum.nextElement();
+		if (item.getPoster().supports(dec)) count++;
+		if (stopafterone && count > 0) break;
+	    }
+	    return count;
+	}
+	return 0;
     }
-    if (parent instanceof Decision) {
-      Decision dec = (Decision) parent;
-      java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
-      int count = 0;
-      while (itemEnum.hasMoreElements()) {
-	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.getPoster().supports(dec)) count++;
-        if (stopafterone && count > 0) break;
-      }
-      return count;
-    }
-    return 0;
-  }
   
     public int getChildCount(Object parent) {
         return getChildCountCond(parent, false);
@@ -86,41 +87,41 @@ public class GoListToDecisionsToItems implements TreeModel {
     }
       
   
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof ToDoList) {
-      return getDecisions().indexOf(child);
+    public int getIndexOfChild(Object parent, Object child) {
+	if (parent instanceof ToDoList) {
+	    return getDecisions().indexOf(child);
+	}
+	if (parent instanceof Decision) {
+	    // instead of makning a new vector, decrement index, return when
+	    // found and index == 0
+	    Vector candidates = new Vector();
+	    Decision dec = (Decision) parent;
+	    java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+	    while (itemEnum.hasMoreElements()) {
+		ToDoItem item = (ToDoItem) itemEnum.nextElement();
+		if (item.getPoster().supports(dec)) candidates.addElement(item);
+	    }
+	    return candidates.indexOf(child);
+	}
+	return -1;
     }
-    if (parent instanceof Decision) {
-      // instead of makning a new vector, decrement index, return when
-      // found and index == 0
-      Vector candidates = new Vector();
-      Decision dec = (Decision) parent;
-      java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
-      while (itemEnum.hasMoreElements()) {
-	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.getPoster().supports(dec)) candidates.addElement(item);
-      }
-      return candidates.indexOf(child);
+
+    public boolean isLeaf(Object node) {
+	if (node instanceof ToDoList) return false;
+	if (node instanceof Decision && hasChildren(node)) return false;
+	return true;
     }
-    return -1;
-  }
 
-  public boolean isLeaf(Object node) {
-    if (node instanceof ToDoList) return false;
-    if (node instanceof Decision && hasChildren(node)) return false;
-    return true;
-  }
+    public void valueForPathChanged(TreePath path, Object newValue) { }
+    public void addTreeModelListener(TreeModelListener l) { }
+    public void removeTreeModelListener(TreeModelListener l) { }
 
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
+    ////////////////////////////////////////////////////////////////
+    // utility methods
 
-  ////////////////////////////////////////////////////////////////
-  // utility methods
-
-  public Vector getDecisions() {
-    return Designer.TheDesigner.getDecisionModel().getDecisions();
-  }
+    public Vector getDecisions() {
+	return Designer.TheDesigner.getDecisionModel().getDecisions();
+    }
   
 
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -45,31 +46,31 @@ import ru.novosoft.uml.behavior.state_machines.*;
   
 public class ChTransition extends UMLChecklist {
 
-  public ChTransition() {
-  setNextCategory("Structure");
-  addItem("Should this transition start at a different source?");
-  addItem("Should this transition end at a different destination?");
-  addItem("Should there be another transition \"like\" this one?");
-  addItem("Is another transition unneeded because of this one?");
+    public ChTransition() {
+	setNextCategory("Structure");
+	addItem("Should this transition start at a different source?");
+	addItem("Should this transition end at a different destination?");
+	addItem("Should there be another transition \"like\" this one?");
+	addItem("Is another transition unneeded because of this one?");
 
-  setNextCategory("Trigger");
-  addItem("Does this transition need a trigger?");
-  addItem("Does the trigger happen too often?");
-  addItem("Does the trigger happen too rarely?");
+	setNextCategory("Trigger");
+	addItem("Does this transition need a trigger?");
+	addItem("Does the trigger happen too often?");
+	addItem("Does the trigger happen too rarely?");
 
-  setNextCategory("MGuard");
-  addItem("Could this transition be taken too often?");
-  addItem("Is this transition's condition too restrictive?");
-  addItem("Could it be broken down into two or more transitions?");
+	setNextCategory("MGuard");
+	addItem("Could this transition be taken too often?");
+	addItem("Is this transition's condition too restrictive?");
+	addItem("Could it be broken down into two or more transitions?");
 
-  setNextCategory("Actions");
-  addItem("Should this transition have an action?");
-  addItem("Should this transition's action be an exit action?");
-  addItem("Should this transition's action be an entry action?");
-  addItem("Is the precondition of the action always met?");
-  addItem("Is the action's postcondition consistent with the destination?");
+	setNextCategory("Actions");
+	addItem("Should this transition have an action?");
+	addItem("Should this transition's action be an exit action?");
+	addItem("Should this transition's action be an entry action?");
+	addItem("Is the precondition of the action always met?");
+	addItem("Is the action's postcondition consistent with the destination?");
 
 
-  }
+    }
 
 } /* end class ChTransition */

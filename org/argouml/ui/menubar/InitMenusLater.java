@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -45,47 +46,47 @@ import org.tigris.gef.base.CmdReorder;
  * @author unknown
  */
 class InitMenusLater implements Runnable {
-  JMenu align, distribute, reorder, nudge, setPreferredSize, layout;
-  JMenu editTabs, detailsTabs;
+    JMenu align, distribute, reorder, nudge, setPreferredSize, layout;
+    JMenu editTabs, detailsTabs;
 
-  /**
-   * @deprecated we don't have a details tab menu section any more
-   * @param a the alignment submenu
-   * @param d the distribute submenu
-   * @param r the reorder submenu
-   * @param n the nudge submenu
-   * @param l the layout submenu
-   * @param et the editor tabs submenu
-   * @param dt the details tab submenu
-   */
-  public InitMenusLater(JMenu a, JMenu d, JMenu r, JMenu n, 
-                        JMenu l, JMenu et, JMenu dt) {
-    align = a;
-    distribute = d;
-    reorder = r;
-    nudge = n;
-    layout = l;
-    editTabs = et;
-    detailsTabs = dt;
-  }
+    /**
+     * @deprecated we don't have a details tab menu section any more
+     * @param a the alignment submenu
+     * @param d the distribute submenu
+     * @param r the reorder submenu
+     * @param n the nudge submenu
+     * @param l the layout submenu
+     * @param et the editor tabs submenu
+     * @param dt the details tab submenu
+     */
+    public InitMenusLater(JMenu a, JMenu d, JMenu r, JMenu n, 
+			  JMenu l, JMenu et, JMenu dt) {
+	align = a;
+	distribute = d;
+	reorder = r;
+	nudge = n;
+	layout = l;
+	editTabs = et;
+	detailsTabs = dt;
+    }
   
-  /**
-   * Constructs this new runnable to initialize the submenus.
-   * @param align the alignment submenu
-   * @param distribute the distribution submenu
-   * @param reorder the reorder submenu
-   * @param nudge the nudge submenu
-   * @param layout the layout submenu
-   * @param editTabs the edit tabs submenu
-   */
-  public InitMenusLater(JMenu align, JMenu distribute, JMenu reorder, JMenu nudge, JMenu layout, JMenu editTabs) {
-      this.align = align;
-      this.distribute = distribute;
-      this.reorder = reorder;
-      this.nudge = nudge;
-      this.layout = layout;
-      this.editTabs = editTabs;
-  }
+    /**
+     * Constructs this new runnable to initialize the submenus.
+     * @param align the alignment submenu
+     * @param distribute the distribution submenu
+     * @param reorder the reorder submenu
+     * @param nudge the nudge submenu
+     * @param layout the layout submenu
+     * @param editTabs the edit tabs submenu
+     */
+    public InitMenusLater(JMenu align, JMenu distribute, JMenu reorder, JMenu nudge, JMenu layout, JMenu editTabs) {
+	this.align = align;
+	this.distribute = distribute;
+	this.reorder = reorder;
+	this.nudge = nudge;
+	this.layout = layout;
+	this.editTabs = editTabs;
+    }
 
     /**
      * The submenus of argouml are created on startup in a seperate thread. 
@@ -120,19 +121,19 @@ class InitMenusLater implements Runnable {
         KeyStroke alt0 = KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.ALT_MASK);
 
         KeyStroke altshift1 =
-          KeyStroke.getKeyStroke(KeyEvent.VK_1,
-                                 KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+	    KeyStroke.getKeyStroke(KeyEvent.VK_1,
+				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
         KeyStroke altshift2 =
-          KeyStroke.getKeyStroke(KeyEvent.VK_2,
-                                 KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+	    KeyStroke.getKeyStroke(KeyEvent.VK_2,
+				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
         KeyStroke altshift3 =
-          KeyStroke.getKeyStroke(KeyEvent.VK_3,
-                                 KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+	    KeyStroke.getKeyStroke(KeyEvent.VK_3,
+				   KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
 
         align.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
         align.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
-        GenericArgoMenuBar.setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS)),ctrlR);
-        GenericArgoMenuBar.setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS)),ctrlL);
+        GenericArgoMenuBar.setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS)), ctrlR);
+        GenericArgoMenuBar.setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS)), ctrlL);
 
         align.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
         align.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
@@ -171,20 +172,20 @@ class InitMenusLater implements Runnable {
         JMenuItem tabe3Item = editTabs.add(new ActionGoToEdit("action.as-metrics"));
         tabe3Item.setAccelerator(altshift3);
         /*
-        JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("tab.todo-item"));
-        tab1Item.setAccelerator(alt1);
-        JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("tab.properties"));
-        tab2Item.setAccelerator(alt2);
-        JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("tab.documentation"));
-        tab3Item.setAccelerator(alt3);
-        JMenuItem tab4Item = detailsTabs.add(new ActionGoToDetails("tab.source"));
-        tab4Item.setAccelerator(alt4);
-        JMenuItem tab5Item = detailsTabs.add(new ActionGoToDetails("tab.constraints"));
-        tab5Item.setAccelerator(alt5);
-        JMenuItem tab6Item = detailsTabs.add(new ActionGoToDetails("tab.tagged-values"));
-        tab6Item.setAccelerator(alt6);
-        JMenuItem tab7Item = detailsTabs.add(new ActionGoToDetails("tab.checklist"));
-        tab7Item.setAccelerator(alt7);
+	  JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("tab.todo-item"));
+	  tab1Item.setAccelerator(alt1);
+	  JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("tab.properties"));
+	  tab2Item.setAccelerator(alt2);
+	  JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("tab.documentation"));
+	  tab3Item.setAccelerator(alt3);
+	  JMenuItem tab4Item = detailsTabs.add(new ActionGoToDetails("tab.source"));
+	  tab4Item.setAccelerator(alt4);
+	  JMenuItem tab5Item = detailsTabs.add(new ActionGoToDetails("tab.constraints"));
+	  tab5Item.setAccelerator(alt5);
+	  JMenuItem tab6Item = detailsTabs.add(new ActionGoToDetails("tab.tagged-values"));
+	  tab6Item.setAccelerator(alt6);
+	  JMenuItem tab7Item = detailsTabs.add(new ActionGoToDetails("tab.checklist"));
+	  tab7Item.setAccelerator(alt7);
         */
     }
 } /* end class InitMenusLater */

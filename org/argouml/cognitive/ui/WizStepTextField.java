@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -41,87 +42,87 @@ import org.argouml.ui.*;
  */
 
 public class WizStepTextField extends WizStep {
-  JTextArea _instructions = new JTextArea();
-  JLabel _label = new JLabel("Value:");
-  JTextField _field = new JTextField(20);
+    JTextArea _instructions = new JTextArea();
+    JLabel _label = new JLabel("Value:");
+    JTextField _field = new JTextField(20);
 
-  public WizStepTextField() {
-    _instructions.setEditable(false);
-    _instructions.setWrapStyleWord(true);
-    _instructions.setBorder(null);
-    _instructions.setBackground(_mainPanel.getBackground());
+    public WizStepTextField() {
+	_instructions.setEditable(false);
+	_instructions.setWrapStyleWord(true);
+	_instructions.setBorder(null);
+	_instructions.setBackground(_mainPanel.getBackground());
 
-    _mainPanel.setBorder(new EtchedBorder());
+	_mainPanel.setBorder(new EtchedBorder());
 
-    GridBagLayout gb = new GridBagLayout();
-    _mainPanel.setLayout(gb);
+	GridBagLayout gb = new GridBagLayout();
+	_mainPanel.setLayout(gb);
 
-    GridBagConstraints c = new GridBagConstraints();
-    c.ipadx = 3; c.ipady = 3;
-    c.weightx = 0.0; c.weighty = 0.0;
-    c.anchor = GridBagConstraints.EAST;
+	GridBagConstraints c = new GridBagConstraints();
+	c.ipadx = 3; c.ipady = 3;
+	c.weightx = 0.0; c.weighty = 0.0;
+	c.anchor = GridBagConstraints.EAST;
 
-    // TODO: should have an image of a wizard or some logo
-    JLabel image = new JLabel("");
-    //image.setMargin(new Insets(0, 0, 0, 0));
-    image.setIcon(WIZ_ICON);
-    image.setBorder(null);
-    c.gridx = 0;
-    c.gridheight = 4;
-    c.gridy = 0;
-    gb.setConstraints(image, c);
-    _mainPanel.add(image);
+	// TODO: should have an image of a wizard or some logo
+	JLabel image = new JLabel("");
+	//image.setMargin(new Insets(0, 0, 0, 0));
+	image.setIcon(WIZ_ICON);
+	image.setBorder(null);
+	c.gridx = 0;
+	c.gridheight = 4;
+	c.gridy = 0;
+	gb.setConstraints(image, c);
+	_mainPanel.add(image);
 
-    c.weightx = 1.0;
-    c.gridx = 2;
-    c.gridheight = 1;
-    c.gridwidth = 3;
-    c.gridy = 0;
-    c.fill = GridBagConstraints.HORIZONTAL;
-    gb.setConstraints(_instructions, c);
-    _mainPanel.add(_instructions);
+	c.weightx = 1.0;
+	c.gridx = 2;
+	c.gridheight = 1;
+	c.gridwidth = 3;
+	c.gridy = 0;
+	c.fill = GridBagConstraints.HORIZONTAL;
+	gb.setConstraints(_instructions, c);
+	_mainPanel.add(_instructions);
 
-    c.gridx = 1;
-    c.gridy = 1;
-    c.weightx = 0.0;
-    c.gridwidth = 1;
-    c.fill = GridBagConstraints.NONE;
-    SpacerPanel spacer = new SpacerPanel();
-    gb.setConstraints(spacer, c);
-    _mainPanel.add(spacer);
+	c.gridx = 1;
+	c.gridy = 1;
+	c.weightx = 0.0;
+	c.gridwidth = 1;
+	c.fill = GridBagConstraints.NONE;
+	SpacerPanel spacer = new SpacerPanel();
+	gb.setConstraints(spacer, c);
+	_mainPanel.add(spacer);
 
-    c.gridx = 2;
-    c.gridy = 2;
-    c.weightx = 0.0;
-    c.gridwidth = 1;
-    gb.setConstraints(_label, c);
-    _mainPanel.add(_label);
+	c.gridx = 2;
+	c.gridy = 2;
+	c.weightx = 0.0;
+	c.gridwidth = 1;
+	gb.setConstraints(_label, c);
+	_mainPanel.add(_label);
 
-    c.weightx = 1.0;
-    c.fill = GridBagConstraints.HORIZONTAL;
-    c.gridx = 3;
-    c.gridy = 2;
-    gb.setConstraints(_field, c);
-    _mainPanel.add(_field);
+	c.weightx = 1.0;
+	c.fill = GridBagConstraints.HORIZONTAL;
+	c.gridx = 3;
+	c.gridy = 2;
+	gb.setConstraints(_field, c);
+	_mainPanel.add(_field);
 
-//     c.gridx = 1;
-//     c.gridy = 3;
-//     c.gridheight = GridBagConstraints.REMAINDER;
-//     SpacerPanel spacer2 = new SpacerPanel();
-//     gb.setConstraints(spacer2, c);
-//     _mainPanel.add(spacer2);
+	//     c.gridx = 1;
+	//     c.gridy = 3;
+	//     c.gridheight = GridBagConstraints.REMAINDER;
+	//     SpacerPanel spacer2 = new SpacerPanel();
+	//     gb.setConstraints(spacer2, c);
+	//     _mainPanel.add(spacer2);
 
-    _field.getDocument().addDocumentListener(this);
-  }
+	_field.getDocument().addDocumentListener(this);
+    }
 
-  public WizStepTextField(Wizard w, String instr, String lab, String val) {
-    this();
-    // store wizard?
-    _instructions.setText(instr);
-    _label.setText(lab);
-    _field.setText(val);
-  }
+    public WizStepTextField(Wizard w, String instr, String lab, String val) {
+	this();
+	// store wizard?
+	_instructions.setText(instr);
+	_label.setText(lab);
+	_field.setText(val);
+    }
 
-  public String getText() { return _field.getText(); }
+    public String getText() { return _field.getText(); }
 
 } /* end class WizStepTextField */

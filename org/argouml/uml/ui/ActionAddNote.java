@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,11 +67,8 @@ public class ActionAddNote extends UMLChangeAction {
             enabled = false;
         if (ModelFacade.isAModelElement(target)
             && !ModelFacade.isAComment(target)
-            && (ProjectManager
-                .getManager()
-                .getCurrentProject()
-                .getActiveDiagram()
-                .presentationFor(target)
+            && (ProjectManager.getManager().getCurrentProject()
+		    .getActiveDiagram().presentationFor(target)
                 instanceof FigNode))
             enabled = true;
         setEnabled(enabled);
@@ -91,7 +89,7 @@ public class ActionAddNote extends UMLChangeAction {
 
         if (target == null || !(target instanceof MModelElement))
             return;
-        MModelElement elem = (MModelElement)target;
+        MModelElement elem = (MModelElement) target;
         MComment comment = CoreFactory.getFactory().buildComment(elem);
 
         // calculate the position of the comment
@@ -126,9 +124,9 @@ public class ActionAddNote extends UMLChangeAction {
         } else if (elemFig instanceof FigEdge) {
             // we cannot do this yet since we have to modify all our edges probably
             /*
-            Point startPoint = new Point(elemFig.getX(), elemFig.getY());
-            Point endPoint = new Point(elemFig.getX() + elemFig.getWidth(), 
-                elemFig.getY() + elemFig.getHeight());
+	      Point startPoint = new Point(elemFig.getX(), elemFig.getY());
+	      Point endPoint = new Point(elemFig.getX() + elemFig.getWidth(), 
+	      elemFig.getY() + elemFig.getHeight());
             */
             UmlFactory.getFactory().delete(comment);
             return;

@@ -53,7 +53,7 @@ public class UMLCollaborationRepresentedOperationListModel
     protected void buildModelList() {
         Object target = getTarget();
         if (target instanceof MCollaboration) {
-            MCollaboration col = (MCollaboration)target;
+            MCollaboration col = (MCollaboration) target;
             removeAllElements();
             if (col.getRepresentedOperation() != null)
                 addElement(col.getRepresentedOperation());
@@ -65,7 +65,7 @@ public class UMLCollaborationRepresentedOperationListModel
      */
     protected boolean isValidElement(MBase elem) {
         return elem instanceof MOperation && 
-            ((MCollaboration)getTarget()).getRepresentedOperation() == elem;
+            ((MCollaboration) getTarget()).getRepresentedOperation() == elem;
     }
 
 }

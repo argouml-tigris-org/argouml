@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -54,7 +55,7 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        MInclude inc = (MInclude)getTarget();
+        MInclude inc = (MInclude) getTarget();
         if (inc == null) return;
         List list = new ArrayList();
         MNamespace ns = inc.getNamespace();
@@ -68,7 +69,7 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MInclude)getTarget()).getBase();
+            return ((MInclude) getTarget()).getBase();
         }
         return null;
     }
@@ -77,7 +78,7 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(Object element) {
-        return element instanceof MUseCase && ((MUseCase)element).getNamespace() == ((MInclude)getTarget()).getNamespace();
+        return element instanceof MUseCase && ((MUseCase) element).getNamespace() == ((MInclude) getTarget()).getNamespace();
     }
 
 }

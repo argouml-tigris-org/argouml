@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -81,7 +82,7 @@ public final class ArgoClassLoader extends ClassLoader {
 	    if (c == null) {
 	        // See if the class is in the jarfile
 		JarEntry je = jf.getJarEntry(classname + ".class");
-		int entrylength = (int)je.getSize();
+		int entrylength = (int) je.getSize();
 		DataInputStream di = new DataInputStream(jf.getInputStream(je));
 		byte[] classbytes = new byte[entrylength];
 		di.readFully(classbytes);

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -138,7 +139,7 @@ public class FileFilters {
      */
     public static String getSuffix(FileFilter filter) {
         if (filter instanceof SuffixFilter) {
-            return ((SuffixFilter)filter)._suffix;
+            return ((SuffixFilter) filter)._suffix;
         }
         return null;
     }

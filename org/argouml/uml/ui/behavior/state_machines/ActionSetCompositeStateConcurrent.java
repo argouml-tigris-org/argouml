@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -53,10 +54,10 @@ public class ActionSetCompositeStateConcurrent extends UMLChangeAction {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         if (e.getSource() instanceof UMLCheckBox2) {
-            UMLCheckBox2 source = (UMLCheckBox2)e.getSource();
+            UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
             if (target instanceof MCompositeState) {
-                MCompositeState m = (MCompositeState)target;
+                MCompositeState m = (MCompositeState) target;
                 m.setConcurent(!m.isConcurent());
             }
         }

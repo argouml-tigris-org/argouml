@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -49,14 +50,14 @@ public class UMLMessageSenderListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MMessage)getTarget()).getSender());
+        addElement(((MMessage) getTarget()).getSender());
     }
     
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase elem) {
-        return ((MMessage)getTarget()).getSender() == elem;
+        return ((MMessage) getTarget()).getSender() == elem;
     }
 
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -199,9 +200,9 @@ public class ProjectBrowser
         addWindowListener(new WindowCloser());
         ImageIcon argoImage =
             ResourceLoaderWrapper
-                .getResourceLoaderWrapper()
-                .lookupIconResource(
-                "ArgoIcon");
+	    .getResourceLoaderWrapper()
+	    .lookupIconResource(
+				"ArgoIcon");
         this.setIconImage(argoImage.getImage());
         // 
 
@@ -223,7 +224,9 @@ public class ProjectBrowser
      * @param key Non-localized string that tells the module where we are.
      */
     private void appendPluggableMenus(JMenuItem menuitem, String key) {
-        Object[] context = { menuitem, key };
+        Object[] context = {
+	    menuitem, key 
+	};
         ArrayList arraylist = Argo.getPlugins(PluggableMenu.class, context);
         ListIterator iterator = arraylist.listIterator();
         while (iterator.hasNext()) {
@@ -302,16 +305,16 @@ public class ProjectBrowser
         Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry entry = (Map.Entry) it.next();
-            String position = (String)entry.getKey();
+            String position = (String) entry.getKey();
             if (entry.getValue() instanceof DetailsPane) {
-                DetailsPane detailsPane = (DetailsPane)entry.getValue();
+                DetailsPane detailsPane = (DetailsPane) entry.getValue();
                 TargetManager.getInstance().addTargetListener(detailsPane);
             }
-            _workarea.add((Component)entry.getValue(), position);
+            _workarea.add((Component) entry.getValue(), position);
         }
         _workarea.add(_navPane, BorderSplitPane.WEST);
         
-        TabToDo todo = (TabToDo)getTab(TabToDo.class);
+        TabToDo todo = (TabToDo) getTab(TabToDo.class);
         //todo.setTree(_todoPane);
         _workarea.add(_todoPane, BorderSplitPane.SOUTHWEST);
         _workarea.add(_editorPane);
@@ -334,44 +337,44 @@ public class ProjectBrowser
     private void restorePanelSizes() {
         if (_northPane != null) {
             _northPane.setPreferredSize(
-                new Dimension(0, Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)));
+					new Dimension(0, Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)));
         }
         if (_southPane != null) {
             _southPane.setPreferredSize(
-                new Dimension(0, Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)));
+					new Dimension(0, Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)));
         }
         if (_eastPane != null) {
             _eastPane.setPreferredSize(
-                new Dimension(Configuration.getInteger(Argo.KEY_SCREEN_EAST_WIDTH, DEFAULT_COMPONENTHEIGHT), 0));
+				       new Dimension(Configuration.getInteger(Argo.KEY_SCREEN_EAST_WIDTH, DEFAULT_COMPONENTHEIGHT), 0));
         }
         if (_navPane != null) {
             _navPane.setPreferredSize(
-                new Dimension(Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, DEFAULT_COMPONENTHEIGHT), 0));
+				      new Dimension(Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, DEFAULT_COMPONENTHEIGHT), 0));
         }
-//        if (_northWestPane != null) {
-//            _northWestPane.setPreferredSize(new Dimension(
-//                Configuration.getInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
-//                Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-//            ));
-//        }
-//        if (_todoPane != null) {
-//            _todoPane.setPreferredSize(new Dimension(
-//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
-//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-//            ));
-//        }
-//        if (_northEastPane != null) {
-//            _northEastPane.setPreferredSize(new Dimension(
-//                Configuration.getInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
-//                Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-//            ));
-//        }
-//        if (_southEastPane != null) {
-//            _southEastPane.setPreferredSize(new Dimension(
-//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
-//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-//            ));
-//        }
+	//        if (_northWestPane != null) {
+	//            _northWestPane.setPreferredSize(new Dimension(
+	//                Configuration.getInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
+	//                Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+	//            ));
+	//        }
+	//        if (_todoPane != null) {
+	//            _todoPane.setPreferredSize(new Dimension(
+	//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
+	//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+	//            ));
+	//        }
+	//        if (_northEastPane != null) {
+	//            _northEastPane.setPreferredSize(new Dimension(
+	//                Configuration.getInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
+	//                Configuration.getInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+	//            ));
+	//        }
+	//        if (_southEastPane != null) {
+	//            _southEastPane.setPreferredSize(new Dimension(
+	//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, DEFAULT_COMPONENTWIDTH),
+	//                Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+	//            ));
+	//        }
     }
     ////////////////////////////////////////////////////////////////
     // accessors
@@ -439,48 +442,48 @@ public class ProjectBrowser
             cat.debug("setting project target = " + o);
 
             // _editorPane.setTarget(o);
-/*
-            _target = o;
-            if (o instanceof MNamespace) {
-                ProjectManager
-                    .getManager()
-                    .getCurrentProject()
-                    .setCurrentNamespace(
-                    (MNamespace) o);
-            } else if (o instanceof MModelElement) {
-                if (((MModelElement) o).getNamespace() != null) {
-                    ProjectManager
-                        .getManager()
-                        .getCurrentProject()
-                        .setCurrentNamespace(
-                        ((MModelElement) o).getNamespace());
-                } else
-                    ProjectManager
-                        .getManager()
-                        .getCurrentProject()
-                        .setCurrentNamespace(
-                        (MNamespace) ProjectManager
-                            .getManager()
-                            .getCurrentProject()
-                            .getRoot());
-            }
+	    /*
+	      _target = o;
+	      if (o instanceof MNamespace) {
+	      ProjectManager
+	      .getManager()
+	      .getCurrentProject()
+	      .setCurrentNamespace(
+	      (MNamespace) o);
+	      } else if (o instanceof MModelElement) {
+	      if (((MModelElement) o).getNamespace() != null) {
+	      ProjectManager
+	      .getManager()
+	      .getCurrentProject()
+	      .setCurrentNamespace(
+	      ((MModelElement) o).getNamespace());
+	      } else
+	      ProjectManager
+	      .getManager()
+	      .getCurrentProject()
+	      .setCurrentNamespace(
+	      (MNamespace) ProjectManager
+	      .getManager()
+	      .getCurrentProject()
+	      .getRoot());
+	      }
 
-            if (o instanceof ArgoDiagram) {
-                ProjectManager
-                    .getManager()
-                    .getCurrentProject()
-                    .setActiveDiagram(
-                    (ArgoDiagram) o);
-                if (o instanceof UMLDiagram) {
-                    MNamespace m = ((UMLDiagram) o).getNamespace();
-                    if (m != null)
-                        ProjectManager
-                            .getManager()
-                            .getCurrentProject()
-                            .setCurrentNamespace(
-                            m);
-                }
-            }
+	      if (o instanceof ArgoDiagram) {
+	      ProjectManager
+	      .getManager()
+	      .getCurrentProject()
+	      .setActiveDiagram(
+	      (ArgoDiagram) o);
+	      if (o instanceof UMLDiagram) {
+	      MNamespace m = ((UMLDiagram) o).getNamespace();
+	      if (m != null)
+	      ProjectManager
+	      .getManager()
+	      .getCurrentProject()
+	      .setCurrentNamespace(
+	      m);
+	      }
+	      }
             */
             // getNavigatorPane().getTree().setTarget(o);
             
@@ -529,7 +532,7 @@ public class ProjectBrowser
     /**
      * Select the tab page containing the todo item
      *
-     * @todo should introduce an instance variable to go straight to the correct tab instead of trying all
+     * TODO: should introduce an instance variable to go straight to the correct tab instead of trying all
      */
     public void setToDoItem(Object o) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
@@ -732,7 +735,7 @@ public class ProjectBrowser
     public boolean navigateBack(boolean attempt) {
         boolean navigated = false;
         if (attempt && TargetManager.getInstance().navigateBackPossible()) {
-           TargetManager.getInstance().navigateBackward();
+	    TargetManager.getInstance().navigateBackward();
         }
         return navigated;
     }
@@ -745,8 +748,8 @@ public class ProjectBrowser
         boolean navigated = false;
         if (attempt) {
             if (attempt && TargetManager.getInstance().navigateForwardPossible()) {
-           TargetManager.getInstance().navigateForward();
-        }
+		TargetManager.getInstance().navigateForward();
+	    }
         }
         return navigated;
     }
@@ -776,10 +779,10 @@ public class ProjectBrowser
         if (_eastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_EAST_WIDTH, _eastPane.getWidth());
         if (_northPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTH_HEIGHT, _northPane.getHeight());
         if (_southPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, _southPane.getHeight());
-//        if (_todoPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, _todoPane.getWidth());
-//        if (_southEastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, _southEastPane.getWidth());
-//        if (_northWestPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, _northWestPane.getWidth());
-//        if (_northEastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, _northEastPane.getWidth());
+	//        if (_todoPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, _todoPane.getWidth());
+	//        if (_southEastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_SOUTHEAST_WIDTH, _southEastPane.getWidth());
+	//        if (_northWestPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTHWEST_WIDTH, _northWestPane.getWidth());
+	//        if (_northEastPane != null) Configuration.setInteger(Argo.KEY_SCREEN_NORTHEAST_WIDTH, _northEastPane.getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());
@@ -827,8 +830,7 @@ public class ProjectBrowser
     public void propertyChange(PropertyChangeEvent evt) {
 
         // the project changed
-        if (evt
-            .getPropertyName()
+        if (evt.getPropertyName()
             .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
             Project p = (Project) evt.getNewValue();
             if (p != null) {
@@ -842,8 +844,8 @@ public class ProjectBrowser
 
         // the save state changed
         else if (
-            evt.getPropertyName().equals(
-                ProjectManager.SAVE_STATE_PROPERTY_NAME)) {
+		 evt.getPropertyName().equals(
+					      ProjectManager.SAVE_STATE_PROPERTY_NAME)) {
 
             String oldTitle = super.getTitle();
             if (((Boolean) evt.getNewValue()).booleanValue() == true
@@ -851,8 +853,8 @@ public class ProjectBrowser
 
                 super.setTitle(oldTitle + " *");
             } else if (
-                ((Boolean) evt.getNewValue()).booleanValue() == false
-                    && oldTitle.endsWith("*")) {
+		       ((Boolean) evt.getNewValue()).booleanValue() == false
+		       && oldTitle.endsWith("*")) {
 
                 super.setTitle(oldTitle.substring(0, oldTitle.length() - 2));
             }

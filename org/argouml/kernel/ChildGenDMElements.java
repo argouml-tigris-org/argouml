@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -35,12 +36,12 @@ import org.tigris.gef.util.*;
 import org.argouml.cognitive.*;
 
 public class ChildGenDMElements implements ChildGenerator {
-  /** Reply a Enumeration of the children of the given Object */
-  public Enumeration gen(Object o) {
-    if (o instanceof Design)
-      return ((Design)o).elements();
-    else
-      return EnumerationEmpty.theInstance();
-  }
+    /** Reply a Enumeration of the children of the given Object */
+    public Enumeration gen(Object o) {
+	if (o instanceof Design)
+	    return ((Design) o).elements();
+	else
+	    return EnumerationEmpty.theInstance();
+    }
 } /* end class ChildGenDMElements */
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,8 +53,8 @@ public class UMLClassifierListModel extends UMLModelElementCachedListModel  {
     private Class _classifierType;
     private Class _implClass;
     
-    public UMLClassifierListModel(UMLUserInterfaceContainer container,String property,boolean showNone,Class classifierType,Class implClass) {
-        super(container,property,showNone);
+    public UMLClassifierListModel(UMLUserInterfaceContainer container, String property, boolean showNone, Class classifierType, Class implClass) {
+        super(container, property, showNone);
         _classifierType = classifierType;
         _implClass = implClass;
     }
@@ -69,14 +70,14 @@ public class UMLClassifierListModel extends UMLModelElementCachedListModel  {
     public Collection getRawCollection() {
         Collection raw = null;
         Object target = getTarget();
-        if(target instanceof MNamespace) {
+        if (target instanceof MNamespace) {
             raw = ((MNamespace) target).getOwnedElements();
         }
         return raw;
     }
     
     protected java.util.List getCache() {
-        if(_classes == null) {
+        if (_classes == null) {
             _classes = buildCache();
         }
         return _classes;
@@ -84,7 +85,7 @@ public class UMLClassifierListModel extends UMLModelElementCachedListModel  {
             
     public void add(int index) {
         Object target = getTarget();
-        if(target instanceof MNamespace) {
+        if (target instanceof MNamespace) {
             MNamespace namespace = (MNamespace) target;
             
             MClassifier newClass = null;
@@ -96,13 +97,13 @@ public class UMLClassifierListModel extends UMLModelElementCachedListModel  {
                 newClass.setNamespace(namespace);
                 int oldSize = getModelElementSize();
                 namespace.addOwnedElement(newClass);
-                if(_classes != null) {
+                if (_classes != null) {
                     _classes.add(newClass);
                 }
-                fireIntervalAdded(this,oldSize,oldSize);
+                fireIntervalAdded(this, oldSize, oldSize);
                 navigateTo(newClass);
             }
-            catch(Exception e) {
+            catch (Exception e) {
                 cat.error(e.toString() + " in UMLClassifierListModel.add()", e);
             }
         }
@@ -111,28 +112,28 @@ public class UMLClassifierListModel extends UMLModelElementCachedListModel  {
     
     public void delete(int index) {
         Object target = getTarget();
-        if(target instanceof MNamespace && _classes != null) {
+        if (target instanceof MNamespace && _classes != null) {
             Object clas = _classes.get(index);
-            if(clas != null) {
+            if (clas != null) {
                 _classes.remove(index);
                 ((MNamespace) target).removeOwnedElement((MClassifier) clas);
                 resetSize();
-                fireIntervalRemoved(this,index,index);
+                fireIntervalRemoved(this, index, index);
             }
         }
     }
     
-    public boolean buildPopup(JPopupMenu popup,int index) {
+    public boolean buildPopup(JPopupMenu popup, int index) {
         UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
-        if(getModelElementSize() <= 0) {
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"), this, "open", index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"), this, "delete", index);
+        if (getModelElementSize() <= 0) {
             open.setEnabled(false);
             delete.setEnabled(false);
         }
 
         popup.add(open);
-        popup.add(new UMLListMenuItem(container.localize("Add"),this,"add",index));
+        popup.add(new UMLListMenuItem(container.localize("Add"), this, "add", index));
         popup.add(delete);
 
         return true;

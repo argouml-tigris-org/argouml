@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,29 +39,39 @@ import ru.novosoft.uml.foundation.data_types.*;
 public class UMLVisibilityPanel extends JPanel {
 
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public UMLVisibilityPanel(UMLUserInterfaceContainer container,Class mclass,int columns,boolean border) {
-      setLayout(new GridLayout(0,columns));
-      ButtonGroup group = new ButtonGroup();
-      UMLRadioButton publicButton = new UMLRadioButton("public",container,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null));
-      publicButton.setSelected(true);
-      add(publicButton);
-      group.add(publicButton);
+    ////////////////////////////////////////////////////////////////
+    // contructors
+    public UMLVisibilityPanel(UMLUserInterfaceContainer container,
+			      Class mclass, int columns, boolean border)
+    {
+	setLayout(new GridLayout(0, columns));
+	ButtonGroup group = new ButtonGroup();
+	UMLRadioButton publicButton = 
+	    new UMLRadioButton("public", container,
+		    new UMLEnumerationBooleanProperty("visibility",
+						      mclass,
+						      "getVisibility",
+						      "setVisibility",
+						      MVisibilityKind.class,
+						      MVisibilityKind.PUBLIC,
+						      null));
+	publicButton.setSelected(true);
+	add(publicButton);
+	group.add(publicButton);
     
-      UMLRadioButton protectedButton = new UMLRadioButton("protected",container,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PROTECTED,null));
-      add(protectedButton);
-      group.add(protectedButton);
+	UMLRadioButton protectedButton = new UMLRadioButton("protected", container, new UMLEnumerationBooleanProperty("visibility", mclass, "getVisibility", "setVisibility", MVisibilityKind.class, MVisibilityKind.PROTECTED, null));
+	add(protectedButton);
+	group.add(protectedButton);
     
-      UMLRadioButton privateButton = new UMLRadioButton("private",container,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PRIVATE,null));
-      add(privateButton);
-      group.add(privateButton);
+	UMLRadioButton privateButton = new UMLRadioButton("private", container, new UMLEnumerationBooleanProperty("visibility", mclass, "getVisibility", "setVisibility", MVisibilityKind.class, MVisibilityKind.PRIVATE, null));
+	add(privateButton);
+	group.add(privateButton);
     
-      if(border) {
-        Border titled = BorderFactory.createTitledBorder("Visibility");
-        setBorder(titled);
-      }
-  }
+	if (border) {
+	    Border titled = BorderFactory.createTitledBorder("Visibility");
+	    setBorder(titled);
+	}
+    }
 
   
 }

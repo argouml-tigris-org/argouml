@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -32,51 +33,51 @@ import org.argouml.xml.XMLTokenTableBase;
 
 public class ArgoTokenTable extends XMLTokenTableBase {
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public ArgoTokenTable() {
-    super(32);
-  }
+    public ArgoTokenTable() {
+	super(32);
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public static final String STRING_argo                   = "argo";
-  /** doesn't work
-   */  
-  public static final String STRING_authorname             = "authorname";
-  public static final String STRING_version                = "version";
-  public static final String STRING_description            = "description";
-  public static final String STRING_searchpath             = "searchpath";
-  public static final String STRING_member                 = "member";
-  public static final String STRING_historyfile            = "historyfile";
-  public static final String STRING_documentation          = "documentation";
+    ////////////////////////////////////////////////////////////////
+    // constants
+    public static final String STRING_argo                   = "argo";
+    /** doesn't work
+     */  
+    public static final String STRING_authorname             = "authorname";
+    public static final String STRING_version                = "version";
+    public static final String STRING_description            = "description";
+    public static final String STRING_searchpath             = "searchpath";
+    public static final String STRING_member                 = "member";
+    public static final String STRING_historyfile            = "historyfile";
+    public static final String STRING_documentation          = "documentation";
 
-  public static final int    TOKEN_argo                    = 1;
-  public static final int    TOKEN_authorname              = 2;
-  public static final int    TOKEN_version                 = 3;
-  public static final int    TOKEN_description             = 4;
-  public static final int    TOKEN_searchpath              = 5;
-  public static final int    TOKEN_member                  = 6;
-  public static final int    TOKEN_historyfile             = 7;
-  /** This can be saved successfully however there is no
-   * way to output this information.
-   */  
-  public static final int    TOKEN_documentation           = 8;
-  public static final int    TOKEN_undefined               = 9;
+    public static final int    TOKEN_argo                    = 1;
+    public static final int    TOKEN_authorname              = 2;
+    public static final int    TOKEN_version                 = 3;
+    public static final int    TOKEN_description             = 4;
+    public static final int    TOKEN_searchpath              = 5;
+    public static final int    TOKEN_member                  = 6;
+    public static final int    TOKEN_historyfile             = 7;
+    /** This can be saved successfully however there is no
+     * way to output this information.
+     */  
+    public static final int    TOKEN_documentation           = 8;
+    public static final int    TOKEN_undefined               = 9;
 
-  ////////////////////////////////////////////////////////////////
-  // protected methods
+    ////////////////////////////////////////////////////////////////
+    // protected methods
 
-  protected void setupTokens()
-  {
-    addToken(STRING_argo, new Integer(TOKEN_argo));
-    addToken(STRING_authorname, new Integer(TOKEN_authorname));
-    addToken(STRING_version, new Integer(TOKEN_version));
-    addToken(STRING_description, new Integer(TOKEN_description));
-    addToken(STRING_searchpath, new Integer(TOKEN_searchpath));
-    addToken(STRING_member, new Integer(TOKEN_member));
-    addToken(STRING_historyfile, new Integer(TOKEN_historyfile));
-  }
+    protected void setupTokens()
+    {
+	addToken(STRING_argo, new Integer(TOKEN_argo));
+	addToken(STRING_authorname, new Integer(TOKEN_authorname));
+	addToken(STRING_version, new Integer(TOKEN_version));
+	addToken(STRING_description, new Integer(TOKEN_description));
+	addToken(STRING_searchpath, new Integer(TOKEN_searchpath));
+	addToken(STRING_member, new Integer(TOKEN_member));
+	addToken(STRING_historyfile, new Integer(TOKEN_historyfile));
+    }
 
 } /* end class ArgoTokenTable */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -46,94 +47,94 @@ import ru.novosoft.uml.xmi.*;
 
 public class JavaUML {
 
-  // java.lang
+    // java.lang
 
-  public static MClass STRING_CLASS = UmlFactory.getFactory().getCore().createClass();
+    public static MClass STRING_CLASS = UmlFactory.getFactory().getCore().createClass();
 
-  public static MDataType VOID_TYPE = UmlFactory.getFactory().getCore().createDataType();
-  public static MDataType CHAR_TYPE = UmlFactory.getFactory().getCore().createDataType();
-  public static MDataType INT_TYPE = UmlFactory.getFactory().getCore().createDataType();
-  public static MDataType BOOLEAN_TYPE = UmlFactory.getFactory().getCore().createDataType();
-  public static MDataType BYTE_TYPE = UmlFactory.getFactory().getCore().createDataType();
-  public static MDataType LONG_TYPE = UmlFactory.getFactory().getCore().createDataType();
-  public static MDataType FLOAT_TYPE = UmlFactory.getFactory().getCore().createDataType();
-  public static MDataType DOUBLE_TYPE = UmlFactory.getFactory().getCore().createDataType();
+    public static MDataType VOID_TYPE = UmlFactory.getFactory().getCore().createDataType();
+    public static MDataType CHAR_TYPE = UmlFactory.getFactory().getCore().createDataType();
+    public static MDataType INT_TYPE = UmlFactory.getFactory().getCore().createDataType();
+    public static MDataType BOOLEAN_TYPE = UmlFactory.getFactory().getCore().createDataType();
+    public static MDataType BYTE_TYPE = UmlFactory.getFactory().getCore().createDataType();
+    public static MDataType LONG_TYPE = UmlFactory.getFactory().getCore().createDataType();
+    public static MDataType FLOAT_TYPE = UmlFactory.getFactory().getCore().createDataType();
+    public static MDataType DOUBLE_TYPE = UmlFactory.getFactory().getCore().createDataType();
 
-  public static MClass CHAR_CLASS = UmlFactory.getFactory().getCore().createClass();
-  public static MClass INT_CLASS = UmlFactory.getFactory().getCore().createClass();
-  public static MClass BOOLEAN_CLASS = UmlFactory.getFactory().getCore().createClass();
-  public static MClass BYTE_CLASS = UmlFactory.getFactory().getCore().createClass();
-  public static MClass LONG_CLASS = UmlFactory.getFactory().getCore().createClass();
-  public static MClass FLOAT_CLASS = UmlFactory.getFactory().getCore().createClass();
-  public static MClass DOUBLE_CLASS = UmlFactory.getFactory().getCore().createClass();
-
-
-  // java.awt
-  public static MClass RECTANGLE_CLASS = UmlFactory.getFactory().getCore().createClass();
-  public static MClass POINT_CLASS = UmlFactory.getFactory().getCore().createClass();
-  public static MClass COLOR_CLASS = UmlFactory.getFactory().getCore().createClass();
+    public static MClass CHAR_CLASS = UmlFactory.getFactory().getCore().createClass();
+    public static MClass INT_CLASS = UmlFactory.getFactory().getCore().createClass();
+    public static MClass BOOLEAN_CLASS = UmlFactory.getFactory().getCore().createClass();
+    public static MClass BYTE_CLASS = UmlFactory.getFactory().getCore().createClass();
+    public static MClass LONG_CLASS = UmlFactory.getFactory().getCore().createClass();
+    public static MClass FLOAT_CLASS = UmlFactory.getFactory().getCore().createClass();
+    public static MClass DOUBLE_CLASS = UmlFactory.getFactory().getCore().createClass();
 
 
-  // java.util
-  public static MClass VECTOR_CLASS = UmlFactory.getFactory().getCore().createClass();
-  public static MClass HASHTABLE_CLASS = UmlFactory.getFactory().getCore().createClass();
-  public static MClass STACK_CLASS = UmlFactory.getFactory().getCore().createClass();
+    // java.awt
+    public static MClass RECTANGLE_CLASS = UmlFactory.getFactory().getCore().createClass();
+    public static MClass POINT_CLASS = UmlFactory.getFactory().getCore().createClass();
+    public static MClass COLOR_CLASS = UmlFactory.getFactory().getCore().createClass();
 
-	public static MModel javastandards = UmlFactory.getFactory().getModelManagement().createModel();
 
-  static{
-   STRING_CLASS.setName("String");
-   CHAR_CLASS.setName("Character");
-   INT_CLASS.setName("Integer");
-   BOOLEAN_CLASS.setName("Boolean");
-   BYTE_CLASS.setName("Byte");
-   LONG_CLASS.setName("Long");
-   FLOAT_CLASS.setName("Float");
-   DOUBLE_CLASS.setName("Double");
-   RECTANGLE_CLASS.setName("Rectangle");
-   POINT_CLASS.setName("Point");
-   COLOR_CLASS.setName("Color");
-   VECTOR_CLASS.setName("Vector");
-   HASHTABLE_CLASS.setName("Hashtable");
-   STACK_CLASS.setName("Stack");
+    // java.util
+    public static MClass VECTOR_CLASS = UmlFactory.getFactory().getCore().createClass();
+    public static MClass HASHTABLE_CLASS = UmlFactory.getFactory().getCore().createClass();
+    public static MClass STACK_CLASS = UmlFactory.getFactory().getCore().createClass();
 
-   VOID_TYPE.setName("void");
-   CHAR_TYPE.setName("char");
-   INT_TYPE.setName("int");
-   BOOLEAN_TYPE.setName("boolean");
-   BYTE_TYPE.setName("byte");
-   LONG_TYPE.setName("long");
-   FLOAT_TYPE.setName("float");
-   DOUBLE_TYPE.setName("double");
+    public static MModel javastandards = UmlFactory.getFactory().getModelManagement().createModel();
 
-//    javastandards.addOwnedElement(STRING_CLASS);
-//    javastandards.addOwnedElement(CHAR_CLASS);
-//    javastandards.addOwnedElement(INT_CLASS);
-//    javastandards.addOwnedElement(BOOLEAN_CLASS);
-//    javastandards.addOwnedElement(BYTE_CLASS);
-//    javastandards.addOwnedElement(LONG_CLASS);
-//    javastandards.addOwnedElement(FLOAT_CLASS);
-//    javastandards.addOwnedElement(DOUBLE_CLASS);
-//    javastandards.addOwnedElement(RECTANGLE_CLASS);
-//    javastandards.addOwnedElement(POINT_CLASS);
-//    javastandards.addOwnedElement(COLOR_CLASS);
-//    javastandards.addOwnedElement(VECTOR_CLASS);
-//    javastandards.addOwnedElement(HASHTABLE_CLASS);
-//    javastandards.addOwnedElement(STACK_CLASS);
-//    javastandards.addOwnedElement(VOID_TYPE);
-//    javastandards.addOwnedElement(CHAR_TYPE);
-//    javastandards.addOwnedElement(INT_TYPE);
-//    javastandards.addOwnedElement(BOOLEAN_TYPE);
-//    javastandards.addOwnedElement(BYTE_TYPE);
-//    javastandards.addOwnedElement(LONG_TYPE);
-//    javastandards.addOwnedElement(FLOAT_TYPE);
-//    javastandards.addOwnedElement(DOUBLE_TYPE);
+    static {
+	STRING_CLASS.setName("String");
+	CHAR_CLASS.setName("Character");
+	INT_CLASS.setName("Integer");
+	BOOLEAN_CLASS.setName("Boolean");
+	BYTE_CLASS.setName("Byte");
+	LONG_CLASS.setName("Long");
+	FLOAT_CLASS.setName("Float");
+	DOUBLE_CLASS.setName("Double");
+	RECTANGLE_CLASS.setName("Rectangle");
+	POINT_CLASS.setName("Point");
+	COLOR_CLASS.setName("Color");
+	VECTOR_CLASS.setName("Vector");
+	HASHTABLE_CLASS.setName("Hashtable");
+	STACK_CLASS.setName("Stack");
 
-//    UUIDManager.SINGLETON.createModelUUIDS(javastandards);
-//    javastandards.setName("Javastandards");
-   //try {XMIWriter writer = new XMIWriter(javastandards, "java.xmi");writer.gen();} catch (Exception e) {}
+	VOID_TYPE.setName("void");
+	CHAR_TYPE.setName("char");
+	INT_TYPE.setName("int");
+	BOOLEAN_TYPE.setName("boolean");
+	BYTE_TYPE.setName("byte");
+	LONG_TYPE.setName("long");
+	FLOAT_TYPE.setName("float");
+	DOUBLE_TYPE.setName("double");
 
-  }
+	//    javastandards.addOwnedElement(STRING_CLASS);
+	//    javastandards.addOwnedElement(CHAR_CLASS);
+	//    javastandards.addOwnedElement(INT_CLASS);
+	//    javastandards.addOwnedElement(BOOLEAN_CLASS);
+	//    javastandards.addOwnedElement(BYTE_CLASS);
+	//    javastandards.addOwnedElement(LONG_CLASS);
+	//    javastandards.addOwnedElement(FLOAT_CLASS);
+	//    javastandards.addOwnedElement(DOUBLE_CLASS);
+	//    javastandards.addOwnedElement(RECTANGLE_CLASS);
+	//    javastandards.addOwnedElement(POINT_CLASS);
+	//    javastandards.addOwnedElement(COLOR_CLASS);
+	//    javastandards.addOwnedElement(VECTOR_CLASS);
+	//    javastandards.addOwnedElement(HASHTABLE_CLASS);
+	//    javastandards.addOwnedElement(STACK_CLASS);
+	//    javastandards.addOwnedElement(VOID_TYPE);
+	//    javastandards.addOwnedElement(CHAR_TYPE);
+	//    javastandards.addOwnedElement(INT_TYPE);
+	//    javastandards.addOwnedElement(BOOLEAN_TYPE);
+	//    javastandards.addOwnedElement(BYTE_TYPE);
+	//    javastandards.addOwnedElement(LONG_TYPE);
+	//    javastandards.addOwnedElement(FLOAT_TYPE);
+	//    javastandards.addOwnedElement(DOUBLE_TYPE);
+
+	//    UUIDManager.SINGLETON.createModelUUIDS(javastandards);
+	//    javastandards.setName("Javastandards");
+	//try {XMIWriter writer = new XMIWriter(javastandards, "java.xmi");writer.gen();} catch (Exception e) {}
+
+    }
 
 
 } /* end class JavaUML */

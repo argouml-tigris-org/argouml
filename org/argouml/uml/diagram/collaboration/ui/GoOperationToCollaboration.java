@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -37,14 +38,14 @@ import ru.novosoft.uml.foundation.core.MOperation;
  */
 public class GoOperationToCollaboration extends AbstractGoRule {
 
-    public String getRuleName() { return "Operation->Collaboration";}
+    public String getRuleName() { return "Operation->Collaboration"; }
 
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
         if (parent instanceof MOperation) {
-            return ((MOperation)parent).getCollaborations();
+            return ((MOperation) parent).getCollaborations();
         }
         return null;
     }

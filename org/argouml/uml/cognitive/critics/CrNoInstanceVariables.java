@@ -46,12 +46,12 @@ import org.argouml.model.ModelFacade;
  */
 public class CrNoInstanceVariables extends CrUML {
 
-  public CrNoInstanceVariables() {
-    setHeadline("Add Instance Variables to <ocl>self</ocl>");
-    addSupportedDecision(CrUML.decSTORAGE);
-    setKnowledgeTypes(Critic.KT_COMPLETENESS);
-    addTrigger("structuralFeature");
-  }
+    public CrNoInstanceVariables() {
+	setHeadline("Add Instance Variables to <ocl>self</ocl>");
+	addSupportedDecision(CrUML.decSTORAGE);
+	setKnowledgeTypes(Critic.KT_COMPLETENESS);
+	addTrigger("structuralFeature");
+    }
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -49,27 +50,32 @@ public final class UMLExpressionModel  {
     private static final Class[] _noClasses = {};
     private static final String _emptyStr = "";
     
-    public UMLExpressionModel(UMLUserInterfaceContainer container,Class targetClass,String propertyName,Class expressionClass,String getMethodName,String setMethodName) {
+    public UMLExpressionModel(UMLUserInterfaceContainer container, Class targetClass, String propertyName, Class expressionClass, String getMethodName, String setMethodName) {
         
         _container = container;
         _propertyName = propertyName;
         _mustRefresh = true;
         try {
-            _getMethod = targetClass.getMethod(getMethodName,_noClasses);
+            _getMethod = targetClass.getMethod(getMethodName, _noClasses);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             cat.error(e.toString() + " in UMLExpressionModel() for " + getMethodName, e);
         }
         try {
-            _setMethod = targetClass.getMethod(setMethodName,new Class[] { expressionClass });
+            _setMethod = targetClass.getMethod(setMethodName, new Class[] {
+		expressionClass 
+	    });
         }
-        catch(Exception e) {
+        catch (Exception e) {
             cat.error(e.toString() + " in UMLExpressionModel() for " + setMethodName, e);
         }
         try {
-            _constructor = expressionClass.getConstructor(new Class[] { String.class, String.class });
+            _constructor = expressionClass.getConstructor(new Class[] {
+		String.class, 
+		String.class 
+	    });
         }
-        catch(Exception e) {
+        catch (Exception e) {
             cat.error(e.toString() + " in UMLExpressionModel() for " + expressionClass.getName(), e);
         }
     }
@@ -81,7 +87,7 @@ public final class UMLExpressionModel  {
     public boolean propertySet(MElementEvent event) {
         boolean isAffected = false;
         String eventName = event.getName();
-        if(eventName != null && eventName.equals(_propertyName)) {
+        if (eventName != null && eventName.equals(_propertyName)) {
             isAffected = true;
             _mustRefresh = true;
         }
@@ -89,14 +95,14 @@ public final class UMLExpressionModel  {
     }
 
     public MExpression getExpression() {
-        if(_mustRefresh) {
+        if (_mustRefresh) {
             _expression = null;
             Object target = _container.getTarget();
-            if(_getMethod != null && target != null) {
+            if (_getMethod != null && target != null) {
                 try {
-                    _expression = (MExpression) _getMethod.invoke(target,_noArgs);
+                    _expression = (MExpression) _getMethod.invoke(target, _noArgs);
                 }
-                catch(Exception e) {
+                catch (Exception e) {
                     cat.error(e.toString() + " in UMLExpressionModel.getExpression()", e);
                 }
             }
@@ -107,20 +113,20 @@ public final class UMLExpressionModel  {
     }
     
     public String getLanguage() {
-        if(_mustRefresh) {
+        if (_mustRefresh) {
             getExpression();
         }
-        if(_expression == null) {
+        if (_expression == null) {
             return _emptyStr;
         }
         return _expression.getLanguage();
     }
     
     public String getBody() {
-        if(_mustRefresh) {
+        if (_mustRefresh) {
             getExpression();
         }
-        if(_expression == null) {
+        if (_expression == null) {
             return _emptyStr;
         }
         return _expression.getBody();
@@ -128,54 +134,58 @@ public final class UMLExpressionModel  {
     
     public void setLanguage(String lang) {
         boolean mustChange = true;
-        if(_expression != null) {
+        if (_expression != null) {
             String oldValue = _expression.getLanguage();
-            if(oldValue != null && oldValue.equals(lang)) {
+            if (oldValue != null && oldValue.equals(lang)) {
                 mustChange = false;
             }
         }
-        if(mustChange) {
+        if (mustChange) {
             String body = null;
-            if(_expression != null) {
+            if (_expression != null) {
                 body = _expression.getBody();
             }
-            if(body == null) body = _emptyStr;
+            if (body == null) body = _emptyStr;
             
-            setExpression(lang,body);
+            setExpression(lang, body);
         }
     }
     
     public void setBody(String body) {
         boolean mustChange = true;
-        if(_expression != null) {
+        if (_expression != null) {
             String oldValue = _expression.getBody();
-            if(oldValue != null && oldValue.equals(body)) {
+            if (oldValue != null && oldValue.equals(body)) {
                 mustChange = false;
             }
         }
-        if(mustChange) {
+        if (mustChange) {
             String lang = null;
-            if(_expression != null) {
+            if (_expression != null) {
                 lang = _expression.getLanguage();
             }
-            if(lang == null) lang = _emptyStr;
+            if (lang == null) lang = _emptyStr;
             
-            setExpression(lang,body);
+            setExpression(lang, body);
         }
     }
     
     
-    private void setExpression(String lang,String body) {
+    private void setExpression(String lang, String body) {
         try {
             //MExpression newExpression = (MExpression) _constructor.newInstance(new Object[] { lang,body });
-            _expression = (MExpression) _constructor.newInstance(new Object[] { lang,body });
+            _expression = (MExpression) _constructor.newInstance(new Object[] {
+		lang, body 
+	    }); 
             
             Object target = _container.getTarget();
-            if(target != null) {
-                _setMethod.invoke(target,new Object[] { _expression});
+            if (target != null) {
+                _setMethod.invoke(target, new Object[] {
+		    _expression
+		});
             }
         }
-        catch(Exception e) {
+        catch (Exception e) {
             cat.error(e.toString() + " in UMLExpressionModel.setExpression()", e);
         }
     }

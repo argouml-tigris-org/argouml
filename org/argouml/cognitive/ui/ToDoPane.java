@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -182,9 +183,9 @@ public class ToDoPane extends JPanel
         toolbarPanel.add(_toolbar, BorderLayout.WEST);
         
         ImageIcon hierarchicalIcon = ResourceLoaderWrapper.getResourceLoaderWrapper()
-                    .lookupIconResource("Hierarchical", "Hierarchical");
+	    .lookupIconResource("Hierarchical", "Hierarchical");
         ImageIcon flatIcon = ResourceLoaderWrapper.getResourceLoaderWrapper()
-                    .lookupIconResource("Flat", "Flat");
+	    .lookupIconResource("Flat", "Flat");
         _flatButton.setIcon(hierarchicalIcon);
         _flatButton.setSelectedIcon(flatIcon);
         add(toolbarPanel, BorderLayout.NORTH);
@@ -247,7 +248,7 @@ public class ToDoPane extends JPanel
         else if (pers.contains(_curPerspective))
             setCurPerspective(_curPerspective);
         else
-            setCurPerspective((ToDoPerspective)_perspectives.elementAt(0));
+            setCurPerspective((ToDoPerspective) _perspectives.elementAt(0));
         updateTree();
     }
     
@@ -318,8 +319,8 @@ public class ToDoPane extends JPanel
         Object sel = getSelectedObject();
         ProjectBrowser.getInstance().setToDoItem(sel);
         
-        if (_lastSel instanceof ToDoItem) ((ToDoItem)_lastSel).deselect();
-        if (sel instanceof ToDoItem) ((ToDoItem)sel).select();
+        if (_lastSel instanceof ToDoItem) ((ToDoItem) _lastSel).deselect();
+        if (sel instanceof ToDoItem) ((ToDoItem) sel).select();
         _lastSel = sel;
     }
     
@@ -339,7 +340,7 @@ public class ToDoPane extends JPanel
         int row = _tree.getRowForLocation(e.getX(), e.getY());
         TreePath path = _tree.getPathForLocation(e.getX(), e.getY());
         if (row != -1) {
-            if (e.getClickCount() >=2) {
+            if (e.getClickCount() >= 2) {
                 myDoubleClick(row, path);               
             } else {
                 mySingleClick(row, path);
@@ -354,27 +355,27 @@ public class ToDoPane extends JPanel
     /** to be documented */
     public void toDoItemsChanged(ToDoListEvent tde) {
         if (_curPerspective instanceof ToDoListListener)
-            ((ToDoListListener)_curPerspective).toDoItemsChanged(tde);
+            ((ToDoListListener) _curPerspective).toDoItemsChanged(tde);
     }
     
     /** to be documented */
     public void toDoItemsAdded(ToDoListEvent tde) {
         if (_curPerspective instanceof ToDoListListener)
-            ((ToDoListListener)_curPerspective).toDoItemsAdded(tde);
+            ((ToDoListListener) _curPerspective).toDoItemsAdded(tde);
         updateCountLabel();
     }
     
     /** to be documented */
     public void toDoItemsRemoved(ToDoListEvent tde) {
         if (_curPerspective instanceof ToDoListListener)
-            ((ToDoListListener)_curPerspective).toDoItemsRemoved(tde);
+            ((ToDoListListener) _curPerspective).toDoItemsRemoved(tde);
         updateCountLabel();
     }
     
     /** to be documented */
     public void toDoListChanged(ToDoListEvent tde) {
         if (_curPerspective instanceof ToDoListListener)
-            ((ToDoListListener)_curPerspective).toDoListChanged(tde);
+            ((ToDoListListener) _curPerspective).toDoListChanged(tde);
         updateCountLabel();
     }
     
@@ -384,18 +385,20 @@ public class ToDoPane extends JPanel
     /** to be documented */
     private static String formatCountLabel(int size) {
         switch (size) {
-            case 0:
-                return Argo.localize("Cognitive", "todopane.label.no-items");
-            case 1:
-                return MessageFormat.
-                        format(Argo.localize("Cognitive", "todopane.label.item"),
-                        new Object[] { new Integer(size) }
-                );
-            default:
-                return MessageFormat.
-                        format(Argo.localize("Cognitive", "todopane.label.items"),
-                        new Object[] { new Integer(size) }
-                );
+	case 0:
+	    return Argo.localize("Cognitive", "todopane.label.no-items");
+	case 1:
+	    return MessageFormat.
+		format(Argo.localize("Cognitive", "todopane.label.item"),
+		       new Object[] {
+			   new Integer(size) 
+		       });
+	default:
+	    return MessageFormat.
+		format(Argo.localize("Cognitive", "todopane.label.items"),
+		       new Object[] {
+			   new Integer(size) 
+		       });
         }
     }
     
@@ -408,7 +411,7 @@ public class ToDoPane extends JPanel
         _countLabel.setText(formatCountLabel(size));
         _countLabel.setOpaque(size > WARN_THRESHOLD);
         _countLabel.setBackground((size >= ALARM_THRESHOLD) ? ALARM_COLOR
-                                                             : WARN_COLOR);
+				  : WARN_COLOR);
     }
     
     /** to be documented */
@@ -437,11 +440,11 @@ public class ToDoPane extends JPanel
     public void mySingleClick(int row, TreePath path) {
         _clicksInToDoPane++;
         /*
-        if (getSelectedObject() == null) return;
-         Object sel = getSelectedObject();
-         if (sel instanceof ToDoItem) 
-             selectItem((ToDoItem)sel);
-        cat.debug("1: " + getSelectedObject().toString());
+	  if (getSelectedObject() == null) return;
+	  Object sel = getSelectedObject();
+	  if (sel instanceof ToDoItem) 
+	  selectItem((ToDoItem)sel);
+	  cat.debug("1: " + getSelectedObject().toString());
         */
     }
     
@@ -455,8 +458,8 @@ public class ToDoPane extends JPanel
         if (getSelectedObject() == null) return;
         Object sel = getSelectedObject();
         if (sel instanceof ToDoItem) {
-            ((ToDoItem)sel).action();
-            VectorSet offs = ((ToDoItem)sel).getOffenders();
+            ((ToDoItem) sel).action();
+            VectorSet offs = ((ToDoItem) sel).getOffenders();
             ProjectBrowser.getInstance().jumpToDiagramShowing(offs);
         }
         
@@ -468,7 +471,7 @@ public class ToDoPane extends JPanel
     /**
      * the perspectives to be chosen in the combobox are built here.
      */
-    private Vector buildPerspectives(){
+    private Vector buildPerspectives() {
         
         ToDoPerspective priority = new ToDoByPriority();
         ToDoPerspective decision = new ToDoByDecision();

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -55,102 +56,102 @@ import org.argouml.uml.diagram.sequence.*;
 
 public class TablePanelUMLSequenceDiagram extends TablePanel {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  JSortedTable _table2 = new JSortedTable();
-  JPanel sp2W;
-  TableModelComposite _tableModelSeqStimulusByProps = new TableModelSeqStimulusByProps();
-  JPanel _south = new JPanel();
-  JScrollPane _sp2;
+    JSortedTable _table2 = new JSortedTable();
+    JPanel sp2W;
+    TableModelComposite _tableModelSeqStimulusByProps = new TableModelSeqStimulusByProps();
+    JPanel _south = new JPanel();
+    JScrollPane _sp2;
 
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public TablePanelUMLSequenceDiagram() {
-    super("UMLDeploymentDiagram");    
+    public TablePanelUMLSequenceDiagram() {
+	super("UMLDeploymentDiagram");    
 
-    _south.setLayout(new GridLayout(2, 2, 5, 5));
+	_south.setLayout(new GridLayout(2, 2, 5, 5));
 
-    _sp2 = new JScrollPane(_table2,
-			   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-			   JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	_sp2 = new JScrollPane(_table2,
+			       JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+			       JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-    _sp1.setPreferredSize(new Dimension(300, 300));
-    _sp1.setSize(new Dimension(300, 300));
+	_sp1.setPreferredSize(new Dimension(300, 300));
+	_sp1.setSize(new Dimension(300, 300));
 
-    _sp2.setPreferredSize(new Dimension(300, 100));
-    _sp2.setSize(new Dimension(300, 100));
+	_sp2.setPreferredSize(new Dimension(300, 100));
+	_sp2.setSize(new Dimension(300, 100));
 
-    _content.setPreferredSize(new Dimension(300, 600));
-    _content.setSize(new Dimension(300, 600));
+	_content.setPreferredSize(new Dimension(300, 600));
+	_content.setSize(new Dimension(300, 600));
 
-    sp2W = new JPanel();
-    sp2W.setLayout(new BorderLayout());
-    sp2W.add(new JLabel("Stimuli of selected communication-link:"), BorderLayout.NORTH);
-    sp2W.add(_sp2, BorderLayout.CENTER);
+	sp2W = new JPanel();
+	sp2W.setLayout(new BorderLayout());
+	sp2W.add(new JLabel("Stimuli of selected communication-link:"), BorderLayout.NORTH);
+	sp2W.add(_sp2, BorderLayout.CENTER);
 
-    _south.add(sp2W);
+	_south.add(sp2W);
 
-    _content.add(_south, BorderLayout.SOUTH);
+	_content.add(_south, BorderLayout.SOUTH);
 
-    Font labelFont = MetalLookAndFeel.getSubTextFont();
-    _table2.setFont(labelFont);
-    setEditors(_table2);
+	Font labelFont = MetalLookAndFeel.getSubTextFont();
+	_table2.setFont(labelFont);
+	setEditors(_table2);
 
-    _table2.getSelectionModel().addListSelectionListener(this);
-  }
+	_table2.getSelectionModel().addListSelectionListener(this);
+    }
 
-  /////////////////////////////////////////////////////////////////
-  // ListSelectionListener implemention
+    /////////////////////////////////////////////////////////////////
+    // ListSelectionListener implemention
 
-  public void valueChanged(ListSelectionEvent lse) {
-    super.valueChanged(lse);
-    if (lse.getValueIsAdjusting()) return;
-    Object src = lse.getSource();
-    _table2.sizeColumnsToFit(-1);
-    if (src == _table2.getSelectionModel()) {
-      int row = lse.getFirstIndex();
-      if (_tableModelSeqStimulusByProps != null) {
-	Vector rowObjects = _tableModelSeqStimulusByProps.getRowObjects();
-	if (row >= 0 && row < rowObjects.size()) {
-	  Object sel = rowObjects.elementAt(row);
-	  objectSelected(sel);
-	  return;
+    public void valueChanged(ListSelectionEvent lse) {
+	super.valueChanged(lse);
+	if (lse.getValueIsAdjusting()) return;
+	Object src = lse.getSource();
+	_table2.sizeColumnsToFit(-1);
+	if (src == _table2.getSelectionModel()) {
+	    int row = lse.getFirstIndex();
+	    if (_tableModelSeqStimulusByProps != null) {
+		Vector rowObjects = _tableModelSeqStimulusByProps.getRowObjects();
+		if (row >= 0 && row < rowObjects.size()) {
+		    Object sel = rowObjects.elementAt(row);
+		    objectSelected(sel);
+		    return;
+		}
+	    }
 	}
-      }
     }
-  }
 
-  public void objectSelected(Object sel) {
-    super.objectSelected(sel);
-    if (sel instanceof MLink) {
-      _tableModelSeqStimulusByProps.setTarget((MLink)sel);
+    public void objectSelected(Object sel) {
+	super.objectSelected(sel);
+	if (sel instanceof MLink) {
+	    _tableModelSeqStimulusByProps.setTarget((MLink) sel);
+	}
     }
-  }
 
 
 
-  public void setTablePerspective() {
-    super.setTablePerspective();
-    if (_tableModel instanceof TableModelSeqLinkByProps) {
-      _south.removeAll();
-      _south.add(sp2W);
-      _table2.setModel(_tableModelSeqStimulusByProps);
-      _south.setVisible(true);
+    public void setTablePerspective() {
+	super.setTablePerspective();
+	if (_tableModel instanceof TableModelSeqLinkByProps) {
+	    _south.removeAll();
+	    _south.add(sp2W);
+	    _table2.setModel(_tableModelSeqStimulusByProps);
+	    _south.setVisible(true);
+	}
+	else {
+	    _south.setVisible(false);
+	}
+	validate();
     }
-    else {
-      _south.setVisible(false);
-    }
-    validate();
-  }
 
     public void initTableModels() {
-    _tableModels.addElement(new TableModelSeqObjectByProps());
-    _tableModels.addElement(new TableModelSeqLinkByProps());
-    _tableModels.addElement(new TableModelSeqStimulusByProps());
-    _tableModels.addElement(new TableModelSeqActionByProps());
-  }
+	_tableModels.addElement(new TableModelSeqObjectByProps());
+	_tableModels.addElement(new TableModelSeqLinkByProps());
+	_tableModels.addElement(new TableModelSeqStimulusByProps());
+	_tableModels.addElement(new TableModelSeqActionByProps());
+    }
 
 } /* end class TablePanelUMLSequenceDiagram */

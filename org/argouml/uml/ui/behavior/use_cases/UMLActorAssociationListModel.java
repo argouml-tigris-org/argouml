@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -46,28 +47,27 @@ import org.argouml.uml.ui.UMLUserInterfaceContainer;
  */
 public class UMLActorAssociationListModel extends UMLConnectionListModel {
 
-	/**
-	 * Constructor for UMLActorAssociationListModel.
-	 * @param container
-	 * @param property
-	 * @param showNone
-	 */
-	public UMLActorAssociationListModel(
-		UMLUserInterfaceContainer container,
-		String property,
-		boolean showNone) {
-		super(container, property, showNone);
-	}
+    /**
+     * Constructor for UMLActorAssociationListModel.
+     * @param container
+     * @param property
+     * @param showNone
+     */
+    public UMLActorAssociationListModel(UMLUserInterfaceContainer container,
+					String property,
+					boolean showNone) {
+	super(container, property, showNone);
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
-	 */
-	protected Collection getChoices() {
-		Vector choices = new Vector();
-		choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
-		choices.addAll(CoreHelper.getHelper().getAllClasses());
-		choices.addAll(ModelManagementHelper.getHelper().getAllSubSystems());
-		return choices;
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
+     */
+    protected Collection getChoices() {
+	Vector choices = new Vector();
+	choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
+	choices.addAll(CoreHelper.getHelper().getAllClasses());
+	choices.addAll(ModelManagementHelper.getHelper().getAllSubSystems());
+	return choices;
+    }
 
 }

@@ -102,13 +102,13 @@ public final class TargetManager {
             if (_currentTarget > -1) {
                 // only targets we didn't have allready count
                 Object modelTarget =
-                    target instanceof Fig ? ((Fig)target).getOwner() : target;
+                    target instanceof Fig ? ((Fig) target).getOwner() : target;
                 Object oldTarget =
-                    ((WeakReference)_history.get(_currentTarget)).get();
+                    ((WeakReference) _history.get(_currentTarget)).get();
                 oldTarget =
                     oldTarget instanceof Fig
-                        ? ((Fig)oldTarget).getOwner()
-                        : oldTarget;
+		    ? ((Fig) oldTarget).getOwner()
+		    : oldTarget;
                 if (oldTarget == modelTarget)
                     return;
             }
@@ -120,8 +120,8 @@ public final class TargetManager {
                 } else {
                     WeakReference ref =
                         _currentTarget > -1
-                            ? (WeakReference)_history.get(_currentTarget)
-                            : null;
+			? (WeakReference) _history.get(_currentTarget)
+			: null;
                     if (_currentTarget == -1 || !ref.get().equals(target)) {
                         int size = _history.size();
                         for (int i = _currentTarget + 1; i < size; i++) {
@@ -161,10 +161,10 @@ public final class TargetManager {
         private void navigateForward() {
             if (_currentTarget >= _history.size() - 1)
                 throw new IllegalStateException(
-                    "NavigateForward is not allowed "
-                        + "since the targetpointer is pointing at the upper boundary "
-                        + "of the history");
-            setTarget(((WeakReference)_history.get(++_currentTarget)).get());
+						"NavigateForward is not allowed "
+						+ "since the targetpointer is pointing at the upper boundary "
+						+ "of the history");
+            setTarget(((WeakReference) _history.get(++_currentTarget)).get());
         }
 
         /**
@@ -175,12 +175,12 @@ public final class TargetManager {
         private void navigateBackward() {
             if (_currentTarget == 0) {
                 throw new IllegalStateException(
-                    "NavigateBackward is not allowed "
-                        + "since the targetpointer is pointing at the lower boundary "
-                        + "of the history");
+						"NavigateBackward is not allowed "
+						+ "since the targetpointer is pointing at the lower boundary "
+						+ "of the history");
             }
             _navigateBackward = true;
-            setTarget(((WeakReference)_history.get(--_currentTarget)).get());
+            setTarget(((WeakReference) _history.get(--_currentTarget)).get());
             _navigateBackward = false;
         }
 
@@ -233,11 +233,11 @@ public final class TargetManager {
 
         private void removeHistoryTarget(Object o) {
             if (ModelFacade.isADiagram(o)) {
-                ListIterator it = ((Diagram)o).getEdges().listIterator();
+                ListIterator it = ((Diagram) o).getEdges().listIterator();
                 while (it.hasNext()) {
                     removeHistoryTarget(it.next());
                 }
-                it = ((Diagram)o).getNodes().listIterator();
+                it = ((Diagram) o).getNodes().listIterator();
                 while (it.hasNext()) {
                     removeHistoryTarget(it.next());
                 }
@@ -245,13 +245,13 @@ public final class TargetManager {
             ListIterator it = _history.listIterator();
             int oldCurrentTarget = _currentTarget;
             while (it.hasNext()) {
-                WeakReference ref = (WeakReference)it.next();
+                WeakReference ref = (WeakReference) it.next();
                 Object historyObject = ref.get();
                 if (ModelFacade.isAModelElement(o)) {
                     historyObject =
                         historyObject instanceof Fig
-                            ? ((Fig)historyObject).getOwner()
-                            : historyObject;
+			? ((Fig) historyObject).getOwner()
+			: historyObject;
 
                 }
                 if (o == historyObject) {
@@ -339,7 +339,9 @@ public final class TargetManager {
         if (!isInTargetTransaction()) {
             startTargetTransaction();
 
-            Object[] targets = new Object[] { o };
+            Object[] targets = new Object[] {
+		o 
+	    };
             List _targetsList = Arrays.asList(_targets);
             boolean equal = true;
             for (int i = 0; i < targets.length; i++) {
@@ -353,7 +355,9 @@ public final class TargetManager {
                 _figTarget = determineFigTarget(_newTarget);
                 _modelTarget = determineModelTarget(_newTarget);
                 fireTargetSet(targets);
-                _targets = new Object[] { o };
+                _targets = new Object[] {
+		    o 
+		};
                 _newTarget = null;
             }
             endTargetTransaction();
@@ -402,7 +406,9 @@ public final class TargetManager {
                     _newTarget = null;
                 }
             } else {
-                Object[] targets = new Object[] { null };
+                Object[] targets = new Object[] {
+		    null 
+		};
                 fireTargetSet(targets);
                 _targets = targets;
                 _modelTarget = null;
@@ -450,11 +456,11 @@ public final class TargetManager {
                     // shorter than the old list)
                     if (i < targets.length)
                         System.arraycopy(
-                            _targets,
-                            i + 1,
-                            targets,
-                            i,
-                            targets.length - i);
+					 _targets,
+					 i + 1,
+					 targets,
+					 i,
+					 targets.length - i);
                     // set the listener array to the new array or null
                     if (target == _modelTarget) {
                         _modelTarget = null;
@@ -504,7 +510,7 @@ public final class TargetManager {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
-                 ((TargetListener)listeners[i + 1]).targetSet(targetEvent);
+		((TargetListener) listeners[i + 1]).targetSet(targetEvent);
             }
         }
     }
@@ -514,15 +520,17 @@ public final class TargetManager {
         Object[] listeners = _listenerList.getListenerList();
         TargetEvent targetEvent =
             new TargetEvent(
-                this,
-                TargetEvent.TARGET_SET,
-                _targets,
-                new Object[] { targetAdded });
+			    this,
+			    TargetEvent.TARGET_SET,
+			    _targets,
+			    new Object[] {
+				targetAdded 
+			    });
 
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
-                 ((TargetListener)listeners[i + 1]).targetAdded(targetEvent);
+		((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
             }
         }
     }
@@ -532,15 +540,17 @@ public final class TargetManager {
         Object[] listeners = _listenerList.getListenerList();
         TargetEvent targetEvent =
             new TargetEvent(
-                this,
-                TargetEvent.TARGET_SET,
-                _targets,
-                new Object[] { targetRemoved });
+			    this,
+			    TargetEvent.TARGET_SET,
+			    _targets,
+			    new Object[] {
+				targetRemoved 
+			    });
 
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
-                 ((TargetListener)listeners[i + 1]).targetRemoved(targetEvent);
+		((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
             }
         }
     }
@@ -584,7 +594,7 @@ public final class TargetManager {
             }
         }
 
-        return target instanceof Fig ? (Fig)target : null;
+        return target instanceof Fig ? (Fig) target : null;
     }
 
     /**
@@ -606,7 +616,7 @@ public final class TargetManager {
      */
     private Object determineModelTarget(Object target) {
         if (target instanceof Fig) {
-            Object owner = ((Fig)target).getOwner();
+            Object owner = ((Fig) target).getOwner();
             if (ModelFacade.isABase(owner)) {
                 target = owner;
             }

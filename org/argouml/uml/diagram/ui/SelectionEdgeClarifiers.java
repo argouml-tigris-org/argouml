@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,18 +37,18 @@ import org.tigris.gef.presentation.*;
 
 public class SelectionEdgeClarifiers extends SelectionReshape {
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  /** Construct a new SelectionEdgeClarifiers for the given Fig */
-  public SelectionEdgeClarifiers(Fig f) { super(f); }
+    /** Construct a new SelectionEdgeClarifiers for the given Fig */
+    public SelectionEdgeClarifiers(Fig f) { super(f); }
 
-  /** Paint the handles at the four corners and midway along each edge
-   * of the bounding box.  */
-  public void paint(Graphics g) {
-    ((FigEdgeModelElement)_content).paintClarifiers(g);
-    super.paint(g);
-  }  
+    /** Paint the handles at the four corners and midway along each edge
+     * of the bounding box.  */
+    public void paint(Graphics g) {
+	((FigEdgeModelElement) _content).paintClarifiers(g);
+	super.paint(g);
+    }  
   
 } /* end class SelectionEdgeClarifiers */
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -72,7 +73,7 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
     protected Collection getChoices() {
         if (getTarget() instanceof MExtensionPoint) {
             Collection col = ModelManagementHelper.getHelper().getAllModelElementsOfKind(MUseCase.class);
-            col.remove(((MExtensionPoint)getTarget()).getUseCase());
+            col.remove(((MExtensionPoint) getTarget()).getUseCase());
             return col;
         } else
             throw new IllegalStateException("In getChoices of UMLExtendedUseCasesListModel: target is not an instance of MExtensionPoint");
@@ -83,7 +84,7 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
      */
     protected Collection getSelected() {
         if (getTarget() instanceof MExtensionPoint) {
-            MUseCase base = ((MExtensionPoint)getTarget()).getUseCase();
+            MUseCase base = ((MExtensionPoint) getTarget()).getUseCase();
             return UseCasesHelper.getHelper().getExtendingUseCases(base);
         } else
             throw new IllegalStateException("In getSelected of UMLExtendedUseCasesListModel: target is not an instance of MExtensionPoint");
@@ -107,7 +108,7 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
         gm.connect(to, from, MExtend.class);
         List list = new ArrayList();
         list.add(getTarget());
-        MExtend e = UseCasesHelper.getHelper().getExtends((MUseCase)from, (MUseCase)to);
+        MExtend e = UseCasesHelper.getHelper().getExtends((MUseCase) from, (MUseCase) to);
         UmlFactory.getFactory().delete(e.getExtensionPoint(0));
         e.setExtensionPoints(list);
     }
@@ -116,21 +117,21 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
      */
     protected void build(MModelElement from, MModelElement to) {
-        UseCasesFactory.getFactory().buildExtend((MUseCase)to, (MUseCase)from, (MExtensionPoint)getTarget());    
+        UseCasesFactory.getFactory().buildExtend((MUseCase) to, (MUseCase) from, (MExtensionPoint) getTarget());    
     }
 
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
      */
     protected MModelElement getRelation(MModelElement from, MModelElement to) {
-        return UseCasesHelper.getHelper().getExtends((MUseCase)from, (MUseCase)to);
+        return UseCasesHelper.getHelper().getExtends((MUseCase) from, (MUseCase) to);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSource()
      */
     protected MModelElement getSource() {
-        return ((MExtensionPoint)getTarget()).getUseCase();
+        return ((MExtensionPoint) getTarget()).getUseCase();
     }
 
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -49,125 +50,126 @@ import org.apache.log4j.Category;
  */
 public class ProjectMemberTodoList extends ProjectMember
 {
-	protected static Category cat = Category.getInstance(
-						ProjectMemberTodoList.class);
+    protected static Category cat =
+	Category.getInstance(ProjectMemberTodoList.class);
 
-	public static final String TODO_TEE = "/org/argouml/xml/dtd/todo.tee";
-	public static final String TODO_EXT = ".todo";
+    public static final String TODO_TEE = "/org/argouml/xml/dtd/todo.tee";
+    public static final String TODO_EXT = ".todo";
 
-	protected OCLExpander expander = null;
+    protected OCLExpander expander = null;
 
-	public ProjectMemberTodoList(String name, Project p)
+    public ProjectMemberTodoList(String name, Project p)
+    {
+	super(name, p);
+    }
+
+    public String getType()
+    {
+	return "todo";
+    }
+
+    public String getFileExtension()
+    {
+	return TODO_EXT;
+    }
+
+    public Vector getToDoList()
+    {
+	Vector in, out;
+	ToDoItem tdi;
+	Designer dsgr;
+	int i;
+
+	dsgr = Designer.theDesigner();
+	in = dsgr.getToDoList().getToDoItems();
+	out = new Vector();
+	for (i = 0; i < in.size(); i++)
 	{
-		super(name, p);
+	    try
+	    {
+		tdi = (ToDoItem) in.elementAt(i);
+		if (tdi == null)
+		    continue;
+	    }
+	    catch (ClassCastException e)
+	    {
+		continue;
+	    }
+
+	    if (tdi.getPoster() instanceof Designer)
+		out.addElement(new ToDoItemXMLHelper(tdi));
+	}
+	return out;
+    }
+
+    public Vector getResolvedCriticsList()
+    {
+	Vector in, out;
+	ResolvedCritic rci;
+	Designer dsgr;
+	int i;
+
+	dsgr = Designer.theDesigner();
+	in = dsgr.getToDoList().getResolvedItems();
+	out = new Vector();
+	for (i = 0; i < in.size(); i++)
+	{
+	    try
+	    {
+		rci = (ResolvedCritic) in.elementAt(i);
+		if (rci == null)
+		    continue;
+	    }
+	    catch (ClassCastException e)
+	    {
+		continue;
+	    }
+	    out.addElement(new ResolvedCriticXMLHelper(rci));
+	}
+	return out;
+    }
+
+    public void load(InputStream is) 
+	throws IOException, org.xml.sax.SAXException
+    {
+	TodoParser.SINGLETON.readTodoList(is, true);
+    }
+
+    public void load() throws IOException, org.xml.sax.SAXException
+    {
+	InputStream is = null;
+	if (getURL() != null)
+	{
+	    is = getURL().openStream();
+	    load(is);
+	}
+    }
+
+    public void save(String path, boolean overwrite, Writer writer)
+    {
+	if (writer == null)
+	{
+	    cat.warn("ProjectMemberTodoList.cognitive.argouml.org:"
+		     + " No writer specified");
+	    return;
 	}
 
-	public String getType()
+	cat.debug("Saving TODO LIST " + path + "/" + getName() + " !!!");
+
+	if (expander == null)
 	{
-		return "todo";
+	    Hashtable templates = TemplateReader.readFile(TODO_TEE);
+	    expander = new OCLExpander(templates);
 	}
 
-	public String getFileExtension()
-	{
-		return TODO_EXT;
-	}
+	expander.expand(writer, this, "", "");
+	
+	cat.debug("Done saving TODO LIST!!!");
+    }
 
-	public Vector getToDoList()
-	{
-		Vector in, out;
-		ToDoItem tdi;
-		Designer dsgr;
-		int i;
-
-		dsgr = Designer.theDesigner();
-		in = dsgr.getToDoList().getToDoItems();
-		out = new Vector();
-		for (i = 0; i < in.size(); i++)
-		{
-			try
-			{
-				tdi = (ToDoItem) in.elementAt(i);
-				if (tdi == null)
-					continue;
-			}
-			catch (ClassCastException e)
-			{
-				continue;
-			}
-
-			if (tdi.getPoster() instanceof Designer)
-				out.addElement(new ToDoItemXMLHelper(tdi));
-		}
-		return out;
-	}
-
-	public Vector getResolvedCriticsList()
-	{
-		Vector in, out;
-		ResolvedCritic rci;
-		Designer dsgr;
-		int i;
-
-		dsgr = Designer.theDesigner();
-		in = dsgr.getToDoList().getResolvedItems();
-		out = new Vector();
-		for (i = 0; i < in.size(); i++)
-		{
-			try
-			{
-				rci = (ResolvedCritic) in.elementAt(i);
-				if (rci == null)
-					continue;
-			}
-			catch (ClassCastException e)
-			{
-				continue;
-			}
-			out.addElement(new ResolvedCriticXMLHelper(rci));
-		}
-		return out;
-	}
-
-	public void load(InputStream is) throws IOException, org.xml.sax.SAXException
-	{
-		TodoParser.SINGLETON.readTodoList(is, true);
-	}
-
-	public void load() throws IOException, org.xml.sax.SAXException
-	{
-		InputStream is = null;
-		if (getURL() != null)
-		{
-			is = getURL().openStream();
-			load(is);
-		}
-	}
-
-	public void save(String path, boolean overwrite, Writer writer)
-	{
-		if (writer == null)
-		{
-			cat.warn("ProjectMemberTodoList.cognitive.argouml.org:"
-				 + " No writer specified");
-			return;
-		}
-
-		cat.debug("Saving TODO LIST " + path + "/" + getName() + " !!!");
-
-		if (expander == null)
-		{
-			Hashtable templates = TemplateReader.readFile(TODO_TEE);
-			expander = new OCLExpander(templates);
-		}
-
-		expander.expand(writer, this, "", "");
-
-		cat.debug("Done saving TODO LIST!!!");
-	}
-
-	public void save(String path, boolean overwrite)
-	{
-		save(path, overwrite, null);
-	}
+    public void save(String path, boolean overwrite)
+    {
+	save(path, overwrite, null);
+    }
 }
 

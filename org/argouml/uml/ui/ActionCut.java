@@ -59,15 +59,15 @@ public class ActionCut extends AbstractAction implements CaretListener {
         super(Translator.localize("CoreMenu", LOCALIZE_KEY));
         Icon icon =
             ResourceLoaderWrapper
-                .getResourceLoaderWrapper()
-                .lookupIconResource(
-                Translator.getImageBinding(LOCALIZE_KEY),
-                Translator.localize("CoreMenu", LOCALIZE_KEY));
+	    .getResourceLoaderWrapper()
+	    .lookupIconResource(
+				Translator.getImageBinding(LOCALIZE_KEY),
+				Translator.localize("CoreMenu", LOCALIZE_KEY));
         if (icon != null)
             putValue(Action.SMALL_ICON, icon);
         putValue(
-            Action.SHORT_DESCRIPTION,
-            Translator.localize("CoreMenu", LOCALIZE_KEY) + " ");
+		 Action.SHORT_DESCRIPTION,
+		 Translator.localize("CoreMenu", LOCALIZE_KEY) + " ");
     }
 
     public static ActionCut getInstance() {
@@ -96,12 +96,12 @@ public class ActionCut extends AbstractAction implements CaretListener {
     }
 
     /**
-    * @see javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
-    */
+     * @see javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
+     */
     public void caretUpdate(CaretEvent e) {
         if (e.getMark() != e.getDot()) { // there is a selection        
             setEnabled(true);
-            _textSource = (JTextComponent)e.getSource();
+            _textSource = (JTextComponent) e.getSource();
         } else {
             Collection figSelection =
                 Globals.curEditor().getSelectionManager().selections();

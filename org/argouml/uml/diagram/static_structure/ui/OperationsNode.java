@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,7 +43,7 @@ public class OperationsNode {
         this.parent = parent;
     }
     
-    public Object getParent(){return parent;}
+    public Object getParent() { return parent; }
         
-    public String toString(){return "Operations";}
+    public String toString() { return "Operations"; }
 }

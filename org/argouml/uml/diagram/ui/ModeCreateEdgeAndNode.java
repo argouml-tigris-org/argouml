@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -115,10 +116,10 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         super();
     }
     public ModeCreateEdgeAndNode(
-        Editor ed,
-        Class edgeClass,
-        Class nodeClass,
-        boolean post) {
+				 Editor ed,
+				 Class edgeClass,
+				 Class nodeClass,
+				 boolean post) {
         super(ed);
         setArg("edgeClass", edgeClass);
         setArg("nodeClass", nodeClass);
@@ -219,7 +220,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             }
 
             if (newNode instanceof GraphNodeHooks)
-                 ((GraphNodeHooks) newNode).initialize(_args);
+		((GraphNodeHooks) newNode).initialize(_args);
             UmlFactory.getFactory().addListenersToModelElement(newNode);
             if (mgm.canAddNode(newNode)) {
                 GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
@@ -241,13 +242,13 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                     if (trap != null
                         && (trap.contains(bbox.x, bbox.y)
                             && trap.contains(
-                                bbox.x + bbox.width,
-                                bbox.y + bbox.height)))
+					     bbox.x + bbox.width,
+					     bbox.y + bbox.height)))
                         encloser = otherFig;
                 }
                 _fn.setEnclosingFig(encloser);
                 if (newNode instanceof GraphNodeHooks)
-                     ((GraphNodeHooks) newNode).postPlacement(editor);
+		    ((GraphNodeHooks) newNode).postPlacement(editor);
                 editor.getSelectionManager().select(_fn);
                 nodeWasCreated = true;
                 f = _fn;
@@ -324,7 +325,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                     _newItem = null;
 
                     if (_fe instanceof MouseListener)
-                         ((MouseListener) _fe).mouseReleased(me);
+			((MouseListener) _fe).mouseReleased(me);
 
                     // set the new edge in place
                     if (_sourceFigNode != null)

@@ -21,6 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.application.api;
 
 import java.util.ArrayList;
@@ -89,7 +90,8 @@ public class Argo
 
     /** Key to report usage statistics.
      */
-    public static final ConfigurationKey KEY_EDEM = Configuration.makeKey("init", "edem");
+    public static final ConfigurationKey KEY_EDEM = 
+	Configuration.makeKey("init", "edem");
 
     /** Key to profile initialization.
      */
@@ -231,9 +233,9 @@ public class Argo
     public static String getDirectory() {
 	// Use the configuration if it exists, otherwise
 	// use what gef thinks.
-	return Configuration.getString(
-           KEY_STARTUP_DIR,
-           org.tigris.gef.base.Globals.getLastDirectory());
+	return Configuration.getString(KEY_STARTUP_DIR,
+				       org.tigris.gef.base.Globals
+				           .getLastDirectory());
     }
 
     /** Helper for localization to eliminate the need to import
@@ -252,7 +254,8 @@ public class Argo
      *
      *  If no plugins are available, returns null.
      */
-    public static final ArrayList getPlugins(Class pluginType, Object[] context) {
+    public static final ArrayList getPlugins(Class pluginType, 
+					     Object[] context) {
 	return ModuleLoader.getInstance().getPlugins(pluginType, context);
     }
 
@@ -279,11 +282,13 @@ public class Argo
     }
 
     public static Icon lookupIconResource(String arg1) {
-	return ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(arg1);
+	return ResourceLoaderWrapper.getResourceLoaderWrapper()
+	    .lookupIconResource(arg1);
     }
 
     public static Icon lookupIconResource(String arg1, String arg2) {
-	return ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(arg1, arg2);
+	return ResourceLoaderWrapper.getResourceLoaderWrapper()
+	    .lookupIconResource(arg1, arg2);
     }
 
     static {
@@ -305,7 +310,7 @@ public class Argo
 	if (!(lr instanceof Hierarchy))
 	    throw new IllegalArgumentException("LoggerRepository "
 					       + "is not a Hierarchy");
-	((Hierarchy)lr).getRendererMap().put(Throwable.class, tr);
+	((Hierarchy) lr).getRendererMap().put(Throwable.class, tr);
 
 	if (System.getProperty(ARGO_CONSOLE_SUPPRESS) != null) {
 	    cat.getRoot().getLoggerRepository().setThreshold(Level.OFF);

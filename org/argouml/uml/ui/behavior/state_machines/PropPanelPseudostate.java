@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -54,7 +55,7 @@ import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /**
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelPseudostate extends PropPanelStateVertex {
@@ -68,7 +69,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
         Class mclass = MPseudostate.class;
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
 
         JPanel kindPanel = new JPanel(new GridLayout(0, 2));
@@ -223,7 +224,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
         }
         Enumeration e = kindGroup.getElements();
         while (e.hasMoreElements()) {
-            ((UMLRadioButton)e.nextElement()).setEnabled(!represented);
+            ((UMLRadioButton) e.nextElement()).setEnabled(!represented);
         }
     }
 

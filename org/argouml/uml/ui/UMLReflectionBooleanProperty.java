@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -47,48 +48,54 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
     private Method _getMethod;
     private Method _setMethod;
     static final private Object[] _noArg = {};
-    static final private Object[] _trueArg = { new Boolean(true) };
-    static final private Object[] _falseArg = { new Boolean(false) };
+    static final private Object[] _trueArg = {
+	new Boolean(true) 
+    };
+    static final private Object[] _falseArg = {
+	new Boolean(false) 
+    };
     
     /** Creates new BooleanChangeListener */
-    public UMLReflectionBooleanProperty(String propertyName,Class elementClass,String getMethod,String setMethod) {
+    public UMLReflectionBooleanProperty(String propertyName, Class elementClass, String getMethod, String setMethod) {
         super(propertyName);
 
         Class[] noClass = {};
         try {
-            _getMethod = elementClass.getMethod(getMethod,noClass);
+            _getMethod = elementClass.getMethod(getMethod, noClass);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             cat.error(e.toString() + " in UMLReflectionBooleanProperty(): " + getMethod, e);
         }
-        Class[] boolClass = { boolean.class };
+        Class[] boolClass = {
+	    boolean.class 
+	};
         try {
-            _setMethod = elementClass.getMethod(setMethod,boolClass);
+            _setMethod = elementClass.getMethod(setMethod, boolClass);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             cat.error(e.toString() + " in UMLReflectionBooleanProperty(): "  + setMethod, e);
         }
     }
     
     
-    public void setProperty(Object element,boolean newState) {
-        if(_setMethod != null && element != null) {
+    public void setProperty(Object element, boolean newState) {
+        if (_setMethod != null && element != null) {
             try {
                 //
                 //   this allows enumerations to work properly
                 //      if newState is false, it won't override
                 //      a different enumeration value
                 boolean oldState = getProperty(element);
-                if(newState != oldState) {
-                    if(newState) {
-                        _setMethod.invoke(element,_trueArg);
+                if (newState != oldState) {
+                    if (newState) {
+                        _setMethod.invoke(element, _trueArg);
                     }
                     else {
-                        _setMethod.invoke(element,_falseArg);
+                        _setMethod.invoke(element, _falseArg);
                     }
                 }
             }
-            catch(Exception e) {
+            catch (Exception e) {
                 cat.error(e.toString() + " in UMLReflectionBooleanProperty.setMethod()", e);
             }
 
@@ -101,14 +108,14 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
     
     public boolean getProperty(Object element) {
         boolean state = false;
-        if(_getMethod != null && element != null) {
+        if (_getMethod != null && element != null) {
             try {
-                Object retval = _getMethod.invoke(element,_noArg);
-                if(retval != null && retval instanceof Boolean) {
+                Object retval = _getMethod.invoke(element, _noArg);
+                if (retval != null && retval instanceof Boolean) {
                     state = ((Boolean) retval).booleanValue();
                 }
             }
-            catch(Exception e) {
+            catch (Exception e) {
                 cat.error(e.toString() + " in UMLReflectionBooleanProperty.getMethod()", e);
             }
         }

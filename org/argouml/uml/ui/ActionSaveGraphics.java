@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -81,8 +82,8 @@ public class ActionSaveGraphics extends UMLAction {
 
     public boolean trySave( boolean overwrite ) {
 	Object target = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-	if( target instanceof Diagram ) {
-	    String defaultName = ((Diagram)target).getName();
+	if ( target instanceof Diagram ) {
+	    String defaultName = ((Diagram) target).getName();
 	    defaultName = Util.stripJunk(defaultName);
 
 	    // FIX - It's probably worthwhile to abstract and factor this chooser
@@ -96,15 +97,15 @@ public class ActionSaveGraphics extends UMLAction {
 		    if ( p != null && p.getURL() != null &&
 			 p.getURL().getFile().length() > 0 ) {
 			String filename = p.getURL().getFile();
-			if( !filename.startsWith( "/FILE1/+/" ) )
+			if ( !filename.startsWith( "/FILE1/+/" ) )
 			    chooser  = OsUtil.getFileChooser( p.getURL().getFile() );
 		    }
 		}
-		catch( Exception ex ) {
+		catch ( Exception ex ) {
                     cat.error("exception in opening JFileChooser", ex);
 		}
 
-		if( chooser == null ) chooser = OsUtil.getFileChooser();
+		if ( chooser == null ) chooser = OsUtil.getFileChooser();
 
 		chooser.setDialogTitle( "Save Diagram as Graphics: " + defaultName );
 		// Only specified format are allowed.
@@ -121,9 +122,9 @@ public class ActionSaveGraphics extends UMLAction {
 		chooser.setSelectedFile( def );
 
 		int retval = chooser.showSaveDialog( pb );
-		if( retval == 0 ) {
+		if ( retval == 0 ) {
 		    File theFile = chooser.getSelectedFile();
-		    if( theFile != null ) {
+		    if ( theFile != null ) {
 			String path = theFile.getParent();
 			String name = theFile.getName();
 			String extension = SuffixFilter.getExtension(theFile);
@@ -136,19 +137,19 @@ public class ActionSaveGraphics extends UMLAction {
 			// start new code
 			
 			if (extension == null || 
-				!((extension.equals(FileFilters.PSFilter._suffix)) || 
-					(extension.equals(FileFilters.EPSFilter._suffix)) ||
-					(extension.equals(FileFilters.GIFFilter._suffix)) ||
-					(extension.equals(FileFilters.SVGFilter._suffix))
-				)) {
-				// add the selected filter extension
-				FileFilter filter = (FileFilter) chooser.getFileFilter();
-				extension = FileFilters.getSuffix(filter);  
-				theFile = new File(theFile.getParentFile(), theFile.getName() + "." + extension);
+			    !((extension.equals(FileFilters.PSFilter._suffix)) || 
+			      (extension.equals(FileFilters.EPSFilter._suffix)) ||
+			      (extension.equals(FileFilters.GIFFilter._suffix)) ||
+			      (extension.equals(FileFilters.SVGFilter._suffix))
+			      )) {
+			    // add the selected filter extension
+			    FileFilter filter = (FileFilter) chooser.getFileFilter();
+			    extension = FileFilters.getSuffix(filter);  
+			    theFile = new File(theFile.getParentFile(), theFile.getName() + "." + extension);
 			}
 			// end new code
 				
-			CmdSaveGraphics cmd=null;
+			CmdSaveGraphics cmd = null;
 			if (FileFilters.PSFilter._suffix.equals(extension))
 			    cmd = new CmdSavePS();
 			else if (FileFilters.EPSFilter._suffix.equals(extension))
@@ -159,13 +160,13 @@ public class ActionSaveGraphics extends UMLAction {
 			    cmd = new CmdSaveSVG();
 			else {
 			    pb.showStatus("Unknown graphics file type withextension "
-					  +extension);
+					  + extension);
 			    return false;
 			}
 
-			if( !path.endsWith( separator ) ) path += separator;
+			if ( !path.endsWith( separator ) ) path += separator;
 			pb.showStatus( "Writing " + path + name + "..." );
-			if( theFile.exists() && !overwrite ) {
+			if ( theFile.exists() && !overwrite ) {
 			    String t = "Overwrite " + path + name;
 			    int response =
 				JOptionPane.showConfirmDialog(pb, t, t,
@@ -181,14 +182,14 @@ public class ActionSaveGraphics extends UMLAction {
 		    }
 		}
 	    }
-	    catch( FileNotFoundException ignore )
-		{
-                cat.error("got a FileNotFoundException", ignore);
-		}
-	    catch( IOException ignore )
-		{
-                cat.error("got an IOException", ignore);
-		}
+	    catch ( FileNotFoundException ignore )
+	    {
+		cat.error("got a FileNotFoundException", ignore);
+	    }
+	    catch ( IOException ignore )
+	    {
+		cat.error("got an IOException", ignore);
+	    }
 	}
 
 	return false;

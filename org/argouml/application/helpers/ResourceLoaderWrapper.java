@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -37,8 +38,9 @@ import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /**
- * Wrapper around org.tigris.gef.util.ResourceLoader. Necessary since ArgoUML needs
- * some extra init
+ * Wrapper around org.tigris.gef.util.ResourceLoader. 
+ * 
+ * Necessary since ArgoUML needs some extra init
  * @since Nov 24, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -47,18 +49,30 @@ public final class ResourceLoaderWrapper {
         initResourceLoader();
     }
 
-    protected static ImageIcon _ActionStateIcon = ResourceLoader.lookupIconResource("ActionState");
-    protected static ImageIcon _StateIcon = ResourceLoader.lookupIconResource("State");
-    protected static ImageIcon _InitialStateIcon = ResourceLoader.lookupIconResource("Initial");
-    protected static ImageIcon _DeepIcon = ResourceLoader.lookupIconResource("DeepHistory");
-    protected static ImageIcon _ShallowIcon = ResourceLoader.lookupIconResource("ShallowHistory");
-    protected static ImageIcon _ForkIcon = ResourceLoader.lookupIconResource("Fork");
-    protected static ImageIcon _JoinIcon = ResourceLoader.lookupIconResource("Join");
-    protected static ImageIcon _BranchIcon = ResourceLoader.lookupIconResource("Branch");
-    protected static ImageIcon _FinalStateIcon = ResourceLoader.lookupIconResource("FinalState");
-    protected static ImageIcon _RealizeIcon = ResourceLoader.lookupIconResource("Realization");
-    protected static ImageIcon _SignalIcon = ResourceLoader.lookupIconResource("SignalSending");
-    protected static ImageIcon _CommentIcon = ResourceLoader.lookupIconResource("Note");
+    protected static ImageIcon _ActionStateIcon =
+	 ResourceLoader.lookupIconResource("ActionState");
+    protected static ImageIcon _StateIcon =
+	 ResourceLoader.lookupIconResource("State");
+    protected static ImageIcon _InitialStateIcon =
+	 ResourceLoader.lookupIconResource("Initial");
+    protected static ImageIcon _DeepIcon =
+	 ResourceLoader.lookupIconResource("DeepHistory");
+    protected static ImageIcon _ShallowIcon =
+	 ResourceLoader.lookupIconResource("ShallowHistory");
+    protected static ImageIcon _ForkIcon =
+	 ResourceLoader.lookupIconResource("Fork");
+    protected static ImageIcon _JoinIcon =
+	 ResourceLoader.lookupIconResource("Join");
+    protected static ImageIcon _BranchIcon =
+	 ResourceLoader.lookupIconResource("Branch");
+    protected static ImageIcon _FinalStateIcon =
+	 ResourceLoader.lookupIconResource("FinalState");
+    protected static ImageIcon _RealizeIcon =
+	 ResourceLoader.lookupIconResource("Realization");
+    protected static ImageIcon _SignalIcon =
+	 ResourceLoader.lookupIconResource("SignalSending");
+    protected static ImageIcon _CommentIcon =
+	 ResourceLoader.lookupIconResource("Note");
 
     protected Hashtable _iconCache = new Hashtable();
 
@@ -87,8 +101,10 @@ public final class ResourceLoaderWrapper {
     }
 
     /**
-     * Initializes the resourceloader. LookupIconResource checks if there are locations 
-     * and extensions known. If there are none, this method is called to initialize
+     * Initializes the resourceloader.
+     *
+     * LookupIconResource checks if there are locations and extensions known. 
+     * If there are none, this method is called to initialize
      * the resource loader. Originally, this method was placed within Main but
      * this coupled Main and the resourceLoader to much.
      */
@@ -193,7 +209,9 @@ public final class ResourceLoaderWrapper {
      * @param loader
      * @return ImageIcon
      */
-    public ImageIcon lookupIconResource(String resource, String desc, ClassLoader loader) {
+    public ImageIcon lookupIconResource(String resource, String desc, 
+					ClassLoader loader) 
+    {
         return ResourceLoader.lookupIconResource(resource, desc, loader);
     }
 
@@ -217,54 +235,60 @@ public final class ResourceLoaderWrapper {
         Icon icon = null;
         if (value != null) {
         
-         icon = (Icon) _iconCache.get(value.getClass());
+	    icon = (Icon) _iconCache.get(value.getClass());
 
 
-        if (ModelFacade.isAPseudostate(value) ) {
-            MPseudostate ps = (MPseudostate) value;
-            MPseudostateKind kind = ps.getKind();
-            if (MPseudostateKind.INITIAL.equals(kind))
-                icon = _InitialStateIcon;
-            if (MPseudostateKind.DEEP_HISTORY.equals(kind))
-                icon = _DeepIcon;
-            if (MPseudostateKind.SHALLOW_HISTORY.equals(kind))
-                icon = _ShallowIcon;
-            if (MPseudostateKind.FORK.equals(kind))
-                icon = _ForkIcon;
-            if (MPseudostateKind.JOIN.equals(kind))
-                icon = _JoinIcon;
-            if (MPseudostateKind.BRANCH.equals(kind))
-                icon = _BranchIcon;
-            //if (MPseudostateKind.FINAL.equals(kind)) icon = _FinalStateIcon;
-        }
-        if (ModelFacade.isAAbstraction(value)) {
-            icon = _RealizeIcon;
-        }
-        // needs more work: sending and receiving icons
-        if (ModelFacade.isASignal(value)) {
-            icon = _SignalIcon;
-        }
+	    if (ModelFacade.isAPseudostate(value) ) {
+		MPseudostate ps = (MPseudostate) value;
+		MPseudostateKind kind = ps.getKind();
+		if (MPseudostateKind.INITIAL.equals(kind))
+		    icon = _InitialStateIcon;
+		if (MPseudostateKind.DEEP_HISTORY.equals(kind))
+		    icon = _DeepIcon;
+		if (MPseudostateKind.SHALLOW_HISTORY.equals(kind))
+		    icon = _ShallowIcon;
+		if (MPseudostateKind.FORK.equals(kind))
+		    icon = _ForkIcon;
+		if (MPseudostateKind.JOIN.equals(kind))
+		    icon = _JoinIcon;
+		if (MPseudostateKind.BRANCH.equals(kind))
+		    icon = _BranchIcon;
+		// if (MPseudostateKind.FINAL.equals(kind)) 
+		// icon = _FinalStateIcon;
+	    }
+	    if (ModelFacade.isAAbstraction(value)) {
+		icon = _RealizeIcon;
+	    }
+	    // needs more work: sending and receiving icons
+	    if (ModelFacade.isASignal(value)) {
+		icon = _SignalIcon;
+	    }
 
-        if (ModelFacade.isAComment(value)) {
-            icon = _CommentIcon;
-        }
+	    if (ModelFacade.isAComment(value)) {
+		icon = _CommentIcon;
+	    }
 
-        if (icon == null) {
-            String clsPackName = value.getClass().getName();
-            if (clsPackName.startsWith("org") || clsPackName.startsWith("ru")) {
-                String cName = clsPackName.substring(clsPackName.lastIndexOf(".") + 1);
-                // special case "UML*" e.g. UMLClassDiagram
-                if (cName.startsWith("UML"))
-                    cName = cName.substring(3);
-                if (cName.startsWith("M"))
-                    cName = cName.substring(1);
-                if (cName.endsWith("Impl"))
-                    cName = cName.substring(0, cName.length() - 4);
-                icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(cName);
-                if (icon != null)
-                    _iconCache.put(value.getClass(), icon);
-            }
-        }
+	    if (icon == null) {
+		String clsPackName = value.getClass().getName();
+		if (clsPackName.startsWith("org")
+		    || clsPackName.startsWith("ru")) 
+		{
+		    String cName =
+			clsPackName.substring(clsPackName.lastIndexOf(".")
+					      + 1);
+		    // special case "UML*" e.g. UMLClassDiagram
+		    if (cName.startsWith("UML"))
+			cName = cName.substring(3);
+		    if (cName.startsWith("M"))
+			cName = cName.substring(1);
+		    if (cName.endsWith("Impl"))
+			cName = cName.substring(0, cName.length() - 4);
+		    icon = ResourceLoaderWrapper.getResourceLoaderWrapper()
+			.lookupIconResource(cName);
+		    if (icon != null)
+			_iconCache.put(value.getClass(), icon);
+		}
+	    }
         }
         return icon;
         

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -69,73 +70,75 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
  *             that used reflection a lot.
  */
 
-public class UMLGeneralizationListModel extends UMLBinaryRelationListModel  {
+public class UMLGeneralizationListModel 
+    extends UMLBinaryRelationListModel 
+{
 
 
-	/**
-	 * Constructor for UMLGeneralizationListModel.
-	 * @param container
-	 * @param property
-	 * @param showNone
-	 */
-	public UMLGeneralizationListModel(
-		UMLUserInterfaceContainer container,
-		String property,
-		boolean showNone) {
-		super(container, property, showNone);
+    /**
+     * Constructor for UMLGeneralizationListModel.
+     * @param container
+     * @param property
+     * @param showNone
+     */
+    public UMLGeneralizationListModel(UMLUserInterfaceContainer container,
+				      String property,
+				      boolean showNone) {
+	super(container, property, showNone);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
+     */
+    protected void build(MModelElement from, MModelElement to) {
+	if (from instanceof MGeneralizableElement 
+	    && to instanceof MGeneralizableElement) {
+	    CoreFactory.getFactory().buildGeneralization((MGeneralizableElement) from, (MGeneralizableElement) to);
 	}
-
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
-	 */
-	protected void build(MModelElement from, MModelElement to) {
-		if (from instanceof MGeneralizableElement && to instanceof MGeneralizableElement) {
-		CoreFactory.getFactory().buildGeneralization((MGeneralizableElement)from, (MGeneralizableElement)to);
-		} else
-			throw new IllegalArgumentException("In build of UMLGeneralizationListModel: either the arguments are null or not instanceof MGeneralizableElement");
+	else
+	    throw new IllegalArgumentException("In build of UMLGeneralizationListModel: either the arguments are null or not instanceof MGeneralizableElement");
 		
-	}
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
-	 */
-	protected void connect(
-		MutableGraphModel gm,
-		MModelElement from,
-		MModelElement to) {
-			gm.connect(from, to, MGeneralization.class);
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
+     */
+    protected void connect(MutableGraphModel gm,
+			   MModelElement from,
+			   MModelElement to) {
+	gm.connect(from, to, MGeneralization.class);
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
-	 */
-	protected String getAddDialogTitle() {
-		return Argo.localize("UMLMenu", "dialog.title.add-generalizations");
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
+     */
+    protected String getAddDialogTitle() {
+	return Argo.localize("UMLMenu", "dialog.title.add-generalizations");
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
-	 */
-	protected Collection getChoices() {
-		return ModelManagementHelper.getHelper().getAllModelElementsOfKind(getTarget().getClass());
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
+     */
+    protected Collection getChoices() {
+	return ModelManagementHelper.getHelper().getAllModelElementsOfKind(getTarget().getClass());
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
-	 */
-	protected MModelElement getRelation(MModelElement from, MModelElement to) {
-		return CoreHelper.getHelper().getGeneralization((MGeneralizableElement)from, (MGeneralizableElement)to);
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
+     */
+    protected MModelElement getRelation(MModelElement from, MModelElement to) {
+	return CoreHelper.getHelper().getGeneralization((MGeneralizableElement) from, (MGeneralizableElement) to);
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
-	 */
-	protected Collection getSelected() {
-                if (getTarget() == null) return new ArrayList();
-		if (getTarget() instanceof MGeneralizableElement) {
-			return CoreHelper.getHelper().getExtendedClassifiers((MGeneralizableElement)getTarget());
-		} else
-			throw new IllegalStateException("In getSelected of UMLGeneralizaitonListModel: target is not an instanceof GeneralizbleElement");
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
+     */
+    protected Collection getSelected() {
+	if (getTarget() == null) return new ArrayList();
+	if (getTarget() instanceof MGeneralizableElement) {
+	    return CoreHelper.getHelper().getExtendedClassifiers((MGeneralizableElement) getTarget());
+	} else
+	    throw new IllegalStateException("In getSelected of UMLGeneralizaitonListModel: target is not an instanceof GeneralizbleElement");
+    }
 
 } /* End of class UMLGeneralizationListModel */

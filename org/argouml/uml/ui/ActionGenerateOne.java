@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -61,7 +62,7 @@ public class ActionGenerateOne extends UMLAction {
         while (it.hasNext()) {
             Object target = it.next();
             if (target instanceof Fig) {
-                target = ((Fig)target).getOwner();
+                target = ((Fig) target).getOwner();
             }
             if (ModelFacade.isAClass(target)
                 || ModelFacade.isAInterface(target)) {
@@ -100,7 +101,7 @@ public class ActionGenerateOne extends UMLAction {
         while (it.hasNext()) {
             Object target = it.next();
             if (target instanceof Fig) {
-                target = ((Fig)target).getOwner();
+                target = ((Fig) target).getOwner();
             }
             if (ModelFacade.isAClass(target)
                 || ModelFacade.isAInterface(target)) {

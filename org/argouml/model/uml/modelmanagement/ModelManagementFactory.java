@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -103,7 +104,7 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
         MPackage modelElement = MFactory.getDefaultFactory().createPackage();
 	super.initialize(modelElement);
 	modelElement.setName(name);
-	if(modelElement.getUUID() == null)
+	if (modelElement.getUUID() == null)
 	    modelElement.setUUID(uuid);
 	return modelElement;
     }
@@ -118,13 +119,13 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
-    public void deleteElementImport(MElementImport elem) {}
+    public void deleteElementImport(MElementImport elem) { }
 
-    public void deleteModel(MModel elem) {}
+    public void deleteModel(MModel elem) { }
 
-    public void deletePackage(MPackage elem) {}
+    public void deletePackage(MPackage elem) { }
 
-    public void deleteSubsystem(MSubsystem elem) {}
+    public void deleteSubsystem(MSubsystem elem) { }
 
     /**
      * Copies a package, but not any elements within it. This does however

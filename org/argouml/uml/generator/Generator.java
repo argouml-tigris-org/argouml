@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -93,7 +94,7 @@ public abstract class Generator
      */
     public final static String TEST_SUFFIX = "test";
     public static Generator getGenerator(NotationName n) {
-        return (Generator)s_generators.get(n);
+        return (Generator) s_generators.get(n);
     }
 
     public Generator(NotationName notationName) {
@@ -114,25 +115,25 @@ public abstract class Generator
         if (o == null)
             return "";
         if (o instanceof MExtensionPoint)
-            return generateExtensionPoint((MExtensionPoint)o);
+            return generateExtensionPoint((MExtensionPoint) o);
         if (o instanceof MOperation)
-            return generateOperation((MOperation)o, false);
+            return generateOperation((MOperation) o, false);
         if (o instanceof MAttribute)
-            return generateAttribute((MAttribute)o, false);
+            return generateAttribute((MAttribute) o, false);
         if (o instanceof MParameter)
-            return generateParameter((MParameter)o);
+            return generateParameter((MParameter) o);
         if (o instanceof MPackage)
-            return generatePackage((MPackage)o);
+            return generatePackage((MPackage) o);
         if (o instanceof MClassifier)
-            return generateClassifier((MClassifier)o);
+            return generateClassifier((MClassifier) o);
         if (o instanceof MExpression)
-            return generateExpression((MExpression)o);
+            return generateExpression((MExpression) o);
         if (o instanceof String)
-            return generateName((String)o);
+            return generateName((String) o);
         if (o instanceof String)
-            return generateUninterpreted((String)o);
+            return generateUninterpreted((String) o);
         if (o instanceof MStereotype)
-            return generateStereotype((MStereotype)o);
+            return generateStereotype((MStereotype) o);
         if (o instanceof MTaggedValue) {
             /*
              * 2002-11-07
@@ -143,33 +144,33 @@ public abstract class Generator
              * the owner should call generate(sometag) and not generateTaggedValue(sometag)
              */
             if (_testModus
-                && ((MTaggedValue)o).getTag().equals(
+                && ((MTaggedValue) o).getTag().equals(
                     getNotation().getName() + TEST_SUFFIX)) {
                 return "";
             }
-            return generateTaggedValue((MTaggedValue)o);
+            return generateTaggedValue((MTaggedValue) o);
         }
         if (o instanceof MAssociation)
-            return generateAssociation((MAssociation)o);
+            return generateAssociation((MAssociation) o);
         if (o instanceof MAssociationEnd)
-            return generateAssociationEnd((MAssociationEnd)o);
+            return generateAssociationEnd((MAssociationEnd) o);
         if (o instanceof MMultiplicity)
-            return generateMultiplicity((MMultiplicity)o);
+            return generateMultiplicity((MMultiplicity) o);
         if (o instanceof MState)
-            return generateState((MState)o);
+            return generateState((MState) o);
         if (o instanceof MTransition)
-            return generateTransition((MTransition)o);
+            return generateTransition((MTransition) o);
         if (ModelFacade.isAAction(o))
             return generateAction(o);
         if (o instanceof MCallAction)
             return generateAction(o);
         if (o instanceof MGuard)
-            return generateGuard((MGuard)o);
+            return generateGuard((MGuard) o);
         if (o instanceof MMessage)
-            return generateMessage((MMessage)o);
+            return generateMessage((MMessage) o);
 
         if (o instanceof MModelElement)
-            return generateName(((MModelElement)o).getName());
+            return generateName(((MModelElement) o).getName());
 
         if (o == null)
             return "";

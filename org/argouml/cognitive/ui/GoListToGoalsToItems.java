@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,85 +34,85 @@ import org.argouml.cognitive.*;
 
 public class GoListToGoalsToItems implements TreeModel {
   
-  ////////////////////////////////////////////////////////////////
-  // TreeModel implementation
+    ////////////////////////////////////////////////////////////////
+    // TreeModel implementation
   
-  public Object getRoot() {
-      throw new UnsupportedOperationException("getRoot should never be called");
-  } 
-  public void setRoot(Object r) { }
+    public Object getRoot() {
+	throw new UnsupportedOperationException("getRoot should never be called");
+    } 
+    public void setRoot(Object r) { }
 
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof ToDoList) {
-      return getGoals().elementAt(index);
-    }
-    if (parent instanceof Goal) {
-      Goal g = (Goal) parent;
-      java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
-      while (itemEnum.hasMoreElements()) {
-	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.getPoster().supports(g)) {
-	    if (index == 0) return item;
-	    index--;
+    public Object getChild(Object parent, int index) {
+	if (parent instanceof ToDoList) {
+	    return getGoals().elementAt(index);
 	}
-      }
+	if (parent instanceof Goal) {
+	    Goal g = (Goal) parent;
+	    java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+	    while (itemEnum.hasMoreElements()) {
+		ToDoItem item = (ToDoItem) itemEnum.nextElement();
+		if (item.getPoster().supports(g)) {
+		    if (index == 0) return item;
+		    index--;
+		}
+	    }
+	}
+	throw new IndexOutOfBoundsException("getChild shouldnt get here GoListToGoalsToItems");
     }
-    throw new IndexOutOfBoundsException("getChild shouldnt get here GoListToGoalsToItems");
-  }
   
-  public int getChildCount(Object parent) {
-    if (parent instanceof ToDoList) {
-      return getGoals().size();
+    public int getChildCount(Object parent) {
+	if (parent instanceof ToDoList) {
+	    return getGoals().size();
+	}
+	if (parent instanceof Goal) {
+	    Goal g = (Goal) parent;
+	    java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+	    int count = 0;
+	    while (itemEnum.hasMoreElements()) {
+		ToDoItem item = (ToDoItem) itemEnum.nextElement();
+		if (item.getPoster().supports(g)) count++;
+	    }
+	    return count;
+	}
+	return 0;
     }
-    if (parent instanceof Goal) {
-      Goal g = (Goal) parent;
-      java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
-      int count = 0;
-      while (itemEnum.hasMoreElements()) {
-	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.getPoster().supports(g)) count++;
-      }
-      return count;
-    }
-    return 0;
-  }
   
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof ToDoList) {
-      return getGoals().indexOf(child);
+    public int getIndexOfChild(Object parent, Object child) {
+	if (parent instanceof ToDoList) {
+	    return getGoals().indexOf(child);
+	}
+	if (parent instanceof Goal) {
+	    // instead of makning a new vector, decrement index, return when
+	    // found and index == 0
+	    Vector candidates = new Vector();
+	    Goal g = (Goal) parent;
+	    java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+	    while (itemEnum.hasMoreElements()) {
+		ToDoItem item = (ToDoItem) itemEnum.nextElement();
+		if (item.getPoster().supports(g)) candidates.addElement(item);
+	    }
+	    return candidates.indexOf(child);
+	}
+	return -1;
     }
-    if (parent instanceof Goal) {
-      // instead of makning a new vector, decrement index, return when
-      // found and index == 0
-      Vector candidates = new Vector();
-      Goal g = (Goal) parent;
-      java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
-      while (itemEnum.hasMoreElements()) {
-	ToDoItem item = (ToDoItem) itemEnum.nextElement();
-	if (item.getPoster().supports(g)) candidates.addElement(item);
-      }
-      return candidates.indexOf(child);
+
+    public boolean isLeaf(Object node) {
+	if (node instanceof ToDoList) return false;
+	if (node instanceof Goal && getChildCount(node) > 0) return false;
+	return true;
     }
-    return -1;
-  }
 
-  public boolean isLeaf(Object node) {
-    if (node instanceof ToDoList) return false;
-    if (node instanceof Goal && getChildCount(node) > 0) return false;
-    return true;
-  }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
+    public void valueForPathChanged(TreePath path, Object newValue) { }
+    public void addTreeModelListener(TreeModelListener l) { }
+    public void removeTreeModelListener(TreeModelListener l) { }
 
 
 
-  ////////////////////////////////////////////////////////////////
-  // utility methods
+    ////////////////////////////////////////////////////////////////
+    // utility methods
 
-  public Vector getGoals() {
-    return Designer.TheDesigner.getGoalModel().getGoals();
-  }
+    public Vector getGoals() {
+	return Designer.TheDesigner.getGoalModel().getGoals();
+    }
   
 } /* end class GoListToGoalsToItems */

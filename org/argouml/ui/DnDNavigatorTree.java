@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -51,8 +52,9 @@ import org.argouml.model.uml.UmlHelper;
  * @since Created on 16 April 2003
  */
 public class DnDNavigatorTree extends DisplayTextTree
-implements DragGestureListener,
-DragSourceListener{
+    implements DragGestureListener,
+	       DragSourceListener
+{
     
     private static Category _cat = Category.getInstance(DnDNavigatorTree.class);
     
@@ -72,10 +74,10 @@ DragSourceListener{
         _dragSource = DragSource.getDefaultDragSource();
         
         DragGestureRecognizer dgr =
-        _dragSource.createDefaultDragGestureRecognizer(
-        this,
-        DnDConstants.ACTION_COPY_OR_MOVE, //specifies valid actions
-        this);
+	    _dragSource.createDefaultDragGestureRecognizer(
+							   this,
+							   DnDConstants.ACTION_COPY_OR_MOVE, //specifies valid actions
+							   this);
         
         // Eliminates right mouse clicks as valid actions
         dgr.setSourceActions(dgr.getSourceActions() & ~InputEvent.BUTTON3_MASK);
@@ -116,7 +118,8 @@ DragSourceListener{
     class ArgoDropTargetListener implements DropTargetListener {
         
         public void dragEnter(DropTargetDragEvent dropTargetDragEvent) {
-            _cat.debug("dragEnter");}
+            _cat.debug("dragEnter");
+	}
         
         public void dragExit(DropTargetEvent dropTargetEvent) {
             _cat.debug("dragExit");
@@ -133,17 +136,19 @@ DragSourceListener{
             //set cursor location. Needed in setCursor method
             Point cursorLocationBis = dropTargetDragEvent.getLocation();
             TreePath destinationPath =
-            getPathForLocation(cursorLocationBis.x, cursorLocationBis.y);
+		getPathForLocation(cursorLocationBis.x, cursorLocationBis.y);
             
             // if destination path is okay accept drop...
             // can't drag to a descendant
             // there will be other rules.
-            if (!_selectedTreePath.isDescendant(destinationPath)){
+            if (!_selectedTreePath.isDescendant(destinationPath)) {
                 dropTargetDragEvent.acceptDrag(DnDConstants.ACTION_COPY_OR_MOVE);
             }
             // ...otherwise reject drop
             else
-                {dropTargetDragEvent.rejectDrag();}
+            {
+		dropTargetDragEvent.rejectDrag();
+	    }
         }
         
         /**
@@ -157,16 +162,16 @@ DragSourceListener{
                 
                 //flavor not supported, reject drop
                 if (!tr.isDataFlavorSupported( 
-                            TransferableModelElement.ELEM_FLAVOR)){
+					      TransferableModelElement.ELEM_FLAVOR)) {
                     _cat.debug("! isDataFlavorSupported");
                     dropTargetDropEvent.rejectDrop();
                 }
                 
                 //get the model element that is being transfered.
                 Object modelElement = tr.getTransferData( 
-                                    TransferableModelElement.ELEM_FLAVOR );
+							 TransferableModelElement.ELEM_FLAVOR );
                 
-                _cat.debug("transfer data = "+modelElement);
+                _cat.debug("transfer data = " + modelElement);
                 
                 //get new parent node
                 Point loc = dropTargetDropEvent.getLocation();
@@ -177,16 +182,17 @@ DragSourceListener{
                 if (msg != null) {
                     dropTargetDropEvent.rejectDrop();
                     
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            JOptionPane.showMessageDialog(
-                                    ProjectBrowser.getInstance(),
-                                    msg,
-                                    "Error Dialog", 
-                                    JOptionPane.ERROR_MESSAGE
-                            );
-                        }
-                    });
+                    SwingUtilities.invokeLater(new Runnable() 
+			{
+			    public void run() {
+				JOptionPane.showMessageDialog(
+							      ProjectBrowser.getInstance(),
+							      msg,
+							      "Error Dialog", 
+							      JOptionPane.ERROR_MESSAGE
+							      );
+			    }
+			});
                     // reset the cursor.
                     //dropTargetDropEvent.getDropTargetContext()
                     //  .getComponent().setCursor(Cursor.getDefaultCursor());
@@ -194,19 +200,19 @@ DragSourceListener{
                 }
                 
                 Object destinationModelElement =
-                                    destinationPath.getLastPathComponent();
+		    destinationPath.getLastPathComponent();
                 
                 //get old parent node
                 Object oldParentME = _selectedTreePath.getParentPath()
-                                                      .getLastPathComponent();
+		    .getLastPathComponent();
                 
                 int action = dropTargetDropEvent.getDropAction();
                 boolean copyAction = (action == DnDConstants.ACTION_COPY);
                 boolean moveAction = (action == DnDConstants.ACTION_MOVE);
                 
                 try {
-                    if (moveAction){
-                        _cat.debug("move "+modelElement);
+                    if (moveAction) {
+                        _cat.debug("move " + modelElement);
                         ModelFacade.setNamespace(modelElement,
                                                  destinationModelElement);
                     }
@@ -241,10 +247,11 @@ DragSourceListener{
          *          else returns null.
          */
         private String isValidDropTarget(TreePath destinationPath,
-        TreePath sourceTreePath){
+					 TreePath sourceTreePath) {
             
-            if(destinationPath == null ||
-            sourceTreePath == null){
+            if (destinationPath == null ||
+		sourceTreePath == null)
+	    {
                 return null;
             }
             
@@ -252,9 +259,9 @@ DragSourceListener{
             Object src = sourceTreePath.getLastPathComponent();
             
             boolean isValid = UmlHelper.getHelper().getCore()
-                                .isValidNamespace(src,dest);
+		.isValidNamespace(src, dest);
             
-            if(isValid){
+            if (isValid) {
                 return null;
             }
             else
@@ -262,24 +269,24 @@ DragSourceListener{
         }
         
         /** empty implementation - not used */
-        public void dropActionChanged(DropTargetDragEvent dropTargetDragEvent){}
+        public void dropActionChanged(DropTargetDragEvent dropTargetDragEvent) { }
         
     }
     
     /** DragSourceListener empty implementation - not used */
-    public void dragDropEnd(DragSourceDropEvent dragSourceDropEvent) {}
+    public void dragDropEnd(DragSourceDropEvent dragSourceDropEvent) { }
     
     /** DragSourceListener empty implementation - not used */
-    public void dragEnter(DragSourceDragEvent dragSourceDragEvent) {}
+    public void dragEnter(DragSourceDragEvent dragSourceDragEvent) { }
     
     /** DragSourceListener empty implementation - not used */
-    public void dragExit(DragSourceEvent dragSourceEvent) {}
+    public void dragExit(DragSourceEvent dragSourceEvent) { }
     
     /** DragSourceListener empty implementation - not used */
-    public void dragOver(DragSourceDragEvent dragSourceDragEvent) {}
+    public void dragOver(DragSourceDragEvent dragSourceDragEvent) { }
     
     /** DragSourceListener empty implementation - not used */
-    public void dropActionChanged(DragSourceDragEvent dragSourceDragEvent) {}
+    public void dropActionChanged(DragSourceDragEvent dragSourceDragEvent) { }
     
     /**
      * records the selected path for later use during dnd.
@@ -297,23 +304,24 @@ DragSourceListener{
 /**
  * Encaosulates a UML Model element for data transfer.
  */
-class TransferableModelElement implements Transferable{
+class TransferableModelElement implements Transferable {
     
     final public static DataFlavor ELEM_FLAVOR =
-    new DataFlavor(Object.class, "UML Model Element");
+	new DataFlavor(Object.class, "UML Model Element");
     
     static DataFlavor flavors[] = {ELEM_FLAVOR };
     
     Object _modelElement;
     
-    public TransferableModelElement(Object modelElement){
+    public TransferableModelElement(Object modelElement) {
         
         _modelElement = modelElement;
     }
     
     public Object getTransferData(java.awt.datatransfer.DataFlavor dataFlavor)
-    throws UnsupportedFlavorException,
-    java.io.IOException {
+	throws UnsupportedFlavorException,
+	       java.io.IOException 
+    {
         
         if (dataFlavor.match(ELEM_FLAVOR)) {
             return _modelElement;

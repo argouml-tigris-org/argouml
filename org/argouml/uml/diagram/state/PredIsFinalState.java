@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -30,13 +31,13 @@ import org.tigris.gef.util.*;
 
 public class PredIsFinalState implements Predicate {
 
-  public static PredIsFinalState TheInstance = new PredIsFinalState();
+    public static PredIsFinalState TheInstance = new PredIsFinalState();
 
-  private PredIsFinalState() { }
+    private PredIsFinalState() { }
 
-  public boolean predicate(Object obj) {
-    return (obj instanceof MFinalState);
-  }
+    public boolean predicate(Object obj) {
+	return (obj instanceof MFinalState);
+    }
 
 } /* end class PredIsFinalState */
 

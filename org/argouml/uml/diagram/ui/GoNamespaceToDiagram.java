@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,13 +53,13 @@ public class GoNamespaceToDiagram extends AbstractGoRule {
     public Collection getChildren(Object parent) {
         if (parent instanceof MNamespace) {
             List returnList = new ArrayList();
-            MNamespace ns = (MNamespace)parent;
+            MNamespace ns = (MNamespace) parent;
             Project proj = ProjectManager.getManager().getCurrentProject();
             Iterator it = proj.getDiagrams().iterator();
             while (it.hasNext()) {
-                UMLDiagram d= (UMLDiagram)it.next();
+                UMLDiagram d = (UMLDiagram) it.next();
                 if (d instanceof UMLStateDiagram) {
-                    UMLStateDiagram sd = (UMLStateDiagram)d;
+                    UMLStateDiagram sd = (UMLStateDiagram) d;
                     if (sd.getStateMachine().getContext() instanceof MBehavioralFeature)
                     	continue;
                 }

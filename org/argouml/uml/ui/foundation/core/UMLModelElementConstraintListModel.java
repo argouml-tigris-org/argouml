@@ -50,14 +50,14 @@ public class UMLModelElementConstraintListModel
      */
     protected void buildModelList() {
         if (_target != null)
-            setAllElements(((MModelElement)getTarget()).getConstraints());
+            setAllElements(((MModelElement) getTarget()).getConstraints());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {
-        return o instanceof MConstraint && ((MModelElement)getTarget()).getConstraints().contains(o);     
+        return o instanceof MConstraint && ((MModelElement) getTarget()).getConstraints().contains(o);     
     }
 
 }

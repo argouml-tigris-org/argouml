@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -28,11 +29,11 @@ import java.util.Vector;
 
 public class ToDoListEvent {
 
-  protected Vector _items;
+    protected Vector _items;
 
-  public ToDoListEvent() { _items = null; }
-  public ToDoListEvent(Vector items) { _items = items ; }
+    public ToDoListEvent() { _items = null; }
+    public ToDoListEvent(Vector items) { _items = items; }
 
-  public Vector getToDoItems() { return _items; }
+    public Vector getToDoItems() { return _items; }
 
 } /* end class ToDoListEvent */

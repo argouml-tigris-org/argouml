@@ -1,3 +1,27 @@
+// $Id$
+// Copyright (c) 2003 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 /*
  * GridLayout2.java
  */
@@ -333,7 +357,7 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
             int largestPreferredWidth = 0;
             int largestPreferredHeight = 0;
 
-            for (int c = 0; c < actualCols ; ++c) {
+            for (int c = 0; c < actualCols; ++c) {
                 for (int r = 0; r < actualRows; ++r) {
                     int i = r * actualCols + c;
                     if (i < componentCount) {
@@ -371,7 +395,7 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
             int largestMinimumWidth = 0;
             int largestMinimumHeight = 0;
 
-            for (int c = 0; c < actualCols ; ++c) {
+            for (int c = 0; c < actualCols; ++c) {
                 for (int r = 0; r < actualRows; ++r) {
                     int i = r * actualCols + c;
                     if (i < componentCount) {
@@ -413,13 +437,13 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
             largestHeight = 0;
 
             if (cellSizing == FITPARENT) {
-                int availableWidth = parent.getWidth() - (insets.left + insets.right + (ncols-1)*hgap);
-                int availableHeight = parent.getHeight() - (insets.top + insets.bottom + (nrows-1)*vgap);
+                int availableWidth = parent.getWidth() - (insets.left + insets.right + (ncols - 1) * hgap);
+                int availableHeight = parent.getHeight() - (insets.top + insets.bottom + (nrows - 1) * vgap);
                 largestWidth = availableWidth / ncols;
                 largestHeight = availableHeight / nrows;
             }
             else {
-                for (int c = 0; c < ncols ; ++c) {
+                for (int c = 0; c < ncols; ++c) {
                     for (int r = 0; r < nrows; ++r) {
                         int i = r * ncols + c;
                         if (i < ncomponents) {
@@ -438,9 +462,9 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
 
             int cellWidth;
             int cellHeight;
-            for (int c = 0, x = insets.left ; c < ncols ; x += cellWidth + hgap, ++c) {
+            for (int c = 0, x = insets.left; c < ncols; x += cellWidth + hgap, ++c) {
                 cellWidth = getComponentCellWidth(c);
-                for (int r = 0, y = insets.top ; r < nrows ; y += cellHeight + vgap, ++r) {
+                for (int r = 0, y = insets.top; r < nrows; y += cellHeight + vgap, ++r) {
                     cellHeight = getComponentCellHeight(r);
 
                     int i = r * ncols + c;
@@ -458,8 +482,8 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
         int w = 0;
         int h = 0;
         if (cellSizing == this.ROWCOLPREFERRED) {
-            for (int c = 0; c < actualCols ; ++c) w += colWidth[c];
-            for (int r = 0; r < actualRows ; ++r) h += rowHeight[r];
+            for (int c = 0; c < actualCols; ++c) w += colWidth[c];
+            for (int r = 0; r < actualRows; ++r) h += rowHeight[r];
         }
         else {
             w = largestWidth * actualCols;
@@ -467,8 +491,8 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
         }
 
         Insets insets = parent.getInsets();
-        return new Dimension(insets.left + insets.right + w + (actualCols-1) * hgap,
-                             insets.top + insets.bottom + h + (actualRows-1) * vgap);
+        return new Dimension(insets.left + insets.right + w + (actualCols - 1) * hgap,
+                             insets.top + insets.bottom + h + (actualRows - 1) * vgap);
     }
 
     protected int getComponentCellHeight(int row) {
@@ -506,7 +530,7 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
             xAnchor = x + cellWidth - componentWidth;
         }
         else {
-            xAnchor = x + (cellWidth - componentWidth)/2;
+            xAnchor = x + (cellWidth - componentWidth) / 2;
         }
 
         if (fill == BOTH || fill == VERTICAL || anchor == NORTH || anchor == NORTHWEST || anchor == NORTHEAST) {
@@ -516,7 +540,7 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
             yAnchor = y + cellHeight - componentHeight;
         }
         else {
-            yAnchor = y + (cellHeight - componentHeight)/2;
+            yAnchor = y + (cellHeight - componentHeight) / 2;
         }
 
         comp.setBounds(xAnchor, yAnchor, componentWidth, componentHeight);

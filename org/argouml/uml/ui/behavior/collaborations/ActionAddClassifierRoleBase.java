@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,7 +53,7 @@ public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
      */
     protected Vector getChoices() {
         Vector vec = new Vector();
-        vec.addAll(CollaborationsHelper.getHelper().getAllPossibleBases((MClassifierRole)getTarget()));
+        vec.addAll(CollaborationsHelper.getHelper().getAllPossibleBases((MClassifierRole) getTarget()));
         return vec;
     }
 
@@ -61,7 +62,7 @@ public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
      */
     protected Vector getSelected() {
         Vector vec = new Vector();
-        vec.addAll(((MClassifierRole)getTarget()).getBases());
+        vec.addAll(((MClassifierRole) getTarget()).getBases());
         return vec;
     }
 
@@ -76,7 +77,7 @@ public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
-        MClassifierRole role = (MClassifierRole)getTarget();
+        MClassifierRole role = (MClassifierRole) getTarget();
         CollaborationsHelper.getHelper().setBases(role, selected);
     }
         

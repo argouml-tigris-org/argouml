@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -44,77 +45,77 @@ import org.argouml.uml.diagram.deployment.ui.*;
 
 public class CrComponentWithoutNode extends CrUML {
 
-  public CrComponentWithoutNode() {
-    setHeadline("Components normally are inside nodes");
-    addSupportedDecision(CrUML.decPATTERNS);
-  }
+    public CrComponentWithoutNode() {
+	setHeadline("Components normally are inside nodes");
+	addSupportedDecision(CrUML.decPATTERNS);
+    }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
-    UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
-    VectorSet offs = computeOffenders(dd); 
-    if (offs == null) return NO_PROBLEM; 
-    return PROBLEM_FOUND; 
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
+	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
+	VectorSet offs = computeOffenders(dd); 
+	if (offs == null) return NO_PROBLEM; 
+	return PROBLEM_FOUND; 
+    }
 
-  public ToDoItem toDoItem(Object dm, Designer dsgr) { 
-    UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
-    VectorSet offs = computeOffenders(dd); 
-    return new ToDoItem(this, offs, dsgr); 
-  } 
+    public ToDoItem toDoItem(Object dm, Designer dsgr) { 
+	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
+	VectorSet offs = computeOffenders(dd); 
+	return new ToDoItem(this, offs, dsgr); 
+    } 
  
-  public boolean stillValid(ToDoItem i, Designer dsgr) { 
-    if (!isActive()) return false; 
-    VectorSet offs = i.getOffenders(); 
-    UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement();
-       //if (!predicate(dm, dsgr)) return false; 
-    VectorSet newOffs = computeOffenders(dd); 
-    boolean res = offs.equals(newOffs); 
-    return res; 
-  } 
+    public boolean stillValid(ToDoItem i, Designer dsgr) { 
+	if (!isActive()) return false; 
+	VectorSet offs = i.getOffenders(); 
+	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement();
+	//if (!predicate(dm, dsgr)) return false; 
+	VectorSet newOffs = computeOffenders(dd); 
+	boolean res = offs.equals(newOffs); 
+	return res; 
+    } 
 
 
-  /**
-   * If there are components that have no enclosing FigMNode
-   * the returned vector-set is not null. Then in the vector-set
-   * are the UMLDeploymentDiagram and all FigComponents with no
-   * enclosing FigMNode
-   **/
-  public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
+    /**
+     * If there are components that have no enclosing FigMNode
+     * the returned vector-set is not null. Then in the vector-set
+     * are the UMLDeploymentDiagram and all FigComponents with no
+     * enclosing FigMNode
+     **/
+    public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
 
-    Vector figs = dd.getLayer().getContents();
-    VectorSet offs = null;
-    int size = figs.size();
-    boolean isNode = false;
-    for (int j=0; j<size; j++) {
-      Object obj = figs.elementAt(j);
-      if (obj instanceof FigMNode) isNode = true;
-    }
-    for (int i=0; i<size; i++) {
-      Object obj = figs.elementAt(i);
-      if (!(obj instanceof FigComponent)) continue;
-      FigComponent fc = (FigComponent) obj;
-      if (fc.getEnclosingFig() == null && isNode == true) {
-        if (offs == null) {
-          offs = new VectorSet();
-          offs.addElement(dd);
-        }
-        offs.addElement(fc);
-      }
-      else if (fc.getEnclosingFig() != null &&
-                 (((MComponent)fc.getOwner()).getDeploymentLocations() == null || 
-                 (((MComponent)fc.getOwner()).getDeploymentLocations().size() == 0))) {
-        if (offs == null) {
-          offs = new VectorSet();
-          offs.addElement(dd);
-        }
-        offs.addElement(fc);
-      }
+	Vector figs = dd.getLayer().getContents();
+	VectorSet offs = null;
+	int size = figs.size();
+	boolean isNode = false;
+	for (int j = 0; j < size; j++) {
+	    Object obj = figs.elementAt(j);
+	    if (obj instanceof FigMNode) isNode = true;
+	}
+	for (int i = 0; i < size; i++) {
+	    Object obj = figs.elementAt(i);
+	    if (!(obj instanceof FigComponent)) continue;
+	    FigComponent fc = (FigComponent) obj;
+	    if (fc.getEnclosingFig() == null && isNode == true) {
+		if (offs == null) {
+		    offs = new VectorSet();
+		    offs.addElement(dd);
+		}
+		offs.addElement(fc);
+	    }
+	    else if (fc.getEnclosingFig() != null &&
+		     (((MComponent) fc.getOwner()).getDeploymentLocations() == null || 
+		      (((MComponent) fc.getOwner()).getDeploymentLocations().size() == 0))) {
+		if (offs == null) {
+		    offs = new VectorSet();
+		    offs.addElement(dd);
+		}
+		offs.addElement(fc);
+	    }
      
-    }
+	}
 
-    return offs; 
-  } 
+	return offs; 
+    } 
 
 } /* end class CrComponentWithoutNode.java */
 

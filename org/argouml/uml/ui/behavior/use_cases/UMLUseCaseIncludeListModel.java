@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -47,14 +48,14 @@ public class UMLUseCaseIncludeListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MUseCase)getTarget()).getIncludes());
+        setAllElements(((MUseCase) getTarget()).getIncludes());
     }
 
-     /**
+    /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-     protected boolean isValidElement(MBase o) {
-        return ((MUseCase)getTarget()).getIncludes().contains(o);
+    protected boolean isValidElement(MBase o) {
+        return ((MUseCase) getTarget()).getIncludes().contains(o);
     }
 
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -53,8 +54,8 @@ public class UMLReceptionSignalComboBox extends UMLComboBox2 {
      */
     protected void doIt(ActionEvent event) {
         Object o = getModel().getElementAt(getSelectedIndex());
-        MSignal signal = (MSignal)o;
-        MReception reception = (MReception)getTarget();
+        MSignal signal = (MSignal) o;
+        MReception reception = (MReception) getTarget();
         if (signal != reception.getSignal()) {
             reception.setSignal(signal);
         }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -86,7 +87,9 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
      * @see org.argouml.application.api.PluggableMenu#buildContext(javax.swing.JMenuItem, java.lang.String)
      */
     public Object[] buildContext(JMenuItem parentMenuItem, String menuType) {
-        return new Object[] { parentMenuItem, menuType };
+        return new Object[] {
+	    parentMenuItem, menuType 
+	};
     }
 
     /**
@@ -183,22 +186,22 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
         // show a chooser dialog for the file name, only xmi is allowed
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle(
-            Translator.localize(
-                "CoreMenu",
-                "action.export-project-as-xmi"));
+			       Translator.localize(
+						   "CoreMenu",
+						   "action.export-project-as-xmi"));
         chooser.setApproveButtonText(
-            Translator.localize("CoreMenu", "filechooser.export"));
-        chooser.setFileFilter(new FileFilter() {
-            public boolean accept(File file) {
-                return (
-                    file.getName().endsWith(".xmi")
-                        || file.getName().indexOf('.') == -1);
-            }
-            public String getDescription() {
-                return "An XMI project file";
-            }
+				     Translator.localize("CoreMenu", "filechooser.export"));
+        chooser.setFileFilter(new FileFilter() 
+	    {
+		public boolean accept(File file) {
+		    return (file.getName().endsWith(".xmi")
+			    || file.getName().indexOf('.') == -1);
+		}
+		public String getDescription() {
+		    return "An XMI project file";
+		}
 
-        });
+	    });
         int result = chooser.showSaveDialog(ProjectBrowser.getInstance());
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = chooser.getSelectedFile();
@@ -206,25 +209,27 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
                 ProjectManager.getManager().getCurrentProject();
             Iterator it = currentProject.getMembers().iterator();
             while (it.hasNext()) {
-                ProjectMember member = (ProjectMember)it.next();
+                ProjectMember member = (ProjectMember) it.next();
                 if (member.getType().equalsIgnoreCase("xmi")) {
                     try {
                         member.save(new FileWriter(selectedFile));
                     } catch (Exception ex) {
                         String sMessage =
                             MessageFormat.format(
-                                Argo.localize(
-                                    "Actions",
-                                    "optionpane.save-project-general-exception"),
-                                new Object[] { ex.getMessage()});
+						 Argo.localize(
+							       "Actions",
+							       "optionpane.save-project-general-exception"),
+						 new Object[] {
+						     ex.getMessage()
+						 });
 
                         JOptionPane.showMessageDialog(
-                            ProjectBrowser.getInstance(),
-                            sMessage,
-                            Argo.localize(
-                                "Actions",
-                                "optionpane.save-project-general-exception-title"),
-                            JOptionPane.ERROR_MESSAGE);
+						      ProjectBrowser.getInstance(),
+						      sMessage,
+						      Argo.localize(
+								    "Actions",
+								    "optionpane.save-project-general-exception-title"),
+						      JOptionPane.ERROR_MESSAGE);
 
                         log.error(sMessage, ex);
                     }

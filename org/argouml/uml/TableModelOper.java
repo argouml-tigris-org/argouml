@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -31,26 +32,26 @@ import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.foundation.core.*;
 
 public class TableModelOper extends TableModelComposite {
-  ////////////////
-  // constructor
-  public TableModelOper() { }
+    ////////////////
+    // constructor
+    public TableModelOper() { }
 
-  public void initColumns() {
-    addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.FeatureVis);
-    addColumn(ColumnDescriptor.OperKeyword);
-    addColumn(ColumnDescriptor.Return);
-    addColumn(ColumnDescriptor.Query);
-    addColumn(ColumnDescriptor.MStereotype);
-  }
+    public void initColumns() {
+	addColumn(ColumnDescriptor.Name);
+	addColumn(ColumnDescriptor.FeatureVis);
+	addColumn(ColumnDescriptor.OperKeyword);
+	addColumn(ColumnDescriptor.Return);
+	addColumn(ColumnDescriptor.Query);
+	addColumn(ColumnDescriptor.MStereotype);
+    }
 
-  public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof MClassifier)) return new Vector();
-    MClassifier cls = (MClassifier) t;
-    Collection oper = ModelFacade.getOperations(cls);
-    return new Vector(oper);
-  }
+    public Vector rowObjectsFor(Object t) {
+	if (!(t instanceof MClassifier)) return new Vector();
+	MClassifier cls = (MClassifier) t;
+	Collection oper = ModelFacade.getOperations(cls);
+	return new Vector(oper);
+    }
 
-  public String toString() { return "Operations vs. Properties"; }
+    public String toString() { return "Operations vs. Properties"; }
 } /* end class TableModelOper */
 

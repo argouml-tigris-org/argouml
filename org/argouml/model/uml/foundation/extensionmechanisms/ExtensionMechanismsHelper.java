@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -54,10 +55,10 @@ public class ExtensionMechanismsHelper {
     private ExtensionMechanismsHelper() {
     }
 
-     /** Singleton instance.
+    /** Singleton instance.
      */
     private static ExtensionMechanismsHelper SINGLETON =
-                   new ExtensionMechanismsHelper();
+	new ExtensionMechanismsHelper();
 
 
     /** Singleton instance access method.
@@ -74,10 +75,10 @@ public class ExtensionMechanismsHelper {
         if (ns == null) return l;
     	Iterator it = ns.getOwnedElements().iterator();
     	while (it.hasNext()) {
-    		Object o = it.next();
-    		if (o instanceof MStereotype) {
-    			l.add(o);
-    		}
+	    Object o = it.next();
+	    if (o instanceof MStereotype) {
+		l.add(o);
+	    }
     	}
     	return l;
     }
@@ -109,14 +110,14 @@ public class ExtensionMechanismsHelper {
     	String baseClass = stereo.getBaseClass();
     	Iterator it = getStereotypes(ns).iterator();
     	while (it.hasNext()) {
-    		Object o = it.next();
-    		if (o instanceof MStereotype &&
-                ((MStereotype)o).getName() != null &&
-    			((MStereotype)o).getName().equals(name) &&
-                ((MStereotype)o).getBaseClass() != null &&
-    			((MStereotype)o).getBaseClass().equals(baseClass)) {
-    			return (MStereotype)o;
-    		}
+	    Object o = it.next();
+	    if (o instanceof MStereotype &&
+                ((MStereotype) o).getName() != null &&
+		((MStereotype) o).getName().equals(name) &&
+                ((MStereotype) o).getBaseClass() != null &&
+		((MStereotype) o).getBaseClass().equals(baseClass)) {
+		return (MStereotype) o;
+	    }
     	}
     	return null;
     }
@@ -133,14 +134,14 @@ public class ExtensionMechanismsHelper {
         if (name == null || baseClass == null) return null;
         Iterator it2 = ProjectManager.getManager().getCurrentProject().getModels().iterator();
         while (it2.hasNext()) {
-            MModel model = (MModel)it2.next();
+            MModel model = (MModel) it2.next();
             Iterator it = getStereotypes(model).iterator();
             while (it.hasNext()) {
                 Object o = it.next();
                 if (o instanceof MStereotype &&
-                    ((MStereotype)o).getName().equals(name) &&
-                    ((MStereotype)o).getBaseClass().equals(baseClass)) {
-                    return (MStereotype)o;
+                    ((MStereotype) o).getName().equals(name) &&
+                    ((MStereotype) o).getBaseClass().equals(baseClass)) {
+                    return (MStereotype) o;
                 }
             }
         }
@@ -155,9 +156,9 @@ public class ExtensionMechanismsHelper {
     protected String getMetaModelName(Class clazz) {
         if (clazz == null) return null;
         String name = clazz.getName();
-        name = name.substring(name.lastIndexOf('.')+2,name.length());
+        name = name.substring(name.lastIndexOf('.') + 2, name.length());
         if (name.endsWith("Impl")) {
-            name = name.substring(0,name.lastIndexOf("Impl"));
+            name = name.substring(0, name.lastIndexOf("Impl"));
         }
         return name;
     }
@@ -176,7 +177,7 @@ public class ExtensionMechanismsHelper {
         Iterator it = getStereotypes().iterator();
         String baseClass = getMetaModelName(m);
         while (it.hasNext()) {
-            MStereotype stereo = (MStereotype)it.next();
+            MStereotype stereo = (MStereotype) it.next();
             if (isValidStereoType(m.getClass(), stereo)) {
                 ret.add(stereo);
             }
@@ -203,7 +204,7 @@ public class ExtensionMechanismsHelper {
      */
     public boolean isValidStereoType(Object m, MStereotype stereo) {
         if (m == null) return false;
-       return isValidStereoType(m.getClass(), stereo);
+	return isValidStereoType(m.getClass(), stereo);
     }
 
     public Collection getStereotypes() {
@@ -211,7 +212,7 @@ public class ExtensionMechanismsHelper {
         Project p = ProjectManager.getManager().getCurrentProject();
         Iterator it = p.getModels().iterator();
         while (it.hasNext()) {
-            MModel model = (MModel)it.next();
+            MModel model = (MModel) it.next();
             ret.addAll(getStereotypes(model));
         }
         return ret;

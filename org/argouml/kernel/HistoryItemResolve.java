@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,29 +34,29 @@ import org.argouml.cognitive.*;
 
 public class HistoryItemResolve extends HistoryItem {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  String _reason;
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    String _reason;
   
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public HistoryItemResolve(ToDoItem item) {
-    super(item, "Criticism resolved: ");
-  }
+    public HistoryItemResolve(ToDoItem item) {
+	super(item, "Criticism resolved: ");
+    }
 
-  public HistoryItemResolve(ToDoItem item, String reason) {
-    super(item, "Criticism resolved: ");
-    _reason = reason;
-  }
+    public HistoryItemResolve(ToDoItem item, String reason) {
+	super(item, "Criticism resolved: ");
+	_reason = reason;
+    }
 
 
-  ////////////////////////////////////////////////////////////////
-  // debugging
+    ////////////////////////////////////////////////////////////////
+    // debugging
 
-  public String toString() {
-    if (_desc == null) return "HIC: (null)";
-    return "HIR: " + _desc;
-  }
+    public String toString() {
+	if (_desc == null) return "HIC: (null)";
+	return "HIR: " + _desc;
+    }
   
 } /* end class HistoryItemResolve */

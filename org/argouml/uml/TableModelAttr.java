@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -31,25 +32,25 @@ import ru.novosoft.uml.foundation.core.*;
 import org.argouml.model.ModelFacade;
 
 public class TableModelAttr extends TableModelComposite {
-  ////////////////
-  // constructor
-  public TableModelAttr() { }
+    ////////////////
+    // constructor
+    public TableModelAttr() { }
 
-  public void initColumns() {
-    addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.FeatureVis);
-    addColumn(ColumnDescriptor.AttrKeyword);
-    addColumn(ColumnDescriptor.Type);
-    addColumn(ColumnDescriptor.MStereotype);
-  }
+    public void initColumns() {
+	addColumn(ColumnDescriptor.Name);
+	addColumn(ColumnDescriptor.FeatureVis);
+	addColumn(ColumnDescriptor.AttrKeyword);
+	addColumn(ColumnDescriptor.Type);
+	addColumn(ColumnDescriptor.MStereotype);
+    }
 
-  public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof MClassifier)) return new Vector();
-    MClassifier cls = (MClassifier) t;
-    Vector attr = new Vector(ModelFacade.getStructuralFeatures(cls));
-    return attr;
-  }
+    public Vector rowObjectsFor(Object t) {
+	if (!(t instanceof MClassifier)) return new Vector();
+	MClassifier cls = (MClassifier) t;
+	Vector attr = new Vector(ModelFacade.getStructuralFeatures(cls));
+	return attr;
+    }
 
-  public String toString() { return "Attributes vs. Properties"; }
+    public String toString() { return "Attributes vs. Properties"; }
 } /* end class TableModelAttr */
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -35,59 +36,59 @@ import org.argouml.cognitive.*;
 
 public class GoListToPosterToItem implements TreeModel {
   
-  ////////////////////////////////////////////////////////////////
-  // TreeModel implementation
+    ////////////////////////////////////////////////////////////////
+    // TreeModel implementation
   
-  public Object getRoot() {
-      throw new UnsupportedOperationException("getRoot should never be called");
-  } 
-  public void setRoot(Object r) { }
+    public Object getRoot() {
+	throw new UnsupportedOperationException("getRoot should never be called");
+    } 
+    public void setRoot(Object r) { }
 
-  public Object getChild(Object parent, int index) {
-    Vector children = getChildren(parent);
-    return (children == null) ? null : children.elementAt(index);
-  }
-  
-  public int getChildCount(Object parent) {
-    Vector children = getChildren(parent);
-    return (children == null) ? 0 : children.size();
-  }
-  
-  public int getIndexOfChild(Object parent, Object child) {
-    Vector children = getChildren(parent);
-    return (children == null) ? -1 : children.indexOf(child);
-  }
-
-  public boolean isLeaf(Object node) {
-    if (node instanceof ToDoList) return false;
-    if (getChildCount(node) > 0) return false;
-    return true;
-  }
-
-
-  public Vector getChildren(Object parent) {
-    VectorSet allPosters = Designer.TheDesigner.getToDoList().getPosters();
-    if (parent instanceof ToDoList) {
-      return allPosters.asVector();
+    public Object getChild(Object parent, int index) {
+	Vector children = getChildren(parent);
+	return (children == null) ? null : children.elementAt(index);
     }
-    //otherwise parent must be an offending design material
-    if (allPosters.contains(parent)) {
-      Vector res = new Vector();
-      ToDoList list = Designer.TheDesigner.getToDoList();
-      java.util.Enumeration enum = list.elements();
-      while (enum.hasMoreElements()) {
-	ToDoItem item = (ToDoItem) enum.nextElement();
-	Poster post = item.getPoster();
-	if (post == parent) res.addElement(item);
-      }
-      return res;
-    }
-    return null;
-  }
   
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
+    public int getChildCount(Object parent) {
+	Vector children = getChildren(parent);
+	return (children == null) ? 0 : children.size();
+    }
+  
+    public int getIndexOfChild(Object parent, Object child) {
+	Vector children = getChildren(parent);
+	return (children == null) ? -1 : children.indexOf(child);
+    }
+
+    public boolean isLeaf(Object node) {
+	if (node instanceof ToDoList) return false;
+	if (getChildCount(node) > 0) return false;
+	return true;
+    }
+
+
+    public Vector getChildren(Object parent) {
+	VectorSet allPosters = Designer.TheDesigner.getToDoList().getPosters();
+	if (parent instanceof ToDoList) {
+	    return allPosters.asVector();
+	}
+	//otherwise parent must be an offending design material
+	if (allPosters.contains(parent)) {
+	    Vector res = new Vector();
+	    ToDoList list = Designer.TheDesigner.getToDoList();
+	    java.util.Enumeration enum = list.elements();
+	    while (enum.hasMoreElements()) {
+		ToDoItem item = (ToDoItem) enum.nextElement();
+		Poster post = item.getPoster();
+		if (post == parent) res.addElement(item);
+	    }
+	    return res;
+	}
+	return null;
+    }
+  
+    public void valueForPathChanged(TreePath path, Object newValue) { }
+    public void addTreeModelListener(TreeModelListener l) { }
+    public void removeTreeModelListener(TreeModelListener l) { }
 
 
 } /* end class GoListToPosterToItem */

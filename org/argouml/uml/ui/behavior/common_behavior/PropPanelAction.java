@@ -38,7 +38,7 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 /**
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public abstract class PropPanelAction extends PropPanelModelElement {
@@ -62,9 +62,9 @@ public abstract class PropPanelAction extends PropPanelModelElement {
         UMLExpressionModel expressionModel =
             new UMLExpressionModel(
                 this,
-                (Class)ModelFacade.ACTION,
+                (Class) ModelFacade.ACTION,
                 "script",
-                (Class)ModelFacade.ACTION_EXPRESSION,
+                (Class) ModelFacade.ACTION_EXPRESSION,
                 "getScript",
                 "setScript");
         addField(Argo.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel, true)));

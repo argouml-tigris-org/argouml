@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -51,8 +52,8 @@ import org.argouml.swingext.LabelledLayout;
  */
 
 public class SettingsTabNotation extends SettingsTabHelper
-
-implements SettingsTabPanel {
+    implements SettingsTabPanel 
+{
 
     JCheckBox _allowNotations = null;
     JCheckBox _useGuillemots = null;
@@ -64,63 +65,63 @@ implements SettingsTabPanel {
     JTextField _defaultShadowWidth = null;
 
     public SettingsTabNotation() {
-    super();
-    setLayout(new BorderLayout());
+	super();
+	setLayout(new BorderLayout());
 	JPanel top = new JPanel();
        
-    top.setLayout(new GridBagLayout()); 
+	top.setLayout(new GridBagLayout()); 
 
 	GridBagConstraints constraints = new GridBagConstraints();
 	constraints.anchor = GridBagConstraints.WEST;
-    constraints.fill = GridBagConstraints.HORIZONTAL;
+	constraints.fill = GridBagConstraints.HORIZONTAL;
 	constraints.gridy = 0;
 	constraints.gridx = 0;
 	constraints.gridwidth = 1;
 	constraints.gridheight = 1;
-    constraints.weightx = 1.0;
+	constraints.weightx = 1.0;
 	constraints.insets = new Insets(0, 30, 0, 4);
 
 	constraints.gridy = 0;
-    _allowNotations = createCheckBox("label.uml-notation-only");
+	_allowNotations = createCheckBox("label.uml-notation-only");
 	top.add(_allowNotations, constraints);
 
 	constraints.gridy = 1;
-    _useGuillemots = createCheckBox("label.use-guillemots");
+	_useGuillemots = createCheckBox("label.use-guillemots");
 	top.add(_useGuillemots, constraints);
     
-    // 2002-07-31
-    // Jaap Branderhorst
-    // from here made visibility etc. configurable
+	// 2002-07-31
+	// Jaap Branderhorst
+	// from here made visibility etc. configurable
     
-    constraints.gridy = 2;
-    _showVisibility = createCheckBox("label.show-visibility");
-    top.add(_showVisibility, constraints);
+	constraints.gridy = 2;
+	_showVisibility = createCheckBox("label.show-visibility");
+	top.add(_showVisibility, constraints);
     
-    constraints.gridy = 3;
-    _showMultiplicity = createCheckBox("label.show-multiplicity");
-    top.add(_showMultiplicity, constraints);
+	constraints.gridy = 3;
+	_showMultiplicity = createCheckBox("label.show-multiplicity");
+	top.add(_showMultiplicity, constraints);
 
-    constraints.gridy = 4;
-    _showInitialValue = createCheckBox("label.show-initialvalue");
-    top.add(_showInitialValue, constraints);
+	constraints.gridy = 4;
+	_showInitialValue = createCheckBox("label.show-initialvalue");
+	top.add(_showInitialValue, constraints);
     
-    constraints.gridy = 5;
-    _showProperties = createCheckBox("label.show-properties");
-    top.add(_showProperties, constraints);
+	constraints.gridy = 5;
+	_showProperties = createCheckBox("label.show-properties");
+	top.add(_showProperties, constraints);
 	
-    constraints.gridy = 6;
-    _showStereotypes = createCheckBox("label.show-stereotypes");
-    top.add(_showStereotypes, constraints);
+	constraints.gridy = 6;
+	_showStereotypes = createCheckBox("label.show-stereotypes");
+	top.add(_showStereotypes, constraints);
 
-    constraints.gridy = 7;
-    constraints.insets = new Insets(5, 30, 0, 4);
-    JPanel defaultShadowWidthPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-    JLabel defaultShadowWidthLabel = createLabel("label.default-shadow-width");
-    _defaultShadowWidth = new JTextField(5);
-    defaultShadowWidthLabel.setLabelFor(_defaultShadowWidth);
-    defaultShadowWidthPanel.add(defaultShadowWidthLabel);
-    defaultShadowWidthPanel.add(_defaultShadowWidth);
-    top.add(defaultShadowWidthPanel, constraints);
+	constraints.gridy = 7;
+	constraints.insets = new Insets(5, 30, 0, 4);
+	JPanel defaultShadowWidthPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+	JLabel defaultShadowWidthLabel = createLabel("label.default-shadow-width");
+	_defaultShadowWidth = new JTextField(5);
+	defaultShadowWidthLabel.setLabelFor(_defaultShadowWidth);
+	defaultShadowWidthPanel.add(defaultShadowWidthLabel);
+	defaultShadowWidthPanel.add(_defaultShadowWidth);
+	top.add(defaultShadowWidthPanel, constraints);
 	
 	add(top, BorderLayout.NORTH);
     }
@@ -133,7 +134,7 @@ implements SettingsTabPanel {
         _showProperties.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES, false));
         _showMultiplicity.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_MULTIPLICITY, false));
         _showStereotypes.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false));
-        _defaultShadowWidth.setText(Configuration.getString(Notation.KEY_DEFAULT_SHADOW_WIDTH,"1"));
+        _defaultShadowWidth.setText(Configuration.getString(Notation.KEY_DEFAULT_SHADOW_WIDTH, "1"));
     }
 
     public void handleSettingsTabSave() {
@@ -151,13 +152,13 @@ implements SettingsTabPanel {
         handleSettingsTabRefresh();
     }
 
-  public String getModuleName() { return "SettingsTabNotation"; }
-  public String getModuleDescription() { return "Settings Tab for Notation"; }
-  public String getModuleAuthor() { return "ArgoUML Core"; }
-  public String getModuleVersion() { return ArgoVersion.getVersion(); }
-  public String getModuleKey() { return "module.settings.notation"; }
-  public String getTabKey() { return "tab.notation"; }
-  public String getTabResourceBundleKey() { return "CoreSettings"; }
+    public String getModuleName() { return "SettingsTabNotation"; }
+    public String getModuleDescription() { return "Settings Tab for Notation"; }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return ArgoVersion.getVersion(); }
+    public String getModuleKey() { return "module.settings.notation"; }
+    public String getTabKey() { return "tab.notation"; }
+    public String getTabResourceBundleKey() { return "CoreSettings"; }
 
 
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -53,7 +54,7 @@ abstract public class AbstractSection
 
     public static String generate(String id, String INDENT) {
         return "";
-	}
+    }
 
     // write todo:
     // check if sections are not used within the file and put them as comments
@@ -62,19 +63,19 @@ abstract public class AbstractSection
     // =======================================================================
 
     public void write(String filename, String INDENT, boolean OutputLostSections) {
-        try{           
+        try {           
             FileReader f = new FileReader(filename);
             BufferedReader fr = new BufferedReader(f);
             FileWriter fw = new FileWriter(filename + ".out");          
             String line = "";
-            while (line != null){
+            while (line != null) {
                 line = fr.readLine();
-                if (line != null){
+                if (line != null) {
                     String section_id = get_sect_id(line);
-                    if (section_id != null){
-                        String content = (String)m_ary.get(section_id);
+                    if (section_id != null) {
+                        String content = (String) m_ary.get(section_id);
                         fw.write(line + "\n");
-                        if (content != null){
+                        if (content != null) {
                             fw.write(content);                        
                         }
                         line = fr.readLine(); // read end section;
@@ -83,69 +84,69 @@ abstract public class AbstractSection
                     fw.write(line + "\n");           
                 }
             }
-            if ((m_ary.isEmpty() != true) && (OutputLostSections)){
+            if ((m_ary.isEmpty() != true) && (OutputLostSections)) {
                 fw.write("/* lost code following: \n");
                 Set map_entries = m_ary.entrySet();
                 Iterator itr = map_entries.iterator();
-                while (itr.hasNext()){
-                    Map.Entry entry = (Map.Entry)itr.next();
+                while (itr.hasNext()) {
+                    Map.Entry entry = (Map.Entry) itr.next();
                     fw.write(INDENT + "// section " + entry.getKey() + " begin\n");
-                    fw.write((String)entry.getValue());
+                    fw.write((String) entry.getValue());
                     fw.write(INDENT + "// section " + entry.getKey() + " end\n");
                 }
             }
             fr.close();
             fw.close();
-        } catch (IOException e){
+        } catch (IOException e) {
             _log.error("Error: " + e.toString());
         }
     }
 
     public void read(String filename) {
-        try{            
+        try {            
             FileReader f = new FileReader(filename);
             BufferedReader fr = new BufferedReader(f);
 
             String line = "";
             String content = "";
             boolean in_section = false;
-            while (line != null){
+            while (line != null) {
                 line = fr.readLine();
                 if (line != null) {
-                    if (in_section){
+                    if (in_section) {
                         String section_id = get_sect_id(line);
-                        if (section_id != null){
+                        if (section_id != null) {
                             in_section = false;
                             m_ary.put(section_id, content);
                             content = "";
-                        } else{
+                        } else {
                             content += line + "\n";
                         }
                     } else {
                         String section_id = get_sect_id(line);
-                        if (section_id != null){
+                        if (section_id != null) {
                             in_section = true;
                         }
                     }
                 }
             }
             fr.close();
-        } catch (IOException e){
+        } catch (IOException e) {
             _log.error("Error: " + e.toString());
         }
     }
 
-    public static String get_sect_id(String line){
+    public static String get_sect_id(String line) {
         final String BEGIN = "// section ";
         final String END1 = " begin";
         final String END2 = " end";
         int first = line.indexOf(BEGIN);
         int second = line.indexOf(END1);
-        if (second < 0){
+        if (second < 0) {
             second = line.indexOf(END2);
         }
         String s = null;
-        if ( (first > 0) && (second > 0) ){
+        if ( (first > 0) && (second > 0) ) {
             first = first + new String(BEGIN).length();
             s = line.substring(first, second);
         }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -30,7 +31,7 @@ import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 
 /**
- * @TODO this class should be moved to package
+ * TODO: this class should be moved to package
  * org.argouml.uml.ui.behavior.common_behavior
  */
 public class UMLStimulusActionTextField extends JTextField implements DocumentListener, UMLUserInterfaceComponent {
@@ -39,7 +40,7 @@ public class UMLStimulusActionTextField extends JTextField implements DocumentLi
     private UMLStimulusActionTextProperty _property;
     
     /** Creates new BooleanChangeListener */
-    public UMLStimulusActionTextField(UMLUserInterfaceContainer container,UMLStimulusActionTextProperty property) {
+    public UMLStimulusActionTextField(UMLUserInterfaceContainer container, UMLStimulusActionTextProperty property) {
         _container = container;
         _property = property;
         getDocument().addDocumentListener(this);
@@ -65,7 +66,7 @@ public class UMLStimulusActionTextField extends JTextField implements DocumentLi
     public void removed(final MElementEvent p1) {
     }
     public void propertySet(final MElementEvent event) {	
-        if(_property.isAffected(event)) {
+        if (_property.isAffected(event)) {
             //
             //   check the possibility that this is a promiscuous event
             Object eventSource = event.getSource();
@@ -74,7 +75,7 @@ public class UMLStimulusActionTextField extends JTextField implements DocumentLi
             //    if event source is unknown or 
             //       the event source is the container's target
             //          then update the field
-            if(eventSource == null || eventSource == target) {
+            if (eventSource == null || eventSource == target) {
                 update();
             }
         }
@@ -86,24 +87,24 @@ public class UMLStimulusActionTextField extends JTextField implements DocumentLi
 	
         String newText = _property.getProperty(_container);
 
-        if(oldText == null || newText == null || !oldText.equals(newText)) {
-            if(oldText != newText) {
+        if (oldText == null || newText == null || !oldText.equals(newText)) {
+            if (oldText != newText) {
                 setText(newText);
             }
         }
     }
     public void changedUpdate(final DocumentEvent p1) {
 
-        _property.setProperty(_container,getText());
+        _property.setProperty(_container, getText());
     }
     public void removeUpdate(final DocumentEvent p1) {
 
-        _property.setProperty(_container,getText());
+        _property.setProperty(_container, getText());
     }
     public void insertUpdate(final DocumentEvent p1) {
 	
 	
-        _property.setProperty(_container,getText());
+        _property.setProperty(_container, getText());
 	
     }
 

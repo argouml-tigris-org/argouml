@@ -53,7 +53,7 @@ import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelSignal extends PropPanelModelElement {
@@ -72,29 +72,29 @@ public class PropPanelSignal extends PropPanelModelElement {
 
         addSeperator();
 
-        JList contextList = new UMLList(new UMLReflectionListModel(this,"contexts",false,"getContexts",null,"addContext","deleteContext"),true);
- 		contextList.setBackground(getBackground());
+        JList contextList = new UMLList(new UMLReflectionListModel(this, "contexts", false, "getContexts", null, "addContext", "deleteContext"), true);
+	contextList.setBackground(getBackground());
         contextList.setForeground(Color.blue);
-        JScrollPane contextScroll=new JScrollPane(contextList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane contextScroll = new JScrollPane(contextList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         addField(Argo.localize("UMLMenu", "label.contexts"), contextScroll);
 
-        JList receiverList = new UMLList(new UMLReflectionListModel(this,"receivers",false,"getReceptions",null,"addReception","deleteReception"),true);
- 		receiverList.setBackground(getBackground());
+        JList receiverList = new UMLList(new UMLReflectionListModel(this, "receivers", false, "getReceptions", null, "addReception", "deleteReception"), true);
+	receiverList.setBackground(getBackground());
         receiverList.setForeground(Color.blue);
-        JScrollPane receiverScroll=new JScrollPane(receiverList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        JScrollPane receiverScroll = new JScrollPane(receiverList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         addField(Argo.localize("UMLMenu", "label.receptions"), receiverScroll);
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
-        new PropPanelButton(this,buttonPanel,_signalIcon, Argo.localize("UMLMenu", "button.add-signal"),"newSignal",null);
-        new PropPanelButton(this,buttonPanel,_receptionIcon, Argo.localize("UMLMenu", "button.add-reception"), "newReception", null);
-        new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-signal"),"removeElement",null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+        new PropPanelButton(this, buttonPanel, _signalIcon, Argo.localize("UMLMenu", "button.add-signal"), "newSignal", null);
+        new PropPanelButton(this, buttonPanel, _receptionIcon, Argo.localize("UMLMenu", "button.add-reception"), "newReception", null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-signal"), "removeElement", null);
     }
 
     public void newSignal() {
         Object target = getTarget();
-        if(ModelFacade.isASignal(target)) {
-            MNamespace ns = (MNamespace)ModelFacade.getNamespace(target);
-            if(ns != null) {
+        if (ModelFacade.isASignal(target)) {
+            MNamespace ns = (MNamespace) ModelFacade.getNamespace(target);
+            if (ns != null) {
                 MSignal newSig = ns.getFactory().createSignal();
                 ns.addOwnedElement(newSig);
                 TargetManager.getInstance().setTarget(newSig);
@@ -105,92 +105,92 @@ public class PropPanelSignal extends PropPanelModelElement {
     public void newReception() {
     	Object target = getTarget();
     	if (ModelFacade.isASignal(target)) {
-    		MSignal signal = (MSignal)target;
-    		MReception reception = CommonBehaviorFactory.getFactory().buildReception(signal);
+	    MSignal signal = (MSignal) target;
+	    MReception reception = CommonBehaviorFactory.getFactory().buildReception(signal);
             TargetManager.getInstance().setTarget(reception);
     	}
     }
 
 
-	/**
-	 * Gets all behavioralfeatures that form the contexts that can send the signal
-	 * @return Collection
-	 */
+    /**
+     * Gets all behavioralfeatures that form the contexts that can send the signal
+     * @return Collection
+     */
     public Collection getContexts() {
     	Collection contexts = new Vector();
     	Object target = getTarget();
     	if (target instanceof MSignal) {
-    		contexts = ((MSignal)target).getContexts();
+	    contexts = ((MSignal) target).getContexts();
     	}
     	return contexts;
     }
 
 
-	/**
-	 * Opens a new window where existing behavioral features can be added to the signal as context.
-	 * @param index
-	 */
+    /**
+     * Opens a new window where existing behavioral features can be added to the signal as context.
+     * @param index
+     */
     public void addContext(Integer index) {
     	Object target = getTarget();
     	if (target instanceof MSignal) {
-    		MSignal signal = (MSignal)target;
-	    	Vector choices = new Vector();
-	    	Vector selected = new Vector();
-	    	choices.addAll(CoreHelper.getHelper().getAllBehavioralFeatures());
-	    	selected.addAll(signal.getContexts());
-	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-contexts"), true, true);
-	    	int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
-	    	if (returnValue == JOptionPane.OK_OPTION) {
-	    		signal.setContexts(dialog.getSelected());
-	    	}
+	    MSignal signal = (MSignal) target;
+	    Vector choices = new Vector();
+	    Vector selected = new Vector();
+	    choices.addAll(CoreHelper.getHelper().getAllBehavioralFeatures());
+	    selected.addAll(signal.getContexts());
+	    UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-contexts"), true, true);
+	    int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
+	    if (returnValue == JOptionPane.OK_OPTION) {
+		signal.setContexts(dialog.getSelected());
+	    }
     	}
     }
 
-	/**
-	 * Deletes the context at index from the list with contexts.
-	 * @param index
-	 */
+    /**
+     * Deletes the context at index from the list with contexts.
+     * @param index
+     */
     public void deleteContext(Integer index) {
     	Object target = getTarget();
     	if (target instanceof MSignal) {
-    		MSignal signal = (MSignal)target;
-    		MBehavioralFeature feature = (MBehavioralFeature)UMLModelElementListModel.elementAtUtil(signal.getContexts(), index.intValue(), null);
-    		signal.removeContext(feature);
+	    MSignal signal = (MSignal) target;
+	    MBehavioralFeature feature = (MBehavioralFeature) UMLModelElementListModel.elementAtUtil(signal.getContexts(), index.intValue(), null);
+	    signal.removeContext(feature);
     	}
     }
 
-	/**
-	 * Returns all behavioral features that can recept this signal.
-	 * @return Collection
-	 */
+    /**
+     * Returns all behavioral features that can recept this signal.
+     * @return Collection
+     */
     public Collection getReceptions() {
     	Collection receptions = new Vector();
     	Object target = getTarget();
     	if (ModelFacade.isASignal(target)) {
-    		receptions = ModelFacade.getReceptions(target);
+	    receptions = ModelFacade.getReceptions(target);
     	}
     	return receptions;
     }
 
     /**
-	 * Adds a new reception. The user has to fill in the classifier the reception
-	 * belongs too on the proppanel of the reception
-	 * @param index
-	 */
+     * Adds a new reception. The user has to fill in the classifier the reception
+     * belongs too on the proppanel of the reception
+     * @param index
+     */
     public void addReception(Integer index) {
     	newReception();
     }
 
     /**
-	 * Deletes the reception at index from the list with receptions.
-	 * @param index
-	 */
+     * Deletes the reception at index from the list with receptions.
+     * @param index
+     */
     public void deleteReception(Integer index) {
     	Object target = getTarget();
     	if (target instanceof MSignal) {
-    		MSignal signal = (MSignal)target;
-    		MReception reception = (MReception)UMLModelElementListModel.elementAtUtil(signal.getReceptions(), index.intValue(), null);
-    		signal.removeReception(reception);
+	    MSignal signal = (MSignal) target;
+	    MReception reception = (MReception) UMLModelElementListModel.elementAtUtil(signal.getReceptions(), index.intValue(), null);
+	    signal.removeReception(reception);
     	}
     }
 

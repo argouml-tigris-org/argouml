@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,7 +41,7 @@ import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 public class UMLStructuralFeatureChangeabilityRadioButtonPanel
 	extends UMLRadioButtonPanel {
 
-	private static Map labelTextsAndActionCommands = new HashMap();
+    private static Map labelTextsAndActionCommands = new HashMap();
 
     static {
         labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.changeability-addonly"), ActionSetStructuralFeatureChangeability.ADDONLY_COMMAND);
@@ -65,18 +66,18 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
      */
     public void buildModel() {
         if (getTarget() != null) {
-            MStructuralFeature target = (MStructuralFeature)getTarget();
+            MStructuralFeature target = (MStructuralFeature) getTarget();
             MChangeableKind kind = target.getChangeability();
             if (kind == null || kind.equals(MChangeableKind.ADD_ONLY)) {
                 setSelected(ActionSetStructuralFeatureChangeability.ADDONLY_COMMAND);
             } else
-            if (kind.equals(MChangeableKind.CHANGEABLE)) {
-                setSelected(ActionSetStructuralFeatureChangeability.CHANGEABLE_COMMAND); 
-            } else
-            if (kind.equals(MChangeableKind.FROZEN)) {
-                setSelected(ActionSetStructuralFeatureChangeability.FROZEN_COMMAND);
-            } else
-                setSelected(ActionSetStructuralFeatureChangeability.CHANGEABLE_COMMAND);
+		if (kind.equals(MChangeableKind.CHANGEABLE)) {
+		    setSelected(ActionSetStructuralFeatureChangeability.CHANGEABLE_COMMAND); 
+		} else
+		    if (kind.equals(MChangeableKind.FROZEN)) {
+			setSelected(ActionSetStructuralFeatureChangeability.FROZEN_COMMAND);
+		    } else
+			setSelected(ActionSetStructuralFeatureChangeability.CHANGEABLE_COMMAND);
         }
     }
 }

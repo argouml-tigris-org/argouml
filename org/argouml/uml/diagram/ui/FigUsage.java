@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -54,7 +55,7 @@ public class FigUsage extends FigDependency {
     }
 
     public FigUsage(Object edge, Layer lay) {
-        super(edge,lay);
+        super(edge, lay);
     }
         
     protected void modelChanged(MElementEvent e) {
@@ -63,7 +64,7 @@ public class FigUsage extends FigDependency {
 	String stereoTypeStr = _stereo.getText();
 
 	if (stereoTypeStr == null || "".equals(stereoTypeStr)) {
-	    _stereo.setText(NotationHelper.getLeftGuillemot()+"use"+NotationHelper.getRightGuillemot());
+	    _stereo.setText(NotationHelper.getLeftGuillemot() + "use" + NotationHelper.getRightGuillemot());
 	}
     } 
 

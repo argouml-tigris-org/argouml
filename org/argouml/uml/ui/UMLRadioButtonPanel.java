@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -89,12 +90,12 @@ public abstract class UMLRadioButtonPanel
      * @param horizontal when true the buttons should be layed out horizontaly.
      */
     public UMLRadioButtonPanel(
-        boolean isDoubleBuffered,
-        String title,
-        Map labeltextsActioncommands,
-        String propertySetName,
-        Action setAction,
-        boolean horizontal) {
+			       boolean isDoubleBuffered,
+			       String title,
+			       Map labeltextsActioncommands,
+			       String propertySetName,
+			       Action setAction,
+			       boolean horizontal) {
         super(isDoubleBuffered);
         setLayout(horizontal ? new GridLayout() : new GridLayout(0, 1));
         setDoubleBuffered(true);
@@ -116,19 +117,13 @@ public abstract class UMLRadioButtonPanel
      * that's executed when one of the buttons is pressed
      * @param horizontal when true the buttons should be layed out horizontaly.
      */
-    public UMLRadioButtonPanel(
-        String title,
-        Map labeltextsActioncommands,
-        String propertySetName,
-        Action setAction,
-        boolean horizontal) {
-        this(
-            true,
-            title,
-            labeltextsActioncommands,
-            propertySetName,
-            setAction,
-            horizontal);
+    public UMLRadioButtonPanel(String title,
+			       Map labeltextsActioncommands,
+			       String propertySetName,
+			       Action setAction,
+			       boolean horizontal) {
+        this(true, title, labeltextsActioncommands, 
+	     propertySetName, setAction, horizontal);
     }
 
     /**
@@ -153,7 +148,7 @@ public abstract class UMLRadioButtonPanel
             JRadioButton button = new JRadioButton(keyAndLabel);
             button.addActionListener(setAction);
             button.setActionCommand(
-                (String) labeltextsActioncommands.get(keyAndLabel));
+				    (String) labeltextsActioncommands.get(keyAndLabel));
             _buttonGroup.add(button);
             add(button);
         }
@@ -210,20 +205,20 @@ public abstract class UMLRadioButtonPanel
      * @param target The target to set
      */
     public void setTarget(Object target) {
-        target = target instanceof Fig ? ((Fig)target).getOwner() : target;
+        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (_target instanceof MBase) {
             UmlModelEventPump.getPump().removeModelEventListener(
-                this,
-                (MBase) _target,
-                _propertySetName);
+								 this,
+								 (MBase) _target,
+								 _propertySetName);
         }
         _target = target;
         if (_target instanceof MBase) {
             // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
             UmlModelEventPump.getPump().addModelEventListener(
-                this,
-                (MBase) _target,
-                _propertySetName);
+							      this,
+							      (MBase) _target,
+							      _propertySetName);
         }
         if (_target != null)
             buildModel();

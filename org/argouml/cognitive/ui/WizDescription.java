@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -39,94 +40,106 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class WizDescription extends WizStep {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  JTextArea _description = new JTextArea();
+    JTextArea _description = new JTextArea();
 
 
-  public WizDescription() {
-    super();
-    Argo.log.info("making WizDescription");
+    public WizDescription() {
+	super();
+	Argo.log.info("making WizDescription");
 
-    _description.setLineWrap(true);
-    _description.setWrapStyleWord(true);
+	_description.setLineWrap(true);
+	_description.setWrapStyleWord(true);
 
-    _mainPanel.setLayout(new BorderLayout());
-    _mainPanel.add(new JScrollPane(_description), BorderLayout.CENTER);
-  }
-
-  public void setTarget(Object item) {
-    String message = "";
-    super.setTarget(item);
-    Object target = item;
-    if (target == null) {
-        _description.setEditable(false);
-      _description.setText(Argo.localize("Cognitive", "message.no-item-selected"));
+	_mainPanel.setLayout(new BorderLayout());
+	_mainPanel.add(new JScrollPane(_description), BorderLayout.CENTER);
     }
-    else if (target instanceof ToDoItem) {
-      ToDoItem tdi = (ToDoItem) target;
-      _description.setEditable(false);
-      _description.setEnabled(true);
-      _description.setText(tdi.getDescription());
-      _description.setCaretPosition(0);
-    }
-    else if (target instanceof PriorityNode) {
-      message = MessageFormat. 
+
+    public void setTarget(Object item) {
+	String message = "";
+	super.setTarget(item);
+	Object target = item;
+	if (target == null) {
+	    _description.setEditable(false);
+	    _description.setText(Argo.localize("Cognitive", "message.no-item-selected"));
+	}
+	else if (target instanceof ToDoItem) {
+	    ToDoItem tdi = (ToDoItem) target;
+	    _description.setEditable(false);
+	    _description.setEnabled(true);
+	    _description.setText(tdi.getDescription());
+	    _description.setCaretPosition(0);
+	}
+	else if (target instanceof PriorityNode) {
+	    message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-priority"),
-                       new Object [] { target.toString() });
-      _description.setEditable(false);
-      _description.setText(message);
+                       new Object [] {
+			   target.toString() 
+		       });
+	    _description.setEditable(false);
+	    _description.setText(message);
 
-      return;
-    }
-    else if (target instanceof Critic) {
-      message = MessageFormat. 
+	    return;
+	}
+	else if (target instanceof Critic) {
+	    message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-critic"),
-                       new Object [] { target.toString() });
-      _description.setEditable(false);
-      _description.setText(message);
+                       new Object [] {
+			   target.toString() 
+		       });
+	    _description.setEditable(false);
+	    _description.setText(message);
 
-      return;
-    }
-    else if (target instanceof MModelElement) {
-      message = MessageFormat. 
+	    return;
+	}
+	else if (target instanceof MModelElement) {
+	    message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-model"),
-                       new Object [] { target.toString() });
-      _description.setEditable(false);
-      _description.setText(message);
+                       new Object [] {
+			   target.toString() 
+		       });
+	    _description.setEditable(false);
+	    _description.setText(message);
 
-      return;
-    }
-    else if (target instanceof Decision) {
-      message = MessageFormat. 
+	    return;
+	}
+	else if (target instanceof Decision) {
+	    message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-decision"),
-                       new Object [] { target.toString() });
-      _description.setText(message);
+                       new Object [] {
+			   target.toString() 
+		       });
+	    _description.setText(message);
 
-      return;
-    }
-    else if (target instanceof Goal) {
-      message = MessageFormat. 
+	    return;
+	}
+	else if (target instanceof Goal) {
+	    message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-goal"),
-                       new Object [] { target.toString() });
-      _description.setText(message);
+                       new Object [] {
+			   target.toString() 
+		       });
+	    _description.setText(message);
 
-      return;
-    }
-    else if (target instanceof KnowledgeTypeNode) {
-      message = MessageFormat. 
+	    return;
+	}
+	else if (target instanceof KnowledgeTypeNode) {
+	    message = MessageFormat. 
                 format(Argo.localize("Cognitive", "message.branch-knowledge"),
-                       new Object [] { target.toString() });
-      _description.setText(message);
+                       new Object [] {
+			   target.toString() 
+		       });
+	    _description.setText(message);
 
-      return;
+	    return;
+	}
+	else {
+	    _description.setText("");
+	    return;
+	}
     }
-    else {
-      _description.setText("");
-      return;
-    }
-  }
 
 
 

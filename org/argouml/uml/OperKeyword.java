@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -30,61 +31,61 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 public class OperKeyword implements java.io.Serializable {
-  public static final OperKeyword NONE = new OperKeyword("none");
-  public static final OperKeyword STATIC = new OperKeyword("static");
-  public static final OperKeyword FINAL = new OperKeyword("final");
-  public static final OperKeyword STATFIN = new OperKeyword("static final");
-  public static final OperKeyword SYNC = new OperKeyword("synchronized");
-  public static final OperKeyword STSYNC = new OperKeyword("static sync"); 
-  public static final OperKeyword FINSYNC = new OperKeyword("final sync"); 
-  public static final OperKeyword SFSYNC = new OperKeyword("static final sync");
+    public static final OperKeyword NONE = new OperKeyword("none");
+    public static final OperKeyword STATIC = new OperKeyword("static");
+    public static final OperKeyword FINAL = new OperKeyword("final");
+    public static final OperKeyword STATFIN = new OperKeyword("static final");
+    public static final OperKeyword SYNC = new OperKeyword("synchronized");
+    public static final OperKeyword STSYNC = new OperKeyword("static sync"); 
+    public static final OperKeyword FINSYNC = new OperKeyword("final sync"); 
+    public static final OperKeyword SFSYNC = new OperKeyword("static final sync");
 
 
-  public static final OperKeyword[] POSSIBLES = {
-    NONE, STATIC, FINAL, STATFIN, SYNC, STSYNC, FINSYNC, SFSYNC };
+    public static final OperKeyword[] POSSIBLES = {
+	NONE, STATIC, FINAL, STATFIN, SYNC, STSYNC, FINSYNC, SFSYNC };
 
-  protected String _label = null;
+    protected String _label = null;
   
-  private OperKeyword(String label) { _label = label; }
+    private OperKeyword(String label) { _label = label; }
   
-  public static OperKeyword KeywordFor(MOperation op) {
-    MScopeKind sk = op.getOwnerScope();
-    MCallConcurrencyKind ck = op.getConcurrency();
-    // TODO final?
-    if (MCallConcurrencyKind.CONCURRENT.equals(ck)) {
-      if (MScopeKind.CLASSIFIER.equals(ck)) return STATIC;
-      return NONE;
+    public static OperKeyword KeywordFor(MOperation op) {
+	MScopeKind sk = op.getOwnerScope();
+	MCallConcurrencyKind ck = op.getConcurrency();
+	// TODO final?
+	if (MCallConcurrencyKind.CONCURRENT.equals(ck)) {
+	    if (MScopeKind.CLASSIFIER.equals(ck)) return STATIC;
+	    return NONE;
+	}
+	else {
+	    if (MScopeKind.CLASSIFIER.equals(ck)) return STSYNC;
+	    return SYNC;
+	}
     }
-    else {
-      if (MScopeKind.CLASSIFIER.equals(ck)) return STSYNC;
-      return SYNC;
+  
+    public boolean equals(Object o) {
+	if (!(o instanceof OperKeyword)) return false;
+	String oLabel = ((OperKeyword) o)._label;
+	return _label.equals(oLabel);
     }
-  }
-  
-  public boolean equals(Object o) {
-    if (!(o instanceof OperKeyword)) return false;
-    String oLabel = ((OperKeyword)o)._label;
-    return _label.equals(oLabel);
-  }
 
-  public int hashCode() { return _label.hashCode(); }
+    public int hashCode() { return _label.hashCode(); }
   
-  public String toString() { return _label.toString(); }
+    public String toString() { return _label.toString(); }
 
-  public void set(MOperation target) {
-    MCallConcurrencyKind ck = MCallConcurrencyKind.CONCURRENT;
-    if (this == SYNC || this == STSYNC || this == FINSYNC ||
-	this == SFSYNC)
-      ck = MCallConcurrencyKind.GUARDED;
+    public void set(MOperation target) {
+	MCallConcurrencyKind ck = MCallConcurrencyKind.CONCURRENT;
+	if (this == SYNC || this == STSYNC || this == FINSYNC ||
+	    this == SFSYNC)
+	    ck = MCallConcurrencyKind.GUARDED;
     
-    MScopeKind sk = MScopeKind.INSTANCE;
-    if (this == STATIC || this == STATFIN || this == STSYNC ||
-	this == SFSYNC)
-      sk = MScopeKind.CLASSIFIER;
-      //TODO: final
+	MScopeKind sk = MScopeKind.INSTANCE;
+	if (this == STATIC || this == STATFIN || this == STSYNC ||
+	    this == SFSYNC)
+	    sk = MScopeKind.CLASSIFIER;
+	//TODO: final
       
-      target.setConcurrency(ck);
-      target.setOwnerScope(sk);
-      // TODO: final
-  }
+	target.setConcurrency(ck);
+	target.setOwnerScope(sk);
+	// TODO: final
+    }
 } /* end class OperKeyword */

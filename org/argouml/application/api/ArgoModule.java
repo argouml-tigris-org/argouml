@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -46,11 +47,13 @@ public interface ArgoModule {
 
     /** Define a static log4j category variable for ArgoUML configuration.
      */
-    public final static Logger cat = Logger.getLogger("org.argouml.application.modules");
+    public final static Logger cat = 
+	Logger.getLogger("org.argouml.application.modules");
     // TODO:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //
-    // public final static Category cat = Category.getInstance(ModuleLoader.class.getPackage().getName());
+    // public final static Category cat = 
+    // Category.getInstance(ModuleLoader.class.getPackage().getName());
 
 
     public static final String MODULEFILENAME = ".argo.modules";

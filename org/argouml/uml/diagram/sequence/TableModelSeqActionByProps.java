@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -47,36 +48,36 @@ import org.tigris.gef.base.Globals;
 
 
 public class TableModelSeqActionByProps extends TableModelComposite {
-  ////////////////
-  // constructor
-  public TableModelSeqActionByProps() { }
-
-  public void initColumns() {
-    addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.Communication);
-    addColumn(ColumnDescriptor.ActionType);
-    addColumn(ColumnDescriptor.MStereotype);
-  }
-
-  public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof UMLSequenceDiagram)) return new Vector();
-    Editor _editor = Globals.curEditor();
-    Layer lay = _editor.getLayerManager().getActiveLayer();
-    Vector contents = lay.getContents();
-    int size = contents.size();
-    Vector res = new Vector();
-    for (int i = 0; i < size; i++) {
-      Object figure = contents.elementAt(i);
-      if (figure instanceof FigSeqStimulus) {
-        FigSeqStimulus figSti = (FigSeqStimulus) figure;
-        MStimulus sti = (MStimulus) figSti.getOwner();
-        Object act = ModelFacade.getDispatchAction(sti);
-        res.addElement(act);
-      }
+    ////////////////
+    // constructor
+    public TableModelSeqActionByProps() { }
+									 
+    public void initColumns() {
+	addColumn(ColumnDescriptor.Name);
+	addColumn(ColumnDescriptor.Communication);
+	addColumn(ColumnDescriptor.ActionType);
+	addColumn(ColumnDescriptor.MStereotype);
     }
-    return res;
-  }
+									     
+    public Vector rowObjectsFor(Object t) {
+	if (!(t instanceof UMLSequenceDiagram)) return new Vector();
+	Editor _editor = Globals.curEditor();
+	Layer lay = _editor.getLayerManager().getActiveLayer();
+	Vector contents = lay.getContents();
+	int size = contents.size();
+	Vector res = new Vector();
+	for (int i = 0; i < size; i++) {
+	    Object figure = contents.elementAt(i);
+	    if (figure instanceof FigSeqStimulus) {
+		FigSeqStimulus figSti = (FigSeqStimulus) figure;
+		MStimulus sti = (MStimulus) figSti.getOwner();
+		Object act = ModelFacade.getDispatchAction(sti);
+		res.addElement(act);
+	    }
+	}
+	return res;
+    }
 
-  public String toString() { return "SeqAction vs. Properties"; }
+    public String toString() { return "SeqAction vs. Properties"; }
 } /* end class TableModelSeqActionByProps */
 

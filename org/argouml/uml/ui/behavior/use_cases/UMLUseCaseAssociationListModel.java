@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -54,50 +55,49 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  *             that used reflection a lot.
  */
 public class UMLUseCaseAssociationListModel
-	extends UMLConnectionListModel {
+    extends UMLConnectionListModel {
 
-	/**
-	 * Constructor for UMLUseCaseAssociationListModel.
-	 * @param container
-	 * @param property
-	 * @param showNone
-	 */
-	public UMLUseCaseAssociationListModel(
-		UMLUserInterfaceContainer container,
-		String property,
-		boolean showNone) {
-		super(container, property, showNone);
+    /**
+     * Constructor for UMLUseCaseAssociationListModel.
+     * @param container
+     * @param property
+     * @param showNone
+     */
+    public UMLUseCaseAssociationListModel(UMLUserInterfaceContainer container,
+					  String property,
+					  boolean showNone) {
+	super(container, property, showNone);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
+     */
+    protected Collection getChoices() {
+	Vector choices = new Vector();	
+	choices.addAll(super.getChoices());
+	Vector choices2 = new Vector();
+	Collection specpath = UseCasesHelper.getHelper().getSpecificationPath((MUseCase) getTarget());
+	if (!specpath.isEmpty()) {
+	    Iterator it = choices.iterator();
+	    while (it.hasNext()) {
+		MClassifier choice = (MClassifier) it.next();
+		if (choice instanceof MUseCase) {
+		    Collection specpath2 = UseCasesHelper.getHelper().getSpecificationPath((MUseCase) choice);
+		    if (!specpath.equals(specpath2)) choices2.add(choice);
+		} else
+		    choices2.add(choice);
+	    }
+	} else {
+	    choices2 = choices;
 	}
+	return choices2;
+    }	
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
-	 */
-	protected Collection getChoices() {
-		Vector choices = new Vector();	
-		choices.addAll(super.getChoices());
-		Vector choices2 = new Vector();
-		Collection specpath = UseCasesHelper.getHelper().getSpecificationPath((MUseCase)getTarget());
-		if (!specpath.isEmpty()) {
-			Iterator it = choices.iterator();
-			while (it.hasNext()) {
-				MClassifier choice = (MClassifier)it.next();
-				if (choice instanceof MUseCase) {
-					Collection specpath2 = UseCasesHelper.getHelper().getSpecificationPath((MUseCase)choice);
-					if (!specpath.equals(specpath2)) choices2.add(choice);
-				} else
-					choices2.add(choice);
-			}
-		} else {
-			choices2 = choices;
-		}
-		return choices2;
-	}	
-
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
-	 */
-	protected String getAddDialogTitle() {
-		return Argo.localize("UMLMenu", "dialog.title.add-associated-usecases");
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
+     */
+    protected String getAddDialogTitle() {
+	return Argo.localize("UMLMenu", "dialog.title.add-associated-usecases");
+    }
 
 }

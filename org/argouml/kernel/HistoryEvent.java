@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -26,24 +27,24 @@ package org.argouml.kernel;
 
 
 public class HistoryEvent {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected History _source;
-  protected HistoryItem _item;
-  protected int _index;
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    protected History _source;
+    protected HistoryItem _item;
+    protected int _index;
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public HistoryEvent(History src, HistoryItem item, int index) {
-    _source = src;
-    _item = item;
-    _index = index;
-  }
+    ////////////////////////////////////////////////////////////////
+    // contructors
+    public HistoryEvent(History src, HistoryItem item, int index) {
+	_source = src;
+	_item = item;
+	_index = index;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
-  //TODO
+    ////////////////////////////////////////////////////////////////
+    // accessors
+    //TODO
 
-  public int getIndex() { return _index; }
+    public int getIndex() { return _index; }
 
 } /* end class HistoryEvent */

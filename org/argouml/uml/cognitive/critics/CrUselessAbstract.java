@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -44,49 +45,49 @@ import org.argouml.cognitive.*;
 
 public class CrUselessAbstract extends CrUML {
 
-  public CrUselessAbstract() {
-    setHeadline("Define Concrete (Sub)Class");
-    addSupportedDecision(CrUML.decINHERITANCE);
-    addSupportedGoal(Goal.UNSPEC);
-    addTrigger("specialization");
-    addTrigger("isAbstract");
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-    MClass cls, c;
-    if (!(dm instanceof MClass)) return false;
-    cls = (MClass) dm;
-    if (!cls.isAbstract()) return false;  // original class was not abstract
-    VectorSet derived = (new VectorSet(cls)).reachable(new ChildGenDerivedClasses());
-    java.util.Enumeration enum = derived.elements();
-    while (enum.hasMoreElements()) {
-      c = (MClass) enum.nextElement();
-      if (!c.isAbstract()) return false;  // found a concrete subclass
+    public CrUselessAbstract() {
+	setHeadline("Define Concrete (Sub)Class");
+	addSupportedDecision(CrUML.decINHERITANCE);
+	addSupportedGoal(Goal.UNSPEC);
+	addTrigger("specialization");
+	addTrigger("isAbstract");
     }
-    return true; // no concrete subclasses defined, this class is "useless"
-  }
+
+    public boolean predicate2(Object dm, Designer dsgr) {
+	MClass cls, c;
+	if (!(dm instanceof MClass)) return false;
+	cls = (MClass) dm;
+	if (!cls.isAbstract()) return false;  // original class was not abstract
+	VectorSet derived = (new VectorSet(cls)).reachable(new ChildGenDerivedClasses());
+	java.util.Enumeration enum = derived.elements();
+	while (enum.hasMoreElements()) {
+	    c = (MClass) enum.nextElement();
+	    if (!c.isAbstract()) return false;  // found a concrete subclass
+	}
+	return true; // no concrete subclasses defined, this class is "useless"
+    }
 
 } /* end class CrUselessAbstract */
 
 
 
 class ChildGenDerivedClasses implements ChildGenerator {
-  public java.util.Enumeration gen(Object o) {
-    MClass c = (MClass) o;
-    Vector specs = new Vector(c.getSpecializations());
-    if (specs == null) {
-      return EnumerationEmpty.theInstance();
+    public java.util.Enumeration gen(Object o) {
+	MClass c = (MClass) o;
+	Vector specs = new Vector(c.getSpecializations());
+	if (specs == null) {
+	    return EnumerationEmpty.theInstance();
+	}
+	// TODO: it would be nice to have a EnumerationXform
+	// and a Functor object in uci.util
+	Vector specClasses = new Vector(specs.size());
+	java.util.Enumeration enum = specs.elements();
+	while (enum.hasMoreElements()) {
+	    MGeneralization g = (MGeneralization) enum.nextElement();
+	    MGeneralizableElement ge = g.getChild();
+	    // assert: ge != null
+	    if (ge != null) specClasses.addElement(ge);
+	}
+	return specClasses.elements();
     }
-    // TODO: it would be nice to have a EnumerationXform
-    // and a Functor object in uci.util
-    Vector specClasses = new Vector(specs.size());
-    java.util.Enumeration enum = specs.elements();
-    while (enum.hasMoreElements()) {
-      MGeneralization g = (MGeneralization) enum.nextElement();
-      MGeneralizableElement ge = g.getChild();
-      // assert: ge != null
-      if (ge != null) specClasses.addElement(ge);
-    }
-    return specClasses.elements();
-  }
 } /* end class derivedClasses */

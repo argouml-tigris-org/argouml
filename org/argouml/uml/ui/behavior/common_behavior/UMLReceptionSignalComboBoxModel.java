@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -53,7 +54,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Object target = getTarget();
         if (target instanceof MReception) {
-            MReception rec = (MReception)target;
+            MReception rec = (MReception) target;
             removeAllElements();
             setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(MSignal.class));
             setSelectedItem(rec.getSignal());      
@@ -73,7 +74,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MReception)getTarget()).getSignal();
+            return ((MReception) getTarget()).getSignal();
         }
         return null;
     }

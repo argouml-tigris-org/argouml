@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -59,15 +60,15 @@ public class ActionCopy extends AbstractAction implements CaretListener {
         super(Translator.localize("CoreMenu", LOCALIZE_KEY));
         Icon icon =
             ResourceLoaderWrapper
-                .getResourceLoaderWrapper()
-                .lookupIconResource(
-                Translator.getImageBinding(LOCALIZE_KEY),
-                Translator.localize("CoreMenu", LOCALIZE_KEY));
+	    .getResourceLoaderWrapper()
+	    .lookupIconResource(
+				Translator.getImageBinding(LOCALIZE_KEY),
+				Translator.localize("CoreMenu", LOCALIZE_KEY));
         if (icon != null)
             putValue(Action.SMALL_ICON, icon);
         putValue(
-            Action.SHORT_DESCRIPTION,
-            Translator.localize("CoreMenu", LOCALIZE_KEY) + " ");
+		 Action.SHORT_DESCRIPTION,
+		 Translator.localize("CoreMenu", LOCALIZE_KEY) + " ");
     }
 
     public static ActionCopy getInstance() {
@@ -89,7 +90,7 @@ public class ActionCopy extends AbstractAction implements CaretListener {
         }
         if (isSystemClipBoardEmpty()
             && (Globals.clipBoard == null
-            || Globals.clipBoard.isEmpty())) {
+		|| Globals.clipBoard.isEmpty())) {
             ActionPaste.getInstance().setEnabled(false);
         } else {
             ActionPaste.getInstance().setEnabled(true);
@@ -102,7 +103,7 @@ public class ActionCopy extends AbstractAction implements CaretListener {
     public void caretUpdate(CaretEvent e) {
         if (e.getMark() != e.getDot()) { // there is a selection        
             setEnabled(true);
-            _textSource = (JTextComponent)e.getSource();
+            _textSource = (JTextComponent) e.getSource();
         } else {
             setEnabled(false);
             _textSource = null;
@@ -115,10 +116,10 @@ public class ActionCopy extends AbstractAction implements CaretListener {
         try {
             Object text =
                 Toolkit
-                    .getDefaultToolkit()
-                    .getSystemClipboard()
-                    .getContents(null)
-                    .getTransferData(DataFlavor.stringFlavor);
+		.getDefaultToolkit()
+		.getSystemClipboard()
+		.getContents(null)
+		.getTransferData(DataFlavor.stringFlavor);
             return text == null;
         } catch (IOException ignorable) {
         } catch (UnsupportedFlavorException ignorable) {

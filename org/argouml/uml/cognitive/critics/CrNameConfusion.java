@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -49,111 +50,111 @@ import org.argouml.cognitive.critics.*;
 
 public class CrNameConfusion extends CrUML {
 
-  public CrNameConfusion() {
-    setHeadline("Revise Name to Avoid Confusion");
-    addSupportedDecision(CrUML.decNAMING);
-    setKnowledgeTypes(Critic.KT_PRESENTATION);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-    addTrigger("name");
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MModelElement)) return NO_PROBLEM;
-    MModelElement me = (MModelElement) dm;
-    VectorSet offs = computeOffenders(me);
-    if (offs.size() > 1) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
-
-  public VectorSet computeOffenders(MModelElement dm) {
-    MNamespace ns = dm.getNamespace();
-    VectorSet res = new VectorSet(dm);
-    String n = dm.getName();
-    if (n == null || n.equals("")) return res;
-    String dmNameStr = n;
-    if (dmNameStr == null || dmNameStr.length() == 0) return res;
-    String stripped2 = strip(dmNameStr);
-    if (ns == null) return res;
-    Collection oes = ns.getOwnedElements();
-    if (oes == null) return res;
-    Iterator enum = oes.iterator();
-    while (enum.hasNext()) {
-      MModelElement me2 = (MModelElement) enum.next();
-      if (me2 == dm) continue;
-      String meName = me2.getName();
-      if (meName == null || meName.equals("")) continue;
-      String compareName = meName;
-      if (confusable(stripped2, strip(compareName)) &&
-	  !dmNameStr.equals(compareName)) {
-	res.addElement(me2);
-      }
+    public CrNameConfusion() {
+	setHeadline("Revise Name to Avoid Confusion");
+	addSupportedDecision(CrUML.decNAMING);
+	setKnowledgeTypes(Critic.KT_PRESENTATION);
+	setKnowledgeTypes(Critic.KT_SYNTAX);
+	addTrigger("name");
     }
-    return res;
-  }
 
-  public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    MModelElement me = (MModelElement) dm;
-    VectorSet offs = computeOffenders(me);
-    return new ToDoItem(this, offs, dsgr);
-  }
-
-  public boolean stillValid(ToDoItem i, Designer dsgr) {
-    if (!isActive()) return false;
-    VectorSet offs = i.getOffenders();
-    MModelElement dm = (MModelElement) offs.firstElement();
-    if (!predicate(dm, dsgr)) return false;
-    VectorSet newOffs = computeOffenders(dm);
-    boolean res = offs.equals(newOffs);
-    return res;
-  }
-
-  public boolean confusable(String stripped1, String stripped2) {
-    int countDiffs = countDiffs(stripped1, stripped2);
-    return countDiffs <= 1;
-  }
-
-  public int countDiffs(String s1, String s2) {
-    int len = Math.min(s1.length(), s2.length());
-    int count = Math.abs(s1.length() - s2.length());
-    if (count > 2) return count;
-    for (int i = 0; i < len; i++) {
-      if (s1.charAt(i) != s2.charAt(i)) count++;
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MModelElement)) return NO_PROBLEM;
+	MModelElement me = (MModelElement) dm;
+	VectorSet offs = computeOffenders(me);
+	if (offs.size() > 1) return PROBLEM_FOUND;
+	return NO_PROBLEM;
     }
-    return count;
-  }
 
-  public String strip(String s) {
-    StringBuffer res = new StringBuffer(s.length());
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      char c = s.charAt(i);
-      if (Character.isLetterOrDigit(c))
-	res.append(Character.toLowerCase(c));
-      else if (c == ']' && i > 1 && s.charAt(i - 1) == '[') {
-	  res.append("[]");
-      }
+    public VectorSet computeOffenders(MModelElement dm) {
+	MNamespace ns = dm.getNamespace();
+	VectorSet res = new VectorSet(dm);
+	String n = dm.getName();
+	if (n == null || n.equals("")) return res;
+	String dmNameStr = n;
+	if (dmNameStr == null || dmNameStr.length() == 0) return res;
+	String stripped2 = strip(dmNameStr);
+	if (ns == null) return res;
+	Collection oes = ns.getOwnedElements();
+	if (oes == null) return res;
+	Iterator enum = oes.iterator();
+	while (enum.hasNext()) {
+	    MModelElement me2 = (MModelElement) enum.next();
+	    if (me2 == dm) continue;
+	    String meName = me2.getName();
+	    if (meName == null || meName.equals("")) continue;
+	    String compareName = meName;
+	    if (confusable(stripped2, strip(compareName)) &&
+		!dmNameStr.equals(compareName)) {
+		res.addElement(me2);
+	    }
+	}
+	return res;
     }
-    return res.toString();
-  }
 
-  public Icon getClarifier() {
-    return ClClassName.TheInstance;
-  }
-
-
-  public void initWizard(Wizard w) {
-    if (w instanceof WizManyNames) {
-      ToDoItem item = w.getToDoItem();
-      String ins = "Change each name to be significantly different from "+
-	"the others.  Names should differ my more than one character and " +
-	"not just differ my case (capital or lower case).";
-      ((WizManyNames)w).setInstructions(ins);
-      ((WizManyNames)w).setMEs(item.getOffenders().asVector());
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+	MModelElement me = (MModelElement) dm;
+	VectorSet offs = computeOffenders(me);
+	return new ToDoItem(this, offs, dsgr);
     }
-  }
-  public Class getWizardClass(ToDoItem item) {
-    return WizManyNames.class;
-  }
+
+    public boolean stillValid(ToDoItem i, Designer dsgr) {
+	if (!isActive()) return false;
+	VectorSet offs = i.getOffenders();
+	MModelElement dm = (MModelElement) offs.firstElement();
+	if (!predicate(dm, dsgr)) return false;
+	VectorSet newOffs = computeOffenders(dm);
+	boolean res = offs.equals(newOffs);
+	return res;
+    }
+
+    public boolean confusable(String stripped1, String stripped2) {
+	int countDiffs = countDiffs(stripped1, stripped2);
+	return countDiffs <= 1;
+    }
+
+    public int countDiffs(String s1, String s2) {
+	int len = Math.min(s1.length(), s2.length());
+	int count = Math.abs(s1.length() - s2.length());
+	if (count > 2) return count;
+	for (int i = 0; i < len; i++) {
+	    if (s1.charAt(i) != s2.charAt(i)) count++;
+	}
+	return count;
+    }
+
+    public String strip(String s) {
+	StringBuffer res = new StringBuffer(s.length());
+	int len = s.length();
+	for (int i = 0; i < len; i++) {
+	    char c = s.charAt(i);
+	    if (Character.isLetterOrDigit(c))
+		res.append(Character.toLowerCase(c));
+	    else if (c == ']' && i > 1 && s.charAt(i - 1) == '[') {
+		res.append("[]");
+	    }
+	}
+	return res.toString();
+    }
+
+    public Icon getClarifier() {
+	return ClClassName.TheInstance;
+    }
+
+
+    public void initWizard(Wizard w) {
+	if (w instanceof WizManyNames) {
+	    ToDoItem item = w.getToDoItem();
+	    String ins = "Change each name to be significantly different from " +
+		"the others.  Names should differ my more than one character and " +
+		"not just differ my case (capital or lower case).";
+	    ((WizManyNames) w).setInstructions(ins);
+	    ((WizManyNames) w).setMEs(item.getOffenders().asVector());
+	}
+    }
+    public Class getWizardClass(ToDoItem item) {
+	return WizManyNames.class;
+    }
 
 } /* end class CrNameConfusion.java */
 

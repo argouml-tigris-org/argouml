@@ -63,36 +63,36 @@ public class TargetEvent extends EventObject {
      */
     private Object[] _newTargets;
 
-	/**
+    /**
      * Constructs a new TargetEvent
-	 * @param source The source that fired the TargetEvent, will allways be the TargetManager
-	 * @param name The name of the TargetEvent, can be TARGET_SET, TARGET_REMOVED or TARGET_ADDED
-	 * @param oldTargets The old targets before the change took place
-	 * @param newTargets The new targets after the change took place
-	 */
-	public TargetEvent(Object source, String name, Object[] oldTargets, Object[] newTargets) {
-		super(source);
-		_name = name;
+     * @param source The source that fired the TargetEvent, will allways be the TargetManager
+     * @param name The name of the TargetEvent, can be TARGET_SET, TARGET_REMOVED or TARGET_ADDED
+     * @param oldTargets The old targets before the change took place
+     * @param newTargets The new targets after the change took place
+     */
+    public TargetEvent(Object source, String name, Object[] oldTargets, Object[] newTargets) {
+	super(source);
+	_name = name;
         _oldTargets = oldTargets;
         _newTargets = newTargets;
-	}
+    }
     
 
-	/**
+    /**
      * Getter for the name
-	 * @return the name of the event
-	 */
-	public String getName() {
-		return _name;
-	}
+     * @return the name of the event
+     */
+    public String getName() {
+	return _name;
+    }
 
-	/**
+    /**
      * Getter for the old targets
-	 * @return an object array with the old targets
-	 */
-	public Object[] getOldTargets() {
-		return _oldTargets == null ? new Object[] {null} : _oldTargets;
-	}
+     * @return an object array with the old targets
+     */
+    public Object[] getOldTargets() {
+	return _oldTargets == null ? new Object[] {null} : _oldTargets;
+    }
 
     /**
      * Getter for the new targets

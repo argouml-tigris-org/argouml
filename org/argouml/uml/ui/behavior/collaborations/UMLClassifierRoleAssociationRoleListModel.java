@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -56,71 +57,71 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 public class UMLClassifierRoleAssociationRoleListModel
 	extends UMLConnectionListModel {
 
-	/**
-	 * Constructor for UMLClassifierRoleAssociationRoleListModel.
-	 * @param container
-	 * @param property
-	 * @param showNone
-	 */
-	public UMLClassifierRoleAssociationRoleListModel(
-		UMLUserInterfaceContainer container,
-		String property,
-		boolean showNone) {
-		super(container, property, showNone);
-	}
+    /**
+     * Constructor for UMLClassifierRoleAssociationRoleListModel.
+     * @param container
+     * @param property
+     * @param showNone
+     */
+    public UMLClassifierRoleAssociationRoleListModel(
+						     UMLUserInterfaceContainer container,
+						     String property,
+						     boolean showNone) {
+	super(container, property, showNone);
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
-	 */
-	protected Collection getChoices() {
-		Object target = getTarget();
-		if (target instanceof MClassifierRole) {
-			MClassifierRole role = (MClassifierRole)target;
-			List list = new ArrayList();
-			Iterator it = role.getBases().iterator();
-			while (it.hasNext()) {
-				MClassifier base = (MClassifier)it.next();
-				list.addAll(CoreHelper.getHelper().getAssociatedClassifiers(base));
-			}
-			return list;
-		} else
-			throw new IllegalStateException("Target not an instanceof MClassifierRole");
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
+     */
+    protected Collection getChoices() {
+	Object target = getTarget();
+	if (target instanceof MClassifierRole) {
+	    MClassifierRole role = (MClassifierRole) target;
+	    List list = new ArrayList();
+	    Iterator it = role.getBases().iterator();
+	    while (it.hasNext()) {
+		MClassifier base = (MClassifier) it.next();
+		list.addAll(CoreHelper.getHelper().getAssociatedClassifiers(base));
+	    }
+	    return list;
+	} else
+	    throw new IllegalStateException("Target not an instanceof MClassifierRole");
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
-	 */
-	protected String getAddDialogTitle() {
-		return Argo.localize("UMLMenu", "dialog.add-associated-classifierroles");
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
+     */
+    protected String getAddDialogTitle() {
+	return Argo.localize("UMLMenu", "dialog.add-associated-classifierroles");
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
-	 */
-	protected void connect(
-		MutableGraphModel gm,
-		MModelElement from,
-		MModelElement to) {
-			gm.connect(from, to, MAssociationRole.class);
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
+     */
+    protected void connect(
+			   MutableGraphModel gm,
+			   MModelElement from,
+			   MModelElement to) {
+	gm.connect(from, to, MAssociationRole.class);
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
-	 */
-	protected void build(MModelElement from, MModelElement to) {
-		if (from != null && to != null && from instanceof MClassifierRole && to instanceof MClassifierRole) { 
-			CollaborationsFactory.getFactory().buildAssociationRole((MClassifierRole)from, (MClassifierRole)to);
-		}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
+     */
+    protected void build(MModelElement from, MModelElement to) {
+	if (from != null && to != null && from instanceof MClassifierRole && to instanceof MClassifierRole) { 
+	    CollaborationsFactory.getFactory().buildAssociationRole((MClassifierRole) from, (MClassifierRole) to);
 	}
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
-	 */
-	protected MModelElement getRelation(MModelElement from, MModelElement to) {
-		if (from != null && to != null && from instanceof MClassifierRole && to instanceof MClassifierRole) { 
-			return CollaborationsHelper.getHelper().getAssocationRole((MClassifierRole)from, (MClassifierRole)to);
-		} else
-			throw new IllegalArgumentException("Tried to get relation between some objects of which one was not a classifierrole");
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
+     */
+    protected MModelElement getRelation(MModelElement from, MModelElement to) {
+	if (from != null && to != null && from instanceof MClassifierRole && to instanceof MClassifierRole) { 
+	    return CollaborationsHelper.getHelper().getAssocationRole((MClassifierRole) from, (MClassifierRole) to);
+	} else
+	    throw new IllegalArgumentException("Tried to get relation between some objects of which one was not a classifierrole");
+    }
 
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -26,7 +27,7 @@ package org.argouml.cognitive.critics;
 import org.argouml.cognitive.*;
 
 class EnabledCM extends ControlMech {
-  public boolean isRelevant(Critic c, Designer d) {
-    return c.isEnabled();
-  }
+    public boolean isRelevant(Critic c, Designer d) {
+	return c.isEnabled();
+    }
 } // end class EnabledCM

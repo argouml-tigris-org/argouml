@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -77,7 +78,7 @@ public class PackageCodePiece extends NamedCodePiece
     }
 
     /**
-	Return the start line
+       Return the start line
     */
     public int getStartLine()
     {
@@ -85,7 +86,7 @@ public class PackageCodePiece extends NamedCodePiece
     }
 
     /**
-	Return the end line
+       Return the end line
     */
     public int getEndLine()
     {
@@ -99,15 +100,15 @@ public class PackageCodePiece extends NamedCodePiece
                       BufferedWriter writer,
                       Stack parseStateStack) throws Exception
     {
-    ParseState parseState = (ParseState)parseStateStack.peek();
-    MNamespace mNamespace = parseState.getNamespace();
+	ParseState parseState = (ParseState) parseStateStack.peek();
+	MNamespace mNamespace = parseState.getNamespace();
 
-    if(!(mNamespace instanceof MModel)) {
-        writer.write("package ");
-        writer.write(GeneratorJava.getInstance().getPackageName(mNamespace));
-        writer.write(";");
-    }
-    // fast forward original code (overwriting)
-    ffCodePiece(reader,null);
+	if (!(mNamespace instanceof MModel)) {
+	    writer.write("package ");
+	    writer.write(GeneratorJava.getInstance().getPackageName(mNamespace));
+	    writer.write(";");
+	}
+	// fast forward original code (overwriting)
+	ffCodePiece(reader, null);
     }
 }

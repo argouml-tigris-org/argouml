@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -110,18 +111,18 @@ public class AnonymousClassCodePiece extends NamedCodePiece
                       BufferedWriter writer,
                       Stack parseStateStack) throws Exception
     {
-        ParseState parseState = (ParseState)parseStateStack.peek();
+        ParseState parseState = (ParseState) parseStateStack.peek();
         MClass mClass = (MClass)
             parseState.newClassifier((new Integer(number)).toString());
 
-        if(mClass != null) {
+        if (mClass != null) {
             parseStateStack.push(new ParseState(mClass));
             writer.write(classDef.getText().toString());
             // dispose code piece in reader
-            ffCodePiece(reader,null);
+            ffCodePiece(reader, null);
         } else {
             // not in model, so write the original code
-            ffCodePiece(reader,writer);
+            ffCodePiece(reader, writer);
         }
     }
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,26 +39,26 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 
 public class FigAssociationRole extends FigAssociation {
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
   
-  	protected FigMessageGroup _messages = new FigMessageGroup();
+    protected FigMessageGroup _messages = new FigMessageGroup();
 
     public FigAssociationRole() {
-      super(); // this really is questionable
-      addPathItem(_messages, new PathConvPercent(this, 50, 10));
+	super(); // this really is questionable
+	addPathItem(_messages, new PathConvPercent(this, 50, 10));
     }
 
-	/**
-	 * Constructor for FigAssociationRole.
-	 * @param edge
-	 * @param lay
-	 */
-	public FigAssociationRole(Object edge, Layer lay) {
-		this();
-		setLayer(lay);
+    /**
+     * Constructor for FigAssociationRole.
+     * @param edge
+     * @param lay
+     */
+    public FigAssociationRole(Object edge, Layer lay) {
+	this();
+	setLayer(lay);
     	setOwner(edge);
-	}
+    }
 
     ////////////////////////////////////////////////////////////////
     // event handlers
@@ -95,78 +96,78 @@ public class FigAssociationRole extends FigAssociation {
 
 class FigMessageGroup extends FigGroup {
 	
-	/**
-	 * Constructor for FigMessageGroup.
-	 */
-	public FigMessageGroup() {
-		super();
-	}
+    /**
+     * Constructor for FigMessageGroup.
+     */
+    public FigMessageGroup() {
+	super();
+    }
 
-	/**
-	 * Constructor for FigMessageGroup.
-	 * @param figs
-	 */
-	public FigMessageGroup(Vector figs) {
-		super(figs);
-	}
+    /**
+     * Constructor for FigMessageGroup.
+     * @param figs
+     */
+    public FigMessageGroup(Vector figs) {
+	super(figs);
+    }
 
 	
-	protected void updateFigPositions() {
+    protected void updateFigPositions() {
     	Vector figs = getFigs();
     	if (!figs.isEmpty()) {
-    		FigMessage first = (FigMessage)figs.get(0);
-    		for (int i = 0; i < figs.size(); i++) {
-    			FigMessage fig = (FigMessage)figs.get(i);
-    			fig.startTrans();
-    			fig.setX(getX());
-    			if (i != 0) {
-    				fig.setY(((FigMessage)figs.get(i-1)).getY() + ((FigMessage)figs.get(i-1)).getHeight() + 5);
-    			} else {
-    				fig.setY(getY());
-    			}
-    			fig.endTrans();
-    		}
+	    FigMessage first = (FigMessage) figs.get(0);
+	    for (int i = 0; i < figs.size(); i++) {
+		FigMessage fig = (FigMessage) figs.get(i);
+		fig.startTrans();
+		fig.setX(getX());
+		if (i != 0) {
+		    fig.setY(((FigMessage) figs.get(i - 1)).getY() + ((FigMessage) figs.get(i - 1)).getHeight() + 5);
+		} else {
+		    fig.setY(getY());
+		}
+		fig.endTrans();
+	    }
     	}
     }
     
     
 
-	/**
-	 * @see org.tigris.gef.presentation.Fig#calcBounds()
-	 */
-	public void calcBounds() {
-		super.calcBounds();
-		Vector figs = getFigs();
-		if (!figs.isEmpty()) {
-			Fig last = (Fig)figs.lastElement();
-		    Fig first = (Fig)figs.firstElement();
-			// _x = first.getX();
-			// _y = first.getY();
-			_h = last.getY() + last.getHeight() - first.getY();
-			_w = 0;
-			for (int i = 0; i < figs.size(); i++) {
-				Fig fig = (Fig)figs.get(i);
-				if (fig.getWidth() > _w) { 
-					_w = fig.getWidth();
-				}
-			}
-		} else {
-			_w = 0;
-			_h = 0;
+    /**
+     * @see org.tigris.gef.presentation.Fig#calcBounds()
+     */
+    public void calcBounds() {
+	super.calcBounds();
+	Vector figs = getFigs();
+	if (!figs.isEmpty()) {
+	    Fig last = (Fig) figs.lastElement();
+	    Fig first = (Fig) figs.firstElement();
+	    // _x = first.getX();
+	    // _y = first.getY();
+	    _h = last.getY() + last.getHeight() - first.getY();
+	    _w = 0;
+	    for (int i = 0; i < figs.size(); i++) {
+		Fig fig = (Fig) figs.get(i);
+		if (fig.getWidth() > _w) { 
+		    _w = fig.getWidth();
 		}
-		
+	    }
+	} else {
+	    _w = 0;
+	    _h = 0;
 	}
+		
+    }
 	
 	
 
-	/**
-	 * @see org.tigris.gef.presentation.FigGroup#addFig(Fig)
-	 */
-	public void addFig(Fig f) {
-		super.addFig(f);
-		updateFigPositions();
-		calcBounds();
-	}
+    /**
+     * @see org.tigris.gef.presentation.FigGroup#addFig(Fig)
+     */
+    public void addFig(Fig f) {
+	super.addFig(f);
+	updateFigPositions();
+	calcBounds();
+    }
 
 
     /**
@@ -177,7 +178,7 @@ class FigMessageGroup extends FigGroup {
         if (figs != null) {
             Iterator it = figs.iterator();
             while (it.hasNext()) {
-                Fig fig = (Fig)it.next();
+                Fig fig = (Fig) it.next();
                 fig.delete();
             }
         } 
@@ -192,17 +193,15 @@ class FigMessageGroup extends FigGroup {
     public void dispose() {
     	Vector figs = getFigs();
         if (figs != null) {
-        	Iterator it = figs.iterator();
-        	while (it.hasNext()) {
-        		Fig fig = (Fig)it.next();
-        		fig.dispose();
-        	}
+	    Iterator it = figs.iterator();
+	    while (it.hasNext()) {
+		Fig fig = (Fig) it.next();
+		fig.dispose();
+	    }
         }
         removeAll();
         super.dispose();
     }
-
-    
 
 }
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -65,18 +66,18 @@ public class UMLModelElementVisibilityRadioButtonPanel extends UMLRadioButtonPan
      */
     public void buildModel() {
         if (getTarget() != null) {
-            MModelElement target = (MModelElement)getTarget();
+            MModelElement target = (MModelElement) getTarget();
             MVisibilityKind kind = target.getVisibility();
             if (kind == null || kind.equals(MVisibilityKind.PUBLIC)) {
                 setSelected(ActionSetModelElementVisibility.PUBLIC_COMMAND);
             } else
-            if (kind.equals(MVisibilityKind.PROTECTED)) {
-                setSelected(ActionSetModelElementVisibility.PROTECTED_COMMAND); 
-            } else
-            if (kind.equals(MVisibilityKind.PRIVATE)) {
-                setSelected(ActionSetModelElementVisibility.PRIVATE_COMMAND);
-            } else
-                setSelected(ActionSetModelElementVisibility.PUBLIC_COMMAND);
+		if (kind.equals(MVisibilityKind.PROTECTED)) {
+		    setSelected(ActionSetModelElementVisibility.PROTECTED_COMMAND); 
+		} else
+		    if (kind.equals(MVisibilityKind.PRIVATE)) {
+			setSelected(ActionSetModelElementVisibility.PRIVATE_COMMAND);
+		    } else
+			setSelected(ActionSetModelElementVisibility.PUBLIC_COMMAND);
         }
     }
 

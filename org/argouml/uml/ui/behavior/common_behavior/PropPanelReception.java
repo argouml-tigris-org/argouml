@@ -47,7 +47,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 /**
  * @author Jaap
  *
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelReception extends PropPanelModelElement {
@@ -55,28 +55,28 @@ public class PropPanelReception extends PropPanelModelElement {
     public PropPanelReception() {
         super("Reception", _receptionIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class)ModelFacade.RECEPTION;
+        Class mclass = (Class) ModelFacade.RECEPTION;
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        JPanel modPanel = new JPanel(new GridLayout2(0,3, GridLayout2.ROWCOLPREFERRED));
+        JPanel modPanel = new JPanel(new GridLayout2(0, 3, GridLayout2.ROWCOLPREFERRED));
         // next line does not contain typing errors, NSUML is not correct (isabstarct instead of isabstract)
-        modPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstarct",mclass,"isAbstarct","setAbstarct")));
-        modPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-        modPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+        modPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"), this, new UMLReflectionBooleanProperty("isAbstarct", mclass, "isAbstarct", "setAbstarct")));
+        modPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"), this, new UMLReflectionBooleanProperty("isLeaf", mclass, "isLeaf", "setLeaf")));
+        modPanel.add(new UMLCheckBox(localize("root"), this, new UMLReflectionBooleanProperty("isRoot", mclass, "isRoot", "setRoot")));
         addField(Argo.localize("UMLMenu", "label.modifiers"), modPanel);
 
         addSeperator();
 
         addField(Argo.localize("UMLMenu", "label.signal"), new UMLReceptionSignalComboBox(this, new UMLReceptionSignalComboBoxModel()));
 
-        JScrollPane specificationScroll = new JScrollPane(new UMLTextArea(this, new UMLTextProperty(mclass, "specification", "getSpecification" , "setSpecification")),JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane specificationScroll = new JScrollPane(new UMLTextArea(this, new UMLTextProperty(mclass, "specification", "getSpecification" , "setSpecification")), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         addField(Argo.localize("UMLMenu", "label.specification"), specificationScroll);
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-	new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-operation"),"removeElement",null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+	new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-operation"), "removeElement", null);
     }
 
 
@@ -97,7 +97,7 @@ public class PropPanelReception extends PropPanelModelElement {
     public MClassifier getOwner() {
         Object target = getTarget();
         if (ModelFacade.isAReception(target)) {
-            return ((MReception)target).getOwner();
+            return ((MReception) target).getOwner();
         }
         return null;
     }
@@ -109,7 +109,7 @@ public class PropPanelReception extends PropPanelModelElement {
     public void setOwner(MClassifier owner) {
         Object target = getTarget();
         if (ModelFacade.isAReception(target)) {
-            MReception rec = (MReception)target;
+            MReception rec = (MReception) target;
             if (rec.getOwner() != null) {
                 rec.setOwner(null);
             }

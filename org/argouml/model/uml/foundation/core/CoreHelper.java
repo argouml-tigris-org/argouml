@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -91,7 +92,7 @@ public class CoreHelper {
     private CoreHelper() {
     }
     /** Singleton instance.
-    */
+     */
 
     private static CoreHelper SINGLETON = new CoreHelper();
     /** Singleton instance access method.
@@ -116,9 +117,9 @@ public class CoreHelper {
             Iterator addIter = add.iterator();
             while (addIter.hasNext()) {
                 MGeneralizableElement next =
-                    (MGeneralizableElement)addIter.next();
+                    (MGeneralizableElement) addIter.next();
                 if (next instanceof MClassifier) {
-                    newAdd.addAll(getSupertypes((MClassifier)next));
+                    newAdd.addAll(getSupertypes((MClassifier) next));
                 }
             }
             result.addAll(add);
@@ -140,11 +141,11 @@ public class CoreHelper {
         Collection result = new HashSet();
         if (ModelFacade.isAGeneralizableElement(ogeneralizableelement)) {
             MGeneralizableElement cls =
-                (MGeneralizableElement)ogeneralizableelement;
+                (MGeneralizableElement) ogeneralizableelement;
             Collection gens = cls.getGeneralizations();
             Iterator genIterator = gens.iterator();
             while (genIterator.hasNext()) {
-                MGeneralization next = (MGeneralization)genIterator.next();
+                MGeneralization next = (MGeneralization) genIterator.next();
                 result.add(next.getParent());
             }
         }
@@ -160,7 +161,7 @@ public class CoreHelper {
         Collection result = new ArrayList();
         Iterator ascends = classifier.getAssociationEnds().iterator();
         while (ascends.hasNext()) {
-            MAssociationEnd ascend = (MAssociationEnd)ascends.next();
+            MAssociationEnd ascend = (MAssociationEnd) ascends.next();
             if ((ascend.getOppositeEnd() != null))
                 result.add(ascend.getOppositeEnd());
         }
@@ -177,7 +178,7 @@ public class CoreHelper {
         result.addAll(getAssociateEnds(classifier));
         Iterator parents = classifier.getParents().iterator();
         while (parents.hasNext()) {
-            result.addAll(getAssociateEndsInh((MClassifier)parents.next()));
+            result.addAll(getAssociateEndsInh((MClassifier) parents.next()));
         }
         return result;
     }
@@ -192,7 +193,7 @@ public class CoreHelper {
             && feature != null
             && cls instanceof MClassifier
             && feature instanceof MFeature) {
-            ((MClassifier)cls).removeFeature((MFeature)feature);
+            ((MClassifier) cls).removeFeature((MFeature) feature);
         }
     }
     /** This method returns the name of a feature.
@@ -202,7 +203,7 @@ public class CoreHelper {
      */
     public String getFeatureName(Object o) {
         if (o != null && o instanceof MFeature)
-            return ((MFeature)o).getName();
+            return ((MFeature) o).getName();
         return null;
     }
     /** This method returns if the object is a method.
@@ -229,10 +230,10 @@ public class CoreHelper {
     public Collection getOperations(Object classifier) {
         Collection result = new ArrayList();
         if (ModelFacade.isAClassifier(classifier)) {
-            MClassifier mclassifier = (MClassifier)classifier;
+            MClassifier mclassifier = (MClassifier) classifier;
             Iterator features = mclassifier.getFeatures().iterator();
             while (features.hasNext()) {
-                MFeature feature = (MFeature)features.next();
+                MFeature feature = (MFeature) features.next();
                 if (ModelFacade.isAOperation(feature))
                     result.add(feature);
             }
@@ -241,20 +242,20 @@ public class CoreHelper {
     }
 
     /** This method returns all attributes of a given Classifier.
-	 *
-	 * @param classifier the classifier you want to have the attributes for
-	 * @return a collection of the attributes
-	 */
-	public Collection getAttributes(MClassifier classifier) {
-	    Collection result = new ArrayList();
-		Iterator features = classifier.getFeatures().iterator();
-		while (features.hasNext()) {
-			MFeature feature = (MFeature)features.next();
-			if (feature instanceof MAttribute)
-				result.add(feature);
-		}
-		return result;
-	}  
+     *
+     * @param classifier the classifier you want to have the attributes for
+     * @return a collection of the attributes
+     */
+    public Collection getAttributes(MClassifier classifier) {
+	Collection result = new ArrayList();
+	Iterator features = classifier.getFeatures().iterator();
+	while (features.hasNext()) {
+	    MFeature feature = (MFeature) features.next();
+	    if (feature instanceof MAttribute)
+		result.add(feature);
+	}
+	return result;
+    }  
 
     /** This method returns all attributes of a given Classifier, including inherited
      *
@@ -266,7 +267,7 @@ public class CoreHelper {
         result.addAll(ModelFacade.getStructuralFeatures(classifier));
         Iterator parents = classifier.getParents().iterator();
         while (parents.hasNext()) {
-            MClassifier parent = (MClassifier)parents.next();
+            MClassifier parent = (MClassifier) parents.next();
             cat.debug("Adding attributes for: " + parent);
             result.addAll(getAttributesInh(parent));
         }
@@ -282,7 +283,7 @@ public class CoreHelper {
         result.addAll(ModelFacade.getOperations(classifier));
         Iterator parents = classifier.getParents().iterator();
         while (parents.hasNext()) {
-            result.addAll(getOperationsInh((MClassifier)parents.next()));
+            result.addAll(getOperationsInh((MClassifier) parents.next()));
         }
         return result;
     }
@@ -300,23 +301,23 @@ public class CoreHelper {
         MParameter firstReturnParameter = null;
         Iterator params = operation.getParameters().iterator();
         while (params.hasNext()) {
-            MParameter parameter = (MParameter)params.next();
+            MParameter parameter = (MParameter) params.next();
             if ((parameter.getKind()).equals(MParameterDirectionKind.RETURN)) {
                 returnParams.add(parameter);
             }
         }
         switch (returnParams.size()) {
-            case 1 :
-                return (MParameter)returnParams.elementAt(0);
-            case 0 :
-            	//Next line gives too many strings while debugging
-            	// obscuring other errors.
-                //cat.debug("No ReturnParameter found!");
-                return null;
-            default :
-                cat.debug(
-                    "More than one ReturnParameter found, returning first!");
-                return (MParameter)returnParams.elementAt(0);
+	case 1 :
+	    return (MParameter) returnParams.elementAt(0);
+	case 0 :
+	    //Next line gives too many strings while debugging
+	    // obscuring other errors.
+	    //cat.debug("No ReturnParameter found!");
+	    return null;
+	default :
+	    cat.debug(
+		      "More than one ReturnParameter found, returning first!");
+	    return (MParameter) returnParams.elementAt(0);
         }
     }
     /**
@@ -329,12 +330,12 @@ public class CoreHelper {
         MParameter firstReturnParameter = null;
         Iterator params = operation.getParameters().iterator();
         while (params.hasNext()) {
-            MParameter parameter = (MParameter)params.next();
+            MParameter parameter = (MParameter) params.next();
             if ((parameter.getKind()).equals(MParameterDirectionKind.RETURN)) {
                 returnParams.add(parameter);
             }
         }
-        return (Collection)returnParams;
+        return (Collection) returnParams;
     }
     /**
      * Returns the operation that some method realized. Returns null if
@@ -347,7 +348,7 @@ public class CoreHelper {
     public MOperation getSpecification(Object object) {
 	if (!(object instanceof MMethod))
 	    return null;
-	return ((MMethod)object).getSpecification();
+	return ((MMethod) object).getSpecification();
     }
     /**
      * Returns all Interfaces of which this class is a realization.
@@ -365,7 +366,7 @@ public class CoreHelper {
                 && stereo != null
                 && ModelFacade.getName(stereo) != null
                 && ModelFacade.getName(stereo).equals("realize")) {
-                   Object i = ModelFacade.getSuppliers(dep).toArray()[0];               
+		Object i = ModelFacade.getSuppliers(dep).toArray()[0];               
                 result.add(i);
             }
         }
@@ -383,7 +384,7 @@ public class CoreHelper {
         Collection gens = cls.getSpecializations();
         Iterator genIterator = gens.iterator();
         while (genIterator.hasNext()) {
-            MGeneralization next = (MGeneralization)genIterator.next();
+            MGeneralization next = (MGeneralization) genIterator.next();
             result.add(next.getChild());
         }
         return result;
@@ -398,12 +399,12 @@ public class CoreHelper {
      * @param newReturnParameter
      */
     public void setReturnParameter(
-        MOperation operation,
-        MParameter newReturnParameter) {
+				   MOperation operation,
+				   MParameter newReturnParameter) {
         Iterator params = operation.getParameters().iterator();
         String name = "return";
         while (params.hasNext()) {
-            MParameter parameter = (MParameter)params.next();
+            MParameter parameter = (MParameter) params.next();
             if ((parameter.getKind()).equals(MParameterDirectionKind.RETURN)) {
                 operation.removeParameter(parameter);
                 if (parameter.getName() != null || parameter.getName() == "") {
@@ -419,27 +420,27 @@ public class CoreHelper {
         Project p = ProjectManager.getManager().getCurrentProject();
         Iterator it = p.findFigsForMember(operation).iterator();
         while (it.hasNext()) {
-            MElementListener listener = (MElementListener)it.next();
+            MElementListener listener = (MElementListener) it.next();
             // UmlModelEventPump.getPump().removeModelEventListener(listener, newReturnParameter);
             UmlModelEventPump.getPump().addModelEventListener(
-                listener,
-                newReturnParameter);
+							      listener,
+							      newReturnParameter);
         }
     }
     /**
      * Builds a dependency with stereotype support
      */
     public MDependency buildSupportDependency(
-        MModelElement from,
-        MModelElement to) {
+					      MModelElement from,
+					      MModelElement to) {
         MDependency dep = CoreFactory.getFactory().buildDependency(from, to);
         MNamespace model =
             ProjectManager.getManager().getCurrentProject().getModel();
         MStereotype stereo =
             ExtensionMechanismsFactory.getFactory().buildStereotype(
-                dep,
-                "support",
-                ProjectManager.getManager().getCurrentProject().getModel());
+								    dep,
+								    "support",
+								    ProjectManager.getManager().getCurrentProject().getModel());
         return dep;
     }
 
@@ -453,9 +454,9 @@ public class CoreHelper {
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MClassifier) {
-                list.addAll(getAllBehavioralFeatures((MClassifier)o));
+                list.addAll(getAllBehavioralFeatures((MClassifier) o));
             } else {
-                list.addAll(getAllBehavioralFeatures((MModelElement)it.next()));
+                list.addAll(getAllBehavioralFeatures((MModelElement) it.next()));
             }
         }
         return list;
@@ -509,7 +510,7 @@ public class CoreHelper {
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllInterfaces((MNamespace)o));
+                list.addAll(getAllInterfaces((MNamespace) o));
             }
             if (o instanceof MInterface) {
                 list.add(o);
@@ -538,7 +539,7 @@ public class CoreHelper {
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllClasses((MNamespace)o));
+                list.addAll(getAllClasses((MNamespace) o));
             }
             if (o instanceof MClass) {
                 list.add(o);
@@ -591,7 +592,7 @@ public class CoreHelper {
         Iterator it = clazz.getGeneralizations().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
-            MGeneralization gen = (MGeneralization)it.next();
+            MGeneralization gen = (MGeneralization) it.next();
             MGeneralizableElement parent = gen.getParent();
             if (parent != null) {
                 list.add(parent);
@@ -607,13 +608,13 @@ public class CoreHelper {
      * @return MGeneralization
      */
     public MGeneralization getGeneralization(
-        MGeneralizableElement child,
-        MGeneralizableElement parent) {
+					     MGeneralizableElement child,
+					     MGeneralizableElement parent) {
         if (child == null || parent == null)
             return null;
         Iterator it = child.getGeneralizations().iterator();
         while (it.hasNext()) {
-            MGeneralization gen = (MGeneralization)it.next();
+            MGeneralization gen = (MGeneralization) it.next();
             if (gen.getParent() == parent) {
                 return gen;
             }
@@ -633,7 +634,7 @@ public class CoreHelper {
         Collection targetFlows = target.getTargetFlows();
         Iterator it = source.getSourceFlows().iterator();
         while (it.hasNext()) {
-            MFlow flow = (MFlow)it.next();
+            MFlow flow = (MFlow) it.next();
             if (targetFlows.contains(flow)) {
                 ret.add(flow);
             }
@@ -651,7 +652,7 @@ public class CoreHelper {
         Iterator it = clazz.getSpecializations().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
-            MGeneralization gen = (MGeneralization)it.next();
+            MGeneralization gen = (MGeneralization) it.next();
             MGeneralizableElement client = gen.getChild();
             if (client != null) {
                 list.add(client);
@@ -670,7 +671,7 @@ public class CoreHelper {
         Iterator it = clazz.getSpecializations().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
-            MGeneralization gen = (MGeneralization)it.next();
+            MGeneralization gen = (MGeneralization) it.next();
             MGeneralizableElement client = gen.getChild();
             if (client instanceof MClassifier) {
                 list.add(client);
@@ -699,7 +700,7 @@ public class CoreHelper {
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllComponents((MNamespace)o));
+                list.addAll(getAllComponents((MNamespace) o));
             }
             if (o instanceof MComponent) {
                 list.add(o);
@@ -728,7 +729,7 @@ public class CoreHelper {
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllDataTypes((MNamespace)o));
+                list.addAll(getAllDataTypes((MNamespace) o));
             }
             if (o instanceof MDataType) {
                 list.add(o);
@@ -757,7 +758,7 @@ public class CoreHelper {
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllNodes((MNamespace)o));
+                list.addAll(getAllNodes((MNamespace) o));
             }
             if (o instanceof MNode) {
                 list.add(o);
@@ -777,11 +778,11 @@ public class CoreHelper {
         List list = new ArrayList();
         Iterator it = classifier.getAssociationEnds().iterator();
         while (it.hasNext()) {
-            MAssociationEnd end = (MAssociationEnd)it.next();
+            MAssociationEnd end = (MAssociationEnd) it.next();
             MAssociation assoc = end.getAssociation();
             Iterator it2 = assoc.getConnections().iterator();
             while (it2.hasNext()) {
-                MAssociationEnd end2 = (MAssociationEnd)it2.next();
+                MAssociationEnd end2 = (MAssociationEnd) it2.next();
                 if (end2 != end) {
                     list.add(end2.getType());
                 }
@@ -802,11 +803,11 @@ public class CoreHelper {
             return ret;
         Iterator it = from.getAssociationEnds().iterator();
         while (it.hasNext()) {
-            MAssociationEnd end = (MAssociationEnd)it.next();
+            MAssociationEnd end = (MAssociationEnd) it.next();
             MAssociation assoc = end.getAssociation();
             Iterator it2 = assoc.getConnections().iterator();
             while (it2.hasNext()) {
-                MAssociationEnd end2 = (MAssociationEnd)it2.next();
+                MAssociationEnd end2 = (MAssociationEnd) it2.next();
                 if (end2.getType() == to) {
                     ret.add(assoc);
                 }
@@ -835,7 +836,7 @@ public class CoreHelper {
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllClassifiers((MNamespace)o));
+                list.addAll(getAllClassifiers((MNamespace) o));
             }
             if (o instanceof MClassifier) {
                 list.add(o);
@@ -851,10 +852,10 @@ public class CoreHelper {
     public Collection getAssociations(Object oclassifier) {
         Collection col = new ArrayList();
         if (ModelFacade.isAClassifier(oclassifier)) {
-            MClassifier classifier = (MClassifier)oclassifier;
+            MClassifier classifier = (MClassifier) oclassifier;
             Iterator it = classifier.getAssociationEnds().iterator();
             while (it.hasNext()) {
-                col.add(((MAssociationEnd)it.next()).getAssociation());
+                col.add(((MAssociationEnd) it.next()).getAssociation());
             }
         }
         return col;
@@ -866,13 +867,13 @@ public class CoreHelper {
      * @return MAssociationEnd
      */
     public MAssociationEnd getAssociationEnd(
-        MClassifier type,
-        MAssociation assoc) {
+					     MClassifier type,
+					     MAssociation assoc) {
         if (type == null || assoc == null)
             return null;
         Iterator it = type.getAssociationEnds().iterator();
         while (it.hasNext()) {
-            MAssociationEnd end = (MAssociationEnd)it.next();
+            MAssociationEnd end = (MAssociationEnd) it.next();
             if (assoc.getConnections().contains(end))
                 return end;
         }
@@ -890,7 +891,7 @@ public class CoreHelper {
         List list = new ArrayList();
         Iterator it = clazz.getOwnedElements().iterator();
         while (it.hasNext()) {
-            MModelElement element = (MModelElement)it.next();
+            MModelElement element = (MModelElement) it.next();
             if (element.getVisibility().equals(MVisibilityKind.PUBLIC)
                 || element.getVisibility().equals(MVisibilityKind.PROTECTED)) {
                 list.add(element);
@@ -898,7 +899,7 @@ public class CoreHelper {
         }
         it = clazz.getGeneralizations().iterator();
         while (it.hasNext()) {
-            list.addAll(getAllContents((MClassifier)it.next()));
+            list.addAll(getAllContents((MClassifier) it.next()));
         }
         return list;
     }
@@ -913,14 +914,14 @@ public class CoreHelper {
         List list = new ArrayList();
         Iterator it = clazz.getFeatures().iterator();
         while (it.hasNext()) {
-            MFeature element = (MFeature)it.next();
+            MFeature element = (MFeature) it.next();
             if (element instanceof MAttribute) {
                 list.add(element);
             }
         }
         it = clazz.getGeneralizations().iterator();
         while (it.hasNext()) {
-            list.addAll(getAllAttributes((MClassifier)it.next()));
+            list.addAll(getAllAttributes((MClassifier) it.next()));
         }
         return list;
     }
@@ -936,36 +937,36 @@ public class CoreHelper {
      */
     public MModelElement getSource(MRelationship relation) {
         if (relation instanceof MAssociation) {
-            MAssociation assoc = (MAssociation)relation;
+            MAssociation assoc = (MAssociation) relation;
             List conns = assoc.getConnections();
             if (conns.isEmpty())
                 return null;
-            return ((MAssociationEnd)conns.get(0)).getType();
+            return ((MAssociationEnd) conns.get(0)).getType();
         }
         if (relation instanceof MGeneralization) {
-            MGeneralization gen = (MGeneralization)relation;
+            MGeneralization gen = (MGeneralization) relation;
             return gen.getChild();
         }
         if (relation instanceof MDependency) {
-            MDependency dep = (MDependency)relation;
+            MDependency dep = (MDependency) relation;
             Collection col = dep.getClients();
             if (col.isEmpty())
                 return null;
             return (MModelElement) (col.toArray())[0];
         }
         if (relation instanceof MFlow) {
-            MFlow flow = (MFlow)relation;
+            MFlow flow = (MFlow) relation;
             Collection col = flow.getSources();
             if (col.isEmpty())
                 return null;
             return (MModelElement) (col.toArray())[0];
         }
         if (relation instanceof MExtend) {
-            MExtend extend = (MExtend)relation;
+            MExtend extend = (MExtend) relation;
             return extend.getExtension(); // we have to follow the arrows..
         }
         if (relation instanceof MInclude) {
-            MInclude include = (MInclude)relation;
+            MInclude include = (MInclude) relation;
             return include.getAddition();
         }
         return null;
@@ -983,36 +984,36 @@ public class CoreHelper {
      */
     public MModelElement getDestination(MRelationship relation) {
         if (relation instanceof MAssociation) {
-            MAssociation assoc = (MAssociation)relation;
+            MAssociation assoc = (MAssociation) relation;
             List conns = assoc.getConnections();
             if (conns.size() <= 1)
                 return null;
-            return ((MAssociationEnd)conns.get(1)).getType();
+            return ((MAssociationEnd) conns.get(1)).getType();
         }
         if (relation instanceof MGeneralization) {
-            MGeneralization gen = (MGeneralization)relation;
+            MGeneralization gen = (MGeneralization) relation;
             return gen.getParent();
         }
         if (relation instanceof MDependency) {
-            MDependency dep = (MDependency)relation;
+            MDependency dep = (MDependency) relation;
             Collection col = dep.getSuppliers();
             if (col.isEmpty())
                 return null;
             return (MModelElement) (col.toArray())[0];
         }
         if (relation instanceof MFlow) {
-            MFlow flow = (MFlow)relation;
+            MFlow flow = (MFlow) relation;
             Collection col = flow.getTargets();
             if (col.isEmpty())
                 return null;
             return (MModelElement) (col.toArray())[0];
         }
         if (relation instanceof MExtend) {
-            MExtend extend = (MExtend)relation;
+            MExtend extend = (MExtend) relation;
             return extend.getBase();
         }
         if (relation instanceof MInclude) {
-            MInclude include = (MInclude)relation;
+            MInclude include = (MInclude) relation;
             return include.getBase();
         }
         return null;
@@ -1026,21 +1027,21 @@ public class CoreHelper {
      * @return Collection
      */
     public Collection getDependencies(
-        Object supplierObj,
-        Object clientObj) {
+				      Object supplierObj,
+				      Object clientObj) {
             
         if ( !(supplierObj instanceof MModelElement) ||
-            !(clientObj instanceof MModelElement))
+	     !(clientObj instanceof MModelElement))
             return null;
         
-        MModelElement supplier = (MModelElement)supplierObj;
-        MModelElement client = (MModelElement)clientObj;
+        MModelElement supplier = (MModelElement) supplierObj;
+        MModelElement client = (MModelElement) clientObj;
         
         List ret = new ArrayList();
         Collection clientDependencies = client.getClientDependencies();
         Iterator it = supplier.getSupplierDependencies().iterator();
         while (it.hasNext()) {
-            MDependency dep = (MDependency)it.next();
+            MDependency dep = (MDependency) it.next();
             if (clientDependencies.contains(dep)) {
                 ret.add(dep);
             }
@@ -1055,8 +1056,8 @@ public class CoreHelper {
      * @return Collection
      */
     public Collection getRelationships(
-        MModelElement source,
-        MModelElement dest) {
+				       MModelElement source,
+				       MModelElement dest) {
         Set ret = new HashSet();
         if (source == null || dest == null)
             return ret;
@@ -1067,16 +1068,16 @@ public class CoreHelper {
         if (source instanceof MGeneralizableElement
             && dest instanceof MGeneralizableElement) {
             ret.add(
-                getGeneralization(
-                    (MGeneralizableElement)source,
-                    (MGeneralizableElement)dest));
+		    getGeneralization(
+				      (MGeneralizableElement) source,
+				      (MGeneralizableElement) dest));
             ret.add(
-                getGeneralization(
-                    (MGeneralizableElement)dest,
-                    (MGeneralizableElement)source));
+		    getGeneralization(
+				      (MGeneralizableElement) dest,
+				      (MGeneralizableElement) source));
             if (source instanceof MClassifier && dest instanceof MClassifier) {
                 ret.addAll(
-                    getAssociations((MClassifier)source, (MClassifier)dest));
+			   getAssociations((MClassifier) source, (MClassifier) dest));
             }
         }
         return ret;
@@ -1089,12 +1090,12 @@ public class CoreHelper {
      */
     public boolean isValidNamespace(Object mObj, Object nsObj) {
         
-        if( !(mObj instanceof MModelElement) ||
+        if ( !(mObj instanceof MModelElement) ||
             !(nsObj instanceof MNamespace))
             return false;
         
-        MModelElement m = (MModelElement)mObj;
-        MNamespace ns = (MNamespace)nsObj;
+        MModelElement m = (MModelElement) mObj;
+        MNamespace ns = (MNamespace) nsObj;
         
         if (m == null || ns == null)
             return false;
@@ -1103,7 +1104,7 @@ public class CoreHelper {
         if (m == ns)
             return false;
         if (m instanceof MNamespace
-            && m == getFirstSharedNamespace((MNamespace)m, ns))
+            && m == getFirstSharedNamespace((MNamespace) m, ns))
             return false;
         if (ns instanceof MInterface
             || ns instanceof MActor
@@ -1113,52 +1114,52 @@ public class CoreHelper {
             return (m instanceof MComponent && m != ns);
         else if (ns instanceof MCollaboration) {
             if (!(m instanceof MClassifierRole
-                || m instanceof MAssociationRole
-                || m instanceof MGeneralization
-                || m instanceof MConstraint))
+		  || m instanceof MAssociationRole
+		  || m instanceof MGeneralization
+		  || m instanceof MConstraint))
                 return false;
         } else if (ns instanceof MPackage) {
             if (!(m instanceof MPackage
-                || m instanceof MClassifier
-                || m instanceof MAssociation
-                || m instanceof MGeneralization
-                || m instanceof MDependency
-                || m instanceof MConstraint
-                || m instanceof MCollaboration
-                || m instanceof MStateMachine
-                || m instanceof MStereotype))
+		  || m instanceof MClassifier
+		  || m instanceof MAssociation
+		  || m instanceof MGeneralization
+		  || m instanceof MDependency
+		  || m instanceof MConstraint
+		  || m instanceof MCollaboration
+		  || m instanceof MStateMachine
+		  || m instanceof MStereotype))
                 return false;
         } else if (ns instanceof MClass) {
             if (!(m instanceof MClass
-                || m instanceof MAssociation
-                || m instanceof MGeneralization
-                || m instanceof MUseCase
-                || m instanceof MConstraint
-                || m instanceof MDependency
-                || m instanceof MCollaboration
-                || m instanceof MDataType
-                || m instanceof MInterface))
+		  || m instanceof MAssociation
+		  || m instanceof MGeneralization
+		  || m instanceof MUseCase
+		  || m instanceof MConstraint
+		  || m instanceof MDependency
+		  || m instanceof MCollaboration
+		  || m instanceof MDataType
+		  || m instanceof MInterface))
                 return false;
         } else if (ns instanceof MClassifierRole) {
-            if (!(((MClassifierRole)ns).getAvailableContentses().contains(m)
-                || ((MClassifierRole)ns).getAvailableFeatures().contains(m)))
+            if (!(((MClassifierRole) ns).getAvailableContentses().contains(m)
+		  || ((MClassifierRole) ns).getAvailableFeatures().contains(m)))
                 return false;
         }
         if (m instanceof MStructuralFeature) {
-            if (!isValidNamespace((MStructuralFeature)m, ns))
+            if (!isValidNamespace((MStructuralFeature) m, ns))
                 return false;
         } else if (m instanceof MGeneralizableElement) {
-            if (!isValidNamespace((MGeneralizableElement)m, ns))
+            if (!isValidNamespace((MGeneralizableElement) m, ns))
                 return false;
         } else if (m instanceof MGeneralization) {
-            if (!isValidNamespace((MGeneralization)m, ns))
+            if (!isValidNamespace((MGeneralization) m, ns))
                 return false;
         }
         if (m instanceof MAssociation) {
-            if (!isValidNamespace((MAssociation)m, ns))
+            if (!isValidNamespace((MAssociation) m, ns))
                 return false;
         } else if (m instanceof MCollaboration) {
-            if (!isValidNamespace((MCollaboration)m, ns))
+            if (!isValidNamespace((MCollaboration) m, ns))
                 return false;
         }
         return true;
@@ -1166,18 +1167,17 @@ public class CoreHelper {
     private boolean isValidNamespace(MCollaboration collab, MNamespace ns) {
         Iterator it = collab.getOwnedElements().iterator();
         while (it.hasNext()) {
-            MModelElement m = (MModelElement)it.next();
+            MModelElement m = (MModelElement) it.next();
             if (m instanceof MClassifierRole) {
-                MClassifierRole role = (MClassifierRole)m;
+                MClassifierRole role = (MClassifierRole) m;
                 Iterator it2 = role.getBases().iterator();
                 while (it2.hasNext()) {
                     if (!ns.getOwnedElements().contains(it2.next()))
                         return false;
                 }
             } else if (m instanceof MAssociationRole) {
-                if (!ns
-                    .getOwnedElements()
-                    .contains(((MAssociationRole)m).getBase()))
+                if (!ns.getOwnedElements()
+		    .contains(((MAssociationRole) m).getBase()))
                     return false;
             }
         }
@@ -1196,21 +1196,21 @@ public class CoreHelper {
         if (struc.getType() == null || struc.getOwner() == null)
             return true;
         return struc.getOwner().getNamespace().getOwnedElements().contains(
-            struc.getType());
+									   struc.getType());
     }
     
     private boolean isValidNamespace(MAssociation assoc, MNamespace ns) {
         Iterator it = assoc.getConnections().iterator();
         List namespaces = new ArrayList();
         while (it.hasNext()) {
-            MAssociationEnd end = (MAssociationEnd)it.next();
+            MAssociationEnd end = (MAssociationEnd) it.next();
             namespaces.add(end.getType().getNamespace());
         }
         it = namespaces.iterator();
         while (it.hasNext()) {
-            MNamespace ns1 = (MNamespace)it.next();
+            MNamespace ns1 = (MNamespace) it.next();
             if (it.hasNext()) {
-                MNamespace ns2 = (MNamespace)it.next();
+                MNamespace ns2 = (MNamespace) it.next();
                 // TODO: this contains a small error (ns can be part of hierarchy
                 // of namespaces, that's not taken into account)
                 if (ns == getFirstSharedNamespace(ns1, ns2))
@@ -1221,11 +1221,11 @@ public class CoreHelper {
     }
     
     private boolean isValidNamespace(
-        MGeneralizableElement gen,
-        MNamespace ns) {
+				     MGeneralizableElement gen,
+				     MNamespace ns) {
         Iterator it = gen.getParents().iterator();
         while (it.hasNext()) {
-            MGeneralizableElement gen2 = (MGeneralizableElement)it.next();
+            MGeneralizableElement gen2 = (MGeneralizableElement) it.next();
             if (!ns.getOwnedElements().contains(gen2)) {
                 return false;
             }
@@ -1247,10 +1247,10 @@ public class CoreHelper {
             return ns1;
         boolean ns1Owner =
             ModelManagementHelper.getHelper().getAllNamespaces(ns1).contains(
-                ns2);
+									     ns2);
         boolean ns2Owner =
             ModelManagementHelper.getHelper().getAllNamespaces(ns2).contains(
-                ns1);
+									     ns1);
         if (ns1Owner)
             return ns1;
         if (ns2Owner)
@@ -1275,11 +1275,11 @@ public class CoreHelper {
             ret.add(model);
         Iterator it =
             ModelManagementHelper
-                .getHelper()
-                .getAllModelElementsOfKind(model, MNamespace.class)
-                .iterator();
+	    .getHelper()
+	    .getAllModelElementsOfKind(model, MNamespace.class)
+	    .iterator();
         while (it.hasNext()) {
-            MNamespace ns = (MNamespace)it.next();
+            MNamespace ns = (MNamespace) it.next();
             if (isValidNamespace(m, ns))
                 ret.add(ns);
         }
@@ -1300,11 +1300,11 @@ public class CoreHelper {
         if (ModelFacade.isANamespace(o)) {
             Iterator it =
                 ModelManagementHelper
-                    .getHelper()
-                    .getAllModelElementsOfKind(o, MGeneralizableElement.class)
-                    .iterator();
+		.getHelper()
+		.getAllModelElementsOfKind(o, MGeneralizableElement.class)
+		.iterator();
             while (it.hasNext()) {
-                MGeneralizableElement gen = (MGeneralizableElement)it.next();
+                MGeneralizableElement gen = (MGeneralizableElement) it.next();
                 if (gen.getGeneralizations().isEmpty()) {
                     col.add(gen);
                 }
@@ -1330,9 +1330,9 @@ public class CoreHelper {
         Collection col = new ArrayList();
         if (ModelFacade.isAGeneralizableElement(o)) {
             Iterator it =
-                ((MGeneralizableElement)o).getSpecializations().iterator();
+                ((MGeneralizableElement) o).getSpecializations().iterator();
             while (it.hasNext()) {
-                getChildren(col, (MGeneralization)it.next());
+                getChildren(col, (MGeneralization) it.next());
             }
         }
         return col;
@@ -1354,7 +1354,7 @@ public class CoreHelper {
 	currentChildren.add(child);
 	Iterator it = child.getSpecializations().iterator();
 	while (it.hasNext()) {
-	    getChildren(currentChildren, (MGeneralization)it.next());
+	    getChildren(currentChildren, (MGeneralization) it.next());
 	}
     }
 
@@ -1369,11 +1369,11 @@ public class CoreHelper {
         Collection col = new ArrayList();
         if (o != null) {
             if (ModelFacade.isAClass(o)) {
-                MClass clazz = (MClass)o;
+                MClass clazz = (MClass) o;
                 Collection supDependencies = clazz.getClientDependencies();
                 Iterator it = supDependencies.iterator();
                 while (it.hasNext()) {
-                    MDependency dependency = (MDependency)it.next();
+                    MDependency dependency = (MDependency) it.next();
                     MStereotype stereo = dependency.getStereotype();
                     if (ModelFacade.isAAbstraction(dependency)
                         && stereo != null && 

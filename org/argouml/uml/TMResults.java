@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -103,63 +104,63 @@ public class TMResults extends AbstractTableModel {
             return "bad col!";
         Object rowObj = _rowObjects.elementAt(row);
         if (rowObj instanceof Diagram) {
-            Diagram d = (Diagram)rowObj;
+            Diagram d = (Diagram) rowObj;
             switch (col) {
-                case 0 :
-                    String name = null;
-                    if (d instanceof UMLClassDiagram)
-                        name = "label.class-diagram";
-                    else if (d instanceof UMLUseCaseDiagram) {
-                        name = "label.usecase-diagram";
-                    } else if (d instanceof UMLStateDiagram) {
-                        name = "label.state-diagram";
-                    } else if (d instanceof UMLDeploymentDiagram) {
-                        name = "label.deployment-diagram";
-                    } else if (d instanceof UMLCollaborationDiagram) {
-                        name = "label.collaboration-diagram";
-                    } else if (d instanceof UMLActivityDiagram) {
-                        name = "label.activity-diagram";
-                    } else if (d instanceof UMLSequenceDiagram) {
-                        name = "label.sequence-diagram";
-                    }
-                    return Argo.localize(BUNDLE,name);
-                case 1 :
-                    return d.getName();
-                case 2 :
-                    return "N/A";
-                case 3 :
-                    //GraphModel gm = d.getGraphModel();
-                    int numNodes = d.getNodes().size();
-                    int numEdges = d.getEdges().size();
-                    return numNodes + " nodes and " + numEdges + " edges";
+	    case 0 :
+		String name = null;
+		if (d instanceof UMLClassDiagram)
+		    name = "label.class-diagram";
+		else if (d instanceof UMLUseCaseDiagram) {
+		    name = "label.usecase-diagram";
+		} else if (d instanceof UMLStateDiagram) {
+		    name = "label.state-diagram";
+		} else if (d instanceof UMLDeploymentDiagram) {
+		    name = "label.deployment-diagram";
+		} else if (d instanceof UMLCollaborationDiagram) {
+		    name = "label.collaboration-diagram";
+		} else if (d instanceof UMLActivityDiagram) {
+		    name = "label.activity-diagram";
+		} else if (d instanceof UMLSequenceDiagram) {
+		    name = "label.sequence-diagram";
+		}
+		return Argo.localize(BUNDLE, name);
+	    case 1 :
+		return d.getName();
+	    case 2 :
+		return "N/A";
+	    case 3 :
+		//GraphModel gm = d.getGraphModel();
+		int numNodes = d.getNodes().size();
+		int numEdges = d.getEdges().size();
+		return numNodes + " nodes and " + numEdges + " edges";
             }
         }
         if (ModelFacade.isAModelElement(rowObj)) {
             Diagram d = null;
             if (_diagrams != null)
-                d = (Diagram)_diagrams.elementAt(row);
+                d = (Diagram) _diagrams.elementAt(row);
             switch (col) {
-                case 0 :
-                    return ModelFacade.getUMLClassName(rowObj);
-                case 1 :
-                    return ModelFacade.getName(rowObj);
-                case 2 :
-                    return (d == null) ? "N/A" : d.getName();
-                case 3 :
-                    return "docs";
+	    case 0 :
+		return ModelFacade.getUMLClassName(rowObj);
+	    case 1 :
+		return ModelFacade.getName(rowObj);
+	    case 2 :
+		return (d == null) ? "N/A" : d.getName();
+	    case 3 :
+		return "docs";
             }
         }
         switch (col) {
-            case 0 :
-                String clsName = rowObj.getClass().getName();
-                int lastDot = clsName.lastIndexOf(".");
-                return clsName.substring(lastDot + 1);
-            case 1 :
-                return "";
-            case 2 :
-                return "??";
-            case 3 :
-                return "docs";
+	case 0 :
+	    String clsName = rowObj.getClass().getName();
+	    int lastDot = clsName.lastIndexOf(".");
+	    return clsName.substring(lastDot + 1);
+	case 1 :
+	    return "";
+	case 2 :
+	    return "??";
+	case 3 :
+	    return "docs";
         }
         return "unknown!";
     }

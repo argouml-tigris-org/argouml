@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -29,12 +30,12 @@ import org.argouml.uml.diagram.ui.PropPanelDiagram;
 public class PropPanelUMLStateDiagram extends PropPanelDiagram {
 
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public PropPanelUMLStateDiagram() {
-    super(Argo.localize("UMLMenu", "label.state-chart-diagram"));
+    public PropPanelUMLStateDiagram() {
+	super(Argo.localize("UMLMenu", "label.state-chart-diagram"));
 
-  }
+    }
 
 } /* end class PropPanelDiagram */

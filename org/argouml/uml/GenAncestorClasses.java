@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -35,33 +36,33 @@ import org.tigris.gef.util.*;
  *  safe way that will nothang in case of cyclic inheritance. */
 
 public class GenAncestorClasses implements ChildGenerator {
-  public static GenAncestorClasses TheInstance = new GenAncestorClasses();
+    public static GenAncestorClasses TheInstance = new GenAncestorClasses();
 
-  public Enumeration gen(Object o) {
+    public Enumeration gen(Object o) {
 	Vector res = new Vector();
 
-    if (!(o instanceof MGeneralizableElement)) return res.elements();
-    MGeneralizableElement cls = (MGeneralizableElement) o;
-    Collection gens = cls.getGeneralizations();
-    if (gens == null) return res.elements();
-    // Vector res = new Vector();
-    accumulateAncestors(cls, res);
-    return res.elements();
-  }
-
-
-  public void accumulateAncestors(MGeneralizableElement cls, Vector accum) {
-    Vector gens = new Vector(cls.getGeneralizations());
-    if (gens == null) return;
-    int size = gens.size();
-    for (int i = 0; i < size; i++) {
-      MGeneralization g = (MGeneralization) (gens).elementAt(i);
-      MGeneralizableElement ge = g.getParent();
-      if (!accum.contains(ge)) {
-		  accum.add(ge);
-		  accumulateAncestors(cls, accum);
-      }
+	if (!(o instanceof MGeneralizableElement)) return res.elements();
+	MGeneralizableElement cls = (MGeneralizableElement) o;
+	Collection gens = cls.getGeneralizations();
+	if (gens == null) return res.elements();
+	// Vector res = new Vector();
+	accumulateAncestors(cls, res);
+	return res.elements();
     }
-  }
+
+
+    public void accumulateAncestors(MGeneralizableElement cls, Vector accum) {
+	Vector gens = new Vector(cls.getGeneralizations());
+	if (gens == null) return;
+	int size = gens.size();
+	for (int i = 0; i < size; i++) {
+	    MGeneralization g = (MGeneralization) (gens).elementAt(i);
+	    MGeneralizableElement ge = g.getParent();
+	    if (!accum.contains(ge)) {
+		accum.add(ge);
+		accumulateAncestors(cls, accum);
+	    }
+	}
+    }
 } /* end class GenAncestorClasses */
 

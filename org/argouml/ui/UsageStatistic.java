@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -24,16 +25,16 @@
 package org.argouml.ui;
 
 public class UsageStatistic {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  public String name;
-  public int value;
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    public String name;
+    public int value;
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public UsageStatistic(String n, int v) {
-    name = n;
-    value = v;
-  }
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public UsageStatistic(String n, int v) {
+	name = n;
+	value = v;
+    }
 
 } /* end class UsageStatistic */

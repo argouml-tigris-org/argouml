@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,38 +43,38 @@ import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 public class ActionSetStructuralFeatureChangeability extends UMLChangeAction {
     public static final ActionSetStructuralFeatureChangeability SINGLETON = new ActionSetStructuralFeatureChangeability();
 
-        public final static String ADDONLY_COMMAND = "addonly";
-        public final static String CHANGEABLE_COMMAND = "changeable";
-        public final static String FROZEN_COMMAND = "frozen";
+    public final static String ADDONLY_COMMAND = "addonly";
+    public final static String CHANGEABLE_COMMAND = "changeable";
+    public final static String FROZEN_COMMAND = "frozen";
 
-        /**
-         * Constructor for ActionSetElementOwnershipSpecification.
-         * @param s
-         */
-        protected ActionSetStructuralFeatureChangeability() {
-            super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
-        }
+    /**
+     * Constructor for ActionSetElementOwnershipSpecification.
+     * @param s
+     */
+    protected ActionSetStructuralFeatureChangeability() {
+	super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
+    }
 
-        /**
-         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e) {
-            super.actionPerformed(e);
-            if (e.getSource() instanceof JRadioButton) {
-                JRadioButton source = (JRadioButton) e.getSource();
-                String actionCommand = source.getActionCommand();
-                Object target = ((UMLRadioButtonPanel) source.getParent()).getTarget();
-                if (target instanceof MStructuralFeature) {
-                    MStructuralFeature m = (MStructuralFeature) target;
-                    MChangeableKind kind = null;
-                    if (actionCommand.equals(ADDONLY_COMMAND)) {
-                        kind = MChangeableKind.ADD_ONLY;
-                    } else if (actionCommand.equals(CHANGEABLE_COMMAND)) {
-                        kind = MChangeableKind.CHANGEABLE;
-                    } else
-                        kind = MChangeableKind.FROZEN;
-                    m.setChangeability(kind);
-                }
-            }
-        }
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+	super.actionPerformed(e);
+	if (e.getSource() instanceof JRadioButton) {
+	    JRadioButton source = (JRadioButton) e.getSource();
+	    String actionCommand = source.getActionCommand();
+	    Object target = ((UMLRadioButtonPanel) source.getParent()).getTarget();
+	    if (target instanceof MStructuralFeature) {
+		MStructuralFeature m = (MStructuralFeature) target;
+		MChangeableKind kind = null;
+		if (actionCommand.equals(ADDONLY_COMMAND)) {
+		    kind = MChangeableKind.ADD_ONLY;
+		} else if (actionCommand.equals(CHANGEABLE_COMMAND)) {
+		    kind = MChangeableKind.CHANGEABLE;
+		} else
+		    kind = MChangeableKind.FROZEN;
+		m.setChangeability(kind);
+	    }
+	}
+    }
 }

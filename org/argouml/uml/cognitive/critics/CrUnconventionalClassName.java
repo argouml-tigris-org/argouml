@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,43 +44,43 @@ import org.argouml.cognitive.critics.*;
 
 public class CrUnconventionalClassName extends CrUML {
 
-  public CrUnconventionalClassName() {
-    setHeadline("Capitalize Class Name <ocl>self</ocl>");
-    addSupportedDecision(CrUML.decNAMING);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-    addTrigger("name");
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClass) && !(dm instanceof MInterface))
-      return NO_PROBLEM;
-    MClassifier cls = (MClassifier) dm;
-    String myName = cls.getName();
-    if (myName == null || myName.equals("")) return NO_PROBLEM;
-    String nameStr = myName;
-    if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
-    char initialChar = nameStr.charAt(0);
-    if (!Character.isUpperCase(initialChar)) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
-
-  public Icon getClarifier() {
-    return ClClassName.TheInstance;
-  }
-
-  public void initWizard(Wizard w) {
-    if (w instanceof WizMEName) {
-      ToDoItem item = w.getToDoItem();
-      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
-      String sug = me.getName();
-      sug = sug.substring(0,1).toUpperCase() + sug.substring(1);
-      String ins = "Change the class name to start with an "+
-	"uppercase letter.";
-      ((WizMEName)w).setInstructions(ins);
-      ((WizMEName)w).setSuggestion(sug);
+    public CrUnconventionalClassName() {
+	setHeadline("Capitalize Class Name <ocl>self</ocl>");
+	addSupportedDecision(CrUML.decNAMING);
+	setKnowledgeTypes(Critic.KT_SYNTAX);
+	addTrigger("name");
     }
-  }
-  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MClass) && !(dm instanceof MInterface))
+	    return NO_PROBLEM;
+	MClassifier cls = (MClassifier) dm;
+	String myName = cls.getName();
+	if (myName == null || myName.equals("")) return NO_PROBLEM;
+	String nameStr = myName;
+	if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
+	char initialChar = nameStr.charAt(0);
+	if (!Character.isUpperCase(initialChar)) return PROBLEM_FOUND;
+	return NO_PROBLEM;
+    }
+
+    public Icon getClarifier() {
+	return ClClassName.TheInstance;
+    }
+
+    public void initWizard(Wizard w) {
+	if (w instanceof WizMEName) {
+	    ToDoItem item = w.getToDoItem();
+	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+	    String sug = me.getName();
+	    sug = sug.substring(0, 1).toUpperCase() + sug.substring(1);
+	    String ins = "Change the class name to start with an " +
+		"uppercase letter.";
+	    ((WizMEName) w).setInstructions(ins);
+	    ((WizMEName) w).setSuggestion(sug);
+	}
+    }
+    public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 } /* end class CrUnconventionalClassName */
 

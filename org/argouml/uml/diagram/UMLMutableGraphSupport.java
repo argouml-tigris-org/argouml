@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -79,28 +80,29 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     
     
     public boolean containsNode(Object node) {
-            return _nodes.contains(node); }
+	return _nodes.contains(node);
+    }
     
     public boolean constainsEdge(Object edge) {
-            return _edges.contains(edge);
+	return _edges.contains(edge);
     }
     
     /** remove a node from the diagram and notify GEF
      * @param node node to remove
      */    
     public void removeNode(Object node) {
-            if (!containsNode(node)) return;
-            _nodes.removeElement(node);
-            fireNodeRemoved(node);
+	if (!containsNode(node)) return;
+	_nodes.removeElement(node);
+	fireNodeRemoved(node);
     }
     
     /** remove an edge from the graphmodel and notify GEF
      * @param edge edge to remove
      */    
     public void removeEdge(Object edge) {
-            if (!containsEdge(edge)) return;
-            _edges.removeElement(edge);
-            fireEdgeRemoved(edge);
+	if (!containsEdge(edge)) return;
+	_edges.removeElement(edge);
+	fireEdgeRemoved(edge);
     }
     
     /** Assume that anything can be connected to anything unless overridden
@@ -140,34 +142,34 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             // as null.
             Editor curEditor = Globals.curEditor();
             ModeManager modeManager = curEditor.getModeManager();
-            Mode mode = (Mode)modeManager.top();
+            Mode mode = (Mode) modeManager.top();
             Hashtable args = mode.getArgs();
-            MAggregationKind style = (MAggregationKind)args.get("aggregation");
-            Boolean unidirectional = (Boolean)args.get("unidirectional");
+            MAggregationKind style = (MAggregationKind) args.get("aggregation");
+            Boolean unidirectional = (Boolean) args.get("unidirectional");
             // Create the UML connection of the given type between the given model elements.
             connection = UmlFactory.getFactory().buildConnection(
-                edgeClass,
-                fromPort,
-                style,
-                toPort,
-                null, // default aggregation (none)
-                unidirectional
-            );
+								 edgeClass,
+								 fromPort,
+								 style,
+								 toPort,
+								 null, // default aggregation (none)
+								 unidirectional
+								 );
         } catch (org.argouml.model.uml.UmlException ex) {
             // fail silently as we expect users to accidentally drop on to wrong component
         }
         
         if (connection == null) {
-            cat.debug("Cannot make a "+ edgeClass.getName() +
-                         " between a " + fromPort.getClass().getName() +
-                         " and a " + toPort.getClass().getName());
+            cat.debug("Cannot make a " + edgeClass.getName() +
+		      " between a " + fromPort.getClass().getName() +
+		      " and a " + toPort.getClass().getName());
             return null;
         }
         
         addEdge(connection);
-        cat.debug("Connection type" + edgeClass.getName()+
-                         " made between a " + fromPort.getClass().getName() +
-                         " and a " + toPort.getClass().getName());
+        cat.debug("Connection type" + edgeClass.getName() +
+		  " made between a " + fromPort.getClass().getName() +
+		  " and a " + toPort.getClass().getName());
         return connection;
     }
 }

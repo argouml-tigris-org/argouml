@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -62,15 +63,15 @@ public class ActionSetModelElementNamespace extends UMLChangeAction {
         MNamespace newNamespace = null;
         MModelElement m = null;
         if (source instanceof UMLComboBox2) {
-            UMLComboBox2 box = (UMLComboBox2)source;
+            UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
             if (o instanceof MModelElement) {
-                m = (MModelElement)o;
+                m = (MModelElement) o;
                 oldNamespace = m.getNamespace();
             }
             o = box.getSelectedItem();
             if (o instanceof MNamespace) {
-                newNamespace = (MNamespace)o;
+                newNamespace = (MNamespace) o;
             }
         }
         if (newNamespace != oldNamespace && m != null && newNamespace != null) {

@@ -103,7 +103,7 @@ public class DiagramInterface {
      * @param diagram The diagram to mark as modified.
      */
     void markDiagramAsModified(Object diagram) {
-	if(!_modifiedDiagrams.contains(diagram)) {  // If the diagram is not already marked,
+	if (!_modifiedDiagrams.contains(diagram)) {  // If the diagram is not already marked,
 	    _modifiedDiagrams.add(diagram);         // add it to the list.
 	}
     }
@@ -132,14 +132,14 @@ public class DiagramInterface {
      */
     public void addPackage(Object newPackage) {
         
-        if(!isInDiagram(newPackage)) {
+        if (!isInDiagram(newPackage)) {
             
             FigPackage newPackageFig = new FigPackage( currentGM, newPackage);
             if (currentGM.canAddNode(newPackage)) {
                 
                 currentGM.addNode(newPackage);
                 currentLayer.add(newPackageFig);
-                currentLayer.putInPosition((Fig)newPackageFig);
+                currentLayer.putInPosition((Fig) newPackageFig);
             }
         }
     }
@@ -154,7 +154,7 @@ public class DiagramInterface {
      */
     public boolean isInDiagram(Object p) {
         
-	if(currentDiagram == null)
+	if (currentDiagram == null)
             return false;
         else
             return currentDiagram.getNodes().contains(p);
@@ -176,7 +176,7 @@ public class DiagramInterface {
      * @return The name for the diagram.
      */
     private String getDiagramName(String packageName) {
-	return packageName.replace('.','_') + "_classes";
+	return packageName.replace('.', '_') + "_classes";
     }
 
     /**
@@ -199,12 +199,12 @@ public class DiagramInterface {
 
 	// Check if this diagram already exists in the project
 	ProjectMember m;
-	if( isDiagramInProject(name) ) {
+	if ( isDiagramInProject(name) ) {
 	    m = ProjectManager.getManager().getCurrentProject().findMemberByName( getDiagramName(name) + ".pgml");
 
 	    // The diagram already exists in this project. Select it as the current target.
-	    if(m instanceof ProjectMemberDiagram) {
-		setCurrentDiagram(((ProjectMemberDiagram)m).getDiagram());
+	    if (m instanceof ProjectMemberDiagram) {
+		setCurrentDiagram(((ProjectMemberDiagram) m).getDiagram());
 	    }
 
 	} else {  // Otherwise
@@ -238,10 +238,10 @@ public class DiagramInterface {
     public void addClass(Object newClass, boolean minimise) {
         
         FigClass newClassFig = new FigClass( currentGM, newClass);
-        if (currentGM.canAddNode(newClass)){
+        if (currentGM.canAddNode(newClass)) {
             currentLayer.add( newClassFig);
             currentGM.addNode(newClass);
-            currentLayer.putInPosition( (Fig)newClassFig);
+            currentLayer.putInPosition( (Fig) newClassFig);
             currentGM.addNodeRelatedEdges( newClass);
             
             newClassFig.setAttributeVisible(!minimise);
@@ -260,10 +260,10 @@ public class DiagramInterface {
         
         FigInterface     newInterfaceFig = new FigInterface( currentGM, newInterface);
         
-        if (currentGM.canAddNode(newInterface)){
+        if (currentGM.canAddNode(newInterface)) {
             currentLayer.add( newInterfaceFig);
             currentGM.addNode(newInterface);
-            currentLayer.putInPosition( (Fig)newInterfaceFig);
+            currentLayer.putInPosition( (Fig) newInterfaceFig);
             currentGM.addNodeRelatedEdges( newInterface);
             
             newInterfaceFig.setOperationVisible(!minimise);
@@ -272,49 +272,49 @@ public class DiagramInterface {
         }
     }
 
-	/**
-	 * Creates new class diagram for package or selects existing one.
-	 * @param currentPackage  The package to attach the diagram to.
-	 * @param currentPackageName The fully qualified name of the package, which is
+    /**
+     * Creates new class diagram for package or selects existing one.
+     * @param currentPackage  The package to attach the diagram to.
+     * @param currentPackageName The fully qualified name of the package, which is
      *             used to generate the diagram name from.
-	 */
-	public void createOrSelectClassDiagram(Object currentPackage, String currentPackageName) {
-		Project p = ProjectManager.getManager().getCurrentProject();
-		String diagramName = currentPackageName.replace('.','_') + "_classes";
-		UMLClassDiagram d = new UMLClassDiagram(currentPackage==null?p.getRoot():currentPackage);
-		if (p.findMemberByName(diagramName + ".pgml") == null) {
-			try {
-				d.setName(diagramName);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			p.addMember(d);
-			setCurrentDiagram(d);
-		} else {
-			ArgoDiagram ddi = ((ProjectMemberDiagram)p.findMemberByName(diagramName + ".pgml")).getDiagram();
-			setCurrentDiagram(ddi);
-		}
+     */
+    public void createOrSelectClassDiagram(Object currentPackage, String currentPackageName) {
+	Project p = ProjectManager.getManager().getCurrentProject();
+	String diagramName = currentPackageName.replace('.', '_') + "_classes";
+	UMLClassDiagram d = new UMLClassDiagram(currentPackage == null ? p.getRoot() : currentPackage);
+	if (p.findMemberByName(diagramName + ".pgml") == null) {
+	    try {
+		d.setName(diagramName);
+	    } catch (Exception e) {
+		e.printStackTrace();
+	    }
+	    p.addMember(d);
+	    setCurrentDiagram(d);
+	} else {
+	    ArgoDiagram ddi = ((ProjectMemberDiagram) p.findMemberByName(diagramName + ".pgml")).getDiagram();
+	    setCurrentDiagram(ddi);
 	}
+    }
 	
-	/**
-	 * Creates class diagram under the root.
-	 * Is used for classes out of packages.
-	 *
-	 */
-	public void createRootClassDiagram() {
-		createOrSelectClassDiagram(null, "");
-	}
+    /**
+     * Creates class diagram under the root.
+     * Is used for classes out of packages.
+     *
+     */
+    public void createRootClassDiagram() {
+	createOrSelectClassDiagram(null, "");
+    }
         
     /**
      * selects a diagram without affecting the gui.
      */
-    public void setCurrentDiagram(ArgoDiagram diagram){
+    public void setCurrentDiagram(ArgoDiagram diagram) {
         
-        if(diagram == null){
+        if (diagram == null) {
             throw new RuntimeException("you can't select a null diagram");
         }
         
-        currentGM = (ClassDiagramGraphModel)diagram.getGraphModel();
+        currentGM = (ClassDiagramGraphModel) diagram.getGraphModel();
         currentLayer = diagram.getLayer();
         currentDiagram = diagram;
         

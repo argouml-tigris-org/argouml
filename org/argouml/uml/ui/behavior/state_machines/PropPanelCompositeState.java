@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -56,11 +57,11 @@ public class PropPanelCompositeState extends PropPanelState {
     }
 
     public PropPanelCompositeState() {
-        super("Composite State",_compositeStateIcon, ConfigLoader.getTabPropsOrientation());
+        super("Composite State", _compositeStateIcon, ConfigLoader.getTabPropsOrientation());
         initialize();
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
         addField(Argo.localize("UMLMenu", "label.modifiers"), new UMLCompositeStateConcurentCheckBox());
         addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
@@ -77,11 +78,11 @@ public class PropPanelCompositeState extends PropPanelState {
 
         addField(Argo.localize("UMLMenu", "label.subvertex"), new JScrollPane(subverticesList));
 
-  }
+    }
 
-  protected void initialize() {
-      subverticesList = new UMLCompositeStateSubvertexList(new UMLCompositeStateSubvertexListModel());
-  }
+    protected void initialize() {
+	subverticesList = new UMLCompositeStateSubvertexList(new UMLCompositeStateSubvertexListModel());
+    }
 
 } /* end class PropPanelCompositeState */
 

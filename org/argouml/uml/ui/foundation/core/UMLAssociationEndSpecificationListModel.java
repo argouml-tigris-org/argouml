@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -50,14 +51,14 @@ public class UMLAssociationEndSpecificationListModel extends UMLModelElementList
      */
     protected void buildModelList() {
         if (_target != null) 
-            setAllElements(((MAssociationEnd)_target).getSpecifications());
+            setAllElements(((MAssociationEnd) _target).getSpecifications());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {  
-        return o instanceof MClassifier && ((MAssociationEnd)getTarget()).getSpecifications().contains(o);
+        return o instanceof MClassifier && ((MAssociationEnd) getTarget()).getSpecifications().contains(o);
     }
 
 }

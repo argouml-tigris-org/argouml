@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,79 +34,79 @@ import org.argouml.cognitive.*;
 
 public class GoListToPriorityToItem implements TreeModel {
   
-  ////////////////////////////////////////////////////////////////
-  // TreeModel implementation
+    ////////////////////////////////////////////////////////////////
+    // TreeModel implementation
 
-  public Object getRoot() {
-      throw new UnsupportedOperationException("getRoot should never be called");
-  } 
-  public void setRoot(Object r) { }
+    public Object getRoot() {
+	throw new UnsupportedOperationException("getRoot should never be called");
+    } 
+    public void setRoot(Object r) { }
 
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof ToDoList) {
-      return PriorityNode.getPriorities().elementAt(index);
-    }
-    if (parent instanceof PriorityNode) {
-      PriorityNode pn = (PriorityNode) parent;
-      ToDoList list = Designer.TheDesigner.getToDoList();
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-	ToDoItem item = list.elementAt(i);
-	if (item.getPriority() == pn.getPriority()) {
-	  if (index == 0) return item;
-	  index--;
+    public Object getChild(Object parent, int index) {
+	if (parent instanceof ToDoList) {
+	    return PriorityNode.getPriorities().elementAt(index);
 	}
-      }
-    }
-    throw new IndexOutOfBoundsException("getChild shouldnt get here GoListToPriorityToItem");
-  }
-
-  public int getChildCount(Object parent) {
-    if (parent instanceof ToDoList) {
-      return PriorityNode.getPriorities().size();
-    }
-    if (parent instanceof PriorityNode) {
-      int res = 0;
-      PriorityNode pn = (PriorityNode) parent;
-      ToDoList list = Designer.TheDesigner.getToDoList();
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-	ToDoItem item = list.elementAt(i);
-	if (item.getPriority() == pn.getPriority()) res++;
-      }
-      return res;
-    }
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof ToDoList) {
-      return PriorityNode.getPriorities().indexOf(child);
-    }
-    if (parent instanceof PriorityNode) {
-      int index = 0;
-      PriorityNode pn = (PriorityNode) parent;
-      ToDoList list = Designer.TheDesigner.getToDoList();
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-	ToDoItem item = list.elementAt(i);
-	if (item.getPriority() == pn.getPriority()) {
-	  if (item == child) return index;
-	  index++;
+	if (parent instanceof PriorityNode) {
+	    PriorityNode pn = (PriorityNode) parent;
+	    ToDoList list = Designer.TheDesigner.getToDoList();
+	    int size = list.size();
+	    for (int i = 0; i < size; i++) {
+		ToDoItem item = list.elementAt(i);
+		if (item.getPriority() == pn.getPriority()) {
+		    if (index == 0) return item;
+		    index--;
+		}
+	    }
 	}
-      }
+	throw new IndexOutOfBoundsException("getChild shouldnt get here GoListToPriorityToItem");
     }
-    return -1;
-  }
 
-  public boolean isLeaf(Object node) {
-    if (node instanceof ToDoList) return false;
-    if (node instanceof PriorityNode && getChildCount(node) > 0) return false;
-    return true;
-  }
+    public int getChildCount(Object parent) {
+	if (parent instanceof ToDoList) {
+	    return PriorityNode.getPriorities().size();
+	}
+	if (parent instanceof PriorityNode) {
+	    int res = 0;
+	    PriorityNode pn = (PriorityNode) parent;
+	    ToDoList list = Designer.TheDesigner.getToDoList();
+	    int size = list.size();
+	    for (int i = 0; i < size; i++) {
+		ToDoItem item = list.elementAt(i);
+		if (item.getPriority() == pn.getPriority()) res++;
+	    }
+	    return res;
+	}
+	return 0;
+    }
 
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
+    public int getIndexOfChild(Object parent, Object child) {
+	if (parent instanceof ToDoList) {
+	    return PriorityNode.getPriorities().indexOf(child);
+	}
+	if (parent instanceof PriorityNode) {
+	    int index = 0;
+	    PriorityNode pn = (PriorityNode) parent;
+	    ToDoList list = Designer.TheDesigner.getToDoList();
+	    int size = list.size();
+	    for (int i = 0; i < size; i++) {
+		ToDoItem item = list.elementAt(i);
+		if (item.getPriority() == pn.getPriority()) {
+		    if (item == child) return index;
+		    index++;
+		}
+	    }
+	}
+	return -1;
+    }
+
+    public boolean isLeaf(Object node) {
+	if (node instanceof ToDoList) return false;
+	if (node instanceof PriorityNode && getChildCount(node) > 0) return false;
+	return true;
+    }
+
+    public void valueForPathChanged(TreePath path, Object newValue) { }
+    public void addTreeModelListener(TreeModelListener l) { }
+    public void removeTreeModelListener(TreeModelListener l) { }
 
 } /* end class GoListToPriorityToItem */

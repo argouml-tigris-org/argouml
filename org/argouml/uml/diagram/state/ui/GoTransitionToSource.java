@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,15 +34,15 @@ import ru.novosoft.uml.behavior.state_machines.MTransition;
 
 public class GoTransitionToSource extends AbstractGoRule {
 
-  public String getRuleName() { return "Transition->Source State"; }
+    public String getRuleName() { return "Transition->Source State"; }
 
-  public Collection getChildren(Object parent) { 
-      if (ModelFacade.isATransition(parent)) {
-          Collection col = new ArrayList();
-          col.add(ModelFacade.getSource(parent));
-          return col;          
-      }
-      return null;
-  }
+    public Collection getChildren(Object parent) { 
+	if (ModelFacade.isATransition(parent)) {
+	    Collection col = new ArrayList();
+	    col.add(ModelFacade.getSource(parent));
+	    return col;          
+	}
+	return null;
+    }
 
 }

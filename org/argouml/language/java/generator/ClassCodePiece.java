@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -87,7 +88,7 @@ public class ClassCodePiece extends NamedCodePiece
     }
 
     /**
-	Return the start line
+       Return the start line
     */
     public int getStartLine()
     {
@@ -95,7 +96,7 @@ public class ClassCodePiece extends NamedCodePiece
     }
 
     /**
-	Return the end line
+       Return the end line
     */
     public int getEndLine()
     {
@@ -110,20 +111,20 @@ public class ClassCodePiece extends NamedCodePiece
                       BufferedWriter writer,
                       Stack parseStateStack) throws Exception
     {
-       ParseState parseState = (ParseState)parseStateStack.peek();
-       MClass mClass = (MClass)parseState.newClassifier(name);
+	ParseState parseState = (ParseState) parseStateStack.peek();
+	MClass mClass = (MClass) parseState.newClassifier(name);
 
-       if (mClass != null) {
-           parseStateStack.push(new ParseState(mClass));
-           StringBuffer sbText = GeneratorJava.getInstance().generateClassifierStart(mClass);
-           if (sbText != null) {
-               writer.write (sbText.toString());
-           }
+	if (mClass != null) {
+	    parseStateStack.push(new ParseState(mClass));
+	    StringBuffer sbText = GeneratorJava.getInstance().generateClassifierStart(mClass);
+	    if (sbText != null) {
+		writer.write (sbText.toString());
+	    }
             // dispose code piece in reader
-            ffCodePiece(reader,null);
+            ffCodePiece(reader, null);
         } else {
             // not in model, so write the original code
-            ffCodePiece(reader,writer);
+            ffCodePiece(reader, writer);
         }
     }
 }

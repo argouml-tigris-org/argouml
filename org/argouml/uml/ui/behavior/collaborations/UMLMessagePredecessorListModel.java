@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -50,7 +51,7 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        MMessage message = (MMessage)getTarget();
+        MMessage message = (MMessage) getTarget();
         removeAllElements();       
         Iterator it = message.getPredecessors().iterator();
         while (it.hasNext()) {
@@ -63,8 +64,8 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
      */
     protected boolean isValidElement(MBase elem) {
         return elem instanceof MMessage && 
-            ((MMessage)elem).getInteraction() == ((MMessage)getTarget()).getInteraction() &&
-            ((MMessage)elem).getActivator() == ((MMessage)getTarget()).getActivator();
+            ((MMessage) elem).getInteraction() == ((MMessage) getTarget()).getInteraction() &&
+            ((MMessage) elem).getActivator() == ((MMessage) getTarget()).getActivator();
     }
 
 }

@@ -64,7 +64,7 @@ public class PropPanelInclude extends PropPanelModelElement {
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"),
-            new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+            new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
         addSeperator();
@@ -153,7 +153,7 @@ public class PropPanelInclude extends PropPanelModelElement {
         // Note that because of the NSUML bug, we must use setAddition() rather
         // than setBase() to set the base use case.
 
-        if(target instanceof MInclude) {
+        if (target instanceof MInclude) {
             ((MInclude) target).setAddition((MUseCase) base);
         }
     }
@@ -211,7 +211,7 @@ public class PropPanelInclude extends PropPanelModelElement {
         // Note that because of the NSUML bug, we must use setBase() rather
         // than setAddition() to set the addition use case.
 
-        if(target instanceof MInclude) {
+        if (target instanceof MInclude) {
             ((MInclude) target).setBase((MUseCase) addition);
         }
     }

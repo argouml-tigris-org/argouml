@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -48,7 +49,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     /** Singleton instance.
      */
     private static ExtensionMechanismsFactory SINGLETON =
-                   new ExtensionMechanismsFactory();
+	new ExtensionMechanismsFactory();
 
     /** Singleton instance access method.
      */
@@ -87,22 +88,22 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     public MStereotype buildStereotype(Object mObj,
                                        Object textObj,
                                        Object nsObj) {
-        MModelElement m = (MModelElement)mObj;
-        String text = (String)textObj;
-        MNamespace ns = (MNamespace)nsObj;
+        MModelElement m = (MModelElement) mObj;
+        String text = (String) textObj;
+        MNamespace ns = (MNamespace) nsObj;
     	if (m == null || text == null || ns == null) throw new IllegalArgumentException("In buildStereotype: one of the arguments is null");
     	MStereotype stereo = createStereotype();
     	stereo.setName(text);
     	stereo.setBaseClass(ExtensionMechanismsHelper.getHelper().getMetaModelName(m));
     	MStereotype stereo2 = ExtensionMechanismsHelper.getHelper().getStereotype(ns, stereo);
     	if (stereo2 != null) {
-    		stereo2.addExtendedElement(m);
-    		UmlFactory.getFactory().delete(stereo);
-    		return stereo2;
+	    stereo2.addExtendedElement(m);
+	    UmlFactory.getFactory().delete(stereo);
+	    return stereo2;
     	} else {
-    		ns.addOwnedElement(stereo);
-    		stereo.addExtendedElement(m);
-    		return stereo;
+	    ns.addOwnedElement(stereo);
+	    stereo.addExtendedElement(m);
+	    return stereo;
     	}
     }
 
@@ -117,7 +118,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     	MStereotype stereo = createStereotype();
     	stereo.setName(text);
     	if (ns != null && ns instanceof MNamespace)
-    	    stereo.setNamespace((MNamespace)ns);
+    	    stereo.setNamespace((MNamespace) ns);
     	return stereo;
     }
 
@@ -150,9 +151,9 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
         return tv;
     }
 
-    public void deleteStereotype(MStereotype elem) {}
+    public void deleteStereotype(MStereotype elem) { }
 
-    public void deleteTaggedValue(MTaggedValue elem) {}
+    public void deleteTaggedValue(MTaggedValue elem) { }
 
     /**
      * Copies a stereotype.

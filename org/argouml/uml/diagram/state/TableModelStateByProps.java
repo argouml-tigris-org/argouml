@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -35,32 +36,32 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 public class TableModelStateByProps extends TableModelComposite {
     protected static Category cat = 
         Category.getInstance(TableModelStateByProps.class);
-  ////////////////
-  // constructor
-  public TableModelStateByProps() { }
+    ////////////////
+    // constructor
+    public TableModelStateByProps() { }
 
-  public void initColumns() {
-    addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.Entry);
-    addColumn(ColumnDescriptor.Exit);
-    addColumn(ColumnDescriptor.Parent);
-    addColumn(ColumnDescriptor.MStereotype);
-  }
-
-  public Vector rowObjectsFor(Object t) {
-    cat.debug("rowObjectsFor " + t);
-    if (!(t instanceof UMLStateDiagram)) return new Vector();
-    UMLStateDiagram d = (UMLStateDiagram) t;
-    Vector nodes = d.getNodes();
-    Vector res = new Vector();
-    int size = nodes.size();
-    for (int i = 0; i < size; i++) {
-      Object node = nodes.elementAt(i);
-      if (node instanceof MStateVertex) res.addElement(node);
+    public void initColumns() {
+	addColumn(ColumnDescriptor.Name);
+	addColumn(ColumnDescriptor.Entry);
+	addColumn(ColumnDescriptor.Exit);
+	addColumn(ColumnDescriptor.Parent);
+	addColumn(ColumnDescriptor.MStereotype);
     }
-    return res;
-  }
 
-  public String toString() { return "States vs. Properties"; }
+    public Vector rowObjectsFor(Object t) {
+	cat.debug("rowObjectsFor " + t);
+	if (!(t instanceof UMLStateDiagram)) return new Vector();
+	UMLStateDiagram d = (UMLStateDiagram) t;
+	Vector nodes = d.getNodes();
+	Vector res = new Vector();
+	int size = nodes.size();
+	for (int i = 0; i < size; i++) {
+	    Object node = nodes.elementAt(i);
+	    if (node instanceof MStateVertex) res.addElement(node);
+	}
+	return res;
+    }
+
+    public String toString() { return "States vs. Properties"; }
 } /* end class TableModelStateByProps */
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -37,7 +38,8 @@ import org.argouml.ui.ArgoDiagram;
  */
 
 public abstract class DiagramHelper extends ArgoDiagram
-implements PluggableDiagram {
+    implements PluggableDiagram
+{
 
     /** Default localization key for diagrams
      */
@@ -57,7 +59,9 @@ implements PluggableDiagram {
     public boolean isModuleEnabled() { return true; }
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
     public boolean shutdownModule() { return true; }
-    public JMenuItem getDiagramMenuItem() { return new JMenuItem(Argo.localize(_bundle,"menu.item.diagram-type")); } // add icon if desired
+    public JMenuItem getDiagramMenuItem() {
+	return new JMenuItem(Argo.localize(_bundle, "menu.item.diagram-type"));
+    } // add icon if desired
 
     public String getDiagramResourceBundleKey() {
         return DIAGRAM_BUNDLE;

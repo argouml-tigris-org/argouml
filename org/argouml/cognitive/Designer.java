@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -61,12 +62,12 @@ import org.apache.log4j.Category;
  * should be done.
  */
 public class Designer
-
     implements Poster,
         Runnable, // TODO remove/refactor per issue 1024
         PropertyChangeListener,
         MElementListener, // TODO remove.
-        java.io.Serializable {
+        java.io.Serializable 
+{
     
     protected static Category cat = Category.getInstance(Designer.class);
     
@@ -239,7 +240,9 @@ public class Designer
             int size;
             
             // why?
-            if (_CritiquingRoot != null && getAutoCritique() && _critiqueLock <= 0) {
+            if (_CritiquingRoot != null
+		&& getAutoCritique()
+		&& _critiqueLock <= 0) {
                 
                 // why?
                 synchronized (this) {
@@ -262,7 +265,8 @@ public class Designer
                         Long reasonCode = (Long) _hotReasonQueue.elementAt(0);
                         _hotQueue.removeElementAt(0);
                         _hotReasonQueue.removeElementAt(0);
-                        Agency.applyAllCritics(dm, theDesigner(), reasonCode.longValue());
+                        Agency.applyAllCritics(dm, theDesigner(),
+					       reasonCode.longValue());
                     }
                     
                     size = _removeQueue.size();
@@ -273,8 +277,8 @@ public class Designer
                     if (_warmQueue.size() == 0)
                         _warmQueue.addElement(_CritiquingRoot);
                     while (_warmQueue.size() > 0 &&
-                    (System.currentTimeMillis() < cutoffTime ||
-                    minWarmElements > 0)) {
+			   (System.currentTimeMillis() < cutoffTime ||
+			    minWarmElements > 0)) {
                         if (minWarmElements > 0)
                             minWarmElements--;
                         Object dm = _warmQueue.elementAt(0);
@@ -319,7 +323,8 @@ public class Designer
             _addReasonQueue.addElement(reasonCodeObj);
         }
         else {
-            Long reasonCodeObj = (Long) _addReasonQueue.elementAt(addQueueIndex);
+            Long reasonCodeObj =
+		(Long) _addReasonQueue.elementAt(addQueueIndex);
             long rc = reasonCodeObj.longValue() | rCode;
             Long newReasonCodeObj = new Long(rc);
             _addReasonQueue.setElementAt(newReasonCodeObj, addQueueIndex);
@@ -338,7 +343,9 @@ public class Designer
     
     /** TODO: remove this */
     public void propertySet(MElementEvent mee) {
-        critiqueASAP(mee.getSource(), ((ru.novosoft.uml.foundation.core.MModelElement)mee.getOldValue()).getName());
+        critiqueASAP(mee.getSource(),
+		     ((ru.novosoft.uml.foundation.core.MModelElement) mee.getOldValue())
+		     .getName());
     }
     
     /** TODO: remove this */

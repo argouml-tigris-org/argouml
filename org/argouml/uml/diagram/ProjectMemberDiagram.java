@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -78,9 +79,9 @@ public class ProjectMemberDiagram extends ProjectMember {
         // Make sure that the namespace has an UUID, otherwise we will not
         // be able to match them after a save-load cycle.
         if (d instanceof UMLDiagram) {
-            UMLDiagram u = (UMLDiagram)d;
+            UMLDiagram u = (UMLDiagram) d;
             if (u.getNamespace() instanceof MModelElement) {
-                MModelElement me = (MModelElement)u.getNamespace();
+                MModelElement me = (MModelElement) u.getNamespace();
                 // if (me.getUUID() == null)
                 //   me.setUUID(UUIDManager.SINGLETON.getNewUUID());
             }
@@ -103,7 +104,7 @@ public class ProjectMemberDiagram extends ProjectMember {
     public void load() {
         cat.debug("Reading " + getURL());
         PGMLParser.SINGLETON.setOwnerRegistry(getProject().getUUIDRefs());
-        ArgoDiagram d = (ArgoDiagram)PGMLParser.SINGLETON.readDiagram(getURL());
+        ArgoDiagram d = (ArgoDiagram) PGMLParser.SINGLETON.readDiagram(getURL());
         setDiagram(d);
         getProject().addDiagram(d);
 

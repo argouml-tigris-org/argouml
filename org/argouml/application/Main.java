@@ -105,13 +105,14 @@ public class Main {
         /* set properties for application behaviour */
         System.setProperty("gef.imageLocation", "/org/argouml/Images");
 
-        /* FIX: disable apple menu bar to enable proper running of Mac OS X java web start */
+        /* TODO: disable apple menu bar to enable proper running
+	 * of Mac OS X java web start 
+	 */
         System.setProperty("com.apple.macos.useScreenMenuBar", "false");
 
         /* FIX: set the application name for Mac OS X */
-        System.setProperty(
-            "com.apple.mrj.application.apple.menu.about.name",
-            "ArgoUML");
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name",
+			   "ArgoUML");
 
 
         boolean doSplash = Configuration.getBoolean(Argo.KEY_SPLASH, true);
@@ -381,59 +382,61 @@ public class Main {
             PropertyConfigurator.configure(props);
             // BasicConfigurator.configure();
             /*
-            Logger.getRootLogger().getLoggerRepository().setThreshold(
-                Level.WARN);
-                */
+	      Logger.getRootLogger().getLoggerRepository().setThreshold(
+	      Level.WARN);
+	    */
         }
         
         // initLogging();
     }
     
-    private static void initializeGUI(SimpleTimer st, boolean doSplash, String themeMemory) {
+    private static void initializeGUI(SimpleTimer st, 
+				      boolean doSplash, String themeMemory) 
+    {
         st.mark("projectbrowser");
 
-                // Register the default notation.
-                org.argouml.uml.generator.GeneratorDisplay.getInstance();
+	// Register the default notation.
+	org.argouml.uml.generator.GeneratorDisplay.getInstance();
 
-                MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
 
-                // Initialize the UMLActions
-                Actions.getInstance();
+	// Initialize the UMLActions
+	Actions.getInstance();
                 
-                // initialize the correct look and feel
-				LookAndFeelMgr.SINGLETON.initializeLookAndFeel();
-                if (themeMemory != null)
-                {
-					LookAndFeelMgr.SINGLETON.setCurrentTheme(themeMemory);
-                }
+	// initialize the correct look and feel
+	LookAndFeelMgr.SINGLETON.initializeLookAndFeel();
+	if (themeMemory != null)
+	{
+	    LookAndFeelMgr.SINGLETON.setCurrentTheme(themeMemory);
+	}
 
-                // make the projectbrowser
-                ProjectBrowser.setSplash(doSplash);
-                ProjectBrowser pb = ProjectBrowser.getInstance();
+	// make the projectbrowser
+	ProjectBrowser.setSplash(doSplash);
+	ProjectBrowser pb = ProjectBrowser.getInstance();
 
-                JOptionPane.setRootFrame(pb);
+	JOptionPane.setRootFrame(pb);
 
-                // Set the screen layout to what the user left it before, or
-                // to reasonable defaults.
-                Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-                pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	// Set the screen layout to what the user left it before, or
+	// to reasonable defaults.
+	Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
+	pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-                int w =
-                    Math.min(
-                        Configuration.getInteger(
-                            Argo.KEY_SCREEN_WIDTH,
-                            (int) (0.95 * scrSize.width)),
-                        scrSize.width);
-                int h =
-                    Math.min(
-                        Configuration.getInteger(
-                            Argo.KEY_SCREEN_HEIGHT,
-                            (int) (0.95 * scrSize.height)),
-                        scrSize.height);
-                int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, 0);
-                int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
-                pb.setLocation(x, y);
-                pb.setSize(w, h);
+	int w =
+	    Math.min(
+		     Configuration.getInteger(
+					      Argo.KEY_SCREEN_WIDTH,
+					      (int) (0.95 * scrSize.width)),
+		     scrSize.width);
+	int h =
+	    Math.min(
+		     Configuration.getInteger(
+					      Argo.KEY_SCREEN_HEIGHT,
+					      (int) (0.95 * scrSize.height)),
+		     scrSize.height);
+	int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, 0);
+	int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, 0);
+	pb.setLocation(x, y);
+	pb.setSize(w, h);
     }
 
     
@@ -457,7 +460,7 @@ class PostLoad implements Runnable {
         }
         int size = postLoadActions.size();
         for (int i = 0; i < size; i++) {
-            Runnable r = (Runnable)postLoadActions.elementAt(i);
+            Runnable r = (Runnable) postLoadActions.elementAt(i);
             r.run();
             try {
                 Thread.sleep(100);
@@ -505,8 +508,10 @@ class PreloadClasses implements Runnable {
         c = org.argouml.uml.diagram.static_structure.ui.FigInterface.class;
         c = org.argouml.uml.diagram.static_structure.ui.FigPackage.class;
         c = org.argouml.uml.diagram.static_structure.ui.SelectionClass.class;
-        c = org.argouml.uml.diagram.static_structure.ui.StylePanelFigClass.class;
-        c = org.argouml.uml.diagram.static_structure.ui.StylePanelFigInterface.class;
+        c = org.argouml.uml.diagram.static_structure.ui
+	    .StylePanelFigClass.class;
+        c = org.argouml.uml.diagram.static_structure.ui
+	    .StylePanelFigInterface.class;
         c = org.argouml.uml.diagram.ui.FigAssociation.class;
         c = org.argouml.uml.diagram.ui.FigGeneralization.class;
         c = org.argouml.uml.diagram.ui.FigRealization.class;

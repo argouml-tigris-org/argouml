@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -41,31 +42,31 @@ import org.argouml.cognitive.critics.*;
 
 public class CrNoTriggerOrGuard extends CrUML {
 
-  public CrNoTriggerOrGuard() {
-    setHeadline("Add Trigger or Guard to Transistion");
-    addSupportedDecision(CrUML.decSTATE_MACHINES);
-    setKnowledgeTypes(Critic.KT_COMPLETENESS);
-    addTrigger("trigger");
-    addTrigger("guard");
-  }
+    public CrNoTriggerOrGuard() {
+	setHeadline("Add Trigger or Guard to Transistion");
+	addSupportedDecision(CrUML.decSTATE_MACHINES);
+	setKnowledgeTypes(Critic.KT_COMPLETENESS);
+	addTrigger("trigger");
+	addTrigger("guard");
+    }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MTransition)) return NO_PROBLEM;
-    MTransition tr = (MTransition) dm;
-    MEvent t = tr.getTrigger();
-    MGuard g = tr.getGuard();
-    MStateVertex sv = tr.getSource();
-    if (!(sv instanceof MState)) return NO_PROBLEM;
-    if (((MState)sv).getDoActivity()!=null) return NO_PROBLEM;
-    boolean hasTrigger = (t != null && t.getName() != null && t.getName().length() > 0);
-    if (hasTrigger) return NO_PROBLEM;
-    boolean noGuard = (g == null || g.getExpression() == null ||
-			g.getExpression().getBody() == null ||
-			g.getExpression().getBody() == null ||
-			g.getExpression().getBody().length() == 0);
-    if (noGuard) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MTransition)) return NO_PROBLEM;
+	MTransition tr = (MTransition) dm;
+	MEvent t = tr.getTrigger();
+	MGuard g = tr.getGuard();
+	MStateVertex sv = tr.getSource();
+	if (!(sv instanceof MState)) return NO_PROBLEM;
+	if (((MState) sv).getDoActivity() != null) return NO_PROBLEM;
+	boolean hasTrigger = (t != null && t.getName() != null && t.getName().length() > 0);
+	if (hasTrigger) return NO_PROBLEM;
+	boolean noGuard = (g == null || g.getExpression() == null ||
+			   g.getExpression().getBody() == null ||
+			   g.getExpression().getBody() == null ||
+			   g.getExpression().getBody().length() == 0);
+	if (noGuard) return PROBLEM_FOUND;
+	return NO_PROBLEM;
+    }
 
 } /* end class CrNoTriggerOrGuard */
 

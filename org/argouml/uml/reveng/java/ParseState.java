@@ -117,14 +117,14 @@ class ParseState
     /**
      *
      */
-    public void addComponent(Object component){
+    public void addComponent(Object component) {
         this.component = component;
     }
     
     /**
      *
      */
-    public Object getComponent(){
+    public Object getComponent() {
         return component;
     }
     
@@ -197,8 +197,8 @@ class ParseState
     */
     public void removeObsoleteFeatures()
     {
-	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
-	    ModelFacade.removeFeature(classifier,i.next());
+	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
+	    ModelFacade.removeFeature(classifier, i.next());
 	}
     }
 
@@ -208,9 +208,9 @@ class ParseState
     */
     public void removeObsoleteInnerClasses()
     {
-	for(Iterator i = obsoleteInnerClasses.iterator(); i.hasNext(); ) {
+	for (Iterator i = obsoleteInnerClasses.iterator(); i.hasNext(); ) {
 	    Object element = i.next();
-	    if(ModelFacade.isAClassifier(element)) {
+	    if (ModelFacade.isAClassifier(element)) {
                 CoreFactory.getFactory().deleteClassifier(element);
 	    }
 	}
@@ -235,9 +235,9 @@ class ParseState
      */
     public Object getFeature(String name)
     {
-	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
+	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
 	    Object mFeature = i.next();
-	    if(name.equals(ModelFacade.getName(mFeature))) {
+	    if (name.equals(ModelFacade.getName(mFeature))) {
 		return mFeature;
 	    }
 	}
@@ -252,9 +252,9 @@ class ParseState
      */
     public Object getMethod(String name)
     {
-	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
+	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
 	    Object mFeature = i.next();
-	    if(ModelFacade.isAMethod(mFeature) && name.equals(ModelFacade.getName(mFeature))) {
+	    if (ModelFacade.isAMethod(mFeature) && name.equals(ModelFacade.getName(mFeature))) {
 		return mFeature;
 	    }
 	}
@@ -269,9 +269,9 @@ class ParseState
      */
     public Object getOperation(String name)
     {
-	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
+	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
 	    Object mFeature = i.next();
-	    if(ModelFacade.isAOperation(mFeature) && name.equals(ModelFacade.getName(mFeature))) {
+	    if (ModelFacade.isAOperation(mFeature) && name.equals(ModelFacade.getName(mFeature))) {
 		return mFeature;
 	    }
 	}

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99,2002 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -294,7 +295,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
             // (it is never displayed in the tree(package parspective)), therefore
             // this method will not work unless we get its statemachine
             // and set that as the 'changed' object.
-            if(ModelFacade.isAStateVertex(changed)){
+            if (ModelFacade.isAStateVertex(changed)) {
                 changed = UmlHelper.getHelper().getStateMachines().getStateMachine(changed);
             }
             

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -37,16 +38,16 @@ import org.argouml.uml.ui.UMLAction;
  */
 public class ActionGoToDetails extends UMLAction {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected String _tabName;
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    protected String _tabName;
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public ActionGoToDetails(String tabName) {
-    super(tabName, NO_ICON);
-    _tabName = tabName;
-  }
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public ActionGoToDetails(String tabName) {
+	super(tabName, NO_ICON);
+	_tabName = tabName;
+    }
 
     /**
      * Should return true as the pane where the user can navigate to supports
@@ -62,13 +63,13 @@ public class ActionGoToDetails extends UMLAction {
         if (namedTab instanceof TabToDoTarget) {
             shouldBeEnabled = true;
         } else 
-        if (namedTab instanceof TabModelTarget && TargetManager.getInstance().getTarget() != null) {
-            shouldBeEnabled = ((TabModelTarget)namedTab).shouldBeEnabled(TargetManager.getInstance().getTarget());
-        } else {
-            shouldBeEnabled = (namedTab != null && TargetManager.getInstance().getTarget() != null);
-        } 
+	    if (namedTab instanceof TabModelTarget && TargetManager.getInstance().getTarget() != null) {
+		shouldBeEnabled = ((TabModelTarget) namedTab).shouldBeEnabled(TargetManager.getInstance().getTarget());
+	    } else {
+		shouldBeEnabled = (namedTab != null && TargetManager.getInstance().getTarget() != null);
+	    } 
         
-       return shouldBeEnabled;
+	return shouldBeEnabled;
     }
 
     public void actionPerformed(ActionEvent ae) {

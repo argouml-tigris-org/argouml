@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -29,46 +30,46 @@ import org.argouml.cognitive.critics.*;
 
 public class KnowledgeTypeNode {
 
-  ////////////////////////////////////////////////////////////////
-  // static variables and methods
-  protected static Vector _TYPES = null;
+    ////////////////////////////////////////////////////////////////
+    // static variables and methods
+    protected static Vector _TYPES = null;
 
-  public static Vector getTypes() {
-    if (_TYPES == null) {
-      _TYPES = new Vector();
-      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_DESIGNERS));
-      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_CORRECTNESS));
-      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_COMPLETENESS));
-      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_CONSISTENCY));
-      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_SYNTAX));
-      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_SEMANTICS));
-      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_OPTIMIZATION));
-      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_PRESENTATION));
-      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_ORGANIZATIONAL));
-      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_EXPERIENCIAL));
-      _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_TOOL));
+    public static Vector getTypes() {
+	if (_TYPES == null) {
+	    _TYPES = new Vector();
+	    _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_DESIGNERS));
+	    _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_CORRECTNESS));
+	    _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_COMPLETENESS));
+	    _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_CONSISTENCY));
+	    _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_SYNTAX));
+	    _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_SEMANTICS));
+	    _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_OPTIMIZATION));
+	    _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_PRESENTATION));
+	    _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_ORGANIZATIONAL));
+	    _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_EXPERIENCIAL));
+	    _TYPES.addElement(new KnowledgeTypeNode(Critic.KT_TOOL));
+	}
+	return _TYPES;
     }
-    return _TYPES;
-  }
 
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  protected String _name;
+    protected String _name;
   
-  ////////////////////////////////////////////////////////////////
-  // contrsuctors
+    ////////////////////////////////////////////////////////////////
+    // contrsuctors
 
-  public KnowledgeTypeNode(String name) {
-    _name = name;
-  }
+    public KnowledgeTypeNode(String name) {
+	_name = name;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public String getName() { return _name; }
+    public String getName() { return _name; }
 
-  public String toString() { return getName(); }
+    public String toString() { return getName(); }
   
 } /* end class KnowledgeTypeNode */

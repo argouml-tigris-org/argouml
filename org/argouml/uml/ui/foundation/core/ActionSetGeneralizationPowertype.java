@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -63,15 +64,15 @@ public class ActionSetGeneralizationPowertype extends UMLChangeAction {
         MClassifier newClassifier = null;
         MGeneralization gen = null;
         if (source instanceof UMLComboBox2) {
-            UMLComboBox2 box = (UMLComboBox2)source;
+            UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
             if (o instanceof MGeneralization) {
-                gen = (MGeneralization)o;
+                gen = (MGeneralization) o;
                 oldClassifier = gen.getPowertype();
             }
             o = box.getSelectedItem();
             if (o instanceof MClassifier) {
-                newClassifier = (MClassifier)o;
+                newClassifier = (MClassifier) o;
             }
         }
         if (newClassifier != oldClassifier && gen != null) {

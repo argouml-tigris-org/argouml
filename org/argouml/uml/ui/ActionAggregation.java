@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,16 +67,16 @@ public class ActionAggregation extends UMLAction {
 
     public void actionPerformed(ActionEvent ae) {
 	Vector sels = Globals.curEditor().getSelectionManager().selections();
-	if( sels.size() == 1 ) {
+	if ( sels.size() == 1 ) {
 	    Selection sel = (Selection) sels.firstElement();
 	    Fig f = sel.getContent();
 	    Object owner = ((FigEdgeModelElement) f).getOwner();
 	    java.util.List ascEnds = ((MAssociation) owner).getConnections();
 	    MAssociationEnd ascEnd = null;
-	    if(str.equals("src"))
+	    if (str.equals("src"))
 		ascEnd = (MAssociationEnd) ascEnds.get(0);
 	    else
-		ascEnd = (MAssociationEnd) ascEnds.get(ascEnds.size()-1);
+		ascEnd = (MAssociationEnd) ascEnds.get(ascEnds.size() - 1);
 	    ascEnd.setAggregation(agg);
 	}
     }

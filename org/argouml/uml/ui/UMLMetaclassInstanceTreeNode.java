@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -49,7 +50,7 @@ public class UMLMetaclassInstanceTreeNode implements TreeNode {
     private UMLUserInterfaceContainer _container;
     
     public UMLMetaclassInstanceTreeNode(UMLUserInterfaceContainer container,
-        TreeNode parent,String label,Class include,Class[] exclude) {
+        TreeNode parent, String label, Class include, Class[] exclude) {
         _parent = parent;
         _label = label;
         _include = include;
@@ -58,15 +59,15 @@ public class UMLMetaclassInstanceTreeNode implements TreeNode {
     }
 
     public TreeNode getChildAt(int childIndex) {
-        if(_children == null) update();
-        if(childIndex >= 0 && childIndex < _children.size()) {
+        if (_children == null) update();
+        if (childIndex >= 0 && childIndex < _children.size()) {
             return (TreeNode) _children.get(childIndex);
         }
         return null;
     }
 
     public int getChildCount() {
-        if(_children == null) update();
+        if (_children == null) update();
         return _children.size();
     }
 
@@ -75,7 +76,7 @@ public class UMLMetaclassInstanceTreeNode implements TreeNode {
     }
 
     public int getIndex(TreeNode node) {
-        if(_children == null) update();
+        if (_children == null) update();
         return _children.indexOf(node);
     }
 
@@ -89,7 +90,7 @@ public class UMLMetaclassInstanceTreeNode implements TreeNode {
 
     
     public Enumeration children() {
-        if(_children == null) update();
+        if (_children == null) update();
         return new EnumerationAdapter(_children.iterator());
     }
     
@@ -103,26 +104,26 @@ public class UMLMetaclassInstanceTreeNode implements TreeNode {
     }
         
     private void update() {
-        if(_children == null) {
+        if (_children == null) {
             _children = new ArrayList();
         }
         else {
             _children.clear();
         }
-        if(_collection != null) {
+        if (_collection != null) {
             Iterator iter = _collection.iterator();
-            while(iter.hasNext()) {
+            while (iter.hasNext()) {
                 Object candidate = iter.next();
-                if(_include.isInstance(candidate)) {
+                if (_include.isInstance(candidate)) {
                     boolean accept = true;
-                    if(_exclude != null) {
-                        for(int i = 0; i < _exclude.length && accept; i++) {
+                    if (_exclude != null) {
+                        for (int i = 0; i < _exclude.length && accept; i++) {
                             accept = !_exclude[i].isInstance(candidate);
                         }
                     }
-                    if(accept) {
+                    if (accept) {
                         _children.add(
-                            new UMLModelElementTreeNode(this,_container,
+                            new UMLModelElementTreeNode(this, _container,
                                 (MModelElement) candidate));
                     }
                 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -39,59 +40,58 @@ import java.sql.*;
    */
 public class ThrowableRenderer implements ObjectRenderer {
 
-  /** 
-   Constructor does no special processing.
- */
-  public ThrowableRenderer() {
-  }
-
+    /** 
+	Constructor does no special processing.
+    */
+    public ThrowableRenderer() {
+    }
    
-  /** Internal worker for the beginning of a throwable log
-   */
-  private void startThrowable(StringBuffer sb, String name, Throwable t) {
-      sb.append(name);
-      sb.append(": ");
-      sb.append(t.getClass().getName());
-      sb.append('\n');
-      sb.append(t.getMessage());
-      sb.append('\n');
-  }
-
-  /** Internal worker for the end of a throwable log
-   */
-  private void endThrowable(StringBuffer sb, Throwable t) {
-      StringWriter sw = new StringWriter();
-      t.printStackTrace(new PrintWriter(sw));
-      sb.append(sw.toString());
-      sb.append('\n');
-  }
-
-  /**
-     Render a {@link java.lang.Throwable}.
-  */
-  public String doRender(Object o) {
-    StringBuffer sb = new StringBuffer();
-
-    // Put the most specialized exceptions before simpler ones.
-    if(o instanceof SQLException) {  
-	SQLException se = (SQLException)o;
-	startThrowable (sb, "SQLException", (Throwable)o);
-        sb.append("SQLState: ");
-	sb.append(se.getSQLState());
-        sb.append('\n');
-	endThrowable (sb, (Throwable)o);
-        return sb.toString();
+    /** Internal worker for the beginning of a throwable log
+     */
+    private void startThrowable(StringBuffer sb, String name, Throwable t) {
+	sb.append(name);
+	sb.append(": ");
+	sb.append(t.getClass().getName());
+	sb.append('\n');
+	sb.append(t.getMessage());
+	sb.append('\n');
     }
-    else if(o instanceof Throwable) {  
-        // This is a generic handler that will get called if
-	// nothing else handles before it.
-        Throwable t = (Throwable)o;
-	//
-	startThrowable (sb, "Exception", t);
-	endThrowable (sb, t);
-        return sb.toString();
-    } else {
-      return o.toString();
+
+    /** Internal worker for the end of a throwable log
+     */
+    private void endThrowable(StringBuffer sb, Throwable t) {
+	StringWriter sw = new StringWriter();
+	t.printStackTrace(new PrintWriter(sw));
+	sb.append(sw.toString());
+	sb.append('\n');
     }
-  }
+
+    /**
+       Render a {@link java.lang.Throwable}.
+    */
+    public String doRender(Object o) {
+	StringBuffer sb = new StringBuffer();
+
+	// Put the most specialized exceptions before simpler ones.
+	if (o instanceof SQLException) {  
+	    SQLException se = (SQLException) o;
+	    startThrowable (sb, "SQLException", (Throwable) o);
+	    sb.append("SQLState: ");
+	    sb.append(se.getSQLState());
+	    sb.append('\n');
+	    endThrowable (sb, (Throwable) o);
+	    return sb.toString();
+	}
+	else if (o instanceof Throwable) {  
+	    // This is a generic handler that will get called if
+	    // nothing else handles before it.
+	    Throwable t = (Throwable) o;
+	    //
+	    startThrowable (sb, "Exception", t);
+	    endThrowable (sb, t);
+	    return sb.toString();
+	} else {
+	    return o.toString();
+	}
+    }
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -31,113 +32,114 @@ import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
 public class ToDoByPoster extends ToDoPerspective
-implements ToDoListListener {
+    implements ToDoListListener 
+{
     protected static Category cat = 
         Category.getInstance(ToDoByPoster.class);
 
-  public ToDoByPoster() {
-    super("combobox.todo-perspective-poster");
-    addSubTreeModel(new GoListToPosterToItem());
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // ToDoListListener implementation
-
-  public void toDoItemsChanged(ToDoListEvent tde) {
-    cat.debug("toDoItemsChanged");
-    Vector items = tde.getToDoItems();
-    int nItems = items.size();
-    Object path[] = new Object[2];
-    path[0] = Designer.TheDesigner.getToDoList();
-
-    VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
-    java.util.Enumeration enum = posters.elements();
-    while (enum.hasMoreElements()) {
-      Poster p = (Poster) enum.nextElement();
-      path[1] = p;
-      int nMatchingItems = 0;
-      for (int i = 0; i < nItems; i++) {
-	ToDoItem item = (ToDoItem) items.elementAt(i);
-	Poster post = item.getPoster();
-	if (post != p) continue;
-	nMatchingItems++;
-      }
-      if (nMatchingItems == 0) continue;
-      int childIndices[] = new int[nMatchingItems];
-      Object children[] = new Object[nMatchingItems];
-      nMatchingItems = 0;
-      for (int i = 0; i < nItems; i++) {
-	ToDoItem item = (ToDoItem) items.elementAt(i);
-	Poster post = item.getPoster();
-	if (post != p) continue;
-	childIndices[nMatchingItems] = getIndexOfChild(p, item);
-	children[nMatchingItems] = item;
-	nMatchingItems++;
-      }
-      fireTreeNodesChanged(this, path, childIndices, children);
+    public ToDoByPoster() {
+	super("combobox.todo-perspective-poster");
+	addSubTreeModel(new GoListToPosterToItem());
     }
-  }
 
-  public void toDoItemsAdded(ToDoListEvent tde) {
-    cat.debug("toDoItemAdded");
-    Vector items = tde.getToDoItems();
-    int nItems = items.size();
-    Object path[] = new Object[2];
-    path[0] = Designer.TheDesigner.getToDoList();
+    ////////////////////////////////////////////////////////////////
+    // ToDoListListener implementation
 
-    VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
-    java.util.Enumeration enum = posters.elements();
-    while (enum.hasMoreElements()) {
-      Poster p = (Poster) enum.nextElement();
-      path[1] = p;
-      int nMatchingItems = 0;
-      for (int i = 0; i < nItems; i++) {
-	ToDoItem item = (ToDoItem) items.elementAt(i);
-	Poster post = item.getPoster();
-	if (post != p) continue;
-	nMatchingItems++;
-      }
-      if (nMatchingItems == 0) continue;
-      int childIndices[] = new int[nMatchingItems];
-      Object children[] = new Object[nMatchingItems];
-      nMatchingItems = 0;
-      for (int i = 0; i < nItems; i++) {
-	ToDoItem item = (ToDoItem) items.elementAt(i);
-	Poster post = item.getPoster();
-	if (post != p) continue;
-	childIndices[nMatchingItems] = getIndexOfChild(p, item);
-	children[nMatchingItems] = item;
-	nMatchingItems++;
-      }
-      fireTreeNodesInserted(this, path, childIndices, children);
+    public void toDoItemsChanged(ToDoListEvent tde) {
+	cat.debug("toDoItemsChanged");
+	Vector items = tde.getToDoItems();
+	int nItems = items.size();
+	Object path[] = new Object[2];
+	path[0] = Designer.TheDesigner.getToDoList();
+
+	VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
+	java.util.Enumeration enum = posters.elements();
+	while (enum.hasMoreElements()) {
+	    Poster p = (Poster) enum.nextElement();
+	    path[1] = p;
+	    int nMatchingItems = 0;
+	    for (int i = 0; i < nItems; i++) {
+		ToDoItem item = (ToDoItem) items.elementAt(i);
+		Poster post = item.getPoster();
+		if (post != p) continue;
+		nMatchingItems++;
+	    }
+	    if (nMatchingItems == 0) continue;
+	    int childIndices[] = new int[nMatchingItems];
+	    Object children[] = new Object[nMatchingItems];
+	    nMatchingItems = 0;
+	    for (int i = 0; i < nItems; i++) {
+		ToDoItem item = (ToDoItem) items.elementAt(i);
+		Poster post = item.getPoster();
+		if (post != p) continue;
+		childIndices[nMatchingItems] = getIndexOfChild(p, item);
+		children[nMatchingItems] = item;
+		nMatchingItems++;
+	    }
+	    fireTreeNodesChanged(this, path, childIndices, children);
+	}
     }
-  }
 
-  public void toDoItemsRemoved(ToDoListEvent tde) {
-    cat.debug("toDoItemRemoved");
-    ToDoList list = Designer.TheDesigner.getToDoList(); //source?
-    Vector items = tde.getToDoItems();
-    int nItems = items.size();
-    Object path[] = new Object[2];
-    path[0] = Designer.TheDesigner.getToDoList();
+    public void toDoItemsAdded(ToDoListEvent tde) {
+	cat.debug("toDoItemAdded");
+	Vector items = tde.getToDoItems();
+	int nItems = items.size();
+	Object path[] = new Object[2];
+	path[0] = Designer.TheDesigner.getToDoList();
 
-
-    java.util.Enumeration enum = list.getPosters().elements();
-    while (enum.hasMoreElements()) {
-      Poster p = (Poster) enum.nextElement();
-//       boolean anyInPoster = false;
-//       for (int i = 0; i < nItems; i++) {
-// 	ToDoItem item = (ToDoItem) items.elementAt(i);
-// 	Poster post = item.getPoster();
-// 	if (post == p) anyInPoster = true;
-//       }
-//       if (!anyInPoster) continue;
-      path[1] = p;
-      fireTreeStructureChanged(path);
+	VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
+	java.util.Enumeration enum = posters.elements();
+	while (enum.hasMoreElements()) {
+	    Poster p = (Poster) enum.nextElement();
+	    path[1] = p;
+	    int nMatchingItems = 0;
+	    for (int i = 0; i < nItems; i++) {
+		ToDoItem item = (ToDoItem) items.elementAt(i);
+		Poster post = item.getPoster();
+		if (post != p) continue;
+		nMatchingItems++;
+	    }
+	    if (nMatchingItems == 0) continue;
+	    int childIndices[] = new int[nMatchingItems];
+	    Object children[] = new Object[nMatchingItems];
+	    nMatchingItems = 0;
+	    for (int i = 0; i < nItems; i++) {
+		ToDoItem item = (ToDoItem) items.elementAt(i);
+		Poster post = item.getPoster();
+		if (post != p) continue;
+		childIndices[nMatchingItems] = getIndexOfChild(p, item);
+		children[nMatchingItems] = item;
+		nMatchingItems++;
+	    }
+	    fireTreeNodesInserted(this, path, childIndices, children);
+	}
     }
-  }
 
-  public void toDoListChanged(ToDoListEvent tde) { }
+    public void toDoItemsRemoved(ToDoListEvent tde) {
+	cat.debug("toDoItemRemoved");
+	ToDoList list = Designer.TheDesigner.getToDoList(); //source?
+	Vector items = tde.getToDoItems();
+	int nItems = items.size();
+	Object path[] = new Object[2];
+	path[0] = Designer.TheDesigner.getToDoList();
+
+
+	java.util.Enumeration enum = list.getPosters().elements();
+	while (enum.hasMoreElements()) {
+	    Poster p = (Poster) enum.nextElement();
+	    //       boolean anyInPoster = false;
+	    //       for (int i = 0; i < nItems; i++) {
+	    // 	ToDoItem item = (ToDoItem) items.elementAt(i);
+	    // 	Poster post = item.getPoster();
+	    // 	if (post == p) anyInPoster = true;
+	    //       }
+	    //       if (!anyInPoster) continue;
+	    path[1] = p;
+	    fireTreeStructureChanged(path);
+	}
+    }
+
+    public void toDoListChanged(ToDoListEvent tde) { }
   
 
 } /* end class ToDoByPoster */

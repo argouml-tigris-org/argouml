@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,36 +43,36 @@ import org.argouml.cognitive.*;
 
 public class CrTooManyAttr extends CrUML {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public static String THRESHOLD = "Threshold";
+    ////////////////////////////////////////////////////////////////
+    // constants
+    public static String THRESHOLD = "Threshold";
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public CrTooManyAttr() {
-    setHeadline("Reduce Attributes on <ocl>self</ocl>");
-    addSupportedDecision(CrUML.decSTORAGE);
-    setArg(THRESHOLD, new Integer(7));
-    addTrigger("structuralFeature");
-  }
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public CrTooManyAttr() {
+	setHeadline("Reduce Attributes on <ocl>self</ocl>");
+	addSupportedDecision(CrUML.decSTORAGE);
+	setArg(THRESHOLD, new Integer(7));
+	addTrigger("structuralFeature");
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // critiquing API
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
-    MClassifier cls = (MClassifier) dm;
-    // TODO: consider inherited attributes?
-    int threshold = ((Integer)getArg(THRESHOLD)).intValue();
-    Collection str = cls.getFeatures();
-    if (str == null) return NO_PROBLEM;
-    int n=0;
-    for (Iterator iter = str.iterator(); iter.hasNext();) {
-      if (iter.next() instanceof MStructuralFeature)
-        n++;
-    };
-    if (n <= threshold) return NO_PROBLEM;
-    return PROBLEM_FOUND;
-  }
+    ////////////////////////////////////////////////////////////////
+    // critiquing API
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+	MClassifier cls = (MClassifier) dm;
+	// TODO: consider inherited attributes?
+	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
+	Collection str = cls.getFeatures();
+	if (str == null) return NO_PROBLEM;
+	int n = 0;
+	for (Iterator iter = str.iterator(); iter.hasNext();) {
+	    if (iter.next() instanceof MStructuralFeature)
+		n++;
+	};
+	if (n <= threshold) return NO_PROBLEM;
+	return PROBLEM_FOUND;
+    }
 
 } /* end class CrTooManyAttr */
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -57,21 +58,21 @@ public class PropPanelInteraction extends PropPanelModelElement {
         addSeperator();
 
         JList messagesList = new UMLLinkedList(new UMLInteractionMessagesListModel());
-      	JScrollPane messagesScroll= new JScrollPane(messagesList);
+      	JScrollPane messagesScroll = new JScrollPane(messagesList);
         addField(Argo.localize("UMLMenu", "label.messages"), messagesScroll);
 
-    	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-        new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-attribute"),"removeElement",null);
+    	new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-attribute"), "removeElement", null);
 
-	}
+    }
 
-	/**
-	 * Navigates to the owning collaboration
-	 * @see org.argouml.uml.ui.foundation.core.PropPanelModelElement#navigateUp()
-	 */
-	public void navigateUp() {
-        TargetManager.getInstance().setTarget(((MInteraction)getTarget()).getContext());
-	}
+    /**
+     * Navigates to the owning collaboration
+     * @see org.argouml.uml.ui.foundation.core.PropPanelModelElement#navigateUp()
+     */
+    public void navigateUp() {
+        TargetManager.getInstance().setTarget(((MInteraction) getTarget()).getContext());
+    }
 
 }
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,32 +43,34 @@ import ru.novosoft.uml.MElementEvent;
  *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
  *             that used reflection a lot.
  */
-public class UMLRadioButton extends JRadioButton implements ItemListener, 
-                                                            UMLUserInterfaceComponent {
+public class UMLRadioButton
+    extends JRadioButton
+    implements ItemListener, UMLUserInterfaceComponent
+{
     protected static Category cat = Category.getInstance(UMLRadioButton.class);
                                                                 
         
-	private class BooleanSetter implements Runnable {
-		JRadioButton _field = null;
-		boolean _newValue = false;
-		public BooleanSetter(JRadioButton field, boolean newValue) {
-			_field = field;
-			_newValue = newValue;
-		}
-		/**
+    private class BooleanSetter implements Runnable {
+	JRadioButton _field = null;
+	boolean _newValue = false;
+	public BooleanSetter(JRadioButton field, boolean newValue) {
+	    _field = field;
+	    _newValue = newValue;
+	}
+	/**
          * @see java.lang.Runnable#run()
          */
         public void run() {
-        	_field.setSelected(_newValue);
+	    _field.setSelected(_newValue);
         }
-	}
+    }
 			
     private UMLUserInterfaceContainer _container;
     private UMLBooleanProperty _property;
     private ButtonGroup _group = null;
     
     /** Creates new BooleanChangeListener */
-    public UMLRadioButton(String label,UMLUserInterfaceContainer container,
+    public UMLRadioButton(String label, UMLUserInterfaceContainer container,
                           UMLBooleanProperty property) {
         super(label);
         _container = container;
@@ -76,7 +79,7 @@ public class UMLRadioButton extends JRadioButton implements ItemListener,
         update();
     }
     
-    public UMLRadioButton(String label,UMLUserInterfaceContainer container,
+    public UMLRadioButton(String label, UMLUserInterfaceContainer container,
                           UMLBooleanProperty property, boolean select) {
         super(label, select);
         _container = container;
@@ -85,13 +88,13 @@ public class UMLRadioButton extends JRadioButton implements ItemListener,
         update();
     }
     public void itemStateChanged(final ItemEvent event) {
-		cat.debug(getAccessibleContext().getAccessibleName()+" itemStateChanged "+event.getStateChange());
-		try {
-        	_property.setProperty(_container.getTarget(),event.getStateChange() == ItemEvent.SELECTED);
-		}
-		catch (PropertyVetoException ve) {
-			ProjectBrowser.getInstance().getStatusBar().showStatus(ve.getMessage());
-			setSelected(_property.getProperty(_container.getTarget()));
+	cat.debug(getAccessibleContext().getAccessibleName() + " itemStateChanged " + event.getStateChange());
+	try {
+	    _property.setProperty(_container.getTarget(), event.getStateChange() == ItemEvent.SELECTED);
+	}
+	catch (PropertyVetoException ve) {
+	    ProjectBrowser.getInstance().getStatusBar().showStatus(ve.getMessage());
+	    setSelected(_property.getProperty(_container.getTarget()));
     	}
         // yes we should update
         update();
@@ -115,27 +118,27 @@ public class UMLRadioButton extends JRadioButton implements ItemListener,
     public void removed(final MElementEvent p1) {
     }
     public void propertySet(final MElementEvent event) {
-      if(_property.isAffected(event))
-	  update();
+	if (_property.isAffected(event))
+	    update();
     }
     
-/** update the radio button selection on a target change to reflect the 
- *  attribute's visibility. newState is what was saved with the collection,
- *  sel generally reflects the vis. of the previously displayed attribute or the
- *  direction kind of a parameter. Each change makes a number of passes through 
- *  update, 1 pass for each radio button in the property panel. Therefore, if 
- *  sel and newState are different, and newState is true, we set the currently 
- *  selected radio button to reflect the visibility for attributes, or the 
- *  direction kind for parameters. 
- *      Modified psager@tigris.org Sept. 01, 2001
- */    
+    /** update the radio button selection on a target change to reflect the 
+     *  attribute's visibility. newState is what was saved with the collection,
+     *  sel generally reflects the vis. of the previously displayed attribute or the
+     *  direction kind of a parameter. Each change makes a number of passes through 
+     *  update, 1 pass for each radio button in the property panel. Therefore, if 
+     *  sel and newState are different, and newState is true, we set the currently 
+     *  selected radio button to reflect the visibility for attributes, or the 
+     *  direction kind for parameters. 
+     *      Modified psager@tigris.org Sept. 01, 2001
+     */    
     private void update() {
         Object target = _container.getTarget();
         boolean sel = isSelected();
         boolean newState = _property.getProperty(_container.getTarget());
-        if (newState && sel != newState){
+        if (newState && sel != newState) {
         	
-        	SwingUtilities.invokeLater(new BooleanSetter(this, true));
+	    SwingUtilities.invokeLater(new BooleanSetter(this, true));
         }
     }  //...end of update()...
 

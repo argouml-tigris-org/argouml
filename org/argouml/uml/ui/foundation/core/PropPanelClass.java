@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -49,7 +50,7 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelClass extends PropPanelClassifier {
@@ -63,46 +64,46 @@ public class PropPanelClass extends PropPanelClassifier {
     private static UMLClassOperationListModel operationListModel =
         new UMLClassOperationListModel();
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public PropPanelClass() {
-    super("Class", ConfigLoader.getTabPropsOrientation());
-    Class mclass = MClass.class;
+    ////////////////////////////////////////////////////////////////
+    // contructors
+    public PropPanelClass() {
+	super("Class", ConfigLoader.getTabPropsOrientation());
+	Class mclass = MClass.class;
 
-    addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-    addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
-    addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
-    _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.active-uc"),this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));
-    addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
-    addField(Argo.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
+	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+	addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+	_modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.active-uc"), this, new UMLReflectionBooleanProperty("isActive", mclass, "isActive", "setActive")));
+	addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+	addField(Argo.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
 
-    addSeperator();
+	addSeperator();
 
-    addField(Argo.localize("UMLMenu", "label.client-dependencies"), getClientDependencyScroll());
-    addField(Argo.localize("UMLMenu", "label.supplier-dependencies"), getSupplierDependencyScroll());
-    addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
-    addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+	addField(Argo.localize("UMLMenu", "label.client-dependencies"), getClientDependencyScroll());
+	addField(Argo.localize("UMLMenu", "label.supplier-dependencies"), getSupplierDependencyScroll());
+	addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+	addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
 
-    addSeperator();
+	addSeperator();
 
-    addField(Argo.localize("UMLMenu", "label.attributes"), getAttributeScroll());
-    addField(Argo.localize("UMLMenu", "label.association-ends"), getAssociationEndScroll());
-    addField(Argo.localize("UMLMenu", "label.operations"), getOperationScroll());
-    addField(Argo.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
+	addField(Argo.localize("UMLMenu", "label.attributes"), getAttributeScroll());
+	addField(Argo.localize("UMLMenu", "label.association-ends"), getAssociationEndScroll());
+	addField(Argo.localize("UMLMenu", "label.operations"), getOperationScroll());
+	addField(Argo.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
 
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-    new PropPanelButton(this,buttonPanel,_addAttrIcon, Argo.localize("UMLMenu", "button.add-attribute"),"addAttribute",null);
-    new PropPanelButton(this,buttonPanel,_addOpIcon, Argo.localize("UMLMenu", "button.add-operation"),"addOperation",null);
-    new PropPanelButton(this,buttonPanel,_innerClassIcon, Argo.localize("UMLMenu", "button.add-inner-class"),"addInnerClass",null);
-    new PropPanelButton(this,buttonPanel,_classIcon, Argo.localize("UMLMenu", "button.add-new-class"),"newClass",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-class"),"removeElement",null);
+	new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+	new PropPanelButton(this, buttonPanel, _addAttrIcon, Argo.localize("UMLMenu", "button.add-attribute"), "addAttribute", null);
+	new PropPanelButton(this, buttonPanel, _addOpIcon, Argo.localize("UMLMenu", "button.add-operation"), "addOperation", null);
+	new PropPanelButton(this, buttonPanel, _innerClassIcon, Argo.localize("UMLMenu", "button.add-inner-class"), "addInnerClass", null);
+	new PropPanelButton(this, buttonPanel, _classIcon, Argo.localize("UMLMenu", "button.add-new-class"), "newClass", null);
+	new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-class"), "removeElement", null);
 
-  }
+    }
 
     public void addInnerClass() {
         Object target = getTarget();
-        if(target instanceof MClassifier) {
+        if (target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
             MClass inner = CoreFactory.getFactory().buildClass(classifier);
             TargetManager.getInstance().setTarget(inner);
@@ -111,10 +112,10 @@ public class PropPanelClass extends PropPanelClassifier {
 
     public void newClass() {
         Object target = getTarget();
-        if(target instanceof MClassifier) {
+        if (target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
             MNamespace ns = classifier.getNamespace();
-            if(ns != null) {
+            if (ns != null) {
                 MClassifier peer = CoreFactory.getFactory().buildClass(ns);
                 TargetManager.getInstance().setTarget(peer);
             }

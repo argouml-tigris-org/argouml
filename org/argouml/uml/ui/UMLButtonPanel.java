@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -56,7 +57,7 @@ public class UMLButtonPanel
         setLayout(new SerialLayout());
         Enumeration en = group.getElements();
         while (en.hasMoreElements()) {
-            add((Component)en.nextElement());
+            add((Component) en.nextElement());
         }
     }
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,7 +43,7 @@ abstract public class Profile {
      *    @param namespace context namespace (may be null).
      *    @return a string representing the model element
      */
-    abstract public String formatElement(MModelElement element,MNamespace namespace);
+    abstract public String formatElement(MModelElement element, MNamespace namespace);
     /**
      *   This method produces a string the represents the collection of model elements
      *   in the context of the specified namespace.
@@ -50,6 +51,6 @@ abstract public class Profile {
      *   @param namespace context namespace (may be null).
      *   @return a string representing the collection
      */
-    abstract public String formatCollection(Iterator iter,MNamespace namespace);
+    abstract public String formatCollection(Iterator iter, MNamespace namespace);
     abstract public MModel getProfileModel();
 }

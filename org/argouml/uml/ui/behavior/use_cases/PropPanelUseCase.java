@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -73,39 +74,39 @@ public class PropPanelUseCase extends PropPanelClassifier {
         super("UseCase", ConfigLoader.getTabPropsOrientation());
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-    	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
-    	addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceComboBox());
+    	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+    	addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
 	PropPanelModifiers mPanel = new PropPanelModifiers(3);
-        Class mclass = (Class)ModelFacade.USE_CASE;
+        Class mclass = (Class) ModelFacade.USE_CASE;
 
-    // since when do we know abstract usecases?
-    //    mPanel.add("isAbstract", mclass, "isAbstract", "setAbstract",
-    //               Argo.localize("UMLMenu", "checkbox.abstract-lc"), this);
+	// since when do we know abstract usecases?
+	//    mPanel.add("isAbstract", mclass, "isAbstract", "setAbstract",
+	//               Argo.localize("UMLMenu", "checkbox.abstract-lc"), this);
         mPanel.add("isLeaf", mclass, "isLeaf", "setLeaf",
                    Argo.localize("UMLMenu", "checkbox.final-lc"), this);
         mPanel.add("isRoot", mclass, "isRoot", "setRoot",
                    localize("root"), this);
-		addField(Argo.localize("UMLMenu", "label.modifiers"),mPanel);
+	addField(Argo.localize("UMLMenu", "label.modifiers"), mPanel);
 
-    JList extensionPoints = new UMLMutableLinkedList(new UMLUseCaseExtensionPointListModel(), null, ActionNewUseCaseExtensionPoint.SINGLETON);
-    addField(Argo.localize("UMLMenu", "label.extension-points"),
-        new JScrollPane(extensionPoints));
+	JList extensionPoints = new UMLMutableLinkedList(new UMLUseCaseExtensionPointListModel(), null, ActionNewUseCaseExtensionPoint.SINGLETON);
+	addField(Argo.localize("UMLMenu", "label.extension-points"),
+		 new JScrollPane(extensionPoints));
 
-    addSeperator();
+	addSeperator();
 
-    addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
-    addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+	addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+	addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
 
-    JList extendsList = new UMLLinkedList(new UMLUseCaseExtendListModel());
-    addField(Argo.localize("UMLMenu", "label.extends"),
-        new JScrollPane(extendsList));
+	JList extendsList = new UMLLinkedList(new UMLUseCaseExtendListModel());
+	addField(Argo.localize("UMLMenu", "label.extends"),
+		 new JScrollPane(extendsList));
 
-    JList includesList = new UMLLinkedList(new UMLUseCaseIncludeListModel());
-    addField(Argo.localize("UMLMenu", "label.includes"),
-        new JScrollPane(includesList));
+	JList includesList = new UMLLinkedList(new UMLUseCaseIncludeListModel());
+	addField(Argo.localize("UMLMenu", "label.includes"),
+		 new JScrollPane(includesList));
 
-    addSeperator();
+	addSeperator();
 
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
@@ -136,10 +137,10 @@ public class PropPanelUseCase extends PropPanelClassifier {
     public void newUseCase() {
         Object target = getTarget();
 
-        if(ModelFacade.isAUseCase(target)) {
+        if (ModelFacade.isAUseCase(target)) {
             Object ns = ModelFacade.getNamespace(target);
 
-            if(ns != null) {
+            if (ns != null) {
                 Object useCase = UseCasesFactory.getFactory().createUseCase();
                 ModelFacade.addOwnedElement(ns, useCase);
                 TargetManager.getInstance().setTarget(useCase);

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -120,15 +121,15 @@ public class DetailsPane
     private Orientation orientation;
 
     /**
-       * The list with targetlisteners, this are the property panels managed by TabProps
-       * It should only contain one listener at a time.
-       */
+     * The list with targetlisteners, this are the property panels managed by TabProps
+     * It should only contain one listener at a time.
+     */
     private EventListenerList _listenerList = new EventListenerList();
 
     /**
-        * Adds a listener.
-        * @param listener the listener to add
-        */
+     * Adds a listener.
+     * @param listener the listener to add
+     */
     private void addTargetListener(TargetListener listener) {
         _listenerList.add(TargetListener.class, listener);
     }
@@ -246,7 +247,7 @@ public class DetailsPane
                 if (tab instanceof TabTarget) {
                     if (((TabTarget) tab).shouldBeEnabled(target)) {
                         if (!(tab instanceof TargetListener))
-                             ((TabTarget) tab).setTarget(target);
+			    ((TabTarget) tab).setTarget(target);
                         _tabs.setSelectedIndex(i);
                         tabSelected = true;
                         _lastNonNullTab = i;
@@ -256,8 +257,8 @@ public class DetailsPane
             }
             if (!tabSelected) {
                 for (int i = _lastNonNullTab + 1;
-                    i < _tabs.getTabCount();
-                    i++) {
+		     i < _tabs.getTabCount();
+		     i++) {
                     Component tab = _tabs.getComponentAt(i);
                     if (tab instanceof TabTarget) {
                         if (((TabTarget) tab).shouldBeEnabled(target)) {
@@ -413,7 +414,7 @@ public class DetailsPane
         while (iter.hasNext()) {
             o = iter.next();
             if (o.getClass().equals(tabClass)) {
-                return (TabSpawnable)o;
+                return (TabSpawnable) o;
             }
         }
         return null;
@@ -438,18 +439,18 @@ public class DetailsPane
 
         // update the tab
         if (_lastNonNullTab >= 0) {
-                    Object tab = _tabPanels.get(_lastNonNullTab);
-                    if (tab instanceof TargetListener)
-                        removeTargetListener((TargetListener) tab);
-                }
+	    Object tab = _tabPanels.get(_lastNonNullTab);
+	    if (tab instanceof TargetListener)
+		removeTargetListener((TargetListener) tab);
+	}
         Object target = TargetManager.getInstance().getTarget();
         
         if (!(sel instanceof TargetListener)) {
             if (sel instanceof TabToDoTarget)
-                 ((TabToDoTarget) sel).refresh();
+		((TabToDoTarget) sel).refresh();
 
             else if (sel instanceof TabTarget)
-                 ((TabTarget) sel).setTarget(target);
+		((TabTarget) sel).setTarget(target);
         } else {
             removeTargetListener((TargetListener) sel);
             addTargetListener((TargetListener) sel);
@@ -482,7 +483,7 @@ public class DetailsPane
         cat.debug("double: " + _tabs.getComponentAt(tab).toString());
         JPanel t = (JPanel) _tabPanels.elementAt(tab);
         if (t instanceof TabSpawnable)
-             ((TabSpawnable) t).spawn();
+	    ((TabSpawnable) t).spawn();
     }
 
     /**
@@ -616,7 +617,7 @@ public class DetailsPane
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
-                 ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
+		((TargetListener) listeners[i + 1]).targetSet(targetEvent);
             }
         }
     }
@@ -628,7 +629,7 @@ public class DetailsPane
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
-                 ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
+		((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
             }
         }
     }

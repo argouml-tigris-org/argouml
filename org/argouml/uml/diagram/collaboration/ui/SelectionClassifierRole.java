@@ -52,187 +52,187 @@ import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 
 
 public class SelectionClassifierRole extends SelectionWButtons {
-	protected static Category cat = 
+    protected static Category cat = 
         Category.getInstance(SelectionClassifierRole.class);
-	////////////////////////////////////////////////////////////////
-	// constants
-	public static Icon assocrole =
-		ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(
-			"AssociationRole");
+    ////////////////////////////////////////////////////////////////
+    // constants
+    public static Icon assocrole =
+	ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(
+									    "AssociationRole");
 
     public static Icon selfassoc =
         ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("SelfAssociation");
 
-	////////////////////////////////////////////////////////////////
-	// instance varables
-	protected boolean _showIncoming = true;
-	protected boolean _showOutgoing = true;
+    ////////////////////////////////////////////////////////////////
+    // instance varables
+    protected boolean _showIncoming = true;
+    protected boolean _showOutgoing = true;
 
-	////////////////////////////////////////////////////////////////
-	// constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-	/** Construct a new SelectionClassifierRole for the given Fig */
-	public SelectionClassifierRole(Fig f) {
-		super(f);
-	}
+    /** Construct a new SelectionClassifierRole for the given Fig */
+    public SelectionClassifierRole(Fig f) {
+	super(f);
+    }
 
-	////////////////////////////////////////////////////////////////
-	// accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-	public void setIncomingButtonEnabled(boolean b) {
-		_showIncoming = b;
-	}
+    public void setIncomingButtonEnabled(boolean b) {
+	_showIncoming = b;
+    }
 
-	public void setOutgoingButtonEnabled(boolean b) {
-		_showOutgoing = b;
-	}
+    public void setOutgoingButtonEnabled(boolean b) {
+	_showOutgoing = b;
+    }
 
-	public void hitHandle(Rectangle r, Handle h) {
-		super.hitHandle(r, h);
-		if (h.index != -1)
-			return;
-		if (!_paintButtons)
-			return;
-		Editor ce = Globals.curEditor();
-		SelectionManager sm = ce.getSelectionManager();
-		if (sm.size() != 1)
-			return;
-		ModeManager mm = ce.getModeManager();
-		if (mm.includes(ModeModify.class) && _pressedButton == -1)
-			return;
-		int cx = _content.getX();
-		int cy = _content.getY();
-		int cw = _content.getWidth();
-		int ch = _content.getHeight();
-		int iw = assocrole.getIconWidth();
-		int ih = assocrole.getIconHeight();
-		if (_showOutgoing && hitLeft(cx + cw, cy + ch / 2, iw, ih, r)) {
-			h.index = 12;
-			h.instructions = "Add an outgoing classifierrole";
-		} else if (_showIncoming && hitRight(cx, cy + ch / 2, iw, ih, r)) {
-			h.index = 13;
-			h.instructions = "Add an incoming classifierrole";
+    public void hitHandle(Rectangle r, Handle h) {
+	super.hitHandle(r, h);
+	if (h.index != -1)
+	    return;
+	if (!_paintButtons)
+	    return;
+	Editor ce = Globals.curEditor();
+	SelectionManager sm = ce.getSelectionManager();
+	if (sm.size() != 1)
+	    return;
+	ModeManager mm = ce.getModeManager();
+	if (mm.includes(ModeModify.class) && _pressedButton == -1)
+	    return;
+	int cx = _content.getX();
+	int cy = _content.getY();
+	int cw = _content.getWidth();
+	int ch = _content.getHeight();
+	int iw = assocrole.getIconWidth();
+	int ih = assocrole.getIconHeight();
+	if (_showOutgoing && hitLeft(cx + cw, cy + ch / 2, iw, ih, r)) {
+	    h.index = 12;
+	    h.instructions = "Add an outgoing classifierrole";
+	} else if (_showIncoming && hitRight(cx, cy + ch / 2, iw, ih, r)) {
+	    h.index = 13;
+	    h.instructions = "Add an incoming classifierrole";
         } else if (hitRight(cx, cy + ch - 10, iw, ih, r)) {
-            h.index=14;
+            h.index = 14;
             h.instructions = "Add a associationrole to this";
-		} else {
-			h.index = -1;
-			h.instructions = "Move object(s)";
-		}
+	} else {
+	    h.index = -1;
+	    h.instructions = "Move object(s)";
 	}
+    }
 
-	/** Paint the handles at the four corners and midway along each edge
-	 * of the bounding box.  */
-	public void paintButtons(Graphics g) {
-		int cx = _content.getX();
-		int cy = _content.getY();
-		int cw = _content.getWidth();
-		int ch = _content.getHeight();
-		if (_showOutgoing)
-			paintButtonLeft(assocrole, g, cx + cw, cy + ch / 2, 12);
-		if (_showIncoming)
-			paintButtonRight(assocrole, g, cx, cy + ch / 2, 13);
+    /** Paint the handles at the four corners and midway along each edge
+     * of the bounding box.  */
+    public void paintButtons(Graphics g) {
+	int cx = _content.getX();
+	int cy = _content.getY();
+	int cw = _content.getWidth();
+	int ch = _content.getHeight();
+	if (_showOutgoing)
+	    paintButtonLeft(assocrole, g, cx + cw, cy + ch / 2, 12);
+	if (_showIncoming)
+	    paintButtonRight(assocrole, g, cx, cy + ch / 2, 13);
         if (_showOutgoing || _showIncoming)
             paintButtonRight(selfassoc, g, cx, cy + ch - 10, 14);
+    }
+
+    public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
+	if (hand.index < 10) {
+	    _paintButtons = false;
+	    super.dragHandle(mX, mY, anX, anY, hand);
+	    return;
 	}
+	int cx = _content.getX(), cy = _content.getY();
+	int cw = _content.getWidth(), ch = _content.getHeight();
+	int newX = cx, newY = cy, newW = cw, newH = ch;
+	Dimension minSize = _content.getMinimumSize();
+	int minWidth = minSize.width, minHeight = minSize.height;
+	Class edgeClass = null;
+	Class nodeClass = MClassifierRole.class;
 
-	public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-		if (hand.index < 10) {
-			_paintButtons = false;
-			super.dragHandle(mX, mY, anX, anY, hand);
-			return;
-		}
-		int cx = _content.getX(), cy = _content.getY();
-		int cw = _content.getWidth(), ch = _content.getHeight();
-		int newX = cx, newY = cy, newW = cw, newH = ch;
-		Dimension minSize = _content.getMinimumSize();
-		int minWidth = minSize.width, minHeight = minSize.height;
-		Class edgeClass = null;
-		Class nodeClass = MClassifierRole.class;
+	Editor ce = Globals.curEditor();
+	GraphModel gm = ce.getGraphModel();
+	if (!(gm instanceof MutableGraphModel))
+	    return;
 
-		Editor ce = Globals.curEditor();
-		GraphModel gm = ce.getGraphModel();
-		if (!(gm instanceof MutableGraphModel))
-			return;
+	MutableGraphModel mgm = (MutableGraphModel) gm;
 
-		MutableGraphModel mgm = (MutableGraphModel) gm;
-
-		int bx = mX, by = mY;
-		boolean reverse = false;
-		switch (hand.index) {
-			case 12 : //add outgoing
-				edgeClass = MAssociationRole.class;
-				by = cy + ch / 2;
-				bx = cx + cw;
-				break;
-			case 13 : // add incoming
-				edgeClass = MAssociationRole.class;
-				reverse = true;
-				by = cy + ch / 2;
-				bx = cx;
-				break;
+	int bx = mX, by = mY;
+	boolean reverse = false;
+	switch (hand.index) {
+	case 12 : //add outgoing
+	    edgeClass = MAssociationRole.class;
+	    by = cy + ch / 2;
+	    bx = cx + cw;
+	    break;
+	case 13 : // add incoming
+	    edgeClass = MAssociationRole.class;
+	    reverse = true;
+	    by = cy + ch / 2;
+	    bx = cx;
+	    break;
         case 14: // add to self
             // do not want to drag this
             break;
             
-			default :
-				cat.warn("invalid handle number");
-				break;
-		}
-		if (edgeClass != null && nodeClass != null) {
-			ModeCreateEdgeAndNode m =
-				new ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
-			m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
-			ce.mode(m);
-		}
+	default :
+	    cat.warn("invalid handle number");
+	    break;
 	}
+	if (edgeClass != null && nodeClass != null) {
+	    ModeCreateEdgeAndNode m =
+		new ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
+	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
+	    ce.mode(m);
+	}
+    }
 
-	/** create a new ClassifierRole object.
-	   * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
-	   */
-	protected Object getNewNode(int buttonCode) {
-		return UmlFactory.getFactory().
+    /** create a new ClassifierRole object.
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
+     */
+    protected Object getNewNode(int buttonCode) {
+	return UmlFactory.getFactory().
             getCollaborations().createClassifierRole();
-	}
+    }
 
-	/**
-	 * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeAbove(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-	 */
-	protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
-		return mgm.connect(newNode, _content.getOwner(), MAssociationRole.class);
-	}
+    /**
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeAbove(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
+    protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
+	return mgm.connect(newNode, _content.getOwner(), MAssociationRole.class);
+    }
 
-	/**
-	 * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-	 */
-	protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-		return gm.connect(newNode, _content.getOwner(), MAssociationRole.class);
-	}
+    /**
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
+    protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
+	return gm.connect(newNode, _content.getOwner(), MAssociationRole.class);
+    }
 
-	/**
-	 * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeRight(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-	 */
-	protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-		return gm.connect(_content.getOwner(), newNode, MAssociationRole.class);
-	}
+    /**
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeRight(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
+    protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
+	return gm.connect(_content.getOwner(), newNode, MAssociationRole.class);
+    }
 
-	/**
-	 * To enable this we need to add an icon.
-	 * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeToSelf(org.tigris.gef.graph.MutableGraphModel)
-	 */
-	protected Object createEdgeToSelf(MutableGraphModel gm) {
-		return gm.connect(
-			_content.getOwner(),
-			_content.getOwner(),
-			MAssociationRole.class);
-	}
+    /**
+     * To enable this we need to add an icon.
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeToSelf(org.tigris.gef.graph.MutableGraphModel)
+     */
+    protected Object createEdgeToSelf(MutableGraphModel gm) {
+	return gm.connect(
+			  _content.getOwner(),
+			  _content.getOwner(),
+			  MAssociationRole.class);
+    }
 
-	/**
-	 * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-	 */
-	protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-		return gm.connect(_content.getOwner(), newNode, MAssociationRole.class);
-	}
+    /**
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
+    protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
+	return gm.connect(_content.getOwner(), newNode, MAssociationRole.class);
+    }
 
 	
 

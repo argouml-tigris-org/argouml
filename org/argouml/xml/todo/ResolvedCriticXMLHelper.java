@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,64 +37,63 @@ import org.argouml.cognitive.ResolvedCritic;
  */
 public class ResolvedCriticXMLHelper
 {
-	/** The ResolvedCritic this instance helps. */
-	protected final ResolvedCritic _item;
+    /** The ResolvedCritic this instance helps. */
+    protected final ResolvedCritic _item;
 
-	/**
-	 * Creates a new ResolvedCriticXMLHelper for helping item.
-	 *
-	 * @param	item	The ResolvedCritic to expose.
-	 */
-	public ResolvedCriticXMLHelper(ResolvedCritic item)
+    /**
+     * Creates a new ResolvedCriticXMLHelper for helping item.
+     *
+     * @param	item	The ResolvedCritic to expose.
+     */
+    public ResolvedCriticXMLHelper(ResolvedCritic item)
+    {
+	if (item == null)
+	    throw new NullPointerException();
+	_item = item;
+    }
+
+    /**
+     * Encodes the critic of this ResolvedCritic in an XML safe way and
+     * returns the new String. The String can be regained by running the
+     * returned String through
+     * {@link TodoParser#decode TodoParser::decode}.
+     *
+     * @return	The encoded critic.
+     */
+    public String getCritic()
+    {
+	return TodoParser.encode(_item.getCritic());
+    }
+
+    /**
+     * Gets the offender vector of this critic where each offender is
+     * wrapped in an OffenderXMLHelper.
+     *
+     * @return	A Vector of OffenderXMLHelpers, or null if there are
+     *		no offenders.
+     * @see	OffenderXMLHelper
+     */
+    public Vector getOffenderList()
+    {
+	Vector in = _item.getOffenderList();
+	Enumeration enum;
+	Vector out;
+
+	if (in == null)
+	    return null;
+	out = new Vector();
+	enum = in.elements();
+	while (enum.hasMoreElements())
 	{
-		if (item == null)
-			throw new NullPointerException();
-		_item = item;
+	    try {
+		out.addElement(new OffenderXMLHelper((String) enum.nextElement()));
+	    }
+	    catch (ClassCastException cce)
+	    {
+	    }
 	}
 
-	/**
-	 * Encodes the critic of this ResolvedCritic in an XML safe way and
-	 * returns the new String. The String can be regained by running the
-	 * returned String through
-	 * {@link TodoParser#decode TodoParser::decode}.
-	 *
-	 * @return	The encoded critic.
-	 */
-	public String getCritic()
-	{
-		return TodoParser.encode(_item.getCritic());
-	}
-
-	/**
-	 * Gets the offender vector of this critic where each offender is
-	 * wrapped in an OffenderXMLHelper.
-	 *
-	 * @return	A Vector of OffenderXMLHelpers, or null if there are
-	 *		no offenders.
-	 * @see	OffenderXMLHelper
-	 */
-	public Vector getOffenderList()
-	{
-		Vector in = _item.getOffenderList();
-		Enumeration enum;
-		Vector out;
-
-		if (in == null)
-			return null;
-		out = new Vector();
-		enum = in.elements();
-		while (enum.hasMoreElements())
-		{
-			try
-			{
-				out.addElement(new OffenderXMLHelper((String)enum.nextElement()));
-			}
-			catch (ClassCastException cce)
-			{
-			}
-		}
-
-		return out;
-	}
+	return out;
+    }
 }
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,7 +39,8 @@ import javax.swing.*;
  *   @since 0.9.4
  */
 public class NotationNameImpl
-implements NotationName, ArgoModuleEventListener {
+    implements NotationName, ArgoModuleEventListener
+{
 
     String _name = null;
     String _version = null;
@@ -119,8 +121,8 @@ implements NotationName, ArgoModuleEventListener {
 	return k1 + "." + k2;
     }
 
-    private static void fireEvent(int eventType,  NotationName nn) {
-     ArgoEventPump.fireEvent(new ArgoNotationEvent(eventType, nn));
+    private static void fireEvent(int eventType, NotationName nn) {
+	ArgoEventPump.fireEvent(new ArgoNotationEvent(eventType, nn));
     }
 
     /** Create a NotationName with or without a version.
@@ -131,7 +133,7 @@ implements NotationName, ArgoModuleEventListener {
 	NotationName nn = null;
 	nn = findNotation(getNotationNameString(k1, k2));
 	if (nn == null) {
-	    nn = (NotationName)new NotationNameImpl(k1, k2, icon);
+	    nn = (NotationName) new NotationNameImpl(k1, k2, icon);
 	    _notations.add(nn);
 	    fireEvent(ArgoEventTypes.NOTATION_ADDED, nn);
 	}
@@ -151,7 +153,7 @@ implements NotationName, ArgoModuleEventListener {
         ListIterator iterator = _notations.listIterator();
         while (iterator.hasNext()) {
 	    try {
-                NotationName nn = (NotationName)iterator.next();
+                NotationName nn = (NotationName) iterator.next();
 		if (s.equals(nn.getConfigurationValue())) {
 		    return nn;
 		}

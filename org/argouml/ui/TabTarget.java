@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,24 +39,24 @@ import org.argouml.ui.targetmanager.TargetListener;
  */
 public interface TabTarget extends TargetListener {
     
-  /**
-   *
-   */  
-  public void setTarget(Object target);
+    /**
+     *
+     */  
+    public void setTarget(Object target);
   
-  /**
-   *
-   */
-  public Object getTarget();
+    /**
+     *
+     */
+    public Object getTarget();
   
-  /**
-   * Refreshes the tab IN TOTAL
-   */
-  public void refresh();
+    /**
+     * Refreshes the tab IN TOTAL
+     */
+    public void refresh();
     
   
-  /**
-   * Returns true if the tab should be enabled with the given target
-   */
-  public boolean shouldBeEnabled(Object target);
+    /**
+     * Returns true if the tab should be enabled with the given target
+     */
+    public boolean shouldBeEnabled(Object target);
 }

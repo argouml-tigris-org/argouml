@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,18 +39,18 @@ import org.argouml.ui.AbstractGoRule;
  */
 public class GoSignalToReception extends AbstractGoRule {
 	
-	public String getRuleName() {
+    public String getRuleName() {
     	return Argo.localize ("Tree", "misc.interaction.messages");
-  	}
+    }
 
-	/**
-	 * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
-	 */
-	public Collection getChildren(Object parent) {
-		if (ModelFacade.isASignal(parent)) {
-			return ModelFacade.getReceptions(parent);
-		}
-		return null;
+    /**
+     * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
+     */
+    public Collection getChildren(Object parent) {
+	if (ModelFacade.isASignal(parent)) {
+	    return ModelFacade.getReceptions(parent);
 	}
+	return null;
+    }
 
 }

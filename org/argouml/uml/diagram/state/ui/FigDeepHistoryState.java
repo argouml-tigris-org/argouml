@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -44,100 +45,100 @@ import org.tigris.gef.presentation.FigText;
 
 public class FigDeepHistoryState extends FigStateVertex {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  public final int MARGIN = 2;
-  public int x = 0;
-  public int y = 0;
-  public int width = 24;
-  public int height = 24;
+    public final int MARGIN = 2;
+    public int x = 0;
+    public int y = 0;
+    public int width = 24;
+    public int height = 24;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The main label on this icon. */
-  FigText _name;
+    /** The main label on this icon. */
+    FigText _name;
 
-  /** UML does not really use ports, so just define one big one so
-   *  that users can drag edges to or from any point in the icon. */
+    /** UML does not really use ports, so just define one big one so
+     *  that users can drag edges to or from any point in the icon. */
 
-  FigCircle _bigPort;
+    FigCircle _bigPort;
 
-  // add other Figs here aes needed
+    // add other Figs here aes needed
 
-  FigCircle _head;
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    FigCircle _head;
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public FigDeepHistoryState() {
-    _bigPort = new FigCircle(x, y, width, height, Color.cyan, Color.cyan);
-    _head = new FigCircle(x, y, width, height, Color.black, Color.white);
-    _name = new FigText(x, y, width-10, height-10);
-    _name.setText("H*");
-    _name.setTextColor(Color.black);
-    _name.setFilled(false);
-    _name.setLineWidth(0);
+    public FigDeepHistoryState() {
+	_bigPort = new FigCircle(x, y, width, height, Color.cyan, Color.cyan);
+	_head = new FigCircle(x, y, width, height, Color.black, Color.white);
+	_name = new FigText(x, y, width - 10, height - 10);
+	_name.setText("H*");
+	_name.setTextColor(Color.black);
+	_name.setFilled(false);
+	_name.setLineWidth(0);
 
-    // add Figs to the FigNode in back-to-front order
-    addFig(_bigPort);
-    addFig(_head);
-    addFig(_name);
+	// add Figs to the FigNode in back-to-front order
+	addFig(_bigPort);
+	addFig(_head);
+	addFig(_name);
 
-    setBlinkPorts(false); //make port invisble unless mouse enters
-    Rectangle r = getBounds();
-  }
+	setBlinkPorts(false); //make port invisble unless mouse enters
+	Rectangle r = getBounds();
+    }
 
-  public String placeString() { return "H*"; }
+    public String placeString() { return "H*"; }
 
-  public FigDeepHistoryState(GraphModel gm, Object node) {
-    this();
-    setOwner(node);
-  }
+    public FigDeepHistoryState(GraphModel gm, Object node) {
+	this();
+	setOwner(node);
+    }
 
-  public Object clone() {
-    FigDeepHistoryState figClone = (FigDeepHistoryState) super.clone();
-    Vector v = figClone.getFigs();
-    figClone._bigPort = (FigCircle) v.elementAt(0);
-    figClone._head = (FigCircle) v.elementAt(1);
-    figClone._name = (FigText) v.elementAt(2);
-    return figClone;
-  }
+    public Object clone() {
+	FigDeepHistoryState figClone = (FigDeepHistoryState) super.clone();
+	Vector v = figClone.getFigs();
+	figClone._bigPort = (FigCircle) v.elementAt(0);
+	figClone._head = (FigCircle) v.elementAt(1);
+	figClone._name = (FigText) v.elementAt(2);
+	return figClone;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // Fig accessors
+    ////////////////////////////////////////////////////////////////
+    // Fig accessors
 
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
-  }
+    public void setOwner(Object node) {
+	super.setOwner(node);
+	bindPort(node, _bigPort);
+    }
 
-  /** History states are fixed size. */
-  public boolean isResizable() { return false; }
+    /** History states are fixed size. */
+    public boolean isResizable() { return false; }
 
-  public Selection makeSelection() {
-    return new SelectionMoveClarifiers(this);
-  }
+    public Selection makeSelection() {
+	return new SelectionMoveClarifiers(this);
+    }
 
-  public void setLineColor(Color col) { _head.setLineColor(col); }
-  public Color getLineColor() { return _head.getLineColor(); }
+    public void setLineColor(Color col) { _head.setLineColor(col); }
+    public Color getLineColor() { return _head.getLineColor(); }
 
-  public void setFillColor(Color col) { _head.setFillColor(col); }
-  public Color getFillColor() { return _head.getFillColor(); }
+    public void setFillColor(Color col) { _head.setFillColor(col); }
+    public Color getFillColor() { return _head.getFillColor(); }
 
-  public void setFilled(boolean f) { }
-  public boolean getFilled() { return true; }
+    public void setFilled(boolean f) { }
+    public boolean getFilled() { return true; }
 
-  public void setLineWidth(int w) { _head.setLineWidth(w); }
-  public int getLineWidth() { return _head.getLineWidth(); }
+    public void setLineWidth(int w) { _head.setLineWidth(w); }
+    public int getLineWidth() { return _head.getLineWidth(); }
 
-  ////////////////////////////////////////////////////////////////
-  // Event handlers
+    ////////////////////////////////////////////////////////////////
+    // Event handlers
 
-  public void mouseClicked(MouseEvent me) { }
-  public void keyPressed(KeyEvent ke) { }
+    public void mouseClicked(MouseEvent me) { }
+    public void keyPressed(KeyEvent ke) { }
 
 
-  static final long serialVersionUID = 6572261327347541373L;
+    static final long serialVersionUID = 6572261327347541373L;
 
 } /* end class FigDeepHistoryState */

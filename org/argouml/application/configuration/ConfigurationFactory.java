@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -31,38 +32,39 @@ package org.argouml.application.configuration;
  */
 public class ConfigurationFactory
 {
-  /** The only occurance of the configuration factory.
-   */
-  private static final ConfigurationFactory SINGLETON;
+    /** The only occurance of the configuration factory.
+     */
+    private static final ConfigurationFactory SINGLETON;
 
-  /** The active configuration handler.
-   */
-  private static ConfigurationHandler _handler = new ConfigurationProperties();
+    /** The active configuration handler.
+     */
+    private static ConfigurationHandler _handler = 
+	new ConfigurationProperties();
 
-  /** Private constructor to not allow instantiation.
-   */
-  private ConfigurationFactory() {
-     // Argo.log.debug("Constructor");
-  }
+    /** Private constructor to not allow instantiation.
+     */
+    private ConfigurationFactory() {
+	// Argo.log.debug("Constructor");
+    }
 
-  /** Returns the instance of the singleton.
-   *
-   *  @return the only instance of the configuration factory.
-   */
-  public static final ConfigurationFactory getInstance()
-  {
-      return SINGLETON;
-  }
+    /** Returns the instance of the singleton.
+     *
+     *  @return the only instance of the configuration factory.
+     */
+    public static final ConfigurationFactory getInstance()
+    {
+	return SINGLETON;
+    }
 
-  /** Returns the customized configuration for the user.
-   *
-   *  @return a concrete class which extends ConfigurationHandler and
-   *  can be used to access and manipulate the configuration.
-   */
-  public ConfigurationHandler getConfigurationHandler() {
-      // TODO:  Allow other configuration handlers.
-      return _handler;
-  }
+    /** Returns the customized configuration for the user.
+     *
+     *  @return a concrete class which extends ConfigurationHandler and
+     *  can be used to access and manipulate the configuration.
+     */
+    public ConfigurationHandler getConfigurationHandler() {
+	// TODO:  Allow other configuration handlers.
+	return _handler;
+    }
 
     /**
      * Initialize the factory singleton based on system
@@ -74,15 +76,16 @@ public class ConfigurationFactory
 	ConfigurationFactory newFactory = null;
 	if (name != null) {
             try {
-                newFactory = (ConfigurationFactory)Class.forName(name).newInstance();
+                newFactory = 
+		    (ConfigurationFactory) Class.forName(name).newInstance();
             }
-	    catch(Exception e) {
+	    catch (Exception e) {
 	        System.out.println ("Can't create configuration factory " +
 	                            name + ", using default factory");
             }
 	}
 	if (newFactory == null)
-		newFactory = new ConfigurationFactory();
+	    newFactory = new ConfigurationFactory();
 	SINGLETON = newFactory;
     }
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -41,90 +42,93 @@ import org.tigris.gef.presentation.FigRect;
 
 public class FigJoinState extends FigStateVertex {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  public static final int MARGIN = 2;
-  public static final int X = 10;
-  public static final int Y = 10;
-  public static final int WIDTH = 80;
-  public static final int HEIGHT = 9;
+    public static final int MARGIN = 2;
+    public static final int X = 10;
+    public static final int Y = 10;
+    public static final int WIDTH = 80;
+    public static final int HEIGHT = 9;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  FigRect _bigPort;
-  FigRect _head;
+    FigRect _bigPort;
+    FigRect _head;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public FigJoinState() {
-    _bigPort = new FigRect(X,Y,WIDTH,HEIGHT, Color.cyan, Color.cyan);
-    _head = new FigRect(X,Y,WIDTH,HEIGHT, Color.black, Color.black);
-    // add Figs to the FigNode in back-to-front order
-    addFig(_bigPort);
-    addFig(_head);
+    public FigJoinState() {
+	_bigPort = new FigRect(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan);
+	_head = new FigRect(X, Y, WIDTH, HEIGHT, Color.black, Color.black);
+	// add Figs to the FigNode in back-to-front order
+	addFig(_bigPort);
+	addFig(_head);
 
-    setBlinkPorts(false); //make port invisble unless mouse enters
-    Rectangle r = getBounds();
-  }
+	setBlinkPorts(false); //make port invisble unless mouse enters
+	Rectangle r = getBounds();
+    }
 
-  public FigJoinState(GraphModel gm, Object node) {
-    this();
-    setOwner(node);
-  }
+    public FigJoinState(GraphModel gm, Object node) {
+	this();
+	setOwner(node);
+    }
 
-  public Object clone() {
-    FigJoinState figClone = (FigJoinState) super.clone();
-    Vector v = figClone.getFigs();
-    figClone._bigPort = (FigRect) v.elementAt(0);
-    figClone._head = (FigRect) v.elementAt(1);
-    return figClone;
-  }
+    public Object clone() {
+	FigJoinState figClone = (FigJoinState) super.clone();
+	Vector v = figClone.getFigs();
+	figClone._bigPort = (FigRect) v.elementAt(0);
+	figClone._head = (FigRect) v.elementAt(1);
+	return figClone;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // Fig accessors
+    ////////////////////////////////////////////////////////////////
+    // Fig accessors
 
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
-  }
+    public void setOwner(Object node) {
+	super.setOwner(node);
+	bindPort(node, _bigPort);
+    }
 
-  /** Initial states are fixed size. */
-  //public boolean isResizable() { return false; }
+    /** Initial states are fixed size. */
+    //public boolean isResizable() { return false; }
 
-  /* Override setBounds to keep shapes looking right */
-  public void setBounds(int x, int y, int w, int h) {
-    Rectangle oldBounds = getBounds();
-    if (w > h) h = 9; else w = 9;
-    _bigPort.setBounds(x, y, w, h);
-    _head.setBounds(x, y, w, h);
+    /* Override setBounds to keep shapes looking right */
+    public void setBounds(int x, int y, int w, int h) {
+	Rectangle oldBounds = getBounds();
+	if (w > h)
+	    h = 9;
+	else
+	    w = 9;
+	_bigPort.setBounds(x, y, w, h);
+	_head.setBounds(x, y, w, h);
 
-    calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-    updateEdges();
-    firePropChange("bounds", oldBounds, getBounds());
-  }
+	calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+	updateEdges();
+	firePropChange("bounds", oldBounds, getBounds());
+    }
 
-  public void setLineColor(Color col) { _head.setLineColor(col); }
-  public Color getLineColor() { return _head.getLineColor(); }
+    public void setLineColor(Color col) { _head.setLineColor(col); }
+    public Color getLineColor() { return _head.getLineColor(); }
 
-  public void setFillColor(Color col) { _head.setFillColor(col); }
-  public Color getFillColor() { return _head.getFillColor(); }
+    public void setFillColor(Color col) { _head.setFillColor(col); }
+    public Color getFillColor() { return _head.getFillColor(); }
 
-  public void setFilled(boolean f) { }
-  public boolean getFilled() { return true; }
+    public void setFilled(boolean f) { }
+    public boolean getFilled() { return true; }
 
-  public void setLineWidth(int w) { _head.setLineWidth(w); }
-  public int getLineWidth() { return _head.getLineWidth(); }
+    public void setLineWidth(int w) { _head.setLineWidth(w); }
+    public int getLineWidth() { return _head.getLineWidth(); }
 
-  ////////////////////////////////////////////////////////////////
-  // Event handlers
+    ////////////////////////////////////////////////////////////////
+    // Event handlers
   
-  public void mouseClicked(MouseEvent me) { }
-  public void keyPressed(KeyEvent ke) { }
+    public void mouseClicked(MouseEvent me) { }
+    public void keyPressed(KeyEvent ke) { }
 
 
-  static final long serialVersionUID = 2075803883819230367L;
+    static final long serialVersionUID = 2075803883819230367L;
 
 } /* end class FigJoinState */

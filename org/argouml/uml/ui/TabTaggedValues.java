@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -138,7 +139,7 @@ public class TabTaggedValues extends TabSpawnable
         Vector tvs = new Vector(me.getTaggedValues());
         _tableModel.setTarget(me);
         if (me != null) {
-            _titleLabel.setText("Target: "+ me.getUMLClassName()+" ("+me.getName()+")");
+            _titleLabel.setText("Target: " + me.getUMLClassName() + " (" + me.getName() + ")");
         }
         else {
             _titleLabel.setText("none");
@@ -156,7 +157,7 @@ public class TabTaggedValues extends TabSpawnable
             _shouldBeEnabled = false;
             return _shouldBeEnabled;
         }
-        else{
+        else {
             _shouldBeEnabled = true;
             return true;
         }
@@ -190,134 +191,137 @@ public class TabTaggedValues extends TabSpawnable
 
 
 class TableModelTaggedValues extends AbstractTableModel
-implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
-  private static final String BUNDLE = "Cognitive";
+    implements VetoableChangeListener, 
+	       DelayedVChangeListener,
+	       MElementListener 
+{
+    private static final String BUNDLE = "Cognitive";
 
-  ////////////////
-  // instance varables
-  MModelElement _target;
-  TabTaggedValues _tab = null;
+    ////////////////
+    // instance varables
+    MModelElement _target;
+    TabTaggedValues _tab = null;
 
-  ////////////////
-  // constructor
-  public TableModelTaggedValues(TabTaggedValues t) { _tab = t; }
+    ////////////////
+    // constructor
+    public TableModelTaggedValues(TabTaggedValues t) { _tab = t; }
 
-  ////////////////
-  // accessors
-  public void setTarget(MModelElement t) {
-    if (_target != null)
-        UmlModelEventPump.getPump().removeModelEventListener(this, _target);
-    _target = t;
-    UmlModelEventPump.getPump().addModelEventListener(this, t);
-    fireTableDataChanged();
-    _tab.resizeColumns();
-  }
-
-  ////////////////
-  // TableModel implemetation
-  public int getColumnCount() { return 2; }
-
-  public String  getColumnName(int c) {
-    if (c == 0) return Argo.localize(BUNDLE, "taggedvaluespane.label.tag");
-    if (c == 1) return Argo.localize(BUNDLE, "taggedvaluespane.label.value");
-    return "XXX";
-  }
-
-  public Class getColumnClass(int c) {
-    return String.class;
-  }
-
-  public boolean isCellEditable(int row, int col) {
-    return true;
-  }
-
-  public int getRowCount() {
-    if (_target == null) return 0;
-    Collection tvs = _target.getTaggedValues();
-    //if (tvs == null) return 1;
-    return tvs.size() + 1;
-  }
-
-  public Object getValueAt(int row, int col) {
-    Vector tvs = new Vector(_target.getTaggedValues());
-    //if (tvs == null) return "";
-    if (row == tvs.size()) return ""; //blank line allows addition
-    MTaggedValue tv = (MTaggedValue) tvs.elementAt(row);
-    if (col == 0) {
-      String n = tv.getTag();
-      if (n == null) return "";
-      return n;
+    ////////////////
+    // accessors
+    public void setTarget(MModelElement t) {
+	if (_target != null)
+	    UmlModelEventPump.getPump().removeModelEventListener(this, _target);
+	_target = t;
+	UmlModelEventPump.getPump().addModelEventListener(this, t);
+	fireTableDataChanged();
+	_tab.resizeColumns();
     }
-    if (col == 1) {
-      String be = tv.getValue();
-      if (be == null) return "";
-      return be;
+
+    ////////////////
+    // TableModel implemetation
+    public int getColumnCount() { return 2; }
+
+    public String  getColumnName(int c) {
+	if (c == 0) return Argo.localize(BUNDLE, "taggedvaluespane.label.tag");
+	if (c == 1) return Argo.localize(BUNDLE, "taggedvaluespane.label.value");
+	return "XXX";
     }
-    return "TV-" + row*2+col; // for debugging
-  }
 
-  public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-    TableModelEvent mEvent = null;
-
-    if (columnIndex != 0 && columnIndex != 1) return;
-    if (!(aValue instanceof String)) return;
-    Vector tvs = new Vector(_target.getTaggedValues());
-    if (tvs.size() <= rowIndex) {
-      MTaggedValue tv = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
-      if (columnIndex == 0) tv.setTag((String)aValue);
-      if (columnIndex == 1) {
-	  tv.setTag("");
-	  tv.setValue((String) aValue);
-      }
-      tvs.addElement(tv);
-
-      mEvent = new TableModelEvent(this, tvs.size(), tvs.size(),
-			TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT);
+    public Class getColumnClass(int c) {
+	return String.class;
     }
-    else if ("".equals(aValue) && columnIndex == 0) {
-      tvs.removeElementAt(rowIndex);
-      mEvent = new TableModelEvent(this, rowIndex, rowIndex,
-			TableModelEvent.ALL_COLUMNS, TableModelEvent.DELETE);
+
+    public boolean isCellEditable(int row, int col) {
+	return true;
     }
-    else {
-      MTaggedValue tv = (MTaggedValue) tvs.elementAt(rowIndex);
-      if (columnIndex == 0) tv.setTag((String) aValue);
-      if (columnIndex == 1) tv.setValue((String) aValue);
-      mEvent = new TableModelEvent(this, rowIndex);
+
+    public int getRowCount() {
+	if (_target == null) return 0;
+	Collection tvs = _target.getTaggedValues();
+	//if (tvs == null) return 1;
+	return tvs.size() + 1;
     }
-    _target.setTaggedValues(tvs);
-    if (mEvent != null)
-      fireTableChanged(mEvent);
-    _tab.resizeColumns();
-  }
 
-  ////////////////
-  // event handlers
-	public void propertySet(MElementEvent mee) {
+    public Object getValueAt(int row, int col) {
+	Vector tvs = new Vector(_target.getTaggedValues());
+	//if (tvs == null) return "";
+	if (row == tvs.size()) return ""; //blank line allows addition
+	MTaggedValue tv = (MTaggedValue) tvs.elementAt(row);
+	if (col == 0) {
+	    String n = tv.getTag();
+	    if (n == null) return "";
+	    return n;
 	}
-	public void listRoleItemSet(MElementEvent mee) {
+	if (col == 1) {
+	    String be = tv.getValue();
+	    if (be == null) return "";
+	    return be;
 	}
-	public void recovered(MElementEvent mee) {
+	return "TV-" + row * 2 + col; // for debugging
+    }
+
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+	TableModelEvent mEvent = null;
+
+	if (columnIndex != 0 && columnIndex != 1) return;
+	if (!(aValue instanceof String)) return;
+	Vector tvs = new Vector(_target.getTaggedValues());
+	if (tvs.size() <= rowIndex) {
+	    MTaggedValue tv = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
+	    if (columnIndex == 0) tv.setTag((String) aValue);
+	    if (columnIndex == 1) {
+		tv.setTag("");
+		tv.setValue((String) aValue);
+	    }
+	    tvs.addElement(tv);
+
+	    mEvent = new TableModelEvent(this, tvs.size(), tvs.size(),
+					 TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT);
 	}
-	public void removed(MElementEvent mee) {
+	else if ("".equals(aValue) && columnIndex == 0) {
+	    tvs.removeElementAt(rowIndex);
+	    mEvent = new TableModelEvent(this, rowIndex, rowIndex,
+					 TableModelEvent.ALL_COLUMNS, TableModelEvent.DELETE);
 	}
-	public void roleAdded(MElementEvent mee) {
-	    if ("taggedValue".equals(mee.getName()))
-		fireTableChanged(new TableModelEvent(this));
+	else {
+	    MTaggedValue tv = (MTaggedValue) tvs.elementAt(rowIndex);
+	    if (columnIndex == 0) tv.setTag((String) aValue);
+	    if (columnIndex == 1) tv.setValue((String) aValue);
+	    mEvent = new TableModelEvent(this, rowIndex);
 	}
-	public void roleRemoved(MElementEvent mee) {
-	}
+	_target.setTaggedValues(tvs);
+	if (mEvent != null)
+	    fireTableChanged(mEvent);
+	_tab.resizeColumns();
+    }
+
+    ////////////////
+    // event handlers
+    public void propertySet(MElementEvent mee) {
+    }
+    public void listRoleItemSet(MElementEvent mee) {
+    }
+    public void recovered(MElementEvent mee) {
+    }
+    public void removed(MElementEvent mee) {
+    }
+    public void roleAdded(MElementEvent mee) {
+	if ("taggedValue".equals(mee.getName()))
+	    fireTableChanged(new TableModelEvent(this));
+    }
+    public void roleRemoved(MElementEvent mee) {
+    }
 
 
-  public void vetoableChange(PropertyChangeEvent pce) {
-    DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-    SwingUtilities.invokeLater(delayedNotify);
-  }
+    public void vetoableChange(PropertyChangeEvent pce) {
+	DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
+	SwingUtilities.invokeLater(delayedNotify);
+    }
 
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    fireTableDataChanged();
-    _tab.resizeColumns();
-  }
+    public void delayedVetoableChange(PropertyChangeEvent pce) {
+	fireTableDataChanged();
+	_tab.resizeColumns();
+    }
 
 } /* end class TableModelTaggedValues */
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -110,151 +111,153 @@ public class FigPackage extends FigNodeModelElement {
 
     public FigPackage() {
         Color handleColor = Globals.getPrefs().getHandleColor();
-        _bigPort = new FigRect(x, y, width, height, null, null) {
-            public void paint(Graphics g) {
-                super.paint(g);
+        _bigPort = new FigRect(x, y, width, height, null, null) 
+	    {
+		public void paint(Graphics g) {
+		    super.paint(g);
                 
-                // Draw the shadow                
-                if (_shadowSize > 0) {
-                    for (int i = 0; i < _shadowSize; ++i) {
-                        Color shadow = new Color(0.1f, 0.1f, 0.1f, 
-                            0.5f * (((float) _shadowSize - i) / (float) _shadowSize));                        
-                        g.setColor(shadow);
+		    // Draw the shadow                
+		    if (_shadowSize > 0) {
+			for (int i = 0; i < _shadowSize; ++i) {
+			    Color shadow = new Color(0.1f, 0.1f, 0.1f, 
+						     0.5f * (((float) _shadowSize - i) / (float) _shadowSize));                        
+			    g.setColor(shadow);
 
-                        g.drawLine(
-                            _body.getX() + _shadowSize,
-                            _body.getY() + _body.getHeight() + i,
-                            _body.getX() + _body.getWidth() + i,
-                            _body.getY() + _body.getHeight() + i);
+			    g.drawLine(
+				       _body.getX() + _shadowSize,
+				       _body.getY() + _body.getHeight() + i,
+				       _body.getX() + _body.getWidth() + i,
+				       _body.getY() + _body.getHeight() + i);
 
-                        g.drawLine(
-                            _body.getX() + _body.getWidth() + i,
-                            _body.getY() + _shadowSize,
-                            _body.getX() + _body.getWidth() + i,
-                            _body.getY() + _body.getHeight() + i - 1);                        
+			    g.drawLine(
+				       _body.getX() + _body.getWidth() + i,
+				       _body.getY() + _shadowSize,
+				       _body.getX() + _body.getWidth() + i,
+				       _body.getY() + _body.getHeight() + i - 1);                        
                     
-                        if (_stereo.getHeight() > _shadowSize) {
-                            g.drawLine(
-                                _stereo.getX() + _stereo.getWidth() + i,
-                                _stereo.getY() + _shadowSize,
-                                _stereo.getX() + _stereo.getWidth() + i,
-                                _stereo.getY() + _stereo.getHeight() + _name.getHeight() + _shadowSize - 2);
+			    if (_stereo.getHeight() > _shadowSize) {
+				g.drawLine(
+					   _stereo.getX() + _stereo.getWidth() + i,
+					   _stereo.getY() + _shadowSize,
+					   _stereo.getX() + _stereo.getWidth() + i,
+					   _stereo.getY() + _stereo.getHeight() + _name.getHeight() + _shadowSize - 2);
                                 
-                            //int blinderheight =
-                            //    (_name.getY()
-                            //        - 1
-                            //        - (_stereo.getY() + _stereo.getHeight() + 1));
-                            //if (blinderheight > 0) {
-                            //                  g.fillRect(_stereo.getX()+_stereo.getWidth(),
-                            //                             _stereo.getY()+_stereo.getHeight(),
-                            //                             _shadowSize,
-                            //                             blinderheight);
-                            //}
-                        }
-                        else if (_name.getHeight() > _shadowSize) {
-                            g.drawLine(
-                                _name.getX() + _name.getWidth() + i,
-                                _name.getY() + _shadowSize,
-                                _name.getX() + _name.getWidth() + i,
-                                _name.getY() + _name.getHeight());
-                        }
-                    }
-                }
-            }
-        };
+				//int blinderheight =
+				//    (_name.getY()
+				//        - 1
+				//        - (_stereo.getY() + _stereo.getHeight() + 1));
+				//if (blinderheight > 0) {
+				//                  g.fillRect(_stereo.getX()+_stereo.getWidth(),
+				//                             _stereo.getY()+_stereo.getHeight(),
+				//                             _shadowSize,
+				//                             blinderheight);
+				//}
+			    }
+			    else if (_name.getHeight() > _shadowSize) {
+				g.drawLine(
+					   _name.getX() + _name.getWidth() + i,
+					   _name.getY() + _shadowSize,
+					   _name.getX() + _name.getWidth() + i,
+					   _name.getY() + _name.getHeight());
+			    }
+			}
+		    }
+		}
+	    };
 
         //
         // Create a Body that reacts to double-clicks and jumps to a diagram.
         //
-        _body = new FigText(x, y + textH, width, height - textH) {
-            public void mouseClicked(MouseEvent me) {
+        _body = new FigText(x, y + textH, width, height - textH) 
+	    {
+		public void mouseClicked(MouseEvent me) {
 
-                String lsDefaultName = "main";
+		    String lsDefaultName = "main";
 
-                if (me.getClickCount() >= 2) {
-                    MPackage lPkg = (MPackage) FigPackage.this.getOwner();
-                    if (lPkg != null) {
-                        MNamespace lNS = lPkg;
+		    if (me.getClickCount() >= 2) {
+			MPackage lPkg = (MPackage) FigPackage.this.getOwner();
+			if (lPkg != null) {
+			    MNamespace lNS = lPkg;
 
-                        ProjectBrowser lPB = ProjectBrowser.getInstance();
-                        Project lP =
-                            ProjectManager.getManager().getCurrentProject();
+			    ProjectBrowser lPB = ProjectBrowser.getInstance();
+			    Project lP =
+				ProjectManager.getManager().getCurrentProject();
 
-                        Vector diags = lP.getDiagrams();
-                        Enumeration diagEnum = diags.elements();
-                        UMLDiagram lFirst = null;
-                        while (diagEnum.hasMoreElements()) {
-                            UMLDiagram lDiagram =
-                                (UMLDiagram) diagEnum.nextElement();
-                            MNamespace lDiagramNS = lDiagram.getNamespace();
-                            if ((lNS == null && lDiagramNS == null)
-                                || (lNS.equals(lDiagramNS))) {
-                                /* save first */
-                                if (lFirst == null) {
-                                    lFirst = lDiagram;
-                                }
+			    Vector diags = lP.getDiagrams();
+			    Enumeration diagEnum = diags.elements();
+			    UMLDiagram lFirst = null;
+			    while (diagEnum.hasMoreElements()) {
+				UMLDiagram lDiagram =
+				    (UMLDiagram) diagEnum.nextElement();
+				MNamespace lDiagramNS = lDiagram.getNamespace();
+				if ((lNS == null && lDiagramNS == null)
+				    || (lNS.equals(lDiagramNS))) {
+				    /* save first */
+				    if (lFirst == null) {
+					lFirst = lDiagram;
+				    }
 
-                                if (lDiagram.getName() != null
-                                    && lDiagram.getName().startsWith(
-                                        lsDefaultName)) {
-                                    me.consume();
-                                    super.mouseClicked(me);                                   
-                                    TargetManager.getInstance().setTarget(lDiagram);
-                                    return;
-                                }
-                            }
-                        } /*while*/
+				    if (lDiagram.getName() != null
+					&& lDiagram.getName().startsWith(
+									 lsDefaultName)) {
+					me.consume();
+					super.mouseClicked(me);                                   
+					TargetManager.getInstance().setTarget(lDiagram);
+					return;
+				    }
+				}
+			    } /*while*/
 
-                        /* if we get here then we didnt get the default diagram*/
-                        if (lFirst != null) {
-                            me.consume();
-                            super.mouseClicked(me);
+			    /* if we get here then we didnt get the default diagram*/
+			    if (lFirst != null) {
+				me.consume();
+				super.mouseClicked(me);
                         
-                            TargetManager.getInstance().setTarget(lFirst);
-                            return;
-                        } else {
-                            /* try to create a new class diagram */
-                            me.consume();
-                            super.mouseClicked(me);
-                            try {
-                                String nameSpace;
-                                if (lNS != null && lNS.getName() != null)
-                                    nameSpace = lNS.getName();
-                                else
-                                    nameSpace = "(anon)";
+				TargetManager.getInstance().setTarget(lFirst);
+				return;
+			    } else {
+				/* try to create a new class diagram */
+				me.consume();
+				super.mouseClicked(me);
+				try {
+				    String nameSpace;
+				    if (lNS != null && lNS.getName() != null)
+					nameSpace = lNS.getName();
+				    else
+					nameSpace = "(anon)";
 
-                                String dialogText =
-                                    "Add new class diagram to "
+				    String dialogText =
+					"Add new class diagram to "
                                         + nameSpace
                                         + "?";
-                                int option =
-                                    JOptionPane.showConfirmDialog(
-                                        null,
-                                        dialogText,
-                                        "Add new class diagram?",
-                                        JOptionPane.YES_NO_OPTION);
-                                if (option == JOptionPane.YES_OPTION) {
-                                    ArgoDiagram lNew = new UMLClassDiagram(lNS);
-                                    String diagramName =
-                                        lsDefaultName + "_" + lNew.getName();
+				    int option =
+					JOptionPane.showConfirmDialog(
+								      null,
+								      dialogText,
+								      "Add new class diagram?",
+								      JOptionPane.YES_NO_OPTION);
+				    if (option == JOptionPane.YES_OPTION) {
+					ArgoDiagram lNew = new UMLClassDiagram(lNS);
+					String diagramName =
+					    lsDefaultName + "_" + lNew.getName();
 
-                                    lP.addMember(lNew);
+					lP.addMember(lNew);
                                 
-                                    TargetManager.getInstance().setTarget(lNew);
-                                    /* change prefix */
-                                    lNew.setName(diagramName);
-                                }
-                            } catch (Exception ex) {
-                            }
+					TargetManager.getInstance().setTarget(lNew);
+					/* change prefix */
+					lNew.setName(diagramName);
+				    }
+				} catch (Exception ex) {
+				}
 
-                            return;
-                        } /*if new*/
+				return;
+			    } /*if new*/
 
-                    } /*if package */
-                } /* if doubleclicks */
-                super.mouseClicked(me);
-            }
-        };
+			} /*if package */
+		    } /* if doubleclicks */
+		    super.mouseClicked(me);
+		}
+	    };
 
         _body.setEditable(false);
 
@@ -470,8 +473,8 @@ public class FigPackage extends FigNodeModelElement {
             }
         } catch (Exception e) {
             cat.error(
-                "could not set package due to:" + e + "' at " + encloser,
-                e);
+		      "could not set package due to:" + e + "' at " + encloser,
+		      e);
         }
     }
 
@@ -583,10 +586,10 @@ public class FigPackage extends FigNodeModelElement {
         _name.setBounds(x, currentY, newW - indentX, height);
         _stereo.setBounds(x, y, newW - indentX, STEREOHEIGHT + 1);
         _stereoLineBlinder.setBounds(
-            x + 1,
-            y + STEREOHEIGHT,
-            newW - 2 - indentX,
-            2);
+				     x + 1,
+				     y + STEREOHEIGHT,
+				     newW - 2 - indentX,
+				     2);
 
         // Advance currentY to where the start of the body box is,
         // remembering that it overlaps the next box by 1 pixel. Calculate the
@@ -610,11 +613,11 @@ public class FigPackage extends FigNodeModelElement {
     }
 
     /**
-      * Build a collection of menu items relevant for a right-click popup menu on a Package.
-      *
-      * @param     me     a mouse event
-      * @return          a collection of menu items
-      */
+     * Build a collection of menu items relevant for a right-click popup menu on a Package.
+     *
+     * @param     me     a mouse event
+     * @return          a collection of menu items
+     */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         MPackage mclass = (MPackage) getOwner();
@@ -622,37 +625,39 @@ public class FigPackage extends FigNodeModelElement {
         ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
 
         modifierMenu.addCheckItem(
-            new ActionModifier(
-                "Abstract",
-                "isAbstract",
-                "isAbstract",
-                "setAbstract",
-                mclass));
+				  new ActionModifier(
+						     "Abstract",
+						     "isAbstract",
+						     "isAbstract",
+						     "setAbstract",
+						     mclass));
         modifierMenu.addCheckItem(
-            new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", mclass));
+				  new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", mclass));
         modifierMenu.addCheckItem(
-            new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mclass));
+				  new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mclass));
 
         popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
 
         ArgoJMenu showMenu = new ArgoJMenu("Show");
 
         if (!_showStereotype) {
-            showMenu.add(new UMLAction("Show Stereotype", UMLAction.NO_ICON) {
-                public void actionPerformed(ActionEvent ae) {
-                    _showStereotype = true;
-                    renderingChanged();
-                    damage();
-                }
-            });
+            showMenu.add(new UMLAction("Show Stereotype", UMLAction.NO_ICON) 
+		{
+		    public void actionPerformed(ActionEvent ae) {
+			_showStereotype = true;
+			renderingChanged();
+			damage();
+		    }
+		});
         } else {
-            showMenu.add(new UMLAction("Hide Stereotype", UMLAction.NO_ICON) {
-                public void actionPerformed(ActionEvent ae) {
-                    _showStereotype = false;
-                    renderingChanged();
-                    damage();
-                }
-            });
+            showMenu.add(new UMLAction("Hide Stereotype", UMLAction.NO_ICON) 
+		{
+		    public void actionPerformed(ActionEvent ae) {
+			_showStereotype = false;
+			renderingChanged();
+			damage();
+		    }
+		});
         }
 
         popUpActions.insertElementAt(showMenu, popUpActions.size() - 1);

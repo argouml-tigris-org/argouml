@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,10 +43,10 @@ import org.argouml.cognitive.*;
 
 public abstract class ControlMech implements java.io.Serializable {
 
-  public ControlMech() { }
-  public boolean isRelevant(Critic c, Designer d) {
-    return true;
-  }
+    public ControlMech() { }
+    public boolean isRelevant(Critic c, Designer d) {
+	return true;
+    }
 } // end class ControlMech
 
 

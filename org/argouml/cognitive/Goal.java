@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -26,38 +27,38 @@ package org.argouml.cognitive;
 import org.argouml.application.api.*;
 
 public class Goal {
-
-  // TODO: values
-
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public static final Goal UNSPEC = new Goal("goal.unspecified", 1);
-  
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected String _name;
-  protected int _priority;
-  
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public Goal(String n, int p) {
-    setName(Argo.localize("Cognitive", n));
-    setPriority(p);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public boolean equals(Object d2) {
-    if (!(d2 instanceof Goal)) return false;
-    return ((Goal)d2).getName().equals(getName());
-  }
-  
-  public String getName() { return _name; }
-  public void setName(String n) { _name = n; }
-  public int getPriority() { return _priority; }
-  public void setPriority(int p) { _priority = p; }
-
-  public String toString() { return getName(); }
-  
+    
+    // TODO: values
+    
+    ////////////////////////////////////////////////////////////////
+    // constants
+    public static final Goal UNSPEC = new Goal("goal.unspecified", 1);
+		       
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    protected String _name;
+    protected int _priority;
+			       
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public Goal(String n, int p) {
+	setName(Argo.localize("Cognitive", n));
+	setPriority(p);
+    }
+				   
+    ////////////////////////////////////////////////////////////////
+    // accessors
+				   
+    public boolean equals(Object d2) {
+	if (!(d2 instanceof Goal)) return false;
+	return ((Goal) d2).getName().equals(getName());
+    }
+				       
+    public String getName() { return _name; }
+    public void setName(String n) { _name = n; }
+    public int getPriority() { return _priority; }
+    public void setPriority(int p) { _priority = p; }
+						       
+    public String toString() { return getName(); }
+							   
 } /* end class Goal */

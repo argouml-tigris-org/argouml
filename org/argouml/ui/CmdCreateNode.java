@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -99,10 +100,10 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      * @param name
      */
     public CmdCreateNode(
-        Class nodeClass,
-        boolean sticky,
-        String resource,
-        String name) {
+			 Class nodeClass,
+			 boolean sticky,
+			 String resource,
+			 String name) {
         super(nodeClass, sticky, resource, name);
     }
 
@@ -130,38 +131,35 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
             Iterator it = factoryMethods.iterator();
             while (it.hasNext()) {
                 Object factory =
-                    (
-                        (Method)it
-                            .next())
-                            .invoke(UmlFactory.getFactory(), new Object[] {
-                });
+                    ((Method) it.next())
+		    .invoke(UmlFactory.getFactory(), new Object[] {
+		    });
                 List createMethods =
                     Arrays.asList(factory.getClass().getMethods());
                 Iterator it2 = createMethods.iterator();
                 String classname = getCreateClassName();
                 while (it2.hasNext()) {
-                    Method method = (Method)it2.next();
+                    Method method = (Method) it2.next();
                     String methodname = method.getName();
                     if (methodname.endsWith(classname)
-                        && methodname.substring(
-                            0,
-                            methodname.lastIndexOf(classname)).equals(
-                            "build")
-                        && method.getParameterTypes().length == 0) {
-                        return method.invoke(factory, new Object[] {
-                        });
-
-                    }
+                        && methodname.substring(0,
+						methodname.lastIndexOf(classname)).equals(
+											  "build")
+                        && method.getParameterTypes().length == 0)
+		    {
+			return method.invoke(factory, new Object[] {
+			});
+		    }
                 }
                 it2 = createMethods.iterator();
                 while (it2.hasNext()) {
-                    Method method = (Method)it2.next();
+                    Method method = (Method) it2.next();
                     String methodname = method.getName();
                     if (methodname.endsWith(classname)
                         && methodname.substring(
-                            0,
-                            methodname.lastIndexOf(classname)).equals(
-                            "create")) {
+						0,
+						methodname.lastIndexOf(classname)).equals(
+											  "create")) {
                         return method.invoke(factory, new Object[] {
                         });
                     }
@@ -180,7 +178,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      * @return String
      */
     private String getCreateClassName() {
-        String name = ((Class)_args.get("className")).getName();
+        String name = ((Class) _args.get("className")).getName();
         name = name.substring(name.lastIndexOf('.') + 2, name.length());
         if (name.endsWith("Impl")) {
             name = name.substring(0, name.lastIndexOf("Impl"));

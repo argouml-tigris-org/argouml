@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -45,50 +46,50 @@ import org.argouml.cognitive.critics.*;
 
 public class CrUnconventionalOperName extends CrUML {
 
-  public CrUnconventionalOperName() {
-    setHeadline("Choose a Better MOperation Name");
-    addSupportedDecision(CrUML.decNAMING);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-    addTrigger("feature_name");
-  }
+    public CrUnconventionalOperName() {
+	setHeadline("Choose a Better MOperation Name");
+	addSupportedDecision(CrUML.decNAMING);
+	setKnowledgeTypes(Critic.KT_SYNTAX);
+	addTrigger("feature_name");
+    }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MOperation)) return NO_PROBLEM;
-    MOperation oper = (MOperation) dm;
-    String myName = oper.getName();
-    if (myName == null || myName.equals("")) return NO_PROBLEM;
-    String nameStr = myName;
-    if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
-    char initalChar = nameStr.charAt(0);
-    if ((oper.getStereotype()!=null) && 
-        ("create".equals(oper.getStereotype().getName()) ||
-         "constructor".equals(oper.getStereotype().getName())))
-      return NO_PROBLEM;
-    if (!Character.isLowerCase(initalChar)) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MOperation)) return NO_PROBLEM;
+	MOperation oper = (MOperation) dm;
+	String myName = oper.getName();
+	if (myName == null || myName.equals("")) return NO_PROBLEM;
+	String nameStr = myName;
+	if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
+	char initalChar = nameStr.charAt(0);
+	if ((oper.getStereotype() != null) && 
+	    ("create".equals(oper.getStereotype().getName()) ||
+	     "constructor".equals(oper.getStereotype().getName())))
+	    return NO_PROBLEM;
+	if (!Character.isLowerCase(initalChar)) return PROBLEM_FOUND;
+	return NO_PROBLEM;
+    }
 
-  public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    MFeature f = (MFeature) dm;
-    VectorSet offs = computeOffenders(f);
-    return new ToDoItem(this, offs, dsgr);
-  }
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+	MFeature f = (MFeature) dm;
+	VectorSet offs = computeOffenders(f);
+	return new ToDoItem(this, offs, dsgr);
+    }
 
-  protected VectorSet computeOffenders(MFeature dm) {
-    VectorSet offs = new VectorSet(dm);
-    offs.addElement(dm.getOwner());
-    return offs;
-  }
+    protected VectorSet computeOffenders(MFeature dm) {
+	VectorSet offs = new VectorSet(dm);
+	offs.addElement(dm.getOwner());
+	return offs;
+    }
 
-  public boolean stillValid(ToDoItem i, Designer dsgr) {
-    if (!isActive()) return false;
-    VectorSet offs = i.getOffenders();
-    MFeature f = (MFeature) offs.firstElement();
-    if (!predicate(f, dsgr)) return false;
-    VectorSet newOffs = computeOffenders(f);
-    boolean res = offs.equals(newOffs);
-    return res;
-  }
+    public boolean stillValid(ToDoItem i, Designer dsgr) {
+	if (!isActive()) return false;
+	VectorSet offs = i.getOffenders();
+	MFeature f = (MFeature) offs.firstElement();
+	if (!predicate(f, dsgr)) return false;
+	VectorSet newOffs = computeOffenders(f);
+	boolean res = offs.equals(newOffs);
+	return res;
+    }
 
 
     /** candidateForConstructor tests if the operation name is the same
@@ -108,24 +109,24 @@ public class CrUnconventionalOperName extends CrUML {
     }
 
 
-  public void initWizard(Wizard w) {
-    if (w instanceof WizOperName) {
-      ToDoItem item = w.getToDoItem();
-      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
-      String sug = me.getName();
-      sug = sug.substring(0,1).toLowerCase() + sug.substring(1);
-      boolean cand = candidateForConstructor(me);
-      String ins = "Change the operation name to start with a "+
-	"lowercase letter";
-      if (cand)
-	  ins = ins + " or make it a constructor";
-      ins = ins + ".";
-      ((WizOperName)w).setInstructions(ins);
-      ((WizOperName)w).setSuggestion(sug);
-      ((WizOperName)w).setPossibleConstructor(cand);
+    public void initWizard(Wizard w) {
+	if (w instanceof WizOperName) {
+	    ToDoItem item = w.getToDoItem();
+	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+	    String sug = me.getName();
+	    sug = sug.substring(0, 1).toLowerCase() + sug.substring(1);
+	    boolean cand = candidateForConstructor(me);
+	    String ins = "Change the operation name to start with a " +
+		"lowercase letter";
+	    if (cand)
+		ins = ins + " or make it a constructor";
+	    ins = ins + ".";
+	    ((WizOperName) w).setInstructions(ins);
+	    ((WizOperName) w).setSuggestion(sug);
+	    ((WizOperName) w).setPossibleConstructor(cand);
+	}
     }
-  }
-  public Class getWizardClass(ToDoItem item) { return WizOperName.class; }
+    public Class getWizardClass(ToDoItem item) { return WizOperName.class; }
 
 } /* end class CrUnconventionalOperName */
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -121,12 +122,12 @@ public class ToDoList
     /** needs documenting */
     public ToDoList() {
     
-            _items = new Vector(100);
-            _resolvedItems = new Vector(100);
-            _listenerList = new EventListenerList();
-            _longestToDoList = 0;
-            _numNotValid = 0;
-            _RecentOffenderItems = new Vector();
+	_items = new Vector(100);
+	_resolvedItems = new Vector(100);
+	_listenerList = new EventListenerList();
+	_longestToDoList = 0;
+	_numNotValid = 0;
+	_RecentOffenderItems = new Vector();
     }
     
     /** Start a Thread to delete old items from the ToDoList. */
@@ -240,7 +241,7 @@ public class ToDoList
         VectorSet all = _allOffenders;
         if (all == null) {
             int size = _items.size();
-            all = new VectorSet(size*2);
+            all = new VectorSet(size * 2);
             for (int i = 0; i < size; i++) {
                 ToDoItem item = (ToDoItem) _items.elementAt(i);
                 all.addAllElements(item.getOffenders());
@@ -296,7 +297,7 @@ public class ToDoList
         if (item.getPoster() instanceof Critic) {
             ResolvedCritic rc;
             try {
-                rc = new ResolvedCritic((Critic)item.getPoster(),
+                rc = new ResolvedCritic((Critic) item.getPoster(),
                                         item.getOffenders(), false);
                 Enumeration enum = _resolvedItems.elements();
                 //cat.debug("Checking for inhibitors " + rc);
@@ -374,7 +375,7 @@ public class ToDoList
     
     /** needs documenting */
     public boolean explicitlyResolve(ToDoItem item, String reason) 
-      throws UnresolvableException {
+	throws UnresolvableException {
           
         if (item.getPoster() instanceof Designer) {
             boolean res = resolve(item);
@@ -384,10 +385,10 @@ public class ToDoList
         
         if (!(item.getPoster() instanceof Critic))
             throw new UnresolvableException("Unable to resolve with poster of type: "
-                                + item.getPoster().getClass());
+					    + item.getPoster().getClass());
         
-        ResolvedCritic rc = new ResolvedCritic((Critic)item.getPoster(),
-                                                item.getOffenders());
+        ResolvedCritic rc = new ResolvedCritic((Critic) item.getPoster(),
+					       item.getOffenders());
         boolean res = resolve(item);
         _resolvedItems.addElement(rc);
         History.TheHistory.addItemResolution(item, reason);
@@ -400,7 +401,7 @@ public class ToDoList
         Vector oldItems = (Vector) _items.clone();
         int size = oldItems.size();
         for (int i = 0; i < size; i++)
-            removeE((ToDoItem)oldItems.elementAt(i));
+            removeE((ToDoItem) oldItems.elementAt(i));
         
         recomputeAllOffenders();
         recomputeAllPosters();
@@ -434,7 +435,7 @@ public class ToDoList
     
     /** needs documenting */
     public ToDoItem elementAt(int index) {
-        return (ToDoItem)_items.elementAt(index);
+        return (ToDoItem) _items.elementAt(index);
     }
     
     /** needs documenting */
@@ -461,13 +462,13 @@ public class ToDoList
         _listenerList.remove(ToDoListListener.class, l);
     }
     
-  /**
-   * Notify all listeners that have registered interest for
-   * notification on this event type.  The event instance
-   * is lazily created using the parameters passed into
-   * the fire method.
-   * @see EventListenerList
-   */
+    /**
+     * Notify all listeners that have registered interest for
+     * notification on this event type.  The event instance
+     * is lazily created using the parameters passed into
+     * the fire method.
+     * @see EventListenerList
+     */
     protected void fireToDoListChanged() {
         _RecentOffender = null;
         // Guaranteed to return a non-null array
@@ -475,11 +476,11 @@ public class ToDoList
         ToDoListEvent e = null;
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for (int i = listeners.length-2; i>=0; i-=2) {
-            if (listeners[i]==ToDoListListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == ToDoListListener.class) {
                 // Lazily create the event:
                 if (e == null) e = new ToDoListEvent();
-                ((ToDoListListener)listeners[i+1]).toDoListChanged(e);
+                ((ToDoListListener) listeners[i + 1]).toDoListChanged(e);
             }
         }
     }
@@ -490,15 +491,15 @@ public class ToDoList
         ToDoListEvent e = null;
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for (int i = listeners.length-2; i>=0; i-=2) {
-            if (listeners[i]==ToDoListListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == ToDoListListener.class) {
                 // Lazily create the event:
                 if (e == null) {
                     Vector items = new Vector();
                     items.addElement(item);
                     e = new ToDoListEvent(items);
                 }
-                ((ToDoListListener)listeners[i+1]).toDoItemsChanged(e);
+                ((ToDoListListener) listeners[i + 1]).toDoItemsChanged(e);
             }
         }
     }
@@ -518,11 +519,11 @@ public class ToDoList
         ToDoListEvent e = null;
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for (int i = listeners.length-2; i>=0; i-=2) {
-            if (listeners[i]==ToDoListListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == ToDoListListener.class) {
                 // Lazily create the event:
                 if (e == null) e = new ToDoListEvent(items);
-                ((ToDoListListener)listeners[i+1]).toDoItemsAdded(e);
+                ((ToDoListListener) listeners[i + 1]).toDoItemsAdded(e);
             }
         }
     }
@@ -542,11 +543,11 @@ public class ToDoList
         ToDoListEvent e = null;
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for (int i = listeners.length-2; i>=0; i-=2) {
-            if (listeners[i]==ToDoListListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == ToDoListListener.class) {
                 // Lazily create the event:
                 if (e == null) e = new ToDoListEvent(items);
-                ((ToDoListListener)listeners[i+1]).toDoItemsRemoved(e);
+                ((ToDoListListener) listeners[i + 1]).toDoItemsRemoved(e);
             }
         }
     }

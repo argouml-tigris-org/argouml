@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -55,7 +56,7 @@ public class ActionNewModelElementConstraint
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        CoreFactory.getFactory().buildConstraint((MModelElement)getTarget());
+        CoreFactory.getFactory().buildConstraint((MModelElement) getTarget());
     }
 
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -62,7 +63,7 @@ public class OperationCodePiece extends NamedCodePiece
     {
 	this.name = name;
 	fullyQualifiedTypeNames = (operationDef.getText().toString().indexOf('.') != -1);
-	if(javadocDef != null) {
+	if (javadocDef != null) {
 	    CompositeCodePiece cp = new CompositeCodePiece(javadocDef);
 	    cp.add(operationDef);
 	    this.operationDef = cp;
@@ -120,25 +121,25 @@ public class OperationCodePiece extends NamedCodePiece
                        BufferedWriter writer,
                        Stack parseStateStack) throws Exception
     {
-        ParseState parseState = (ParseState)parseStateStack.peek();
+        ParseState parseState = (ParseState) parseStateStack.peek();
         Vector features = parseState.getNewFeatures();
         boolean found = false;
 
-        for(Iterator j=features.iterator(); j.hasNext() && !found; ) {
-            MFeature feature = (MFeature)j.next();
-            if(feature.getName().equals(name) && feature instanceof MOperation) { // fixed issue 1527
+        for (Iterator j = features.iterator(); j.hasNext() && !found; ) {
+            MFeature feature = (MFeature) j.next();
+            if (feature.getName().equals(name) && feature instanceof MOperation) { // fixed issue 1527
                 found = true;
                 parseState.newFeature(feature);
-                MOperation mOperation = (MOperation)feature;
+                MOperation mOperation = (MOperation) feature;
                 writer.write (GeneratorJava.getInstance().generateOperation(mOperation, true));
             }
         }
-        if(found) {
+        if (found) {
             // fast forward original code (overwriting)
-            ffCodePiece(reader,null);
+            ffCodePiece(reader, null);
         } else {
             // not in model, so write the original code
-            ffCodePiece(reader,writer);
+            ffCodePiece(reader, writer);
         }
     }
 }

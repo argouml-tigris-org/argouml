@@ -58,114 +58,114 @@ import ru.novosoft.uml.foundation.core.MInterface;
 public class SelectionInterface extends SelectionWButtons {
     protected static Category cat = 
         Category.getInstance(SelectionInterface.class);
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public static Icon realiz = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Realization");
+    ////////////////////////////////////////////////////////////////
+    // constants
+    public static Icon realiz = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Realization");
 
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  /** Construct a new SelectionInterface for the given Fig */
-  public SelectionInterface(Fig f) { super(f); }
+    /** Construct a new SelectionInterface for the given Fig */
+    public SelectionInterface(Fig f) { super(f); }
 
-  /** Return a handle ID for the handle under the mouse, or -1 if
-   *  none. TODO: in the future, return a Handle instance or
-   *  null. <p>
-   *  <pre>
-   *   0-------1-------2
-   *   |               |
-   *   3               4
-   *   |               |
-   *   5-------6-------7
-   * </pre>
-   */
-  public void hitHandle(Rectangle r, Handle h) {
-    super.hitHandle(r, h);
-    if (h.index != -1) return;
-    if (!_paintButtons) return;
-    Editor ce = Globals.curEditor();
-    SelectionManager sm = ce.getSelectionManager();
-    if (sm.size() != 1) return;
-    ModeManager mm = ce.getModeManager();
-    if (mm.includes(ModeModify.class) && _pressedButton == -1) return;
-    int cx = _content.getX();
-    int cy = _content.getY();
-    int cw = _content.getWidth();
-    int ch = _content.getHeight();
-    int iw = realiz.getIconWidth();
-    int ih = realiz.getIconHeight();
-    if (hitBelow(cx + cw/2, cy + ch, iw, ih, r)) {
-      h.index = 11;
-      h.instructions = "Add a realization";
-    }
-    else {
-      h.index = -1;
-      h.instructions = "Move object(s)";
-    }
-  }
-
-
-  /** Paint the handles at the four corners and midway along each edge
-   * of the bounding box.  */
-  public void paintButtons(Graphics g) {
-    int cx = _content.getX();
-    int cy = _content.getY();
-    int cw = _content.getWidth();
-    int ch = _content.getHeight();
-    paintButtonBelow(realiz, g, cx + cw/2, cy + ch, 11);
-  }
-
-
-  public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-    if (hand.index < 10) {
-      _paintButtons = false;
-      super.dragHandle(mX, mY, anX, anY, hand);
-      return;
-    }
-    int cx = _content.getX(), cy = _content.getY();
-    int cw = _content.getWidth(), ch = _content.getHeight();
-    int newX = cx, newY = cy, newW = cw, newH = ch;
-    Dimension minSize = _content.getMinimumSize();
-    int minWidth = minSize.width, minHeight = minSize.height;
-    Class edgeClass = null;
-    Class nodeClass = MClassImpl.class;
-    int bx = mX, by = mY;
-    boolean reverse = false;
-    switch (hand.index) {
-    case 11: //add realization
-      edgeClass = (Class)ModelFacade.ABSTRACTION;
-      reverse = true;
-      by = cy + ch;
-      bx = cx + cw/2;
-      break;
-    default:
-      cat.warn("invalid handle number");
-      break;
-    }
-    if (edgeClass != null && nodeClass != null) {
-      Editor ce = Globals.curEditor();
-      ModeCreateEdgeAndNode m = new
-	ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
-      m.setup((FigNode)_content, _content.getOwner(), bx, by, reverse);
-      ce.mode(m);
+    /** Return a handle ID for the handle under the mouse, or -1 if
+     *  none. TODO: in the future, return a Handle instance or
+     *  null. <p>
+     *  <pre>
+     *   0-------1-------2
+     *   |               |
+     *   3               4
+     *   |               |
+     *   5-------6-------7
+     * </pre>
+     */
+    public void hitHandle(Rectangle r, Handle h) {
+	super.hitHandle(r, h);
+	if (h.index != -1) return;
+	if (!_paintButtons) return;
+	Editor ce = Globals.curEditor();
+	SelectionManager sm = ce.getSelectionManager();
+	if (sm.size() != 1) return;
+	ModeManager mm = ce.getModeManager();
+	if (mm.includes(ModeModify.class) && _pressedButton == -1) return;
+	int cx = _content.getX();
+	int cy = _content.getY();
+	int cw = _content.getWidth();
+	int ch = _content.getHeight();
+	int iw = realiz.getIconWidth();
+	int ih = realiz.getIconHeight();
+	if (hitBelow(cx + cw / 2, cy + ch, iw, ih, r)) {
+	    h.index = 11;
+	    h.instructions = "Add a realization";
+	}
+	else {
+	    h.index = -1;
+	    h.instructions = "Move object(s)";
+	}
     }
 
-  }
+
+    /** Paint the handles at the four corners and midway along each edge
+     * of the bounding box.  */
+    public void paintButtons(Graphics g) {
+	int cx = _content.getX();
+	int cy = _content.getY();
+	int cw = _content.getWidth();
+	int ch = _content.getHeight();
+	paintButtonBelow(realiz, g, cx + cw / 2, cy + ch, 11);
+    }
+
+
+    public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
+	if (hand.index < 10) {
+	    _paintButtons = false;
+	    super.dragHandle(mX, mY, anX, anY, hand);
+	    return;
+	}
+	int cx = _content.getX(), cy = _content.getY();
+	int cw = _content.getWidth(), ch = _content.getHeight();
+	int newX = cx, newY = cy, newW = cw, newH = ch;
+	Dimension minSize = _content.getMinimumSize();
+	int minWidth = minSize.width, minHeight = minSize.height;
+	Class edgeClass = null;
+	Class nodeClass = MClassImpl.class;
+	int bx = mX, by = mY;
+	boolean reverse = false;
+	switch (hand.index) {
+	case 11: //add realization
+	    edgeClass = (Class) ModelFacade.ABSTRACTION;
+	    reverse = true;
+	    by = cy + ch;
+	    bx = cx + cw / 2;
+	    break;
+	default:
+	    cat.warn("invalid handle number");
+	    break;
+	}
+	if (edgeClass != null && nodeClass != null) {
+	    Editor ce = Globals.curEditor();
+	    ModeCreateEdgeAndNode m = new
+		ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
+	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
+	    ce.mode(m);
+	}
+
+    }
 
 
   
 	
-  public Object addRealization(MutableGraphModel mgm, MInterface cls,
-			    MClass newCls) {
-    return mgm.connect(newCls, cls, (Class)ModelFacade.ABSTRACTION);
-  }
+    public Object addRealization(MutableGraphModel mgm, MInterface cls,
+				 MClass newCls) {
+	return mgm.connect(newCls, cls, (Class) ModelFacade.ABSTRACTION);
+    }
 	
     /**
      * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, _content.getOwner(), (Class)ModelFacade.ABSTRACTION);
+        return gm.connect(newNode, _content.getOwner(), (Class) ModelFacade.ABSTRACTION);
     }
 
     /**

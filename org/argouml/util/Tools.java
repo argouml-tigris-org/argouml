@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -30,7 +31,7 @@ import java.util.*;
 public class Tools {
 
     static String packageList[] = new 
-        String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.xml.sax","java.lang","org.apache.log4j"};
+        String[]{"org.argouml.application", "ru.novosoft.uml", "org.tigris.gef.base", "org.xml.sax", "java.lang", "org.apache.log4j"};
 
     private static void getComponentVersionInfo(StringBuffer sb, String pn) 
     {
@@ -38,22 +39,22 @@ public class Tools {
         sb.append(pn);
         sb.append('\n');
         Package pkg = Package.getPackage(pn);
-        if(pkg == null) {
+        if (pkg == null) {
             sb.append("-- No Versioning Information --\nMaybe you don't use the jar?\n");
         }
         else {
             String in = pkg.getImplementationTitle();
-            if(in!=null) {
+            if (in != null) {
                 sb.append("Component: ");
                 sb.append(in);
             }
             in = pkg.getImplementationVendor();
-            if(in!=null) {
+            if (in != null) {
                 sb.append(", by: ");
                 sb.append(in);
             }
             in = pkg.getImplementationVersion();
-            if(in!=null) {
+            if (in != null) {
                 sb.append(", version: ");
                 sb.append(in);
                 sb.append('\n');
@@ -64,7 +65,7 @@ public class Tools {
 
     public static String getVersionInfo()
     {
-        try{
+        try {
 
             // class preloading, so packages are there...
             Class cls = Class.forName("ru.novosoft.uml.MBase");
@@ -76,8 +77,8 @@ public class Tools {
             StringBuffer sb = new StringBuffer();
 
             String saxFactory = System.getProperty("javax.xml.parsers.SAXParserFactory");
-            if(saxFactory != null) {
-                sb.append("SAX Parser Factory " + saxFactory+ " specified using system property\n");
+            if (saxFactory != null) {
+                sb.append("SAX Parser Factory " + saxFactory + " specified using system property\n");
             }
 
             Object saxObject = null;
@@ -87,11 +88,11 @@ public class Tools {
                           saxObject.getClass().getName() + " will be used.\n");
                 sb.append("\n");
             }
-            catch(Exception ex) {
+            catch (Exception ex) {
                 sb.append("Error determining SAX Parser Factory\n.");
             }
 
-            for(int i=0;i<packageList.length;i++) {
+            for (int i = 0; i < packageList.length; i++) {
                 getComponentVersionInfo(sb, packageList[i]);
             }
 
@@ -123,7 +124,7 @@ public class Tools {
 
             return sb.toString();
 
-        } catch (Exception e) { return e.toString();}
+        } catch (Exception e) { return e.toString(); }
 
     }
 
@@ -150,7 +151,7 @@ public class Tools {
         String s = file.getName();
         int i = s.lastIndexOf('.');
 
-        if (i>0) ext = s.substring(i).toLowerCase();
+        if (i > 0) ext = s.substring(i).toLowerCase();
         return ext;
     }
 }

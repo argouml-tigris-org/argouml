@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,139 +49,131 @@ import org.argouml.ui.ProjectBrowser;
 public class ActionSaveProject extends UMLAction {
     private Logger log = Logger.getLogger(this.getClass());
   
-  ////////////////////////////////////////////////////////////////
-  // static variables
+    ////////////////////////////////////////////////////////////////
+    // static variables
 
-  public static ActionSaveProject SINGLETON = new ActionSaveProject(); 
+    public static ActionSaveProject SINGLETON = new ActionSaveProject(); 
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public ActionSaveProject() {
-    super("action.save-project");
-  }
-
-  public ActionSaveProject(String title, boolean icon) {
-    super(title, icon);
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // main methods
-
-  public void actionPerformed(ActionEvent e) {
-    URL url = ProjectManager.getManager().getCurrentProject() != null ?
-        ProjectManager.getManager().getCurrentProject().getURL() : null;
-    if (url == null) { 
-        ActionSaveProjectAs.SINGLETON.actionPerformed(e);
-    } else {
-        trySave(true);
+    public ActionSaveProject() {
+	super("action.save-project");
     }
-  }
 
-  public boolean trySave (boolean overwrite) {
-    URL url = ProjectManager.getManager().getCurrentProject().getURL();
-    return url == null ? false : trySave(overwrite, new File(url.getFile()));
-  }
+    public ActionSaveProject(String title, boolean icon) {
+	super(title, icon);
+    }
 
-  public boolean trySave(boolean overwrite, File file) {
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    Project p = ProjectManager.getManager().getCurrentProject();
 
-    try {
+    ////////////////////////////////////////////////////////////////
+    // main methods
 
-      if (file.exists() && !overwrite) {
-        //Argo.log.info ("Are you sure you want to overwrite " + fullpath + "?");
-        String sConfirm = MessageFormat.format (
-            Argo.localize ("Actions",
-                                "optionpane.save-project-confirm-overwrite"),
-            new Object[] {file}
-          );
-        int nResult = JOptionPane.showConfirmDialog (
-            pb,
-            sConfirm,
-            Argo.localize ("Actions", "optionpane.save-project-confirm-overwrite-title"),
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE
-          );
+    public void actionPerformed(ActionEvent e) {
+	URL url = ProjectManager.getManager().getCurrentProject() != null ?
+	    ProjectManager.getManager().getCurrentProject().getURL() : null;
+	if (url == null) { 
+	    ActionSaveProjectAs.SINGLETON.actionPerformed(e);
+	} else {
+	    trySave(true);
+	}
+    }
+
+    public boolean trySave (boolean overwrite) {
+	URL url = ProjectManager.getManager().getCurrentProject().getURL();
+	return url == null ? false : trySave(overwrite, new File(url.getFile()));
+    }
+
+    public boolean trySave(boolean overwrite, File file) {
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	Project p = ProjectManager.getManager().getCurrentProject();
+
+	try {
+
+	    if (file.exists() && !overwrite) {
+		//Argo.log.info ("Are you sure you want to overwrite " + fullpath + "?");
+		String sConfirm = 
+		    MessageFormat.format(Argo.localize("Actions",
+						       "optionpane.save-project-confirm-overwrite"),
+					 new Object[] {file} );
+		int nResult = 
+		    JOptionPane.showConfirmDialog(pb, sConfirm,
+						  Argo.localize("Actions", 
+								"optionpane.save-project-confirm-overwrite-title"),
+						  JOptionPane.YES_NO_OPTION,
+						  JOptionPane.QUESTION_MESSAGE
+						  );
         
-        if (nResult != JOptionPane.YES_OPTION) {
-          return false;
-        }
-      }
+		if (nResult != JOptionPane.YES_OPTION) {
+		    return false;
+		}
+	    }
       
-      String sStatus = MessageFormat.format (
-          Argo.localize ("Actions", "label.save-project-status-writing"),
-          new Object[] {file}
-        );
-      pb.showStatus (sStatus);
+	    String sStatus =
+		MessageFormat.format(Argo.localize("Actions",
+						   "label.save-project-status-writing"),
+				     new Object[] {file} );
+	    pb.showStatus (sStatus);
 		
 	  
-      p.save(overwrite, file);
+	    p.save(overwrite, file);
       	
 
-      sStatus = MessageFormat.format (
-          Argo.localize ("Actions", "label.save-project-status-wrote"),
-          new Object[] {p.getURL()}
-        );
-      pb.showStatus (sStatus);
-      Argo.log.debug ("setting most recent project file to " +
-                      file.getCanonicalPath());
-      Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, file.getCanonicalPath());
+	    sStatus = MessageFormat.format(Argo.localize("Actions", 
+							 "label.save-project-status-wrote"),
+					   new Object[] {p.getURL()} );
+	    pb.showStatus (sStatus);
+	    Argo.log.debug ("setting most recent project file to " +
+			    file.getCanonicalPath());
+	    Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, file.getCanonicalPath());
       
-      return true;
-    }
-    catch (FileNotFoundException fnfe) {
-      String sMessage = MessageFormat.format (
-          Argo.localize ("Actions", "optionpane.save-project-file-not-found"),
-          new Object[] {fnfe.getMessage()}
-        );
+	    return true;
+	}
+	catch (FileNotFoundException fnfe) {
+	    String sMessage = 
+		MessageFormat.format(Argo.localize("Actions",
+						   "optionpane.save-project-file-not-found"),
+				     new Object[] {fnfe.getMessage()} );
       
-      JOptionPane.showMessageDialog (
-          pb,
-          sMessage,
-          Argo.localize ("Actions", "optionpane.save-project-file-not-found-title"),
-          JOptionPane.ERROR_MESSAGE
-        );
+	    JOptionPane.showMessageDialog(pb, sMessage,
+					  Argo.localize("Actions",
+							"optionpane.save-project-file-not-found-title"),
+					  JOptionPane.ERROR_MESSAGE);
       
-     log.error(sMessage, fnfe);
-    }
-    catch (IOException ioe) {
-      String sMessage = MessageFormat.format (
-          Argo.localize ("Actions", "optionpane.save-project-io-exception"),
-          new Object[] {ioe.getMessage()}
-        );
+	    log.error(sMessage, fnfe);
+	}
+	catch (IOException ioe) {
+	    String sMessage = 
+		MessageFormat.format(Argo.localize("Actions",
+						   "optionpane.save-project-io-exception"),
+				     new Object[] {ioe.getMessage()} );
       
-      JOptionPane.showMessageDialog (
-          pb,
-          sMessage,
-          Argo.localize ("Actions", "optionpane.save-project-io-exception-title"),
-          JOptionPane.ERROR_MESSAGE
-        );
+	    JOptionPane.showMessageDialog(pb, sMessage,
+					  Argo.localize("Actions", 
+							"optionpane.save-project-io-exception-title"),
+					  JOptionPane.ERROR_MESSAGE);
       
-        log.error(sMessage, ioe);
-    }
-    catch (Exception ex) {
-    	String sMessage = MessageFormat.format (
-          Argo.localize ("Actions", "optionpane.save-project-general-exception"),
-          new Object[] {ex.getMessage()}
-        );
+	    log.error(sMessage, ioe);
+	}
+	catch (Exception ex) {
+	    String sMessage = 
+		MessageFormat.format(Argo.localize("Actions",
+						   "optionpane.save-project-general-exception"),
+				     new Object[] {ex.getMessage()} );
       
-      JOptionPane.showMessageDialog (
-          pb,
-          sMessage,
-          Argo.localize ("Actions", "optionpane.save-project-general-exception-title"),
-          JOptionPane.ERROR_MESSAGE
-        );
+	    JOptionPane.showMessageDialog(pb, sMessage,
+					  Argo.localize ("Actions",
+							 "optionpane.save-project-general-exception-title"),
+					  JOptionPane.ERROR_MESSAGE);
       
-        log.error(sMessage, ex);
-    }
+	    log.error(sMessage, ex);
+	}
     
-    return false;
-  }
+	return false;
+    }
 
-  public boolean shouldBeEnabled() {
+    public boolean shouldBeEnabled() {
     
-    return super.shouldBeEnabled();
-  }
+	return super.shouldBeEnabled();
+    }
 } /* end class ActionSaveProject */

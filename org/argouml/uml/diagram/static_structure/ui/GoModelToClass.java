@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -34,13 +35,13 @@ import ru.novosoft.uml.model_management.MPackage;
 
 public class GoModelToClass extends AbstractGoRule {
 
-  public String getRuleName() { return "Package->Class"; }
+    public String getRuleName() { return "Package->Class"; }
   
-  public Collection getChildren(Object parent) {
-      if (ModelFacade.isAPackage(parent)) {
-          return ModelManagementHelper.getHelper().getAllModelElementsOfKind(parent, MClass.class);
-      }
-      return null;
-  }
+    public Collection getChildren(Object parent) {
+	if (ModelFacade.isAPackage(parent)) {
+	    return ModelManagementHelper.getHelper().getAllModelElementsOfKind(parent, MClass.class);
+	}
+	return null;
+    }
 
 }

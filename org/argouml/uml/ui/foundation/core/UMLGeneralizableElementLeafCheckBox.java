@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -53,7 +54,7 @@ public class UMLGeneralizableElementLeafCheckBox extends UMLCheckBox2 {
      */
     public void buildModel() {
         if (getTarget() != null)
-            setSelected(((MGeneralizableElement)getTarget()).isLeaf());
+            setSelected(((MGeneralizableElement) getTarget()).isLeaf());
     }
 
 

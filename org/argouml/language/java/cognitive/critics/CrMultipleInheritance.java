@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -44,43 +45,43 @@ import org.argouml.uml.cognitive.critics.*;
 
 public class CrMultipleInheritance extends CrUML {
 
-  public CrMultipleInheritance() {
-    setHeadline("Change Multiple Inheritance to Interfaces");
-    addSupportedDecision(CrUML.decINHERITANCE);
-    addSupportedDecision(CrUML.decCODE_GEN);
-    addTrigger("generalization");
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
-    MClassifier cls = (MClassifier) dm;
-    Collection gen = cls.getGeneralizations();
-    if (gen != null && gen.size() > 1)
-      return PROBLEM_FOUND;
-    else
-      return NO_PROBLEM;
-  }
-
-  public void initWizard(Wizard w) {
-    if (w instanceof WizCueCards) {
-      WizCueCards wcc = (WizCueCards) w;
-      ToDoItem item = w.getToDoItem();
-      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
-      String nameStr = me.getName();
-      wcc.addCue("Remove the generalization arrow to one of the base "+
-		 "classes of {name}.");
-      wcc.addCue("Optionally, use the MInterface tool to create a new "+
-		 "MInterface for {name} to implement.");
-      wcc.addCue("Use the Realization tool to add a dashed arrow from "+
-		 "{name} to the new MInterface.");
-      wcc.addCue("Move method declarations from the unused base class "+
-		 "to the new MInterface and move method bodies down into "+
-		 "{name}.");
-      wcc.addCue("If the unused base class is not used by anything else "+
-		 "then it can be removed.");
+    public CrMultipleInheritance() {
+	setHeadline("Change Multiple Inheritance to Interfaces");
+	addSupportedDecision(CrUML.decINHERITANCE);
+	addSupportedDecision(CrUML.decCODE_GEN);
+	addTrigger("generalization");
     }
-  }
-  public Class getWizardClass(ToDoItem item) { return WizCueCards.class; }
+
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+	MClassifier cls = (MClassifier) dm;
+	Collection gen = cls.getGeneralizations();
+	if (gen != null && gen.size() > 1)
+	    return PROBLEM_FOUND;
+	else
+	    return NO_PROBLEM;
+    }
+
+    public void initWizard(Wizard w) {
+	if (w instanceof WizCueCards) {
+	    WizCueCards wcc = (WizCueCards) w;
+	    ToDoItem item = w.getToDoItem();
+	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+	    String nameStr = me.getName();
+	    wcc.addCue("Remove the generalization arrow to one of the base " +
+		       "classes of {name}.");
+	    wcc.addCue("Optionally, use the MInterface tool to create a new " +
+		       "MInterface for {name} to implement.");
+	    wcc.addCue("Use the Realization tool to add a dashed arrow from " +
+		       "{name} to the new MInterface.");
+	    wcc.addCue("Move method declarations from the unused base class " +
+		       "to the new MInterface and move method bodies down into " +
+		       "{name}.");
+	    wcc.addCue("If the unused base class is not used by anything else " +
+		       "then it can be removed.");
+	}
+    }
+    public Class getWizardClass(ToDoItem item) { return WizCueCards.class; }
 
 } /* end class CrMultipleInheritance.java */
 

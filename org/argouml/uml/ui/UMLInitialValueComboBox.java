@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -59,14 +60,14 @@ public class UMLInitialValueComboBox extends JComboBox
     private boolean _isUpdating = false;
     
 /** items in the initial value combobox that are available for selection.*/    
-    String[] listItems = {"","0", "1", "2","null"};
+    String[] listItems = {"", "0", "1", "2", "null"};
 
     /** Creates new BooleanChangeListener */
     public UMLInitialValueComboBox(UMLUserInterfaceContainer container) {
         super();
         _container = container;
         
-        for (int i = 0; i < listItems.length; i++){
+        for (int i = 0; i < listItems.length; i++) {
             addItem(listItems[i]);
         }
 	setEditable(true);
@@ -81,7 +82,7 @@ public class UMLInitialValueComboBox extends JComboBox
  *      Modified psager@tigris.org Aug.6, 2001 to handle method parameter
  *      expressions.
  */
-        addActionListener(new ActionListener(){
+        addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent event) {
 		if (_isUpdating) {
 		    return;
@@ -89,14 +90,14 @@ public class UMLInitialValueComboBox extends JComboBox
 
                 String item = (String) getSelectedItem();
                 Object target = _container.getTarget();
-                if (target instanceof MAttribute){
+                if (target instanceof MAttribute) {
                     MExpression itemExpr = UmlFactory.getFactory().getDataTypes().createExpression("Java", item);
-                    ((MAttribute)target).setInitialValue(itemExpr);
+                    ((MAttribute) target).setInitialValue(itemExpr);
                     update();
                 }
-                else if (target instanceof MParameter){
+                else if (target instanceof MParameter) {
                     MExpression itemExpr = UmlFactory.getFactory().getDataTypes().createExpression("Java", item);
-                    ((MParameter)target).setDefaultValue(itemExpr);
+                    ((MParameter) target).setDefaultValue(itemExpr);
                     update();
                 }
             }
@@ -116,25 +117,25 @@ public class UMLInitialValueComboBox extends JComboBox
     public void targetChanged() {
         Object target = _container.getTarget();
 	_isUpdating = true;
-        if (target instanceof MAttribute){
-            MExpression initExpr = (MExpression)((MAttribute)target).getInitialValue();
-            if (initExpr != null){
+        if (target instanceof MAttribute) {
+            MExpression initExpr = (MExpression) ((MAttribute) target).getInitialValue();
+            if (initExpr != null) {
                 String init = initExpr.getBody();
                 setSelectedItem(init);
                 //update();
             }
-            else if (initExpr == null){
-                setSelectedItem(null);// clear residual junk from the combo box.
+            else if (initExpr == null) {
+                setSelectedItem(null); // clear residual junk from the combo box.
             }
         } 
-        else if (target instanceof MParameter){
-            MExpression initExpr = (MExpression)((MParameter)target).getDefaultValue();
-            if (initExpr != null){
+        else if (target instanceof MParameter) {
+            MExpression initExpr = (MExpression) ((MParameter) target).getDefaultValue();
+            if (initExpr != null) {
                 String init = initExpr.getBody();
                 setSelectedItem(init);
                 //update();
             }
-            else if (initExpr == null){
+            else if (initExpr == null) {
                 setSelectedItem(null); // clear the previous value from the combo box.
             }
         }
@@ -170,11 +171,11 @@ public class UMLInitialValueComboBox extends JComboBox
     public void propertySet(final MElementEvent event) {
         String eventProp = event.getName();
 //        Argo.log.info("Event Property = " + eventProp);
-        if(eventProp.equals("owner") || eventProp.equals("name")) {
+        if (eventProp.equals("owner") || eventProp.equals("name")) {
             return;
         }
-	if("initialValue".equals(eventProp) ||
-	   "defaultValue".equals(eventProp))
+	if ("initialValue".equals(eventProp) 
+	    || "defaultValue".equals(eventProp))
 	    targetChanged();
 //	else
 //	    update();
@@ -187,21 +188,21 @@ public class UMLInitialValueComboBox extends JComboBox
  */    
     private void update() {
         Object target = _container.getTarget();
-        if (target instanceof MAttribute){
-            MClassifier classifier = (MClassifier) ((MAttribute)target).getOwner();
-            if (classifier == null){
+        if (target instanceof MAttribute) {
+            MClassifier classifier = (MClassifier) ((MAttribute) target).getOwner();
+            if (classifier == null) {
                 return;
             }
             classifier.setFeatures(classifier.getFeatures());
         }
-        else if (target instanceof MParameter){
-            if (target instanceof MCallEvent){
+        else if (target instanceof MParameter) {
+            if (target instanceof MCallEvent) {
                 return;
             }
             MBehavioralFeature feature = ((MParameter) target).getBehavioralFeature();
-            if (feature != null){
+            if (feature != null) {
                 MClassifier classifier = (MClassifier) feature.getOwner();
-                if (classifier == null){
+                if (classifier == null) {
                     return;
                 }
                 classifier.setFeatures(classifier.getFeatures());

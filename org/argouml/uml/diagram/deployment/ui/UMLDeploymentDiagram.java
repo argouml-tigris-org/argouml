@@ -1,3 +1,27 @@
+// $Id$
+// Copyright (c) 2003 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 // File: UMLDeploymentDiagram.java
 // Classes: UmlDeploymentDiagram
 // Author: Clemens Eichler (5eichler@informatik.uni-hamburg.de)
@@ -68,49 +92,49 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
     protected static Action _actionMDependency =
         new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            MDependency.class,
-            "Dependency");
+		       ModeCreatePolyEdge.class,
+		       "edgeClass",
+		       MDependency.class,
+		       "Dependency");
 
     protected static Action _actionMAssociation =
         new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            MAssociation.class,
-            "Association");
+		       ModeCreatePolyEdge.class,
+		       "edgeClass",
+		       MAssociation.class,
+		       "Association");
 
     protected static Action _actionMLink =
         new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            MLink.class,
-            "Link");
+		       ModeCreatePolyEdge.class,
+		       "edgeClass",
+		       MLink.class,
+		       "Link");
 
     protected static Action _actionAssociation =
         new ActionAddAssociation(MAggregationKind.NONE, false, "Association");
     protected static Action _actionAggregation =
         new ActionAddAssociation(
-            MAggregationKind.AGGREGATE,
-            false,
-            "Aggregation");
+				 MAggregationKind.AGGREGATE,
+				 false,
+				 "Aggregation");
     protected static Action _actionComposition =
         new ActionAddAssociation(
-            MAggregationKind.COMPOSITE,
-            false,
-            "Composition");
+				 MAggregationKind.COMPOSITE,
+				 false,
+				 "Composition");
     protected static Action _actionUniAssociation =
         new ActionAddAssociation(MAggregationKind.NONE, true, "UniAssociation");
     protected static Action _actionUniAggregation =
         new ActionAddAssociation(
-            MAggregationKind.AGGREGATE,
-            true,
-            "UniAggregation");
+				 MAggregationKind.AGGREGATE,
+				 true,
+				 "UniAggregation");
     protected static Action _actionUniComposition =
         new ActionAddAssociation(
-            MAggregationKind.COMPOSITE,
-            true,
-            "UniComposition");
+				 MAggregationKind.COMPOSITE,
+				 true,
+				 "UniComposition");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -144,11 +168,11 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
             cat.error(
-                "Illegal argument. Object " + handle + " is not a namespace");
+		      "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(
-                "Illegal argument. Object " + handle + " is not a namespace");
+					       "Illegal argument. Object " + handle + " is not a namespace");
         }
-        MNamespace m = (MNamespace)handle;
+        MNamespace m = (MNamespace) handle;
         super.setNamespace(m);
         DeploymentDiagramGraphModel gm = new DeploymentDiagramGraphModel();
         gm.setNamespace(m);
@@ -182,9 +206,9 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
     private Object[] getAssociationActions() {
         Object actions[][] = {
-            {_actionAssociation,_actionUniAssociation},
-            {_actionAggregation,_actionUniAggregation},
-            {_actionComposition,_actionUniComposition}
+        {_actionAssociation, _actionUniAssociation},
+	{_actionAggregation, _actionUniAggregation},
+	{_actionComposition, _actionUniComposition}
         };
 
         return actions;
@@ -201,10 +225,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         String name = null;
         name = "Deployment Diagram " + _DeploymentDiagramSerial;
         _DeploymentDiagramSerial++;
-        if (!ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .isValidDiagramName(name)) {
+        if (!ProjectManager.getManager().getCurrentProject()
+                .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;

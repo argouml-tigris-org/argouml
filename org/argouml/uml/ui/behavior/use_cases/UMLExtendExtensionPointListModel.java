@@ -49,7 +49,7 @@ public class UMLExtendExtensionPointListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MExtend)getTarget()).getExtensionPoints());
+        setAllElements(((MExtend) getTarget()).getExtensionPoints());
     }
 
    
@@ -58,7 +58,7 @@ public class UMLExtendExtensionPointListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {
-        return o instanceof MExtensionPoint && ((MExtend)getTarget()).getExtensionPoints().contains(o);
+        return o instanceof MExtensionPoint && ((MExtend) getTarget()).getExtensionPoints().contains(o);
     }
 
 }

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-02 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,7 +54,7 @@ public class CmdSetPreferredSize extends Cmd {
      */
     public CmdSetPreferredSize(int mode) {
         super(Argo.
-              localize(Argo.MENU_BUNDLE,"Set " + wordFor(mode) + " size"));
+              localize(Argo.MENU_BUNDLE, "Set " + wordFor(mode) + " size"));
         _mode = mode;
     }
 
@@ -97,7 +98,7 @@ public class CmdSetPreferredSize extends Cmd {
         int size = figs.size();
         if (size == 0) return;
     
-        for (int i = 0; i<size; i++) {
+        for (int i = 0; i < size; i++) {
             Fig fi = (Fig) figs.elementAt(i);
             fi.startTrans();
             // only resize elements which the user would also be able 
@@ -107,7 +108,7 @@ public class CmdSetPreferredSize extends Cmd {
                     fi.setSize(fi.getPreferedSize());
                 else
                     fi.setSize(fi.getMinimumSize());
-                Globals.showStatus("Setting size for " +fi);
+                Globals.showStatus("Setting size for " + fi);
             }
             fi.endTrans();
         }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,21 +53,22 @@ import ru.novosoft.uml.model_management.*;
  *  GEF.  This class handles only UML Use Case Digrams.  */
 
 public class CollabDiagramGraphModel extends UMLMutableGraphSupport
-implements VetoableChangeListener {
+    implements VetoableChangeListener 
+{
     protected static Category cat = Category.getInstance(CollabDiagramGraphModel.class);
 
-  /** The "home" UML model of this diagram, not all ModelElements in this
-   *  graph are in the home model, but if they are added and don't
-   *  already have a model, they are placed in the "home model".
-   *  Also, elements from other models will have their FigNodes add a
-   *  line to say what their model is. */
+    /** The "home" UML model of this diagram, not all ModelElements in this
+     *  graph are in the home model, but if they are added and don't
+     *  already have a model, they are placed in the "home model".
+     *  Also, elements from other models will have their FigNodes add a
+     *  line to say what their model is. */
 
-  /** The collaboration / interaction we are diagramming */
+    /** The collaboration / interaction we are diagramming */
     protected MCollaboration _collab;
     protected MInteraction _interaction;
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
     public MNamespace getNamespace() { return _collab; }
     public void setNamespace(MNamespace m) {
@@ -77,118 +79,118 @@ implements VetoableChangeListener {
     }
 
 
-  ////////////////////////////////////////////////////////////////
-  // GraphModel implementation
+    ////////////////////////////////////////////////////////////////
+    // GraphModel implementation
 
  
-  /** Return all ports on node or edge */
-  public Vector getPorts(Object nodeOrEdge) {
-    Vector res = new Vector();  //wasteful!
-    if (nodeOrEdge instanceof MClassifierRole) res.addElement(nodeOrEdge);
-    return res;
-  }
-
-  /** Return the node or edge that owns the given port */
-  public Object getOwner(Object port) {
-    return port;
-  }
-
-  /** Return all edges going to given port */
-  public Vector getInEdges(Object port) {
-    Vector res = new Vector(); //wasteful!
-    if (port instanceof MClassifierRole) {
-      MClassifierRole cr = (MClassifierRole) port;
-      Collection ends = cr.getAssociationEnds();
-      if (ends == null) return res; // empty Vector
-	  Iterator iter = ends.iterator();
-      while (iter.hasNext()) {
-	    MAssociationEndRole aer = (MAssociationEndRole) iter.next();
-	    res.addElement(aer.getAssociation());
-      }
+    /** Return all ports on node or edge */
+    public Vector getPorts(Object nodeOrEdge) {
+	Vector res = new Vector();  //wasteful!
+	if (nodeOrEdge instanceof MClassifierRole) res.addElement(nodeOrEdge);
+	return res;
     }
-    return res;
-  }
 
-  /** Return all edges going from given port */
-  public Vector getOutEdges(Object port) {
-    return new Vector(); // TODO?
-  }
-
-  /** Return one end of an edge */
-  public Object getSourcePort(Object edge) {
-    if (edge instanceof MRelationship) {
-        return CoreHelper.getHelper().getSource((MRelationship)edge);
+    /** Return the node or edge that owns the given port */
+    public Object getOwner(Object port) {
+	return port;
     }
-    cat.debug("TODO getSourcePort");
-    return null;
-  }
 
-  /** Return  the other end of an edge */
-  public Object getDestPort(Object edge) {
-    if (edge instanceof MRelationship) {
-        return CoreHelper.getHelper().getDestination((MRelationship)edge);
+    /** Return all edges going to given port */
+    public Vector getInEdges(Object port) {
+	Vector res = new Vector(); //wasteful!
+	if (port instanceof MClassifierRole) {
+	    MClassifierRole cr = (MClassifierRole) port;
+	    Collection ends = cr.getAssociationEnds();
+	    if (ends == null) return res; // empty Vector
+	    Iterator iter = ends.iterator();
+	    while (iter.hasNext()) {
+		MAssociationEndRole aer = (MAssociationEndRole) iter.next();
+		res.addElement(aer.getAssociation());
+	    }
+	}
+	return res;
     }
-    cat.debug("TODO getDestPort");
-    return null;
-  }
 
-
-  ////////////////////////////////////////////////////////////////
-  // MutableGraphModel implementation
-
-  /** Return true if the given object is a valid node in this graph */
-  public boolean canAddNode(Object node) {
-    if (node == null) return false;
-    if (_nodes.contains(node)) return false;
-    return (node instanceof MClassifierRole || node instanceof MMessage);
-  }
-
-  /** Return true if the given object is a valid edge in this graph */
-  public boolean canAddEdge(Object edge)  {
-    if (edge == null) return false;
-    if(_edges.contains(edge)) return false;
-    Object end0 = null, end1 = null;
-    if (edge instanceof MAssociationRole) {
-      List conns = ((MAssociationRole)edge).getConnections();
-      if (conns.size() < 2) return false;
-      MAssociationEndRole ae0 = (MAssociationEndRole) conns.get(0);
-      MAssociationEndRole ae1 = (MAssociationEndRole) conns.get(1);
-      if (ae0 == null || ae1 == null) return false;
-      end0 = ae0.getType();
-      end1 = ae1.getType();
+    /** Return all edges going from given port */
+    public Vector getOutEdges(Object port) {
+	return new Vector(); // TODO?
     }
-    if (edge instanceof MGeneralization) {
-        MGeneralization gen = (MGeneralization)edge;
-        end0 = gen.getParent();
-        end1 = gen.getChild();
+
+    /** Return one end of an edge */
+    public Object getSourcePort(Object edge) {
+	if (edge instanceof MRelationship) {
+	    return CoreHelper.getHelper().getSource((MRelationship) edge);
+	}
+	cat.debug("TODO getSourcePort");
+	return null;
     }
-    if (edge instanceof MDependency) {
-        Collection clients = ((MDependency)edge).getClients();
-        Collection suppliers = ((MDependency)edge).getSuppliers();
-        if (clients == null || suppliers == null) return false;
-        end0 = ((Object[])clients.toArray())[0];
-        end1 = ((Object[])suppliers.toArray())[0];
+
+    /** Return  the other end of an edge */
+    public Object getDestPort(Object edge) {
+	if (edge instanceof MRelationship) {
+	    return CoreHelper.getHelper().getDestination((MRelationship) edge);
+	}
+	cat.debug("TODO getDestPort");
+	return null;
     }
-    if (end0 == null || end1 == null) return false;
-    if (!_nodes.contains(end0)) return false;
-    if (!_nodes.contains(end1)) return false;
-    return true;
-  }
 
 
-  /** Add the given node to the graph, if valid. */
-  public void addNode(Object node) {
-    cat.debug("adding MClassifierRole node!!");
-    if (!canAddNode(node)) return;
-    _nodes.addElement(node);
-    // TODO: assumes public, user pref for default visibility?
-      if (node instanceof MClassifier) {
-		  _collab.addOwnedElement((MClassifier) node);
-		  // ((MClassifier)node).setNamespace(_collab.getNamespace());
-      }
+    ////////////////////////////////////////////////////////////////
+    // MutableGraphModel implementation
+
+    /** Return true if the given object is a valid node in this graph */
+    public boolean canAddNode(Object node) {
+	if (node == null) return false;
+	if (_nodes.contains(node)) return false;
+	return (node instanceof MClassifierRole || node instanceof MMessage);
+    }
+
+    /** Return true if the given object is a valid edge in this graph */
+    public boolean canAddEdge(Object edge)  {
+	if (edge == null) return false;
+	if (_edges.contains(edge)) return false;
+	Object end0 = null, end1 = null;
+	if (edge instanceof MAssociationRole) {
+	    List conns = ((MAssociationRole) edge).getConnections();
+	    if (conns.size() < 2) return false;
+	    MAssociationEndRole ae0 = (MAssociationEndRole) conns.get(0);
+	    MAssociationEndRole ae1 = (MAssociationEndRole) conns.get(1);
+	    if (ae0 == null || ae1 == null) return false;
+	    end0 = ae0.getType();
+	    end1 = ae1.getType();
+	}
+	if (edge instanceof MGeneralization) {
+	    MGeneralization gen = (MGeneralization) edge;
+	    end0 = gen.getParent();
+	    end1 = gen.getChild();
+	}
+	if (edge instanceof MDependency) {
+	    Collection clients = ((MDependency) edge).getClients();
+	    Collection suppliers = ((MDependency) edge).getSuppliers();
+	    if (clients == null || suppliers == null) return false;
+	    end0 = ((Object[]) clients.toArray())[0];
+	    end1 = ((Object[]) suppliers.toArray())[0];
+	}
+	if (end0 == null || end1 == null) return false;
+	if (!_nodes.contains(end0)) return false;
+	if (!_nodes.contains(end1)) return false;
+	return true;
+    }
+
+
+    /** Add the given node to the graph, if valid. */
+    public void addNode(Object node) {
+	cat.debug("adding MClassifierRole node!!");
+	if (!canAddNode(node)) return;
+	_nodes.addElement(node);
+	// TODO: assumes public, user pref for default visibility?
+	if (node instanceof MClassifier) {
+	    _collab.addOwnedElement((MClassifier) node);
+	    // ((MClassifier)node).setNamespace(_collab.getNamespace());
+	}
     
-    fireNodeAdded(node);
-  }
+	fireNodeAdded(node);
+    }
 
     /** Add the given edge to the graph, if valid. */
     public void addEdge(Object edge) {
@@ -196,85 +198,85 @@ implements VetoableChangeListener {
         if (!canAddEdge(edge)) return;
         _edges.addElement(edge);
         // TODO: assumes public
-        if (edge instanceof MModelElement && ((MModelElement)edge).getNamespace() == null) {
+        if (edge instanceof MModelElement && ((MModelElement) edge).getNamespace() == null) {
             _collab.addOwnedElement((MModelElement) edge);
         }
         fireEdgeAdded(edge);
     }
 
-  public void addNodeRelatedEdges(Object node) {
-    if ( node instanceof MClassifier ) {
-      Collection ends = ((MClassifier)node).getAssociationEnds();
-      Iterator iter = ends.iterator();
-      while (iter.hasNext()) {
-         MAssociationEndRole ae = (MAssociationEndRole) iter.next();
-         if(canAddEdge(ae.getAssociation()))
-           addEdge(ae.getAssociation());
-      }
+    public void addNodeRelatedEdges(Object node) {
+	if ( node instanceof MClassifier ) {
+	    Collection ends = ((MClassifier) node).getAssociationEnds();
+	    Iterator iter = ends.iterator();
+	    while (iter.hasNext()) {
+		MAssociationEndRole ae = (MAssociationEndRole) iter.next();
+		if (canAddEdge(ae.getAssociation()))
+		    addEdge(ae.getAssociation());
+	    }
+	}
+	if ( node instanceof MGeneralizableElement ) {
+	    Collection gn = ((MGeneralizableElement) node).getGeneralizations();
+	    Iterator iter = gn.iterator();
+	    while (iter.hasNext()) {
+		MGeneralization g = (MGeneralization) iter.next();
+		if (canAddEdge(g)) {
+		    addEdge(g);
+		    return;
+		}
+	    }
+	    Collection sp = ((MGeneralizableElement) node).getSpecializations();
+	    iter = sp.iterator();
+	    while (iter.hasNext()) {
+		MGeneralization s = (MGeneralization) iter.next();
+		if (canAddEdge(s)) {
+		    addEdge(s);
+		    return;
+		}
+	    }
+	}
+	if ( node instanceof MModelElement ) {
+	    Vector specs = new Vector(((MModelElement) node).getClientDependencies());
+	    specs.addAll(((MModelElement) node).getSupplierDependencies());
+	    Iterator iter = specs.iterator();
+	    while (iter.hasNext()) {
+		MDependency dep = (MDependency) iter.next();
+		if (canAddEdge(dep)) {
+		    addEdge(dep);
+		    return;
+		}
+	    }
+	}
     }
-    if ( node instanceof MGeneralizableElement ) {
-      Collection gn = ((MGeneralizableElement)node).getGeneralizations();
-      Iterator iter = gn.iterator();
-      while (iter.hasNext()) {
-         MGeneralization g = (MGeneralization) iter.next();
-         if(canAddEdge(g)) {
-           addEdge(g);
-           return;
-         }
-      }
-      Collection sp = ((MGeneralizableElement)node).getSpecializations();
-      iter = sp.iterator();
-      while (iter.hasNext()) {
-         MGeneralization s = (MGeneralization) iter.next();
-         if(canAddEdge(s)) {
-           addEdge(s);
-           return;
-         }
-      }
+
+
+    /** Return true if the two given ports can be connected by a
+     * kind of edge to be determined by the ports. */
+    public boolean canConnect(Object fromP, Object toP) {
+	if ((fromP instanceof MClassifierRole) && (toP instanceof MClassifierRole)) return true;
+	return false;
     }
-    if ( node instanceof MModelElement ) {
-      Vector specs = new Vector(((MModelElement)node).getClientDependencies());
-      specs.addAll(((MModelElement)node).getSupplierDependencies());
-      Iterator iter = specs.iterator();
-      while (iter.hasNext()) {
-         MDependency dep = (MDependency) iter.next();
-         if(canAddEdge(dep)) {
-           addEdge(dep);
-           return;
-         }
-      }
+
+    ////////////////////////////////////////////////////////////////
+    // VetoableChangeListener implementation
+
+    public void vetoableChange(PropertyChangeEvent pce) {
+	//throws PropertyVetoException
+
+	if ("ownedElement".equals(pce.getPropertyName())) {
+	    Vector oldOwned = (Vector) pce.getOldValue();
+	    MElementImport eo = (MElementImport) pce.getNewValue();
+	    MModelElement me = eo.getModelElement();
+	    if (oldOwned.contains(eo)) {
+		cat.debug("model removed " + me);
+		if (me instanceof MClassifier) removeNode(me);
+		if (me instanceof MMessage) removeNode(me);
+		if (me instanceof MAssociation) removeEdge(me);
+	    }
+	    else {
+		cat.debug("model added " + me);
+	    }
+	}
     }
- }
-
-
-  /** Return true if the two given ports can be connected by a
-   * kind of edge to be determined by the ports. */
-  public boolean canConnect(Object fromP, Object toP) {
-    if ((fromP instanceof MClassifierRole) && (toP instanceof MClassifierRole)) return true;
-    return false;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // VetoableChangeListener implementation
-
-  public void vetoableChange(PropertyChangeEvent pce) {
-    //throws PropertyVetoException
-
-    if ("ownedElement".equals(pce.getPropertyName())) {
-      Vector oldOwned = (Vector) pce.getOldValue();
-      MElementImport eo = (MElementImport) pce.getNewValue();
-      MModelElement me = eo.getModelElement();
-      if (oldOwned.contains(eo)) {
-	    cat.debug("model removed " + me);
-	    if (me instanceof MClassifier) removeNode(me);
-	    if (me instanceof MMessage) removeNode(me);
-	    if (me instanceof MAssociation) removeEdge(me);
-      }
-      else {
-	    cat.debug("model added " + me);
-      }
-    }
-  }
 
 } /* end class CollabDiagramGraphModel */
 

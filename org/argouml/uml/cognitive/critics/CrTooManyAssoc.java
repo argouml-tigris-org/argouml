@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,32 +43,32 @@ import org.argouml.cognitive.*;
 
 public class CrTooManyAssoc extends CrUML {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public static String THRESHOLD = "Threshold";
+    ////////////////////////////////////////////////////////////////
+    // constants
+    public static String THRESHOLD = "Threshold";
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public CrTooManyAssoc() {
-    setHeadline("Reduce Associations on <ocl>self</ocl>");
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public CrTooManyAssoc() {
+	setHeadline("Reduce Associations on <ocl>self</ocl>");
 
-    addSupportedDecision(CrUML.decRELATIONSHIPS);
-    setArg(THRESHOLD, new Integer(7));
-    addTrigger("associationEnd");
-  }
+	addSupportedDecision(CrUML.decRELATIONSHIPS);
+	setArg(THRESHOLD, new Integer(7));
+	addTrigger("associationEnd");
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // critiquing API
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
-    MClassifier cls = (MClassifier) dm;
-    // TODO: consider inherited associations?
-    // TODO: self loops are double counted
-    int threshold = ((Integer)getArg(THRESHOLD)).intValue();
-    Collection aes = cls.getAssociationEnds();
-    if (aes == null || aes.size() <= threshold) return NO_PROBLEM;
-    return PROBLEM_FOUND;
-  }
+    ////////////////////////////////////////////////////////////////
+    // critiquing API
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+	MClassifier cls = (MClassifier) dm;
+	// TODO: consider inherited associations?
+	// TODO: self loops are double counted
+	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
+	Collection aes = cls.getAssociationEnds();
+	if (aes == null || aes.size() <= threshold) return NO_PROBLEM;
+	return PROBLEM_FOUND;
+    }
 
 } /* end class CrTooManyAssoc */
 

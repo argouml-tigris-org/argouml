@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,7 +53,7 @@ public class ActionAddAssociationSpecification extends AbstractActionAddModelEle
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
-        ((MAssociationEnd)getTarget()).setSpecifications(selected);
+        ((MAssociationEnd) getTarget()).setSpecifications(selected);
     }
 
     /**
@@ -78,7 +79,7 @@ public class ActionAddAssociationSpecification extends AbstractActionAddModelEle
      */
     protected Vector getSelected() {
         Vector ret = new Vector();
-        ret.addAll(((MAssociationEnd)getTarget()).getSpecifications());
+        ret.addAll(((MAssociationEnd) getTarget()).getSpecifications());
         return ret;
     }
 }

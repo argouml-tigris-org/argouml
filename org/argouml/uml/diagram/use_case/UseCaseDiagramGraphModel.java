@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -77,7 +78,7 @@ import org.tigris.gef.base.ModeManager;
 
 public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener {
-        protected static Category cat = Category.getInstance(UseCaseDiagramGraphModel.class);
+    protected static Category cat = Category.getInstance(UseCaseDiagramGraphModel.class);
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -275,12 +276,13 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
     public Object getSourcePort(Object edge) {
         
         if (edge instanceof MRelationship) {
-            return CoreHelper.getHelper().getSource((MRelationship)edge);       }
+            return CoreHelper.getHelper().getSource((MRelationship) edge);
+	}
 
         // Don't know what to do otherwise
 
         cat.debug(this.getClass().toString() + ": getSourcePort(" +
-                           edge.toString() + ") - can't handle");
+		  edge.toString() + ") - can't handle");
 
         return null;
     }
@@ -314,7 +316,7 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
         // Don't know what to do otherwise
 
         cat.debug(this.getClass().toString() + ": getDestPort(" +
-                           edge.toString() + ") - can't handle");
+		  edge.toString() + ") - can't handle");
 
         return null;
     }
@@ -381,7 +383,7 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
 
             // Only allow binary associations
 
-            List conns = ((MAssociation)edge).getConnections();
+            List conns = ((MAssociation) edge).getConnections();
 
             if (conns.size() < 2) {
                 return false;
@@ -400,12 +402,12 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
             end1 = ae1.getType();
         }
         else if (edge instanceof MGeneralization) {
-            end0 = ((MGeneralization)edge).getChild();
-            end1 = ((MGeneralization)edge).getParent();
+            end0 = ((MGeneralization) edge).getChild();
+            end1 = ((MGeneralization) edge).getParent();
         }
         else if (edge instanceof MExtend) {
-            end0 = ((MExtend)edge).getBase();
-            end1 = ((MExtend)edge).getExtension();
+            end0 = ((MExtend) edge).getBase();
+            end1 = ((MExtend) edge).getExtension();
         }
         else if (edge instanceof MInclude) {
 
@@ -413,8 +415,8 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
             // relationships back to front for include relationships. Solve
             // by reversing their accessors in the code
 
-            end0 = ((MInclude)edge).getAddition();
-            end1 = ((MInclude)edge).getBase();
+            end0 = ((MInclude) edge).getAddition();
+            end1 = ((MInclude) edge).getBase();
         }
         else if (edge instanceof MDependency) {
 
@@ -422,8 +424,8 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
             // consider the first of each (not clear that we should really
             // accept the case where there is more than one of either)
 
-            Collection clients   = ((MDependency)edge).getClients();
-            Collection suppliers = ((MDependency)edge).getSuppliers();
+            Collection clients   = ((MDependency) edge).getClients();
+            Collection suppliers = ((MDependency) edge).getSuppliers();
 
             // Give up if either clients or suppliers is undefined
 
@@ -431,8 +433,8 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
                 return false;
             }
 
-            end0 = ((Object[])clients.toArray())[0];
-            end1 = ((Object[])suppliers.toArray())[0];
+            end0 = ((Object[]) clients.toArray())[0];
+            end1 = ((Object[]) suppliers.toArray())[0];
         }
 
         // Both ends must be defined and nodes that are on the graph already.
@@ -489,16 +491,16 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
          * usecase diagram belongs to.
          * OLD CODE
 
-        if ((node instanceof MActor) ||
-            (node instanceof MUseCase)) {
+	 if ((node instanceof MActor) ||
+	 (node instanceof MUseCase)) {
          
          * NEW CODE:
          */
-         if (((node instanceof MActor) || (node instanceof MUseCase)) && 
-         	(((MModelElement)node).getNamespace() == null)) {
-         // end NEW CODE
+	if (((node instanceof MActor) || (node instanceof MUseCase)) && 
+	    (((MModelElement) node).getNamespace() == null)) {
+	    // end NEW CODE
             cat.debug("setting namespace " + _model +
-                                " to element "+node);
+		      " to element " + node);
             _model.addOwnedElement((MModelElement) node);
         }
 
@@ -529,7 +531,7 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
         // Add the element and place it in the namespace of the model
         _edges.addElement(edge);
 
-        if (((MModelElement)edge).getNamespace() == null) {
+        if (((MModelElement) edge).getNamespace() == null) {
             _model.addOwnedElement((MModelElement) edge);
         }
 
@@ -583,7 +585,7 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
         // to find the associations.
 
         if (node instanceof MClassifier) {
-            Collection ends = ((MClassifier)node).getAssociationEnds();
+            Collection ends = ((MClassifier) node).getAssociationEnds();
             Iterator   iter = ends.iterator();
 
             while (iter.hasNext()) {
@@ -602,7 +604,7 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
 
             // The generalizations
 
-            Collection gn = ((MGeneralizableElement)node).getGeneralizations();
+            Collection gn = ((MGeneralizableElement) node).getGeneralizations();
 
             Iterator iter = gn.iterator();
 
@@ -616,7 +618,7 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
 
             // The specializations
 
-            Collection sp = ((MGeneralizableElement)node).getSpecializations();
+            Collection sp = ((MGeneralizableElement) node).getSpecializations();
 
             iter = sp.iterator();
 
@@ -634,9 +636,9 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
 
         if ( node instanceof MModelElement ) {
             Vector specs =
-                new Vector(((MModelElement)node).getClientDependencies());
+                new Vector(((MModelElement) node).getClientDependencies());
 
-            specs.addAll(((MModelElement)node).getSupplierDependencies());
+            specs.addAll(((MModelElement) node).getSupplierDependencies());
 
             Iterator iter = specs.iterator();
 

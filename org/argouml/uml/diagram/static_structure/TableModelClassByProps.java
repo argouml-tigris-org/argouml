@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -32,32 +33,32 @@ import org.argouml.uml.*;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 
 public class TableModelClassByProps extends TableModelComposite {
-  ////////////////
-  // constructor
-  public TableModelClassByProps() { }
+    ////////////////
+    // constructor
+    public TableModelClassByProps() { }
 
-  public void initColumns() {
-    addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.ClassVisibility);
-    addColumn(ColumnDescriptor.ClassKeyword);
-    addColumn(ColumnDescriptor.Extends);
+    public void initColumns() {
+	addColumn(ColumnDescriptor.Name);
+	addColumn(ColumnDescriptor.ClassVisibility);
+	addColumn(ColumnDescriptor.ClassKeyword);
+	addColumn(ColumnDescriptor.Extends);
 	//nsuml problem realization    addColumn(ColumnDescriptor.Implements);
-    addColumn(ColumnDescriptor.MStereotype);
-  }
-
-  public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof UMLClassDiagram)) return new Vector();
-    UMLClassDiagram d = (UMLClassDiagram) t;
-    Vector nodes = d.getNodes();
-    Vector res = new Vector();
-    int size = nodes.size();
-    for (int i = 0; i < size; i++) {
-      Object node = nodes.elementAt(i);
-      if (node instanceof MClass) res.addElement(node);
+	addColumn(ColumnDescriptor.MStereotype);
     }
-    return res;
-  }
 
-  public String toString() { return "Classes vs. Properties"; }
+    public Vector rowObjectsFor(Object t) {
+	if (!(t instanceof UMLClassDiagram)) return new Vector();
+	UMLClassDiagram d = (UMLClassDiagram) t;
+	Vector nodes = d.getNodes();
+	Vector res = new Vector();
+	int size = nodes.size();
+	for (int i = 0; i < size; i++) {
+	    Object node = nodes.elementAt(i);
+	    if (node instanceof MClass) res.addElement(node);
+	}
+	return res;
+    }
+
+    public String toString() { return "Classes vs. Properties"; }
 } /* end class TableModelClassByProps */
 

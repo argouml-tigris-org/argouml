@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,38 +44,38 @@ import ru.novosoft.uml.model_management.*;
 
 public class ChLink extends UMLChecklist {
 
-  public ChLink() {
-  setNextCategory("Naming");
-  addItem("Does the name '<ocl>self</ocl>' clearly describe the class?");
-  addItem("Is '<ocl>self</ocl>' a noun or noun phrase?");
-  addItem("Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?");
+    public ChLink() {
+	setNextCategory("Naming");
+	addItem("Does the name '<ocl>self</ocl>' clearly describe the class?");
+	addItem("Is '<ocl>self</ocl>' a noun or noun phrase?");
+	addItem("Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?");
 
 
-  setNextCategory("Encoding");
-  addItem("Should <ocl>self</ocl> be its own class or a simple attribute of "+
-	  "another class?");
-  addItem("Does <ocl>self</ocl> do exactly one thing and do it well?");
-  addItem("Could <ocl>self</ocl> be broken down into two or more classes?");
+	setNextCategory("Encoding");
+	addItem("Should <ocl>self</ocl> be its own class or a simple attribute of " +
+		"another class?");
+	addItem("Does <ocl>self</ocl> do exactly one thing and do it well?");
+	addItem("Could <ocl>self</ocl> be broken down into two or more classes?");
 
-  setNextCategory("Value");
-  addItem("Do all attributes of <ocl>self</ocl> start with meaningful values?");
-  addItem("Could you write an invariant for this class?");
-  addItem("Do all constructors establish the class invariant?");
-  addItem("Do all operations maintain the class invariant?");
+	setNextCategory("Value");
+	addItem("Do all attributes of <ocl>self</ocl> start with meaningful values?");
+	addItem("Could you write an invariant for this class?");
+	addItem("Do all constructors establish the class invariant?");
+	addItem("Do all operations maintain the class invariant?");
 
-  setNextCategory("Location");
-  addItem("Could <ocl>self</ocl> be defined in a different location in the class "+
-	  "hierarchy?");
-  addItem("Have you planned to have subclasses of <ocl>self</ocl>?");
-  addItem("Could <ocl>self</ocl> be eliminated from the model?");
-  addItem("Is there another class in the model that should be revised "+
-	  "or eliminated because it serves the same purpose as <ocl>self</ocl>?");
+	setNextCategory("Location");
+	addItem("Could <ocl>self</ocl> be defined in a different location in the class " +
+		"hierarchy?");
+	addItem("Have you planned to have subclasses of <ocl>self</ocl>?");
+	addItem("Could <ocl>self</ocl> be eliminated from the model?");
+	addItem("Is there another class in the model that should be revised " +
+		"or eliminated because it serves the same purpose as <ocl>self</ocl>?");
 
-  setNextCategory("Updates");
-  addItem("For what reasons will an instance of <ocl>self</ocl> be updated?");
-  addItem("Is there some other object that must be updated whenever "+
-	  "<ocl>self</ocl> is updated?");
+	setNextCategory("Updates");
+	addItem("For what reasons will an instance of <ocl>self</ocl> be updated?");
+	addItem("Is there some other object that must be updated whenever " +
+		"<ocl>self</ocl> is updated?");
 
-  }
+    }
 
 } /* end class ChLink */

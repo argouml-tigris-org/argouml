@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -104,7 +105,7 @@ public class UMLClassDiagram extends UMLDiagram {
     }
 
     public UMLClassDiagram(String name, Object m) {
-        super(name, (MNamespace)m);
+        super(name, (MNamespace) m);
     }
 
     public UMLClassDiagram(Object m) {
@@ -113,10 +114,10 @@ public class UMLClassDiagram extends UMLDiagram {
 
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
-          cat.error("Illegal argument. Object " + handle + " is not a namespace");
-          throw new IllegalArgumentException("Illegal argument. Object " + handle + " is not a namespace");
+	    cat.error("Illegal argument. Object " + handle + " is not a namespace");
+	    throw new IllegalArgumentException("Illegal argument. Object " + handle + " is not a namespace");
         }
-        MNamespace m = (MNamespace)handle;
+        MNamespace m = (MNamespace) handle;
         super.setNamespace(m);
         ClassDiagramGraphModel gm = new ClassDiagramGraphModel();
         gm.setNamespace(m);
@@ -153,23 +154,24 @@ public class UMLClassDiagram extends UMLDiagram {
     // remove the comment marks to enable models and subsystems.
     private Object[] getPackageActions() {
         /* subsystem, model enabled 
-        Object actions[] = 
-            { _actionPackage , 
-              _actionModel,
-              _actionSubsystem };
+	   Object actions[] = 
+	   { _actionPackage , 
+	   _actionModel,
+	   _actionSubsystem };
         */
         /* subsystem. model disabled */
-           Object actions[] = 
-            { _actionPackage };
+	Object actions[] = {
+	    _actionPackage 
+	};
        
         return actions;
     }
 
     private Object[] getAssociationActions() {
         Object actions[][] = {
-            {_actionAssociation,_actionUniAssociation},
-            {_actionAggregation,_actionUniAggregation},
-            {_actionComposition,_actionUniComposition}
+	{_actionAssociation, _actionUniAssociation},
+	{_actionAggregation, _actionUniAggregation},
+	{_actionComposition, _actionUniComposition}
         };
 
         return actions;

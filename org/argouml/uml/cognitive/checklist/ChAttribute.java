@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -47,52 +48,52 @@ import ru.novosoft.uml.model_management.*;
 
 public class ChAttribute extends UMLChecklist {
 
-  public ChAttribute() {
-    setNextCategory("Naming");
-    addItem("Does the name '<ocl>self</ocl>' clearly describe the attribute?");
-    addItem("Is '<ocl>self</ocl>' a noun or noun phrase?");
-    addItem("Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?");
+    public ChAttribute() {
+	setNextCategory("Naming");
+	addItem("Does the name '<ocl>self</ocl>' clearly describe the attribute?");
+	addItem("Is '<ocl>self</ocl>' a noun or noun phrase?");
+	addItem("Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?");
 
 
-    setNextCategory("Encoding");
-    addItem("Is the type <ocl>self.type</ocl> too restrictive to represent all "+
-	    "possible values of <ocl>self</ocl>?");
-    addItem("Does the type <ocl>self.type</ocl> allow values for <ocl>self</ocl> that could never be "+
-	    "correct?");
-    addItem("Could <ocl>self</ocl> be combined with some other attribute of "+
-	    "<ocl>self.owner</ocl> (e.g., {owner.structuralFeature})?");
-    addItem("Could <ocl>self</ocl> be broken down into two or more parts (e.g., a phone"+
-	    "number can be broken down into area code, prefix, and number)?");
-    addItem("Could <ocl>self</ocl> be computed from other attributes instead of stored?");
+	setNextCategory("Encoding");
+	addItem("Is the type <ocl>self.type</ocl> too restrictive to represent all " +
+		"possible values of <ocl>self</ocl>?");
+	addItem("Does the type <ocl>self.type</ocl> allow values for <ocl>self</ocl> that could never be " +
+		"correct?");
+	addItem("Could <ocl>self</ocl> be combined with some other attribute of " +
+		"<ocl>self.owner</ocl> (e.g., {owner.structuralFeature})?");
+	addItem("Could <ocl>self</ocl> be broken down into two or more parts (e.g., a phone" +
+		"number can be broken down into area code, prefix, and number)?");
+	addItem("Could <ocl>self</ocl> be computed from other attributes instead of stored?");
 
-    setNextCategory("Value");
-    addItem("Should <ocl>self</ocl> have an initial (or default) value?");
-    addItem("Is the initial value <ocl>self.initialValue</ocl> correct?");
-    addItem("Could you write an expression to check if <ocl>self</ocl> is correct? "+
-	    "Plausible?");
+	setNextCategory("Value");
+	addItem("Should <ocl>self</ocl> have an initial (or default) value?");
+	addItem("Is the initial value <ocl>self.initialValue</ocl> correct?");
+	addItem("Could you write an expression to check if <ocl>self</ocl> is correct? " +
+		"Plausible?");
 
-    setNextCategory("Location");
-    addItem("Could <ocl>self</ocl> be defined in a different class that is associated "+
-	    "with <ocl>self.owner</ocl>?");
-    addItem("Could <ocl>self</ocl> be moved up the inheritance hierarchy to apply to "+
-	    "owner.name and to other classes?");
-    addItem("Does <ocl>self</ocl> apply to all instances of class <ocl>self.owner</ocl> including "+
-	  "instances of subclasses?");
-    addItem("Could <ocl>self</ocl> be eliminated from the model?");
-    addItem("Is there another attribute in the model that should be revised "+
-	    "or eliminated because it serves the same purpose as <ocl>self</ocl>?");
+	setNextCategory("Location");
+	addItem("Could <ocl>self</ocl> be defined in a different class that is associated " +
+		"with <ocl>self.owner</ocl>?");
+	addItem("Could <ocl>self</ocl> be moved up the inheritance hierarchy to apply to " +
+		"owner.name and to other classes?");
+	addItem("Does <ocl>self</ocl> apply to all instances of class <ocl>self.owner</ocl> including " +
+		"instances of subclasses?");
+	addItem("Could <ocl>self</ocl> be eliminated from the model?");
+	addItem("Is there another attribute in the model that should be revised " +
+		"or eliminated because it serves the same purpose as <ocl>self</ocl>?");
 
-    setNextCategory("Updates");
-    addItem("For what reasons will <ocl>self</ocl> be updated?");
+	setNextCategory("Updates");
+	addItem("For what reasons will <ocl>self</ocl> be updated?");
 
-    addItem("Is there some other attribute that must be updated whenever "+
-	    "<ocl>self</ocl> is updated?");
+	addItem("Is there some other attribute that must be updated whenever " +
+		"<ocl>self</ocl> is updated?");
 
-    addItem("Is there a method that should be called when <ocl>self</ocl> is updated?");
-    addItem("Is there a method that should be called when <ocl>self</ocl> is given a "+
-	    "certain kind of value?");
+	addItem("Is there a method that should be called when <ocl>self</ocl> is updated?");
+	addItem("Is there a method that should be called when <ocl>self</ocl> is given a " +
+		"certain kind of value?");
 
 
-  }
+    }
 
 } /* end class ChAttribute */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -49,7 +50,9 @@ public class UMLListMenuItem extends JMenuItem implements ActionListener {
     private Object _actionObj;
     private int _index;
     private Method _action;
-    static final Class[] _argClass = { int.class };
+    static final Class[] _argClass = {
+	int.class 
+    };
     
     /**
      *   Creates a new menu item.
@@ -58,7 +61,7 @@ public class UMLListMenuItem extends JMenuItem implements ActionListener {
      *   @param action name of method.
      *   @param index integer value passed to method, typically position in list.
      */
-    public UMLListMenuItem(String caption, Object actionObj,String action,int index) {
+    public UMLListMenuItem(String caption, Object actionObj, String action, int index) {
         super(caption);
         _actionObj = actionObj;
         _index = index;
@@ -68,9 +71,9 @@ public class UMLListMenuItem extends JMenuItem implements ActionListener {
         //     action only when the popup was invoked, however
         //     this will identify bad "actions" more readily
         try {
-            _action = _actionObj.getClass().getMethod(action,_argClass);
+            _action = _actionObj.getClass().getMethod(action, _argClass);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             cat.error("Exception in " + _action + " popup.", e);
             setEnabled(false);
         }
@@ -84,13 +87,15 @@ public class UMLListMenuItem extends JMenuItem implements ActionListener {
      */
     public void actionPerformed(final java.awt.event.ActionEvent event) {
         try {
-             Object[] argValue = { new Integer(_index) };
-            _action.invoke(_actionObj,argValue);
+	    Object[] argValue = {
+		new Integer(_index)
+	    };
+            _action.invoke(_actionObj, argValue);
         }
-        catch(InvocationTargetException ex) {
+        catch (InvocationTargetException ex) {
             cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLListMenuItem.actionPerformed()", ex);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             cat.error(e.toString() + " in UMLListMenuItem.actionPerformed()", e);
         }
     }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -46,59 +47,59 @@ import org.argouml.cognitive.critics.*;
 
 public class CrDisambigClassName extends CrUML {
 
-  public CrDisambigClassName() {
-    setHeadline("Choose a Unique Name for <ocl>self</ocl>");
-    addSupportedDecision(CrUML.decNAMING);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-    addTrigger("name");
-    addTrigger("elementOwnership");
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
-    MClassifier cls = (MClassifier) dm;
-    String myName = cls.getName();
-    //@ if (myName.equals(Name.UNSPEC)) return NO_PROBLEM;
-    String myNameString = myName;
-    
-    if (myNameString != null && myNameString.length() == 0) return NO_PROBLEM;
-    Collection pkgs = cls.getElementImports2();
-    if (pkgs == null) return NO_PROBLEM;
-    for (Iterator iter = pkgs.iterator(); iter.hasNext();) {
-      MElementImport imp = (MElementImport)iter.next();
-      MNamespace ns = imp.getPackage();
-      Collection siblings = ns.getOwnedElements();
-      if (siblings == null) return NO_PROBLEM;
-      Iterator enum = siblings.iterator();
-      while (enum.hasNext()) {
-        MElementImport eo = (MElementImport) enum.next();
-        MModelElement me = (MModelElement) eo.getModelElement();
-        if (!(me instanceof MClassifier)) continue;
-        if (me == cls) continue;
-        String meName = me.getName();
-        if (meName == null || meName.equals("")) continue;
-        if (meName.equals(myNameString)) return PROBLEM_FOUND;
-      }
-    };
-    return NO_PROBLEM;
-  }
-
-  public Icon getClarifier() {
-    return ClClassName.TheInstance;
-  }
-
-  public void initWizard(Wizard w) {
-    if (w instanceof WizMEName) {
-      ToDoItem item = w.getToDoItem();
-      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
-      String sug = me.getName();
-      String ins = "Change the name to something different.";
-      ((WizMEName)w).setInstructions(ins);
-      ((WizMEName)w).setSuggestion(sug);
-      ((WizMEName)w).setMustEdit(true);
+    public CrDisambigClassName() {
+	setHeadline("Choose a Unique Name for <ocl>self</ocl>");
+	addSupportedDecision(CrUML.decNAMING);
+	setKnowledgeTypes(Critic.KT_SYNTAX);
+	addTrigger("name");
+	addTrigger("elementOwnership");
     }
-  }
-  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+	MClassifier cls = (MClassifier) dm;
+	String myName = cls.getName();
+	//@ if (myName.equals(Name.UNSPEC)) return NO_PROBLEM;
+	String myNameString = myName;
+    
+	if (myNameString != null && myNameString.length() == 0) return NO_PROBLEM;
+	Collection pkgs = cls.getElementImports2();
+	if (pkgs == null) return NO_PROBLEM;
+	for (Iterator iter = pkgs.iterator(); iter.hasNext();) {
+	    MElementImport imp = (MElementImport) iter.next();
+	    MNamespace ns = imp.getPackage();
+	    Collection siblings = ns.getOwnedElements();
+	    if (siblings == null) return NO_PROBLEM;
+	    Iterator enum = siblings.iterator();
+	    while (enum.hasNext()) {
+		MElementImport eo = (MElementImport) enum.next();
+		MModelElement me = (MModelElement) eo.getModelElement();
+		if (!(me instanceof MClassifier)) continue;
+		if (me == cls) continue;
+		String meName = me.getName();
+		if (meName == null || meName.equals("")) continue;
+		if (meName.equals(myNameString)) return PROBLEM_FOUND;
+	    }
+	};
+	return NO_PROBLEM;
+    }
+
+    public Icon getClarifier() {
+	return ClClassName.TheInstance;
+    }
+
+    public void initWizard(Wizard w) {
+	if (w instanceof WizMEName) {
+	    ToDoItem item = w.getToDoItem();
+	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+	    String sug = me.getName();
+	    String ins = "Change the name to something different.";
+	    ((WizMEName) w).setInstructions(ins);
+	    ((WizMEName) w).setSuggestion(sug);
+	    ((WizMEName) w).setMustEdit(true);
+	}
+    }
+    public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 
 } /* end class CrDisambigClassName.java */

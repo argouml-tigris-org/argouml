@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -63,25 +64,25 @@ class CodeGenerator
 
 	// Features
 	Collection features = mClass.getFeatures();
-	for(Iterator i = features.iterator(); i.hasNext(); ) {
-	    MFeature feature = (MFeature)i.next();
-	    if(feature instanceof MOperation) {
-		generateOperation((MOperation)feature, mClass, reader, writer);
+	for (Iterator i = features.iterator(); i.hasNext(); ) {
+	    MFeature feature = (MFeature) i.next();
+	    if (feature instanceof MOperation) {
+		generateOperation((MOperation) feature, mClass, reader, writer);
 	    }
-	    if(feature instanceof MAttribute) {
-		generateAttribute((MAttribute)feature, mClass, reader, writer);
+	    if (feature instanceof MAttribute) {
+		generateAttribute((MAttribute) feature, mClass, reader, writer);
 	    }
 	}
 
 	// Inner classes
 	Collection elements = mClass.getOwnedElements();
-	for(Iterator i = elements.iterator(); i.hasNext(); ) {
-	    MModelElement element = (MModelElement)i.next();
-	    if(element instanceof MClass) {
-		generateClass((MClass)element, reader, writer);
+	for (Iterator i = elements.iterator(); i.hasNext(); ) {
+	    MModelElement element = (MModelElement) i.next();
+	    if (element instanceof MClass) {
+		generateClass((MClass) element, reader, writer);
 	    }
-	    else if(element instanceof MInterface) {
-		generateInterface((MInterface)element, reader, writer);
+	    else if (element instanceof MInterface) {
+		generateInterface((MInterface) element, reader, writer);
 	    }
 	}
 
@@ -107,25 +108,25 @@ class CodeGenerator
 
 	// Features
 	Collection features = mInterface.getFeatures();
-	for(Iterator i = features.iterator(); i.hasNext(); ) {
-	    MFeature feature = (MFeature)i.next();
-	    if(feature instanceof MOperation) {
-		generateOperation((MOperation)feature, mInterface, reader, writer);
+	for (Iterator i = features.iterator(); i.hasNext(); ) {
+	    MFeature feature = (MFeature) i.next();
+	    if (feature instanceof MOperation) {
+		generateOperation((MOperation) feature, mInterface, reader, writer);
 	    }
-	    if(feature instanceof MAttribute) {
-		generateAttribute((MAttribute)feature, mInterface, reader, writer);
+	    if (feature instanceof MAttribute) {
+		generateAttribute((MAttribute) feature, mInterface, reader, writer);
 	    }
 	}
 
 	// Inner classes
 	Collection elements = mInterface.getOwnedElements();
-	for(Iterator i = elements.iterator(); i.hasNext(); ) {
-	    MModelElement element = (MModelElement)i.next();
-	    if(element instanceof MClass) {
-		generateClass((MClass)element, reader, writer);
+	for (Iterator i = elements.iterator(); i.hasNext(); ) {
+	    MModelElement element = (MModelElement) i.next();
+	    if (element instanceof MClass) {
+		generateClass((MClass) element, reader, writer);
 	    }
-	    else if(element instanceof MInterface) {
-		generateInterface((MInterface)element, reader, writer);
+	    else if (element instanceof MInterface) {
+		generateInterface((MInterface) element, reader, writer);
 	    }
 	}
 
@@ -150,7 +151,7 @@ class CodeGenerator
 	parseStateStack.push(new ParseState(mClassifier));
 	ocp.write(reader, writer, parseStateStack);
 
-	if(mOperation.isAbstract() || mClassifier instanceof MInterface) {
+	if (mOperation.isAbstract() || mClassifier instanceof MInterface) {
 	    writer.write(";\n");
 	}
 	else {

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -71,15 +72,15 @@ public abstract class UMLVisibilityButtonGroup extends UMLButtonGroup {
      * @see org.argouml.uml.ui.UMLButtonGroup#buildModel()
      */
     public void buildModel() {
-        MVisibilityKind vis = ((MModelElement)getTarget()).getVisibility();
+        MVisibilityKind vis = ((MModelElement) getTarget()).getVisibility();
         
         if (vis == MVisibilityKind.PRIVATE) {
             _privateButton.setSelected(true);
         } else
-        if (vis == MVisibilityKind.PROTECTED) {
-            _protectedButton.setSelected(true);
-        } else
-            _publicButton.setSelected(true);
+	    if (vis == MVisibilityKind.PROTECTED) {
+		_protectedButton.setSelected(true);
+	    } else
+		_publicButton.setSelected(true);
             
     }
 

@@ -1,3 +1,27 @@
+// $Id$
+// Copyright (c) 2003 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 /*
  * DockLayout.java
  *
@@ -15,7 +39,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.SwingConstants;
 
-public class DockLayout extends BorderLayout{
+public class DockLayout extends BorderLayout {
     private ArrayList north = new ArrayList(1);
     private ArrayList south = new ArrayList(1);
     private ArrayList east = new ArrayList(1);
@@ -79,8 +103,8 @@ public class DockLayout extends BorderLayout{
     // and the ideal height for a horizontally oriented tollbar:   
     private Dimension getPreferredDimension(ArrayList comps) {      
         int w = 0, h = 0;      
-        for (int i=0; i < comps.size(); i++) {
-            Component c = (Component)(comps.get(i));         
+        for (int i = 0; i < comps.size(); i++) {
+            Component c = (Component) (comps.get(i));         
             Dimension d = c.getPreferredSize();         
             w = Math.max(w, d.width);         
             h = Math.max(h, d.height);      
@@ -93,16 +117,16 @@ public class DockLayout extends BorderLayout{
         Component c = null;      
         if (orientation == HORIZONTAL) {         
             offset = x;         
-            for (int i=0; i < comps.size(); i++) {            
-                c = (Component)(comps.get(i));            
+            for (int i = 0; i < comps.size(); i++) {            
+                c = (Component) (comps.get(i));            
                 int cwidth = c.getPreferredSize().width;            
                 if (i == comps.size() - 1) cwidth = w - offset;            
                 c.setBounds(x + offset, y, cwidth, h);            
                 offset += cwidth;         
             }      
         } else {
-            for (int i=0; i < comps.size(); i++) {
-                c = (Component)(comps.get(i));        
+            for (int i = 0; i < comps.size(); i++) {
+                c = (Component) (comps.get(i));        
                 int cheight = c.getPreferredSize().height;            
                 if (i == comps.size() - 1) cheight = h - offset;            
                 c.setBounds(x, y + offset, w, cheight);            

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -76,9 +77,9 @@ public class CrNameConflict extends CrUML {
             Object me = item.getOffenders().elementAt(0);
             String sug = ModelFacade.getName(me);
             String ins = "Change the name to something different.";
-            ((WizMEName)w).setInstructions(ins);
-            ((WizMEName)w).setSuggestion(sug);
-            ((WizMEName)w).setMustEdit(true);
+            ((WizMEName) w).setInstructions(ins);
+            ((WizMEName) w).setSuggestion(sug);
+            ((WizMEName) w).setMustEdit(true);
         }
     }
 

@@ -59,33 +59,33 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        MNamespace ns = (MNamespace)handle;
+        MNamespace ns = (MNamespace) handle;
         Object target = ProjectBrowser.getInstance().getTarget();
         MCollaboration c = null;
         if (target instanceof MOperation) {
             c =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
                     ns);
-            c.setRepresentedOperation((MOperation)target);
+            c.setRepresentedOperation((MOperation) target);
         } else if (target instanceof MClassifier) {
             c =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
-                    (MClassifier)target);
-            c.setRepresentedClassifier((MClassifier)target);
+                    (MClassifier) target);
+            c.setRepresentedClassifier((MClassifier) target);
         } else if (target instanceof MModel) {
             c =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
-                    (MModel)target);
+                    (MModel) target);
         } else if (target instanceof MInteraction) {
-            c = ((MInteraction)target).getContext();
+            c = ((MInteraction) target).getContext();
         } else if (target instanceof UMLCollaborationDiagram) {
-            Object o = ((UMLCollaborationDiagram)target).getOwner();
+            Object o = ((UMLCollaborationDiagram) target).getOwner();
             if (o instanceof MCollaboration) {
                 //preventing backward compat problems
-                c = (MCollaboration)o;
+                c = (MCollaboration) o;
             }
         } else if (target instanceof MCollaboration) {
-            c = (MCollaboration)target;
+            c = (MCollaboration) target;
         } else {
             c =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
@@ -106,7 +106,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        MNamespace ns = (MNamespace)handle;
+        MNamespace ns = (MNamespace) handle;
         return CollaborationsHelper.getHelper().isAddingCollaborationAllowed(
             ns);
     }
@@ -119,7 +119,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
 
         Object target = ProjectBrowser.getInstance().getTarget();
         if (target instanceof MNamespace)
-            return isValidNamespace((MNamespace)target);
+            return isValidNamespace((MNamespace) target);
         else
             return false;
     }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,66 +53,63 @@ import ru.novosoft.uml.foundation.core.*;
  */
 public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
 
-    
+    /**
+     * Constructor for UMLConnectionListModel.
+     * @param container
+     * @param property
+     * @param showNone
+     */
+    public UMLConnectionListModel(UMLUserInterfaceContainer container,
+				  String property,
+				  boolean showNone) {
+	super(container, property, showNone);
+    }
 
-	/**
-	 * Constructor for UMLConnectionListModel.
-	 * @param container
-	 * @param property
-	 * @param showNone
-	 */
-	public UMLConnectionListModel(
-		UMLUserInterfaceContainer container,
-		String property,
-		boolean showNone) {
-		super(container, property, showNone);
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
+     */
+    protected void build(MModelElement from, MModelElement to) {
+	CoreFactory.getFactory().buildAssociation((MClassifier) from, (MClassifier) to);
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
-	 */
-	protected void build(MModelElement from, MModelElement to) {
-		CoreFactory.getFactory().buildAssociation((MClassifier)from, (MClassifier)to);
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
+     */
+    protected void connect(
+			   MutableGraphModel gm,
+			   MModelElement from,
+			   MModelElement to) {
+	gm.connect(from, to, MAssociation.class);
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
-	 */
-	protected void connect(
-		MutableGraphModel gm,
-		MModelElement from,
-		MModelElement to) {
-			gm.connect(from, to, MAssociation.class);
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
+     */
+    protected String getAddDialogTitle() {
+	return Argo.localize("UMLMenu", "dialog.add-associations");
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
-	 */
-	protected String getAddDialogTitle() {
-		return Argo.localize("UMLMenu", "dialog.add-associations");
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
+     */
+    protected Collection getChoices() {
+	return ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
-	 */
-	protected Collection getChoices() {
-		return ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
+     */
+    protected MModelElement getRelation(MModelElement from, MModelElement to) {
+	// this could get awkward but we assume that there is only one association
+	return (MModelElement) ((CoreHelper.getHelper().getAssociations((MClassifier) from, (MClassifier) to)).toArray())[0];
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
-	 */
-	protected MModelElement getRelation(MModelElement from, MModelElement to) {
-            // this could get awkward but we assume that there is only one association
-	   return (MModelElement)((CoreHelper.getHelper().getAssociations((MClassifier)from, (MClassifier)to)).toArray())[0];
-	}
-
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
-	 */
-	protected Collection getSelected() {
-		return CoreHelper.getHelper().getAssociatedClassifiers((MClassifier)getTarget());
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
+     */
+    protected Collection getSelected() {
+	return CoreHelper.getHelper().getAssociatedClassifiers((MClassifier) getTarget());
+    }
 
 }
 

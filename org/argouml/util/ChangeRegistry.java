@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,47 +41,47 @@ import org.argouml.kernel.ProjectManager;
 
 public class ChangeRegistry implements GraphListener
 {
-	protected boolean changeFlag;
+    protected boolean changeFlag;
 
-	public ChangeRegistry() { changeFlag = false; }
+    public ChangeRegistry() { changeFlag = false; }
 
-        /**
-         * changes save state / notifies gui.
-         */
-	public void setChangeFlag( boolean newValue ) {
+    /**
+     * changes save state / notifies gui.
+     */
+    public void setChangeFlag( boolean newValue ) {
 		
-            if(changeFlag != newValue){
-                // notify the gui to put a * on the title bar (swing gui):
-                ProjectManager.getManager().notifySavePropertyChanged(newValue);
-            }
+	if (changeFlag != newValue) {
+	    // notify the gui to put a * on the title bar (swing gui):
+	    ProjectManager.getManager().notifySavePropertyChanged(newValue);
+	}
                 
-                changeFlag = newValue;
+	changeFlag = newValue;
                 
-	}
+    }
 
-	public boolean hasChanged() {
-		return changeFlag;
-	}
+    public boolean hasChanged() {
+	return changeFlag;
+    }
 
-	public void nodeAdded(GraphEvent e) {
-		setChangeFlag( true );
-	}
+    public void nodeAdded(GraphEvent e) {
+	setChangeFlag( true );
+    }
 
-	public void edgeAdded(GraphEvent e) {
-		setChangeFlag( true );
-	}
+    public void edgeAdded(GraphEvent e) {
+	setChangeFlag( true );
+    }
 
-	public void nodeRemoved(GraphEvent e) {
-		setChangeFlag( true );
-	}
+    public void nodeRemoved(GraphEvent e) {
+	setChangeFlag( true );
+    }
 
-	public void edgeRemoved(GraphEvent e) {
-		setChangeFlag( true );
-	}
+    public void edgeRemoved(GraphEvent e) {
+	setChangeFlag( true );
+    }
 
-	public void graphChanged(GraphEvent e) {
-		setChangeFlag( true );
-	}
+    public void graphChanged(GraphEvent e) {
+	setChangeFlag( true );
+    }
 
 } /* end class ChangeRegistry */
 

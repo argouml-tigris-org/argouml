@@ -54,67 +54,71 @@ import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelParameter extends PropPanelModelElement {
 
     public PropPanelParameter() {
         super(
-            "Parameter",
-            _parameterIcon,
-            ConfigLoader.getTabPropsOrientation());
+	      "Parameter",
+	      _parameterIcon,
+	      ConfigLoader.getTabPropsOrientation());
         Class mclass = MParameter.class;
 
-        Class[] namesToWatch = { MStereotype.class,MOperation.class,
-        MParameter.class,MClassifier.class };
+        Class[] namesToWatch = {
+	    MStereotype.class,
+	    MOperation.class,
+	    MParameter.class,
+	    MClassifier.class 
+	};
         setNameEventListening(namesToWatch);
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
 
-        JList namespaceList = new UMLList(new UMLReflectionListModel(this,"behaviorialfeature",false,"getBehavioralFeature",null,null,null),true);
+        JList namespaceList = new UMLList(new UMLReflectionListModel(this, "behaviorialfeature", false, "getBehavioralFeature", null, null, null), true);
         namespaceList.setVisibleRowCount(1);
-        addLinkField(Argo.localize("UMLMenu", "label.owner"), new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+        addLinkField(Argo.localize("UMLMenu", "label.owner"), new JScrollPane(namespaceList, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 
         addSeperator();
 
-        addField(Argo.localize("UMLMenu", "label.type"),new UMLComboBox2(new UMLParameterTypeComboBoxModel(), ActionSetParameterType.SINGLETON));
+        addField(Argo.localize("UMLMenu", "label.type"), new UMLComboBox2(new UMLParameterTypeComboBoxModel(), ActionSetParameterType.SINGLETON));
 
         addField("Initial Value:", new UMLInitialValueComboBox(this));
 
         JPanel kindPanel = new JPanel(new GridLayout2(0, 2, GridLayout2.ROWCOLPREFERRED));
         ButtonGroup kindGroup = new ButtonGroup();
 
-        UMLRadioButton inout = new UMLRadioButton("in/out",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MParameterDirectionKind.class,MParameterDirectionKind.INOUT,null));
+        UMLRadioButton inout = new UMLRadioButton("in/out", this, new UMLEnumerationBooleanProperty("kind", mclass, "getKind", "setKind", MParameterDirectionKind.class, MParameterDirectionKind.INOUT, null));
         kindGroup.add(inout);
         kindPanel.add(inout);
 
-        UMLRadioButton in = new UMLRadioButton("in",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MParameterDirectionKind.class,MParameterDirectionKind.IN,null));
+        UMLRadioButton in = new UMLRadioButton("in", this, new UMLEnumerationBooleanProperty("kind", mclass, "getKind", "setKind", MParameterDirectionKind.class, MParameterDirectionKind.IN, null));
         kindGroup.add(in);
         kindPanel.add(in);
 
-        UMLRadioButton out = new UMLRadioButton("out",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MParameterDirectionKind.class,MParameterDirectionKind.OUT,null));
+        UMLRadioButton out = new UMLRadioButton("out", this, new UMLEnumerationBooleanProperty("kind", mclass, "getKind", "setKind", MParameterDirectionKind.class, MParameterDirectionKind.OUT, null));
         kindGroup.add(out);
         kindPanel.add(out);
 
-        UMLRadioButton ret = new UMLRadioButton("return",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MParameterDirectionKind.class,MParameterDirectionKind.RETURN,null));
+        UMLRadioButton ret = new UMLRadioButton("return", this, new UMLEnumerationBooleanProperty("kind", mclass, "getKind", "setKind", MParameterDirectionKind.class, MParameterDirectionKind.RETURN, null));
         kindGroup.add(ret);
         kindPanel.add(ret);
 
 	addField("Kind:", kindPanel);
 
-	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-	new PropPanelButton(this,buttonPanel,_parameterIcon, Argo.localize("UMLMenu", "button.add-parameter"),"addParameter",null);
+	new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+	new PropPanelButton(this, buttonPanel, _parameterIcon, Argo.localize("UMLMenu", "button.add-parameter"), "addParameter", null);
 	//	new PropPanelButton(this,buttonPanel,_dataTypeIcon, Argo.localize("UMLMenu", "button.add-datatype"),"addDataType",null);
-	new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-parameter"),"removeElement",null);
+	new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-parameter"), "removeElement", null);
 
     }
 
     public MClassifier getType() {
         MClassifier type = null;
         Object target = getTarget();
-        if(target instanceof MParameter) {
+        if (target instanceof MParameter) {
             type = ((MParameter) target).getType();
         }
         return type;
@@ -122,27 +126,27 @@ public class PropPanelParameter extends PropPanelModelElement {
 
     public void setType(MClassifier type) {
         Object target = getTarget();
-        if(target instanceof MParameter) {
+        if (target instanceof MParameter) {
             ((MParameter) target).setType(type);
         }
     }
 
     public boolean isAcceptibleType(MModelElement type) {
-       return type instanceof MClassifier;
+	return type instanceof MClassifier;
     }
 
     public Object getBehavioralFeature() {
         MBehavioralFeature feature = null;
         Object target = getTarget();
-        if(target instanceof MParameter) {
+        if (target instanceof MParameter) {
             feature = ((MParameter) target).getBehavioralFeature();
         }
         return feature;
     }
 
-     public void addDataType() {
+    public void addDataType() {
         Object target = getTarget();
-        if(target instanceof MNamespace) {
+        if (target instanceof MNamespace) {
             MNamespace ns = (MNamespace) target;
             MModelElement ownedElem = CoreFactory.getFactory().createDataType();
             ns.addOwnedElement(ownedElem);
@@ -154,7 +158,7 @@ public class PropPanelParameter extends PropPanelModelElement {
 
     public void navigateUp() {
         Object feature = getBehavioralFeature();
-        if(feature != null) {
+        if (feature != null) {
             TargetManager.getInstance().setTarget(feature);
         }
     }
@@ -162,16 +166,16 @@ public class PropPanelParameter extends PropPanelModelElement {
     public void addParameter() {
         MBehavioralFeature feature = null;
         Object target = getTarget();
-        if(target instanceof MParameter) {
+        if (target instanceof MParameter) {
             feature = ((MParameter) target).getBehavioralFeature();
-            if(feature != null) {
-                MParameter param = CoreFactory.getFactory().buildParameter((MOperation)feature);
+            if (feature != null) {
+                MParameter param = CoreFactory.getFactory().buildParameter((MOperation) feature);
                 TargetManager.getInstance().setTarget(param);
             }
         }
     }
 
-   public void addDataType(MModelElement element) {
+    public void addDataType(MModelElement element) {
         addDataType();
     }
 

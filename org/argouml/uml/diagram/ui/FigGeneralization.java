@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -47,112 +48,112 @@ import ru.novosoft.uml.foundation.core.MGeneralization;
 
 public class FigGeneralization extends FigEdgeModelElement {
 	
-	/**
-	 * Text box for discriminator
-	 */
-	FigText _discriminator = new FigText(10, 30, 90, 20);
+    /**
+     * Text box for discriminator
+     */
+    FigText _discriminator = new FigText(10, 30, 90, 20);
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  protected ArrowHeadTriangle endArrow;
+    protected ArrowHeadTriangle endArrow;
 
-  public FigGeneralization() {
-    addPathItem(_stereo, new PathConvPercent(this, 50, 10));
-    endArrow = new ArrowHeadTriangle();
+    public FigGeneralization() {
+	addPathItem(_stereo, new PathConvPercent(this, 50, 10));
+	endArrow = new ArrowHeadTriangle();
 
-    _discriminator.setFont(LABEL_FONT);
-    _discriminator.setTextColor(Color.black);
-    _discriminator.setTextFilled(false);
-    _discriminator.setFilled(false);
-    _discriminator.setLineWidth(0);
-    _discriminator.setExpandOnly(false);
-    _discriminator.setMultiLine(false);
-    _discriminator.setAllowsTab(false);
-    addPathItem(_discriminator, new PathConvPercent(this, 40, -10));
-    endArrow.setFillColor(Color.white);
-    setDestArrowHead(endArrow);
-    setBetweenNearestPoints(true);
+	_discriminator.setFont(LABEL_FONT);
+	_discriminator.setTextColor(Color.black);
+	_discriminator.setTextFilled(false);
+	_discriminator.setFilled(false);
+	_discriminator.setLineWidth(0);
+	_discriminator.setExpandOnly(false);
+	_discriminator.setMultiLine(false);
+	_discriminator.setAllowsTab(false);
+	addPathItem(_discriminator, new PathConvPercent(this, 40, -10));
+	endArrow.setFillColor(Color.white);
+	setDestArrowHead(endArrow);
+	setBetweenNearestPoints(true);
     
-    if (getLayer() == null) {
-	   	setLayer(ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer());
+	if (getLayer() == null) {
+	    setLayer(ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer());
+	}
+    
     }
-    
-  }
 
-  public FigGeneralization(Object edge, Layer lay) {
-    this();
-    setLayer(lay);
-    setOwner(edge);
+    public FigGeneralization(Object edge, Layer lay) {
+	this();
+	setLayer(lay);
+	setOwner(edge);
     
-  }
+    }
   
-  public FigGeneralization(Object edge) {
+    public FigGeneralization(Object edge) {
   	this();
   	setOwner(edge);
-  }
+    }
 
-  protected boolean canEdit(Fig f) { return false; }
+    protected boolean canEdit(Fig f) { return false; }
 
-  ////////////////////////////////////////////////////////////////
-  // event handlers
+    ////////////////////////////////////////////////////////////////
+    // event handlers
 
-  /** This is called aftern any part of the UML MModelElement has
-   *  changed. This method automatically updates the name FigText.
-   *  Subclasses should override and update other parts. */
-  protected void modelChanged(MElementEvent e) {
-    // do not set _name
-    updateStereotypeText();
-    updateDiscriminatorText();
-  }
+    /** This is called aftern any part of the UML MModelElement has
+     *  changed. This method automatically updates the name FigText.
+     *  Subclasses should override and update other parts. */
+    protected void modelChanged(MElementEvent e) {
+	// do not set _name
+	updateStereotypeText();
+	updateDiscriminatorText();
+    }
   
-  /**
-   * Updates the discriminator text. Called if the model is changed and on construction time.
-   */
-  public void updateDiscriminatorText() {
-  	MGeneralization me = (MGeneralization)getOwner();
+    /**
+     * Updates the discriminator text. Called if the model is changed and on construction time.
+     */
+    public void updateDiscriminatorText() {
+  	MGeneralization me = (MGeneralization) getOwner();
   	if (me == null) {
-  		return;
+	    return;
   	}
   	String disc = me.getDiscriminator();
   	if (disc == null) {
-  		disc = "";
+	    disc = "";
   	}
   	_discriminator.setText(disc);
-  }
+    }
 
-  public void paint(Graphics g) {
+    public void paint(Graphics g) {
         endArrow.setLineColor(getLineColor());
         super.paint(g);
-  }
+    }
 
-	/**
-	 * @see org.tigris.gef.presentation.Fig#setOwner(Object)
-	 */
-	public void setOwner(Object own) {
-		super.setOwner(own);
-		if (own instanceof MGeneralization) {
-    	MGeneralization gen = (MGeneralization)own;
-    	MGeneralizableElement subType = gen.getChild();
-      MGeneralizableElement superType = gen.getParent();
-      // due to errors in earlier releases of argouml it can happen that there is a generalization 
-      // without a child or parent. 
-      if (subType == null || superType == null) {
-      	delete();
-      	return;
-      }
-	      FigNode subTypeFN = (FigNode) getLayer().presentationFor(subType);
-	      FigNode superTypeFN = (FigNode) getLayer().presentationFor(superType);
-	      setSourcePortFig(subTypeFN);
-	      setSourceFigNode(subTypeFN);
-	      setDestPortFig(superTypeFN);
-	      setDestFigNode(superTypeFN);
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(Object)
+     */
+    public void setOwner(Object own) {
+	super.setOwner(own);
+	if (own instanceof MGeneralization) {
+	    MGeneralization gen = (MGeneralization) own;
+	    MGeneralizableElement subType = gen.getChild();
+	    MGeneralizableElement superType = gen.getParent();
+	    // due to errors in earlier releases of argouml it can happen that there is a generalization 
+	    // without a child or parent. 
+	    if (subType == null || superType == null) {
+		delete();
+		return;
+	    }
+	    FigNode subTypeFN = (FigNode) getLayer().presentationFor(subType);
+	    FigNode superTypeFN = (FigNode) getLayer().presentationFor(superType);
+	    setSourcePortFig(subTypeFN);
+	    setSourceFigNode(subTypeFN);
+	    setDestPortFig(superTypeFN);
+	    setDestFigNode(superTypeFN);
       
-    } else 
-    if (own != null) {
-    	throw new IllegalStateException("FigGeneralization has an illegal owner");
-	}
-	}
+	} else 
+	    if (own != null) {
+		throw new IllegalStateException("FigGeneralization has an illegal owner");
+	    }
+    }
 
     /**
      * This method is called after the fig is loaded from pgml. Implemented here
@@ -173,7 +174,7 @@ public class FigGeneralization extends FigEdgeModelElement {
         Object source = sourceFig.getOwner();
         Object dest = destFig.getOwner();
         if (source instanceof MGeneralizableElement && dest instanceof MGeneralizableElement) {
-            setOwner(CoreFactory.getFactory().buildGeneralization((MGeneralizableElement)source, (MGeneralizableElement)dest));
+            setOwner(CoreFactory.getFactory().buildGeneralization((MGeneralizableElement) source, (MGeneralizableElement) dest));
         }
     }
 } /* end class FigGeneralization */

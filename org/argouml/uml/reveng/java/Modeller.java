@@ -47,7 +47,7 @@ import org.tigris.gef.base.Globals;
  */
 public class Modeller
 {
-        protected static Category cat = Category.getInstance(Modeller.class);
+    protected static Category cat = Category.getInstance(Modeller.class);
     /** Current working model. */
     private Object model;
 
@@ -86,11 +86,11 @@ public class Modeller
        @param model The model to work with.
     */
     public Modeller(Object model,
-                  DiagramInterface diagram,
-                  Import _import,
-                  boolean noAssociations,
-                  boolean arraysAsDatatype,
-                  String fileName)
+		    DiagramInterface diagram,
+		    Import _import,
+		    boolean noAssociations,
+		    boolean arraysAsDatatype,
+		    String fileName)
     {
 	this.model = model;
 	this.noAssociations = noAssociations;
@@ -119,33 +119,33 @@ public class Modeller
      * / packages.
      * <p>See JSR 26.
      */
-    public void addComponent(){
+    public void addComponent() {
         
         // try and find the component in the current package
         // to cope with repeated imports
-        Object component = ModelFacade.lookupIn(currentPackage,fileName);
+        Object component = ModelFacade.lookupIn(currentPackage, fileName);
         
-        if (component == null){
+        if (component == null) {
         
             // remove the java specific ending (per JSR 26).
             // BUT we can't do this because then the component will be confused
             // with its class with the same name when invoking
             // ModelFacade.lookupIn(Object,String)
             /*
-            if(fileName.endsWith(".java"))
-               fileName = fileName.substring(0,
-                                             fileName.length()-5);
+	      if(fileName.endsWith(".java"))
+	      fileName = fileName.substring(0,
+	      fileName.length()-5);
             */
             
             component = UmlFactory.getFactory().getCore().createComponent();
-            ModelFacade.setName(component,fileName);
+            ModelFacade.setName(component, fileName);
         }
         
         parseState.addComponent(component);
         
         // set the namespace of the component, in the event
         // that the source file does not have a package stmt
-        ModelFacade.setNamespace(parseState.getComponent(),model);
+        ModelFacade.setNamespace(parseState.getComponent(), model);
     }
     
     /**
@@ -159,8 +159,8 @@ public class Modeller
 	// in the diagram yet. I do this for all the class diagrams up to the top level,
 	// since I need diagrams for all the packages.
 	String ownerPackageName, currentName = name;
-	while( ! "".equals(ownerPackageName = getPackageName(currentName))) {
-	    if(getDiagram() != null && _import.isCreateDiagramsChecked() && getDiagram().isDiagramInProject(ownerPackageName)) {
+	while ( !"".equals(ownerPackageName = getPackageName(currentName))) {
+	    if (getDiagram() != null && _import.isCreateDiagramsChecked() && getDiagram().isDiagramInProject(ownerPackageName)) {
                 getDiagram().selectClassDiagram( getPackage(ownerPackageName), ownerPackageName);
                 getDiagram().addPackage(getPackage(currentName));
             }
@@ -169,7 +169,7 @@ public class Modeller
 	// Save src_path in the upper package
 	Object mPackage = getPackage(currentName);
 	if (_import.getSrcPath() != null && ModelFacade.getTaggedValue(mPackage, "src_path") == null)
-		ModelFacade.setTaggedValue(mPackage, "src_path", _import.getSrcPath());
+	    ModelFacade.setTaggedValue(mPackage, "src_path", _import.getSrcPath());
 		
 	// Find or create a MPackage NSUML object for this package.
 	mPackage = getPackage(name);
@@ -182,7 +182,7 @@ public class Modeller
         // Delay diagram creation until any classifier (class or interface) will be found
         
         // set the namespace of the component
-        ModelFacade.setNamespace(parseState.getComponent(),currentPackage);
+        ModelFacade.setNamespace(parseState.getComponent(), currentPackage);
     }
 
     /**
@@ -197,19 +197,19 @@ public class Modeller
 	Object mPackage = getPackage(packageName);
 
         // import on demand
-	if(classifierName.equals("*")) {
+	if (classifierName.equals("*")) {
 	    parseState.addPackageContext(mPackage);
-            Object perm=null;
+            Object perm = null;
             
             // try find an existing permission
             Iterator dependenciesIt =
                 UmlHelper.getHelper().getCore()
-                    .getDependencies(mPackage, parseState.getComponent())
-                    .iterator();
-            while(dependenciesIt.hasNext()){
+		.getDependencies(mPackage, parseState.getComponent())
+		.iterator();
+            while (dependenciesIt.hasNext()) {
                 
                 Object dependency = dependenciesIt.next();
-                if(ModelFacade.isAPermission(dependency)){
+                if (ModelFacade.isAPermission(dependency)) {
                     
                     perm = dependency;
                     break;
@@ -217,31 +217,31 @@ public class Modeller
             }
             
             // if no existing permission was found.
-            if(perm == null){
-            perm = UmlFactory.getFactory().getCore().buildPermission(parseState.getComponent(), mPackage);
-            ModelFacade.setName(perm,
-                ModelFacade.getName(parseState.getComponent())+
-                " -> "+
-                packageName);
+            if (perm == null) {
+		perm = UmlFactory.getFactory().getCore().buildPermission(parseState.getComponent(), mPackage);
+		ModelFacade.setName(perm,
+				    ModelFacade.getName(parseState.getComponent()) +
+				    " -> " +
+				    packageName);
             }
 	}
         // single type import
 	else {
-            Object mClassifier=null;
+            Object mClassifier = null;
 	    try {
-		mClassifier= (new PackageContext(null, mPackage)).get(classifierName);
+		mClassifier = (new PackageContext(null, mPackage)).get(classifierName);
 		parseState.addClassifierContext(mClassifier);
                 Object perm = null;
                 
                 // try find an existing permission
                 Iterator dependenciesIt =
-                UmlHelper.getHelper().getCore()
+		    UmlHelper.getHelper().getCore()
                     .getDependencies(mClassifier, parseState.getComponent())
                     .iterator();
-                while(dependenciesIt.hasNext()){
+                while (dependenciesIt.hasNext()) {
                     
                     Object dependency = dependenciesIt.next();
-                    if(ModelFacade.isAPermission(dependency)){
+                    if (ModelFacade.isAPermission(dependency)) {
                         
                         perm = dependency;
                         break;
@@ -249,23 +249,23 @@ public class Modeller
                 }
                 
                 // if no existing permission was found.
-                if(perm == null){
+                if (perm == null) {
                     perm = UmlFactory.getFactory().getCore().buildPermission(parseState.getComponent(), mClassifier);
                     ModelFacade.setName(perm,
-                    ModelFacade.getName(parseState.getComponent())+
-                    " -> "+
-                    ModelFacade.getName(mClassifier));
+					ModelFacade.getName(parseState.getComponent()) +
+					" -> " +
+					ModelFacade.getName(mClassifier));
                 }
 	    }
-	    catch(ClassifierNotFoundException e) {
+	    catch (ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
                 // model/classpath then information will be lost from
                 // source files, because the classifier cannot be
                 // created on the fly.
-                cat.warn("Modeller.java: a classifier that was in the source"+
-                         " file could not be generated in the model "+
-                         "(to generate an imported classifier)- information lost\n"+
-                         "\t"+e);
+                cat.warn("Modeller.java: a classifier that was in the source" +
+                         " file could not be generated in the model " +
+                         "(to generate an imported classifier)- information lost\n" +
+                         "\t" + e);
 	    }
             
             
@@ -278,11 +278,11 @@ public class Modeller
        @param name The name of the class.
        @param modifiers A sequence of class modifiers.
        @param superclass Zero or one string with the name of the
-                         superclass. Can be fully qualified or
-			 just a simple class name.
+       superclass. Can be fully qualified or
+       just a simple class name.
        @param interfaces Zero or more strings with the names of implemented
-                         interfaces. Can be fully qualified or just a
-			 simple interface name.
+       interfaces. Can be fully qualified or just a
+       simple interface name.
        @param javadoc The javadoc comment. null or "" if no comment available.
     */
     public void addClass(String name,
@@ -293,51 +293,51 @@ public class Modeller
     {
         Object mClass = addClassifier(UmlFactory.getFactory().getCore().createClass(), name, modifiers, javadoc);
 
-        ModelFacade.setAbstract(mClass,(modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
-        ModelFacade.setLeaf(mClass,(modifiers & JavaRecognizer.ACC_FINAL) > 0);
-        ModelFacade.setRoot(mClass,false);
+        ModelFacade.setAbstract(mClass, (modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
+        ModelFacade.setLeaf(mClass, (modifiers & JavaRecognizer.ACC_FINAL) > 0);
+        ModelFacade.setRoot(mClass, false);
 
 
-            if(superclassName != null) {
-                try {
-                    Object parentClass = getContext(superclassName).get(getClassifierName(superclassName));
-                    getGeneralization(currentPackage, parentClass, mClass);
-                }
-                catch(ClassifierNotFoundException e) {
-                    // Currently if a classifier cannot be found in the
-                    // model/classpath then information will be lost from
-                    // source files, because the classifier cannot be
-                    // created on the fly.
-                    cat.warn("Modeller.java: a classifier that was in the source"+
-                         " file could not be generated in the model "+
-                         "(to generate a generalization)- information lost\n"+
-                         "\t"+e);
-                }
-            }
+	if (superclassName != null) {
+	    try {
+		Object parentClass = getContext(superclassName).get(getClassifierName(superclassName));
+		getGeneralization(currentPackage, parentClass, mClass);
+	    }
+	    catch (ClassifierNotFoundException e) {
+		// Currently if a classifier cannot be found in the
+		// model/classpath then information will be lost from
+		// source files, because the classifier cannot be
+		// created on the fly.
+		cat.warn("Modeller.java: a classifier that was in the source" +
+                         " file could not be generated in the model " +
+                         "(to generate a generalization)- information lost\n" +
+                         "\t" + e);
+	    }
+	}
 
-            for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
-                String interfaceName = (String)i.next();
-                try {
-                    Object mInterface = getContext(interfaceName).getInterface(getClassifierName(interfaceName));
-                    Object mAbstraction = getAbstraction(currentPackage, mInterface, mClass);
-                    if(ModelFacade.getSuppliers(mAbstraction).size() == 0) {
-                        ModelFacade.addSupplier(mAbstraction, mInterface);
-                        ModelFacade.addClient(mAbstraction, mClass);
-                    }
-                    ModelFacade.setNamespace(mAbstraction,currentPackage);
-                    ModelFacade.setStereotype(mAbstraction,getStereotype("realize"));
-                }
-                catch(ClassifierNotFoundException e) {
-                        // Currently if a classifier cannot be found in the
-                        // model/classpath then information will be lost from
-                        // source files, because the classifier cannot be
-                        // created on the fly.
-                        cat.warn("Modeller.java: a classifier that was in the source"+
-                         " file could not be generated in the model "+
-                         "(to generate a abstraction)- information lost\n"+
-                         "\t"+e);
-                }
-            }
+	for (Iterator i = interfaces.iterator(); i.hasNext(); ) {
+	    String interfaceName = (String) i.next();
+	    try {
+		Object mInterface = getContext(interfaceName).getInterface(getClassifierName(interfaceName));
+		Object mAbstraction = getAbstraction(currentPackage, mInterface, mClass);
+		if (ModelFacade.getSuppliers(mAbstraction).size() == 0) {
+		    ModelFacade.addSupplier(mAbstraction, mInterface);
+		    ModelFacade.addClient(mAbstraction, mClass);
+		}
+		ModelFacade.setNamespace(mAbstraction, currentPackage);
+		ModelFacade.setStereotype(mAbstraction, getStereotype("realize"));
+	    }
+	    catch (ClassifierNotFoundException e) {
+		// Currently if a classifier cannot be found in the
+		// model/classpath then information will be lost from
+		// source files, because the classifier cannot be
+		// created on the fly.
+		cat.warn("Modeller.java: a classifier that was in the source" +
+                         " file could not be generated in the model " +
+                         "(to generate a abstraction)- information lost\n" +
+                         "\t" + e);
+	    }
+	}
 
     }
 
@@ -352,14 +352,14 @@ public class Modeller
         try {
             Object mClassifier = getContext(type).get(getClassifierName(type));
             Vector interfaces = new Vector();
-            if(ModelFacade.isAInterface(mClassifier)) {
+            if (ModelFacade.isAInterface(mClassifier)) {
                 interfaces.add(type);
             }
-            addClass(name, (short)0, ModelFacade.isAClass(mClassifier) ? type : null, interfaces, "");
+            addClass(name, (short) 0, ModelFacade.isAClass(mClassifier) ? type : null, interfaces, "");
         }
-        catch(ClassifierNotFoundException e) {
+        catch (ClassifierNotFoundException e) {
             // Must add it anyway, or the class poping will mismatch.
-            addClass(name, (short)0, null, new Vector(), "");
+            addClass(name, (short) 0, null, new Vector(), "");
         }
     }
 
@@ -369,8 +369,8 @@ public class Modeller
        @param name The name of the interface.
        @param modifiers A sequence of interface modifiers.
        @param interfaces Zero or more strings with the names of extended
-                         interfaces. Can be fully qualified or just a
-                         simple interface name.
+       interfaces. Can be fully qualified or just a
+       simple interface name.
        @param javadoc The javadoc comment. "" if no comment available.
     */
     public void addInterface(String name,
@@ -379,21 +379,21 @@ public class Modeller
                              String javadoc)
     {
         Object mInterface = addClassifier(UmlFactory.getFactory().getCore().createInterface(), name, modifiers, javadoc);
-        for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
-            String interfaceName = (String)i.next();
+        for (Iterator i = interfaces.iterator(); i.hasNext(); ) {
+            String interfaceName = (String) i.next();
             try {
                 Object parentInterface = getContext(interfaceName).getInterface(getClassifierName(interfaceName));
                 getGeneralization(currentPackage, parentInterface, mInterface);
             }
-            catch(ClassifierNotFoundException e) {
-				// Currently if a classifier cannot be found in the
+            catch (ClassifierNotFoundException e) {
+		// Currently if a classifier cannot be found in the
                 // model/classpath then information will be lost from
                 // source files, because the classifier cannot be
                 // created on the fly.
-                cat.warn("Modeller.java: a classifier that was in the source"+
-                         " file could not be generated in the model "+
-                         "(to generate a generalization)- information lost\n"+
-                         "\t"+e);
+                cat.warn("Modeller.java: a classifier that was in the source" +
+                         " file could not be generated in the model " +
+                         "(to generate a generalization)- information lost\n" +
+                         "\t" + e);
             }
         }
     }
@@ -406,7 +406,7 @@ public class Modeller
        @param modifiers String of modifiers.
        @param javadoc The javadoc comment. null or "" if no comment available.
        @return The newly created/found classifier.
-     */
+    */
     private Object addClassifier(Object newClassifier,
                                  String name,
                                  short modifiers,
@@ -416,21 +416,21 @@ public class Modeller
 	Object mNamespace;
 
         // the new classifier is a java inner class
-	if(parseState.getClassifier() != null) {
-	    mClassifier = ModelFacade.lookupIn(parseState.getClassifier(),name);
+	if (parseState.getClassifier() != null) {
+	    mClassifier = ModelFacade.lookupIn(parseState.getClassifier(), name);
 	    mNamespace = parseState.getClassifier();
 	}
         // the new classifier is a top level java class
 	else {
 	    parseState.outerClassifier();
-	    mClassifier = ModelFacade.lookupIn(currentPackage,name);
+	    mClassifier = ModelFacade.lookupIn(currentPackage, name);
 	    mNamespace = currentPackage;
 	}
         // if the classifier could not be could in the model
-	if(mClassifier == null) {
+	if (mClassifier == null) {
 	    mClassifier = newClassifier;
-	    ModelFacade.setName(mClassifier,name);
-	    ModelFacade.setNamespace(mClassifier,mNamespace);
+	    ModelFacade.setName(mClassifier, name);
+	    ModelFacade.setNamespace(mClassifier, mNamespace);
 	}
         // it was found and we delete andy existing tagged values.
 	else {
@@ -439,17 +439,17 @@ public class Modeller
 	parseState.innerClassifier(mClassifier);
         
         // set up the component residency (only for top level classes)
-        if(parseState.getClassifier() == null){
+        if (parseState.getClassifier() == null) {
             // set the clasifier to be a resident in its component:
             // (before we push a new parse state on the stack)
             Object residentDep = null;
             
             // try find an existing residency
             Iterator dependenciesIt =
-            UmlHelper.getHelper().getCore()
-                .getDependencies(mClassifier,parseState.getComponent())
-                    .iterator();
-            while(dependenciesIt.hasNext()){
+		UmlHelper.getHelper().getCore()
+                .getDependencies(mClassifier, parseState.getComponent())
+		.iterator();
+            while (dependenciesIt.hasNext()) {
                 
                 Object dependency = dependenciesIt.next();
                 residentDep = dependency;
@@ -457,7 +457,7 @@ public class Modeller
             }
             
             // if no existing residency was found.
-            if(residentDep == null){
+            if (residentDep == null) {
                 
                 // this doesn't work because of a bug in NSUML (the ElementResidence
                 // association class is never saved to the xmi).
@@ -466,16 +466,16 @@ public class Modeller
                 // therefore temporarily use a non-standard hack:
                 //if (parseState.getComponent() == null) addComponent();
                 residentDep = CoreFactory.getFactory()
-                         .buildDependency(parseState.getComponent(),mClassifier);
+		    .buildDependency(parseState.getComponent(), mClassifier);
                 UmlFactory.getFactory().getExtensionMechanisms()
-                                       .buildStereotype(
-                                            residentDep,
-                                            "resident",
-                                            model);
+		    .buildStereotype(
+				     residentDep,
+				     "resident",
+				     model);
                 ModelFacade.setName(residentDep,
-                ModelFacade.getName(parseState.getComponent())+
-                    " -(location of)-> "+
-                    ModelFacade.getName(mClassifier));
+				    ModelFacade.getName(parseState.getComponent()) +
+				    " -(location of)-> " +
+				    ModelFacade.getName(mClassifier));
             }
         }
         
@@ -486,19 +486,19 @@ public class Modeller
 
 	setVisibility(mClassifier, modifiers);
 
-  /*
-   * Changed 2001-10-05 STEFFEN ZSCHALER
-   *
-   * Was (space added below!):
-   *
-  if((javadoc == null) || "".equals(javadoc)) {
-	    javadoc = "/** * /";
-	}
-	getTaggedValue(mClassifier, "documentation").setValue(javadoc);
-   *
-   */
+	/*
+	 * Changed 2001-10-05 STEFFEN ZSCHALER
+	 *
+	 * Was (space added below!):
+	 *
+	 if((javadoc == null) || "".equals(javadoc)) {
+	 javadoc = "/** * /";
+	 }
+	 getTaggedValue(mClassifier, "documentation").setValue(javadoc);
+	 *
+	 */
 
-  addDocumentationTag (mClassifier, javadoc);
+	addDocumentationTag (mClassifier, javadoc);
   
         
 	return mClassifier;
@@ -510,37 +510,37 @@ public class Modeller
     public void popClassifier()
     {
         // now create diagram if it doesn't exists in project
-		if (_import.isCreateDiagramsChecked()) {
-                        if (getDiagram() == null) {
-                                _diagram = new DiagramInterface(Globals.curEditor());
-                                if (currentPackageName != null && !currentPackageName.trim().equals("")) {
-					// create new diagram or select existing diagram for package
-					_diagram.createOrSelectClassDiagram(currentPackage, currentPackageName);
-				} else {
-					// create new diagram in root for classifier without package
-					_diagram.createRootClassDiagram();
-				}
-				
-			} else {
-				if (currentPackageName != null) {
-					getDiagram().selectClassDiagram(currentPackage, currentPackageName);
-				}
-                                // the DiagramInterface is instantiated already
-                                // but the class is in a source file
-                                // with no package declaration
-                                else{
-                                    // create new diagram in root for classifier without package
-                                    _diagram.createRootClassDiagram();
-                                }
-			}
+	if (_import.isCreateDiagramsChecked()) {
+	    if (getDiagram() == null) {
+		_diagram = new DiagramInterface(Globals.curEditor());
+		if (currentPackageName != null && !currentPackageName.trim().equals("")) {
+		    // create new diagram or select existing diagram for package
+		    _diagram.createOrSelectClassDiagram(currentPackage, currentPackageName);
+		} else {
+		    // create new diagram in root for classifier without package
+		    _diagram.createRootClassDiagram();
 		}
+				
+	    } else {
+		if (currentPackageName != null) {
+		    getDiagram().selectClassDiagram(currentPackage, currentPackageName);
+		}
+		// the DiagramInterface is instantiated already
+		// but the class is in a source file
+		// with no package declaration
+		else {
+		    // create new diagram in root for classifier without package
+		    _diagram.createRootClassDiagram();
+		}
+	    }
+	}
         // add the current classifier to the diagram.
         Object classifier = parseState.getClassifier();
-        if(ModelFacade.isAInterface(classifier)) {
-            if (getDiagram() != null && _import.isCreateDiagramsChecked()) _diagram.addInterface(classifier,_import.isMinimiseFigsChecked());
+        if (ModelFacade.isAInterface(classifier)) {
+            if (getDiagram() != null && _import.isCreateDiagramsChecked()) _diagram.addInterface(classifier, _import.isMinimiseFigsChecked());
         } else {
-            if(ModelFacade.isAClass(classifier)) {
-                if (getDiagram() != null && _import.isCreateDiagramsChecked()) _diagram.addClass(classifier,_import.isMinimiseFigsChecked());
+            if (ModelFacade.isAClass(classifier)) {
+                if (getDiagram() != null && _import.isCreateDiagramsChecked()) _diagram.addClass(classifier, _import.isMinimiseFigsChecked());
             }
         }
 
@@ -550,7 +550,7 @@ public class Modeller
         // Remove inner classes not in source
         parseState.removeObsoleteInnerClasses();
 
-        parseState = (ParseState)parseStateStack.pop();
+        parseState = (ParseState) parseStateStack.pop();
     }
 
     /** Called from the parser when an operation is
@@ -570,95 +570,95 @@ public class Modeller
                                 String name,
                                 Vector parameters,
                                 String javadoc) {
-      Object mOperation = getOperation(name);
-      parseState.feature(mOperation);
+	Object mOperation = getOperation(name);
+	parseState.feature(mOperation);
 
-      ModelFacade.setAbstract(mOperation,(modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
-      ModelFacade.setLeaf(mOperation,(modifiers & JavaRecognizer.ACC_FINAL) > 0);
-      ModelFacade.setRoot(mOperation,false);
-      setOwnerScope(mOperation, modifiers);
-      setVisibility(mOperation, modifiers);
-      if((modifiers & JavaRecognizer.ACC_SYNCHRONIZED) > 0) {
-          ModelFacade.setConcurrency(mOperation, ModelFacade.GUARDED);
-      } else if(ModelFacade.getConcurrency(mOperation) == ModelFacade.GUARDED) {
-          ModelFacade.setConcurrency(mOperation, ModelFacade.SEQUENTIAL);
-      }
+	ModelFacade.setAbstract(mOperation, (modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
+	ModelFacade.setLeaf(mOperation, (modifiers & JavaRecognizer.ACC_FINAL) > 0);
+	ModelFacade.setRoot(mOperation, false);
+	setOwnerScope(mOperation, modifiers);
+	setVisibility(mOperation, modifiers);
+	if ((modifiers & JavaRecognizer.ACC_SYNCHRONIZED) > 0) {
+	    ModelFacade.setConcurrency(mOperation, ModelFacade.GUARDED);
+	} else if (ModelFacade.getConcurrency(mOperation) == ModelFacade.GUARDED) {
+	    ModelFacade.setConcurrency(mOperation, ModelFacade.SEQUENTIAL);
+	}
 
-      for(Iterator i = ModelFacade.getParameters(mOperation).iterator(); i.hasNext(); ) {
-          ModelFacade.removeParameter(mOperation, i.next());
-      }
+	for (Iterator i = ModelFacade.getParameters(mOperation).iterator(); i.hasNext(); ) {
+	    ModelFacade.removeParameter(mOperation, i.next());
+	}
 
-          Object mParameter;
-          String typeName;
-          Object mPackage;
-          Object mClassifier;
+	Object mParameter;
+	String typeName;
+	Object mPackage;
+	Object mClassifier;
 
-          if(returnType == null) {
-              // Constructor
-              ModelFacade.setStereotype(mOperation,getStereotype("create"));
-          }
-          else {
-              try {
-                  mClassifier = getContext(returnType).get(getClassifierName(returnType));
+	if (returnType == null) {
+	    // Constructor
+	    ModelFacade.setStereotype(mOperation, getStereotype("create"));
+	}
+	else {
+	    try {
+		mClassifier = getContext(returnType).get(getClassifierName(returnType));
                 
-              mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
-              ModelFacade.setName(mParameter, "return");
-              ModelFacade.setKindToReturn(mParameter);
+		mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
+		ModelFacade.setName(mParameter, "return");
+		ModelFacade.setKindToReturn(mParameter);
 
                 ModelFacade.setType(mParameter, mClassifier);
-              }
-              catch(ClassifierNotFoundException e) {
+	    }
+	    catch (ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
                 // model/classpath then information will be lost from
                 // source files, because the classifier cannot be
                 // created on the fly.
-                cat.warn("Modeller.java: a classifier that was in the source "+
-                         "file could not be generated in the model "+
-                         "(for generating operation return type)- information lost\n"+
-                         "\t"+e);
-             }
-          }
+                cat.warn("Modeller.java: a classifier that was in the source " +
+                         "file could not be generated in the model " +
+                         "(for generating operation return type)- information lost\n" +
+                         "\t" + e);
+	    }
+	}
 
-          for(Iterator i = parameters.iterator(); i.hasNext(); ) {
-              Vector parameter = (Vector)i.next();
-              typeName = (String)parameter.elementAt(1);
-              try {
+	for (Iterator i = parameters.iterator(); i.hasNext(); ) {
+	    Vector parameter = (Vector) i.next();
+	    typeName = (String) parameter.elementAt(1);
+	    try {
                 mClassifier = getContext(typeName).get(getClassifierName(typeName));
                 mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
-              ModelFacade.setName(mParameter, (String)parameter.elementAt(2));
-              ModelFacade.setKindToIn(mParameter);
-              ModelFacade.setType(mParameter, mClassifier);
-              }
-              catch(ClassifierNotFoundException e) {
+		ModelFacade.setName(mParameter, (String) parameter.elementAt(2));
+		ModelFacade.setKindToIn(mParameter);
+		ModelFacade.setType(mParameter, mClassifier);
+	    }
+	    catch (ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
                 // model/classpath then information will be lost from
                 // source files, because the classifier cannot be
                 // created on the fly.
-                cat.warn("Modeller.java: a classifier that was in the source "+
-                         "file could not be generated in the model "+
-                         "(for generating operation params)- information lost\n"+
-                         "\t"+e);
-             }
-          }
+                cat.warn("Modeller.java: a classifier that was in the source " +
+                         "file could not be generated in the model " +
+                         "(for generating operation params)- information lost\n" +
+                         "\t" + e);
+	    }
+	}
 
 
-      /*
-       * Changed 2001-10-05 STEFFEN ZSCHALER.
-       *
-       * Was (space added below!):
-       *
-      if((javadoc == null) || "".equals(javadoc)) {
-          javadoc = "/** * /";
-      }
-      getTaggedValue(mOperation, "documentation").setValue(javadoc);
-       *
-       * Moved to end of method 2001-11-05 to allow addDocumentationTag to
-       * access as much information as possible
-       */
+	/*
+	 * Changed 2001-10-05 STEFFEN ZSCHALER.
+	 *
+	 * Was (space added below!):
+	 *
+	 if((javadoc == null) || "".equals(javadoc)) {
+	 javadoc = "/** * /";
+	 }
+	 getTaggedValue(mOperation, "documentation").setValue(javadoc);
+	 *
+	 * Moved to end of method 2001-11-05 to allow addDocumentationTag to
+	 * access as much information as possible
+	 */
 
-      addDocumentationTag (mOperation, javadoc);
+	addDocumentationTag (mOperation, javadoc);
 
-      return mOperation;
+	return mOperation;
     }
 
     /**
@@ -680,7 +680,7 @@ public class Modeller
         Object method = getMethod(ModelFacade.getName(op));
         parseState.feature(method);
         ModelFacade.setBody(method, UmlFactory.getFactory().getDataTypes().createProcedureExpression("Java", body));
-        ModelFacade.addMethod(op,method);  // Add the method to it's specification.
+        ModelFacade.addMethod(op, method);  // Add the method to it's specification.
         // Add this method as a feature to the classifier that owns the operation.
         ModelFacade.addFeature(ModelFacade.getOwner(op), method);
     }
@@ -699,38 +699,38 @@ public class Modeller
                               String name,
                               String initializer,
                               String javadoc) {
-	    String multiplicity = null;
+	String multiplicity = null;
 
-      if(!arraysAsDatatype && typeSpec.indexOf('[') != -1) {
-          typeSpec = typeSpec.substring(0, typeSpec.indexOf('['));
-          multiplicity = "1_N";
-      } else
-          multiplicity = "1_1";
+	if (!arraysAsDatatype && typeSpec.indexOf('[') != -1) {
+	    typeSpec = typeSpec.substring(0, typeSpec.indexOf('['));
+	    multiplicity = "1_N";
+	} else
+	    multiplicity = "1_1";
       
-      // the attribute type
-      Object mClassifier=null;
-      try {
-        // get the attribute type
-        mClassifier = getContext(typeSpec).get(getClassifierName(typeSpec));
-      }catch(ClassifierNotFoundException e) {
-		// Currently if a classifier cannot be found in the
-                // model/classpath then information will be lost from
-                // source files, because the classifier cannot be
-                // created on the fly.
-                cat.warn("Modeller.java: a classifier that was in the source "+
-                         "file could not be generated in the model "+
-                         "(for generating an attribute)- information lost\n"+
-                         "\t"+e);
+	// the attribute type
+	Object mClassifier = null;
+	try {
+	    // get the attribute type
+	    mClassifier = getContext(typeSpec).get(getClassifierName(typeSpec));
+	} catch (ClassifierNotFoundException e) {
+	    // Currently if a classifier cannot be found in the
+	    // model/classpath then information will be lost from
+	    // source files, because the classifier cannot be
+	    // created on the fly.
+	    cat.warn("Modeller.java: a classifier that was in the source " +
+		     "file could not be generated in the model " +
+		     "(for generating an attribute)- information lost\n" +
+		     "\t" + e);
                 
-        // if we can't find the attribute type then
-        // we can't add the attribute.
-        return;
-      }
+	    // if we can't find the attribute type then
+	    // we can't add the attribute.
+	    return;
+	}
           
-      // if we want to create a UML attribute:
-      if(noAssociations ||
-         ModelFacade.isADataType(mClassifier) ||
-         ModelFacade.getNamespace(mClassifier) == getPackage("java.lang")){
+	// if we want to create a UML attribute:
+	if (noAssociations ||
+	    ModelFacade.isADataType(mClassifier) ||
+	    ModelFacade.getNamespace(mClassifier) == getPackage("java.lang")) {
       
             Object mAttribute = getAttribute(name, initializer, mClassifier);
 
@@ -742,14 +742,14 @@ public class Modeller
             ModelFacade.setType(mAttribute, mClassifier);
 
             // Set the initial value for the attribute.
-            if(initializer != null) {
+            if (initializer != null) {
                 ModelFacade.setInitialValue(mAttribute, UmlFactory.getFactory().getDataTypes().createExpression("Java", initializer));
             }
 
-            if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
+            if ((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
                 ModelFacade.setChangeable(mAttribute, false);
             }
-            else if(!ModelFacade.isChangeable(mAttribute)) {
+            else if (!ModelFacade.isChangeable(mAttribute)) {
                 ModelFacade.setChangeable(mAttribute, true);
             }
             addDocumentationTag(mAttribute, javadoc);
@@ -768,7 +768,7 @@ public class Modeller
             }
             ModelFacade.setNavigable(mAssociationEnd, true);
             addDocumentationTag(mAssociationEnd, javadoc);
-       }
+	}
     }
 
     /**
@@ -787,11 +787,11 @@ public class Modeller
         String name = ModelFacade.getName(child) + " -> " + ModelFacade.getName(parent);
         Object mGeneralization = null;
         mGeneralization = ModelFacade.getGeneralization(child, parent);
-        if(mGeneralization == null) {
+        if (mGeneralization == null) {
             mGeneralization = CoreFactory.getFactory().buildGeneralization(child, parent, name);
         }
-        if(mGeneralization != null) {
-            ModelFacade.setNamespace(mGeneralization,mPackage);
+        if (mGeneralization != null) {
+            ModelFacade.setNamespace(mGeneralization, mPackage);
         }
         return mGeneralization;
     }
@@ -811,14 +811,14 @@ public class Modeller
     {
         String name = ModelFacade.getName(child) + " -> " + ModelFacade.getName(parent);
         Object mAbstraction = null;
-        for(Iterator i = ModelFacade.getClientDependencies(child).iterator(); i.hasNext(); ) {
+        for (Iterator i = ModelFacade.getClientDependencies(child).iterator(); i.hasNext(); ) {
             mAbstraction = i.next();
             Collection c = ModelFacade.getSuppliers(mAbstraction);
-            if(c == null || c.size() == 0) {
-                ModelFacade.removeClientDependency(child,mAbstraction);
+            if (c == null || c.size() == 0) {
+                ModelFacade.removeClientDependency(child, mAbstraction);
             }
             else {
-                if(parent != c.toArray()[0]) {
+                if (parent != c.toArray()[0]) {
                     mAbstraction = null;
                 }
                 else {
@@ -827,7 +827,7 @@ public class Modeller
             }
         }
 
-        if(mAbstraction == null) {
+        if (mAbstraction == null) {
             mAbstraction = UmlFactory.getFactory().getCore().buildAbstraction(name);
         }
         return mAbstraction;
@@ -843,12 +843,12 @@ public class Modeller
     private Object getPackage(String name)
     {
 	Object mPackage = searchPackageInModel(name);
-	if(mPackage == null) {
+	if (mPackage == null) {
 	    mPackage = UmlFactory.getFactory().getModelManagement().buildPackage(getRelativePackageName(name), name);
 	    ModelFacade.setNamespace(mPackage, model);
 
 	    // Find the owner for this package.
-	    if("".equals(getPackageName(name))) {
+	    if ("".equals(getPackageName(name))) {
 		ModelFacade.addOwnedElement(model, mPackage);
 	    }
 	    else {
@@ -868,11 +868,11 @@ public class Modeller
      * @return The found package or null, if it is not in the model.
      */
     private Object searchPackageInModel(String name) {
-	if("".equals(getPackageName(name))) {
-	    return ModelFacade.lookupIn(model,name);
+	if ("".equals(getPackageName(name))) {
+	    return ModelFacade.lookupIn(model, name);
 	} else {
 	    Object owner = searchPackageInModel(getPackageName(name));
-	    return owner == null ? null : ModelFacade.lookupIn(owner,getRelativePackageName(name));
+	    return owner == null ? null : ModelFacade.lookupIn(owner, getRelativePackageName(name));
 	}
     }
 
@@ -886,15 +886,15 @@ public class Modeller
     private Object getOperation(String name)
     {
         Object mOperation = parseState.getOperation(name);
-        if(mOperation == null) {
-            mOperation = UmlFactory.getFactory().getCore().buildOperation(parseState.getClassifier(),name);
+        if (mOperation == null) {
+            mOperation = UmlFactory.getFactory().getCore().buildOperation(parseState.getClassifier(), name);
             Iterator it2 = ProjectManager.getManager().getCurrentProject().findFigsForMember(parseState.getClassifier()).iterator();
             while (it2.hasNext()) {
                 Object listener = it2.next();
                 // UmlModelEventPump.getPump().removeModelEventListener(listener, mOperation);
                 UmlModelEventPump.getPump().addModelEventListener(listener, mOperation);
                 // UmlModelEventPump.getPump().removeModelEventListener(listener, mOperation.getParameter(0));
-                UmlModelEventPump.getPump().addModelEventListener(listener, ModelFacade.getParameter(mOperation,0));
+                UmlModelEventPump.getPump().addModelEventListener(listener, ModelFacade.getParameter(mOperation, 0));
             }
         }
         return mOperation;
@@ -910,9 +910,9 @@ public class Modeller
     private Object getMethod(String name)
     {
         Object mMethod = parseState.getMethod(name);
-        if(mMethod == null) {
+        if (mMethod == null) {
             mMethod = UmlFactory.getFactory().getCore().buildMethod(name);
-            ModelFacade.addFeature(parseState.getClassifier(),mMethod);
+            ModelFacade.addFeature(parseState.getClassifier(), mMethod);
         }
         return mMethod;
     }
@@ -924,7 +924,7 @@ public class Modeller
        @param name The name of the attribute.
        @param initializer The initializer code.
        @param mClassifier The type, used when checking for existing
-                          association.
+       association.
        @return The attribute found or created.
     */
     private Object getAttribute(String name,
@@ -932,9 +932,9 @@ public class Modeller
                                 Object mClassifier)
     {
         Object mAttribute = parseState.getFeature(name);
-        if(mAttribute == null) {
+        if (mAttribute == null) {
             mAttribute = UmlFactory.getFactory().getCore().buildAttribute(name);
-            ModelFacade.addFeature(parseState.getClassifier(),mAttribute);
+            ModelFacade.addFeature(parseState.getClassifier(), mAttribute);
         }
         return mAttribute;
     }
@@ -953,17 +953,17 @@ public class Modeller
         Object mAssociationEnd = null;
         for (Iterator i = ModelFacade.getAssociationEnds(mClassifier).iterator(); i.hasNext(); ) {
             Object ae = i.next();
-            if(name.equals(ModelFacade.getName(ae))) {
+            if (name.equals(ModelFacade.getName(ae))) {
                 mAssociationEnd = ae;
             }
         }
         if (mAssociationEnd == null && !noAssociations) {
             Object mAssociation = CoreFactory.getFactory()
-                                             .buildAssociation(mClassifier,
-                                                               true,
-                                                               parseState.getClassifier(),
-                                                               false,
-                                                               ModelFacade.getName(parseState.getClassifier())+" -> "+ModelFacade.getName(mClassifier));
+		.buildAssociation(mClassifier,
+				  true,
+				  parseState.getClassifier(),
+				  false,
+				  ModelFacade.getName(parseState.getClassifier()) + " -> " + ModelFacade.getName(mClassifier));
             mAssociationEnd = ModelFacade.getAssociationEnd(mClassifier, mAssociation);
         }
         return mAssociationEnd;
@@ -977,10 +977,10 @@ public class Modeller
     */
     private Object getStereotype(String name)
     {
-	Object mStereotype = ModelFacade.lookupIn(model,name);
+	Object mStereotype = ModelFacade.lookupIn(model, name);
 
-	if(mStereotype == null || !ModelFacade.isAStereotype(mStereotype)) {
-	    mStereotype = UmlFactory.getFactory().getExtensionMechanisms().buildStereotype(name,model);
+	if (mStereotype == null || !ModelFacade.isAStereotype(mStereotype)) {
+	    mStereotype = UmlFactory.getFactory().getExtensionMechanisms().buildStereotype(name, model);
 	}
 
 	return mStereotype;
@@ -992,13 +992,13 @@ public class Modeller
        @param element The tagged value belongs to this.
        @param name The tag.
        @return The found tag. A new is created if not found.
-     */
+    */
     private Object getTaggedValue(Object element, String name)
     {
-        Object tv = ModelFacade.getTaggedValue(element,name);
+        Object tv = ModelFacade.getTaggedValue(element, name);
         if (tv == null) {
-            ModelFacade.setTaggedValue(element,name,"");
-            tv = ModelFacade.getTaggedValue(element,name);
+            ModelFacade.setTaggedValue(element, name, "");
+            tv = ModelFacade.getTaggedValue(element, name);
         }
         return tv;
     }
@@ -1010,7 +1010,7 @@ public class Modeller
      * @param element that they are removed from
      */
     private void cleanModelElement(Object element) {
-        for(Iterator i = ModelFacade.getTaggedValues(element); i.hasNext(); ) {
+        for (Iterator i = ModelFacade.getTaggedValues(element); i.hasNext(); ) {
             Object tv = i.next();
             if (ModelFacade.getValueOfTag(tv).equals(MMUtil.GENERATED_TAG)) {
                 UmlFactory.getFactory().delete(tv);
@@ -1027,7 +1027,7 @@ public class Modeller
     private String getPackageName(String name)
     {
 	int lastDot = name.lastIndexOf('.');
-	if(lastDot == -1) {
+	if (lastDot == -1) {
 	    return "";
 	}
 	else {
@@ -1060,11 +1060,11 @@ public class Modeller
     private String getClassifierName(String name)
     {
 	int lastDot = name.lastIndexOf('.');
-	if(lastDot == -1) {
+	if (lastDot == -1) {
 	    return name;
 	}
 	else {
-	    return name.substring(lastDot+1);
+	    return name.substring(lastDot + 1);
 	}
     }
 
@@ -1073,24 +1073,24 @@ public class Modeller
 
        @param element The model element.
        @param modifiers A sequence of modifiers which may contain
-                        'private', 'protected' or 'public'.
+       'private', 'protected' or 'public'.
     */
     private void setVisibility(Object element,
                                short modifiers)
     {
-	if((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
-            ModelFacade.setTaggedValue(element,"src_modifiers", "static");
+	if ((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
+            ModelFacade.setTaggedValue(element, "src_modifiers", "static");
 	}
-	if((modifiers & JavaRecognizer.ACC_PRIVATE) > 0) {
-	    ModelFacade.setVisibility(element,ModelFacade.ACC_PRIVATE);
+	if ((modifiers & JavaRecognizer.ACC_PRIVATE) > 0) {
+	    ModelFacade.setVisibility(element, ModelFacade.ACC_PRIVATE);
 	}
-	else if((modifiers & JavaRecognizer.ACC_PROTECTED) > 0) {
-	    ModelFacade.setVisibility(element,ModelFacade.ACC_PROTECTED);
+	else if ((modifiers & JavaRecognizer.ACC_PROTECTED) > 0) {
+	    ModelFacade.setVisibility(element, ModelFacade.ACC_PROTECTED);
 	}
-	else if((modifiers & JavaRecognizer.ACC_PUBLIC) > 0) {
-	    ModelFacade.setVisibility(element,ModelFacade.ACC_PUBLIC);
+	else if ((modifiers & JavaRecognizer.ACC_PUBLIC) > 0) {
+	    ModelFacade.setVisibility(element, ModelFacade.ACC_PUBLIC);
 	} else {
-            ModelFacade.setTaggedValue(element,"src_visibility", "default");
+            ModelFacade.setTaggedValue(element, "src_visibility", "default");
 	}
     }
 
@@ -1099,15 +1099,15 @@ public class Modeller
 
        @param feature The feature.
        @param modifiers A sequence of modifiers which may contain
-                        'static'.
+       'static'.
     */
     private void setOwnerScope(Object feature, short modifiers)
     {
-        if((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
-            ModelFacade.setOwnerScope(feature,ModelFacade.CLASSIFIER_SCOPE);
+        if ((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
+            ModelFacade.setOwnerScope(feature, ModelFacade.CLASSIFIER_SCOPE);
         }
         else {
-            ModelFacade.setOwnerScope(feature,ModelFacade.INSTANCE_SCOPE);
+            ModelFacade.setOwnerScope(feature, ModelFacade.INSTANCE_SCOPE);
         }
     }
 
@@ -1116,15 +1116,15 @@ public class Modeller
 
        @param mAssociationEnd The end.
        @param modifiers A sequence of modifiers which may contain
-                        'static'.
+       'static'.
     */
     private void setTargetScope(Object mAssociationEnd, short modifiers)
     {
-        if((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
-            ModelFacade.setTargetScope(mAssociationEnd,ModelFacade.CLASSIFIER_SCOPE);
+        if ((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
+            ModelFacade.setTargetScope(mAssociationEnd, ModelFacade.CLASSIFIER_SCOPE);
         }
         else {
-            ModelFacade.setTargetScope(mAssociationEnd,ModelFacade.INSTANCE_SCOPE);
+            ModelFacade.setTargetScope(mAssociationEnd, ModelFacade.INSTANCE_SCOPE);
         }
     }
 
@@ -1138,248 +1138,247 @@ public class Modeller
     {
 	Context context = parseState.getContext();
 	String packageName = getPackageName(name);
-	if(!"".equals(packageName)) {
+	if (!"".equals(packageName)) {
 	    context = new PackageContext(context, getPackage(packageName));
 	}
 	return context;
     }
 
 
-  /**
-   * Add the contents of a single standard javadoc tag to the model element.
-   * Usually this will be added as a tagged value.
-   *
-   * This is called from {@link #addDocumentationTag} only.
-   *
-   * @param me the model element to add to
-   * @sTagName the name of the javadoc tag
-   * @sTagData the contents of the javadoc tag
-   */
-  private void addJavadocTagContents (Object me,
-                                      String sTagName,
-                                      String sTagData) {
-    if ((sTagName.equals ("invariant")) ||
-        (sTagName.equals ("pre-condition")) ||
-        (sTagName.equals ("post-condition"))) {
+    /**
+     * Add the contents of a single standard javadoc tag to the model element.
+     * Usually this will be added as a tagged value.
+     *
+     * This is called from {@link #addDocumentationTag} only.
+     *
+     * @param me the model element to add to
+     * @sTagName the name of the javadoc tag
+     * @sTagData the contents of the javadoc tag
+     */
+    private void addJavadocTagContents (Object me,
+					String sTagName,
+					String sTagData) {
+	if ((sTagName.equals ("invariant")) ||
+	    (sTagName.equals ("pre-condition")) ||
+	    (sTagName.equals ("post-condition"))) {
 
-      // add as OCL constraint
-      String sContext = OCLUtil.getContextString(me);
-      String name = sTagData.substring(0, sTagData.indexOf(':'));
-      String body = null;
-      if (sTagName.equals ("invariant")) {
-        // add as invariant constraint
-        // Note that no checking of constraint syntax is performed... BAD!
-        body = sContext + " inv " + sTagData;
-      }
-      else if (sTagName.equals ("pre-condition")) {
-        body = sContext + " pre " + sTagData;
-      }
-      else {
-        body = sContext + " post " + sTagData;
-      }
-      Object bexpr = UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",body);
-      Object mc = UmlFactory.getFactory().getCore().buildConstraint(name, bexpr);
-      ModelFacade.addConstraint(me,mc);
-      if (ModelFacade.getNamespace(me) != null) {
-        // Apparently namespace management is not supported for all model
-        // elements. As this does not seem to cause problems, I'll just
-        // leave it at that for the moment...
-        ModelFacade.addOwnedElement(ModelFacade.getNamespace(me),mc);
-      }
+	    // add as OCL constraint
+	    String sContext = OCLUtil.getContextString(me);
+	    String name = sTagData.substring(0, sTagData.indexOf(':'));
+	    String body = null;
+	    if (sTagName.equals ("invariant")) {
+		// add as invariant constraint
+		// Note that no checking of constraint syntax is performed... BAD!
+		body = sContext + " inv " + sTagData;
+	    }
+	    else if (sTagName.equals ("pre-condition")) {
+		body = sContext + " pre " + sTagData;
+	    }
+	    else {
+		body = sContext + " post " + sTagData;
+	    }
+	    Object bexpr = UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL", body);
+	    Object mc = UmlFactory.getFactory().getCore().buildConstraint(name, bexpr);
+	    ModelFacade.addConstraint(me, mc);
+	    if (ModelFacade.getNamespace(me) != null) {
+		// Apparently namespace management is not supported for all model
+		// elements. As this does not seem to cause problems, I'll just
+		// leave it at that for the moment...
+		ModelFacade.addOwnedElement(ModelFacade.getNamespace(me), mc);
+	    }
+	}
+	else {
+	    ModelFacade.setValueOfTag(getTaggedValue(me, sTagName), sTagData);
+	}
     }
-    else {
-      ModelFacade.setValueOfTag(getTaggedValue(me,sTagName),sTagData);
-    }
-  }
 
-  /**
-   * Add the javadocs as a tagged value 'documentation' to the model element. All
-   * comment delimiters are removed prior to adding the comment.
-   *
-   * Added 2001-10-05 STEFFEN ZSCHALER.
-   *
-   * @param me the model element to which to add the documentation
-   * @param sJavaDocs the documentation comment to add ("" or null if no java docs)
-   */
-  private void addDocumentationTag (Object modelElement,
-                                    String sJavaDocs) {
-    if ((sJavaDocs != null) &&
-        (sJavaDocs.trim().length() >=5 )) {
-      cat.debug ("Modeller.addDocumentationTag: sJavaDocs = \"" + sJavaDocs + "\"");
+    /**
+     * Add the javadocs as a tagged value 'documentation' to the model element. All
+     * comment delimiters are removed prior to adding the comment.
+     *
+     * Added 2001-10-05 STEFFEN ZSCHALER.
+     *
+     * @param me the model element to which to add the documentation
+     * @param sJavaDocs the documentation comment to add ("" or null if no java docs)
+     */
+    private void addDocumentationTag (Object modelElement,
+				      String sJavaDocs) {
+	if ((sJavaDocs != null) &&
+	    (sJavaDocs.trim().length() >= 5 )) {
+	    cat.debug ("Modeller.addDocumentationTag: sJavaDocs = \"" + sJavaDocs + "\"");
 
-      StringBuffer sbPureDocs = new StringBuffer(80);
+	    StringBuffer sbPureDocs = new StringBuffer(80);
 
-      String sCurrentTagName = null;
-      String sCurrentTagData = null;
+	    String sCurrentTagName = null;
+	    String sCurrentTagData = null;
 
-      int nStartPos = 3; // skip the leading /**
-      boolean fHadAsterisk = true;
+	    int nStartPos = 3; // skip the leading /**
+	    boolean fHadAsterisk = true;
 
-      while (nStartPos < sJavaDocs.length()) {
-        switch (sJavaDocs.charAt (nStartPos)) {
-          case '*':
-            fHadAsterisk = true;
-            nStartPos++;
-            break;
+	    while (nStartPos < sJavaDocs.length()) {
+		switch (sJavaDocs.charAt (nStartPos)) {
+		case '*':
+		    fHadAsterisk = true;
+		    nStartPos++;
+		    break;
 
-          case ' ':   // all white space, hope I didn't miss any ;-)
-          case '\t':
-            if (! fHadAsterisk) {
-              // forget every white space before the first asterisk
-              nStartPos++;
-              break;
-            }
+		case ' ':   // all white space, hope I didn't miss any ;-)
+		case '\t':
+		    if (!fHadAsterisk) {
+			// forget every white space before the first asterisk
+			nStartPos++;
+			break;
+		    }
 
-          default:
-            // normal comment text or standard tag
+		default:
+		    // normal comment text or standard tag
 
-            // check ahead for tag
-            int j = nStartPos;
+		    // check ahead for tag
+		    int j = nStartPos;
 
-            while ((j < sJavaDocs.length()) &&
-                   ((sJavaDocs.charAt (j) == ' ') ||
-                    (sJavaDocs.charAt (j) == '\t'))) {
-              j++;
-            }
+		    while ((j < sJavaDocs.length()) &&
+			   ((sJavaDocs.charAt (j) == ' ') ||
+			    (sJavaDocs.charAt (j) == '\t'))) {
+			j++;
+		    }
 
-            if (j < sJavaDocs.length()) {
-              if (sJavaDocs.charAt (j) == '@') {
-                // if the last javadoc is on the last line
-                // no new line will be found, causing an indexoutofboundexception.
-                int lineEndPos = 0;
-                if(sJavaDocs.indexOf('\n',j) < 0)
-                { lineEndPos = sJavaDocs.length()-2;}
-                else
-                { lineEndPos =sJavaDocs.indexOf('\n',j) + 1;}
+		    if (j < sJavaDocs.length()) {
+			if (sJavaDocs.charAt (j) == '@') {
+			    // if the last javadoc is on the last line
+			    // no new line will be found, causing an indexoutofboundexception.
+			    int lineEndPos = 0;
+			    if (sJavaDocs.indexOf('\n', j) < 0) {
+				lineEndPos = sJavaDocs.length() - 2;
+			    }
+			    else {
+				lineEndPos = sJavaDocs.indexOf('\n', j) + 1;
+			    }
                 
-                sbPureDocs.append (sJavaDocs.substring (j, lineEndPos));  // afl 05/02/03 fix Issue 1511
-                // start standard tag
-                // potentially add current tag to set of tagged values...
-                if (sCurrentTagName != null) {
-                  addJavadocTagContents (modelElement, sCurrentTagName, sCurrentTagData);
-                }
+			    sbPureDocs.append (sJavaDocs.substring (j, lineEndPos));  // afl 05/02/03 fix Issue 1511
+			    // start standard tag
+			    // potentially add current tag to set of tagged values...
+			    if (sCurrentTagName != null) {
+				addJavadocTagContents (modelElement, sCurrentTagName, sCurrentTagData);
+			    }
 
-                // open new tag
+			    // open new tag
 
-                int nTemp = sJavaDocs.indexOf (' ', j + 1);
-                if (nTemp == -1) {
-                  nTemp = sJavaDocs.length() - 1;
-                }
-                sCurrentTagName = sJavaDocs.substring (
-                    j + 1,
-                    nTemp
-                  );
+			    int nTemp = sJavaDocs.indexOf (' ', j + 1);
+			    if (nTemp == -1) {
+				nTemp = sJavaDocs.length() - 1;
+			    }
+			    sCurrentTagName = sJavaDocs.substring(j + 1, 
+								  nTemp);
 
-                cat.debug (
-                    "Modeller.addDocumentationTag (starting tag): " +
-                    "current tag name: " + sCurrentTagName
-                );
+			    cat.debug (
+				       "Modeller.addDocumentationTag (starting tag): " +
+				       "current tag name: " + sCurrentTagName);
 
-                int nTemp1 = sJavaDocs.indexOf ('\n', ++nTemp);
-                if (nTemp1 == -1) {
-                  nTemp1 = sJavaDocs.length();
-                }
-                else {
-                  nTemp1++;
-                }
+			    int nTemp1 = sJavaDocs.indexOf ('\n', ++nTemp);
+			    if (nTemp1 == -1) {
+				nTemp1 = sJavaDocs.length();
+			    }
+			    else {
+				nTemp1++;
+			    }
 
-                sCurrentTagData = sJavaDocs.substring (nTemp, nTemp1);
-                cat.debug (
-                    "Modeller.addDocumentationTag (starting tag): "+
-                    "current tag data: " + sCurrentTagData
-                  );
+			    sCurrentTagData = sJavaDocs.substring (nTemp, nTemp1);
+			    cat.debug (
+				       "Modeller.addDocumentationTag (starting tag): " +
+				       "current tag data: " + sCurrentTagData);
 
-                nStartPos = nTemp1;
-              }
-              else {
-                // continue standard tag or comment text
-                int nTemp = sJavaDocs.indexOf ('\n', nStartPos);
-                if (nTemp == -1) {
-                  nTemp = sJavaDocs.length();
-                }
-                else {
-                  nTemp++;
-                }
+			    nStartPos = nTemp1;
+			}
+			else {
+			    // continue standard tag or comment text
+			    int nTemp = sJavaDocs.indexOf ('\n', nStartPos);
+			    if (nTemp == -1) {
+				nTemp = sJavaDocs.length();
+			    }
+			    else {
+				nTemp++;
+			    }
 
-                if (sCurrentTagName != null) {
-                  sbPureDocs.append (sJavaDocs.substring (nStartPos, nTemp));  // afl 05/02/03 fixed Issue 1511
-                  cat.debug (
-                      "Modeller.addDocumentationTag (continuing tag): nTemp = " +
-                      nTemp + ", nStartPos = " + nStartPos
-                    );
-                  sCurrentTagData +=
-                      " " +
-                      sJavaDocs.substring (nStartPos, nTemp);
-                  cat.debug (
-                     "Modeller.addDocumentationTag (continuing tag): tag data = " +
-                      sCurrentTagData);
-                }
-                else {
-                  cat.debug ("Modeller.addDocumentationTag: nTemp = " + nTemp + ", nStartPos = " + nStartPos);
-                  sbPureDocs.append (sJavaDocs.substring (nStartPos, nTemp));
-                }
+			    if (sCurrentTagName != null) {
+				sbPureDocs.append (sJavaDocs.substring (nStartPos, nTemp));  // afl 05/02/03 fixed Issue 1511
+				cat.debug (
+					   "Modeller.addDocumentationTag (continuing tag): nTemp = " 
+					   + nTemp
+					   + ", nStartPos = " 
+					   + nStartPos);
+				sCurrentTagData +=
+				    " " +
+				    sJavaDocs.substring (nStartPos, nTemp);
+				cat.debug (
+					   "Modeller.addDocumentationTag (continuing tag): tag data = " +
+					   sCurrentTagData);
+			    }
+			    else {
+				cat.debug ("Modeller.addDocumentationTag: nTemp = " + nTemp + ", nStartPos = " + nStartPos);
+				sbPureDocs.append (sJavaDocs.substring (nStartPos, nTemp));
+			    }
 
-                nStartPos = nTemp;
-              }
-            }
+			    nStartPos = nTemp;
+			}
+		    }
 
-            fHadAsterisk = false;
-        }
-      }
+		    fHadAsterisk = false;
+		}
+	    }
 
-      sJavaDocs = sbPureDocs.toString();
-      cat.debug(sJavaDocs);
-      /*
-       * After this, we have the documentation text, but unfortunately, there's
-       * still a trailing '/' left. If this is even the only thing on it's line,
-       * we want to remove the complete line, otherwise we remove just the '/'.
-       *
-       * This will be either at the end of the actual comment text or at the end
-       * of the last tag.
-       */
+	    sJavaDocs = sbPureDocs.toString();
+	    cat.debug(sJavaDocs);
+	    /*
+	     * After this, we have the documentation text, but unfortunately, there's
+	     * still a trailing '/' left. If this is even the only thing on it's line,
+	     * we want to remove the complete line, otherwise we remove just the '/'.
+	     *
+	     * This will be either at the end of the actual comment text or at the end
+	     * of the last tag.
+	     */
 
-      if (sCurrentTagName != null) {
-        // handle last tag...
-        sCurrentTagData = sCurrentTagData.substring (
-            0,
-            sCurrentTagData.lastIndexOf ('/') - 1
-          );
+	    if (sCurrentTagName != null) {
+		// handle last tag...
+		sCurrentTagData = 
+		    sCurrentTagData.substring(0,
+					      sCurrentTagData.lastIndexOf('/') - 1
+					      );
 
-        if ( sCurrentTagData.length() > 0 &&
-             sCurrentTagData.charAt (sCurrentTagData.length() - 1) == '\n') {
-          sCurrentTagData = sCurrentTagData.substring (
-              0,
-              sCurrentTagData.length() - 1
-            );
-        }
+		if ( sCurrentTagData.length() > 0 &&
+		     sCurrentTagData.charAt (sCurrentTagData.length() - 1) == '\n') {
+		    sCurrentTagData = 
+			sCurrentTagData.substring(0,
+						  sCurrentTagData.length() - 1
+						  );
+		}
 
-        // store tag
-        addJavadocTagContents (modelElement, sCurrentTagName, sCurrentTagData);
-      }
-      else {
-        sJavaDocs = sJavaDocs.substring (0, sJavaDocs.lastIndexOf ('/') - 1);
+		// store tag
+		addJavadocTagContents (modelElement, sCurrentTagName, sCurrentTagData);
+	    }
+	    else {
+		sJavaDocs = sJavaDocs.substring (0, sJavaDocs.lastIndexOf ('/') - 1);
 
-        if (sJavaDocs.length() > 0) {
-          if (sJavaDocs.charAt (sJavaDocs.length() - 1) == '\n') {
-            sJavaDocs = sJavaDocs.substring (0, sJavaDocs.length() - 1);
-          }
-        }
-      }
-      if (sJavaDocs.endsWith("/")) sJavaDocs = sJavaDocs.substring(0, sJavaDocs.length() - 1);
+		if (sJavaDocs.length() > 0) {
+		    if (sJavaDocs.charAt (sJavaDocs.length() - 1) == '\n') {
+			sJavaDocs = sJavaDocs.substring (0, sJavaDocs.length() - 1);
+		    }
+		}
+	    }
+	    if (sJavaDocs.endsWith("/")) sJavaDocs = sJavaDocs.substring(0, sJavaDocs.length() - 1);
 
-      // Do special things:
+	    // Do special things:
 
-      // Now store documentation text
-      ModelFacade.setValueOfTag(getTaggedValue(modelElement,"documentation"),sJavaDocs);
+	    // Now store documentation text
+	    ModelFacade.setValueOfTag(getTaggedValue(modelElement, "documentation"), sJavaDocs);
 
-      // If there is a tagged value named stereotype, make it a real
-      // stereotype
-      String stereo = ModelFacade.getValueOfTag(ModelFacade.getTaggedValue(modelElement,"stereotype"));
-      if (stereo != null && stereo.length() > 0) {
-	  ModelFacade.setStereotype(modelElement,getStereotype(stereo));
-      }
+	    // If there is a tagged value named stereotype, make it a real
+	    // stereotype
+	    String stereo = ModelFacade.getValueOfTag(ModelFacade.getTaggedValue(modelElement, "stereotype"));
+	    if (stereo != null && stereo.length() > 0) {
+		ModelFacade.setStereotype(modelElement, getStereotype(stereo));
+	    }
+	}
     }
-  }
 
     public void addCall(String method, String obj) {
 	if (obj.equals(""))

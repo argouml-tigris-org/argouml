@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -1384,7 +1385,7 @@ public class FigUseCase extends FigNodeModelElement {
     protected void updateStereotypeText() {
         super.updateStereotypeText();
         if (!(_stereo.getText() == null || _stereo.getText().equals(""))) {
-            _stereo.setBounds(_bigPort.getX() + _bigPort.getWidth()/2 - _stereo.getWidth()/2, _bigPort.getY() + _bigPort.getHeight() + _MIN_VERT_PADDING, _stereo.getWidth(), _stereo.getHeight());
+            _stereo.setBounds(_bigPort.getX() + _bigPort.getWidth() / 2 - _stereo.getWidth() / 2, _bigPort.getY() + _bigPort.getHeight() + _MIN_VERT_PADDING, _stereo.getWidth(), _stereo.getHeight());
         } else {
             _stereo.setBounds(0, 0, 0, 0);     
         }

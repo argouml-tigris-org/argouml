@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -63,8 +64,8 @@ public class UMLPackagesListModel extends UMLOwnedElementListModel  {
      *   @param showNone  if true, an element labelled "none" will be shown where there are
      *                        no actual entries in the list.
      */    
-    public UMLPackagesListModel(UMLUserInterfaceContainer container,String property,boolean showNone) {
-        super(container,property,showNone);
+    public UMLPackagesListModel(UMLUserInterfaceContainer container, String property, boolean showNone) {
+        super(container, property, showNone);
     }
     
     /**

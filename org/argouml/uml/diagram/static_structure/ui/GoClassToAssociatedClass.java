@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -32,13 +33,13 @@ import ru.novosoft.uml.foundation.core.MClass;
 
 public class GoClassToAssociatedClass extends AbstractGoRule {
 
-  public String getRuleName() { return "Class->Associated Class"; }
+    public String getRuleName() { return "Class->Associated Class"; }
 
-  public Collection getChildren(Object parent) {
-      if (ModelFacade.isAClass(parent)) {
-          return ModelFacade.getAssociatedClasses(parent);
-      }
-      return null;
-  }
+    public Collection getChildren(Object parent) {
+	if (ModelFacade.isAClass(parent)) {
+	    return ModelFacade.getAssociatedClasses(parent);
+	}
+	return null;
+    }
 
 }

@@ -55,173 +55,173 @@ import ru.novosoft.uml.behavior.state_machines.MStateImpl;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 
 public class SelectionState extends SelectionWButtons {
-	protected static Category cat = Category.getInstance(SelectionState.class);
-	////////////////////////////////////////////////////////////////
-	// constants
-	public static Icon trans =
-		ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(
-			"Transition");
+    protected static Category cat = Category.getInstance(SelectionState.class);
+    ////////////////////////////////////////////////////////////////
+    // constants
+    public static Icon trans =
+	ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(
+									    "Transition");
 
-	////////////////////////////////////////////////////////////////
-	// instance varables
-	protected boolean _showIncoming = true;
-	protected boolean _showOutgoing = true;
+    ////////////////////////////////////////////////////////////////
+    // instance varables
+    protected boolean _showIncoming = true;
+    protected boolean _showOutgoing = true;
 
-	////////////////////////////////////////////////////////////////
-	// constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-	/** Construct a new SelectionState for the given Fig */
-	public SelectionState(Fig f) {
-		super(f);
+    /** Construct a new SelectionState for the given Fig */
+    public SelectionState(Fig f) {
+	super(f);
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    public void setIncomingButtonEnabled(boolean b) {
+	_showIncoming = b;
+    }
+
+    public void setOutgoingButtonEnabled(boolean b) {
+	_showOutgoing = b;
+    }
+
+    public void hitHandle(Rectangle r, Handle h) {
+	super.hitHandle(r, h);
+	if (h.index != -1)
+	    return;
+	if (!_paintButtons)
+	    return;
+	Editor ce = Globals.curEditor();
+	SelectionManager sm = ce.getSelectionManager();
+	if (sm.size() != 1)
+	    return;
+	ModeManager mm = ce.getModeManager();
+	if (mm.includes(ModeModify.class) && _pressedButton == -1)
+	    return;
+	int cx = _content.getX();
+	int cy = _content.getY();
+	int cw = _content.getWidth();
+	int ch = _content.getHeight();
+	int iw = trans.getIconWidth();
+	int ih = trans.getIconHeight();
+	if (_showOutgoing && hitLeft(cx + cw, cy + ch / 2, iw, ih, r)) {
+	    h.index = 12;
+	    h.instructions = "Add an outgoing transition";
+	} else if (_showIncoming && hitRight(cx, cy + ch / 2, iw, ih, r)) {
+	    h.index = 13;
+	    h.instructions = "Add an incoming transition";
+	} else {
+	    h.index = -1;
+	    h.instructions = "Move object(s)";
 	}
+    }
 
-	////////////////////////////////////////////////////////////////
-	// accessors
+    /** Paint the handles at the four corners and midway along each edge
+     * of the bounding box.  */
+    public void paintButtons(Graphics g) {
+	int cx = _content.getX();
+	int cy = _content.getY();
+	int cw = _content.getWidth();
+	int ch = _content.getHeight();
+	if (_showOutgoing)
+	    paintButtonLeft(trans, g, cx + cw, cy + ch / 2, 12);
+	if (_showIncoming)
+	    paintButtonRight(trans, g, cx, cy + ch / 2, 13);
+    }
 
-	public void setIncomingButtonEnabled(boolean b) {
-		_showIncoming = b;
+    public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
+	if (hand.index < 10) {
+	    _paintButtons = false;
+	    super.dragHandle(mX, mY, anX, anY, hand);
+	    return;
 	}
+	int cx = _content.getX(), cy = _content.getY();
+	int cw = _content.getWidth(), ch = _content.getHeight();
+	int newX = cx, newY = cy, newW = cw, newH = ch;
+	Dimension minSize = _content.getMinimumSize();
+	int minWidth = minSize.width, minHeight = minSize.height;
+	Class edgeClass = null;
+	Class nodeClass = MStateImpl.class;
 
-	public void setOutgoingButtonEnabled(boolean b) {
-		_showOutgoing = b;
+	Editor ce = Globals.curEditor();
+	GraphModel gm = ce.getGraphModel();
+	if (!(gm instanceof MutableGraphModel))
+	    return;
+
+	MutableGraphModel mgm = (MutableGraphModel) gm;
+
+	int bx = mX, by = mY;
+	boolean reverse = false;
+	switch (hand.index) {
+	case 12 : //add outgoing
+	    edgeClass = MTransition.class;
+	    by = cy + ch / 2;
+	    bx = cx + cw;
+	    break;
+	case 13 : // add incoming
+	    edgeClass = MTransition.class;
+	    reverse = true;
+	    by = cy + ch / 2;
+	    bx = cx;
+	    break;
+	default :
+	    cat.warn("invalid handle number");
+	    break;
 	}
-
-	public void hitHandle(Rectangle r, Handle h) {
-		super.hitHandle(r, h);
-		if (h.index != -1)
-			return;
-		if (!_paintButtons)
-			return;
-		Editor ce = Globals.curEditor();
-		SelectionManager sm = ce.getSelectionManager();
-		if (sm.size() != 1)
-			return;
-		ModeManager mm = ce.getModeManager();
-		if (mm.includes(ModeModify.class) && _pressedButton == -1)
-			return;
-		int cx = _content.getX();
-		int cy = _content.getY();
-		int cw = _content.getWidth();
-		int ch = _content.getHeight();
-		int iw = trans.getIconWidth();
-		int ih = trans.getIconHeight();
-		if (_showOutgoing && hitLeft(cx + cw, cy + ch / 2, iw, ih, r)) {
-			h.index = 12;
-			h.instructions = "Add an outgoing transition";
-		} else if (_showIncoming && hitRight(cx, cy + ch / 2, iw, ih, r)) {
-			h.index = 13;
-			h.instructions = "Add an incoming transition";
-		} else {
-			h.index = -1;
-			h.instructions = "Move object(s)";
-		}
+	if (edgeClass != null && nodeClass != null) {
+	    ModeCreateEdgeAndNode m =
+		new ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
+	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
+	    ce.mode(m);
 	}
+    }
 
-	/** Paint the handles at the four corners and midway along each edge
-	 * of the bounding box.  */
-	public void paintButtons(Graphics g) {
-		int cx = _content.getX();
-		int cy = _content.getY();
-		int cw = _content.getWidth();
-		int ch = _content.getHeight();
-		if (_showOutgoing)
-			paintButtonLeft(trans, g, cx + cw, cy + ch / 2, 12);
-		if (_showIncoming)
-			paintButtonRight(trans, g, cx, cy + ch / 2, 13);
-	}
+    /**
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
+     */
+    protected Object getNewNode(int buttonCode) {
+	return UmlFactory.getFactory().getStateMachines().createState();
+    }
 
-	public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-		if (hand.index < 10) {
-			_paintButtons = false;
-			super.dragHandle(mX, mY, anX, anY, hand);
-			return;
-		}
-		int cx = _content.getX(), cy = _content.getY();
-		int cw = _content.getWidth(), ch = _content.getHeight();
-		int newX = cx, newY = cy, newW = cw, newH = ch;
-		Dimension minSize = _content.getMinimumSize();
-		int minWidth = minSize.width, minHeight = minSize.height;
-		Class edgeClass = null;
-		Class nodeClass = MStateImpl.class;
+    /**
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeAbove(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
+    protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
+	return mgm.connect(newNode, _content.getOwner(), MTransition.class);
+    }
 
-		Editor ce = Globals.curEditor();
-		GraphModel gm = ce.getGraphModel();
-		if (!(gm instanceof MutableGraphModel))
-			return;
+    /**
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
+    protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
+	return gm.connect(newNode, _content.getOwner(), MTransition.class);
+    }
 
-		MutableGraphModel mgm = (MutableGraphModel) gm;
+    /**
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeRight(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
+    protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
+	return gm.connect(_content.getOwner(), newNode, MTransition.class);
+    }
 
-		int bx = mX, by = mY;
-		boolean reverse = false;
-		switch (hand.index) {
-			case 12 : //add outgoing
-				edgeClass = MTransition.class;
-				by = cy + ch / 2;
-				bx = cx + cw;
-				break;
-			case 13 : // add incoming
-				edgeClass = MTransition.class;
-				reverse = true;
-				by = cy + ch / 2;
-				bx = cx;
-				break;
-			default :
-				cat.warn("invalid handle number");
-				break;
-		}
-		if (edgeClass != null && nodeClass != null) {
-			ModeCreateEdgeAndNode m =
-				new ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
-			m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
-			ce.mode(m);
-		}
-	}
+    /**
+     * To enable this we need to add an icon.
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeToSelf(org.tigris.gef.graph.MutableGraphModel)
+     */
+    protected Object createEdgeToSelf(MutableGraphModel gm) {
+	return gm.connect(
+			  _content.getOwner(),
+			  _content.getOwner(),
+			  MTransition.class);
+    }
 
-	/**
-	   * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
-	   */
-	protected Object getNewNode(int buttonCode) {
-		return UmlFactory.getFactory().getStateMachines().createState();
-	}
-
-	/**
-	 * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeAbove(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-	 */
-	protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
-		return mgm.connect(newNode, _content.getOwner(), MTransition.class);
-	}
-
-	/**
-	 * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-	 */
-	protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-		return gm.connect(newNode, _content.getOwner(), MTransition.class);
-	}
-
-	/**
-	 * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeRight(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-	 */
-	protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-		return gm.connect(_content.getOwner(), newNode, MTransition.class);
-	}
-
-	/**
-	 * To enable this we need to add an icon.
-	 * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeToSelf(org.tigris.gef.graph.MutableGraphModel)
-	 */
-	protected Object createEdgeToSelf(MutableGraphModel gm) {
-		return gm.connect(
-			_content.getOwner(),
-			_content.getOwner(),
-			MTransition.class);
-	}
-
-	/**
-	 * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-	 */
-	protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-		return gm.connect(_content.getOwner(), newNode, MTransition.class);
-	}
+    /**
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
+    protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
+	return gm.connect(_content.getOwner(), newNode, MTransition.class);
+    }
 
 	
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -49,7 +50,7 @@ public class NavigationHistory {
      *     navigate to a model element has been received.
      */
     public void navigateTo(Object element) {
-        if(_history == null) {
+        if (_history == null) {
             _history = new ArrayList();
             _position = -1;
         }
@@ -59,9 +60,9 @@ public class NavigationHistory {
         //   if we have navigated back and taken off in 
         //      a new direction, truncate the navigation
         //      history after the previous element 
-        if(_position < size) {
-            _history.set(_position,new WeakReference(element));
-            for(int i = size-1;i > _position; i--) {
+        if (_position < size) {
+            _history.set(_position, new WeakReference(element));
+            for (int i = size - 1; i > _position; i--) {
                 _history.remove(i);
             }
         }
@@ -91,7 +92,7 @@ public class NavigationHistory {
      */
     public Object navigateBack(boolean attempt) {
         Object target = null;
-        if(_history == null || _position <= 0) {
+        if (_history == null || _position <= 0) {
             _isBackEnabled = 0;
         }
         else {
@@ -100,7 +101,7 @@ public class NavigationHistory {
             //     (might happen if you delete an intermediate entry)
             WeakReference ref = (WeakReference) _history.get(_position);
             Object current = null;
-            if(ref != null) {
+            if (ref != null) {
                 current = ref.get();
             }
             //
@@ -108,29 +109,29 @@ public class NavigationHistory {
             //      see if any of the references are still valid
             //   
             int index;            
-            for(index = _position-1; index >= 0 && target == null; index--) {
+            for (index = _position - 1; index >= 0 && target == null; index--) {
                 ref = (WeakReference) _history.get(index);
-                if(ref != null) {
+                if (ref != null) {
                     target = ref.get();
                     //
                     //  weak ref has been reclaimed, remove it from
                     //     the list and continue looking back
-                    if(target == null || target == current) {
-                        _history.set(index,null);
+                    if (target == null || target == current) {
+                        _history.set(index, null);
                         target = null;
                     }
                     else {
                         //
                         //   these check for phantom model elements
                         //       those still alive but not attached to anything
-                        if(ModelFacade.isAFeature(target)) {
-                            if(ModelFacade.getOwner(target) == null) {
+                        if (ModelFacade.isAFeature(target)) {
+                            if (ModelFacade.getOwner(target) == null) {
                                 target = null;
                             }
                         }
                         else {
-                            if(ModelFacade.isAModelElement(target)) {
-                                if(ModelFacade.getNamespace(target) == null) {
+                            if (ModelFacade.isAModelElement(target)) {
+                                if (ModelFacade.getNamespace(target) == null) {
                                     target = null;
                                 }
                             }
@@ -141,12 +142,12 @@ public class NavigationHistory {
             //
             //  if there were no tolerable back targets
             //
-            if(target == null) {
+            if (target == null) {
                 _isBackEnabled = 0;
             }
             else {
-                if(attempt) {
-                    _position = index+1;
+                if (attempt) {
+                    _position = index + 1;
                     _isForwardEnabled = 1;
                     _isBackEnabled = -1;
                 }
@@ -168,15 +169,15 @@ public class NavigationHistory {
     public Object navigateForward(boolean attempt) {
         Object target = null;
         _isForwardEnabled = 0;
-        if(_history != null) {
+        if (_history != null) {
             int size = _history.size();
-            if(_position < size-1) {
+            if (_position < size - 1) {
                 //
                 //   get the current entry so that we don't go back to ourselves
                 //     (might happen if you delete an intermediate entry)
                 WeakReference ref = (WeakReference) _history.get(_position);
                 Object current = null;
-                if(ref != null) {
+                if (ref != null) {
                     current = ref.get();
                 }
                 //
@@ -184,30 +185,31 @@ public class NavigationHistory {
                 //      see if any of the references are still valid
                 //   
                 int index;
-                for(index = _position+1; index < size && target == null; index++) {
+                for (index = _position + 1; index < size && target == null; index++) {
                     ref = (WeakReference) _history.get(index);
-                    if(ref != null) {
+                    if (ref != null) {
                         target = ref.get();
                         //
                         //  weak ref has been reclaimed, remove it from
                         //     the list and continue looking back
-                        if(target == null || target == current) {
-                            _history.set(index,null);
+                        if (target == null || target == current) {
+                            _history.set(index, null);
                             target = null;
                         }
                         else {
                             //
                             //   these check for phantom model elements
                             //       those still alive but not attached to anything
-                            if(ModelFacade.isAFeature(target)) {
-                                if(ModelFacade.getOwner(target) == null) {
+                            if (ModelFacade.isAFeature(target)) {
+                                if (ModelFacade.getOwner(target) == null) {
                                     target = null;
                                 }
                             }
                             else {
-                                if(ModelFacade.isAModelElement(target)) {
-                                    if(ModelFacade.getNamespace(target) == 
-                                       null) {
+                                if (ModelFacade.isAModelElement(target)) {
+                                    if (ModelFacade.getNamespace(target) == 
+					null) 
+				    {
                                         target = null;
                                     }
                                 }
@@ -215,12 +217,12 @@ public class NavigationHistory {
                         }
                     }
                 }
-                if(target == null) {
+                if (target == null) {
                     _isForwardEnabled = 0;
                 }
                 else {
-                    if(attempt) {
-                        _position = index-1;
+                    if (attempt) {
+                        _position = index - 1;
                         _isBackEnabled = 1;
                         _isForwardEnabled = -1;
                     }
@@ -237,14 +239,14 @@ public class NavigationHistory {
      *    Returns true if this listener has a target for
      *    a back navigation.  Only one listener needs to
      *    return true for the back button to be enabled.
-    */
+     */
     public boolean isNavigateBackEnabled() {
         boolean enabled = false;
-        if(_isBackEnabled == 1) {
+        if (_isBackEnabled == 1) {
             return true;
         }
         else {
-            if(_isBackEnabled != 0) {
+            if (_isBackEnabled != 0) {
                 enabled = navigateBack(false) != null;
             }
         }
@@ -255,14 +257,14 @@ public class NavigationHistory {
      *    Returns true if this listener has a target for
      *    a back navigation.  Only one listener needs to
      *    return true for the back button to be enabled.
-    */
+     */
     public boolean isNavigateForwardEnabled() {
         boolean enabled = false;
-        if(_isForwardEnabled == 1) {
+        if (_isForwardEnabled == 1) {
             enabled = true;
         }
         else {
-            if(_isForwardEnabled != 0) {
+            if (_isForwardEnabled != 0) {
                 enabled = navigateForward(false) != null;
             }
         }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -51,10 +52,10 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class UmlHelper {
 	
-	/** Singleton instance.
+    /** Singleton instance.
      */
     private static UmlHelper SINGLETON =
-                   new UmlHelper();
+	new UmlHelper();
 
 
     /** Don't allow instantiation.
@@ -76,13 +77,13 @@ public class UmlHelper {
      */
     protected void addListenersToMBase(MBase mbase) {     
 	UmlFactory.getFactory().addListenersToModelElement(mbase);
-    Collection elements = mbase.getModelElementContents();
+	Collection elements = mbase.getModelElementContents();
 	if (elements != null) {
 	    Iterator iterator = elements.iterator();
-	    while(iterator.hasNext()) {
+	    while (iterator.hasNext()) {
 	        Object o = iterator.next();
 	        if (o instanceof MBase) {
-	            addListenersToMBase((MBase)o);
+	            addListenersToMBase((MBase) o);
 	        }
 	    }
 	}
@@ -175,27 +176,27 @@ public class UmlHelper {
         return ModelManagementHelper.getHelper();
     }
     
-	/**
-	 * Returns the correct helper on basis of the package of base
-	 * @param base
-	 * @return Object the helper
-	 */
+    /**
+     * Returns the correct helper on basis of the package of base
+     * @param base
+     * @return Object the helper
+     */
     public Object getHelper(Object base) {
     	if (base instanceof MBase) {
-	    	String name = base.getClass().getName();
-	    	name = name.substring(0, name.lastIndexOf('.'));
-	    	name = name.substring(name.lastIndexOf('.')+1, name.length());
-	    	Method[] methods = this.getClass().getMethods();
-	    	for (int i = 0; i < methods.length; i++) {
-	    		String methodname = methods[i].getName();
-	    		if (methodname.toLowerCase().indexOf(name)>=0) {
-	    			try {
-						return methods[i].invoke(this, new Object[] {});
-					} catch (IllegalAccessException e) {
-					} catch (InvocationTargetException e) {
-					}
-	    		}
-	    	}
+	    String name = base.getClass().getName();
+	    name = name.substring(0, name.lastIndexOf('.'));
+	    name = name.substring(name.lastIndexOf('.') + 1, name.length());
+	    Method[] methods = this.getClass().getMethods();
+	    for (int i = 0; i < methods.length; i++) {
+		String methodname = methods[i].getName();
+		if (methodname.toLowerCase().indexOf(name) >= 0) {
+		    try {
+			return methods[i].invoke(this, new Object[] {});
+		    } catch (IllegalAccessException e) {
+		    } catch (InvocationTargetException e) {
+		    }
+		}
+	    }
     	}
     	return null;
     }
@@ -209,7 +210,7 @@ public class UmlHelper {
      */
     public Object getOwner(Object handle) {
         if (handle instanceof MBase) {
-            return ((MBase)handle).getModelElementContainer();
+            return ((MBase) handle).getModelElementContainer();
         }
         return null;
     }
@@ -224,7 +225,7 @@ public class UmlHelper {
     public void deleteCollection(Collection col) {
         Iterator it = col.iterator();
         while (it.hasNext()) {
-            UmlFactory.getFactory().delete((MBase)it.next());
+            UmlFactory.getFactory().delete((MBase) it.next());
         }        
     }
     

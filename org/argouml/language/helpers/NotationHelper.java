@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -57,125 +58,126 @@ import ru.novosoft.uml.model_management.MPackage;
  * "http://www.ccs.neu.edu/research/demeter/"> Demeter project</a>. */
 
 public abstract class NotationHelper
-implements NotationProvider {
+    implements NotationProvider 
+{
 
-  private NotationName _notationName;
+    private NotationName _notationName;
 
-  public NotationHelper(NotationName notationName) {
-      _notationName = notationName;
-  }
+    public NotationHelper(NotationName notationName) {
+	_notationName = notationName;
+    }
 
 
-  public NotationName getNotation() {
-      return _notationName;
-  }
+    public NotationName getNotation() {
+	return _notationName;
+    }
 
-  public String generate(Object o) {
-    if (o == null)
-      return "";
-    if (o instanceof MOperation)
-      return generateOperation((MOperation) o);
-    if (o instanceof MAttribute)
-      return generateAttribute((MAttribute) o);
-    if (o instanceof MParameter)
-      return generateParameter((MParameter) o);
-    if (o instanceof MPackage)
-      return generatePackage((MPackage) o);
-    if (o instanceof MClassifier)
-      return generateClassifier((MClassifier) o);
-    if (o instanceof MExpression)
-      return generateExpression((MExpression) o);
-    if (o instanceof String)
-      return generateName((String) o);
-    if (o instanceof String)
-      return generateUninterpreted((String) o);
-    if (o instanceof MStereotype)
-      return generateStereotype((MStereotype) o);
-    if (o instanceof MTaggedValue)
-      return generateTaggedValue((MTaggedValue) o);
-    if (o instanceof MAssociation)
-      return generateAssociation((MAssociation)o);
-    if (o instanceof MAssociationEnd)
-      return generateAssociationEnd((MAssociationEnd)o);
-    if (o instanceof MMultiplicity)
-      return generateMultiplicity((MMultiplicity)o);
-    if (o instanceof MState)
-      return generateState((MState)o);
-    if (o instanceof MTransition)
-      return generateTransition((MTransition)o);
-    if (ModelFacade.isAAction(o))
-      return generateAction(o);
-    if (o instanceof MCallAction)
-      return generateAction(o);
-    if (o instanceof MGuard)
-      return generateGuard((MGuard)o);
-    if (o instanceof MMessage)
-      return generateMessage((MMessage)o);
+    public String generate(Object o) {
+	if (o == null)
+	    return "";
+	if (o instanceof MOperation)
+	    return generateOperation((MOperation) o);
+	if (o instanceof MAttribute)
+	    return generateAttribute((MAttribute) o);
+	if (o instanceof MParameter)
+	    return generateParameter((MParameter) o);
+	if (o instanceof MPackage)
+	    return generatePackage((MPackage) o);
+	if (o instanceof MClassifier)
+	    return generateClassifier((MClassifier) o);
+	if (o instanceof MExpression)
+	    return generateExpression((MExpression) o);
+	if (o instanceof String)
+	    return generateName((String) o);
+	if (o instanceof String)
+	    return generateUninterpreted((String) o);
+	if (o instanceof MStereotype)
+	    return generateStereotype((MStereotype) o);
+	if (o instanceof MTaggedValue)
+	    return generateTaggedValue((MTaggedValue) o);
+	if (o instanceof MAssociation)
+	    return generateAssociation((MAssociation) o);
+	if (o instanceof MAssociationEnd)
+	    return generateAssociationEnd((MAssociationEnd) o);
+	if (o instanceof MMultiplicity)
+	    return generateMultiplicity((MMultiplicity) o);
+	if (o instanceof MState)
+	    return generateState((MState) o);
+	if (o instanceof MTransition)
+	    return generateTransition((MTransition) o);
+	if (ModelFacade.isAAction(o))
+	    return generateAction(o);
+	if (o instanceof MCallAction)
+	    return generateAction(o);
+	if (o instanceof MGuard)
+	    return generateGuard((MGuard) o);
+	if (o instanceof MMessage)
+	    return generateMessage((MMessage) o);
 
-    if (o instanceof MModelElement)
-      return generateName(((MModelElement)o).getName());
+	if (o instanceof MModelElement)
+	    return generateName(((MModelElement) o).getName());
 
-    if (o == null) return "";
+	if (o == null) return "";
 
-    return o.toString();
-  }
+	return o.toString();
+    }
 
-  public abstract String generateOperation(MOperation op);
-  public abstract String generateAttribute(MAttribute attr);
-  public abstract String generateParameter(MParameter param);
-  public abstract String generatePackage(MPackage p);
-  public abstract String generateClassifier(MClassifier cls);
-  // public abstract String generateStereotype(MStereotype s);
-  public abstract String generateTaggedValue(MTaggedValue s);
-  public abstract String generateAssociation(MAssociation a);
-  public abstract String generateAssociationEnd(MAssociationEnd ae);
-  public abstract String generateMultiplicity(MMultiplicity m);
-  public abstract String generateState(MState m);
-  public abstract String generateTransition(MTransition m);
-  public abstract String generateAction(Object m);
-  public abstract String generateGuard(MGuard m);
-  public abstract String generateMessage(MMessage m);
+    public abstract String generateOperation(MOperation op);
+    public abstract String generateAttribute(MAttribute attr);
+    public abstract String generateParameter(MParameter param);
+    public abstract String generatePackage(MPackage p);
+    public abstract String generateClassifier(MClassifier cls);
+    // public abstract String generateStereotype(MStereotype s);
+    public abstract String generateTaggedValue(MTaggedValue s);
+    public abstract String generateAssociation(MAssociation a);
+    public abstract String generateAssociationEnd(MAssociationEnd ae);
+    public abstract String generateMultiplicity(MMultiplicity m);
+    public abstract String generateState(MState m);
+    public abstract String generateTransition(MTransition m);
+    public abstract String generateAction(Object m);
+    public abstract String generateGuard(MGuard m);
+    public abstract String generateMessage(MMessage m);
 
-  public static String getLeftGuillemot() {
+    public static String getLeftGuillemot() {
 
-      return (Configuration.getBoolean(Notation.KEY_USE_GUILLEMOTS, false))
-             ? "\u00ab"
-	     : "<<";
+	return (Configuration.getBoolean(Notation.KEY_USE_GUILLEMOTS, false))
+	    ? "\u00ab"
+	    : "<<";
 
-  }
+    }
 
-  public static String getRightGuillemot() {
-      return (Configuration.getBoolean(Notation.KEY_USE_GUILLEMOTS, false))
-             ? "\u00bb"
-	     : ">>";
-  }
+    public static String getRightGuillemot() {
+	return (Configuration.getBoolean(Notation.KEY_USE_GUILLEMOTS, false))
+	    ? "\u00bb"
+	    : ">>";
+    }
 
-  public String generateStereotype(MStereotype s) {
-    return getLeftGuillemot() + generateName(s.getName()) + getRightGuillemot();
-  }
+    public String generateStereotype(MStereotype s) {
+	return getLeftGuillemot() + generateName(s.getName()) + getRightGuillemot();
+    }
 
-  public String generateExpression(MExpression expr) {
-    if (expr == null) return "";
-    return generateUninterpreted(expr.getBody());
-  }
+    public String generateExpression(MExpression expr) {
+	if (expr == null) return "";
+	return generateUninterpreted(expr.getBody());
+    }
 
-  public String generateExpression(MConstraint expr) {
-    if (expr == null) return "";
-    return generateExpression(expr.getBody());
-  }
+    public String generateExpression(MConstraint expr) {
+	if (expr == null) return "";
+	return generateExpression(expr.getBody());
+    }
 
-  public String generateName(String n) {
-    return n;
-  }
+    public String generateName(String n) {
+	return n;
+    }
 
-  public String generateUninterpreted(String un) {
-    if (un == null) return "";
-    return un;
-  }
+    public String generateUninterpreted(String un) {
+	if (un == null) return "";
+	return un;
+    }
 
-  public String generateClassifierRef(MClassifier cls) {
-    if (cls == null) return "";
-    return cls.getName();
-  }
+    public String generateClassifierRef(MClassifier cls) {
+	if (cls == null) return "";
+	return cls.getName();
+    }
 
 } /* end class NotationHelper */

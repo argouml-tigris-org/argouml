@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,42 +39,42 @@ import org.argouml.uml.*;
 import org.argouml.uml.diagram.deployment.ui.*;
 
 public class TableModelAssoc_in_DeplByProps extends TableModelComposite {
-  ////////////////
-  // constructor
-  public TableModelAssoc_in_DeplByProps() { }
+    ////////////////
+    // constructor
+    public TableModelAssoc_in_DeplByProps() { }
 
-  public void initColumns() {
-    addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.Visibility);
-    addColumn(ColumnDescriptor.MStereotype);
+    public void initColumns() {
+	addColumn(ColumnDescriptor.Name);
+	addColumn(ColumnDescriptor.Visibility);
+	addColumn(ColumnDescriptor.MStereotype);
 
-    addColumn(ColumnDescriptor.SrcName);
-    addColumn(ColumnDescriptor.SrcType);
-    addColumn(ColumnDescriptor.SrcMult);
-    addColumn(ColumnDescriptor.SrcNav);
+	addColumn(ColumnDescriptor.SrcName);
+	addColumn(ColumnDescriptor.SrcType);
+	addColumn(ColumnDescriptor.SrcMult);
+	addColumn(ColumnDescriptor.SrcNav);
 
-    addColumn(ColumnDescriptor.DstName);
-    addColumn(ColumnDescriptor.DstType);
-    addColumn(ColumnDescriptor.DstMult);
-    addColumn(ColumnDescriptor.DstNav);
-}
-
-  ////////////////
-  // accessors
-  public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof UMLDeploymentDiagram)) return new Vector();
-    UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
-    Vector edges = d.getEdges();
-    Vector res = new Vector();
-    int size = edges.size();
-    for (int i = 0; i < size; i++) {
-      Object edge = edges.elementAt(i);
-      if (edge instanceof MAssociation) res.addElement(edge);
+	addColumn(ColumnDescriptor.DstName);
+	addColumn(ColumnDescriptor.DstType);
+	addColumn(ColumnDescriptor.DstMult);
+	addColumn(ColumnDescriptor.DstNav);
     }
-    return res;
-  }
 
-  public String toString() { return "Associations vs. Properties"; }
+    ////////////////
+    // accessors
+    public Vector rowObjectsFor(Object t) {
+	if (!(t instanceof UMLDeploymentDiagram)) return new Vector();
+	UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
+	Vector edges = d.getEdges();
+	Vector res = new Vector();
+	int size = edges.size();
+	for (int i = 0; i < size; i++) {
+	    Object edge = edges.elementAt(i);
+	    if (edge instanceof MAssociation) res.addElement(edge);
+	}
+	return res;
+    }
+
+    public String toString() { return "Associations vs. Properties"; }
 
 } /* end class TableModelAssoc_in_DeplByProps */
 

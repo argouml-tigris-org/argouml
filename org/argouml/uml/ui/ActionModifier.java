@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,14 +56,14 @@ import ru.novosoft.uml.behavior.use_cases.*;
  */
 
 public class ActionModifier extends UMLAction {
-	private UMLBooleanProperty _property;
-	private Object object;
-	Class mclassClass = MClass.class;
-	Class mpackageClass = MPackage.class;
-	Class minterfaceClass = MInterface.class;
-        Class museCaseClass = MUseCase.class;      // Jeremy Bennett
-	Object trueValue = null;
-	Object falseValue = null;
+    private UMLBooleanProperty _property;
+    private Object object;
+    Class mclassClass = MClass.class;
+    Class mpackageClass = MPackage.class;
+    Class minterfaceClass = MInterface.class;
+    Class museCaseClass = MUseCase.class;      // Jeremy Bennett
+    Object trueValue = null;
+    Object falseValue = null;
 
     /**
      * Defines an Action object with the specified description which will use the given reflection methods
@@ -75,10 +76,10 @@ public class ActionModifier extends UMLAction {
      * @param     mclass         the <code>MClass</code> object containing the modifier property.
      */
     public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MClass mclass) {
-		super(name, NO_ICON);
-		this.object = mclass;
-		_property = new UMLReflectionBooleanProperty(propertyName,mclassClass,getMethod,setMethod);
-		putValue("SELECTED", new Boolean(_property.getProperty(object)));
+	super(name, NO_ICON);
+	this.object = mclass;
+	_property = new UMLReflectionBooleanProperty(propertyName, mclassClass, getMethod, setMethod);
+	putValue("SELECTED", new Boolean(_property.getProperty(object)));
     }
 
     /**
@@ -94,11 +95,11 @@ public class ActionModifier extends UMLAction {
      * @param     trueValue      The enumerated value representing true
      * @param     falseValue     The enumerated value representing false
      */
-    public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MClass mclass, Class enumClass, Object trueValue,Object falseValue) {
-		super(name, NO_ICON);
-		this.object = mclass;
-		_property = new UMLEnumerationBooleanProperty(propertyName,mclassClass,getMethod,setMethod, enumClass, trueValue, falseValue);
-		putValue("SELECTED", new Boolean(_property.getProperty(object)));
+    public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MClass mclass, Class enumClass, Object trueValue, Object falseValue) {
+	super(name, NO_ICON);
+	this.object = mclass;
+	_property = new UMLEnumerationBooleanProperty(propertyName, mclassClass, getMethod, setMethod, enumClass, trueValue, falseValue);
+	putValue("SELECTED", new Boolean(_property.getProperty(object)));
     }
 
     /**
@@ -112,10 +113,10 @@ public class ActionModifier extends UMLAction {
      * @param     minterface     the <code>MInterface</code> object containing the modifier property.
      */
     public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MInterface minterface) {
-		super(name, NO_ICON);
-		this.object = minterface;
-		_property = new UMLReflectionBooleanProperty(propertyName,minterfaceClass,getMethod,setMethod);
-		putValue("SELECTED", new Boolean(_property.getProperty(object)));
+	super(name, NO_ICON);
+	this.object = minterface;
+	_property = new UMLReflectionBooleanProperty(propertyName, minterfaceClass, getMethod, setMethod);
+	putValue("SELECTED", new Boolean(_property.getProperty(object)));
     }
 
     /**
@@ -131,11 +132,11 @@ public class ActionModifier extends UMLAction {
      * @param     trueValue      The enumerated value representing true
      * @param     falseValue     The enumerated value representing false
      */
-    public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MInterface minterface, Class enumClass, Object trueValue,Object falseValue) {
-		super(name, NO_ICON);
-		this.object = minterface;
-		_property = new UMLEnumerationBooleanProperty(propertyName,minterfaceClass,getMethod,setMethod, enumClass, trueValue, falseValue);
-		putValue("SELECTED", new Boolean(_property.getProperty(object)));
+    public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MInterface minterface, Class enumClass, Object trueValue, Object falseValue) {
+	super(name, NO_ICON);
+	this.object = minterface;
+	_property = new UMLEnumerationBooleanProperty(propertyName, minterfaceClass, getMethod, setMethod, enumClass, trueValue, falseValue);
+	putValue("SELECTED", new Boolean(_property.getProperty(object)));
     }
 
     /**
@@ -149,10 +150,10 @@ public class ActionModifier extends UMLAction {
      * @param     mpackage       the <code>MPackage</code> object containing the modifier property.
      */
     public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MPackage mpackage) {
-		super(name, NO_ICON);
-		this.object = mpackage;
-		_property = new UMLReflectionBooleanProperty(propertyName,mpackageClass,getMethod,setMethod);
-		putValue("SELECTED", new Boolean(_property.getProperty(object)));
+	super(name, NO_ICON);
+	this.object = mpackage;
+	_property = new UMLReflectionBooleanProperty(propertyName, mpackageClass, getMethod, setMethod);
+	putValue("SELECTED", new Boolean(_property.getProperty(object)));
     }
 
     /**
@@ -168,11 +169,11 @@ public class ActionModifier extends UMLAction {
      * @param     trueValue      The enumerated value representing true
      * @param     falseValue     The enumerated value representing false
      */
-    public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MPackage mpackage, Class enumClass, Object trueValue,Object falseValue) {
-		super(name, NO_ICON);
-		this.object = mpackage;
-		_property = new UMLEnumerationBooleanProperty(propertyName,mpackageClass,getMethod,setMethod, enumClass, trueValue, falseValue);
-		putValue("SELECTED", new Boolean(_property.getProperty(object)));
+    public ActionModifier(String name, String propertyName, String getMethod, String setMethod, MPackage mpackage, Class enumClass, Object trueValue, Object falseValue) {
+	super(name, NO_ICON);
+	this.object = mpackage;
+	_property = new UMLEnumerationBooleanProperty(propertyName, mpackageClass, getMethod, setMethod, enumClass, trueValue, falseValue);
+	putValue("SELECTED", new Boolean(_property.getProperty(object)));
     }
 
     /**
@@ -200,7 +201,7 @@ public class ActionModifier extends UMLAction {
         this.object = museCase;
         _property   = new UMLReflectionBooleanProperty(propertyName,
                                                        museCaseClass,
-                                                       getMethod,setMethod);
+                                                       getMethod, setMethod);
         putValue("SELECTED", new Boolean(_property.getProperty(object)));
     }
 
@@ -232,7 +233,7 @@ public class ActionModifier extends UMLAction {
 
     public ActionModifier(String name, String propertyName, String getMethod,
                           String setMethod, MUseCase museCase, Class enumClass,
-                          Object trueValue,Object falseValue) {
+                          Object trueValue, Object falseValue) {
         super(name, NO_ICON);
         this.object = museCase;
         _property   = new UMLEnumerationBooleanProperty(propertyName,
@@ -250,19 +251,19 @@ public class ActionModifier extends UMLAction {
     // main methods
 
     /**
-	  * To perform the action of changing a modifier
-	  */
+     * To perform the action of changing a modifier
+     */
     public void actionPerformed(ActionEvent ae) {
     	try {
-		_property.setProperty(object, !_property.getProperty(object));
+	    _property.setProperty(object, !_property.getProperty(object));
     	}
-    	catch (PropertyVetoException ve) {}
+    	catch (PropertyVetoException ve) { }
     }
 
     /**
-	  * The action is always enabled
-	  */
-	public boolean shouldBeEnabled() {
-		return true;
-	}
+     * The action is always enabled
+     */
+    public boolean shouldBeEnabled() {
+	return true;
+    }
 } /* end class ActionModifier */

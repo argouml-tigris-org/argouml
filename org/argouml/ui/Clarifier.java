@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -32,7 +33,7 @@ import org.tigris.gef.presentation.*;
 import org.argouml.cognitive.*;
 
 public interface Clarifier extends Icon {
-  public void setFig(Fig f);
-  public void setToDoItem(ToDoItem i);
-  public boolean hit(int x, int y);
+    public void setFig(Fig f);
+    public void setToDoItem(ToDoItem i);
+    public boolean hit(int x, int y);
 } /* end interface Clarifier */

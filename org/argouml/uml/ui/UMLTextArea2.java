@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -56,49 +57,49 @@ public class UMLTextArea2 extends JTextArea implements MElementListener, Targett
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
-        ((UMLPlainTextDocument)getDocument()).propertySet(e);
+        ((UMLPlainTextDocument) getDocument()).propertySet(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        ((UMLPlainTextDocument)getDocument()).roleAdded(e);
+        ((UMLPlainTextDocument) getDocument()).roleAdded(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        ((UMLPlainTextDocument)getDocument()).roleRemoved(e);
+        ((UMLPlainTextDocument) getDocument()).roleRemoved(e);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
-        ((UMLPlainTextDocument)getDocument()).listRoleItemSet(e);            
+        ((UMLPlainTextDocument) getDocument()).listRoleItemSet(e);            
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent e) {
-        ((UMLPlainTextDocument)getDocument()).removed(e);     
+        ((UMLPlainTextDocument) getDocument()).removed(e);     
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
     public void recovered(MElementEvent e) {
-        ((UMLPlainTextDocument)getDocument()).recovered(e);     
+        ((UMLPlainTextDocument) getDocument()).recovered(e);     
     }
 
     /** 
      * @see org.argouml.ui.targetmanager.TargettableModelView#getTargettableModel()
      */
     public TargetListener getTargettableModel() {
-        return ((TargetListener)getDocument());
+        return ((TargetListener) getDocument());
     }
 
 }

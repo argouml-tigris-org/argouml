@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -47,14 +48,14 @@ public class GoModelToCollaboration extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-         if (parent instanceof MModel) {
-            MModel model = (MModel)parent;
+	if (parent instanceof MModel) {
+            MModel model = (MModel) parent;
             Collection col = ModelManagementHelper.getHelper()
-                    .getAllModelElementsOfKind(model, MCollaboration.class);
+		.getAllModelElementsOfKind(model, MCollaboration.class);
             List returnList = new ArrayList();
             Iterator it = col.iterator();
             while (it.hasNext()) {
-                MCollaboration collab = (MCollaboration)it.next();
+                MCollaboration collab = (MCollaboration) it.next();
                 if (collab.getRepresentedClassifier() == null && 
                     collab.getRepresentedOperation() == null) {
                         

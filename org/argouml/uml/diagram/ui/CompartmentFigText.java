@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -112,7 +113,7 @@ public class CompartmentFigText extends FigText
      */
 
     public CompartmentFigText(int x, int y, int w, int h, Fig aFig) {
-        super(x,y,w,h,true);
+        super(x, y, w, h, true);
 
         // Set the enclosing compartment fig. Warn if its null (which will
         // break).
@@ -257,7 +258,7 @@ public class CompartmentFigText extends FigText
      */
 
     public MFeature getFeature() {
-        MModelElement modelElement = (MModelElement)getOwner();
+        MModelElement modelElement = (MModelElement) getOwner();
 
         if (modelElement instanceof MFeature) {
             return (MFeature) getOwner();
@@ -292,7 +293,7 @@ public class CompartmentFigText extends FigText
 
     public MModelElement getModelElement() {
 
-        return (MModelElement)getOwner();
+        return (MModelElement) getOwner();
     }
 
 } /* End of class CompartmentFigText */

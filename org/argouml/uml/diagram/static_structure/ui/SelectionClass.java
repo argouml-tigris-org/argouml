@@ -117,19 +117,19 @@ public class SelectionClass extends SelectionWButtons {
         int saw = selfassoc.getIconWidth();
         int sah = selfassoc.getIconHeight();
 
-        if (hitAbove(cx + cw/2, cy, iw, ih, r)) {
+        if (hitAbove(cx + cw / 2, cy, iw, ih, r)) {
             h.index = 10;
             h.instructions = "Add a superclass";
         }
-        else if (hitBelow(cx + cw/2, cy + ch, iw, ih, r)) {
+        else if (hitBelow(cx + cw / 2, cy + ch, iw, ih, r)) {
             h.index = 11;
             h.instructions = "Add a subclass";
         }
-        else if (hitLeft(cx + cw, cy + ch/2, aw, ah, r)) {
+        else if (hitLeft(cx + cw, cy + ch / 2, aw, ah, r)) {
             h.index = 12;
             h.instructions = "Add an associated class";
         }
-        else if (hitRight(cx, cy + ch/2, aw, ah, r)) {
+        else if (hitRight(cx, cy + ch / 2, aw, ah, r)) {
             h.index = 13;
             h.instructions = "Add an associated class";
         }
@@ -158,17 +158,17 @@ public class SelectionClass extends SelectionWButtons {
         GraphModel gm = ce.getGraphModel();
 
         if (!(gm instanceof DeploymentDiagramGraphModel)) {
-            paintButtonAbove(inherit, g, cx + cw/2, cy, 10);
-            paintButtonBelow(inherit, g, cx + cw/2, cy + ch, 11);
+            paintButtonAbove(inherit, g, cx + cw / 2, cy, 10);
+            paintButtonBelow(inherit, g, cx + cw / 2, cy + ch, 11);
         }
         if (_useComposite) {
-            paintButtonLeft(compos, g, cx + cw, cy + ch/2, 12);
-            paintButtonRight(compos, g, cx, cy + ch/2, 13);
+            paintButtonLeft(compos, g, cx + cw, cy + ch / 2, 12);
+            paintButtonRight(compos, g, cx, cy + ch / 2, 13);
             paintButtonRight(selfassoc, g, cx, cy + ch - 10, 14);
         }
         else {
-            paintButtonLeft(assoc, g, cx + cw, cy + ch/2, 12);
-            paintButtonRight(assoc, g, cx, cy + ch/2, 13);
+            paintButtonLeft(assoc, g, cx + cw, cy + ch / 2, 12);
+            paintButtonRight(assoc, g, cx, cy + ch / 2, 13);
             paintButtonRight(selfassoc, g, cx, cy + ch - 10, 14);
         }
     }
@@ -193,23 +193,23 @@ public class SelectionClass extends SelectionWButtons {
         case 10: //add superclass
             edgeClass = ru.novosoft.uml.foundation.core.MGeneralization.class;
             by = cy;
-            bx = cx + cw/2;
+            bx = cx + cw / 2;
             break;
         case 11: //add subclass
             edgeClass = ru.novosoft.uml.foundation.core.MGeneralization.class;
             reverse = true;
             by = cy + ch;
-            bx = cx + cw/2;
+            bx = cx + cw / 2;
             break;
         case 12: //add assoc
             edgeClass = ru.novosoft.uml.foundation.core.MAssociation.class;
-            by = cy + ch/2;
+            by = cy + ch / 2;
             bx = cx + cw;
             break;
         case 13: // add assoc
             edgeClass = ru.novosoft.uml.foundation.core.MAssociation.class;
             reverse = true;
-            by = cy + ch/2;
+            by = cy + ch / 2;
             bx = cx;
             break;
         case 14: // selfassociation
@@ -223,7 +223,7 @@ public class SelectionClass extends SelectionWButtons {
             Editor ce = Globals.curEditor();
             ModeCreateEdgeAndNode m = new
                 ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, _useComposite);
-            m.setup((FigNode)_content, _content.getOwner(), bx, by, reverse);
+            m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
             ce.mode(m);
         }
 

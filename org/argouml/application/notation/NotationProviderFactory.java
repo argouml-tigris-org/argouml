@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -58,37 +59,39 @@ import java.util.*;
  */
 
 public class NotationProviderFactory
-implements ArgoModuleEventListener {
+    implements ArgoModuleEventListener 
+{
 
-  static NotationProviderFactory SINGLETON = new NotationProviderFactory();
+    static NotationProviderFactory SINGLETON = new NotationProviderFactory();
 
-  public static NotationProviderFactory getInstance() { return SINGLETON; }
+    public static NotationProviderFactory getInstance() { return SINGLETON; }
 
-  private ArrayList _providers = new ArrayList();
-  private NotationProvider _defaultProvider = null;
+    private ArrayList _providers = new ArrayList();
+    private NotationProvider _defaultProvider = null;
 
-  private NotationProviderFactory() {
-      _providers = new ArrayList();
-      ListIterator iterator = Argo.getPlugins(PluggableNotation.class).listIterator();
-      while (iterator.hasNext()) {
+    private NotationProviderFactory() {
+	_providers = new ArrayList();
+	ListIterator iterator =
+	    Argo.getPlugins(PluggableNotation.class).listIterator();
+	while (iterator.hasNext()) {
             Object o = iterator.next();
             if (o instanceof NotationProvider) {
-	        NotationProvider np = (NotationProvider)o;
+	        NotationProvider np = (NotationProvider) o;
                 Notation.cat.debug ("added provider:" + np);
                 _providers.add(np);
                 fireEvent(ArgoEventTypes.NOTATION_PROVIDER_ADDED, np);
 	    }
-      }
-      ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
-      ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
-  }
+	}
+	ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+	ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
+    }
 
-  /** Remove the notation change listener.
-   *  <code>finalize</code> should never happen, but play it safe.
-   */
-  public void finalize() {
-      ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
-  }
+    /** Remove the notation change listener.
+     *  <code>finalize</code> should never happen, but play it safe.
+     */
+    public void finalize() {
+	ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+    }
 
 
     public NotationProvider getProvider(NotationName nn) {
@@ -97,7 +100,7 @@ implements ArgoModuleEventListener {
 	Notation.cat.debug ("looking for " + n);
         ListIterator iterator = _providers.listIterator();
         while (iterator.hasNext()) {
-            NotationProvider np = (NotationProvider)iterator.next();
+            NotationProvider np = (NotationProvider) iterator.next();
 	    Notation.cat.debug ("Checking " + np + ", " + np.getNotation());
 	    if (np.getNotation().equals(n)) {
 	        Notation.cat.debug ("found provider " + np);
@@ -113,44 +116,45 @@ implements ArgoModuleEventListener {
         ArrayList _notations = new ArrayList();
         ListIterator iterator = _providers.listIterator();
         while (iterator.hasNext()) {
-            NotationProvider np = (NotationProvider)iterator.next();
+            NotationProvider np = (NotationProvider) iterator.next();
 	    _notations.add(np.getNotation());
 	}
         return _notations;
     }
 
     public NotationProvider getDefaultProvider() {
-      if (_defaultProvider == null) {
-          _defaultProvider = (NotationProvider)org.argouml.uml.generator.GeneratorDisplay.getInstance();
-          // TODO:  This must be the provider pointed to by the configuration,
-	  // or UML 13 if none.
-	  // 
-      }
-      return _defaultProvider;
+	if (_defaultProvider == null) {
+	    _defaultProvider =
+		(NotationProvider) org.argouml.uml.generator.GeneratorDisplay.getInstance();
+	    // TODO:  This must be the provider pointed to by the configuration,
+	    // or UML 13 if none.
+	    // 
+	}
+	return _defaultProvider;
     }
  
-  public void moduleLoaded(ArgoModuleEvent event) {
-    Notation.cat.debug (event);
-    if(event.getSource() instanceof NotationProvider) {
-        NotationProvider np = (NotationProvider)event.getSource();
-        Notation.cat.debug ("added:" + np);
-        _providers.add(np);
-        fireEvent(ArgoEventTypes.NOTATION_PROVIDER_ADDED, np);
+    public void moduleLoaded(ArgoModuleEvent event) {
+	Notation.cat.debug (event);
+	if (event.getSource() instanceof NotationProvider) {
+	    NotationProvider np = (NotationProvider) event.getSource();
+	    Notation.cat.debug ("added:" + np);
+	    _providers.add(np);
+	    fireEvent(ArgoEventTypes.NOTATION_PROVIDER_ADDED, np);
+	}
     }
-  }
 
-  public void moduleUnloaded(ArgoModuleEvent event) {
-  }
+    public void moduleUnloaded(ArgoModuleEvent event) {
+    }
 
-  public void moduleEnabled(ArgoModuleEvent event) {
-  }
+    public void moduleEnabled(ArgoModuleEvent event) {
+    }
 
-  public void moduleDisabled(ArgoModuleEvent event) {
-  }
+    public void moduleDisabled(ArgoModuleEvent event) {
+    }
 
-  private void fireEvent(int eventType,  NotationProvider provider) {
-      ArgoEventPump.getInstance().fireEvent(new ArgoNotationEvent(eventType,
-                                                                provider));
-  }
+    private void fireEvent(int eventType,  NotationProvider provider) {
+	ArgoEventPump.getInstance().fireEvent(new ArgoNotationEvent(eventType,
+								    provider));
+    }
 
 }

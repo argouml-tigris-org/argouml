@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,16 +43,16 @@ import org.argouml.cognitive.critics.*;
 
 public class CrNameConflictAC extends CrUML {
 
-  public CrNameConflictAC() {
-    setHeadline("Role name conflicts with member");
-    addSupportedDecision(CrUML.decNAMING);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-  }
+    public CrNameConflictAC() {
+	setHeadline("Role name conflicts with member");
+	addSupportedDecision(CrUML.decNAMING);
+	setKnowledgeTypes(Critic.KT_SYNTAX);
+    }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    // TODO: not implemented
-    return NO_PROBLEM;
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	// TODO: not implemented
+	return NO_PROBLEM;
+    }
 
 } /* end class CrNameConflictAC.java */
 

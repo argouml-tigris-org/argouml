@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,7 +34,7 @@ import java.util.*;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.*;
 
-import org.apache.log4j.Category;import org.argouml.cognitive.*;
+import org.apache.log4j.Category; import org.argouml.cognitive.*;
 
 /** A critic to detect when a state has no outgoing transitions. */
 
@@ -54,8 +55,8 @@ public class CrMultipleInitialStates extends CrUML {
         Object k = ModelFacade.getPseudostateKind(dm);
         if (!ModelFacade.
             equalsPseudostateKind(k,
-                              ModelFacade.INITIAL_PSEUDOSTATEKIND))
-        return NO_PROBLEM;
+				  ModelFacade.INITIAL_PSEUDOSTATEKIND))
+	    return NO_PROBLEM;
 
         // container state / composite state
         Object cs = ModelFacade.getContainer(dm);
@@ -70,8 +71,8 @@ public class CrMultipleInitialStates extends CrUML {
             Object sv = iter.next();
             if (ModelFacade.isAPseudostate(sv) &&
                 ModelFacade.
-                equalsPseudostateKind(ModelFacade.getPseudostateKind(sv), 
-                                      ModelFacade.INITIAL_PSEUDOSTATEKIND))
+		    equalsPseudostateKind(ModelFacade.getPseudostateKind(sv), 
+					  ModelFacade.INITIAL_PSEUDOSTATEKIND))
                 initialStateCount++;
         }
         if (initialStateCount > 1) return PROBLEM_FOUND;
@@ -88,16 +89,19 @@ public class CrMultipleInitialStates extends CrUML {
         Object cs = ModelFacade.getContainer(ps);
         if (cs == null) { 
             cat.debug("null parent in still valid"); 
-            return offs; }
+            return offs; 
+	}
         Collection peers = ModelFacade.getSubvertices(cs);
 
         for (Iterator iter = peers.iterator(); iter.hasNext();) {
             Object sv = iter.next();
             if (ModelFacade.isAPseudostate(sv) &&
                 ModelFacade.
-                equalsPseudostateKind(ModelFacade.getPseudostateKind(sv), 
-                                      ModelFacade.INITIAL_PSEUDOSTATEKIND))
+                    equalsPseudostateKind(ModelFacade.getPseudostateKind(sv), 
+					  ModelFacade.INITIAL_PSEUDOSTATEKIND))
+	    {
                 offs.addElement(sv);
+	    }
         }
 
         return offs;

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -37,100 +38,139 @@ import ru.novosoft.uml.*;
  *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
  *             that used reflection a lot.
  */
-public class UMLMetaclassComboBox extends JComboBox implements UMLUserInterfaceComponent, ItemListener {
-   protected static Category cat = Category.getInstance(UMLMetaclassComboBox.class);
+public class UMLMetaclassComboBox 
+    extends JComboBox 
+    implements UMLUserInterfaceComponent, ItemListener 
+{
+    protected static Category cat = Category.getInstance(UMLMetaclassComboBox.class);
 
-  private String[] _metaclasses =
-    { "ModelElement", "Classifier", "Class", "Interface", "DataType", "Exception", "Signal",
-        "Association", "AssociationEnd", "Attribute", "Operation", "Generalization", "Flow", "Usage", "BehavioralFeature",
-        "CallEvent", "Abstraction", "Component", "Package", "Constraint", "Comment","ObjectFlowState",
-        "Model", "Subsystem", "Collaboration", "Permission", "Actor", "Node", "NodeInstance", "Link" };
+    private String[] _metaclasses = {
+	"ModelElement",
+	"Classifier",
+	"Class",
+	"Interface",
+	"DataType",
+	"Exception",
+	"Signal",
+	
+	"Association",
+	"AssociationEnd",
+	"Attribute",
+	"Operation",
+	"Generalization",
+	"Flow",
+	"Usage",
+	"BehavioralFeature",
+	
+	"CallEvent",
+	"Abstraction",
+	"Component",
+	"Package",
+	"Constraint",
+	"Comment",
+	"ObjectFlowState",
+	
+	"Model",
+	"Subsystem",
+	"Collaboration",
+	"Permission",
+	"Actor",
+	"Node",
+	"NodeInstance",
+	"Link"
+    };
 
-  private Method _getMethod;
-  private Method _setMethod;
-  private String _property;
-  private UMLUserInterfaceContainer _container;
-  private Object[] _noArgs = {};
+    private Method _getMethod;
+    private Method _setMethod;
+    private String _property;
+    private UMLUserInterfaceContainer _container;
+    private Object[] _noArgs = {};
 
-  public UMLMetaclassComboBox(UMLUserInterfaceContainer container,String property,String getMethod,String setMethod) {
-    setModel(new DefaultComboBoxModel(_metaclasses));
-    _container = container;
-    _property = property;
-    addItemListener(this);
-    try {
-      _getMethod = container.getClass().getMethod(getMethod,new Class[] { });
+    public UMLMetaclassComboBox(UMLUserInterfaceContainer container, String property, String getMethod, String setMethod) {
+	setModel(new DefaultComboBoxModel(_metaclasses));
+	_container = container;
+	_property = property;
+	addItemListener(this);
+	try {
+	    _getMethod = container.getClass().getMethod(getMethod,
+							new Class[] { 
+							});
+	}
+	catch (Exception e) {
+	    cat.error("Error in UMLMetaclassComboBox:" + getMethod, e);
+	}
+	try {
+	    _setMethod = container.getClass().getMethod(setMethod, new Class[] {
+		String.class 
+	    });
+	}
+	catch (Exception e) {
+	    cat.error("Error in UMLMetaclassComboBox:" + setMethod, e);
+	}
     }
-    catch(Exception e) {
-        cat.error("Error in UMLMetaclassComboBox:" + getMethod, e);
+
+    public void propertySet(MElementEvent e) {
+	String eventName = e.getName();
+	if (eventName == null || _property == null || eventName.equals(_property)) {
+	    update();
+	}
     }
-    try {
-      _setMethod = container.getClass().getMethod(setMethod,new Class[] { String.class });
+
+    public void roleAdded(MElementEvent e) {
     }
-    catch(Exception e) {
-        cat.error("Error in UMLMetaclassComboBox:" + setMethod, e);
+
+    public void roleRemoved(MElementEvent e) {
     }
-  }
 
-  public void propertySet(MElementEvent e) {
-    String eventName = e.getName();
-    if(eventName == null || _property == null || eventName.equals(_property)) {
-      update();
+    public void listRoleItemSet(MElementEvent e) {
     }
-  }
 
-  public void roleAdded(MElementEvent e) {
-  }
-
-  public void roleRemoved(MElementEvent e) {
-  }
-
-  public void listRoleItemSet(MElementEvent e) {
-  }
-
-  public void removed(MElementEvent e) {
-  }
-
-  public void recovered(MElementEvent e) {
-  }
-
-  public void targetChanged() {
-    update();
-  }
-
-  public void targetReasserted() {
-  }
-
-  private void update() {
-    String meta = "ModelElement";
-    try {
-      meta = (String) _getMethod.invoke(_container,_noArgs);
+    public void removed(MElementEvent e) {
     }
-    catch(Exception e) {
-    }
-    ComboBoxModel model = getModel();
-    Object element;
-    int size =  model.getSize();
-    int i = 0;
-    for(i = 0; i < size; i++) {
-      element = model.getElementAt(i);
-      if(element.equals(meta)) {
-        model.setSelectedItem(element);
-        break;
-      }
-    }
-    if(i == size) {
-      model.setSelectedItem(model.getElementAt(0));
-    }
-  }
 
-  public void itemStateChanged(ItemEvent event) {
-    if(event.getStateChange() == ItemEvent.SELECTED) {
-      Object selectedItem = event.getItem();
-      try {
-        _setMethod.invoke(_container,new Object[] { selectedItem.toString() });
-      }
-      catch(Exception e) {
-      }
+    public void recovered(MElementEvent e) {
     }
-  }
+
+    public void targetChanged() {
+	update();
+    }
+
+    public void targetReasserted() {
+    }
+
+    private void update() {
+	String meta = "ModelElement";
+	try {
+	    meta = (String) _getMethod.invoke(_container, _noArgs);
+	}
+	catch (Exception e) {
+	}
+	ComboBoxModel model = getModel();
+	Object element;
+	int size =  model.getSize();
+	int i = 0;
+	for (i = 0; i < size; i++) {
+	    element = model.getElementAt(i);
+	    if (element.equals(meta)) {
+		model.setSelectedItem(element);
+		break;
+	    }
+	}
+	if (i == size) {
+	    model.setSelectedItem(model.getElementAt(0));
+	}
+    }
+
+    public void itemStateChanged(ItemEvent event) {
+	if (event.getStateChange() == ItemEvent.SELECTED) {
+	    Object selectedItem = event.getItem();
+	    try {
+		_setMethod.invoke(_container, new Object[] {
+		    selectedItem.toString() 
+		});
+	    }
+	    catch (Exception e) {
+	    }
+	}
+    }
 }

@@ -56,8 +56,8 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
     protected void setProperty(String text) {
         if (getTarget() != null)
             ((MModelElement) getTarget()).setTaggedValue(
-                this.getEventName(),
-                text);
+							 this.getEventName(),
+							 text);
     }
 
     /**
@@ -65,7 +65,7 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
      * @return the value of the tagged value
      */
     protected String getProperty() {
-        return ((MModelElement)getTarget()).getTaggedValue(this.getEventName());
+        return ((MModelElement) getTarget()).getTaggedValue(this.getEventName());
     }
 }
 

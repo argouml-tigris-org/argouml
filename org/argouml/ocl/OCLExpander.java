@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -27,15 +28,15 @@ import java.util.*;
 
 public class OCLExpander extends org.tigris.gef.ocl.OCLExpander {
 
-  public OCLExpander(Map templates) {
-    super(templates);
-  }
+    public OCLExpander(Map templates) {
+	super(templates);
+    }
 
     //
     //   the only difference between Argo's expander
     //       and GEF's is which evaluator they use
-    protected List evaluate(Map bindings,String expr) {
-        return org.argouml.ocl.OCLEvaluator.SINGLETON.eval(bindings,expr);
+    protected List evaluate(Map bindings, String expr) {
+        return org.argouml.ocl.OCLEvaluator.SINGLETON.eval(bindings, expr);
     }
 
 } /* end class OCLExpander */

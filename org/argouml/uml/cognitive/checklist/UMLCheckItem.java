@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -46,31 +47,31 @@ public class UMLCheckItem extends CheckItem {
     protected static Category cat = 
         Category.getInstance(UMLCheckItem.class);
 
-  public UMLCheckItem(String c, String d) { super(c, d); }
+    public UMLCheckItem(String c, String d) { super(c, d); }
 
-  public UMLCheckItem(String c, String d, String m, Predicate p) {
-    super(c, d, m, p);
-  }
-
-
-  public String expand(String res, Object dm) {
-    int searchPos = 0;
-    int matchPos = res.indexOf(OCLEvaluator.OCL_START, searchPos);
-
-    // replace all occurances of OFFENDER with the name of the first offender
-    while (matchPos != -1) {
-      int endExpr = res.indexOf(OCLEvaluator.OCL_END, matchPos + 1);
-      String expr = res.substring(matchPos + OCLEvaluator.OCL_START.length(),
-				  endExpr);
-      String evalStr = OCLEvaluator.SINGLETON.evalToString(dm, expr);
-      cat.debug("expr='" + expr + "' = '" + evalStr + "'");
-      res = res.substring(0, matchPos) +
-	evalStr +
-	res.substring(endExpr + OCLEvaluator.OCL_END.length());
-      searchPos = endExpr + 1;
-      matchPos = res.indexOf(OCLEvaluator.OCL_START, searchPos);
+    public UMLCheckItem(String c, String d, String m, Predicate p) {
+	super(c, d, m, p);
     }
-    return res;
-  }
+
+
+    public String expand(String res, Object dm) {
+	int searchPos = 0;
+	int matchPos = res.indexOf(OCLEvaluator.OCL_START, searchPos);
+
+	// replace all occurances of OFFENDER with the name of the first offender
+	while (matchPos != -1) {
+	    int endExpr = res.indexOf(OCLEvaluator.OCL_END, matchPos + 1);
+	    String expr = res.substring(matchPos + OCLEvaluator.OCL_START.length(),
+					endExpr);
+	    String evalStr = OCLEvaluator.SINGLETON.evalToString(dm, expr);
+	    cat.debug("expr='" + expr + "' = '" + evalStr + "'");
+	    res = res.substring(0, matchPos) +
+		evalStr +
+		res.substring(endExpr + OCLEvaluator.OCL_END.length());
+	    searchPos = endExpr + 1;
+	    matchPos = res.indexOf(OCLEvaluator.OCL_START, searchPos);
+	}
+	return res;
+    }
 
 } /* end class UMLCheckItem */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -50,140 +51,140 @@ import ru.novosoft.uml.behavior.state_machines.MState;
 public class FigSimpleState extends FigState {
     protected static Category cat = Category.getInstance(FigSimpleState.class);
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  public final int MARGIN = 2;
+    public final int MARGIN = 2;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  FigRect _cover;
-  FigLine _divider;
-
-
-  ////////////////////////////////////////////////////////////////
-  // constructors
-
-  public FigSimpleState() {
-    _bigPort = new FigRRect(getInitialX()+1, getInitialY()+1, getInitialWidth()-2, getInitialHeight()-2, Color.cyan, Color.cyan);
-    _cover = new FigRRect(getInitialX(), getInitialY(), getInitialWidth(), getInitialHeight(), Color.black, Color.white);
-
-    _bigPort.setLineWidth(0);
-    _name.setLineWidth(0);
-    _name.setBounds(getInitialX()+2, getInitialY()+2, getInitialWidth()-4, _name.getBounds().height);
-    _name.setFilled(false);
-
-    _divider = new FigLine(getInitialX(),  getInitialY()+2 + _name.getBounds().height + 1,
-    getInitialWidth()-1,  getInitialY()+2 + _name.getBounds().height + 1,
-			   Color.black);   
-
-    // add Figs to the FigNode in back-to-front order
-    addFig(_bigPort);
-    addFig(_cover);
-    addFig(_name);
-    addFig(_divider);
-    addFig(_internal);
-
-    //setBlinkPorts(false); //make port invisble unless mouse enters
-    Rectangle r = getBounds();
-    setBounds(r.x, r.y, r.width, r.height);
-  }
-
-  public FigSimpleState(GraphModel gm, Object node) {
-    this();
-    setOwner(node);
-  }
-
-  public String placeString() { return "new MState"; }
-
-  public Object clone() {
-    FigSimpleState figClone = (FigSimpleState) super.clone();
-    Vector v = figClone.getFigs();
-    figClone._bigPort = (FigRect) v.elementAt(0);
-    figClone._cover = (FigRect) v.elementAt(1);
-    figClone._name = (FigText) v.elementAt(2);
-    figClone._divider = (FigLine) v.elementAt(3);
-    figClone._internal = (FigText) v.elementAt(4);
-    return figClone;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public Selection makeSelection() {
-    return new SelectionState(this);
-  }
+    FigRect _cover;
+    FigLine _divider;
 
 
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
-  }
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public Dimension getMinimumSize() {
-    Dimension nameDim = _name.getMinimumSize();
-    Dimension internalDim = _internal.getMinimumSize();
+    public FigSimpleState() {
+	_bigPort = new FigRRect(getInitialX() + 1, getInitialY() + 1, getInitialWidth() - 2, getInitialHeight() - 2, Color.cyan, Color.cyan);
+	_cover = new FigRRect(getInitialX(), getInitialY(), getInitialWidth(), getInitialHeight(), Color.black, Color.white);
 
-    int h = nameDim.height + 4 + internalDim.height;
-    int w = Math.max(nameDim.width + 4, internalDim.width + 4);
-    return new Dimension(w, h);
-  }
+	_bigPort.setLineWidth(0);
+	_name.setLineWidth(0);
+	_name.setBounds(getInitialX() + 2, getInitialY() + 2, getInitialWidth() - 4, _name.getBounds().height);
+	_name.setFilled(false);
 
-  /* Override setBounds to keep shapes looking right */
-  public void setBounds(int x, int y, int w, int h) {
-    if (_name == null) return;
-    Rectangle oldBounds = getBounds();
-    Dimension nameDim = _name.getMinimumSize();
+	_divider = new FigLine(getInitialX(),  getInitialY() + 2 + _name.getBounds().height + 1,
+			       getInitialWidth() - 1,  getInitialY() + 2 + _name.getBounds().height + 1,
+			       Color.black);   
 
-    _name.setBounds(x+2, y+2, w-4,  nameDim.height);
-    _divider.setShape(x, y + nameDim.height + 1, x + w - 1,  y + nameDim.height + 1);
+	// add Figs to the FigNode in back-to-front order
+	addFig(_bigPort);
+	addFig(_cover);
+	addFig(_name);
+	addFig(_divider);
+	addFig(_internal);
 
-    _internal.setBounds(x+2, y + nameDim.height + 4,
-			w-4, h - nameDim.height - 6);
-
-    _bigPort.setBounds(x, y, w, h);
-    _cover.setBounds(x, y, w, h);
-
-    calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-    updateEdges();
-    firePropChange("bounds", oldBounds, getBounds());
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // Fig accessors
-
-  public void setLineColor(Color col) {
-    _cover.setLineColor(col);
-    _divider.setLineColor(col);
-  }
- public Color getLineColor() { return _cover.getLineColor(); }
-
-  public void setFillColor(Color col) { _cover.setFillColor(col); }
-  public Color getFillColor() { return _cover.getFillColor(); }
-
-  public void setFilled(boolean f) { _cover.setFilled(f); }
-  public boolean getFilled() { return _cover.getFilled(); }
-
-  public void setLineWidth(int w) {
-    _cover.setLineWidth(w);
-    _divider.setLineWidth(w);
-  }
-  public int getLineWidth() { return _cover.getLineWidth(); }
-
-
-  ////////////////////////////////////////////////////////////////
-  // event processing  
-
-  public void textEdited(FigText ft) throws PropertyVetoException {
-    super.textEdited(ft);
-    if (ft == _internal) {
-      MState st = (MState) getOwner();
-      if (st == null) return;
-      String s = ft.getText();
-      ParserDisplay.SINGLETON.parseStateBody(st, s);
+	//setBlinkPorts(false); //make port invisble unless mouse enters
+	Rectangle r = getBounds();
+	setBounds(r.x, r.y, r.width, r.height);
     }
-  }
+
+    public FigSimpleState(GraphModel gm, Object node) {
+	this();
+	setOwner(node);
+    }
+
+    public String placeString() { return "new MState"; }
+
+    public Object clone() {
+	FigSimpleState figClone = (FigSimpleState) super.clone();
+	Vector v = figClone.getFigs();
+	figClone._bigPort = (FigRect) v.elementAt(0);
+	figClone._cover = (FigRect) v.elementAt(1);
+	figClone._name = (FigText) v.elementAt(2);
+	figClone._divider = (FigLine) v.elementAt(3);
+	figClone._internal = (FigText) v.elementAt(4);
+	return figClone;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    public Selection makeSelection() {
+	return new SelectionState(this);
+    }
+
+
+    public void setOwner(Object node) {
+	super.setOwner(node);
+	bindPort(node, _bigPort);
+    }
+
+    public Dimension getMinimumSize() {
+	Dimension nameDim = _name.getMinimumSize();
+	Dimension internalDim = _internal.getMinimumSize();
+
+	int h = nameDim.height + 4 + internalDim.height;
+	int w = Math.max(nameDim.width + 4, internalDim.width + 4);
+	return new Dimension(w, h);
+    }
+
+    /* Override setBounds to keep shapes looking right */
+    public void setBounds(int x, int y, int w, int h) {
+	if (_name == null) return;
+	Rectangle oldBounds = getBounds();
+	Dimension nameDim = _name.getMinimumSize();
+
+	_name.setBounds(x + 2, y + 2, w - 4,  nameDim.height);
+	_divider.setShape(x, y + nameDim.height + 1, x + w - 1,  y + nameDim.height + 1);
+
+	_internal.setBounds(x + 2, y + nameDim.height + 4,
+			    w - 4, h - nameDim.height - 6);
+
+	_bigPort.setBounds(x, y, w, h);
+	_cover.setBounds(x, y, w, h);
+
+	calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+	updateEdges();
+	firePropChange("bounds", oldBounds, getBounds());
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // Fig accessors
+
+    public void setLineColor(Color col) {
+	_cover.setLineColor(col);
+	_divider.setLineColor(col);
+    }
+    public Color getLineColor() { return _cover.getLineColor(); }
+
+    public void setFillColor(Color col) { _cover.setFillColor(col); }
+    public Color getFillColor() { return _cover.getFillColor(); }
+
+    public void setFilled(boolean f) { _cover.setFilled(f); }
+    public boolean getFilled() { return _cover.getFilled(); }
+
+    public void setLineWidth(int w) {
+	_cover.setLineWidth(w);
+	_divider.setLineWidth(w);
+    }
+    public int getLineWidth() { return _cover.getLineWidth(); }
+
+
+    ////////////////////////////////////////////////////////////////
+    // event processing  
+
+    public void textEdited(FigText ft) throws PropertyVetoException {
+	super.textEdited(ft);
+	if (ft == _internal) {
+	    MState st = (MState) getOwner();
+	    if (st == null) return;
+	    String s = ft.getText();
+	    ParserDisplay.SINGLETON.parseStateBody(st, s);
+	}
+    }
    
 
     /**

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -57,132 +58,132 @@ import org.argouml.cognitive.*;
 
 public abstract class Wizard implements java.io.Serializable {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** User interface panels displayed so far. */
-  protected Vector _panels = new Vector();
+    /** User interface panels displayed so far. */
+    protected Vector _panels = new Vector();
 
-  /** The current step that the Wizard is on.  Zero indicates that the
-   *  wizard has not yet begun. */
-  protected int _step = 0;
+    /** The current step that the Wizard is on.  Zero indicates that the
+     *  wizard has not yet begun. */
+    protected int _step = 0;
 
-  /** True when the wizard has done everything it can. */
-  protected boolean _finished = false;
-  protected boolean _started = false;
+    /** True when the wizard has done everything it can. */
+    protected boolean _finished = false;
+    protected boolean _started = false;
 
-  protected ToDoItem _item = null;
+    protected ToDoItem _item = null;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  /** Construct a new wizard to help the user repair a design flaw. */
-  public Wizard() { }
+    /** Construct a new wizard to help the user repair a design flaw. */
+    public Wizard() { }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public void setToDoItem(ToDoItem item) { _item = item; }
+    public void setToDoItem(ToDoItem item) { _item = item; }
 
-  public ToDoItem getToDoItem() { return _item; }
+    public ToDoItem getToDoItem() { return _item; }
 
-  /** An integer between 0 and 100, shows percent done. The current
-   *  Argo/UML user itnerface shows different PostIt note icons for
-   *  0, 1-25, 26-50. 51-75, and 76-100. */
-  public int getProgress() { return _step * 100 / getNumSteps(); }
+    /** An integer between 0 and 100, shows percent done. The current
+     *  Argo/UML user itnerface shows different PostIt note icons for
+     *  0, 1-25, 26-50. 51-75, and 76-100. */
+    public int getProgress() { return _step * 100 / getNumSteps(); }
 
-  /** Get the number of steps in this wizard.  Subclasses should
-   *  override to return a constant, or compute based on context. */
-  public abstract int getNumSteps();
+    /** Get the number of steps in this wizard.  Subclasses should
+     *  override to return a constant, or compute based on context. */
+    public abstract int getNumSteps();
 
-  /** Get the panel that should be displayed now.  Usually called
-   *  after the user pressed "Next>" and next() has returned, or after
-   *  the user pressed "<Back" and back() has returned.  Also called
-   *  when the user turns away from the wizard to do something else and
-   *  then returns his or her attention to the wizard. */
-  public JPanel getCurrentPanel() { return getPanel(_step); }
+    /** Get the panel that should be displayed now.  Usually called
+     *  after the user pressed "Next>" and next() has returned, or after
+     *  the user pressed "<Back" and back() has returned.  Also called
+     *  when the user turns away from the wizard to do something else and
+     *  then returns his or her attention to the wizard. */
+    public JPanel getCurrentPanel() { return getPanel(_step); }
 
 
-  /** Get the exising panel at step s. Step 1 is the first wizard
-   *  panel. 
-   *
-   * @return the panel for step s or null if none.
-   */
-  public JPanel getPanel(int s) {
-    if (s > 0 && s <= _panels.size())
-      return (JPanel) _panels.elementAt(s - 1);
-    return null;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // wizard actions
-
-  /** Return true iff the "Next>" button should be enabled.
-   *  Subclasses should override to first check super.nextEnabled()
-   *  and then check for legal context values. */
-  public boolean canGoNext() { return _step < getNumSteps(); }
-
-  public void next() {
-      doAction(_step);
-      _step++;
-      JPanel p = makePanel(_step);
-      if (p != null) _panels.addElement(p);
-      _started = true;
-      if (_item != null) _item.changed();
-  }
-
-  public boolean canGoBack() { return _step > 0; }
-
-  public void back() {
-    _step--;
-    if (_step < 0) _step = 0;
-    undoAction(_step);
-    if (_item != null) _item.changed();
-  }
-
-  public boolean canFinish() { return true; }
-  public boolean isStarted() { return _started; }
-  public boolean isFinished() { return _finished; }
-
-  public void finish() {
-    _started = true;
-    int numSteps = getNumSteps();
-    for (int i = _step; i <= numSteps; i++) {
-      doAction(i);
-      if (_item != null) _item.changed();
+    /** Get the exising panel at step s. Step 1 is the first wizard
+     *  panel. 
+     *
+     * @return the panel for step s or null if none.
+     */
+    public JPanel getPanel(int s) {
+	if (s > 0 && s <= _panels.size())
+	    return (JPanel) _panels.elementAt(s - 1);
+	return null;
     }
-    // TODO: do all following steps
-    // TODO: resolve item from ToDoList
-    _finished = true;
-  }
 
-  /** Create a new panel for the given step. For example, When the
-   *  given step is 1, create the first step of the wizard. <p>
-   *
-   *  TODO: It might be convient to make a reusable
-   *  subclass of Wizard that shows all textual steps to guide the
-   *  user without any automation.  Such a Wizard could be easily
-   *  authored, stored in an XML file, and effiecntly presented by
-   *  reusing a single panel with a single JTextArea. */
-  public abstract JPanel makePanel(int newStep);
+    ////////////////////////////////////////////////////////////////
+    // wizard actions
 
-  /** Take action at the completion of a step. For example, when the
-   *  given step is 0, do nothing; and when the given step is 1, do
-   *  the first action.  Argo non-modal wizards should take action as
-   *  they do along, as soon as possible, they should not wait until
-   *  the final step. Also, if the user pressed "Finish" doAction may
-   *  be called for steps that never constructored or displayed their
-   *  panels. */
-  public abstract void doAction(int oldStep);
+    /** Return true iff the "Next>" button should be enabled.
+     *  Subclasses should override to first check super.nextEnabled()
+     *  and then check for legal context values. */
+    public boolean canGoNext() { return _step < getNumSteps(); }
 
-  public void doAction() { doAction(_step); }
+    public void next() {
+	doAction(_step);
+	_step++;
+	JPanel p = makePanel(_step);
+	if (p != null) _panels.addElement(p);
+	_started = true;
+	if (_item != null) _item.changed();
+    }
 
-  /** Undo the action done after the given step. For example, when the
-   *  given step is 0, nothing was done, so nothing can be undone; and
-   *  when the given step is 1, undo the first action.  Undo allows
-   *  users to work part way through fixing a problem, see the partial
-   *  result, and explore a different alternative. */
-  public void undoAction(int oldStep) { }
+    public boolean canGoBack() { return _step > 0; }
 
-  public void undoAction() { undoAction(_step); }
+    public void back() {
+	_step--;
+	if (_step < 0) _step = 0;
+	undoAction(_step);
+	if (_item != null) _item.changed();
+    }
+
+    public boolean canFinish() { return true; }
+    public boolean isStarted() { return _started; }
+    public boolean isFinished() { return _finished; }
+
+    public void finish() {
+	_started = true;
+	int numSteps = getNumSteps();
+	for (int i = _step; i <= numSteps; i++) {
+	    doAction(i);
+	    if (_item != null) _item.changed();
+	}
+	// TODO: do all following steps
+	// TODO: resolve item from ToDoList
+	_finished = true;
+    }
+
+    /** Create a new panel for the given step. For example, When the
+     *  given step is 1, create the first step of the wizard. <p>
+     *
+     *  TODO: It might be convient to make a reusable
+     *  subclass of Wizard that shows all textual steps to guide the
+     *  user without any automation.  Such a Wizard could be easily
+     *  authored, stored in an XML file, and effiecntly presented by
+     *  reusing a single panel with a single JTextArea. */
+    public abstract JPanel makePanel(int newStep);
+
+    /** Take action at the completion of a step. For example, when the
+     *  given step is 0, do nothing; and when the given step is 1, do
+     *  the first action.  Argo non-modal wizards should take action as
+     *  they do along, as soon as possible, they should not wait until
+     *  the final step. Also, if the user pressed "Finish" doAction may
+     *  be called for steps that never constructored or displayed their
+     *  panels. */
+    public abstract void doAction(int oldStep);
+
+    public void doAction() { doAction(_step); }
+
+    /** Undo the action done after the given step. For example, when the
+     *  given step is 0, nothing was done, so nothing can be undone; and
+     *  when the given step is 1, undo the first action.  Undo allows
+     *  users to work part way through fixing a problem, see the partial
+     *  result, and explore a different alternative. */
+    public void undoAction(int oldStep) { }
+
+    public void undoAction() { undoAction(_step); }
 } /* end class Wizard */

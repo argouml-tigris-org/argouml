@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,29 +43,29 @@ import org.argouml.util.*;
 public class UMLChangeRegistry extends ChangeRegistry implements MElementListener
 {
 
-	public UMLChangeRegistry() { super(); }
+    public UMLChangeRegistry() { super(); }
 
-	public void propertySet(MElementEvent mee) {
-		setChangeFlag( true );
-	}
+    public void propertySet(MElementEvent mee) {
+	setChangeFlag( true );
+    }
 
-	public void listRoleItemSet(MElementEvent mee) {
-	}
+    public void listRoleItemSet(MElementEvent mee) {
+    }
 
-	public void recovered(MElementEvent mee) {
-	}
+    public void recovered(MElementEvent mee) {
+    }
 
-	public void removed(MElementEvent mee) {
-		setChangeFlag( true );
-	}
+    public void removed(MElementEvent mee) {
+	setChangeFlag( true );
+    }
 
-	public void roleAdded(MElementEvent mee) {
-		setChangeFlag( true );
-	}
+    public void roleAdded(MElementEvent mee) {
+	setChangeFlag( true );
+    }
 
-	public void roleRemoved(MElementEvent mee) {
-		setChangeFlag( true );
-	}
+    public void roleRemoved(MElementEvent mee) {
+	setChangeFlag( true );
+    }
 
 } /* end class UMLChangeRegistry */
 

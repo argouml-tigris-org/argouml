@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,10 +53,10 @@ public class ConfigLoader {
     public static void loadTabs(Vector tabs, String panelName, Orientation orientation) {
         String position = null;
         if (
-                panelName.equals("north") || panelName.equals("south") || 
-                panelName.equals("west") || panelName.equals("east") ||
-                panelName.equals("northwest") || panelName.equals("northeast") || 
-                panelName.equals("southwest") || panelName.equals("southeast")) {
+	    panelName.equals("north") || panelName.equals("south") || 
+	    panelName.equals("west") || panelName.equals("east") ||
+	    panelName.equals("northwest") || panelName.equals("northeast") || 
+	    panelName.equals("southwest") || panelName.equals("southeast")) {
             position = panelName;
             panelName = "detail";
         }
@@ -65,23 +66,23 @@ public class ConfigLoader {
         //
         //    if property specified
         //
-        if(configFile != null) {
+        if (configFile != null) {
             //    try to load a file
             try {
                 is = new FileInputStream(configFile);
             }
-            catch(FileNotFoundException e) {
+            catch (FileNotFoundException e) {
                 is = ConfigLoader.class.getResourceAsStream(configFile);
-                if(is != null) {
+                if (is != null) {
                     _Log.info("Value of argo.config (" + configFile + ") could not be loaded.\nLoading default configuration.");
                 }
             }
         }
-        if(is == null) {
+        if (is == null) {
             configFile = "/org/argouml/argo.ini";
             is = ConfigLoader.class.getResourceAsStream(configFile);
         }
-        if(is != null) {
+        if (is != null) {
             lnr = new LineNumberReader(new InputStreamReader(is));
 
             if (lnr != null) {
@@ -93,7 +94,7 @@ public class ConfigLoader {
                         if (tabClass != null) {
                             try {
                                 String className = tabClass.getName();
-                                String shortClassName = className.substring(className.lastIndexOf('.')+1).toLowerCase();
+                                String shortClassName = className.substring(className.lastIndexOf('.') + 1).toLowerCase();
                                 ConfigurationKey key = Configuration.makeKey("layout", shortClassName);
                                 if (position == null || position.equalsIgnoreCase(Configuration.getString(key, "South"))) {
                                     if (className.equals("org.argouml.uml.ui.TabProps")) {
@@ -105,11 +106,11 @@ public class ConfigLoader {
                             }
                             catch (InstantiationException ex) {
                                 _Log.error("Could not make instance of " +
-                                    tabClass.getName());
+					   tabClass.getName());
                             }
                             catch (IllegalAccessException ex) {
                                 _Log.error("Could not make instance of " +
-                                    tabClass.getName());
+					   tabClass.getName());
                             }
                         }
                         line = lnr.readLine();                     
@@ -123,58 +124,58 @@ public class ConfigLoader {
                 _Log.error("lnr is null");
             }
         }
-	}
+    }
 
-	public static Class parseConfigLine(String line, String panelName,
-						int lineNum, String configFile) {
-		if (line.startsWith("tabpath")) {
-			String newPath = stripBeforeColon(line).trim();
-			if (newPath.length() > 0) TabPath = newPath;
-			return null;
-		}
-		else if (line.startsWith(panelName)) {
-			String tabNames = stripBeforeColon(line).trim();
-			java.util.StringTokenizer tabAlternatives = new java.util.StringTokenizer(tabNames, "|");
-			Class res = null;
-			while (tabAlternatives.hasMoreElements()) {
-				String tabSpec = tabAlternatives.nextToken().trim();
-				String tabName = tabSpec;  //TODO: arguments
-				String tabClassName;
+    public static Class parseConfigLine(String line, String panelName,
+					int lineNum, String configFile) {
+	if (line.startsWith("tabpath")) {
+	    String newPath = stripBeforeColon(line).trim();
+	    if (newPath.length() > 0) TabPath = newPath;
+	    return null;
+	}
+	else if (line.startsWith(panelName)) {
+	    String tabNames = stripBeforeColon(line).trim();
+	    java.util.StringTokenizer tabAlternatives = new java.util.StringTokenizer(tabNames, "|");
+	    Class res = null;
+	    while (tabAlternatives.hasMoreElements()) {
+		String tabSpec = tabAlternatives.nextToken().trim();
+		String tabName = tabSpec;  //TODO: arguments
+		String tabClassName;
                                 
-				if ( tabName.indexOf('.') > 0 )
-					tabClassName = tabName;
-				else
-					tabClassName = TabPath + "." + tabName;
+		if ( tabName.indexOf('.') > 0 )
+		    tabClassName = tabName;
+		else
+		    tabClassName = TabPath + "." + tabName;
 
-				try {
-					res = Class.forName(tabClassName);
-				}
-				catch (ClassNotFoundException cnfe) { }
-				catch (Exception e) {
-					_Log.error("Unanticipated exception, skipping "+tabName);
-					_Log.error(e);
-				}
-				if (res != null) {
-                                        if (ProjectBrowser.getInstance().getSplashScreen() != null) {
-					   ProjectBrowser.getInstance().getSplashScreen().getStatusBar().showStatus("Making Project Browser: " + tabName);
-					   ProjectBrowser.getInstance().getSplashScreen().getStatusBar().incProgress(2);
-                                        }
-					return res;
-				}
-			}
-			if (Boolean.getBoolean("dbg")) {
-				_Log.warn("\nCould not find any of these classes:\n" +
-								   "TabPath=" + TabPath + "\n" +
-								   "Config file=" + configFile + "\n" +
-								   "Config line #" + lineNum + ":" + line);
-			}
+		try {
+		    res = Class.forName(tabClassName);
 		}
-		return null;
+		catch (ClassNotFoundException cnfe) { }
+		catch (Exception e) {
+		    _Log.error("Unanticipated exception, skipping " + tabName);
+		    _Log.error(e);
+		}
+		if (res != null) {
+		    if (ProjectBrowser.getInstance().getSplashScreen() != null) {
+			ProjectBrowser.getInstance().getSplashScreen().getStatusBar().showStatus("Making Project Browser: " + tabName);
+			ProjectBrowser.getInstance().getSplashScreen().getStatusBar().incProgress(2);
+		    }
+		    return res;
+		}
+	    }
+	    if (Boolean.getBoolean("dbg")) {
+		_Log.warn("\nCould not find any of these classes:\n" +
+			  "TabPath=" + TabPath + "\n" +
+			  "Config file=" + configFile + "\n" +
+			  "Config line #" + lineNum + ":" + line);
+	    }
 	}
+	return null;
+    }
 
-	public static String stripBeforeColon(String s) {
-		int colonPos = s.indexOf(":");
-		return s.substring(colonPos  + 1);
-	}
+    public static String stripBeforeColon(String s) {
+	int colonPos = s.indexOf(":");
+	return s.substring(colonPos  + 1);
+    }
 
 } /* end class ConfigLoader */

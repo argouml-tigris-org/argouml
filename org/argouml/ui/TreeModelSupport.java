@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,7 +41,7 @@ import org.apache.log4j.Category;
  * @author  alexb
  * @since 0.13.5, Created on 15 April 2003
  */
-public class TreeModelSupport extends PerspectiveSupport{
+public class TreeModelSupport extends PerspectiveSupport {
 
     private static Category cat =
         Category.getInstance(TreeModelSupport.class);
@@ -79,10 +80,10 @@ public class TreeModelSupport extends PerspectiveSupport{
      * @see EventListenerList
      */
     protected void fireTreeNodesChanged(
-                    Object source,
-                    Object[] path,
-                    int[] childIndices,
-                    Object[] children) {
+					Object source,
+					Object[] path,
+					int[] childIndices,
+					Object[] children) {
             
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
@@ -95,10 +96,10 @@ public class TreeModelSupport extends PerspectiveSupport{
                 if (e == null)
                     e =
                         new TreeModelEvent(
-                            source,
-                            path,
-                            childIndices,
-                            children);
+					   source,
+					   path,
+					   childIndices,
+					   children);
                 ((TreeModelListener) listeners[i + 1]).treeNodesChanged(e);
             }
         }
@@ -112,10 +113,10 @@ public class TreeModelSupport extends PerspectiveSupport{
      * @see EventListenerList
      */
     protected void fireTreeNodesInserted(
-                    Object source,
-                    Object[] path,
-                    int[] childIndices,
-                    Object[] children) {
+					 Object source,
+					 Object[] path,
+					 int[] childIndices,
+					 Object[] children) {
             
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
@@ -128,10 +129,10 @@ public class TreeModelSupport extends PerspectiveSupport{
                 if (e == null)
                     e =
                         new TreeModelEvent(
-                            source,
-                            path,
-                            childIndices,
-                            children);
+					   source,
+					   path,
+					   childIndices,
+					   children);
                 ((TreeModelListener) listeners[i + 1]).treeNodesInserted(e);
             }
         }
@@ -145,10 +146,10 @@ public class TreeModelSupport extends PerspectiveSupport{
      * @see EventListenerList
      */
     protected void fireTreeNodesRemoved(
-                    Object source,
-                    Object[] path,
-                    int[] childIndices,
-                    Object[] children) {
+					Object source,
+					Object[] path,
+					int[] childIndices,
+					Object[] children) {
             
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
@@ -161,10 +162,10 @@ public class TreeModelSupport extends PerspectiveSupport{
                 if (e == null)
                     e =
                         new TreeModelEvent(
-                            source,
-                            path,
-                            childIndices,
-                            children);
+					   source,
+					   path,
+					   childIndices,
+					   children);
                 ((TreeModelListener) listeners[i + 1]).treeNodesRemoved(e);
             }
         }
@@ -185,17 +186,17 @@ public class TreeModelSupport extends PerspectiveSupport{
     }
     
     
-  /**
-   * Notify all listeners that have registered interest for
-   * notification on this event type.  The event instance 
-   * is lazily created using the parameters passed into 
-   * the fire method.
-   * @see EventListenerList
-   */
-  protected void fireTreeStructureChanged(Object[] path) {
+    /**
+     * Notify all listeners that have registered interest for
+     * notification on this event type.  The event instance 
+     * is lazily created using the parameters passed into 
+     * the fire method.
+     * @see EventListenerList
+     */
+    protected void fireTreeStructureChanged(Object[] path) {
       
-      fireTreeStructureChanged(this, path);
-  }
+	fireTreeStructureChanged(this, path);
+    }
     /**
      */
     protected void fireTreeStructureChanged(Object source, Object[] path) {
@@ -210,10 +211,10 @@ public class TreeModelSupport extends PerspectiveSupport{
      * @see EventListenerList
      */
     public void fireTreeStructureChanged(
-                    Object source,
-                    Object[] path,
-                    int[] childIndices,
-                    Object[] children) {
+					 Object source,
+					 Object[] path,
+					 int[] childIndices,
+					 Object[] children) {
             
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
@@ -226,10 +227,10 @@ public class TreeModelSupport extends PerspectiveSupport{
                 if (e == null)
                     e =
                         new TreeModelEvent(
-                            source,
-                            path,
-                            childIndices,
-                            children);
+					   source,
+					   path,
+					   childIndices,
+					   children);
                 ((TreeModelListener) listeners[i + 1]).treeStructureChanged(e);
             }
         }

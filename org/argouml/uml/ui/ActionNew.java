@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,66 +43,64 @@ import org.argouml.ui.targetmanager.TargetManager;
  */
 public class ActionNew extends UMLAction {
 
-  ////////////////////////////////////////////////////////////////
-  // static variables
+    ////////////////////////////////////////////////////////////////
+    // static variables
 
-  public static ActionNew SINGLETON = new ActionNew(); 
+    public static ActionNew SINGLETON = new ActionNew(); 
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  protected ActionNew() { super("New"); }
+    protected ActionNew() { super("New"); }
 
-  ////////////////////////////////////////////////////////////////
-  // main methods
+    ////////////////////////////////////////////////////////////////
+    // main methods
 
-  public void actionPerformed(ActionEvent e) {
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    Project p = ProjectManager.getManager().getCurrentProject();
+    public void actionPerformed(ActionEvent e) {
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	Project p = ProjectManager.getManager().getCurrentProject();
 
-    if (p != null && p.needsSave()) {
-      String t = MessageFormat.format (
-          Argo.localize ("Actions", "optionpane.new-project-save-changes-to"),
-          new Object[] {p.getName()}
-        );
-      int response = JOptionPane.showConfirmDialog (
-          pb,
-          t,
-          t,
-          JOptionPane.YES_NO_CANCEL_OPTION
-        );
+	if (p != null && p.needsSave()) {
+	    String t =
+		MessageFormat.format(Argo.localize("Actions",
+						   "optionpane.new-project-save-changes-to"),
+				     new Object[] {p.getName()} );
+	    int response =
+		JOptionPane.showConfirmDialog(pb, t, t,
+					      JOptionPane.YES_NO_CANCEL_OPTION
+					      );
 
-      if (response == JOptionPane.CANCEL_OPTION) return;
-      if (response == JOptionPane.YES_OPTION) {
-        boolean safe = false;
+	    if (response == JOptionPane.CANCEL_OPTION) return;
+	    if (response == JOptionPane.YES_OPTION) {
+		boolean safe = false;
 
-        if (ActionSaveProject.SINGLETON.shouldBeEnabled()) {
-          safe = ActionSaveProject.SINGLETON.trySave (true);
-        }
-        if (!safe) {
-          safe = ActionSaveProjectAs.SINGLETON.trySave (false);
-        }          
-        if (!safe) return;
-      }
-      //TODO: if you cancel the save it should cancel open
-      // Steffen Zschaler 01/10/2002 - Well, it does, doesn't it? trySave will
-      // return false in that case...
+		if (ActionSaveProject.SINGLETON.shouldBeEnabled()) {
+		    safe = ActionSaveProject.SINGLETON.trySave (true);
+		}
+		if (!safe) {
+		    safe = ActionSaveProjectAs.SINGLETON.trySave (false);
+		}          
+		if (!safe) return;
+	    }
+	    //TODO: if you cancel the save it should cancel open
+	    // Steffen Zschaler 01/10/2002 - Well, it does, doesn't it? trySave will
+	    // return false in that case...
+	}
+
+	// we should remove all open dialogs. They have as parent the ProjectBrowser
+	Window[] windows = ProjectBrowser.getInstance().getOwnedWindows();
+	for (int i = 0; i < windows.length; i++) {
+	    windows[i].dispose();
+	}
+
+	Designer.disableCritiquing();
+	Designer.clearCritiquing();
+	// clean the history
+	TargetManager.getInstance().cleanHistory();
+	p = ProjectManager.getManager().makeEmptyProject();
+	FindDialog.getInstance().doClearTabs();
+	FindDialog.getInstance().doResetFields();
+	TargetManager.getInstance().setTarget(p.getDiagrams().toArray()[0]);
+	Designer.enableCritiquing();
     }
-
-    // we should remove all open dialogs. They have as parent the ProjectBrowser
-    Window[] windows = ProjectBrowser.getInstance().getOwnedWindows();
-    for (int i = 0; i < windows.length; i++) {
-        windows[i].dispose();
-    }
-
-    Designer.disableCritiquing();
-    Designer.clearCritiquing();
-    // clean the history
-    TargetManager.getInstance().cleanHistory();
-    p = ProjectManager.getManager().makeEmptyProject();
-    FindDialog.getInstance().doClearTabs();
-    FindDialog.getInstance().doResetFields();
-    TargetManager.getInstance().setTarget(p.getDiagrams().toArray()[0]);
-    Designer.enableCritiquing();
-  }
 } /* end class ActionNew */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -45,7 +46,7 @@ public class UMLCheckBox extends JCheckBox implements ItemListener, UMLUserInter
     private UMLBooleanProperty _property;
     
     /** Creates new BooleanChangeListener */
-    public UMLCheckBox(String label,UMLUserInterfaceContainer container,UMLBooleanProperty property) {
+    public UMLCheckBox(String label, UMLUserInterfaceContainer container, UMLBooleanProperty property) {
         super(label);
         _container = container;
         _property = property;
@@ -55,10 +56,10 @@ public class UMLCheckBox extends JCheckBox implements ItemListener, UMLUserInter
 
     public void itemStateChanged(final ItemEvent event) {
     	try {
-        _property.setProperty(_container.getTarget(),event.getStateChange() == ItemEvent.SELECTED);
+	    _property.setProperty(_container.getTarget(), event.getStateChange() == ItemEvent.SELECTED);
     	}
     	catch (PropertyVetoException ve) {
-    		ProjectBrowser.getInstance().getStatusBar().showStatus(ve.getMessage());
+	    ProjectBrowser.getInstance().getStatusBar().showStatus(ve.getMessage());
     	}
     	update();
         
@@ -82,18 +83,18 @@ public class UMLCheckBox extends JCheckBox implements ItemListener, UMLUserInter
     public void removed(final MElementEvent p1) {
     }
     public void propertySet(final MElementEvent event) {
-        if(_property.isAffected(event))
+        if (_property.isAffected(event))
             update();
     }
     
     private void update() {
         boolean oldState = isSelected();
         boolean newState = _property.getProperty(_container.getTarget());
-        if(newState && oldState != newState){
+        if (newState && oldState != newState) {
             setSelected(newState);
         }
         // clear out the residual garbage.
-        if (!newState && oldState){
+        if (!newState && oldState) {
             setSelected(false);
         }
     }

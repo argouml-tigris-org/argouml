@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,16 +32,16 @@ import ru.novosoft.uml.behavior.state_machines.MState;
 
 
 class ActionAddInternalTrans extends UMLChangeAction {
-  public ActionAddInternalTrans() { super("action.add-internal-transition"); }
+    public ActionAddInternalTrans() { super("action.add-internal-transition"); }
 
-  public void actionPerformed(ActionEvent ae) {
-    Object target = TargetManager.getInstance().getModelTarget();
-    if (!(target instanceof MState)) return;
-    MState st = (MState) target;
-    super.actionPerformed(ae);
-  }
-  public boolean shouldBeEnabled() {
-    Object target = TargetManager.getInstance().getModelTarget();
-    return super.shouldBeEnabled() && target instanceof MState;
-  }
+    public void actionPerformed(ActionEvent ae) {
+	Object target = TargetManager.getInstance().getModelTarget();
+	if (!(target instanceof MState)) return;
+	MState st = (MState) target;
+	super.actionPerformed(ae);
+    }
+    public boolean shouldBeEnabled() {
+	Object target = TargetManager.getInstance().getModelTarget();
+	return super.shouldBeEnabled() && target instanceof MState;
+    }
 } /* end class ActionAddInternalTrans */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -71,7 +72,7 @@ public class UMLLinkedList extends UMLList2 implements MouseListener {
      */
     public void mouseClicked(MouseEvent e) {
         if (e.getSource() == this) {
-            if (e.getClickCount() >=2 && SwingUtilities.isLeftMouseButton(e)) {
+            if (e.getClickCount() >= 2 && SwingUtilities.isLeftMouseButton(e)) {
                 Object o = getSelectedValue();
                 if (o instanceof MModelElement) {                    
                     TargetManager.getInstance().setTarget(o);

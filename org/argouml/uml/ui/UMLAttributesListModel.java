@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -61,8 +62,8 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
      *   @param showNone  if true, an element labelled "none" will be shown where there are
      *                        no actual entries in the list.
      */
-    public UMLAttributesListModel(UMLUserInterfaceContainer container,String property,boolean showNone) {
-        super(container,property,showNone);
+    public UMLAttributesListModel(UMLUserInterfaceContainer container, String property, boolean showNone) {
+        super(container, property, showNone);
     }
     /**
      *   Called to indicate that the cache of attributes may have become invalid.
@@ -88,7 +89,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
     public Collection getRawCollection() {
         Collection raw = null;
         Object target = getTarget();
-        if(target instanceof MClassifier) {
+        if (target instanceof MClassifier) {
             raw = ((MClassifier) target).getFeatures();
         }
         return raw;
@@ -98,7 +99,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
      *    @return cache of model elements
      */
     protected java.util.List getCache() {
-        if(_attributes == null) {
+        if (_attributes == null) {
             _attributes = buildCache();
         }
         return _attributes;
@@ -112,15 +113,15 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
      *   @author Phil Sager July 18, 2001
      *   Modified: Dec  06, 2001 - thn
   */
-    public void add(int index){
+    public void add(int index) {
         Object target = getTarget();
-        if(target instanceof MClassifier) {
+        if (target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
             Collection oldFeatures = classifier.getFeatures();
             MAttribute newAttr = UmlFactory.getFactory().getCore().buildAttribute(classifier);
             classifier.setFeatures(addElement(oldFeatures, index, newAttr,
-                                   _attributes.isEmpty()?null:_attributes.get(index)));
-            fireContentsChanged(this,index-1,index);
+                                   _attributes.isEmpty() ? null : _attributes.get(index)));
+            fireContentsChanged(this, index - 1, index);
             navigateTo(newAttr);
         }
     }  // ...end of add()...
@@ -132,16 +133,16 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
      */
     public void delete(int index) {
         Object target = getTarget();
-        if(target instanceof MClassifier && _attributes != null) {
+        if (target instanceof MClassifier && _attributes != null) {
             Object attribute = _attributes.get(index);
-            if(attribute != null) {
-                 if(_attributes != null) {
+            if (attribute != null) {
+		if (_attributes != null) {
                     _attributes.remove(index);
                 }
 
                 ((MClassifier) target).removeFeature((MAttribute) attribute);
                 resetSize();
-                fireIntervalRemoved(this,index,index);
+                fireIntervalRemoved(this, index, index);
             }
         }
     }
@@ -153,11 +154,11 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
      */
     public void moveUp(int index) {
         Object target = getTarget();
-        if(target instanceof MClassifier) {
+        if (target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
             Collection oldFeatures = classifier.getFeatures();
-            classifier.setFeatures(swap(oldFeatures,index-1,_attributes.get(index-1),_attributes.get(index)));
-            fireContentsChanged(this,index-1,index);
+            classifier.setFeatures(swap(oldFeatures, index - 1, _attributes.get(index - 1), _attributes.get(index)));
+            fireContentsChanged(this, index - 1, index);
         }
     }
 
@@ -167,11 +168,11 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
      */
     public void moveDown(int index) {
         Object target = getTarget();
-        if(target instanceof MClassifier) {
+        if (target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
             Collection oldFeatures = classifier.getFeatures();
-            classifier.setFeatures(swap(oldFeatures,index,_attributes.get(index),_attributes.get(index+1)));
-            fireContentsChanged(this,index,index+1);
+            classifier.setFeatures(swap(oldFeatures, index, _attributes.get(index), _attributes.get(index + 1)));
+            fireContentsChanged(this, index, index + 1);
         }
     }
     
@@ -182,18 +183,18 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
      *  @param index index of selected list item
      *  @return "true" if popup menu should be displayed
      */
-    public boolean buildPopup(JPopupMenu popup,int index) {
+    public boolean buildPopup(JPopupMenu popup, int index) {
         UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
-        if(getModelElementSize() <= 0) {
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"), this, "open", index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"), this, "delete", index);
+        if (getModelElementSize() <= 0) {
             open.setEnabled(false);
             delete.setEnabled(false);
         }
 
         popup.add(open);
-        UMLListMenuItem add =new UMLListMenuItem(container.localize("New"),this,"add",index);
-        if(_upper >= 0 && getModelElementSize() >= _upper) {
+        UMLListMenuItem add = new UMLListMenuItem(container.localize("New"), this, "add", index);
+        if (_upper >= 0 && getModelElementSize() >= _upper) {
             add.setEnabled(false);
         }
         popup.add(add);

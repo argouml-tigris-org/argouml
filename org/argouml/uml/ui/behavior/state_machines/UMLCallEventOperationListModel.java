@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,14 +53,14 @@ public class UMLCallEventOperationListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MCallEvent)getTarget()).getOperation());
+        addElement(((MCallEvent) getTarget()).getOperation());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return element == ((MCallEvent)getTarget()).getOperation();
+        return element == ((MCallEvent) getTarget()).getOperation();
     }
 
 }

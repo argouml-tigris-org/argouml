@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -54,229 +55,229 @@ import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 public class FigMessage extends FigNodeModelElement {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public int PADDING = 5;
-  public static Vector ARROW_DIRECTIONS = new Vector();
+    ////////////////////////////////////////////////////////////////
+    // constants
+    public int PADDING = 5;
+    public static Vector ARROW_DIRECTIONS = new Vector();
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  protected FigPoly _figPoly;
-  protected int _arrowDirection = 0;
-  //protected Polygon _polygon;
+    protected FigPoly _figPoly;
+    protected int _arrowDirection = 0;
+    //protected Polygon _polygon;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public FigMessage() {
-    _name.setLineWidth(0);
-    _name.setMultiLine(true);
-    _name.setFilled(false);
-    Dimension nameMin = _name.getMinimumSize();
-    _name.setBounds(10, 10, 90, nameMin.height);
+    public FigMessage() {
+	_name.setLineWidth(0);
+	_name.setMultiLine(true);
+	_name.setFilled(false);
+	Dimension nameMin = _name.getMinimumSize();
+	_name.setBounds(10, 10, 90, nameMin.height);
 
-    _figPoly = new FigPoly(Color.black, Color.black);
-    int[] xpoints = {75,75,77,75,73,75};
-    int[] ypoints = {33,24,24,15,24,24};
-    Polygon polygon = new Polygon(xpoints, ypoints, 6);
-    _figPoly.setPolygon(polygon);
-    _figPoly.setBounds(100,10,5,18);
+	_figPoly = new FigPoly(Color.black, Color.black);
+	int[] xpoints = {75, 75, 77, 75, 73, 75};
+	int[] ypoints = {33, 24, 24, 15, 24, 24};
+	Polygon polygon = new Polygon(xpoints, ypoints, 6);
+	_figPoly.setPolygon(polygon);
+	_figPoly.setBounds(100, 10, 5, 18);
 
-    ARROW_DIRECTIONS.addElement("North");
-    ARROW_DIRECTIONS.addElement("South");
-    ARROW_DIRECTIONS.addElement("East");
-    ARROW_DIRECTIONS.addElement("West");
+	ARROW_DIRECTIONS.addElement("North");
+	ARROW_DIRECTIONS.addElement("South");
+	ARROW_DIRECTIONS.addElement("East");
+	ARROW_DIRECTIONS.addElement("West");
 
-    // add Figs to the FigNode in back-to-front order
-    addFig(_name);
-    addFig(_figPoly);
+	// add Figs to the FigNode in back-to-front order
+	addFig(_name);
+	addFig(_figPoly);
 
-    Rectangle r = getBounds();
-    setBounds(r.x, r.y, r.width, r.height);
-  }
+	Rectangle r = getBounds();
+	setBounds(r.x, r.y, r.width, r.height);
+    }
 
-  public FigMessage(GraphModel gm, Layer lay, Object node) {
-    this();
-    setLayer(lay);
-    setOwner(node);
-  }
+    public FigMessage(GraphModel gm, Layer lay, Object node) {
+	this();
+	setLayer(lay);
+	setOwner(node);
+    }
 
-  public String placeString() { return "new Message"; }
+    public String placeString() { return "new Message"; }
 
-  public Object clone() {
-    FigMessage figClone = (FigMessage) super.clone();
-    Vector v = figClone.getFigs();
-    figClone._name = (FigText) v.elementAt(0);
-    figClone._figPoly = (FigPoly) v.elementAt(1);
-    //figClone._polygon = (Polygon) _polygon.clone();
-    return figClone;
-  }
+    public Object clone() {
+	FigMessage figClone = (FigMessage) super.clone();
+	Vector v = figClone.getFigs();
+	figClone._name = (FigText) v.elementAt(0);
+	figClone._figPoly = (FigPoly) v.elementAt(1);
+	//figClone._polygon = (Polygon) _polygon.clone();
+	return figClone;
+    }
 
 
 
-  ////////////////////////////////////////////////////////////////
-  // Fig accessors
+    ////////////////////////////////////////////////////////////////
+    // Fig accessors
 
-  public void setLineColor(Color col) {
-    _figPoly.setLineColor(col);
-    _name.setLineColor(col);
-  }
-  public Color getLineColor() { return _figPoly.getLineColor(); }
+    public void setLineColor(Color col) {
+	_figPoly.setLineColor(col);
+	_name.setLineColor(col);
+    }
+    public Color getLineColor() { return _figPoly.getLineColor(); }
 
-  public void setFillColor(Color col) {
-    _figPoly.setFillColor(col);
-    _name.setFillColor(col);
-  }
-  public Color getFillColor() { return _figPoly.getFillColor(); }
+    public void setFillColor(Color col) {
+	_figPoly.setFillColor(col);
+	_name.setFillColor(col);
+    }
+    public Color getFillColor() { return _figPoly.getFillColor(); }
 
-  public void setFilled(boolean f) {  }
-  public boolean getFilled() { return true; }
+    public void setFilled(boolean f) {  }
+    public boolean getFilled() { return true; }
 
-  public void setLineWidth(int w) { _figPoly.setLineWidth(w); }
-  public int getLineWidth() { return _figPoly.getLineWidth(); }
+    public void setLineWidth(int w) { _figPoly.setLineWidth(w); }
+    public int getLineWidth() { return _figPoly.getLineWidth(); }
 
-  public void setArrow(int direction) {
-    Rectangle bbox = getBounds();
+    public void setArrow(int direction) {
+	Rectangle bbox = getBounds();
     
-    _arrowDirection = direction;
-    switch (direction) {
-      // south
-      case 1: {
-        int[] xpoints = {75,75,77,75,73,75};
-        int[] ypoints = {15,24,24,33,24,24};
-        Polygon polygon = new Polygon(xpoints, ypoints, 6);
-        _figPoly.setPolygon(polygon);
-        break;
-      }
-      // east
-      case 2: {
-        int[] xpoints = {66,75,75,84,75,75};
-        int[] ypoints = {24,24,26,24,22,24};
-        Polygon polygon = new Polygon(xpoints, ypoints, 6);
-        _figPoly.setPolygon(polygon);
-        break;
-      }
-      // west
-      case 3: {
-        int[] xpoints = {84,75,75,66,75,75};
-        int[] ypoints = {24,24,26,24,22,24};
-        Polygon polygon = new Polygon(xpoints, ypoints, 6);
-        _figPoly.setPolygon(polygon);
-        break;
-      }
-      // north
-      default: {
-        int[] xpoints = {75,75,77,75,73,75};
-        int[] ypoints = {33,24,24,15,24,24};
-        Polygon polygon = new Polygon(xpoints, ypoints, 6);
-        _figPoly.setPolygon(polygon);
-      }
+	_arrowDirection = direction;
+	switch (direction) {
+	    // south
+	case 1: {
+	    int[] xpoints = {75, 75, 77, 75, 73, 75};
+	    int[] ypoints = {15, 24, 24, 33, 24, 24};
+	    Polygon polygon = new Polygon(xpoints, ypoints, 6);
+	    _figPoly.setPolygon(polygon);
+	    break;
+	}
+	    // east
+	case 2: {
+	    int[] xpoints = {66, 75, 75, 84, 75, 75};
+	    int[] ypoints = {24, 24, 26, 24, 22, 24};
+	    Polygon polygon = new Polygon(xpoints, ypoints, 6);
+	    _figPoly.setPolygon(polygon);
+	    break;
+	}
+	    // west
+	case 3: {
+	    int[] xpoints = {84, 75, 75, 66, 75, 75};
+	    int[] ypoints = {24, 24, 26, 24, 22, 24};
+	    Polygon polygon = new Polygon(xpoints, ypoints, 6);
+	    _figPoly.setPolygon(polygon);
+	    break;
+	}
+	    // north
+	default: {
+	    int[] xpoints = {75, 75, 77, 75, 73, 75};
+	    int[] ypoints = {33, 24, 24, 15, 24, 24};
+	    Polygon polygon = new Polygon(xpoints, ypoints, 6);
+	    _figPoly.setPolygon(polygon);
+	}
+	}
+	setBounds(bbox);
     }
-    setBounds(bbox);
-  }
-  public int getArrow() { return _arrowDirection; }
+    public int getArrow() { return _arrowDirection; }
 
-  public Dimension getMinimumSize() {
-    Dimension nameMin = _name.getMinimumSize();
-    Dimension figPolyMin = _figPoly.getSize();
+    public Dimension getMinimumSize() {
+	Dimension nameMin = _name.getMinimumSize();
+	Dimension figPolyMin = _figPoly.getSize();
 
-    int h = Math.max(figPolyMin.height, nameMin.height);
-    int w = figPolyMin.width + nameMin.width;
-    return new Dimension(w, h);
-  }
-
-  /* Override setBounds to keep shapes looking right */
-  public void setBounds(int x, int y, int w, int h) {
-    if (_name == null) return;
-
-    Rectangle oldBounds = getBounds();
-
-    Dimension nameMin = _name.getMinimumSize();
-
-    int ht = 0;
-
-    if (nameMin.height > _figPoly.getHeight()) 
-      ht = (nameMin.height - _figPoly.getHeight()) / 2;
-
-    _name.setBounds(x, y, w-_figPoly.getWidth(), nameMin.height);
-    _figPoly.setBounds(x + _name.getWidth(), y + ht,
-		       _figPoly.getWidth(), _figPoly.getHeight());
-
-    firePropChange("bounds", oldBounds, getBounds());
-    calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-    updateEdges();
-  }
-
-  protected void textEdited(FigText ft) throws PropertyVetoException {
-    MMessage mes = (MMessage) getOwner();
-    if (mes != null && ft == _name) {
-       String s = ft.getText();
-       try {
-	  ParserDisplay.SINGLETON.parseMessage(mes, s);
-	  ProjectBrowser.getInstance().getStatusBar().showStatus("");
-       } catch (ParseException pe) {
-	  ProjectBrowser.getInstance().getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
-       }
+	int h = Math.max(figPolyMin.height, nameMin.height);
+	int w = figPolyMin.width + nameMin.width;
+	return new Dimension(w, h);
     }
-    else
-	super.textEdited(ft);
-  }
 
-/**
- * Determines the direction of the message arrow. Deetermination of the 
- * type of arrow happens in modelchanged
- */
-  protected void updateArrow() {
+    /* Override setBounds to keep shapes looking right */
+    public void setBounds(int x, int y, int w, int h) {
+	if (_name == null) return;
+
+	Rectangle oldBounds = getBounds();
+
+	Dimension nameMin = _name.getMinimumSize();
+
+	int ht = 0;
+
+	if (nameMin.height > _figPoly.getHeight()) 
+	    ht = (nameMin.height - _figPoly.getHeight()) / 2;
+
+	_name.setBounds(x, y, w - _figPoly.getWidth(), nameMin.height);
+	_figPoly.setBounds(x + _name.getWidth(), y + ht,
+			   _figPoly.getWidth(), _figPoly.getHeight());
+
+	firePropChange("bounds", oldBounds, getBounds());
+	calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+	updateEdges();
+    }
+
+    protected void textEdited(FigText ft) throws PropertyVetoException {
+	MMessage mes = (MMessage) getOwner();
+	if (mes != null && ft == _name) {
+	    String s = ft.getText();
+	    try {
+		ParserDisplay.SINGLETON.parseMessage(mes, s);
+		ProjectBrowser.getInstance().getStatusBar().showStatus("");
+	    } catch (ParseException pe) {
+		ProjectBrowser.getInstance().getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+	    }
+	}
+	else
+	    super.textEdited(ft);
+    }
+
+    /**
+     * Determines the direction of the message arrow. Deetermination of the 
+     * type of arrow happens in modelchanged
+     */
+    protected void updateArrow() {
   	MMessage mes = (MMessage) getOwner();
-    if (mes == null || getLayer() == null) return;
-    MClassifierRole sender = mes.getSender();
-    MClassifierRole receiver = mes.getReceiver();
-    Fig senderPort = getLayer().presentationFor(sender);
-    Fig receiverPort = getLayer().presentationFor(receiver);
-    if (senderPort == null || receiverPort == null) return;
-    int sx = senderPort.getX();
-    int sy = senderPort.getY();
-    int rx = receiverPort.getX();
-    int ry = receiverPort.getY();
-    if (sx < rx && Math.abs(sy-ry) <= Math.abs(sx-rx)) { // east
-    	setArrow(2);
-    } else 
-    if (sx > rx && Math.abs(sy-ry) <= Math.abs(sx-rx)) { // west
-    	setArrow(3);
-    } else 
-    if (sy < ry) { // south
-    	setArrow(1);
-    } else
-    	setArrow(4);
-  }
-
-  /** add the FigMessage to the Path Items of its FigAssociationRole */
-  public void addPathItemToFigAssociationRole(Layer lay) {
-
-    MAssociationRole ar = ((MMessage) getOwner()).getCommunicationConnection();
-    if (ar != null && lay != null) {
-      FigAssociationRole figAssocRole = (FigAssociationRole) lay.presentationFor(ar);
-      if (figAssocRole != null) {
-      	figAssocRole.addMessage(this);
-        figAssocRole.updatePathItemLocations();
-        lay.bringToFront(this);
-      }
+	if (mes == null || getLayer() == null) return;
+	MClassifierRole sender = mes.getSender();
+	MClassifierRole receiver = mes.getReceiver();
+	Fig senderPort = getLayer().presentationFor(sender);
+	Fig receiverPort = getLayer().presentationFor(receiver);
+	if (senderPort == null || receiverPort == null) return;
+	int sx = senderPort.getX();
+	int sy = senderPort.getY();
+	int rx = receiverPort.getX();
+	int ry = receiverPort.getY();
+	if (sx < rx && Math.abs(sy - ry) <= Math.abs(sx - rx)) { // east
+	    setArrow(2);
+	} else 
+	    if (sx > rx && Math.abs(sy - ry) <= Math.abs(sx - rx)) { // west
+		setArrow(3);
+	    } else 
+		if (sy < ry) { // south
+		    setArrow(1);
+		} else
+		    setArrow(4);
     }
-  }
+
+    /** add the FigMessage to the Path Items of its FigAssociationRole */
+    public void addPathItemToFigAssociationRole(Layer lay) {
+
+	MAssociationRole ar = ((MMessage) getOwner()).getCommunicationConnection();
+	if (ar != null && lay != null) {
+	    FigAssociationRole figAssocRole = (FigAssociationRole) lay.presentationFor(ar);
+	    if (figAssocRole != null) {
+		figAssocRole.addMessage(this);
+		figAssocRole.updatePathItemLocations();
+		lay.bringToFront(this);
+	    }
+	}
+    }
 
  
 	
 
 	
 
-	/**
-	 * @see org.tigris.gef.presentation.Fig#paint(Graphics)
-	 */
-	public void paint(Graphics g) {
-		updateArrow();
-		super.paint(g);
-	}
+    /**
+     * @see org.tigris.gef.presentation.Fig#paint(Graphics)
+     */
+    public void paint(Graphics g) {
+	updateArrow();
+	super.paint(g);
+    }
 
     
 

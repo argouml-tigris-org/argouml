@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -103,8 +104,8 @@ public class StateMachinesHelper {
     public MStateMachine getStateMachine(Object oStateVertex) {
         if (oStateVertex instanceof MStateVertex) {
             MStateVertex state = (MStateVertex) oStateVertex;
-            if (state instanceof MState && ((MState)state).getStateMachine() != null) {
-                return ((MState)state).getStateMachine();
+            if (state instanceof MState && ((MState) state).getStateMachine() != null) {
+                return ((MState) state).getStateMachine();
             } else
                 return getStateMachine(state.getContainer());
         }
@@ -169,7 +170,7 @@ public class StateMachinesHelper {
      */
     public void setStatemachineAsSubmachine(Object oSubmachineState, Object oStatemachine) {
         if (oSubmachineState instanceof MSubmachineState && oStatemachine instanceof MStateMachine) {
-            ((MSubmachineState)oSubmachineState).setSubmachine((MStateMachine)oStatemachine);
+            ((MSubmachineState) oSubmachineState).setSubmachine((MStateMachine) oStatemachine);
         }
     }
     
@@ -187,11 +188,11 @@ public class StateMachinesHelper {
      */
     public Collection getOutgoingStates(Object ostatevertex) {
         if (ModelFacade.isAStateVertex(ostatevertex)) {
-            MStateVertex statevertex = (MStateVertex)ostatevertex;
+            MStateVertex statevertex = (MStateVertex) ostatevertex;
             Collection col = new ArrayList();
             Iterator it = statevertex.getOutgoings().iterator();
             while (it.hasNext()) {
-                col.add(((MTransition)it.next()).getTarget());           
+                col.add(((MTransition) it.next()).getTarget());           
             }
             return col;
         }

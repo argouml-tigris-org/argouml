@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -39,44 +40,44 @@ import org.argouml.uml.*;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 
 public class TableModelCompInstanceByProps extends TableModelComposite {
-  ////////////////
-  // constructor
-  public TableModelCompInstanceByProps() { }
+    ////////////////
+    // constructor
+    public TableModelCompInstanceByProps() { }
 
-  public void initColumns() {
-    addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.BaseForComponentInstance); 
-    addColumn(ColumnDescriptor.CompNodeInstance);
+    public void initColumns() {
+	addColumn(ColumnDescriptor.Name);
+	addColumn(ColumnDescriptor.BaseForComponentInstance); 
+	addColumn(ColumnDescriptor.CompNodeInstance);
 	//nsuml problem realization    addColumn(ColumnDescriptor.Implements);
-    addColumn(ColumnDescriptor.MStereotype);
-  }
-
-  public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof UMLDeploymentDiagram || t instanceof MNodeInstance)) return new Vector();
-    if (t instanceof UMLDeploymentDiagram) {
-      UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
-      Vector nodes = d.getNodes();
-      Vector res = new Vector();
-      int size = nodes.size();
-      for (int i = 0; i < size; i++) {
-        Object node = nodes.elementAt(i);
-        if (node instanceof MComponentInstance) res.addElement(node);
-      }
-      return res;
+	addColumn(ColumnDescriptor.MStereotype);
     }
-    else {
-      MNodeInstance n = (MNodeInstance) t;
-      Vector res = new Vector();
-      Collection residences = n.getResidents();
-      Iterator it = residences.iterator();
-      while (it.hasNext()) {
-        MInstance inst = (MInstance) it.next();
-        if (inst instanceof MComponentInstance) res.addElement(inst);
-      }
-      return res;
-    }
-  }
 
-  public String toString() { return "ComponentInstances vs. Properties"; }
+    public Vector rowObjectsFor(Object t) {
+	if (!(t instanceof UMLDeploymentDiagram || t instanceof MNodeInstance)) return new Vector();
+	if (t instanceof UMLDeploymentDiagram) {
+	    UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
+	    Vector nodes = d.getNodes();
+	    Vector res = new Vector();
+	    int size = nodes.size();
+	    for (int i = 0; i < size; i++) {
+		Object node = nodes.elementAt(i);
+		if (node instanceof MComponentInstance) res.addElement(node);
+	    }
+	    return res;
+	}
+	else {
+	    MNodeInstance n = (MNodeInstance) t;
+	    Vector res = new Vector();
+	    Collection residences = n.getResidents();
+	    Iterator it = residences.iterator();
+	    while (it.hasNext()) {
+		MInstance inst = (MInstance) it.next();
+		if (inst instanceof MComponentInstance) res.addElement(inst);
+	    }
+	    return res;
+	}
+    }
+
+    public String toString() { return "ComponentInstances vs. Properties"; }
 } /* end class TableModelCompInstanceByProps */
 

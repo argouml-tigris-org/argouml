@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,7 +44,7 @@ import java.awt.*;
  *   @author Curt Arnold
  */
 public class UMLTreeMenuItem extends JMenuItem implements ActionListener {
-            protected static Category cat = Category.getInstance(UMLTreeMenuItem.class);
+    protected static Category cat = Category.getInstance(UMLTreeMenuItem.class);
 
     private Object _actionObj;
     private MModelElement _element;
@@ -58,8 +59,8 @@ public class UMLTreeMenuItem extends JMenuItem implements ActionListener {
      *   @param index integer value passed to method, typically position in list.
      */
     public UMLTreeMenuItem(String caption, Object actionObj,
-        String action,
-        boolean requiresElement) {
+			   String action,
+			   boolean requiresElement) {
         super(caption);
         _actionObj = actionObj;
         _requiresElement = requiresElement;
@@ -70,9 +71,11 @@ public class UMLTreeMenuItem extends JMenuItem implements ActionListener {
         //     this will identify bad "actions" more readily
         try {
             _action = _actionObj.getClass().
-                    getMethod(action,new Class[] { MModelElement.class });
+		getMethod(action, new Class[] {
+		    MModelElement.class 
+		});
         }
-        catch(Exception e) {
+        catch (Exception e) {
             cat.error("Exception in " + _action + " popup.", e);
             setEnabled(false);
         }
@@ -86,17 +89,19 @@ public class UMLTreeMenuItem extends JMenuItem implements ActionListener {
      */
     public void actionPerformed(final java.awt.event.ActionEvent event) {
         try {
-             Object[] argValue = { _element };
-            _action.invoke(_actionObj,argValue);
+	    Object[] argValue = {
+		_element 
+	    };
+            _action.invoke(_actionObj, argValue);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             cat.error(e.toString() + " in UMLListMenuItem.actionPerformed()", e);
         }
     }
     
     public void setModelElement(MModelElement element) {
         _element = element;
-        if(_element == null && _requiresElement) {
+        if (_element == null && _requiresElement) {
             setEnabled(false);
         }
     }

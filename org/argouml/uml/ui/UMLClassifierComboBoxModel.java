@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -72,9 +73,9 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
      *    @param elementType base type for all elements
      */
     public UMLClassifierComboBoxModel(UMLUserInterfaceContainer container,
-        String filter,String property,String getMethod,
-        String setMethod,boolean allowVoid,Class elementType,
-        boolean addElementsFromProfileModel) {
+				      String filter, String property, String getMethod,
+				      String setMethod, boolean allowVoid, Class elementType,
+				      boolean addElementsFromProfileModel) {
 	
 	super (container, filter, property, getMethod, setMethod, allowVoid, elementType,
 	       addElementsFromProfileModel);
@@ -86,17 +87,17 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
     private void makeSelection(MModel model, MClassifier selClass) {
 	getSet().clear();
 	Profile profile = getContainer().getProfile();
-	if(allowVoid()) {
-	    getSet().add(new UMLComboBoxEntry(null,profile,false));
+	if (allowVoid()) {
+	    getSet().add(new UMLComboBoxEntry(null, profile, false));
 	}
-	if(model != null) {
-	    collectElements(model,profile,false);
+	if (model != null) {
+	    collectElements(model, profile, false);
 	}
                  
-	if(addElementsFromProfileModel()) {
+	if (addElementsFromProfileModel()) {
 	    MModel profileModel = profile.getProfileModel();
-	    if(profileModel != null) {
-		collectElements(profileModel,profile,true);
+	    if (profileModel != null) {
+		collectElements(profileModel, profile, true);
 	    }
 	}
 		       
@@ -104,58 +105,58 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 	//   scan for name collisions
 	//
 
-	    Iterator iter = getSet().iterator();
-	    String before = null;
-	    UMLComboBoxEntry currentEntry = null;
-	    String currentStr = null;
-	    UMLComboBoxEntry afterEntry = null;
-	    String after = null;
+	Iterator iter = getSet().iterator();
+	String before = null;
+	UMLComboBoxEntry currentEntry = null;
+	String currentStr = null;
+	UMLComboBoxEntry afterEntry = null;
+	String after = null;
 	    
-	    while(iter.hasNext()) {
-		before = currentStr;
-		currentEntry = afterEntry;
-		currentStr = after;
-		afterEntry = (UMLComboBoxEntry) iter.next();
-		after = afterEntry.getShortName();
-		if(currentEntry != null) currentEntry.checkCollision(before,after);
-	    }
+	while (iter.hasNext()) {
+	    before = currentStr;
+	    currentEntry = afterEntry;
+	    currentStr = after;
+	    afterEntry = (UMLComboBoxEntry) iter.next();
+	    after = afterEntry.getShortName();
+	    if (currentEntry != null) currentEntry.checkCollision(before, after);
+	}
 	    
-	    if(afterEntry != null) afterEntry.checkCollision(currentStr,null);		   
+	if (afterEntry != null) afterEntry.checkCollision(currentStr, null);		   
 	    
-	   	// fireContentsChanged(this,0,getSet().size());	  
+	// fireContentsChanged(this,0,getSet().size());	  
 
 	//
 	//   get current value
 	//                          
 	Iterator it = getSet().iterator();
 	UMLComboBoxEntry entry;
-	while(it.hasNext()) {
+	while (it.hasNext()) {
 	    entry = (UMLComboBoxEntry) it.next();
-	    if(!entry.isPhantom() && entry.getElement(model) == selClass) {
+	    if (!entry.isPhantom() && entry.getElement(model) == selClass) {
 		MModelElement elem = entry.getElement(model);
 		String name = null;
-		if (elem !=  null ) name=elem.getName();
+		if (elem !=  null ) name = elem.getName();
 		cat.debug("setSelectedItem");
 		setSelectedItem( entry);
 			    
 	    }
 	}
-	 fireContentsChanged(this,0,getSet().size());	
+	fireContentsChanged(this, 0, getSet().size());	
     }
 
 
 
    
     public void roleAdded(final MElementEvent event) {
-	Iterator it=null;
+	Iterator it = null;
         String eventName = event.getName();
-        if(eventName != null && eventName.equals("classifier")) {
-	    MModel model = ((MModelElement)event.getSource()).getModel();
+        if (eventName != null && eventName.equals("classifier")) {
+	    MModel model = ((MModelElement) event.getSource()).getModel();
 	    if (event.getSource() instanceof MInstance ) {
 		
-		MInstance instance = (MInstance)event.getSource();	    	    
+		MInstance instance = (MInstance) event.getSource();	    	    
 		Collection col = instance.getClassifiers();	
-		if (col != null && col.size()>0) {
+		if (col != null && col.size() > 0) {
 		    it  = col.iterator();		  
 		    MClassifier cls = (MClassifier) it.next();
 
@@ -171,21 +172,21 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 
     public void targetChanged() {
         Object target = getContainer().getTarget();	
-        if(target instanceof MModelElement) {
+        if (target instanceof MModelElement) {
 
             MModelElement element = (MModelElement) target;	 	   
             MModel model = element.getModel();
 	    try {		
                 Object[] _noArgs = {};
-                Object current = getGetMethod().invoke(getContainer(),_noArgs);
+                Object current = getGetMethod().invoke(getContainer(), _noArgs);
 		makeSelection( model , (MClassifier) current);
 		
 	    }
-	    catch(InvocationTargetException ex){
-                cat.error(ex.getTargetException()+" is IncovationTargetException in UMLClassifierComboBoxModel", ex);
+	    catch (InvocationTargetException ex) {
+                cat.error(ex.getTargetException() + " is IncovationTargetException in UMLClassifierComboBoxModel", ex);
 		setSelectedItem(null);
 	    }
-            catch(Exception e) {
+            catch (Exception e) {
                 cat.error("Exception in targetchanged", e);
                 setSelectedItem(null);
             }
@@ -195,11 +196,11 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 
   
 
-	/**
-	 * @see ru.novosoft.uml.MElementListener#propertySet(MElementEvent)
-	 */
-	public void propertySet(MElementEvent e) {
-		super.propertySet(e);
-	}
+    /**
+     * @see ru.novosoft.uml.MElementListener#propertySet(MElementEvent)
+     */
+    public void propertySet(MElementEvent e) {
+	super.propertySet(e);
+    }
 
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -68,7 +69,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     // actions for toolbar
 
     protected static Action _actionState =
-        new CmdCreateNode((Class)ModelFacade.ACTION_STATE, "ActionState");
+        new CmdCreateNode((Class) ModelFacade.ACTION_STATE, "ActionState");
 
     // start state, end state, forks, joins, etc.
     protected static Action _actionStartPseudoState =
@@ -88,10 +89,10 @@ public class UMLActivityDiagram extends UMLDiagram {
 
     protected static Action _actionTransition =
         new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            MTransition.class,
-            "Transition");
+		       ModeCreatePolyEdge.class,
+		       "edgeClass",
+		       MTransition.class,
+		       "Transition");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -142,10 +143,10 @@ public class UMLActivityDiagram extends UMLDiagram {
     public void initialize(Object o) {
         if (!(o instanceof MActivityGraph))
             return;
-        MActivityGraph sm = (MActivityGraph)o;
+        MActivityGraph sm = (MActivityGraph) o;
         MModelElement context = sm.getContext();
         if (context != null && context instanceof MNamespace)
-            setup((MNamespace)context, sm);
+            setup((MNamespace) context, sm);
         else
             cat.debug("ActivityGraph without context not yet possible :-(");
     }
@@ -179,7 +180,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     }
 
     public MModelElement getOwner() {
-        StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
+        StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
         MStateMachine sm = gm.getMachine();
         if (sm != null)
             return sm;
@@ -187,44 +188,42 @@ public class UMLActivityDiagram extends UMLDiagram {
     }
 
     public MStateMachine getStateMachine() {
-        return ((StateDiagramGraphModel)getGraphModel()).getMachine();
+        return ((StateDiagramGraphModel) getGraphModel()).getMachine();
     }
 
     public void setStateMachine(MStateMachine sm) {
-        ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
+        ((StateDiagramGraphModel) getGraphModel()).setMachine(sm);
     }
 
     /**
      * Get the actions from which to create a toolbar or equivilent graphic triggers
      */
     protected Object[] getUmlActions() {
-        Object actions[] =
-            {
-                _actionState,
-                _actionTransition,
-                null,
-                _actionStartPseudoState,
-                _actionFinalPseudoState,
-                _actionBranchPseudoState,
-                _actionForkPseudoState,
-                _actionJoinPseudoState,
-                null,
-                ActionAddNote.SINGLETON };
+        Object actions[] = {
+	    _actionState,
+	    _actionTransition,
+	    null,
+	    _actionStartPseudoState,
+	    _actionFinalPseudoState,
+	    _actionBranchPseudoState,
+	    _actionForkPseudoState,
+	    _actionJoinPseudoState,
+	    null,
+	    ActionAddNote.SINGLETON 
+	};
         return actions;
     }
 
     /**
-      * Creates a new diagramname.
-      * @return String
-      */
+     * Creates a new diagramname.
+     * @return String
+     */
     protected static String getNewDiagramName() {
         String name = null;
         name = "Activity Diagram " + _ActivityDiagramSerial;
         _ActivityDiagramSerial++;
-        if (!ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .isValidDiagramName(name)) {
+        if (!ProjectManager.getManager().getCurrentProject()
+                .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;

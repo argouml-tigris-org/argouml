@@ -84,7 +84,7 @@ public abstract class UMLModelElementListModel2
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
-    public void listRoleItemSet(MElementEvent e) {}
+    public void listRoleItemSet(MElementEvent e) { }
 
     /**
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
@@ -104,12 +104,12 @@ public abstract class UMLModelElementListModel2
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
-    public void recovered(MElementEvent e) {}
+    public void recovered(MElementEvent e) { }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
-    public void removed(MElementEvent e) {}
+    public void removed(MElementEvent e) { }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
@@ -118,7 +118,7 @@ public abstract class UMLModelElementListModel2
         if (isValidEvent(e)) {
             Object o = getChangedElement(e);
             if (o instanceof Collection) {
-                Iterator it = ((Collection)o).iterator();
+                Iterator it = ((Collection) o).iterator();
                 while (it.hasNext()) {
                     Object o2 = it.next();
                     addElement(it.next());
@@ -137,7 +137,7 @@ public abstract class UMLModelElementListModel2
         if (!(getChangedElement(e) instanceof Collection)) {
             valid = contains(getChangedElement(e));
         } else {
-            Collection col = (Collection)getChangedElement(e);
+            Collection col = (Collection) getChangedElement(e);
             Iterator it = col.iterator();
             valid = true;
             while (it.hasNext()) {
@@ -151,7 +151,7 @@ public abstract class UMLModelElementListModel2
         if (valid) {
             Object o = getChangedElement(e);
             if (o instanceof Collection) {
-                Iterator it = ((Collection)o).iterator();
+                Iterator it = ((Collection) o).iterator();
                 while (it.hasNext()) {
                     removeElement(it.next());
                 }
@@ -225,7 +225,7 @@ public abstract class UMLModelElementListModel2
         if (super.contains(elem))
             return true;
         if (elem instanceof Collection) {
-            Iterator it = ((Collection)elem).iterator();
+            Iterator it = ((Collection) elem).iterator();
             while (it.hasNext()) {
                 if (!super.contains(it.next())) {
                     return false;
@@ -244,22 +244,22 @@ public abstract class UMLModelElementListModel2
      * @param target
      */
     public void setTarget(Object target) {
-        target = target instanceof Fig ? ((Fig)target).getOwner() : target;
+        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
             if (_target instanceof MBase) {
                 UmlModelEventPump.getPump().removeModelEventListener(
-                    this,
-                    (MBase)_target,
-                    _eventName);
+								     this,
+								     (MBase) _target,
+								     _eventName);
             }
 
             if (target instanceof MBase) {
                 _target = target;
                 // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _eventName);
                 UmlModelEventPump.getPump().addModelEventListener(
-                    this,
-                    (MBase)_target,
-                    _eventName);
+								  this,
+								  (MBase) _target,
+								  _eventName);
 
                 removeAllElements();
                 _buildingModel = true;
@@ -295,25 +295,25 @@ public abstract class UMLModelElementListModel2
     protected boolean isValidEvent(MElementEvent e) {
         boolean valid = false;
         if (!(getChangedElement(e) instanceof Collection)) {
-            valid = isValidElement((MBase)getChangedElement(e));
+            valid = isValidElement((MBase) getChangedElement(e));
             if (!valid && e.getNewValue() == null && e.getOldValue() != null) {
                 valid = true; // we tried to remove a value
             }
         } else {
-            Collection col = (Collection)getChangedElement(e);
+            Collection col = (Collection) getChangedElement(e);
             Iterator it = col.iterator();
             if (!col.isEmpty()) {
                 valid = true;
                 while (it.hasNext()) {
                     Object o = it.next();
-                    if (!isValidElement((MBase)o)) {
+                    if (!isValidElement((MBase) o)) {
                         valid = false;
                         break;
                     }
                 }
             } else {
                 if (e.getOldValue() instanceof Collection
-                    && !((Collection)e.getOldValue()).isEmpty()) {
+                    && !((Collection) e.getOldValue()).isEmpty()) {
                     valid = true;
                 }
             }
@@ -353,7 +353,7 @@ public abstract class UMLModelElementListModel2
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
-    public void targetAdded(TargetEvent e) {}
+    public void targetAdded(TargetEvent e) { }
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -75,7 +76,7 @@ public class ClassDiagramRenderer
         else if (node instanceof MSubsystem) return new FigSubsystem(gm, node);
         else if (node instanceof MPackage) return new FigPackage(gm, node);
         else if (node instanceof MModel) return new FigPackage(gm, node);
-        cat.debug("TODO ClassDiagramRenderer getFigNodeFor "+node);
+        cat.debug("TODO ClassDiagramRenderer getFigNodeFor " + node);
         return null;
     }
 
@@ -122,14 +123,14 @@ public class ClassDiagramRenderer
             return usageFig;
         }
         if (edge instanceof MDependency) {
-            cat.debug("get fig for "+edge);
+            cat.debug("get fig for " + edge);
             MDependency dep = (MDependency) edge;
-            cat.debug("stereo "+dep.getStereotype());
+            cat.debug("stereo " + dep.getStereotype());
             if (dep.getStereotype() != null && dep.getStereotype().getName().equals("realize")) {
                 FigRealization realFig = new FigRealization(dep);
 		  
-                MModelElement supplier = (MModelElement)((dep.getSuppliers().toArray())[0]);
-                MModelElement client = (MModelElement)((dep.getClients().toArray())[0]);
+                MModelElement supplier = (MModelElement) ((dep.getSuppliers().toArray())[0]);
+                MModelElement client = (MModelElement) ((dep.getClients().toArray())[0]);
 		  
                 FigNode supFN = (FigNode) lay.presentationFor(supplier);
                 FigNode cliFN = (FigNode) lay.presentationFor(client);

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -68,8 +69,8 @@ public class SourcePathDialog extends JDialog implements ActionListener {
 
     public SourcePathDialog() {
         super(
-            ProjectBrowser.getInstance(),
-            Argo.localize("CoreMenu", "action.generate-code-for-project"));
+	      ProjectBrowser.getInstance(),
+	      Argo.localize("CoreMenu", "action.generate-code-for-project"));
 
         GridBagConstraints gridBagConstraints;
 
@@ -121,8 +122,8 @@ public class SourcePathDialog extends JDialog implements ActionListener {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Rectangle pbBox = pb.getBounds();
         setLocation(
-            pbBox.x + (pbBox.width - this.getWidth()) / 2,
-            pbBox.y + (pbBox.height - this.getHeight()) / 2);
+		    pbBox.x + (pbBox.width - this.getWidth()) / 2,
+		    pbBox.y + (pbBox.height - this.getHeight()) / 2);
 
         getRootPane().setDefaultButton(_okButton);
         _okButton.addActionListener(this);
@@ -151,7 +152,7 @@ public class SourcePathDialog extends JDialog implements ActionListener {
     public void buttonOkActionPerformed() {
         for (int i = 0; i < _srcPathTableModel.getRowCount(); i++) {
             Object elem = _srcPathTableModel.getValueAt(i, 0);
-            String path = (String)_srcPathTableModel.getValueAt(i, 3);
+            String path = (String) _srcPathTableModel.getValueAt(i, 3);
             if (elem != null
                 && path != null
                 && !path.equals(ModelFacade.getTaggedValue(elem, "src_path"))) {
@@ -171,11 +172,13 @@ class SrcPathTableModel extends DefaultTableModel {
     /** Creates a new instance of SrcPathTableModel */
     public SrcPathTableModel() {
         super(new Object[][] {
-        }, new String[] { "", "Name", "Type", "Source path" });       
+        }, new String[] {
+	    "", "Name", "Type", "Source path" 
+	});
         Project p = ProjectManager.getManager().getCurrentProject();
         Collection elems =
             ModelManagementHelper.getHelper().getAllModelElementsOfKind(
-                (Class)ModelFacade.MODELELEMENT);
+                (Class) ModelFacade.MODELELEMENT);
         elems.add(p.getRoot());
         Iterator iter = elems.iterator();
         while (iter.hasNext()) {
@@ -200,7 +203,9 @@ class SrcPathTableModel extends DefaultTableModel {
                 } else if (ModelFacade.isAInterface(me)) {
                     type = "Interface";
                 }
-                addRow(new Object[] { me, name, type, path });
+                addRow(new Object[] {
+		    me, name, type, path 
+		});
             }
         }
     }

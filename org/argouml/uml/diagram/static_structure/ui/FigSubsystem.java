@@ -1,4 +1,5 @@
-// Copyright (c) 1996-03 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -76,8 +77,12 @@ public class FigSubsystem extends FigPackage {
     public FigSubsystem() {
         super();
         _figPoly = new FigPoly(Color.black, Color.black);
-        int[] xpoints = { 125, 125, 130, 130, 130, 135, 135 };
-        int[] ypoints = {  45,  40,  40,  35,  40,  40,  45 };
+        int[] xpoints = {
+	    125, 125, 130, 130, 130, 135, 135 
+	};
+        int[] ypoints = {
+	    45,  40,  40,  35,  40,  40,  45 
+	};
         Polygon polygon = new Polygon(xpoints, ypoints, 7);
         _figPoly.setPolygon(polygon);
         _figPoly.setFilled(false);

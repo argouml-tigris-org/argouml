@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -66,80 +67,80 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
  *             that used reflection a lot.
  */
 
-public class UMLSpecializationListModel extends UMLBinaryRelationListModel  {
+public class UMLSpecializationListModel extends UMLBinaryRelationListModel {
 
-	/**
-	 * Constructor for UMLSpecializationListModel.
-	 * @param container
-	 * @param property
-	 * @param showNone
-	 */
-	public UMLSpecializationListModel(
-		UMLUserInterfaceContainer container,
-		String property,
-		boolean showNone) {
-		super(container, property, showNone);
-	}
+    /**
+     * Constructor for UMLSpecializationListModel.
+     * @param container
+     * @param property
+     * @param showNone
+     */
+    public UMLSpecializationListModel(
+				      UMLUserInterfaceContainer container,
+				      String property,
+				      boolean showNone) {
+	super(container, property, showNone);
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
-	 */
-	protected void build(MModelElement from, MModelElement to) {
-		CoreFactory.getFactory().buildGeneralization((MGeneralizableElement)to, (MGeneralizableElement)from);
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
+     */
+    protected void build(MModelElement from, MModelElement to) {
+	CoreFactory.getFactory().buildGeneralization((MGeneralizableElement) to, (MGeneralizableElement) from);
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
-	 */
-	protected void connect(
-		MutableGraphModel gm,
-		MModelElement from,
-		MModelElement to) {
-			gm.connect(to, from, MGeneralization.class);
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
+     */
+    protected void connect(
+			   MutableGraphModel gm,
+			   MModelElement from,
+			   MModelElement to) {
+	gm.connect(to, from, MGeneralization.class);
+    }
 	
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
-	 */
-	protected String getAddDialogTitle() {
-		return Argo.localize("UMLMenu", "dialog.title.add-specializations");
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
+     */
+    protected String getAddDialogTitle() {
+	return Argo.localize("UMLMenu", "dialog.title.add-specializations");
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
-	 */
-	protected Collection getChoices() {
-		if (getTarget() instanceof MGeneralizableElement) {
-			MGeneralizableElement target = (MGeneralizableElement)getTarget();
-			if (target.isLeaf()) return new ArrayList();
-			Collection genElem = ModelManagementHelper.getHelper().getAllModelElementsOfKind(getTarget().getClass());
-			List list = new ArrayList();
-			Iterator it = genElem.iterator();
-			while (it.hasNext()) {
-				MGeneralizableElement elem = (MGeneralizableElement)it.next();
-				if (elem == target || !elem.isRoot()) {
-					list.add(elem);
-				}
-			}
-			return list;
-		} else 
-			throw new IllegalStateException("In getChoices: target not instanceof MGeneralizableElement");
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
+     */
+    protected Collection getChoices() {
+	if (getTarget() instanceof MGeneralizableElement) {
+	    MGeneralizableElement target = (MGeneralizableElement) getTarget();
+	    if (target.isLeaf()) return new ArrayList();
+	    Collection genElem = ModelManagementHelper.getHelper().getAllModelElementsOfKind(getTarget().getClass());
+	    List list = new ArrayList();
+	    Iterator it = genElem.iterator();
+	    while (it.hasNext()) {
+		MGeneralizableElement elem = (MGeneralizableElement) it.next();
+		if (elem == target || !elem.isRoot()) {
+		    list.add(elem);
+		}
+	    }
+	    return list;
+	} else 
+	    throw new IllegalStateException("In getChoices: target not instanceof MGeneralizableElement");
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
-	 */
-	protected MModelElement getRelation(MModelElement from, MModelElement to) {
-		return CoreHelper.getHelper().getGeneralization((MGeneralizableElement)to, (MGeneralizableElement)from);
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
+     */
+    protected MModelElement getRelation(MModelElement from, MModelElement to) {
+	return CoreHelper.getHelper().getGeneralization((MGeneralizableElement) to, (MGeneralizableElement) from);
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
-	 */
-	protected Collection getSelected() {
-		MGeneralizableElement target = (MGeneralizableElement)getTarget();
-		return CoreHelper.getHelper().getExtendingElements(target);
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
+     */
+    protected Collection getSelected() {
+	MGeneralizableElement target = (MGeneralizableElement) getTarget();
+	return CoreHelper.getHelper().getExtendingElements(target);
+    }
 
 } /* End of class UMLSpecializationListModel */

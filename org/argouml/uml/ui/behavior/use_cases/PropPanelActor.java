@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -73,12 +74,12 @@ public class PropPanelActor extends PropPanelClassifier {
 
 
     	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-    	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+    	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
 
         addField(Argo.localize("UMLMenu", "label.modifiers"),
                  _modifiersPanel);
 
-    	addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceComboBox());
+    	addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
     	addSeperator();
 

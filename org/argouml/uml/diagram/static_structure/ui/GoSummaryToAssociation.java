@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,30 +44,30 @@ import org.argouml.ui.AbstractGoRule;
  */
 public class GoSummaryToAssociation extends AbstractGoRule {
 
-  public String getRuleName() {
-    return Argo.localize ("Tree", "misc.class.attribute");
-  }
+    public String getRuleName() {
+	return Argo.localize ("Tree", "misc.class.attribute");
+    }
 
 
-  public Collection getChildren(Object parent) {
-      if ( parent instanceof AssociationsNode) {
+    public Collection getChildren(Object parent) {
+	if ( parent instanceof AssociationsNode) {
           
-          //List list = new ArrayList();
+	    //List list = new ArrayList();
           
-          return UmlHelper.getHelper().getCore().getAssociations(((AssociationsNode)parent).getParent());
-          //ModelFacade.getAssociationEnds(((AssociationsNode)parent).getParent());
-          /*
-          Iterator it = col.iterator();
+	    return UmlHelper.getHelper().getCore().getAssociations(((AssociationsNode) parent).getParent());
+	    //ModelFacade.getAssociationEnds(((AssociationsNode)parent).getParent());
+	    /*
+	      Iterator it = col.iterator();
           
-          while(it.hasNext()){
+	      while(it.hasNext()){
               
               list.add(it.next());
-          }
-          return list;
-           */
+	      }
+	      return list;
+	    */
            
-      }
-      return null;
-  }
+	}
+	return null;
+    }
 
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -50,8 +51,8 @@ public abstract class ActionSetMultiplicity extends UMLChangeAction {
         super.actionPerformed(e);
         Object source = e.getSource();
         if (source instanceof UMLComboBox2) {
-            Object selected = ((UMLComboBox2)source).getSelectedItem();
-            Object target = ((UMLComboBox2)source).getTarget();
+            Object selected = ((UMLComboBox2) source).getSelectedItem();
+            Object target = ((UMLComboBox2) source).getTarget();
             if (target != null && selected != null)
                 setSelectedItem(selected, target);
         }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -34,25 +35,25 @@ import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 
 public class GoCollaborationDiagram extends AbstractGoRule {
 
-  public String getRuleName() { return "Collaboration->Diagram"; }
+    public String getRuleName() { return "Collaboration->Diagram"; }
 
-  public Collection getChildren(Object parent) {
+    public Collection getChildren(Object parent) {
     
-    if (!(parent instanceof MCollaboration)) return null;
-    Project p = ProjectManager.getManager().getCurrentProject();
-    if (p == null) return null;
+	if (!(parent instanceof MCollaboration)) return null;
+	Project p = ProjectManager.getManager().getCurrentProject();
+	if (p == null) return null;
     
-    Vector res = new Vector();
-    Vector diagrams = p.getDiagrams();
-    if (diagrams == null) return null;
-    java.util.Enumeration enum = diagrams.elements();
-    while (enum.hasMoreElements()) {
-      Object d = enum.nextElement();
-      if (d instanceof UMLCollaborationDiagram &&
-	  ((UMLCollaborationDiagram)d).getNamespace() == parent)
-	res.addElement(d);
+	Vector res = new Vector();
+	Vector diagrams = p.getDiagrams();
+	if (diagrams == null) return null;
+	java.util.Enumeration enum = diagrams.elements();
+	while (enum.hasMoreElements()) {
+	    Object d = enum.nextElement();
+	    if (d instanceof UMLCollaborationDiagram &&
+		((UMLCollaborationDiagram) d).getNamespace() == parent)
+		res.addElement(d);
+	}
+	return res;
     }
-    return res;
-  }
 
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -34,53 +35,54 @@ import org.tigris.gef.ui.IStatusBar;
 
 // JWindow? I don't want a frame or close widgets
 public class SplashScreen extends JWindow
-implements IStatusBar {
+    implements IStatusBar 
+{
 
-  protected StatusBar _statusBar = new StatusBar();
+    protected StatusBar _statusBar = new StatusBar();
 
 
-  public SplashScreen(String title, String iconName) {
-    super();
+    public SplashScreen(String title, String iconName) {
+	super();
 
-    setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    getContentPane().setLayout(new BorderLayout(0, 0));
-    //splashButton.setMargin(new Insets(0, 0, 0, 0));
+	setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+	getContentPane().setLayout(new BorderLayout(0, 0));
+	//splashButton.setMargin(new Insets(0, 0, 0, 0));
 
-    SplashPanel panel = new SplashPanel(iconName);
-    if (panel.getImage() != null) {
-      int imgWidth = panel.getImage().getIconWidth();
-      int imgHeight = panel.getImage().getIconHeight();
-      Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-      setLocation(scrSize.width/2 - imgWidth/2,
-		       scrSize.height/2 - imgHeight/2);
+	SplashPanel panel = new SplashPanel(iconName);
+	if (panel.getImage() != null) {
+	    int imgWidth = panel.getImage().getIconWidth();
+	    int imgHeight = panel.getImage().getIconHeight();
+	    Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
+	    setLocation(scrSize.width / 2 - imgWidth / 2,
+			scrSize.height / 2 - imgHeight / 2);
+	}
+
+	JPanel splash = new JPanel(new BorderLayout());
+	splash.setBorder(new EtchedBorder(EtchedBorder.RAISED));
+	splash.add(panel, BorderLayout.CENTER);
+	splash.add(_statusBar, BorderLayout.SOUTH);
+	getContentPane().add(splash);
+	// add preloading progress bar?
+	Dimension contentPaneSize = getContentPane().getPreferredSize();
+	setSize(contentPaneSize.width, contentPaneSize.height);
+	//setResizable(false);
+	pack();
     }
 
-    JPanel splash = new JPanel(new BorderLayout());
-    splash.setBorder(new EtchedBorder(EtchedBorder.RAISED));
-    splash.add(panel, BorderLayout.CENTER);
-    splash.add(_statusBar, BorderLayout.SOUTH);
-    getContentPane().add(splash);
-    // add preloading progress bar?
-    Dimension contentPaneSize = getContentPane().getPreferredSize();
-    setSize(contentPaneSize.width, contentPaneSize.height);
-    //setResizable(false);
-    pack();
-  }
+
+    public void preload(Vector classnames) {
+	//preload classes?
+    }
 
 
-  public void preload(Vector classnames) {
-    //preload classes?
-  }
-
-
-  public StatusBar getStatusBar() { return _statusBar; }
+    public StatusBar getStatusBar() { return _statusBar; }
   
-  ////////////////////////////////////////////////////////////////
-  // IStatusBar
-  public void showStatus(String s) { _statusBar.showStatus(s); }
+    ////////////////////////////////////////////////////////////////
+    // IStatusBar
+    public void showStatus(String s) { _statusBar.showStatus(s); }
   
-  public void setVisible(boolean b) {
-    super.setVisible(b);
-  }
+    public void setVisible(boolean b) {
+	super.setVisible(b);
+    }
 
 } /* end class SplashScreen */

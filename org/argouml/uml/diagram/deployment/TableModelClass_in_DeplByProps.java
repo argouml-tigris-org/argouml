@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,48 +39,48 @@ import org.argouml.uml.*;
 import org.argouml.uml.diagram.deployment.ui.*;
 
 public class TableModelClass_in_DeplByProps extends TableModelComposite {
-  ////////////////
-  // constructor
-  public TableModelClass_in_DeplByProps() { }
+    ////////////////
+    // constructor
+    public TableModelClass_in_DeplByProps() { }
 
-  public void initColumns() {
-    addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.ImplLocation);
-    addColumn(ColumnDescriptor.ClassVisibility);
-    addColumn(ColumnDescriptor.ClassKeyword);
-    addColumn(ColumnDescriptor.Extends);
+    public void initColumns() {
+	addColumn(ColumnDescriptor.Name);
+	addColumn(ColumnDescriptor.ImplLocation);
+	addColumn(ColumnDescriptor.ClassVisibility);
+	addColumn(ColumnDescriptor.ClassKeyword);
+	addColumn(ColumnDescriptor.Extends);
 	//nsuml problem realization    addColumn(ColumnDescriptor.Implements);
-    addColumn(ColumnDescriptor.MStereotype);
-  }
-
-  public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof UMLDeploymentDiagram || t instanceof MComponent)) return new Vector();
-    if (t instanceof UMLDeploymentDiagram) {
-      UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
-      Vector nodes = d.getNodes();
-      Vector res = new Vector();
-      int size = nodes.size();
-      for (int i = 0; i < size; i++) {
-        Object node = nodes.elementAt(i);
-        if (node instanceof MClass) res.addElement(node);
-      }
-      return res;
+	addColumn(ColumnDescriptor.MStereotype);
     }
-    else {
-      MComponent d = (MComponent) t;
-      Vector res = new Vector();
-      Collection elementResidences = d.getResidentElements();
-      Iterator it = elementResidences.iterator();
-      while (it.hasNext()) {
-        MElementResidence residence = (MElementResidence) it.next();
-        MModelElement node = (MModelElement) residence.getResident();
-        if (node instanceof MClass) res.addElement(node);
 
-      }
-      return res;
+    public Vector rowObjectsFor(Object t) {
+	if (!(t instanceof UMLDeploymentDiagram || t instanceof MComponent)) return new Vector();
+	if (t instanceof UMLDeploymentDiagram) {
+	    UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
+	    Vector nodes = d.getNodes();
+	    Vector res = new Vector();
+	    int size = nodes.size();
+	    for (int i = 0; i < size; i++) {
+		Object node = nodes.elementAt(i);
+		if (node instanceof MClass) res.addElement(node);
+	    }
+	    return res;
+	}
+	else {
+	    MComponent d = (MComponent) t;
+	    Vector res = new Vector();
+	    Collection elementResidences = d.getResidentElements();
+	    Iterator it = elementResidences.iterator();
+	    while (it.hasNext()) {
+		MElementResidence residence = (MElementResidence) it.next();
+		MModelElement node = (MModelElement) residence.getResident();
+		if (node instanceof MClass) res.addElement(node);
+
+	    }
+	    return res;
+	}
     }
-  }
 
-  public String toString() { return "Classes vs. Properties"; }
+    public String toString() { return "Classes vs. Properties"; }
 } /* end class TableModelClass_in_DeplByProps */
 

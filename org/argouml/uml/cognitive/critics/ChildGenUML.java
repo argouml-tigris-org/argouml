@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -48,81 +49,81 @@ import org.argouml.kernel.*;
  * @see org.argouml.cognitive.critics.Agency */
 
 public class ChildGenUML implements ChildGenerator {
-  public static ChildGenUML SINGLETON = new ChildGenUML();
+    public static ChildGenUML SINGLETON = new ChildGenUML();
 
-  /** Reply a java.util.Enumeration of the children of the given Object */
-  public java.util.Enumeration gen(Object o) {
-    if (o instanceof Project) {
-      Project p = (Project) o;
-      return new EnumerationComposite(p.getUserDefinedModels().elements(),
-				      p.getDiagrams().elements());
+    /** Reply a java.util.Enumeration of the children of the given Object */
+    public java.util.Enumeration gen(Object o) {
+	if (o instanceof Project) {
+	    Project p = (Project) o;
+	    return new EnumerationComposite(p.getUserDefinedModels().elements(),
+					    p.getDiagrams().elements());
+	}
+
+	if (o instanceof Diagram) {
+	    Vector figs = ((Diagram) o).getLayer().getContents();
+	    if (figs != null) return figs.elements();
+	}
+
+	if (o instanceof MPackage) {
+	    Vector ownedElements = new Vector(((MPackage) o).getOwnedElements());
+	    if (ownedElements != null) return ownedElements.elements();
+	}
+
+	if (o instanceof MElementImport) {
+	    MModelElement me = ((MElementImport) o).getModelElement();
+	    return new EnumerationSingle(me);  //wasteful!
+	}
+
+	if (o instanceof MModelElement) {
+	    Vector behavior = new Vector(((MModelElement) o).getBehaviors());
+	    if (behavior != null) behavior.elements();
+	}
+
+	// TODO: associationclasses fit both of the next 2 cases
+
+	if (o instanceof MClassifier) {
+	    MClassifier cls = (MClassifier) o;
+	    EnumerationComposite res = new EnumerationComposite();
+	    res.addSub(new Vector(cls.getFeatures()));
+
+	    Vector sms = new Vector(cls.getBehaviors());
+	    MStateMachine sm = null;
+	    if (sms != null && sms.size() > 0) sm = (MStateMachine) sms.elementAt(0);
+	    if (sm != null) res.addSub(new EnumerationSingle(sm));
+	    return res;
+	}
+
+	if (o instanceof MAssociation) {
+	    MAssociation asc = (MAssociation) o;
+	    Vector assocEnds = new Vector(asc.getConnections());
+	    if (assocEnds != null) return assocEnds.elements();
+	    //TODO: MAssociationRole
+	}
+
+
+
+
+
+	// // needed?
+	if (o instanceof MStateMachine) {
+	    MStateMachine sm = (MStateMachine) o;
+	    EnumerationComposite res = new EnumerationComposite();
+	    MState top = sm.getTop();
+	    if (top != null) res.addSub(new EnumerationSingle(top));
+	    res.addSub(new Vector(sm.getTransitions()));
+	    return res;
+	}
+
+	// needed?
+	if (o instanceof MCompositeState) {
+	    MCompositeState cs = (MCompositeState) o;
+	    Vector substates = new Vector(cs.getSubvertices());
+	    if (substates != null) return substates.elements();
+	}
+
+	// tons more cases
+
+	return EnumerationEmpty.theInstance();
     }
-
-    if (o instanceof Diagram) {
-      Vector figs = ((Diagram)o).getLayer().getContents();
-      if (figs != null) return figs.elements();
-    }
-
-    if (o instanceof MPackage) {
-      Vector ownedElements = new Vector(((MPackage)o).getOwnedElements());
-      if (ownedElements != null) return ownedElements.elements();
-    }
-
-    if (o instanceof MElementImport) {
-      MModelElement me = ((MElementImport)o).getModelElement();
-      return new EnumerationSingle(me);  //wasteful!
-    }
-
-    if (o instanceof MModelElement) {
-      Vector behavior = new Vector(((MModelElement)o).getBehaviors());
-      if (behavior != null) behavior.elements();
-    }
-
-    // TODO: associationclasses fit both of the next 2 cases
-
-    if (o instanceof MClassifier) {
-      MClassifier cls = (MClassifier) o;
-      EnumerationComposite res = new EnumerationComposite();
-      res.addSub(new Vector(cls.getFeatures()));
-
-      Vector sms = new Vector(cls.getBehaviors());
-      MStateMachine sm = null;
-      if (sms != null && sms.size() > 0) sm = (MStateMachine) sms.elementAt(0);
-      if (sm != null) res.addSub(new EnumerationSingle(sm));
-      return res;
-    }
-
-    if (o instanceof MAssociation) {
-      MAssociation asc = (MAssociation) o;
-      Vector assocEnds = new Vector(asc.getConnections());
-      if (assocEnds != null) return assocEnds.elements();
-      //TODO: MAssociationRole
-    }
-
-
-
-
-
-    // // needed?
-    if (o instanceof MStateMachine) {
-      MStateMachine sm = (MStateMachine) o;
-      EnumerationComposite res = new EnumerationComposite();
-      MState top = sm.getTop();
-      if (top != null) res.addSub(new EnumerationSingle(top));
-      res.addSub(new Vector(sm.getTransitions()));
-      return res;
-    }
-
-    // needed?
-    if (o instanceof MCompositeState) {
-      MCompositeState cs = (MCompositeState) o;
-      Vector substates = new Vector(cs.getSubvertices());
-      if (substates != null) return substates.elements();
-    }
-
-    // tons more cases
-
-    return EnumerationEmpty.theInstance();
-  }
 } /* end class ChildGenUML */
 

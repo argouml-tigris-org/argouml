@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,18 +44,20 @@ import java.awt.*;
  *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
  *             that used reflection a lot.
  */
-public class UMLClientDependencyListModel extends UMLModelElementListModel  {
+public class UMLClientDependencyListModel 
+    extends UMLModelElementListModel 
+{
 
     private final static String _nullLabel = "(null)";
     
-    public UMLClientDependencyListModel(UMLUserInterfaceContainer container,String property,boolean showNone) {
-        super(container,property,showNone);
+    public UMLClientDependencyListModel(UMLUserInterfaceContainer container, String property, boolean showNone) {
+        super(container, property, showNone);
     }
 
     private Collection getClientDependencies() {
         Collection dependencies = null;
         Object target = getTarget();
-        if(target instanceof MModelElement) {
+        if (target instanceof MModelElement) {
             MModelElement genElement = (MModelElement) target;
             dependencies = genElement.getClientDependencies();
         }
@@ -64,23 +67,23 @@ public class UMLClientDependencyListModel extends UMLModelElementListModel  {
     protected int recalcModelElementSize() {
         int size = 0;
         Collection dependencies = getClientDependencies();
-        if(dependencies != null) {
+        if (dependencies != null) {
             size = dependencies.size();
         }
         return size;
     }
     
     protected MModelElement getModelElementAt(int index) {
-        return elementAtUtil(getClientDependencies(),index,MDependency.class);
+        return elementAtUtil(getClientDependencies(), index, MDependency.class);
     }
         
     
     public Object formatElement(MModelElement element) {
         Object value = _nullLabel;
-	if ((element!=null) && (element instanceof MDependency)){
+	if ((element != null) && (element instanceof MDependency)) {
 	    MDependency dependency = (MDependency) element;
 	    Collection target = dependency.getSuppliers();
-	    if(target != null) {
+	    if (target != null) {
 		value = getContainer().formatCollection(target.iterator());
 	    }
 	}
@@ -129,28 +132,28 @@ public class UMLClientDependencyListModel extends UMLModelElementListModel  {
         // Fixed to look at the true list size, not counting the "empty"
         // entry.
 
-        if(index == getModelElementSize()) {    
+        if (index == getModelElementSize()) {    
             ModelFacade.addClientDependency(modelElement, newAbstraction);
            
         }
         else {
             modelElement.setClientDependencies(
-                addAtUtil(modelElement.getClientDependencies(),
-                          newAbstraction, index));
+					       addAtUtil(modelElement.getClientDependencies(),
+							 newAbstraction, index));
         }
 
         // Advise Swing that we have added something at this index and
         // navigate there.
 
-        fireIntervalAdded(this,index,index);
+        fireIntervalAdded(this, index, index);
         navigateTo(newAbstraction);
     }
     
     public void delete(int index) {
-       Object target = getTarget();
-       if(target instanceof MModelElement) { 
-            Object obj = elementAtUtil(getClientDependencies(),index,MDependency.class);
-            if(obj != null) {
+	Object target = getTarget();
+	if (target instanceof MModelElement) { 
+            Object obj = elementAtUtil(getClientDependencies(), index, MDependency.class);
+            if (obj != null) {
                 MDependency dep = (MDependency) obj;
                 ((MModelElement) target).removeClientDependency(dep);
             }
@@ -159,17 +162,17 @@ public class UMLClientDependencyListModel extends UMLModelElementListModel  {
     
     public void moveUp(int index) {
         Object target = getTarget();
-        if(target instanceof MModelElement) {
+        if (target instanceof MModelElement) {
             MModelElement targetElement = (MModelElement) target;
-            targetElement.setClientDependencies(moveUpUtil(targetElement.getClientDependencies(),index));
+            targetElement.setClientDependencies(moveUpUtil(targetElement.getClientDependencies(), index));
         }
     }
     
     public void moveDown(int index) {
         Object target = getTarget();
-        if(target instanceof MModelElement) {
+        if (target instanceof MModelElement) {
             MModelElement targetElement = (MModelElement) target;
-            targetElement.setClientDependencies(moveDownUtil(targetElement.getClientDependencies(),index));
+            targetElement.setClientDependencies(moveDownUtil(targetElement.getClientDependencies(), index));
         }
     }
     /**
@@ -179,29 +182,29 @@ public class UMLClientDependencyListModel extends UMLModelElementListModel  {
      *  @param index index of selected list item
      *  @return "true" if popup menu should be displayed
      */
-    public boolean buildPopup(JPopupMenu popup,int index) {
+    public boolean buildPopup(JPopupMenu popup, int index) {
         UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
-        if(getModelElementSize() <= 0) {
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"), this, "open", index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"), this, "delete", index);
+        if (getModelElementSize() <= 0) {
             open.setEnabled(false);
             delete.setEnabled(false);
         }
 
         popup.add(open);
-        UMLListMenuItem add =new UMLListMenuItem(container.localize("Add"),this,"add",index);
-        if(_upper >= 0 && getModelElementSize() >= _upper) {
+        UMLListMenuItem add = new UMLListMenuItem(container.localize("Add"), this, "add", index);
+        if (_upper >= 0 && getModelElementSize() >= _upper) {
             add.setEnabled(false);
         }
         popup.add(add);
         popup.add(delete);
         /*
-        UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"),this,"moveUp",index);
-        if(index == 0) moveUp.setEnabled(false);
-        popup.add(moveUp);
-        UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"),this,"moveDown",index);
-        if(index == getSize()-1) moveDown.setEnabled(false);
-        popup.add(moveDown);
+	  UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"),this,"moveUp",index);
+	  if(index == 0) moveUp.setEnabled(false);
+	  popup.add(moveUp);
+	  UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"),this,"moveDown",index);
+	  if(index == getSize()-1) moveDown.setEnabled(false);
+	  popup.add(moveDown);
         */
         return true;
     }

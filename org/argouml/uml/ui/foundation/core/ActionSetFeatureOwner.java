@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -39,7 +40,7 @@ import ru.novosoft.uml.foundation.core.MFeature;
  */
 public class ActionSetFeatureOwner extends UMLChangeAction {
 
-      public static final ActionSetFeatureOwner SINGLETON = new ActionSetFeatureOwner();
+    public static final ActionSetFeatureOwner SINGLETON = new ActionSetFeatureOwner();
     
     /**
      * Constructor for ActionSetStructuralFeatureType.
@@ -61,15 +62,15 @@ public class ActionSetFeatureOwner extends UMLChangeAction {
         MClassifier newClassifier = null;
         MFeature feature = null;
         if (source instanceof UMLComboBox2) {
-            UMLComboBox2 box = (UMLComboBox2)source;
+            UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
             if (o instanceof MFeature) {
-                feature = (MFeature)o;
+                feature = (MFeature) o;
                 oldClassifier = feature.getOwner();
             }
             o = box.getSelectedItem();
             if (o instanceof MClassifier) {
-                newClassifier = (MClassifier)o;
+                newClassifier = (MClassifier) o;
             }
         }
         if (newClassifier != oldClassifier && feature != null && newClassifier != null) {

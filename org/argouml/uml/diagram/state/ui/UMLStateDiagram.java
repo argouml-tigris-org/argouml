@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -93,20 +94,20 @@ public class UMLStateDiagram extends UMLDiagram {
 
     protected static Action _actionShallowHistoryPseudoState =
         new ActionCreatePseudostate(
-            MPseudostateKind.SHALLOW_HISTORY,
-            "ShallowHistory");
+				    MPseudostateKind.SHALLOW_HISTORY,
+				    "ShallowHistory");
 
     protected static Action _actionDeepHistoryPseudoState =
         new ActionCreatePseudostate(
-            MPseudostateKind.DEEP_HISTORY,
-            "DeepHistory");
+				    MPseudostateKind.DEEP_HISTORY,
+				    "DeepHistory");
 
     protected static Action _actionTransition =
         new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            MTransition.class,
-            "Transition");
+		       ModeCreatePolyEdge.class,
+		       "edgeClass",
+		       MTransition.class,
+		       "Transition");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -129,14 +130,16 @@ public class UMLStateDiagram extends UMLDiagram {
         if (sm != null && m == null) {
             MModelElement context = sm.getContext();
             if (context instanceof MClassifier) {
-                m = (MNamespace)context;
+                m = (MNamespace) context;
             } else if (context instanceof MBehavioralFeature) {
-                m = ((MBehavioralFeature)context).getOwner();
+                m = ((MBehavioralFeature) context).getOwner();
             }
         }
         if (m != null && m.getName() != null) {
             String name = null, diag_name = m.getName();
-            Object[] args = { name };
+            Object[] args = {
+		name 
+	    };
             int number =
                 ((m.getBehaviors()) == null ? 0 : m.getBehaviors().size());
             name = diag_name + " " + (number++);
@@ -155,7 +158,7 @@ public class UMLStateDiagram extends UMLDiagram {
      * The owner of a statediagram is the statediagram it's showing.
      */
     public MModelElement getOwner() {
-        StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
+        StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
         return gm.getMachine();
     }
 
@@ -167,14 +170,14 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     public void initialize(Object o) {
         if (o instanceof MStateMachine) {
-            MStateMachine sm = (MStateMachine)o;
+            MStateMachine sm = (MStateMachine) o;
             MModelElement context = sm.getContext();
             MNamespace contextNamespace = null;
             if (context instanceof MClassifier) {
-                contextNamespace = (MClassifier)context;
+                contextNamespace = (MClassifier) context;
             } else if (context instanceof MBehavioralFeature) {
                 contextNamespace =
-                    ((MBehavioralFeature)context).getOwner().getNamespace();
+                    ((MBehavioralFeature) context).getOwner().getNamespace();
             }
             if (contextNamespace != null) {
                 setup(contextNamespace, sm);
@@ -217,7 +220,7 @@ public class UMLStateDiagram extends UMLDiagram {
     }
 
     public MStateMachine getStateMachine() {
-        return ((StateDiagramGraphModel)getGraphModel()).getMachine();
+        return ((StateDiagramGraphModel) getGraphModel()).getMachine();
     }
 
     /**
@@ -225,7 +228,7 @@ public class UMLStateDiagram extends UMLDiagram {
      * @param m
      */
     public void setStateMachine(MStateMachine sm) {
-        ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
+        ((StateDiagramGraphModel) getGraphModel()).setMachine(sm);
     }
 
     /**
@@ -254,10 +257,8 @@ public class UMLStateDiagram extends UMLDiagram {
         String name = null;
         name = "State Diagram " + _StateDiagramSerial;
         _StateDiagramSerial++;
-        if (!ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .isValidDiagramName(name)) {
+        if (!ProjectManager.getManager().getCurrentProject()
+                .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;
@@ -270,8 +271,8 @@ public class UMLStateDiagram extends UMLDiagram {
     public void removed(MElementEvent e) {
 
         UmlModelEventPump.getPump().removeModelEventListener(
-            this,
-            theStateMachine);
+							     this,
+							     theStateMachine);
         super.removed(e);
     }
 } /* end class UMLStateDiagram */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -34,25 +35,25 @@ import java.util.Enumeration;
 
 public class HistoryItemManipulation extends HistoryItem {
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public HistoryItemManipulation(String head, String desc) {
-    super(head, desc);
-  }
+    public HistoryItemManipulation(String head, String desc) {
+	super(head, desc);
+    }
 
-  public HistoryItemManipulation(String head, String desc, Object target,
-		     Object oldValue, Object newValue) {
-    super(head, desc, target, oldValue, newValue);
-  }
+    public HistoryItemManipulation(String head, String desc, Object target,
+				   Object oldValue, Object newValue) {
+	super(head, desc, target, oldValue, newValue);
+    }
 
 
-  ////////////////////////////////////////////////////////////////
-  // debugging
+    ////////////////////////////////////////////////////////////////
+    // debugging
 
-  public String toString() {
-    if (_desc == null) return "HIM: (null)";
-    return "HIM: " + _desc;
-  }
+    public String toString() {
+	if (_desc == null) return "HIM: (null)";
+	return "HIM: " + _desc;
+    }
 
 } /* end class HistoryItemManipulation */

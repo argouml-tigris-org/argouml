@@ -31,21 +31,21 @@ package org.argouml.ui.targetmanager;
  */
 public class TargetException extends RuntimeException {
 
-	/**
-	 * 
-	 */
-	public TargetException() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * 
+     */
+    public TargetException() {
+	super();
+	// TODO Auto-generated constructor stub
+    }
 
-	/**
-	 * @param message
-	 */
-	public TargetException(String message) {
-		super(message);
-		// TODO Auto-generated constructor stub
-	}
+    /**
+     * @param message
+     */
+    public TargetException(String message) {
+	super(message);
+	// TODO Auto-generated constructor stub
+    }
 
 	
 

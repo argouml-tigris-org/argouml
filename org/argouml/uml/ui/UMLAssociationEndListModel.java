@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -63,14 +64,14 @@ public class UMLAssociationEndListModel extends UMLModelElementListModel  {
      *   @param showNone  if true, an element labelled "none" will be shown where there are
      *                        no association ends connected to the classifier.
      */
-    public UMLAssociationEndListModel(UMLUserInterfaceContainer container,String property,boolean showNone) {
-        super(container,property,showNone);
+    public UMLAssociationEndListModel(UMLUserInterfaceContainer container, String property, boolean showNone) {
+        super(container, property, showNone);
     }
     
     private Collection getAssociationEnds() {
         Collection assocEnds = null;
         Object target = getTarget();
-        if(target instanceof MAssociation) {
+        if (target instanceof MAssociation) {
             assocEnds = ((MAssociation) target).getConnections();
         }
         return assocEnds;
@@ -82,7 +83,7 @@ public class UMLAssociationEndListModel extends UMLModelElementListModel  {
     protected int recalcModelElementSize() {
         int size = 0;
         Collection assocEnds = getAssociationEnds();
-        if(assocEnds != null) {
+        if (assocEnds != null) {
             size = assocEnds.size();
         }
         return size;
@@ -90,15 +91,15 @@ public class UMLAssociationEndListModel extends UMLModelElementListModel  {
     
     //  see superclass documentation
     protected MModelElement getModelElementAt(int index) {
-        return elementAtUtil(getAssociationEnds(),index,MAssociationEnd.class);
+        return elementAtUtil(getAssociationEnds(), index, MAssociationEnd.class);
     }
     
     //  see superclass documentation
-    public boolean buildPopup(JPopupMenu popup,int index) {
+    public boolean buildPopup(JPopupMenu popup, int index) {
         UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"), this, "open", index);
         int size = getModelElementSize();
-        if(size <= 0) {
+        if (size <= 0) {
             open.setEnabled(false);
         }
            

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,108 +53,108 @@ import org.argouml.kernel.*;
  */
 
 public class ChildGenFind implements ChildGenerator {
-  public static ChildGenFind SINGLETON = new ChildGenFind();
+    public static ChildGenFind SINGLETON = new ChildGenFind();
 
-  /** Reply a Collection of the children of the given Object */
-  public java.util.Enumeration gen(Object o) {
-    if (o instanceof Project) {
-      Project p = (Project) o;
-	  Vector res = new Vector();
-	  res.addAll(p.getUserDefinedModels());
-	  res.addAll(p.getDiagrams());
-	  return res.elements();
-      // return new EnumerationComposite(p.getModels().elements(),
-	  //		      p.getDiagrams().elements());
-    }
+    /** Reply a Collection of the children of the given Object */
+    public java.util.Enumeration gen(Object o) {
+	if (o instanceof Project) {
+	    Project p = (Project) o;
+	    Vector res = new Vector();
+	    res.addAll(p.getUserDefinedModels());
+	    res.addAll(p.getDiagrams());
+	    return res.elements();
+	    // return new EnumerationComposite(p.getModels().elements(),
+	    //		      p.getDiagrams().elements());
+	}
 
-//     if (o instanceof MPackage) {
-//       Vector ownedElements = ((MPackage)o).getOwnedElements();
-//       if (ownedElements != null) return ownedElements.elements();
-//     }
+	//     if (o instanceof MPackage) {
+	//       Vector ownedElements = ((MPackage)o).getOwnedElements();
+	//       if (ownedElements != null) return ownedElements.elements();
+	//     }
 
-//     if (o instanceof MElementImport) {
-//       MModelElement me = ((MElementImport)o).getModelElement();
-//       return new EnumerationSingle(me);  //wasteful!
-//     }
+	//     if (o instanceof MElementImport) {
+	//       MModelElement me = ((MElementImport)o).getModelElement();
+	//       return new EnumerationSingle(me);  //wasteful!
+	//     }
 
-//     if (o instanceof MModelElement) {
-//       Vector behavior = ((MModelElement)o).getBehavior();
-//       if (behavior != null) behavior.elements();
-//     }
+	//     if (o instanceof MModelElement) {
+	//       Vector behavior = ((MModelElement)o).getBehavior();
+	//       if (behavior != null) behavior.elements();
+	//     }
 
-//     // TODO: associationclasses fit both of the next 2 cases
+	//     // TODO: associationclasses fit both of the next 2 cases
 
-    if (o instanceof MClassifier) {
-      MClassifier cls = (MClassifier) o;
-	  //      EnumerationComposite res = new EnumerationComposite();
-	  Vector res = new Vector(cls.getFeatures());
-      res.addAll(cls.getBehaviors());
-      return res.elements();
-    }
+	if (o instanceof MClassifier) {
+	    MClassifier cls = (MClassifier) o;
+	    //      EnumerationComposite res = new EnumerationComposite();
+	    Vector res = new Vector(cls.getFeatures());
+	    res.addAll(cls.getBehaviors());
+	    return res.elements();
+	}
 
-    if (o instanceof MAssociation) {
-      MAssociation asc = (MAssociation) o;
-	  return new Vector(asc.getConnections()).elements();
-	  //      Vector assocEnds = asc.getConnections();
-      //if (assocEnds != null) return assocEnds.elements();
-    }
+	if (o instanceof MAssociation) {
+	    MAssociation asc = (MAssociation) o;
+	    return new Vector(asc.getConnections()).elements();
+	    //      Vector assocEnds = asc.getConnections();
+	    //if (assocEnds != null) return assocEnds.elements();
+	}
 
 
 
-//     // // needed?
-//     if (o instanceof MStateMachine) {
-//       MStateMachine sm = (MStateMachine) o;
-//       EnumerationComposite res = new EnumerationComposite();
-//       MState top = sm.getTop();
-//       if (top != null) res.addSub(new EnumerationSingle(top));
-//       res.addSub(sm.getTransitions());
-//       return res;
-//     }
+	//     // // needed?
+	//     if (o instanceof MStateMachine) {
+	//       MStateMachine sm = (MStateMachine) o;
+	//       EnumerationComposite res = new EnumerationComposite();
+	//       MState top = sm.getTop();
+	//       if (top != null) res.addSub(new EnumerationSingle(top));
+	//       res.addSub(sm.getTransitions());
+	//       return res;
+	//     }
 
-//     // needed?
-//     if (o instanceof MCompositeState) {
-//       MCompositeState cs = (MCompositeState) o;
-//       Vector substates = cs.getSubvertices();
-//       if (substates != null) return substates.elements();
-//     }
+	//     // needed?
+	//     if (o instanceof MCompositeState) {
+	//       MCompositeState cs = (MCompositeState) o;
+	//       Vector substates = cs.getSubvertices();
+	//       if (substates != null) return substates.elements();
+	//     }
 
-    // tons more cases
+	// tons more cases
 
-    if (o instanceof Diagram) {
-      Diagram d = (Diagram) o;
+	if (o instanceof Diagram) {
+	    Diagram d = (Diagram) o;
 	  
-	  Vector res = new Vector();
-	  res.addAll(d.getGraphModel().getNodes());
-	  res.addAll(d.getGraphModel().getEdges());
-	  return res.elements();
-      //return new EnumerationComposite(d.getGraphModel().getNodes().elements(),
-	  //			      d.getGraphModel().getEdges().elements());
-    }
+	    Vector res = new Vector();
+	    res.addAll(d.getGraphModel().getNodes());
+	    res.addAll(d.getGraphModel().getEdges());
+	    return res.elements();
+	    //return new EnumerationComposite(d.getGraphModel().getNodes().elements(),
+	    //			      d.getGraphModel().getEdges().elements());
+	}
 
-    if (o instanceof MState) {
-      MState s = (MState) o;
-      //Vector interns = s.getInternalTransition();
-      //if (interns != null) return interns.elements();
-	  return new Vector(s.getInternalTransitions()).elements();
-    }
+	if (o instanceof MState) {
+	    MState s = (MState) o;
+	    //Vector interns = s.getInternalTransition();
+	    //if (interns != null) return interns.elements();
+	    return new Vector(s.getInternalTransitions()).elements();
+	}
 
-    if (o instanceof MTransition) {
-      MTransition tr = (MTransition) o;
-	  Vector res = new Vector();
-	  res.add(tr.getTrigger());
-	  res.add(tr.getGuard());
-	  res.add(tr.getEffect());
-	  /*
-		Vector parts = new Vector();  // wasteful!!
-		if (tr.getTrigger() != null) parts.addElement(tr.getTrigger());
-		if (tr.getGuard() != null) parts.addElement(tr.getGuard());
-		if (tr.getEffect() != null) parts.addElement(tr.getEffect());
-		return parts.elements();
-	  */
-	  return res.elements();
-    }
+	if (o instanceof MTransition) {
+	    MTransition tr = (MTransition) o;
+	    Vector res = new Vector();
+	    res.add(tr.getTrigger());
+	    res.add(tr.getGuard());
+	    res.add(tr.getEffect());
+	    /*
+	      Vector parts = new Vector();  // wasteful!!
+	      if (tr.getTrigger() != null) parts.addElement(tr.getTrigger());
+	      if (tr.getGuard() != null) parts.addElement(tr.getGuard());
+	      if (tr.getEffect() != null) parts.addElement(tr.getEffect());
+	      return parts.elements();
+	    */
+	    return res.elements();
+	}
 
-    return new Vector().elements();
-  }
+	return new Vector().elements();
+    }
 } /* end class ChildGenFind */
 

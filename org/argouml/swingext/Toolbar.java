@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -46,8 +47,8 @@ import javax.swing.JToolBar;
  */
 public class Toolbar extends JToolBar implements MouseListener {
     
-    private static final Color selectedBack = new Color(153,153,153);
-    private static final Color buttonBack = new Color(204,204,204);
+    private static final Color selectedBack = new Color(153, 153, 153);
+    private static final Color buttonBack = new Color(204, 204, 204);
     private static Color normalBack;
 
     private boolean _rollover;
@@ -58,7 +59,7 @@ public class Toolbar extends JToolBar implements MouseListener {
         super();
         this.setFloatable(false);
         this.setRollover(true);
-        this.setMargin(new Insets(0,0,0,0));
+        this.setMargin(new Insets(0, 0, 0, 0));
     }
     
     /** Creates a new instance of Toolbar
@@ -77,7 +78,7 @@ public class Toolbar extends JToolBar implements MouseListener {
         this.setName(title);
         this.setFloatable(floatable);
         this.setRollover(true);
-        this.setMargin(new Insets(0,0,0,0));
+        this.setMargin(new Insets(0, 0, 0, 0));
     }
     
     /** Creates a new instance of Toolbar with the given orientation
@@ -87,7 +88,7 @@ public class Toolbar extends JToolBar implements MouseListener {
         super(orientation);
         this.setFloatable(false);
         this.setRollover(true);
-        this.setMargin(new Insets(0,0,0,0));
+        this.setMargin(new Insets(0, 0, 0, 0));
     }
 
     public void setRollover(boolean rollover) {
@@ -130,9 +131,9 @@ public class Toolbar extends JToolBar implements MouseListener {
     public void mouseReleased(MouseEvent me) { }
     public void mouseClicked(MouseEvent me) {
         Object src = me.getSource();
-        if (src instanceof JButton && ((JButton)src).getAction() instanceof ButtonAction) {
-            JButton button = (JButton)src;
-            ButtonAction action = (ButtonAction)button.getAction();
+        if (src instanceof JButton && ((JButton) src).getAction() instanceof ButtonAction) {
+            JButton button = (JButton) src;
+            ButtonAction action = (ButtonAction) button.getAction();
             if (action.isModal()) {
                 Color currentBack = button.getBackground();
                 if (currentBack.equals(selectedBack)) {

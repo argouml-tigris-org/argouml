@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -71,11 +72,11 @@ public class ActionAddOperation extends UMLChangeAction {
         TargetManager.getInstance().setTarget(oper);
         Iterator it = pb.getEditorPane().findPresentationsFor(cls, p.getDiagrams()).iterator();
         while (it.hasNext()) {
-            MElementListener listener = (MElementListener)it.next();
+            MElementListener listener = (MElementListener) it.next();
             UmlModelEventPump.getPump().removeModelEventListener(listener, oper);
             UmlModelEventPump.getPump().addModelEventListener(listener, oper);
         }
-	 super.actionPerformed(ae);
+	super.actionPerformed(ae);
 	
     }
 
@@ -83,7 +84,7 @@ public class ActionAddOperation extends UMLChangeAction {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Object target =  TargetManager.getInstance().getModelTarget();
 	return super.shouldBeEnabled() && 
-        ModelFacade.isAClassifier(target) && 
-        !(ModelFacade.isASignal(target));
+	    ModelFacade.isAClassifier(target) && 
+	    !(ModelFacade.isASignal(target));
     }
 } /* end class ActionAddOperation */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,7 +41,8 @@ import org.tigris.gef.util.*;
  *  @since  0.9.4
  */
 public class SettingsTabUser extends SettingsTabHelper
-implements SettingsTabPanel {
+    implements SettingsTabPanel 
+{
 
     /** This is where the user enters full name in settings tab
      * unknown where this information is stored

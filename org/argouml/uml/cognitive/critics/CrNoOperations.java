@@ -43,12 +43,12 @@ import org.argouml.model.ModelFacade;
  */
 public class CrNoOperations extends CrUML {
 
-  public CrNoOperations() {
-    setHeadline("Add Operations to <ocl>self</ocl>");
-    addSupportedDecision(CrUML.decBEHAVIOR);
-    setKnowledgeTypes(Critic.KT_COMPLETENESS);
-    addTrigger("behavioralFeature");
-  }
+    public CrNoOperations() {
+	setHeadline("Add Operations to <ocl>self</ocl>");
+	addSupportedDecision(CrUML.decBEHAVIOR);
+	setKnowledgeTypes(Critic.KT_COMPLETENESS);
+	addTrigger("behavioralFeature");
+    }
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -46,7 +47,8 @@ import org.argouml.uml.ui.UMLAction;
  *  @since  0.9.4
  */
 public class ActionSettings extends UMLAction
-implements ArgoModuleEventListener {
+    implements ArgoModuleEventListener 
+{
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -68,7 +70,7 @@ implements ArgoModuleEventListener {
     protected ArgoDialog dlg = null;
 
     protected ActionSettings() {
-        super(Argo.localize(Argo.MENU_BUNDLE,"action.settings"), false);
+        super(Argo.localize(Argo.MENU_BUNDLE, "action.settings"), false);
     }
 
     /** Helper for localization.
@@ -88,17 +90,18 @@ implements ArgoModuleEventListener {
             if (dlg == null) {
                 try {
                     dlg = new ArgoDialog(pb, localize("dialog.settings"), 
-                        ArgoDialog.OK_CANCEL_OPTION, true) {
-                        public void actionPerformed(ActionEvent event) {
-                            super.actionPerformed(event);
-                            if (event.getSource() == getOkButton()) {
-                                handleSave();
-                            }
-                            else if (event.getSource() == getCancelButton()) {
-                                handleCancel();
-                            }
-                        }
-                    };
+					 ArgoDialog.OK_CANCEL_OPTION, true)
+			{
+			    public void actionPerformed(ActionEvent event) {
+				super.actionPerformed(event);
+				if (event.getSource() == getOkButton()) {
+				    handleSave();
+				}
+				else if (event.getSource() == getCancelButton()) {
+				    handleCancel();
+				}
+			    }
+			};
 
                     tabs = new JTabbedPane();
 
@@ -107,11 +110,12 @@ implements ArgoModuleEventListener {
                     if (mnemonic != null && mnemonic.length() > 0) {
                         buttonApply.setMnemonic(mnemonic.charAt(0));
                     }
-                    buttonApply.addActionListener(new ActionListener() {
-                        public void actionPerformed(ActionEvent e) {
-                            handleSave();
-                        }
-                    });
+                    buttonApply.addActionListener(new ActionListener() 
+			{
+			    public void actionPerformed(ActionEvent e) {
+				handleSave();
+			    }
+			});
                     dlg.addButton(buttonApply);
 
                     ArrayList list =
@@ -123,18 +127,18 @@ implements ArgoModuleEventListener {
                             ((PluggableSettingsTab) o).getSettingsTabPanel();
 
                         tabs.addTab(
-                            Argo.localize(
-                                stp.getTabResourceBundleKey(),
-                                stp.getTabKey()),
-                            stp.getTabPanel());
+				    Argo.localize(
+						  stp.getTabResourceBundleKey(),
+						  stp.getTabKey()),
+				    stp.getTabPanel());
                     }
 
                     // Increase width to accommodate all tabs on one row.
                     // (temporary solution until tabs are replaced with tree)
                     final int minimumWidth = 465;
                     tabs.setPreferredSize(new Dimension(
-                        Math.max(tabs.getPreferredSize().width, minimumWidth),
-                        tabs.getPreferredSize().height));
+							Math.max(tabs.getPreferredSize().width, minimumWidth),
+							tabs.getPreferredSize().height));
 
                     dlg.setContent(tabs);                    
                 }
@@ -147,7 +151,7 @@ implements ArgoModuleEventListener {
             handleRefresh();
             dlg.toFront();
             dlg.setVisible(true);
-	    }
+	}
     }
 
     public void moduleLoaded(ArgoModuleEvent event) {

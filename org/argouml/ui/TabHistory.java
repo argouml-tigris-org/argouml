@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -61,245 +62,248 @@ import org.argouml.kernel.HistoryItemResolve;
 import org.argouml.kernel.HistoryListener;
 
 public class TabHistory extends TabSpawnable
-implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
+    implements ListSelectionListener, ListCellRenderer, MouseMotionListener 
+{
     protected static Category cat = 
         Category.getInstance(TabHistory.class);
 
-  ////////////////////////////////////////////////////////////////
-  // class variables
-  protected ImageIcon _CritiqueIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt0");
-  protected ImageIcon _ResolveIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt100");
-  protected ImageIcon _ManipIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt100");
-  protected ImageIcon _HistoryItemIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Rectangle");
+    ////////////////////////////////////////////////////////////////
+    // class variables
+    protected ImageIcon _CritiqueIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt0");
+    protected ImageIcon _ResolveIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt100");
+    protected ImageIcon _ManipIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt100");
+    protected ImageIcon _HistoryItemIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Rectangle");
 
-  protected static String FILTERS[] = { "All History Items",
-					"History of Selection" };
+    protected static String FILTERS[] = {
+	"All History Items",
+	"History of Selection" 
+    };
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  private Object _target;
-  private Vector _data;
-  private JList _list = new JList();
-  private JLabel _label = new JLabel();
-  private JPanel _affected = new JPanel();
-  private JComboBox _filter = new JComboBox(FILTERS);
-
-
-  private JTextArea _description = new JTextArea();
-  private JSplitPane _splitter;
-
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public TabHistory() {
-    super("History");
-    setLayout(new BorderLayout());
-    //setFont(new Font("Dialog", Font.PLAIN, 10));
-    //_label.setFont(new Font("Dialog", Font.PLAIN, 10));
-    _label.setOpaque(true);
-
-    _list.addListSelectionListener(this);
-    _list.setCellRenderer(this);
-    _list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    _list.setEnabled(true);
-    _list.addMouseMotionListener(this);
-    _list.setModel(new HistoryListModel());
-
-    _affected.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-    _affected.add(new JLabel("Affected: "));
-    _affected.setBorder(new EtchedBorder());
-
-    JPanel descPane = new JPanel();
-    descPane.setLayout(new BorderLayout());
-    descPane.add(new JScrollPane(_description), BorderLayout.CENTER);
-    _description.setLineWrap(true);
-    _description.setWrapStyleWord(true);
-    descPane.add(_affected, BorderLayout.SOUTH);
-
-    // TODO: related design elements
-
-    JPanel listPane = new JPanel();
-    listPane.setLayout(new BorderLayout());
-    listPane.add(new JScrollPane(_list), BorderLayout.CENTER);
-    Box filterPane = Box.createHorizontalBox();
-    filterPane.add(new JLabel(" Show: "));
-    filterPane.add(_filter);
-    listPane.add(filterPane, BorderLayout.NORTH);
-    listPane.setMinimumSize(new Dimension(100, 100));
-    listPane.setPreferredSize(new Dimension(300, 100));
-
-    setLayout(new BorderLayout());
-    _splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-					 listPane, descPane);
-    _splitter.setDividerSize(2);
-    _splitter.setDividerLocation(300);
-    add(_splitter, BorderLayout.CENTER);
-
-  }
-
-  //TODO: should be more than just a scrolling list
-  // need to examine individual items, filter, sort,...
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    private Object _target;
+    private Vector _data;
+    private JList _list = new JList();
+    private JLabel _label = new JLabel();
+    private JPanel _affected = new JPanel();
+    private JComboBox _filter = new JComboBox(FILTERS);
 
 
+    private JTextArea _description = new JTextArea();
+    private JSplitPane _splitter;
 
-  /** 
-   * Called whenever the value of the selection changes.
-   * @param e the event that characterizes the change.
-   */
-  public void valueChanged(ListSelectionEvent e) {
-    // TODO: called on each critique!
-    cat.debug("user selected " + _list.getSelectedValue());
-    Object sel = _list.getSelectedValue();
-    if (sel instanceof HistoryItem) {
-      _description.setText(((HistoryItem)sel).toString());
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public TabHistory() {
+	super("History");
+	setLayout(new BorderLayout());
+	//setFont(new Font("Dialog", Font.PLAIN, 10));
+	//_label.setFont(new Font("Dialog", Font.PLAIN, 10));
+	_label.setOpaque(true);
+
+	_list.addListSelectionListener(this);
+	_list.setCellRenderer(this);
+	_list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	_list.setEnabled(true);
+	_list.addMouseMotionListener(this);
+	_list.setModel(new HistoryListModel());
+
+	_affected.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+	_affected.add(new JLabel("Affected: "));
+	_affected.setBorder(new EtchedBorder());
+
+	JPanel descPane = new JPanel();
+	descPane.setLayout(new BorderLayout());
+	descPane.add(new JScrollPane(_description), BorderLayout.CENTER);
+	_description.setLineWrap(true);
+	_description.setWrapStyleWord(true);
+	descPane.add(_affected, BorderLayout.SOUTH);
+
+	// TODO: related design elements
+
+	JPanel listPane = new JPanel();
+	listPane.setLayout(new BorderLayout());
+	listPane.add(new JScrollPane(_list), BorderLayout.CENTER);
+	Box filterPane = Box.createHorizontalBox();
+	filterPane.add(new JLabel(" Show: "));
+	filterPane.add(_filter);
+	listPane.add(filterPane, BorderLayout.NORTH);
+	listPane.setMinimumSize(new Dimension(100, 100));
+	listPane.setPreferredSize(new Dimension(300, 100));
+
+	setLayout(new BorderLayout());
+	_splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+				   listPane, descPane);
+	_splitter.setDividerSize(2);
+	_splitter.setDividerLocation(300);
+	add(_splitter, BorderLayout.CENTER);
+
     }
-    else
-      _description.setText("what?");
-    _description.setCaretPosition(0);
-  }
+
+    //TODO: should be more than just a scrolling list
+    // need to examine individual items, filter, sort,...
 
 
-  // This is the only method defined by ListCellRenderer.  We just
-  // reconfigure the Jlabel each time we're called.
 
-  public Component getListCellRendererComponent(
-         JList list,
-         Object value,            // value to display
-         int index,               // cell index
-         boolean isSelected,      // is the cell selected
-         boolean cellHasFocus)    // the list and the cell have the focus
-  {
-    if (!(value instanceof HistoryItem)) {
-      _label.setText("non HistoryItem");
-      return _label;
+    /** 
+     * Called whenever the value of the selection changes.
+     * @param e the event that characterizes the change.
+     */
+    public void valueChanged(ListSelectionEvent e) {
+	// TODO: called on each critique!
+	cat.debug("user selected " + _list.getSelectedValue());
+	Object sel = _list.getSelectedValue();
+	if (sel instanceof HistoryItem) {
+	    _description.setText(((HistoryItem) sel).toString());
+	}
+	else
+	    _description.setText("what?");
+	_description.setCaretPosition(0);
     }
-    HistoryItem hi = (HistoryItem) value;
-    String s = hi.getHeadline();
-    _label.setText(s);
-    _label.setBackground(isSelected ?
-			 MetalLookAndFeel.getTextHighlightColor() :
-    			 MetalLookAndFeel.getWindowBackground());
-    _label.setForeground(isSelected ?
-			 MetalLookAndFeel.getHighlightedTextColor() :
-			 MetalLookAndFeel.getUserTextColor());
-    if (hi instanceof HistoryItemManipulation) {
-      _label.setIcon(_ManipIcon);
-    }
-    else if (hi instanceof org.argouml.cognitive.critics.HistoryItemCritique) {
-      _label.setIcon(_CritiqueIcon);
-    }
-    else if (hi instanceof HistoryItemResolve) {
-      _label.setIcon(_ResolveIcon);
-    }
-    else {
-      _label.setIcon(_HistoryItemIcon);
-    }
-    return _label;
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // MouseMotionListener implementation
 
-  public void mouseMoved(MouseEvent me) {
-    int index = _list.locationToIndex(me.getPoint());
-    if (index == -1) return;
-    String tip = _list.getModel().getElementAt(index).toString();
-    cat.debug("tip=" + tip);
-    _list.setToolTipText(tip + " ");
-  }
+    // This is the only method defined by ListCellRenderer.  We just
+    // reconfigure the Jlabel each time we're called.
 
-  public void mouseDragged(MouseEvent me) { }
+    public Component getListCellRendererComponent(
+						  JList list,
+						  Object value,            // value to display
+						  int index,               // cell index
+						  boolean isSelected,      // is the cell selected
+						  boolean cellHasFocus)    // the list and the cell have the focus
+    {
+	if (!(value instanceof HistoryItem)) {
+	    _label.setText("non HistoryItem");
+	    return _label;
+	}
+	HistoryItem hi = (HistoryItem) value;
+	String s = hi.getHeadline();
+	_label.setText(s);
+	_label.setBackground(isSelected ?
+			     MetalLookAndFeel.getTextHighlightColor() :
+			     MetalLookAndFeel.getWindowBackground());
+	_label.setForeground(isSelected ?
+			     MetalLookAndFeel.getHighlightedTextColor() :
+			     MetalLookAndFeel.getUserTextColor());
+	if (hi instanceof HistoryItemManipulation) {
+	    _label.setIcon(_ManipIcon);
+	}
+	else if (hi instanceof org.argouml.cognitive.critics.HistoryItemCritique) {
+	    _label.setIcon(_CritiqueIcon);
+	}
+	else if (hi instanceof HistoryItemResolve) {
+	    _label.setIcon(_ResolveIcon);
+	}
+	else {
+	    _label.setIcon(_HistoryItemIcon);
+	}
+	return _label;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // MouseMotionListener implementation
+
+    public void mouseMoved(MouseEvent me) {
+	int index = _list.locationToIndex(me.getPoint());
+	if (index == -1) return;
+	String tip = _list.getModel().getElementAt(index).toString();
+	cat.debug("tip=" + tip);
+	_list.setToolTipText(tip + " ");
+    }
+
+    public void mouseDragged(MouseEvent me) { }
 
 } /* end class TabHistory */
 
 
 
 class HistoryListModel implements ListModel, HistoryListener {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected EventListenerList listenerList = new EventListenerList();
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    protected EventListenerList listenerList = new EventListenerList();
 
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public HistoryListModel() {
-    History.TheHistory.addHistoryListener(this);
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // HistoryListener implementation
-
-  public void historyAdded(HistoryEvent he) {
-    fireIntervalAdded(this, he.getIndex(), he.getIndex());
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // ListModel implementation
-
-  /** 
-   * Returns the length of the list.
-   */
-  public int getSize() {
-    History h = History.TheHistory;
-    return h.getItems().size();
-  }
-
-  /**
-   * Returns the value at the specified index.  
-   */
-  public Object getElementAt(int index) {
-    History h = History.TheHistory;
-    return h.getItems().elementAt(index);
-  }
-
-
-  /**
-   * Add a listener to the list that's notified each time a change
-   * to the data model occurs.
-   * @param l the ListDataListener
-   */
-  public void addListDataListener(ListDataListener l) {
-    listenerList.add(ListDataListener.class, l);
-  }
-
-
-  /**
-   * Remove a listener from the list that's notified each time a 
-   * change to the data model occurs.
-   * @param l the ListDataListener
-   */
-  public void removeListDataListener(ListDataListener l) {
-    listenerList.remove(ListDataListener.class, l);
-  }
-
-
-  /*
-   * AbstractListModel subclasses must call this method <b>after</b>
-   * one or more elements are added to the model.  The new elements
-   * are specified by a closed interval index0, index1, i.e. the
-   * range that includes both index0 and index1.  Note that
-   * index0 need not be less than or equal to index1.
-   * 
-   * @param source The ListModel that changed, typically "this".
-   * @param index0 One end of the new interval.
-   * @param index1 The other end of the new interval.
-   * @see EventListenerList
-   * @see DefaultListModel
-   */
-  protected void fireIntervalAdded(Object source, int index0, int index1)
-  {
-    Object[] listeners = listenerList.getListenerList();
-    ListDataEvent e = null;
-
-    for (int i = listeners.length - 2; i >= 0; i -= 2) {
-      if (listeners[i] == ListDataListener.class) {
-	if (e == null) {
-	  e = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, index0, index1);
-	}
-	((ListDataListener)listeners[i+1]).intervalAdded(e);
-      }
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public HistoryListModel() {
+	History.TheHistory.addHistoryListener(this);
     }
-  }
+
+
+    ////////////////////////////////////////////////////////////////
+    // HistoryListener implementation
+
+    public void historyAdded(HistoryEvent he) {
+	fireIntervalAdded(this, he.getIndex(), he.getIndex());
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // ListModel implementation
+
+    /** 
+     * Returns the length of the list.
+     */
+    public int getSize() {
+	History h = History.TheHistory;
+	return h.getItems().size();
+    }
+
+    /**
+     * Returns the value at the specified index.  
+     */
+    public Object getElementAt(int index) {
+	History h = History.TheHistory;
+	return h.getItems().elementAt(index);
+    }
+
+
+    /**
+     * Add a listener to the list that's notified each time a change
+     * to the data model occurs.
+     * @param l the ListDataListener
+     */
+    public void addListDataListener(ListDataListener l) {
+	listenerList.add(ListDataListener.class, l);
+    }
+
+
+    /**
+     * Remove a listener from the list that's notified each time a 
+     * change to the data model occurs.
+     * @param l the ListDataListener
+     */
+    public void removeListDataListener(ListDataListener l) {
+	listenerList.remove(ListDataListener.class, l);
+    }
+
+
+    /*
+     * AbstractListModel subclasses must call this method <b>after</b>
+     * one or more elements are added to the model.  The new elements
+     * are specified by a closed interval index0, index1, i.e. the
+     * range that includes both index0 and index1.  Note that
+     * index0 need not be less than or equal to index1.
+     * 
+     * @param source The ListModel that changed, typically "this".
+     * @param index0 One end of the new interval.
+     * @param index1 The other end of the new interval.
+     * @see EventListenerList
+     * @see DefaultListModel
+     */
+    protected void fireIntervalAdded(Object source, int index0, int index1)
+    {
+	Object[] listeners = listenerList.getListenerList();
+	ListDataEvent e = null;
+
+	for (int i = listeners.length - 2; i >= 0; i -= 2) {
+	    if (listeners[i] == ListDataListener.class) {
+		if (e == null) {
+		    e = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, index0, index1);
+		}
+		((ListDataListener) listeners[i + 1]).intervalAdded(e);
+	    }
+	}
+    }
 
 
 

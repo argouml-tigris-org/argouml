@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,16 +53,16 @@ public class UMLTree extends JTree implements UMLUserInterfaceComponent,
     private UMLUserInterfaceContainer _container;
     
     public UMLTree(UMLUserInterfaceContainer container,
-        UMLTreeModel model,boolean navigate) {
+		   UMLTreeModel model, boolean navigate) {
         super(model);
         _model = model;
         _navigate = navigate;
         _container = container;
         setRootVisible(false);
         setEditable(false);
-        getSelectionModel().setSelectionMode
-            (TreeSelectionModel.SINGLE_TREE_SELECTION);
-        if(navigate) {
+        getSelectionModel()
+	    .setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        if (navigate) {
             addMouseListener(this);
             addTreeSelectionListener(this);
         }
@@ -69,7 +70,7 @@ public class UMLTree extends JTree implements UMLUserInterfaceComponent,
     
     public void setModel(TreeModel model) {
         super.setModel(model);
-        if(model instanceof UMLTreeModel) {
+        if (model instanceof UMLTreeModel) {
             _model = (UMLTreeModel) model;
         }
         else {
@@ -79,83 +80,83 @@ public class UMLTree extends JTree implements UMLUserInterfaceComponent,
     }
 
     public void targetChanged() {
-        if(_model != null) _model.targetChanged();
+        if (_model != null) _model.targetChanged();
     }
 
     public void targetReasserted() {
     }
     
     public void roleAdded(final MElementEvent event) {
-        if(_model != null) _model.roleAdded(event);
+        if (_model != null) _model.roleAdded(event);
     }
     
     public void recovered(final MElementEvent event) {
-        if(_model != null) _model.recovered(event);
+        if (_model != null) _model.recovered(event);
     }
     
     public void roleRemoved(final MElementEvent event) {
-        if(_model != null) _model.roleRemoved(event);
+        if (_model != null) _model.roleRemoved(event);
     }
     
     public void listRoleItemSet(final MElementEvent event) {
-        if(_model != null) _model.listRoleItemSet(event);
+        if (_model != null) _model.listRoleItemSet(event);
     }
     
     public void removed(final MElementEvent event) {
-        if(_model != null) _model.removed(event);
+        if (_model != null) _model.removed(event);
     }
     public void propertySet(final MElementEvent event) {
-        if(_model != null) _model.propertySet(event);
+        if (_model != null) _model.propertySet(event);
     }
    
     public void mouseReleased(final MouseEvent event) {
-        if(event.isPopupTrigger()) {
+        if (event.isPopupTrigger()) {
             showPopup(event);
         }
     }
     
     public void mouseEntered(final MouseEvent event) {
-        if(event.isPopupTrigger()) {
+        if (event.isPopupTrigger()) {
             showPopup(event);
         }
     }
 
     public void mouseClicked(final MouseEvent event) {
-        if(event.isPopupTrigger()) {
+        if (event.isPopupTrigger()) {
             showPopup(event);
         }            
     }
     
     public void mousePressed(final MouseEvent event) {
-        if(event.isPopupTrigger()) {
+        if (event.isPopupTrigger()) {
             showPopup(event);
         }
     }
 
     public void mouseExited(final MouseEvent event) {
-        if(event.isPopupTrigger()) {
+        if (event.isPopupTrigger()) {
             showPopup(event);
         }
     }
     
     private final void showPopup(MouseEvent event) {
         Point point = event.getPoint();
-        TreePath path = getPathForLocation(event.getX(),event.getY());
-        if(path != null) {
+        TreePath path = getPathForLocation(event.getX(), event.getY());
+        if (path != null) {
             JPopupMenu popup = new JPopupMenu();
-            if(_model != null && _model.buildPopup(popup,path)) {
-                popup.show(this,point.x,point.y);
+            if (_model != null && _model.buildPopup(popup, path)) {
+                popup.show(this, point.x, point.y);
             }
         }
     }
     
     public void valueChanged(TreeSelectionEvent e)    {
         TreePath selection = e.getNewLeadSelectionPath();
-        if(selection != null) {
+        if (selection != null) {
             Object last = selection.getLastPathComponent();
-            if(last instanceof UMLModelElementTreeNode) {
+            if (last instanceof UMLModelElementTreeNode) {
                 MModelElement element = ((UMLModelElementTreeNode) last).getModelElement();
-                if(element != null) {
+                if (element != null) {
                     TargetManager.getInstance().setTarget(element);
                 }
             }

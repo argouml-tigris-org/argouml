@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -140,7 +141,7 @@ public final class ProjectManager {
                             propertyName,
                             oldValue,
                             newValue);
-                ((PropertyChangeListener)listeners[i + 1]).propertyChange(
+                ((PropertyChangeListener) listeners[i + 1]).propertyChange(
                     _event);
             }
         }
@@ -165,7 +166,7 @@ public final class ProjectManager {
 	    && _currentProject.getActiveDiagram() == null) {
             Vector diagrams = _currentProject.getDiagrams();
             if (diagrams != null && !diagrams.isEmpty())
-                _currentProject.setActiveDiagram((ArgoDiagram)_currentProject.getDiagrams().get(0));
+                _currentProject.setActiveDiagram((ArgoDiagram) _currentProject.getDiagrams().get(0));
         }
         firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME, oldProject, newProject);
     }
@@ -292,7 +293,7 @@ public final class ProjectManager {
             String name = zis.getNextEntry().getName();
             while (!name.endsWith(".xmi")) {
                 ZipEntry nextEntry = zis.getNextEntry();
-                if(nextEntry == null)
+                if (nextEntry == null)
                     throw new IOException("The XMI file is missing from the .zargo file.");
                 name = nextEntry.getName();
             }
@@ -365,7 +366,7 @@ public final class ProjectManager {
      * notify the gui from the project manager that the
      * current project's save state has changed.
      */
-    public void notifySavePropertyChanged(boolean newValue){
+    public void notifySavePropertyChanged(boolean newValue) {
         
         firePropertyChanged(SAVE_STATE_PROPERTY_NAME,
                             new Boolean(!newValue),

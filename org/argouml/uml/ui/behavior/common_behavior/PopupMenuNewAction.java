@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -72,14 +73,14 @@ public class PopupMenuNewAction extends JPopupMenu {
         newMenu.add(ActionNewUninterpretedAction.SINGLETON);
         ActionNewUninterpretedAction.SINGLETON.setTarget(list.getTarget());
         ActionNewUninterpretedAction.SINGLETON.putValue(
-            ActionNewAction.ROLE,
-            role);
+							ActionNewAction.ROLE,
+							role);
         add(newMenu);
 
         addSeparator();
 
         ActionRemoveModelElement.SINGLETON.setTarget(
-            list.getSelectedValue());
+						     list.getSelectedValue());
         add(ActionRemoveModelElement.SINGLETON);
     }
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,57 +41,57 @@ import org.tigris.gef.presentation.FigRect;
 
 public class FigNote extends FigNodeModelElement {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  public final int MARGIN = 2;
+    public final int MARGIN = 2;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  // add other Figs here aes needed
-
-
-  ////////////////////////////////////////////////////////////////
-  // constructors
-
-  public FigNote() {
-    Color handleColor = Globals.getPrefs().getHandleColor();
-    _bigPort = new FigRect(10, 10, 90, 20, handleColor, Color.lightGray);
-    _name.setExpandOnly(true);
-    _name.setText("FigNote");
-    // initialize any other Figs here
-
-    // add Figs to the FigNode in back-to-front order
-    addFig(_bigPort);
-    addFig(_name);
+    // add other Figs here aes needed
 
 
-    setBlinkPorts(true); //make port invisble unless mouse enters
-    Rectangle r = getBounds();
-  }
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public FigNote(GraphModel gm, Object node) {
-    this();
-    setOwner(node);
+    public FigNote() {
+	Color handleColor = Globals.getPrefs().getHandleColor();
+	_bigPort = new FigRect(10, 10, 90, 20, handleColor, Color.lightGray);
+	_name.setExpandOnly(true);
+	_name.setText("FigNote");
+	// initialize any other Figs here
 
-  }
+	// add Figs to the FigNode in back-to-front order
+	addFig(_bigPort);
+	addFig(_name);
 
 
-  public Dimension getMinimumSize() {
-    Dimension nameDim = _name.getMinimumSize();
-    int w = nameDim.width;
-    int h = nameDim.height;
-    return new Dimension(w, h);
-  }
+	setBlinkPorts(true); //make port invisble unless mouse enters
+	Rectangle r = getBounds();
+    }
 
-  public void setBounds(int x, int y, int w, int h) {
-    Rectangle oldBounds = getBounds();
-    _name.setBounds(x, y, w, h);
-    _x = x; _y = y; _w = w; _h = h;
-    firePropChange("bounds", oldBounds, getBounds());
-    updateEdges();
-  }
+    public FigNote(GraphModel gm, Object node) {
+	this();
+	setOwner(node);
+
+    }
+
+
+    public Dimension getMinimumSize() {
+	Dimension nameDim = _name.getMinimumSize();
+	int w = nameDim.width;
+	int h = nameDim.height;
+	return new Dimension(w, h);
+    }
+
+    public void setBounds(int x, int y, int w, int h) {
+	Rectangle oldBounds = getBounds();
+	_name.setBounds(x, y, w, h);
+	_x = x; _y = y; _w = w; _h = h;
+	firePropChange("bounds", oldBounds, getBounds());
+	updateEdges();
+    }
 
 
 } /* end class FigNote */

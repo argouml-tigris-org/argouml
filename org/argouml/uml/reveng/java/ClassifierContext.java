@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -56,12 +57,12 @@ class ClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Check if it is this interface
-	if(name.equals(ModelFacade.getName(mClassifier)) && ModelFacade.isAInterface(mClassifier)) {
+	if (name.equals(ModelFacade.getName(mClassifier)) && ModelFacade.isAInterface(mClassifier)) {
 	    return mClassifier;
 	}
 	else {
 	    // Continue the search through the rest of the model
-	    if(context != null) {
+	    if (context != null) {
 		return context.getInterface(name);
 	    }
 	    else {
@@ -80,12 +81,12 @@ class ClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Check if it is this classifier
-	if(classifierName.equals(ModelFacade.getName(mClassifier))) {
+	if (classifierName.equals(ModelFacade.getName(mClassifier))) {
 	    return mClassifier;
 	}
 	else {
 	    // Continue the search through the rest of the model
-	    if(context != null) {
+	    if (context != null) {
 		return context.get(classifierName);
 	    }
 	    else {

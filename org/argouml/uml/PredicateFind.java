@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -32,40 +33,40 @@ import org.tigris.gef.util.*;
 
 public class PredicateFind implements Predicate {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  Predicate _elementName;
-  Predicate _packageName;
-  Predicate _diagramName;
-  Predicate _type;
-  Predicate _specific = PredicateTrue.theInstance();
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    Predicate _elementName;
+    Predicate _packageName;
+    Predicate _diagramName;
+    Predicate _type;
+    Predicate _specific = PredicateTrue.theInstance();
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public PredicateFind(Predicate e, Predicate p, Predicate d,
-		       Predicate t) {
-    _elementName = e;
-    _packageName = p;
-    _diagramName = d;
-    _type = t;
-  }
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public PredicateFind(Predicate e, Predicate p, Predicate d,
+			 Predicate t) {
+	_elementName = e;
+	_packageName = p;
+	_diagramName = d;
+	_type = t;
+    }
 
 
-  public boolean matchDiagram(Diagram d) {
-    boolean res = _diagramName.predicate(d.getName());
-    return res;
-  }
+    public boolean matchDiagram(Diagram d) {
+	boolean res = _diagramName.predicate(d.getName());
+	return res;
+    }
 
-  public boolean matchPackage(MModel m) {
-    boolean res = _packageName.predicate(m.getName());
-    return res;
-  }
+    public boolean matchPackage(MModel m) {
+	boolean res = _packageName.predicate(m.getName());
+	return res;
+    }
 
-  public boolean predicate(Object o) {
-    if (!(o instanceof MModelElement)) return false;
-    MModelElement me = (MModelElement) o;
-    return _type.predicate(me) && _specific.predicate(me) &&
-      _elementName.predicate(me.getName());
-  }
+    public boolean predicate(Object o) {
+	if (!(o instanceof MModelElement)) return false;
+	MModelElement me = (MModelElement) o;
+	return _type.predicate(me) && _specific.predicate(me) &&
+	    _elementName.predicate(me.getName());
+    }
 
 } /* end class PredicateFind */

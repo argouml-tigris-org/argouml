@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -45,90 +46,90 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class WizMEName extends Wizard {
     protected static Category cat = Category.getInstance(WizMEName.class);
-
-  protected String _instructions =
-  "Please change the name of the offending model element.";
-  protected String _label = Argo.localize("UMLMenu", "label.name");
-  protected String _suggestion = "suggestion";
-  protected String _origSuggest = "suggestion";
-  protected boolean _mustEdit = false;
-
-  protected WizStepTextField _step1 = null;
-
-  public WizMEName() { }
-
-  public int getNumSteps() { return 1; }
-
-  public MModelElement getModelElement() {
-    if (_item != null) {
-      VectorSet offs = _item.getOffenders();
-      if (offs.size() >= 1) {
-	MModelElement me = (MModelElement) offs.elementAt(0);
-	return me;
-      }
+					   
+    protected String _instructions =
+	"Please change the name of the offending model element.";
+    protected String _label = Argo.localize("UMLMenu", "label.name");
+    protected String _suggestion = "suggestion";
+    protected String _origSuggest = "suggestion";
+    protected boolean _mustEdit = false;
+							       
+    protected WizStepTextField _step1 = null;
+								   
+    public WizMEName() { }
+								       
+    public int getNumSteps() { return 1; }
+									   
+    public MModelElement getModelElement() {
+	if (_item != null) {
+	    VectorSet offs = _item.getOffenders();
+	    if (offs.size() >= 1) {
+		MModelElement me = (MModelElement) offs.elementAt(0);
+		return me;
+	    }
+	}
+	return null;
     }
-    return null;
-  }
-
-  public String getSuggestion() {
-    if (_suggestion != null) return _suggestion;
-    MModelElement me = getModelElement();
-    if (me != null) {
-      String n = me.getName();
-      return n;
-    }
-    return "";
-  }
-  public void setSuggestion(String s) { _origSuggest = _suggestion = s; }
-
-  public void setInstructions(String s) { _instructions = s; }
-
-  public void setMustEdit(boolean b) { _mustEdit = b; }
-
-  /** Create a new panel for the given step.  */
-  public JPanel makePanel(int newStep) {
-    switch (newStep) {
-    case 1:
-      if (_step1 == null) {
-	_step1 = new WizStepTextField(this, _instructions,
-				      _label, getSuggestion());
-      }
-      return _step1;
-    }
-    return null;
-  }
-
-  /** Return false iff the user has not edited the text and they were
-   *  required to. */
-  public boolean canGoNext() {
-    if (!super.canGoNext()) return false;
-    if (_step1 != null) {
-      boolean changed = _origSuggest.equals(_step1.getText());
-      if (_mustEdit && !changed) return false;
-    }
-    return true;
-  }
-
-  /** Take action at the completion of a step. For example, when the
-   *  given step is 0, do nothing; and when the given step is 1, do
-   *  the first action.  Argo non-modal wizards should take action as
-   *  they do along, as soon as possible, they should not wait until
-   *  the final step. */
-  public void doAction(int oldStep) {
-    cat.debug("doAction " + oldStep);
-    switch (oldStep) {
-    case 1:
-      String newName = _suggestion;
-      if (_step1 != null) newName = _step1.getText();
-      try {
+									       
+    public String getSuggestion() {
+	if (_suggestion != null) return _suggestion;
 	MModelElement me = getModelElement();
-	me.setName(newName);
-      }
-      catch (Exception pve) {
-	cat.error("could not set name", pve);
-      }
+	if (me != null) {
+	    String n = me.getName();
+	    return n;
+	}
+	return "";
     }
-  }
-
-
+    public void setSuggestion(String s) { _origSuggest = _suggestion = s; }
+										       
+    public void setInstructions(String s) { _instructions = s; }
+											   
+    public void setMustEdit(boolean b) { _mustEdit = b; }
+											       
+    /** Create a new panel for the given step.  */
+    public JPanel makePanel(int newStep) {
+	switch (newStep) {
+	case 1:
+	    if (_step1 == null) {
+		_step1 = new WizStepTextField(this, _instructions,
+					      _label, getSuggestion());
+	    }
+	    return _step1;
+	}
+	return null;
+    }
+												   
+    /** Return false iff the user has not edited the text and they were
+     *  required to. */
+    public boolean canGoNext() {
+	if (!super.canGoNext()) return false;
+	if (_step1 != null) {
+	    boolean changed = _origSuggest.equals(_step1.getText());
+	    if (_mustEdit && !changed) return false;
+	}
+	return true;
+    }
+												       
+    /** Take action at the completion of a step. For example, when the
+     *  given step is 0, do nothing; and when the given step is 1, do
+     *  the first action.  Argo non-modal wizards should take action as
+     *  they do along, as soon as possible, they should not wait until
+     *  the final step. */
+    public void doAction(int oldStep) {
+	cat.debug("doAction " + oldStep);
+	switch (oldStep) {
+	case 1:
+	    String newName = _suggestion;
+	    if (_step1 != null) newName = _step1.getText();
+	    try {
+		MModelElement me = getModelElement();
+		me.setName(newName);
+	    }
+	    catch (Exception pve) {
+		cat.error("could not set name", pve);
+	    }
+	}
+    }
+													   
+													   
 } /* end class WizMEName */

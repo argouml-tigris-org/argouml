@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,52 +41,52 @@ import ru.novosoft.uml.foundation.core.MOperation;
 
 public class ArgoDiagram extends Diagram {
 
-  ItemUID _id;
+    ItemUID _id;
 
-  // hack to use vetocheck in constructing names
-  protected static ArgoDiagram TheInstance = new ArgoDiagram(); 
+    // hack to use vetocheck in constructing names
+    protected static ArgoDiagram TheInstance = new ArgoDiagram(); 
   
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public ArgoDiagram() { 
+    public ArgoDiagram() { 
   	super();    
-  }
+    }
 
-  public ArgoDiagram(String diagramName ) {
+    public ArgoDiagram(String diagramName ) {
   	// next line patch to issue 596 (hopefully)
   	super(diagramName);
-    try { setName(diagramName); }
-    catch (PropertyVetoException pve) { }
-  }
+	try { setName(diagramName); }
+	catch (PropertyVetoException pve) { }
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public void setName(String n) throws PropertyVetoException {
-    super.setName(n);
-  }
+    public void setName(String n) throws PropertyVetoException {
+	super.setName(n);
+    }
 
-  public void setItemUID(ItemUID id) {
-    _id = id;
-  }
+    public void setItemUID(ItemUID id) {
+	_id = id;
+    }
 
-  public ItemUID getItemUID() {
-    return _id;
-  }
+    public ItemUID getItemUID() {
+	return _id;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // event management
+    ////////////////////////////////////////////////////////////////
+    // event management
 
-  public void addChangeRegistryAsListener( ChangeRegistry change ) {
-	  getGraphModel().addGraphEventListener( change );
-  }
+    public void addChangeRegistryAsListener( ChangeRegistry change ) {
+	getGraphModel().addGraphEventListener( change );
+    }
 
-  public void removeChangeRegistryAsListener( ChangeRegistry change ) {
-	  getGraphModel().removeGraphEventListener( change );
-  }
+    public void removeChangeRegistryAsListener( ChangeRegistry change ) {
+	getGraphModel().removeGraphEventListener( change );
+    }
 
-  static final long serialVersionUID = -401219134410459387L;
+    static final long serialVersionUID = -401219134410459387L;
 
     /**
      * @see org.argouml.uml.ui.VetoablePropertyChange#getVetoMessage(String)
@@ -93,7 +94,7 @@ public class ArgoDiagram extends Diagram {
      */
     public String getVetoMessage(String propertyName) {
     	if (propertyName.equals("name")) {
-    		return "Name of diagram may not exist allready";
+	    return "Name of diagram may not exist allready";
     	}
         return null;
     }
@@ -117,7 +118,7 @@ public class ArgoDiagram extends Diagram {
                 while (it.hasNext()) {
                     Object o = it.next();
                     if (o instanceof MClassifier) {
-                        MClassifier cl = (MClassifier)o;
+                        MClassifier cl = (MClassifier) o;
                         if (cl.getFeatures().contains(obj)) return presentationFor(cl);
                     }
                 }
@@ -126,19 +127,19 @@ public class ArgoDiagram extends Diagram {
         return fig;
     }
 
-	/**
-	 * @see org.tigris.gef.base.Diagram#initialize(Object)
-	 */
-	public void initialize(Object owner) {
-		super.initialize(owner);
-		ProjectManager.getManager().getCurrentProject().setActiveDiagram(this);
-	}
+    /**
+     * @see org.tigris.gef.base.Diagram#initialize(Object)
+     */
+    public void initialize(Object owner) {
+	super.initialize(owner);
+	ProjectManager.getManager().getCurrentProject().setActiveDiagram(this);
+    }
     
     public void damage() {
         if (_lay != null && _lay.getEditors() != null) {
             Iterator it = _lay.getEditors().iterator();
             while (it.hasNext()) {
-                ((Editor)it.next()).damageAll();
+                ((Editor) it.next()).damageAll();
             }
         }
     }

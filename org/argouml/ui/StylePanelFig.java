@@ -49,165 +49,166 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.ui.ColorRenderer;
 
 public class StylePanelFig extends StylePanel
-implements ItemListener, FocusListener, KeyListener {
+    implements ItemListener, FocusListener, KeyListener 
+{
     protected static Category cat = 
         Category.getInstance(StylePanelFig.class);
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  private static final String BUNDLE = "Cognitive";
+    ////////////////////////////////////////////////////////////////
+    // constants
+    private static final String BUNDLE = "Cognitive";
 
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  protected JLabel _bboxLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.bounds") + ": ");
-  protected JTextField _bboxField = new JTextField();
-  protected JLabel _fillLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.fill") + ": ");
-  protected JComboBox _fillField = new JComboBox();
-  protected JLabel _lineLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.line") + ": ");
-  protected JComboBox _lineField = new JComboBox();
-  protected JLabel _shadowLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.shadow") + ": ");
-  protected JComboBox _shadowField = new JComboBox();
-  //protected JLabel _dashedLabel = new JLabel("Dashed: ");
-  //protected JComboBox _dashedField = new JComboBox(Fig.DASHED_CHOICES);
-  protected SpacerPanel _spacer = new SpacerPanel();
-  protected SpacerPanel _spacer2 = new SpacerPanel();
-  protected SpacerPanel _spacer3 = new SpacerPanel();
+    ////////////////////////////////////////////////////////////////
+    // instance vars
+    protected JLabel _bboxLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.bounds") + ": ");
+    protected JTextField _bboxField = new JTextField();
+    protected JLabel _fillLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.fill") + ": ");
+    protected JComboBox _fillField = new JComboBox();
+    protected JLabel _lineLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.line") + ": ");
+    protected JComboBox _lineField = new JComboBox();
+    protected JLabel _shadowLabel = new JLabel(Argo.localize(BUNDLE, "stylepane.label.shadow") + ": ");
+    protected JComboBox _shadowField = new JComboBox();
+    //protected JLabel _dashedLabel = new JLabel("Dashed: ");
+    //protected JComboBox _dashedField = new JComboBox(Fig.DASHED_CHOICES);
+    protected SpacerPanel _spacer = new SpacerPanel();
+    protected SpacerPanel _spacer2 = new SpacerPanel();
+    protected SpacerPanel _spacer3 = new SpacerPanel();
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public StylePanelFig() {
-    super("Fig Appearance");
-    initChoices();
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.ipadx = 0; c.ipady = 0;
+    ////////////////////////////////////////////////////////////////
+    // contructors
+    public StylePanelFig() {
+	super("Fig Appearance");
+	initChoices();
+	GridBagLayout gb = (GridBagLayout) getLayout();
+	GridBagConstraints c = new GridBagConstraints();
+	c.fill = GridBagConstraints.BOTH;
+	c.ipadx = 0; c.ipady = 0;
 
-    Document bboxDoc = _bboxField.getDocument();
-    bboxDoc.addDocumentListener(this);
-    _bboxField.addKeyListener(this);
-    _bboxField.addFocusListener(this);
-    _fillField.addItemListener(this);
-    _lineField.addItemListener(this);
-    _shadowField.addItemListener(this);
-    //_dashedField.addItemListener(this);
+	Document bboxDoc = _bboxField.getDocument();
+	bboxDoc.addDocumentListener(this);
+	_bboxField.addKeyListener(this);
+	_bboxField.addFocusListener(this);
+	_fillField.addItemListener(this);
+	_lineField.addItemListener(this);
+	_shadowField.addItemListener(this);
+	//_dashedField.addItemListener(this);
 
-    _fillField.setRenderer(new ColorRenderer());
-    _lineField.setRenderer(new ColorRenderer());
-    //_dashedField.setRenderer(DashRenderer.SINGLETON);
+	_fillField.setRenderer(new ColorRenderer());
+	_lineField.setRenderer(new ColorRenderer());
+	//_dashedField.setRenderer(DashRenderer.SINGLETON);
 
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 1;
-    c.weightx = 0.0;
-    gb.setConstraints(_bboxLabel, c);
-    add(_bboxLabel);
-    c.gridy = 2;
-    gb.setConstraints(_fillLabel, c);
-    add(_fillLabel);
-    c.gridy = 3;
-    gb.setConstraints(_lineLabel, c);
-    add(_lineLabel);
-    c.gridy = 4;
-    gb.setConstraints(_shadowLabel, c);
-    add(_shadowLabel);
-    //c.gridy = 5;
-    //gb.setConstraints(_dashedLabel, c);
-    //add(_dashedLabel);
+	c.gridx = 0;
+	c.gridwidth = 1;
+	c.gridy = 1;
+	c.weightx = 0.0;
+	gb.setConstraints(_bboxLabel, c);
+	add(_bboxLabel);
+	c.gridy = 2;
+	gb.setConstraints(_fillLabel, c);
+	add(_fillLabel);
+	c.gridy = 3;
+	gb.setConstraints(_lineLabel, c);
+	add(_lineLabel);
+	c.gridy = 4;
+	gb.setConstraints(_shadowLabel, c);
+	add(_shadowLabel);
+	//c.gridy = 5;
+	//gb.setConstraints(_dashedLabel, c);
+	//add(_dashedLabel);
 
-    c.weightx = 1.0;
-    c.gridx = 1;
-    //c.gridwidth = GridBagConstraints.REMAINDER;
-    c.gridy = 1;
-    gb.setConstraints(_bboxField, c);
-    add(_bboxField);
-    c.gridy = 2;
-    gb.setConstraints(_fillField, c);
-    add(_fillField);
-    c.gridy = 3;
-    gb.setConstraints(_lineField, c);
-    add(_lineField);
-    c.gridy = 4;
-    gb.setConstraints(_shadowField, c);
-    add(_shadowField);
-    //c.gridy = 5;
-    //gb.setConstraints(_dashedField, c);
-    //add(_dashedField);
+	c.weightx = 1.0;
+	c.gridx = 1;
+	//c.gridwidth = GridBagConstraints.REMAINDER;
+	c.gridy = 1;
+	gb.setConstraints(_bboxField, c);
+	add(_bboxField);
+	c.gridy = 2;
+	gb.setConstraints(_fillField, c);
+	add(_fillField);
+	c.gridy = 3;
+	gb.setConstraints(_lineField, c);
+	add(_lineField);
+	c.gridy = 4;
+	gb.setConstraints(_shadowField, c);
+	add(_shadowField);
+	//c.gridy = 5;
+	//gb.setConstraints(_dashedField, c);
+	//add(_dashedField);
 
-    c.weightx = 0.0;
-    c.gridx = 2;
-    c.gridy = 1;
-    gb.setConstraints(_spacer, c);
-    add(_spacer);
+	c.weightx = 0.0;
+	c.gridx = 2;
+	c.gridy = 1;
+	gb.setConstraints(_spacer, c);
+	add(_spacer);
 
-    c.gridx = 3;
-    c.gridy = 10;
-    gb.setConstraints(_spacer2, c);
-    add(_spacer2);
+	c.gridx = 3;
+	c.gridy = 10;
+	gb.setConstraints(_spacer2, c);
+	add(_spacer2);
 
-    c.weightx = 1.0;
-    c.gridx = 4;
-    c.gridy = 10;
-    gb.setConstraints(_spacer3, c);
-    add(_spacer3);
-  }
+	c.weightx = 1.0;
+	c.gridx = 4;
+	c.gridy = 10;
+	gb.setConstraints(_spacer3, c);
+	add(_spacer3);
+    }
 
-  protected void initChoices() {
-    _fillField.addItem(Argo.localize(BUNDLE, "stylepane.label.no-fill"));
-    _fillField.addItem(Color.black);
-    _fillField.addItem(Color.white);
-    _fillField.addItem(Color.gray);
-    _fillField.addItem(Color.lightGray);
-    _fillField.addItem(Color.darkGray);
-    _fillField.addItem(new Color(255, 255, 200));
-    _fillField.addItem(new Color(255, 200, 255));
-    _fillField.addItem(new Color(200, 255, 255));
-    _fillField.addItem(new Color(200, 200, 255));
-    _fillField.addItem(new Color(200, 255, 200));
-    _fillField.addItem(new Color(255, 200, 200));
-    _fillField.addItem(new Color(200, 200, 200));
-    _fillField.addItem(Color.red);
-    _fillField.addItem(Color.blue);
-    _fillField.addItem(Color.cyan);
-    _fillField.addItem(Color.yellow);
-    _fillField.addItem(Color.magenta);
-    _fillField.addItem(Color.green);
-    _fillField.addItem(Color.orange);
-    _fillField.addItem(Color.pink);
-    _fillField.addItem(Argo.localize(BUNDLE, "stylepane.label.custom"));
+    protected void initChoices() {
+	_fillField.addItem(Argo.localize(BUNDLE, "stylepane.label.no-fill"));
+	_fillField.addItem(Color.black);
+	_fillField.addItem(Color.white);
+	_fillField.addItem(Color.gray);
+	_fillField.addItem(Color.lightGray);
+	_fillField.addItem(Color.darkGray);
+	_fillField.addItem(new Color(255, 255, 200));
+	_fillField.addItem(new Color(255, 200, 255));
+	_fillField.addItem(new Color(200, 255, 255));
+	_fillField.addItem(new Color(200, 200, 255));
+	_fillField.addItem(new Color(200, 255, 200));
+	_fillField.addItem(new Color(255, 200, 200));
+	_fillField.addItem(new Color(200, 200, 200));
+	_fillField.addItem(Color.red);
+	_fillField.addItem(Color.blue);
+	_fillField.addItem(Color.cyan);
+	_fillField.addItem(Color.yellow);
+	_fillField.addItem(Color.magenta);
+	_fillField.addItem(Color.green);
+	_fillField.addItem(Color.orange);
+	_fillField.addItem(Color.pink);
+	_fillField.addItem(Argo.localize(BUNDLE, "stylepane.label.custom"));
 
-    _lineField.addItem(Argo.localize(BUNDLE, "stylepane.label.no-line"));
-    _lineField.addItem(Color.black);
-    _lineField.addItem(Color.white);
-    _lineField.addItem(Color.gray);
-    _lineField.addItem(Color.lightGray);
-    _lineField.addItem(Color.darkGray);
-    _lineField.addItem(new Color(60, 60, 200));
-    _lineField.addItem(new Color(60, 200, 60));
-    _lineField.addItem(new Color(200, 60, 60));
-    _lineField.addItem(Color.red);
-    _lineField.addItem(Color.blue);
-    _lineField.addItem(Color.cyan);
-    _lineField.addItem(Color.yellow);
-    _lineField.addItem(Color.magenta);
-    _lineField.addItem(Color.green);
-    _lineField.addItem(Color.orange);
-    _lineField.addItem(Color.pink);
-    _lineField.addItem(Argo.localize(BUNDLE, "stylepane.label.custom"));
+	_lineField.addItem(Argo.localize(BUNDLE, "stylepane.label.no-line"));
+	_lineField.addItem(Color.black);
+	_lineField.addItem(Color.white);
+	_lineField.addItem(Color.gray);
+	_lineField.addItem(Color.lightGray);
+	_lineField.addItem(Color.darkGray);
+	_lineField.addItem(new Color(60, 60, 200));
+	_lineField.addItem(new Color(60, 200, 60));
+	_lineField.addItem(new Color(200, 60, 60));
+	_lineField.addItem(Color.red);
+	_lineField.addItem(Color.blue);
+	_lineField.addItem(Color.cyan);
+	_lineField.addItem(Color.yellow);
+	_lineField.addItem(Color.magenta);
+	_lineField.addItem(Color.green);
+	_lineField.addItem(Color.orange);
+	_lineField.addItem(Color.pink);
+	_lineField.addItem(Argo.localize(BUNDLE, "stylepane.label.custom"));
 
-    _shadowField.addItem(Argo.localize(BUNDLE, "stylepane.label.no-shadow"));
-    _shadowField.addItem("1");
-    _shadowField.addItem("2");
-    _shadowField.addItem("3");
-    _shadowField.addItem("4");
-    _shadowField.addItem("5");
-    _shadowField.addItem("6");
-    _shadowField.addItem("7");
-    _shadowField.addItem("8");
-  }
+	_shadowField.addItem(Argo.localize(BUNDLE, "stylepane.label.no-shadow"));
+	_shadowField.addItem("1");
+	_shadowField.addItem("2");
+	_shadowField.addItem("3");
+	_shadowField.addItem("4");
+	_shadowField.addItem("5");
+	_shadowField.addItem("6");
+	_shadowField.addItem("7");
+	_shadowField.addItem("8");
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
     /**
      * <p>Handle a refresh of the style panel after the fig has moved.</p>
@@ -238,7 +239,7 @@ implements ItemListener, FocusListener, KeyListener {
         // will have made them the same). Note that styleBounds could be null,
         // so we do the test this way round.
 
-        if(!(figBounds.equals(styleBounds))) {
+        if (!(figBounds.equals(styleBounds))) {
             _bboxField.setText(figBounds.x + "," + figBounds.y + "," +
                                figBounds.width + ","  + figBounds.height);
         }
@@ -400,52 +401,52 @@ implements ItemListener, FocusListener, KeyListener {
     }
 
 
-  public void setTargetFill() {
-    Object c =  _fillField.getSelectedItem();
-    if (_target == null || c == null) return;
-    _target.startTrans();
-    if (c instanceof Color) _target.setFillColor((Color)c);
-    _target.setFilled(c instanceof Color);
-    _target.endTrans();
-  }
+    public void setTargetFill() {
+	Object c =  _fillField.getSelectedItem();
+	if (_target == null || c == null) return;
+	_target.startTrans();
+	if (c instanceof Color) _target.setFillColor((Color) c);
+	_target.setFilled(c instanceof Color);
+	_target.endTrans();
+    }
 
-  public void setTargetLine() {
-    Object c =  _lineField.getSelectedItem();
-    if (_target == null || c == null) return;
-    _target.startTrans();
-    if (c instanceof Color) _target.setLineColor((Color)c);
-    _target.setLineWidth((c instanceof Color) ? 1 : 0);
-    _target.endTrans();
-  }
+    public void setTargetLine() {
+	Object c =  _lineField.getSelectedItem();
+	if (_target == null || c == null) return;
+	_target.startTrans();
+	if (c instanceof Color) _target.setLineColor((Color) c);
+	_target.setLineWidth((c instanceof Color) ? 1 : 0);
+	_target.endTrans();
+    }
 
-  public void setTargetShadow() {
-    int i =  _shadowField.getSelectedIndex();
-    if (_target == null || !(_target instanceof FigNodeModelElement)) return;
-    _target.startTrans();
-    ((FigNodeModelElement)_target).setShadowSize(i);
-    _target.endTrans();
-  }
+    public void setTargetShadow() {
+	int i =  _shadowField.getSelectedIndex();
+	if (_target == null || !(_target instanceof FigNodeModelElement)) return;
+	_target.startTrans();
+	((FigNodeModelElement) _target).setShadowSize(i);
+	_target.endTrans();
+    }
 
-  // public void setTargetDashed() {
-  //     String dashStr = (String) _dashedField.getSelectedItem();
-  //     if (_target == null || dashStr == null) return;
-  //     _target.startTrans();
-  //     _target.setDashedString(dashStr);
-  //     _target.endTrans();
-  //  }
+    // public void setTargetDashed() {
+    //     String dashStr = (String) _dashedField.getSelectedItem();
+    //     if (_target == null || dashStr == null) return;
+    //     _target.startTrans();
+    //     _target.setDashedString(dashStr);
+    //     _target.endTrans();
+    //  }
 
 
-  ////////////////////////////////////////////////////////////////
-  // event handling
+    ////////////////////////////////////////////////////////////////
+    // event handling
 
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-    if (src == _fillField) setTargetFill();
-    else if (src == _lineField) setTargetLine();
-    else if (src == _shadowField) setTargetShadow();
-    //else if (src == _dashedField) setTargetDashed();
-    else super.itemStateChanged(e);
-  }
+    public void itemStateChanged(ItemEvent e) {
+	Object src = e.getSource();
+	if (src == _fillField) setTargetFill();
+	else if (src == _lineField) setTargetLine();
+	else if (src == _shadowField) setTargetShadow();
+	//else if (src == _dashedField) setTargetDashed();
+	else super.itemStateChanged(e);
+    }
 
     /**
      * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)

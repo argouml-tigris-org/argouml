@@ -1,4 +1,5 @@
-// Copyright (c) 1996-02 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +40,7 @@ public class ClassdiagramModelElementFactory
     /** Singleton */
     public static ClassdiagramModelElementFactory SINGLETON = new ClassdiagramModelElementFactory();
     
-    private ClassdiagramModelElementFactory() {}
+    private ClassdiagramModelElementFactory() { }
     
     /** create layouter object from a Fig.*
      *
@@ -47,16 +48,16 @@ public class ClassdiagramModelElementFactory
      * @return Layouter for the Edge or null if none exists.
      */
     public ClassdiagramEdge getInstance(Object f) {
-        if(f instanceof FigEdge) {
-                if (f instanceof FigGeneralization)
-                    return (new ClassdiagramGeneralizationEdge((FigGeneralization) f));
-                if (f instanceof FigRealization)
-                    return (new ClassdiagramRealizationEdge((FigRealization) f));
-                if (f instanceof FigAssociation)
-                    return (new ClassdiagramAssociationEdge((FigAssociation) f));
-                cat.debug("Do not know how to deal with: " +
-                                   f.getClass().getName() +
-                                   "\nUsing standard layout");
+        if (f instanceof FigEdge) {
+	    if (f instanceof FigGeneralization)
+		return (new ClassdiagramGeneralizationEdge((FigGeneralization) f));
+	    if (f instanceof FigRealization)
+		return (new ClassdiagramRealizationEdge((FigRealization) f));
+	    if (f instanceof FigAssociation)
+		return (new ClassdiagramAssociationEdge((FigAssociation) f));
+	    cat.debug("Do not know how to deal with: " +
+		      f.getClass().getName() +
+		      "\nUsing standard layout");
         }
         return null;
     }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -53,7 +54,8 @@ public interface Pluggable extends ArgoModule {
 
     public static final String PLUGIN_VENDOR = "University of California";
 
-    public static final String PLUGIN_PREFIX = "org.argouml.application.api.Pluggable";
+    public static final String PLUGIN_PREFIX = 
+	"org.argouml.application.api.Pluggable";
     //
     // TODO:  jdk1.2.2 has problems with the following static
     //                   declaration.  jdk1.3 seems to be ok.  

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,29 +39,29 @@ import org.argouml.model.ModelFacade;
 
 public class CrNoGuard extends CrUML {
 
-  public CrNoGuard() {
-    setHeadline("Add MGuard to Transistion");
-    addSupportedDecision(CrUML.decSTATE_MACHINES);
-    setKnowledgeTypes(Critic.KT_COMPLETENESS);
-    addTrigger("guard");
-  }
+    public CrNoGuard() {
+	setHeadline("Add MGuard to Transistion");
+	addSupportedDecision(CrUML.decSTATE_MACHINES);
+	setKnowledgeTypes(Critic.KT_COMPLETENESS);
+	addTrigger("guard");
+    }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(ModelFacade.isATransition(dm))) return NO_PROBLEM;
-    Object sv = ModelFacade.getSource(dm);
-    if (!(ModelFacade.isAPseudostate(sv))) return NO_PROBLEM;
-    if (!ModelFacade.
-        equalsPseudostateKind(ModelFacade.getPseudostateKind(sv),
-                              ModelFacade.BRANCH_PSEUDOSTATEKIND))
-        return NO_PROBLEM;
-    MGuard g = (MGuard) ModelFacade.getGuard(dm);
-    boolean noGuard = (g == null || g.getExpression() == null ||
-			g.getExpression().getBody() == null ||
-			g.getExpression().getBody() == null ||
-			g.getExpression().getBody().length() == 0);
-    if (noGuard) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(ModelFacade.isATransition(dm))) return NO_PROBLEM;
+	Object sv = ModelFacade.getSource(dm);
+	if (!(ModelFacade.isAPseudostate(sv))) return NO_PROBLEM;
+	if (!ModelFacade.
+	    equalsPseudostateKind(ModelFacade.getPseudostateKind(sv),
+				  ModelFacade.BRANCH_PSEUDOSTATEKIND))
+	    return NO_PROBLEM;
+	MGuard g = (MGuard) ModelFacade.getGuard(dm);
+	boolean noGuard = (g == null || g.getExpression() == null ||
+			   g.getExpression().getBody() == null ||
+			   g.getExpression().getBody() == null ||
+			   g.getExpression().getBody().length() == 0);
+	if (noGuard) return PROBLEM_FOUND;
+	return NO_PROBLEM;
+    }
 
 } /* end class CrNoGuard */
 

@@ -45,81 +45,81 @@ public class Trash {
     protected static Category cat = 
         Category.getInstance(Trash.class);
     
-  public static Trash SINGLETON = new Trash();
+    public static Trash SINGLETON = new Trash();
 
-  /** Keys are model objects, values are TrashItems with recovery info */
-  public Vector _contents = new Vector();
+    /** Keys are model objects, values are TrashItems with recovery info */
+    public Vector _contents = new Vector();
     // public MModel Trash_Model = UmlFactory.getFactory().getModelManagement().createModel();
 
 
-  protected Trash() { 
-      boolean saveNeeded = ProjectManager.getManager().getCurrentProject().needsSave();      
-	  // Trash_Model.setName("Trash");
-      // the last statement causes the project to think that a save is needed
-      // since it is the trash model it is not needed
-      ProjectManager.getManager().getCurrentProject().setNeedsSave(saveNeeded);
-  }
+    protected Trash() { 
+	boolean saveNeeded = ProjectManager.getManager().getCurrentProject().needsSave();      
+	// Trash_Model.setName("Trash");
+	// the last statement causes the project to think that a save is needed
+	// since it is the trash model it is not needed
+	ProjectManager.getManager().getCurrentProject().setNeedsSave(saveNeeded);
+    }
 
-  public void addItemFrom(Object obj, Vector places) {
-    if (obj == null) {
-      cat.warn("tried to add null to trash!");
-      return;
-    }    
-    if (ModelFacade.isAModelElement(obj)) {
-        //MModelElement me = (MModelElement) obj;
-	  TrashItem ti = new TrashItem(obj, places);
-	  _contents.addElement(ti);
+    public void addItemFrom(Object obj, Vector places) {
+	if (obj == null) {
+	    cat.warn("tried to add null to trash!");
+	    return;
+	}    
+	if (ModelFacade.isAModelElement(obj)) {
+	    //MModelElement me = (MModelElement) obj;
+	    TrashItem ti = new TrashItem(obj, places);
+	    _contents.addElement(ti);
       
-      // next two lines give runtime exceptions. Remove should be done properly
-	  //me.setNamespace(null);
-      // me.setNamespace(Trash_Model);
-	  cat.debug("added " + obj + " to trash");
+	    // next two lines give runtime exceptions. Remove should be done properly
+	    //me.setNamespace(null);
+	    // me.setNamespace(Trash_Model);
+	    cat.debug("added " + obj + " to trash");
+	}
+	//TODO: trash diagrams
     }
-    //TODO: trash diagrams
-  }
 
-  public boolean contains(Object obj) {
-    int size = _contents.size();
-    for (int i = 0; i < size; i++) {
-      TrashItem ti = (TrashItem) _contents.elementAt(i);
-      if (ti._item == obj) return true;
+    public boolean contains(Object obj) {
+	int size = _contents.size();
+	for (int i = 0; i < size; i++) {
+	    TrashItem ti = (TrashItem) _contents.elementAt(i);
+	    if (ti._item == obj) return true;
+	}
+	return false;
     }
-    return false;
-  }
   
-  public void recoverItem(Object obj) {
-    cat.debug("TODO: recover from trash");
-    if (ModelFacade.isAModelElement(obj)) {
-      TrashItem ti = null; //TODO: find in trash
-	  //((MModelElement)obj).recoverFromTrash(ti);
+    public void recoverItem(Object obj) {
+	cat.debug("TODO: recover from trash");
+	if (ModelFacade.isAModelElement(obj)) {
+	    TrashItem ti = null; //TODO: find in trash
+	    //((MModelElement)obj).recoverFromTrash(ti);
+	}
     }
-  }
 
-  public void removeItem(Object obj) {
-    if (obj == null) {
-      cat.debug("tried to remove null from trash!");
-      return;
+    public void removeItem(Object obj) {
+	if (obj == null) {
+	    cat.debug("tried to remove null from trash!");
+	    return;
+	}
+	TrashItem ti = null; //TODO: find in trash
+	_contents.removeElement(ti);
     }
-    TrashItem ti = null; //TODO: find in trash
-    _contents.removeElement(ti);
-  }
 
-  public void emptyTrash() {
-    cat.debug("TODO: emptyTheTrash not implemented yet");
-    if (cat.isDebugEnabled()) {
-        StringBuffer buf = new StringBuffer("Trash contents:");
-        buf.append("\n");
-        java.util.Enumeration keys = _contents.elements();
-        while (keys.hasMoreElements()) {
-          Object k = keys.nextElement();
-          buf.append("| " + ((TrashItem)k)._item + "\n");
-        }
-        cat.debug(buf.toString());
-    }
+    public void emptyTrash() {
+	cat.debug("TODO: emptyTheTrash not implemented yet");
+	if (cat.isDebugEnabled()) {
+	    StringBuffer buf = new StringBuffer("Trash contents:");
+	    buf.append("\n");
+	    java.util.Enumeration keys = _contents.elements();
+	    while (keys.hasMoreElements()) {
+		Object k = keys.nextElement();
+		buf.append("| " + ((TrashItem) k)._item + "\n");
+	    }
+	    cat.debug(buf.toString());
+	}
     
-  }
+    }
 
-  public int getSize() { return _contents.size(); }
+    public int getSize() { return _contents.size(); }
 
 } /* end class Trash */
 
@@ -127,31 +127,31 @@ public class Trash {
 
 class TrashItem {
 
-  Object _item;
-  Object _recoveryInfo = null;
-  Vector _places;
+    Object _item;
+    Object _recoveryInfo = null;
+    Vector _places;
 
-  TrashItem(Object item, Vector places) {
-    _item = item;
-    _places = places;
-    //if (item instanceof MModelElement) {
-		// this can't work with nsuml. Toby
-		/*      try {
-				_recoveryInfo = ((MModelElement)item).prepareForTrash();
-				}
-				catch (PropertyVetoException pve) { }
-		*/
-    //}
-  }
-
-  public boolean equals(Object o) {
-    if (o instanceof TrashItem) {
-      TrashItem ti = (TrashItem) o;
-      return ti._item == _item;
+    TrashItem(Object item, Vector places) {
+	_item = item;
+	_places = places;
+	//if (item instanceof MModelElement) {
+	// this can't work with nsuml. Toby
+	/*      try {
+		_recoveryInfo = ((MModelElement)item).prepareForTrash();
+		}
+		catch (PropertyVetoException pve) { }
+	*/
+	//}
     }
-    return false;
-  }
 
-  public int hashCode() { return _item.hashCode(); }
+    public boolean equals(Object o) {
+	if (o instanceof TrashItem) {
+	    TrashItem ti = (TrashItem) o;
+	    return ti._item == _item;
+	}
+	return false;
+    }
+
+    public int hashCode() { return _item.hashCode(); }
 
 } /* end class TrashItem */

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -64,42 +65,42 @@ public class ActionGenerateAll extends UMLAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-      ProjectBrowser pb = ProjectBrowser.getInstance();
-      ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-      if (!(activeDiagram instanceof UMLClassDiagram)) return;
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	if (!(activeDiagram instanceof UMLClassDiagram)) return;
 
-      UMLClassDiagram d = (UMLClassDiagram) activeDiagram;
-      Vector classes = new Vector();
-      Vector nodes = d.getNodes();
-      java.util.Enumeration enum = nodes.elements();
-      while (enum.hasMoreElements()) {
-          Object owner = enum.nextElement();
-          if (!ModelFacade.isAClass(owner) && !ModelFacade.isAInterface(owner))
-            continue;
-          String name = ModelFacade.getName(owner);
-          if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0))) continue;
+	UMLClassDiagram d = (UMLClassDiagram) activeDiagram;
+	Vector classes = new Vector();
+	Vector nodes = d.getNodes();
+	java.util.Enumeration enum = nodes.elements();
+	while (enum.hasMoreElements()) {
+	    Object owner = enum.nextElement();
+	    if (!ModelFacade.isAClass(owner) && !ModelFacade.isAInterface(owner))
+		continue;
+	    String name = ModelFacade.getName(owner);
+	    if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0))) continue;
             classes.addElement(owner);
-      }
-	  TreePath[] paths = pb.getNavigatorPane().getTree().getSelectionPaths();
-      if (classes.size() == 0 && paths != null) {
-          for (int i = 0; i < paths.length; i++ ) {
-              Object selected = paths[i].getLastPathComponent();
-              if (ModelFacade.isAPackage(selected)) {
-                  addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MClass.class), classes);
-                  addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MInterface.class), classes);
-              } else if (ModelFacade.isAClass(selected) || ModelFacade.isAInterface(selected)) {
-                  if(!classes.contains(selected)) classes.addElement(selected);
-              }
-          }
-      }
-      ClassGenerationDialog cgd = new ClassGenerationDialog(classes);
-      cgd.show();
+	}
+	TreePath[] paths = pb.getNavigatorPane().getTree().getSelectionPaths();
+	if (classes.size() == 0 && paths != null) {
+	    for (int i = 0; i < paths.length; i++ ) {
+		Object selected = paths[i].getLastPathComponent();
+		if (ModelFacade.isAPackage(selected)) {
+		    addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MClass.class), classes);
+		    addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MInterface.class), classes);
+		} else if (ModelFacade.isAClass(selected) || ModelFacade.isAInterface(selected)) {
+		    if (!classes.contains(selected)) classes.addElement(selected);
+		}
+	    }
+	}
+	ClassGenerationDialog cgd = new ClassGenerationDialog(classes);
+	cgd.show();
     }
 
     public boolean shouldBeEnabled() {
-      ProjectBrowser pb = ProjectBrowser.getInstance();
-      ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();;
-      return super.shouldBeEnabled() && (activeDiagram instanceof UMLClassDiagram);
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();;
+	return super.shouldBeEnabled() && (activeDiagram instanceof UMLClassDiagram);
     }
     
     /**

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -63,53 +64,53 @@ public class ActionGenerateProjectCode extends UMLAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-      Vector classes = new Vector();
-      // The following lines should be substituted by the following 2 commented lines.
-      // (This is because getting the project still does not seem to work...)
-      ProjectBrowser pb = ProjectBrowser.getInstance();
-      ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-      if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram)) return;
-      ru.novosoft.uml.foundation.core.MNamespace ns = ((org.argouml.uml.diagram.ui.UMLDiagram)activeDiagram).getNamespace();
-      if (ns == null) return;
-      while (ns.getNamespace() != null) ns = ns.getNamespace();
-      Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns,MClassifier.class);
-      //Project p = ProjectManager.getManager().getCurrentProject();
-      //Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
-      Iterator iter = elems.iterator();
-      while (iter.hasNext()) {
-        MClassifier cls = (MClassifier)iter.next();
-        if (isCodeRelevantClassifier(cls)) {
-          classes.addElement(cls);
-        }
-      }
-      ClassGenerationDialog cgd = new ClassGenerationDialog(classes,true);
-      cgd.show();
+	Vector classes = new Vector();
+	// The following lines should be substituted by the following 2 commented lines.
+	// (This is because getting the project still does not seem to work...)
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram)) return;
+	ru.novosoft.uml.foundation.core.MNamespace ns = ((org.argouml.uml.diagram.ui.UMLDiagram) activeDiagram).getNamespace();
+	if (ns == null) return;
+	while (ns.getNamespace() != null) ns = ns.getNamespace();
+	Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifier.class);
+	//Project p = ProjectManager.getManager().getCurrentProject();
+	//Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
+	Iterator iter = elems.iterator();
+	while (iter.hasNext()) {
+	    MClassifier cls = (MClassifier) iter.next();
+	    if (isCodeRelevantClassifier(cls)) {
+		classes.addElement(cls);
+	    }
+	}
+	ClassGenerationDialog cgd = new ClassGenerationDialog(classes, true);
+	cgd.show();
     }
 
     public boolean shouldBeEnabled() {
-      ProjectBrowser pb = ProjectBrowser.getInstance();
-      ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-      return super.shouldBeEnabled() && (activeDiagram instanceof UMLDiagram);
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	return super.shouldBeEnabled() && (activeDiagram instanceof UMLDiagram);
     }
 
     private boolean isCodeRelevantClassifier(MClassifier cls) {
-      String path = Generator.getCodePath(cls);
-      String name = cls.getName();
-      if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0))) {
-        return false;
-      }
-      if (path != null) {
-        return (path.length() > 0);
-      }
-      MNamespace parent = cls.getNamespace();
-      while (parent != null) {
-        path = Generator.getCodePath(parent);
-        if (path != null) {
-          return (path.length() > 0);
-        }
-        parent = parent.getNamespace();
-      }
-      return false;
+	String path = Generator.getCodePath(cls);
+	String name = cls.getName();
+	if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0))) {
+	    return false;
+	}
+	if (path != null) {
+	    return (path.length() > 0);
+	}
+	MNamespace parent = cls.getNamespace();
+	while (parent != null) {
+	    path = Generator.getCodePath(parent);
+	    if (path != null) {
+		return (path.length() > 0);
+	    }
+	    parent = parent.getNamespace();
+	}
+	return false;
     }
 
 } /* end class ActionGenerateProjectCode */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -59,8 +60,8 @@ public class UMLTreeModel extends DefaultTreeModel
      *   @param showNone  if true, an element labelled "none" will be shown where there are
      *                        no actual entries in the list.
      */    
-    public UMLTreeModel(UMLUserInterfaceContainer container,UMLTreeRootNode root) {
-        super(root,true);
+    public UMLTreeModel(UMLUserInterfaceContainer container, UMLTreeRootNode root) {
+        super(root, true);
         _rootComponent = root;
         _container = container;
     }
@@ -95,7 +96,9 @@ public class UMLTreeModel extends DefaultTreeModel
     }
     
     public void fireTreeStructureChanged() {
-        fireTreeStructureChanged(this,new Object[] { getRoot() },null,null);
+        fireTreeStructureChanged(this, new Object[] {
+	    getRoot() 
+	}, null, null);
     }
     
     
@@ -135,8 +138,8 @@ public class UMLTreeModel extends DefaultTreeModel
     }
     
     
-    public boolean buildPopup(JPopupMenu popup,TreePath path) {
-        return _rootComponent.buildPopup(this,popup,path);
+    public boolean buildPopup(JPopupMenu popup, TreePath path) {
+        return _rootComponent.buildPopup(this, popup, path);
     }
     
     

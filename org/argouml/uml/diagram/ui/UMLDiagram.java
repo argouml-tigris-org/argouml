@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -120,18 +121,18 @@ public abstract class UMLDiagram
         }
     }
 
-  public void initialize(Object owner) {
-    super.initialize(owner);
-    if (owner instanceof MNamespace) setNamespace((MNamespace) owner);
-    else cat.debug("unknown object in UMLDiagram initialize:"
-			    + owner);
-  }
+    public void initialize(Object owner) {
+	super.initialize(owner);
+	if (owner instanceof MNamespace) setNamespace((MNamespace) owner);
+	else cat.debug("unknown object in UMLDiagram initialize:"
+		       + owner);
+    }
 
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public MNamespace getNamespace() { return _namespace; }
+    public MNamespace getNamespace() { return _namespace; }
   
     /**
      * sets the namespace of the Diagram, and
@@ -144,7 +145,7 @@ public abstract class UMLDiagram
             cat.error(ns);
             throw new IllegalArgumentException("Given object not a namespace");
         }
-        _namespace = (MNamespace)ns;      
+        _namespace = (MNamespace) ns;      
         // add the diagram as a listener to the namspace so
         // that when the namespace is remove()d the diagram is deleted also.
         UmlModelEventPump.getPump().addModelEventListener(this, _namespace, UmlModelEventPump.REMOVE);
@@ -220,34 +221,34 @@ public abstract class UMLDiagram
      */
     private void addActionsToToolbar(JToolBar toolBar, Object actions[]) {
         
-        for (int i=0; i < actions.length; ++i) {
+        for (int i = 0; i < actions.length; ++i) {
             Object o = actions[i];
             if (o == null) {
                 toolBar.addSeparator();
             } else if (o instanceof Action) {
-                toolBar.add((Action)o);
+                toolBar.add((Action) o);
             } else if (o instanceof Object[]) {
-                Object[] subActions = (Object[])o;
+                Object[] subActions = (Object[]) o;
                 toolBar.add(buildPopupToolBoxButton(subActions));
             } else if (o instanceof Component) {
-                toolBar.add((Component)o);
+                toolBar.add((Component) o);
             }
         }
     }
 
     private PopupToolBoxButton buildPopupToolBoxButton(Object[] actions) {
         PopupToolBoxButton toolBox = null;
-        for (int i=0; i < actions.length; ++i) {
+        for (int i = 0; i < actions.length; ++i) {
             if (actions[i] instanceof Action) {
-                Action a = (Action)actions[i];
+                Action a = (Action) actions[i];
                 if (toolBox == null) {
                     toolBox = new PopupToolBoxButton(a, 0, 1);
                 }
                 toolBox.add(a);
             } else if (actions[i] instanceof Object[]) {
-                Object[] actionRow = (Object[])actions[i];
-                for (int j=0; j < actionRow.length; ++j) {
-                    Action a = (Action)actionRow[j];
+                Object[] actionRow = (Object[]) actions[i];
+                for (int j = 0; j < actionRow.length; ++j) {
+                    Action a = (Action) actionRow[j];
                     if (toolBox == null) {
                         int cols = actionRow.length;
                         toolBox = new PopupToolBoxButton(a, 0, cols);
@@ -277,7 +278,7 @@ public abstract class UMLDiagram
     private Object[] getShapeActions() {
         Object actions[] = {
             null,
-            getShapePopupActions(),null,
+            getShapePopupActions(), null,
             _diagramName.getJComponent()
         };
         return actions;
@@ -285,10 +286,10 @@ public abstract class UMLDiagram
     
     private Object[] getShapePopupActions() {
         Object actions[][] = {
-            {_actionRectangle, _actionRRectangle},
-            {_actionCircle,    _actionLine},
-            {_actionText,      _actionPoly},
-            {_actionSpline,    _actionInk}
+        {_actionRectangle, _actionRRectangle},
+	{_actionCircle,    _actionLine},
+	{_actionText,      _actionPoly},
+	{_actionSpline,    _actionInk}
         };
 
         return actions;
@@ -308,98 +309,98 @@ public abstract class UMLDiagram
     }
     
     
-  /**
-   * This diagram listens to events from is namespace ModelElement;
-   * When the modelelement is removed, we also want to delete this diagram too.
-   * <p>There is also a risk that if this diagram was the one shown in the
-   * diagram panel, then it will remain after it has been deleted. so
-   * we need to deselect this diagram.
-   */
-  public void removed(MElementEvent e){
-      Object newTarget = ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
-      TargetManager.getInstance().setTarget(newTarget);
-      UmlModelEventPump.getPump().removeModelEventListener(this,_namespace, UmlModelEventPump.REMOVE);
-      ProjectManager.getManager().getCurrentProject().moveToTrash(this);      
+    /**
+     * This diagram listens to events from is namespace ModelElement;
+     * When the modelelement is removed, we also want to delete this diagram too.
+     * <p>There is also a risk that if this diagram was the one shown in the
+     * diagram panel, then it will remain after it has been deleted. so
+     * we need to deselect this diagram.
+     */
+    public void removed(MElementEvent e) {
+	Object newTarget = ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
+	TargetManager.getInstance().setTarget(newTarget);
+	UmlModelEventPump.getPump().removeModelEventListener(this, _namespace, UmlModelEventPump.REMOVE);
+	ProjectManager.getManager().getCurrentProject().moveToTrash(this);      
       
       
-  }
+    }
   
-  /**
-   * not used the UMLDiagram is only interested in the removed() event.
-   */
-  public void propertySet(MElementEvent e){
+    /**
+     * not used the UMLDiagram is only interested in the removed() event.
+     */
+    public void propertySet(MElementEvent e) {
       
-  }
+    }
   
-  /**
-   * not used the UMLDiagram is only interested in the removed() event.
-   */
-  public void roleAdded(MElementEvent e){
+    /**
+     * not used the UMLDiagram is only interested in the removed() event.
+     */
+    public void roleAdded(MElementEvent e) {
       
-  }
+    }
   
-  /**
-   * not used the UMLDiagram is only interested in the removed() event.
-   */
-  public void roleRemoved(MElementEvent e){
+    /**
+     * not used the UMLDiagram is only interested in the removed() event.
+     */
+    public void roleRemoved(MElementEvent e) {
       
-  }
+    }
   
-  /**
-   * not used the UMLDiagram is only interested in the removed() event.
-   */
-  public void listRoleItemSet(MElementEvent e){
+    /**
+     * not used the UMLDiagram is only interested in the removed() event.
+     */
+    public void listRoleItemSet(MElementEvent e) {
       
-  }
+    }
   
-  /**
-   * not used the UMLDiagram is only interested in the removed() event.
-   */
-  public void recovered(MElementEvent e){
+    /**
+     * not used the UMLDiagram is only interested in the removed() event.
+     */
+    public void recovered(MElementEvent e) {
       
-  }
+    }
   
-  /**
-   * Removes the UMLDiagram and all the figs on it as listener to 
-   * UmlModelEventPump. Is called by setTarget in TabDiagram to improve 
-   * performance. 
-   *
-   */
-  public void removeAsTarget() {
-      Enumeration enum = elements();
-      UmlModelEventPump pump = UmlModelEventPump.getPump();
-      while (enum.hasMoreElements()) {
-          Object o = enum.nextElement();
-          if (o instanceof MElementListener) {
-              MElementListener listener = (MElementListener)o;
-              Fig fig = (Fig)o;
-              pump.removeModelEventListener(listener, (MBase)fig.getOwner()); 
-          }
-      }
-      pump.removeModelEventListener(this, getNamespace());
+    /**
+     * Removes the UMLDiagram and all the figs on it as listener to 
+     * UmlModelEventPump. Is called by setTarget in TabDiagram to improve 
+     * performance. 
+     *
+     */
+    public void removeAsTarget() {
+	Enumeration enum = elements();
+	UmlModelEventPump pump = UmlModelEventPump.getPump();
+	while (enum.hasMoreElements()) {
+	    Object o = enum.nextElement();
+	    if (o instanceof MElementListener) {
+		MElementListener listener = (MElementListener) o;
+		Fig fig = (Fig) o;
+		pump.removeModelEventListener(listener, (MBase) fig.getOwner()); 
+	    }
+	}
+	pump.removeModelEventListener(this, getNamespace());
       
-  }
+    }
   
-  /**
-   * Adds the UMLDiagram and all the figs on it as listener to UmlModelEventPump.
-   * Together with removeAsModelListener this is a performance improvement. 
-   *
-   */
-  public void setAsTarget() {
-      Enumeration enum = elements();
-      UmlModelEventPump pump = UmlModelEventPump.getPump();
-      while (enum.hasMoreElements()) {
-          Fig fig = (Fig)enum.nextElement();
-          if (fig instanceof MElementListener) {
-              Object owner = fig.getOwner();
-              // pump.addModelEventListener((MElementListener)fig, owner);
-              // this will make sure all the correct event listeners are set. 
-              fig.setOwner(null); 
-              fig.setOwner(owner);
-          }
-      }    
+    /**
+     * Adds the UMLDiagram and all the figs on it as listener to UmlModelEventPump.
+     * Together with removeAsModelListener this is a performance improvement. 
+     *
+     */
+    public void setAsTarget() {
+	Enumeration enum = elements();
+	UmlModelEventPump pump = UmlModelEventPump.getPump();
+	while (enum.hasMoreElements()) {
+	    Fig fig = (Fig) enum.nextElement();
+	    if (fig instanceof MElementListener) {
+		Object owner = fig.getOwner();
+		// pump.addModelEventListener((MElementListener)fig, owner);
+		// this will make sure all the correct event listeners are set. 
+		fig.setOwner(null); 
+		fig.setOwner(owner);
+	    }
+	}    
       
-  }
+    }
 
 
   

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -26,15 +27,15 @@ package org.argouml.kernel;
 import java.beans.*;
 
 public class DelayedChangeNotify implements Runnable {
-  DelayedVChangeListener _listener;
-  PropertyChangeEvent _pce;
+    DelayedVChangeListener _listener;
+    PropertyChangeEvent _pce;
 
-  public DelayedChangeNotify(DelayedVChangeListener list,
-			     PropertyChangeEvent pce) {
-    _listener = list;
-    _pce = pce;
-  }
+    public DelayedChangeNotify(DelayedVChangeListener list,
+			       PropertyChangeEvent pce) {
+	_listener = list;
+	_pce = pce;
+    }
   
-  public void run() { _listener.delayedVetoableChange(_pce); }
+    public void run() { _listener.delayedVetoableChange(_pce); }
 
 } /* end class DelayedChangeNotify */

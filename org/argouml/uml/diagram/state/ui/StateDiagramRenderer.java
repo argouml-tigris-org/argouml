@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -92,22 +93,22 @@ public class StateDiagramRenderer implements GraphNodeRenderer, GraphEdgeRendere
             if (pState.getKind() == null) {
                 return null;
             }
-            if (pState.getKind().equals(MPseudostateKind.INITIAL)){
+            if (pState.getKind().equals(MPseudostateKind.INITIAL)) {
                 return new FigInitialState(gm, node);
             }
-            else if (pState.getKind().equals(MPseudostateKind.BRANCH)){
+            else if (pState.getKind().equals(MPseudostateKind.BRANCH)) {
                 return new FigBranchState(gm, node);
             }
-            else if (pState.getKind().equals(MPseudostateKind.FORK)){
+            else if (pState.getKind().equals(MPseudostateKind.FORK)) {
                 return new FigForkState(gm, node);
             }
-            else if (pState.getKind().equals(MPseudostateKind.JOIN)){
+            else if (pState.getKind().equals(MPseudostateKind.JOIN)) {
                 return new FigJoinState(gm, node);
             }
-            else if (pState.getKind().equals(MPseudostateKind.SHALLOW_HISTORY)){
+            else if (pState.getKind().equals(MPseudostateKind.SHALLOW_HISTORY)) {
                 return new FigShallowHistoryState(gm, node);
             }
-            else if (pState.getKind().equals(MPseudostateKind.DEEP_HISTORY)){
+            else if (pState.getKind().equals(MPseudostateKind.DEEP_HISTORY)) {
                 return new FigDeepHistoryState(gm, node);     
             }
             else {
@@ -118,20 +119,20 @@ public class StateDiagramRenderer implements GraphNodeRenderer, GraphEdgeRendere
         return null;
     }
 
-  /** Return a Fig that can be used to represent the given edge */
-  public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-    cat.debug("making figedge for " + edge);
-    if (edge instanceof MTransition) {
-      MTransition tr = (MTransition) edge;
-      FigTransition trFig = new FigTransition(tr, lay);
-      return trFig;
+    /** Return a Fig that can be used to represent the given edge */
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
+	cat.debug("making figedge for " + edge);
+	if (edge instanceof MTransition) {
+	    MTransition tr = (MTransition) edge;
+	    FigTransition trFig = new FigTransition(tr, lay);
+	    return trFig;
+	}
+
+	cat.debug("TODO StateDiagramRenderer getFigEdgeFor");
+	return null;
     }
 
-    cat.debug("TODO StateDiagramRenderer getFigEdgeFor");
-    return null;
-  }
 
-
-  static final long serialVersionUID = 8448809085349795886L;
+    static final long serialVersionUID = 8448809085349795886L;
 
 } /* end class StateDiagramRenderer */

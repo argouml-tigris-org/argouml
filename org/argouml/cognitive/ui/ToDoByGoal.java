@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -29,111 +30,112 @@ import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
 public class ToDoByGoal extends ToDoPerspective
-implements ToDoListListener {
+    implements ToDoListListener
+{
     protected static Category cat = 
         Category.getInstance(ToDoByGoal.class);
 
 
-  public ToDoByGoal() {
-    super("combobox.todo-perspective-goal");
-    addSubTreeModel(new GoListToGoalsToItems());
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // ToDoListListener implementation
-
-  public void toDoItemsChanged(ToDoListEvent tde) {
-    cat.debug("toDoItemsChanged");
-    Vector items = tde.getToDoItems();
-    int nItems = items.size();
-    Object path[] = new Object[2];
-    path[0] = Designer.TheDesigner.getToDoList();
-
-    Vector goals = Designer.TheDesigner.getGoals();
-    java.util.Enumeration enum = goals.elements();
-    while (enum.hasMoreElements()) {
-      Goal g = (Goal) enum.nextElement();
-      path[1] = g;
-      int nMatchingItems = 0;
-      for (int i = 0; i < nItems; i++) {
-	ToDoItem item = (ToDoItem) items.elementAt(i);
-	if (!item.supports(g)) continue;
-	nMatchingItems++;
-      }
-      if (nMatchingItems == 0) continue;
-      int childIndices[] = new int[nMatchingItems];
-      Object children[] = new Object[nMatchingItems];
-      nMatchingItems = 0;
-      for (int i = 0; i < nItems; i++) {
-	ToDoItem item = (ToDoItem) items.elementAt(i);
-	if (!item.supports(g)) continue;
-	childIndices[nMatchingItems] = getIndexOfChild(g, item);
-	children[nMatchingItems] = item;
-	nMatchingItems++;
-      }
-      fireTreeNodesChanged(this, path, childIndices, children);
+    public ToDoByGoal() {
+	super("combobox.todo-perspective-goal");
+	addSubTreeModel(new GoListToGoalsToItems());
     }
-  }
 
-  public void toDoItemsAdded(ToDoListEvent tde) {
-    cat.debug("toDoItemAdded");
-    Vector items = tde.getToDoItems();
-    int nItems = items.size();
-    Object path[] = new Object[2];
-    path[0] = Designer.TheDesigner.getToDoList();
+    ////////////////////////////////////////////////////////////////
+    // ToDoListListener implementation
 
-    Vector goals = Designer.TheDesigner.getGoals();
-    java.util.Enumeration enum = goals.elements();
-    while (enum.hasMoreElements()) {
-      Goal g = (Goal) enum.nextElement();
-      path[1] = g;
-      int nMatchingItems = 0;
-      for (int i = 0; i < nItems; i++) {
-	ToDoItem item = (ToDoItem) items.elementAt(i);
-	if (!item.supports(g)) continue;
-	nMatchingItems++;
-      }
-      if (nMatchingItems == 0) continue;
-      int childIndices[] = new int[nMatchingItems];
-      Object children[] = new Object[nMatchingItems];
-      nMatchingItems = 0;
-      for (int i = 0; i < nItems; i++) {
-	ToDoItem item = (ToDoItem) items.elementAt(i);
-	if (!item.supports(g)) continue;
-	childIndices[nMatchingItems] = getIndexOfChild(g, item);
-	children[nMatchingItems] = item;
-	nMatchingItems++;
-      }
-      fireTreeNodesInserted(this, path, childIndices, children);
+    public void toDoItemsChanged(ToDoListEvent tde) {
+	cat.debug("toDoItemsChanged");
+	Vector items = tde.getToDoItems();
+	int nItems = items.size();
+	Object path[] = new Object[2];
+	path[0] = Designer.TheDesigner.getToDoList();
+
+	Vector goals = Designer.TheDesigner.getGoals();
+	java.util.Enumeration enum = goals.elements();
+	while (enum.hasMoreElements()) {
+	    Goal g = (Goal) enum.nextElement();
+	    path[1] = g;
+	    int nMatchingItems = 0;
+	    for (int i = 0; i < nItems; i++) {
+		ToDoItem item = (ToDoItem) items.elementAt(i);
+		if (!item.supports(g)) continue;
+		nMatchingItems++;
+	    }
+	    if (nMatchingItems == 0) continue;
+	    int childIndices[] = new int[nMatchingItems];
+	    Object children[] = new Object[nMatchingItems];
+	    nMatchingItems = 0;
+	    for (int i = 0; i < nItems; i++) {
+		ToDoItem item = (ToDoItem) items.elementAt(i);
+		if (!item.supports(g)) continue;
+		childIndices[nMatchingItems] = getIndexOfChild(g, item);
+		children[nMatchingItems] = item;
+		nMatchingItems++;
+	    }
+	    fireTreeNodesChanged(this, path, childIndices, children);
+	}
     }
-  }
 
-  public void toDoItemsRemoved(ToDoListEvent tde) {
-    cat.debug("toDoItemAdded");
-    ToDoList list = Designer.TheDesigner.getToDoList(); //source?
-    Vector items = tde.getToDoItems();
-    int nItems = items.size();
-    Object path[] = new Object[2];
-    path[0] = Designer.TheDesigner.getToDoList();
+    public void toDoItemsAdded(ToDoListEvent tde) {
+	cat.debug("toDoItemAdded");
+	Vector items = tde.getToDoItems();
+	int nItems = items.size();
+	Object path[] = new Object[2];
+	path[0] = Designer.TheDesigner.getToDoList();
 
-    Vector goals = Designer.TheDesigner.getGoals();
-    java.util.Enumeration enum = goals.elements();
-    while (enum.hasMoreElements()) {
-      Goal g = (Goal) enum.nextElement();
-      cat.debug("toDoItemRemoved updating decision node!");
-      boolean anyInGoal = false;
-      for (int i = 0; i < nItems; i++) {
-	ToDoItem item = (ToDoItem) items.elementAt(i);
-	if (item.supports(g)) anyInGoal = true;
-      }
-      if (!anyInGoal) continue;
-      path[1] = g;
-      //fireTreeNodesChanged(this, path, childIndices, children);
-      fireTreeStructureChanged(path);
+	Vector goals = Designer.TheDesigner.getGoals();
+	java.util.Enumeration enum = goals.elements();
+	while (enum.hasMoreElements()) {
+	    Goal g = (Goal) enum.nextElement();
+	    path[1] = g;
+	    int nMatchingItems = 0;
+	    for (int i = 0; i < nItems; i++) {
+		ToDoItem item = (ToDoItem) items.elementAt(i);
+		if (!item.supports(g)) continue;
+		nMatchingItems++;
+	    }
+	    if (nMatchingItems == 0) continue;
+	    int childIndices[] = new int[nMatchingItems];
+	    Object children[] = new Object[nMatchingItems];
+	    nMatchingItems = 0;
+	    for (int i = 0; i < nItems; i++) {
+		ToDoItem item = (ToDoItem) items.elementAt(i);
+		if (!item.supports(g)) continue;
+		childIndices[nMatchingItems] = getIndexOfChild(g, item);
+		children[nMatchingItems] = item;
+		nMatchingItems++;
+	    }
+	    fireTreeNodesInserted(this, path, childIndices, children);
+	}
     }
-  }
 
-  public void toDoListChanged(ToDoListEvent tde) { }
+    public void toDoItemsRemoved(ToDoListEvent tde) {
+	cat.debug("toDoItemAdded");
+	ToDoList list = Designer.TheDesigner.getToDoList(); //source?
+	Vector items = tde.getToDoItems();
+	int nItems = items.size();
+	Object path[] = new Object[2];
+	path[0] = Designer.TheDesigner.getToDoList();
+
+	Vector goals = Designer.TheDesigner.getGoals();
+	java.util.Enumeration enum = goals.elements();
+	while (enum.hasMoreElements()) {
+	    Goal g = (Goal) enum.nextElement();
+	    cat.debug("toDoItemRemoved updating decision node!");
+	    boolean anyInGoal = false;
+	    for (int i = 0; i < nItems; i++) {
+		ToDoItem item = (ToDoItem) items.elementAt(i);
+		if (item.supports(g)) anyInGoal = true;
+	    }
+	    if (!anyInGoal) continue;
+	    path[1] = g;
+	    //fireTreeNodesChanged(this, path, childIndices, children);
+	    fireTreeStructureChanged(path);
+	}
+    }
+
+    public void toDoListChanged(ToDoListEvent tde) { }
 
 
 } /* end class ToDoByGoal */

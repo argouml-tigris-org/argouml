@@ -56,168 +56,168 @@ import ru.novosoft.uml.behavior.state_machines.MTransition;
 public class SelectionActionState extends SelectionWButtons {
     protected static Category cat = 
         Category.getInstance(SelectionActionState.class);
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public static Icon trans = 
-      ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Transition");
-  public static Icon transDown = 
-      ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("TransitionDown");
-  ////////////////////////////////////////////////////////////////
-  // instance varables
-  protected boolean _showIncomingLeft = true;
+    ////////////////////////////////////////////////////////////////
+    // constants
+    public static Icon trans = 
+	ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Transition");
+    public static Icon transDown = 
+	ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("TransitionDown");
+    ////////////////////////////////////////////////////////////////
+    // instance varables
+    protected boolean _showIncomingLeft = true;
     protected boolean _showIncomingAbove = true;
-  protected boolean _showOutgoingRight = true;
+    protected boolean _showOutgoingRight = true;
     protected boolean _showOutgoingBelow = true;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  /** Construct a new SelectionActionState for the given Fig */
-  public SelectionActionState(Fig f) { super(f); }
+    /** Construct a new SelectionActionState for the given Fig */
+    public SelectionActionState(Fig f) { super(f); }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public void setOutgoingButtonEnabled(boolean b) {
+    public void setOutgoingButtonEnabled(boolean b) {
         setOutgoingRightButtonEnabled(b);
         setIncomingAboveButtonEnabled(b);
-  }
+    }
 
-  public void setIncomingButtonEnabled(boolean b) {
+    public void setIncomingButtonEnabled(boolean b) {
         setIncomingLeftButtonEnabled(b);
         setOutgoingBelowButtonEnabled(b);
-  }
-
-  public void setIncomingLeftButtonEnabled(boolean b) {
-    _showIncomingLeft = b;
-  }
-
-  public void setOutgoingRightButtonEnabled(boolean b) {
-    _showOutgoingRight = b;
-  }
-
-   public void setIncomingAboveButtonEnabled(boolean b) {
-    _showIncomingAbove = b;
-  }
-
-  public void setOutgoingBelowButtonEnabled(boolean b) {
-    _showOutgoingBelow = b;
-  }
-
-  public void hitHandle(Rectangle r, Handle h) {
-    super.hitHandle(r, h);
-    if (h.index != -1) return;
-    if (!_paintButtons) return;
-    Editor ce = Globals.curEditor();
-    SelectionManager sm = ce.getSelectionManager();
-    if (sm.size() != 1) return;
-    ModeManager mm = ce.getModeManager();
-    if (mm.includes(ModeModify.class) && _pressedButton == -1) return;
-    int cx = _content.getX();
-    int cy = _content.getY();
-    int cw = _content.getWidth();
-    int ch = _content.getHeight();
-    int iw = trans.getIconWidth();
-    int ih = trans.getIconHeight();
-    int iwd = transDown.getIconWidth();
-    int ihd = transDown.getIconHeight();
-    if (_showOutgoingRight && hitLeft(cx + cw, cy + ch/2, iw, ih, r)) {
-      h.index = 12;
-      h.instructions = "Add an outgoing transition";
     }
-    else if (_showIncomingLeft && hitRight(cx, cy + ch/2, iw, ih, r)) {
-      h.index = 13;
-      h.instructions = "Add an incoming transition";
+
+    public void setIncomingLeftButtonEnabled(boolean b) {
+	_showIncomingLeft = b;
     }
-    else if (_showOutgoingBelow && hitAbove(cx+cw/2, cy, iwd, ihd, r)) {
-        h.index=10;
-        h.instructions = "Add an incoming transaction";
+
+    public void setOutgoingRightButtonEnabled(boolean b) {
+	_showOutgoingRight = b;
     }
-    else if (_showIncomingAbove && hitBelow(cx+cw/2,cy+ch, iwd, ihd, r)) {
-        h.index=11;
-        h.instructions = "Add an outgoing transaction";
+
+    public void setIncomingAboveButtonEnabled(boolean b) {
+	_showIncomingAbove = b;
     }
-    else {
-      h.index = -1;
-      h.instructions = "Move object(s)";
+
+    public void setOutgoingBelowButtonEnabled(boolean b) {
+	_showOutgoingBelow = b;
     }
-  }
+
+    public void hitHandle(Rectangle r, Handle h) {
+	super.hitHandle(r, h);
+	if (h.index != -1) return;
+	if (!_paintButtons) return;
+	Editor ce = Globals.curEditor();
+	SelectionManager sm = ce.getSelectionManager();
+	if (sm.size() != 1) return;
+	ModeManager mm = ce.getModeManager();
+	if (mm.includes(ModeModify.class) && _pressedButton == -1) return;
+	int cx = _content.getX();
+	int cy = _content.getY();
+	int cw = _content.getWidth();
+	int ch = _content.getHeight();
+	int iw = trans.getIconWidth();
+	int ih = trans.getIconHeight();
+	int iwd = transDown.getIconWidth();
+	int ihd = transDown.getIconHeight();
+	if (_showOutgoingRight && hitLeft(cx + cw, cy + ch / 2, iw, ih, r)) {
+	    h.index = 12;
+	    h.instructions = "Add an outgoing transition";
+	}
+	else if (_showIncomingLeft && hitRight(cx, cy + ch / 2, iw, ih, r)) {
+	    h.index = 13;
+	    h.instructions = "Add an incoming transition";
+	}
+	else if (_showOutgoingBelow && hitAbove(cx + cw / 2, cy, iwd, ihd, r)) {
+	    h.index = 10;
+	    h.instructions = "Add an incoming transaction";
+	}
+	else if (_showIncomingAbove && hitBelow(cx + cw / 2, cy + ch, iwd, ihd, r)) {
+	    h.index = 11;
+	    h.instructions = "Add an outgoing transaction";
+	}
+	else {
+	    h.index = -1;
+	    h.instructions = "Move object(s)";
+	}
+    }
 
 
-  /** Paint the handles at the four corners and midway along each edge
-   * of the bounding box.  */
-  public void paintButtons(Graphics g) {
-    int cx = _content.getX();
-    int cy = _content.getY();
-    int cw = _content.getWidth();
-    int ch = _content.getHeight();
-    if (_showOutgoingRight) 
-        paintButtonLeft(trans, g, cx + cw, cy + ch/2, 12);
-    if (_showIncomingLeft) 
-        paintButtonRight(trans, g, cx, cy + ch/2, 13);
-    if (_showOutgoingBelow) 
-        paintButtonAbove(transDown, g, cx + cw/2, cy , 14);
-    if (_showIncomingAbove) 
-        paintButtonBelow(transDown, g, cx+cw/2, cy + ch, 15);
-  }
-
-
-  public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-    if (hand.index < 10) {
-      _paintButtons = false;
-      super.dragHandle(mX, mY, anX, anY, hand);
-      return;
+    /** Paint the handles at the four corners and midway along each edge
+     * of the bounding box.  */
+    public void paintButtons(Graphics g) {
+	int cx = _content.getX();
+	int cy = _content.getY();
+	int cw = _content.getWidth();
+	int ch = _content.getHeight();
+	if (_showOutgoingRight) 
+	    paintButtonLeft(trans, g, cx + cw, cy + ch / 2, 12);
+	if (_showIncomingLeft) 
+	    paintButtonRight(trans, g, cx, cy + ch / 2, 13);
+	if (_showOutgoingBelow) 
+	    paintButtonAbove(transDown, g, cx + cw / 2, cy , 14);
+	if (_showIncomingAbove) 
+	    paintButtonBelow(transDown, g, cx + cw / 2, cy + ch, 15);
     }
-    int cx = _content.getX(), cy = _content.getY();
-    int cw = _content.getWidth(), ch = _content.getHeight();
-    int newX = cx, newY = cy, newW = cw, newH = ch;
-    Dimension minSize = _content.getMinimumSize();
-    int minWidth = minSize.width, minHeight = minSize.height;
-    Class edgeClass = null;
-    Class nodeClass = MActionStateImpl.class;
 
-    Editor ce = Globals.curEditor();
-    GraphModel gm = ce.getGraphModel();
-    if (!(gm instanceof MutableGraphModel)) return;
+
+    public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
+	if (hand.index < 10) {
+	    _paintButtons = false;
+	    super.dragHandle(mX, mY, anX, anY, hand);
+	    return;
+	}
+	int cx = _content.getX(), cy = _content.getY();
+	int cw = _content.getWidth(), ch = _content.getHeight();
+	int newX = cx, newY = cy, newW = cw, newH = ch;
+	Dimension minSize = _content.getMinimumSize();
+	int minWidth = minSize.width, minHeight = minSize.height;
+	Class edgeClass = null;
+	Class nodeClass = MActionStateImpl.class;
+
+	Editor ce = Globals.curEditor();
+	GraphModel gm = ce.getGraphModel();
+	if (!(gm instanceof MutableGraphModel)) return;
    
-    MutableGraphModel mgm = (MutableGraphModel) gm;
+	MutableGraphModel mgm = (MutableGraphModel) gm;
 
-    int bx = mX, by = mY;
-    boolean reverse = false;
-    switch (hand.index) {
-    case 12: //add incoming
-      edgeClass = MTransition.class;
-      by = cy + ch/2;
-      bx = cx + cw;
-      break;
-    case 13: // add outgoing
-      edgeClass = MTransition.class;
-      reverse = true;
-      by = cy + ch/2;
-      bx = cx;
-      break;
-     case 10: // add incoming on top
-      edgeClass = MTransition.class;
-      reverse = true;
-      by = cy ;
-      bx = cx + cw/2;
-      break;
-     case 11: // add outgoing below
-      edgeClass = MTransition.class;
-      by = cy + ch;
-      bx = cx + cw/2;
-      break;
-    default:
-      cat.warn("invalid handle number");
-      break;
+	int bx = mX, by = mY;
+	boolean reverse = false;
+	switch (hand.index) {
+	case 12: //add incoming
+	    edgeClass = MTransition.class;
+	    by = cy + ch / 2;
+	    bx = cx + cw;
+	    break;
+	case 13: // add outgoing
+	    edgeClass = MTransition.class;
+	    reverse = true;
+	    by = cy + ch / 2;
+	    bx = cx;
+	    break;
+	case 10: // add incoming on top
+	    edgeClass = MTransition.class;
+	    reverse = true;
+	    by = cy;
+	    bx = cx + cw / 2;
+	    break;
+	case 11: // add outgoing below
+	    edgeClass = MTransition.class;
+	    by = cy + ch;
+	    bx = cx + cw / 2;
+	    break;
+	default:
+	    cat.warn("invalid handle number");
+	    break;
+	}
+	if (edgeClass != null && nodeClass != null) {
+	    ModeCreateEdgeAndNode m = new
+		ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
+	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
+	    ce.mode(m);
+	}
     }
-    if (edgeClass != null && nodeClass != null) {
-      ModeCreateEdgeAndNode m = new
-	ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
-      m.setup((FigNode)_content, _content.getOwner(), bx, by, reverse);
-      ce.mode(m);
-    }
-  }
   
     /**
      * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)

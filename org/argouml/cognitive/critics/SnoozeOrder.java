@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,21 +41,21 @@ import java.util.*;
  *  mind that is not worth making explicit. */
 
 public class SnoozeOrder implements java.io.Serializable {
-  ////////////////////////////////////////////////////////////////
-  // constants
-  /** The initial sleeping time. */
-  private final long _initialIntervalMS = 1000 * 60 * 10; /* ten minutes */
+    ////////////////////////////////////////////////////////////////
+    // constants
+    /** The initial sleeping time. */
+    private final long _initialIntervalMS = 1000 * 60 * 10; /* ten minutes */
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** Critic should sleep until this time. */
-  private Date _snoozeUntil;
-  /** Ifthe designer snoozees the critics again before this time, then
-   * go to sleep for even longer. */
-  private Date _snoozeAgain;
-  /** The sleeping time, including the effects of repeated snoozeing. */
-  private long _interval;
+    /** Critic should sleep until this time. */
+    private Date _snoozeUntil;
+    /** Ifthe designer snoozees the critics again before this time, then
+     * go to sleep for even longer. */
+    private Date _snoozeAgain;
+    /** The sleeping time, including the effects of repeated snoozeing. */
+    private long _interval;
 
     private Date _now = new Date();
     private Date getNow() {
@@ -62,47 +63,50 @@ public class SnoozeOrder implements java.io.Serializable {
 	return _now;
     }
 	
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    ////////////////////////////////////////////////////////////////
+    // constructor
 
-  public SnoozeOrder() {
-    /* in the past, 0 milliseconds after January 1, 1970, 00:00:00 GMT. */
-    _snoozeUntil =  new Date(0); 
-    _snoozeAgain =  new Date(0); 
-  }
+    public SnoozeOrder() {
+	/* in the past, 0 milliseconds after January 1, 1970, 00:00:00 GMT. */
+	_snoozeUntil =  new Date(0); 
+	_snoozeAgain =  new Date(0); 
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public boolean getSnoozed() {
-    return _snoozeUntil.after(getNow());
-  }
+    public boolean getSnoozed() {
+	return _snoozeUntil.after(getNow());
+    }
 
-  public void setSnoozed(boolean h) {
-    if (h) snooze(); else unsnooze();
-  }
+    public void setSnoozed(boolean h) {
+	if (h) 
+	    snooze();
+	else
+	    unsnooze();
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // criticism control
+    ////////////////////////////////////////////////////////////////
+    // criticism control
 
-  public void snooze() {
-    if (_snoozeAgain.after(getNow())) _interval = nextInterval(_interval);
-    else _interval = _initialIntervalMS;
-    long now = (getNow()).getTime();
-    _snoozeUntil.setTime(now + _interval);
-    _snoozeAgain.setTime(now + _interval + _initialIntervalMS);
-    Critic.cat.info("Setting snooze order to: " +
-		       _snoozeUntil.toString());
-  }
+    public void snooze() {
+	if (_snoozeAgain.after(getNow())) _interval = nextInterval(_interval);
+	else _interval = _initialIntervalMS;
+	long now = (getNow()).getTime();
+	_snoozeUntil.setTime(now + _interval);
+	_snoozeAgain.setTime(now + _interval + _initialIntervalMS);
+	Critic.cat.info("Setting snooze order to: " +
+			_snoozeUntil.toString());
+    }
 
-  public void unsnooze() {
-    /* in the past, 0 milliseconds after January 1, 1970, 00:00:00 GMT. */
-    _snoozeUntil =  new Date(0); 
-  }
+    public void unsnooze() {
+	/* in the past, 0 milliseconds after January 1, 1970, 00:00:00 GMT. */
+	_snoozeUntil =  new Date(0); 
+    }
 
-  protected long nextInterval(long last) {
-    /* by default, double the snooze interval each time */
-    return last * 2;
-  }
+    protected long nextInterval(long last) {
+	/* by default, double the snooze interval each time */
+	return last * 2;
+    }
 
 } /* end class SnoozeOrder */

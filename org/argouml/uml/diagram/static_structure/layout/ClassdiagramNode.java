@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -96,12 +97,12 @@ class ClassdiagramNode implements LayoutedNode {
      */
     public int getRank() {
 
-	if(_rank == NORANK) {  // If the rank was not computed yet, compute it now.
-	    if(getUplinks().size() == 0) {  // If there are no uplinks,
-		_rank=0;  // place the node in the 1st row.
+	if (_rank == NORANK) {  // If the rank was not computed yet, compute it now.
+	    if (getUplinks().size() == 0) {  // If there are no uplinks,
+		_rank = 0;  // place the node in the 1st row.
 	    } else {  // Otherwise compute the max rank of the uplinks + 1
-		for(int i=0; i < getUplinks().size(); i++) {
-		    if(getUplink(i).getRank() + 1 > _rank) {
+		for (int i = 0; i < getUplinks().size(); i++) {
+		    if (getUplink(i).getRank() + 1 > _rank) {
 			_rank = getUplink(i).getRank() + 1;
 		    }
 		}
@@ -153,7 +154,7 @@ class ClassdiagramNode implements LayoutedNode {
      * @param The index of this uplink.
      * @return The ClassdiagramNode for this uplink.
      */
-    public ClassdiagramNode getUplink(int i) { return (ClassdiagramNode)(_uplinks.elementAt(i)); }
+    public ClassdiagramNode getUplink(int i) { return (ClassdiagramNode) (_uplinks.elementAt(i)); }
 
     /**
      * Add an uplink to this node.
@@ -175,7 +176,7 @@ class ClassdiagramNode implements LayoutedNode {
      * @param The index of this downlink.
      * @return The ClassdiagramNode of this downlink.
      */
-    public ClassdiagramNode getDownlink(int i) { return (ClassdiagramNode)(_downlinks.elementAt(i)); }
+    public ClassdiagramNode getDownlink(int i) { return (ClassdiagramNode) (_downlinks.elementAt(i)); }
 
     /**
      * Operation setDownlinks changes the value of the attribute _downlinks.
@@ -217,7 +218,7 @@ class ClassdiagramNode implements LayoutedNode {
      * @return whether the node is movable
      */
     boolean isMovable() {
-        return ( _downlinks.size()==0 && _uplinks.size()==0 && _sidelinks.size()>0);
+        return ( _downlinks.size() == 0 && _uplinks.size() == 0 && _sidelinks.size() > 0);
     }
 
     /** A placementhint gives an indication where it might be feasible to

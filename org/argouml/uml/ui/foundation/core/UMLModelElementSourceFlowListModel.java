@@ -50,14 +50,14 @@ public class UMLModelElementSourceFlowListModel
      */
     protected void buildModelList() {
         if (_target != null)
-        setAllElements(((MModelElement)getTarget()).getSourceFlows());
+	    setAllElements(((MModelElement) getTarget()).getSourceFlows());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {
-        return o instanceof MFlow && ((MModelElement)getTarget()).getSourceFlows().contains(o);
+        return o instanceof MFlow && ((MModelElement) getTarget()).getSourceFlows().contains(o);
     }
 
 }

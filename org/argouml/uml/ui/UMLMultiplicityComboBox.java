@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -41,8 +42,11 @@ import ru.novosoft.uml.foundation.data_types.*;
  *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
  *             that used reflection a lot.
  */
-public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, UMLUserInterfaceComponent {
-     protected static Category cat = Category.getInstance(UMLMultiplicityComboBox.class);
+public class UMLMultiplicityComboBox
+    extends JComboBox
+    implements ItemListener, UMLUserInterfaceComponent 
+{
+    protected static Category cat = Category.getInstance(UMLMultiplicityComboBox.class);
 
     private UMLUserInterfaceContainer _container;
     private Method _getMethod;
@@ -76,7 +80,7 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
    
     private static final Object[] _noArg = {};
     
-    public UMLMultiplicityComboBox(UMLUserInterfaceContainer container,Class elementClass) {
+    public UMLMultiplicityComboBox(UMLUserInterfaceContainer container, Class elementClass) {
 
         super();
 
@@ -88,14 +92,16 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
         addItemListener(this);
 
         Class[] getArgs = {};
-        Class[] setArgs = { MMultiplicity.class };
+        Class[] setArgs = {
+	    MMultiplicity.class 
+	};
 
         try {
 
-            _getMethod = elementClass.getMethod("getMultiplicity",getArgs);
-	    _setMethod = elementClass.getMethod("setMultiplicity",setArgs);
+            _getMethod = elementClass.getMethod("getMultiplicity", getArgs);
+	    _setMethod = elementClass.getMethod("setMultiplicity", setArgs);
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             cat.error(e.toString() + " in UMLMultiplicityComboBox()", e);
 
             setEnabled(false);
@@ -128,7 +134,7 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
 
     public void propertySet(final MElementEvent event) {
         String eventProp = event.getName();
-        if(eventProp == null || eventProp.equals("multiplicity")) {
+        if (eventProp == null || eventProp.equals("multiplicity")) {
             update();
         }
     }
@@ -140,21 +146,21 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
         
         try {
          
-	    Object obj = _getMethod.invoke(_container.getTarget(),_noArg);
-            if(obj instanceof MMultiplicity) {
+	    Object obj = _getMethod.invoke(_container.getTarget(), _noArg);
+            if (obj instanceof MMultiplicity) {
                 MMultiplicity mult = (MMultiplicity) obj;
                 lower = mult.getLower();
                 upper = mult.getUpper();
             }
 
-        } catch(Exception e) {
+        } catch (Exception e) {
             cat.error(e.toString() + " in UMLMultiplicityComboBox.update()", e);
 
         }
 
         boolean match = false;
 	int i = 0;
-        while (i < _sMultiplicities.length && match==false) {
+        while (i < _sMultiplicities.length && match == false) {
 
             if (lower == _iLower[i] && upper == _iUpper[i]) {
 
@@ -167,7 +173,7 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
 
         }
 
-        if (match==false) {
+        if (match == false) {
 
             StringBuffer buf = new StringBuffer();
 
@@ -199,11 +205,11 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
     
     public void itemStateChanged(ItemEvent event) {
 
-        if(event.getStateChange() == ItemEvent.SELECTED) {
+        if (event.getStateChange() == ItemEvent.SELECTED) {
 
             int index = getSelectedIndex();
 
-	    int lower=0, upper=0;
+	    int lower = 0, upper = 0;
 
 	    if (index >= 0 && index < _iLower.length) {
 
@@ -214,19 +220,19 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
 
 		boolean ok = true;
 
-		String s = (String)getSelectedItem();
+		String s = (String) getSelectedItem();
 		s = s.trim();
 		int length = s.length();
 
-		if (length>0) {
+		if (length > 0) {
 
 		    String sLower = new String(s);
 		    String sUpper = new String(s);
 
 		    int i = 0;
-		    while (i<length&&Character.isDigit(s.charAt(i))) i++;
+		    while (i < length && Character.isDigit(s.charAt(i))) i++;
 
-		    if (i==0) {
+		    if (i == 0) {
 
 			ok = false;
 		
@@ -235,7 +241,7 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
 		    sLower = s.substring(0, i);
 		    sUpper = s.substring(i).trim();
 		    
-		    if (sUpper!=null && sUpper.length()>0) {
+		    if (sUpper != null && sUpper.length() > 0) {
 
 			if (!sUpper.startsWith("..")) {
 
@@ -247,9 +253,9 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
 
 			    length = sUpper.length();
 			    i = 0;
-			    while (i<length&&Character.isDigit(s.charAt(i))) i++;
+			    while (i < length && Character.isDigit(s.charAt(i))) i++;
 
-			    if (i!=sUpper.length()) {
+			    if (i != sUpper.length()) {
 
 				ok = false;
 				
@@ -264,7 +270,7 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
 		    }
 
 
-		    if (ok==true) {
+		    if (ok == true) {
 
 			Integer intLower = new Integer(sLower);
 			Integer intUpper = new Integer(sUpper);
@@ -280,17 +286,19 @@ public class UMLMultiplicityComboBox extends JComboBox implements ItemListener, 
 		
 	    
 	    MMultiplicity mult = null;
-	    if(lower >= -1) {
+	    if (lower >= -1) {
 
-		mult = UmlFactory.getFactory().getDataTypes().createMultiplicity(lower,upper);
+		mult = UmlFactory.getFactory().getDataTypes().createMultiplicity(lower, upper);
 
             }
 
             try {
 
-                _setMethod.invoke(_container.getTarget(),new Object[] { mult });
+                _setMethod.invoke(_container.getTarget(), new Object[] {
+		    mult 
+		});
 
-            } catch(Exception e) {
+            } catch (Exception e) {
                 cat.error(e.toString() + " in UMLMultiplicityComboBox.itemStateChanged()", e);
 
             }

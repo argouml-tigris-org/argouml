@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,17 +43,17 @@ import org.argouml.cognitive.critics.*;
 
 public class CrNonAggDataType extends CrUML {
 
-  public CrNonAggDataType() {
-    setHeadline("Wrap MDataType");
-    addSupportedDecision(CrUML.decCONTAINMENT);
-    addSupportedDecision(CrUML.decCLASS_SELECTION);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-  }
+    public CrNonAggDataType() {
+	setHeadline("Wrap MDataType");
+	addSupportedDecision(CrUML.decCONTAINMENT);
+	addSupportedDecision(CrUML.decCLASS_SELECTION);
+	setKnowledgeTypes(Critic.KT_SYNTAX);
+    }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    // TODO: not implemented
-    return NO_PROBLEM;
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	// TODO: not implemented
+	return NO_PROBLEM;
+    }
 
 } /* end class CrNonAggDataType.java */
 

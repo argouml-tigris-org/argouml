@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -37,32 +38,32 @@ import org.tigris.gef.util.*;
  */
 
 public class GenDescendantClasses implements ChildGenerator {
-  public static GenDescendantClasses SINGLETON = new GenDescendantClasses();
+    public static GenDescendantClasses SINGLETON = new GenDescendantClasses();
 
-  public Enumeration gen(Object o) {
-    Vector res = new Vector();
-    if (!(o instanceof MGeneralizableElement)) return res.elements();
+    public Enumeration gen(Object o) {
+	Vector res = new Vector();
+	if (!(o instanceof MGeneralizableElement)) return res.elements();
 
-    MGeneralizableElement cls = (MGeneralizableElement) o;
-    Collection gens = cls.getSpecializations();
-    if (gens == null) return res.elements();
-    accumulateDescendants(cls, res);
-    return res.elements();
-  }
-
-
-  public void accumulateDescendants(MGeneralizableElement cls, Vector accum) {
-    Vector gens = new Vector(cls.getSpecializations());
-    if (gens == null) return;
-    int size = gens.size();
-    for (int i = 0; i < size; i++) {
-      MGeneralization g = (MGeneralization) (gens.elementAt(i));
-      MGeneralizableElement ge = g.getChild();
-      if (!accum.contains(ge)) {
-	accum.add(ge);
-	accumulateDescendants(cls, accum);
-      }
+	MGeneralizableElement cls = (MGeneralizableElement) o;
+	Collection gens = cls.getSpecializations();
+	if (gens == null) return res.elements();
+	accumulateDescendants(cls, res);
+	return res.elements();
     }
-  }
+
+
+    public void accumulateDescendants(MGeneralizableElement cls, Vector accum) {
+	Vector gens = new Vector(cls.getSpecializations());
+	if (gens == null) return;
+	int size = gens.size();
+	for (int i = 0; i < size; i++) {
+	    MGeneralization g = (MGeneralization) (gens.elementAt(i));
+	    MGeneralizableElement ge = g.getChild();
+	    if (!accum.contains(ge)) {
+		accum.add(ge);
+		accumulateDescendants(cls, accum);
+	    }
+	}
+    }
 } /* end class GenDescendantClasses */
 

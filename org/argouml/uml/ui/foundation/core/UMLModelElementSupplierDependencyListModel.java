@@ -50,7 +50,7 @@ public class UMLModelElementSupplierDependencyListModel
      */
     protected void buildModelList() {
         if (_target != null) {
-            setAllElements(((MModelElement)getTarget()).getSupplierDependencies());
+            setAllElements(((MModelElement) getTarget()).getSupplierDependencies());
         }
     }
 
@@ -58,7 +58,7 @@ public class UMLModelElementSupplierDependencyListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {
-        return o instanceof MDependency && ((MModelElement)getTarget()).getSupplierDependencies().contains(o);
+        return o instanceof MDependency && ((MModelElement) getTarget()).getSupplierDependencies().contains(o);
     }
 
 }

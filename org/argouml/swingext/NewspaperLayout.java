@@ -1,3 +1,27 @@
+// $Id$
+// Copyright (c) 2003 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 /*
  * NewspaperLayout.java
  */
@@ -48,7 +72,7 @@ public class NewspaperLayout extends GridLayout2 {
     }
 
     public Dimension preferredLayoutSize(Container parent) {
-        JComponent comp = (JComponent)parent;
+        JComponent comp = (JComponent) parent;
         Rectangle rect = comp.getVisibleRect();
         //preferredX = (int) rect.getWidth();
         cat.debug("Visible width = " + preferredX);
@@ -92,14 +116,14 @@ public class NewspaperLayout extends GridLayout2 {
             largestHeight = 0;
 
             if (cellSizing == FITPARENT) {
-                int availableWidth = parent.getWidth() - (insets.left + insets.right + (ncols-1)*getHgap());
-                int availableHeight = parent.getHeight() - (insets.top + insets.bottom + (nrows-1)*getVgap());
+                int availableWidth = parent.getWidth() - (insets.left + insets.right + (ncols - 1) * getHgap());
+                int availableHeight = parent.getHeight() - (insets.top + insets.bottom + (nrows - 1) * getVgap());
                 largestWidth = availableWidth / ncols;
                 largestHeight = availableHeight / nrows;
             }
             else {
 
-                for (int c = 0; c < ncols ; ++c) {
+                for (int c = 0; c < ncols; ++c) {
                     for (int r = 0; r < nrows; ++r) {
                         int i = r * ncols + c;
                         if (parent.getComponent(i).getPreferredSize().getWidth() > colWidth[c]) {
@@ -115,14 +139,14 @@ public class NewspaperLayout extends GridLayout2 {
             }
 
             // Calculate width
-            gridWidth = (ncols-1) * getHgap();
-            for (int c = 0; c < ncols ; ++c) {
+            gridWidth = (ncols - 1) * getHgap();
+            for (int c = 0; c < ncols; ++c) {
                 gridWidth += colWidth[c];
             }
 
             // Calculate Height
-            int gridHeight = (nrows-1) * getVgap();
-            for (int r = 0; r < nrows ; ++r) {
+            int gridHeight = (nrows - 1) * getVgap();
+            for (int r = 0; r < nrows; ++r) {
                 gridHeight += rowHeight[r];
             }
 
@@ -134,7 +158,7 @@ public class NewspaperLayout extends GridLayout2 {
     }
 
     private int positionComponentsInternal(Container parent, int colWidth[], int rowHeight[], int gridHeight, int nrows, int ncols) {
-        JComponent parentComp = (JComponent)parent;
+        JComponent parentComp = (JComponent) parent;
         int visibleHeight = (int) parentComp.getVisibleRect().getHeight();
         int visibleWidth = (int) parentComp.getVisibleRect().getWidth();
         int ncomponents = parent.getComponentCount();
@@ -144,18 +168,18 @@ public class NewspaperLayout extends GridLayout2 {
         int y = insets.top;
         int cellHeight;
         int cellWidth;
-        for (int r = 0; r < nrows ; ++r) {
+        for (int r = 0; r < nrows; ++r) {
 
             cellHeight = getComponentCellHeight(r);
 
             if (y + cellHeight + insets.bottom > visibleHeight ) {
                 y = insets.top;
                 newsColumn++;
-                if (insets.left + insets.right + newsColumn*(gridWidth+gridGap) + gridWidth > visibleWidth) return newsColumn;
+                if (insets.left + insets.right + newsColumn * (gridWidth + gridGap) + gridWidth > visibleWidth) return newsColumn;
             }
 
-            int x = insets.left + newsColumn*(gridWidth+gridGap);
-            for (int c = 0; c < ncols ; ++c) {
+            int x = insets.left + newsColumn * (gridWidth + gridGap);
+            for (int c = 0; c < ncols; ++c) {
                 cellWidth = getComponentCellWidth(c);
 
                 int i = r * ncols + c;
@@ -173,7 +197,7 @@ public class NewspaperLayout extends GridLayout2 {
 
 
     private boolean positionComponentsExternal(Container parent, int colWidth[], int rowHeight[], int gridHeight, int nrows, int ncols, int maxGrids) {
-        JComponent parentComp = (JComponent)parent;
+        JComponent parentComp = (JComponent) parent;
         int visibleWidth = (int) parentComp.getVisibleRect().getWidth();
         int ncomponents = parent.getComponentCount();
         Insets insets = parent.getInsets();
@@ -184,12 +208,12 @@ public class NewspaperLayout extends GridLayout2 {
         int y = insets.top;
         int componentCellHeight;
         int componentCellWidth;
-        for (int r = 0; r < nrows ; ++r) {
+        for (int r = 0; r < nrows; ++r) {
             if (cellSizing != ROWCOLPREFERRED) componentCellHeight = largestHeight;
             else componentCellHeight = rowHeight[r];
 
-            int x = insets.left + newsColumn*(gridWidth+gridGap);
-            for (int c = 0; c < ncols ; ++c) {
+            int x = insets.left + newsColumn * (gridWidth + gridGap);
+            for (int c = 0; c < ncols; ++c) {
                 if (cellSizing != ROWCOLPREFERRED) componentCellWidth = largestWidth;
                 else componentCellWidth = colWidth[c];
 

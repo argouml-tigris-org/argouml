@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -72,9 +73,9 @@ public abstract class AbstractUmlModelFactory {
                 Object[] listenerList = lists[i]._listenerList;
                 for (int j = 0; j < listenerList.length; j += 3) {
                     pump.addModelEventListener(
-                        listenerList[j + 2],
-                        o,
-                        (String) listenerList[j + 1]);
+					       listenerList[j + 2],
+					       o,
+					       (String) listenerList[j + 1]);
                 }
             }
         }
@@ -109,10 +110,10 @@ public abstract class AbstractUmlModelFactory {
             ((MBase) handle).addMElementListener(pump);
             if (GuiEnabled) {
                 ((MBase) handle).addMElementListener(
-                    ProjectBrowser.getInstance().getNavigatorPane());
+						     ProjectBrowser.getInstance().getNavigatorPane());
             }
             ((MBase) handle).addMElementListener(
-                UmlModelListener.getInstance());
+						 UmlModelListener.getInstance());
         }
     }
 

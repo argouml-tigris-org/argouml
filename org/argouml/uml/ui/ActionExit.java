@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,71 +39,65 @@ import javax.swing.*;
  */
 public class ActionExit extends UMLAction {
   
-  ////////////////////////////////////////////////////////////////
-  // static variables
+    ////////////////////////////////////////////////////////////////
+    // static variables
   
-  public static ActionExit SINGLETON = new ActionExit();
+    public static ActionExit SINGLETON = new ActionExit();
  
-  /** remember if this form is already active, so that it does
+    /** remember if this form is already active, so that it does
         not popup twice.
-  */
-  private boolean active = false;
+    */
+    private boolean active = false;
   
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
   
-  protected ActionExit() {
-    super ("action.exit", NO_ICON);
-    active = false;
-  }
+    protected ActionExit() {
+	super ("action.exit", NO_ICON);
+	active = false;
+    }
   
-  ////////////////////////////////////////////////////////////////
-  // main methods
+    ////////////////////////////////////////////////////////////////
+    // main methods
   
-  public void actionPerformed (ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    Project p = ProjectManager.getManager().getCurrentProject();
+    public void actionPerformed (ActionEvent ae) {
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	Project p = ProjectManager.getManager().getCurrentProject();
     
-    if (p != null && p.needsSave() && !active) {
-      active = true;
-      String t = MessageFormat.format (
-          Argo.localize (
-            "Actions",
-            "optionpane.exit-save-changes-to"
-          ),
-          new Object[] {p.getName()}
-        );
-      int response = JOptionPane.showConfirmDialog (
-          pb,
-          t,
-          t,
-          JOptionPane.YES_NO_CANCEL_OPTION
-        );
+	if (p != null && p.needsSave() && !active) {
+	    active = true;
+	    String t = 
+		MessageFormat.format(Argo.localize("Actions",
+						   "optionpane.exit-save-changes-to"),
+				     new Object[] {p.getName()} );
+	    int response = 
+		JOptionPane.showConfirmDialog(pb, t, t, 
+					      JOptionPane.YES_NO_CANCEL_OPTION);
       
-      if (response == JOptionPane.CANCEL_OPTION) {
-          active = false;
-          return;
-      }
-      if (response == JOptionPane.YES_OPTION) {
-        boolean safe = false;
+	    if (response == JOptionPane.CANCEL_OPTION) {
+		active = false;
+		return;
+	    }
+	    if (response == JOptionPane.YES_OPTION) {
+		boolean safe = false;
         
-        if (ActionSaveProject.SINGLETON.shouldBeEnabled()) {
-          safe = ActionSaveProject.SINGLETON.trySave (true);
-        }
-        if (!safe) {
-          safe = ActionSaveProjectAs.SINGLETON.trySave (false);
-        }
-        if (!safe) {
-          active = false;
-          return;
-        }
-      }
-      active = false;
+		if (ActionSaveProject.SINGLETON.shouldBeEnabled()) {
+		    safe = ActionSaveProject.SINGLETON.trySave (true);
+		}
+		if (!safe) {
+		    safe = ActionSaveProjectAs.SINGLETON.trySave (false);
+		}
+		if (!safe) {
+		    active = false;
+		    return;
+		}
+	    }
+	    active = false;
+	}
+	if (!active) {
+	    Configuration.save();
+	    ArgoSecurityManager.getInstance().setAllowExit (true);
+	    System.exit (0);
+	}
     }
-    if (!active) {
-        Configuration.save();
-        ArgoSecurityManager.getInstance().setAllowExit (true);
-        System.exit (0);
-    }
-  }
 } /* end class ActionExit */

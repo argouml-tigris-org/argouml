@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -62,7 +63,7 @@ public class FigEdgeNote extends FigEdgeModelElement implements VetoableChangeLi
      */
     public FigEdgeNote() {
 	setBetweenNearestPoints(true);
-	((FigPoly)_fig).setRectilinear(false);
+	((FigPoly) _fig).setRectilinear(false);
 	setDashed(true);
     }
     
@@ -80,9 +81,9 @@ public class FigEdgeNote extends FigEdgeModelElement implements VetoableChangeLi
         Fig destFig = lay.presentationFor(toNode);
         Fig sourceFig = lay.presentationFor(fromNode);
         if (destFig == null || sourceFig == null) throw new IllegalStateException("No destfig or sourcefig while creating FigEdgeNode");
-        setDestFigNode((FigNode)destFig);
+        setDestFigNode((FigNode) destFig);
         setDestPortFig(destFig);
-        setSourceFigNode((FigNode)sourceFig);
+        setSourceFigNode((FigNode) sourceFig);
         setSourcePortFig(sourceFig);
         computeRoute();
     }

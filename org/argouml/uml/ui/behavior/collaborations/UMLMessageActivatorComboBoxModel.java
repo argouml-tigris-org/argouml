@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -53,7 +54,7 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Object target = getTarget();
         if (target instanceof MMessage) {
-            MMessage mes = (MMessage)target;
+            MMessage mes = (MMessage) target;
             removeAllElements();
             // fill the list with items
             setElements(CollaborationsHelper.getHelper().getAllPossibleActivators(mes));
@@ -67,8 +68,8 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
     protected boolean isValidElement(Object m) {
         return ((m instanceof MMessage)  && 
             m != getTarget() && 
-            !((MMessage)(getTarget())).getPredecessors().contains(m) &&
-            ((MMessage)m).getInteraction() == ((MMessage)(getTarget())).getInteraction());
+            !((MMessage) (getTarget())).getPredecessors().contains(m) &&
+            ((MMessage) m).getInteraction() == ((MMessage) (getTarget())).getInteraction());
     }
 
     /**
@@ -76,7 +77,7 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MMessage)getTarget()).getActivator();
+            return ((MMessage) getTarget()).getActivator();
         }
         return null;
     }
@@ -86,13 +87,13 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
      */
     protected void setTarget(Object target) {
         if (getTarget() instanceof MMessage) {
-            MInteraction inter = ((MMessage)getTarget()).getInteraction();
+            MInteraction inter = ((MMessage) getTarget()).getInteraction();
             if (inter != null)
                 UmlModelEventPump.getPump().removeModelEventListener(this, inter, "message");
         }   
         super.setTarget(target);
         if (target instanceof MMessage) {
-            MInteraction inter = ((MMessage)target).getInteraction();
+            MInteraction inter = ((MMessage) target).getInteraction();
             if (inter != null)
                 UmlModelEventPump.getPump().addModelEventListener(this, inter, "message");
         }

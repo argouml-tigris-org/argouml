@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -48,63 +49,63 @@ import org.argouml.kernel.*;
 
 public class WizManyNames extends Wizard {
     protected static Category cat = Category.getInstance(WizManyNames.class);
-
-  protected String _instructions =
-  "Please change the name of the offending model element.";
-  protected String _label = Argo.localize("UMLMenu", "label.name");
-  public Vector _mes = null;
-
-  protected WizStepManyTextFields _step1 = null;
-
-  public WizManyNames() { }
-
-  public int getNumSteps() { return 1; }
-
-  public void setMEs(Vector mes) { _mes = mes; }
-
-  public void setInstructions(String s) { _instructions = s; }
-
-  /** Create a new panel for the given step.  */
-  public JPanel makePanel(int newStep) {
-    switch (newStep) {
-    case 1:
-      if (_step1 == null) {
-	Vector names = new Vector();
-	int size = _mes.size();
-	for (int i = 0; i < size; i++) {
-	  MModelElement me = (MModelElement) _mes.elementAt(i);
-	  names.addElement(me.getName());
+					      
+    protected String _instructions =
+	"Please change the name of the offending model element.";
+    protected String _label = Argo.localize("UMLMenu", "label.name");
+    public Vector _mes = null;
+							  
+    protected WizStepManyTextFields _step1 = null;
+							      
+    public WizManyNames() { }
+								  
+    public int getNumSteps() { return 1; }
+								      
+    public void setMEs(Vector mes) { _mes = mes; }
+									  
+    public void setInstructions(String s) { _instructions = s; }
+									      
+    /** Create a new panel for the given step.  */
+    public JPanel makePanel(int newStep) {
+	switch (newStep) {
+	case 1:
+	    if (_step1 == null) {
+		Vector names = new Vector();
+		int size = _mes.size();
+		for (int i = 0; i < size; i++) {
+		    MModelElement me = (MModelElement) _mes.elementAt(i);
+		    names.addElement(me.getName());
+		}
+		_step1 = new WizStepManyTextFields(this, _instructions, names);
+	    }
+	    return _step1;
 	}
-	_step1 = new WizStepManyTextFields(this, _instructions, names);
-      }
-      return _step1;
+	return null;
     }
-    return null;
-  }
-
-  /** Take action at the completion of a step. For example, when the
-   *  given step is 0, do nothing; and when the given step is 1, do
-   *  the first action.  Argo non-modal wizards should take action as
-   *  they do along, as soon as possible, they should not wait until
-   *  the final step. */
-  public void doAction(int oldStep) {
-    cat.debug("doAction " + oldStep);
-    switch (oldStep) {
-    case 1:
-      Vector newNames = null;
-      if (_step1 != null) newNames = _step1.getStrings();
-      try {
-	int size = _mes.size();
-	for (int i = 0; i < size; i++) {
-	  MModelElement me = (MModelElement) _mes.elementAt(i);
-	  me.setName((String)newNames.elementAt(i));
+										  
+    /** Take action at the completion of a step. For example, when the
+     *  given step is 0, do nothing; and when the given step is 1, do
+     *  the first action.  Argo non-modal wizards should take action as
+     *  they do along, as soon as possible, they should not wait until
+     *  the final step. */
+    public void doAction(int oldStep) {
+	cat.debug("doAction " + oldStep);
+	switch (oldStep) {
+	case 1:
+	    Vector newNames = null;
+	    if (_step1 != null) newNames = _step1.getStrings();
+	    try {
+		int size = _mes.size();
+		for (int i = 0; i < size; i++) {
+		    MModelElement me = (MModelElement) _mes.elementAt(i);
+		    me.setName((String) newNames.elementAt(i));
+		}
+	    }
+	    catch (Exception pve) {
+		cat.error("could not set name", pve);
+	    }
 	}
-      }
-      catch (Exception pve) {
-	cat.error("could not set name", pve);
-      }
     }
-  }
-
-
+										      
+										      
 } /* end class WizManyNames */

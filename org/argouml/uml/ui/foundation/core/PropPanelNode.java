@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -58,7 +59,7 @@ import org.argouml.util.ConfigLoader;
 import ru.novosoft.uml.foundation.core.MNode;
 
 /**
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelNode extends PropPanelClassifier {
@@ -66,20 +67,20 @@ public class PropPanelNode extends PropPanelClassifier {
     ////////////////////////////////////////////////////////////////
     // contructors
     public PropPanelNode() {
-        super("Node",_nodeIcon, ConfigLoader.getTabPropsOrientation());
+        super("Node", _nodeIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class)ModelFacade.NODE;
+        Class mclass = (Class) ModelFacade.NODE;
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 
         addField("Generalizations:", getGeneralizationScroll());
 
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
 
-        JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-        modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-        modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-        modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+        JPanel modifiersPanel = new JPanel(new GridLayout(0, 3));
+        modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"), this, new UMLReflectionBooleanProperty("isAbstract", mclass, "isAbstract", "setAbstract")));
+        modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"), this, new UMLReflectionBooleanProperty("isLeaf", mclass, "isLeaf", "setLeaf")));
+        modifiersPanel.add(new UMLCheckBox(localize("root"), this, new UMLReflectionBooleanProperty("isRoot", mclass, "isRoot", "setRoot")));
         addField(Argo.localize("UMLMenu", "label.modifiers"), modifiersPanel);
 
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
@@ -88,18 +89,18 @@ public class PropPanelNode extends PropPanelClassifier {
 
         addSeperator();
 
-        JList compList = new UMLList(new UMLReflectionListModel(this,"component",true,"getResidents","setResidents",null,null),true);
+        JList compList = new UMLList(new UMLReflectionListModel(this, "component", true, "getResidents", "setResidents", null, null), true);
         compList.setForeground(Color.blue);
         addField(Argo.localize("UMLMenu", "label.components"), new JScrollPane(compList));
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-        new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete node"),"removeElement",null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete node"), "removeElement", null);
     }
 
     public Collection getResidents() {
         Collection components = null;
         Object target = getTarget();
-        if(ModelFacade.isANode(target)) {
+        if (ModelFacade.isANode(target)) {
             components = ModelFacade.getResidents(target);
         }
         return components;
@@ -107,7 +108,7 @@ public class PropPanelNode extends PropPanelClassifier {
 
     public void setResidents(Collection components) {
         Object target = getTarget();
-        if(ModelFacade.isANode(target)) {
+        if (ModelFacade.isANode(target)) {
             ((MNode) target).setResidents(components);
         }
     }

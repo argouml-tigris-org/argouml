@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -97,7 +98,7 @@ public class ArgoParser extends SAXParserBase {
 
         if ((_url == null) && _addMembers) {
             Argo.log.info(
-                "URL not set! Won't be able to add members! Aborting...");
+			  "URL not set! Won't be able to add members! Aborting...");
             lastLoadMessage = "URL not set!";
             return;
         }
@@ -138,16 +139,16 @@ public class ArgoParser extends SAXParserBase {
             cat.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
         try {
             switch (_tokens.toToken(e.getName(), true)) {
-                case ArgoTokenTable.TOKEN_argo :
-                    handleArgo(e);
-                    break;
-                case ArgoTokenTable.TOKEN_documentation :
-                    handleDocumentation(e);
-                    break;
-                default :
-                    if (_dbg)
-                        cat.warn("WARNING: unknown tag:" + e.getName());
-                    break;
+	    case ArgoTokenTable.TOKEN_argo :
+		handleArgo(e);
+		break;
+	    case ArgoTokenTable.TOKEN_documentation :
+		handleDocumentation(e);
+		break;
+	    default :
+		if (_dbg)
+		    cat.warn("WARNING: unknown tag:" + e.getName());
+		break;
             }
         } catch (Exception ex) {
             cat.error(ex);
@@ -159,28 +160,28 @@ public class ArgoParser extends SAXParserBase {
             cat.debug("NOTE: ArgoParser handleEndTag:" + e.getName() + ".");
         try {
             switch (_tokens.toToken(e.getName(), false)) {
-                case ArgoTokenTable.TOKEN_authorname :
-                    handleAuthorname(e);
-                    break;
-                case ArgoTokenTable.TOKEN_version :
-                    handleVersion(e);
-                    break;
-                case ArgoTokenTable.TOKEN_description :
-                    handleDescription(e);
-                    break;
-                case ArgoTokenTable.TOKEN_searchpath :
-                    handleSearchpath(e);
-                    break;
-                case ArgoTokenTable.TOKEN_member :
-                    handleMember(e);
-                    break;
-                case ArgoTokenTable.TOKEN_historyfile :
-                    handleHistoryfile(e);
-                    break;
-                default :
-                    if (_dbg)
-                        cat.warn("WARNING: unknown end tag:" + e.getName());
-                    break;
+	    case ArgoTokenTable.TOKEN_authorname :
+		handleAuthorname(e);
+		break;
+	    case ArgoTokenTable.TOKEN_version :
+		handleVersion(e);
+		break;
+	    case ArgoTokenTable.TOKEN_description :
+		handleDescription(e);
+		break;
+	    case ArgoTokenTable.TOKEN_searchpath :
+		handleSearchpath(e);
+		break;
+	    case ArgoTokenTable.TOKEN_member :
+		handleMember(e);
+		break;
+	    case ArgoTokenTable.TOKEN_historyfile :
+		handleHistoryfile(e);
+		break;
+	    default :
+		if (_dbg)
+		    cat.warn("WARNING: unknown end tag:" + e.getName());
+		break;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -232,21 +233,21 @@ public class ArgoParser extends SAXParserBase {
 
     /** return the status of the last load attempt.
         Used for junit tests.
-     */
+    */
     public boolean getLastLoadStatus() {
         return lastLoadStatus;
     }
 
     /** set the status of the last load attempt. 
         Used for junit tests.
-     */
+    */
     public void setLastLoadStatus(boolean status) {
         lastLoadStatus = status;
     }
 
     /** get the last message which caused loading to fail. 
         Used for junit tests.
-     */
+    */
     public String getLastLoadMessage() {
         return lastLoadMessage;
     }

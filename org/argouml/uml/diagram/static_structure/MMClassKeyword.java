@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -29,35 +30,35 @@ import java.beans.*;
 import ru.novosoft.uml.foundation.core.*;
 
 public class MMClassKeyword implements java.io.Serializable {
-  public static final MMClassKeyword NONE = new MMClassKeyword("none"); 
-  public static final MMClassKeyword ABSTRACT = new MMClassKeyword("abstract"); 
-  public static final MMClassKeyword FINAL = new MMClassKeyword("final");
+    public static final MMClassKeyword NONE = new MMClassKeyword("none"); 
+    public static final MMClassKeyword ABSTRACT = new MMClassKeyword("abstract"); 
+    public static final MMClassKeyword FINAL = new MMClassKeyword("final");
 
-  public static final MMClassKeyword[] POSSIBLES = {
-    NONE, ABSTRACT, FINAL };
+    public static final MMClassKeyword[] POSSIBLES = {
+	NONE, ABSTRACT, FINAL };
 
-  protected String _label = null;
+    protected String _label = null;
   
-  private MMClassKeyword(String label) { _label = label; }
+    private MMClassKeyword(String label) { _label = label; }
   
-  public static MMClassKeyword KeywordFor(MClassifier cls) {
-    if (cls.isLeaf()) return FINAL;
-    if (cls.isAbstract()) return ABSTRACT;
-    return NONE;
-  }
+    public static MMClassKeyword KeywordFor(MClassifier cls) {
+	if (cls.isLeaf()) return FINAL;
+	if (cls.isAbstract()) return ABSTRACT;
+	return NONE;
+    }
   
-  public boolean equals(Object o) {
-    if (!(o instanceof MMClassKeyword)) return false;
-    String oLabel = ((MMClassKeyword)o)._label;
-    return _label.equals(oLabel);
-  }
+    public boolean equals(Object o) {
+	if (!(o instanceof MMClassKeyword)) return false;
+	String oLabel = ((MMClassKeyword) o)._label;
+	return _label.equals(oLabel);
+    }
 
-  public int hashCode() { return _label.hashCode(); }
+    public int hashCode() { return _label.hashCode(); }
   
-  public String toString() { return _label.toString(); }
+    public String toString() { return _label.toString(); }
 
-  public void set(MClassifier target) {
-      target.setAbstract(this == ABSTRACT);
-      target.setLeaf(this == FINAL);
-  }
+    public void set(MClassifier target) {
+	target.setAbstract(this == ABSTRACT);
+	target.setLeaf(this == FINAL);
+    }
 } /* end class MMClassKeyword */
