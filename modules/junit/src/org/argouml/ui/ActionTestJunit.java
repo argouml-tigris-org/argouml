@@ -24,8 +24,9 @@
 
 package org.argouml.ui;
 
+import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.application.api.*;
+import org.argouml.application.api.PluggableMenu;
 import org.argouml.uml.ui.*;
 
 import java.awt.event.*;
@@ -47,6 +48,9 @@ public class ActionTestJunit extends UMLAction
 
     ////////////////////////////////////////////////////////////////
     // Static variables
+
+    /** logger */
+    private static Logger cat = Logger.getLogger(ActionTestJunit.class);
 
     /** 
      * A singleton as the only instance of this action.
@@ -109,7 +113,7 @@ public class ActionTestJunit extends UMLAction
 	}
 	catch (Exception e) {
 	    if (!_failed) {
-	        Argo.log.error("Unable to launch Junit", e);
+	        cat.error("Unable to launch Junit", e);
 	    }
 	    _failed = true;
 	    // TODO:  Disable the menu entry on failure.
@@ -126,15 +130,15 @@ public class ActionTestJunit extends UMLAction
 	    Object o = c.newInstance();
 
 	    // Advertise a little
-            Argo.log.info ("+-------------------------------+");
-            Argo.log.info ("| JUnit plugin testing enabled! |");
-            Argo.log.info ("+-------------------------------+");
+            cat.info ("+-------------------------------+");
+            cat.info ("| JUnit plugin testing enabled! |");
+            cat.info ("+-------------------------------+");
 	    initialized = true;
 	}
 	catch (Exception e) {
 	    _failed = true;
-	    Argo.log.error("JUnit does not appear to be in the classpath.");
-	    Argo.log.error("Unable to initialize JUnit testing plugin.");
+	    cat.error("JUnit does not appear to be in the classpath.");
+	    cat.error("Unable to initialize JUnit testing plugin.");
 	}
         return initialized;
     }
