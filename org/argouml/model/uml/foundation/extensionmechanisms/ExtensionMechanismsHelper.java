@@ -232,12 +232,14 @@ public class ExtensionMechanismsHelper {
      * @param stereo
      */
     public void setStereoType(Object modelElement, Object stereotype) {
+	if (stereotype != null)
+	    stereotype = ModelManagementHelper.getHelper().getCorrespondingElement(
+				stereotype,
+				ModelFacade.getModel(modelElement),
+				true);
         ModelFacade.setStereotype(
 		modelElement,
-		ModelManagementHelper.getHelper().getCorrespondingElement(
-			stereotype,
-			ModelFacade.getModel(modelElement),
-			true));
+		stereotype);
     }
 
     /**
