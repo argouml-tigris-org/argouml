@@ -31,6 +31,9 @@
 
 package uci.graph;
 
+import uci.gef.FigNode;
+import uci.gef.Layer;
+
 /** An interface for FigNode factories. Similiar in concept to the
  *  Swing class TreeCellRenderer.
  *

@@ -31,6 +31,7 @@
 
 package uci.graph;
 
+import java.util.*;
 import uci.gef.NetList;
 import uci.gef.NetNode;
 import uci.gef.NetPort;
@@ -43,12 +44,11 @@ import uci.gef.NetEdge;
  * @see AdjacencyMatrixGraphModel
  * @see uci.graph.demo.WordTransforms */
 
-public class DefaultGraphModel implements MutableGraphModel {
+public class DefaultGraphModel extends MutableGraphSupport {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
   protected NetList _netList;
-  protected Vector _graphListeners;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -90,8 +90,6 @@ public class DefaultGraphModel implements MutableGraphModel {
   public Object getOwner(Object port) {
     if (port instanceof NetPort)
       return ((NetPort)port).getParent();
-    if (port instanceof NetEdge)
-      return ((NetEdge)port).getParent();
     return null; // raise exception
   }
 
@@ -123,63 +121,6 @@ public class DefaultGraphModel implements MutableGraphModel {
     if (edge instanceof NetEdge)
       return ((NetEdge)edge).getDestPort();
     return null; // raise exception
-  }
-
-  public void addGraphEventListener(GraphListener listener) {
-    if (_graphListeners == null) _graphListeners = new Vector();
-    _graphListeners.addElement(listener);
-  }
-  public void removeGraphEventListener(GraphListener listener) {
-    if (_graphListeners == null) return;
-    _graphListeners.removeElement(listener);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // event notifications
-
-  public void fireNodeAddedEvent(NetNode n) {
-    GraphEvent ge = new GraphEvent(this, n);
-    Enumeration listeners = _graphListeners.elements();
-    while (listeners.hasMoreElements()) {
-      GraphListener listen = (GraphListener) listeners.nextElement();
-      listen.nodeAdded(ge);
-    }
-  }
-
-  public void fireNodeRemovedEvent(NetNode n) {
-    GraphEvent ge = new GraphEvent(this, n);
-    Enumeration listeners = _graphListeners.elements();
-    while (listeners.hasMoreElements()) {
-      GraphListener listen = (GraphListener) listeners.nextElement();
-      listen.nodeRemoved(ge);
-    }
-  }
-
-  public void fireEdgeAddedEvent(NetEdge e) {
-    GraphEvent ge = new GraphEvent(this, e);
-    Enumeration listeners = _graphListeners.elements();
-    while (listeners.hasMoreElements()) {
-      GraphListener listen = (GraphListener) listeners.nextElement();
-      listen.edgeAdded(ge);
-    }
-  }
-
-  public void fireEdgeRemovedEvent(NetEdge e) {
-    GraphEvent ge = new GraphEvent(this, e);
-    Enumeration listeners = _graphListeners.elements();
-    while (listeners.hasMoreElements()) {
-      GraphListener listen = (GraphListener) listeners.nextElement();
-      listen.edgeRemoved(ge);
-    }
-  }
-
-  public void fireGraphChangedEvent(NetEdge e) {
-    GraphEvent ge = new GraphEvent(this, null);
-    Enumeration listeners = _graphListeners.elements();
-    while (listeners.hasMoreElements()) {
-      GraphListener listen = (GraphListener) listeners.nextElement();
-      listen.graphChanged(ge);
-    }
   }
 
 
@@ -216,7 +157,7 @@ public class DefaultGraphModel implements MutableGraphModel {
   /** Remove the given edge from the graph. */
   public void removeEdge(Object edge) {
     NetEdge e = (NetEdge) edge;
-    _netList.removeEdge(edge);
+    _netList.removeEdge(e);
     fireEdgeRemovedEvent(e);
   }
 
@@ -244,6 +185,7 @@ public class DefaultGraphModel implements MutableGraphModel {
     if (srcPort instanceof NetPort && destPort instanceof NetPort) {
       NetPort s = (NetPort) srcPort;
       NetPort d = (NetPort) destPort;
+      System.out.println("calling makeEdgeFor:" + s.getClass().getName());
       NetEdge e = s.makeEdgeFor(d);
       return connectInternal(s, d, e);
     }
@@ -256,16 +198,20 @@ public class DefaultGraphModel implements MutableGraphModel {
     if (srcPort instanceof NetPort && destPort instanceof NetPort) {
       NetPort s = (NetPort) srcPort;
       NetPort d = (NetPort) destPort;
-      NetEdge e = edgeClass.newInstance();
-      return connectInternal(s, d, e);
+      try {
+	NetEdge e = (NetEdge) edgeClass.newInstance();
+	return connectInternal(s, d, e);
+      }
+      catch (java.lang.InstantiationException e) { }
+      catch (java.lang.IllegalAccessException e) { }
     }
-    else return null;
+    return null;
   }
 
   protected Object connectInternal(NetPort s, NetPort d, NetEdge e) {
-      e.connect(s, d);
-      addEdge(e);
-      return e;
+    e.connect(s, d);
+    addEdge(e);
+    return e;
   }
 
 

@@ -31,6 +31,8 @@
 
 package uci.graph;
 
+import java.util.*;
+
 /** This interface provides a facade to a net-level
  *  representation. Similiar in concept to the Swing class TreeModel.
  *
@@ -58,12 +60,12 @@ public interface GraphModel {
   Vector getOutEdges(Object port);
 
   /** Return one end of an edge */
-  Object getStartPort(Object edge);
+  Object getSourcePort(Object edge);
 
   /** Return  the other end of an edge */
-  Object getEndPort(Object edge);
+  Object getDestPort(Object edge);
 
-  void addGraphEventListener(MutableGraphListener listener);
-  void removeGraphEventListener(MutableGraphListener listener);
+  void addGraphEventListener(GraphListener listener);
+  void removeGraphEventListener(GraphListener listener);
 
 } /* end interface GraphModel */

@@ -31,18 +31,20 @@
 
 package uci.graph;
 
-import uci.gef.*;
+import uci.gef.NetEdge;
+import uci.gef.FigEdge;
+import uci.gef.Layer;
 
 /** An interface for FigEdge factories. Similiar in concept to the
  *  Swing class TreeCellRenderer.
  *
  * @see uci.graph.demo.TranscriptionRenderer */
 
-public interface DefaultGraphEdgeRenderer {
+public class DefaultGraphEdgeRenderer {
   /** Return a Fig that can be used to represent the given Edge */
   public FigEdge getFigEdgeFor(GraphModel graph, Layer lay, Object edge) {
     if (edge instanceof NetEdge)
-      return ((NetEdge)Edge).presentationFor(lay);
+      return ((NetEdge)edge).presentationFor(lay);
     return null;
   }
 

@@ -31,6 +31,9 @@
 
 package uci.graph;
 
+import uci.gef.FigEdge;
+import uci.gef.Layer;
+
 /** An interface for FigEdge factories. Similiar in concept to the
  *  Swing class TreeCellRenderer.
  *

@@ -31,14 +31,16 @@
 
 package uci.graph;
 
-import uci.gef.*;
+import uci.gef.NetNode;
+import uci.gef.FigNode;
+import uci.gef.Layer;
 
 /** An interface for FigNode factories. Similiar in concept to the
  *  Swing class TreeCellRenderer.
  *
  * @see uci.graph.demo.WordNodeRenderer */
 
-public interface DefaultGraphNodeRenderer {
+public class DefaultGraphNodeRenderer {
   /** Return a Fig that can be used to represent the given node */
   public FigNode getFigNodeFor(GraphModel graph, Layer lay, Object node) {
     if (node instanceof NetNode)
