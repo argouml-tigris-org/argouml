@@ -1279,6 +1279,31 @@ For details see http://www.clarkware.com/software/JDepend.html.
     </java>
   </target>
 
+  <!-- =================================================================== -->
+  <!-- Removes generated files so that they are not checked by xenofarm.   -->
+  <!-- =================================================================== -->
+  <target name="delete-generated-for-checkstyle" depends="init">
+    <delete>
+      <fileset dir="${argo.src.dir}/org/argouml/uml/reveng/java">
+        <include name="JavaLexer.java"/>
+        <include name="JavaRecognizer.java"/>
+        <include name="JavaTokenTypes.java"/>
+      </fileset>
+      <fileset dir="${argo.src.dir}/org/argouml/language/java/generator">
+        <include name="JavaLexer.java"/>
+        <include name="JavaRecognizer.java"/>
+        <include name="JavaTokenTypes.java"/>
+      </fileset>
+      <fileset dir="${argo.root.dir}/modules/classfile/src/org/argouml/uml/reveng/classfile">
+        <include name="ClassfileParser.java"/>
+        <include name="ClassfileParserTokenTypes.java"/>
+        <include name="ClassfileTokenTypes.java"/>
+        <include name="ClassfileTreeParser.java"/>
+        <include name="ClassfileTreeParserTokenTypes.java"/>
+      </fileset>
+    </delete>
+  </target>
+
 <!-- Attempts at generating code. -->
 
   <target name="generate">
