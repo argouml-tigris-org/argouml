@@ -27,6 +27,7 @@ import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 
+import org.argouml.application.api.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.uml.ui.*;
 
@@ -37,6 +38,7 @@ import org.argouml.uml.ui.*;
 
 public class TabSpawnable extends JPanel implements Cloneable {
   public final int OVERLAPP = 30;
+    private static final String BUNDLE = "UMLMenu";
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -48,12 +50,11 @@ public class TabSpawnable extends JPanel implements Cloneable {
 
   public TabSpawnable() { this("untitled", false); }
 
-  public TabSpawnable(String title) { this(title, false); }
+  public TabSpawnable(String tag) { this(tag, false); }
 
-  public TabSpawnable(String title, boolean tear) {
-    setTitle(title);
+  public TabSpawnable(String tag, boolean tear) {
+    setTitle(Argo.localize(BUNDLE, tag));
     _tear = tear;
-    //System.out.println("making " + title);
   }
 
   public Object clone() {
