@@ -25,6 +25,7 @@
 package org.argouml.uml.cognitive;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -164,9 +165,13 @@ public class ProjectMemberTodoList extends ProjectMember {
                     "No writer specified to save todo list");
         }
         
-        OCLExpander expander = 
-            new OCLExpander(TemplateReader.readFile(TO_DO_TEE));
-
+        OCLExpander expander;
+        try {
+            expander = new OCLExpander(TemplateReader.SINGLETON.read(TO_DO_TEE));
+        } catch (FileNotFoundException e) {
+            throw new SaveException(e);
+        }
+        
         if (indent == null) {
             try {
                 expander.expand(writer, this, "", "");
