@@ -209,6 +209,7 @@ public class Main {
         //
 	st.mark("locales");
         ResourceLoader.addResourceExtension("gif");
+        ResourceLoader.addResourceLocation("/org/argouml/Images/metalLookAndFeel/toolbarButtonGraphics/general");
         ResourceLoader.addResourceLocation("/org/argouml/Images");
         ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
 
