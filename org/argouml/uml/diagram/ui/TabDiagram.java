@@ -40,6 +40,7 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.ToolTipManager;
 import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Logger;
@@ -416,13 +417,13 @@ class ArgoEditor extends Editor {
 	setUnderMouse(me);
 	if (_curFig != null && Globals.getShowFigTips()) {
 	    String tip = _curFig.getTipString(me);
-	    if (tip != null && tip.length() > 0 && !tip.endsWith(" "))
-		tip += " ";
 	    if (tip != null && (getAwtComponent() instanceof JComponent)) {
-		if (((JComponent) getAwtComponent()).getToolTipText() != null
-		    && !((JComponent) getAwtComponent()).getToolTipText().equals(tip))
-                    ((JComponent) getAwtComponent()).setToolTipText(tip);
-	    }
+	        JComponent c = (JComponent) getAwtComponent();
+	        if (c.getToolTipText() == null 
+		    || !(c.getToolTipText().equals(tip))) {
+	            c.setToolTipText(tip);
+	        }
+            }
 	} else if (getAwtComponent() instanceof JComponent) {
 	    if (((JComponent) getAwtComponent()).getToolTipText() != null)
 		((JComponent) getAwtComponent()).setToolTipText(null); //was ""
