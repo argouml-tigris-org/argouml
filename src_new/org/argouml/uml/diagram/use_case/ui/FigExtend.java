@@ -33,6 +33,7 @@
 package org.argouml.uml.diagram.use_case.ui;
 
 import java.awt.Color;
+import java.awt.Graphics;
 
 import org.argouml.application.api.Notation;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -74,6 +75,8 @@ public class FigExtend extends FigEdgeModelElement {
 
     protected FigGroup _fg;
 
+
+    private ArrowHeadGreater endArrow = new ArrowHeadGreater();
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -146,7 +149,6 @@ public class FigExtend extends FigEdgeModelElement {
 
         setDashed(true);
 
-        ArrowHeadGreater endArrow = new ArrowHeadGreater();
         setDestArrowHead(endArrow);
 
         // Make the edge go between nearest points
@@ -260,6 +262,11 @@ public class FigExtend extends FigEdgeModelElement {
         endTrans();
     }
 
+    public void paint(Graphics g) {
+        endArrow.setLineColor(getLineColor());
+        super.paint(g);
+    }
+    
 
 } /* end class FigExtend */
 
