@@ -39,7 +39,7 @@ import org.tigris.gef.presentation.*;
 
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
-import org.argouml.uml.generator.*;
+import org.argouml.language.java.generator.*;
 import org.argouml.language.java.*;
 
 public class TabJavaSrc  extends TabSpawnable
@@ -106,7 +106,7 @@ implements TabModelTarget, DocumentListener {
       modelObject = ((FigEdge)_target).getOwner();
     if (modelObject == null) return null;
     //System.out.println("TabJavaSrc getting src for " + modelObject);
-    return GeneratorDisplay.Generate(modelObject);
+    return GeneratorJava.Generate(modelObject);
   }
 
   protected void parseText(String s) {
