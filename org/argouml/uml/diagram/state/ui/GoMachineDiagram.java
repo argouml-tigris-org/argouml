@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -33,7 +34,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.AbstractGoRule;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+
 
 public class GoMachineDiagram extends AbstractGoRule {
 

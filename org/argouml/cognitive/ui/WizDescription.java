@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -37,7 +38,7 @@ import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
+
 
 public class WizDescription extends WizStep {
 

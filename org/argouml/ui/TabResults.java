@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -25,7 +26,7 @@
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
+
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -264,5 +265,4 @@ public class TabResults extends TabSpawnable
     }
 
 } /* end class TabResults */
-
 

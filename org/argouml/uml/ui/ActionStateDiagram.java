@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -33,7 +34,7 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
-import ru.novosoft.uml.foundation.core.MClassifier;
+
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 

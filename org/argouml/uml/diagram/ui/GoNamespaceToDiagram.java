@@ -1,5 +1,6 @@
 
 
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,7 +39,7 @@ import org.argouml.ui.AbstractGoRule;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 
-import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**

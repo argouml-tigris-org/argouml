@@ -1,5 +1,6 @@
 
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -35,7 +36,7 @@ import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MStructuralFeature;
+
 
 /**
  * @since Nov 3, 2002

@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -32,7 +33,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+
 
 public class GoCollaborationDiagram extends AbstractGoRule {
 

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -31,7 +32,7 @@ import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Vector;
-import javax.swing.Action;
+
 
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -61,7 +62,7 @@ import org.tigris.gef.graph.presentation.DefaultGraphModel;
 import org.tigris.gef.graph.presentation.JGraph;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBarFactory;
-import org.tigris.toolbutton.ToolButton;
+
 
 /**
  * The TabDiagram is the tab in the multieditorpane that holds a diagram. The 

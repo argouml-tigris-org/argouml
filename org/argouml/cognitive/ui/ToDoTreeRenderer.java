@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -42,7 +43,7 @@ import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
-import ru.novosoft.uml.foundation.core.MModelElement;
+
 
 public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
     ////////////////////////////////////////////////////////////////

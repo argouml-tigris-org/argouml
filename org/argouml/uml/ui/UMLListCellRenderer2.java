@@ -1,5 +1,6 @@
 
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -39,7 +40,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+
 
 /**
  * The default cell renderer for uml model elements. Used by UMLList2 and its

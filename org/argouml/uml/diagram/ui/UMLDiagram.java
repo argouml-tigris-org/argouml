@@ -1,5 +1,6 @@
 
 
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -42,7 +43,7 @@ import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.toolbar.ToolBar;
+
 import org.tigris.toolbar.ToolBarFactory;
 import org.tigris.toolbutton.ToolButton;
 

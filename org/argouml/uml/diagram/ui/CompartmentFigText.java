@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -39,7 +40,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.foundation.core.MFeature;
+
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
@@ -228,4 +229,3 @@ public class CompartmentFigText extends FigText
 
 
 } /* End of class CompartmentFigText */
-

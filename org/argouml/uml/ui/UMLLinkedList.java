@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -35,7 +36,7 @@ import javax.swing.event.ListSelectionEvent;
 
 import org.argouml.ui.targetmanager.TargetManager;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
+
 
 
 /**

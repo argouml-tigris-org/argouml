@@ -5,6 +5,7 @@
 
 
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -50,22 +51,22 @@ import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.GraphModel;
 
-import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
-import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
-import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
+
+
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
 import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
-import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
-import ru.novosoft.uml.behavior.common_behavior.MSendAction;
+
+
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
-import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
@@ -83,10 +84,10 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNode;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.MModel;
+
 
 public abstract class ColumnDescriptor {
 

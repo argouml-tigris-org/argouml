@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -29,7 +30,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
+
 
 /**
  * @since Oct 6, 2002

@@ -1,5 +1,6 @@
 
 
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -39,7 +40,7 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.model_management.MPackage;
+
 
 /** Action to add a new sequence diagram.
  * @stereotype singleton

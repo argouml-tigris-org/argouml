@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -41,7 +42,7 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.model_management.MModel;
+
 
 /**
  * Helper class for UML metamodel.
@@ -238,4 +239,3 @@ public class UmlHelper {
     }
     
 }
-

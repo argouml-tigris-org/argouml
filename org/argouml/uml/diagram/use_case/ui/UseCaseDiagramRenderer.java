@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -44,7 +45,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
-import ru.novosoft.uml.behavior.use_cases.MActor;
+
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
