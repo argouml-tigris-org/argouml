@@ -64,53 +64,17 @@ public class UMLStateDiagram extends UMLDiagram {
     ////////////////
     // actions for toolbar
 
-    private Action actionState = new RadioAction(
-        new CmdCreateNode(ModelFacade.STATE, "State"));
-
-    private Action actionCompositeState = new RadioAction(
-        new CmdCreateNode(ModelFacade.COMPOSITESTATE, "CompositeState"));
-
-    // start state, end state, forks, joins, etc.
-    private Action actionStartPseudoState = new RadioAction(
-        new ActionCreatePseudostate(
-            ModelFacade.INITIAL_PSEUDOSTATEKIND,
-            "Initial"));
-
-    private Action actionFinalPseudoState = new RadioAction(
-        new CmdCreateNode(ModelFacade.FINALSTATE, "FinalState"));
-
-    private Action actionBranchPseudoState = new RadioAction(
-        new ActionCreatePseudostate(
-            ModelFacade.BRANCH_PSEUDOSTATEKIND, "Choice"));
-
-    private Action actionForkPseudoState = new RadioAction(
-        new ActionCreatePseudostate(ModelFacade.FORK_PSEUDOSTATEKIND, "Fork"));
-
-    private Action actionJoinPseudoState = new RadioAction(
-        new ActionCreatePseudostate(ModelFacade.JOIN_PSEUDOSTATEKIND, "Join"));
-
-    private Action actionShallowHistoryPseudoState = new RadioAction(
-        new ActionCreatePseudostate(
-            ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND,
-            "ShallowHistory"));
-
-    private Action actionDeepHistoryPseudoState = new RadioAction(
-        new ActionCreatePseudostate(
-            ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND,
-            "DeepHistory"));
-
-    private Action actionTransition = new RadioAction(
-        new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            ModelFacade.TRANSITION,
-            "Transition"));
-
-    private Action actionJunctionPseudoState = new RadioAction(
-        new ActionCreatePseudostate(
-            ModelFacade.JUNCTION_PSEUDOSTATEKIND,
-            "Junction")); 
-
+    private Action actionState;
+    private Action actionCompositeState;
+    private Action actionStartPseudoState;
+    private Action actionFinalPseudoState;
+    private Action actionBranchPseudoState;
+    private Action actionForkPseudoState;
+    private Action actionJoinPseudoState;
+    private Action actionShallowHistoryPseudoState;
+    private Action actionDeepHistoryPseudoState;
+    private Action actionTransition;
+    private Action actionJunctionPseudoState; 
     private static int stateDiagramSerial = 1;
     
     ////////////////////////////////////////////////////////////////
@@ -271,18 +235,18 @@ public class UMLStateDiagram extends UMLDiagram {
     protected Object[] getUmlActions() {
         Object actions[] =
         {
-	    actionState,
-	    actionCompositeState,
-	    actionTransition,
+            getActionState(),
+	    getActionCompositeState(),
+	    getActionTransition(),
 	    null,
-	    actionStartPseudoState,
-	    actionFinalPseudoState,
-	    actionJunctionPseudoState,
-	    actionBranchPseudoState,
-	    actionForkPseudoState,
-	    actionJoinPseudoState,
-	    actionShallowHistoryPseudoState,
-	    actionDeepHistoryPseudoState
+	    getActionStartPseudoState(),
+	    getActionFinalPseudoState(),
+	    getActionJunctionPseudoState(),
+	    getActionBranchPseudoState(),
+	    getActionForkPseudoState(),
+	    getActionJoinPseudoState(),
+	    getActionShallowHistoryPseudoState(),
+	    getActionDeepHistoryPseudoState()
         };
         return actions;
     }
@@ -314,4 +278,128 @@ public class UMLStateDiagram extends UMLDiagram {
         super.removed(e);
     }*/
 
+    /**
+     * @return Returns the actionBranchPseudoState.
+     */
+    protected Action getActionBranchPseudoState() {
+        if (actionBranchPseudoState == null) {
+            actionBranchPseudoState = new RadioAction(
+                    new ActionCreatePseudostate(
+                        ModelFacade.BRANCH_PSEUDOSTATEKIND, "Choice"));
+        }
+        return actionBranchPseudoState;
+    }
+    /**
+     * @return Returns the actionCompositeState.
+     */
+    protected Action getActionCompositeState() {
+        if (actionCompositeState == null) {
+            actionCompositeState = new RadioAction(new CmdCreateNode(
+                    ModelFacade.COMPOSITESTATE, "CompositeState"));
+        }
+        return actionCompositeState;
+    }
+    /**
+     * @return Returns the actionDeepHistoryPseudoState.
+     */
+    protected Action getActionDeepHistoryPseudoState() {
+        if (actionDeepHistoryPseudoState == null) {
+            actionDeepHistoryPseudoState = new RadioAction(
+                    new ActionCreatePseudostate(
+                        ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND,
+                        "DeepHistory"));
+        }
+        return actionDeepHistoryPseudoState;
+    }
+    /**
+     * @return Returns the actionFinalPseudoState.
+     */
+    protected Action getActionFinalPseudoState() {
+        if (actionFinalPseudoState == null) {
+            actionFinalPseudoState = new RadioAction(
+                    new CmdCreateNode(ModelFacade.FINALSTATE, "FinalState"));
+        }
+        return actionFinalPseudoState;
+    }
+    /**
+     * @return Returns the actionForkPseudoState.
+     */
+    protected Action getActionForkPseudoState() {
+        if (actionForkPseudoState == null) {
+            actionForkPseudoState = new RadioAction( 
+                    new ActionCreatePseudostate(
+                            ModelFacade.FORK_PSEUDOSTATEKIND, "Fork"));
+        }
+        return actionForkPseudoState;
+    }
+    /**
+     * @return Returns the actionJoinPseudoState.
+     */
+    protected Action getActionJoinPseudoState() {
+        if (actionJoinPseudoState == null) {
+            actionJoinPseudoState = new RadioAction(new ActionCreatePseudostate(
+                    ModelFacade.JOIN_PSEUDOSTATEKIND, "Join"));
+        }
+        return actionJoinPseudoState;
+    }
+    /**
+     * @return Returns the actionJunctionPseudoState.
+     */
+    protected Action getActionJunctionPseudoState() {
+        if (actionJunctionPseudoState == null) {
+            actionJunctionPseudoState = new RadioAction(
+                    new ActionCreatePseudostate(
+                        ModelFacade.JUNCTION_PSEUDOSTATEKIND,
+                        "Junction"));
+        }
+        return actionJunctionPseudoState;
+    }
+    /**
+     * @return Returns the actionShallowHistoryPseudoState.
+     */
+    protected Action getActionShallowHistoryPseudoState() {
+        if (actionShallowHistoryPseudoState == null) {
+            actionShallowHistoryPseudoState = new RadioAction(
+                    new ActionCreatePseudostate(
+                        ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND,
+                        "ShallowHistory"));
+        }
+        return actionShallowHistoryPseudoState;
+    }
+    /**
+     * @return Returns the actionStartPseudoState.
+     */
+    protected Action getActionStartPseudoState() {
+        if (actionStartPseudoState == null) {
+            actionStartPseudoState = new RadioAction(
+                    new ActionCreatePseudostate(
+                        ModelFacade.INITIAL_PSEUDOSTATEKIND,
+                        "Initial"));
+        }
+        return actionStartPseudoState;
+    }
+    /**
+     * @return Returns the actionState.
+     */
+    protected Action getActionState() {
+        if (actionState == null) {
+            actionState = new RadioAction(
+                    new CmdCreateNode(ModelFacade.STATE, "State"));
+        }
+        return actionState;
+    }
+    /**
+     * @return Returns the actionTransition.
+     */
+    protected Action getActionTransition() {
+        if (actionTransition == null) {
+            actionTransition = new RadioAction(
+                    new CmdSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        ModelFacade.TRANSITION,
+                        "Transition"));
+        }
+        return actionTransition;
+    }
 } /* end class UMLStateDiagram */

@@ -58,96 +58,49 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     /**
      * Tool to add an actor node.<p>
      */
-    private Action actionActor =
-	    new RadioAction(new CmdCreateNode(ModelFacade.ACTOR, "Actor"));
+    private Action actionActor;
     
     /**
      * Tool to add a use case node.<p>
      */
-    private Action actionUseCase =
-        new RadioAction(new CmdCreateNode(ModelFacade.USE_CASE, "UseCase"));
+    private Action actionUseCase;
 
     /**
      * Tool to create an association between UML artifacts using a
      * polyedge.<p>
      */
-    //protected Action _actionAssoc = new
-    //CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
-    //MAssociation.class, "Association");
-    private Action actionAssociation = new RadioAction(
-        new ActionAddAssociation(
-            ModelFacade.NONE_AGGREGATIONKIND,
-            false,
-            "Association"));
-    private Action actionAggregation = new RadioAction(
-        new ActionAddAssociation(
-            ModelFacade.AGGREGATE_AGGREGATIONKIND,
-            false,
-            "Aggregation"));
-    private Action actionComposition = new RadioAction(
-        new ActionAddAssociation(
-            ModelFacade.COMPOSITE_AGGREGATIONKIND,
-            false,
-            "Composition"));
-    private Action actionUniAssociation = new RadioAction(
-        new ActionAddAssociation(
-            ModelFacade.NONE_AGGREGATIONKIND,
-            true,
-            "UniAssociation"));
-    private Action actionUniAggregation = new RadioAction(
-        new ActionAddAssociation(
-            ModelFacade.AGGREGATE_AGGREGATIONKIND,
-            true,
-            "UniAggregation"));
-    private Action actionUniComposition = new RadioAction(
-        new ActionAddAssociation(
-            ModelFacade.COMPOSITE_AGGREGATIONKIND,
-            true,
-            "UniComposition"));
+    private Action actionAssociation;
+    private Action actionAggregation;
+    private Action actionComposition;
+    private Action actionUniAssociation;
+    private Action actionUniAggregation;
+    private Action actionUniComposition;
 
     /**
      * Tool to create a generalization between UML artifacts using a
      * polyedge.<p>
      */
-    private Action actionGeneralize = new RadioAction(
-        new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            ModelFacade.GENERALIZATION,
-            "Generalization"));
+    private Action actionGeneralize;
 
     /**
      * Tool to create an extend relationship between UML use cases
      * using a polyedge.<p>
      */
-    private Action actionExtend = new RadioAction(
-        new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            ModelFacade.EXTEND,
-            "Extend"));
+    private Action actionExtend;
 
     /**
      * Tool to create an include relationship between UML use cases
      * using a polyedge.<p>
      */
-    private Action actionInclude = new RadioAction(
-        new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            ModelFacade.INCLUDE,
-            "Include"));
+    private Action actionInclude;
 
     /**
      * Tool to create a dependency between UML artifacts using a
      * polyedge.<p>
      */
-    private Action actionDependency = new RadioAction(
-        new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            ModelFacade.DEPENDENCY,
-            "Dependency"));
+    private Action actionDependency;
+    
+    private Action actionExtensionPoint;
 
     /**
      * A static counter of the use case index (used in constructing a
@@ -267,25 +220,25 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Object[] getUmlActions() {
         Object actions[] =
         {
-	    actionActor,
-	    actionUseCase,
+            getActionActor(),
+            getActionUseCase(),
 	    null,
 	    getAssociationActions(),
-	    actionDependency,
-	    actionGeneralize,
-	    actionExtend,
-	    actionInclude,
+	    getActionDependency(),
+	    getActionGeneralize(),
+	    getActionExtend(),
+	    getActionInclude(),
 	    null,
-	    ActionAddExtensionPoint.singleton()
+	    getActionExtensionPoint()
 	};
         return actions;
     }
 
     private Object[] getAssociationActions() {
         Object actions[][] = {
-	    {actionAssociation, actionUniAssociation },
-	    {actionAggregation, actionUniAggregation },
-	    {actionComposition, actionUniComposition },
+	    {getActionAssociation(), getActionUniAssociation() },
+	    {getActionAggregation(), getActionUniAggregation() },
+	    {getActionComposition(), getActionUniComposition() },
         };
 
         return actions;
@@ -303,5 +256,169 @@ public class UMLUseCaseDiagram extends UMLDiagram {
             name = getNewDiagramName();
         }
         return name;
+    }
+    /**
+     * @return Returns the actionActor.
+     */
+    protected Action getActionActor() {
+        if (actionActor == null) {
+            actionActor = new RadioAction(new CmdCreateNode(
+                    ModelFacade.ACTOR, "Actor"));
+        }
+        return actionActor;
+    }
+    /**
+     * @return Returns the actionAggregation.
+     */
+    protected Action getActionAggregation() {
+        if (actionAggregation == null) {
+            actionAggregation = new RadioAction(
+                    new ActionAddAssociation(
+                        ModelFacade.AGGREGATE_AGGREGATIONKIND,
+                        false,
+                        "Aggregation"));
+        }
+        return actionAggregation;
+    }
+    /**
+     * @return Returns the actionAssociation.
+     */
+    protected Action getActionAssociation() {
+        if (actionAssociation == null) {
+            actionAssociation = new RadioAction(
+                    new ActionAddAssociation(
+                        ModelFacade.NONE_AGGREGATIONKIND,
+                        false,
+                        "Association"));
+        }
+        return actionAssociation;
+    }
+    /**
+     * @return Returns the actionComposition.
+     */
+    protected Action getActionComposition() {
+        if (actionComposition == null) {
+            actionComposition = new RadioAction(
+                    new ActionAddAssociation(
+                        ModelFacade.COMPOSITE_AGGREGATIONKIND,
+                        false,
+                        "Composition"));
+        }
+        return actionComposition;
+    }
+    /**
+     * @return Returns the actionDependency.
+     */
+    protected Action getActionDependency() {
+        if (actionDependency == null) {
+            actionDependency = new RadioAction(
+                    new CmdSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        ModelFacade.DEPENDENCY,
+                        "Dependency"));
+        }
+        return actionDependency;
+    }
+    /**
+     * @return Returns the actionExtend.
+     */
+    protected Action getActionExtend() {
+        if (actionExtend == null) {
+            actionExtend = new RadioAction(
+                    new CmdSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        ModelFacade.EXTEND,
+                        "Extend"));
+        }
+        return actionExtend;
+    }
+    /**
+     * @return Returns the actionGeneralize.
+     */
+    protected Action getActionGeneralize() {
+        if (actionGeneralize == null) {
+            actionGeneralize = new RadioAction(
+                    new CmdSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        ModelFacade.GENERALIZATION,
+                        "Generalization"));
+        }
+        return actionGeneralize;
+    }
+    /**
+     * @return Returns the actionInclude.
+     */
+    protected Action getActionInclude() {
+        if (actionInclude == null) {
+            actionInclude = new RadioAction(
+                    new CmdSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        ModelFacade.INCLUDE,
+                        "Include"));
+        }
+        return actionInclude;
+    }
+    /**
+     * @return Returns the actionUniAggregation.
+     */
+    protected Action getActionUniAggregation() {
+        if (actionUniAggregation == null) {
+            actionUniAggregation  = new RadioAction(
+                    new ActionAddAssociation(
+                            ModelFacade.AGGREGATE_AGGREGATIONKIND,
+                            true,
+                            "UniAggregation"));
+        }
+        return actionUniAggregation;
+    }
+    /**
+     * @return Returns the actionUniAssociation.
+     */
+    protected Action getActionUniAssociation() {
+        if (actionUniAssociation == null) {
+            actionUniAssociation  = new RadioAction(
+                    new ActionAddAssociation(
+                            ModelFacade.NONE_AGGREGATIONKIND,
+                            true,
+                            "UniAssociation"));
+        }
+        return actionUniAssociation;
+    }
+    /**
+     * @return Returns the actionUniComposition.
+     */
+    protected Action getActionUniComposition() {
+        if (actionUniComposition == null) {
+            actionUniComposition  = new RadioAction(
+                    new ActionAddAssociation(
+                            ModelFacade.COMPOSITE_AGGREGATIONKIND,
+                            true,
+                            "UniComposition"));
+        }
+        return actionUniComposition;
+    }
+    /**
+     * @return Returns the actionUseCase.
+     */
+    protected Action getActionUseCase() {
+        if (actionUseCase == null) {
+            actionUseCase = new RadioAction(new CmdCreateNode(
+                    ModelFacade.USE_CASE, "UseCase"));
+        }
+        return actionUseCase;
+    }
+    
+    /**
+     * @return the action to create an extension point
+     */
+    protected Action getActionExtensionPoint() {
+        if (actionExtensionPoint == null) {
+            actionExtensionPoint = ActionAddExtensionPoint.singleton();
+        }
+        return actionExtensionPoint;
     }
 } /* end class UMLUseCaseDiagram */

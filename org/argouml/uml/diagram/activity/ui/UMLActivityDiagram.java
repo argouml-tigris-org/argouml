@@ -56,20 +56,19 @@ public class UMLActivityDiagram extends UMLDiagram {
     private static final Logger LOG = Logger.
                                     getLogger(UMLActivityDiagram.class);
 
-    ////////////////
-    // actions for toolbar
+    ///////////////////////////
+    // actions for the toolbar
 
     private Action actionState;
     private Action actionStartPseudoState;
     private Action actionFinalPseudoState;
     private Action actionJunctionPseudoState;
-    private Action actionBranchPseudoState;
     private Action actionForkPseudoState;
     private Action actionJoinPseudoState;
     private Action actionTransition;
-    // private Action actionNewSwimlane;
-    private Action actionCallState;
     private Action actionObjectFlowState;
+    private Action actionNewSwimlane; //MVW
+    private Action actionCallState;
     private Action actionSubactivityState;
 
     /**
@@ -82,56 +81,9 @@ public class UMLActivityDiagram extends UMLDiagram {
      * Constructor
      */
     public UMLActivityDiagram() {
-
         try {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) { }
-
-        actionState = new RadioAction(
-                new CmdCreateNode(ModelFacade.ACTION_STATE, "ActionState"));
-        
-	// start state, end state, forks, joins, etc.
-	actionStartPseudoState =  new RadioAction(
-	    new ActionCreatePseudostate(ModelFacade.INITIAL_PSEUDOSTATEKIND, 
-					"Initial"));
-
-	actionFinalPseudoState = new RadioAction(
-            new CmdCreateNode(ModelFacade.FINALSTATE, 
-                                        "FinalState"));
-
-	actionJunctionPseudoState = new RadioAction(
-	    new ActionCreatePseudostate(ModelFacade.JUNCTION_PSEUDOSTATEKIND,
-					"Junction"));
-
-	actionForkPseudoState = new RadioAction(
-	    new ActionCreatePseudostate(ModelFacade.FORK_PSEUDOSTATEKIND, 
-					"Fork"));
-
-	actionJoinPseudoState = new RadioAction(
-	    new ActionCreatePseudostate(ModelFacade.JOIN_PSEUDOSTATEKIND,
-					"Join"));
-
-	actionTransition = new RadioAction(
-            new CmdSetMode(
-                    ModeCreatePolyEdge.class,
-                    "edgeClass",
-                    ModelFacade.TRANSITION,
-                    "Transition"));
-
-
-	// actionNewSwimlane = new CmdCreateNode(ModelFacade.PARTITION, 
-	// "Create a new swimlane");
-
-        actionCallState = new RadioAction(
-            new CmdCreateNode(ModelFacade.CALLSTATE, "CallState"));
-
-        actionObjectFlowState = new RadioAction(
-            new CmdCreateNode(ModelFacade.OBJECTFLOWSTATE, "ObjectFlowState"));
-
-        actionSubactivityState = new RadioAction(
-            new CmdCreateNode(ModelFacade.SUBACTIVITYSTATE, 
-                                        "SubactivityState"));
-
     }
 
     /**
@@ -272,19 +224,19 @@ public class UMLActivityDiagram extends UMLDiagram {
     protected Object[] getUmlActions() {
         Object actions[] =
         {
-	    actionState,
-	    actionTransition,
+            getActionState(),
+            getActionTransition(),
 	    null,
-	    actionStartPseudoState,
-	    actionFinalPseudoState,
-	    actionJunctionPseudoState,
-	    actionForkPseudoState,
-	    actionJoinPseudoState,
-	    //actionNewSwimlane,
+	    getActionStartPseudoState(),
+	    getActionFinalPseudoState(),
+	    getActionJunctionPseudoState(),
+	    getActionForkPseudoState(),
+	    getActionJoinPseudoState(),
+	    //getActionNewSwimlane(),
 	    null,
-	    /*actionCallState,*/ // uncomment these ...
-            actionObjectFlowState,
-            /*actionSubactivityState,*/
+	    /*getActionCallState(),*/ // uncomment these ...
+            getActionObjectFlowState(),
+            /*getActionSubactivityState()*/
 	};
         return actions;
     }
@@ -303,5 +255,126 @@ public class UMLActivityDiagram extends UMLDiagram {
             name = getNewDiagramName();
         }
         return name;
+    }
+
+    /**
+     * @return Returns the actionCallState.
+     */
+    protected Action getActionCallState() {
+        if (actionCallState == null) {
+            actionCallState = new RadioAction(
+                    new CmdCreateNode(ModelFacade.CALLSTATE, "CallState"));
+        }
+        return actionCallState;
+    }
+    /**
+     * @return Returns the actionFinalPseudoState.
+     */
+    protected Action getActionFinalPseudoState() {
+        if (actionFinalPseudoState == null) {
+            actionFinalPseudoState = new RadioAction(
+                    new CmdCreateNode(ModelFacade.FINALSTATE, 
+                                                "FinalState"));
+        }
+        return actionFinalPseudoState;
+    }
+    /**
+     * @return Returns the actionForkPseudoState.
+     */
+    protected Action getActionForkPseudoState() {
+        if (actionForkPseudoState == null) {
+            actionForkPseudoState = new RadioAction(
+                new ActionCreatePseudostate(ModelFacade.FORK_PSEUDOSTATEKIND, 
+                            "Fork"));
+        }
+        return actionForkPseudoState;
+    }
+    /**
+     * @return Returns the actionJoinPseudoState.
+     */
+    protected Action getActionJoinPseudoState() {
+        if (actionJoinPseudoState == null) {
+            actionJoinPseudoState = new RadioAction(
+                new ActionCreatePseudostate(ModelFacade.JOIN_PSEUDOSTATEKIND,
+                            "Join"));
+        }
+        return actionJoinPseudoState;
+    }
+    /**
+     * @return Returns the actionJunctionPseudoState.
+     */
+    protected Action getActionJunctionPseudoState() {
+        if (actionJunctionPseudoState == null) {
+            actionJunctionPseudoState = new RadioAction(
+                new ActionCreatePseudostate(
+                        ModelFacade.JUNCTION_PSEUDOSTATEKIND, "Junction"));
+        }
+        return actionJunctionPseudoState;
+    }
+    /**
+     * @return Returns the actionNewSwimlane.
+     */
+    protected Action getActionNewSwimlane() {
+        if (actionNewSwimlane == null) {
+            actionNewSwimlane = new CmdCreateNode(ModelFacade.PARTITION, 
+                "Create a new swimlane");
+        }
+        return actionNewSwimlane;
+    }
+    /**
+     * @return Returns the actionObjectFlowState.
+     */
+    protected Action getActionObjectFlowState() {
+        if (actionObjectFlowState == null) {
+            actionObjectFlowState = new RadioAction(new CmdCreateNode(
+                    ModelFacade.OBJECTFLOWSTATE, "ObjectFlowState"));
+        }
+        return actionObjectFlowState;
+    }
+    /**
+     * @return Returns the actionStartPseudoState.
+     */
+    protected Action getActionStartPseudoState() {
+        if (actionStartPseudoState == null) {
+            actionStartPseudoState =  new RadioAction(
+                new ActionCreatePseudostate(
+                        ModelFacade.INITIAL_PSEUDOSTATEKIND, "Initial"));
+        }
+        return actionStartPseudoState;
+    }
+    /**
+     * @return Returns the actionState.
+     */
+    protected Action getActionState() {
+        if (actionState == null) {
+            actionState = new RadioAction(
+                    new CmdCreateNode(ModelFacade.ACTION_STATE, "ActionState"));
+        }
+        return actionState;
+    }
+    /**
+     * @return Returns the actionSubactivityState.
+     */
+    protected Action getActionSubactivityState() {
+        if (actionSubactivityState == null) {
+            actionSubactivityState = new RadioAction(
+                    new CmdCreateNode(ModelFacade.SUBACTIVITYSTATE, 
+                                                "SubactivityState"));
+        }
+        return actionSubactivityState;
+    }
+    /**
+     * @return Returns the actionTransition.
+     */
+    protected Action getActionTransition() {
+        if (actionTransition == null) {
+            actionTransition = new RadioAction(
+                    new CmdSetMode(
+                            ModeCreatePolyEdge.class,
+                            "edgeClass",
+                            ModelFacade.TRANSITION,
+                            "Transition"));
+        }
+        return actionTransition;
     }
 } /* end class UMLActivityDiagram */

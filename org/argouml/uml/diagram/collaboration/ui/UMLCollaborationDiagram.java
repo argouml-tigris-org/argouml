@@ -65,63 +65,22 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     private static final Logger LOG =
         Logger.getLogger(UMLCollaborationDiagram.class);
 
-    ////////////////
+    ////////////////////////
     // actions for toolbar
 
-    private static Action actionClassifierRole = new RadioAction(
-        new CmdCreateNode(ModelFacade.CLASSIFIER_ROLE, "ClassifierRole"));
+    private Action actionMessage;
+    private Action actionClassifierRole;
+    private Action actionGeneralize;
 
-    private Action actionAssoc = new RadioAction(
-        new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            ModelFacade.ASSOCIATION_ROLE,
-            "AssociationRole"));
+    private Action actionAssociation;
+    private Action actionAggregation;
+    private Action actionComposition;
+    private Action actionUniAssociation;
+    private Action actionUniAggregation;
+    private Action actionUniComposition;
 
-    private Action actionGeneralize = new RadioAction(
-        new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            ModelFacade.GENERALIZATION,
-            "Generalization"));
-
-    private Action actionAssociation = new RadioAction(
-        new ActionAddAssociationRole(
-            ModelFacade.NONE_AGGREGATIONKIND,
-            false,
-            "Association"));
-    private Action actionAggregation = new RadioAction(
-        new ActionAddAssociationRole(
-            ModelFacade.AGGREGATE_AGGREGATIONKIND,
-            false,
-            "Aggregation"));
-    private Action actionComposition = new RadioAction(
-        new ActionAddAssociationRole(
-            ModelFacade.COMPOSITE_AGGREGATIONKIND,
-            false,
-            "Composition"));
-    private Action actionUniAssociation = new RadioAction(
-        new ActionAddAssociationRole(
-            ModelFacade.NONE_AGGREGATIONKIND,
-            true,
-            "UniAssociation"));
-    private Action actionUniAggregation = new RadioAction(
-        new ActionAddAssociationRole(
-            ModelFacade.AGGREGATE_AGGREGATIONKIND,
-            true,
-            "UniAggregation"));
-    private Action actionUniComposition = new RadioAction(
-        new ActionAddAssociationRole(
-            ModelFacade.COMPOSITE_AGGREGATIONKIND,
-            true,
-            "UniComposition"));
-
-    private Action actionDepend = new RadioAction(
-        new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            ModelFacade.DEPENDENCY,
-            "Dependency"));
+    private Action actionDepend;
+    private Action actionMesasage;
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -199,27 +158,27 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     }
 
     /**
-     * Get the actions from which to create a toolbar or equivilent
-     * graphic triggers
+     * Get the actions from which to create a toolbar or equivalent
+     * graphic triggers.
      *
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
         Object actions[] = {
-	    actionClassifierRole,
+	    getActionClassifierRole(),
 	    null,
 	    getAssociationActions(),
-	    ActionAddMessage.getSingleton(),
-	    actionGeneralize,
-	    actionDepend};
+	    getActionMesage(),
+	    getActionGeneralize(),
+	    getActionDepend()};
         return actions;
     }
 
     private Object[] getAssociationActions() {
         Object actions[][] = {
-	    {actionAssociation, actionUniAssociation },
-	    {actionAggregation, actionUniAggregation },
-	    {actionComposition, actionUniComposition }
+	    {getActionAssociation(), getActionUniAssociation() },
+	    {getActionAggregation(), getActionUniAggregation() },
+	    {getActionComposition(), getActionUniComposition() }
         };
 
         return actions;
@@ -274,5 +233,140 @@ public class UMLCollaborationDiagram extends UMLDiagram {
             name = getNewDiagramName();
         }
         return name;
+    }
+
+    /**
+     * @return Returns the actionClassifierRole.
+     */
+    private Action getActionClassifierRole() {
+        if (actionClassifierRole == null) {
+            actionClassifierRole = new RadioAction(new CmdCreateNode(
+                    ModelFacade.CLASSIFIER_ROLE, "ClassifierRole"));
+        }
+        return actionClassifierRole;
+    }
+
+    /**
+     * @return Returns the actionAssociation.
+     */
+    protected Action getActionAssociation() {
+        if (actionAssociation == null) {
+            actionAssociation = new RadioAction(
+                    new ActionAddAssociationRole(
+                        ModelFacade.NONE_AGGREGATIONKIND,
+                        false,
+                        "Association"));
+        }
+        return actionAssociation;
+    }
+    /**
+     * @return Returns the actionComposition.
+     */
+    protected Action getActionComposition() {
+        if (actionComposition == null) {
+            actionComposition = new RadioAction(
+                    new ActionAddAssociationRole(
+                        ModelFacade.COMPOSITE_AGGREGATIONKIND,
+                        false,
+                        "Composition"));
+        }
+        return actionComposition;
+    }
+    /**
+     * @return Returns the actionDepend.
+     */
+    protected Action getActionDepend() {
+        if (actionDepend == null) {
+            actionDepend = new RadioAction(
+                    new CmdSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        ModelFacade.DEPENDENCY,
+                        "Dependency"));
+        }
+        return actionDepend;
+    }
+    /**
+     * @return Returns the actionGeneralize.
+     */
+    protected Action getActionGeneralize() {
+        if (actionGeneralize == null) {
+            actionGeneralize = new RadioAction(
+                    new CmdSetMode(
+                        ModeCreatePolyEdge.class,
+                        "edgeClass",
+                        ModelFacade.GENERALIZATION,
+                        "Generalization"));
+        }
+        return actionGeneralize;
+    }
+    /**
+     * @return Returns the actionMessage.
+     */
+    protected Action getActionMessage() {
+        return actionMessage;
+    }
+    /**
+     * @return Returns the actionUniAggregation.
+     */
+    protected Action getActionUniAggregation() {
+        if (actionUniAggregation == null) {
+            actionUniAggregation = new RadioAction(
+                    new ActionAddAssociationRole(
+                        ModelFacade.AGGREGATE_AGGREGATIONKIND,
+                        true,
+                        "UniAggregation"));
+        }
+        return actionUniAggregation;
+    }
+    /**
+     * @return Returns the actionUniAssociation.
+     */
+    protected Action getActionUniAssociation() {
+        if (actionUniAssociation  == null) {
+            actionUniAssociation = new RadioAction(
+                    new ActionAddAssociationRole(
+                        ModelFacade.NONE_AGGREGATIONKIND,
+                        true,
+                        "UniAssociation"));
+        }
+        return actionUniAssociation;
+    }
+    /**
+     * @return Returns the actionUniComposition.
+     */
+    protected Action getActionUniComposition() {
+        if (actionUniComposition == null) {
+            actionUniComposition = new RadioAction(
+                    new ActionAddAssociationRole(
+                        ModelFacade.COMPOSITE_AGGREGATIONKIND,
+                        true,
+                        "UniComposition"));
+        }
+        return actionUniComposition;
+    }
+
+    /**
+     * @return Returns the actionAggregation.
+     */
+    private Action getActionAggregation() {
+        if (actionAggregation == null) {
+            actionAggregation = new RadioAction(
+                    new ActionAddAssociationRole(
+                        ModelFacade.AGGREGATE_AGGREGATIONKIND,
+                        false,
+                        "Aggregation"));
+        }
+        return actionAggregation;
+    }
+
+    /**
+     * @return Returns the actionMesasage.
+     */
+    private Action getActionMesage() {
+        if (actionMesasage == null) {
+            actionMesasage = ActionAddMessage.getSingleton();
+        }
+        return actionMesasage;
     }
 } /* end class UMLCollaborationDiagram */
