@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -105,6 +104,8 @@ public class ToDoPane extends JPanel
     ////////////////////////////////////////////////////////////////
     // constants
     
+    private static final String BUNDLE = "statusmsg";
+    
     public static final int WARN_THRESHOLD = 50;
     public static final int ALARM_THRESHOLD = 100;
     public static final Color WARN_COLOR = Color.yellow;
@@ -208,8 +209,9 @@ public class ToDoPane extends JPanel
         
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
-            splash.getStatusBar().showStatus("Making TodoPane: "
-					     + "Setting Perspectives");
+	    splash.getStatusBar().showStatus(
+		    Argo.localize(BUNDLE, 
+				  "statusmsg.bar.making-todopane"));
             splash.getStatusBar().showProgress(25);
         }
         

@@ -119,6 +119,8 @@ public class NavigatorPane
 
     protected transient Logger cat = Logger.getLogger(this.getClass());
 
+    private static final String BUNDLE = "statusmsg";
+	
     public static final int MAX_HISTORY = 10;
 
     /** for collecting user statistics */
@@ -228,8 +230,9 @@ public class NavigatorPane
 
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
-            splash.getStatusBar().showStatus("Making NavigatorPane: "
-					     + "Setting Perspectives");
+	    splash.getStatusBar().showStatus(Argo.localize(
+                    BUNDLE, 
+		    "statusmsg.bar.making-navigator-pane-perspectives"));
             splash.getStatusBar().showProgress(25);
         }
 

@@ -84,6 +84,8 @@ public class ProjectBrowser
     ////////////////////////////////////////////////////////////////
     // constants
 
+    private static final String BUNDLE = "statusmsg";
+	
     public static final int DEFAULT_COMPONENTWIDTH = 220;
     public static final int DEFAULT_COMPONENTHEIGHT = 200;
 
@@ -181,7 +183,9 @@ public class ProjectBrowser
         SplashScreen.setDoSplash(doSplash);
         if (doSplash) {
             _splash = SplashScreen.getInstance();
-            _splash.getStatusBar().showStatus("Making Project Browser");
+	    _splash.getStatusBar().showStatus(
+		     Argo.localize(BUNDLE,
+				   "statusmsg.bar.making-project-browser"));
             _splash.getStatusBar().showProgress(10);
             _splash.setVisible(true);
         }
@@ -249,8 +253,9 @@ public class ProjectBrowser
      */
     protected Component createPanels(boolean doSplash) {
         if (doSplash) {
-            _splash.getStatusBar().showStatus("Making Project Browser: "
-					      + "Explorer");
+	    _splash.getStatusBar().showStatus(
+		     Argo.localize(BUNDLE, 
+			     "statusmsg.bar.making-project-browser-explorer"));
             _splash.getStatusBar().incProgress(5);
         }
         //_navPane = new NavigatorPane(doSplash);
@@ -317,8 +322,8 @@ public class ProjectBrowser
         _workarea = new BorderSplitPane();
         // create the todopane
         if (doSplash) {
-            _splash.getStatusBar().showStatus("Making Project Browser: "
-					      + "To Do Pane");
+			_splash.getStatusBar().showStatus(Argo.localize(BUNDLE, 
+											  "statusmsg.bar.making-project-browser-to-do-pane"));
             _splash.getStatusBar().incProgress(5);
         }
         _todoPane = new ToDoPane(doSplash);
