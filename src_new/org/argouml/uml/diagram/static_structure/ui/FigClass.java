@@ -47,9 +47,13 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
+import org.argouml.uml.diagram.ui.FigAttributesCompartment;
+import org.argouml.uml.diagram.ui.FigCompartment;
+import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
+import org.argouml.uml.diagram.ui.FigOperationsCompartment;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -81,20 +85,10 @@ public class FigClass extends FigNodeModelElement {
 
     //These are the positions of child figs inside this fig
     //They mst be added in the constructor in this order.
-    private static final int ATTRIBUTES_POSN = 2;
-    private static final int OPERATIONS_POSN = 3;
-    private static final int BLINDER_POSN = 5;
+    private static final int BLINDER_POSN = 3;
+    private static final int OPERATIONS_POSN = 4;
+    private static final int ATTRIBUTES_POSN = 5;
     
-    /**
-     * <p>The rectangle for the entire attribute box.</p>
-     */
-    private FigRect attrBigPort;
-
-    /**
-     * <p>The rectangle for the entire operations box.</p>
-     */
-    private FigRect operBigPort;
-
     /**
      * <p>Manages residency of a class within a component on a deployment
      *   diagram. Not clear why it is public, or even why it is an instance
@@ -169,31 +163,12 @@ public class FigClass extends FigNodeModelElement {
         getNameFig().setLineWidth(1);
         getNameFig().setFilled(true);
 
-        // this rectangle marks the attribute section; all attributes
-        // are inside it
-        attrBigPort =
-	    new FigRect(10, 30, 60, ROWHEIGHT + 2, Color.black, Color.white);
-        attrBigPort.setFilled(true);
-        attrBigPort.setLineWidth(1);
-
         // Attributes inside. First one is the attribute box itself.
-        FigCompartment attrVec = new FigCompartment();
-        attrVec.setFilled(true);
-        attrVec.setLineWidth(1);
-        attrVec.addFig(attrBigPort);
+        FigCompartment attrVec = new FigAttributesCompartment(10, 30, 60, ROWHEIGHT + 2);
 
         // this rectangle marks the operation section; all operations
         // are inside it
-        operBigPort =
-	    new FigRect(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2,
-			Color.black, Color.white);
-        operBigPort.setFilled(true);
-        operBigPort.setLineWidth(1);
-
-        FigCompartment operVec = new FigCompartment();
-        operVec.setFilled(true);
-        operVec.setLineWidth(1);
-        operVec.addFig(operBigPort);
+        FigCompartment operVec = new FigOperationsCompartment(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
@@ -217,6 +192,11 @@ public class FigClass extends FigNodeModelElement {
         stereoLineBlinder.setLineWidth(1);
         stereoLineBlinder.setVisible(false);
 
+        FigEmptyRect bigPort = new FigEmptyRect(10, 10, 0, 0);
+        bigPort.setLineWidth(1);
+        bigPort.setLineColor(Color.black);
+        setBigPort(bigPort);
+        
         // Mark this as newly created. This is to get round the problem with
         // creating figs for loaded classes that had stereotypes. They are
         // saved with their dimensions INCLUDING the stereotype, but since we
@@ -230,16 +210,12 @@ public class FigClass extends FigNodeModelElement {
         // we're all done for efficiency.
         enableSizeChecking(false);
         setSuppressCalcBounds(true);
-        // addFig(getNameFig()space);
         addFig(getStereotypeFig());
         addFig(getNameFig());
-        addFig(attrVec);
-        addFig(operVec);
-        addFig(getBigPort());
+        addFig(bigPort);
         addFig(stereoLineBlinder);
-        getBigPort().setLineWidth(1);
-        getBigPort().setLineColor(Color.black);
-        getBigPort().setFilled(false);
+        addFig(operVec);
+        addFig(attrVec);
 
         setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)
@@ -265,8 +241,8 @@ public class FigClass extends FigNodeModelElement {
         enableSizeChecking(true);
         setOwner(node);
         if ((ModelFacade.isAClassifier(node))
-	        && (ModelFacade.getName(node) != null)) {
-            getNameFig().setText(ModelFacade.getName(node));
+                && (ModelFacade.getName(node) != null)) {
+            setName(ModelFacade.getName(node));
         }
     }
 
@@ -1128,8 +1104,9 @@ public class FigClass extends FigNodeModelElement {
      */
     protected void updateAttributes() {
         Object cls = /*(MClassifier)*/ getOwner();
-        int xpos = attrBigPort.getX();
-        int ypos = attrBigPort.getY();
+        Fig attrPort = ((FigAttributesCompartment)getFigAt(ATTRIBUTES_POSN)).getBigPort();
+        int xpos = attrPort.getX();
+        int ypos = attrPort.getY();
         int acounter = 1;
         Collection strs = ModelFacade.getStructuralFeatures(cls);
         if (strs != null) {
@@ -1149,7 +1126,7 @@ public class FigClass extends FigNodeModelElement {
 				       ypos + 1 + (acounter - 1) * ROWHEIGHT,
 				       0,
 				       ROWHEIGHT - 2,
-				       attrBigPort);
+				       attrPort);
                     // bounds not relevant here
                     attr.setFilled(false);
                     attr.setLineWidth(0);
@@ -1190,8 +1167,10 @@ public class FigClass extends FigNodeModelElement {
      */
     protected void updateOperations() {
         Object cls = /*(MClassifier)*/ getOwner();
-        int xpos = operBigPort.getX();
-        int ypos = operBigPort.getY();
+        Fig operPort = ((FigOperationsCompartment)getFigAt(OPERATIONS_POSN)).getBigPort();
+
+        int xpos = operPort.getX();
+        int ypos = operPort.getY();
         int ocounter = 1;
         Collection behs = ModelFacade.getOperations(cls);
         if (behs != null) {
@@ -1207,11 +1186,11 @@ public class FigClass extends FigNodeModelElement {
                 UmlModelEventPump.getPump().addModelEventListener(this, bf);
                 if (figs.size() <= ocounter) {
                     oper =
-			new FigFeature(xpos + 1,
-				       ypos + 1 + (ocounter - 1) * ROWHEIGHT,
-				       0,
-				       ROWHEIGHT - 2,
-				       operBigPort);
+                        new FigFeature(xpos + 1,
+                        ypos + 1 + (ocounter - 1) * ROWHEIGHT,
+                        0,
+                        ROWHEIGHT - 2,
+                        operPort);
                     // bounds not relevant here
                     oper.setFilled(false);
                     oper.setLineWidth(0);
