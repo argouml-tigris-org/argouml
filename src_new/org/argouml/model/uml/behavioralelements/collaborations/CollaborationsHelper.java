@@ -47,6 +47,7 @@ import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MModel;
 
 /**
  * Helper class for UML BehavioralElements::Collaborations Package.
@@ -522,5 +523,20 @@ public class CollaborationsHelper {
     }
             
 		
+    /**
+     * Returns true if a collaboration may be added to the given context. To
+     * decouple ArgoUML as much as possible from the NSUML model, the parameter
+     * of the method is of type Object.
+     * @param context
+     * @return boolean
+     */
+    public boolean isAddingCollaborationAllowed(Object context) {
+        if (context instanceof MCollaboration ||
+            context instanceof MClassifier ||
+            context instanceof MModel)
+            return true;
+        else
+            return false;
+    }
 }
 
