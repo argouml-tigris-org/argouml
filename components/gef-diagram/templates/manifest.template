@@ -1,0 +1,11 @@
+Manifest-Version: 2.0
+Class-Path: argouml-api.jar gef.jar
+Created-By: 1.2 (Sun Microsystems Inc.) 
+
+Name: org/argouml/model/gef/
+Specification-Title: ArgoUML
+Specification-Version: ${component.build.version}
+Specification-Vendor: University of California
+Implementation-Vendor: University of California
+Implementation-Version: ${component.build.version}
+Implementation-Title: ArgoUML
