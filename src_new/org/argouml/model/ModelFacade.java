@@ -243,6 +243,24 @@ public class ModelFacade {
         return handle instanceof MClassifier;
     }
 
+    /** Recognizer for Component
+     *
+     * @param handle candidate
+     * @returns true if handle is a Component
+     */
+    public static boolean isAComponent(Object handle) {
+        return handle instanceof MComponent;
+    }
+
+     /** Recognizer for ComponentInstance
+     *
+     * @param handle candidate
+     * @returns true if handle is a ComponentInstance
+     */
+    public static boolean isAComponentInstance(Object handle) {
+        return handle instanceof MComponentInstance;
+    }
+
     /** Recognizer for DataType
      *
      * @param handle candidate
@@ -250,6 +268,15 @@ public class ModelFacade {
      */
     public static boolean isADataType(Object handle) {
         return handle instanceof MDataType;
+    }
+
+    /** Recognizer for Dependency
+     *
+     * @param handle candidate
+     * @returns true if handle is a Dependency
+     */
+    public static boolean isADependency(Object handle) {
+        return handle instanceof MDependency;
     }
 
     /** Recognizer for CompositeState
@@ -306,6 +333,16 @@ public class ModelFacade {
         return handle instanceof MGeneralization;
     }
 
+    /** Recognizer for Instance
+     *
+     * @param handle candidate
+     * @returns true if handle is a Instance
+     */
+    public static boolean isAInstance(Object handle) {
+        return handle instanceof MInstance;
+    }
+    
+    
     /** Recognizer for Interaction
      *
      * @param handle candidate
@@ -322,6 +359,15 @@ public class ModelFacade {
      */
     public static boolean isAInterface(Object handle) {
         return handle instanceof MInterface;
+    }
+
+    /** Recognizer for Link
+     *
+     * @param handle candidate
+     * @returns true if handle is a Link
+     */
+    public static boolean isALink(Object handle) {
+        return handle instanceof MLink;
     }
 
     /** Recognizer for Method
@@ -389,6 +435,16 @@ public class ModelFacade {
     }
 
     /**
+     * Recognizer for Object
+     *
+     * @param handle candidate
+     * @returns true if handle is an Object
+     */
+    public static boolean isAObject(Object handle) {
+        return handle instanceof MObject;
+    }
+
+    /**
      * Recognizer for Permission
      *
      * @param handle candidate
@@ -415,6 +471,16 @@ public class ModelFacade {
     public static boolean isAReception(Object handle) {
         return handle instanceof MReception;
     }
+    
+    /** Recognizer for Relationship
+     *
+     * @param handle candidate
+     * @returns true if handle is a Relationship
+     */
+    public static boolean isARelationship(Object handle) {
+        return handle instanceof MRelationship;
+    }
+    
 
     /** Recognizer for StateMachine
      *
@@ -1432,7 +1498,7 @@ public class ModelFacade {
         if (f != null && f instanceof MFeature) {
             return ((MFeature)f).getOwner();
         }
-        return null;
+        throw new IllegalArgumentException("Unrecognized object " + f);
     }
 
     /**
