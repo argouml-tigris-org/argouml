@@ -98,12 +98,8 @@ public final class ResourceLoaderWrapper {
 
     /**
      * Constructor for ResourceLoaderWrapper.
-     * 
-     * @deprecated by Linus Tolke as of 0.15.5. Will be private. Use
-     *             {@link #getResourceLoaderWrapper()}to get hold of the
-     *             singleton.
      */
-    public ResourceLoaderWrapper() {
+    private ResourceLoaderWrapper() {
 	super();
 	initResourceLoader();
     }
@@ -323,7 +319,7 @@ public final class ResourceLoaderWrapper {
 		    if (cName.endsWith("Impl")) {
 			cName = cName.substring(0, cName.length() - 4);
 		    }
-		    icon = getResourceLoaderWrapper().lookupIconResource(cName);
+		    icon = lookupIconResource(cName);
 		    if (icon != null) {
 			iconCache.put(value.getClass(), icon);
 		    }

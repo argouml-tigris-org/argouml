@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,26 +28,20 @@ import java.util.ArrayList;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Hierarchy;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
-import org.apache.log4j.spi.RootCategory;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.application.modules.ModuleLoader;
 
 /**
  * The <code>Argo</code> class provides static methods and definitions
- * that can be used as helpers throughout the Argo code.
+ * that can be used as helpers throughout the Argo code.<p>
  *
  * This class is a variation of the <i>Expert</i> design pattern
  * <cite>[Grand]</cite>.  By incorporating a number of unrelated
  * but commonly
  * used methods in a single class, it attempts to decrease the
- * complexity of the overall code while increasing its own complexity.
- *
- * The
+ * complexity of the overall code while increasing its own complexity.<p>
  *
  * These include
  * <ul>
@@ -55,12 +49,10 @@ import org.argouml.application.modules.ModuleLoader;
  * <li>definitions of resource bundle identifier strings</li>
  * <li>methods for localization using <code>gef</code></li>
  * <li>methods for environment manipulation</li>
- * <li>methods for console <code>log4j</code> logging</li>
  * </ul>
  *
  */
-public class Argo
-{
+public class Argo {
 
     /** Key for argo resource directory.
      */
@@ -69,12 +61,6 @@ public class Argo
     /** argo.ini path
      */
     public static final String ARGOINI = "/org/argouml/argo.ini";
-
-    /** Key for menu resource bundle.
-     *
-     * @deprecated in 0.15.1. Replaced by menu and action properties.
-     */
-    public static final String MENU_BUNDLE = "CoreMenu";
 
     /** Key for default startup directory.
      */
@@ -240,14 +226,6 @@ public class Argo
      */
     public static final String ARGO_CONSOLE_PREFIX = "argo.console.prefix";
 
-    /** 
-     * Define a static log4j category variable for ArgoUML to do logging for
-     * classes that don't have a Logger object of their own.
-     *
-     * @deprecated as of 0.15.2. Use your own instance of Logger in each class.
-     */
-    public static final Logger log;
-
     /** Don't let this class be instantiated. */
     private Argo() {
     }
@@ -272,21 +250,6 @@ public class Argo
 	return Configuration.getString(KEY_STARTUP_DIR,
 				       org.tigris.gef.base.Globals
 				           .getLastDirectory());
-    }
-
-    /** Helper for localization to eliminate the need to import
-     *  the gef util library.
-     * 
-     * DON'T USE IT : NOT USED ANYMORE, WILL BE REMOVED NEXT RELEASE
-     *
-     * @param bundle the localization bundle name to use
-     * @param key the resource string to find
-     * @return the localized string
-     * @deprecated since 0.15.2.
-     * Use {see org.argouml.i18n.Translator#localize(String)} directly instead.
-     */
-    public static String localize(String bundle, String key) {
-        return org.argouml.i18n.Translator.localize(bundle, key);
     }
 
     /** Returns a vector of plugins of the class type passed
@@ -343,8 +306,7 @@ public class Argo
      * @return an Icon
      */
     public static Icon lookupIconResource(String arg1) {
-	return ResourceLoaderWrapper.getResourceLoaderWrapper()
-	    .lookupIconResource(arg1);
+	return ResourceLoaderWrapper.lookupIconResource(arg1);
     }
 
     /**
@@ -355,24 +317,12 @@ public class Argo
      * @return an Icon
      */
     public static Icon lookupIconResource(String arg1, String arg2) {
-	return ResourceLoaderWrapper.getResourceLoaderWrapper()
-	    .lookupIconResource(arg1, arg2);
+	return ResourceLoaderWrapper.lookupIconResource(arg1, arg2);
     }
 
     static {
-	// Create a separate hierarchy for the argo logger
-	Hierarchy hier = new Hierarchy(new RootCategory(Level.INFO));
-	// Set up the argo console logger in its own hierarchy
-	Logger cat = hier.getLogger(CONSOLE_LOG);
-	cat.addAppender(new ConsoleAppender(
-	    new PatternLayout(System.getProperty(ARGO_CONSOLE_PREFIX, "")
-				  + "%m%n"),
-		ConsoleAppender.SYSTEM_OUT));
 	if (System.getProperty(ARGO_CONSOLE_SUPPRESS) != null) {
             Logger.getRoot().getLoggerRepository().setThreshold(Level.OFF);
 	}
-
-	// Set log here.  No going back.
-	log = cat;
     }
 }

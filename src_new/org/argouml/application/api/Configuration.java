@@ -23,11 +23,13 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.api;
-import org.argouml.application.configuration.*;
-import java.io.*;
-import java.beans.*;
-import java.net.*;
-import org.apache.log4j.*;
+
+import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.net.URL;
+
+import org.argouml.application.configuration.ConfigurationFactory;
+import org.argouml.application.configuration.ConfigurationHandler;
 import org.argouml.application.configuration.ConfigurationKeyImpl;
 
 /**
@@ -44,25 +46,23 @@ public class Configuration {
     ////////////////////////////////////////////////////////////////
     // Instance variables
 
-    /** Define a static log4j category variable for ArgoUML configuration.
-     * @deprecated in 0.15.3 public access - will become private
-     */
-    public static final Logger cat = 
-	Logger.getLogger("org.argouml.application.configuration");
-
-    /** Property to indicate configuration load from file
+    /** 
+     * Property to indicate configuration load from file.
      */
     public static final String FILE_LOADED = "configuration.load.file";
 
-    /** Property to indicate configuration load from url
+    /** 
+     * Property to indicate configuration load from url.
      */
     public static final String URL_LOADED = "configuration.load.url";
 
-    /** Property to indicate configuration save to file
+    /** 
+     * Property to indicate configuration save to file.
      */
     public static final String FILE_SAVED = "configuration.save.file";
 
-    /** Property to indicate configuration save to url
+    /** 
+     * Property to indicate configuration save to url.
      */
     public static final String URL_SAVED = "configuration.save.url";
 
@@ -102,18 +102,19 @@ public class Configuration {
 	return ConfigurationFactory.getInstance();
     }
 
-    /** Load the configuration from the default location.
+    /** 
+     * Load the configuration from the default location.
      *
-     *  The configuration will be automatically loaded from the default
-     *  location the first time a value is queried or modified, if it
-     *  had not been previously loaded.  Only the first load request
-     *  will be honored, so if the configuration is to be loaded from
-     *  a non-default location, load(name) must be used prior to any
-     *  other call.  The configuration can be loaded only one time.
+     * The configuration will be automatically loaded from the default
+     * location the first time a value is queried or modified, if it
+     * had not been previously loaded.  Only the first load request
+     * will be honored, so if the configuration is to be loaded from
+     * a non-default location, load(name) must be used prior to any
+     * other call.  The configuration can be loaded only one time.
      *
-     *  Implementations must ignore load requests once a load is 
-     *  already successful, and must return false for each of those
-     *  ignored requests.
+     * Implementations must ignore load requests once a load is 
+     * already successful, and must return false for each of those
+     * ignored requests.
      *
      * @return true if the load is successful, otherwise false
      */
@@ -121,7 +122,8 @@ public class Configuration {
 	return config.loadDefault();
     }
 
-    /** Load the configuration from a specified file
+    /**
+     * Load the configuration from a specified file
      *
      * @param file the File to load
      *
@@ -131,7 +133,8 @@ public class Configuration {
 	return config.load(file);
     }
 
-    /** Load the configuration from a specified url
+    /**
+     * Load the configuration from a specified url
      *
      * @param url the URL to load
      *
@@ -141,11 +144,12 @@ public class Configuration {
 	return config.load(url);
     }
 
-    /** Save the configuration to the default location.
+    /**
+     * Save the configuration to the default location.
      *
-     *  Implementations do not have to handle this method.
-     *  If the method is not allowed or it fails, the implementation
-     *  must return false.
+     * Implementations do not have to handle this method.
+     * If the method is not allowed or it fails, the implementation
+     * must return false.
      *
      * @return true if the save is successful, otherwise false
      */
@@ -153,11 +157,12 @@ public class Configuration {
 	return Configuration.save(false);
     }
 
-    /** Save the configuration to the default location.
+    /**
+     * Save the configuration to the default location.
      *
-     *  Implementations do not have to handle this method.
-     *  If the method is not allowed or it fails, the implementation
-     *  must return false.
+     * Implementations do not have to handle this method.
+     * If the method is not allowed or it fails, the implementation
+     * must return false.
      *
      * @param force the file to save even if it would not normally
      * be saved.
@@ -168,7 +173,8 @@ public class Configuration {
 	return config.saveDefault(force);
     }
 
-    /** Returns the string value of a configuration property.
+    /**
+     * Returns the string value of a configuration property.
      *
      * @param key the key to retrieve the value of
      *
@@ -179,7 +185,8 @@ public class Configuration {
 	return getString(key, "");
     }
 
-    /** Returns the string value of a configuration property.
+    /**
+     * Returns the string value of a configuration property.
      *
      * @param key the key to retrieve the value of
      * @param defaultValue the value to return if the key does not exist
@@ -193,7 +200,8 @@ public class Configuration {
 	return config.getString(key, defaultValue);
     }
 
-    /** Returns the numeric value of a configuration property.
+    /**
+     * Returns the numeric value of a configuration property.
      *
      * @param key the key to retrieve the value of
      *
@@ -203,7 +211,8 @@ public class Configuration {
 	return getInteger(key, 0);
     }
 
-    /** Returns the numeric value of a configuration property.
+    /**
+     * Returns the numeric value of a configuration property.
      *
      * @param key the key to retrieve the value of
      * @param defaultValue if the key is not found
@@ -216,7 +225,8 @@ public class Configuration {
 	return config.getDouble(key, defaultValue);
     }
 
-    /** Returns the numeric value of a configuration property.
+    /**
+     * Returns the numeric value of a configuration property.
      *
      * @param key the key to retrieve the value of
      *
@@ -226,7 +236,8 @@ public class Configuration {
 	return getDouble(key, 0);
     }
 
-    /** Returns the numeric value of a configuration property.
+    /**
+     * Returns the numeric value of a configuration property.
      *
      * @param key the key to retrieve the value of
      * @param defaultValue the value to return if the key does not exist
@@ -238,7 +249,8 @@ public class Configuration {
 	return config.getInteger(key, defaultValue);
     }
 
-    /** Returns the boolean value of a configuration property.
+    /**
+     * Returns the boolean value of a configuration property.
      *
      * @param key the key to retrieve the value of
      *
@@ -248,7 +260,8 @@ public class Configuration {
 	return getBoolean(key, false);
     }
 
-    /** Returns the boolean value of a configuration property.
+    /**
+     * Returns the boolean value of a configuration property.
      *
      * @param key the key to retrieve the value of
      * @param defaultValue the value to return if the key does not exist
@@ -262,7 +275,8 @@ public class Configuration {
 	return config.getBoolean(key, defaultValue);
     }
 
-    /** Sets the string value of a configuration property.
+    /**
+     * Sets the string value of a configuration property.
      *
      * @param key the key to set
      * @param newValue the value to set the key to.
@@ -271,7 +285,8 @@ public class Configuration {
 	config.setString(key, newValue);
     }
 
-    /** Sets the numeric value of a configuration property.
+    /**
+     * Sets the numeric value of a configuration property.
      *
      * @param key the key to set
      * @param newValue the value to set the key to.
@@ -280,7 +295,8 @@ public class Configuration {
 	config.setInteger(key, newValue);
     }
 
-    /** Sets the numeric value of a configuration property.
+    /**
+     * Sets the numeric value of a configuration property.
      *
      * @param key the key to set
      * @param newValue the value to set the key to.
@@ -288,18 +304,20 @@ public class Configuration {
     public static final void setDouble(ConfigurationKey key, double newValue) {
 	config.setDouble(key, newValue);
     }
-    /** Sets the boolean value of a configuration property.
+    
+    /**
+     * Sets the boolean value of a configuration property.
      *
      * @param key the key to set
      * @param newValue the value to set the key to.
      */
     public static final void setBoolean(ConfigurationKey key, 
-					boolean newValue) 
-    {
+					boolean newValue) {
 	config.setBoolean(key, newValue);
     }
 
-    /** Adds a property change listener.
+    /**
+     * Adds a property change listener.
      *
      * @param pcl The property change listener to add
      */
@@ -307,7 +325,8 @@ public class Configuration {
 	config.addListener(pcl);
     }
 
-    /** Removes a property change listener.
+    /**
+     * Removes a property change listener.
      *
      * @param pcl The property change listener to remove
      */
@@ -315,92 +334,100 @@ public class Configuration {
 	config.removeListener(pcl);
     }
 
-    /** Adds a property change listener.Static for simplicity of use.
+    /**
+     * Adds a property change listener.Static for simplicity of use.
      *
      * @param key The key to listen for changes of
      * @param pcl The property change listener to add
      */
     public static final void addListener(ConfigurationKey key, 
-					 PropertyChangeListener pcl) 
-    {
+					 PropertyChangeListener pcl) {
 	config.addListener(key, pcl);
     }
 
-    /** Removes a property change listener.
+    /**
+     * Removes a property change listener.
      *
      * @param key The key to listen for changes of
      * @param pcl The property change listener to remove
      */
     public static final void removeListener(ConfigurationKey key, 
-					    PropertyChangeListener pcl) 
-    {
+					    PropertyChangeListener pcl) {
 	config.removeListener(key, pcl);
     }
 
-    /** Create a single component configuration key.
+    /**
+     * Create a single component configuration key.
+     *
      * @param k1 key component 1.
-     * @return the new <code>ConfigurationKey</code>.
-     * 
+     * @return the new {@link ConfigurationKey}.
      */
     public static ConfigurationKey makeKey(String k1) {
 	return new ConfigurationKeyImpl(k1);
     }
 
-    /** Create a sub-component of an existing configuration key.
+    /**
+     * Create a sub-component of an existing configuration key.
+     *
      * @param ck existing key to extend.
      * @param k1 key component 1.
-     * @return the new <code>ConfigurationKey</code>.
+     * @return the new {@link ConfigurationKey}.
      */
     public static ConfigurationKey makeKey(ConfigurationKey ck, String k1) {
 	return new ConfigurationKeyImpl(ck, k1);
     }
 
-    /** Create a two-component configuration key.
+    /** 
+     * Create a two-component configuration key.
+     *
      * @param k1 key component 1.
      * @param k2 key component 2.
-     * @return the new <code>ConfigurationKey</code>.
+     * @return the new {@link ConfigurationKey}.
      */
     public static ConfigurationKey makeKey(String k1, String k2) {
 	return new ConfigurationKeyImpl(k1, k2);
     }
 
-    /** Create a three-component configuration key.
+    /** 
+     * Create a three-component configuration key.
+     *
      * @param k1 key component 1.
      * @param k2 key component 2.
      * @param k3 key component 3.
-     * @return the new <code>ConfigurationKey</code>.
+     * @return the new {@link ConfigurationKey}.
      */
     public static ConfigurationKey makeKey(String k1, String k2, String k3) {
 	return new ConfigurationKeyImpl(k1, k2, k3);
     }
 
-    /** Create a four-component configuration key.
+    /**
+     * Create a four-component configuration key.
+     *
      * @param k1 key component 1.
      * @param k2 key component 2.
      * @param k3 key component 3.
      * @param k4 key component 4.
-     * @return the new <code>ConfigurationKey</code>.
+     * @return the new {@link ConfigurationKey}.
      */
     public static ConfigurationKey makeKey(String k1, String k2, 
-					   String k3, String k4) 
-    {
+					   String k3, String k4) {
 	return new ConfigurationKeyImpl(k1, k2, k3, k4);
     }
 
-    /** Create a five-component configuration key.
+    /** 
+     * Create a five-component configuration key.
+     *
      * @param k1 key component 1.
      * @param k2 key component 2.
      * @param k3 key component 3.
      * @param k4 key component 4.
      * @param k5 key component 5.
-     * @return the new <code>ConfigurationKey</code>.
+     * @return the new {@link ConfigurationKey}.
      */
     public static ConfigurationKey makeKey(String k1, String k2, 
 					   String k3, String k4, 
-					   String k5)
-    {
+					   String k5) {
 	return new ConfigurationKeyImpl(k1, k2, k3, k4, k5);
     }
-
 }
 
