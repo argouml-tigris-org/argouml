@@ -48,6 +48,7 @@ public class UMLClassDiagram extends UMLDiagram {
 
     ////////////////
     // actions for toolbar
+    private Action actionAssociationClass;
     private Action actionClass;
     private Action actionObject;
     private Action actionInterface;
@@ -138,7 +139,8 @@ public class UMLClassDiagram extends UMLDiagram {
             getDependencyActions(), 
             null,
             getActionAttribute(),
-            getActionOperation()
+            getActionOperation(),
+            getActionAssociationClass()
         };
 
         return actions;
@@ -244,6 +246,19 @@ public class UMLClassDiagram extends UMLDiagram {
 
         return actionClass;
     }
+    
+    /**
+    * @return Returns the actionAssociationClass.
+    */
+    protected Action getActionAssociationClass() {
+        if (actionAssociationClass == null) {
+            actionAssociationClass =
+                makeCreateEdgeAction(
+                    ModelFacade.ASSOCIATION_CLASS,
+                    "AssociationClass");
+        }
+        return actionAssociationClass;
+    }    
     /**
      * @return Returns the actionComposition.
      */

@@ -655,7 +655,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param end2 the second given classifier
      * @return MAssociationClass
      */
-    private MAssociationClass buildAssociationClass(
+    public MAssociationClass buildAssociationClass(
 						   MClassifier end1,
 						   MClassifier end2) {
         if (end1 == null
