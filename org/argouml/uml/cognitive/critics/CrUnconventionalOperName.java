@@ -60,7 +60,7 @@ public class CrUnconventionalOperName extends CrUML {
     String nameStr = myName;
     if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
     char initalChar = nameStr.charAt(0);
-    if ((oper.getStereotype()!=null) && "constructor".equals(oper.getStereotype().getName()) )
+    if ((oper.getStereotype()!=null) && "create".equals(oper.getStereotype().getName()) )
       return NO_PROBLEM;
     if (!Character.isLowerCase(initalChar)) return PROBLEM_FOUND;
     return NO_PROBLEM;
