@@ -72,9 +72,9 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *    @param elementType base type for all elements
      */
     public UMLComboBoxModel(UMLUserInterfaceContainer container,
-        String filter, String property, String getMethod,
-        String setMethod, boolean allowVoid, Class elementType,
-        boolean addElementsFromProfileModel) {
+                            String filter, String property, String getMethod,
+                            String setMethod, boolean allowVoid, Class elementType,
+                            boolean addElementsFromProfileModel) {
         _container = container;
         _property = property;
         _allowVoid = allowVoid;
@@ -158,6 +158,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 element = (MModelElement) iter.next();
                 if(isAcceptible(element)) {
                     UMLComboBoxEntry entry = new UMLComboBoxEntry(element,profile,isPhantom);
+//                      Argo.log.info("UMLComboBoxModel.collectElements: " + element);                
                     boolean addMe = true;
                     if(isPhantom) {
                         String shortName = entry.getShortName();
@@ -203,9 +204,12 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 return;
             }
 
-// this if statement does not seem to work, however the code works so I am going
-// to leave it...pjs...Oct. 13, 2001.          
-            if(model != _model) {
+// needs_work...this if statement was not allowing us to update the Stereotype or
+// Type information once the system had previously loaded the combo-box. Perhaps what
+// is required is a way to invalidate the model, instead of collecting the elements
+// everytime we change property panels. For now this does not seem to cause us any
+// performance problems...modified Jan.06, 2002...pjs            
+//            if(model != _model) {
                 _model = model;
                 _set.clear();
                 Profile profile = _container.getProfile();
@@ -243,21 +247,23 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 }
 //      removing this statement solves a problem where on reload of a project or
 //      load of a new project the stereotype, attribute or parameter of the first
-//      class chosen would be changed to null (stereotype) or BigDecimal in the case
-//      of attribute/parameter. I can't think of a reason why this would be fired...pjs                
+//      class chosen would be changed to null in the case of a stereotype or to 
+//      BigDecimal in the case of an attribute or parameter. I can't think of a 
+//      reason why this would be fired...pjs                
 //                fireContentsChanged(this,0,_set.size());
-            }
+                
+//            }  //...end of the commented if statement...pjs
 
             //
             //   get current value
             //
             try {
-                Object current = _getMethod.invoke(_container,_noArgs);
-                Iterator iter = _set.iterator();
+                Object currentObj = _getMethod.invoke(_container,_noArgs);
+                Iterator iter2 = _set.iterator();
                 UMLComboBoxEntry entry;
-                while(iter.hasNext()) {
-                    entry = (UMLComboBoxEntry) iter.next();
-                    if(!entry.isPhantom() && entry.getElement(model) == current) {
+                while(iter2.hasNext()) {
+                    entry = (UMLComboBoxEntry) iter2.next();
+                    if(!entry.isPhantom() && entry.getElement(model) == currentObj) {
                         _selectedItem = entry;
                     }
                 }
@@ -285,6 +291,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
             UMLComboBoxEntry existingEntry;
             String addedName = addedElement.getName();
             Iterator iter = _set.iterator();
+                 
             while(iter.hasNext() && !inSet) {
                 existingEntry = (UMLComboBoxEntry) iter.next();
                 //
@@ -388,8 +395,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
             }
             newValue = entry.getElement(model);
             try {
-                _setMethod.invoke(_container,new Object[] { newValue });
-            }
+                _setMethod.invoke(_container,new Object[] {newValue});}
             catch(Exception e) {
                 e.printStackTrace();
             }
