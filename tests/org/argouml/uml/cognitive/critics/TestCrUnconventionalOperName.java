@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,34 +22,37 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.uml.cognitive.critics;
 
 import junit.framework.TestCase;
 
 
 /**
- * 
- * @author mkl
+ * Testing the class {@link CrUnconventionalOperName}.
  *
+ * @author mkl
  */
 public class TestCrUnconventionalOperName extends TestCase {
-    
+    /**
+     * An instance of the class to test.
+     */
     private CrUnconventionalOperName cr = new CrUnconventionalOperName();
-    
+
+    /**
+     * Constructor.
+     *
+     * @param arg0 The test case name.
+     */
     public TestCrUnconventionalOperName(String arg0) {
         super(arg0);
     }
 
-    public void testNullName() {
+    /**
+     * Testing of computeSuggestion.
+     */
+    public void testComputeSuggestion() {
         assertEquals("", cr.computeSuggestion(null));
-    }
-    
-    public void testNoUnderscoreName() {
         assertEquals("test", cr.computeSuggestion("Test"));
-    }
-    
-    public void testSmallName() {
         assertEquals("t", cr.computeSuggestion("T"));
     }
 }
