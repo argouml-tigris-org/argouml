@@ -28,6 +28,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
@@ -38,7 +39,10 @@ import javax.swing.JOptionPane;
 import javax.swing.ToolTipManager;
 
 import org.apache.log4j.Category;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Level;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
@@ -374,19 +378,27 @@ public class Main {
          
         if (System.getProperty("log4j.configuration") == null) {
             Properties props = new Properties();
-            try {            
-                props.load(ClassLoader.getSystemResourceAsStream(DEFAULT_LOGGING_CONFIGURATION));
+	    InputStream stream = null;
+            try {
+		stream =
+		    ClassLoader.getSystemResourceAsStream(
+		        DEFAULT_LOGGING_CONFIGURATION);
+
+		if (stream != null)
+		    props.load(stream);
             }
             catch (IOException io) {
                 io.printStackTrace();
                 System.exit(-1);
             }
-            PropertyConfigurator.configure(props);
-            // BasicConfigurator.configure();
-            /*
-	      Logger.getRootLogger().getLoggerRepository().setThreshold(
-	      Level.WARN);
-	    */
+
+	    PropertyConfigurator.configure(props);
+
+	    if (stream == null) {
+		BasicConfigurator.configure();
+		Logger.getRootLogger().getLoggerRepository()
+		    .setThreshold(Level.OFF);
+	    }
         }
         
         // initLogging();
