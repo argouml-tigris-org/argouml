@@ -49,12 +49,8 @@ import org.argouml.uml.ui.UMLTreeCellRenderer;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-import ru.novosoft.uml.foundation.core.MElement;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
@@ -71,8 +67,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
  * $Id$
  */
 public class DisplayTextTree 
-    extends JTree
-    implements MElementListener{
+    extends JTree {
     
     protected static Category cat = Category.getInstance(DisplayTextTree.class);
     
@@ -124,6 +119,8 @@ public class DisplayTextTree
                     int row,
                     boolean hasFocus) {
         
+                        //cat.debug("convertValueToText");
+                        
         // do model elements first
         if (value instanceof MModelElement){
             
@@ -188,6 +185,8 @@ public class DisplayTextTree
     public void fireTreeExpanded(TreePath path) {
         
         super.fireTreeExpanded(path);
+        
+         cat.debug("fireTreeExpanded");
         if (_reexpanding)
             return;
         if (path == null || _expandedPathsInModel == null)
@@ -195,13 +194,14 @@ public class DisplayTextTree
         Vector expanded = getExpandedPaths();
         expanded.removeElement(path);
         expanded.addElement(path);
-        addListenerToPath(path);
     }
     
     /** needs documenting */
     public void fireTreeCollapsed(TreePath path) {
         
         super.fireTreeCollapsed(path);
+        
+        cat.debug("fireTreeCollapsed");
         if (path == null || _expandedPathsInModel == null)
             return;
         Vector expanded = getExpandedPaths();
@@ -211,25 +211,11 @@ public class DisplayTextTree
     /** needs documenting */
     public void setModel(TreeModel newModel) {
         
+        
+        cat.debug("setModel");
         Object r = newModel.getRoot();
         if (r != null)
             super.setModel(newModel);
-        
-        if (r instanceof MBase) {
-            // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)r);
-            UmlModelEventPump.getPump().addModelEventListener(this, (MBase) r);
-        }
-        
-        int childCount = newModel.getChildCount(r);
-        for (int i = 0; i < childCount; i++) {
-            Object child = newModel.getChild(r, i);
-            if (child instanceof MBase) {
-                // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)child);
-                UmlModelEventPump.getPump().addModelEventListener(
-                this,
-                (MBase) child);
-            }
-        }
         reexpand();
     }
     
@@ -237,6 +223,8 @@ public class DisplayTextTree
     
     /** needs documenting */
     protected Vector getExpandedPaths() {
+        
+        cat.debug("getExpandedPaths");
         TreeModel tm = getModel();
         Vector res = (Vector) _expandedPathsInModel.get(tm);
         if (res == null) {
@@ -244,37 +232,6 @@ public class DisplayTextTree
             _expandedPathsInModel.put(tm, res);
         }
         return res;
-    }
-    
-    /** needs documenting */
-    protected void addListenerToPath(TreePath path) {
-        
-        Object node = path.getLastPathComponent();
-        addListenerToNode(node);
-    }
-    
-    /** needs documenting */
-    protected void addListenerToNode(Object node) {
-        
-        if (node instanceof MBase) {
-            // UmlModelEventPump.getPump().removeModelEventListener(this, ((MBase)node));
-            UmlModelEventPump.getPump().addModelEventListener(
-                                            this,
-                                            ((MBase) node));
-        }
-        TreeModel tm = getModel();
-        int childCount = tm.getChildCount(node);
-        for (int i = 0; i < childCount; i++) {
-            Object child = tm.getChild(node, i);
-            if (child instanceof MBase) {
-                UmlModelEventPump.getPump().removeModelEventListener(
-                                                this,
-                                                ((MBase) child));
-                UmlModelEventPump.getPump().addModelEventListener(
-                                                this,
-                                                ((MBase) child));
-            }
-        }
     }
     
     /** Signals to the tree that something has changed and it is best
@@ -289,6 +246,8 @@ public class DisplayTextTree
      * updates but it is probably far from every file.
      */
     public void forceUpdate() {
+        
+        cat.debug("forceUpdate");
         _doit.onceMore();
     }
     
@@ -302,6 +261,7 @@ public class DisplayTextTree
      */
     public void doForceUpdate() {
         
+        cat.debug("doForceUpdate");
         Object rootArray[] = new Object[1];
         rootArray[0] = getModel().getRoot();
         Object noChildren[] = null;
@@ -319,6 +279,7 @@ public class DisplayTextTree
     /** needs documenting */
     public void reexpand() {
         
+        cat.debug("reexpand");
         if (_expandedPathsInModel == null)
             return;
         _reexpanding = true;
@@ -334,7 +295,6 @@ public class DisplayTextTree
             tme = new TreeModelEvent(this, path, null, null);
             treeModelListener.treeStructureChanged(tme);
             expandPath(path);
-            // addListenerToPath(path);
         }
         _reexpanding = false;
     }
@@ -347,6 +307,7 @@ public class DisplayTextTree
      */
     public void setTarget(Object target) {
         
+        cat.debug("setTarget");
         if (getModel() instanceof NavPerspective) {
             if (target instanceof Fig) {
                 target = ((Fig)target).getOwner();
@@ -356,56 +317,6 @@ public class DisplayTextTree
             if (index > -1)
                 setSelectionRow(index);
         }
-    }
-    
-    // ------------ MElementListener impl. --------------
-    
-    /** this is only needed so that this class can be added
-     * as a listener to the model event pump.
-     *
-     * empty implementation.
-     */
-    public void listRoleItemSet(MElementEvent e) {
-    }
-    
-    /** this is only needed so that this class can be added
-     * as a listener to the model event pump.
-     *
-     * empty implementation.
-     */
-    public void propertySet(MElementEvent e) {
-    }
-    
-    /** this is only needed so that this class can be added
-     * as a listener to the model event pump.
-     *
-     * empty implementation.
-     */
-    public void recovered(MElementEvent e) {
-    }
-    
-    /** this is only needed so that this class can be added
-     * as a listener to the model event pump.
-     *
-     * empty implementation.
-     */
-    public void removed(MElementEvent e) {
-    }
-    
-    /** this is only needed so that this class can be added
-     * as a listener to the model event pump.
-     *
-     * empty implementation.
-     */
-    public void roleAdded(MElementEvent e) {
-    }
-    
-    /** this is only needed so that this class can be added
-     * as a listener to the model event pump.
-     *
-     * empty implementation.
-     */
-    public void roleRemoved(MElementEvent e) {
     }
     
 } /* end class DisplayTextTree */
@@ -426,7 +337,8 @@ public class DisplayTextTree
 class DisplayTextTreeRun implements Runnable {
 
     /** needs documenting */
-    protected Category cat;
+    //protected Category cat;
+    protected static Category cat = Category.getInstance(DisplayTextTreeRun.class);
     
     /** needs documenting */
     private DisplayTextTree _tree;
@@ -439,7 +351,9 @@ class DisplayTextTreeRun implements Runnable {
     
     /** needs documenting */
     public DisplayTextTreeRun(Category c, DisplayTextTree t) {
-        cat = c;
+        
+        cat.debug("DisplayTextTreeRun constructor");
+        //cat = c;
         _tree = t;
         _timesToRun = 0;
         _queued = false;
@@ -447,6 +361,8 @@ class DisplayTextTreeRun implements Runnable {
     
     /** needs documenting */
     public synchronized void onceMore() {
+        
+        cat.debug("onceMore");
         if (!_queued) {
             _queued = true;
             SwingUtilities.invokeLater(this);
@@ -456,6 +372,8 @@ class DisplayTextTreeRun implements Runnable {
     
     /** needs documenting */
     public synchronized void run() {
+        
+        cat.debug("run");
         if (_timesToRun > 100)
             cat.debug("" + _timesToRun + " forceUpdates encountered.");
         
