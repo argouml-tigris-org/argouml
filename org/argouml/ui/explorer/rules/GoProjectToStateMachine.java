@@ -57,7 +57,7 @@ public class GoProjectToStateMachine extends AbstractPerspectiveRule {
 	    while (it.hasNext()) {
 		col.addAll(Model.getModelManagementHelper()
 			   .getAllModelElementsOfKind(it.next(),
-					ModelFacade.STATEMACHINE));
+					ModelFacade.getStateMachineToken()));
 	    }
 	}
 	return col;

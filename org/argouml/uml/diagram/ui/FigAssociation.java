@@ -355,19 +355,25 @@ public class FigAssociation extends FigEdgeModelElement {
 	ArrowHead arrow = ArrowHeadNone.TheInstance;
 
 	if (nav) {
-	    if (ModelFacade.NONE_AGGREGATIONKIND.equals(ak) || (ak == null)) {
+	    if (ModelFacade.getNoneAggregationKindToken().equals(ak)
+	            || (ak == null)) {
 		arrow = new ArrowHeadGreater();
-            } else if (ModelFacade.AGGREGATE_AGGREGATIONKIND.equals(ak)) {
+            } else if (ModelFacade.getAggregateAggregationKindToken()
+                    .equals(ak)) {
 		arrow = NAV_AGGREGATE;
-            } else if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(ak)) {
+            } else if (ModelFacade.getCompositeAggregationKindToken()
+                    .equals(ak)) {
 		arrow = NAV_COMP;
             }
 	} else {
-	    if (ModelFacade.NONE_AGGREGATIONKIND.equals(ak) || (ak == null)) {
+	    if (ModelFacade.getNoneAggregationKindToken().equals(ak)
+	            || (ak == null)) {
 		arrow = ArrowHeadNone.TheInstance;
-	    } else if (ModelFacade.AGGREGATE_AGGREGATIONKIND.equals(ak)) {
+	    } else if (ModelFacade.getAggregateAggregationKindToken()
+	            .equals(ak)) {
 		arrow = ArrowHeadDiamond.WhiteDiamond;
-	    } else if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(ak)) {
+	    } else if (ModelFacade.getCompositeAggregationKindToken()
+	            .equals(ak)) {
 		arrow = ArrowHeadDiamond.BlackDiamond;
 	    }
 	}

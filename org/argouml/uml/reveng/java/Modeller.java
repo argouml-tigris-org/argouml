@@ -266,7 +266,9 @@ public class Modeller {
         if (component == null) {
 
             // set the namespace of the component
-            Model.getCoreHelper().setNamespace(parseState.getComponent(), currentPackage);
+            Model.getCoreHelper().setNamespace(
+                    parseState.getComponent(),
+                    currentPackage);
         } else {
 
             // a component already exists,
@@ -402,9 +404,12 @@ public class Modeller {
 	    addClassifier(Model.getCoreFactory().createClass(),
 			  name, modifiers, javadoc);
 
-        Model.getCoreHelper().setAbstract(mClass,
-				(modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
-        Model.getCoreHelper().setLeaf(mClass, (modifiers & JavaRecognizer.ACC_FINAL) > 0);
+        Model.getCoreHelper().setAbstract(
+                mClass,
+                (modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
+        Model.getCoreHelper().setLeaf(
+                mClass,
+                (modifiers & JavaRecognizer.ACC_FINAL) > 0);
         Model.getCoreHelper().setRoot(mClass, false);
 
         // only do generalizations and realizations on the 2nd pass.
@@ -443,12 +448,17 @@ public class Modeller {
 		    Object mAbstraction =
 			getAbstraction(mInterface, mClass);
 		    if (ModelFacade.getSuppliers(mAbstraction).size() == 0) {
-			Model.getCoreHelper().addSupplier(mAbstraction, mInterface);
+			Model.getCoreHelper().addSupplier(
+			        mAbstraction,
+			        mInterface);
 			Model.getCoreHelper().addClient(mAbstraction, mClass);
 		    }
-		    Model.getCoreHelper().setNamespace(mAbstraction, currentPackage);
-		    Model.getCoreHelper().setStereotype(mAbstraction,
-					      getStereotype("realize"));
+		    Model.getCoreHelper().setNamespace(
+		            mAbstraction,
+		            currentPackage);
+		    Model.getCoreHelper().setStereotype(
+		            mAbstraction,
+		            getStereotype("realize"));
 		} catch (ClassifierNotFoundException e) {
 		    // Currently if a classifier cannot be found in the
 		    // model/classpath then information will be lost from
@@ -737,11 +747,11 @@ public class Modeller {
 	setVisibility(mOperation, modifiers);
 	if ((modifiers & JavaRecognizer.ACC_SYNCHRONIZED) > 0) {
 	    Model.getCoreHelper().setConcurrency(mOperation,
-	            ModelFacade.GUARDED_CONCURRENCYKIND);
+	            ModelFacade.getGuardedConcurrencyKindToken());
 	} else if (ModelFacade.getConcurrency(mOperation)
-		   == ModelFacade.GUARDED_CONCURRENCYKIND) {
+		   == ModelFacade.getGuardedConcurrencyKindToken()) {
 	    Model.getCoreHelper().setConcurrency(mOperation,
-	            ModelFacade.SEQUENTIAL_CONCURRENCYKIND);
+	            ModelFacade.getSequentialConcurrencyKindToken());
 	}
 
 	for (Iterator i = ModelFacade.getParameters(mOperation).iterator();
@@ -976,7 +986,9 @@ public class Modeller {
 		    Model.getDataTypesFactory()
 		        .createExpression("Java",
 					  initializer);
-                Model.getCoreHelper().setInitialValue(mAttribute, newInitialValue);
+                Model.getCoreHelper().setInitialValue(
+                        mAttribute,
+                        newInitialValue);
             }
 
             if ((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
@@ -992,7 +1004,9 @@ public class Modeller {
             Object mAssociationEnd = getAssociationEnd(name, mClassifier);
             setTargetScope(mAssociationEnd, modifiers);
             setVisibility(mAssociationEnd, modifiers);
-            Model.getCoreHelper().setMultiplicity(mAssociationEnd, multiplicity);
+            Model.getCoreHelper().setMultiplicity(
+                    mAssociationEnd,
+                    multiplicity);
             Model.getCoreHelper().setType(mAssociationEnd, mClassifier);
             Model.getCoreHelper().setName(mAssociationEnd, name);
             if ((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
@@ -1048,7 +1062,8 @@ public class Modeller {
             mAbstraction = i.next();
             Collection c = ModelFacade.getSuppliers(mAbstraction);
             if (c == null || c.size() == 0) {
-                Model.getCoreHelper().removeClientDependency(child, mAbstraction);
+                Model.getCoreHelper()
+                	.removeClientDependency(child, mAbstraction);
             } else {
                 if (parent != c.toArray()[0]) {
                     mAbstraction = null;
@@ -1086,8 +1101,9 @@ public class Modeller {
 	    if ("".equals(getPackageName(name))) {
 		Model.getCoreHelper().addOwnedElement(model, mPackage);
 	    } else {
-		Model.getCoreHelper().addOwnedElement(getPackage(getPackageName(name)),
-					    mPackage);
+		Model.getCoreHelper().addOwnedElement(
+		        getPackage(getPackageName(name)),
+		        mPackage);
 	    }
 	}
 	return mPackage;
@@ -1167,7 +1183,9 @@ public class Modeller {
         Object mMethod = parseState.getMethod(name);
         if (mMethod == null) {
             mMethod = Model.getCoreFactory().buildMethod(name);
-            Model.getCoreHelper().addFeature(parseState.getClassifier(), mMethod);
+            Model.getCoreHelper().addFeature(
+                    parseState.getClassifier(),
+                    mMethod);
         }
         return mMethod;
     }
@@ -1381,19 +1399,28 @@ public class Modeller {
     private void setVisibility(Object element,
                                short modifiers) {
 	if ((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
-            Model.getCoreHelper().setTaggedValue(element, "src_modifiers", "static");
+            Model.getCoreHelper().setTaggedValue(
+                    element,
+                    "src_modifiers",
+                    "static");
 	}
 	if ((modifiers & JavaRecognizer.ACC_PRIVATE) > 0) {
-	    Model.getCoreHelper().setVisibility(element,
-	            ModelFacade.PRIVATE_VISIBILITYKIND);
+	    Model.getCoreHelper().setVisibility(
+	            element,
+	            ModelFacade.getPrivateVisibilityKindToken());
 	} else if ((modifiers & JavaRecognizer.ACC_PROTECTED) > 0) {
-	    Model.getCoreHelper().setVisibility(element,
-	            ModelFacade.PROTECTED_VISIBILITYKIND);
+	    Model.getCoreHelper().setVisibility(
+	            element,
+	            ModelFacade.getProtectedVisibilityKindToken());
 	} else if ((modifiers & JavaRecognizer.ACC_PUBLIC) > 0) {
-	    Model.getCoreHelper().setVisibility(element,
-	            ModelFacade.PUBLIC_VISIBILITYKIND);
+	    Model.getCoreHelper().setVisibility(
+	            element,
+	            ModelFacade.getPublicVisibilityKindToken());
 	} else {
-            Model.getCoreHelper().setTaggedValue(element, "src_visibility", "default");
+            Model.getCoreHelper().setTaggedValue(
+                    element,
+                    "src_visibility",
+                    "default");
 	}
     }
 
@@ -1407,10 +1434,10 @@ public class Modeller {
     private void setOwnerScope(Object feature, short modifiers) {
         if ((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
             Model.getCoreHelper().setOwnerScope(feature,
-                    ModelFacade.CLASSIFIER_SCOPEKIND);
+                    ModelFacade.getClassifierScopeKindToken());
         } else {
             Model.getCoreHelper().setOwnerScope(feature,
-                    ModelFacade.INSTANCE_SCOPEKIND);
+                    ModelFacade.getInstanceScopeKindToken());
         }
     }
 
@@ -1423,11 +1450,13 @@ public class Modeller {
     */
     private void setTargetScope(Object mAssociationEnd, short modifiers) {
         if ((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
-            Model.getCoreHelper().setTargetScope(mAssociationEnd,
-				       ModelFacade.CLASSIFIER_SCOPEKIND);
+            Model.getCoreHelper().setTargetScope(
+                    mAssociationEnd,
+                    ModelFacade.getClassifierScopeKindToken());
         } else {
-            Model.getCoreHelper().setTargetScope(mAssociationEnd,
-				       ModelFacade.INSTANCE_SCOPEKIND);
+            Model.getCoreHelper().setTargetScope(
+                    mAssociationEnd,
+                    ModelFacade.getInstanceScopeKindToken());
         }
     }
 
@@ -1488,10 +1517,14 @@ public class Modeller {
 		// for all model elements. As this does not seem to
 		// cause problems, I'll just leave it at that for the
 		// moment...
-		Model.getCoreHelper().addOwnedElement(ModelFacade.getNamespace(me), mc);
+		Model.getCoreHelper().addOwnedElement(
+		        ModelFacade.getNamespace(me),
+		        mc);
 	    }
 	} else {
-	    Model.getExtensionMechanismsHelper().setValueOfTag(getTaggedValue(me, sTagName), sTagData);
+	    Model.getExtensionMechanismsHelper().setValueOfTag(
+	            getTaggedValue(me, sTagName),
+	            sTagData);
 	}
     }
 
@@ -1648,7 +1681,9 @@ public class Modeller {
                 stereo = ModelFacade.getValueOfTag(tv);
             }
 	    if (stereo != null && stereo.length() > 0) {
-		Model.getCoreHelper().setStereotype(modelElement, getStereotype(stereo));
+		Model.getCoreHelper().setStereotype(
+		        modelElement,
+		        getStereotype(stereo));
 	    }
 	}
     }

@@ -49,8 +49,9 @@ public class UMLAssociationEndOrderingCheckBox extends UMLCheckBox2 {
     public void buildModel() {
         if (getTarget() != null) {
             Object associationEnd = /*(MAssociationEnd)*/ getTarget();
-            setSelected(ModelFacade.ORDERED_ORDERINGKIND.equals(ModelFacade
-                    .getOrdering(associationEnd)));
+            setSelected(
+                    ModelFacade.getOrderedOrderingKindToken().equals(
+                            ModelFacade.getOrdering(associationEnd)));
         }
     }
 }

@@ -50,7 +50,9 @@ import org.tigris.gef.presentation.Handle;
  * @author jrobbins@ics.uci.edu
  */
 public class SelectionActor extends SelectionWButtons {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(SelectionActor.class);
 
     /**
@@ -77,13 +79,21 @@ public class SelectionActor extends SelectionWButtons {
      */
     public void hitHandle(Rectangle r, Handle h) {
 	super.hitHandle(r, h);
-	if (h.index != -1) return;
-	if (!isPaintButtons()) return;
+	if (h.index != -1) {
+	    return;
+	}
+	if (!isPaintButtons()) {
+	    return;
+	}
 	Editor ce = Globals.curEditor();
 	SelectionManager sm = ce.getSelectionManager();
-	if (sm.size() != 1) return;
+	if (sm.size() != 1) {
+	    return;
+	}
 	ModeManager mm = ce.getModeManager();
-	if (mm.includes(ModeModify.class) && getPressedButton() == -1) return;
+	if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
+	    return;
+	}
 	int cx = _content.getX();
 	int cy = _content.getY();
 	int cw = _content.getWidth();
@@ -93,12 +103,10 @@ public class SelectionActor extends SelectionWButtons {
 	if (hitLeft(cx + cw, cy + ch / 2, aw, ah, r)) {
 	    h.index = 12;
 	    h.instructions = "Add an associated use case";
-	}
-	else if (hitRight(cx, cy + ch / 2, aw, ah, r)) {
+	} else if (hitRight(cx, cy + ch / 2, aw, ah, r)) {
 	    h.index = 13;
 	    h.instructions = "Add an associated use case";
-	}
-	else {
+	} else {
 	    h.index = -1;
 	    h.instructions = "Move object(s)";
 	}
@@ -134,17 +142,17 @@ public class SelectionActor extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = (Class) ModelFacade.USE_CASE;
+	Class nodeClass = (Class) ModelFacade.getUseCaseToken();
 	int bx = mX, by = mY;
 	boolean reverse = false;
 	switch (hand.index) {
 	case 12: //add assoc
-	    edgeClass = (Class) ModelFacade.ASSOCIATION;
+	    edgeClass = (Class) ModelFacade.getAssociationToken();
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13: // add assoc
-	    edgeClass = (Class) ModelFacade.ASSOCIATION;
+	    edgeClass = (Class) ModelFacade.getAssociationToken();
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -180,7 +188,7 @@ public class SelectionActor extends SelectionWButtons {
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(),
-			  (Class) ModelFacade.ASSOCIATION);
+			  (Class) ModelFacade.getAssociationToken());
     }
 
     /**
@@ -189,7 +197,7 @@ public class SelectionActor extends SelectionWButtons {
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
         return gm.connect(_content.getOwner(), newNode ,
-			  (Class) ModelFacade.ASSOCIATION);
+			  (Class) ModelFacade.getAssociationToken());
     }
 
 } /* end class SelectionActor */

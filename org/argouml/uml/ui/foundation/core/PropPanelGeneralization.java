@@ -67,9 +67,9 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     public PropPanelGeneralization() {
         super("Generalization", ConfigLoader.getTabPropsOrientation());
         Object[] namesToWatch = {
-            ModelFacade.STEREOTYPE,
-            ModelFacade.NAMESPACE,
-            ModelFacade.CLASSIFIER,
+            ModelFacade.getStereotypeToken(),
+            ModelFacade.getNamespaceToken(),
+            ModelFacade.getClassifierToken(),
         };
         setNameEventListening(namesToWatch);
 

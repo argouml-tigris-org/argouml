@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui;
 
 import java.util.ArrayList;
@@ -40,10 +39,10 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
     private static List multiplicityList = new ArrayList();
 
     static {
-        multiplicityList.add(ModelFacade.M0_N_MULTIPLICITY);
-        multiplicityList.add(ModelFacade.M0_1_MULTIPLICITY);
-        multiplicityList.add(ModelFacade.M1_1_MULTIPLICITY);
-        multiplicityList.add(ModelFacade.M1_N_MULTIPLICITY);
+        multiplicityList.add(ModelFacade.getM0NMultiplicityToken());
+        multiplicityList.add(ModelFacade.getM01MultiplicityToken());
+        multiplicityList.add(ModelFacade.getM11MultiplicityToken());
+        multiplicityList.add(ModelFacade.getM1NMultiplicityToken());
     }
 
     /**
@@ -68,15 +67,18 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         setElements(multiplicityList);
 	Object t = getTarget();
-	if (ModelFacade.isAModelElement(t))
+	if (ModelFacade.isAModelElement(t)) {
 	    addElement(ModelFacade.getMultiplicity(t));
+	}
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#addElement(java.lang.Object)
      */
     public void addElement(Object o) {
-        if (o == null) return;
+        if (o == null) {
+            return;
+        }
         if (!multiplicityList.contains(o) && isValidElement(o)) {
             multiplicityList.add(o);
         }

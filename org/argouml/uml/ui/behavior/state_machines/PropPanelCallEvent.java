@@ -41,8 +41,8 @@ import org.argouml.uml.ui.foundation.core.ActionNewParameter;
 import org.argouml.util.ConfigLoader;
 
 /**
- * The properties panel of a CallEvent. 
- * 
+ * The properties panel of a CallEvent.
+ *
  * @author oliver.heyden@gentleware.de
  */
 public class PropPanelCallEvent extends PropPanelEvent {
@@ -62,14 +62,14 @@ public class PropPanelCallEvent extends PropPanelEvent {
     public void initialize() {
         super.initialize();
 
-        UMLSearchableComboBox operationComboBox = 
+        UMLSearchableComboBox operationComboBox =
             new UMLCallEventOperationComboBox2(
                 new UMLCallEventOperationComboBoxModel());
         addField(Translator.localize("label.operations"), operationComboBox);
-        
+
         addButton(new PropPanelButton2(new ActionNewParameter(),
                 lookupIcon("Parameter")));
-        
+
         addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
@@ -79,21 +79,22 @@ public class PropPanelCallEvent extends PropPanelEvent {
 class UMLCallEventOperationComboBox2 extends UMLSearchableComboBox {
     /**
      * The constructor.
-     * 
+     *
      * @param arg0 the model
      */
     public UMLCallEventOperationComboBox2(UMLComboBoxModel2 arg0) {
         super(arg0, null); // no external action; we do it ourselves
         setEditable(true);
     }
-    
+
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
         if (ModelFacade.isACallEvent(target)) {
-            Model.getCommonBehaviorHelper().setOperation(target, 
+            Model.getCommonBehaviorHelper().setOperation(
+                    target,
                     getSelectedItem());
         }
     }
@@ -104,9 +105,9 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
      * The constructor.
      */
     public UMLCallEventOperationComboBoxModel() {
-        super("operation", true); 
+        super("operation", true);
     }
-    
+
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
@@ -114,10 +115,12 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
         Object target = TargetManager.getInstance().getModelTarget();
         Collection ops = new ArrayList();
         if (ModelFacade.isACallEvent(target)) {
-            Object ns = ModelFacade.getNamespace(target); 
+            Object ns = ModelFacade.getNamespace(target);
             if (ModelFacade.isANamespace(ns)) {
-                Collection c = Model.getModelManagementHelper()
-                    .getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
+                Collection c =
+                    Model.getModelManagementHelper().getAllModelElementsOfKind(
+                            ns,
+                            ModelFacade.getClassifierToken());
                 Iterator i = c.iterator();
                 while (i.hasNext()) {
                     ops.addAll(ModelFacade.getOperations(i.next()));
@@ -126,7 +129,7 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
         }
         setElements(ops);
     }
-    
+
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
@@ -137,7 +140,7 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
         }
         return null;
     }
-    
+
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(java.lang.Object)
      */

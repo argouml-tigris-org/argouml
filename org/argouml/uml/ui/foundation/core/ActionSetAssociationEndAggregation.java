@@ -80,11 +80,11 @@ public class ActionSetAssociationEndAggregation extends UMLAction {
                 Object m = /*(MAssociationEnd)*/ target;
                 Object/*MAggregationKind*/ kind = null;
                 if (actionCommand.equals(AGGREGATE_COMMAND)) {
-                    kind = ModelFacade.AGGREGATE_AGGREGATIONKIND;
+                    kind = ModelFacade.getAggregateAggregationKindToken();
                 } else if (actionCommand.equals(COMPOSITE_COMMAND)) {
-                    kind = ModelFacade.COMPOSITE_AGGREGATIONKIND;
+                    kind = ModelFacade.getCompositeAggregationKindToken();
                 } else {
-                    kind = ModelFacade.NONE_AGGREGATIONKIND;
+                    kind = ModelFacade.getNoneAggregationKindToken();
                 }
                 Model.getCoreHelper().setAggregation(m, kind);
             }

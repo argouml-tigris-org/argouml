@@ -38,9 +38,10 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
-/** This class defines a renderer object for UML Statechart Diagrams. In a
- *  Statechart Diagram the following UML objects are displayed with the
- *  following Figs: <p>
+/**
+ * This class defines a renderer object for UML Statechart Diagrams. In a
+ * Statechart Diagram the following UML objects are displayed with the
+ * following Figs: <p>
  * <pre>
  *  UML Object          ---  Fig
  *  ---------------------------------------
@@ -64,17 +65,20 @@ import org.tigris.gef.presentation.FigNode;
  * @author ics125b spring 1998
  */
 public class StateDiagramRenderer extends UmlDiagramRenderer {
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(StateDiagramRenderer.class);
 
     /**
-     * Return a Fig that can be used to represent the given node
+     * Return a Fig that can be used to represent the given node.
      *
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object, java.util.Map)
      */
-    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, 
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
             Map styleAttributes) {
         if (ModelFacade.isAActionState(node)) {
             return new FigActionState(gm, node);
@@ -94,20 +98,23 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
             if (kind == null) {
                 return null;
             }
-            if (kind.equals(ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
+            if (kind.equals(ModelFacade.getInitialPseudostateKindToken())) {
                 return new FigInitialState(gm, node);
-            } else if (kind.equals(ModelFacade.BRANCH_PSEUDOSTATEKIND)) {
+            } else if (kind.equals(
+                    ModelFacade.getBranchPseudostateKindToken())) {
                 return new FigBranchState(gm, node);
-            } else if (kind.equals(ModelFacade.JUNCTION_PSEUDOSTATEKIND)) {
+            } else if (kind.equals(
+                    ModelFacade.getJunctionPseudostateKindToken())) {
                 return new FigJunctionState(gm, node);
-            } else if (kind.equals(ModelFacade.FORK_PSEUDOSTATEKIND)) {
+            } else if (kind.equals(ModelFacade.getForkPseudostateKindToken())) {
                 return new FigForkState(gm, node);
-            } else if (kind.equals(ModelFacade.JOIN_PSEUDOSTATEKIND)) {
+            } else if (kind.equals(ModelFacade.getJoinPseudostateKindToken())) {
                 return new FigJoinState(gm, node);
-            } else if (kind.equals(ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND))
-            {
+            } else if (kind.equals(
+                    ModelFacade.getShallowHistoryPseudostateKindToken())) {
                 return new FigShallowHistoryState(gm, node);
-            } else if (kind.equals(ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND)) {
+            } else if (kind.equals(
+                    ModelFacade.getDeepHistoryPseudostateKindToken())) {
                 return new FigDeepHistoryState(gm, node);
             } else {
                 LOG.warn("found a type not known");
@@ -117,13 +124,14 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
         return null;
     }
 
-    /** Return a Fig that can be used to represent the given edge
-     * 
+    /**
+     * Return a Fig that can be used to represent the given edge.
+     *
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object, java.util.Map)
      */
-    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, 
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
             Map styleAttributes) {
         LOG.debug("making figedge for " + edge);
         if (org.argouml.model.ModelFacade.isATransition(edge)) {
@@ -132,7 +140,7 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
         } else if (edge instanceof CommentEdge) {
             return new FigEdgeNote(edge, lay);
         }
-        
+
         LOG.debug("TODO: StateDiagramRenderer getFigEdgeFor");
         return null;
     }

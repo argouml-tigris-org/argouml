@@ -63,7 +63,9 @@ public class ActionGenerateAll extends UMLAction {
     public void actionPerformed(ActionEvent ae) {
 	ArgoDiagram activeDiagram =
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-	if (!(activeDiagram instanceof UMLClassDiagram)) return;
+	if (!(activeDiagram instanceof UMLClassDiagram)) {
+	    return;
+	}
 
 	UMLClassDiagram d = (UMLClassDiagram) activeDiagram;
 	Vector classes = new Vector();
@@ -99,17 +101,18 @@ public class ActionGenerateAll extends UMLAction {
 		    addCollection(Model.getModelManagementHelper()
 				  .getAllModelElementsOfKind(
                                       selected,
-		                      ModelFacade.CLASS),
+		                      ModelFacade.getClassToken()),
 				  classes);
 		    addCollection(Model.getModelManagementHelper()
 				  .getAllModelElementsOfKind(
                                       selected,
-			              ModelFacade.INTERFACE),
+			              ModelFacade.getInterfaceToken()),
 				  classes);
 		} else if (ModelFacade.isAClass(selected)
 			   || ModelFacade.isAInterface(selected)) {
-		    if (!classes.contains(selected))
-			classes.addElement(selected);
+		    if (!classes.contains(selected)) {
+		        classes.addElement(selected);
+		    }
 		}
 	    }
 	}
@@ -128,12 +131,14 @@ public class ActionGenerateAll extends UMLAction {
     }
 
     /**
-     *Adds elements from collection without duplicates
+     * Adds elements from collection without duplicates.
      */
     private void addCollection(Collection c, Vector v) {
         for (Iterator it = c.iterator(); it.hasNext();) {
             Object o = it.next();
-            if (!v.contains(o)) v.addElement(o);
+            if (!v.contains(o)) {
+                v.addElement(o);
+            }
         }
     }
 } /* end class ActionGenerateAll */

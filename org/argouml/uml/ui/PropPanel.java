@@ -70,7 +70,7 @@ import ru.novosoft.uml.MElementListener;
  * This abstract class provides the basic layout and event dispatching
  * support for all Property Panels.<p>
  *
- * The property panel is {@link org.argouml.swingext.LabelledLayout} layed out
+ * The property panel is {@link org.tigris.swidgets.LabelledLayout} layed out
  * as a number (specified in the constructor) of equally sized panels
  * that split the available space.  Each panel has a column of
  * "captions" and matching column of "fields" which are laid out
@@ -131,8 +131,8 @@ public abstract class PropPanel
         setLayout(new LabelledLayout(orientation == Vertical.getInstance()));
 
         if (icon != null) {
-            titleLabel = new JLabel(localize(title), icon,
-                    SwingConstants.LEFT);
+            titleLabel =
+                new JLabel(localize(title), icon, SwingConstants.LEFT);
         } else {
             titleLabel = new JLabel(localize(title));
         }
@@ -154,9 +154,9 @@ public abstract class PropPanel
     }
 
     /**
-     * Set the orientation of the panel
+     * Set the orientation of the panel.
      *
-     * @see org.argouml.swingext.Orientable#setOrientation(org.argouml.swingext.Orientation)
+     * @see org.tigris.swidgets.Orientable#setOrientation(org.tigris.swidgets.Orientation)
      */
     public void setOrientation(Orientation orientation) {
         super.setOrientation(orientation);
@@ -369,8 +369,7 @@ public abstract class PropPanel
 		new UMLChangeDispatch(this,
 				      UMLChangeDispatch.TARGET_CHANGED_ADD);
 
-        }
-        else {
+        } else {
             dispatch =
 		new UMLChangeDispatch(this,
 				      UMLChangeDispatch.TARGET_REASSERTED);
@@ -383,8 +382,9 @@ public abstract class PropPanel
         if (titleLabel != null) {
             Icon icon =
 		ResourceLoaderWrapper.getInstance().lookupIcon(t);
-            if (icon != null)
+            if (icon != null) {
                 titleLabel.setIcon(icon);
+            }
         }
     }
 
@@ -506,7 +506,7 @@ public abstract class PropPanel
     /**
      * This method can be overriden in derived Panels where the
      * appropriate namespace for display may not be the same as
-     * the namespace of the target
+     * the namespace of the target.
      *
      * @return the namespace
      */
@@ -593,17 +593,18 @@ public abstract class PropPanel
         */
         for (int i = 0; i < metaclasses.length; i++) {
             Object clazz = metaclasses[i];
-            if (Model.getCoreHelper().isSubType(ModelFacade.NAMESPACE,
+            if (Model.getCoreHelper().isSubType(ModelFacade.getNamespaceToken(),
                                                  clazz)) {
                 UmlModelEventPump.getPump()
 		    .addClassModelEventListener(this, clazz, "ownedElement");
             }
-            if (Model.getCoreHelper().isSubType(ModelFacade.MODELELEMENT,
-                                                 clazz)) {
+            if (Model.getCoreHelper().isSubType(
+                    ModelFacade.getModelElementToken(),
+                    clazz)) {
                 UmlModelEventPump.getPump()
 		    .addClassModelEventListener(this, clazz, "name");
             }
-            if (clazz.equals(ModelFacade.STEREOTYPE)) {
+            if (clazz.equals(ModelFacade.getStereotypeToken())) {
                 UmlModelEventPump.getPump()
 		    .addClassModelEventListener(this, clazz, "baseClass");
             }

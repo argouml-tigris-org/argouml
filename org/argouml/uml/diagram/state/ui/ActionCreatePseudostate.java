@@ -41,8 +41,9 @@ public class ActionCreatePseudostate extends CmdCreateNode {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    /** Construct a new Cmd with the given classes for the NetNode
-     *  and its FigNode.
+    /**
+     * Construct a new Cmd with the given classes for the NetNode
+     * and its FigNode.
      *
      * @param kind the pseudostatekind
      * @param name the name of this kind of pseudostate
@@ -54,14 +55,15 @@ public class ActionCreatePseudostate extends CmdCreateNode {
             throw new IllegalArgumentException();
 	}
 
-	setArg("className", ModelFacade.PSEUDOSTATE);
+	setArg("className", ModelFacade.getPseudostateToken());
 	setArg("kind", kind);
     }
 
     ////////////////////////////////////////////////////////////////
     // Cmd API
 
-    /** Actually instanciate the NetNode and FigNode objects and
+    /**
+     * Actually instanciate the NetNode and FigNode objects and
      * set the global next mode to ModePlace
      * TODO: should call super, reduce code volume!
      *

@@ -49,9 +49,11 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  * TODO: Finish the work on swimlanes, callstates, subactivity states.
  */
 public class UMLActivityDiagram extends UMLDiagram {
-
-    private static final Logger LOG = Logger.
-                                    getLogger(UMLActivityDiagram.class);
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(UMLActivityDiagram.class);
 
     ///////////////////////////
     // actions for the toolbar
@@ -96,7 +98,8 @@ public class UMLActivityDiagram extends UMLDiagram {
     }
 
     /**
-     * Constructor
+     * Constructor.
+     *
      * @param namespace the namespace for the diagram
      * @param agraph the ActivityGraph for the diagram
      */
@@ -105,10 +108,11 @@ public class UMLActivityDiagram extends UMLDiagram {
         this();
 
         if (!ModelFacade.isANamespace(namespace)
-            || !ModelFacade.isAActivityGraph(agraph))
+            || !ModelFacade.isAActivityGraph(agraph)) {
             throw new IllegalArgumentException();
+        }
 
-        if (namespace != null && ModelFacade.getName(namespace) != null)
+        if (namespace != null && ModelFacade.getName(namespace) != null) {
             if (ModelFacade.getName(namespace).trim() != "") {
                 String name =
                     ModelFacade.getName(namespace)
@@ -118,10 +122,12 @@ public class UMLActivityDiagram extends UMLDiagram {
                     setName(name);
                 } catch (PropertyVetoException pve) { }
             }
-        if (namespace != null)
+        }
+        if (namespace != null) {
             setup(namespace, agraph);
-        else
+        } else {
             throw new NullPointerException("Namespace may not be null");
+        }
     }
 
     /**
@@ -158,8 +164,9 @@ public class UMLActivityDiagram extends UMLDiagram {
     public void setup(Object m, Object agraph) {
 
         if (!ModelFacade.isANamespace(m)
-            || !ModelFacade.isAActivityGraph(agraph))
+            || !ModelFacade.isAActivityGraph(agraph)) {
             throw new IllegalArgumentException();
+        }
 
         super.setNamespace(m);
         ActivityDiagramGraphModel gm = new ActivityDiagramGraphModel();
@@ -181,11 +188,12 @@ public class UMLActivityDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
     public Object getOwner() {
-        ActivityDiagramGraphModel gm = (ActivityDiagramGraphModel)
-                                    getGraphModel();
+        ActivityDiagramGraphModel gm =
+            (ActivityDiagramGraphModel) getGraphModel();
         Object sm = gm.getMachine();
-        if (sm != null)
+        if (sm != null) {
             return sm;
+        }
         return gm.getNamespace();
     }
 
@@ -201,8 +209,9 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     public void setStateMachine(Object sm) {
 
-        if (!ModelFacade.isAStateMachine(sm))
+        if (!ModelFacade.isAStateMachine(sm)) {
             throw new IllegalArgumentException();
+        }
 
         ((ActivityDiagramGraphModel) getGraphModel()).setMachine(sm);
     }
@@ -259,8 +268,11 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     protected Action getActionCallState() {
         if (actionCallState == null) {
-            actionCallState = new RadioAction(
-                    new CmdCreateNode(ModelFacade.CALLSTATE, "CallState"));
+            actionCallState =
+                new RadioAction(
+                        new CmdCreateNode(
+                                ModelFacade.getCallStateToken(),
+                                "CallState"));
         }
         return actionCallState;
     }
@@ -269,9 +281,11 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     protected Action getActionFinalPseudoState() {
         if (actionFinalPseudoState == null) {
-            actionFinalPseudoState = new RadioAction(
-                    new CmdCreateNode(ModelFacade.FINALSTATE,
-                                                "FinalState"));
+            actionFinalPseudoState =
+                new RadioAction(
+                        new CmdCreateNode(
+                                ModelFacade.getFinalStateToken(),
+                        	"FinalState"));
         }
         return actionFinalPseudoState;
     }
@@ -280,9 +294,11 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     protected Action getActionForkPseudoState() {
         if (actionForkPseudoState == null) {
-            actionForkPseudoState = new RadioAction(
-                new ActionCreatePseudostate(ModelFacade.FORK_PSEUDOSTATEKIND,
-                            "Fork"));
+            actionForkPseudoState =
+                new RadioAction(
+                        new ActionCreatePseudostate(
+                                ModelFacade.getForkPseudostateKindToken(),
+                        	"Fork"));
         }
         return actionForkPseudoState;
     }
@@ -291,9 +307,11 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     protected Action getActionJoinPseudoState() {
         if (actionJoinPseudoState == null) {
-            actionJoinPseudoState = new RadioAction(
-                new ActionCreatePseudostate(ModelFacade.JOIN_PSEUDOSTATEKIND,
-                            "Join"));
+            actionJoinPseudoState =
+                new RadioAction(
+                        new ActionCreatePseudostate(
+                                ModelFacade.getJoinPseudostateKindToken(),
+                        	"Join"));
         }
         return actionJoinPseudoState;
     }
@@ -302,9 +320,11 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     protected Action getActionJunctionPseudoState() {
         if (actionJunctionPseudoState == null) {
-            actionJunctionPseudoState = new RadioAction(
-                new ActionCreatePseudostate(
-                        ModelFacade.JUNCTION_PSEUDOSTATEKIND, "Junction"));
+            actionJunctionPseudoState =
+                new RadioAction(
+                        new ActionCreatePseudostate(
+                                ModelFacade.getJunctionPseudostateKindToken(),
+                                "Junction"));
         }
         return actionJunctionPseudoState;
     }
@@ -314,7 +334,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     protected Action getActionNewSwimlane() {
         if (actionNewSwimlane == null) {
             actionNewSwimlane =
-                new CmdCreateNode(ModelFacade.PARTITION,
+                new CmdCreateNode(ModelFacade.getPartitionToken(),
                         	  "Create a new swimlane");
         }
         return actionNewSwimlane;
@@ -324,8 +344,11 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     protected Action getActionObjectFlowState() {
         if (actionObjectFlowState == null) {
-            actionObjectFlowState = new RadioAction(new CmdCreateNode(
-                    ModelFacade.OBJECTFLOWSTATE, "ObjectFlowState"));
+            actionObjectFlowState =
+                new RadioAction(
+                        new CmdCreateNode(
+                                ModelFacade.getObjectFlowStateToken(),
+                                "ObjectFlowState"));
         }
         return actionObjectFlowState;
     }
@@ -334,9 +357,11 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     protected Action getActionStartPseudoState() {
         if (actionStartPseudoState == null) {
-            actionStartPseudoState =  new RadioAction(
-                new ActionCreatePseudostate(
-                        ModelFacade.INITIAL_PSEUDOSTATEKIND, "Initial"));
+            actionStartPseudoState =
+                new RadioAction(
+                        new ActionCreatePseudostate(
+                                ModelFacade.getInitialPseudostateKindToken(),
+                                "Initial"));
         }
         return actionStartPseudoState;
     }
@@ -345,8 +370,11 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     protected Action getActionState() {
         if (actionState == null) {
-            actionState = new RadioAction(
-                    new CmdCreateNode(ModelFacade.ACTION_STATE, "ActionState"));
+            actionState =
+                new RadioAction(
+                        new CmdCreateNode(
+                                ModelFacade.getActionStateToken(),
+                        	"ActionState"));
         }
         return actionState;
     }
@@ -355,9 +383,11 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     protected Action getActionSubactivityState() {
         if (actionSubactivityState == null) {
-            actionSubactivityState = new RadioAction(
-                    new CmdCreateNode(ModelFacade.SUBACTIVITYSTATE,
-                                                "SubactivityState"));
+            actionSubactivityState =
+                new RadioAction(
+                        new CmdCreateNode(
+                                ModelFacade.getSubactivityStateToken(),
+                        "SubactivityState"));
         }
         return actionSubactivityState;
     }
@@ -366,12 +396,13 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     protected Action getActionTransition() {
         if (actionTransition == null) {
-            actionTransition = new RadioAction(
-                    new CmdSetMode(
-                            ModeCreatePolyEdge.class,
-                            "edgeClass",
-                            ModelFacade.TRANSITION,
-                            "Transition"));
+            actionTransition =
+                new RadioAction(
+                        new CmdSetMode(
+                                ModeCreatePolyEdge.class,
+                                "edgeClass",
+                                ModelFacade.getTransitionToken(),
+                        "Transition"));
         }
         return actionTransition;
     }

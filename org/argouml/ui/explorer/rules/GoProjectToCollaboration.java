@@ -58,7 +58,7 @@ public class GoProjectToCollaboration extends AbstractPerspectiveRule {
 	    while (it.hasNext()) {
 		col.addAll(Model.getModelManagementHelper()
 			   .getAllModelElementsOfKind(it.next(),
-				ModelFacade.COLLABORATION));
+				ModelFacade.getCollaborationToken()));
 	    }
 	}
 	return col;

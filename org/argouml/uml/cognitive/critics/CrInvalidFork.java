@@ -28,9 +28,10 @@ import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
 
-/** A critic to detect when a fork state has the wrong number of
- *  transitions.  Implements constraint [5] on MPseudostate in the UML
- *  Semantics v1.1, pp. 104.
+/**
+ * A critic to detect when a fork state has the wrong number of
+ * transitions.  Implements constraint [5] on MPseudostate in the UML
+ * Semantics v1.1, pp. 104.
  *
  * @author jrobbins
  */
@@ -52,18 +53,25 @@ public class CrInvalidFork extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAPseudostate(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isAPseudostate(dm))) {
+	    return NO_PROBLEM;
+	}
 	Object k = ModelFacade.getPseudostateKind(dm);
 	if (!ModelFacade.
 	    equalsPseudostateKind(k,
-				  ModelFacade.FORK_PSEUDOSTATEKIND))
+				  ModelFacade.getForkPseudostateKindToken())) {
 	    return NO_PROBLEM;
+	}
 	Collection outgoing = ModelFacade.getOutgoings(dm);
 	Collection incoming = ModelFacade.getIncomings(dm);
 	int nOutgoing = outgoing == null ? 0 : outgoing.size();
 	int nIncoming = incoming == null ? 0 : incoming.size();
-	if (nIncoming > 1) return PROBLEM_FOUND;
-	if (nOutgoing == 1) return PROBLEM_FOUND;
+	if (nIncoming > 1) {
+	    return PROBLEM_FOUND;
+	}
+	if (nOutgoing == 1) {
+	    return PROBLEM_FOUND;
+	}
 	return NO_PROBLEM;
     }
 

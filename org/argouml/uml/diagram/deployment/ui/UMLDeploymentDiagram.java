@@ -80,7 +80,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     // contructors
 
     /**
-     * Constructor
+     * Constructor.
      */
     public UMLDeploymentDiagram() {
 
@@ -137,7 +137,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
     /**
      * Get the actions from which to create a toolbar or equivilent
-     * graphic triggers
+     * graphic triggers.
      *
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
@@ -156,7 +156,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     }
 
     private Object[] getAssociationActions() {
-        Object actions[][] = {
+        Object[][] actions = {
 	    {getActionAssociation(), getActionUniAssociation() },
 	    {getActionAggregation(), getActionUniAggregation() },
 	    {getActionComposition(), getActionUniComposition() },
@@ -198,7 +198,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionAggregation == null) {
             actionAggregation = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.AGGREGATE_AGGREGATIONKIND,
+                        ModelFacade.getAggregateAggregationKindToken(),
                         false,
                         "Aggregation"));
         }
@@ -212,7 +212,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionAssociation == null) {
             actionAssociation = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.NONE_AGGREGATIONKIND,
+                        ModelFacade.getNoneAggregationKindToken(),
                         false,
                         "Association"));
         }
@@ -226,7 +226,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionComposition == null) {
             actionComposition = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.COMPOSITE_AGGREGATIONKIND,
+                        ModelFacade.getCompositeAggregationKindToken(),
                         false,
                         "Composition"));
         }
@@ -240,7 +240,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionMAssociation == null) {
             actionMAssociation = new RadioAction(new CmdSetMode(
                         ModeCreatePolyEdge.class, "edgeClass",
-                        ModelFacade.ASSOCIATION, "Association"));
+                        ModelFacade.getAssociationToken(), "Association"));
         }
         return actionMAssociation;
     }
@@ -251,7 +251,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     protected Action getActionMClass() {
         if (actionMClass == null) {
             actionMClass = new RadioAction(
-                    new CmdCreateNode(ModelFacade.CLASS, "Class"));
+                    new CmdCreateNode(ModelFacade.getClassToken(), "Class"));
         }
         return actionMClass;
     }
@@ -261,8 +261,10 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionMComponent() {
         if (actionMComponent == null) {
-            actionMComponent = new RadioAction(
-                    new CmdCreateNode(ModelFacade.COMPONENT, "Component"));
+            actionMComponent =
+                new RadioAction(
+                        new CmdCreateNode(
+                                ModelFacade.getComponentToken(), "Component"));
         }
         return actionMComponent;
     }
@@ -273,7 +275,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     protected Action getActionMComponentInstance() {
         if (actionMComponentInstance == null) {
             actionMComponentInstance = new RadioAction(new CmdCreateNode(
-                ModelFacade.COMPONENT_INSTANCE, "ComponentInstance"));
+                ModelFacade.getComponentInstanceToken(), "ComponentInstance"));
         }
         return actionMComponentInstance;
     }
@@ -285,7 +287,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionMDependency == null) {
             actionMDependency = new RadioAction(new CmdSetMode(
                         ModeCreatePolyEdge.class, "edgeClass",
-                        ModelFacade.DEPENDENCY, "Dependency"));
+                        ModelFacade.getDependencyToken(), "Dependency"));
         }
         return actionMDependency;
     }
@@ -295,8 +297,11 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected Action getActionMInterface() {
         if (actionMInterface == null) {
-            actionMInterface = new RadioAction(
-                    new CmdCreateNode(ModelFacade.INTERFACE, "Interface"));
+            actionMInterface =
+                new RadioAction(
+                        new CmdCreateNode(
+                                ModelFacade.getInterfaceToken(),
+                                "Interface"));
         }
         return actionMInterface;
     }
@@ -308,7 +313,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionMLink == null) {
             actionMLink = new RadioAction(new CmdSetMode(
                         ModeCreatePolyEdge.class, "edgeClass",
-                        ModelFacade.LINK, "Link"));
+                        ModelFacade.getLinkToken(), "Link"));
         }
         return actionMLink;
     }
@@ -319,7 +324,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     protected Action getActionMNode() {
         if (actionMNode == null) {
             actionMNode = new RadioAction(new CmdCreateNode(
-                    ModelFacade.NODE, "Node"));
+                    ModelFacade.getNodeToken(), "Node"));
         }
         return actionMNode;
     }
@@ -330,7 +335,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     protected Action getActionMNodeInstance() {
         if (actionMNodeInstance == null) {
             actionMNodeInstance = new RadioAction(new CmdCreateNode(
-                    ModelFacade.NODE_INSTANCE, "NodeInstance"));
+                    ModelFacade.getNodeInstanceToken(), "NodeInstance"));
         }
         return actionMNodeInstance;
     }
@@ -341,7 +346,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     protected Action getActionMObject() {
         if (actionMObject == null) {
             actionMObject = new RadioAction(
-                    new CmdCreateNode(ModelFacade.OBJECT, "Object"));
+                    new CmdCreateNode(ModelFacade.getObjectToken(), "Object"));
         }
         return actionMObject;
     }
@@ -353,7 +358,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionUniAggregation == null) {
             actionUniAggregation = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.AGGREGATE_AGGREGATIONKIND,
+                        ModelFacade.getAggregateAggregationKindToken(),
                         true, "UniAggregation"));
         }
         return actionUniAggregation;
@@ -366,7 +371,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionUniAssociation == null) {
             actionUniAssociation = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.NONE_AGGREGATIONKIND,
+                        ModelFacade.getNoneAggregationKindToken(),
                         true, "UniAssociation"));
         }
         return actionUniAssociation;
@@ -379,7 +384,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         if (actionUniComposition == null) {
             actionUniComposition = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.COMPOSITE_AGGREGATIONKIND,
+                        ModelFacade.getCompositeAggregationKindToken(),
                         true, "UniComposition"));
         }
         return actionUniComposition;

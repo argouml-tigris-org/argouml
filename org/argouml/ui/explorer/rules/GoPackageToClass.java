@@ -50,7 +50,7 @@ public class GoPackageToClass extends AbstractPerspectiveRule {
     public Collection getChildren(Object parent) {
 	if (ModelFacade.isAPackage(parent)) {
 	    return Model.getModelManagementHelper()
-                .getAllModelElementsOfKind(parent, ModelFacade.CLASS);
+                .getAllModelElementsOfKind(parent, ModelFacade.getClassToken());
 	}
 	return null;
     }

@@ -172,80 +172,80 @@ class UmlFactoryImpl
      */
     private static final Object[][] VALID_CONNECTIONS =
     {
-	{ModelFacade.GENERALIZATION,   ModelFacade.CLASSIFIER_ROLE, },
-	{ModelFacade.GENERALIZATION,   ModelFacade.CLASS, },
-	{ModelFacade.GENERALIZATION,   ModelFacade.INTERFACE, },
-	{ModelFacade.GENERALIZATION,   ModelFacade.PACKAGE, },
-	{ModelFacade.GENERALIZATION,   ModelFacade.USE_CASE, },
-	{ModelFacade.GENERALIZATION,   ModelFacade.ACTOR, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.PACKAGE, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.CLASS, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE,
-	 ModelFacade.CLASS, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE,
-	 ModelFacade.PACKAGE, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.CLASS,
-	 ModelFacade.PACKAGE, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.USE_CASE, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.ACTOR, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.ACTOR,
-	 ModelFacade.USE_CASE, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT_INSTANCE, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.OBJECT, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT,
-	 ModelFacade.NODE,               null, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,
-	 ModelFacade.COMPONENT,          null, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT_INSTANCE,
-	 ModelFacade.NODE_INSTANCE,      null, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,
-	 ModelFacade.COMPONENT_INSTANCE, null, },
-	{ModelFacade.DEPENDENCY,       ModelFacade.CLASSIFIER_ROLE, },
-	{ModelFacade.USAGE,            ModelFacade.CLASS, },
-	{ModelFacade.USAGE,            ModelFacade.INTERFACE, },
-	{ModelFacade.USAGE,            ModelFacade.PACKAGE, },
-	{ModelFacade.USAGE,            ModelFacade.CLASS,
-	 ModelFacade.PACKAGE, },
-	{ModelFacade.USAGE,            ModelFacade.CLASS,
-	 ModelFacade.INTERFACE, },
-	{ModelFacade.USAGE,            ModelFacade.INTERFACE,
-	 ModelFacade.PACKAGE, },
-	{ModelFacade.PERMISSION,       ModelFacade.CLASS, },
-	{ModelFacade.PERMISSION,       ModelFacade.INTERFACE, },
-	{ModelFacade.PERMISSION,       ModelFacade.PACKAGE, },
-	{ModelFacade.PERMISSION,       ModelFacade.CLASS,
-	 ModelFacade.PACKAGE, },
-	{ModelFacade.PERMISSION,       ModelFacade.CLASS,
-	 ModelFacade.INTERFACE, },
-	{ModelFacade.PERMISSION,       ModelFacade.INTERFACE,
-	 ModelFacade.PACKAGE, },
-	{ModelFacade.ABSTRACTION,      ModelFacade.CLASS,
-	 ModelFacade.INTERFACE,        null, },
-	{ModelFacade.ABSTRACTION,      ModelFacade.CLASS,
-	 ModelFacade.CLASS,            null,
+	{MGeneralization.class,   MClassifierRole.class, },
+	{MGeneralization.class,   MClass.class, },
+	{MGeneralization.class,   MInterface.class, },
+	{MGeneralization.class,   MPackage.class, },
+	{MGeneralization.class,   MUseCase.class, },
+	{MGeneralization.class,   MActor.class, },
+	{MDependency.class,       MPackage.class, },
+	{MDependency.class,       MClass.class, },
+	{MDependency.class,       MInterface.class, },
+	{MDependency.class,       MInterface.class,
+	 MClass.class, },
+	{MDependency.class,       MInterface.class,
+	 MPackage.class, },
+	{MDependency.class,       MClass.class,
+	 MPackage.class, },
+	{MDependency.class,       MUseCase.class, },
+	{MDependency.class,       MActor.class, },
+	{MDependency.class,       MActor.class,
+	 MUseCase.class, },
+	{MDependency.class,       MComponent.class, },
+	{MDependency.class,       MComponentInstance.class, },
+	{MDependency.class,       MObject.class, },
+	{MDependency.class,       MComponent.class,
+	 MNode.class,             null, },
+	{MDependency.class,       MObject.class,
+	 MComponent.class,        null, },
+	{MDependency.class,       MComponentInstance.class,
+	 MNodeInstance.class,     null, },
+	{MDependency.class,       MObject.class,
+	 MComponentInstance.class, null, },
+	{MDependency.class,       MClassifierRole.class, },
+	{MUsage.class,            MClass.class, },
+	{MUsage.class,            MInterface.class, },
+	{MUsage.class,            MPackage.class, },
+	{MUsage.class,            MClass.class,
+	 MPackage.class, },
+	{MUsage.class,            MClass.class,
+	 MInterface.class, },
+	{MUsage.class,            MInterface.class,
+	 MPackage.class, },
+	{MPermission.class,       MClass.class, },
+	{MPermission.class,       MInterface.class, },
+	{MPermission.class,       MPackage.class, },
+	{MPermission.class,       MClass.class,
+	 MPackage.class, },
+	{MPermission.class,       MClass.class,
+	 MInterface.class, },
+	{MPermission.class,       MInterface.class,
+	 MPackage.class, },
+	{MAbstraction.class,      MClass.class,
+	 MInterface.class,        null, },
+	{MAbstraction.class,      MClass.class,
+	 MClass.class,            null,
 	},
-	{ModelFacade.ABSTRACTION,      ModelFacade.PACKAGE,
-	    ModelFacade.PACKAGE,          null,
+	{MAbstraction.class,      MPackage.class,
+	 MPackage.class,          null,
 	},
-	{ModelFacade.ASSOCIATION,      ModelFacade.CLASS, },
-	{ModelFacade.ASSOCIATION,      ModelFacade.CLASS,
-	 ModelFacade.INTERFACE, },
-	{ModelFacade.ASSOCIATION,      ModelFacade.ACTOR, },
-	{ModelFacade.ASSOCIATION,      ModelFacade.USE_CASE, },
-	{ModelFacade.ASSOCIATION,      ModelFacade.ACTOR,
-	 ModelFacade.USE_CASE, },
-	{ModelFacade.ASSOCIATION,      ModelFacade.NODE, },
-	{ModelFacade.ASSOCIATION_ROLE, ModelFacade.CLASSIFIER_ROLE, },
-	{ModelFacade.EXTEND,           ModelFacade.USE_CASE, },
-	{ModelFacade.INCLUDE,          ModelFacade.USE_CASE, },
-	{ModelFacade.LINK,             ModelFacade.NODE_INSTANCE, },
-	{ModelFacade.LINK,             ModelFacade.OBJECT, },
-        {ModelFacade.TRANSITION,       ModelFacade.STATEVERTEX, },
-        {ModelFacade.ASSOCIATION_CLASS, ModelFacade.CLASS, },
-        {ModelFacade.ASSOCIATION_END, ModelFacade.CLASS,
-         ModelFacade.ASSOCIATION, },
+	{MAssociation.class,      MClass.class, },
+	{MAssociation.class,      MClass.class,
+	 MInterface.class, },
+	{MAssociation.class,      MActor.class, },
+	{MAssociation.class,      MUseCase.class, },
+	{MAssociation.class,      MActor.class,
+	 MUseCase.class, },
+	{MAssociation.class,      MNode.class, },
+	{MAssociationRole.class,  MClassifierRole.class, },
+	{MExtend.class,           MUseCase.class, },
+	{MInclude.class,          MUseCase.class, },
+	{MLink.class,             MNodeInstance.class, },
+	{MLink.class,             MObject.class, },
+        {MTransition.class,       MStateVertex.class, },
+        {MAssociationClass.class, MClass.class, },
+        {MAssociationEnd.class,   MClass.class,
+         MAssociation.class, },
     };
 
     /**
@@ -339,7 +339,7 @@ class UmlFactoryImpl
 
         Object connection = null;
 
-        if (elementType == ModelFacade.ASSOCIATION) {
+        if (elementType == ModelFacade.getAssociationToken()) {
             connection =
                 getCore().buildAssociation(
                        (MClassifier) fromElement,
@@ -347,7 +347,7 @@ class UmlFactoryImpl
                        (MClassifier) toElement,
                        (MAggregationKind) toStyle,
                        (Boolean) unidirectional);
-        } else if (elementType == ModelFacade.ASSOCIATION_END) {
+        } else if (elementType == ModelFacade.getAssociationEndToken()) {
             if (fromElement instanceof MAssociation) {
                 connection =
                     getCore().buildAssociationEnd(toElement, fromElement);
@@ -355,41 +355,41 @@ class UmlFactoryImpl
                 connection =
                     getCore().buildAssociationEnd(fromElement, toElement);
             }
-        } else if (elementType == ModelFacade.ASSOCIATION_CLASS) {
+        } else if (elementType == ModelFacade.getAssociationClassToken()) {
             connection =
                 getCore().buildAssociationClass(fromElement, toElement);
-        } else if (elementType == ModelFacade.ASSOCIATION_ROLE) {
+        } else if (elementType == ModelFacade.getAssociationRoleToken()) {
             connection =
                 getCollaborations()
                 	.buildAssociationRole(fromElement, fromStyle,
                 	        toElement, toStyle,
                 	        (Boolean) unidirectional);
-        } else if (elementType == ModelFacade.GENERALIZATION) {
+        } else if (elementType == ModelFacade.getGeneralizationToken()) {
             connection =
                 getCore().buildGeneralization(fromElement, toElement);
-        } else if (elementType == ModelFacade.PERMISSION) {
+        } else if (elementType == ModelFacade.getPermissionToken()) {
             connection = getCore().buildPermission(fromElement, toElement);
-        } else if (elementType == ModelFacade.USAGE) {
+        } else if (elementType == ModelFacade.getUsageToken()) {
             connection =
                 getCore().buildUsage(fromElement, toElement);
-        } else if (elementType == ModelFacade.GENERALIZATION) {
+        } else if (elementType == ModelFacade.getGeneralizationToken()) {
             connection =
                 getCore().buildGeneralization(fromElement, toElement);
-        } else if (elementType == ModelFacade.DEPENDENCY) {
+        } else if (elementType == ModelFacade.getDependencyToken()) {
             connection = getCore().buildDependency(fromElement, toElement);
-        } else if (elementType == ModelFacade.ABSTRACTION) {
+        } else if (elementType == ModelFacade.getAbstractionToken()) {
             connection =
                 getCore().buildRealization(
                         fromElement,
                         toElement,
                         namespace);
-        } else if (elementType == ModelFacade.LINK) {
+        } else if (elementType == ModelFacade.getLinkToken()) {
             connection = getCommonBehavior().buildLink(fromElement, toElement);
-        } else if (elementType == ModelFacade.EXTEND) {
+        } else if (elementType == ModelFacade.getExtendToken()) {
             // Extend, but only between two use cases. Remember we draw from the
             // extension port to the base port.
             connection = getUseCases().buildExtend(toElement, fromElement);
-        } else if (elementType == ModelFacade.INCLUDE) {
+        } else if (elementType == ModelFacade.getIncludeToken()) {
             connection = getUseCases().buildInclude(fromElement, toElement);
         }
 
@@ -420,55 +420,55 @@ class UmlFactoryImpl
     public Object buildNode(Object elementType) {
 
         Object modelElement = null;
-        if (elementType == ModelFacade.ACTOR) {
+        if (elementType == ModelFacade.getActorToken()) {
             return getUseCases().createActor();
-        } else if (elementType == ModelFacade.USE_CASE) {
+        } else if (elementType == ModelFacade.getUseCaseToken()) {
             return getUseCases().createUseCase();
-        } else if (elementType == ModelFacade.CLASS) {
+        } else if (elementType == ModelFacade.getClassToken()) {
             return getCore().buildClass();
-        } else if (elementType == ModelFacade.INTERFACE) {
+        } else if (elementType == ModelFacade.getInterfaceToken()) {
             return getCore().buildInterface();
-        } else if (elementType == ModelFacade.PACKAGE) {
+        } else if (elementType == ModelFacade.getPackageToken()) {
             return getModelManagement().createPackage();
-        } else if (elementType == ModelFacade.MODEL) {
+        } else if (elementType == ModelFacade.getModelToken()) {
             return getModelManagement().createModel();
-        } else if (elementType == ModelFacade.INSTANCE) {
+        } else if (elementType == ModelFacade.getInstanceToken()) {
             return getCommonBehavior().createInstance();
-        } else if (elementType == ModelFacade.SUBSYSTEM) {
+        } else if (elementType == ModelFacade.getSubsystemToken()) {
             return getModelManagement().createSubsystem();
-        } else if (elementType == ModelFacade.CALLSTATE) {
+        } else if (elementType == ModelFacade.getCallStateToken()) {
             return getActivityGraphs().createCallState();
-        } else if (elementType == ModelFacade.FINALSTATE) {
+        } else if (elementType == ModelFacade.getFinalStateToken()) {
             return getStateMachines().createFinalState();
-        } else if (elementType == ModelFacade.PSEUDOSTATE) {
+        } else if (elementType == ModelFacade.getPseudostateToken()) {
             return getStateMachines().createPseudostate();
-        } else if (elementType == ModelFacade.OBJECTFLOWSTATE) {
+        } else if (elementType == ModelFacade.getObjectFlowStateToken()) {
             return getActivityGraphs().createObjectFlowState();
-        } else if (elementType == ModelFacade.ACTION_STATE) {
+        } else if (elementType == ModelFacade.getActionStateToken()) {
             return getActivityGraphs().createActionState();
-        } else if (elementType == ModelFacade.SUBACTIVITYSTATE) {
+        } else if (elementType == ModelFacade.getSubactivityStateToken()) {
             return getActivityGraphs().createSubactivityState();
-        } else if (elementType == ModelFacade.COMPOSITESTATE) {
+        } else if (elementType == ModelFacade.getCompositeStateToken()) {
             return getStateMachines().createCompositeState();
-        } else if (elementType == ModelFacade.SYNCHSTATE) {
+        } else if (elementType == ModelFacade.getSynchStateToken()) {
             return getStateMachines().createSynchState();
-        } else if (elementType == ModelFacade.STATE) {
+        } else if (elementType == ModelFacade.getStateToken()) {
             return getStateMachines().createState();
-        } else if (elementType == ModelFacade.CLASSIFIER_ROLE) {
+        } else if (elementType == ModelFacade.getClassifierRoleToken()) {
             return getCollaborations().createClassifierRole();
-        } else if (elementType == ModelFacade.COMPONENT) {
+        } else if (elementType == ModelFacade.getComponentToken()) {
             return getCore().createComponent();
-        } else if (elementType == ModelFacade.COMPONENT_INSTANCE) {
+        } else if (elementType == ModelFacade.getComponentInstanceToken()) {
             return getCommonBehavior().createComponentInstance();
-        } else if (elementType == ModelFacade.NODE) {
+        } else if (elementType == ModelFacade.getNodeToken()) {
             return getCore().createNode();
-        } else if (elementType == ModelFacade.NODE_INSTANCE) {
+        } else if (elementType == ModelFacade.getNodeInstanceToken()) {
             return getCommonBehavior().createNodeInstance();
-        } else if (elementType == ModelFacade.OBJECT) {
+        } else if (elementType == ModelFacade.getObjectToken()) {
             return getCommonBehavior().createObject();
-        } else if (elementType == ModelFacade.COMMENT) {
+        } else if (elementType == ModelFacade.getCommentToken()) {
             return getCore().createComment();
-        } else if (elementType == ModelFacade.NAMESPACE) {
+        } else if (elementType == ModelFacade.getNamespaceToken()) {
             return getCore().createNamespace();
         }
         return modelElement;

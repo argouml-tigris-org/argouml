@@ -71,14 +71,15 @@ public class UMLClassDiagram extends UMLDiagram {
     private Action actionOperation;
 
     /**
-     * constructor
+     * Constructor.
      */
     public UMLClassDiagram() {
         super();
     }
 
     /**
-     * constructor
+     * Constructor.
+     *
      * @param name the name for the new diagram
      * @param namespace the namespace for the new diagram
      */
@@ -160,7 +161,7 @@ public class UMLClassDiagram extends UMLDiagram {
 
     /**
      * Return an array of dependency actions in the
-     * pattern of which to build a popup toolbutton
+     * pattern of which to build a popup toolbutton.
      */
     private Object[] getDependencyActions() {
         Object[][] actions = {
@@ -174,7 +175,7 @@ public class UMLClassDiagram extends UMLDiagram {
 
     /**
      * Return an array of association actions in the
-     * pattern of which to build a popup toolbutton
+     * pattern of which to build a popup toolbutton.
      */
     private Object[] getAssociationActions() {
         // This calls the getters to fetch actions even though the
@@ -218,7 +219,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionAggregation() {
         if (actionAggregation == null) {
             actionAggregation = makeCreateAssociationAction(
-                ModelFacade.AGGREGATE_AGGREGATIONKIND,
+                ModelFacade.getAggregateAggregationKindToken(),
                 false,
                 "Aggregation");
         }
@@ -230,7 +231,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionAssociation() {
         if (actionAssociation == null) {
             actionAssociation = makeCreateAssociationAction(
-                ModelFacade.NONE_AGGREGATIONKIND,
+                ModelFacade.getNoneAggregationKindToken(),
                 false, "Association");
         }
         return actionAssociation;
@@ -240,7 +241,8 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionClass() {
         if (actionClass == null) {
-            actionClass = makeCreateNodeAction(ModelFacade.CLASS, "Class");
+            actionClass =
+                makeCreateNodeAction(ModelFacade.getClassToken(), "Class");
         }
 
         return actionClass;
@@ -253,7 +255,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionAssociationClass == null) {
             actionAssociationClass =
                 makeCreateEdgeAction(
-                    ModelFacade.ASSOCIATION_CLASS,
+                    ModelFacade.getAssociationClassToken(),
                     "AssociationClass");
         }
         return actionAssociationClass;
@@ -264,7 +266,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionComposition() {
         if (actionComposition == null) {
             actionComposition = makeCreateAssociationAction(
-                ModelFacade.COMPOSITE_AGGREGATIONKIND,
+                ModelFacade.getCompositeAggregationKindToken(),
                 false, "Composition");
         }
         return actionComposition;
@@ -275,7 +277,9 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionDependency() {
         if (actionDependency == null) {
             actionDependency =
-                makeCreateEdgeAction(ModelFacade.DEPENDENCY, "Dependency");
+                makeCreateEdgeAction(
+                        ModelFacade.getDependencyToken(),
+                        "Dependency");
         }
         return actionDependency;
     }
@@ -286,7 +290,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionGeneralization() {
         if (actionGeneralization == null) {
             actionGeneralization = makeCreateEdgeAction(
-                    ModelFacade.GENERALIZATION,
+                    ModelFacade.getGeneralizationToken(),
                     "Generalization");
         }
 
@@ -299,7 +303,9 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionInterface() {
         if (actionInterface == null) {
             actionInterface =
-                makeCreateNodeAction(ModelFacade.INTERFACE, "Interface");
+                makeCreateNodeAction(
+                        ModelFacade.getInterfaceToken(),
+                        "Interface");
         }
         return actionInterface;
     }
@@ -309,7 +315,8 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionLink() {
         if (actionLink == null) {
-            actionLink = makeCreateEdgeAction(ModelFacade.LINK, "Link");
+            actionLink =
+                makeCreateEdgeAction(ModelFacade.getLinkToken(), "Link");
         }
 
         return actionLink;
@@ -319,7 +326,8 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionModel() {
         if (actionModel == null) {
-            actionModel = makeCreateNodeAction(ModelFacade.MODEL, "Model");
+            actionModel =
+                makeCreateNodeAction(ModelFacade.getModelToken(), "Model");
         }
 
         return actionModel;
@@ -330,7 +338,9 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionObject() {
         if (actionObject == null) {
             actionObject =
-                makeCreateNodeAction(ModelFacade.INSTANCE, "Instance");
+                makeCreateNodeAction(
+                        ModelFacade.getInstanceToken(),
+                        "Instance");
         }
 
         return actionObject;
@@ -341,7 +351,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionPackage() {
         if (actionPackage == null) {
             actionPackage =
-                makeCreateNodeAction(ModelFacade.PACKAGE, "Package");
+                makeCreateNodeAction(ModelFacade.getPackageToken(), "Package");
         }
 
         return actionPackage;
@@ -352,7 +362,9 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionPermission() {
         if (actionPermission == null) {
             actionPermission =
-                makeCreateEdgeAction(ModelFacade.PERMISSION, "Permission");
+                makeCreateEdgeAction(
+                        ModelFacade.getPermissionToken(),
+                        "Permission");
         }
 
         return actionPermission;
@@ -364,7 +376,9 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionRealization() {
         if (actionRealization == null) {
             actionRealization =
-                makeCreateEdgeAction(ModelFacade.ABSTRACTION, "Realization");
+                makeCreateEdgeAction(
+                        ModelFacade.getAbstractionToken(),
+                        "Realization");
         }
 
         return actionRealization;
@@ -376,7 +390,9 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionSubsystem() {
         if (actionSubsystem == null) {
             actionSubsystem =
-                makeCreateNodeAction(ModelFacade.SUBSYSTEM, "Subsystem");
+                makeCreateNodeAction(
+                        ModelFacade.getSubsystemToken(),
+                        "Subsystem");
         }
         return actionSubsystem;
     }
@@ -387,7 +403,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionUniAggregation() {
         if (actionUniAggregation == null) {
             actionUniAggregation = makeCreateAssociationAction(
-                ModelFacade.AGGREGATE_AGGREGATIONKIND,
+                ModelFacade.getAggregateAggregationKindToken(),
                 true,
                 "UniAggregation");
         }
@@ -400,7 +416,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionUniAssociation() {
         if (actionUniAssociation == null) {
             actionUniAssociation = makeCreateAssociationAction(
-                ModelFacade.NONE_AGGREGATIONKIND,
+                ModelFacade.getNoneAggregationKindToken(),
                 true,
                 "UniAssociation");
         }
@@ -413,7 +429,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionUniComposition() {
         if (actionUniComposition == null) {
             actionUniComposition = makeCreateAssociationAction(
-                ModelFacade.COMPOSITE_AGGREGATIONKIND,
+                ModelFacade.getCompositeAggregationKindToken(),
                 true,
                 "UniComposition");
         }
@@ -425,7 +441,8 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Action getActionUsage() {
         if (actionUsage == null) {
-            actionUsage = makeCreateEdgeAction(ModelFacade.USAGE, "Usage");
+            actionUsage =
+                makeCreateEdgeAction(ModelFacade.getUsageToken(), "Usage");
         }
         return actionUsage;
     }

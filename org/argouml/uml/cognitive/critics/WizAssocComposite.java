@@ -31,7 +31,6 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
-import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
@@ -220,7 +219,7 @@ public class WizAssocComposite extends UMLWizard {
      * @return          The created {@link JPanel} or <code>null</code> if no
      *                  options were available.
      *
-     * @see Wizard
+     * @see org.argouml.cognitive.ui.Wizard
      */
     public JPanel makePanel(int newStep) {
 
@@ -235,8 +234,8 @@ public class WizAssocComposite extends UMLWizard {
                 Vector opts = buildOptions();
 
                 if (opts != null) {
-                    step1Choice = new WizStepChoice(this, instructions,
-                                                     opts);
+                    step1Choice =
+                        new WizStepChoice(this, instructions, opts);
                     step1Choice.setTarget(getToDoItem());
                 }
             }
@@ -271,7 +270,7 @@ public class WizAssocComposite extends UMLWizard {
      * @param  oldStep  The index of the step just completed (0 for the first
      *                  information panel)
      *
-     * @see Wizard
+     * @see org.argouml.cognitive.ui.Wizard
      */
     public void doAction(int oldStep) {
 
@@ -318,10 +317,10 @@ public class WizAssocComposite extends UMLWizard {
 
                     Model.getCoreHelper().setAggregation(
 			    ae0,
-			    ModelFacade.COMPOSITE_AGGREGATIONKIND);
+			    ModelFacade.getCompositeAggregationKindToken());
                     Model.getCoreHelper().setAggregation(
 			    ae1,
-			    ModelFacade.NONE_AGGREGATIONKIND);
+			    ModelFacade.getNoneAggregationKindToken());
                     break;
 
                 case 1:
@@ -330,10 +329,10 @@ public class WizAssocComposite extends UMLWizard {
 
                     Model.getCoreHelper().setAggregation(
 			    ae0,
-			    ModelFacade.AGGREGATE_AGGREGATIONKIND);
+			    ModelFacade.getAggregateAggregationKindToken());
                     Model.getCoreHelper().setAggregation(
 			    ae1,
-			    ModelFacade.NONE_AGGREGATIONKIND);
+			    ModelFacade.getNoneAggregationKindToken());
                     break;
 
                 case 2:
@@ -342,10 +341,10 @@ public class WizAssocComposite extends UMLWizard {
 
                     Model.getCoreHelper().setAggregation(
 			    ae0,
-			    ModelFacade.NONE_AGGREGATIONKIND);
+			    ModelFacade.getNoneAggregationKindToken());
                     Model.getCoreHelper().setAggregation(
 			    ae1,
-			    ModelFacade.COMPOSITE_AGGREGATIONKIND);
+			    ModelFacade.getCompositeAggregationKindToken());
                     break;
 
                 case 3:
@@ -353,10 +352,10 @@ public class WizAssocComposite extends UMLWizard {
                     // End is a shared aggregation of start
                     Model.getCoreHelper().setAggregation(
 			    ae0,
-			    ModelFacade.NONE_AGGREGATIONKIND);
+			    ModelFacade.getNoneAggregationKindToken());
                     Model.getCoreHelper().setAggregation(
 			    ae1,
-			    ModelFacade.AGGREGATE_AGGREGATIONKIND);
+			    ModelFacade.getAggregateAggregationKindToken());
                     break;
 
                 case 4:
@@ -364,10 +363,10 @@ public class WizAssocComposite extends UMLWizard {
                     // No aggregation
                     Model.getCoreHelper().setAggregation(
 			    ae0,
-			    ModelFacade.NONE_AGGREGATIONKIND);
+			    ModelFacade.getNoneAggregationKindToken());
                     Model.getCoreHelper().setAggregation(
 			    ae1,
-			    ModelFacade.NONE_AGGREGATIONKIND);
+			    ModelFacade.getNoneAggregationKindToken());
                     break;
 
                 default:
@@ -387,7 +386,8 @@ public class WizAssocComposite extends UMLWizard {
     /**
      * Determine if we have sufficient information to finish.<p>
      *
-     * We can't finish if our parent {@link Wizard} can't finish.<p>
+     * We can't finish if our parent {@link org.argouml.cognitive.ui.Wizard}
+     * can't finish.<p>
      *
      * We can finish if we're on step 0.<p>
      *
@@ -396,7 +396,7 @@ public class WizAssocComposite extends UMLWizard {
      * @return  <code>true</code> if we can finish, otherwise
      *          <code>false</code>.
      *
-     * @see Wizard
+     * @see org.argouml.cognitive.ui.Wizard
      */
 
     public boolean canFinish() {

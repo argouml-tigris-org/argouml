@@ -50,25 +50,25 @@ public class UMLCompositeStateSubvertexList extends UMLMutableLinkedList {
             JMenu pMenu = new JMenu();
             pMenu.setText(Translator.localize("button.new-pseudostate"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.BRANCH_PSEUDOSTATEKIND,
+                    ModelFacade.getBranchPseudostateKindToken(),
                     "label.pseudostate.choice"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.INITIAL_PSEUDOSTATEKIND,
+                    ModelFacade.getInitialPseudostateKindToken(),
                     "label.pseudostate.initial"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND,
+                    ModelFacade.getDeepHistoryPseudostateKindToken(),
                     "label.pseudostate.deephistory"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.JUNCTION_PSEUDOSTATEKIND,
+                    ModelFacade.getJunctionPseudostateKindToken(),
                     "label.pseudostate.junction"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND,
+                    ModelFacade.getShallowHistoryPseudostateKindToken(),
                     "label.pseudostate.shallowhistory"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.FORK_PSEUDOSTATEKIND,
+                    ModelFacade.getForkPseudostateKindToken(),
                     "label.pseudostate.fork"));
             pMenu.add(new ActionNewPseudoState(
-                    ModelFacade.JOIN_PSEUDOSTATEKIND,
+                    ModelFacade.getJoinPseudostateKindToken(),
                     "label.pseudostate.join"));
 
             JMenu newMenu = new JMenu();

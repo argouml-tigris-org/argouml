@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -112,7 +112,7 @@ public class WizBreakCircularComp extends UMLWizard {
 	    for (Iterator iter = aes.iterator(); iter.hasNext();) {
 		Object fromEnd = /*(MAssociationEnd)*/ iter.next();
 		Object asc = ModelFacade.getAssociation(fromEnd);
-		Object toEnd = /*(MAssociationEnd)*/
+		Object toEnd =
 		    new ArrayList(ModelFacade.getConnections(asc)).get(0);
 		if (toEnd == fromEnd) {
 		    toEnd =
@@ -180,7 +180,7 @@ public class WizBreakCircularComp extends UMLWizard {
 	    if (choice == -1) {
 		throw new Error("nothing selected, should not get here");
 	    }
-	    selectedCls = /*(MClassifier)*/ offs.elementAt(choice);
+	    selectedCls = offs.elementAt(choice);
 	    break;
 	    ////////////////
 	case 2:
@@ -206,10 +206,12 @@ public class WizBreakCircularComp extends UMLWizard {
 		Object ae0 = /*(MAssociationEnd)*/ conns.get(0);
 		Object ae1 = /*(MAssociationEnd)*/ conns.get(1);
 		try {
-		    Model.getCoreHelper().setAggregation(ae0,
-		                        ModelFacade.NONE_AGGREGATIONKIND);
-		    Model.getCoreHelper().setAggregation(ae1,
-		                        ModelFacade.NONE_AGGREGATIONKIND);
+		    Model.getCoreHelper().setAggregation(
+		            ae0,
+		            ModelFacade.getNoneAggregationKindToken());
+		    Model.getCoreHelper().setAggregation(
+		            ae1,
+		            ModelFacade.getNoneAggregationKindToken());
 		} catch (Exception pve) {
 		    LOG.error("could not set aggregation", pve);
 		}

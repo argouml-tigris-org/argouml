@@ -43,7 +43,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
     public UMLReceptionSignalComboBoxModel() {
         super("signal", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this,
-                ModelFacade.NAMESPACE, "ownedElement");
+                ModelFacade.getNamespaceToken(), "ownedElement");
     }
 
     /**
@@ -57,8 +57,9 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
             Project p = ProjectManager.getManager().getCurrentProject();
             Object model = p.getRoot();
             setElements(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKindWithModel(model, 
-                            ModelFacade.SIGNAL));
+                    .getAllModelElementsOfKindWithModel(
+                            model,
+                            ModelFacade.getSignalToken()));
             setSelectedItem(ModelFacade.getSignal(rec));
         }
 

@@ -98,7 +98,7 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
             setSourceFigNode(newFigNodeAssociation);
             setStartPort(newFigNodeAssociation.getOwner());
             setStartPortFig(newFigNodeAssociation);
-            setArg("edgeClass", ModelFacade.ASSOCIATION_END);
+            setArg("edgeClass", ModelFacade.getAssociationEndToken());
         } else {
             if (!(underMouse instanceof FigNode) && _npoints == 0) {
                 done();
@@ -106,9 +106,9 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
                 return;
             }
             if (underMouse instanceof FigNodeAssociation) {
-                setArg("edgeClass", ModelFacade.ASSOCIATION_END);
+                setArg("edgeClass", ModelFacade.getAssociationEndToken());
             } else {
-                setArg("edgeClass", ModelFacade.ASSOCIATION);
+                setArg("edgeClass", ModelFacade.getAssociationToken());
             }
             if (getSourceFigNode() == null) { //_npoints == 0) {
                 setSourceFigNode((FigNode) underMouse);
@@ -155,9 +155,12 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
             Object assoc = f.getOwner();
             Class edgeClass = (Class) getArg("edgeClass");
             if (edgeClass != null
-                    && edgeClass.equals(ModelFacade.ASSOCIATION)) {
-                boolean isValid = Model.getUmlFactory().isConnectionValid(
-                        ModelFacade.ASSOCIATION_END, getStartPort(), assoc);
+                    && edgeClass.equals(ModelFacade.getAssociationToken())) {
+                boolean isValid =
+                    Model.getUmlFactory().isConnectionValid(
+                        ModelFacade.getAssociationEndToken(),
+                        getStartPort(),
+                        assoc);
                 if (isValid) {
                     GraphModel gm = editor.getGraphModel();
                     GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
@@ -201,9 +204,9 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
                 p._isComplete = true;
 
                 Class edgeClass = (Class) getArg("edgeClass");
-                if (edgeClass.equals(ModelFacade.ASSOCIATION)
+                if (edgeClass.equals(ModelFacade.getAssociationToken())
                         && ModelFacade.isAAssociation(foundPort)) {
-                    edgeClass = (Class) ModelFacade.ASSOCIATION_END;
+                    edgeClass = (Class) ModelFacade.getAssociationEndToken();
                 }
                 if (edgeClass != null) {
                     setNewEdge(mutableGraphModel.connect(
@@ -268,7 +271,8 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
         me.consume();
 
         /* If a FigNodeAssociation has been created and placed but
-         * the connection fails, it must be undone. */
+         * the connection fails, it must be undone.
+         */
         if (getNewEdge() == null
                 && newFigNodeAssociation != null
                 && newFigNodeAssociation instanceof FigNodeAssociation) {

@@ -39,7 +39,7 @@ import org.argouml.i18n.Translator;
  */
 public class Init {
     /**
-     * static initializer, register all appropriate critics<p>
+     * static initializer, register all appropriate critics.
      */
     public static void init() {
 	createChecklists();
@@ -56,8 +56,8 @@ public class Init {
      */
     private static void newCheckItem(String category, String key,
 				     Checklist checklist) {
-	CheckItem checkitem = new UMLCheckItem(category,
-					       Translator.localize(key));
+	CheckItem checkitem =
+	    new UMLCheckItem(category, Translator.localize(key));
 	checklist.addItem(checkitem);
     }
 
@@ -125,7 +125,7 @@ public class Init {
         newCheckItem(cat, "checklist.class.updates.reasons-for-update", cl);
 	newCheckItem(cat, "checklist.class.updates.affects-something-else", cl);
 
-	CheckManager.register((Class) ModelFacade.CLASS, cl);
+	CheckManager.register((Class) ModelFacade.getClassToken(), cl);
 
 
 	// Attribute
@@ -175,7 +175,7 @@ public class Init {
 	    "checklist.attribute.updates.exists-method-for-specific-value",
 	    cl);
 
-	CheckManager.register((Class) ModelFacade.ATTRIBUTE, cl);
+	CheckManager.register((Class) ModelFacade.getAttributeToken(), cl);
 
 
 	// Operation
@@ -229,7 +229,7 @@ public class Init {
 	    "checklist.operation.location.eliminates-or-affects-something-else",
 	    cl);
 
-	CheckManager.register((Class) ModelFacade.OPERATION, cl);
+	CheckManager.register((Class) ModelFacade.getOperationToken(), cl);
 
 
 
@@ -277,7 +277,7 @@ public class Init {
             "checklist.association.updates.affects-something-else",
 	    cl);
 
-	CheckManager.register((Class) ModelFacade.ASSOCIATION, cl);
+	CheckManager.register((Class) ModelFacade.getAssociationToken(), cl);
 
 
 	// Interface
@@ -319,7 +319,7 @@ public class Init {
 	newCheckItem(cat, "checklist.interface.updates.affects-something-else",
 		     cl);
 
-	CheckManager.register((Class) ModelFacade.INTERFACE, cl);
+	CheckManager.register((Class) ModelFacade.getInterfaceToken(), cl);
 
 
 	// Instance
@@ -380,7 +380,7 @@ public class Init {
 	    "checklist.instance.transitions.combine-with-other-outgoing",
 	    cl);
 
-	CheckManager.register((Class) ModelFacade.INSTANCE, cl);
+	CheckManager.register((Class) ModelFacade.getInstanceToken(), cl);
 
 
 	// Link
@@ -417,7 +417,7 @@ public class Init {
 	newCheckItem(cat, "checklist.link.updates.reasons-for-update", cl);
 	newCheckItem(cat, "checklist.link.updates.affects-something-else", cl);
 
-	CheckManager.register((Class) ModelFacade.LINK, cl);
+	CheckManager.register((Class) ModelFacade.getLinkToken(), cl);
 
 
 	// State
@@ -474,7 +474,7 @@ public class Init {
 	    "checklist.state.transitions.combine-with-other-outgoing",
 	    cl);
 
-	CheckManager.register((Class) ModelFacade.STATE, cl);
+	CheckManager.register((Class) ModelFacade.getStateToken(), cl);
 
 
 	// Transition
@@ -512,7 +512,7 @@ public class Init {
 	    "checklist.transition.actions.is-postcondition-consistant-with-"
             + "destination", cl);
 
-	CheckManager.register((Class) ModelFacade.TRANSITION, cl);
+	CheckManager.register((Class) ModelFacade.getTransitionToken(), cl);
 
 
 	// Use Case
@@ -553,7 +553,7 @@ public class Init {
 	newCheckItem(cat, "checklist.usecase.updates.affects-something-else",
 		     cl);
 
-	CheckManager.register((Class) ModelFacade.USE_CASE, cl);
+	CheckManager.register((Class) ModelFacade.getUseCaseToken(), cl);
 
 
 	// Actor
@@ -590,7 +590,7 @@ public class Init {
 	newCheckItem(cat, "checklist.actor.updates.reasons-for-update", cl);
 	newCheckItem(cat, "checklist.actor.updates.affects-something-else", cl);
 
-	CheckManager.register((Class) ModelFacade.ACTOR, cl);
+	CheckManager.register((Class) ModelFacade.getActorToken(), cl);
 
     }
 

@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
@@ -54,20 +53,27 @@ public class CrNoGuard extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isATransition(dm))) return NO_PROBLEM;
-	Object sv = ModelFacade.getSource(dm);
-	if (!(ModelFacade.isAPseudostate(sv))) return NO_PROBLEM;
-	if (!ModelFacade.
-	    equalsPseudostateKind(ModelFacade.getPseudostateKind(sv),
-				  ModelFacade.BRANCH_PSEUDOSTATEKIND))
+	if (!(ModelFacade.isATransition(dm))) {
 	    return NO_PROBLEM;
+	}
+	Object sv = ModelFacade.getSource(dm);
+	if (!(ModelFacade.isAPseudostate(sv))) {
+	    return NO_PROBLEM;
+	}
+	if (!ModelFacade.equalsPseudostateKind(
+	        ModelFacade.getPseudostateKind(sv),
+	        ModelFacade.getBranchPseudostateKindToken())) {
+	    return NO_PROBLEM;
+	}
 	Object g = /*(MGuard)*/ ModelFacade.getGuard(dm);
 	boolean noGuard = (g == null
             || ModelFacade.getExpression(g) == null
             || ModelFacade.getBody(ModelFacade.getExpression(g)) == null
             || ((String) ModelFacade.getBody(ModelFacade.getExpression(g)))
                                                     .length() == 0);
-	if (noGuard) return PROBLEM_FOUND;
+	if (noGuard) {
+	    return PROBLEM_FOUND;
+	}
 	return NO_PROBLEM;
     }
 

@@ -72,11 +72,14 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
             Object/*MChangeableKind*/ kind =
                 ModelFacade.getChangeability(target);
             if (kind == null
-                    || kind.equals(ModelFacade.ADD_ONLY_CHANGEABLEKIND)) {
+                    || kind.equals(
+                            ModelFacade.getAddOnlyChangeableKindToken())) {
                 setSelected(ActionSetChangeability.ADDONLY_COMMAND);
-            } else if (kind.equals(ModelFacade.CHANGEABLE_CHANGEABLEKIND)) {
+            } else if (kind.equals(
+                    ModelFacade.getChangeableChangeableKindToken())) {
                 setSelected(ActionSetChangeability.CHANGEABLE_COMMAND);
-            } else if (kind.equals(ModelFacade.FROZEN_CHANGEABLEKIND)) {
+            } else if (kind.equals(
+                    ModelFacade.getFrozenChangeableKindToken())) {
                 setSelected(ActionSetChangeability.FROZEN_COMMAND);
             } else {
                 setSelected(ActionSetChangeability.CHANGEABLE_COMMAND);

@@ -26,14 +26,13 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.apache.log4j.Logger;
-
-import org.tigris.gef.util.VectorSet;
-
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.model.ModelFacade;
+import org.argouml.uml.cognitive.UMLToDoItem;
+import org.tigris.gef.util.VectorSet;
 
 /**
  * A critic to detect when a state has no outgoing transitions.
@@ -41,7 +40,9 @@ import org.argouml.model.ModelFacade;
  * @author jrobbins
  */
 public class CrMultipleInitialStates extends CrUML {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(CrMultipleInitialStates.class);
 
@@ -65,9 +66,9 @@ public class CrMultipleInitialStates extends CrUML {
             return NO_PROBLEM;
         }
         Object k = ModelFacade.getPseudostateKind(dm);
-        if (!ModelFacade.
-            equalsPseudostateKind(k,
-				  ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
+        if (!ModelFacade.equalsPseudostateKind(
+                k,
+                ModelFacade.getInitialPseudostateKindToken())) {
 	    return NO_PROBLEM;
         }
 
@@ -86,7 +87,7 @@ public class CrMultipleInitialStates extends CrUML {
                 && ModelFacade.
                 	equalsPseudostateKind(
                 	        ModelFacade.getPseudostateKind(sv),
-                	        ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
+                	        ModelFacade.getInitialPseudostateKindToken())) {
                 initialStateCount++;
             }
         }
@@ -123,7 +124,7 @@ public class CrMultipleInitialStates extends CrUML {
             if (ModelFacade.isAPseudostate(sv)
                 && ModelFacade.equalsPseudostateKind(
                         ModelFacade.getPseudostateKind(sv),
-                        ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
+                        ModelFacade.getInitialPseudostateKindToken())) {
                 offs.addElement(sv);
 	    }
         }

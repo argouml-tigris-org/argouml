@@ -35,7 +35,7 @@ import org.argouml.model.ModelFacade;
 public class PredIsStartState implements Predicate {
 
     /**
-     * theInstance is the singleton
+     * theInstance is the singleton.
      */
     private static PredIsStartState theInstance = new PredIsStartState();
 
@@ -46,7 +46,7 @@ public class PredIsStartState implements Predicate {
      */
     public boolean predicate(Object obj) {
 	return (org.argouml.model.ModelFacade.isAPseudostate(obj))
-	    && (ModelFacade.INITIAL_PSEUDOSTATEKIND.equals(
+	    && (ModelFacade.getInitialPseudostateKindToken().equals(
                 ModelFacade.getKind(obj)));
     }
 

@@ -74,16 +74,15 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * <p>Generate the display for an extension point.</p>
+     * Generate the display for an extension point.<p>
      *
-     * <p>The representation is "name: location". "name: " is omitted if there
-     *   is no name given.</p>
+     * The representation is "name: location". "name: " is omitted if there
+     * is no name given.<p>
      *
      * @param ep  The extension point.
      *
      * @return    The string representing the extension point.
      */
-
     public String generateExtensionPoint(Object ep) {
 
         // The string to build
@@ -262,10 +261,10 @@ public class GeneratorDisplay extends Generator2 {
         }
         String changeableKind = "";
         if (ModelFacade.getChangeability(attr) != null) {
-            if (ModelFacade.FROZEN_CHANGEABLEKIND.equals(
+            if (ModelFacade.getFrozenChangeableKindToken().equals(
 	            ModelFacade.getChangeability(attr))) {
                 changeableKind = "frozen";
-	    } else if (ModelFacade.ADD_ONLY_CHANGEABLEKIND.equals(
+	    } else if (ModelFacade.getAddOnlyChangeableKindToken().equals(
 		    ModelFacade.getChangeability(attr))) {
                 changeableKind = "addOnly";
 	    }
@@ -455,9 +454,9 @@ public class GeneratorDisplay extends Generator2 {
     /**
      * Generates the textual number of MMessage m. The number is a string
      * of numbers separated by points which describes the message's order
-     * and level in a collaboration.
+     * and level in a collaboration.<p>
      *
-     * <p>If you plan to modify this number, make sure that
+     * If you plan to modify this number, make sure that
      * ParserDisplay.parseMessage is adapted to the change.
      *
      * @param m A Message to generate the number for.
@@ -471,13 +470,14 @@ public class GeneratorDisplay extends Generator2 {
 
     private String generateKind(Object /*Parameter etc.*/ kind) {
         StringBuffer s = new StringBuffer();
-        if (kind == null || kind == ModelFacade.IN_PARAMETERDIRECTIONKIND) {
+        if (kind == null
+                || kind == ModelFacade.getInParameterDirectionKindToken()) {
             s.append("in");
-        } else if (kind == ModelFacade.INOUT_PARAMETERDIRECTIONKIND) {
+        } else if (kind == ModelFacade.getInOutParameterDirectionKindToken()) {
             s.append("inout");
-        } else if (kind == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
+        } else if (kind == ModelFacade.getReturnParameterDirectionKindToken()) {
             ;// return nothing
-        } else if (kind == ModelFacade.OUT_PARAMETERDIRECTIONKIND) {
+        } else if (kind == ModelFacade.getOutParameterDirectionKindToken()) {
             s.append("out");
         }
         return s.toString();
@@ -701,7 +701,7 @@ public class GeneratorDisplay extends Generator2 {
         if (!ModelFacade.isNavigable(ae))
             return "";
         String s = "protected ";
-        if (ModelFacade.CLASSIFIER_SCOPEKIND.equals(
+        if (ModelFacade.getClassifierScopeKindToken().equals(
 		ModelFacade.getTargetScope(ae))) {
             s += "static ";
 	}
@@ -711,8 +711,8 @@ public class GeneratorDisplay extends Generator2 {
         //     if (ModelFacade.isNavigable(ae)) s += "navigable "; if
         //     (ae.getIsOrdered()) s += "ordered ";
         Object m = ModelFacade.getMultiplicity(ae);
-        if (ModelFacade.M1_1_MULTIPLICITY.equals(m)
-	        || ModelFacade.M0_1_MULTIPLICITY.equals(m)) {
+        if (ModelFacade.getM11MultiplicityToken().equals(m)
+	        || ModelFacade.getM01MultiplicityToken().equals(m)) {
             s += generateClassifierRef(ModelFacade.getType(ae));
 	} else {
             s += "Vector "; //generateMultiplicity(m) + " ";
@@ -764,7 +764,7 @@ public class GeneratorDisplay extends Generator2 {
 
     /**
      * generate the name of an association role of the form:
-     *  / name : name of the base association
+     *  / name : name of the base association.
      *
      * @param assocRole the given associationrole
      * @return the generated name
@@ -831,7 +831,8 @@ public class GeneratorDisplay extends Generator2 {
         return s;
     }
 
-    /** Returns a visibility String eihter for a MVisibilityKind (according to
+    /**
+     * Returns a visibility String eihter for a MVisibilityKind (according to
      * the definition in NotationProvider2), but also for a model element.
      * @see org.argouml.application.api.NotationProvider2#generateVisibility(java.lang.Object)
      */
@@ -847,11 +848,11 @@ public class GeneratorDisplay extends Generator2 {
                 return "#";
         }
         if (ModelFacade.isAVisibilityKind(o)) {
-            if (ModelFacade.PUBLIC_VISIBILITYKIND.equals(o))
+            if (ModelFacade.getPublicVisibilityKindToken().equals(o))
                 return "+";
-            if (ModelFacade.PRIVATE_VISIBILITYKIND.equals(o))
+            if (ModelFacade.getPrivateVisibilityKindToken().equals(o))
                 return "-";
-            if (ModelFacade.PROTECTED_VISIBILITYKIND.equals(o))
+            if (ModelFacade.getProtectedVisibilityKindToken().equals(o))
                 return "#";
         }
         return "";
@@ -864,7 +865,7 @@ public class GeneratorDisplay extends Generator2 {
     public String generateScope(Object f) {
         Object scope = ModelFacade.getOwnerScope(f);
         //if (scope == null) return "";
-        if (ModelFacade.CLASSIFIER_SCOPEKIND.equals(scope))
+        if (ModelFacade.getClassifierScopeKindToken().equals(scope))
             return "static ";
         return "";
     }
@@ -876,7 +877,7 @@ public class GeneratorDisplay extends Generator2 {
     public String generateChangability(Object sf) {
         Object ck = ModelFacade.getChangeability(sf);
         //if (ck == null) return "";
-        if (ModelFacade.FROZEN_CHANGEABLEKIND.equals(ck))
+        if (ModelFacade.getFrozenChangeableKindToken().equals(ck))
             return "final ";
         //if (ModelFacade.ADD_ONLY_CHANGEABLEKIND.equals(ck)) return "final ";
         return "";
@@ -890,7 +891,7 @@ public class GeneratorDisplay extends Generator2 {
         if (m == null) {
             return "";
         }
-        if (ModelFacade.M0_N_MULTIPLICITY.equals(m))
+        if (ModelFacade.getM0NMultiplicityToken().equals(m))
             return ANY_RANGE;
         String s = "";
         Iterator rangeIter = ModelFacade.getRanges(m);
@@ -915,7 +916,7 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * <code>ANY_RANGE</code> stands for "0..*"
+     * <code>ANY_RANGE</code> stands for "0..*".
      */
     public static final String ANY_RANGE = "0..*";
 
@@ -1008,10 +1009,12 @@ public class GeneratorDisplay extends Generator2 {
         String t = generate(ModelFacade.getTrigger(m));
         String g = generate(ModelFacade.getGuard(m));
         String e = generate(ModelFacade.getEffect(m));
-        if (g.length() > 0)
+        if (g.length() > 0) {
             t += " [" + g + "]";
-        if (e.length() > 0)
+        }
+        if (e.length() > 0) {
             t += " / " + e;
+        }
         return t;
     }
 
@@ -1027,10 +1030,11 @@ public class GeneratorDisplay extends Generator2 {
 
         Object script = ModelFacade.getScript(m);
 
-        if ((script != null) && (ModelFacade.getBody(script) != null))
+        if ((script != null) && (ModelFacade.getBody(script) != null)) {
             s = ModelFacade.getBody(script).toString();
-        else
+        } else {
             s = "";
+        }
 
         p = "";
         c = ModelFacade.getActualArguments(m);
@@ -1039,8 +1043,9 @@ public class GeneratorDisplay extends Generator2 {
             first = true;
             while (it.hasNext()) {
                 Object arg = /*(MArgument)*/ it.next();
-                if (!first)
+                if (!first) {
                     p += ", ";
+                }
 
                 if (ModelFacade.getValue(arg) != null) {
                     p += generateExpression(ModelFacade.getValue(arg));
@@ -1048,8 +1053,9 @@ public class GeneratorDisplay extends Generator2 {
                 first = false;
             }
         }
-        if (s.length() == 0 && p.length() == 0)
+        if (s.length() == 0 && p.length() == 0) {
             return "";
+        }
 
         /* If there are no arguments, then do not show the ().
          * This solves issue 1758.
@@ -1057,7 +1063,9 @@ public class GeneratorDisplay extends Generator2 {
          * These brackets are easily confused with the brackets
          * for the Operation of a CallAction.
          */
-        if (p.length() == 0) return s;
+        if (p.length() == 0) {
+            return s;
+        }
 
         return s + " (" + p + ")";
     }
@@ -1066,8 +1074,9 @@ public class GeneratorDisplay extends Generator2 {
      * @see org.argouml.application.api.NotationProvider2#generateGuard(java.lang.Object)
      */
     public String generateGuard(Object m) {
-        if (ModelFacade.getExpression(m) != null)
+        if (ModelFacade.getExpression(m) != null) {
             return generateExpression(ModelFacade.getExpression(m));
+        }
         return "";
     }
 
@@ -1103,9 +1112,9 @@ public class GeneratorDisplay extends Generator2 {
      * given object.  The returned string will have the following
      * syntax:<p>
      *
-     * (param1, param2, param3, ..., paramN)
+     * (param1, param2, param3, ..., paramN)<p>
      *
-     * <p> If there are no parameters, then "()" is returned.
+     * If there are no parameters, then "()" is returned.
      *
      * @param parameterListOwner the 'owner' of the parameters
      * @return the generated parameter list
@@ -1138,8 +1147,9 @@ public class GeneratorDisplay extends Generator2 {
         Object action = ModelFacade.getEntry(actionState);
         if (action != null) {
             Object expression = ModelFacade.getScript(action);
-            if (expression != null)
+            if (expression != null) {
                 ret = generateExpression(expression);
+            }
         }
         return ret;
     }

@@ -207,10 +207,10 @@ public class ParserDisplay extends Parser {
                     if (ModelFacade.isAStructuralFeature(element)) {
                         if ("false".equalsIgnoreCase(value)) {
                             Model.getCoreHelper().setChangeability(element,
-                                        ModelFacade.CHANGEABLE_CHANGEABLEKIND);
+                                    ModelFacade.getChangeableChangeableKindToken());
                         } else {
                             Model.getCoreHelper().setChangeability(element,
-                                        ModelFacade.FROZEN_CHANGEABLEKIND);
+                                    ModelFacade.getFrozenChangeableKindToken());
                         }
                     }
                 }
@@ -222,10 +222,10 @@ public class ParserDisplay extends Parser {
                     if (ModelFacade.isAStructuralFeature(element)) {
                         if ("false".equalsIgnoreCase(value)) {
                             Model.getCoreHelper().setChangeability(element,
-                                        ModelFacade.CHANGEABLE_CHANGEABLEKIND);
+                                    ModelFacade.getChangeableChangeableKindToken());
                         } else {
                             Model.getCoreHelper().setChangeability(element,
-                                        ModelFacade.ADD_ONLY_CHANGEABLEKIND);
+                                    ModelFacade.getAddOnlyChangeableKindToken());
                         }
                     }
                 }
@@ -242,7 +242,7 @@ public class ParserDisplay extends Parser {
                 public void found(Object element, String value) {
                     if (ModelFacade.isAOperation(element)) {
                         Model.getCoreHelper().setConcurrency(element,
-                                    ModelFacade.SEQUENTIAL_CONCURRENCYKIND);
+                                ModelFacade.getSequentialConcurrencyKindToken());
                     }
                 }
             });
@@ -250,20 +250,23 @@ public class ParserDisplay extends Parser {
             new PropertySpecialString("guarded",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
-                    Object kind = ModelFacade.GUARDED_CONCURRENCYKIND;
-                    if (value != null && value.equalsIgnoreCase("false"))
-                            kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
-                    if (ModelFacade.isAOperation(element))
-                            Model.getCoreHelper().setConcurrency(element, kind);
+                    Object kind = ModelFacade.getGuardedConcurrencyKindToken();
+                    if (value != null && value.equalsIgnoreCase("false")) {
+                        kind = ModelFacade.getSequentialConcurrencyKindToken();
+                    }
+                    if (ModelFacade.isAOperation(element)) {
+                        Model.getCoreHelper().setConcurrency(element, kind);
+                    }
                 }
             });
         operationSpecialStrings[2] =
             new PropertySpecialString("concurrent",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
-                    Object kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
+                    Object kind =
+                        ModelFacade.getConcurrentConcurrencyKindToken();
                     if (value != null && value.equalsIgnoreCase("false")) {
-                        kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
+                        kind = ModelFacade.getSequentialConcurrencyKindToken();
                     }
                     if (ModelFacade.isAOperation(element)) {
                         Model.getCoreHelper().setConcurrency(element, kind);
@@ -274,13 +277,16 @@ public class ParserDisplay extends Parser {
             new PropertySpecialString("concurrency",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
-                    Object kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
-                    if ("guarded".equalsIgnoreCase(value))
-                            kind = ModelFacade.GUARDED_CONCURRENCYKIND;
-                    else if ("concurrent".equalsIgnoreCase(value))
-                            kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
-                    if (ModelFacade.isAOperation(element))
-                            Model.getCoreHelper().setConcurrency(element, kind);
+                    Object kind =
+                        ModelFacade.getSequentialConcurrencyKindToken();
+                    if ("guarded".equalsIgnoreCase(value)) {
+                        kind = ModelFacade.getGuardedConcurrencyKindToken();
+                    } else if ("concurrent".equalsIgnoreCase(value)) {
+                        kind = ModelFacade.getConcurrentConcurrencyKindToken();
+                    }
+                    if (ModelFacade.isAOperation(element)) {
+                        Model.getCoreHelper().setConcurrency(element, kind);
+                    }
                 }
             });
         operationSpecialStrings[4] =
@@ -374,7 +380,7 @@ public class ParserDisplay extends Parser {
             TargetManager.getInstance().setTarget(useCase);
         } else {
             Model.getCoreHelper().setName(ep, ModelFacade.getName(newEp));
-            Model.getUseCasesHelper().setLocation(ep, 
+            Model.getUseCasesHelper().setLocation(ep,
                     ModelFacade.getLocation(newEp));
         }
     }
@@ -494,11 +500,12 @@ public class ParserDisplay extends Parser {
     /**
      * Checks for ';' in Strings or chars in ';' separated tokens in order to
      * return an index to the next attribute or operation substring, -1
-     * otherwise (a ';' inside a String or char delimiters is ignored)
+     * otherwise (a ';' inside a String or char delimiters is ignored).
      */
     private int indexOfNextCheckedSemicolon(String s, int start) {
-        if (s == null || start < 0 || start >= s.length())
+        if (s == null || start < 0 || start >= s.length()) {
             return -1;
+        }
         int end;
         boolean inside = false;
         boolean backslashed = false;
@@ -661,14 +668,13 @@ public class ParserDisplay extends Parser {
      * Parse a string representing an extension point and return a new extension
      * point.<p>
      *
-     * The syntax is "name: location", "name:", "location" or "". <em>Note</em>.
-     * If either field is blank, it will be set to null in the extension point.
+     * The syntax is "name: location", "name:", "location" or "".
+     * <em>Note:</em> If either field is blank, it will be set to null
+     * in the extension point.
      *
-     * <p>
      * We break up the string into tokens at the ":". We must keep the ":" as a
      * token, so we can distinguish between "name:" and "location". The number
-     * of tokens will distinguish our four cases.
-     * <p>
+     * of tokens will distinguish our four cases.<p>
      *
      * TODO: This method needs to be replaced, since it by design cannot cope
      * with the current design of the model component.
@@ -986,11 +992,11 @@ public class ParserDisplay extends Parser {
      * Parses a parameter list and aligns the parameter list in op to that
      * specified in param. A parameter list generally has the following syntax:
      *
-     * <br>
-     * param := [inout] [name] [: type] [= initial value] <br>
+     * <pre>
+     * param := [inout] [name] [: type] [= initial value]
      * list := [param] [, param]*
+     * </pre>
      *
-     * <p>
      * <b>inout </b> is optional and if omitted the old value preserved. If no
      * value has been assigned, then <b>in </b> is assumed. <br>
      * <b>name </b>, <b>type </b> and <b>initial value </b> are optional and if
@@ -998,9 +1004,8 @@ public class ParserDisplay extends Parser {
      * <b>type </b> and <b>initial value </b> can be given in any order. <br>
      * Unspecified properties is carried over by position, so if a parameter is
      * inserted into the list, then it will inherit properties from the
-     * parameter that was there before for unspecified properties.
+     * parameter that was there before for unspecified properties.<p>
      *
-     * <p>
      * This syntax is compatible with the UML 1.3 specification.
      *
      * @param op
@@ -1485,12 +1490,12 @@ public class ParserDisplay extends Parser {
      */
     private Object getVisibility(String name) {
         if ("+".equals(name) || "public".equals(name))
-            return ModelFacade.PUBLIC_VISIBILITYKIND;
+            return ModelFacade.getPublicVisibilityKindToken();
         else if ("#".equals(name) || "protected".equals(name))
-            return ModelFacade.PROTECTED_VISIBILITYKIND;
+            return ModelFacade.getProtectedVisibilityKindToken();
         else
             /* if ("-".equals(name) || "private".equals(name)) */
-            return ModelFacade.PRIVATE_VISIBILITYKIND;
+            return ModelFacade.getPrivateVisibilityKindToken();
     }
 
     /**
@@ -2161,13 +2166,14 @@ public class ParserDisplay extends Parser {
      * 3. A guard is not given. None exists yet. <br>
      * 4. The expression of the guard was present, but is removed.<p>
      *
-     * The reaction in these cases should be: <br>
-     * 1. Create a new guard, set its name, language & expression,
-     *    and hook it to the transition. <br>
-     * 2. Change the guard's expression. Leave the name & language
-     *    untouched. See also issue 2742. <br>
-     * 3. Nop. <br>
-     * 4. Unhook and erase the existing guard.
+     * The reaction in these cases should be:<ol>
+     * <li>Create a new guard, set its name, language & expression,
+     *     and hook it to the transition.
+     * <li>Change the guard's expression. Leave the name & language
+     *     untouched. See also issue 2742.
+     * <li>Nop.
+     * <li>Unhook and erase the existing guard.
+     * </ol>
      *
      * @param trans the UML element transition
      * @param guard the string that represents the guard expression
@@ -2486,35 +2492,41 @@ public class ParserDisplay extends Parser {
                         }
                     }
                 } else if ("[".equals(token)) {
-                    if (mustBePre)
+                    if (mustBePre) {
                         throw new ParseException("Predecessors cannot be "
                                 + "qualified", st.getTokenIndex());
+                    }
                     mustBeSeq = true;
 
-                    if (guard != null)
+                    if (guard != null) {
                         throw new ParseException("Messages cannot have several"
                                 + " guard or iteration specifications", st
                                 .getTokenIndex());
+                    }
 
                     guard = "";
                     while (true) {
                         token = st.nextToken();
-                        if ("]".equals(token))
+                        if ("]".equals(token)) {
                             break;
+                        }
                         guard += token;
                     }
                 } else if ("*".equals(token)) {
-                    if (mustBePre)
+                    if (mustBePre) {
                         throw new ParseException("Predecessors cannot be "
                                 + "iterated", st.getTokenIndex());
+                    }
                     mustBeSeq = true;
 
-                    if (currentseq != null)
+                    if (currentseq != null) {
                         iterative = true;
+                    }
                 } else if (".".equals(token)) {
-                    if (currentseq == null)
+                    if (currentseq == null) {
                         throw new ParseException("Unexpected dot ('.')", st
                                 .getTokenIndex());
+                    }
                     if (currentseq.get(currentseq.size() - 2) != null
                             || currentseq.get(currentseq.size() - 1) != null) {
                         currentseq.add(null);
@@ -2530,10 +2542,11 @@ public class ParserDisplay extends Parser {
                         st.putToken(t);
                     }
 
-                    if (mustBePre)
+                    if (mustBePre) {
                         throw new ParseException("Predecessors must be "
                                 + "terminated with \'/\' and not with \':\'",
                                 st.getTokenIndex());
+                    }
 
                     if (currentseq != null) {
                         if (currentseq.size() > 2

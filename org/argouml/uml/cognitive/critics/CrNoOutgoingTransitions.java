@@ -35,7 +35,8 @@ import org.argouml.model.ModelFacade;
  */
 public class CrNoOutgoingTransitions extends CrUML {
 
-    /** constructor
+    /**
+     * Constructor.
      */
     public CrNoOutgoingTransitions() {
 	setHeadline("Add Outgoing Transitions from <ocl>self</ocl>");
@@ -43,7 +44,8 @@ public class CrNoOutgoingTransitions extends CrUML {
 	addTrigger("outgoing");
     }
 
-    /** This is the decision routine for the critic.
+    /**
+     * This is the decision routine for the critic.
      *
      * @param dm is the UML entity (an NSUML object) that is being checked.
      * @param dsgr is for future development and can be ignored.
@@ -51,18 +53,22 @@ public class CrNoOutgoingTransitions extends CrUML {
      * @return boolean problem found
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAStateVertex(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isAStateVertex(dm))) {
+	    return NO_PROBLEM;
+	}
 	Object sv = /*(MStateVertex)*/ dm;
 	if (ModelFacade.isAState(sv)) {
 	    Object sm = ModelFacade.getStateMachine(sv);
-	    if (sm != null && ModelFacade.getTop(sm) == sv) return NO_PROBLEM;
+	    if (sm != null && ModelFacade.getTop(sm) == sv) {
+	        return NO_PROBLEM;
+	    }
 	}
 	if (ModelFacade.isAPseudostate(sv)) {
 	    Object k = ModelFacade.getPseudostateKind(sv);
-	    if (k.equals(ModelFacade.BRANCH_PSEUDOSTATEKIND)) {
+	    if (k.equals(ModelFacade.getBranchPseudostateKindToken())) {
 	        return NO_PROBLEM;
 	    }
-	    if (k.equals(ModelFacade.JUNCTION_PSEUDOSTATEKIND)) {
+	    if (k.equals(ModelFacade.getJunctionPseudostateKindToken())) {
 	        return NO_PROBLEM;
 	    }
 	}
@@ -71,7 +77,9 @@ public class CrNoOutgoingTransitions extends CrUML {
 	if (ModelFacade.isAFinalState(sv)) {
 	    needsOutgoing = false;
 	}
-	if (needsOutgoing) return PROBLEM_FOUND;
+	if (needsOutgoing) {
+	    return PROBLEM_FOUND;
+	}
 	return NO_PROBLEM;
     }
 

@@ -147,28 +147,28 @@ public class SelectionObject extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = (Class) ModelFacade.OBJECT;
+	Class nodeClass = (Class) ModelFacade.getObjectToken();
 	int bx = mX, by = mY;
 	boolean reverse = false;
 	switch (hand.index) {
 	case 10: //add link
-	    edgeClass = (Class) ModelFacade.LINK;
+	    edgeClass = (Class) ModelFacade.getLinkToken();
 	    by = cy;
 	    bx = cx + cw / 2;
 	    break;
 	case 11: //add link
-	    edgeClass = (Class) ModelFacade.LINK;
+	    edgeClass = (Class) ModelFacade.getLinkToken();
 	    reverse = true;
 	    by = cy + ch;
 	    bx = cx + cw / 2;
 	    break;
 	case 12: //add link
-	    edgeClass = (Class) ModelFacade.LINK;
+	    edgeClass = (Class) ModelFacade.getLinkToken();
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13: // add link
-	    edgeClass = (Class) ModelFacade.LINK;
+	    edgeClass = (Class) ModelFacade.getLinkToken();
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -196,7 +196,7 @@ public class SelectionObject extends SelectionWButtons {
      */
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
         return gm.connect(_content.getOwner(), newNode,
-			  (Class) ModelFacade.LINK);
+			  (Class) ModelFacade.getLinkToken());
     }
 
     /**
@@ -205,7 +205,7 @@ public class SelectionObject extends SelectionWButtons {
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(),
-			  (Class) ModelFacade.LINK);
+			  (Class) ModelFacade.getLinkToken());
     }
 
     /**
@@ -214,7 +214,7 @@ public class SelectionObject extends SelectionWButtons {
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
         return gm.connect(_content.getOwner(), newNode,
-			  (Class) ModelFacade.LINK);
+			  (Class) ModelFacade.getLinkToken());
     }
 
     /**
@@ -223,7 +223,7 @@ public class SelectionObject extends SelectionWButtons {
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(),
-			  (Class) ModelFacade.LINK);
+			  (Class) ModelFacade.getLinkToken());
     }
 
     /**

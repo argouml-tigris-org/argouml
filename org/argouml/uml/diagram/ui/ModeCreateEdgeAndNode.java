@@ -67,6 +67,9 @@ import org.tigris.gef.presentation.Handle;
  * @author jrobbins
  */
 public class ModeCreateEdgeAndNode extends ModeCreate {
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(ModeCreateEdgeAndNode.class);
     ////////////////////////////////////////////////////////////////
@@ -77,23 +80,35 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** The NetPort where the arc is paintn from */
+    /**
+     * The NetPort where the arc is paintn from.
+     */
     private Object startPort;
 
-    /** The Fig that presents the starting NetPort */
+    /**
+     * The Fig that presents the starting NetPort.
+     */
     private Fig startPortFig;
 
-    /** The FigNode on the NetNode that owns the start port */
+    /**
+     * The FigNode on the NetNode that owns the start port.
+     */
     private FigNode sourceFigNode;
 
-    /** The new NetEdge that is being created */
+    /**
+     * The new NetEdge that is being created.
+     */
     private Object newEdge;
 
-    /** False if drawing from source and destination.  True if drawing
-     *  from destination to source. */
+    /**
+     * False if drawing from source and destination.  True if drawing
+     * from destination to source.
+     */
     private boolean destToSource = false;
 
-    /** The number of points added so far. */
+    /**
+     * The number of points added so far.
+     */
     //protected int _npoints = 0;
     private Handle handle = new Handle(-1);
 
@@ -191,8 +206,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
      */
     public void done() {
         super.done();
-        if (_newItem != null)
+        if (_newItem != null) {
             editor.damaged(_newItem);
+        }
         _newItem = null; // use this as the fig for the new FigEdge
         sourceFigNode = null;
         startPort = null;
@@ -220,23 +236,24 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
-        if (me.isConsumed())
+        if (me.isConsumed()) {
             return;
+        }
         if (sourceFigNode == null) {
             done();
             return;
         }
         boolean nodeWasCreated = false;
         int x = me.getX(), y = me.getY();
-        Class arcClass;
         Editor ce = Globals.curEditor();
         Fig f = ce.hit(x, y);
         if (f == null) {
             f = ce.hit(x - 16, y - 16, 32, 32);
         }
         GraphModel gm = ce.getGraphModel();
-        if (!(gm instanceof MutableGraphModel))
+        if (!(gm instanceof MutableGraphModel)) {
             f = null;
+        }
         MutableGraphModel mgm = (MutableGraphModel) gm;
         // TODO: potential class cast exception
         if (f == null) {
@@ -253,8 +270,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                 LOG.error(ignore);
                 return;
             }
-            if (newNode instanceof GraphNodeHooks)
-		((GraphNodeHooks) newNode).initialize(_args);
+            if (newNode instanceof GraphNodeHooks) {
+                ((GraphNodeHooks) newNode).initialize(_args);
+            }
             Model.getUmlFactory().addListenersToModelElement(newNode);
             if (mgm.canAddNode(newNode)) {
                 GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
@@ -268,19 +286,23 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                 Iterator others = otherFigs.iterator();
                 while (others.hasNext()) {
                     Fig otherFig = (Fig) others.next();
-                    if (!(otherFig instanceof FigNode))
+                    if (!(otherFig instanceof FigNode)) {
                         continue;
-                    if (otherFig.equals(fn))
+                    }
+                    if (otherFig.equals(fn)) {
                         continue;
+                    }
                     Rectangle trap = otherFig.getTrapRect();
                     if (trap != null && (trap.contains(bbox.x, bbox.y)
                             && trap.contains(bbox.x + bbox.width,
-					     bbox.y + bbox.height)))
+					     bbox.y + bbox.height))) {
                         encloser = otherFig;
+                    }
                 }
                 fn.setEnclosingFig(encloser);
-                if (newNode instanceof GraphNodeHooks)
-		    ((GraphNodeHooks) newNode).postPlacement(editor);
+                if (newNode instanceof GraphNodeHooks) {
+                    ((GraphNodeHooks) newNode).postPlacement(editor);
+                }
                 editor.getSelectionManager().select(fn);
                 nodeWasCreated = true;
                 f = fn;
@@ -319,8 +341,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                 }
                 if (edgeClass != null) {
                     newEdge = mgm.connect(startPort, foundPort, edgeClass);
-                } else
+                } else {
                     newEdge = mgm.connect(startPort, foundPort);
+                }
                 // Calling connect() will add the edge to the GraphModel and
                 // any LayerPersectives on that GraphModel will get a
                 // edgeAdded event and will add an appropriate FigEdge
@@ -347,22 +370,28 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                     fe.setSourceFigNode(sourceFigNode);
                     fe.setDestPortFig(destPortFig);
                     fe.setDestFigNode(destFigNode);
-                    if (fe != null && !nodeWasCreated)
+                    if (fe != null && !nodeWasCreated) {
                         ce.getSelectionManager().select(fe);
+                    }
                     done();
                     _newItem = null;
-                    if (fe instanceof MouseListener)
-			((MouseListener) fe).mouseReleased(me);
+                    if (fe instanceof MouseListener) {
+                        ((MouseListener) fe).mouseReleased(me);
+                    }
                     // set the new edge in place
-                    if (sourceFigNode != null)
+                    if (sourceFigNode != null) {
                         sourceFigNode.updateEdges();
-                    if (destFigNode != null)
+                    }
+                    if (destFigNode != null) {
                         destFigNode.updateEdges();
+                    }
                     return;
-                } else
+                } else {
                     LOG.warn("connection return null");
-            } else
+                }
+            } else {
                 LOG.warn("in dest node but no port");
+            }
         }
         sourceFigNode.damage();
         ce.damaged(_newItem);
@@ -381,8 +410,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
      * @see java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent)
      */
     public void mouseDragged(MouseEvent me) {
-        if (me.isConsumed())
+        if (me.isConsumed()) {
             return;
+        }
         int x = me.getX(), y = me.getY();
         //if (_npoints == 0) { me.consume(); return; }
         if (_newItem == null) {
@@ -422,7 +452,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             Iterator iter = conns.iterator();
             Object associationEnd0 = iter.next();
             Model.getCoreHelper().setAggregation(associationEnd0,
-                    ModelFacade.COMPOSITE_AGGREGATIONKIND);
+                    ModelFacade.getCompositeAggregationKindToken());
         }
     }
 

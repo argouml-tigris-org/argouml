@@ -31,23 +31,19 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
- * A model for a namespace combo box,
+ * A model for a namespace combo box.
  *
  * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl, alexb
  */
 public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
-
-    private static UMLModelElementNamespaceComboBoxModel theInstance;
-
-
     /**
      * Constructor for UMLModelElementNamespaceComboBoxModel.
      */
     public UMLModelElementNamespaceComboBoxModel() {
         super("namespace", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this,
-                ModelFacade.NAMESPACE, "ownedElement");
+                ModelFacade.getNamespaceToken(), "ownedElement");
     }
 
     /**
@@ -63,8 +59,8 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        Object model = ProjectManager.getManager()
-            .getCurrentProject().getRoot();
+        Object model =
+            ProjectManager.getManager().getCurrentProject().getRoot();
         setElements(Model.getCoreHelper().getAllPossibleNamespaces(
                 /*(MModelElement)*/ getTarget(), model));
     }

@@ -177,7 +177,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = (Class) ModelFacade.CLASSIFIER_ROLE;
+	Class nodeClass = (Class) ModelFacade.getClassifierRoleToken();
 
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
@@ -191,12 +191,12 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	boolean reverse = false;
 	switch (hand.index) {
 	case 12 : //add outgoing
-	    edgeClass = (Class) ModelFacade.ASSOCIATION_ROLE;
+	    edgeClass = (Class) ModelFacade.getAssociationRoleToken();
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13 : // add incoming
-	    edgeClass = (Class) ModelFacade.ASSOCIATION_ROLE;
+	    edgeClass = (Class) ModelFacade.getAssociationRoleToken();
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -232,7 +232,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
      */
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
 	return mgm.connect(newNode, _content.getOwner(),
-			   (Class) ModelFacade.ASSOCIATION_ROLE);
+			   (Class) ModelFacade.getAssociationRoleToken());
     }
 
     /**
@@ -241,7 +241,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
 	return gm.connect(newNode, _content.getOwner(),
-			  (Class) ModelFacade.ASSOCIATION_ROLE);
+			  (Class) ModelFacade.getAssociationRoleToken());
     }
 
     /**
@@ -250,7 +250,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
 	return gm.connect(_content.getOwner(), newNode,
-			  (Class) ModelFacade.ASSOCIATION_ROLE);
+			  (Class) ModelFacade.getAssociationRoleToken());
     }
 
     /**
@@ -263,7 +263,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	return gm.connect(
 			  _content.getOwner(),
 			  _content.getOwner(),
-			  (Class) ModelFacade.ASSOCIATION_ROLE);
+			  (Class) ModelFacade.getAssociationRoleToken());
     }
 
     /**
@@ -272,7 +272,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
 	return gm.connect(_content.getOwner(), newNode,
-			  (Class) ModelFacade.ASSOCIATION_ROLE);
+			  (Class) ModelFacade.getAssociationRoleToken());
     }
 
 } /* end class SelectionClassifierRole */

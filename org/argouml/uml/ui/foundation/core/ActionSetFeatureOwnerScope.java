@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
@@ -61,10 +60,10 @@ public class ActionSetFeatureOwnerScope extends UMLAction {
                 Object m = /*(MFeature)*/ target;
                 if (source.isSelected()) {
                     Model.getCoreHelper().setOwnerScope(m,
-                            ModelFacade.CLASSIFIER_SCOPEKIND);
+                            ModelFacade.getClassifierScopeKindToken());
                 } else {
                     Model.getCoreHelper().setOwnerScope(m,
-                            ModelFacade.INSTANCE_SCOPEKIND);
+                            ModelFacade.getInstanceScopeKindToken());
                 }
             }
         }

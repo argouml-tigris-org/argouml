@@ -62,10 +62,10 @@ public class ActionSetAssociationEndOrdering extends UMLAction {
                 Object m = /*(MAssociationEnd)*/ target;
                 if (source.isSelected()) {
                     Model.getCoreHelper().setOrdering(m,
-                            ModelFacade.ORDERED_ORDERINGKIND);
+                            ModelFacade.getOrderedOrderingKindToken());
                 } else {
                     Model.getCoreHelper().setOrdering(m,
-                            ModelFacade.UNORDERED_ORDERINGKIND);
+                            ModelFacade.getUnorderedOrderingKindToken());
                 }
             }
         }

@@ -54,7 +54,7 @@ public class ActionAddAssociation extends CmdSetMode {
     public ActionAddAssociation(Object aggregationKind, boolean unidirectional,
 				String name) {
         super(ModeCreateAssociation.class, "edgeClass",
-	      ModelFacade.ASSOCIATION, name);
+	      ModelFacade.getAssociationToken(), name);
         _modeArgs.put("aggregation", aggregationKind);
         _modeArgs.put("unidirectional", new Boolean(unidirectional));
     }
