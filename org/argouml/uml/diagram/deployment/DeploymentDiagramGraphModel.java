@@ -51,16 +51,16 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      *  Also, elements from other models will have their FigNodes add a
      *  line to say what their model is. */
 
-    protected MNamespace _model;
+    protected Object _model;
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
     /** get the homemodel. */
-    public MNamespace getNamespace() { return _model; }
+    public Object getNamespace() { return _model; }
 
     /** set the homemodel. */
-    public void setNamespace(MNamespace namespace) {
+    public void setNamespace(Object namespace) {
 	_model = namespace;
     }
 
@@ -97,13 +97,13 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    if (ends == null) return res; // empty Vector
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
-		MAssociationEnd aec = (MAssociationEnd) iter.next();
-		res.add(aec.getAssociation());
+		Object aec = /*(MAssociationEnd)*/ iter.next();
+		res.add(ModelFacade.getAssociation(aec));
 	    }
 	}
 	if (ModelFacade.isANodeInstance(port)) {
-	    MNodeInstance noi = (MNodeInstance) port;
-	    Collection ends = noi.getLinkEnds();
+	    Object noi = /*(MNodeInstance)*/ port;
+	    Collection ends = ModelFacade.getLinkEnds(noi);
 	    res.addAll(ends);
 	}
 	if (ModelFacade.isAComponent(port)) {
@@ -111,13 +111,13 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    if (ends == null) return res; // empty Vector
 	    Iterator endEnum = ends.iterator();
 	    while (endEnum.hasNext()) {
-		MAssociationEnd aec = (MAssociationEnd) endEnum.next();
-		res.addElement(aec.getAssociation());
+		Object aec = /*(MAssociationEnd)*/ endEnum.next();
+		res.addElement(ModelFacade.getAssociation(aec));
 	    }
 	}
 	if (ModelFacade.isAComponentInstance(port)) {
-	    MComponentInstance coi = (MComponentInstance) port;
-	    Collection ends = coi.getLinkEnds();
+	    Object coi = /*(MComponentInstance)*/ port;
+	    Collection ends = ModelFacade.getLinkEnds(coi);
 	    res.addAll(ends);
 	}
 	if (ModelFacade.isAClass(port)) {
@@ -125,8 +125,8 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    if (ends == null) return res; // empty Vector 
 	    Iterator endEnum = ends.iterator();
 	    while (endEnum.hasNext()) {
-		MAssociationEnd ae = (MAssociationEnd) endEnum.next();
-		res.addElement(ae.getAssociation());
+		Object ae = /*(MAssociationEnd)*/ endEnum.next();
+		res.addElement(ModelFacade.getAssociation(ae));
 	    }
 	}
 	if (ModelFacade.isAInterface(port)) {
@@ -134,13 +134,13 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    if (ends == null) return res; // empty Vector 
 	    Iterator endEnum = ends.iterator();
 	    while (endEnum.hasNext()) {
-		MAssociationEnd ae = (MAssociationEnd) endEnum.next();
-		res.addElement(ae.getAssociation());
+		Object ae = /*(MAssociationEnd)*/ endEnum.next();
+		res.addElement(ModelFacade.getAssociation(ae));
 	    }
 	}
 	if (ModelFacade.isAObject(port)) {
-	    MInstance clo = (MInstance) port;
-	    Collection ends = clo.getLinkEnds();
+	    Object clo = /*(MInstance)*/ port;
+	    Collection ends = ModelFacade.getLinkEnds(clo);
 	    res.addAll(ends);
 	}
 
@@ -157,10 +157,10 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     /** Return one end of an edge */
     public Object getSourcePort(Object edge) {
 	if (ModelFacade.isARelationship(edge)) {
-	    return CoreHelper.getHelper().getSource((MRelationship) edge);
+	    return CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
 	} else
 	    if (ModelFacade.isALink(edge)) {
-		return CommonBehaviorHelper.getHelper().getSource((MLink) edge);
+		return CommonBehaviorHelper.getHelper().getSource(/*(MLink)*/ edge);
 	    }
     
 	cat.debug("TODO getSourcePort");
@@ -172,10 +172,10 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     /** Return  the other end of an edge */
     public Object getDestPort(Object edge) {
 	if (ModelFacade.isARelationship(edge)) {
-	    return CoreHelper.getHelper().getDestination((MRelationship) edge);
+	    return CoreHelper.getHelper().getDestination(/*(MRelationship)*/ edge);
 	} else if (ModelFacade.isALink(edge)) {
 	    return CommonBehaviorHelper.getHelper()
-		.getDestination((MLink) edge);
+		.getDestination(/*(MLink)*/ edge);
 	}
     
 	cat.debug("TODO getDestPort");
@@ -207,13 +207,13 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	if (_edges.contains(edge)) return false;
 	Object end0 = null, end1 = null;
 	if (ModelFacade.isARelationship(edge)) {
-	    end0 = CoreHelper.getHelper().getSource((MRelationship) edge);
-	    end1 = CoreHelper.getHelper().getDestination((MRelationship) edge);
+	    end0 = CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
+	    end1 = CoreHelper.getHelper().getDestination(/*(MRelationship)*/ edge);
 	}
 	else if (ModelFacade.isALink(edge)) {
-	    end0 = CommonBehaviorHelper.getHelper().getSource((MLink) edge);
+	    end0 = CommonBehaviorHelper.getHelper().getSource(/*(MLink)*/ edge);
 	    end1 =
-		CommonBehaviorHelper.getHelper().getDestination((MLink) edge);
+		CommonBehaviorHelper.getHelper().getDestination(/*(MLink)*/ edge);
 	}
 	if (end0 == null || end1 == null) return false;
 	if (!_nodes.contains(end0)) return false;
@@ -253,9 +253,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    Collection ends = ModelFacade.getAssociationEnds(node);
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
-		MAssociationEnd ae = (MAssociationEnd) iter.next();
-		if (canAddEdge(ae.getAssociation()))
-		    addEdge(ae.getAssociation());
+		Object ae = /*(MAssociationEnd)*/ iter.next();
+		if (canAddEdge(ModelFacade.getAssociation(ae)))
+		    addEdge(ModelFacade.getAssociation(ae));
 		return;
 	    }
 	}
@@ -293,7 +293,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    specs.addAll(ModelFacade.getSupplierDependencies(node));
 	    Iterator iter = specs.iterator();
 	    while (iter.hasNext()) {
-		MDependency dep = (MDependency) iter.next();
+		Object dep = /*(MDependency)*/ iter.next();
 		if (canAddEdge(dep))
 		    addEdge(dep);
 		return;
@@ -305,8 +305,8 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     public void vetoableChange(PropertyChangeEvent pce) {
 	if ("ownedElement".equals(pce.getPropertyName())) {
 	    Vector oldOwned = (Vector) pce.getOldValue();
-	    MElementImport eo = (MElementImport) pce.getNewValue();
-	    MModelElement me = eo.getModelElement();
+	    Object eo = /*(MElementImport)*/ pce.getNewValue();
+	    Object me = ModelFacade.getModelElement(eo);
 	    if (oldOwned.contains(eo)) {
 		cat.debug("model removed " + me);
 		if (ModelFacade.isANode(me)) removeNode(me);

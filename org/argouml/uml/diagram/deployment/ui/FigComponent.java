@@ -36,6 +36,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
@@ -44,9 +45,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.foundation.core.MComponent;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNode;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /** Class to display graphics for a UML Component in a diagram. */
@@ -199,10 +197,10 @@ public class FigComponent extends FigNodeModelElement {
 	    && org.argouml.model.ModelFacade.isANode(encloser.getOwner())
 	    && getOwner() != null)
 	{
-	    MNode node = (MNode) encloser.getOwner();
-	    MComponent comp = (MComponent) getOwner();
-	    if (!comp.getDeploymentLocations().contains(node)) {
-		comp.addDeploymentLocation(node);
+	    Object node = /*(MNode)*/ encloser.getOwner();
+	    Object comp = /*(MComponent)*/ getOwner();
+	    if (!ModelFacade.getDeploymentLocations(comp).contains(node)) {
+		ModelFacade.addDeploymentLocation(comp, node);
 	    }
 	    super.setEnclosingFig(encloser);
         
@@ -290,15 +288,18 @@ public class FigComponent extends FigNodeModelElement {
     // internal methods
 
     protected void updateStereotypeText() {
-	MModelElement me = (MModelElement) getOwner();
+	Object me = /*(MModelElement)*/ getOwner();
 	if (me == null) return;
-	MStereotype stereo = me.getStereotype();
+	Object stereo = null;
+	if (ModelFacade.getStereotypes(me).size() > 0) {
+            stereo = ModelFacade.getStereotypes(me).iterator().next();
+        }
 	if (stereo == null
-	    || stereo.getName() == null
-	    || stereo.getName().length() == 0)
+	    || ModelFacade.getName(stereo) == null
+	    || ModelFacade.getName(stereo).length() == 0)
 	    _stereo.setText("");
 	else {
-	    _stereo.setText(Notation.generateStereotype(this, stereo));
+	    _stereo.setText(Notation.generateStereotype(this, (MStereotype)stereo));
 	}
     }
 

@@ -47,7 +47,6 @@ import org.argouml.model.uml.UmlHelper;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MArgument;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
@@ -55,19 +54,16 @@ import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
+import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MMultiplicityRange;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
@@ -370,7 +366,7 @@ public class GeneratorDisplay extends Generator {
         if (ownedElements != null) {
             Iterator ownedEnum = ownedElements.iterator();
             while (ownedEnum.hasNext()) {
-                s += generate((MModelElement) ownedEnum.next());
+                s += generate(/*(MModelElement)*/ ownedEnum.next());
                 s += "\n\n";
             }
         } else {
@@ -426,9 +422,9 @@ public class GeneratorDisplay extends Generator {
             s += INDENT + "// Associations\n";
             Iterator endEnum = ends.iterator();
             while (endEnum.hasNext()) {
-                MAssociationEnd ae = (MAssociationEnd) endEnum.next();
-                MAssociation a = ae.getAssociation();
-                s += INDENT + generateAssociationFrom(a, ae);
+                Object ae = /*(MAssociationEnd)*/ endEnum.next();
+                Object a = ModelFacade.getAssociation(ae);
+                s += INDENT + generateAssociationFrom((MAssociation)a, (MAssociationEnd)ae);
             }
         }
 
@@ -474,7 +470,7 @@ public class GeneratorDisplay extends Generator {
     public String generateMessageNumber(MMessage m) {
         MsgPtr ptr = new MsgPtr();
         int pos = recCountPredecessors(m, ptr) + 1;
-        return generateMessageNumber(m, ptr.message, pos);
+        return generateMessageNumber(m, (MMessage)ptr.message, pos);
     }
 
     private String generateMessageNumber(
@@ -514,28 +510,28 @@ public class GeneratorDisplay extends Generator {
     }
 
     class MsgPtr {
-        public MMessage message;
+        public Object/*MMessage*/ message;
     }
 
-    int recCountPredecessors(MMessage m, MsgPtr ptr) {
+    int recCountPredecessors(Object message, MsgPtr ptr) {
         Collection c;
         Iterator it;
         int pre = 0;
         int local = 0;
-        MMessage maxmsg = null;
-        MMessage act;
+        Object/*MMessage*/ maxmsg = null;
+        Object/*MMessage*/ act;
 
-        if (m == null) {
+        if (message == null) {
             ptr.message = null;
             return 0;
         }
 
-        act = m.getActivator();
-        c = m.getPredecessors();
+        act = ModelFacade.getActivator(message);
+        c = ModelFacade.getPredecessors(message);
         it = c.iterator();
         while (it.hasNext()) {
-            MMessage msg = (MMessage) it.next();
-            if (msg.getActivator() != act)
+            Object msg = /*(MMessage)*/ it.next();
+            if (ModelFacade.getActivator(msg) != act)
                 continue;
             int p = recCountPredecessors(msg, null) + 1;
             if (p > pre) {
@@ -551,13 +547,13 @@ public class GeneratorDisplay extends Generator {
         return Math.max(pre, local);
     }
 
-    int countSuccessors(MMessage m) {
-        MMessage act = m.getActivator();
-        Iterator it = m.getMessages3().iterator();
+    int countSuccessors(Object/*MMessage*/ m) {
+        Object act = ModelFacade.getActivator(m);
+        Iterator it = ModelFacade.getMessages3(m).iterator();
         int count = 0;
         while (it.hasNext()) {
-            MMessage msg = (MMessage) it.next();
-            if (msg.getActivator() != act)
+            Object msg = /*(MMessage)*/ it.next();
+            if (ModelFacade.getActivator(msg) != act)
                 continue;
             count++;
         }
@@ -584,7 +580,7 @@ public class GeneratorDisplay extends Generator {
         Iterator it;
         Collection pre;
         Object act;
-        MMessage rt;
+        Object/*MMessage*/ rt;
         MsgPtr ptr;
 
         String action = "";
@@ -606,12 +602,12 @@ public class GeneratorDisplay extends Generator {
             int precnt = 0;
 
             while (it.hasNext()) {
-                MMessage msg = (MMessage) it.next();
+                Object msg = /*(MMessage)*/ it.next();
                 int mpn = recCountPredecessors(msg, ptr2) + 1;
 
                 if (mpn == lpn - 1
-                    && rt == msg.getActivator()
-                    && msg.getPredecessors().size() < 2
+                    && rt == ModelFacade.getActivator(msg)
+                    && ModelFacade.getPredecessors(msg).size() < 2
                     && (ptr2.message == null
                         || countSuccessors(ptr2.message) < 2)) {
                     continue;
@@ -619,7 +615,7 @@ public class GeneratorDisplay extends Generator {
 
                 if (predecessors.length() > 0)
                     predecessors += ", ";
-                predecessors += generateMessageNumber(msg, ptr2.message, mpn);
+                predecessors += generateMessageNumber((MMessage)msg, (MMessage)ptr2.message, mpn);
                 precnt++;
             }
 
@@ -627,7 +623,7 @@ public class GeneratorDisplay extends Generator {
                 predecessors += " / ";
         }
 
-        number = generateMessageNumber(m, ptr.message, lpn);
+        number = generateMessageNumber(m, (MMessage)ptr.message, lpn);
 
         act = m.getAction();
         if (act != null) {
@@ -649,9 +645,9 @@ public class GeneratorDisplay extends Generator {
         Collection connections = a.getConnections();
         Iterator connEnum = connections.iterator();
         while (connEnum.hasNext()) {
-            MAssociationEnd ae2 = (MAssociationEnd) connEnum.next();
+            Object ae2 = /*(MAssociationEnd)*/ connEnum.next();
             if (ae2 != ae)
-                s += generateAssociationEnd(ae2);
+                s += generateAssociationEnd((MAssociationEnd)ae2);
         }
         return s;
     }
@@ -711,7 +707,7 @@ public class GeneratorDisplay extends Generator {
         String s = "{";
         Iterator conEnum = constr.iterator();
         while (conEnum.hasNext()) {
-            s += generateConstraint((MConstraint) conEnum.next());
+            s += generateConstraint((MConstraint)conEnum.next());
             if (conEnum.hasNext())
                 s += "; ";
         }
@@ -750,16 +746,16 @@ public class GeneratorDisplay extends Generator {
             return "";
         Iterator enum = generalizations.iterator();
         while (enum.hasNext()) {
-            MGeneralization g = (MGeneralization) enum.next();
-            MGeneralizableElement ge = g.getPowertype();
+            Object g = /*(MGeneralization)*/ enum.next();
+            Object ge = ModelFacade.getPowertype(g);
             // assert ge != null
             if (ge != null) {
                 if (impl) {
-                    if (org.argouml.model.ModelFacade.isAInterface(ge))
+                    if (ModelFacade.isAInterface(ge)) {
                         classes.add(ge);
-                } else {
-                    if (!(org.argouml.model.ModelFacade.isAInterface(ge)))
-                        classes.add(ge);
+                    }
+                } else if (!(org.argouml.model.ModelFacade.isAInterface(ge))) {
+                    classes.add(ge);
                 }
             }
         }
@@ -772,7 +768,7 @@ public class GeneratorDisplay extends Generator {
             return "";
         Iterator clsEnum = classifiers.iterator();
         while (clsEnum.hasNext()) {
-            s += generateClassifierRef((MClass) clsEnum.next());
+            s += generateClassifierRef(/*(MClass)*/ clsEnum.next());
             if (clsEnum.hasNext())
                 s += ", ";
         }
@@ -918,9 +914,9 @@ public class GeneratorDisplay extends Generator {
             while (iter.hasNext()) {
                 if (s.length() > 0)
                     s.append("\n");
-                MTransition trans = (MTransition) iter.next();
-                s.append(trans.getName()).append(" /").append(
-                    generateTransition(trans));
+                Object trans = /*(MTransition)*/ iter.next();
+                s.append(ModelFacade.getName(trans)).append(" /").append(
+                    generateTransition((MTransition)trans));
             }
         }
         return s.toString();
@@ -960,12 +956,12 @@ public class GeneratorDisplay extends Generator {
         it = c.iterator();
         first = true;
         while (it.hasNext()) {
-            MArgument arg = (MArgument) it.next();
+            Object arg = /*(MArgument)*/ it.next();
             if (!first)
                 p += ", ";
 
-            if (arg.getValue() != null)
-                p += generateExpression(arg.getValue());
+            if (ModelFacade.getValue(arg) != null)
+                p += generateExpression((MExpression)ModelFacade.getValue(arg));
             first = false;
         }
 

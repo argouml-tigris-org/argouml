@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,15 +24,12 @@
 
 package org.argouml.uml;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ChildGenerator;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 /** Utility class to generate the children of a class.  In this case
@@ -51,15 +46,15 @@ public class GenCompositeClasses implements ChildGenerator {
     public Enumeration gen(Object o) {
 	Vector res = new Vector();
 	if (!(ModelFacade.isAClassifier(o))) return res.elements();
-	MClassifier cls = (MClassifier) o;
-	Vector ends = new Vector(cls.getAssociationEnds());
+	Object cls = /*(MClassifier)*/ o;
+	Vector ends = new Vector(ModelFacade.getAssociationEnds(cls));
 	if (ends == null) return res.elements();
 	Iterator enum = ends.iterator();
 	while (enum.hasNext()) {
-	    MAssociationEnd ae = (MAssociationEnd) enum.next();
-	    if (MAggregationKind.COMPOSITE.equals(ae.getAggregation())) {
-		MAssociation asc = ae.getAssociation();
-		List conn = asc.getConnections();
+	    Object ae = /*(MAssociationEnd)*/ enum.next();
+	    if (MAggregationKind.COMPOSITE.equals(ModelFacade.getAggregation(ae))) {
+		Object asc = ModelFacade.getAssociation(ae);
+		ArrayList conn = new ArrayList(ModelFacade.getConnections(asc));
 		if (conn == null || conn.size() != 2) continue;
 		Object otherEnd = (ae == conn.get(0)) ?
 		    conn.get(1) : conn.get(0);
