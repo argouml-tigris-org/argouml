@@ -154,7 +154,7 @@ public class SerialLayout extends LineLayout {
 
         Point loc;
         int preferredBreadth =
-	    orientation.getBreadth(parent.getPreferredSize());
+	    getMyOrientation().getBreadth(parent.getPreferredSize());
         if (direction == LEFTTORIGHT) {
             if (position.equals(EAST)) {
                 loc =
@@ -171,32 +171,36 @@ public class SerialLayout extends LineLayout {
                 if (comp != null && comp.isVisible()) {
                     Dimension size = comp.getPreferredSize();
                     if (alignment == FILL) {
-                        orientation.setBreadth(size, preferredBreadth);
+                        getMyOrientation().setBreadth(size, preferredBreadth);
                     }
                     comp.setSize(size);
                     comp.setLocation(loc);
-                    loc = orientation.addToPosition(loc, comp);
-                    loc = orientation.addToPosition(loc, gap);
+                    loc = getMyOrientation().addToPosition(loc, comp);
+                    loc = getMyOrientation().addToPosition(loc, getGap());
                 }
             }
         }
         else {
-            int lastUsablePosition = orientation.getLastUsablePosition(parent);
-            int firstUsableOffset = orientation.getFirstUsableOffset(parent);
-            loc = orientation.newPoint(lastUsablePosition, firstUsableOffset);
+            int lastUsablePosition = getMyOrientation()
+                .getLastUsablePosition(parent);
+            int firstUsableOffset = getMyOrientation()
+                .getFirstUsableOffset(parent);
+            loc = getMyOrientation()
+                .newPoint(lastUsablePosition, firstUsableOffset);
 
             int nComps = parent.getComponentCount();
             for (int i = 0; i < nComps; i++) {
                 Component comp = parent.getComponent(i);
                 if (comp != null && comp.isVisible()) {
-                    loc = orientation.subtractFromPosition(loc, comp);
+                    loc = getMyOrientation().subtractFromPosition(loc, comp);
                     Dimension size = comp.getPreferredSize();
                     if (alignment == FILL) {
-                        orientation.setBreadth(size, preferredBreadth);
+                        getMyOrientation().setBreadth(size, preferredBreadth);
                     }
                     comp.setSize(size);
                     comp.setLocation(loc);
-                    loc = orientation.subtractFromPosition(loc, gap);
+                    loc = getMyOrientation().subtractFromPosition(loc, 
+                                                                getGap());
                 }
             }
         }

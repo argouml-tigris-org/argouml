@@ -51,14 +51,23 @@ import javax.swing.plaf.basic.BasicSplitPaneUI;
  */
 public class Splitter extends JComponent {
 
-    public static final Orientation HORIZONTAL_SPLIT = Horizontal.getInstance();
-    public static final Orientation VERTICAL_SPLIT = Vertical.getInstance();
+    /**
+     * The orientation for a horizontal splitter
+     */
+    private static final Orientation HORIZONTAL_SPLIT = 
+        Horizontal.getInstance();
+    
+    /**
+     * The orientation for a vertical splitter
+     */
+    private static final Orientation VERTICAL_SPLIT = 
+        Vertical.getInstance();
 
-    public static final int NONE = -1;
-    public static final int WEST = 0;
-    public static final int EAST = 1;
-    public static final int NORTH = 0;
-    public static final int SOUTH = 1;
+    protected static final int NONE = -1;
+    protected static final int WEST = 0;
+    protected static final int EAST = 1;
+    protected static final int NORTH = 0;
+    protected static final int SOUTH = 1;
 
     /**
      * The orientation of this splitter. Orientation does not
@@ -103,12 +112,12 @@ public class Splitter extends JComponent {
     /**
      * The quick hide buttons
      */
-    ArrowButton buttonNorth = null;
+    private ArrowButton buttonNorth = null;
     
     /**
      * The quick hide buttons
      */
-    ArrowButton buttonSouth = null;
+    private ArrowButton buttonSouth = null;
     
     /**
      * Component which knows how to paint the split divider.

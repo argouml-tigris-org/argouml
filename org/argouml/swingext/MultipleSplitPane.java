@@ -37,11 +37,26 @@ import java.awt.*;
  * @author Bob Tarling
  */
 public class MultipleSplitPane extends JComponent {
-    public static final Orientation HORIZONTAL_SPLIT = Horizontal.getInstance();
-    public static final Orientation VERTICAL_SPLIT = Vertical.getInstance();
+    
+    /**
+     * The orientation for a horizontal splitter
+     */
+    protected static final Orientation HORIZONTAL_SPLIT = 
+        Horizontal.getInstance();
+    
+    /**
+     * The orientation for a vertical splitter
+     */
+    protected static final Orientation VERTICAL_SPLIT = 
+        Vertical.getInstance();
 
     private Splitter[] splitterArray;
 
+    /**
+     * The constructor. 
+     * 
+     * @param componentArray
+     */
     public MultipleSplitPane(Component componentArray[]) {
         this(componentArray.length);
     }
@@ -55,6 +70,10 @@ public class MultipleSplitPane extends JComponent {
         this(paneCount, HORIZONTAL_SPLIT);
     }
 
+    /**
+     * @param paneCount the number of panes
+     * @param orientation the orientation
+     */
     public MultipleSplitPane(int paneCount, Orientation orientation) {
         this.setLayout(new SplitterLayout(orientation));
         int splitterCount = paneCount - 1;
@@ -70,6 +89,10 @@ public class MultipleSplitPane extends JComponent {
             splitterArray[splitterCount - 1].setQuickHide(Splitter.EAST);
         }
     }
+    
+    /**
+     * @see java.awt.Container#add(java.awt.Component, int)
+     */
     public Component add(Component comp, int index) {
         if (!(comp instanceof Splitter)) {
             SplitterLayout splitterLayout = (SplitterLayout) getLayout();
@@ -87,6 +110,9 @@ public class MultipleSplitPane extends JComponent {
         return super.add(comp, index);
     }
 
+    /**
+     * @see java.awt.Container#add(java.awt.Component, java.lang.Object, int)
+     */
     public void add(Component comp, Object constraints, int index) {
         if (!(comp instanceof Splitter)) {
             SplitterLayout splitterLayout = (SplitterLayout) getLayout();
@@ -104,6 +130,9 @@ public class MultipleSplitPane extends JComponent {
         super.add(comp, constraints, index);
     }
 
+    /**
+     * @see java.awt.Container#remove(int)
+     */
     public void remove(int index) {
         SplitterLayout splitterLayout = (SplitterLayout) getLayout();
         if (index >= splitterArray.length) {
