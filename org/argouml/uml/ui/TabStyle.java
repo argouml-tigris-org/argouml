@@ -122,9 +122,13 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // accessors
-  public void setTarget(Fig t) {
+  public void setTarget(Object t) {
     if (_target != null) _target.removePropertyChangeListener(this);
-    _target = t;
+    
+    if( !(t instanceof Fig))
+        return;
+    
+    _target = (Fig)t;
     if (_target != null) _target.addPropertyChangeListener(this);
     if (_lastPanel != null) remove(_lastPanel);
     if (t == null) {
@@ -199,9 +203,31 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
   protected String getAlternativeClassBaseName() {
     return _alternativeBase; }
 
-  public Fig getTarget() { return _target; }
+  public Object getTarget() { return _target; }
 
-  public boolean shouldBeEnabled() { return _shouldBeEnabled; }
+  public boolean shouldBeEnabled(Object target) {
+  
+    if (target == null) {
+      _shouldBeEnabled = false;
+      return _shouldBeEnabled;
+    }
+    
+    _shouldBeEnabled = true;
+    _stylePanel = null;
+    Class targetClass = target.getClass();
+    while (targetClass != null && _stylePanel == null) {
+      _stylePanel = findPanelFor(targetClass);
+      targetClass = targetClass.getSuperclass();
+    }
+    if (_stylePanel != null) {
+      _shouldBeEnabled = true;
+    }
+    else {
+      _shouldBeEnabled = false;
+    }
+    
+    return _shouldBeEnabled;
+  }
 
 
   ////////////////////////////////////////////////////////////////

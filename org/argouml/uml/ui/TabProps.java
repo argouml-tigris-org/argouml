@@ -339,7 +339,30 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
 
   public Object getTarget() { return _target; }
 
-  public boolean shouldBeEnabled() { return _shouldBeEnabled; }
+  public boolean shouldBeEnabled(Object target) {
+
+		if (target == null) {
+			_shouldBeEnabled = false;
+			return _shouldBeEnabled;
+		}
+                
+		_shouldBeEnabled = true;
+		TabModelTarget newPanel = null;
+		Class targetClass = target.getClass();
+		while (targetClass != null && newPanel == null) {
+			newPanel = findPanelFor(targetClass);
+			targetClass = targetClass.getSuperclass();
+			if (targetClass == java.lang.Object.class) break;
+		}
+		if (newPanel instanceof JPanel) {
+			_shouldBeEnabled = true;
+		}
+		else {
+			_shouldBeEnabled = false;
+		}
+                
+                return _shouldBeEnabled;
+  }
 
   public void moduleLoaded (ArgoModuleEvent event) {
       if (event.getSource() instanceof PluggablePropertyPanel) {

@@ -133,6 +133,21 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
     super.setTarget(t);
   }
 
+  public boolean shouldBeEnabled(Object target) {
+  
+    _shouldBeEnabled = false;
+    if (target instanceof MModelElement){
+        _shouldBeEnabled = true;
+    }
+    
+    if (target instanceof Fig) {
+      if (((Fig)target).getOwner() instanceof MModelElement)
+	_shouldBeEnabled = true;
+    }
+
+    return _shouldBeEnabled;
+  }
+
   /**
    * Invoked when any aspect of the notation has been changed.
    */

@@ -111,8 +111,13 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
   /**
     * Should this tab be activated for the current target element?
     */
-  public boolean shouldBeEnabled() {
-    return (m_mmeiTarget != null);
+  public boolean shouldBeEnabled(Object target) {
+
+      if (!(target instanceof MModelElement)) {
+        return false;
+      } 
+      else
+          return true;
   }
   
   /**

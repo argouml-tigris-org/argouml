@@ -136,7 +136,17 @@ implements TabModelTarget {
 
   public void refresh() { setTarget(_target); }
 
-  public boolean shouldBeEnabled() { return _shouldBeEnabled; }
+  public boolean shouldBeEnabled(Object target) {
+  
+    if (!(target instanceof MModelElement)) {
+      _shouldBeEnabled = false;
+      return _shouldBeEnabled;
+    }
+    else{
+        _shouldBeEnabled = true;
+        return true;
+    }
+  }
 
 } /* end class TabTaggedValues */
 
