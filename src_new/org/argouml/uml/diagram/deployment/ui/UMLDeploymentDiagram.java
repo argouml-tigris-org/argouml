@@ -173,12 +173,12 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 					       + handle
 					       + " is not a namespace");
         }
-        MNamespace m = (MNamespace) handle;
+        Object m = /*(MNamespace)*/ handle;
         super.setNamespace(m);
         DeploymentDiagramGraphModel gm = new DeploymentDiagramGraphModel();
         gm.setNamespace(m);
         setGraphModel(gm);
-        LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
+        LayerPerspective lay = new LayerPerspectiveMutable(ModelFacade.getName(m), gm);
         setLayer(lay);
         DeploymentDiagramRenderer rend = new DeploymentDiagramRenderer();
         // singleton

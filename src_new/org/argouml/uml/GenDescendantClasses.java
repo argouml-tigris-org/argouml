@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -30,9 +29,6 @@ import java.util.Enumeration;
 import java.util.Vector;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ChildGenerator;
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-
 /** Utility class to generate the subclasses of a class.  It
  *  recursively moves down the class hierarchy.  But it does that in a
  *  safe way that will nothang in case of cyclic inheritance. 
@@ -46,21 +42,21 @@ public class GenDescendantClasses implements ChildGenerator {
 	Vector res = new Vector();
 	if (!(ModelFacade.isAGeneralizableElement(o))) return res.elements();
 
-	MGeneralizableElement cls = (MGeneralizableElement) o;
-	Collection gens = cls.getSpecializations();
+	Object cls = /*(MGeneralizableElement)*/ o;
+	Collection gens = ModelFacade.getSpecializations(cls);
 	if (gens == null) return res.elements();
 	accumulateDescendants(cls, res);
 	return res.elements();
     }
 
 
-    public void accumulateDescendants(MGeneralizableElement cls, Vector accum) {
-	Vector gens = new Vector(cls.getSpecializations());
+    public void accumulateDescendants(Object/*MGeneralizableElement*/ cls, Vector accum) {
+	Vector gens = new Vector(ModelFacade.getSpecializations(cls));
 	if (gens == null) return;
 	int size = gens.size();
 	for (int i = 0; i < size; i++) {
-	    MGeneralization g = (MGeneralization) (gens.elementAt(i));
-	    MGeneralizableElement ge = g.getChild();
+	    Object g = /*(MGeneralization)*/ (gens.elementAt(i));
+	    Object ge = ModelFacade.getChild(g);
 	    if (!accum.contains(ge)) {
 		accum.add(ge);
 		accumulateDescendants(cls, accum);

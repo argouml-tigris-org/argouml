@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -496,7 +494,7 @@ public abstract class FigEdgeModelElement
             Object oldOwner = getOwner();
 
             if (org.argouml.model.ModelFacade.isAModelElement(oldOwner))
-		((MModelElement) oldOwner).removeMElementListener(this);
+		((MModelElement)oldOwner).removeMElementListener(this);
             if (org.argouml.model.ModelFacade.isAModelElement(newOwner)) {
                 UmlModelEventPump.getPump().addModelEventListener(this, newOwner);
                 if (ModelFacade.getUUID(newOwner) == null)

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -37,6 +36,7 @@ import org.tigris.gef.graph.*;
 
 import org.argouml.uml.diagram.ui.*;
 import org.apache.log4j.Logger;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.static_structure.ui.*;
 
 public class DeploymentDiagramRenderer
@@ -67,14 +67,14 @@ public class DeploymentDiagramRenderer
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 
 	if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
-	    MAssociation asc = (MAssociation) edge;
+	    Object asc = /*(MAssociation)*/ edge;
 	    FigAssociation ascFig = new FigAssociation(asc, lay);
 	    return ascFig;
 	}
 	if (org.argouml.model.ModelFacade.isALink(edge)) {
-	    MLink lnk = (MLink) edge;
+	    Object lnk = /*(MLink)*/ edge;
 	    FigLink lnkFig = new FigLink(lnk);
-	    Collection linkEnds = lnk.getConnections();
+	    Collection linkEnds = ModelFacade.getConnections(lnk);
 	    if (linkEnds == null) cat.debug("null linkRoles....");
 	    Object[] leArray = linkEnds.toArray();
 	    MLinkEnd fromEnd = (MLinkEnd) leArray[0];
@@ -90,13 +90,13 @@ public class DeploymentDiagramRenderer
 	    return lnkFig;
 	}
 	if (org.argouml.model.ModelFacade.isADependency(edge)) {
-	    MDependency dep = (MDependency) edge;
+	    Object dep = /*(MDependency)*/ edge;
 	    FigDependency depFig = new FigDependency(dep);
 
-	    MModelElement supplier =
-		(MModelElement) (((dep.getSuppliers().toArray())[0]));
-	    MModelElement client =
-		(MModelElement) (((dep.getClients().toArray())[0]));
+	    Object supplier =
+		/*(MModelElement)*/ ((ModelFacade.getSuppliers(dep).toArray())[0]);
+	    Object client =
+		/*(MModelElement)*/ ((ModelFacade.getClients(dep).toArray())[0]);
 
 	    FigNode supFN = (FigNode) lay.presentationFor(supplier);
 	    FigNode cliFN = (FigNode) lay.presentationFor(client);

@@ -34,6 +34,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
+import org.argouml.uml.OperKeyword;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.MMClassKeyword;
@@ -43,31 +44,11 @@ import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.GraphModel;
 
-import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
-
-import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
-import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
-import ru.novosoft.uml.behavior.common_behavior.MObject;
-
-
-import ru.novosoft.uml.behavior.common_behavior.MStimulus;
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 
-import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MComponent;
-import ru.novosoft.uml.foundation.core.MElementResidence;
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNode;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 
@@ -207,10 +188,10 @@ class ColumnName extends ColumnDescriptor {
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isAModelElement(target))) return;
 	if (!(value instanceof String)) return;
-	MModelElement e = (MModelElement) target;
+	Object e = /*(MModelElement)*/ target;
 	String s = (String) value;
 	if (s.startsWith("(anon")) return;
-	e.setName(s); 
+	ModelFacade.setName(e, s); 
     }  
 } /* end class ColumnName */
 
@@ -504,9 +485,9 @@ class ColumnSupplier extends ColumnDescriptor {
 	if (conns != null && (conns.size() == 1)) {
 	    Iterator it = conns.iterator();
 	    while (it.hasNext()) {
-		MModelElement element = (MModelElement) it.next();
-		if (element != null && element.getName() != null) {	
-		    name = element.getName();
+		Object element = /*(MModelElement)*/ it.next();
+		if (element != null && ModelFacade.getName(element) != null) {	
+		    name = ModelFacade.getName(element);
 		}
 	    }
 	}
@@ -527,9 +508,9 @@ class ColumnClient extends ColumnDescriptor {
 	if (conns != null && (conns.size() == 1)) {
 	    Iterator it = conns.iterator();
 	    while (it.hasNext()) {
-		MModelElement element = (MModelElement) it.next();
-		if (element != null && element.getName() != null) {	
-		    name = element.getName();
+		Object element = /*(MModelElement)*/ it.next();
+		if (element != null && ModelFacade.getName(element) != null) {	
+		    name = ModelFacade.getName(element);
 		}
 	    }
 	}
@@ -591,8 +572,8 @@ class ColumnAbstract extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAGeneralizableElement(target))) return Boolean.FALSE;
-	MGeneralizableElement ge = (MGeneralizableElement) target;
-	boolean abs = ge.isAbstract();
+	Object generalizableElement = /*(MGeneralizableElement)*/ target;
+	boolean abs = ModelFacade.isAbstract(generalizableElement);
 	return abs ? Boolean.TRUE : Boolean.FALSE;
     }
 
@@ -600,8 +581,8 @@ class ColumnAbstract extends ColumnDescriptor {
 	if (!(ModelFacade.isAGeneralizableElement(target))) return;
 	if (!(value instanceof Boolean)) return;
 	boolean b = ((Boolean) value).booleanValue();
-	MGeneralizableElement ge = (MGeneralizableElement) target;
-	ge.setAbstract(b);
+	Object ge = /*(MGeneralizableElement)*/ target;
+	ModelFacade.setAbstract(ge, b);
     }  
 } /* end class ColumnAbstract */
 
@@ -611,8 +592,8 @@ class ColumnRoot extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAGeneralizableElement(target))) return Boolean.FALSE;
-	MGeneralizableElement ge = (MGeneralizableElement) target;
-	boolean root = ge.isRoot();
+	Object ge = /*(MGeneralizableElement)*/ target;
+	boolean root = ModelFacade.isRoot(ge);
 	return root ? Boolean.TRUE : Boolean.FALSE;
     }
 
@@ -620,9 +601,9 @@ class ColumnRoot extends ColumnDescriptor {
 	if (!(ModelFacade.isAGeneralizableElement(target))) return;
 	if (!(value instanceof Boolean)) return;
 	boolean b = ((Boolean) value).booleanValue();
-	MGeneralizableElement ge = (MGeneralizableElement) target;
-	ge.setRoot(b);
-    }  
+	Object ge = /*(MGeneralizableElement)*/ target;
+	ModelFacade.setRoot(ge, b);
+    }
 } /* end class ColumnRoot */
 
 
@@ -631,8 +612,8 @@ class ColumnLeaf extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAGeneralizableElement(target))) return Boolean.FALSE;
-	MGeneralizableElement ge = (MGeneralizableElement) target;
-	boolean leaf = ge.isLeaf();
+	Object ge = /*(MGeneralizableElement)*/ target;
+	boolean leaf = ModelFacade.isLeaf(ge);
 	return leaf ? Boolean.TRUE : Boolean.FALSE;
     }
 
@@ -640,8 +621,8 @@ class ColumnLeaf extends ColumnDescriptor {
 	if (!(ModelFacade.isAGeneralizableElement(target))) return;
 	if (!(value instanceof Boolean)) return;
 	boolean b = ((Boolean) value).booleanValue();
-	MGeneralizableElement ge = (MGeneralizableElement) target;
-	ge.setLeaf(b);
+	Object ge = /*(MGeneralizableElement)*/ target;
+	ModelFacade.setLeaf(ge, b);
     }  
 } /* end class ColumnLeaf */
 
@@ -653,17 +634,17 @@ class ColumnClassVisibility extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAClassifier(target))) return null;
-	MClassifier cls = (MClassifier) target;
-	return MMClassVisibility.VisibilityFor(cls);
+	Object cls = /*(MClassifier)*/ target;
+	return MMClassVisibility.VisibilityFor((MClassifier)cls);
     }
 
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isAClassifier(target))) return;
 	if (!(value instanceof MMClassVisibility)) return;
 	MMClassVisibility cv = (MMClassVisibility) value;
-	MClassifier cls = (MClassifier) target;
-	cv.set(cls);
-    }  
+	Object cls = /*(MClassifier)*/ target;
+	cv.set((MClassifier)cls);
+    }
 } /* end class ColumnClassVisibility */
 
 
@@ -674,16 +655,16 @@ class ColumnClassKeyword extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAClassifier(target))) return null;
-	MClassifier cls = (MClassifier) target;
-	return MMClassKeyword.KeywordFor(cls);
+	Object cls = /*(MClassifier)*/ target;
+	return MMClassKeyword.KeywordFor((MClassifier)cls);
     }
 
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isAClassifier(target))) return;
 	if (!(value instanceof MMClassKeyword)) return;
 	MMClassKeyword ck = (MMClassKeyword) value;
-	MClassifier cls = (MClassifier) target;
-	ck.set(cls);
+	Object cls = /*(MClassifier)*/ target;
+	ck.set((MClassifier)cls);
     }  
 } /* end class ColumnClassKeyword */
 
@@ -695,15 +676,15 @@ class ColumnExtends extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAGeneralizableElement(target))) return "";
-	MGeneralizableElement cls = (MGeneralizableElement) target;
-	Vector gen = new Vector(cls.getGeneralizations());
+	Object cls = /*(MGeneralizableElement)*/ target;
+	Vector gen = new Vector(ModelFacade.getGeneralizations(cls));
 	String res = "";
 	if  (gen == null || gen.size() == 0) return res;
 	int size = gen.size();
 	GeneratorDisplay gd = GeneratorDisplay.getInstance();
 	for (int i = 0; i < size; i++) {
-	    MGeneralization g = (MGeneralization) gen.elementAt(i);
-	    MClassifier base = (MClassifier) g.getParent();
+	    Object generalization = /*(MGeneralization)*/ gen.elementAt(i);
+	    Object base = /*(MClassifier)*/ ModelFacade.getParent(generalization);
 	    res += gd.generateClassifierRef(base);
 	    if (i < size - 1) res += ", ";
 	}
@@ -748,9 +729,9 @@ class ColumnEntry extends ColumnDescriptor {
 	
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAState(target))) return "";
-	MState st = (MState) target;
-	if (st.getEntry() != null) {
-	    Object acts = ModelFacade.getEntry(st);
+	Object state = /*(MState)*/ target;
+	if (ModelFacade.getEntry(state) != null) {
+	    Object acts = ModelFacade.getEntry(state);
 	    return GeneratorDisplay.Generate(acts);
 	}
 	return "";
@@ -761,10 +742,10 @@ class ColumnEntry extends ColumnDescriptor {
 	if (!(value instanceof String)) return;
 
 
-	MState st = (MState) target;
+	Object state = /*(MState)*/ target;
 	String s = (String) value;
 	ParserDisplay pd = ParserDisplay.SINGLETON;
-	pd.parseStateEntyAction(st, s);    
+	pd.parseStateEntyAction(state, s);    
     }
 } /* end class ColumnEntry */
 
@@ -776,9 +757,9 @@ class ColumnExit extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAState(target))) return "";
-	MState st = (MState) target;
-	if (ModelFacade.getExit(st) != null) {
-	    Object acts = ModelFacade.getExit(st);
+	Object state = /*(MState)*/ target;
+	if (ModelFacade.getExit(state) != null) {
+	    Object acts = ModelFacade.getExit(state);
 	    return GeneratorDisplay.Generate(acts);
 	}
 	return "";
@@ -787,10 +768,10 @@ class ColumnExit extends ColumnDescriptor {
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isAState(target))) return;
 	if (!(value instanceof String)) return;
-	MState st = (MState) target;
+	Object state = /*(MState)*/ target;
 	String s = (String) value;
 	ParserDisplay pd = ParserDisplay.SINGLETON;
-	pd.parseStateExitAction(st, s);    
+	pd.parseStateExitAction(state, s);    
     }
 } /* end class ColumnExit */
 
@@ -802,9 +783,9 @@ class ColumnParent extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAStateVertex(target))) return "";
-	MStateVertex sv = (MStateVertex) target;
-	if (sv.getContainer() != null) {
-	    MCompositeState cs = sv.getContainer();
+	Object stateVertex = /*(MStateVertex)*/ target;
+	if (ModelFacade.getContainer(stateVertex) != null) {
+	    Object cs = ModelFacade.getContainer(stateVertex);
 	    return GeneratorDisplay.Generate(cs);
 	}
 	return "";
@@ -825,9 +806,9 @@ class ColumnSource extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isATransition(target))) return "";
-	MTransition t = (MTransition) target;
-	if (t.getSource() != null) {
-	    MStateVertex sv = t.getSource();
+	Object t = /*(MTransition)*/ target;
+	if (ModelFacade.getSource(t) != null) {
+	    Object sv = ModelFacade.getSource(t);
 	    return GeneratorDisplay.Generate(sv);
 	}
 	return "";
@@ -844,9 +825,9 @@ class ColumnTarget extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isATransition(target))) return "";
-	MTransition t = (MTransition) target;
-	if (t.getTarget() != null) {
-	    MStateVertex sv = t.getTarget();
+	Object t = /*(MTransition)*/ target;
+	if (ModelFacade.getTarget(t) != null) {
+	    Object sv = ModelFacade.getTarget(t);
 	    return GeneratorDisplay.Generate(sv);
 	}
 	return "";
@@ -864,8 +845,8 @@ class ColumnTrigger extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isATransition(target))) return "";
-	MTransition t = (MTransition) target;
-	MEvent trigger = t.getTrigger();
+	Object t = /*(MTransition)*/ target;
+	Object trigger = ModelFacade.getTrigger(t);
 	if (trigger == null) return "";
 	return GeneratorDisplay.Generate(trigger);
     }
@@ -873,10 +854,10 @@ class ColumnTrigger extends ColumnDescriptor {
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isATransition(target))) return;
 	if (!(value instanceof String)) return;
-	MTransition tr = (MTransition) target;
+	Object tr = /*(MTransition)*/ target;
 	String s = (String) value;
 	ParserDisplay pd = ParserDisplay.SINGLETON;
-	tr.setTrigger(pd.parseEvent(s));
+	ModelFacade.setTrigger(tr, pd.parseEvent(s));
     }
 } /* end class ColumnTrigger */
 
@@ -889,8 +870,8 @@ class ColumnGuard extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isATransition(target))) return "";
-	MTransition t = (MTransition) target;
-	MGuard guard = t.getGuard();
+	Object t = /*(MTransition)*/ target;
+	Object guard = ModelFacade.getGuard(t);
 	if (guard == null) return "";
 	return GeneratorDisplay.Generate(guard);
     }
@@ -898,10 +879,10 @@ class ColumnGuard extends ColumnDescriptor {
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isATransition(target))) return;
 	if (!(value instanceof String)) return;
-	MTransition tr = (MTransition) target;
+	Object tr = /*(MTransition)*/ target;
 	String s = (String) value;
 	ParserDisplay pd = ParserDisplay.SINGLETON;
-	tr.setGuard(pd.parseGuard(s));
+	ModelFacade.setGuard(tr, pd.parseGuard(s));
     }
 } /* end class ColumnGuard */
 
@@ -913,7 +894,7 @@ class ColumnEffect extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isATransition(target))) return "";
-	MTransition t = (MTransition) target;
+	Object t = /*(MTransition)*/ target;
 	Object effect = ModelFacade.getEffect(t);
 	if (effect == null) return "";
 	return GeneratorDisplay.Generate(effect);
@@ -922,7 +903,7 @@ class ColumnEffect extends ColumnDescriptor {
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isATransition(target))) return;
 	if (!(value instanceof String)) return;
-	MTransition tr = (MTransition) target;
+	Object tr = /*(MTransition)*/ target;
 	String s = (String) value;
 	ParserDisplay pd = ParserDisplay.SINGLETON;
 	ModelFacade.setEffect(tr, pd.parseAction(s));
@@ -937,10 +918,10 @@ class ColumnReturn extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAOperation(target))) return "";
-	MOperation op = (MOperation) target;
-	MParameter rp = UmlHelper.getHelper().getCore().getReturnParameter(op);
-	if (rp != null && rp.getType() != null) {
-	    MClassifier returnType = rp.getType();
+	Object operation = /*(MOperation)*/ target;
+	MParameter returnParameter = UmlHelper.getHelper().getCore().getReturnParameter(operation);
+	if (returnParameter != null && ModelFacade.getType(returnParameter) != null) {
+	    Object returnType = ModelFacade.getType(returnParameter);
 	    GeneratorDisplay gd = GeneratorDisplay.getInstance();
 	    return gd.generateClassifierRef(returnType);
 	}
@@ -950,14 +931,14 @@ class ColumnReturn extends ColumnDescriptor {
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isAOperation(target))) return;
 	if (!(value instanceof String)) return;
-	MOperation op = (MOperation) target;
+	Object operation = /*(MOperation)*/ target;
 	String s = (String) value;
 	Project p = ProjectManager.getManager().getCurrentProject();
-	MClassifier rt = (MClassifier)p.findType(s);
+	Object rt = /*(MClassifier)*/p.findType(s);
 	ParserDisplay pd = ParserDisplay.SINGLETON;
-	MParameter rp = UmlFactory.getFactory().getCore().buildParameter(op);
-	rp.setType(rt);
-	UmlHelper.getHelper().getCore().setReturnParameter(op, rp);
+	Object rp = UmlFactory.getFactory().getCore().buildParameter(operation);
+	ModelFacade.setType(rp, rt);
+	UmlHelper.getHelper().getCore().setReturnParameter((MOperation)operation, (MParameter)rp);
     }
 } /* end class ColumnReturn */
 
@@ -968,17 +949,17 @@ class ColumnOperKeyword extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAOperation(target))) return null;
-	MOperation oper = (MOperation) target;
-	return org.argouml.uml.OperKeyword.KeywordFor(oper);
+	Object oper = /*(MOperation)*/ target;
+	return org.argouml.uml.OperKeyword.KeywordFor((MOperation)oper);
     }
 
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isAOperation(target))) return;
 	if (!(value instanceof OperKeyword)) return;
 	OperKeyword ok = (OperKeyword) value;
-	MOperation oper = (MOperation) target;
-	ok.set(oper);
-    }  
+	Object oper = /*(MOperation)*/ target;
+	ok.set((MOperation)oper);
+    }
 } /* end class ColumnOperKeyword */
 
 
@@ -987,8 +968,8 @@ class ColumnQuery extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAOperation(target))) return Boolean.FALSE;
-	MOperation oper = (MOperation) target;
-	boolean query = oper.isQuery();
+	Object oper = /*(MOperation)*/ target;
+	boolean query = ModelFacade.isQuery(oper);
 	return query ? Boolean.TRUE : Boolean.FALSE;
     }
 
@@ -996,8 +977,8 @@ class ColumnQuery extends ColumnDescriptor {
 	if (!(ModelFacade.isAOperation(target))) return;
 	if (!(value instanceof Boolean)) return;
 	boolean b = ((Boolean) value).booleanValue();
-	MOperation oper = (MOperation) target;
-	oper.setQuery(b);
+	Object oper = /*(MOperation)*/ target;
+	ModelFacade.setQuery(oper, b);
     }  
 } /* end class ColumnQuery */
 
@@ -1010,8 +991,8 @@ class ColumnType extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAAttribute(target))) return null;
-	MAttribute op = (MAttribute) target;
-	MClassifier type = op.getType();
+	Object op = /*(MAttribute)*/ target;
+	Object type = ModelFacade.getType(op);
 	GeneratorDisplay gd = GeneratorDisplay.getInstance();
 	return gd.generateClassifierRef(type);
     }
@@ -1019,16 +1000,16 @@ class ColumnType extends ColumnDescriptor {
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isAAttribute(target))) return;
 	if (!(value instanceof String)) return;
-	MAttribute op = (MAttribute) target;
+	Object op = /*(MAttribute)*/ target;
 	String s = (String) value;
 	Project p = ProjectManager.getManager().getCurrentProject();
-	MClassifier t = (MClassifier)p.findType(s);
+	Object t = /*(MClassifier)*/p.findType(s);
 	if (t == null) {
 	    cat.warn("attribute type not found");
 	    return;
 	}
 	ParserDisplay pd = ParserDisplay.SINGLETON;
-	op.setType(t);
+	ModelFacade.setType(op, t);
     }
 } /* end class ColumnType */
 
@@ -1039,16 +1020,16 @@ class ColumnAttrKeyword extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAAttribute(target))) return null;
-	MAttribute attr = (MAttribute) target;
-	return org.argouml.uml.AttrKeyword.KeywordFor(attr);
+	Object attr = /*(MAttribute)*/ target;
+	return org.argouml.uml.AttrKeyword.KeywordFor((MAttribute)attr);
     }
 
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isAAttribute(target))) return;
 	if (!(value instanceof AttrKeyword)) return;
 	AttrKeyword ak = (AttrKeyword) value;
-	MAttribute attr = (MAttribute) target;
-	ak.set(attr);
+	Object attr = /*(MAttribute)*/ target;
+	ak.set((MAttribute)attr);
     }  
 } /* end class ColumnAttrKeyword */
 
@@ -1057,18 +1038,18 @@ class ColumnCompNode extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAComponent(target))) return null;
-	MComponent co = (MComponent) target;
-	Collection nodes = co.getDeploymentLocations();  
-	MNode node = null;
+	Object co = /*(MComponent)*/ target;
+	Collection nodes = ModelFacade.getDeploymentLocations(co);  
+	Object node = null;
 	if ((nodes != null) && (nodes.size() > 0)) {
 	    Iterator it = nodes.iterator();
 	    while (it.hasNext()) {
-		node = (MNode) it.next();
+		node = /*(MNode)*/ it.next();
 	    }
 	}
 	String name = "";
 	if (node != null) {
-	    name = node.getName();
+	    name = ModelFacade.getName(node);
 	}
 	return name;
     }
@@ -1084,11 +1065,11 @@ class ColumnCompNodeInstance extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAComponentInstance(target))) return null;
-	MComponentInstance co = (MComponentInstance) target;
-	MNodeInstance node = co.getNodeInstance();
+	Object co = /*(MComponentInstance)*/ target;
+	Object node = ModelFacade.getNodeInstance(co);
 	String name = "";
 	if (node != null) {
-	    name = node.getName();
+	    name = ModelFacade.getName(node);
 	}
 	return name;
     }
@@ -1108,33 +1089,33 @@ class ColumnImplLocation extends ColumnDescriptor {
 	    return null;
 	String name = "";
 	if (ModelFacade.isAClassifier(target)) {
-	    MClassifier co = (MClassifier) target;
-	    Collection residences = co.getElementResidences();  
+	    Object co = /*(MClassifier)*/ target;
+	    Collection residences = ModelFacade.getElementResidences(co);  
 	    if (residences != null) {
 		Iterator it = residences.iterator();
 		while (it.hasNext()) {
-		    MElementResidence residence = (MElementResidence) it.next();
-		    MModelElement element = residence.getResident();
+		    Object residence = /*(MElementResidence)*/ it.next();
+		    Object element = ModelFacade.getResident(residence);
 		    if (element == co) {
-			MComponent component =
-			    residence.getImplementationLocation();
-			name = component.getName();
+			Object component =
+			    ModelFacade.getImplementationLocation(residence);
+			name = ModelFacade.getName(component);
 		    }
 		}
 	    }
 	}
 	else if (ModelFacade.isAObject(target)) {
-	    MObject obj = (MObject) target;
-	    Collection residences = obj.getElementResidences();  
+	    Object obj = /*(MObject)*/ target;
+	    Collection residences = ModelFacade.getElementResidences(obj);  
 	    if (residences != null) {
 		Iterator it = residences.iterator();
 		while (it.hasNext()) {
-		    MElementResidence residence = (MElementResidence) it.next();
-		    MModelElement element = residence.getResident();
+		    Object residence = /*(MElementResidence)*/ it.next();
+		    Object element = ModelFacade.getResident(residence);
 		    if (element == obj) {
-			MComponent component =
-			    residence.getImplementationLocation();
-			name = component.getName();
+			Object component =
+			    ModelFacade.getImplementationLocation(residence);
+			name = ModelFacade.getName(component);
 		    }
 		}
 	    }
@@ -1155,11 +1136,11 @@ class ColumnComponentInstance extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAObject(target))) return null;
-	MObject co = (MObject) target;
+	Object co = /*(MObject)*/ target;
 	String name = "";
-	MComponentInstance comp = co.getComponentInstance();
+	Object comp = ModelFacade.getComponentInstance(co);
 	if (comp != null) {
-	    name = comp.getName();
+	    name = ModelFacade.getName(comp);
 	}
 	return name;
     }
@@ -1174,15 +1155,15 @@ class ColumnBaseForObject extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAInstance(target))) return null;
-	MInstance in = (MInstance) target;
+	Object in = /*(MInstance)*/ target;
 	String instance_base = "";
-	Collection col = in.getClassifiers();
+	Collection col = ModelFacade.getClassifiers(in);
 	if (col != null && (col.size() > 0)) {
 	    Iterator it = col.iterator();
 	    while (it.hasNext()) {
-		MClassifier cls = (MClassifier) it.next();
-		if (cls != null && (cls.getName() != null)) {
-		    instance_base = cls.getName();
+		Object cls = /*(MClassifier)*/ it.next();
+		if (cls != null && (ModelFacade.getName(cls) != null)) {
+		    instance_base = ModelFacade.getName(cls);
   
 		}
 	    }
@@ -1193,15 +1174,14 @@ class ColumnBaseForObject extends ColumnDescriptor {
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isAInstance(target))) return;
 	if (!(value instanceof String)) return;
-	MObject tt = (MObject) target;
+	Object tt = /*(MObject)*/ target;
 	String _value = (String) value;
-	MClass classifier = UmlFactory.getFactory().getCore().buildClass(); 
-	Collection col = tt.getClassifiers();
+	Object classifier = UmlFactory.getFactory().getCore().buildClass(); 
+	Collection col = ModelFacade.getClassifiers(tt);
 	if ((col != null) && (col.size() > 0)) { 
 	    Iterator itcol = col.iterator(); 
 	    while (itcol.hasNext()) { 
-		MClassifier cls = (MClassifier) itcol.next(); 
-		tt.removeClassifier(cls); 
+		ModelFacade.removeClassifier(tt, itcol.next()); 
 	    } 
 	} 
 
@@ -1224,23 +1204,23 @@ class ColumnBaseForObject extends ColumnDescriptor {
 	    Vector nodes = model.getNodes();
 	    int s = nodes.size();
 	    for (int j = 0; j < s; j++) {
-		MModelElement node = (MModelElement) nodes.elementAt(j);
+		Object node = /*(MModelElement)*/ nodes.elementAt(j);
 		if (node != null && (ModelFacade.isAClass(node))) {
-		    MClass mclass = (MClass) node;
-		    if (mclass.getNamespace() != tt.getNamespace()) continue;
-		    String class_name = mclass.getName();
+		    Object mclass = /*(MClass)*/ node;
+		    if (ModelFacade.getNamespace(mclass) != ModelFacade.getNamespace(tt)) continue;
+		    String class_name = ModelFacade.getName(mclass);
 		    if (class_name != null && (class_name.equals(_value))) {
 			v.addElement(mclass);
-			tt.setClassifiers(v);
+			ModelFacade.setClassifiers(tt, v);
 			return; 
 		    }      
 		}
 	    }
 	}
 
-	classifier.setName(_value);
+	ModelFacade.setName(classifier, _value);
 	v.addElement(classifier);
-	tt.setClassifiers(v);
+	ModelFacade.setClassifiers(tt, v);
     
     }  
 
@@ -1251,16 +1231,15 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAInstance(target))) return null;
-	MInstance in = (MInstance) target;
+	Object instance = /*(MInstance)*/ target;
 	String instance_base = "";
-	Collection col = in.getClassifiers();
+	Collection col = ModelFacade.getClassifiers(instance);
 	if (col != null && (col.size() > 0)) {
 	    Iterator it = col.iterator();
 	    while (it.hasNext()) {
-		MClassifier cls = (MClassifier) it.next();
-		if (cls != null && (cls.getName() != null)) {
-		    instance_base = cls.getName();
-  
+		Object classifier = /*(MClassifier)*/ it.next();
+		if (classifier != null && (ModelFacade.getName(classifier) != null)) {
+		    instance_base = ModelFacade.getName(classifier);
 		}
 	    }
 	}
@@ -1270,18 +1249,18 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isAInstance(target))) return;
 	if (!(value instanceof String)) return;
-	MComponentInstance tt = (MComponentInstance) target;
+	Object componentInstance = /*(MComponentInstance)*/ target;
 	String _value = (String) value;
-	MComponent classifier =
+	Object classifier =
 	    UmlFactory.getFactory().getCore().createComponent(); 
-	Collection col = tt.getClassifiers();
-	if ((col != null) && (col.size() > 0)) { 
+	Collection col = ModelFacade.getClassifiers(componentInstance);
+	if ((col != null) && (col.size() > 0)) {
 	    Iterator itcol = col.iterator(); 
 	    while (itcol.hasNext()) { 
-		MClassifier cls = (MClassifier) itcol.next(); 
-		tt.removeClassifier(cls); 
-	    } 
-	} 
+		Object cls = /*(MClassifier)*/ itcol.next(); 
+		ModelFacade.removeClassifier(componentInstance, cls); 
+	    }
+	}
 
 	Vector diagrams =
 	    ProjectManager.getManager().getCurrentProject().getDiagrams();
@@ -1300,23 +1279,23 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
 	    Vector nodes = model.getNodes();
 	    int s = nodes.size();
 	    for (int j = 0; j < s; j++) {
-		MModelElement node = (MModelElement) nodes.elementAt(j);
+		Object node = /*(MModelElement)*/ nodes.elementAt(j);
 		if (node != null && (ModelFacade.isAComponent(node))) {
-		    MComponent mcomp = (MComponent) node;
-		    if (mcomp.getNamespace() != tt.getNamespace()) continue;
-		    String comp_name = mcomp.getName();
+		    Object mcomponent = /*(MComponent)*/ node;
+		    if (ModelFacade.getNamespace(mcomponent) != ModelFacade.getNamespace(componentInstance)) continue;
+		    String comp_name = ModelFacade.getName(mcomponent);
 		    if (comp_name != null && (comp_name.equals(_value))) {
-			v.addElement(mcomp);
-			tt.setClassifiers(v);
+			v.addElement(mcomponent);
+			ModelFacade.setClassifiers(componentInstance, v);
 			return; 
 		    }      
 		}
 	    }
 	}
 
-	classifier.setName(_value);
+	ModelFacade.setName(classifier, _value);
 	v.addElement(classifier);
-	tt.setClassifiers(v);
+	ModelFacade.setClassifiers(componentInstance, v);
     
     }  
 
@@ -1328,16 +1307,15 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
   
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAInstance(target))) return null;
-	MInstance in = (MInstance) target;
+	Object in = /*(MInstance)*/ target;
 	String instance_base = "";
-	Collection col = in.getClassifiers();
+	Collection col = ModelFacade.getClassifiers(in);
 	if (col != null && (col.size() > 0)) {
 	    Iterator it = col.iterator();
 	    while (it.hasNext()) {
-		MClassifier cls = (MClassifier) it.next();
-		if (cls != null && (cls.getName() != null)) {
-		    instance_base = cls.getName();
-  
+		Object cls = /*(MClassifier)*/ it.next();
+		if (cls != null && (ModelFacade.getName(cls) != null)) {
+		    instance_base = ModelFacade.getName(cls);
 		}
 	    }
 	}
@@ -1347,15 +1325,15 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isAInstance(target))) return;
 	if (!(value instanceof String)) return;
-	MNodeInstance tt = (MNodeInstance) target;
+	Object tt = /*(MNodeInstance)*/ target;
 	String _value = (String) value;
-	MNode classifier = UmlFactory.getFactory().getCore().createNode(); 
-	Collection col = tt.getClassifiers();
+	Object classifier = UmlFactory.getFactory().getCore().createNode(); 
+	Collection col = ModelFacade.getClassifiers(tt);
 	if ((col != null) && (col.size() > 0)) { 
 	    Iterator itcol = col.iterator(); 
 	    while (itcol.hasNext()) { 
-		MClassifier cls = (MClassifier) itcol.next(); 
-		tt.removeClassifier(cls); 
+		Object cls = /*(MClassifier)*/ itcol.next(); 
+		ModelFacade.removeClassifier(tt, cls); 
 	    } 
 	} 
 
@@ -1376,23 +1354,23 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
 	    Vector nodes = model.getNodes();
 	    int s = nodes.size();
 	    for (int j = 0; j < s; j++) {
-		MModelElement node = (MModelElement) nodes.elementAt(j);
+		Object node = /*(MModelElement)*/ nodes.elementAt(j);
 		if (node != null && (ModelFacade.isANode(node))) {
-		    MNode mnode = (MNode) node;
-		    if (mnode.getNamespace() != tt.getNamespace()) continue;
-		    String node_name = mnode.getName();
+		    Object mnode = /*(MNode)*/ node;
+		    if (ModelFacade.getNamespace(mnode) != ModelFacade.getNamespace(tt)) continue;
+		    String node_name = ModelFacade.getName(mnode);
 		    if (node_name != null && (node_name.equals(_value))) {
 			v.addElement(mnode);
-			tt.setClassifiers(v);
-			return; 
-		    }      
+			ModelFacade.setClassifiers(tt, v);
+			return;
+		    }
 		}
 	    }
 	}
 
-	classifier.setName(_value);
+	ModelFacade.setName(classifier, _value);
 	v.addElement(classifier);
-	tt.setClassifiers(v);
+	ModelFacade.setClassifiers(tt, v);
     
     }  
 
@@ -1441,18 +1419,18 @@ class ColumnAction extends ColumnDescriptor {
 
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAStimulus(target))) return null;
-	MStimulus sti = (MStimulus) target;
+	Object sti = /*(MStimulus)*/ target;
 	String action = "";
-	if (sti.getDispatchAction() != null
-	    && sti.getDispatchAction().getName() != null)
-	    action = sti.getDispatchAction().getName();
+	if (ModelFacade.getDispatchAction(sti) != null
+	    && ModelFacade.getName(ModelFacade.getDispatchAction(sti)) != null)
+	    action = ModelFacade.getName(ModelFacade.getDispatchAction(sti));
 	return action;
     }
 
     public void setValueFor(Object target, Object value) {
 	if (!(ModelFacade.isAStimulus(target))) return;
 	if (!(value instanceof String)) return;
-	MStimulus sti = (MStimulus) target;
+	Object sti = /*(MStimulus)*/ target;
 	String _value = (String) value;
 	if (_value != null) {
 	    Object dispatchaction = ModelFacade.getDispatchAction(sti);

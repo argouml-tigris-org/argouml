@@ -36,6 +36,7 @@ import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
@@ -44,7 +45,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigCube;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /** Class to display graphics for a UML Node in a diagram. */
@@ -169,15 +169,18 @@ public class FigMNode extends FigNodeModelElement {
     }
 
     protected void updateStereotypeText() {
-	MModelElement me = (MModelElement) getOwner();
+	Object me = /*(MModelElement)*/ getOwner();
 	if (me == null) return;
-	MStereotype stereo = me.getStereotype();
+	Object stereo = null;
+	if (ModelFacade.getStereotypes(me).size() > 0) {
+            stereo = ModelFacade.getStereotypes(me).iterator().next();
+        }
 	if (stereo == null
-	    || stereo.getName() == null
-	    || stereo.getName().length() == 0)
+	    || ModelFacade.getName(stereo) == null
+	    || ModelFacade.getName(stereo).length() == 0)
 	    _stereo.setText("");
 	else {
-	    _stereo.setText(Notation.generateStereotype(this, stereo));
+	    _stereo.setText(Notation.generateStereotype(this, (MStereotype)stereo));
 	}
     }
 

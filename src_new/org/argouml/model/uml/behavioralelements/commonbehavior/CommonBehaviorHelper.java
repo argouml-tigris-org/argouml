@@ -25,9 +25,9 @@
 package org.argouml.model.uml.behavioralelements.commonbehavior;
 
 import java.util.Collection;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
 
 /**
@@ -63,8 +63,8 @@ public class CommonBehaviorHelper {
      * @param link
      * @return MInstance
      */
-    public MInstance getSource(MLink link) {
-        Collection con = link.getConnections();
+    public MInstance getSource(Object link) {
+        Collection con = ModelFacade.getConnections(link);
         if (con.isEmpty()) return null;
         MLinkEnd le0 = (MLinkEnd) ((Object[]) con.toArray())[0];
         return le0.getInstance();
@@ -77,12 +77,11 @@ public class CommonBehaviorHelper {
      * @param link
      * @return MInstance
      */
-    public MInstance getDestination(MLink link) {
-        Collection con = link.getConnections();
+    public MInstance getDestination(Object link) {
+        Collection con = ModelFacade.getConnections(link);
         if (con.size() <= 1) return null;
         MLinkEnd le0 = (MLinkEnd) ((Object[]) con.toArray())[1];
         return le0.getInstance();
     }
 
 }
-

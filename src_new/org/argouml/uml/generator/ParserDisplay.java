@@ -64,7 +64,6 @@ import org.argouml.util.MyTokenizer;
 
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MArgument;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 import ru.novosoft.uml.behavior.state_machines.MCallEvent;
@@ -81,7 +80,6 @@ import ru.novosoft.uml.foundation.data_types.MActionExpression;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MIterationExpression;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 
 /**
@@ -1524,7 +1522,7 @@ public class ParserDisplay extends Parser {
 
 	if (ModelFacade.isAStereotype(root) && name.equals(ModelFacade.getName(root))) {
 
-	    if (ExtensionMechanismsHelper.getHelper().isValidStereoType(obj, (MStereotype) root))
+	    if (ExtensionMechanismsHelper.getHelper().isValidStereoType(obj, /*(MStereotype)*/ root))
 		return root;
 	    else
 		_cat.debug("Missed stereotype "
@@ -1874,12 +1872,12 @@ public class ParserDisplay extends Parser {
     public String parseOutType(MAttribute attr, String s) {
         s = s.trim();
         if (s.startsWith(":")) { // we got ourselves a type expression
-            MClassifier type = null;
+            Object type = null;
             s = s.substring(1, s.length()).trim();
             String typeExpr = beforeAnyOf(s, " ={").trim();
 	    if (typeExpr.length() > 0) {
 		Project p = ProjectManager.getManager().getCurrentProject();
-		type = (MClassifier)p.findType(typeExpr);
+		type = /*(MClassifier)*/p.findType(typeExpr);
 		// Should we be getting this from the GUI? BT 11 aug 2002
 		if (type == null) { // no type defined yet
 		    type =
@@ -1888,7 +1886,7 @@ public class ParserDisplay extends Parser {
 		if (ModelFacade.getNamespace(attr) != null) {
 		    ModelFacade.setNamespace(type, attr.getNamespace());
 		}
-		attr.setType(type);
+		ModelFacade.setType(attr, type);
 		s = s.substring(typeExpr.length(), s.length());
 	    }
         }
@@ -1905,13 +1903,13 @@ public class ParserDisplay extends Parser {
     protected String parseOutReturnType(MOperation op, String s) {
         s = s.trim();
         if (s.startsWith(":")) { // we got ourselves a type expression
-            MClassifier type = null;
+            Object type = null;
             s = s.substring(1, s.length()).trim();
             String typeExpr = beforeAnyOf(s, " ={").trim();
 	    typeExpr = typeExpr.trim();
 	    if (typeExpr.length() > 0) {
 		Project p = ProjectManager.getManager().getCurrentProject();
-		type = (MClassifier)p.findType(typeExpr);
+		type = /*(MClassifier)*/p.findType(typeExpr);
 		if (type == null) { // no type defined yet
 		    type =
 			UmlFactory.getFactory().getCore().buildClass(typeExpr);
@@ -1923,7 +1921,7 @@ public class ParserDisplay extends Parser {
 		MParameter param =
 		    UmlFactory.getFactory().getCore().buildParameter();
 		UmlHelper.getHelper().getCore().setReturnParameter(op, param);
-		param.setType(type);
+		ModelFacade.setType(param, type);
 		s = s.substring(typeExpr.length(), s.length());
 	    }
         }
@@ -1964,13 +1962,13 @@ public class ParserDisplay extends Parser {
 	if (st.hasMoreTokens()) paramNameStr = st.nextToken();
 	if (st.hasMoreTokens()) typeStr = st.nextToken();
 	Project p = ProjectManager.getManager().getCurrentProject();
-	MClassifier cls = (MClassifier)p.findType(typeStr);
-	MParameter param = UmlFactory.getFactory().getCore().buildParameter();
-	param.setType(cls);
+	Object cls = /*(MClassifier)*/p.findType(typeStr);
+	Object param = UmlFactory.getFactory().getCore().buildParameter();
+	ModelFacade.setType(param, cls);
 	ModelFacade.setKindToIn(param);
 	ModelFacade.setName(param, paramNameStr);
 
-	return param;
+	return (MParameter)param;
     }
 
 
@@ -2040,7 +2038,7 @@ public class ParserDisplay extends Parser {
 
 	// don't forget to remove old internals!
 	for (int i = 0; i < oldinternals.size(); i++)
-	    UmlFactory.getFactory().delete((MTransition) oldinternals.elementAt(i));
+	    UmlFactory.getFactory().delete(/*(MTransition)*/ oldinternals.elementAt(i));
 	internals.addAll(trans);
 	st.setInternalTransitions(trans);
     }
@@ -2048,7 +2046,7 @@ public class ParserDisplay extends Parser {
     public void parseStateEntyAction(Object st, String s) {
 	if (s.startsWith("entry") && s.indexOf("/") > -1)
 	    s = s.substring(s.indexOf("/") + 1).trim();
-	MCallAction entryAction = (MCallAction) parseAction(s);
+	Object entryAction = /*(MCallAction)*/ parseAction(s);
 	ModelFacade.setName(entryAction, "anon");
 	ModelFacade.setEntry(st, entryAction);
     }
@@ -2056,7 +2054,7 @@ public class ParserDisplay extends Parser {
     public void parseStateExitAction(Object st, String s) {
 	if (s.startsWith("exit") && s.indexOf("/") > -1)
 	    s = s.substring(s.indexOf("/") + 1).trim();
-	MCallAction exitAction = (MCallAction) parseAction(s);
+	Object exitAction = /*(MCallAction)*/ parseAction(s);
 	ModelFacade.setName(exitAction, "anon");
 	ModelFacade.setExit(st, exitAction);
     }
@@ -2064,7 +2062,7 @@ public class ParserDisplay extends Parser {
     public void parseStateDoAction(Object st, String s) {
         if (s.startsWith("do") && s.indexOf("/") > -1)
             s = s.substring(s.indexOf("/") + 1).trim();
-        MCallAction doAction = (MCallAction) parseAction(s);
+        Object doAction = /*(MCallAction)*/ parseAction(s);
         ModelFacade.setName(doAction, "anon");
         ModelFacade.setDoActivity(st, doAction);
     }
@@ -2110,7 +2108,7 @@ public class ParserDisplay extends Parser {
 	if (trigger.length() > 0) {
 	    MEvent evt = parseEvent(trigger);
 	    if (evt != null) {
-		trans.setTrigger((MCallEvent) evt);
+		trans.setTrigger(/*(MCallEvent)*/ evt);
 	    }
 	}
 	else
@@ -2128,12 +2126,12 @@ public class ParserDisplay extends Parser {
 	    trans.setGuard(null);
 
 	if (actions.length() > 0) {
-	    MCallAction effect = (MCallAction) parseAction(actions);
+	    Object effect = /*(MCallAction)*/ parseAction(actions);
 	    ModelFacade.setName(effect, "anon");
-	    trans.setEffect(effect);
+	    ModelFacade.setEffect(trans, effect);
 	}
 	else
-	    trans.setEffect(null);
+	    ModelFacade.setEffect(trans, null);
 
 	return trans;
     }
@@ -2708,33 +2706,33 @@ public class ParserDisplay extends Parser {
 	    Iterator it = c.iterator();
 	    int pos;
 	    for (i = 0; i < args.size(); i++) {
-		MArgument arg = (it.hasNext() ? (MArgument) it.next() : null);
+		Object arg = (it.hasNext() ? /*(MArgument)*/ it.next() : null);
 		if (arg == null) {
 		    arg = UmlFactory.getFactory().getCommonBehavior()
 			.createArgument();
-		    mes.getAction().addActualArgument(arg);
+		    ModelFacade.addActualArgument(mes.getAction(), arg);
 		    refindOperation = true;
 		}
-		if (arg.getValue() == null ||
-		    !args.get(i).equals(arg.getValue().getBody())) {
+		if (ModelFacade.getValue(arg) == null ||
+		    !args.get(i).equals(ModelFacade.getBody(ModelFacade.getValue(arg)))) {
 		    String value =
 			(args.get(i) != null ? (String) args.get(i) : "");
 		    MExpression e = UmlFactory.getFactory().getDataTypes()
 			.createExpression(
 					  Notation.getDefaultNotation().toString(),
 					  value.trim());
-		    arg.setValue(e);
+		    ModelFacade.setValue(arg, e);
 		}
 	    }
 
 	    while (it.hasNext()) {
-		mes.getAction().removeActualArgument((MArgument) it.next());
+		ModelFacade.removeActualArgument(mes.getAction(), /*(MArgument)*/ it.next());
 		refindOperation = true;
 	    }
 	}
 
 	if (seqno != null) {
-	    MMessage root;
+	    Object/*MMessage*/ root;
 	    // Find the preceding message, if any, on either end of the
 	    // association.
 	    String pname = "";
@@ -2810,25 +2808,25 @@ public class ParserDisplay extends Parser {
 
 		it = c2.iterator();
 		while (it.hasNext()) {
-		    mes.removeMessage3((MMessage) it.next());
+		    ModelFacade.removeMessage3(mes, /*(MMessage)*/ it.next());
 		}
 
 		it = c.iterator();
 		while (it.hasNext()) {
 		    Iterator it2 = c2.iterator();
-		    MMessage pre = (MMessage) it.next();
-		    mes.removePredecessor(pre);
+		    Object pre = /*(MMessage)*/ it.next();
+		    ModelFacade.removePredecessor(mes, pre);
 		    while (it2.hasNext()) {
 			ModelFacade.addPredecessor(it2.next(), pre);
 		    }
 		}
 
 		// Connect the message at a new spot
-		mes.setActivator(root);
+		ModelFacade.setActivator(mes, root);
 		if (swapRoles) {
-		    MClassifierRole r = mes.getSender();
-		    mes.setSender(mes.getReceiver());
-		    mes.setReceiver(r);
+		    Object/*MClassifierRole*/ r = ModelFacade.getSender(mes);
+		    ModelFacade.setSender(mes, ModelFacade.getReceiver(mes));
+		    ModelFacade.setReceiver(mes, r);
 		}
 
 		if (root == null) {
@@ -2836,7 +2834,7 @@ public class ParserDisplay extends Parser {
 			filterWithActivator(mes.getSender().getMessages2(),
 					    null);
 		} else {
-		    c = root.getMessages4();
+		    c = ModelFacade.getMessages4(root);
 		}
 		c2 = findCandidateRoots(c, root, mes);
 		it = c2.iterator();
@@ -2846,14 +2844,14 @@ public class ParserDisplay extends Parser {
 		// crappy, but we'll just use one of them anyway
 		if (majval <= 0) {
 		    while (it.hasNext())
-			mes.addMessage3((MMessage) it.next());
+			ModelFacade.addMessage3(mes, /*(MMessage)*/ it.next());
 		} else if (it.hasNext()) {
-		    MMessage pre =
-			walk((MMessage) it.next(), majval - 1, false);
-		    MMessage post = successor(pre, minval);
+		    Object/*MMessage*/ pre =
+			walk(/*(MMessage)*/ it.next(), majval - 1, false);
+		    Object/*MMessage*/ post = successor(pre, minval);
 		    if (post != null) {
-			post.removePredecessor(pre);
-			post.addPredecessor(mes);
+			ModelFacade.removePredecessor(post, pre);
+			ModelFacade.addPredecessor(post, mes);
 		    }
 		    insertSuccessor(pre, mes, minval);
 		}
@@ -2870,11 +2868,11 @@ public class ParserDisplay extends Parser {
 	    // TODO: Should someone choose one, if there are more
 	    // than one?
 	    if (org.argouml.model.ModelFacade.isACallAction(mes.getAction())) {
-		MCallAction a = (MCallAction) mes.getAction();
+		Object a = /*(MCallAction)*/ ModelFacade.getAction(mes);
 		if (ops.size() > 0)
-		    a.setOperation((MOperation) ops.get(0));
+		    ModelFacade.setOperation(a, /*(MOperation)*/ ops.get(0));
 		else
-		    a.setOperation(null);
+		    ModelFacade.setOperation(a, null);
 	    }
 	}
 
@@ -2894,7 +2892,7 @@ public class ParserDisplay extends Parser {
 	    for (i = 0; i < predecessors.size(); i++) {
 		it = roots.iterator();
 		while (it.hasNext()) {
-		    MMessage msg = walkTree((MMessage) it.next(),
+		    Object/*MMessage*/ msg = walkTree(/*(MMessage)*/ it.next(),
 					    (Vector) predecessors.get(i));
 		    if (msg != null && msg != mes) {
 			if (isBadPreMsg(mes, msg)) {
@@ -2920,13 +2918,13 @@ public class ParserDisplay extends Parser {
     /**
      * Examines the call tree from chld to see if ans is an ancestor.
      */
-    private boolean isBadPreMsg(MMessage ans, MMessage chld) {
+    private boolean isBadPreMsg(Object/*MMessage*/ ans, Object/*MMessage*/ chld) {
 	while (chld != null) {
 	    if (ans == chld)
 		return true;
 	    if (isPredecessorMsg(ans, chld, 100))
 		return true;
-	    chld = chld.getActivator();
+	    chld = ModelFacade.getActivator(chld);
 	}
 	return false;
     }
@@ -2936,10 +2934,10 @@ public class ParserDisplay extends Parser {
      * This function is recursive and md specifies the maximum level of
      * recursions allowed.
      */
-    private boolean isPredecessorMsg(MMessage pre, MMessage suc, int md) {
-	Iterator it = suc.getPredecessors().iterator();
+    private boolean isPredecessorMsg(Object/*MMessage*/ pre, Object/*MMessage*/ suc, int md) {
+	Iterator it = ModelFacade.getPredecessors(suc).iterator();
 	while (it.hasNext()) {
-	    MMessage m = (MMessage) it.next();
+	    Object m = /*(MMessage)*/ it.next();
 	    if (m == pre)
 		return true;
 	    if (md > 0 && isPredecessorMsg(pre, m, md - 1))
@@ -2957,7 +2955,7 @@ public class ParserDisplay extends Parser {
      * @param path The path to walk in the call tree.
      * @return The message at the end of path, or null.
      */
-    private MMessage walkTree(MMessage root, Vector path) {
+    private Object/*MMessage*/ walkTree(Object/*MMessage*/ root, Vector path) {
 	int i;
 	for (i = 0; i + 1 < path.size(); i += 2) {
 	    int bv = (path.get(i) != null ?
@@ -2976,13 +2974,13 @@ public class ParserDisplay extends Parser {
 	    }
 	    if (i + 3 < path.size()) {
 		Iterator it =
-		    findCandidateRoots(root.getMessages4(), root, null)
+		    findCandidateRoots(ModelFacade.getMessages4(root), root, null)
 		    .iterator();
 		// Things are strange if there are more than one candidate root,
 		// it has no obvious interpretation in terms of a call tree.
 		if (!it.hasNext())
 		    return null;
-		root = (MMessage) it.next();
+		root = /*(MMessage)*/ it.next();
 	    }
 	}
 	return root;
@@ -3003,27 +3001,27 @@ public class ParserDisplay extends Parser {
     /**
      * Inserts message s as the p'th successor of message m.
      */
-    private void insertSuccessor(MMessage m, MMessage s, int p) {
-	Vector v = new Vector(m.getMessages3());
+    private void insertSuccessor(Object/*MMessage*/ m, Object/*MMessage*/ s, int p) {
+	Vector v = new Vector(ModelFacade.getMessages3(m));
 	if (v.size() > p)
 	    v.insertElementAt(s, p);
 	else
 	    v.add(s);
-	m.setMessages3(v);
+	ModelFacade.setMessages3(m, v);
     }
 
     /**
      * Finds the steps'th successor of message r in the sense that it is a
      * direct successor of r. Returns null if r has fewer successors.
      */
-    private MMessage successor(MMessage r, int steps) {
-	Iterator it = r.getMessages3().iterator();
+    private Object/*MMessage*/ successor(Object/*MMessage*/ r, int steps) {
+	Iterator it = ModelFacade.getMessages3(r).iterator();
 	while (it.hasNext() && steps > 0) {
 	    it.next();
 	    steps--;
 	}
 	if (it.hasNext())
-	    return (MMessage) it.next();
+	    return /*(MMessage)*/ it.next();
 	return null;
     }
 
@@ -3034,15 +3032,15 @@ public class ParserDisplay extends Parser {
      * then struct determines the result. If struct is true, then null is
      * returned, otherwise the last successor found.
      */
-    private MMessage walk(MMessage r, int steps, boolean strict) {
-	MMessage act = r.getActivator();
+    private Object walk(Object/*MMessage*/ r, int steps, boolean strict) {
+	Object/*MMessage*/ act = ModelFacade.getActivator(r);
 	while (steps > 0) {
-	    Iterator it = r.getMessages3().iterator();
+	    Iterator it = ModelFacade.getMessages3(r).iterator();
 	    do {
 		if (!it.hasNext())
 		    return (strict ? null : r);
-		r = (MMessage) it.next();
-	    } while (r.getActivator() != act);
+		r = /*(MMessage)*/ it.next();
+	    } while (ModelFacade.getActivator(r) != act);
 	    steps--;
 	}
 	return r;
@@ -3054,21 +3052,21 @@ public class ParserDisplay extends Parser {
      * activator. If veto isn't null, then the message in veto will not be
      * included in the Collection of candidates.
      */
-    private Collection findCandidateRoots(Collection c, MMessage a,
-					  MMessage veto) {
+    private Collection findCandidateRoots(Collection c, Object/*MMessage*/ a,
+					  Object/*MMessage*/ veto) {
 	Iterator it = c.iterator();
 	Vector v = new Vector();
 	while (it.hasNext()) {
-	    MMessage m = (MMessage) it.next();
+	    Object m = /*(MMessage)*/ it.next();
 	    if (m == veto)
 		continue;
-	    if (m.getActivator() != a)
+	    if (ModelFacade.getActivator(m) != a)
 		continue;
-	    Iterator it2 = m.getPredecessors().iterator();
+	    Iterator it2 = ModelFacade.getPredecessors(m).iterator();
 	    boolean candidate = true;
 	    while (it2.hasNext()) {
-		MMessage m2 = (MMessage) it2.next();
-		if (m2.getActivator() == a)
+		Object m2 = /*(MMessage)*/ it2.next();
+		if (ModelFacade.getActivator(m2) == a)
 		    candidate = false;
 	    }
 	    if (candidate)
@@ -3080,12 +3078,12 @@ public class ParserDisplay extends Parser {
     /**
      * Finds the messages in Collection c that has message a as activator.
      */
-    private Collection filterWithActivator(Collection c, MMessage a) {
+    private Collection filterWithActivator(Collection c, Object/*MMessage*/ a) {
 	Iterator it = c.iterator();
 	Vector v = new Vector();
 	while (it.hasNext()) {
-	    MMessage m = (MMessage) it.next();
-	    if (m.getActivator() == a)
+	    Object m = /*(MMessage)*/ it.next();
+	    if (ModelFacade.getActivator(m) == a)
 		v.add(m);
 	}
 	return v;
@@ -3095,13 +3093,13 @@ public class ParserDisplay extends Parser {
      * Finds the message in ClassifierRole r that has the message number
      * written in n. If it isn't found, null is returned.
      */
-    private MMessage findMsg(MClassifierRole r, String n) {
-	Collection c = r.getMessages1();
+    private Object findMsg(Object/*MClassifierRole*/ r, String n) {
+	Collection c = ModelFacade.getMessages1(r);
 	Iterator it = c.iterator();
 	while (it.hasNext()) {
-	    MMessage msg = (MMessage) it.next();
+	    Object msg = /*(MMessage)*/ it.next();
 	    String gname =
-		GeneratorDisplay.getInstance().generateMessageNumber(msg);
+		GeneratorDisplay.getInstance().generateMessageNumber((MMessage)msg);
 	    if (compareMsgNumbers(gname, n))
 		return msg;
 	}
@@ -3195,16 +3193,16 @@ public class ParserDisplay extends Parser {
 
 	it = c.iterator();
 	while (it.hasNext()) {
-	    MClassifier clf = (MClassifier) it.next();
-	    Collection oe = clf.getFeatures();
+	    Object clf = /*(MClassifier)*/ it.next();
+	    Collection oe = ModelFacade.getFeatures(clf);
 	    Iterator it2 = oe.iterator();
 	    while (it2.hasNext()) {
-		MModelElement me = (MModelElement) it2.next();
-		if (!(org.argouml.model.ModelFacade.isAOperation(me)))
+		Object me = /*(MModelElement)*/ it2.next();
+		if (!(ModelFacade.isAOperation(me)))
 		    continue;
 
-		MOperation op = (MOperation) me;
-		if (!name.equals(op.getName()))
+		Object op = /*(MOperation)*/ me;
+		if (!name.equals(ModelFacade.getName(op)))
 		    continue;
 		if (params != countParameters(op))
 		    continue;
@@ -3227,8 +3225,8 @@ public class ParserDisplay extends Parser {
 	    // Jaap Branderhorst 2002-23-09 added next lines to link
 	    // parameters and operations to the figs that represent
 	    // them
-	    MClassifier cls = (MClassifier) it.next();
-	    MOperation op =
+	    Object cls = /*(MClassifier)*/ it.next();
+	    Object op =
 		UmlFactory.getFactory().getCore().buildOperation(cls);
 
 	    try {
@@ -3388,10 +3386,10 @@ public class ParserDisplay extends Parser {
 	if (baseTokens != null) {
 	    while (baseTokens.hasMoreElements()) {
 		String typeString = baseTokens.nextToken();
-		MClassifier type =
-		    (MClassifier)ProjectManager.getManager()
+		Object type =
+		    /*(MClassifier)*/ProjectManager.getManager()
                     .getCurrentProject().findType(typeString);
-		obj.addClassifier(type);
+		ModelFacade.addClassifier(obj, type);
 	    }
 	}
     }
