@@ -130,14 +130,14 @@ implements TabToDoTarget, ActionListener, DocumentListener {
   }
 
   public void enableButtons() {
-    if (TargetManager.getInstance().getTarget() == null) {
+    if (_target == null) {
       _backButton.setEnabled(false);
       _nextButton.setEnabled(false);
       _finishButton.setEnabled(false);
       _helpButton.setEnabled(false);
     }
-    else if (TargetManager.getInstance().getTarget() instanceof ToDoItem) {
-      ToDoItem tdi = (ToDoItem) TargetManager.getInstance().getTarget();
+    else if (_target instanceof ToDoItem) {
+      ToDoItem tdi = (ToDoItem) _target;
       Wizard w = getWizard();
       _backButton.setEnabled(w != null ? w.canGoBack() : false);
       _nextButton.setEnabled(w != null ? w.canGoNext() : false);
@@ -163,8 +163,8 @@ implements TabToDoTarget, ActionListener, DocumentListener {
   public void refresh() { setTarget(_target); }
 
   public Wizard getWizard() {
-    if (TargetManager.getInstance().getTarget() instanceof ToDoItem) {
-      return ((ToDoItem)TargetManager.getInstance().getTarget()).getWizard();
+    if (_target instanceof ToDoItem) {
+      return ((ToDoItem)_target).getWizard();
     }
     return null;
   }
@@ -204,7 +204,7 @@ implements TabToDoTarget, ActionListener, DocumentListener {
     // awkward: relying on getParent() is fragile.
     TabToDo ttd = (TabToDo) getParent(); //???
     JPanel ws = getWizard().getCurrentPanel();
-    if (ws instanceof WizStep) ((WizStep)ws).setTarget(TargetManager.getInstance().getTarget());
+    if (ws instanceof WizStep) ((WizStep)ws).setTarget(_target);
     ttd.showStep(ws);
   }
 
