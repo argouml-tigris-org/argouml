@@ -59,7 +59,7 @@ public class GUITestActionOpenProject extends TestCase {
      * Test an empty project.
      */
     public void testEmptyProject() {
-        URL url = 
+        URL url =
             this.getClass().getClassLoader()
                 .getResource("testmodels/EmptyProject0161.zargo");
         CheckMain.callMain(new String[] {
@@ -68,16 +68,15 @@ public class GUITestActionOpenProject extends TestCase {
             "org.argouml.uml.ui.ActionOpenProject=" + url,
         });
 
-        assertEquals(ProjectManager.getManager()
-                .getCurrentProject().getBaseName(),
-                "EmptyProject0161");
+        assertEquals("EmptyProject0161",
+		ProjectManager.getManager().getCurrentProject().getBaseName());
     }
 
     /**
      * Test a project with contents.
      */
     public void testProjectWithContents() {
-        URL url = 
+        URL url =
             this.getClass().getClassLoader()
                 .getResource("testmodels/GUITestPropertyPanels.zargo");
         CheckMain.callMain(new String[] {
@@ -86,9 +85,8 @@ public class GUITestActionOpenProject extends TestCase {
             "org.argouml.uml.ui.ActionOpenProject=" + url,
         });
 
-        assertEquals(ProjectManager.getManager()
-                .getCurrentProject().getBaseName(),
-                "GUITestPropertyPanels");
+        assertEquals("GUITestPropertyPanels",
+		ProjectManager.getManager().getCurrentProject().getBaseName());
     }
 
 }
