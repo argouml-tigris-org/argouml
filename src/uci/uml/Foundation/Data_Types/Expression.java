@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Foundation/Data_Types/Expression.java
-
 package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
@@ -120,5 +115,6 @@ public class Expression implements java.io.Serializable {
     if (OCLTypeString.equals("MMException")) return "Exception";
     return OCLTypeString;
   }
-  
+
+  static final long serialVersionUID = -933319327759446691L;
 }

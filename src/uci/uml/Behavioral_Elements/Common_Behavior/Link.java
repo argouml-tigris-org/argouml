@@ -39,7 +39,7 @@ public class Link extends ModelElementImpl {
 
   public Vector _linkRole = new Vector();
   public Association _association = null;
-  
+
   public Link() { }
   public Link(Name name) { super(name); }
   public Link(String nameStr) { super(new Name(nameStr)); }
@@ -62,7 +62,7 @@ public class Link extends ModelElementImpl {
     }
     catch (PropertyVetoException pce) { }
   }
- 
+
   public void addLinkRole(LinkEnd x) throws PropertyVetoException {
     if (_linkRole == null) _linkRole = new Vector();
     fireVetoableChange("linkRole", _linkRole, x);
@@ -77,7 +77,7 @@ public class Link extends ModelElementImpl {
     fireVetoableChange("linkRole", _linkRole, x);
     _linkRole.removeElement(x);
   }
-  
+
   public void setLinkRole(Vector x) throws PropertyVetoException {
     if (_linkRole == null) _linkRole = new Vector();
     fireVetoableChange("linkRole", _linkRole, x);
@@ -88,6 +88,6 @@ public class Link extends ModelElementImpl {
       le.setLink(this);
     }
   }
-  
-  
+
+  static final long serialVersionUID = -1637163109716378315L;
 }

@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/State_Machines/StateVertex.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
@@ -40,11 +35,9 @@ import uci.uml.Foundation.Data_Types.*;
 
 public abstract class StateVertex extends ModelElementImpl {
   public CompositeState _parent;
-  //% public Transition _outgoing[];
   public Vector _outgoing;
-  //% public Transition _incoming[];
   public Vector _incoming;
-    
+
   public StateVertex() { }
   public StateVertex(Name name) { super(name); }
   public StateVertex(String nameStr) { super(new Name(nameStr)); }
@@ -101,4 +94,5 @@ public abstract class StateVertex extends ModelElementImpl {
     return s;
   }
 
+  static final long serialVersionUID = -8081077916116617988L;
 }

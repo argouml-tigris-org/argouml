@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/State_Machines/ActivityModel.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
@@ -34,9 +29,8 @@ import java.beans.*;
 import uci.uml.Foundation.Data_Types.*;
 
 public class ActivityModel extends StateMachine {
-  //% public Partition _partition[];
   public Vector _partition;
-    
+
   public ActivityModel() { }
   public ActivityModel(Name name) { super(name); }
   public ActivityModel(String nameStr) { super(new Name(nameStr)); }
@@ -57,5 +51,6 @@ public class ActivityModel extends StateMachine {
     fireVetoableChange("partition", _partition, x);
     _partition.removeElement(x);
   }
-  
+
+  static final long serialVersionUID = 6682640444743199356L;
 }

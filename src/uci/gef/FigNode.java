@@ -470,4 +470,12 @@ implements MouseListener, PropertyChangeListener, Serializable {
    * model to the Figs */
   public void postLoad() { setOwner(getOwner()); }
 
+  public void cleanUp() {
+    Enumeration arcPers = _figEdges.elements();
+    while (arcPers.hasMoreElements()) {
+      FigEdge fe = (FigEdge) arcPers.nextElement();
+      fe.cleanUp();
+    }
+  }
+
 } /* end class FigNode */

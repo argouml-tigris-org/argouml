@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: Model_Management/ElementReference.java
-
 package uci.uml.Model_Management;
 
 import java.util.*;
@@ -40,7 +35,7 @@ public class ElementReference implements java.io.Serializable {
   public Name _alias;
 
   public ElementReference() { }
-  
+
   public VisibilityKind getVisibility() { return _visibility; }
   public void setVisibility(VisibilityKind x) { //throws PropertyVetoException {
     //fireVetoableChange("visibility", _visibility, x);
@@ -51,5 +46,6 @@ public class ElementReference implements java.io.Serializable {
     //fireVetoableChange("alias", _alias, x);
     _alias = x;
   }
-  
+
+  static final long serialVersionUID = -1708115085163651119L;
 }

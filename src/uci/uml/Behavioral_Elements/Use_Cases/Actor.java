@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: Behavioral_Elements/Use_Cases/Actor.java
-
 package uci.uml.Behavioral_Elements.Use_Cases;
 
 import java.util.*;
@@ -37,8 +32,10 @@ import uci.uml.Foundation.Data_Types.*;
 
 
 public class Actor extends Classifier {
-    
+
   public Actor() { }
   public Actor(Name name) { super(name); }
   public Actor(String nameStr) { super(new Name(nameStr)); }
+
+  static final long serialVersionUID = 5667019655207348726L;
 }

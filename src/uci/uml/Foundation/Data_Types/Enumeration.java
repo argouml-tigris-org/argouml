@@ -23,10 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: f:/jr/projects/uml/Foundation/Data_Types/Enumeration.java
-
 package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
@@ -35,9 +31,8 @@ import uci.uml.Foundation.Core.DataType;
 
 
 public class Enumeration extends DataType {
-  //% public EnumerationLiteral _literal[];
   public Vector _literal;
-    
+
   public Enumeration() { }
   public Enumeration(Name name) { super(name); }
   public Enumeration(String nameStr) { super(new Name(nameStr)); }
@@ -67,5 +62,6 @@ public class Enumeration extends DataType {
   public void removeLiteral(EnumerationLiteral x) {
     _literal.removeElement(x);
   }
-  
+
+  static final long serialVersionUID = 5615747990474962109L;
 }

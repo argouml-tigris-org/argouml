@@ -23,10 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: Model_Management/ElementReference.java
-
 package uci.uml.Model_Management;
 
 import java.util.*;
@@ -50,7 +46,7 @@ public class ElementOwnership implements java.io.Serializable {
     //}
     //catch (PropertyVetoException pve) { }
   }
-  
+
   public VisibilityKind getVisibility() { return _visibility; }
   public void setVisibility(VisibilityKind x) { //throws PropertyVetoException {
     //fireVetoableChange("visibility", _visibility, x);
@@ -68,5 +64,6 @@ public class ElementOwnership implements java.io.Serializable {
     //fireVetoableChange("namespace", _namespace, x);
     _namespace = x;
   }
-  
+
+  static final long serialVersionUID = -5143188352697231294L;
 }

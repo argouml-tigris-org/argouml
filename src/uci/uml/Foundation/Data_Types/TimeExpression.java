@@ -23,21 +23,17 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: f:/jr/projects/uml/Foundation/Data_Types/TimeExpression.java
-
 package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
 public class TimeExpression extends Expression {
-    
+
   public TimeExpression() { }
   public TimeExpression(Uninterpreted body) { super(body); }
   public TimeExpression(String bodyStr) { super(bodyStr); }
   public TimeExpression(String langStr, String bodyStr) {
     super(langStr, bodyStr);
   }
-
+  static final long serialVersionUID = 7559884564918569111L;
 }

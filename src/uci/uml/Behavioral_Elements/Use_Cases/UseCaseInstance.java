@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: Behavioral_Elements/Use_Cases/UseCaseInstance.java
-
 package uci.uml.Behavioral_Elements.Use_Cases;
 
 import java.util.*;
@@ -37,9 +32,10 @@ import uci.uml.Behavioral_Elements.Common_Behavior.Instance;
 
 
 public class UseCaseInstance extends Instance {
-    
+
   public UseCaseInstance() { }
   public UseCaseInstance(Name name) { super(name); }
   public UseCaseInstance(String nameStr) { super(new Name(nameStr)); }
-  
+
+  static final long serialVersionUID = 7101550528467007598L;
 }

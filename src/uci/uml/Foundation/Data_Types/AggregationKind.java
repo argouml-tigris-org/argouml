@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Foundation/Data_Types/AggregationKind.java
-
 package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
@@ -37,7 +32,7 @@ public class AggregationKind implements java.io.Serializable {
   public static final AggregationKind COMPOSITE =
   new AggregationKind("Composite"); 
   public static final AggregationKind NONE = new AggregationKind("None");
-  
+
   public static final AggregationKind[] POSSIBLE_AGGS = {
     UNSPEC, AGG, COMPOSITE, NONE };
 
@@ -51,7 +46,8 @@ public class AggregationKind implements java.io.Serializable {
   }
 
   public int hashCode() { return _label.hashCode(); }
-  
+
   public String toString() { return _label.toString(); }
 
+  static final long serialVersionUID = 8111565984588788657L;
 }

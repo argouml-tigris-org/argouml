@@ -39,5 +39,5 @@ public class Uninterpreted  implements java.io.Serializable{
   public void setBody(String body) {
     _body = body;
   }
-  
+  static final long serialVersionUID = -4219772509741917397L;
 }

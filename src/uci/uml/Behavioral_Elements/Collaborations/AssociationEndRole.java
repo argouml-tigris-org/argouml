@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Collaborations/AssociationEndRole.java
-
 package uci.uml.Behavioral_Elements.Collaborations;
 
 import java.util.*;
@@ -39,8 +34,7 @@ import uci.uml.Foundation.Data_Types.*;
 public class AssociationEndRole extends AssociationEnd {
   public AssociationEnd _base;
   public AssociationRole _associationRole;
-  //public ClassifierRole /type;
-    
+
   public AssociationEndRole() { }
   public AssociationEndRole(Name name) { super(name); }
   public AssociationEndRole(String nameStr) { super(new Name(nameStr)); }
@@ -58,5 +52,6 @@ public class AssociationEndRole extends AssociationEnd {
     fireVetoableChange("associationRole", _associationRole, x);
     _associationRole = x;
   }
-  
+
+  static final long serialVersionUID = 177940593529064742L;
 }

@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Foundation/Extension_Mechanisms/TaggedValue.java
-
 package uci.uml.Foundation.Extension_Mechanisms;
 
 import java.util.*;
@@ -39,11 +34,7 @@ import uci.uml.generate.*;
 public class TaggedValue extends ElementImpl {
   public Name _tag;
   public Uninterpreted _value;
-  //- public Stereotype stereotype;
-  //- public ModelElement modelElement;
-  //- public Element _element;
-  //- public Element m_Element;
-    
+
   public TaggedValue() { }
   public TaggedValue(Name tag, Uninterpreted value) {
     super(tag);  // a bit redundant
@@ -57,14 +48,11 @@ public class TaggedValue extends ElementImpl {
   }
 
   public Name getTag() { return _tag; }
-  public void setTag(Name x) {
-    _tag = x;
-  }
+  public void setTag(Name x) { _tag = x; }
+
   public Uninterpreted getValue() { return _value; }
-  public void setValue(Uninterpreted x) {
-    _value = x;
-  }
-  
+  public void setValue(Uninterpreted x) { _value = x; }
+
   ////////////////////////////////////////////////////////////////
   // debugging
 
@@ -75,4 +63,5 @@ public class TaggedValue extends ElementImpl {
     return s;
   }
 
+  static final long serialVersionUID = 3466399101350652592L;
 }

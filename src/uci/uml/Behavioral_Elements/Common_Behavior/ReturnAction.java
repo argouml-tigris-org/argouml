@@ -22,18 +22,14 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Common_Behavior/ReturnAction.java
-
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
 import java.beans.*;
 
 public class ReturnAction extends MMAction {
-    
-    public ReturnAction() { }
-  
+
+  public ReturnAction() { }
+
+  static final long serialVersionUID = -1202078111821947314L;
 }

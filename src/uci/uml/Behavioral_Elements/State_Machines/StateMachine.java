@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: Behavioral_Elements/State_Machines/StateMachine.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
@@ -43,11 +38,9 @@ import uci.uml.Foundation.Data_Types.*;
 public class StateMachine extends ModelElementImpl {
   public ModelElement _context;
   public State _top;
-  //% public Transition _transitions[];
   public Vector _transitions = new Vector();
-  //% public SubmachineState _submachineState[];
   public Vector _submachineState;
-  
+
   public StateMachine() { }
   public StateMachine(Name name) { super(name); }
   public StateMachine(Name name, ModelElement context) {
@@ -149,5 +142,6 @@ public class StateMachine extends ModelElementImpl {
     s += "}";
     return s;
   }
-  
+
+  static final long serialVersionUID = -5514946867958180870L;
 }

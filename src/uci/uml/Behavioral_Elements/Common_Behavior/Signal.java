@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Common_Behavior/Signal.java
-
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
@@ -40,16 +35,11 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 
 
 public class Signal extends GeneralizableElementImpl implements Request {
-  //% public Reception _reception[];
   public Vector _reception;
-  //% public Parameter _parameter[];
   public Vector _parameter;
-  //% public SignalEvent _occurrence[];
   public Vector _occurrence;
-  //% public SendAction _raises[];
   public Vector _raises;
-  //public SendAction Raises[];
-    
+
   public Signal() { }
 
   public Vector getReception() { return _reception; }
@@ -133,16 +123,7 @@ public class Signal extends GeneralizableElementImpl implements Request {
   ////////////////////////////////////////////////////////////////
   // Request implementation 
 
-  //public MessageInstance _messageInstance[];
-  //% public MMAction _action[];
   public Vector _action;
-  
-  //public Vector getMessageInstance() {
-  //  return _messageInstance;
-  //}
-  //public void setMessageInstance(Vector x) {
-  //  _messageInstance = x;
-  //}
 
   public Vector getAction() { return _action; }
   public void setAction(Vector x) throws PropertyVetoException {
@@ -160,5 +141,6 @@ public class Signal extends GeneralizableElementImpl implements Request {
     fireVetoableChange("action", _action, x);
     _action.removeElement(x);
   }
-  
+
+  static final long serialVersionUID = 2196339430138627081L;
 }

@@ -23,10 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: Behavioral_Elements/State_Machines/SignalEvent.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
@@ -37,7 +33,7 @@ import uci.uml.Foundation.Data_Types.*;
 
 public class SignalEvent extends Event {
   public Signal _signal;
-  
+
   public SignalEvent() { }
   public SignalEvent(Name name, Signal s) {
     super(name);
@@ -45,11 +41,12 @@ public class SignalEvent extends Event {
     catch (PropertyVetoException pve) { }
   }
   public SignalEvent(String nameStr) { super(new Name(nameStr)); }
-  
+
   public Signal getSignal() { return _signal; }
   public void setSignal(Signal x) throws PropertyVetoException {
     fireVetoableChange("signal", _signal, x);
     _signal = x;
   }
-  
+
+  static final long serialVersionUID = -3139229055741844228L;
 }

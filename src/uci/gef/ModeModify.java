@@ -216,6 +216,12 @@ public class ModeModify extends Mode {
     super.start();
   }
 
+  public void done() {
+    super.done();
+    SelectionManager sm = getEditor().getSelectionManager();
+    sm.cleanUp();
+  }
+
   /** Reply true if the user had moved the mouse enough to signify
    * that (s)he really wants to make a change. */
   protected boolean checkMinDelta(int x, int y) {

@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: Behavioral_Elements/Use_Cases/UseCase.java
-
 package uci.uml.Behavioral_Elements.Use_Cases;
 
 import java.util.*;
@@ -37,13 +32,12 @@ import uci.uml.Foundation.Data_Types.*;
 
 
 public class UseCase extends Classifier {
-  //% public String _extensionPoint[];
   public Vector _extensionPoint = new Vector();
-    
+
   public UseCase() { }
   public UseCase(Name name) { super(name); }
   public UseCase(String nameStr) { super(new Name(nameStr)); }
-  
+
   public Vector getExtensionPoint() { return _extensionPoint; }
   public void setExtensionPoint(Vector x) throws PropertyVetoException {
     if (_extensionPoint == null) _extensionPoint = new Vector();
@@ -84,6 +78,6 @@ public class UseCase extends Classifier {
     return s;
   }
 
-
+  static final long serialVersionUID = -3250339412834176145L;
 }
 

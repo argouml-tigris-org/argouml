@@ -161,4 +161,5 @@ public class Stereotype extends GeneralizableElementImpl {
     return s;
   }
 
+  static final long serialVersionUID = -3483418093201070198L;
 }

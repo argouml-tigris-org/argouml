@@ -22,21 +22,16 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Foundation/Data_Types/CallConcurrencyKind.java
-
 package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
 public class CallConcurrencyKind implements java.io.Serializable {
-    
+
   public static final CallConcurrencyKind SEQUENTIAL =
-  new CallConcurrencyKind("sequential"); 
+  new CallConcurrencyKind("sequential");
   public static final CallConcurrencyKind GUARDED =
-  new CallConcurrencyKind("guarded"); 
+  new CallConcurrencyKind("guarded");
   public static final CallConcurrencyKind CONCURRENT =
   new CallConcurrencyKind("concurrent");
 
@@ -44,9 +39,9 @@ public class CallConcurrencyKind implements java.io.Serializable {
     SEQUENTIAL, GUARDED, CONCURRENT };
 
   protected String _label = null;
-  
+
   public CallConcurrencyKind(String label) { _label = label; }
-  
+
   public boolean equals(Object o) {
     if (!(o instanceof CallConcurrencyKind)) return false;
     String oLabel = ((CallConcurrencyKind)o)._label;
@@ -54,7 +49,8 @@ public class CallConcurrencyKind implements java.io.Serializable {
   }
 
   public int hashCode() { return _label.hashCode(); }
-  
+
   public String toString() { return _label.toString(); }
 
+  static final long serialVersionUID = 8625490138320150847L;
 }

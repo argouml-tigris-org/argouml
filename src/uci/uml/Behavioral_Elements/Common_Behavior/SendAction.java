@@ -23,11 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Common_Behavior/SendAction.java
-
-
 // needs-more-work: what is the difference between raises and raised?
 
 package uci.uml.Behavioral_Elements.Common_Behavior;
@@ -38,9 +33,9 @@ import java.beans.*;
 public class SendAction extends MMAction {
   public Signal _raises;
   public Signal _raised;
-  
+
   public SendAction() { }
-  
+
   public Signal getRaises() { return _raises; }
   public void setRaises(Signal x) throws PropertyVetoException {
     fireVetoableChange("raises", _raises, x);
@@ -51,5 +46,6 @@ public class SendAction extends MMAction {
     fireVetoableChange("raised", _raised, x);
     _raised = x;
   }
-  
+
+  static final long serialVersionUID = 1730933056582329993L;
 }

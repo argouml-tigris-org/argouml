@@ -56,5 +56,5 @@ public class ParameterDirectionKind implements java.io.Serializable {
   public int hashCode() { return _label.hashCode(); }
 
   public String toString() { return _label.toString(); }
-
+  static final long serialVersionUID = -8786440999253973587L;
 }

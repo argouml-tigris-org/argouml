@@ -44,14 +44,17 @@ public class CmdDistribute extends Cmd {
   /** Constants specifying the type of distribution requested. */
   public static final int H_SPACING = 0;
   public static final int H_CENTERS = 1;
-  public static final int V_SPACING = 2;
-  public static final int V_CENTERS = 3;
+  public static final int H_PACK    = 2;
+  public static final int V_SPACING = 4;
+  public static final int V_CENTERS = 5;
+  public static final int V_PACK    = 6;
 
   ////////////////////////////////////////////////////////////////
   // instanve variables
 
   /** Specification of the type of distribution requested */
   protected int _request;
+  protected Rectangle _bbox = null;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -67,10 +70,12 @@ public class CmdDistribute extends Cmd {
 
   protected static String wordFor(int r) {
     switch (r) {
-    case H_SPACING: return "Horizontal Spacing";
-    case H_CENTERS: return "Horizontal Centers";
-    case V_SPACING: return "Vertical Spacing";
-    case V_CENTERS: return "Vertical Centers";
+    case H_SPACING:    return "Horizontal Spacing";
+    case H_CENTERS:    return "Horizontal Centers";
+    case H_PACK:       return "Leftward";
+    case V_SPACING:    return "Vertical Spacing";
+    case V_CENTERS:    return "Vertical Centers";
+    case V_PACK:       return "Upward";
     }
     return "";
   }
@@ -80,6 +85,10 @@ public class CmdDistribute extends Cmd {
   public void doIt() {
     Editor ce = Globals.curEditor();
     Vector figs = (Vector) getArg("figs");
+    Integer packGapInt = (Integer) getArg("gap");
+    int packGap = 16;
+    if (packGapInt != null) packGap = packGapInt.intValue();
+    _bbox = (Rectangle) getArg("bbox");
     if (figs == null) {
       SelectionManager sm = ce.getSelectionManager();
       if (sm.getLocked()) {
@@ -88,48 +97,62 @@ public class CmdDistribute extends Cmd {
       }
       figs = sm.getFigs();
     }
+    int leftMostCenter = 0, rightMostCenter = 0;
+    int topMostCenter = 0, bottomMostCenter = 0;
     int size = figs.size();
-    if (size <= 2) return;
+    if (size == 0) return;
     Fig f = (Fig) figs.elementAt(0);
-    Rectangle bbox = f.getBounds();
-    int leftMostCenter = bbox.x + bbox.width / 2;
-    int rightMostCenter = bbox.x + bbox.width / 2;
-    int topMostCenter = bbox.y + bbox.height / 2;
-    int bottomMostCenter = bbox.y + bbox.height / 2;
-    int totalWidth = f.getWidth(), totalHeight = f.getHeight();
-    for (int i = 1; i < size; i++) {
+    if (_bbox == null) {
+      _bbox = f.getBounds();
+      leftMostCenter = _bbox.x + _bbox.width / 2;
+      rightMostCenter = _bbox.x + _bbox.width / 2;
+      topMostCenter = _bbox.y + _bbox.height / 2;
+      bottomMostCenter = _bbox.y + _bbox.height / 2;
+      for (int i = 1; i < size; i++) {
+	f = (Fig) figs.elementAt(i);
+	Rectangle r = f.getBounds();
+	_bbox.add(r);
+	leftMostCenter = Math.min(leftMostCenter, r.x + r.width / 2);
+	rightMostCenter = Math.max(rightMostCenter, r.x + r.width / 2);
+	topMostCenter = Math.min(topMostCenter, r.y + r.height / 2);
+	bottomMostCenter = Math.max(bottomMostCenter, r.y + r.height / 2);
+      }
+    }
+
+    int totalWidth = 0, totalHeight = 0;
+    for (int i = 0; i < size; i++) {
       f = (Fig) figs.elementAt(i);
-      Rectangle r = f.getBounds();
-      bbox.add(r);
-      leftMostCenter = Math.min(leftMostCenter, r.x + r.width / 2);
-      rightMostCenter = Math.max(rightMostCenter, r.x + r.width / 2);
-      topMostCenter = Math.min(topMostCenter, r.y + r.height / 2);
-      bottomMostCenter = Math.max(bottomMostCenter, r.y + r.height / 2);
       totalWidth += f.getWidth();
       totalHeight += f.getHeight();
     }
 
-    int gap = 0;
-    int oncenter = 0;
-    int xNext = 0;
-    int yNext = 0;    
-    
+    int gap = 0, oncenter = 0;
+    int xNext = 0, yNext = 0;
+
     switch (_request) {
     case H_SPACING:
-      xNext = bbox.x;
-      gap = (bbox.width - totalWidth) / (size - 1);
+      xNext = _bbox.x;
+      gap = (_bbox.width - totalWidth) / Math.max(size - 1, 1);
       break;
     case H_CENTERS:
       xNext = leftMostCenter;
-      oncenter = (rightMostCenter - leftMostCenter) / (size - 1);
+      oncenter = (rightMostCenter - leftMostCenter) / Math.max(size - 1, 1);
+      break;
+    case H_PACK:
+      xNext = _bbox.x;
+      gap = packGap;
       break;
     case V_SPACING:
-      yNext = bbox.y;
-      gap = (bbox.height - totalHeight) / (size - 1);
+      yNext = _bbox.y;
+      gap = (_bbox.height - totalHeight) / Math.max(size - 1, 1);
       break;
     case V_CENTERS:
       yNext = topMostCenter;
-      oncenter = (bottomMostCenter - topMostCenter) / (size - 1);
+      oncenter = (bottomMostCenter - topMostCenter) / Math.max(size - 1, 1);
+      break;
+    case V_PACK:
+      yNext = _bbox.y;
+      gap = packGap;
       break;
     }
 
@@ -138,7 +161,8 @@ public class CmdDistribute extends Cmd {
       for (int j = i + 1; j < size; j++) {
 	Fig fi = (Fig) figs.elementAt(i);
 	Fig fj = (Fig) figs.elementAt(j);
-	if (_request == H_SPACING || _request == H_CENTERS) {
+	if (_request == H_SPACING || _request == H_CENTERS ||
+	    _request == H_PACK) {
 	  if (fi.getX() > fj.getX()) swap(figs, i, j);
 	}
 	else
@@ -146,12 +170,13 @@ public class CmdDistribute extends Cmd {
       }
     }
 
-    
+
     for (int i = 0; i < size; i++) {
       f = (Fig) figs.elementAt(i);
       f.startTrans();
       switch (_request) {
       case H_SPACING:
+      case H_PACK:
 	f.setLocation(xNext, f.getY());
 	xNext += f.getWidth() + gap;
 	break;
@@ -160,6 +185,7 @@ public class CmdDistribute extends Cmd {
 	xNext += oncenter;
 	break;
       case V_SPACING:
+      case V_PACK:
 	f.setLocation(f.getX(), yNext);
 	yNext += f.getHeight() + gap;
 	break;
@@ -180,5 +206,8 @@ public class CmdDistribute extends Cmd {
     v.setElementAt(v.elementAt(j), i);
     v.setElementAt(temp, j);
   }
+
+  public Rectangle getLastBBox() { return _bbox; }
+
 } /* end class CmdDistribute */
 

@@ -24,15 +24,31 @@
 
 
 
-
-// Source file: f:/jr/projects/uml/Foundation/Data_Types/SynchronousKind.java
-
 package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
 public class SynchronousKind implements java.io.Serializable {
-    
-  public SynchronousKind() { }
-  
+  public static final SynchronousKind SYNC =
+  new SynchronousKind("synchronized");
+  public static final SynchronousKind UNSYNC =
+  new SynchronousKind("unsynchronized");
+
+  public static final SynchronousKind[] POSSIBLE_SYNCS = { SYNC, UNSYNC };
+
+  protected String _label = null;
+
+  public SynchronousKind(String label) { _label = label; }
+
+  public boolean equals(Object o) {
+    if (!(o instanceof SynchronousKind)) return false;
+    String oLabel = ((SynchronousKind)o)._label;
+    return _label.equals(oLabel);
+  }
+
+  public int hashCode() { return _label.hashCode(); }
+
+  public String toString() { return _label.toString(); }
+
+  static final long serialVersionUID = -8653590924173133621L;
 }

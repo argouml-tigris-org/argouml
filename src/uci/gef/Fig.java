@@ -722,5 +722,6 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
   public void postSave() { }
   public void postLoad() { }
 
+  public void cleanUp() { }
 
 } /* end class Fig */

@@ -170,7 +170,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   protected void defineLayers(GraphModel gm, Layer lay) {
     _layerManager.addLayer(new LayerGrid());
-    //_layerManager.addLayer(new LayerPageBreaks());
+    _layerManager.addLayer(new LayerPageBreaks());
     // the following line is an example of another "grid"
     //_layerManager.addLayer(new LayerPolar());
     if (lay != null) _layerManager.addLayer(lay);

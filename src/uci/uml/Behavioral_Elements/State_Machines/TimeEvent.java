@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/State_Machines/TimeEvent.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
@@ -36,7 +31,7 @@ import uci.uml.Foundation.Data_Types.TimeExpression;
 
 public class TimeEvent extends Event {
   public TimeExpression _duration;
-    
+
   public TimeEvent() { }
   public TimeEvent(TimeExpression exp) {
     try { setDuration(exp); }
@@ -46,11 +41,13 @@ public class TimeEvent extends Event {
     try { setDuration(new TimeExpression(exp)); }
     catch (PropertyVetoException pve) { }
   }
-  
+
   public TimeExpression getDuration() { return _duration; }
   public void setDuration(TimeExpression x) throws PropertyVetoException {
     fireVetoableChange("duration", _duration, x);
     _duration = x;
   }
-  
+
+  static final long serialVersionUID = 4877976846111362059L;
+
 }

@@ -23,10 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: uci/uml/Behavioral_Elements/Common_Behavior/MMException.java
-
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
@@ -36,9 +32,8 @@ import uci.uml.Foundation.Core.BehavioralFeature;
 
 
 public class MMException extends Signal {
-  //% public BehavioralFeature _context[];
   public Vector _context;
-    
+
   public MMException() { }
 
   public Vector getContext() { return _context; }
@@ -57,12 +52,13 @@ public class MMException extends Signal {
     fireVetoableChange("context", _context, x);
     _context.removeElement(x);
   }
-  
+
   public String getOCLTypeStr() {
     return "Exception";
     // drop the MM prefix, it is just used
     // to prevent confusion with java.lang.Class
   }
 
+  static final long serialVersionUID = 5599355010204479490L;
 }
 

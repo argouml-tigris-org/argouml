@@ -22,17 +22,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: Behavioral_Elements/State_Machines/ActionState.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
 import java.beans.*;
 
 public class ActionState extends SimpleState {
-    
-    public ActionState() { }
+  public ActionState() { }
+
+  static final long serialVersionUID = 519870896088353537L;
 }

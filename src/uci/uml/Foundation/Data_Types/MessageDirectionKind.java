@@ -23,16 +23,33 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: f:/jr/projects/uml/Foundation/Data_Types/MessageDirectionKind.java
-
 package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
 public class MessageDirectionKind  implements java.io.Serializable {
-    
-  public MessageDirectionKind() { }
-  
+
+  public static final MessageDirectionKind ACTIVATION =
+  new MessageDirectionKind("activation");
+  public static final MessageDirectionKind RETURN =
+  new MessageDirectionKind("return");
+
+  public static final MessageDirectionKind[] POSSIBLE_DIRECTIONS = {
+    ACTIVATION, RETURN };
+
+  protected String _label = null;
+
+  public MessageDirectionKind(String label) { _label = label; }
+
+  public boolean equals(Object o) {
+    if (!(o instanceof VisibilityKind)) return false;
+    String oLabel = ((VisibilityKind)o)._label;
+    return _label.equals(oLabel);
+  }
+
+  public int hashCode() { return _label.hashCode(); }
+
+  public String toString() { return _label.toString(); }
+
+  static final long serialVersionUID = 6992485836591688591L;
 }

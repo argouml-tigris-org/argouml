@@ -22,12 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Model_Management/Package.java
-
-
 package uci.uml.Model_Management;
 
 import java.util.*;
@@ -38,9 +32,8 @@ import uci.uml.Foundation.Core.ModelElement;
 
 
 public interface Package extends GeneralizableElement, java.io.Serializable {
-  // public ModelElement _referencedElement[];
-
   public Vector getReferencedElement();
   public void setReferencedElement(Vector x) throws PropertyVetoException;
-  
+
+  static final long serialVersionUID = 7717228132033697652L;
 }

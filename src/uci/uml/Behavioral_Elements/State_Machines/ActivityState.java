@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/State_Machines/ActivityState.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
@@ -35,9 +30,10 @@ import java.beans.*;
 import uci.uml.Foundation.Data_Types.*;
 
 public class ActivityState extends SimpleState {
-    
+
   public ActivityState() { }
   public ActivityState(Name name) { super(name); }
   public ActivityState(String nameStr) { super(new Name(nameStr)); }
-  
+
+  static final long serialVersionUID = 326244163459335559L;
 }

@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/State_Machines/ObjectFlowState.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
@@ -38,7 +33,7 @@ import uci.uml.Foundation.Data_Types.*;
 public class ObjectFlowState extends SimpleState {
   public Parameter _available;
   public ClassifierInState _typeState;
-    
+
   public ObjectFlowState() { }
   public ObjectFlowState(Name name) { super(name); }
   public ObjectFlowState(String nameStr) { super(new Name(nameStr)); }
@@ -53,5 +48,6 @@ public class ObjectFlowState extends SimpleState {
     fireVetoableChange("typeState", _typeState, x);
     _typeState = x;
   }
-  
+
+  static final long serialVersionUID = -7570876865755582588L;
 }

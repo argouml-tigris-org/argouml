@@ -23,10 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: uci/uml/Behavioral_Elements/Collaborations/Collaboration.java
-
 package uci.uml.Behavioral_Elements.Collaborations;
 
 import java.util.*;
@@ -42,12 +38,10 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 //needs-more-work: switch to Vector 
 
 public class Collaboration extends NamespaceImpl {
-  //public AssociationRole /ownedElement[];
   public Operation _representedOperation;
-  //public ClassifierRole /ownedElement[];
   public Vector _interaction;
   public Vector _constrainingElement;
-    
+
   public Collaboration() { }
   public Collaboration(Name name) { super(name); }
   public Collaboration(String nameStr) { super(new Name(nameStr)); }
@@ -96,6 +90,6 @@ public class Collaboration extends NamespaceImpl {
     fireVetoableChange("constrainingElement", _constrainingElement, x);
     _constrainingElement.removeElement(x);
   }
-  
 
+  static final long serialVersionUID = -9038991908839832965L;
 }

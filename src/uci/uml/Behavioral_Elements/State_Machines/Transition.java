@@ -23,10 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: Behavioral_Elements/State_Machines/Transition.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
@@ -47,7 +43,7 @@ public class Transition extends ModelElementImpl {
   public StateMachine _stateMachine;
   public StateVertex _source;
   public StateVertex _target;
-    
+
   public Transition() { }
   public Transition(Name name) { super(name); }
   public Transition(Name name, StateVertex src, StateVertex tar) {
@@ -147,5 +143,6 @@ public class Transition extends ModelElementImpl {
     if (_effect != null) s += " /" + _effect.dbgString();
     return s;
   }
-  
+
+  static final long serialVersionUID = 5131320930672761568L;
 }

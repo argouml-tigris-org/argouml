@@ -23,10 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Common_Behavior/ActionSequence.java
-
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
@@ -45,12 +41,8 @@ import uci.uml.Behavioral_Elements.Collaborations.*;
 
 public class ActionSequence extends ModelElementImpl {
   //public MMAction _action[];
-  //% public MMAction _action[];
   public Vector _action;
-  //public State _state;
-  //public State _state;
-  //public Transition _transition;
-    
+
   public ActionSequence() { }
   public ActionSequence(Name name) { super(name); }
   public ActionSequence(String actionNameStr) {
@@ -85,16 +77,5 @@ public class ActionSequence extends ModelElementImpl {
     x.setActionSequence(null);
   }
 
-//   public State getState() { return _state; }
-//   public void setState(State x) throws PropertyVetoException {
-//     fireVetoableChange("state", _state, x);
-//     _state = x;
-//   }
-
-//   public Transition getTransition() { return _transition; }
-//   public void setTransition(Transition x) throws PropertyVetoException {
-//     fireVetoableChange("transition", _state, x);
-//     _transition = x;
-//   }
-
+  static final long serialVersionUID = -1266775602257025737L;
 }

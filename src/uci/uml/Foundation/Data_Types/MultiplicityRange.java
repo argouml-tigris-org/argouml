@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Foundation/Data_Types/MultiplicityRange.java
-
 package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
@@ -68,9 +63,5 @@ public class MultiplicityRange implements java.io.Serializable {
     return low && high;
   }
 
-  //-public Multiplicity m_getMultiplicity() { return m_Multiplicity; }
-  //-public void setM_Multiplicity(Multiplicity x) {
-  //-  Multiplicity Multiplicity = x;
-  //-}
-
+  static final long serialVersionUID = -1710371023037332039L;
 }

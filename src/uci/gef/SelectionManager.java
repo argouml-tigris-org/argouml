@@ -331,6 +331,15 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
     sel.dragHandle(mx, my, an_x, an_y, h);
   }
 
+  public void cleanUp() {
+    Enumeration sels = _selections.elements(); 
+    while (sels.hasMoreElements()) {
+      Selection sel = (Selection)sels.nextElement();
+      Fig f = sel.getContent();
+      f.cleanUp();
+    }
+  }
+
   /** When a multiple selection are deleted, each selection is deleted */
   public void delete() {
     Enumeration ss = ((Vector)_selections.clone()).elements();
@@ -406,6 +415,8 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
       ((Selection) sels.nextElement()).mouseEntered(me);
   }
 
+
+  
   ////////////////////////////////////////////////////////////////
   // graph events
   

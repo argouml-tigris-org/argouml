@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Model_Management/Subsystem.java
-
 package uci.uml.Model_Management;
 
 import java.util.*;
@@ -38,7 +33,7 @@ import uci.uml.Foundation.Data_Types.*;
 
 public class Subsystem extends Classifier implements Package {
   public boolean _isInstantiable;
-  
+
   public Subsystem() { }
   public Subsystem(Name name) { super(name); }
   public Subsystem(Name name, boolean isInstantiable) {
@@ -60,7 +55,7 @@ public class Subsystem extends Classifier implements Package {
   // Package implementation
 
   // needs-more-work: these should use ElementReferences
-  
+
   public Vector _referencedElement;
 
   public Vector getReferencedElement() { return _referencedElement; }
@@ -81,4 +76,5 @@ public class Subsystem extends Classifier implements Package {
     _referencedElement.removeElement(x);
   }
 
+  static final long serialVersionUID = 7804585279406663688L;
 }

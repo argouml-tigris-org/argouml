@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Collaborations/Message.java
-
 package uci.uml.Behavioral_Elements.Collaborations;
 
 import java.util.*;
@@ -40,16 +35,12 @@ import uci.uml.Foundation.Data_Types.*;
 public class Message extends ModelElementImpl {
   public MMAction _action;
   public Message _activator;
-  //public Message m_Message[];
-  //% public Message _message[];
   public Vector _message;
-  //% public Message _predecessor[];
   public Vector _predecessor;
   public ClassifierRole _sender;
   public ClassifierRole _receiver;
-  //% public Interaction _interaction[];
   public Vector _interaction;
-  
+
   public Message() { }
 
   public MMAction getAction() { return _action; }
@@ -128,5 +119,6 @@ public class Message extends ModelElementImpl {
     fireVetoableChange("interaction", _interaction, x);
      _interaction.removeElement(x);
   }
-  
+
+  static final long serialVersionUID = 6766833621483911685L;
 }

@@ -261,6 +261,7 @@ implements IStatusBar {
     view.add(_actionShowDiagramTab);
     view.add(_actionShowTableTab);
     view.add(_actionShowTextTab);
+
     
     //view.addSeparator();
     //view.add(_actionAddToFavorites);
@@ -289,6 +290,12 @@ implements IStatusBar {
 //     tab9Item.setAccelerator(alt9);
 //     JMenuItem tab0Item = detailsTabs.add(new ActionGoToDetails(""));
 //     tab0Item.setAccelerator(alt0);
+
+    view.addSeparator();
+    view.add(new CmdAdjustGrid());
+    view.add(new CmdAdjustGuide());
+    view.add(new CmdAdjustPageBreaks());
+
 
     JMenu create = (JMenu) _menuBar.add(new JMenu("Create"));
     create.setMnemonic('C');

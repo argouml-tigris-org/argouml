@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-
-// Source file: f:/jr/projects/uml/Model_Management/Model.java
 package uci.uml.Model_Management;
 
 import java.util.*;
@@ -36,7 +31,7 @@ import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.Name;
 
 public class Model extends GeneralizableElementImpl implements Package {
-    
+
   public Model() { }
   public Model(Name name) { super(name); }
   public Model(String nameStr) { super(new Name(nameStr)); }
@@ -45,8 +40,6 @@ public class Model extends GeneralizableElementImpl implements Package {
   // Package implementation
 
   // needs-more-work: create ElementReferences
-  
-  //% public ModelElement _referencedElement[];
   public Vector _referencedElement;
 
   public Vector getReferencedElement() {
@@ -68,5 +61,6 @@ public class Model extends GeneralizableElementImpl implements Package {
     fireVetoableChange("referencedElemement", _referencedElement, x);
     _referencedElement.removeElement(x);
   }
-  
+
+  static final long serialVersionUID = 2092726972899284076L;
 }

@@ -22,17 +22,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Foundation/Data_Types/EventOriginKind.java
-
 package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
 
 public class EventOriginKind implements java.io.Serializable {
-    
+
   public EventOriginKind() { }
 
+  static final long serialVersionUID = 8836883136846323084L;
 }

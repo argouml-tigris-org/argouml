@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Collaborations/Interaction.java
-
 package uci.uml.Behavioral_Elements.Collaborations;
 
 import java.util.*;
@@ -44,7 +39,7 @@ public class Interaction extends ModelElementImpl {
   public Collaboration _context;
   public Vector _link;
   public Vector _instances;
-  
+
   public Interaction() { }
   public Interaction(Name name) { super(name); }
   public Interaction(String nameStr) { super(new Name(nameStr)); }
@@ -105,5 +100,6 @@ public class Interaction extends ModelElementImpl {
     fireVetoableChange("instance", _instances, x);
     _instances.removeElement(x);
   }
-  
+
+  static final long serialVersionUID = -3378148253359414278L;
 }

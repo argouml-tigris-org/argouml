@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Common_Behavior/Reception.java
-
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
@@ -43,7 +38,7 @@ public class Reception extends BehavioralFeature {
   public boolean _isPolymorphic;
   public Uninterpreted _specification;
   public Signal _signal;
-  
+
   public Reception() { }
 
   public boolean getIsPolymorphic() { return _isPolymorphic; }
@@ -65,5 +60,6 @@ public class Reception extends BehavioralFeature {
     fireVetoableChange("signal", _signal, x);
     _signal = x;
   }
-  
+
+  static final long serialVersionUID = -7875946899393035281L;
 }

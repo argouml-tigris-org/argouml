@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: Behavioral_Elements/State_Machines/Event.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
@@ -102,5 +97,5 @@ public class Event extends ModelElementImpl {
     fireVetoableChange("transition", _transition, x);
     _transition.removeElement(x);
   }
-
+  static final long serialVersionUID = 6658724545936512448L;
 }

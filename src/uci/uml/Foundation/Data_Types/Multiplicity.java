@@ -23,10 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: f:/jr/projects/uml/Foundation/Data_Types/Multiplicity.java
-
 package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
@@ -41,9 +37,8 @@ public class Multiplicity implements java.io.Serializable {
   new Multiplicity(new Integer(0), null);
   public static int MAX_MULTIPLICITY_RANGES = 10;
 
-  //% public MultiplicityRange _ranges[];
   public Vector _ranges;
-    
+
   public Multiplicity() { }
   public Multiplicity(int low, int high) {
     addRange(new MultiplicityRange(low, high));
@@ -88,7 +83,7 @@ public class Multiplicity implements java.io.Serializable {
     // needs-more-work:should be no dependencies out of UML meta-model
     return uci.uml.generate.GeneratorDisplay.Generate(this);
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // utility methods
 
@@ -104,7 +99,7 @@ public class Multiplicity implements java.io.Serializable {
     }
     return res;
   }
-  
+
   public int min() {
     int res = Integer.MAX_VALUE;
     if (_ranges == null) return 0;
@@ -117,5 +112,6 @@ public class Multiplicity implements java.io.Serializable {
     }
     return res;
   }
-
+  static final long serialVersionUID = -7746929584910122951L;
 }
+

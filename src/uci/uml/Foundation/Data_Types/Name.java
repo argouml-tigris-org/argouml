@@ -23,16 +23,9 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: f:/jr/projects/uml/Foundation/Data_Types/Name.java
-
 package uci.uml.Foundation.Data_Types;
 
 import java.util.*;
-
-//import uci.uml.Foundation.Core.Element;
-
 
 public class Name implements java.io.Serializable {
   public static final Name UNSPEC = new Name("");
@@ -62,5 +55,5 @@ public class Name implements java.io.Serializable {
     else
       return "Name(null)";
   }
-
+  static final long serialVersionUID = -4926569310582058675L;
 }

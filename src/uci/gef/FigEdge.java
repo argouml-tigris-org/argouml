@@ -405,6 +405,8 @@ implements PropertyChangeListener {
    * model to the Figs */
   public void postLoad() { setOwner(getOwner()); }
 
+  public void cleanUp() { _fig.cleanUp(); }
+
   ////////////////////////////////////////////////////////////////
   // inner classes
   protected class PathItem implements java.io.Serializable {

@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Common_Behavior/LocalInvocation.java
-
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
@@ -37,7 +32,7 @@ import uci.uml.Foundation.Core.Operation;
 
 public class LocalInvocation extends MMAction {
   public Operation _invoked;
-  
+
   public LocalInvocation() { }
 
   public Operation getInvoked() { return _invoked; }
@@ -45,5 +40,6 @@ public class LocalInvocation extends MMAction {
     fireVetoableChange("invoked", _invoked, x);
     _invoked = x;
   }
-  
+
+  static final long serialVersionUID = 7399673888543837552L;
 }

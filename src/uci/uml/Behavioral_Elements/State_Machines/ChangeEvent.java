@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/State_Machines/ChangeEvent.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
@@ -53,5 +48,5 @@ public class ChangeEvent extends Event {
     fireVetoableChange("changeExpression", _changeExpression, x);
     _changeExpression = x;
   }
-  
+  static final long serialVersionUID = 7458730805238059328L;
 }

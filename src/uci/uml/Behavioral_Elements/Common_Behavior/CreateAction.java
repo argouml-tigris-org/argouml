@@ -22,18 +22,17 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Common_Behavior/CreateAction.java
-
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
 import java.beans.*;
+import uci.uml.Foundation.Core.*;
 
 public class CreateAction extends MMAction {
-    
+
+  public Classifier _classifier = null;
+
   public CreateAction() { }
-  
+
+  static final long serialVersionUID = -7713440841355596628L;
 }

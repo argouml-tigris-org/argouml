@@ -22,18 +22,14 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Common_Behavior/DestroyAction.java
-
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
 import java.beans.*;
 
 public class DestroyAction extends MMAction {
-    
+
   public DestroyAction() { }
-  
+
+  static final long serialVersionUID = 290655406049358105L;
 }

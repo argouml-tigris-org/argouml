@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Common_Behavior/UninterpretedAction.java
-
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
@@ -36,7 +31,7 @@ import uci.uml.Foundation.Data_Types.*;
 
 public class UninterpretedAction extends MMAction {
   public String _body;
-    
+
   public UninterpretedAction() { }
   public UninterpretedAction(Name name) { super(name); }
   public UninterpretedAction(String nameStr) { super(new Name(nameStr)); }
@@ -51,5 +46,6 @@ public class UninterpretedAction extends MMAction {
     fireVetoableChange("body", _body, x);
     _body = x;
   }
-  
+
+  static final long serialVersionUID = -9134702830096106900L;
 }

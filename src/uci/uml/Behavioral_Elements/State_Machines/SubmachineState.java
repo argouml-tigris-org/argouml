@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/State_Machines/SubmachineState.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
@@ -39,7 +34,7 @@ import uci.uml.Foundation.Data_Types.*;
 
 public class SubmachineState extends State {
   public StateMachine _submachine;
-    
+
   public SubmachineState() { }
   public SubmachineState(Name name, StateMachine machine) {
     super(name);
@@ -48,12 +43,13 @@ public class SubmachineState extends State {
   }
   public SubmachineState(String nameStr) { super(new Name(nameStr)); }
 
-  
   public StateMachine getSubmachine() { return _submachine; }
   public void setSubmachine(StateMachine x) throws PropertyVetoException {
     fireVetoableChange("submachine", _submachine, x);
     _submachine = x;
     _submachine.setNamespace(getNamespace());
   }
-  
+
+  static final long serialVersionUID = -8655848246285842604L;
 }
+

@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/State_Machines/ClassifierInState.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
@@ -71,5 +66,5 @@ public class ClassifierInState extends Classifier {
     fireVetoableChange("objectFlowState", _objectFlowState, x);
     _objectFlowState.removeElement(x);
   }
-  
+  static final long serialVersionUID = -2311325935566396430L;
 }

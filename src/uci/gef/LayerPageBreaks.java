@@ -43,13 +43,20 @@ import java.awt.*;
 public class LayerPageBreaks extends Layer {
 
   ////////////////////////////////////////////////////////////////
+  // constants
+
+  /** The size of the dashes drawn when the Fig is dashed. */
+  public final int DASH_LENGTH = 2;
+  public final int GAP_LENGTH = 7;
+
+  ////////////////////////////////////////////////////////////////
   // instance variables
 
   /** True means paint PageBreaks lines. */
-  private boolean _paintLines = true;
+  private boolean _paintLines = false;
 
   /** The color of the grid lines or dots. */
-  protected Color _color = Color.darkGray;
+  protected Color _color = Color.white;
 
   /** The size of the page in pixels. */
   protected Dimension _pageSize = new Dimension(612, 792);
@@ -87,15 +94,39 @@ public class LayerPageBreaks extends Layer {
     g.setColor(_color);
 
     while (stepsX > 0) {
-      g.drawLine(x - 1, 0, x - 1, bot);
+      drawDashedLine(g, 0, x - 1, 0, x - 1, bot);
       x += _pageSize.width;
       --stepsX;
     }
     while (stepsY > 0) {
-      g.drawLine(0, y - 1, right, y - 1);
+      drawDashedLine(g, 0, 0, y - 1, right, y - 1);
       y += _pageSize.height;
       --stepsY;
     }
+  }
+
+  /* needs-more-work: this code is cut and paste from FigPoly */
+  protected int drawDashedLine(Graphics g, int phase,
+				int x1, int y1, int x2, int y2) {
+    int segStartX, segStartY;
+    int segEndX, segEndY;
+    int dxdx = (x2 - x1) * (x2 - x1);
+    int dydy = (y2 - y1) * (y2 - y1);
+    int length = (int) Math.sqrt(dxdx + dydy);
+    for (int i= phase; i < length - DASH_LENGTH; i += GAP_LENGTH) {
+      segStartX = x1 + ((x2 - x1) * i) / length;
+      segStartY = y1 + ((y2 - y1) * i) / length;
+      i += DASH_LENGTH;
+      if (i >= length) { segEndX = x2; segEndY = y2; }
+      else {
+	segEndX = x1 + ((x2 - x1) * i) / length;
+	segEndY = y1 + ((y2 - y1) * i) / length;
+      }
+      g.drawLine(segStartX, segStartY, segEndX, segEndY );
+    }
+    // needs-more-work: phase not taken into account
+    //return length % (DASH_LENGTH + DASH_LENGTH);
+    return 0;
   }
 
   ////////////////////////////////////////////////////////////////

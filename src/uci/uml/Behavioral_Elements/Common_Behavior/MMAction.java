@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: uci/uml/Behavioral_Elements/Common_Behavior/MMAction.java
-
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
@@ -47,15 +42,13 @@ public class MMAction extends ModelElementImpl {
   public String _script;
   //public Argument _actualArgument[];
   public Request _request;
-  //public ActionSequence m_ActionSequence;
   public ActionSequence _actionSequence;
-  //% public Message _message[];
   public Vector _message;
-    
+
   public MMAction() { }
   public MMAction(Name name) { super(name); }
   public MMAction(String nameStr) { super(new Name(nameStr)); }
-  
+
   public Expression getRecurrence() { return _recurrence; }
   public void setRecurrence(Expression x) throws PropertyVetoException {
     fireVetoableChange("recurrence", _recurrence, x);
@@ -121,6 +114,6 @@ public class MMAction extends ModelElementImpl {
     // to prevent confusion with java.lang.Class
   }
 
-  
+  static final long serialVersionUID = -6867331064459335863L;
 }
-  
+

@@ -52,4 +52,6 @@ public class ScopeKind implements java.io.Serializable {
   public int hashCode() { return _label.hashCode(); }
 
   public String toString() { return _label.toString(); }
+
+  static final long serialVersionUID = 2967098679032348853L;
 }

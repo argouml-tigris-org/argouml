@@ -80,7 +80,8 @@ public class Geometry {
     if (p2.x == p1.x && p2.y > p1.y) return 270;
     if (p2.y == p1.y && p2.x > p1.x) return 0;
     if (p2.y == p1.y) return 180;
-    int dx = p2.x - p1.x; int dy = p2.y = p1.y;
+    double dx = p2.x - p1.x;
+    double dy = p2.y - p1.y;
     double m = dy / dx;
     double a = Math.atan(m);
     if (dx > 0) return a; else return -a;

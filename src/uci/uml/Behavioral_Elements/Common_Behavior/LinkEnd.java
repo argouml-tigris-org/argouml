@@ -71,6 +71,7 @@ public class LinkEnd extends ModelElementImpl {
     fireVetoableChange("associationEnd", _associationEnd, x);
     _associationEnd = x;
   }
-  
+
+  static final long serialVersionUID = 7327255478564468057L;
 
 }

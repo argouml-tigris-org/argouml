@@ -23,10 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Collaborations/AssociationRole.java
-
 package uci.uml.Behavioral_Elements.Collaborations;
 
 import java.util.*;
@@ -39,9 +35,8 @@ import uci.uml.Foundation.Data_Types.*;
 public class AssociationRole extends Association {
   public Multiplicity _multiplicity;
   public Association _base;
-  //public AssociationEndRole /connection[];
   public Collaboration _collaboration;
-    
+
   public AssociationRole() { }
   public AssociationRole(Name name) { super(name); }
   public AssociationRole(String nameStr) { super(new Name(nameStr)); }
@@ -63,5 +58,6 @@ public class AssociationRole extends Association {
     fireVetoableChange("collaboration", _collaboration, x);
      _collaboration = x;
   }
-  
+
+  static final long serialVersionUID = 5767831899229440182L;
 }

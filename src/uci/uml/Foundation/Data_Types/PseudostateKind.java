@@ -59,5 +59,5 @@ public class PseudostateKind  implements java.io.Serializable {
   public int hashCode() { return _label.hashCode(); }
   
   public String toString() { return _label.toString(); }
-
+  static final long serialVersionUID = -1795073663828289079L;
 }

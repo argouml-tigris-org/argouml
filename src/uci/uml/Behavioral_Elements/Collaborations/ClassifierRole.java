@@ -23,10 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Collaborations/ClassifierRole.java
-
 package uci.uml.Behavioral_Elements.Collaborations;
 
 import java.util.*;
@@ -38,15 +34,11 @@ import uci.uml.Foundation.Data_Types.*;
 
 public class ClassifierRole extends Classifier {
   public Multiplicity _multiplicity;
-  //% public AssociationEndRole _associationEndRole[];
   public Vector _associationEndRole;
-  //public Message m_Message[];
-  //% public Message _message[];
   public Vector _message;
-  //% public Feature _availableFeature[];
   public Vector _availableFeature;
   public Collaboration _collaboration;
-  
+
   public ClassifierRole() { }
   public ClassifierRole(Name name) { super(name); }
   public ClassifierRole(String nameStr) { super(new Name(nameStr)); }
@@ -118,5 +110,6 @@ public class ClassifierRole extends Classifier {
     fireVetoableChange("collaboration", _collaboration, x);
      _collaboration = x;
   }
-  
+
+  static final long serialVersionUID = -817836238906155325L;
 }

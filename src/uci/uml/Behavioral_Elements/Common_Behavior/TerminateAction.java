@@ -24,16 +24,14 @@
 
 
 
-
-// Source file: f:/jr/projects/uml/Behavioral_Elements/Common_Behavior/TerminateAction.java
-
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
 import java.beans.*;
 
 public class TerminateAction extends MMAction {
-    
+
   public TerminateAction() { }
-  
+
+  static final long serialVersionUID = -3340607006074588779L;
 }

@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-// Source file: uci/uml/Behavioral_Elements/State_Machines/Pseudostate.java
-
 package uci.uml.Behavioral_Elements.State_Machines;
 
 import java.util.*;
@@ -56,4 +51,5 @@ public class Pseudostate extends StateVertex {
     setName(new Name(_kind.toString()));
   }
 
+  static final long serialVersionUID = 7250449739589125926L;
 }
