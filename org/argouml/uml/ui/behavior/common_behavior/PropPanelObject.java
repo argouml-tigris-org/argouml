@@ -32,8 +32,8 @@ import java.util.Vector;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
+import org.argouml.i18n.Translator;
 import org.argouml.model.uml.UmlFactory;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -56,35 +56,63 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  */
 public class PropPanelObject extends PropPanelModelElement {
 
+    /**
+     * Constructor.
+     */
     public PropPanelObject() {
 	super("Object", _objectIcon, ConfigLoader.getTabPropsOrientation());
 
 	Class mclass = (Class) ModelFacade.OBJECT;
 
-	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+	addField(Translator.localize("label.name"), getNameTextField());
 
-	UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this, "isAcceptibleClassifier", "classifier", "getClassifier", "setClassifier", true, (Class)ModelFacade.CLASSIFIER, true);
+	UMLClassifierComboBoxModel classifierModel =
+	    new UMLClassifierComboBoxModel(this,
+					   "isAcceptibleClassifier",
+					   "classifier",
+					   "getClassifier",
+					   "setClassifier",
+					   true,
+					   (Class) ModelFacade.CLASSIFIER,
+					   true);
 	UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
-	addField("Classifier:", new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-class"), clsComboBox));
+	addField("Classifier:",
+		 new UMLComboBoxNavigator(this,
+			 Translator.localize("tooltip.nav-class"),
+			 clsComboBox));
 
-	addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+	addField(Translator.localize("label.stereotype"),
+		 new UMLComboBoxNavigator(this,
+			 Translator.localize("tooltip.nav-stereo"),
+			 getStereotypeBox()));
 
-	addLinkField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+	addLinkField(Translator.localize("label.namespace"),
+		     getNamespaceComboBox());
 
         addSeperator();
 
-	JList sentList = new UMLList(new UMLStimulusListModel(this, null, true, "sent"), true);
+	JList sentList =
+	    new UMLList(new UMLStimulusListModel(this, null, true, "sent"),
+			true);
 	sentList.setForeground(Color.blue);
 	JScrollPane sentScroll = new JScrollPane(sentList);
 	addField("Stimuli sent:", sentScroll);
 
-	JList receivedList = new UMLList(new UMLStimulusListModel(this, null, true, "received"), true);
+	JList receivedList =
+	    new UMLList(new UMLStimulusListModel(this, null, true, "received"),
+			true);
 	receivedList.setForeground(Color.blue);
 	JScrollPane receivedScroll = new JScrollPane(receivedList);
 	addField("Stimuli received:", receivedScroll);
 
-	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
-	new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete object"), "removeElement", null);
+	new PropPanelButton(this,
+			    buttonPanel, _navUpIcon,
+			    Translator.localize("button.go-up"),
+			    "navigateNamespace", null);
+	new PropPanelButton(this,
+			    buttonPanel, _deleteIcon,
+			    Translator.localize("Delete object"),
+			    "removeElement", null);
     }
 
 
@@ -158,7 +186,8 @@ public class PropPanelObject extends PropPanelModelElement {
 
             boolean changed = false;
             if (ModelFacade.getClassifiers(inst) == null
-                    || classifiers.size() != ModelFacade.getClassifiers(inst).size()) {
+                    || (classifiers.size()
+			!= ModelFacade.getClassifiers(inst).size())) {
                 changed = true;
             }
             else {
@@ -208,6 +237,8 @@ public class PropPanelObject extends PropPanelModelElement {
 	Object newTarget = /*(MModelElement)*/ ModelFacade.getNamespace(target);
 
         UmlFactory.getFactory().delete(target);
-	if (newTarget != null) TargetManager.getInstance().setTarget(newTarget);
+	if (newTarget != null) {
+	    TargetManager.getInstance().setTarget(newTarget);
+	}
     }
 }
