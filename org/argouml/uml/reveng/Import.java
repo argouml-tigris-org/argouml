@@ -589,16 +589,14 @@ public class Import {
                     if (e1 instanceof RuntimeException) {
                         cat.error("program bug encountered "
 				  + "in reverese engineering, "
-				  + "the project file will be corrupted\n"
-				  + e1);
-                        
-                        e1.printStackTrace();
+				  + "the project file will be corrupted",
+				  e1);
                     }
                     else
                         cat.warn("exception encountered "
 				 + "in reverese engineering, "
-				 + "the project file will be corrupted\n"
-				 + e1);
+				 + "the project file will be corrupted",
+				 e1);
                 }
                 
                 if (!isCancelled()) {
