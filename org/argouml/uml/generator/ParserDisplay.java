@@ -1812,7 +1812,8 @@ public class ParserDisplay extends Parser {
         //	if (s.indexOf(":", 0) > -1) {
         //	    String s1 = s.substring(0, s.indexOf(":"));
         //	    // the name may not contain a "(", for the case of: a(b:c)
-        //	    // the name may not contain a "/", for when the action contains a ":"
+        //	    // the name may not contain a "/", 
+        //          // for when the action contains a ":"
         //	    if ((s1.indexOf("(") < 0) && (s1.indexOf("/") < 0)) {
         //	        name = s1.trim();
         //	        s = s.substring(s.indexOf(":") + 1).trim();
@@ -1821,9 +1822,10 @@ public class ParserDisplay extends Parser {
         //
         //        // get the guard from between the []
         //	if (s.indexOf("[", 0) > -1 && s.indexOf("]", 0) > -1) {
-        //	    guard = s.substring(s.indexOf("[", 0) + 1, s.indexOf("]")).trim();
-        //	    s = s.substring(0, s.indexOf("[")) + s.substring(s.indexOf("]")
-        //							     + 1);
+        //	    guard = s.substring(s.indexOf("[", 0) + 1, 
+        //              s.indexOf("]")).trim();
+        //	    s = s.substring(0, s.indexOf("[")) 
+        //                  + s.substring(s.indexOf("]") + 1);
         //	    s = s.trim();
         //	}
         //
@@ -1836,7 +1838,8 @@ public class ParserDisplay extends Parser {
         //        // and the remainder is the trigger name
         //	trigger = s;
         //
-        //	// let's look for a TimeEvent, ChangeEvent, CallEvent or SignalEvent
+        //	// let's look for a TimeEvent, ChangeEvent, 
+        //      // CallEvent or SignalEvent
         //	boolean timeEvent = false;
         //	boolean changeEvent = false;
         //	boolean callEvent = false;
@@ -1910,11 +1913,11 @@ public class ParserDisplay extends Parser {
         //                }
         //                if (callEvent) { // operation(paramlist)
         //                    evt = UmlFactory.getFactory().getStateMachines()
-        //			                        .buildCallEvent(trans, trigger);
+        //			            .buildCallEvent(trans, trigger);
         //                }
         //                if (signalEvent) { // signalname
         //                    evt = UmlFactory.getFactory().getStateMachines()
-        //                                                .buildSignalEvent(trigger);
+        //                                   .buildSignalEvent(trigger);
         //                }
         //                created_evt = true;
         //            } else {
@@ -1923,32 +1926,37 @@ public class ParserDisplay extends Parser {
         //                    ModelFacade.setName(evt, trigger);
         //                    if (timeEvent && !ModelFacade.isATimeEvent(evt)) {
         //                        UmlFactory.getFactory().delete(evt);
-        //                        evt = UmlFactory.getFactory().getStateMachines()
-        //                            .buildTimeEvent(s);
+        //                        evt = UmlFactory.getFactory()
+        //                            .getStateMachines().buildTimeEvent(s);
         //                        created_evt = true;
         //                    }
-        //                    if (changeEvent && !ModelFacade.isAChangeEvent(evt)) {
+        //                    if (changeEvent && !ModelFacade
+        //                        .isAChangeEvent(evt)) {
         //                        UmlFactory.getFactory().delete(evt);
-        //                        evt = UmlFactory.getFactory().getStateMachines()
-        //                            .buildChangeEvent(s);
+        //                        evt = UmlFactory.getFactory()
+        //                            .getStateMachines().buildChangeEvent(s);
         //                        created_evt = true;
         //                    }
         //                    if (callEvent && !ModelFacade.isACallEvent(evt)) {
         //                        UmlFactory.getFactory().delete(evt);
-        //                        evt = UmlFactory.getFactory().getStateMachines()
+        //                        evt = UmlFactory.getFactory()
+        //                            .getStateMachines()
         //                            .buildCallEvent(trans, trigger);
         //                        created_evt = true;
         //                    }
-        //                    if (signalEvent && !ModelFacade.isASignalEvent(evt)) {
+        //                    if (signalEvent && !ModelFacade
+        //                        .isASignalEvent(evt)) {
         //                        UmlFactory.getFactory().delete(evt);
-        //                        evt = UmlFactory.getFactory().getStateMachines()
+        //                        evt = UmlFactory.getFactory()
+        //                            .getStateMachines()
         //                            .buildSignalEvent(trigger);
         //                        created_evt = true;
         //                    }
         //                }
         //            }
         //            if (created_evt && (evt != null)) {
-        //                StateMachinesHelper.getHelper().setEventAsTrigger(trans, evt);
+        //                StateMachinesHelper.getHelper()
+        //                    .setEventAsTrigger(trans, evt);
         //                
         //                /* The next part is explained by the following
         //                 * quote from the UML spec:
@@ -1959,7 +1967,7 @@ public class ParserDisplay extends Parser {
         //                 * a single class."
         //                 */
         //                Object enclosing = StateMachinesHelper.getHelper()
-        //                                                .getStateMachine(trans);
+        //                                            .getStateMachine(trans);
         //                while ((!ModelFacade.isAPackage(enclosing))
         //		       && (enclosing != null)) {
         //                    enclosing = ModelFacade.getNamespace(enclosing);
@@ -1999,10 +2007,12 @@ public class ParserDisplay extends Parser {
         //	        /*TODO: In the next line, I should use buildGuard(),
         //	         * but it doesn't show the guard on the diagram...
         //	         * Why? (MVW)*/
-        //		g = UmlFactory.getFactory().getStateMachines().createGuard();
+        //		g = UmlFactory.getFactory().getStateMachines()
+        //                  .createGuard();
         //		if (g != null) {
         //		    ModelFacade.setExpression(g, UmlFactory.getFactory()
-        //		    	.getDataTypes().createBooleanExpression("Java", guard));
+        //		    	.getDataTypes().createBooleanExpression(
+        //                                                   "Java", guard));
         //		    ModelFacade.setName(g, "anon");
         //		    ModelFacade.setTransition(g, trans);
         //		    ModelFacade.setGuard(trans, g);
@@ -2016,11 +2026,13 @@ public class ParserDisplay extends Parser {
         //		ModelFacade.setExpression(g,expr); */
         //	        
         //	        //hence a less elegant workaround that works:
-        //	        String language =
-        //			ModelFacade.getLanguage(ModelFacade.getExpression(g));
+        //	        String language = ModelFacade.getLanguage(
+        //                  ModelFacade.getExpression(g));
         //	        ModelFacade.setExpression(g, UmlFactory.getFactory()
-        //                    .getDataTypes().createBooleanExpression(language, guard));
-        //                /* TODO: In this case, the properties panel is not updated
+        //                    .getDataTypes().createBooleanExpression(
+        //                                              language, guard));
+        //                /* TODO: In this case, the properties panel 
+        //                  is not updated
         //		    with the changed expression! */
         //	    }
         //	} else {
@@ -2039,10 +2051,10 @@ public class ParserDisplay extends Parser {
         //        3. An effct is not given. None exists yet.
         //        4. The expression of the effect was present, but is removed.
         //        The reaction in these cases should be:
-        //        1. Create a new CallAction, set its name, language & expression,
-        //        and hook it to the transition.
-        //        2. Change the effect's expression. Leave the actiontype, name &
-        //	language untouched.
+        //        1. Create a new CallAction, set its name, language & 
+        //        expression, and hook it to the transition.
+        //        2. Change the effect's expression. Leave the actiontype, name 
+        //	  & language untouched.
         //        3. Nop.
         //        4. Unhook and erase the existing effect.
         //        */
@@ -2052,14 +2064,16 @@ public class ParserDisplay extends Parser {
         //	        effect = UmlFactory.getFactory().getCommonBehavior()
         //		    .createCallAction();
         //	        ModelFacade.setScript(effect, UmlFactory.getFactory()
-        //		    .getDataTypes().createActionExpression("Java", actions));
+        //		    .getDataTypes().createActionExpression(
+        //                                                   "Java", actions));
         //	        ModelFacade.setName(effect, "anon");
         //	        ModelFacade.setEffect(trans, effect);
         //	    } else { // case 2
         //                String language = ModelFacade.getLanguage(ModelFacade
         //		    .getScript(effect));
         //                ModelFacade.setScript(effect, UmlFactory.getFactory()
-        //		    .getDataTypes().createActionExpression(language, actions));
+        //		    .getDataTypes().createActionExpression(
+        //                                            language, actions));
         //	    }
         //	} else { // case 3 & 4
         //	    if (effect == null) {

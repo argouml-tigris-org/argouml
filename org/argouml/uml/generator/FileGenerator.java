@@ -42,7 +42,7 @@ public interface FileGenerator {
      *
      * @param node the node
      * @param path the path
-     * @return filename
+     * @return filename the generated file
      */
     public String GenerateFile(Object node, String path);
 }
