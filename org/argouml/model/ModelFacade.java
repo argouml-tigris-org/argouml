@@ -328,7 +328,7 @@ public class ModelFacade {
     /** Recognizer for Abstraction.
      *
      * @param handle candidate
-     * @returns true if handle is an Abstraction
+     * @return true if handle is an Abstraction
      */
     public static boolean isAAbstraction(Object handle) {
         return handle instanceof MAbstraction;
@@ -337,7 +337,7 @@ public class ModelFacade {
     /** Recognizer for Action.
      *
      * @param handle candidate
-     * @returns true if handle is an Action
+     * @return true if handle is an Action
      */
     public static boolean isAAction(Object handle) {
         return handle instanceof MAction;
@@ -373,7 +373,7 @@ public class ModelFacade {
     /** Recognizer for Actor
      *
      * @param handle candidate
-     * @returns true if handle is an Actor
+     * @return true if handle is an Actor
      */
     public static boolean isAActor(Object handle) {
         return handle instanceof MActor;
@@ -382,7 +382,7 @@ public class ModelFacade {
     /** Recognizer for AggregationKind
      *
      * @param handle candidate
-     * @returns true if handle is an AggregationKind
+     * @return true if handle is an AggregationKind
      */
     public static boolean isAAggregationKind(Object handle) {
         return handle instanceof MAggregationKind;
@@ -391,7 +391,7 @@ public class ModelFacade {
     /** Recognizer for Association.
      *
      * @param handle candidate
-     * @returns true if handle is an Association
+     * @return true if handle is an Association
      */
     public static boolean isAAssociation(Object handle) {
         return handle instanceof MAssociation;
@@ -400,7 +400,7 @@ public class ModelFacade {
     /** Recognizer for AssociationEnd.
      *
      * @param handle candidate
-     * @returns true if handle is an AssociationEnd
+     * @return true if handle is an AssociationEnd
      */
     public static boolean isAAssociationEnd(Object handle) {
         return handle instanceof MAssociationEnd;
@@ -409,7 +409,7 @@ public class ModelFacade {
     /** Recognizer for AssociationRole
      *
      * @param handle candidate
-     * @returns true if handle is an AssociationRole
+     * @return true if handle is an AssociationRole
      */
     public static boolean isAAssociationRole(Object handle) {
         return handle instanceof MAssociationRole;
@@ -418,7 +418,7 @@ public class ModelFacade {
     /** Recognizer for AssociationEndRole
      *
      * @param handle candidate
-     * @returns true if handle is an AssociationEndRole
+     * @return true if handle is an AssociationEndRole
      */
     public static boolean isAAssociationEndRole(Object handle) {
         return handle instanceof MAssociationEndRole;
@@ -427,7 +427,7 @@ public class ModelFacade {
     /** Recognizer for Attribute
      *
      * @param handle candidate
-     * @returns true if handle is an Attribute
+     * @return true if handle is an Attribute
      */
     public static boolean isAAttribute(Object handle) {
         return handle instanceof MAttribute;
@@ -435,7 +435,7 @@ public class ModelFacade {
 
     /**
      * Recognizer for asynchronisity of an action
-     * @param handle
+     * @param handle candidate
      * @return
      */
     public static boolean isAsynchronous(Object handle) {
@@ -448,7 +448,7 @@ public class ModelFacade {
     /** Recognizer for abstract classes and operations.
      *
      * @param handle candidate
-     * @returns true if handle is abstract.
+     * @return true if handle is abstract.
      */
     public static boolean isAbstract(Object handle) {
         if (handle instanceof MOperation)
@@ -462,7 +462,7 @@ public class ModelFacade {
     /** Recognizer for ActivityGraph
      *
      * @param handle candidate
-     * @returns true if handle is ActivityGraph.
+     * @return true if handle is ActivityGraph.
      */
     public static boolean isAActivityGraph(Object handle) {
         return handle instanceof MActivityGraph;
@@ -472,7 +472,7 @@ public class ModelFacade {
      *  an element in the model. MBase in Novosoft terms.
      *
      * @param handle candidate
-     * @returns true if handle is abstract.
+     * @return true if handle is abstract.
      */
     public static boolean isABase(Object handle) {
         return handle instanceof MBase;
@@ -481,7 +481,7 @@ public class ModelFacade {
     /** Recognizer for BehavioralFeature
      *
      * @param handle candidate
-     * @returns true if handle is a BehavioralFeature
+     * @return true if handle is a BehavioralFeature
      */
     public static boolean isABehavioralFeature(Object handle) {
         return handle instanceof MBehavioralFeature;
@@ -490,7 +490,7 @@ public class ModelFacade {
     /** Recognizer for CallAction
      *
      * @param handle candidate
-     * @returns true if handle is a CallAction
+     * @return true if handle is a CallAction
      */
     public static boolean isACallAction(Object handle) {
         return handle instanceof MCallAction;
@@ -499,7 +499,7 @@ public class ModelFacade {
     /** Recognizer for CallEvent
      *
      * @param handle candidate
-     * @returns true if handle is a CallEvent
+     * @return true if handle is a CallEvent
      */
     public static boolean isACallEvent(Object handle) {
         return handle instanceof MCallEvent;
@@ -508,7 +508,7 @@ public class ModelFacade {
     /** Recognizer for Class
      *
      * @param handle candidate
-     * @returns true if handle is a Class
+     * @return true if handle is a Class
      */
     public static boolean isAClass(Object handle) {
         return handle instanceof MClass;
@@ -517,7 +517,7 @@ public class ModelFacade {
     /** Recognizer for Classifier
      *
      * @param handle candidate
-     * @returns true if handle is a Classifier
+     * @return true if handle is a Classifier
      */
     public static boolean isAClassifier(Object handle) {
         return handle instanceof MClassifier;
@@ -526,7 +526,7 @@ public class ModelFacade {
     /** Recognizer for ClassifierRole
      *
      * @param handle candidate
-     * @returns true if handle is a ClassifierRole
+     * @return true if handle is a ClassifierRole
      */
     public static boolean isAClassifierRole(Object handle) {
         return handle instanceof MClassifierRole;
@@ -535,7 +535,7 @@ public class ModelFacade {
     /** Recognizer for Comment
      *
      * @param handle candidate
-     * @returns true if handle is a Comment
+     * @return true if handle is a Comment
      */
     public static boolean isAComment(Object handle) {
         return handle instanceof MComment;
@@ -544,7 +544,7 @@ public class ModelFacade {
     /** Recognizer for Collaboration
      *
      * @param handle candidate
-     * @returns true if handle is a Collaboration
+     * @return true if handle is a Collaboration
      */
     public static boolean isACollaboration(Object handle) {
         return handle instanceof MCollaboration;
@@ -553,7 +553,7 @@ public class ModelFacade {
     /** Recognizer for Component
      *
      * @param handle candidate
-     * @returns true if handle is a Component
+     * @return true if handle is a Component
      */
     public static boolean isAComponent(Object handle) {
         return handle instanceof MComponent;
@@ -562,7 +562,7 @@ public class ModelFacade {
     /** Recognizer for ComponentInstance
      *
      * @param handle candidate
-     * @returns true if handle is a ComponentInstance
+     * @return true if handle is a ComponentInstance
      */
     public static boolean isAComponentInstance(Object handle) {
         return handle instanceof MComponentInstance;
@@ -571,7 +571,7 @@ public class ModelFacade {
     /** Recognizer for Constraint
      *
      * @param handle candidate
-     * @returns true if handle is a Constraint
+     * @return true if handle is a Constraint
      */
     public static boolean isAConstraint(Object handle) {
         return handle instanceof MConstraint;
@@ -580,7 +580,7 @@ public class ModelFacade {
     /** Recognizer for CreateAction
      *
      * @param handle candidate
-     * @returns true if handle is a CreateAction
+     * @return true if handle is a CreateAction
      */
     public static boolean isACreateAction(Object handle) {
         return handle instanceof MCreateAction;
@@ -589,7 +589,7 @@ public class ModelFacade {
     /** Recognizer for DataType
      *
      * @param handle candidate
-     * @returns true if handle is a DataType
+     * @return true if handle is a DataType
      */
     public static boolean isADataType(Object handle) {
         return handle instanceof MDataType;
@@ -598,7 +598,7 @@ public class ModelFacade {
     /** Recognizer for DataValue
      *
      * @param handle candidate
-     * @returns true if handle is a DataValue
+     * @return true if handle is a DataValue
      */
     public static boolean isADataValue(Object handle) {
         return handle instanceof MDataValue;
@@ -607,7 +607,7 @@ public class ModelFacade {
     /** Recognizer for Dependency
      *
      * @param handle candidate
-     * @returns true if handle is a Dependency
+     * @return true if handle is a Dependency
      */
     public static boolean isADependency(Object handle) {
         return handle instanceof MDependency;
@@ -616,7 +616,7 @@ public class ModelFacade {
     /** Recognizer for DestroyAction
      *
      * @param handle candidate
-     * @returns true if handle is a DestroyAction
+     * @return true if handle is a DestroyAction
      */
     public static boolean isADestroyAction(Object handle) {
         return handle instanceof MDestroyAction;
@@ -625,7 +625,7 @@ public class ModelFacade {
     /** Recognizer for CompositeState
      *
      * @param handle candidate
-     * @returns true if handle is a CompositeState
+     * @return true if handle is a CompositeState
      */
     public static boolean isACompositeState(Object handle) {
         return handle instanceof MCompositeState;
@@ -634,7 +634,7 @@ public class ModelFacade {
     /** Recognizer for Element
      *
      * @param handle candidate
-     * @returns true if handle is an Element
+     * @return true if handle is an Element
      */
     public static boolean isAElement(Object handle) {
         return handle instanceof MElement;
@@ -643,7 +643,7 @@ public class ModelFacade {
     /** Recognizer for ElementImport
      *
      * @param handle candidate
-     * @returns true if handle is an ElementImport
+     * @return true if handle is an ElementImport
      */
     public static boolean isAElementImport(Object handle) {
         return handle instanceof MElementImport;
@@ -652,7 +652,7 @@ public class ModelFacade {
     /** Recognizer for ElementListener
      *
      * @param handle candidate
-     * @returns true if handle is an ElementListener
+     * @return true if handle is an ElementListener
      */
     public static boolean isAElementListener(Object handle) {
         return handle instanceof MElementListener;
@@ -661,7 +661,7 @@ public class ModelFacade {
     /** Recognizer for ElementResidence
      *
      * @param handle candidate
-     * @returns true if handle is an ElementResidence
+     * @return true if handle is an ElementResidence
      */
     public static boolean isAElementResidence(Object handle) {
         return handle instanceof MElementResidence;
@@ -670,7 +670,7 @@ public class ModelFacade {
     /** Recognizer for Expression
      *
      * @param handle candidate
-     * @returns true if handle is an Expression
+     * @return true if handle is an Expression
      */
     public static boolean isAExpression(Object handle) {
         return handle instanceof MExpression;
@@ -679,7 +679,7 @@ public class ModelFacade {
     /** Recognizer for Extend
      *
      * @param handle candidate
-     * @returns true if handle is an Extend
+     * @return true if handle is an Extend
      */
     public static boolean isAExtend(Object handle) {
         return handle instanceof MExtend;
@@ -689,7 +689,7 @@ public class ModelFacade {
     /** Recognizer for ExtensionPoint
      *
      * @param handle candidate
-     * @returns true if handle is an ExtensionPoint
+     * @return true if handle is an ExtensionPoint
      */
     public static boolean isAExtensionPoint(Object handle) {
         return handle instanceof MExtensionPoint;
@@ -699,7 +699,7 @@ public class ModelFacade {
     /** Recognizer for Feature
      *
      * @param handle candidate
-     * @returns true if handle is a Feature
+     * @return true if handle is a Feature
      */
     public static boolean isAFeature(Object handle) {
         return handle instanceof MFeature;
@@ -708,7 +708,7 @@ public class ModelFacade {
     /** Recognizer for FinalState
      *
      * @param handle candidate
-     * @returns true if handle is a FinalState
+     * @return true if handle is a FinalState
      */
     public static boolean isAFinalState(Object handle) {
         return handle instanceof MFinalState;
@@ -717,7 +717,7 @@ public class ModelFacade {
     /** Recognizer for Flow
      *
      * @param handle candidate
-     * @returns true if handle is a Flow
+     * @return true if handle is a Flow
      */
     public static boolean isAFlow(Object handle) {
         return handle instanceof MFlow;
@@ -726,7 +726,7 @@ public class ModelFacade {
     /** Recognizer for Guard
      *
      * @param handle candidate
-     * @returns true if handle is a Guard
+     * @return true if handle is a Guard
      */
     public static boolean isAGuard(Object handle) {
         return handle instanceof MGuard;
@@ -735,7 +735,7 @@ public class ModelFacade {
     /** Recognizer for GeneralizableElement
      *
      * @param handle candidate
-     * @returns true if handle is a GeneralizableElement
+     * @return true if handle is a GeneralizableElement
      */
     public static boolean isAGeneralizableElement(Object handle) {
         return handle instanceof MGeneralizableElement;
@@ -744,7 +744,7 @@ public class ModelFacade {
     /** Recognizer for GeneralizableElement
      *
      * @param handle candidate
-     * @returns true if handle is a GeneralizableElement
+     * @return true if handle is a GeneralizableElement
      */
     public static boolean isAGeneralization(Object handle) {
         return handle instanceof MGeneralization;
@@ -753,7 +753,7 @@ public class ModelFacade {
     /** Recognizer for Include
      *
      * @param handle candidate
-     * @returns true if handle is an Include
+     * @return true if handle is an Include
      */
     public static boolean isAInclude(Object handle) {
         return handle instanceof MInclude;
@@ -763,7 +763,7 @@ public class ModelFacade {
     /** Recognizer for Instance
      *
      * @param handle candidate
-     * @returns true if handle is a Instance
+     * @return true if handle is a Instance
      */
     public static boolean isAInstance(Object handle) {
         return handle instanceof MInstance;
@@ -773,7 +773,7 @@ public class ModelFacade {
     /** Recognizer for Interaction
      *
      * @param handle candidate
-     * @returns true if handle is a Interaction
+     * @return true if handle is a Interaction
      */
     public static boolean isAInteraction(Object handle) {
         return handle instanceof MInteraction;
@@ -782,7 +782,7 @@ public class ModelFacade {
     /** Recognizer for Interface
      *
      * @param handle candidate
-     * @returns true if handle is a Interface
+     * @return true if handle is a Interface
      */
     public static boolean isAInterface(Object handle) {
         return handle instanceof MInterface;
@@ -791,7 +791,7 @@ public class ModelFacade {
     /** Recognizer for Link
      *
      * @param handle candidate
-     * @returns true if handle is a Link
+     * @return true if handle is a Link
      */
     public static boolean isALink(Object handle) {
         return handle instanceof MLink;
@@ -800,7 +800,7 @@ public class ModelFacade {
     /** Recognizer for Message
      *
      * @param handle candidate
-     * @returns true if handle is a Method
+     * @return true if handle is a Method
      */
     public static boolean isAMessage(Object handle) {
         return handle instanceof MMessage;
@@ -809,7 +809,7 @@ public class ModelFacade {
     /** Recognizer for Method
      *
      * @param handle candidate
-     * @returns true if handle is a Method
+     * @return true if handle is a Method
      */
     public static boolean isAMethod(Object handle) {
         return handle instanceof MMethod;
@@ -818,7 +818,7 @@ public class ModelFacade {
     /** Recognizer for Model
      *
      * @param handle candidate
-     * @returns true if handle is a Model
+     * @return true if handle is a Model
      */
     public static boolean isAModel(Object handle) {
         return handle instanceof MModel;
@@ -827,7 +827,7 @@ public class ModelFacade {
     /** Recognizer for ModelElement
      *
      * @param handle candidate
-     * @returns true if handle is a ModelElement
+     * @return true if handle is a ModelElement
      */
     public static boolean isAModelElement(Object handle) {
         return handle instanceof MModelElement;
@@ -836,7 +836,7 @@ public class ModelFacade {
     /** Recognizer for Multiplicity
      *
      * @param handle candidate
-     * @returns true if handle is a Multiplicity
+     * @return true if handle is a Multiplicity
      */
     public static boolean isAMultiplicity(Object handle) {
         return handle instanceof MMultiplicity;
@@ -845,7 +845,7 @@ public class ModelFacade {
     /** Recognizer for Namespace
      *
      * @param handle candidate
-     * @returns true if handle is a Namespace
+     * @return true if handle is a Namespace
      */
     public static boolean isANamespace(Object handle) {
         return handle instanceof MNamespace;
@@ -854,7 +854,7 @@ public class ModelFacade {
     /** Recognizer for a Node
      *
      * @param handle candidate
-     * @returns true if handle is a Node
+     * @return true if handle is a Node
      */
     public static boolean isANode(Object handle) {
         return handle instanceof MNode;
@@ -863,7 +863,7 @@ public class ModelFacade {
     /** Recognizer for a NodeInstance
      *
      * @param handle candidate
-     * @returns true if handle is a NodeInstance
+     * @return true if handle is a NodeInstance
      */
     public static boolean isANodeInstance(Object handle) {
         return handle instanceof MNodeInstance;
@@ -873,7 +873,7 @@ public class ModelFacade {
      * Recognizer for Operation
      *
      * @param handle candidate
-     * @returns true if handle is an Operation
+     * @return true if handle is an Operation
      */
     public static boolean isAOperation(Object handle) {
         return handle instanceof MOperation;
@@ -883,7 +883,7 @@ public class ModelFacade {
      * Recognizer for Object
      *
      * @param handle candidate
-     * @returns true if handle is an Object
+     * @return true if handle is an Object
      */
     public static boolean isAObject(Object handle) {
         return handle instanceof MObject;
@@ -892,7 +892,7 @@ public class ModelFacade {
     /** Recognizer for Parameter
      *
      * @param handle candidate
-     * @returns true if handle is a Parameter
+     * @return true if handle is a Parameter
      */
     public static boolean isAParameter(Object handle) {
         return handle instanceof MParameter;
@@ -902,7 +902,7 @@ public class ModelFacade {
      * Recognizer for Permission
      *
      * @param handle candidate
-     * @returns true if handle is an Permission
+     * @return true if handle is an Permission
      */
     public static boolean isAPermission(Object handle) {
         return handle instanceof MPermission;
@@ -911,7 +911,7 @@ public class ModelFacade {
     /** Recognizer for Package
      *
      * @param handle candidate
-     * @returns true if handle is a Package
+     * @return true if handle is a Package
      */
     public static boolean isAPackage(Object handle) {
         return handle instanceof MPackage;
@@ -920,7 +920,7 @@ public class ModelFacade {
     /** Recognizer for Pseudostate
      *
      * @param handle candidate
-     * @returns true if handle is a Pseudostate
+     * @return true if handle is a Pseudostate
      */
     public static boolean isAPseudostate(Object handle) {
         return handle instanceof MPseudostate;
@@ -929,7 +929,7 @@ public class ModelFacade {
     /** Recognizer for PseudostateKind
      *
      * @param handle candidate
-     * @returns true if handle is a PseudostateKind
+     * @return true if handle is a PseudostateKind
      */
     public static boolean isAPseudostateKind(Object handle) {
         return handle instanceof MPseudostateKind;
@@ -945,7 +945,7 @@ public class ModelFacade {
 
     /**
      * Returns the receiver object of a message or stimulus
-     * @param handle
+     * @param handle candidate
      * @return receiver
      */
     public static Object getReceiver(Object handle) {
@@ -985,7 +985,7 @@ public class ModelFacade {
     /** Recognizer for Reception
      *
      * @param handle candidate
-     * @returns true if handle is a Reception
+     * @return true if handle is a Reception
      */
     public static boolean isAReception(Object handle) {
         return handle instanceof MReception;
@@ -994,7 +994,7 @@ public class ModelFacade {
     /** Recognizer for Returnaction
      *
      * @param handle candidate
-     * @returns true if handle is a returnaction
+     * @return true if handle is a returnaction
      */
     public static boolean isAReturnAction(Object handle) {
 	return handle instanceof MReturnAction;
@@ -1003,7 +1003,7 @@ public class ModelFacade {
     /** Recognizer for Relationship
      *
      * @param handle candidate
-     * @returns true if handle is a Relationship
+     * @return true if handle is a Relationship
      */
     public static boolean isARelationship(Object handle) {
         return handle instanceof MRelationship;
@@ -1012,7 +1012,7 @@ public class ModelFacade {
     /** Recognizer for SendAction
      *
      * @param handle candidate
-     * @returns true if handle is a SendAction
+     * @return true if handle is a SendAction
      */
     public static boolean isASendAction(Object handle) {
         return handle instanceof MSendAction;
@@ -1021,7 +1021,7 @@ public class ModelFacade {
     /** Recognizer for Signal
      *
      * @param handle candidate
-     * @returns true if handle is a Signal
+     * @return true if handle is a Signal
      */
     public static boolean isASignal(Object handle) {
         return handle instanceof MSignal;
@@ -1030,7 +1030,7 @@ public class ModelFacade {
     /** Recognizer for StateMachine
      *
      * @param handle candidate
-     * @returns true if handle is a StateMachine
+     * @return true if handle is a StateMachine
      */
     public static boolean isAStateMachine(Object handle) {
         return handle instanceof MStateMachine;
@@ -1039,7 +1039,7 @@ public class ModelFacade {
     /** Recognizer for stimulus
      *
      * @param handle candidate
-     * @returns true if handle is a stimulus
+     * @return true if handle is a stimulus
      */
     public static boolean isAStimulus(Object handle) {
         return handle instanceof MStimulus;
@@ -1048,7 +1048,7 @@ public class ModelFacade {
     /** Recognizer for StateVertex
      *
      * @param handle candidate
-     * @returns true if handle is a StateVertex
+     * @return true if handle is a StateVertex
      */
     public static boolean isAStateVertex(Object handle) {
         return handle instanceof MStateVertex;
@@ -1057,7 +1057,7 @@ public class ModelFacade {
     /** Recognizer for Stereotype
      *
      * @param handle candidate
-     * @returns true if handle is a Stereotype
+     * @return true if handle is a Stereotype
      */
     public static boolean isAStereotype(Object handle) {
         return handle instanceof MStereotype;
@@ -1066,7 +1066,7 @@ public class ModelFacade {
     /** Recognizer for StructuralFeature
      *
      * @param handle candidate
-     * @returns true if handle is a StructuralFeature
+     * @return true if handle is a StructuralFeature
      */
     public static boolean isAStructuralFeature(Object handle) {
         return handle instanceof MStructuralFeature;
@@ -1075,7 +1075,7 @@ public class ModelFacade {
     /** Recognizer for State
      *
      * @param handle candidate
-     * @returns true if handle is a State
+     * @return true if handle is a State
      */
     public static boolean isAState(Object handle) {
         return handle instanceof MState;
@@ -1084,7 +1084,7 @@ public class ModelFacade {
     /** Recognizer for Subsystem
      *
      * @param handle candidate
-     * @returns true if handle is a Subsystem
+     * @return true if handle is a Subsystem
      */
     public static boolean isASubsystem(Object handle) {
         return handle instanceof MSubsystem;
@@ -1093,7 +1093,7 @@ public class ModelFacade {
     /** Recognizer for TaggedValue
      *
      * @param handle candidate
-     * @returns true if handle is a TaggedValue
+     * @return true if handle is a TaggedValue
      */
     public static boolean isATaggedValue(Object handle) {
         return handle instanceof MTaggedValue;
@@ -1103,7 +1103,7 @@ public class ModelFacade {
     /** Recognizer for Transition
      *
      * @param handle candidate
-     * @returns true if handle is a Transition
+     * @return true if handle is a Transition
      */
     public static boolean isATransition(Object handle) {
         return handle instanceof MTransition;
@@ -1112,7 +1112,7 @@ public class ModelFacade {
     /** Recognizer for Usage
      *
      * @param handle candidate
-     * @returns true if handle is a Usage
+     * @return true if handle is a Usage
      */
     public static boolean isAUsage(Object handle) {
         return handle instanceof MUsage;
@@ -1121,7 +1121,7 @@ public class ModelFacade {
     /** Recognizer for a Use Case
      *
      * @param handle candidate
-     * @returns true if handle is a Transition
+     * @return true if handle is a Transition
      */
     public static boolean isAUseCase(Object handle) {
         return handle instanceof MUseCase;
@@ -1130,7 +1130,7 @@ public class ModelFacade {
     /** Recognizer for VisibilityKind
      *
      * @param handle candidate
-     * @returns true if handle is a VisibilityKind
+     * @return true if handle is a VisibilityKind
      */
     public static boolean isAVisibilityKind(Object handle) {
         return handle instanceof MVisibilityKind;
@@ -1139,7 +1139,7 @@ public class ModelFacade {
     /** Recognizer for attributes that are changeable
      *
      * @param handle candidate
-     * @returns true if handle is changeable
+     * @return true if handle is changeable
      */
     public static boolean isChangeable(Object handle) {
         if (handle != null && handle instanceof MAttribute) {
@@ -1159,7 +1159,7 @@ public class ModelFacade {
     /** Recognizer for attributes with classifier scope.
      *
      * @param handle candidate
-     * @returns true if handle has classifier scope.
+     * @return true if handle has classifier scope.
      */
     public static boolean isClassifierScope(Object handle) {
         if (handle instanceof MAttribute) {
@@ -1173,7 +1173,7 @@ public class ModelFacade {
     /** Recognizer for concurent composite state.
      *
      * @param handle composite state
-     * @returns true if concurent.
+     * @return true if concurent.
      */
     public static boolean isConcurent(Object handle) {
         if (handle instanceof MCompositeState) {
@@ -1185,7 +1185,7 @@ public class ModelFacade {
     /** Recognizer for constructor.
      *
      * @param handle candidate
-     * @returns true if handle is a constructor.
+     * @return true if handle is a constructor.
      */
     public static boolean isConstructor(Object handle) {
         Object stereo = null;
@@ -1221,7 +1221,7 @@ public class ModelFacade {
     
     /**
      * Returns true if a given associationend is a composite.
-     * @param handle
+     * @param handle candidate
      * @return boolean
      */
     public static boolean isComposite(Object handle) {
@@ -1238,7 +1238,7 @@ public class ModelFacade {
 
     /**
      * Returns true if a given associationend is a composite.
-     * @param handle
+     * @param handle candidate
      * @return boolean
      */
     public static boolean isAggregate(Object handle) {
@@ -1276,7 +1276,7 @@ public class ModelFacade {
     /** Recognizer for attributes with instance scope.
      *
      * @param handle candidate
-     * @returns true if handle has instance scope.
+     * @return true if handle has instance scope.
      */
     public static boolean isInstanceScope(Object handle) {
         if (handle instanceof MFeature) {
@@ -1290,7 +1290,7 @@ public class ModelFacade {
     /** Recognizer for leafs
      *
      * @param handle candidate GeneralizableElement
-     * @returns true if handle is a leaf
+     * @return true if handle is a leaf
      */
     public static boolean isLeaf(Object handle) {
 
@@ -1309,7 +1309,7 @@ public class ModelFacade {
     /** Recognizer for roots
      *
      * @param handle candidate GeneralizableElement
-     * @returns true if handle is a leaf
+     * @return true if handle is a leaf
      */
     public static boolean isRoot(Object handle) {
 
@@ -1328,7 +1328,7 @@ public class ModelFacade {
     /** Recognizer for specifications
      *
      * @param handle candidate ModelElement
-     * @returns true if handle is a specification
+     * @return true if handle is a specification
      */
     public static boolean isSpecification(Object handle) {
 
@@ -1341,7 +1341,7 @@ public class ModelFacade {
     /** Recognizer for Navigable elements
      *
      * @param handle candidate
-     * @returns true if handle is navigable
+     * @return true if handle is navigable
      */
     public static boolean isNavigable(Object handle) {
         if (handle instanceof MAssociationEnd) {
@@ -1358,7 +1358,7 @@ public class ModelFacade {
      * Object that are created when importing some other object are not.
      *
      * @param handle candidate
-     * @returns true if primary object.
+     * @return true if primary object.
      */
     public static boolean isPrimaryObject(Object handle) {
         if (handle instanceof MModelElement) {
@@ -1380,7 +1380,7 @@ public class ModelFacade {
     /** Recognizer for attributes with private
      *
      * @param handle candidate
-     * @returns true if handle has private
+     * @return true if handle has private
      */
     public static boolean isPrivate(Object handle) {
         if (handle instanceof MModelElement) {
@@ -1394,7 +1394,7 @@ public class ModelFacade {
     /** Recognizer for attributes with public
      *
      * @param handle candidate
-     * @returns true if handle has public
+     * @return true if handle has public
      */
     public static boolean isPublic(Object handle) {
         if (handle instanceof MModelElement) {
@@ -1408,7 +1408,7 @@ public class ModelFacade {
     /**
      * Recognizer for MBehaviouralFeature's that are queries.
      */
-    public static boolean isQuery(Object handle){
+    public static boolean isQuery(Object handle) {
         
         if (!(handle instanceof MBehavioralFeature)) {
             throw new IllegalArgumentException();
@@ -1420,7 +1420,7 @@ public class ModelFacade {
     /** Recognizer for attributes with protected
      *
      * @param handle candidate
-     * @returns true if handle has protected
+     * @return true if handle has protected
      */
     public static boolean isProtected(Object handle) {
         if (handle instanceof MModelElement) {
@@ -1434,7 +1434,7 @@ public class ModelFacade {
     /** Recognizer for realize
      *
      * @param handle candidate
-     * @returns true if handle has a realize stereotype
+     * @return true if handle has a realize stereotype
      */
     public static boolean isRealize(Object handle) {
         return isStereotype(handle, "realize");
@@ -1443,7 +1443,7 @@ public class ModelFacade {
     /** Recognizer for return
      *
      * @param handle candidate parameter
-     * @returns true if handle is a return parameter.
+     * @return true if handle is a return parameter.
      */
     public static boolean isReturn(Object handle) {
         if (handle instanceof MParameter) {
@@ -1458,7 +1458,7 @@ public class ModelFacade {
     /** Recognizer for singleton.
      *
      * @param handle candidate
-     * @returns true if handle is a singleton.
+     * @return true if handle is a singleton.
      */
     public static boolean isSingleton(Object handle) {
         return isStereotype(handle, "singleton");
@@ -1503,7 +1503,7 @@ public class ModelFacade {
     /** Recognizer for type.
      *
      * @param handle candidate
-     * @returns true if handle is a type.
+     * @return true if handle is a type.
      */
     public static boolean isType(Object handle) {
         return isStereotype(handle, "type");
@@ -1512,7 +1512,7 @@ public class ModelFacade {
     /** Recognizer for utility.
      *
      * @param handle candidate
-     * @returns true if handle is a utility.
+     * @return true if handle is a utility.
      */
     public static boolean isUtility(Object handle) {
         return isStereotype(handle, "utility");
@@ -1524,7 +1524,7 @@ public class ModelFacade {
     /** Recognizer for Diagram.
      *
      * @param handle candidate
-     * @returns true if handle is a diagram.
+     * @return true if handle is a diagram.
      */
     public static boolean isADiagram(Object handle) {
         return handle instanceof Diagram;
@@ -1571,7 +1571,7 @@ public class ModelFacade {
     /** The list of Association Ends
      *
      * @param handle the object that we get the association ends from.
-     * @return Iterator with association ends.
+     * @return Collection with association ends.
      */
     public static Collection getAssociationEnds(Object handle) {
         if (handle instanceof MClassifier) {
@@ -1883,7 +1883,7 @@ public class ModelFacade {
     /** Get the residences of an element.
      *
      * @param handle the model element that we are getting the residences of
-     * @returns the residence collection
+     * @return the residence collection
      */
     public static Collection getElementResidences(Object handle) {
         if (handle instanceof MModelElement)
@@ -2248,8 +2248,8 @@ public class ModelFacade {
     /**
      * @param elemImport an Element Import.
      */
-    public static Object getModelElement(Object elemImport){
-        if(!(elemImport instanceof MElementImport))
+    public static Object getModelElement(Object elemImport) {
+       if (!(elemImport instanceof MElementImport))
             throw new IllegalArgumentException();
         
         return ((MElementImport)elemImport).getModelElement();
@@ -2275,7 +2275,7 @@ public class ModelFacade {
     /** Get the comments of an element.
      *
      * @param handle the model element that we are getting the comments of
-     * @returns the comment (or null)
+     * @return the comment (or null)
      */
     public static Collection getComments(Object handle) {
         if (handle instanceof MModelElement)
@@ -2287,7 +2287,7 @@ public class ModelFacade {
     /** Get the communication connection of an message.
      *
      * @param handle the message that we are getting the communication connection
-     * @returns the communication connection
+     * @return the communication connection
      */
     public static Object getCommunicationConnection(Object handle) {
         if (handle instanceof MMessage)
@@ -2299,7 +2299,7 @@ public class ModelFacade {
     /** Get the communication link of a stimulus.
      *
      * @param handle the message that we are getting the communication link
-     * @returns the communication link
+     * @return the communication link
      */
     public static Object getCommunicationLink(Object handle) {
         if (handle instanceof MStimulus)
@@ -2311,7 +2311,7 @@ public class ModelFacade {
     /** Get the collaborations of an element.
      *
      * @param handle the model element that we are getting the collaborations of
-     * @returns the collaborations
+     * @return the collaborations
      */
     public static Collection getCollaborations(Object handle) {
         if (handle instanceof MOperation)
@@ -2337,7 +2337,7 @@ public class ModelFacade {
     /** Get the component instance of an instance
      *
      * @param handle
-     * @returns the component instance
+     * @return the component instance
      */
     public static Object getComponentInstance(Object handle) {
         if (handle instanceof MInstance)
@@ -2418,7 +2418,7 @@ public class ModelFacade {
     /** Get the default value of a parameter
      *
      * @param handle the parameter that we are getting the defaultvalue from
-     * @returns the default value
+     * @return the default value
      */
     public static Object getDefaultValue(Object handle) {
         if (handle instanceof MParameter) {
@@ -2430,7 +2430,7 @@ public class ModelFacade {
     /** Get deferrable events of a state
      *
      * @param handle the state that we are getting the deferrable event from
-     * @returns the deferrable events collection
+     * @return the deferrable events collection
      */
     public static Collection getDeferrableEvents(Object handle) {
         if (handle instanceof MState) {
@@ -2456,7 +2456,7 @@ public class ModelFacade {
     /** Get the discriminator.
      *
      * @param handle the Generalization
-     * @returns the discriminator a String
+     * @return the discriminator a String
      */
     public static Object getDiscriminator(Object handle) {
         if (handle instanceof MGeneralization) {
@@ -2468,7 +2468,7 @@ public class ModelFacade {
     /** Get the dispatchaction of a stimulus.
      *
      * @param handle the stimulus that we are getting the dispatchaction of
-     * @returns the dispatchaction (or null)
+     * @return the dispatchaction (or null)
      */
     public static Object getDispatchAction(Object handle) {
         if (handle instanceof MStimulus) {
@@ -2509,7 +2509,7 @@ public class ModelFacade {
     /**
      * Gets a location of some extension point.
      * @param extension point
-     * @returns the location
+     * @return the location
      */
     public static String getLocation(Object handle) {
         if (handle instanceof MExtensionPoint) {
@@ -2521,7 +2521,7 @@ public class ModelFacade {
     /** Get the namespace of an element.
      *
      * @param handle the model element that we are getting the namespace of
-     * @returns the namespace (or null)
+     * @return the namespace (or null)
      */
     public static Object getNamespace(Object handle) {
         if (handle instanceof MModelElement)
@@ -2533,7 +2533,7 @@ public class ModelFacade {
     /** Get the node instance of a component instance.
      *
      * @param handle the model element that we are getting the node instance of
-     * @returns the node instance
+     * @return the node instance
      */
     public static Object getNodeInstance(Object handle) {
         if (handle instanceof MComponentInstance)
@@ -2557,7 +2557,7 @@ public class ModelFacade {
     /** Get the operation of a Call Action or Call Event.
      *
      * @param handle the model element that we are getting the operation of
-     * @returns the Operation
+     * @return the Operation
      */
     public static Object getOperation(Object handle) {
         if (handle instanceof MCallAction) {
@@ -2644,7 +2644,7 @@ public class ModelFacade {
     /** The list of Associations Ends connected to this association end
      *
      * @param handle association end to start from
-     * @returns Iterator with all connected association ends.
+     * @return Iterator with all connected association ends.
      */
     public static Collection getOtherAssociationEnds(Object handle) {
         if (handle instanceof MAssociationEnd) {
@@ -3079,7 +3079,7 @@ public class ModelFacade {
     /** The list of SupplierDependencies from a ModelElement.
      *
      * @param handle model element.
-     * @returns Iterator with the supplier dependencies.
+     * @return Iterator with the supplier dependencies.
      */
     public static Collection getSupplierDependencies(Object handle) {
         if (handle instanceof MModelElement) {
@@ -3094,7 +3094,7 @@ public class ModelFacade {
     /** The top of a state machine
      *
      * @param handle the state machine
-     * @returns the top
+     * @return the top
      */
     public static Object getTop(Object handle) {
         if (handle instanceof MStateMachine) {
@@ -3108,7 +3108,7 @@ public class ModelFacade {
     /** Get the transition of a guard or action
      *
      * @param handle the guard or action
-     * @returns the transition
+     * @return the transition
      */
     public static Object getTransition(Object handle) {
         if (handle instanceof MGuard) {
@@ -3123,7 +3123,7 @@ public class ModelFacade {
     /** Get the trigger of a transition
      *
      * @param handle the transition
-     * @returns the trigger
+     * @return the trigger
      */
     public static Object getTrigger(Object handle) {
         if (handle instanceof MTransition) {
@@ -3135,7 +3135,7 @@ public class ModelFacade {
     /** The type of an attribute
      *
      * @param handle the attribute
-     * @returns the type
+     * @return the type
      */
     public static Object getType(Object handle) {
         if (handle instanceof MStructuralFeature) {
@@ -3424,7 +3424,7 @@ public class ModelFacade {
     /** The name of a model element or some diagram part.
      *
      * @param handle that points out the object.
-     * @returns the name
+     * @return the name
      */
     public static String getName(Object handle) {
         if (handle instanceof MModelElement) {
@@ -4967,7 +4967,7 @@ public class ModelFacade {
             return;
         }
         if (target instanceof MNode) {
-            ((MNode)target).setResidents(residents);
+            ((MNode) target).setResidents(residents);
             return;
         }
         throw new IllegalArgumentException("Unrecognized object " + target);
@@ -5308,7 +5308,7 @@ public class ModelFacade {
 
     public static void addDeploymentLocation(Object handle, Object node) {
         if (handle instanceof MComponent && node instanceof MNode) {
-            ((MComponent)handle).addDeploymentLocation((MNode)node);
+            ((MComponent) handle).addDeploymentLocation((MNode) node);
         }
         throw new IllegalArgumentException("Unrecognized object " + handle
 					   + " or " + node);
@@ -5316,7 +5316,7 @@ public class ModelFacade {
 
     public static void addExtendedElement(Object target, Object extendedElement) {
         if (target instanceof MStereotype && extendedElement instanceof MExtensionPoint) {
-            ((MStereotype)target).addExtendedElement((MModelElement)extendedElement);
+            ((MStereotype) target).addExtendedElement((MModelElement) extendedElement);
             return;
         }
         throw new IllegalArgumentException("Unrecognized object " + target
@@ -5331,11 +5331,12 @@ public class ModelFacade {
     public static void addExtensionPoint(Object target, Object extensionPoint) {
         if (target != null && extensionPoint != null && extensionPoint instanceof MExtensionPoint) {
             if (target instanceof MUseCase) {
-                ((MUseCase)target).addExtensionPoint((MExtensionPoint)extensionPoint);
+                ((MUseCase) target).addExtensionPoint((MExtensionPoint) extensionPoint);
                 return;
             }
             if (target instanceof MExtend) {
-                ((MExtend)target).addExtensionPoint((MExtensionPoint)extensionPoint);
+                ((MExtend) target)
+                    .addExtensionPoint((MExtensionPoint)extensionPoint);
                 return;
             }
         }
@@ -5360,7 +5361,7 @@ public class ModelFacade {
 
     /** The empty set.
      *
-     * @returns an empty iterator.
+     * @return an empty iterator.
      */
     private static Iterator emptyIterator() {
         return Collections.EMPTY_SET.iterator();
