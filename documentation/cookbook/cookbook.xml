@@ -3747,6 +3747,53 @@ Something like org.argouml.<replaceable>yourname</replaceable>
 as the package root.
 </para>
 	    </listitem>
+	    <listitem>
+	      <para>
+...get Argo to use a plugin?
+</para>
+<para>
+    Once you've created a jar file with a plugin in it,
+    you need to make sure that Argo can find the jar
+    to be able to execute it.
+</para>
+<para>
+    If you are using a "standard" ArgoUML source structure,
+    then you should be able to execute <command>build install</command>
+    or <command>ant install</command>
+    in the source directory of the plugin.
+    This will copy the jar file to the proper directory in the
+    main ArgoUML build target.
+    You can test your plugin by running <command>build run</command>
+    in the <filename class="directory">src_new</filename> directory.
+</para>
+<para>
+    If you need to install the jar "the hard way",
+    try the following steps.
+    <itemizedlist>
+      <listitem>
+         Start up ArgoUML.
+      </listitem>
+      <listitem>
+         Go to the menu <command>Edit->Settings</command>
+	 and look at the <command>Environment</command> tab.
+	 Find the entry labelled <literal>${argo.ext.dir}</literal>.
+         Create that directory if it does not already exist.
+      </listitem>
+      <listitem>
+         Copy the plugin jar
+	 and any other jars required by it
+	 into that directory.
+      </listitem>
+      <listitem>
+         Start up ArgoUML again,
+	 and you should see the plugin's startup banner
+	 (if it has one, of course).
+      </listitem>
+
+    </itemizedlist>
+
+</para>
+	    </listitem>
 	  </itemizedlist>
 </para>
       </sect2>
