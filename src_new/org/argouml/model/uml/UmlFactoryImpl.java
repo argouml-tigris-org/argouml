@@ -771,8 +771,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                 if (elem instanceof MStateMachine) {
                     getStateMachines().deleteStateMachine((MStateMachine) elem);
                     if (elem instanceof MActivityGraph) {
-                        getActivityGraphs()
-                            .deleteActivityGraph((MActivityGraph) elem);
+                        getActivityGraphs().deleteActivityGraph(elem);
                     }
                 } else if (elem instanceof MTransition) {
                     getStateMachines().deleteTransition((MTransition) elem);
@@ -793,7 +792,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
         }
 
         if (elem instanceof MPartition) {
-            getActivityGraphs().deletePartition((MPartition) elem);
+            getActivityGraphs().deletePartition(elem);
         } else if (elem instanceof MElementImport) {
             getModelManagement().deleteElementImport((MElementImport) elem);
         }
@@ -877,8 +876,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
             } else if (elem instanceof MActor) {
                 getUseCases().deleteActor((MActor) elem);
             } else if (elem instanceof MClassifierInState) {
-                getActivityGraphs().deleteClassifierInState(
-                    (MClassifierInState) elem);
+                getActivityGraphs().deleteClassifierInState(elem);
             }
         } else if (elem instanceof MCollaboration) {
             getCollaborations().deleteCollaboration((MCollaboration) elem);
@@ -1004,8 +1002,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                     getStateMachines().deleteSubmachineState(
                         (MSubmachineState) elem);
                     if (elem instanceof MSubactivityState) {
-                        getActivityGraphs().deleteSubactivityState(
-                            (MSubactivityState) elem);
+                        getActivityGraphs().deleteSubactivityState(elem);
                     }
                 }
             } else if (elem instanceof MSimpleState) {
@@ -1013,11 +1010,10 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                 if (ModelFacade.isAActionState(elem)) {
                     getActivityGraphs().deleteActionState(elem);
                     if (elem instanceof MCallState) {
-                        getActivityGraphs().deleteCallState((MCallState) elem);
+                        getActivityGraphs().deleteCallState(elem);
                     }
                 } else if (elem instanceof MObjectFlowState) {
-                    getActivityGraphs().deleteObjectFlowState(
-                        (MObjectFlowState) elem);
+                    getActivityGraphs().deleteObjectFlowState(elem);
                 }
             } else if (elem instanceof MFinalState) {
                 getStateMachines().deleteFinalState((MFinalState) elem);

@@ -24,12 +24,6 @@
 
 package org.argouml.model;
 
-import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
-import ru.novosoft.uml.behavior.activity_graphs.MCallState;
-import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
-import ru.novosoft.uml.behavior.activity_graphs.MObjectFlowState;
-import ru.novosoft.uml.behavior.activity_graphs.MPartition;
-import ru.novosoft.uml.behavior.activity_graphs.MSubactivityState;
 
 /**
  * The interface for the factory for ActivityGraphs.<p>
@@ -49,42 +43,42 @@ public interface ActivityGraphsFactory {
      *
      * @return an initialized UML ActivityGraph instance.
      */
-    MActivityGraph createActivityGraph();
+    Object createActivityGraph();
 
     /**
      * Create an empty but initialized instance of a UML CallState.
      *
      * @return an initialized UML CallState instance.
      */
-    MCallState createCallState();
+    Object createCallState();
 
     /**
      * Create an empty but initialized instance of a UML ClassifierInState.
      *
      * @return an initialized UML ClassifierInState instance.
      */
-    MClassifierInState createClassifierInState();
+    Object createClassifierInState();
 
     /**
      * Create an empty but initialized instance of a UML ObjectFlowState.
      *
      * @return an initialized UML ObjectFlowState instance.
      */
-    MObjectFlowState createObjectFlowState();
+    Object createObjectFlowState();
 
     /**
      * Create an empty but initialized instance of a UML Partition.
      *
      * @return an initialized UML Partition instance.
      */
-    MPartition createPartition();
+    Object createPartition();
 
     /**
      * Create an empty but initialized instance of a UML SubactivityState.
      *
      * @return an initialized UML SubactivityState instance.
      */
-    MSubactivityState createSubactivityState();
+    Object createSubactivityState();
 
     /**
      * Builds an activity graph owned by the given context.<p>
@@ -125,30 +119,30 @@ public interface ActivityGraphsFactory {
     /**
      * @param elem the ActivityGraph to be deleted
      */
-    void deleteActivityGraph(MActivityGraph elem);
+    void deleteActivityGraph(Object elem);
 
     /**
      * @param elem the CallState to be deleted
      */
-    void deleteCallState(MCallState elem);
+    void deleteCallState(Object elem);
 
     /**
      * @param elem the ClassifierInState to be deleted
      */
-    void deleteClassifierInState(MClassifierInState elem);
+    void deleteClassifierInState(Object elem);
 
     /**
      * @param elem ObjectFlowState
      */
-    void deleteObjectFlowState(MObjectFlowState elem);
+    void deleteObjectFlowState(Object elem);
 
     /**
      * @param elem Partition
      */
-    void deletePartition(MPartition elem);
+    void deletePartition(Object elem);
 
     /**
      * @param elem SubactivityState
      */
-    void deleteSubactivityState(MSubactivityState elem);
+    void deleteSubactivityState(Object elem);
 }

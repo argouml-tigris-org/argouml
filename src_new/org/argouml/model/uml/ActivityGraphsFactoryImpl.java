@@ -46,7 +46,7 @@ import ru.novosoft.uml.model_management.MPackage;
 /**
  * Factory to create UML classes for the UML
  * BehaviorialElements::ActivityGraphs package.
- * 
+ *
  * TODO: Change visibility to package after reflection problem solved.
  *
  * @since ARGO0.11.2
@@ -78,7 +78,7 @@ public class ActivityGraphsFactoryImpl
      *
      * @return an initialized UML ActivityGraph instance.
      */
-    public MActivityGraph createActivityGraph() {
+    public Object createActivityGraph() {
         MActivityGraph modelElement =
 	    MFactory.getDefaultFactory().createActivityGraph();
 	super.initialize(modelElement);
@@ -90,7 +90,7 @@ public class ActivityGraphsFactoryImpl
      *
      * @return an initialized UML CallState instance.
      */
-    public MCallState createCallState() {
+    public Object createCallState() {
         MCallState modelElement =
 	    MFactory.getDefaultFactory().createCallState();
 	super.initialize(modelElement);
@@ -102,7 +102,7 @@ public class ActivityGraphsFactoryImpl
      *
      * @return an initialized UML ClassifierInState instance.
      */
-    public MClassifierInState createClassifierInState() {
+    public Object createClassifierInState() {
         MClassifierInState modelElement =
 	    MFactory.getDefaultFactory().createClassifierInState();
 	super.initialize(modelElement);
@@ -114,7 +114,7 @@ public class ActivityGraphsFactoryImpl
      *
      * @return an initialized UML ObjectFlowState instance.
      */
-    public MObjectFlowState createObjectFlowState() {
+    public Object createObjectFlowState() {
         MObjectFlowState modelElement =
 	    MFactory.getDefaultFactory().createObjectFlowState();
 	super.initialize(modelElement);
@@ -126,7 +126,7 @@ public class ActivityGraphsFactoryImpl
      *
      * @return an initialized UML Partition instance.
      */
-    public MPartition createPartition() {
+    public Object createPartition() {
         MPartition modelElement =
 	    MFactory.getDefaultFactory().createPartition();
 	super.initialize(modelElement);
@@ -138,7 +138,7 @@ public class ActivityGraphsFactoryImpl
      *
      * @return an initialized UML SubactivityState instance.
      */
-    public MSubactivityState createSubactivityState() {
+    public Object createSubactivityState() {
         MSubactivityState modelElement =
 	    MFactory.getDefaultFactory().createSubactivityState();
 	super.initialize(modelElement);
@@ -157,7 +157,7 @@ public class ActivityGraphsFactoryImpl
 	    && (context instanceof MBehavioralFeature
 		|| context instanceof MClassifier
 		|| context instanceof MPackage)) {
-	    MActivityGraph graph = createActivityGraph();
+	    MActivityGraph graph = (MActivityGraph) createActivityGraph();
 	    graph.setContext(context);
 	    if (context instanceof MNamespace) {
 		graph.setNamespace((MNamespace) context);
@@ -185,8 +185,9 @@ public class ActivityGraphsFactoryImpl
      */
     public Object buildObjectFlowState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
-            MObjectFlowState state = createObjectFlowState();
-            state.setContainer((MCompositeState) compositeState);
+            Object state = createObjectFlowState();
+            ((MObjectFlowState) state).setContainer(
+                    (MCompositeState) compositeState);
             return state;
         }
         return null;
@@ -202,7 +203,7 @@ public class ActivityGraphsFactoryImpl
      */
     public Object buildClassifierInState(Object classifier, Object state) {
         if (classifier instanceof MClassifier && state instanceof MState) {
-            MClassifierInState c = createClassifierInState();
+            Object c = createClassifierInState();
             ModelFacade.setType(c, classifier);
             ModelFacade.addInState(c, state);
         }
@@ -218,32 +219,32 @@ public class ActivityGraphsFactoryImpl
     /**
      * @param elem the ActivityGraph to be deleted
      */
-    public void deleteActivityGraph(MActivityGraph elem) { }
+    public void deleteActivityGraph(Object elem) { }
 
     /**
      * @param elem the CallState to be deleted
      */
-    public void deleteCallState(MCallState elem) { }
+    public void deleteCallState(Object elem) { }
 
     /**
      * @param elem the ClassifierInState to be deleted
      */
-    public void deleteClassifierInState(MClassifierInState elem) { }
+    public void deleteClassifierInState(Object elem) { }
 
     /**
      * @param elem ObjectFlowState
      */
-    public void deleteObjectFlowState(MObjectFlowState elem) { }
+    public void deleteObjectFlowState(Object elem) { }
 
     /**
      * @param elem Partition
      */
-    public void deletePartition(MPartition elem) { }
+    public void deletePartition(Object elem) { }
 
     /**
      * @param elem SubactivityState
      */
-    public void deleteSubactivityState(MSubactivityState elem) { }
+    public void deleteSubactivityState(Object elem) { }
 
 }
 
