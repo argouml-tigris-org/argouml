@@ -48,8 +48,10 @@ import ru.novosoft.uml.MElementListener;
 /**
  * ComboBoxmodel for UML modelelements. This implementation does not use 
  * reflection and seperates Model, View and Controller better then does
- * UMLComboBoxModel. In the future UMLComboBoxModel and UMLComboBox will be
- * replaced with this implementation to improve performance.
+ * the former UMLComboBoxModel. <p>
+ * 
+ * This combobox allows selecting no value, if so indicated 
+ * at construction time of this class. I.e. it is "clearable".
  */
 public abstract class UMLComboBoxModel2
     extends AbstractListModel
