@@ -3731,6 +3731,18 @@ public class ModelFacade {
     }
 
     /**
+     * Get the occurrences of an operation.
+     * @param handle the Opration
+     * @return the collection of occurrences
+     */
+    public static Collection getOccurrences(Object handle) {
+        if (handle instanceof MOperation) {
+            return ((MOperation) handle).getOccurrences();
+        }
+        return illegalArgumentCollection(handle);
+    }
+    
+    /**
      * Get the list of operations.
      *
      * @param handle classifier to examine.
