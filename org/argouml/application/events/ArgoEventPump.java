@@ -26,6 +26,9 @@ import org.argouml.application.api.*;
 import java.util.*;
 import org.apache.log4j.*;
 
+/** ArgoEventPump is an eventhandler which handles events regarding 
+ *  the loading and unloading of modules.
+ */
 public class ArgoEventPump {
 
     Category cat = Category.getInstance(ArgoEventPump.class.getName());
