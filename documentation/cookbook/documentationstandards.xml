@@ -13,7 +13,8 @@ Standards for writing documentation (manual, cookbook, quickguide).
   <sect1>
     <title>Introduction</title>
 
-    <para>The entire documentation
+    <para>
+The documentation
       (currently manual, cookbook, and quickguide)
       is written using
       <ulink url="http://www.oasis-open.org/docbook"><application>DocBook
@@ -21,8 +22,7 @@ Standards for writing documentation (manual, cookbook, quickguide).
       conventions for use of DocBook and for the documentation in general. It
 also includes some information 
 for tooling configuration, e.g. 
-for Emacs 
-and the psgml package.
+for Emacs with the psgml package.
 </para>
   </sect1>
 
@@ -34,8 +34,9 @@ and the psgml package.
     <itemizedlist>
       <listitem>
 	<para>
-"We" in the document means the persons reading the document and using
-&argouml;
+"We" in the documents means the persons reading the document.
+For the Quick-guide and User Manual this means the user using &argouml;.
+For the Cookbook this means the developer working with improving &argouml;.
 </para>
       </listitem>
 
@@ -106,8 +107,10 @@ Spelling is US English.
 
       <listitem>
 	<para>
-Use full URLs throughout this manual!
-Rationale: The manual may also be published in other formats then html on the &argouml; web site.
+Use full URLs throughout all documents!
+Rationale: 
+These documents may also be published in other formats then 
+html on the &argouml; web site.
 </para>
       </listitem>
 
@@ -115,19 +118,20 @@ Rationale: The manual may also be published in other formats then html on the &a
 	<para>
 Do not include lists of what changes have been done.
 This information is kept by CVS, the version control tool.
-This is changed since Jeremy Bennet did the work for 0.9/0.10
-so there are still such lists.
+This is changed since Jeremy Bennet did the work for 
+the 0.9/0.10 User Manual and there might still exist such lists.
 Remove them while changing the files!
 </para>
       </listitem>
 
       <listitem>
 	<para>
-Problems in the current implementation of &argouml; are mentioned
+When problems in the current implementation of &argouml; are mentioned
 or perhaps even emphasized using the
-<sgmltag>warning</sgmltag> tag.
-The issue number is included in a sgml-comment in the source 
-so that it is easy to know if this problem has been fixed.
+<sgmltag>warning</sgmltag> tag,
+include the issue number in a sgml-comment in the source 
+so that it is easy to know if this problem has been fixed
+when revising the document.
 The issue should be mentioned in the format <quote>issue xxx</quote>, i.e.
 there should only be a space between 
 the word <quote>issue</quote> 
@@ -142,7 +146,10 @@ the manual source.
         <para>
 Do not write "currently". Better write either
 "in version 0.14" if you mean in the stable version 0.14 of ArgoUML or "in
-version @VERSION@" if you mean in the current version of the manual. There
+version &amp;argoversion;" if you mean in the current version of the document
+as defined in <filename>default.properties</filename> when 
+the document is deployed.
+There
 are some old references to "current" or "currently" also. If you encounter
 them, try to remove them!
         </para>
@@ -150,7 +157,7 @@ them, try to remove them!
       
       <listitem>
         <para>
-          For documents that contain an <quote>index</quote>:
+For documents that contain an <quote>index</quote>,
 Add indexterms while doing changes. 
 Creating the index is a good idea 
 and we eventually should have indexterms all over. 
@@ -174,16 +181,9 @@ strangely biased.
       <listitem>
 	<para>
 The top level document
-of the manual
-is argouml.xml (actually in argouml.in 
-and copied to argouml.xml by the build script).
-The top level document
-of the cookbook
-is cookbook.xml (actually in cookbook.in 
-and copied to cookbook.xml by the build script).
-  </para></listitem>
-
-  <listitem><para>
+of the document
+is in <filename>documentname.in</filename>
+(copied to <filename>documentname.xml</filename> by the build script). 
 Each chapter (or
         preface, glossary, appendix etc) is a separate file, defined as a
         system entity and included from this top level
@@ -191,11 +191,22 @@ Each chapter (or
 
       <listitem><para>There are some useful entities defined for common terms
         in the beginning of 
-        this top level document. 
+this top level document.
+</para>
+        <para>
         E.g. use of
         <sgmltag>&amp;argouml;</sgmltag> will ensure consistent naming of the
 product (ArgoUML) and allow us to change it later (to Argo/UML,
-        Argouml or whatever).</para></listitem>
+        Argouml or whatever).
+</para>
+        <para>
+In the build script there is some magic that
+translates @tagname@ to a real value.
+E.g. @VERSION@ in the <filename>documentname.in</filename> file 
+into <replaceable>what.ever</replaceable> in 
+the <filename>documentname.xml</filename> file.
+</para>
+      </listitem>
 
       <listitem><para>XML comments are used throughout to explain what various
         sections are trying to achieve.</para></listitem>
@@ -279,7 +290,7 @@ Especially if reindentation caused the paragraphs to be broken
 in a different way.
 Not indenting the text means that the text will be unchanged even
 if the heading level was changed.
-The contributions that Jeremy Bennet did for 0.10 
+The contributions that Jeremy Bennet did for the 0.10 User Manual
 are not indented like this.
 Change it while changing the paragraphs.
 </para>
@@ -299,7 +310,7 @@ When structuring the text the parts are paragraphs, sentences and words.
 By having each sentence on a line of its own it is easier to see
 what sentences has been changed and what has not in the <literal>diff</literal>
 reports from CVS.
-The contributions that Jeremy Bennet did 
+The contributions that Jeremy Bennet did for the 0.10 User Manual
 are not written like this.
 Change it while changing the paragraphs.
 </para>
