@@ -57,9 +57,12 @@ public class ConfigurationProperties extends ConfigurationHandler {
       Properties defaults = new Properties();
       try {
           defaults.load(getClass().getResourceAsStream(PROPERTIES));
+	  Configuration.cat.debug("Configuration loaded from " + PROPERTIES);
       }
       catch (Exception ioe) {
           // needs-more-work:  What should we do here?
+	  Configuration.cat.warn("Configuration not loaded from " + PROPERTIES,
+	                          ioe);
       }
       _properties = new Properties(defaults);
   }
@@ -153,12 +156,15 @@ public class ConfigurationProperties extends ConfigurationHandler {
    *  @return the string value of the key if found, otherwise null;
    */
   public String getValue(String key, String defaultValue) {
+      String result = "";
       try {
-          return _properties.getProperty(key, defaultValue);
+          result = _properties.getProperty(key, defaultValue);
       }
       catch (Exception e) {
-          return defaultValue;
+          result = defaultValue;
       }
+      Configuration.cat.debug("key '" + key + "' returns '" + result + "'");
+      return result;
   }
 
   /** Sets the string value of a configuration property.
@@ -167,6 +173,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
    *  @param value the value to set the key to.
    */
   public void setValue(String key, String value) {
+     Configuration.cat.debug("key '" + key + "' set to '" + value + "'");
      _properties.setProperty(key, value);
   }
 }

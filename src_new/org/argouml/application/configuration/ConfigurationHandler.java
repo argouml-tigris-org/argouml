@@ -24,7 +24,6 @@
 
 package org.argouml.application.configuration;
 import org.argouml.application.api.*;
-// import org.argouml.application.helpers.*;
 import java.beans.*;
 import java.io.*;
 import java.util.*;
@@ -32,7 +31,7 @@ import java.net.*;
 import org.apache.log4j.*;
 
 /**
- *   This class provides a user configuration based upon properties files.
+ *   This class provides a user configuration based upon properties.
  *   This provides an implementation-free interface to a configuration
  *   repository.  Any classes which need to implement a configuration
  *   datastore must extend this class.
@@ -42,11 +41,12 @@ import org.apache.log4j.*;
  *   storage-related logic must be handled by the extending class.
  *   These methods are abstract.
  *
- *   This class is intimately related to org.argouml.kernel.Configuration.
+ *   This class is intimately related to
+ *   {@link org.argouml.application.api.Configuration}.
  *   
  *   @author Thierry Lach
  *
- *   @see org.argouml.kernel.Configuration
+ *   @since 0.9.4
  */
 public abstract class ConfigurationHandler {
 
@@ -100,7 +100,7 @@ public abstract class ConfigurationHandler {
   public abstract String getDefaultPath();
 
   /** Internal worker which is called prior to any getValue
-   *  or setValue to ensure that the load is done if it was not
+   *  or setValue to ensure that the default load is done if it was not
    *  loaded previously.
    */
   private void loadIfNecessary() {
@@ -174,7 +174,7 @@ public abstract class ConfigurationHandler {
       boolean status = loadFile(file);
       if (status) {
           if (_pcl != null) {
-              _pcl.firePropertyChange("configuration.load.file", null, file);
+              _pcl.firePropertyChange(Configuration.FILE_LOADED, null, file);
           }
           _loadedFromFile = file;
 	  _loaded = status;
@@ -195,7 +195,7 @@ public abstract class ConfigurationHandler {
       boolean status = loadURL(url);
       if (status) {
           if (_pcl != null) {
-              _pcl.firePropertyChange("configuration.load.url", null, url);
+              _pcl.firePropertyChange(Configuration.URL_LOADED, null, url);
           }
           _loadedFromURL = url;
 	  _loaded = status;
@@ -215,7 +215,7 @@ public abstract class ConfigurationHandler {
       boolean status = saveFile(file);
       if (status) {
           if (_pcl != null) {
-              _pcl.firePropertyChange("configuration.save.file", null, file);
+              _pcl.firePropertyChange(Configuration.FILE_SAVED, null, file);
           }
       }
       return status;
@@ -233,7 +233,7 @@ public abstract class ConfigurationHandler {
       boolean status = saveURL(url);
       if (status) {
           if (_pcl != null) {
-              _pcl.firePropertyChange("configuration.save.url", null, url);
+              _pcl.firePropertyChange(Configuration.URL_SAVED, null, url);
           }
       }
       return status;
@@ -371,7 +371,7 @@ public abstract class ConfigurationHandler {
       if (_pcl == null) {
           _pcl = new PropertyChangeSupport(this);
       }
-      Configuration.log.debug("addPropertyChangeListener()");
+      Configuration.cat.debug("addPropertyChangeListener()");
       _pcl.addPropertyChangeListener(pcl);
   }
 
@@ -381,7 +381,7 @@ public abstract class ConfigurationHandler {
    */
   public final void removeListener(PropertyChangeListener pcl) {
       if (_pcl != null) {
-          Configuration.log.debug("removePropertyChangeListener()");
+          Configuration.cat.debug("removePropertyChangeListener()");
           _pcl.removePropertyChangeListener(pcl);
       }
   }
@@ -395,7 +395,7 @@ public abstract class ConfigurationHandler {
       if (_pcl == null) {
           _pcl = new PropertyChangeSupport(this);
       }
-      Configuration.log.debug("addPropertyChangeListener(" + key.getKey() + ")");
+      Configuration.cat.debug("addPropertyChangeListener(" + key.getKey() + ")");
       _pcl.addPropertyChangeListener(key.getKey(), pcl);
   }
 
@@ -406,7 +406,7 @@ public abstract class ConfigurationHandler {
    */
   public final void removeListener(ConfigurationKey key, PropertyChangeListener pcl) {
       if (_pcl != null) {
-          Configuration.log.debug("removePropertyChangeListener(" + key.getKey() + ")");
+          Configuration.cat.debug("removePropertyChangeListener(" + key.getKey() + ")");
           _pcl.removePropertyChangeListener(key.getKey(), pcl);
       }
   }
