@@ -242,6 +242,7 @@ public abstract class PropPanel
      *     the field is a link.
      *   @param label the required string label
      *   @param component Component to be added
+     *   @deprecated replaced by according widgets as of version 0.17.1
      */
     public final void addLinkField(String label, JComponent component) {
         component.setBackground(getBackground());

@@ -36,7 +36,10 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
+import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.PropPanelButton2;
+import org.argouml.uml.ui.UMLConditionExpressionModel;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
 import org.argouml.uml.ui.UMLExpressionModel;
@@ -72,12 +75,13 @@ public class PropPanelGuard extends PropPanelModelElement {
 
         UMLExpressionModel expressionModel = new UMLExpressionModel(this, (Class)ModelFacade.GUARD, "expression",
 								    (Class)ModelFacade.BOOLEAN_EXPRESSION, "getExpression", "setExpression");
-        addField(Translator.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel, true), JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-        addField(Translator.localize("UMLMenu", "label.language"), new UMLExpressionLanguageField(expressionModel, true));
+        //UMLExpressionModel2 expressionModel = new UMLConditionExpressionModel(this, "expression")
+        //addField(Translator.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel, true), JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+        //addField(Translator.localize("UMLMenu", "label.language"), new UMLExpressionLanguageField(expressionModel, true));
 
 	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-	new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
-
+	buttonPanel
+        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
 } /* end class PropPanelState */

@@ -28,7 +28,6 @@
 // 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Labels corrected to
 // "Generalizations:" and "Specializations".
 
-
 package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JList;
@@ -38,68 +37,91 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.ActionAddAttribute;
+import org.argouml.uml.diagram.ui.ActionAddOperation;
+import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewReception;
 import org.argouml.util.ConfigLoader;
 
 /**
- * TODO: this property panel needs refactoring to remove dependency on
- *       old gui components.
+ * TODO: this property panel needs refactoring to remove dependency on old gui
+ * components.
  */
 public class PropPanelClass extends PropPanelClassifier {
 
     private JScrollPane _attributeScroll;
+
     private JScrollPane _operationScroll;
 
-    private static UMLClassAttributeListModel attributeListModel =
-        new UMLClassAttributeListModel();
+    private static UMLClassAttributeListModel attributeListModel = new UMLClassAttributeListModel();
 
-    private static UMLClassOperationListModel operationListModel =
-        new UMLClassOperationListModel();
+    private static UMLClassOperationListModel operationListModel = new UMLClassOperationListModel();
 
     ////////////////////////////////////////////////////////////////
     // contructors
     public PropPanelClass() {
-	super("Class", ConfigLoader.getTabPropsOrientation());
-	Class mclass = (Class)ModelFacade.CLASS;
+        super("Class", ConfigLoader.getTabPropsOrientation());
+        Class mclass = (Class) ModelFacade.CLASS;
 
-	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-	// addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
-	_modifiersPanel.add(new UMLClassActiveCheckBox());
-	add(_modifiersPanel);
-	add(getNamespaceVisibilityPanel());
+        addField(Translator.localize("UMLMenu", "label.name"),
+                getNameTextField());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), new
+        // UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
+        // "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"),
+                getNamespaceComboBox());
+        _modifiersPanel.add(new UMLClassActiveCheckBox());
+        add(_modifiersPanel);
+        add(getNamespaceVisibilityPanel());
 
-	addSeperator();
+        addSeperator();
 
-	addField(Translator.localize("UMLMenu", "label.client-dependencies"), getClientDependencyScroll());
-	addField(Translator.localize("UMLMenu", "label.supplier-dependencies"), getSupplierDependencyScroll());
-	addField(Translator.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
-	addField(Translator.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+        addField(Translator.localize("UMLMenu", "label.client-dependencies"),
+                getClientDependencyScroll());
+        addField(Translator.localize("UMLMenu", "label.supplier-dependencies"),
+                getSupplierDependencyScroll());
+        addField(Translator.localize("UMLMenu", "label.generalizations"),
+                getGeneralizationScroll());
+        addField(Translator.localize("UMLMenu", "label.specializations"),
+                getSpecializationScroll());
 
-	addSeperator();
+        addSeperator();
 
-	addField(Translator.localize("UMLMenu", "label.attributes"), getAttributeScroll());
-	addField(Translator.localize("UMLMenu", "label.association-ends"), getAssociationEndScroll());
-	addField(Translator.localize("UMLMenu", "label.operations"), getOperationScroll());
-	addField(Translator.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
+        addField(Translator.localize("UMLMenu", "label.attributes"),
+                getAttributeScroll());
+        addField(Translator.localize("UMLMenu", "label.association-ends"),
+                getAssociationEndScroll());
+        addField(Translator.localize("UMLMenu", "label.operations"),
+                getOperationScroll());
+        addField(Translator.localize("UMLMenu", "label.owned-elements"),
+                getOwnedElementsScroll());
 
-
-	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-	new PropPanelButton(this, buttonPanel, _addAttrIcon, Translator.localize("UMLMenu", "button.new-attribute"), "addAttribute", null);
-	new PropPanelButton(this, buttonPanel, _addOpIcon, Translator.localize("UMLMenu", "button.new-operation"), "addOperation", null);
-        new PropPanelButton(this, buttonPanel, _receptionIcon, Translator.localize("UMLMenu", "button.new-reception"), getActionNewReception());
-	new PropPanelButton(this, buttonPanel, _innerClassIcon, Translator.localize("UMLMenu", "button.new-inner-class"), "addInnerClass", null);
-	new PropPanelButton(this, buttonPanel, _classIcon, Translator.localize("UMLMenu", "button.new-class"), "newClass", null);
-	new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-class"), "removeElement", null);
-
+        buttonPanel.add(new PropPanelButton2(this,
+                new ActionNavigateNamespace()));
+        buttonPanel
+                .add(new PropPanelButton2(this, ActionAddAttribute.SINGLETON));
+        buttonPanel
+                .add(new PropPanelButton2(this, ActionAddOperation.SINGLETON));
+        buttonPanel.add(new PropPanelButton2(this, new ActionNewReception()));
+        new PropPanelButton(this, buttonPanel, _innerClassIcon, Translator
+                .localize("UMLMenu", "button.new-inner-class"),
+                "addInnerClass", null);
+        new PropPanelButton(this, buttonPanel, _classIcon, Translator.localize(
+                "UMLMenu", "button.new-class"), "newClass", null);
+        buttonPanel
+                .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     public void addInnerClass() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            Object classifier = /*(MClassifier)*/ target;
+            Object classifier = /* (MClassifier) */target;
             Object inner = CoreFactory.getFactory().buildClass(classifier);
             TargetManager.getInstance().setTarget(inner);
         }
@@ -108,7 +130,7 @@ public class PropPanelClass extends PropPanelClassifier {
     public void newClass() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            Object classifier = /*(MClassifier)*/ target;
+            Object classifier = /* (MClassifier) */target;
             Object ns = ModelFacade.getNamespace(classifier);
             if (ns != null) {
                 Object peer = CoreFactory.getFactory().buildClass(ns);
@@ -120,6 +142,7 @@ public class PropPanelClass extends PropPanelClassifier {
 
     /**
      * Returns the operationScroll.
+     * 
      * @return JScrollPane
      */
     public JScrollPane getOperationScroll() {
@@ -132,6 +155,7 @@ public class PropPanelClass extends PropPanelClassifier {
 
     /**
      * Returns the attributeScroll.
+     * 
      * @return JScrollPane
      */
     public JScrollPane getAttributeScroll() {
@@ -141,9 +165,5 @@ public class PropPanelClass extends PropPanelClassifier {
         }
         return _attributeScroll;
     }
-    
-    
 
-
-    
 } /* end class PropPanelClass */

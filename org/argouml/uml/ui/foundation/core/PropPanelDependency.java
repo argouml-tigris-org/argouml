@@ -28,10 +28,10 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-
 import org.argouml.swingext.Orientation;
-import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
 
@@ -65,9 +65,9 @@ public class PropPanelDependency extends PropPanelRelationship {
         addField(Translator.localize("UMLMenu", "label.suppliers"), _supplierScroll);
         addField(Translator.localize("UMLMenu", "label.clients"), _clientScroll);
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-association"), "removeElement", null);
-
+        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));
+        buttonPanel
+        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     /**

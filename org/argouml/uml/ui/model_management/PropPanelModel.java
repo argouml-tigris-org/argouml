@@ -3,14 +3,14 @@
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -24,31 +24,44 @@
 
 package org.argouml.uml.ui.model_management;
 
-import org.argouml.application.api.*;
-import org.argouml.util.ConfigLoader;
 import org.argouml.application.ArgoVersion;
+import org.argouml.application.api.PluggablePropertyPanel;
 import org.argouml.model.ModelFacade;
+import org.argouml.util.ConfigLoader;
 
-public class PropPanelModel extends PropPanelPackage 
-        implements PluggablePropertyPanel {
-    ////////////////////////////////////////////////////////////////
-    // instance vars
+/**
+ * A Propertypanel for a model.
+ */
+public class PropPanelModel extends PropPanelPackage implements
+        PluggablePropertyPanel {
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
     public PropPanelModel() {
-	super("Model", ConfigLoader.getTabPropsOrientation());
+        super("Model", ConfigLoader.getTabPropsOrientation());
     }
 
     public Class getClassForPanel() {
         // TODO Shouldn't refer to NSUML implementation class
-        return (Class)ModelFacade.MODEL;//MModelImpl.class;
+        return (Class) ModelFacade.MODEL;//MModelImpl.class;
     }
 
-    public String getModuleName() { return "PropPanelModel"; }
-    public String getModuleDescription() { return "Property Panel for Model"; }
-    public String getModuleAuthor() { return "ArgoUML Core"; }
-    public String getModuleVersion() { return ArgoVersion.getVersion(); }
-    public String getModuleKey() { return "module.propertypanel.model"; }
+    public String getModuleName() {
+        return "PropPanelModel";
+    }
+
+    public String getModuleDescription() {
+        return "Property Panel for Model";
+    }
+
+    public String getModuleAuthor() {
+        return "ArgoUML Core";
+    }
+
+    public String getModuleVersion() {
+        return ArgoVersion.getVersion();
+    }
+
+    public String getModuleKey() {
+        return "module.propertypanel.model";
+    }
 
 } /* end class PropPanelModel */
