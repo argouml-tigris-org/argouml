@@ -183,6 +183,7 @@ public class MultiEditorPane
      * is the component shown by the multieditorpane. At the moment (version
      * 0.13.3 of ArgoUML) there is only 1 tab, the Diagram tab.
      *
+     * @param tabName the given tab name
      * @return The index.
      */
     public int getIndexOfNamedTab(String tabName) {
@@ -197,7 +198,7 @@ public class MultiEditorPane
     /**
      * Selects a certain tab and shows it. At the moment (version
      * 0.13.3 of ArgoUML) there is only 1 tab, the Diagram tab.
-     * @param tabName
+     * @param tabName the name of the tab
      */
     public void selectTabNamed(String tabName) {
         int index = getIndexOfNamedTab(tabName);
@@ -224,6 +225,8 @@ public class MultiEditorPane
 
     /**
      * Called when the user selects a tab, by clicking or otherwise. 
+     *
+     * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
      */
     public void stateChanged(ChangeEvent  e) {
         //TODO: should fire its own event and ProjectBrowser
@@ -286,6 +289,8 @@ public class MultiEditorPane
 
     /**
      * Called when the user clicks once on a tab.
+     *
+     * @param tab the tab that was clicked on
      */
     public void mySingleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
@@ -322,7 +327,8 @@ public class MultiEditorPane
      * TODO: move this to ProjectManager for example, in any case: out
      * of the GUI.
      *
-     * @param obj
+     * @param obj the given object
+     * @param diagrams the list of diagrams
      */
     public void removePresentationFor(Object obj, Vector diagrams) {
         for (int i = 0; i < _tabs.getComponentCount(); i++) {
@@ -350,9 +356,9 @@ public class MultiEditorPane
      * TODO: move this to ProjectManager for example, in any case: out
      * of the GUI
      *
-     * @param o
-     * @param diagrams
-     * @return List
+     * @param o the given object
+     * @param diagrams the given list of diagrams
+     * @return List the list of figs
      */
     public List findPresentationsFor(Object o, Vector diagrams) {
         List returnList = new ArrayList();
