@@ -217,7 +217,7 @@ implements ChangeListener, MouseListener, QuadrantPanel {
   /** There is no way through the GUI to set any preferences
    *
    * @return the preferred size on initial creation
-   */  
+   */
   public Dimension getPreferredSize() { return new Dimension(400, 150); }
 
   ////////////////////////////////////////////////////////////////
@@ -232,6 +232,9 @@ implements ChangeListener, MouseListener, QuadrantPanel {
   }
 
   public void selectTabNamed(String tabName) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    pb.setDetailsPaneVisible(true); // Added BobTarling 7-Jan-2002
+
     int index = getIndexOfNamedTab(tabName);
     if (index != -1) _tabs.setSelectedIndex(index);
   }
@@ -245,6 +248,9 @@ implements ChangeListener, MouseListener, QuadrantPanel {
   }
 
   public void selectNextTab() {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    pb.setDetailsPaneVisible(true); // Added BobTarling 7-Jan-2002
+
     int size = _tabPanels.size();
     int currentTab = _tabs.getSelectedIndex();
     for (int i = 1; i < _tabPanels.size(); i++) {
@@ -266,7 +272,7 @@ implements ChangeListener, MouseListener, QuadrantPanel {
             }
         }
     }
-    
+
     public void removeNavigationListener(NavigationListener navListener) {
         Iterator iter = _tabPanels.iterator();
         Object panel;
@@ -297,14 +303,14 @@ implements ChangeListener, MouseListener, QuadrantPanel {
     if (_modelTarget != null) _lastNonNullTab = _tabs.getSelectedIndex();
   }
 
-  /** called when the user clicks once on a tab. */ 
+  /** called when the user clicks once on a tab. */
   public void mySingleClick(int tab) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     //System.out.println("single: " + _tabs.getComponentAt(tab).toString());
   }
 
-  /** called when the user clicks twice on a tab. */ 
+  /** called when the user clicks twice on a tab. */
   public void myDoubleClick(int tab) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
@@ -327,11 +333,11 @@ implements ChangeListener, MouseListener, QuadrantPanel {
     }
   }
 
-  
+
   protected Icon _upArrowIcon = new UpArrowIcon();
 
   protected Icon _leftArrowIcon = new LeftArrowIcon();
-  
+
   public int getQuadrant() { return Q_BOTTOM_RIGHT; }
 
 } /* end class DetailsPane */
