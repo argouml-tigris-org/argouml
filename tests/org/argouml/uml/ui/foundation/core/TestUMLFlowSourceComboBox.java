@@ -35,6 +35,7 @@ import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassImpl;
 import ru.novosoft.uml.foundation.core.MFlow;
 import ru.novosoft.uml.foundation.core.MFlowImpl;
+import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MModelImpl;
 
 import junit.framework.TestCase;
@@ -88,7 +89,9 @@ public class TestUMLFlowSourceComboBox extends TestCase {
     // this test does not work yet since the event mechanisme in argo needs to 
     // be refactored.
     public void testSetSelected() {
-        MClass clazz = CoreFactory.getFactory().buildClass(new MModelImpl());
+        MModel m = new MModelImpl();
+        MClass clazz = CoreFactory.getFactory().buildClass(m);
+        elem.setNamespace(m);
         box.setSelectedItem(clazz);
         assert(elem.getSources().contains(clazz));
     }
