@@ -2012,27 +2012,846 @@ addBases:
     }
   }
 
-  /** Parse a line of the form: "name: action" */
-  public void parseMessage(MMessage mes, String s) {
-    // strip any trailing semi-colons
-    s = s.trim();
-    if (s.length() == 0) return;
-    if (s.charAt(s.length()-1) == ';')
-      s = s.substring(0, s.length() - 2);
+  /**
+   * Parses a message line on the form:
+   *
+   * <br>intno := integer|name
+   * <br>seq := intno ['.' intno]*
+   * <br>recurrance := '*'['//'] | '*'['//']'['<i>iteration</i>']' | '['<i>condition</i>']'
+   * <br>seqelem := {[intno] ['['recurrance']']}
+   * <br>seq2 := seqelem ['.' seqelem]*
+   * <br>ret_list := lvalue [',' lvalue]*
+   * <br>arg_list := rvalue [',' rvalue]*
+   * <br>message := [seq [',' seq]* '/'] seq2 ':' [ret_list :=] name ([arg_list])
+   *
+   * <p>Which is rather complex, so a few examples:
+   * <br>2: display(x, y)
+   * <br>1.3.1: p := find(specs)
+   * <br>[x < 0] 4: invert(color)
+   * <br>A3, B4/ C3.1*: update()
+   *
+   * <p>This syntax is compatible with the UML 1.3 specification.
+   *
+   * <p>Actually, only a subset of this syntax is currently supported, and
+   * some is not even planned to be supported. Also, not even all supported
+   * syntax is currently completely implemented.
+   *
+   * @param mes The MMessage to apply any changes to.
+   * @param s The String to parse.
+   * @throws java.text.ParseException when it detects an error in the
+   *	attribute string. See also ParseError.getErrorOffset().
+   */
+  /* (formerly: name: action ) */
+  public void parseMessage(MMessage mes, String s) throws ParseException {
+    String fname = null;
+    String guard = null;
+    String paramExpr = null;
+    String token;
+    String varname = null;
+    Vector predecessors = new Vector();
+    Vector seqno = null;
+    Vector currentseq = new Vector();
+    Vector args = null;
+    boolean mustBePre = false;
+    boolean mustBeSeq = false;
+    boolean parallell = false;
+    boolean iterative = false;
+    boolean mayDeleteExpr = false;
+    boolean refindOperation = false;
+    MMessage root;
+    int i;
 
-    String name = "";
-    String action = "";
-    if (s.indexOf(":", 0) > -1) {
-      name = s.substring(0, s.indexOf(":")).trim();
-      //System.out.println("set message name to: '" + name + "'");
-      action = s.substring(s.indexOf(":") + 1).trim();
+    currentseq.add(null);
+    currentseq.add(null);
+
+    try {
+	MyTokenizer st = new MyTokenizer(s, " ,\t,*,[,],.,:,=,/,\\,",
+		MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+
+	while (st.hasMoreTokens()) {
+	    token = st.nextToken();
+
+	    if (" ".equals(token) || "\t".equals(token)) {
+		if (currentseq == null) {
+		    if (varname != null && fname == null) {
+			varname += token;
+		    }
+		}
+	    } else if ("[".equals(token)) {
+		if (mustBePre)
+		    throw new ParseException("Predecessors cannot be " +
+			"qualified", st.getTokenIndex());
+		mustBeSeq = true;
+
+		guard = "";
+		while (true) {
+		    token = st.nextToken();
+		    if ("]".equals(token))
+			break;
+		    guard += token;
+		}
+	    } else if ("*".equals(token)) {
+		if (mustBePre)
+		    throw new ParseException("Predecessors cannot be " +
+			"iterated", st.getTokenIndex());
+		mustBeSeq = true;
+
+		if (currentseq != null)
+		    iterative = true;
+	    } else if (".".equals(token)) {
+		if (currentseq == null)
+		    throw new ParseException("Unexpected dot ('.')",
+			st.getTokenIndex());
+		if (currentseq.get(currentseq.size()-2) != null ||
+		    currentseq.get(currentseq.size()-1) != null) {
+		    currentseq.add(null);
+		    currentseq.add(null);
+		}
+	    } else if (":".equals(token)) {
+		if (st.hasMoreTokens()) {
+		    String t = st.nextToken();
+		    if ("=".equals(t)) {
+			st.putToken(":=");
+			continue;
+		    }
+		    st.putToken(t);
+		}
+
+		if (mustBePre)
+		    throw new ParseException("Predecessors must be " +
+			"terminated with \'/\' and not with \':\'",
+			st.getTokenIndex());
+
+		if (currentseq != null) {
+		    if (currentseq.size() > 2 &&
+			currentseq.get(currentseq.size()-2) == null &&
+			currentseq.get(currentseq.size()-1) == null) {
+			currentseq.remove(currentseq.size()-1);
+			currentseq.remove(currentseq.size()-1);
+		    }
+
+		    seqno = currentseq;
+		    currentseq = null;
+		    mayDeleteExpr = true;
+		}
+	    } else if ("/".equals(token)) {
+		if (st.hasMoreTokens()) {
+		    String t = st.nextToken();
+		    if ("/".equals(t)) {
+			st.putToken("//");
+			continue;
+		    }
+		    st.putToken(t);
+		}
+
+		if (mustBeSeq) {
+		    throw new ParseException("The sequence number must be " +
+			"terminated with \':\' and not with \'/\'",
+			st.getTokenIndex());
+		}
+
+		mustBePre = false;
+		mustBeSeq = true;
+
+		if (currentseq.size() > 2 &&
+		    currentseq.get(currentseq.size()-2) == null &&
+		    currentseq.get(currentseq.size()-1) == null) {
+		    currentseq.remove(currentseq.size()-1);
+		    currentseq.remove(currentseq.size()-1);
+		}
+
+		if (currentseq.get(currentseq.size()-2) != null ||
+		    currentseq.get(currentseq.size()-1) != null) {
+
+		    predecessors.add(currentseq);
+
+		    currentseq = new Vector();
+		    currentseq.add(null);
+		    currentseq.add(null);
+		}
+	    } else if ("//".equals(token)) {
+		if (mustBePre)
+		    throw new ParseException("Predecessors cannot be " +
+			"parallellized", st.getTokenIndex());
+		mustBeSeq = true;
+
+		if (currentseq != null)
+		    parallell = true;
+	    } else if (",".equals(token)) {
+		if (currentseq != null) {
+		    if (mustBeSeq)
+			throw new ParseException("Messages cannot have many " +
+			    "sequence numbers", st.getTokenIndex());
+		    mustBePre = true;
+
+		    if (currentseq.size() > 2 &&
+			currentseq.get(currentseq.size()-2) == null &&
+			currentseq.get(currentseq.size()-1) == null) {
+
+			currentseq.remove(currentseq.size()-1);
+			currentseq.remove(currentseq.size()-1);
+		    }
+
+		    if (currentseq.get(currentseq.size()-2) != null ||
+			currentseq.get(currentseq.size()-1) != null) {
+
+			predecessors.add(currentseq);
+
+			currentseq = new Vector();
+			currentseq.add(null);
+			currentseq.add(null);
+		    }
+		} else {
+		    if (varname == null && fname != null) {
+			varname = fname + token;
+			fname = null;
+		    } else if (varname != null && fname == null) {
+			varname += token;
+		    } else {
+			throw new ParseException("Unexpected character (,)",
+			    st.getTokenIndex());
+		    }
+		}
+	    } else if ("=".equals(token) || ":=".equals(token)) {
+		if (currentseq == null) {
+		    if (varname == null) {
+			varname = fname;
+			fname = "";
+		    } else {
+			fname = "";
+		    }
+		}
+	    } else if (currentseq == null) {
+		if (varname != null && fname == null) {
+		    varname += token;
+		} else if (fname == null || fname.length() == 0) {
+		    fname = token;
+		} else if (paramExpr == null && token.charAt(0) == '(') {
+		    if (token.charAt(token.length()-1) != ')')
+			throw new ParseException("Malformed parameters",
+			    st.getTokenIndex());
+		    paramExpr = token.substring(1, token.length() - 1);
+		} else {
+		    throw new ParseException("Unexpected token (" + token +
+			")", st.getTokenIndex());
+		}
+	    } else {
+		boolean hasVal = currentseq.get(currentseq.size() - 2) != null;
+		boolean hasOrd = currentseq.get(currentseq.size() - 1) != null;
+		boolean assigned = false;
+		int bp = findMsgOrderBreak(token);
+
+		if (!hasVal && !assigned && bp == token.length()) {
+		    try {
+			currentseq.set(currentseq.size() - 2,
+				new Integer(token));
+			assigned = true;
+		    } catch (NumberFormatException nfe) {
+		    }
+		}
+
+		if (!hasOrd && !assigned && bp == 0) {
+		    try {
+			currentseq.set(currentseq.size() - 1,
+				new Integer(parseMsgOrder(token)));
+			assigned = true;
+		    } catch (NumberFormatException nfe) {
+		    }
+		}
+
+		if (!hasVal && !hasOrd && !assigned &&
+		    bp > 0 && bp < token.length()) {
+		    Integer nbr, ord;
+		    try {
+			nbr = new Integer(token.substring(0, bp));
+			ord = new Integer(parseMsgOrder(token.substring(bp)));
+			currentseq.set(currentseq.size() - 2,
+				nbr);
+			currentseq.set(currentseq.size() - 1,
+				ord);
+			assigned = true;
+		    } catch (NumberFormatException nfe) {
+		    }
+		}
+
+		if (!assigned) {
+		    throw new ParseException("Unexpected token (" + token +
+			")", st.getTokenIndex());
+		}
+	    }
+	}
+    } catch (NoSuchElementException nsee) {
+	throw new ParseException("Unexpected end of message", s.length());
+    } catch (ParseException pre) {
+	System.out.println(pre);
+	throw pre;
     }
-    else action = s;
 
-     MAction ua = (MAction) mes.getAction();
-     ua.setName(action);
-     mes.setName(name);
+    if (paramExpr != null) {
+	MyTokenizer st = new MyTokenizer(paramExpr, "\\,",
+		_parameterCustomSep);
+	args = new Vector();
+	while (st.hasMoreTokens()) {
+	    token = st.nextToken();
 
+	    if (",".equals(token)) {
+		if (args.size() == 0)
+		    args.add(null);
+		args.add(null);
+	    } else {
+		if (args.size() == 0) {
+		    if (token.trim().length() == 0)
+			continue;
+		    args.add(null);
+		}
+		String arg = (String) args.get(args.size()-1);
+		if (arg != null)
+		    arg = arg + token;
+		else
+		    arg = token;
+		args.set(args.size()-1, arg);
+	    }
+	}
+    } else if (mayDeleteExpr) {
+	args = new Vector();
+    }
+
+/*
+System.out.println("ParseMessage: " + s);
+System.out.print("Message: ");
+for (i = 0; seqno != null && i+1 < seqno.size(); i+=2) {
+	if (i > 0)
+		System.out.print(", ");
+	System.out.print(seqno.get(i) + " (" + seqno.get(i+1)  + ")");
+}
+System.out.println();
+System.out.println("predecessors: " + predecessors.size());
+for (i = 0; i < predecessors.size(); i++) {
+	int j;
+	Vector v = (Vector) predecessors.get(i);
+	System.out.print("    Predecessor: ");
+	for (j = 0; v != null && j+1 < v.size(); j+=2) {
+		if (j > 0)
+			System.out.print(", ");
+		System.out.print(v.get(j) + " (" + v.get(j+1)  + ")");
+	}
+	System.out.println();
+}
+System.out.println("guard: " + guard + " it: " + iterative + " pl: " + parallell);
+System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
+*/
+
+    root = findMsgRoot(mes);
+
+    if (mes.getAction() == null) {
+	MCallAction a = UmlFactory.getFactory().getCommonBehavior()
+		.createCallAction();
+	mes.getInteraction().getContext().addOwnedElement(a);
+	mes.setAction(a);
+    }
+
+    if (guard != null) {
+	guard = "[" + guard.trim() + "]";
+	if (iterative) {
+	    if (parallell)
+		guard = "*//" + guard;
+	    else
+		guard = "*" + guard;
+	}
+	MIterationExpression expr = UmlFactory.getFactory().getDataTypes()
+		.createIterationExpression(
+			Notation.getDefaultNotation().toString(),
+			guard);
+	mes.getAction().setRecurrence(expr);
+    }
+
+    if (fname == null) {
+	if (!mayDeleteExpr && mes.getAction().getScript() != null) {
+	    String body = mes.getAction().getScript().getBody();
+
+	    int idx = body.indexOf(":=");
+	    if (idx >= 0)
+		idx++;
+	    else
+		idx = body.indexOf("=");
+
+	    if (idx >= 0)
+		fname = body.substring(idx + 1);
+	    else
+		fname = "";
+	    System.out.println("FName: " + body + " => " + fname);
+	} else
+	    fname = "";
+    }
+
+    if (varname == null) {
+	if (!mayDeleteExpr && mes.getAction().getScript() != null) {
+	    String body = mes.getAction().getScript().getBody();
+	    int idx = body.indexOf(":=");
+	    if (idx < 0)
+		idx = body.indexOf("=");
+
+	    if (idx >= 0)
+		varname = body.substring(0, idx);
+	    else
+		varname = "";
+	    System.out.println("VarName: " + body + " => " + varname);
+	} else
+	    varname = "";
+    }
+
+    if (args != null) {
+	Collection c = mes.getAction().getActualArguments();
+	Iterator it = c.iterator();
+	int pos;
+	for (i = 0; i < args.size(); i++) {
+	    MArgument arg = (it.hasNext() ? (MArgument)it.next() : null);
+	    if (arg == null) {
+		arg = UmlFactory.getFactory().getCommonBehavior()
+			.createArgument();
+		mes.getAction().addActualArgument(arg);
+		refindOperation = true;
+	    }
+	    if (arg.getValue() == null ||
+		!args.get(i).equals(arg.getValue().getBody())) {
+		String value =
+			(args.get(i) != null ? (String)args.get(i) : "");
+		MExpression e = UmlFactory.getFactory().getDataTypes()
+			.createExpression(
+				Notation.getDefaultNotation().toString(),
+				value.trim());
+	 	arg.setValue(e);
+	    }
+	}
+
+	while (it.hasNext()) {
+	    mes.getAction().removeActualArgument((MArgument)it.next());
+	    refindOperation = true;
+	}
+    }
+
+    if (fname != null) {
+	String expr = fname.trim();
+	if (varname != null && varname.length() > 0)
+	    expr = varname.trim() + " := " + expr;
+
+	if (mes.getAction().getScript() == null ||
+	    !expr.equals(mes.getAction().getScript().getBody())) {
+	    MActionExpression e = UmlFactory.getFactory().getDataTypes()
+		.createActionExpression(
+			Notation.getDefaultNotation().toString(),
+			expr.trim());
+	    mes.getAction().setScript(e);
+	    refindOperation = true;
+	}
+
+	if (refindOperation) {
+	    MClassifierRole role = mes.getReceiver();
+	    Vector ops = getOperation(role.getBases(), fname.trim(),
+		mes.getAction().getActualArguments().size());
+
+	    // Needs-more-work: Should someone choose one, if there are more
+	    // than one?
+	    if (mes.getAction() instanceof MCallAction) {
+		MCallAction a = (MCallAction) mes.getAction();
+		if (ops.size() > 0)
+		    a.setOperation((MOperation) ops.get(0));
+		else
+		    a.setOperation(null);
+	    }
+	}
+    }
+
+    if (seqno != null) {
+	// Find the preceding message, if any, on either end of the
+	// association.
+	String pname = "";
+	String mname = "";
+	String gname = GeneratorDisplay.getInstance()
+		.generateMessageNumber(mes);
+	boolean swapRoles = false;
+	int majval = (seqno.get(seqno.size()-2) != null ?
+		Math.max(((Integer)seqno.get(seqno.size()-2)).intValue()-1, 0)
+		: 0);
+	int minval = (seqno.get(seqno.size()-1) != null ?
+		Math.max(((Integer)seqno.get(seqno.size()-1)).intValue(), 0)
+		: 0);
+
+	for (i = 0; i + 1 < seqno.size(); i += 2) {
+	    int bv = (seqno.get(i) != null ?
+		Math.max(((Integer)seqno.get(i)).intValue(), 1) : 1);
+	    int sv = (seqno.get(i+1) != null ?
+		Math.max(((Integer)seqno.get(i+1)).intValue(), 0) : 0);
+
+	    if (i > 0)
+		mname += ".";
+	    mname += Integer.toString(bv) + (char)('a' + sv);
+
+	    if (i+3 < seqno.size()) {
+		if (i > 0)
+		    pname += ".";
+		pname += Integer.toString(bv) + (char)('a' + sv);
+	    }
+	}
+
+	root = null;
+	if (pname.length() > 0) {
+	    root = findMsg(mes.getSender(), pname);
+	    if (root == null) {
+		root = findMsg(mes.getReceiver(), pname);
+		if (root != null) {
+		    swapRoles = true;
+		}
+	    }
+	} else if (!hasMsgWithActivator(mes.getSender(), null) && 
+		   hasMsgWithActivator(mes.getReceiver(), null))
+	    swapRoles = true;
+
+	if (compareMsgNumbers(mname, gname)) {
+	    ; // Do nothing
+	} else if (isMsgNumberStartOf(gname, mname)) {
+	    throw new ParseException("Cannot move a message into the " +
+		"subtree rooted at self", 0);
+	} else if (mes.getPredecessors().size() > 1 &&
+		   mes.getMessages3().size() > 1) {
+	    throw new ParseException("Cannot move a message which is " +
+		"both start and end of several threads", 0);
+	} else if (root == null && pname.length() > 0) {
+	    throw new ParseException("Cannot find the activator for the " +
+		"message", 0);
+	} else {
+	    // Disconnect the message from the call graph
+	    Collection c = mes.getPredecessors();
+	    Collection c2 = mes.getMessages3();
+	    Iterator it;
+
+	    it = c2.iterator();
+	    while (it.hasNext()) {
+		mes.removeMessage3((MMessage) it.next());
+	    }
+
+	    it = c.iterator();
+	    while (it.hasNext()) {
+		Iterator it2 = c2.iterator();
+		MMessage pre = (MMessage) it.next();
+		mes.removePredecessor(pre);
+		while (it2.hasNext()) {
+		    ((MMessage) it2.next()).addPredecessor(pre);
+		}
+	    }
+
+	    // Connect the message at a new spot
+	    mes.setActivator(root);
+	    if (swapRoles) {
+		MClassifierRole r = mes.getSender();
+		mes.setSender(mes.getReceiver());
+		mes.setReceiver(r);
+	    }
+
+	    if (root == null) {
+		c = filterWithActivator(mes.getSender().getMessages2(), null);
+	    } else {
+		c = root.getMessages4();
+	    }
+	    c2 = findCandidateRoots(c, root, mes);
+	    it = c2.iterator();
+	    // If c2 is empty, then we're done
+	    // (or there is a cycle in the message graph, which would be bad)
+	    // If c2 has more than one element, then the model is crappy,
+	    // but we'll just use one of them anyway
+	    if (majval <= 0) {
+		while (it.hasNext())
+		    mes.addMessage3((MMessage) it.next());
+	    } else if (it.hasNext()) {
+		MMessage pre = walk((MMessage) it.next(), majval - 1);
+		MMessage post = successor(pre, minval);
+		if (post != null) {
+		    post.removePredecessor(pre);
+		    post.addPredecessor(mes);
+		}
+		insertSuccessor(pre, mes, minval);
+	    }
+	}
+    }
+
+    // Needs-more-work: Predecessors is not implemented, because it
+    // causes some problems that I've not found an easy way to handle yet,
+    // d00mst. The specific problem is that the notation currently is
+    // ambiguous on second message after a thread split.
+  }
+
+  private boolean hasMsgWithActivator(MClassifierRole r, MMessage m) {
+    Iterator it = r.getMessages2().iterator();
+    while (it.hasNext())
+	if (((MMessage) it.next()).getActivator() == m)
+	    return true;
+    return false;
+  }
+
+  private void insertSuccessor(MMessage m, MMessage s, int p) {
+    Vector v = new Vector(m.getMessages3());
+    if (v.size() > p)
+	v.insertElementAt(s, p);
+    else
+	v.add(s);
+    m.setMessages3(v);
+  }
+
+  private MMessage successor(MMessage r, int steps) {
+    Iterator it = r.getMessages3().iterator();
+    while (it.hasNext() && steps > 0)
+	it.next();
+    if (it.hasNext())
+	return (MMessage) it.next();
+    return null;
+  }
+
+  private MMessage walk(MMessage r, int steps) {
+    while (steps > 0) {
+	Iterator it = r.getMessages3().iterator();
+	if (!it.hasNext())
+	    return r;
+	r = (MMessage) it.next();
+	steps--;
+    }
+    return r;
+  }
+
+  private Collection findCandidateRoots(Collection c, MMessage a,
+		MMessage veto) {
+    Iterator it = c.iterator();
+    Vector v = new Vector();
+    while (it.hasNext()) {
+	MMessage m = (MMessage) it.next();
+	if (m == veto)
+	    continue;
+	Iterator it2 = m.getPredecessors().iterator();
+	boolean candidate = true;
+	while (it2.hasNext()) {
+	    MMessage m2 = (MMessage) it2.next();
+	    if (m2.getActivator() == a)
+		candidate = false;
+	}
+	if (candidate)
+	    v.add(m);
+    }
+    return v;
+  }
+
+  private Collection filterWithActivator(Collection c, MMessage a) {
+    Iterator it = c.iterator();
+    Vector v = new Vector();
+    while (it.hasNext()) {
+	MMessage m = (MMessage) it.next();
+	if (m.getActivator() == a)
+	    v.add(m);
+    }
+    return v;
+  }
+
+  private MMessage findMsg(MClassifierRole r, String n) {
+    Collection c = r.getMessages1();
+    Iterator it = c.iterator();
+    while (it.hasNext()) {
+	MMessage msg = (MMessage) it.next();
+	String gname = GeneratorDisplay.getInstance().generateMessageNumber(
+		msg);
+	if (compareMsgNumbers(gname, n))
+	    return msg;
+    }
+    return null;
+  }
+
+  private boolean compareMsgNumbers(String n1, String n2) {
+    return isMsgNumberStartOf(n1, n2) && isMsgNumberStartOf(n2, n1);
+  }
+
+  private boolean isMsgNumberStartOf(String n1, String n2) {
+    int i, j, len, jlen;
+    len = n1.length();
+    jlen = n2.length();
+    i = j = 0;
+    for (;i < len;) {
+	int ibv, isv;
+	int jbv, jsv;
+
+	ibv = 0;
+	for (; i < len; i++) {
+	    char c = n1.charAt(i);
+	    if (c < '0' || c > '9')
+		break;
+	    ibv *= 10;
+	    ibv += c - '0';
+	}
+	isv = 0;
+	for (; i < len; i++) {
+	    char c = n1.charAt(i);
+	    if (c < 'a' || c > 'z')
+		break;
+	    isv *= 26;
+	    isv += c - 'a';
+	}
+
+	jbv = 0;
+	for (; j < jlen; j++) {
+	    char c = n2.charAt(j);
+	    if (c < '0' || c > '9')
+		break;
+	    jbv *= 10;
+	    jbv += c - '0';
+	}
+	jsv = 0;
+	for (; j < jlen; j++) {
+	    char c = n2.charAt(j);
+	    if (c < 'a' || c > 'z')
+		break;
+	    jsv *= 26;
+	    jsv += c - 'a';
+	}
+
+	if (ibv != jbv || isv != jsv) {
+	    return false;
+	}
+
+	if (i < len && n1.charAt(i) != '.') {
+	    return false;
+	} else
+	    i++;
+
+	if (j < jlen && n2.charAt(j) != '.') {
+	    return false;
+	} else
+	    j++;
+    }
+    return true;
+  }
+
+  private Vector getOperation(Collection c, String name, int params) {
+    Vector options = new Vector();
+    Iterator it;
+
+    if (name == null || name.length() == 0)
+	return options;
+
+    it = c.iterator();
+    while (it.hasNext()) {
+	MClassifier clf = (MClassifier) it.next();
+	Collection oe = clf.getFeatures();
+	Iterator it2 = oe.iterator();
+	while (it2.hasNext()) {
+	    MModelElement me = (MModelElement) it2.next();
+	    if (!(me instanceof MOperation))
+		continue;
+
+	    MOperation op = (MOperation) me;
+	    if (!name.equals(op.getName()))
+		continue;
+	    if (params != countParameters(op))
+		continue;
+	    options.add(op);
+	}
+    }
+    if (options.size() > 0)
+	return options;
+
+    it = c.iterator();
+    if (it.hasNext()) {
+	String expr = name + "(";
+	int i;
+	for (i = 0; i < params; i++) {
+	    if (i > 0)
+		expr += ", ";
+	    expr += "param" + (i+1);
+	}
+	expr += ")";
+	MOperation op = UmlFactory.getFactory().getCore().buildOperation(
+		(MClassifier) it.next());
+	try {
+	    parseOperation(expr, op);
+	} catch (ParseException pe) {
+	    System.out.println("Unexpected ParseException in getOperation: " + pe);
+	}
+	options.add(op);
+    }
+    return options;
+  }
+
+  private int countParameters(MBehavioralFeature bf) {
+    Collection c = bf.getParameters();
+    Iterator it = c.iterator();
+    int count = 0;
+
+    while (it.hasNext()) {
+	MParameter p = (MParameter) it.next();
+	if (MParameterDirectionKind.RETURN.equals(p.getKind()))
+	    continue;
+	count++;
+    }
+
+    return count;
+  }
+
+  private static int parseMsgOrder(String s) {
+    int i, t;
+    int v = 0;
+
+    t = s.length();
+    for (i = 0; i < t; i++) {
+	char c = s.charAt(i);
+	if (c < 'a' || c > 'z')
+	    throw new NumberFormatException();
+	v *= 26;
+	v += c - 'a';
+    }
+
+    return v;
+  }
+
+  private static int findMsgOrderBreak(String s) {
+    int i, t;
+    int v = 0;
+
+    t = s.length();
+    for (i = 0; i < t; i++) {
+	char c = s.charAt(i);
+	if (c < '0' || c > '9')
+	    break;
+    }
+    return i;
+  }
+
+  private MMessage findMsgRoot(MMessage m) {
+    Collection c;
+    Iterator it;
+    MMessage root = null;
+
+    while (true) {
+	if (root != null)
+	    c = root.getMessages4();
+	else
+	    c = m.getMessages4();
+	it = c.iterator();
+	if (!it.hasNext())
+	    break;
+	root = (MMessage) it.next();
+	if (root == null)
+	    return null;
+    }
+
+    while (true) {
+	if (root != null)
+	    c = root.getPredecessors();
+	else
+	    c = m.getPredecessors();
+	it = c.iterator();
+	if (!it.hasNext())
+	    break;
+	root = (MMessage) it.next();
+	if (root == null)
+	    return null;
+    }
+
+    return root;
   }
 
   /** Parse a line of the form: "name: action" */
