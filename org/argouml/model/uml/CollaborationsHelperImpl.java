@@ -671,16 +671,18 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
 	    (MAssociationEndRole)
 	    nsmodel.getCoreHelper().getAssociationEnd(receiver, role);
 
-        Collection baseConnections = base.getConnections();
-        Iterator it = baseConnections.iterator();
-        while (it.hasNext()) {
-            MAssociationEnd end = (MAssociationEnd) it.next();
-            if (senderBases.contains(end.getType())) {
-		senderRole.setBase(end);
-            } else if (receiverBases.contains(end.getType())) {
-		receiverRole.setBase(end);
+	if (base != null) {
+	    Collection baseConnections = base.getConnections();
+	    Iterator it = baseConnections.iterator();
+	    while (it.hasNext()) {
+	        MAssociationEnd end = (MAssociationEnd) it.next();
+	        if (senderBases.contains(end.getType())) {
+	            senderRole.setBase(end);
+	        } else if (receiverBases.contains(end.getType())) {
+	            receiverRole.setBase(end);
+	        }
 	    }
-        }
+	}
     }
 
 
