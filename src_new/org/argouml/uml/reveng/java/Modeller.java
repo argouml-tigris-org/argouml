@@ -1214,8 +1214,10 @@ public class Modeller
       else {
         sJavaDocs = sJavaDocs.substring (0, sJavaDocs.lastIndexOf ('/') - 1);
 
-        if (sJavaDocs.charAt (sJavaDocs.length() - 1) == '\n') {
-          sJavaDocs = sJavaDocs.substring (0, sJavaDocs.length() - 1);
+        if (sJavaDocs.length() > 0) {
+          if (sJavaDocs.charAt (sJavaDocs.length() - 1) == '\n') {
+            sJavaDocs = sJavaDocs.substring (0, sJavaDocs.length() - 1);
+          }
         }
       }
       
