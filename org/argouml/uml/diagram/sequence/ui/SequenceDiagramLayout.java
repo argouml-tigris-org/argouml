@@ -31,6 +31,7 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
+import org.argouml.model.ModelFacade;
 import java.util.Vector;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -49,8 +50,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphEvent;
 
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-
 public class SequenceDiagramLayout extends LayerPerspective {
     protected static Logger cat = 
         Logger.getLogger(SequenceDiagramLayout.class);
@@ -290,7 +289,7 @@ public class SequenceDiagramLayout extends LayerPerspective {
 	    // after all objects are in place the stimuli has to be set in front of the layer
 	    // to keep it all selectable
 
-	    Collection col = ((MLink) link.getOwner()).getStimuli();
+	    Collection col = ModelFacade.getStimuli(link.getOwner());
 	    MStimulus stimulus = null;
 	    Iterator it = col.iterator();
 
@@ -313,7 +312,6 @@ public class SequenceDiagramLayout extends LayerPerspective {
     }
 
 }
-
 
 
 

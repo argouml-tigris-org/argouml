@@ -94,7 +94,7 @@ public class ChildGenRelated implements ChildGenerator {
 	    MStateMachine sm = (MStateMachine) o;
 	    MState top = sm.getTop();
 	    if (top != null)
-		res.addAll(((MCompositeState) top).getSubvertices());
+		res.addAll(ModelFacade.getSubvertices(top));
 	    res.add(sm.getContext()); //wasteful!
 	    res.addAll(sm.getTransitions());
 	    return res.elements();

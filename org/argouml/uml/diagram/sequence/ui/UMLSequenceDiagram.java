@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -51,7 +49,6 @@ import org.tigris.gef.presentation.Fig;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
 import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
 import ru.novosoft.uml.behavior.common_behavior.MSendAction;
@@ -189,7 +186,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
                 MModelElement me = (MModelElement) oeIterator.next();
 
                 if (org.argouml.model.ModelFacade.isALink(me)) {
-                    stimuli = ((MLink) me).getStimuli();
+                    stimuli = ModelFacade.getStimuli(me);
                     stimuliIterator = stimuli.iterator();
                     while (stimuliIterator.hasNext()) {
                         MStimulus stimulus = (MStimulus) stimuliIterator.next();

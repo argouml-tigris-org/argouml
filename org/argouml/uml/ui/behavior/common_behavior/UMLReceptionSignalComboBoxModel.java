@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -74,7 +73,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MReception) getTarget()).getSignal();
+            return ModelFacade.getSignal(getTarget());
         }
         return null;
     }

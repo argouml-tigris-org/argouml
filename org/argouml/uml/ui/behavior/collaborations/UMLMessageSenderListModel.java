@@ -25,11 +25,10 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-
 /**
  * Listmodel to show the sender belonging to some message.
  * @since Oct 3, 2002
@@ -50,14 +49,14 @@ public class UMLMessageSenderListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MMessage) getTarget()).getSender());
+        addElement(ModelFacade.getSender(getTarget()));
     }
     
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase elem) {
-        return ((MMessage) getTarget()).getSender() == elem;
+        return ModelFacade.getSender(getTarget()) == elem;
     }
 
 }

@@ -25,6 +25,7 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import java.util.Vector;
 
 import org.argouml.application.api.Argo;
@@ -79,7 +80,7 @@ public class ActionAddAssociationSpecification extends AbstractActionAddModelEle
      */
     protected Vector getSelected() {
         Vector ret = new Vector();
-        ret.addAll(((MAssociationEnd) getTarget()).getSpecifications());
+        ret.addAll(ModelFacade.getSpecifications(getTarget()));
         return ret;
     }
 }

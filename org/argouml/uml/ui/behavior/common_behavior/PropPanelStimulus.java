@@ -113,11 +113,11 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public void removed(MElementEvent mee) {
     }
 
-    public MInstance getSender() {
-        MInstance sender = null;
+    public Object getSender() {
+        Object sender = null;
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAStimulus(target)) {
-            sender =  ((MStimulus) target).getSender();
+        if (ModelFacade.isAStimulus(target)) {
+            sender =  ModelFacade.getSender(target);
         }
         return sender;
     }
