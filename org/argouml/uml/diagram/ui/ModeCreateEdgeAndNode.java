@@ -28,18 +28,33 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Vector;
 
 import org.apache.log4j.Category;
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerManager;
+import org.tigris.gef.base.ModeCreate;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeHooks;
+import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.Handle;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 /** A Mode to interpret user input while creating an edge.  Basically
  *  mouse down starts creating an edge from a source port Fig, mouse
@@ -53,295 +68,323 @@ import org.tigris.gef.graph.*;
  *  and connecting it to other model elements. */
 
 public class ModeCreateEdgeAndNode extends ModeCreate {
-    protected static Category cat = Category.getInstance(ModeCreateEdgeAndNode.class);
-  ////////////////////////////////////////////////////////////////
-  // static variables
-  public static int Drags_To_Existing = 0;
-  public static int Drags_To_New = 0;
+    protected static Category cat =
+        Category.getInstance(ModeCreateEdgeAndNode.class);
+    ////////////////////////////////////////////////////////////////
+    // static variables
+    public static int Drags_To_Existing = 0;
+    public static int Drags_To_New = 0;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The NetPort where the arc is paintn from */
-  private Object _startPort;
+    /** The NetPort where the arc is paintn from */
+    private Object _startPort;
 
-  /** The Fig that presents the starting NetPort */
-  private Fig _startPortFig;
+    /** The Fig that presents the starting NetPort */
+    private Fig _startPortFig;
 
-  /** The FigNode on the NetNode that owns the start port */
-  private FigNode _sourceFigNode;
+    /** The FigNode on the NetNode that owns the start port */
+    private FigNode _sourceFigNode;
 
-  /** The new NetEdge that is being created */
-  private Object _newEdge;
+    /** The new NetEdge that is being created */
+    private Object _newEdge;
 
-  /** False if drawing from source and destination.  True if drawing
-   *  from destination to source. */
-  private boolean _destToSource = false;
+    /** False if drawing from source and destination.  True if drawing
+     *  from destination to source. */
+    private boolean _destToSource = false;
 
-  /** The number of points added so far. */
-  //protected int _npoints = 0;
-  protected Handle _handle = new Handle(-1);
+    /** The number of points added so far. */
+    //protected int _npoints = 0;
+    protected Handle _handle = new Handle(-1);
 
-  protected FigNode _fn;
+    protected FigNode _fn;
 
-  protected FigEdge _fe;
+    protected FigEdge _fe;
 
-  protected boolean _postProcessEdge = false;
+    protected boolean _postProcessEdge = false;
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    ////////////////////////////////////////////////////////////////
+    // constructor
 
-  public ModeCreateEdgeAndNode() { super(); }
-  public ModeCreateEdgeAndNode(Editor ed, Class edgeClass,
-			       Class nodeClass, boolean post) {
-    super(ed);
-    setArg("edgeClass", edgeClass);
-    setArg("nodeClass", nodeClass);
-    _postProcessEdge = post;
-  }
+    public ModeCreateEdgeAndNode() {
+        super();
+    }
+    public ModeCreateEdgeAndNode(
+        Editor ed,
+        Class edgeClass,
+        Class nodeClass,
+        boolean post) {
+        super(ed);
+        setArg("edgeClass", edgeClass);
+        setArg("nodeClass", nodeClass);
+        _postProcessEdge = post;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public void setup(FigNode fn, Object port, int x, int y, boolean reverse) {
-    start();
-    _sourceFigNode = fn;
-    _startPortFig = fn.getPortFig(port);
-    _startPort = port;
-    _newItem = createNewItem(null, x, y);
-    _destToSource = reverse;
-    setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-  }
+    public void setup(FigNode fn, Object port, int x, int y, boolean reverse) {
+        start();
+        _sourceFigNode = fn;
+        _startPortFig = fn.getPortFig(port);
+        _startPort = port;
+        _newItem = createNewItem(null, x, y);
+        _destToSource = reverse;
+        setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // Mode API
+    ////////////////////////////////////////////////////////////////
+    // Mode API
 
-  public String instructions() {
-    return "Drag to define an edge (and a new node)";
-  }
+    public String instructions() {
+        return "Drag to define an edge (and a new node)";
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // ModeCreate API
+    ////////////////////////////////////////////////////////////////
+    // ModeCreate API
 
-  /** Create the new item that will be drawn. In this case I would
-   *  rather create the FigEdge when I am done. Here I just
-   *  create a rubberband FigLine to show during dragging. */
-  public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-    FigPoly p = new FigPoly(snapX, snapY);
-    p.setLineColor(Globals.getPrefs().getRubberbandColor());
-    p.setFillColor(null);
-    p.addPoint(snapX, snapY); // add the first point twice
-    //_npoints = 2;
-    return p;
-  }
+    /** Create the new item that will be drawn. In this case I would
+     *  rather create the FigEdge when I am done. Here I just
+     *  create a rubberband FigLine to show during dragging. */
+    public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
+        FigPoly p = new FigPoly(snapX, snapY);
+        p.setLineColor(Globals.getPrefs().getRubberbandColor());
+        p.setFillColor(null);
+        p.addPoint(snapX, snapY); // add the first point twice
+        //_npoints = 2;
+        return p;
+    }
 
-  public void done() {
-    super.done();
-    if (_newItem != null) editor.damaged(_newItem);
-    _newItem = null;// use this as the fig for the new FigEdge
-    _sourceFigNode = null;
-    _startPort = null;
-    _startPortFig = null;
-  }
+    public void done() {
+        super.done();
+        if (_newItem != null)
+            editor.damaged(_newItem);
+        _newItem = null; // use this as the fig for the new FigEdge
+        _sourceFigNode = null;
+        _startPort = null;
+        _startPortFig = null;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // mouse event handlers
+    ////////////////////////////////////////////////////////////////
+    // mouse event handlers
 
-  /** On mousePressed determine what port the user is dragging from.
-   *  The mousePressed event is sent via ModeSelect. */
-  public void mousePressed(MouseEvent me) {
-  }
+    /** On mousePressed determine what port the user is dragging from.
+     *  The mousePressed event is sent via ModeSelect. */
+    public void mousePressed(MouseEvent me) {
+    }
 
-  /** On mouseReleased, find the destination port, ask the GraphModel
-   *  to connect the two ports.  If that connection is allowed, then
-   *  construct a new FigEdge and add it to the Layer and send it to
-   *  the back. */
-	public void mouseReleased(MouseEvent me) {
-		if (me.isConsumed()) return;
-		if (_sourceFigNode == null) { done(); return; }
-		boolean nodeWasCreated = false;
+    /** On mouseReleased, find the destination port, ask the GraphModel
+     *  to connect the two ports.  If that connection is allowed, then
+     *  construct a new FigEdge and add it to the Layer and send it to
+     *  the back. */
+    public void mouseReleased(MouseEvent me) {
+        if (me.isConsumed())
+            return;
+        if (_sourceFigNode == null) {
+            done();
+            return;
+        }
+        boolean nodeWasCreated = false;
 
-		int x = me.getX(), y = me.getY();
-		Class arcClass;
-		Editor ce = Globals.curEditor();
-		Fig f = ce.hit(x, y);
-		if (f == null) { f = ce.hit(x-16, y-16, 32, 32); }
-		GraphModel gm = ce.getGraphModel();
-		if (!(gm instanceof MutableGraphModel)) f = null;
-		MutableGraphModel mgm = (MutableGraphModel) gm;
-		// TODO: potential class cast exception
+        int x = me.getX(), y = me.getY();
+        Class arcClass;
+        Editor ce = Globals.curEditor();
+        Fig f = ce.hit(x, y);
+        if (f == null) {
+            f = ce.hit(x - 16, y - 16, 32, 32);
+        }
+        GraphModel gm = ce.getGraphModel();
+        if (!(gm instanceof MutableGraphModel))
+            f = null;
+        MutableGraphModel mgm = (MutableGraphModel) gm;
+        // TODO: potential class cast exception
 
-		if (f == null) {
-			cat.debug("make new node");
-			Drags_To_New++;
-			Object newNode = null;
-			Class nodeClass = (Class) getArg("nodeClass");
-			try { newNode = nodeClass.newInstance(); }
-			catch (java.lang.IllegalAccessException ignore) { return; }
-			catch (java.lang.InstantiationException ignore) { return; }
+        if (f == null) {
+            cat.debug("make new node");
+            Drags_To_New++;
+            Object newNode = null;
+            Class nodeClass = (Class) getArg("nodeClass");
+            try {
+                newNode = nodeClass.newInstance();
+                
+            } catch (java.lang.IllegalAccessException ignore) {
+                return;
+            } catch (java.lang.InstantiationException ignore) {
+                return;
+            }
 
-			if (newNode instanceof GraphNodeHooks)
-				((GraphNodeHooks)newNode).initialize(_args);
+            if (newNode instanceof GraphNodeHooks)
+                 ((GraphNodeHooks) newNode).initialize(_args);
 
-			if (mgm.canAddNode(newNode)) {
-				GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
-				Layer lay = editor.getLayerManager().getActiveLayer();
-				_fn = renderer.getFigNodeFor(gm, lay, newNode);
-				editor.add(_fn);
-				mgm.addNode(newNode);
-				Fig encloser = null;
-				Rectangle bbox = _fn.getBounds();
-				Vector otherFigs = lay.getContents();
-				java.util.Enumeration others = otherFigs.elements();
-				while (others.hasMoreElements()) {
-					Fig otherFig = (Fig) others.nextElement();
-					if (!(otherFig instanceof FigNode)) continue;
-					if (otherFig.equals(_fn)) continue;
-					Rectangle trap = otherFig.getTrapRect();
-					if (trap != null && (trap.contains(bbox.x, bbox.y) &&
-										 trap.contains(bbox.x + bbox.width,
-													   bbox.y + bbox.height)))
-						encloser = otherFig;
-				}
-				_fn.setEnclosingFig(encloser);
-				if (newNode instanceof GraphNodeHooks)
-					((GraphNodeHooks)newNode).postPlacement(editor);
-				editor.getSelectionManager().select(_fn);
-				nodeWasCreated = true;
-				f = _fn;
-				f.setLocation(x - f.getWidth() / 2, y - f.getHeight() / 2);
-			}
-		}
-		else {
-			Drags_To_Existing++;
-		}
+            if (mgm.canAddNode(newNode)) {
+                GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
+                Layer lay = editor.getLayerManager().getActiveLayer();
+                _fn = renderer.getFigNodeFor(gm, lay, newNode);
+                editor.add(_fn);
+                mgm.addNode(newNode);
+                Fig encloser = null;
+                Rectangle bbox = _fn.getBounds();
+                Vector otherFigs = lay.getContents();
+                java.util.Enumeration others = otherFigs.elements();
+                while (others.hasMoreElements()) {
+                    Fig otherFig = (Fig) others.nextElement();
+                    if (!(otherFig instanceof FigNode))
+                        continue;
+                    if (otherFig.equals(_fn))
+                        continue;
+                    Rectangle trap = otherFig.getTrapRect();
+                    if (trap != null
+                        && (trap.contains(bbox.x, bbox.y)
+                            && trap.contains(
+                                bbox.x + bbox.width,
+                                bbox.y + bbox.height)))
+                        encloser = otherFig;
+                }
+                _fn.setEnclosingFig(encloser);
+                if (newNode instanceof GraphNodeHooks)
+                     ((GraphNodeHooks) newNode).postPlacement(editor);
+                editor.getSelectionManager().select(_fn);
+                nodeWasCreated = true;
+                f = _fn;
+                f.setLocation(x - f.getWidth() / 2, y - f.getHeight() / 2);
+            }
+        } else {
+            Drags_To_Existing++;
+        }
 
+        if (f instanceof FigNode) {
+            FigNode destFigNode = (FigNode) f;
+            // If its a FigNode, then check within the  
+            // FigNode to see if a port exists 
+            Object foundPort = destFigNode.deepHitPort(x, y);
+            if (foundPort == null) {
+                Vector portFigs = destFigNode.getPortFigs();
+                if (portFigs.size() > 0)
+                    foundPort = ((Fig) portFigs.elementAt(0)).getOwner();
+            }
 
-		if (f instanceof FigNode) {
-			FigNode destFigNode = (FigNode) f;
-			// If its a FigNode, then check within the  
-			// FigNode to see if a port exists 
-			Object foundPort = destFigNode.deepHitPort(x, y);
-			if (foundPort == null) {
-				Vector portFigs = destFigNode.getPortFigs();
-				if (portFigs.size() > 0)
-					foundPort = ((Fig)portFigs.elementAt(0)).getOwner();
-			}
-			
-			FigPoly p = (FigPoly) _newItem;
-			editor.damaged(p);
-			p._isComplete = true;
+            FigPoly p = (FigPoly) _newItem;
+            editor.damaged(p);
+            p._isComplete = true;
 
-			if (foundPort != null && foundPort != _startPort) {
-				Fig destPortFig = destFigNode.getPortFig(foundPort);
-				Class edgeClass = (Class) getArg("edgeClass");
-				if (_destToSource) {
-					Object temp = _startPort;
-					_startPort = foundPort;
-					foundPort = temp;
-					FigNode tempFN = destFigNode;
-					destFigNode = _sourceFigNode;
-					_sourceFigNode = tempFN;
-					Fig tempFigPort = _startPortFig;
-					_startPortFig = destPortFig;
-					destPortFig = tempFigPort;
-				}
-				if (edgeClass != null) {
-					_newEdge = mgm.connect(_startPort, foundPort, edgeClass); }
-				else
-					_newEdge = mgm.connect(_startPort, foundPort);
+            if (foundPort != null && foundPort != _startPort) {
+                Fig destPortFig = destFigNode.getPortFig(foundPort);
+                Class edgeClass = (Class) getArg("edgeClass");
+                if (_destToSource) {
+                    Object temp = _startPort;
+                    _startPort = foundPort;
+                    foundPort = temp;
+                    FigNode tempFN = destFigNode;
+                    destFigNode = _sourceFigNode;
+                    _sourceFigNode = tempFN;
+                    Fig tempFigPort = _startPortFig;
+                    _startPortFig = destPortFig;
+                    destPortFig = tempFigPort;
+                }
+                if (edgeClass != null) {
+                    _newEdge = mgm.connect(_startPort, foundPort, edgeClass);
+                } else
+                    _newEdge = mgm.connect(_startPort, foundPort);
 
-				// Calling connect() will add the edge to the GraphModel and
-				// any LayerPersectives on that GraphModel will get a
-				// edgeAdded event and will add an appropriate FigEdge
-				// (determined by the GraphEdgeRenderer).
+                // Calling connect() will add the edge to the GraphModel and
+                // any LayerPersectives on that GraphModel will get a
+                // edgeAdded event and will add an appropriate FigEdge
+                // (determined by the GraphEdgeRenderer).
 
-				if (_newEdge != null) {
-					if (_postProcessEdge) postProcessEdge();
-					ce.damaged(_newItem);
-					_sourceFigNode.damage();
-					destFigNode.damage();
+                if (_newEdge != null) {
+                    if (_postProcessEdge)
+                        postProcessEdge();
+                    ce.damaged(_newItem);
+                    _sourceFigNode.damage();
+                    destFigNode.damage();
 
-					LayerManager lm = ce.getLayerManager();
-					_fe = (FigEdge) lm.getActiveLayer().presentationFor(_newEdge);
-					_newItem.setLineColor(Color.black);
-					_fe.setLineColor(Color.black);
-					_fe.setFig(_newItem);
-					_fe.setSourcePortFig(_startPortFig);
-					_fe.setSourceFigNode(_sourceFigNode);
-					_fe.setDestPortFig(destPortFig);
-					_fe.setDestFigNode(destFigNode);
-					_fe.setSourcePortFig(_startPortFig);
-					_fe.setSourceFigNode(_sourceFigNode);
-					_fe.setDestPortFig(destPortFig);
-					_fe.setDestFigNode(destFigNode);
-					if (_fe != null && !nodeWasCreated)
-						ce.getSelectionManager().select(_fe);
-					done();
-					//me.consume();
-					_newItem = null;
-                                        
-                                         if (_fe instanceof MouseListener) ((MouseListener) _fe).mouseReleased(me);
+                    LayerManager lm = ce.getLayerManager();
+                    _fe =
+                        (FigEdge) lm.getActiveLayer().presentationFor(_newEdge);
+                    _newItem.setLineColor(Color.black);
+                    _fe.setLineColor(Color.black);
+                    _fe.setFig(_newItem);
+                    _fe.setSourcePortFig(_startPortFig);
+                    _fe.setSourceFigNode(_sourceFigNode);
+                    _fe.setDestPortFig(destPortFig);
+                    _fe.setDestFigNode(destFigNode);
+                    _fe.setSourcePortFig(_startPortFig);
+                    _fe.setSourceFigNode(_sourceFigNode);
+                    _fe.setDestPortFig(destPortFig);
+                    _fe.setDestFigNode(destFigNode);
+                    if (_fe != null && !nodeWasCreated)
+                        ce.getSelectionManager().select(_fe);
+                    done();
+                    //me.consume();
+                    _newItem = null;
 
-                                        // set the new edge in place
-                                        if (_sourceFigNode != null) _sourceFigNode.updateEdges();
-                                        if (destFigNode != null) destFigNode.updateEdges();
+                    if (_fe instanceof MouseListener)
+                         ((MouseListener) _fe).mouseReleased(me);
 
-					return;
-				}
-				else
-					cat.warn("connection return null");
-			}
-			else
-				cat.warn("in dest node but no port");
-		}
+                    // set the new edge in place
+                    if (_sourceFigNode != null)
+                        _sourceFigNode.updateEdges();
+                    if (destFigNode != null)
+                        destFigNode.updateEdges();
 
-		_sourceFigNode.damage();
-		ce.damaged(_newItem);
-		_newItem = null;
-		done();
-		//me.consume();
-	}
+                    return;
+                } else
+                    cat.warn("connection return null");
+            } else
+                cat.warn("in dest node but no port");
+        }
 
-	public void mouseMoved(MouseEvent me) {
-		mouseDragged(me);
-	}
+        _sourceFigNode.damage();
+        ce.damaged(_newItem);
+        _newItem = null;
+        done();
+        //me.consume();
+    }
 
-	public void mouseDragged(MouseEvent me) {
-		if (me.isConsumed()) return;
-		int x = me.getX(), y = me.getY();
-		//if (_npoints == 0) { me.consume(); return; }
-		if (_newItem == null) { me.consume(); return; }
-		FigPoly p = (FigPoly)_newItem;
-		editor.damaged(_newItem); // startTrans?
-		Point snapPt = new Point(x, y);
-		editor.snap(snapPt);
-		_handle.index = p.getNumPoints() - 1;
-		p.moveVertex(_handle, snapPt.x, snapPt.y, true);
-		editor.damaged(_newItem); // endTrans?
-		me.consume();
-	}
+    public void mouseMoved(MouseEvent me) {
+        mouseDragged(me);
+    }
 
-	////////////////////////////////////////////////////////////////
-	// key events
+    public void mouseDragged(MouseEvent me) {
+        if (me.isConsumed())
+            return;
+        int x = me.getX(), y = me.getY();
+        //if (_npoints == 0) { me.consume(); return; }
+        if (_newItem == null) {
+            me.consume();
+            return;
+        }
+        FigPoly p = (FigPoly) _newItem;
+        editor.damaged(_newItem); // startTrans?
+        Point snapPt = new Point(x, y);
+        editor.snap(snapPt);
+        _handle.index = p.getNumPoints() - 1;
+        p.moveVertex(_handle, snapPt.x, snapPt.y, true);
+        editor.damaged(_newItem); // endTrans?
+        me.consume();
+    }
 
-	public void keyTyped(KeyEvent ke) {
-		if (ke.getKeyChar() == '') { // escape
-			done();
-			ke.consume();
-		}
-	}
+    ////////////////////////////////////////////////////////////////
+    // key events
 
-	////////////////////////////////////////////////////////////////
-	// internal methods
+    public void keyTyped(KeyEvent ke) {
+        if (ke.getKeyChar() == '') { // escape
+            done();
+            ke.consume();
+        }
+    }
 
-	public void postProcessEdge() {
-		if (_newEdge instanceof MAssociation) {
-			java.util.List conn = ((MAssociation)_newEdge).getConnections();
-			MAssociationEnd ae0 = (MAssociationEnd) conn.get(0);
-			ae0.setAggregation(MAggregationKind.COMPOSITE);
-		}
-	}
+    ////////////////////////////////////////////////////////////////
+    // internal methods
 
-	static final long serialVersionUID = -427957543380196265L;
+    public void postProcessEdge() {
+        if (_newEdge instanceof MAssociation) {
+            java.util.List conn = ((MAssociation) _newEdge).getConnections();
+            MAssociationEnd ae0 = (MAssociationEnd) conn.get(0);
+            ae0.setAggregation(MAggregationKind.COMPOSITE);
+        }
+    }
+
+    static final long serialVersionUID = -427957543380196265L;
 } /* end class ModeCreateEdgeAndNode */
