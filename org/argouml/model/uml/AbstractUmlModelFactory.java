@@ -43,7 +43,7 @@ public abstract class AbstractUmlModelFactory {
 
     /** Log4j logging category.
      */
-    public static Category logger =
+    private static Category logger =
                   Category.getInstance("org.argouml.model.uml");
 
     /** Default constructor.
