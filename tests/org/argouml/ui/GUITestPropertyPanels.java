@@ -57,12 +57,10 @@ import org.tigris.gef.util.ChildGenerator;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ZargoFilePersister;
 import org.argouml.model.ModelFacade;
-// import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
+import org.argouml.persistence.ZargoFilePersister;
 import org.argouml.ui.targetmanager.TargetEvent;
-// import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
 
 import org.tigris.swidgets.Horizontal;
@@ -146,7 +144,7 @@ public class GUITestPropertyPanels extends TestCase {
 	    new File(projectFile);
         
         ZargoFilePersister persister = new ZargoFilePersister();
-        p = persister.loadProject(testfile.toURL());
+        p = persister.doLoad(testfile);
         ProjectManager.getManager().setCurrentProject(p);
         
         Collection me = UmlHelper.getHelper().getModelManagement().
@@ -196,7 +194,6 @@ public class GUITestPropertyPanels extends TestCase {
      * @see junit.framework.TestCase#runTest()
      */
     protected void runTest() throws Throwable {
-	System.out.println("runTest called in " + this + ":" + this.hashCode());
         testPropertyTab();
     }
     
@@ -204,8 +201,6 @@ public class GUITestPropertyPanels extends TestCase {
      * @throws Throwable any error or exception
      */
     public void testPropertyTab() throws Throwable {
-	System.out.println("testPropertyTab called in "
-			   + this + ":" + this.hashCode());
         TargetEvent e =
 	    new TargetEvent(this,
 			    TargetEvent.TARGET_SET,
