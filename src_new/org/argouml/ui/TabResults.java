@@ -25,7 +25,6 @@ package org.argouml.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -39,7 +38,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.apache.log4j.Category;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -87,37 +85,25 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
     _showRelated = showRelated;
     setLayout(new BorderLayout());
 
-    Font labelFont = MetalLookAndFeel.getSubTextFont();
-
     JPanel resultsW = new JPanel();
-    JScrollPane resultsSP =
-      new JScrollPane(_resultsTable,
-		      JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-		      JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    JScrollPane resultsSP = new JScrollPane(_resultsTable);
     resultsW.setLayout(new BorderLayout());
     resultsW.add(_resultsLabel, BorderLayout.NORTH);
     resultsW.add(resultsSP, BorderLayout.CENTER);
-    _resultsTable.setFont(labelFont);
     _resultsTable.setModel(_resultsModel);
     _resultsTable.addMouseListener(this);
     _resultsTable.getSelectionModel().addListSelectionListener(this);
     resultsW.setMinimumSize(new Dimension(100, 100));
-    resultsW.setPreferredSize(new Dimension(100, 200));
 
     JPanel relatedW = new JPanel();
     if (_showRelated) {
-      JScrollPane relatedSP =
-	new JScrollPane(_relatedTable,
-			JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-			JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+      JScrollPane relatedSP = new JScrollPane(_relatedTable);
       relatedW.setLayout(new BorderLayout());
       relatedW.add(_relatedLabel, BorderLayout.NORTH);
       relatedW.add(relatedSP, BorderLayout.CENTER);
-      _relatedTable.setFont(labelFont);
       _relatedTable.setModel(_relatedModel);
       _relatedTable.addMouseListener(this);
       relatedW.setMinimumSize(new Dimension(100, 100));
-      relatedW.setPreferredSize(new Dimension(100, 100));
     }
 
     if (_showRelated) {
@@ -191,21 +177,26 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
   ////////////////////////////////////////////////////////////////
   // ListSelectionListener implementation
 
-  public void valueChanged(ListSelectionEvent lse) {
-    if (lse.getValueIsAdjusting()) return;
-    Object src = lse.getSource();
-    if (_showRelated) {
-      int row = lse.getFirstIndex();
-      Object sel = _results.elementAt(row);
-      cat.debug("selected " + sel);
-      _related.removeAllElements();
-      java.util.Enumeration enum = ChildGenRelated.SINGLETON.gen(sel);
-      while (enum.hasMoreElements())
-	_related.addElement(enum.nextElement());
-      _relatedModel.setTarget(_related, null);
-      _relatedLabel.setText("Related Elements: "+ _related.size() + " items");
+    public void valueChanged(ListSelectionEvent lse) {
+        if (lse.getValueIsAdjusting())
+            return;
+        Object src = lse.getSource();
+        if (_showRelated) {
+            int row = lse.getFirstIndex();
+            Object sel = _results.elementAt(row);
+            cat.debug("selected " + sel);
+            _related.removeAllElements();
+            java.util.Enumeration enum = ChildGenRelated.SINGLETON.gen(sel);
+            if (enum != null) {
+                while (enum.hasMoreElements()) {
+                    _related.addElement(enum.nextElement());
+                }
+            }
+            _relatedModel.setTarget(_related, null);
+            _relatedLabel.setText(
+                "Related Elements: " + _related.size() + " items");
+        }
     }
-  }
 
   ////////////////////////////////////////////////////////////////
   // actions
