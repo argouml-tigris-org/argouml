@@ -39,8 +39,6 @@ import java.util.Vector;
 import java.util.Iterator;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
 /**
    This code piece represents an attribute. Even though the code can
    handle several attributes in the same statement, the code generated
@@ -76,7 +74,7 @@ public class AttributeCodePiece extends NamedCodePiece
 	for (Iterator i = names.iterator(); i.hasNext(); ) {
 	    CodePiece cp = (CodePiece) i.next();
 	    String cpText = cp.getText().toString().trim();
-            if (cpText.indexOf('\n') > 0) 
+            if (cpText.indexOf('\n') > 0)
                 cpText = cpText.substring(0, cpText.indexOf('\n')).trim();
 	    attributeDef.add(cp);
 	    int pos = 0;
@@ -160,7 +158,7 @@ public class AttributeCodePiece extends NamedCodePiece
 		    parseState.newFeature(mFeature);
 
 		    Object attr = /*(MAttribute)*/ mFeature;
-		    writer.write(generator().generateCoreAttribute((MAttribute)attr));
+		    writer.write(generator().generateCoreAttribute(attr));
 
 		    if ( k < count ) {
 			writer.write("; "); // fixed comma separated attributes
@@ -185,11 +183,11 @@ public class AttributeCodePiece extends NamedCodePiece
 			    if (associationEnd2 != associationEnd
 				&& ModelFacade.isNavigable(associationEnd2)
 				&& !ModelFacade.isAbstract(ModelFacade.getAssociation(associationEnd2))
-				&& generator().generateAscEndName((MAssociationEnd)associationEnd2).equals(name))
+				&& generator().generateAscEndName(associationEnd2).equals(name))
 			    {
 				// association end found
 				found = true;
-				writer.write(generator().generateCoreAssociationEnd((MAssociationEnd)associationEnd2));
+				writer.write(generator().generateCoreAssociationEnd(associationEnd2));
 				break;
 			    }
 			}

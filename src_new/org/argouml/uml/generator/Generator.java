@@ -29,32 +29,14 @@ package org.argouml.uml.generator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.argouml.application.api.NotationName;
 import org.argouml.application.api.NotationProvider;
 import org.argouml.application.api.PluggableNotation;
 import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.ModelFacade;
-
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-
-import ru.novosoft.uml.behavior.state_machines.MGuard;
-import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MConstraint;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.core.MParameter;
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
-import ru.novosoft.uml.foundation.data_types.MExpression;
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
-import ru.novosoft.uml.model_management.MPackage;
 
 /** This class is the abstract super class that defines a code
  * generation framework.  It is basically a depth-first traversal of
@@ -63,7 +45,7 @@ import ru.novosoft.uml.model_management.MPackage;
  * the generation logic.  See the <a href=
  * "http://hillside.net/patterns/">Vistor design
  * pattern</a> in "Design Patterns", and the <a href=
- * "http://www.ccs.neu.edu/research/demeter/"> Demeter project</a>. 
+ * "http://www.ccs.neu.edu/research/demeter/"> Demeter project</a>.
  */
 public abstract class Generator
     implements NotationProvider, PluggableNotation {
@@ -108,25 +90,25 @@ public abstract class Generator
         if (o == null)
             return "";
         if (ModelFacade.isAExtensionPoint(o))
-            return generateExtensionPoint((MExtensionPoint) o);
+            return generateExtensionPoint(o);
         if (ModelFacade.isAOperation(o))
-            return generateOperation((MOperation) o, false);
+            return generateOperation(o, false);
         if (ModelFacade.isAAttribute(o))
-            return generateAttribute((MAttribute) o, false);
+            return generateAttribute(o, false);
         if (ModelFacade.isAParameter(o))
-            return generateParameter((MParameter)o);
+            return generateParameter(o);
         if (ModelFacade.isAPackage(o))
-            return generatePackage((MPackage) o);
+            return generatePackage(o);
         if (ModelFacade.isAClassifier(o))
-            return generateClassifier((MClassifier) o);
+            return generateClassifier(o);
         if (ModelFacade.isAExpression(o))
-            return generateExpression((MExpression) o);
+            return generateExpression(o);
         if (o instanceof String)
             return generateName((String) o);
         if (o instanceof String)
             return generateUninterpreted((String) o);
         if (ModelFacade.isAStereotype(o))
-            return generateStereotype((MStereotype) o);
+            return generateStereotype(o);
         if (ModelFacade.isATaggedValue(o)) {
             /*
              * 2002-11-07 Jaap Branderhorst Added the if statement to
@@ -143,28 +125,28 @@ public abstract class Generator
                     getNotation().getName() + TEST_SUFFIX)) {
                 return "";
             }
-            return generateTaggedValue((MTaggedValue) o);
+            return generateTaggedValue(o);
         }
         if (ModelFacade.isAAssociation(o))
-            return generateAssociation((MAssociation) o);
+            return generateAssociation(o);
         if (ModelFacade.isAAssociationEnd(o))
-            return generateAssociationEnd((MAssociationEnd) o);
+            return generateAssociationEnd(o);
         if (ModelFacade.isAMultiplicity(o))
-            return generateMultiplicity((MMultiplicity) o);
+            return generateMultiplicity(o);
         if (ModelFacade.isAState(o))
-            return generateState((MState) o);
+            return generateState(o);
         if (ModelFacade.isATransition(o))
-            return generateTransition((MTransition) o);
+            return generateTransition(o);
         if (ModelFacade.isAAction(o))
             return generateAction(o);
         if (ModelFacade.isACallAction(o))
             return generateAction(o);
         if (ModelFacade.isAGuard(o))
-            return generateGuard((MGuard) o);
+            return generateGuard(o);
         if (ModelFacade.isAMessage(o))
-            return generateMessage((MMessage) o);
+            return generateMessage(o);
         if (ModelFacade.isAVisibilityKind(o))
-            return generateVisibility((MVisibilityKind) o);
+            return generateVisibility(o);
 
         if (ModelFacade.isAModelElement(o))
             return generateName(org.argouml.model.ModelFacade.getName(o));
@@ -175,34 +157,29 @@ public abstract class Generator
         return o.toString();
     }
 
-    public abstract String generateExtensionPoint(MExtensionPoint op);
-    public abstract String generateOperation(MOperation op, boolean documented);
-    public abstract String generateAttribute(MAttribute attr,
-        boolean documented);
-    public abstract String generateParameter(MParameter param);
-    public abstract String generatePackage(MPackage p);
-    public abstract String generateClassifier(MClassifier cls);
-    public abstract String generateTaggedValue(MTaggedValue s);
-    public abstract String generateAssociation(MAssociation a);
-    public abstract String generateAssociationEnd(MAssociationEnd ae);
-    public abstract String generateMultiplicity(MMultiplicity m);
-    public abstract String generateState(MState m);
-    public abstract String generateTransition(MTransition m);
+    public abstract String generateExtensionPoint(Object op);
+    public abstract String generateOperation(Object op, boolean documented);
+    public abstract String generateAttribute(Object attr, boolean documented);
+    public abstract String generateParameter(Object param);
+    public abstract String generatePackage(Object p);
+    public abstract String generateClassifier(Object cls);
+    public abstract String generateTaggedValue(Object s);
+    public abstract String generateAssociation(Object a);
+    public abstract String generateAssociationEnd(Object ae);
+    public abstract String generateMultiplicity(Object m);
+    public abstract String generateState(Object m);
+    public abstract String generateTransition(Object m);
     public abstract String generateAction(Object m);
-    public abstract String generateGuard(MGuard m);
-    public abstract String generateMessage(MMessage m);
-    public abstract String generateVisibility(MVisibilityKind visibility);
+    public abstract String generateGuard(Object m);
+    public abstract String generateMessage(Object m);
+    public abstract String generateVisibility(Object m);
 
-    public String generateExpression(MExpression expr) {
-        if (expr == null)
-            return "";
-        return generateUninterpreted(expr.getBody());
-    }
-
-    public String generateExpression(MConstraint expr) {
-        if (expr == null)
-            return "";
-        return generateExpression(expr.getBody());
+    public String generateExpression(Object expr) {
+        if (ModelFacade.isAExpression(expr))
+            return generateUninterpreted((String)ModelFacade.getBody(expr));
+        else if (ModelFacade.isAConstraint(expr))
+            return generateExpression(ModelFacade.getBody(expr));
+        return "";
     }
 
     public String generateName(String n) {
@@ -221,16 +198,38 @@ public abstract class Generator
         return ModelFacade.getName(cls);
     }
 
-    public String generateStereotype(MStereotype st) {
+    public String generateStereotype(Object st) {
         if (st == null)
             return "";
-        if (st.getName() == null)
-            return ""; // Patch by Jeremy Bennett
-        if (st.getName().length() == 0)
-            return "";
-        return NotationHelper.getLeftGuillemot()
-            + generateName(st.getName())
+        if (ModelFacade.isAModelElement(st)) {
+            if (ModelFacade.getName(st) == null)
+                return ""; // Patch by Jeremy Bennett
+            if (ModelFacade.getName(st).length() == 0)
+                return "";
+            return NotationHelper.getLeftGuillemot()
+            + generateName(ModelFacade.getName(st))
             + NotationHelper.getRightGuillemot();
+        }
+        if (st instanceof Collection) {
+            Object o;
+            StringBuffer sb = new StringBuffer(10);
+            boolean first = true;
+            Iterator iter = ((Collection)st).iterator();
+            while (iter.hasNext()) {
+                if (!first)
+                    sb.append(',');
+                o = iter.next();
+                if (o != null) {
+                    sb.append(generateName(ModelFacade.getName(o)));
+                    first = false;
+                }
+            }
+            if (!first)
+                return NotationHelper.getLeftGuillemot()
+                + sb.toString()
+                + NotationHelper.getRightGuillemot();
+        }
+        return "";
     }
 
     // Module stuff
@@ -281,7 +280,7 @@ public abstract class Generator
         return null;
     }
 
-    /**   
+    /**
      * The default for any Generator is to be enabled.
      *
      * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
