@@ -34,7 +34,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.argouml.ui.*;
 
-public class GoStateToSubstate implements TreeModel {
+public class GoStateToSubstate extends AbstractGoRule {
 
   public String getRuleName() { return "State->Substates"; }
 
@@ -45,17 +45,17 @@ public class GoStateToSubstate implements TreeModel {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     return (children == null) ? null : children.elementAt(index);
   }
 
   public int getChildCount(Object parent) {
-    Vector children = getChildren(parent);
+    Collection children = getChildren(parent);
     return (children == null) ? 0 : children.size();
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     return (children == null) ? -1 : children.indexOf(child);
   }
 
@@ -63,7 +63,7 @@ public class GoStateToSubstate implements TreeModel {
     return !(getChildCount(node) > 0);
   }
 
-  public Vector getChildren(Object parent) {
+  public Collection getChildren(Object parent) {
     if (!(parent instanceof MCompositeState)) return null;
     MCompositeState cs = (MCompositeState) parent;
     Vector subs = new Vector(cs.getSubvertices());

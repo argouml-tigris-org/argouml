@@ -36,7 +36,7 @@ import org.argouml.kernel.Project;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.activity.ui.*;
 
-public class GoMachineDiagram implements TreeModel {
+public class GoMachineDiagram extends AbstractGoRule {
 
   public String getRuleName() { return "Machine->Diagram"; }
 
@@ -47,26 +47,26 @@ public class GoMachineDiagram implements TreeModel {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     if (children != null) return children.elementAt(index);
     throw
 	new UnsupportedOperationException("getChild should never be get here");
   }
 
   public int getChildCount(Object parent) {
-    Vector children = getChildren(parent);
+    Collection children = getChildren(parent);
     if (children != null) return children.size();
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     if (children != null && children.contains(child))
       return children.indexOf(child);
     return -1;
   }
 
-  public Vector getChildren(Object parent) {
+  public Collection getChildren(Object parent) {
     Project p = ProjectBrowser.TheInstance.getProject();
     if (p == null) return null;
     if (!(parent instanceof MStateMachine)) return null;

@@ -31,7 +31,7 @@ import javax.swing.tree.*;
 import org.argouml.ui.*;
 import org.tigris.gef.util.*;
 
-public class GoChildGenerator implements TreeModel {
+public class GoChildGenerator extends AbstractGoRule {
 
     ChildGenerator _cg;
     String _name;
@@ -60,6 +60,11 @@ public class GoChildGenerator implements TreeModel {
 	    e.nextElement();
 	}
 	return null;
+    }
+
+    public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
     }
 
     public int getChildCount(Object parent) {

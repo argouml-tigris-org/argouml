@@ -34,7 +34,7 @@ import ru.novosoft.uml.foundation.core.*;
 import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
 
-public class GoGenElementToDerived implements TreeModel {
+public class GoGenElementToDerived extends AbstractGoRule {
 
   public String getRuleName() {
     return Argo.localize ("Tree", "misc.class.subclass");
@@ -52,6 +52,11 @@ public class GoGenElementToDerived implements TreeModel {
     }
     throw
 	new UnsupportedOperationException("getChild should never be get here");
+  }
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
   }
   
   public int getChildCount(Object parent) {

@@ -34,7 +34,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.argouml.ui.*;
 
-public class GoStateToDownstream implements TreeModel {
+public class GoStateToDownstream extends AbstractGoRule {
 
   public String getRuleName() { return "State->Following States"; }
   
@@ -52,6 +52,11 @@ public class GoStateToDownstream implements TreeModel {
     }
     throw 
 	new UnsupportedOperationException("getChild should never be get here");
+  }
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
   }
 
   // needs-more-work: should be a set

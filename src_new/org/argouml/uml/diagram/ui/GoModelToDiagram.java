@@ -36,7 +36,7 @@ import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-public class GoModelToDiagram implements TreeModel {
+public class GoModelToDiagram extends AbstractGoRule {
 
   public String getRuleName() {
     return Argo.localize ("Tree", "misc.package.diagram");
@@ -59,6 +59,11 @@ public class GoModelToDiagram implements TreeModel {
       }
     }
     throw new UnsupportedOperationException("getChild should never get here");
+  }
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
   }
 
   public int getChildCount(Object parent) {

@@ -35,7 +35,7 @@ import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
 
-public class GoModelToBaseElements implements TreeModel {
+public class GoModelToBaseElements extends AbstractGoRule {
     protected static Category cat = Category.getInstance(GoModelToBaseElements.class);
 
   public String getRuleName() {
@@ -63,6 +63,11 @@ public class GoModelToBaseElements implements TreeModel {
       cat.warn("getChild not enough base elements found!");
     }
     throw new UnsupportedOperationException("getChild should not get here");
+  }
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
   }
   
   public int getChildCount(Object parent) {

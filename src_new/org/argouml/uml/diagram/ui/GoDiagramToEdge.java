@@ -36,7 +36,7 @@ import org.tigris.gef.base.Diagram;
 import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
 
-public class GoDiagramToEdge implements TreeModel {
+public class GoDiagramToEdge extends AbstractGoRule {
 
   public String getRuleName() {
     return Argo.localize ("Tree", "misc.diagram.edge");
@@ -54,6 +54,11 @@ public class GoDiagramToEdge implements TreeModel {
     }
     throw
 	new UnsupportedOperationException("getChild should never be get here");
+  }
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
   }
 
   public int getChildCount(Object parent) {
