@@ -1034,6 +1034,84 @@ It is in
 Verify that you can start ArgoUML from the debugger within Eclipse.
 </para>
       </listitem>
+
+      <listitem>
+	<para>
+Run the JUnit tests.
+</para>
+	<para>
+There is perhaps some fancy way of doing this but while we figure that out
+this "revert to ant"-way can be used to run the tests:
+</para>
+
+	<itemizedlist>
+	  <listitem>
+	    <para>
+Select Ant Home Entries 
+(under Window => Preferences,
+Ant => Runtime,
+Tab Classpath)
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Press <command>Add Jars</command> and add
+<filename>optional.jar</filename> from 
+<filename>tools/ant-1.4.1</filename>.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Press <command>Add Jars</command> and add
+all jars from
+<filename>tools/ant-/lib<replaceable>1.4.1</replaceable></filename>.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Press <command>Add Jars</command> and add
+<filename>jdepend.jar</filename> from 
+<filename>tools/jdepend-<replaceable>2.2</replaceable>/lib</filename>.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Press OK.
+</para>
+	    <para>
+These first items needs only be done once as a set up.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Run ant with the 
+<command>alltests</command> target.
+</para>
+	    <para>
+This is done by right-clicking on 
+<filename>src_new/build.xml</filename>
+and selecting 
+<command>Run Ant</command>
+and then selecting the <command>alltests</command> target,
+deselecting all other targets,
+and pressing run.
+</para>
+
+	    <para>
+This setting, i.e. the 
+<filename>src_new/build.xml</filename> file 
+and the 
+<command>alltests</command> target
+are remembered by Eclipse so after this the Run tool can be used.
+</para>
+	  </listitem>
+	</itemizedlist>
+      </listitem>
     </itemizedlist>
   </sect1>
 
