@@ -389,22 +389,22 @@ public class CoreFactory extends AbstractUmlModelFactory {
         MNamespace ns1 = c1.getNamespace();
         MNamespace ns2 = c2.getNamespace();
         if (ns1 == null || ns2 == null) throw new IllegalArgumentException("In buildAssociation: one of the classifiers does not belong to a namespace");
-        boolean ns1Owner = ModelManagementHelper.getHelper().getAllNamespaces(ns1).contains(ns2);
+        MAssociation assoc = UmlFactory.getFactory().getCore().createAssociation();
+        assoc.setName("");     
+        assoc.setNamespace(getFirstSharedNamespace(ns1, ns2));
+        buildAssociationEnd(assoc, null, c1,null, null, nav1, null, null, null, null, null);
+        buildAssociationEnd(assoc, null, c2,null, null, nav2, null, null, null, null, null);
+        return assoc;       
+    }
+    
+    private MNamespace getFirstSharedNamespace(MNamespace ns1, MNamespace ns2) {
+    	if (ns1 == null || ns2 == null) return null;
+    	if (ns1 == ns2) return ns1;
+    	boolean ns1Owner = ModelManagementHelper.getHelper().getAllNamespaces(ns1).contains(ns2);
         boolean ns2Owner = ModelManagementHelper.getHelper().getAllNamespaces(ns2).contains(ns1);
-        if (ns1 == ns2 || ns1Owner || ns2Owner) {
-        	MAssociation assoc = UmlFactory.getFactory().getCore().createAssociation();
-        	assoc.setName("");     
-        	if (ns1Owner)
-        		assoc.setNamespace(ns1);
-        	else
-        		assoc.setNamespace(ns2);
-        	buildAssociationEnd(assoc, null, c1,null, null, nav1, null, null, null, null, null);
-        	buildAssociationEnd(assoc, null, c2,null, null, nav2, null, null, null, null, null);
-        	return assoc;
-        } else {
-        	throw new IllegalArgumentException("In buildAssociation: the classifiers belong to namespaces that are no children of eachother");
-        }
-        
+        if (ns1Owner) return ns1;
+        if (ns2Owner) return ns2;
+        return getFirstSharedNamespace(ns1.getNamespace(), ns2.getNamespace());
     }
     
     /**

@@ -159,24 +159,7 @@ implements PluggablePropertyPanel {
             // Force an update of the navigation pane to solve issue 323
             ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
-    }
-
-    public void addGeneralization() {
-        Object target = getTarget();
-        if(target instanceof MPackage) {
-            MPackage pkg = (MPackage) target;
-            MModelElement element = pkg.getFactory().createGeneralization();
-            pkg.addOwnedElement(element);
-            navigateTo(element);
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
-        }
-    }
-
-
-  
+    }  
 
     public String formatElement(MModelElement element) {
         String formatted = null;
@@ -230,15 +213,6 @@ implements PluggablePropertyPanel {
     public void addClass(MModelElement element) {
         addClass();
     }
-
-    public void addGeneralization(MModelElement element) {
-        addGeneralization();
-    }
-
-    public void addRealization(MModelElement element) {
-        addRealization();
-    }
-
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Package") ||

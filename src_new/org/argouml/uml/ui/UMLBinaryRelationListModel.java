@@ -92,7 +92,7 @@ abstract public class UMLBinaryRelationListModel extends UMLModelElementListMode
 		Object target = getTarget();
     	if (target instanceof MModelElement) {
     		MModelElement melement = (MModelElement)target;
-    		MModelElement othermelement = (MModelElement)getElementAt(index);
+    		MModelElement othermelement = (MModelElement)getModelElementAt(index);
     		MModelElement relation = getRelation(melement, othermelement);
     		Object pt = ProjectBrowser.TheInstance.getTarget();
     		ProjectBrowser.TheInstance.setTarget(relation);
@@ -191,4 +191,7 @@ abstract public class UMLBinaryRelationListModel extends UMLModelElementListMode
          
 	}
 
+	
+
+	
 }

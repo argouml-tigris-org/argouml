@@ -255,15 +255,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
       		return gen;
       	}
       }
-      /*else if (edgeClass == MGeneralization.class &&
-		((fromPort instanceof MActor && toPort instanceof MActor) ||
-		 (fromPort instanceof MUseCase && toPort instanceof MUseCase))) {
-	    MGeneralization gen = UmlFactory.getFactory().getCore().createGeneralization((MClassifier) fromPort,
-						(MClassifier) toPort);
-	    gen.addStereotype(MStereotype.EXTENDS);
-	    addEdge(gen);
-	    return gen;
-      }*/
+      
       else {
 	    System.out.println("Incorrect edge");
 	    return null;
