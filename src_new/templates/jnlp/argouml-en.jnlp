@@ -32,8 +32,7 @@
     <jar href="toolbutton.jar"/>
     <jar href="jmi.jar"/>
 
+    <property name="user.language" value="en"/>
   </resources>
-  <application-desc main-class="org.argouml.application.Main">
-    <argument>-Duser.language=en</argument>
-  </application-desc>
+  <application-desc main-class="org.argouml.application.Main"/>
 </jnlp>
