@@ -560,7 +560,7 @@ in the <filename class="directory">argouml/src_new</filename>-directory.
 This is done with <command>ant run</command>-command 
 in the 
 <filename class="directory">
-argouml/modules/<replacable>whatever</replacable>
+argouml/modules/<replaceable>whatever</replaceable>
 </filename>-directory.
 </para>
                   </listitem>
@@ -582,7 +582,7 @@ in the <filename class="directory">argouml/src_new</filename>-directory.
 This is done with <command>ant install</command>-command
 in each of the 
 <filename class="directory">
-argouml/modules/<replacable>whatever</replacable>
+argouml/modules/<replaceable>whatever</replaceable>
 </filename>-directories.
 </para>
                   </listitem>
