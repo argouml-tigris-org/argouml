@@ -93,7 +93,7 @@ public class GoListToOffenderToItem extends AbstractGoList {
         VectorSet allOffenders = new VectorSet();
         allOffenders.addAllElementsSuchThat(Designer.theDesigner()
             .getToDoList().getOffenders(), 
-            new PredicateNotInTrash());
+            getListPredicate());
         
         
 	if (parent instanceof ToDoList) {
