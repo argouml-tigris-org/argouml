@@ -69,16 +69,16 @@ public class PropPanelDataType extends PropPanelClassifier {
     addField(_modifiersPanel,4,0,0);
 
     addCaption("Generalizations:",0,1,1);
-    addField(extendsScroll,0,1,1);
+    addField(getGeneralizationScroll(),0,1,1);
 
     addCaption("Specializations:",1,1,1);
-    addField(derivedScroll,1,1,1);
+    addField(getSpecializationScroll(),1,1,1);
 
-    addCaption(Argo.localize("UMLMenu", "label.implements"),2,1,1);
-    addField(implementsScroll,2,1,1);
+    addCaption(Argo.localize("UMLMenu", "label.dependency"),2,1,1);
+    addField(getSupplierDependencyScroll(),2,1,1);
 
     addCaption(Argo.localize("UMLMenu", "label.operations"),0,2,1);
-    addField(opsScroll,0,2,1);
+    addField(getFeatureScroll(),0,2,1);
 
     addCaption(Argo.localize("UMLMenu", "label.literals"),1,2,1);
     JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);

@@ -62,16 +62,16 @@ public class PropPanelClass extends PropPanelClassifier {
     
     add(LabelledLayout.getSeperator());
     
-    addField(Argo.localize("UMLMenu", "label.implements"), implementsScroll);
-    addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
-    addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);
+    addField(Argo.localize("UMLMenu", "label.dependency"), getClientDependencyScroll());
+    addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+    addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
     
     add(LabelledLayout.getSeperator());
      
-    addField(Argo.localize("UMLMenu", "label.associations"), connectScroll);
-    addField(Argo.localize("UMLMenu", "label.operations"), opsScroll);
-    addField(Argo.localize("UMLMenu", "label.attributes"), attrScroll);
-    addField(Argo.localize("UMLMenu", "label.owned-elements"),innerScroll);
+    addField(Argo.localize("UMLMenu", "label.association-ends"), getAssociationEndScroll());
+    addField(Argo.localize("UMLMenu", "label.operations"), getFeatureScroll());
+    addField(Argo.localize("UMLMenu", "label.attributes"), getStructuralFeatureScroll());
+    addField(Argo.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
     
   
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);

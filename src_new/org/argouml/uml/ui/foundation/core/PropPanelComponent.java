@@ -75,10 +75,10 @@ public class PropPanelComponent extends PropPanelClassifier {
     addField(modifiersPanel,4,0,0);
 
     addCaption("Generalizations:",0,1,1);
-    addField(extendsScroll,0,1,1);
+    addField(getGeneralizationScroll(),0,1,1);
 
     addCaption("Specializations:",1,1,1);
-    addField(derivedScroll,1,1,1);
+    addField(getSpecializationScroll(),1,1,1);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");

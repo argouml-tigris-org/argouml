@@ -39,18 +39,18 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 
 public abstract class PropPanelNamespace extends PropPanelModelElement {
 
-	protected JScrollPane ownedElementsScroll;
+	private JScrollPane _ownedElementsScroll;
+    
+    private static UMLNamespaceOwnedElementListModel ownedElementListModel = new UMLNamespaceOwnedElementListModel();
 
   ////////////////////////////////////////////////////////////////
   // contructors
     public PropPanelNamespace(String panelName, ImageIcon icon, int columns) {
         super(panelName,icon,columns);
-        initialize();
     }
     
     public PropPanelNamespace(String title, Orientation orientation) {
     	super(title, orientation);
-    	initialize();
     }
 
     public PropPanelNamespace(String panelName,int columns) {
@@ -87,9 +87,19 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         }
     }
     
-    private void initialize() {
-        JList ownedElementsList  = new UMLLinkedList(new UMLNamespaceOwnedElementListModel());
-        ownedElementsScroll = new JScrollPane(ownedElementsList);
+    
+
+    /**
+     * Returns the ownedElementsScroll.
+     * @return JScrollPane
+     */
+    public JScrollPane getOwnedElementsScroll() {
+        if (_ownedElementsScroll == null) {
+           JList ownedElementsList  = new UMLLinkedList(ownedElementListModel);
+            _ownedElementsScroll = new JScrollPane(ownedElementsList); 
+        }
+        return _ownedElementsScroll;
+        
     }
 
 } /* end class PropPanelClass */

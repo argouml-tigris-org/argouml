@@ -24,8 +24,6 @@
 
 package org.argouml.uml.ui.model_management;
 
-import javax.swing.ImageIcon;
-
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggablePropertyPanel;
@@ -33,9 +31,7 @@ import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelNamespace;
-import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.model_management.MPackageImpl;
@@ -98,7 +94,7 @@ public class PropPanelPackage extends PropPanelNamespace implements PluggablePro
         // TODO: facilitate the fact that Package is a generalizable element.
         add(LabelledLayout.getSeperator());
 
-        addField(Argo.localize("UMLMenu", "label.owned-elements"), ownedElementsScroll);
+        addField(Argo.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
 
         new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
         new PropPanelButton(this, buttonPanel, _navBackIcon, Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction", "isNavigateBackEnabled");

@@ -65,6 +65,7 @@ public abstract class AbstractUmlModelFactory {
             Iterator it = couples.iterator();
             while (it.hasNext()) {
                 UmlModelEventPump.ListenerEventName couple = (UmlModelEventPump.ListenerEventName)it.next();
+                UmlModelEventPump.getPump().removeModelEventListener(couple.getListener(), (MBase)o, couple.getEventName());
                 UmlModelEventPump.getPump().addModelEventListener(couple.getListener(), (MBase)o, couple.getEventName());
             }
             

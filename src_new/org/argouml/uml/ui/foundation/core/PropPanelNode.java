@@ -67,7 +67,7 @@ public class PropPanelNode extends PropPanelClassifier {
     addField(getNameTextField(),1,0,0);
 
     addCaption("Generalizations:",2,0,0);
-    addField(extendsScroll,2,0,0);
+    addField(getGeneralizationScroll(),2,0,0);
 
     addCaption(Argo.localize("UMLMenu", "label.stereotype"),3,0,0);
     addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()),3,0,0);
@@ -83,7 +83,7 @@ public class PropPanelNode extends PropPanelClassifier {
    addField(getNamespaceComboBox(),5,0,0);
 
     addCaption("Specializations:",6,0,1);
-    addField(derivedScroll,6,0,1);
+    addField(getSpecializationScroll(),6,0,1);
 
     addCaption(Argo.localize("UMLMenu", "label.components"),0,1,1);
     JList compList = new UMLList(new UMLReflectionListModel(this,"component",true,"getResidents","setResidents",null,null),true);

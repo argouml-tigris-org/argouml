@@ -102,8 +102,8 @@ public class PropPanelUseCase extends PropPanelClassifier {
 		
     add(LabelledLayout.getSeperator());
 		
-    addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
-    addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);
+    addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+    addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
     	
     JList extendsList = new UMLLinkedList(new UMLUseCaseExtendListModel());
     addField(Argo.localize("UMLMenu", "label.extends"), 
