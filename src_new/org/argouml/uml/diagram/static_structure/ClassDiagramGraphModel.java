@@ -311,147 +311,159 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object fromPort, Object toPort,
-			java.lang.Class edgeClass) {
-	  //    System.out.println("connecting: "+fromPort+toPort+edgeClass);
+                        java.lang.Class edgeClass) {
+	  // System.out.println("connecting: "+fromPort+toPort+edgeClass);
       if ((fromPort instanceof MClass) && (toPort instanceof MClass)) {
-	    MClass fromCls = (MClass) fromPort;
-	    MClass toCls = (MClass) toPort;
+          MClass fromCls = (MClass) fromPort;
+          MClass toCls = (MClass) toPort;
 
-	    if (edgeClass == MGeneralizationImpl.class) {
-			MGeneralization gen = MMUtil.SINGLETON.buildGeneralization(fromCls, toCls);
-			addEdge(gen);
-			return gen;
-	    }
-	    else if (edgeClass == MAssociationImpl.class) {
-		  MAssociation asc = MMUtil.SINGLETON.buildAssociation(fromCls, toCls);
- 	      addEdge(asc);
-		  return asc;
-		  //return asc;
-	    }
-	    else if (edgeClass == MDependencyImpl.class) {
-			// nsuml: using Binding as default
-			MDependency dep = MMUtil.SINGLETON.buildDependency(fromCls, toCls);
-			addEdge(dep);
-			return dep;
-	    }
-	    else {
-	      System.out.println("connect: Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	      return null;
-	    }
+          if (edgeClass == MGeneralizationImpl.class) {
+              MGeneralization gen = 
+                  MMUtil.SINGLETON.buildGeneralization(fromCls, toCls);
+              addEdge(gen);
+              return gen;
+          }
+          else if (edgeClass == MAssociationImpl.class) {
+              MAssociation asc = 
+                  MMUtil.SINGLETON.buildAssociation(fromCls, toCls);
+              addEdge(asc);
+              return asc;
+              //return asc;
+          }
+          else if (edgeClass == MDependencyImpl.class) {
+              // nsuml: using Binding as default
+              MDependency dep = 
+                  MMUtil.SINGLETON.buildDependency(fromCls, toCls);
+              addEdge(dep);
+              return dep;
+          }
+          else {
+              System.out.println("connect: Cannot make a "+ edgeClass.getName() +
+                                 " between a " + fromPort.getClass().getName() +
+                                 " and a " + toPort.getClass().getName());
+              return null;
+          }
       }
-      else if ((fromPort instanceof MPackage) && (toPort instanceof MPackage)) {
-		  MPackage fromPack = (MPackage) fromPort;
-		  MPackage toPack = (MPackage) toPort;
-    // needs-more-work: assumes public, user pref for default visibility?
-	//do I have to check the namespace here? (Toby)
-		  if (edgeClass == MDependencyImpl.class) {
-			  // nsuml: using Usage as default
-			  MDependency dep = MMUtil.SINGLETON.buildDependency(fromPack, toPack);
-			  addEdge(dep);
-			  return dep;
-		  }
-      }
+      else if ((fromPort instanceof MPackage) && (toPort instanceof MPackage))
+          {
+              MPackage fromPack = (MPackage) fromPort;
+              MPackage toPack = (MPackage) toPort;
+              // needs-more-work: assumes public, user pref for default visibility?
+              //do I have to check the namespace here? (Toby)
+              if (edgeClass == MDependencyImpl.class) {
+                  // nsuml: using Usage as default
+                  MDependency dep = MMUtil.SINGLETON.buildDependency(fromPack, toPack);
+                  addEdge(dep);
+                  return dep;
+              }
+          }
 
       // break
       else if ((fromPort instanceof MClass) && (toPort instanceof MInterface)) {
-	MClass fromCls = (MClass) fromPort;
-	MInterface toIntf = (MInterface) toPort;
+          MClass fromCls = (MClass) fromPort;
+          MInterface toIntf = (MInterface) toPort;
 	 
-	if (edgeClass == MAbstractionImpl.class) {
-		MAbstraction real = MMUtil.SINGLETON.buildRealization(fromCls, toIntf);
-		addEdge(real);
-		return real;
-	}
+          if (edgeClass == MAbstractionImpl.class) {
+              MAbstraction real = 
+                  MMUtil.SINGLETON.buildRealization(fromCls, toIntf);
+              addEdge(real);
+              return real;
+          }
 	
-	  else  if (edgeClass == MAssociationImpl.class) {
-		  MAssociation asc = MMUtil.SINGLETON.buildAssociation(fromCls, toIntf);
- 	      addEdge(asc);
-		  return asc;
-	}
-	else {
-	  System.out.println("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	  return null;
-	}
+          else  if (edgeClass == MAssociationImpl.class) {
+              MAssociation asc = 
+                  MMUtil.SINGLETON.buildAssociation(fromCls, false, toIntf, true);
+              addEdge(asc);
+              return asc;
+          }
+          else {
+              System.out.println("Cannot make a "+ edgeClass.getName() +
+                                 " between a " + fromPort.getClass().getName() +
+                                 " and a " + toPort.getClass().getName());
+              return null;
+          }
       }
 
       // break
-      else if ((fromPort instanceof MInterface) && (toPort instanceof MClass)) {
-	MInterface fromIntf = (MInterface) fromPort;
-	MClass toCls = (MClass) toPort;
+      else if ((fromPort instanceof MInterface) && (toPort instanceof MClass)) 
+          {
+              MInterface fromIntf = (MInterface) fromPort;
+              MClass toCls = (MClass) toPort;
 
 
-	if (edgeClass == MAssociationImpl.class) {
-		  MAssociation asc = MMUtil.SINGLETON.buildAssociation(fromIntf, false, toCls, true);
- 	      addEdge(asc);
-		  return asc;
-	}
+              if (edgeClass == MAssociationImpl.class) {
+                  MAssociation asc = 
+                      MMUtil.SINGLETON.buildAssociation(fromIntf, true, 
+                                                        toCls, false);
+                  addEdge(asc);
+                  return asc;
+              }
 
-// 	else if (edgeClass == MAbstractionImpl.class) {
-// 		MAbstraction real = MMUtil.SINGLETON.buildRealization(toCls, fromIntf);
-// 		addEdge(real);
-// 		return real;
-// 	}
+              // 	else if (edgeClass == MAbstractionImpl.class) {
+              // 		MAbstraction real = 
+              //            MMUtil.SINGLETON.buildRealization(toCls, fromIntf);
+              // 		addEdge(real);
+              // 		return real;
+              // 	}
 
-	else {
-	  System.out.println("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	  return null;
-	}
+              else {
+                  System.out.println("Cannot make a "+ edgeClass.getName() +
+                                     " between a " + fromPort.getClass().getName() +
+                                     " and a " + toPort.getClass().getName());
+                  return null;
+              }
+          }
+
+      // break
+      else if ((fromPort instanceof MInterface) && 
+               (toPort instanceof MInterface)) {
+          MInterface fromIntf = (MInterface) fromPort;
+          MInterface toIntf = (MInterface) toPort;
+
+          if (edgeClass == MGeneralizationImpl.class) {
+              MGeneralization gen = new MGeneralizationImpl();
+              gen.setChild(fromIntf);
+              gen.setParent(toIntf);
+              addEdge(gen);
+              return gen;
+          }
+          else if (edgeClass == MDependencyImpl.class) {
+              //nsuml: using Binding
+              MDependency dep = new MDependencyImpl();
+              dep.addSupplier(fromIntf);
+              dep.addClient(toIntf);
+              addEdge(dep);
+              addEdge(dep);
+              return dep;
+          }
+          else {
+              System.out.println("Cannot make a "+ edgeClass.getName() +
+                                 " between a " + fromPort.getClass().getName() +
+                                 " and a " + toPort.getClass().getName());
+              return null;
+          }
       }
 
       // break
-      else if ((fromPort instanceof MInterface) && (toPort instanceof MInterface)) {
-	MInterface fromIntf = (MInterface) fromPort;
-	MInterface toIntf = (MInterface) toPort;
-
-	if (edgeClass == MGeneralizationImpl.class) {
-		MGeneralization gen = new MGeneralizationImpl();
-	  gen.setChild(fromIntf);
-	  gen.setParent(toIntf);
-	  addEdge(gen);
-	  return gen;
-	}
-	else if (edgeClass == MDependencyImpl.class) {
-		//nsuml: using Binding
-	MDependency dep = new MDependencyImpl();
-		dep.addSupplier(fromIntf);
-		dep.addClient(toIntf);
-		addEdge(dep);
-	  addEdge(dep);
-	  return dep;
-	}
-	else {
-	  System.out.println("Cannot make a "+ edgeClass.getName() +
-			     " between a " + fromPort.getClass().getName() +
-			     " and a " + toPort.getClass().getName());
-	  return null;
-	}
-      }
-
-      // break
-      else if ((fromPort instanceof MInstance) && (toPort instanceof MInstance)) {
-        MInstance fromInst = (MInstance) fromPort;
-        MInstance toInst = (MInstance) toPort;
-    	if (edgeClass == MLinkImpl.class) {
-    	  MLink link = new MLinkImpl();
-		  MLinkEnd le0 = new MLinkEndImpl();
-		  le0.setInstance(fromInst);
-		  MLinkEnd le1 = new MLinkEndImpl();
-		  le1.setInstance(toInst);
-		  link.addConnection(le0);
-		  link.addConnection(le1);
-    	  addEdge(link);
-    	  return link;
-    	}
+      else if ((fromPort instanceof MInstance) && 
+               (toPort instanceof MInstance)) {
+          MInstance fromInst = (MInstance) fromPort;
+          MInstance toInst = (MInstance) toPort;
+          if (edgeClass == MLinkImpl.class) {
+              MLink link = new MLinkImpl();
+              MLinkEnd le0 = new MLinkEndImpl();
+              le0.setInstance(fromInst);
+              MLinkEnd le1 = new MLinkEndImpl();
+              le1.setInstance(toInst);
+              link.addConnection(le0);
+              link.addConnection(le1);
+              addEdge(link);
+              return link;
+          }
       }
     
-    System.out.println("should not enter here! connect3");
-    return null;
+      System.out.println("should not enter here! connect3");
+      return null;
   }
 
 
