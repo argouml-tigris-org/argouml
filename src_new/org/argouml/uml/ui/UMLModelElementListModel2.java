@@ -198,7 +198,10 @@ public abstract class UMLModelElementListModel2
             addElement(o);
         }
         _fireListEvents = true;
-        fireIntervalAdded(this, oldSize - 1, getSize() - 1);
+	int newSize = getSize();
+	if (newSize > oldSize) {
+	    fireIntervalAdded(this, oldSize, newSize - 1);
+	}
     }
 
     /**
