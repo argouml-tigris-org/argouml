@@ -114,7 +114,7 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
                 File tempFile = File.createTempFile("todo", null);
                 tempFile.deleteOnExit();
                 FileWriter w = new FileWriter(tempFile);
-                expander.expand(w, this);
+                expander.expand(w, member);
                 w.close();
                 addXmlFileToWriter(
                         (PrintWriter) writer,
