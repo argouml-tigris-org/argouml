@@ -5392,6 +5392,7 @@ public class ModelFacade {
     public static void setTag(Object target, Object tag) {
         if (target instanceof MTaggedValue && tag instanceof String) {
             ((MTaggedValue)target).setTag((String)tag);
+            return;
         }
         throw new IllegalArgumentException("Unrecognized object " + target + " or " + tag);
     }
