@@ -879,6 +879,27 @@ public class Project implements java.io.Serializable, TargetListener {
     public Vector getDiagrams() {
         return _diagrams;
     }
+
+    /**
+     * Finds a diagram with a specific name or UID.
+     *
+     * @returns the diagram object (if found). Otherwize null.
+     * @param name is the name to search for.
+     */
+    public ArgoDiagram getDiagram(String name) {
+	Iterator it = _diagrams.iterator();
+	while (it.hasNext()) {
+	    ArgoDiagram ad = (ArgoDiagram)it.next();
+	    if (ad.getName() != null
+		&& ad.getName().equals(name))
+		return ad;
+	    if (ad.getItemUID() != null
+		&& ad.getItemUID().toString().equals(name))
+		return ad;
+	}
+	return null;
+    } 
+
     public void addDiagram(ArgoDiagram d) {
         // send indeterminate new value instead of making copy of vector
         _diagrams.addElement(d);
