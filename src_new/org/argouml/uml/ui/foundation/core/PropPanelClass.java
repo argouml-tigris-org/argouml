@@ -80,30 +80,28 @@ public class PropPanelClass extends PropPanelClassifier {
     addField(connectScroll,0,1,0.5);
 
     addCaption(Argo.localize("UMLMenu", "label.implements"),1,1,0);
-    addField(implementsScroll,1,1,0.3);
+    addField(implementsScroll,1,1,0);
+   
 
     addCaption("Specializations:",2,1,0);
-    addField(derivedScroll,2,1,0.2);
+    addField(derivedScroll,2,1,0);
 
-    addCaption(Argo.localize("UMLMenu", "label.operations"),0,2,0.4);
-    addField(opsScroll,0,2,0.4);
+    addCaption(Argo.localize("UMLMenu", "label.operations"),0,2,0);
+    addField(opsScroll,0,2,0);
 
-    addCaption(Argo.localize("UMLMenu", "label.attributes"),1,2,0.4);
-    addField(attrScroll,1,2,0.4);
+    addCaption(Argo.localize("UMLMenu", "label.attributes"),1,2,0);
+    addField(attrScroll,1,2,0);
 
-    addCaption(Argo.localize("UMLMenu", "label.owned-elements"),2,2,0.2);
-    addField(innerScroll,2,2,0.2);
+    addCaption(Argo.localize("UMLMenu", "label.owned-elements"),2,2,0);
+    addField(innerScroll,2,2,0);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_addAttrIcon, Argo.localize("UMLMenu", "button.add-attribute"),"addAttribute",null);
     new PropPanelButton(this,buttonPanel,_addOpIcon, Argo.localize("UMLMenu", "button.add-operation"),"addOperation",null);
-    //does this make sense??    new PropPanelButton(this,buttonPanel,_addAssocIcon, Argo.localize("UMLMenu", "button.add-association"),"addAssociation",null);
-    //new PropPanelButton(this,buttonPanel,_generalizationIcon, Argo.localize("UMLMenu", "button.add-generalization"),"addGeneralization",null);
-    //new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
-    //does this make sense??    new PropPanelButton(this,buttonPanel,_classIcon, Argo.localize("UMLMenu", "button.add-new-class"),"newClass",null);
     new PropPanelButton(this,buttonPanel,_innerClassIcon, Argo.localize("UMLMenu", "button.add-inner-class"),"addInnerClass",null);
+    new PropPanelButton(this,buttonPanel,_classIcon, Argo.localize("UMLMenu", "button.add-new-class"),"newClass",null);
     new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-class"),"removeElement",null);
 
   }

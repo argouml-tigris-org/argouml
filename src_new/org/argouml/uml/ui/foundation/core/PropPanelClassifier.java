@@ -30,17 +30,27 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.layout.ClassdiagramGeneralizationEdge;
 import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.UMLAddDialog;
 import org.argouml.uml.ui.UMLAttributesListModel;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLClassifiersListModel;
@@ -49,17 +59,25 @@ import org.argouml.uml.ui.UMLConnectionListModel;
 import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
 import org.argouml.uml.ui.UMLGeneralizationListModel;
 import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLModelElementListModel;
 import org.argouml.uml.ui.UMLOperationsListModel;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
+import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.UMLSpecializationListModel;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MInterface;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
@@ -76,6 +94,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     protected JScrollPane attrScroll;
     protected JScrollPane connectScroll;
     protected JScrollPane innerScroll;
+    
+    private UMLReflectionListModel _implementsModel = null;
 
   ////////////////////////////////////////////////////////////////
   // contructors
@@ -102,12 +122,19 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       extendsList.setVisibleRowCount(3);
       extendsScroll= new JScrollPane(extendsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
+		_implementsModel = new UMLReflectionListModel(this,"realizations",true,"getRealizations",null,"addRealization","deleteRealization");
+	  	JList implementsList = new UMLList(_implementsModel,true);
+ 		implementsList.setBackground(getBackground());
+        implementsList.setForeground(Color.blue);
+        implementsList.setVisibleRowCount(3);
+        implementsScroll=new JScrollPane(implementsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+      /*
       JList implementsList = new UMLList(new UMLClientDependencyListModel(this,"implements",true),true);
       implementsList.setBackground(getBackground());
       implementsList.setForeground(Color.blue);
       implementsList.setVisibleRowCount(3);
       implementsScroll= new JScrollPane(implementsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
+	  */
       _modifiersPanel = new JPanel(new GridLayout(0,2));
       _modifiersPanel.add(new UMLCheckBox(localize("public"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
       _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
@@ -147,12 +174,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
             MOperation oper = UmlFactory.getFactory().getCore().buildOperation(classifier);
-            oper.addMElementListener(((MElementListener)ProjectBrowser.TheInstance.getActiveDiagram().presentationFor(classifier)));
+            // why?-> oper.addMElementListener(((MElementListener)ProjectBrowser.TheInstance.getActiveDiagram().presentationFor(classifier)));
             navigateTo(oper);
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -162,10 +185,6 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 	    MClassifier cls = (MClassifier) target;
 	    MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
 	      navigateTo(attr);
-          // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -216,31 +235,104 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 
     public void removeElement() {
 	//overrides removeElement in PropPanel
-	ActionEvent event = new ActionEvent(this,0, "delete");
-	ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-	/*
+	
+	
+	
+	
         Object target = getTarget();
         if(target instanceof MClassifier) {
             MClassifier cls = (MClassifier) target;
-
             Object newTarget = cls.getNamespace();
-
-            cls.remove();
-
+            ProjectBrowser.TheInstance.setTarget(cls);
+			ActionEvent event = new ActionEvent(this,0, "delete");
+			ActionRemoveFromModel.SINGLETON.actionPerformed(event); 
             if(newTarget != null) {
+            	ProjectBrowser.TheInstance.setTarget(newTarget);
                 navigateTo(newTarget);
-            }
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
+            }   
         }
-        */
     }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Classifier") ||
             baseClass.equals("GeneralizableElement");
+    }
+    
+    /**
+	 * Opens a new window where existing interfaces can be added to the class as interfaces.
+	 * realized by this class.
+	 * If the interface and the class are on the same diagram, a figrealization is drawn.
+	 * @param index
+	 */
+    public void addRealization(Integer index) {
+    	Object target = getTarget();
+    	if (target instanceof MClass) {
+    		MClass clazz = (MClass)target;	
+	    	Vector choices = new Vector();
+	    	Vector selected = new Vector();
+	    	choices.addAll(CoreHelper.getHelper().getAllInterfaces());
+	    	selected.addAll(CoreHelper.getHelper().getRealizedInterfaces(clazz));
+	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-contexts"), true, true);
+	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
+	    	if (returnValue == JOptionPane.OK_OPTION) {
+	    		Iterator it = dialog.getSelected().iterator();
+	    		while (it.hasNext()) {
+	    			MInterface interf = (MInterface)it.next();
+	    			if (!selected.contains(interf)) {
+	    				ProjectBrowser pb = ProjectBrowser.TheInstance;
+	    				ArgoDiagram diagram = pb.getActiveDiagram();
+	    				Fig figclass = diagram.getLayer().presentationFor(clazz);
+	    				Fig figinterface = diagram.getLayer().presentationFor(interf);
+	    				if (figclass != null && figinterface != null) {
+	    					GraphModel gm = diagram.getGraphModel();
+	    					if (gm instanceof ClassDiagramGraphModel) {
+	    						((ClassDiagramGraphModel)gm).connect(clazz, interf, MAbstraction.class);
+	    					}
+	    				} else {
+	    					CoreFactory.getFactory().buildRealization(clazz, interf);
+	    				}
+	    			}
+	    		}
+	    		// have to do it like this since propertyset for the elements in the model is not called
+	    		_implementsModel.resetSize();	
+	    	}
+    	}
+    }
+    
+	/**
+	 * Returns all interfaces this class realizes.
+	 * @return Collection
+	 */
+    public Collection getRealizations() {
+    	Object target = getTarget();
+    	if (target instanceof MClass) {
+    		return CoreHelper.getHelper().getRealizedInterfaces((MClass)target);
+    	}
+    	return new Vector();
+    }
+    
+	/**
+	 * Deletes the realization between this class and an interface.
+	 * @param index
+	 */
+    public void deleteRealization(Integer index) {
+    	Object target = getTarget();
+    	if (target instanceof MClass) {
+    		MClass clazz = (MClass)target;
+    		MInterface interf = (MInterface)UMLModelElementListModel.elementAtUtil(CoreHelper.getHelper().getRealizedInterfaces(clazz), index.intValue(), null);
+    		MAbstraction abstraction = CoreHelper.getHelper().getRealization(interf, clazz);
+    		if (abstraction.getClients().size() == 1 && abstraction.getSuppliers().size() == 1) {
+    			Object pt = ProjectBrowser.TheInstance.getTarget();
+    			ProjectBrowser.TheInstance.setTarget(abstraction);
+    			ActionEvent event = new ActionEvent(this, 1, "delete");
+    			ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+    			ProjectBrowser.TheInstance.setTarget(pt);
+    			
+    		} else {
+    			interf.removeSupplierDependency(abstraction);
+    			clazz.removeClientDependency(abstraction);
+    		}
+    	}
     }
 
 
