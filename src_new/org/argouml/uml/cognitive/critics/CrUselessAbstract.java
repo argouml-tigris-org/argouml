@@ -46,6 +46,10 @@ import org.tigris.gef.util.VectorSet;
  *  itself of any subclasses). */
 public class CrUselessAbstract extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrUselessAbstract() {
 	setHeadline("Define Concrete (Sub)Class");
 	addSupportedDecision(CrUML.decINHERITANCE);
@@ -54,6 +58,10 @@ public class CrUselessAbstract extends CrUML {
 	addTrigger("isAbstract");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClass(dm))) return false;
 	Object cls = /*(MClass)*/ dm;

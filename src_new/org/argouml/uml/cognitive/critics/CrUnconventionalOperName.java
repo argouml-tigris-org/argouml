@@ -43,6 +43,10 @@ import org.tigris.gef.util.VectorSet;
  */
 public class CrUnconventionalOperName extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrUnconventionalOperName() {
 	setHeadline("Choose a Better MOperation Name");
 	addSupportedDecision(CrUML.decNAMING);
@@ -50,6 +54,10 @@ public class CrUnconventionalOperName extends CrUML {
 	addTrigger("feature_name");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAOperation(dm))) return NO_PROBLEM;
 	Object oper = /*(MOperation)*/ dm;
@@ -62,27 +70,39 @@ public class CrUnconventionalOperName extends CrUML {
         if (ModelFacade.getStereotypes(oper).size() > 0) {
             stereo = ModelFacade.getStereotypes(oper).iterator().next();
         }
-	if ((stereo != null) && 
-                ("create".equals(ModelFacade.getName(stereo)) ||
-                 "constructor".equals(ModelFacade.getName(stereo)))) {
+	if ((stereo != null) 
+            && ("create".equals(ModelFacade.getName(stereo)) 
+                    || "constructor".equals(ModelFacade.getName(stereo)))) {
 	    return NO_PROBLEM;
         }
 	if (!Character.isLowerCase(initalChar)) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Object f = /*(MFeature)*/ dm;
 	VectorSet offs = computeOffenders(f);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
+    /**
+     * @param dm the object to be checked
+     * @return the set of offenders
+     */
     protected VectorSet computeOffenders(Object/*MFeature*/ dm) {
 	VectorSet offs = new VectorSet(dm);
 	offs.addElement(ModelFacade.getOwner(dm));
 	return offs;
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#stillValid(
+     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
@@ -94,9 +114,13 @@ public class CrUnconventionalOperName extends CrUML {
     }
 
 
-    /** candidateForConstructor tests if the operation name is the same
+    /** 
+     * CandidateForConstructor tests if the operation name is the same
      * as the class name. If so, an alternative path in the wizard is 
      * possible where we are suggested to make the operation a constructor.
+     *
+     * @param me the operation to check
+     * @return true if this operation looks like a constructor
      */
     protected boolean candidateForConstructor(Object/*MModelElement*/ me) {
 	if (!(ModelFacade.isAOperation(me))) return false;
@@ -111,6 +135,9 @@ public class CrUnconventionalOperName extends CrUML {
     }
 
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     */
     public void initWizard(Wizard w) {
 	if (w instanceof WizOperName) {
 	    ToDoItem item = w.getToDoItem();
@@ -118,8 +145,8 @@ public class CrUnconventionalOperName extends CrUML {
 	    String sug = ModelFacade.getName(me);
 	    sug = sug.substring(0, 1).toLowerCase() + sug.substring(1);
 	    boolean cand = candidateForConstructor(me);
-	    String ins = "Change the operation name to start with a " +
-		"lowercase letter";
+	    String ins = "Change the operation name to start with a " 
+		+ "lowercase letter";
 	    if (cand)
 		ins = ins + " or make it a constructor";
 	    ins = ins + ".";
@@ -128,6 +155,10 @@ public class CrUnconventionalOperName extends CrUML {
 	    ((WizOperName) w).setPossibleConstructor(cand);
 	}
     }
+    
+    /**
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
     public Class getWizardClass(ToDoItem item) { return WizOperName.class; }
 
 } /* end class CrUnconventionalOperName */

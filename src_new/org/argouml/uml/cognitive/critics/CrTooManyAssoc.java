@@ -33,16 +33,18 @@ import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
 /** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
-
+ *  itself of any subclasses). 
+ */
 public class CrTooManyAssoc extends CrUML {
 
     ////////////////////////////////////////////////////////////////
     // constants
-    public static String THRESHOLD = "Threshold";
+    private static final String THRESHOLD = "Threshold";
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
+    /**
+     * The constructor.
+     * 
+     */
     public CrTooManyAssoc() {
 	setHeadline("Reduce Associations on <ocl>self</ocl>");
 
@@ -51,8 +53,10 @@ public class CrTooManyAssoc extends CrUML {
 	addTrigger("associationEnd");
     }
 
-    ////////////////////////////////////////////////////////////////
-    // critiquing API
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
 	Object cls = /*(MClassifier)*/ dm;

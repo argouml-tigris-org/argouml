@@ -42,6 +42,10 @@ import org.argouml.model.uml.foundation.core.CoreHelper;
  */
 public class CrUtilityViolated extends CrUML {
     
+    /**
+     * The constructor.
+     * 
+     */
     public CrUtilityViolated() {
         setHeadline("Remove instance variables from Utility Class");
         addSupportedDecision(CrUML.decSTORAGE);
@@ -51,6 +55,10 @@ public class CrUtilityViolated extends CrUML {
         addTrigger("behavioralFeature");
     }
     
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
         // we could check for base class of the stereotype but the 
 	// condition normally covers it all.
