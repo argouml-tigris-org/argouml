@@ -31,7 +31,6 @@ import java.util.*;
 import java.awt.*;
 import java.beans.*;
 
-import uci.gef.*;
 import uci.graph.*;
 import uci.ui.*;
 
