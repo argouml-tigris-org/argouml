@@ -46,6 +46,7 @@
 	<xsl:param name="refentry.xref.manvolnum" select="1"/>
 	<xsl:param name="rootid" select="''"/>
 	<xsl:param name="section.autolabel" select="1"/>
+	<xsl:param name="section.label.includes.component.label" select="1"/>
 	<xsl:param name="spacing.paras" select="1"/>
 	<xsl:param name="stylesheet.result.type" select="'html'"/>
 	<xsl:param name="toc.list.type" select="'dl'"/>
