@@ -46,11 +46,16 @@
 
 package org.argouml.model.uml.behavioralelements.collaborations;
 
+import java.lang.ref.WeakReference;
+
 import junit.framework.*;
 
-
-
 import org.argouml.util.*;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+
+import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.behavior.collaborations.*;
 
 
 
@@ -112,6 +117,46 @@ public class TestCollaborationsFactory extends TestCase {
         CheckUMLModelHelper.deleteComplete(this, 
             CollaborationsFactory.getFactory(), 
             allModelElements);
+    }
+
+    /** test to check whether elements which are attached to a
+     *  ClassifierRole get deleted upon deletion of the 
+     *  ClassifierRole. These elements are Interaction, Message,
+     *  AssociationRole.
+     */
+    public void testDeleteClassifierRole() {
+      
+        MModel model = ModelManagementFactory.getFactory().createModel();
+        MCollaboration collab = CollaborationsFactory.
+            getFactory().buildCollaboration(model);
+        MClassifierRole cr1 = CollaborationsFactory.
+            getFactory().createClassifierRole();
+        MClassifierRole cr2 = CollaborationsFactory.
+            getFactory().createClassifierRole();
+        MAssociationRole role = CollaborationsFactory.
+            getFactory().buildAssociationRole(cr1, cr2);
+        MInteraction inter = CollaborationsFactory.
+            getFactory().buildInteraction(collab);
+        MMessage mes = CollaborationsFactory.
+            getFactory().buildMessage(inter, role);
+
+
+        WeakReference cr1wr = new WeakReference(cr1);
+        WeakReference rolewr = new WeakReference(role);
+        WeakReference interwr = new WeakReference(inter);
+        WeakReference meswr = new WeakReference(mes);
+
+        UmlFactory.getFactory().delete(cr1);
+        cr1 = null;
+        role = null;
+        inter = null;
+        mes = null;
+        assertNull("ClassifierRole not removed", cr1wr.get());
+        assertNull("AssociationRole not removed", rolewr.get());
+        assertNull("Interaction not removed", interwr.get());
+        assertNull("Message not removed", meswr.get());
+        
+        
     }
     
 }
