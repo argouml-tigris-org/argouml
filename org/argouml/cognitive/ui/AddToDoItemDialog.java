@@ -46,7 +46,9 @@ import javax.swing.SwingConstants;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.LabelledLayout;
+import org.argouml.swingext.SerialLayout;
 import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.util.VectorSet;
 
@@ -68,7 +70,7 @@ public class AddToDoItemDialog extends JDialog implements ActionListener {
     private JComboBox  _priority = new JComboBox(PRIORITIES);
     private JTextField _moreinfo = new JTextField(30);
     private JTextArea  _description = new JTextArea(10, 30);
-    private JButton _addButton = new JButton(Argo.localize(BUNDLE, "button.add"));
+    private JButton _okButton = new JButton(Argo.localize(BUNDLE, "button.ok"));
     private JButton _cancelButton = new JButton(Argo.localize(BUNDLE, "button.cancel"));
 
   ////////////////////////////////////////////////////////////////
@@ -107,13 +109,14 @@ public class AddToDoItemDialog extends JDialog implements ActionListener {
         descriptionScroller.setPreferredSize(_description.getPreferredSize());
         panel.add(descriptionScroller);
         
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        buttonPanel.add(_addButton);
+        //JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        JPanel buttonPanel = new JPanel(new SerialLayout(Horizontal.getInstance(), SerialLayout.EAST, SerialLayout.LEFTTORIGHT, SerialLayout.TOP, 4));
+        buttonPanel.add(_okButton);
         buttonPanel.add(_cancelButton);
-        panel.add(buttonPanel);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
 
-        getRootPane().setDefaultButton(_addButton);
-        _addButton.addActionListener(this);
+        getRootPane().setDefaultButton(_okButton);
+        _okButton.addActionListener(this);
         _cancelButton.addActionListener(this);
 
         pack();
@@ -129,30 +132,28 @@ public class AddToDoItemDialog extends JDialog implements ActionListener {
         setLocation(x, y);
     }
     
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-  public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == _addButton) {
-      Designer dsgr = Designer.TheDesigner;
-      String head = _headline.getText();
-      int pri = ToDoItem.HIGH_PRIORITY;
-      switch (_priority.getSelectedIndex()) {
-      case 0: pri = ToDoItem.HIGH_PRIORITY; break;
-      case 1: pri = ToDoItem.MED_PRIORITY; break;
-      case 2: pri = ToDoItem.LOW_PRIORITY; break;
-      }
-      String desc = _description.getText();
-      String more = _moreinfo.getText();
-      VectorSet offs = new VectorSet();  //? null
-      ToDoItem item = new ToDoItem(dsgr, head, pri, desc, more, offs);
-      dsgr.getToDoList().addElement(item); //? inform()
-      setVisible(false);
-      dispose();
+    ////////////////////////////////////////////////////////////////
+    // event handlers
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == _okButton) {
+            Designer designer = Designer.TheDesigner;
+            String headline = _headline.getText();
+            int priority = ToDoItem.HIGH_PRIORITY;
+            switch (_priority.getSelectedIndex()) {
+                case 0: priority = ToDoItem.HIGH_PRIORITY; break;
+                case 1: priority = ToDoItem.MED_PRIORITY; break;
+                case 2: priority = ToDoItem.LOW_PRIORITY; break;
+            }
+            String desc = _description.getText();
+            String moreInfoURL = _moreinfo.getText();
+            ToDoItem item = new ToDoItem(designer, headline, priority, desc, moreInfoURL);
+            designer.getToDoList().addElement(item); //? inform()
+            setVisible(false);
+            dispose();
+        } else if (e.getSource() == _cancelButton) {
+            hide();
+            dispose();
+        }
     }
-    if (e.getSource() == _cancelButton) {
-      hide();
-      dispose();
-    }
-  }
 
 } /* end class AddToDoItemDialog */
