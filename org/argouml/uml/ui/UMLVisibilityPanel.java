@@ -27,6 +27,7 @@ package org.argouml.uml.ui;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.foundation.data_types.*;
 
@@ -52,18 +53,18 @@ public class UMLVisibilityPanel extends JPanel {
 						      mclass,
 						      "getVisibility",
 						      "setVisibility",
-						      MVisibilityKind.class,
-						      MVisibilityKind.PUBLIC,
+						      (Class)ModelFacade.VISIBILITYKIND,
+						      (Class)ModelFacade.PUBLIC_VISIBILITYKIND,
 						      null));
 	publicButton.setSelected(true);
 	add(publicButton);
 	group.add(publicButton);
     
-	UMLRadioButton protectedButton = new UMLRadioButton("protected", container, new UMLEnumerationBooleanProperty("visibility", mclass, "getVisibility", "setVisibility", MVisibilityKind.class, MVisibilityKind.PROTECTED, null));
+	UMLRadioButton protectedButton = new UMLRadioButton("protected", container, new UMLEnumerationBooleanProperty("visibility", mclass, "getVisibility", "setVisibility", (Class)ModelFacade.VISIBILITYKIND, (Class)ModelFacade.PROTECTED_VISIBILITYKIND, null));
 	add(protectedButton);
 	group.add(protectedButton);
     
-	UMLRadioButton privateButton = new UMLRadioButton("private", container, new UMLEnumerationBooleanProperty("visibility", mclass, "getVisibility", "setVisibility", MVisibilityKind.class, MVisibilityKind.PRIVATE, null));
+	UMLRadioButton privateButton = new UMLRadioButton("private", container, new UMLEnumerationBooleanProperty("visibility", mclass, "getVisibility", "setVisibility", (Class)ModelFacade.VISIBILITYKIND, (Class)ModelFacade.PRIVATE_VISIBILITYKIND, null));
 	add(privateButton);
 	group.add(privateButton);
     
@@ -75,4 +76,3 @@ public class UMLVisibilityPanel extends JPanel {
 
   
 }
-

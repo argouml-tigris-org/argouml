@@ -29,9 +29,6 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /**
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -44,7 +41,7 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLExtendExtensionComboBoxModel() {
         super("extension", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
+        UmlModelEventPump.getPump().addClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
     }
 
     /**
@@ -54,7 +51,7 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
         Object extend = /*(MExtend)*/ getTarget();
         if (extend == null) return;
         Object ns = ModelFacade.getNamespace(extend);
-        addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
+        addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, (Class)ModelFacade.USE_CASE));
         if (ModelFacade.getBase(extend) != null) {
             removeElement(ModelFacade.getBase(extend));
         }

@@ -240,7 +240,7 @@ abstract public class UMLBinaryRelationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel#getModelElementAt(int)
      */
     protected MModelElement getModelElementAt(int index) {
-        return elementAtUtil(getSelected(), index, MModelElement.class);
+        return elementAtUtil(getSelected(), index, (Class)ModelFacade.MODELELEMENT);
     }
 
     /**

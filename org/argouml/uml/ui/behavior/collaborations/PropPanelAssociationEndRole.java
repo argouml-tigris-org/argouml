@@ -28,13 +28,11 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd;
 import org.argouml.util.ConfigLoader;
-
-import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
-
 
 public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
 
@@ -45,7 +43,7 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
     public PropPanelAssociationEndRole() {
         super("AssociationEndRoleRole", ConfigLoader.getTabPropsOrientation());
         setAssociationLabel(Argo.localize("UMLMenu", "label.association-role"));
-        createControls(MAssociationEndRole.class);
+        createControls((Class)ModelFacade.ASSOCIATION_END_ROLE);
         positionStandardControls();
         positionControls();
     }
@@ -62,4 +60,3 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
     }
 
 } /* end class PropPanelAssociationEndRole */
-

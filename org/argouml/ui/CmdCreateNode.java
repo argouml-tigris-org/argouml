@@ -89,8 +89,8 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      * @param nodeClass
      * @param name
      */
-    public CmdCreateNode(Class nodeClass, String name) {
-        super(nodeClass, name);
+    public CmdCreateNode(Object nodeClass, String name) {
+        super((Class)nodeClass, name);
     }
 
     /**
@@ -114,8 +114,8 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
      * @param sticky
      * @param name
      */
-    public CmdCreateNode(Class nodeClass, boolean sticky, String name) {
-        super(nodeClass, sticky, name);
+    public CmdCreateNode(Object nodeClass, boolean sticky, String name) {
+        super((Class)nodeClass, sticky, name);
     }
 
     /**

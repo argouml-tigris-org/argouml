@@ -32,8 +32,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	
@@ -62,7 +60,7 @@ public class ActionAddAssociationSpecification extends AbstractActionAddModelEle
     protected Vector getChoices() {
         Vector ret = new Vector();
         if (getTarget() != null) {
-            ret.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class));
+            ret.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind((Class)ModelFacade.CLASSIFIER));
         }
         return ret;
     }

@@ -38,7 +38,6 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsH
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.foundation.core.MNamespace;
 /**
  * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -51,7 +50,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLModelElementStereotypeComboBoxModel() {
         super("stereotype", true);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
+        UmlModelEventPump.getPump().addClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
     }
 
     

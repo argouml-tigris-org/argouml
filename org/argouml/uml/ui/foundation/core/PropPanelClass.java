@@ -46,7 +46,6 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.foundation.core.MClass;
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -66,7 +65,7 @@ public class PropPanelClass extends PropPanelClassifier {
     // contructors
     public PropPanelClass() {
 	super("Class", ConfigLoader.getTabPropsOrientation());
-	Class mclass = MClass.class;
+	Class mclass = (Class)ModelFacade.CLASS;
 
 	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));

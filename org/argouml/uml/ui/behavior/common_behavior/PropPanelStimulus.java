@@ -67,7 +67,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
 	};
         setNameEventListening(namesToWatch);
 
-        Class mclass = MStimulus.class;
+        Class mclass = (Class)ModelFacade.STIMULUS;
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField("Action:", new UMLStimulusActionTextField(this, new UMLStimulusActionTextProperty("name")));

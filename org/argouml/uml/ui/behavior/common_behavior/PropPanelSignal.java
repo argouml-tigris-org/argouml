@@ -47,7 +47,6 @@ import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
@@ -62,7 +61,7 @@ public class PropPanelSignal extends PropPanelModelElement {
     public PropPanelSignal() {
         super("Signal", _signalIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = MSignal.class;
+        Class mclass = (Class)ModelFacade.SIGNAL;
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());

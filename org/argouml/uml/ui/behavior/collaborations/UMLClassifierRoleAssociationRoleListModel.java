@@ -38,7 +38,6 @@ import org.argouml.uml.ui.UMLConnectionListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.MutableGraphModel;
 
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 /**
  * Binary relation list model for associationsroles between classifierroles
  * 
@@ -100,7 +99,7 @@ public class UMLClassifierRoleAssociationRoleListModel
 			   MutableGraphModel gm,
 			   Object/*MModelElement*/ from,
 			   Object/*MModelElement*/ to) {
-	gm.connect(from, to, MAssociationRole.class);
+	gm.connect(from, to, (Class)ModelFacade.ASSOCIATION_ROLE);
     }
 
     /**

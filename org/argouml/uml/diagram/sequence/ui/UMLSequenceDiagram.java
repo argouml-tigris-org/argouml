@@ -46,12 +46,6 @@ import org.argouml.uml.ui.ActionAddNote;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.presentation.Fig;
-import ru.novosoft.uml.behavior.common_behavior.MCallAction;
-import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
-import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
-import ru.novosoft.uml.behavior.common_behavior.MObject;
-import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
-import ru.novosoft.uml.behavior.common_behavior.MSendAction;
 public class UMLSequenceDiagram extends UMLDiagram {
     protected static Logger cat =
         Logger.getLogger(UMLSequenceDiagram.class);
@@ -60,22 +54,22 @@ public class UMLSequenceDiagram extends UMLDiagram {
     // actions for toolbar
 
     protected static Action _actionObject =
-        new CmdCreateNode(MObject.class, "Object");
+        new CmdCreateNode(ModelFacade.OBJECT, "Object");
 
     protected static Action _actionLinkWithStimulusCall =
-        new ActionAddLink(MCallAction.class, "StimulusCall");
+        new ActionAddLink((Class)ModelFacade.CALL_ACTION, "StimulusCall");
 
     protected static Action _actionLinkWithStimulusCreate =
-        new ActionAddLink(MCreateAction.class, "StimulusCreate");
+        new ActionAddLink((Class)ModelFacade.CREATE_ACTION, "StimulusCreate");
 
     protected static Action _actionLinkWithStimulusDestroy =
-        new ActionAddLink(MDestroyAction.class, "StimulusDestroy");
+        new ActionAddLink((Class)ModelFacade.DESTROY_ACTION, "StimulusDestroy");
 
     protected static Action _actionLinkWithStimulusSend =
-        new ActionAddLink(MSendAction.class, "StimulusSend");
+        new ActionAddLink((Class)ModelFacade.SEND_ACTION, "StimulusSend");
 
     protected static Action _actionLinkWithStimulusReturn =
-        new ActionAddLink(MReturnAction.class, "StimulusReturn");
+        new ActionAddLink((Class)ModelFacade.RETURN_ACTION, "StimulusReturn");
 
     ////////////////////////////////////////////////////////////////
     // contructors

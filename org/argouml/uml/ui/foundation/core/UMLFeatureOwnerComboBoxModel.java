@@ -30,9 +30,6 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /**
  * @since Nov 6, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -47,7 +44,7 @@ public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLFeatureOwnerComboBoxModel() {
         super("owner", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
+        UmlModelEventPump.getPump().addClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
     }
 
     /**
@@ -61,7 +58,7 @@ public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class));
+        setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind((Class)ModelFacade.CLASSIFIER));
     }
 
     /**

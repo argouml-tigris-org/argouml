@@ -42,7 +42,6 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -55,7 +54,7 @@ public class PropPanelNodeInstance extends PropPanelModelElement {
 
 	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 
-        UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this, "isAcceptibleClassifier", "classifier", "getClassifier", "setClassifier", false, MClassifier.class, true);
+        UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this, "isAcceptibleClassifier", "classifier", "getClassifier", "setClassifier", false, (Class)ModelFacade.CLASSIFIER, true);
 	UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
         addField("Classifier:", new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"), clsComboBox));
 
