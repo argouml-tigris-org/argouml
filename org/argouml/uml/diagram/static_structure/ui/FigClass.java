@@ -322,20 +322,23 @@ public class FigClass extends FigNodeModelElement {
             popUpActions.size() - POPUP_ADD_OFFSET);
         
         ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
-        if (_attrVec.isDisplayed() && _operVec.isDisplayed())
+        if (_attrVec.isDisplayed() && _operVec.isDisplayed()) {
             showMenu.add(ActionCompartmentDisplay.HideAllCompartments);
-        else if (!_attrVec.isDisplayed() && !_operVec.isDisplayed())
+        } else if (!_attrVec.isDisplayed() && !_operVec.isDisplayed()) {
             showMenu.add(ActionCompartmentDisplay.ShowAllCompartments);
+        }
 
-        if (_attrVec.isDisplayed())
+        if (_attrVec.isDisplayed()) {
             showMenu.add(ActionCompartmentDisplay.HideAttrCompartment);
-        else
+        } else {
             showMenu.add(ActionCompartmentDisplay.ShowAttrCompartment);
+        }
 
-        if (_operVec.isDisplayed())
+        if (_operVec.isDisplayed()) {
             showMenu.add(ActionCompartmentDisplay.HideOperCompartment);
-        else
+        } else {
             showMenu.add(ActionCompartmentDisplay.ShowOperCompartment);
+        }
         
         showMenu.add(ActionEdgesDisplay.ShowEdges);
         showMenu.add(ActionEdgesDisplay.HideEdges);
@@ -591,12 +594,10 @@ public class FigClass extends FigNodeModelElement {
                 }
                 if (i != -1) {
                     if (key == KeyEvent.VK_UP) {
-                        ft =
-			    (CompartmentFigText)
+                        ft = (CompartmentFigText)
 			    getPreviousVisibleFeature(fg, ft, i);
                     } else {
-                        ft =
-			    (CompartmentFigText)
+                        ft = (CompartmentFigText)
 			    getNextVisibleFeature(fg, ft, i);
                     }
                     if (ft != null) {
@@ -620,8 +621,9 @@ public class FigClass extends FigNodeModelElement {
     protected void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
         Object cls = /*(MClassifier)*/ getOwner();
-        if (cls == null)
+        if (cls == null) {
             return;
+        }
         int i = new Vector(_attrVec.getFigs(null)).indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
@@ -659,15 +661,16 @@ public class FigClass extends FigNodeModelElement {
     }
 
     protected FigText getPreviousVisibleFeature(FigGroup fgVec,
-						FigText ft, int i)
-    {
-        if (fgVec == null || i < 1)
+						FigText ft, int i) {
+        if (fgVec == null || i < 1) {
             return null;
+        }
         FigText ft2 = null;
         // TODO: come GEF V 0.12 use getFigs returning an array
         Vector v = new Vector(fgVec.getFigs(null));
-        if (i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed())
+        if (i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed()) {
             return null;
+        }
         do {
             i--;
             while (i < 1) {
@@ -676,22 +679,24 @@ public class FigClass extends FigNodeModelElement {
                 i = v.size() - 1;
             }
             ft2 = (FigText) v.elementAt(i);
-            if (!ft2.isDisplayed())
+            if (!ft2.isDisplayed()) {
                 ft2 = null;
-        }
-        while (ft2 == null);
+            }
+        } while (ft2 == null);
         return ft2;
     }
 
     protected FigText getNextVisibleFeature(FigGroup fgVec, FigText ft, int i)
     {
-        if (fgVec == null || i < 1)
+        if (fgVec == null || i < 1) {
             return null;
+        }
         FigText ft2 = null;
         // TODO: come GEF V 0.12 use getFigs returning an array
         Vector v = new Vector(fgVec.getFigs(null));
-        if (i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed())
+        if (i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed()) {
             return null;
+        }
         do {
             i++;
             while (i >= v.size()) {
@@ -702,20 +707,21 @@ public class FigClass extends FigNodeModelElement {
             ft2 = (FigText) v.elementAt(i);
             if (!ft2.isDisplayed())
                 ft2 = null;
-        }
-        while (ft2 == null);
+        } while (ft2 == null);
         return ft2;
     }
 
     protected void createFeatureIn(FigGroup fg, InputEvent ie) {
         CompartmentFigText ft = null;
         Object cls = /*(MClassifier)*/ getOwner();
-        if (cls == null)
+        if (cls == null) {
             return;
-        if (fg == _attrVec)
+        }
+        if (fg == _attrVec) {
             ActionAddAttribute.SINGLETON.actionPerformed(null);
-        else
+        } else {
             ActionAddOperation.SINGLETON.actionPerformed(null);
+        }
         // TODO: When available use getFigs() returning array
         ft = (CompartmentFigText) new Vector(fg.getFigs(null)).lastElement();
         if (ft != null) {
@@ -760,25 +766,24 @@ public class FigClass extends FigNodeModelElement {
      */
     protected void modelChanged(MElementEvent mee) {
 
-        if (getOwner() == null)
+        if (getOwner() == null) {
             return;
+        }
         Object cls = /*(MClass)*/ getOwner();
         // attributes
         if (mee == null
-	    || org.argouml.model.ModelFacade.isAAttribute(mee.getSource())
-	    || (mee.getSource() == getOwner()
-		&& mee.getName().equals("feature")))
-	{
+                || ModelFacade.isAAttribute(mee.getSource())
+                || (mee.getSource() == getOwner()
+		&& mee.getName().equals("feature"))) {
             updateAttributes();
             damage();
         }
         // operations
         if (mee == null
-	    || org.argouml.model.ModelFacade.isAOperation(mee.getSource())
-	    || org.argouml.model.ModelFacade.isAParameter(mee.getSource())
-	    || (mee.getSource() == getOwner()
-		&& mee.getName().equals("feature")))
-	{
+                || ModelFacade.isAOperation(mee.getSource())
+                || ModelFacade.isAParameter(mee.getSource())
+                || (mee.getSource() == getOwner()
+		&& mee.getName().equals("feature"))) {
             updateOperations();
             damage();
         }
@@ -794,7 +799,6 @@ public class FigClass extends FigNodeModelElement {
         }
         // name updating
         super.modelChanged(mee);
-
     }
 
     protected void updateStereotypeText() {
@@ -841,15 +845,12 @@ public class FigClass extends FigNodeModelElement {
                     setBounds(rect.x, rect.y, rect.width, rect.height);
                     calcBounds();
                 }
-
             }
         }
 
         // Whatever happened we are no longer newly created, so clear the
         // flag. Then set the bounds for the rectangle we have defined.
-
         _newlyCreated = false;
-
     }
 
     /**
@@ -1004,18 +1005,21 @@ public class FigClass extends FigNodeModelElement {
      */
     public void mouseClicked(MouseEvent me) {
 
-        if (me.isConsumed())
+        if (me.isConsumed()) {
             return;
+        }
         super.mouseClicked(me);
 	if (me.isShiftDown()
-	    && TargetManager.getInstance().getTargets().size() > 0)
+                && TargetManager.getInstance().getTargets().size() > 0) {
 	    return;
+        }
 
         int i = 0;
         Editor ce = Globals.curEditor();
         Selection sel = ce.getSelectionManager().findSelectionFor(this);
-        if (sel instanceof SelectionClass)
+        if (sel instanceof SelectionClass) {
 	    ((SelectionClass) sel).hideButtons();
+        }
         unhighlight();
         //display attr/op properties if necessary:
         Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
@@ -1095,8 +1099,9 @@ public class FigClass extends FigNodeModelElement {
             }
             if (figs.size() > acounter) {
                 //cleanup of unused attribute FigText's
-                for (int i = figs.size() - 1; i >= acounter; i--)
+                for (int i = figs.size() - 1; i >= acounter; i--) {
                     _attrVec.removeFig((Fig) figs.elementAt(i));
+                }
             }
         }
         Rectangle rect = getBounds();
@@ -1154,16 +1159,18 @@ public class FigClass extends FigNodeModelElement {
                 // italics, if abstract
                 //oper.setItalic(((MOperation)bf).isAbstract()); //
                 //does not properly work (GEF bug?)
-                if (ModelFacade.isAbstract(bf))
+                if (ModelFacade.isAbstract(bf)) {
                     oper.setFont(ITALIC_LABEL_FONT);
-                else
+                } else {
                     oper.setFont(LABEL_FONT);
+                }
                 ocounter++;
             }
             if (figs.size() > ocounter) {
                 //cleanup of unused operation FigText's
-                for (int i = figs.size() - 1; i >= ocounter; i--)
+                for (int i = figs.size() - 1; i >= ocounter; i--) {
                     _operVec.removeFig((Fig) figs.elementAt(i));
+                }
             }
         }
         Rectangle rect = getBounds();
@@ -1203,8 +1210,9 @@ public class FigClass extends FigNodeModelElement {
      */
     protected void updateAbstract() {
         Rectangle rect = getBounds();
-        if (getOwner() == null)
+        if (getOwner() == null) {
             return;
+        }
         Object cls = /*(MClass)*/ getOwner();
         if (ModelFacade.isAbstract(cls)) {
             getNameFig().setFont(ITALIC_LABEL_FONT);

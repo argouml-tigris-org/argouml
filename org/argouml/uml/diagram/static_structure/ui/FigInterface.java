@@ -258,10 +258,11 @@ public class FigInterface extends FigNodeModelElement {
         popUpActions.insertElementAt(addMenu, 
             popUpActions.size() - POPUP_ADD_OFFSET);
         ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
-        if (_operVec.isDisplayed())
+        if (_operVec.isDisplayed()) {
             showMenu.add(ActionCompartmentDisplay.HideOperCompartment);
-        else
+        } else {
             showMenu.add(ActionCompartmentDisplay.ShowOperCompartment);
+        }
 
         popUpActions.insertElementAt(showMenu, 
             popUpActions.size() - POPUP_ADD_OFFSET);
@@ -359,8 +360,9 @@ public class FigInterface extends FigNodeModelElement {
         // Ensure that the minimum height of the name compartment is at least
         // 21 pixels (hardcoded).
 
-        if (aSize.height < 21)
+        if (aSize.height < 21) {
             aSize.height = 21;
+        }
 
         // If we have a stereotype displayed, then allow some space for that
         // (width and height)
@@ -411,8 +413,9 @@ public class FigInterface extends FigNodeModelElement {
         super.translate(dx, dy);
         Editor ce = Globals.curEditor();
         Selection sel = ce.getSelectionManager().findSelectionFor(this);
-        if (sel instanceof SelectionClass)
-             ((SelectionClass) sel).hideButtons();
+        if (sel instanceof SelectionClass) {
+            ((SelectionClass) sel).hideButtons();
+        }
     }
 
     ////////////////////////////////////////////////////////////////
@@ -421,8 +424,9 @@ public class FigInterface extends FigNodeModelElement {
     public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
 	if (me.isShiftDown()
-	    && TargetManager.getInstance().getTargets().size() > 0)
+                && TargetManager.getInstance().getTargets().size() > 0) {
 	    return;
+        }
 
         int i = 0;
         Editor ce = Globals.curEditor();
@@ -489,7 +493,7 @@ public class FigInterface extends FigNodeModelElement {
     public void setEnclosingFig(Fig encloser) {
         Fig oldEncloser = getEnclosingFig();
         super.setEnclosingFig(encloser);
-        if (!(org.argouml.model.ModelFacade.isAModelElement(getOwner())))
+        if (!(ModelFacade.isAModelElement(getOwner())))
             return;
         Object me = /*(MModelElement)*/ getOwner();
         Object m = null;
@@ -506,9 +510,8 @@ public class FigInterface extends FigNodeModelElement {
 
             // If default Namespace is not already set
             if (ModelFacade.getNamespace(me) == null
-		&& (TargetManager.getInstance().getTarget()
-		    instanceof UMLDiagram))
-	    {
+		    && (TargetManager.getInstance().getTarget()
+		       instanceof UMLDiagram)) {
                 m = /*(MNamespace)*/
 		    ((UMLDiagram) TargetManager.getInstance().getTarget())
 		    .getNamespace();
@@ -567,32 +570,43 @@ public class FigInterface extends FigNodeModelElement {
         FigText ft2 = null;
         // TODO: in future version of GEF call getFigs returning array
         Vector v = new Vector(_operVec.getFigs(null));
-        if (i < 1 || i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed())
+        if (i < 1 || i >= v.size()
+                || !((FigText) v.elementAt(i)).isDisplayed()) {
             return null;
+        }
+        
         do {
             i--;
             if (i < 1)
                 i = v.size() - 1;
             ft2 = (FigText) v.elementAt(i);
-            if (!ft2.isDisplayed())
+            if (!ft2.isDisplayed()) {
                 ft2 = null;
+            }
         } while (ft2 == null);
+        
         return ft2;
     }
 
     protected FigText getNextVisibleFeature(FigText ft, int i) {
         FigText ft2 = null;
         Vector v = new Vector(_operVec.getFigs(null));
-        if (i < 1 || i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed())
+        if (i < 1 || i >= v.size()
+                || !((FigText) v.elementAt(i)).isDisplayed()) {
             return null;
+        }
+        
         do {
             i++;
-            if (i >= v.size())
+            if (i >= v.size()) {
                 i = 1;
+            }
             ft2 = (FigText) v.elementAt(i);
-            if (!ft2.isDisplayed())
+            if (!ft2.isDisplayed()) {
                 ft2 = null;
+            }
         } while (ft2 == null);
+        
         return ft2;
     }
 
@@ -629,15 +643,16 @@ public class FigInterface extends FigNodeModelElement {
     }
 
     protected void modelChanged(MElementEvent mee) {
-        if (getOwner() == null)
+        if (getOwner() == null) {
             return;
+        }
+        
         // operations
         if (mee == null
-	    || org.argouml.model.ModelFacade.isAOperation(mee.getSource())
-	    || org.argouml.model.ModelFacade.isAParameter(mee.getSource())
-	    || (mee.getSource() == getOwner()
-		&& mee.getName().equals("feature")))
-	{
+                || org.argouml.model.ModelFacade.isAOperation(mee.getSource())
+                || org.argouml.model.ModelFacade.isAParameter(mee.getSource())
+                || (mee.getSource() == getOwner()
+		&& mee.getName().equals("feature"))) {
             updateOperations();
             damage();
         }
@@ -826,16 +841,18 @@ public class FigInterface extends FigNodeModelElement {
                     // italics, if abstract
                     //oper.setItalic(((MOperation)bf).isAbstract());
                     //// does not properly work (GEF bug?)
-                    if (ModelFacade.isAbstract(behavioralFeature))
+                    if (ModelFacade.isAbstract(behavioralFeature)) {
                         oper.setFont(ITALIC_LABEL_FONT);
-                    else
+                    } else {
                         oper.setFont(LABEL_FONT);
+                    }
                     ocounter++;
                 }
                 if (figs.size() > ocounter) {
                     //cleanup of unused operation FigText's
-                    for (int i = figs.size() - 1; i >= ocounter; i--)
+                    for (int i = figs.size() - 1; i >= ocounter; i--) {
                         _operVec.removeFig((Fig) figs.elementAt(i));
+                    }
                 }
             }
             Rectangle rect = getBounds();
