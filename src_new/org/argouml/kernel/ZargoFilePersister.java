@@ -63,8 +63,14 @@ public class ZargoFilePersister extends AbstractFilePersister {
      * Sets the extensionname and the description. 
      */
     public ZargoFilePersister() {
-        extension = "zargo";
         desc = "Argo compressed project file";
+    }
+
+    /**
+     * @see org.argouml.kernel.AbstractFilePersister#getExtension()
+     */
+    public String getExtension() {
+        return "zargo";
     }
     
     /**

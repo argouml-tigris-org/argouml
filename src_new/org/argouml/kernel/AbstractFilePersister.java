@@ -54,11 +54,6 @@ public abstract class AbstractFilePersister extends FileFilter
      */
     protected static OCLExpander expander;
     
-    /**
-     * The extension valid for this type of file.
-     * (Just the chars, not the dot: e.g. "zargo".)
-     */
-    protected String extension;
     protected String desc;
     
     /**
@@ -107,16 +102,17 @@ public abstract class AbstractFilePersister extends FileFilter
         if (f.isDirectory()) return true;
         String s = getExtension(f); 
         if (s != null) // this check for files without extension... 
-            if (s.equalsIgnoreCase(extension)) return true;
+            if (s.equalsIgnoreCase(getExtension())) return true;
         return false;
     }
     
     /**
+     * The extension valid for this type of file.
+     * (Just the chars, not the dot: e.g. "zargo".)
+     *
      * @return the extension valid for this type of file
      */
-    public String getExtension() {
-        return extension;
-    }
+    public abstract String getExtension();
 
     private static String getExtension(File f) {
         if (f == null) return null;
@@ -135,6 +131,6 @@ public abstract class AbstractFilePersister extends FileFilter
      * @see javax.swing.filechooser.FileFilter#getDescription()
      */
     public String getDescription() {
-        return desc + " (*." + extension + ")";
+        return desc + " (*." + getExtension() + ")";
     }
 }

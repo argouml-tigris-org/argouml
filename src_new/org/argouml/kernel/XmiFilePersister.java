@@ -53,8 +53,14 @@ public class XmiFilePersister extends AbstractFilePersister {
      * Sets the extensionname and the description. 
      */
     public XmiFilePersister() {
-        extension = "xmi";
         desc = "XML Metadata Interchange";
+    }
+
+    /**
+     * @see org.argouml.kernel.AbstractFilePersister#getExtension()
+     */
+    public String getExtension() {
+        return "xmi";
     }
     
     /**

@@ -59,8 +59,14 @@ public class ArgoFilePersister extends AbstractFilePersister {
      * Sets the extensionname and the description. 
      */
     public ArgoFilePersister() {
-        extension = "argo";
         desc = "Argo project file";
+    }
+    
+    /**
+     * @see org.argouml.kernel.AbstractFilePersister#getExtension()
+     */
+    public String getExtension() {
+        return "argo";
     }
     
     /**
