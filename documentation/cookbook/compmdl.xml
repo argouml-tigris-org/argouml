@@ -234,17 +234,17 @@ You might wonder: how does this all work?
 Well, very simple in fact.
 </para>
 	  <para>
-A model event (from now on a MEvent) has a name that uniquely
+A model event (from now on a Event) has a name that uniquely
 identifies the type of the event.
 
-In most cases the name of the MEvent is equal to the name of the
+In most cases the name of the Event is equal to the name of the
 property that was changed in the model.
 
-In fact, there is even a 1-1 relationship between the type of MEvent
+In fact, there is even a 1-1 relationship between the type of Event
 and the property changed in the model.
 
-Therefore most listeners that need MEvents are only interested in one
-type of MEvent since they are only interested in the status of 1
+Therefore most listeners that need Events are only interested in one
+type of Event since they are only interested in the status of 1
 property.
 </para>
         <para>
@@ -282,7 +282,7 @@ like this:
 <programlisting>
 UmlModelEventPump.getPump().addModelEventListener(this, modelelementIAmInterestedIn, "IamInterestedInThisEventnameType");
 </programlisting>
-Now your object this gets only the <classname>MEvents</classname>
+Now your object this gets only the <classname>Events</classname>
 fired by modelElementIAmInterestedIn that have the name
 "IamInterestedInThisEventnameType".
 </para>
