@@ -77,7 +77,7 @@ public class CheckUMLModelHelper {
     }
 
     public static void createAndRelease(TestCase tc,
-					AbstractModelFactory f,
+					AbstractUmlModelFactory f,
 					String [] names,
 					Object [] args) {
 	Class [] classes = new Class[args.length];
@@ -122,7 +122,7 @@ public class CheckUMLModelHelper {
     }
 
     public static void createAndRelease(TestCase tc,
-					AbstractModelFactory f,
+					AbstractUmlModelFactory f,
 					String [] names) {
 	Object[] noarguments = { };
 
