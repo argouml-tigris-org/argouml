@@ -137,18 +137,20 @@ public class ParserDisplay extends Parser {
 	  return;
 	int i = cls.getFeatures().indexOf(at);
 	if (s != null && s.length() > 0) {
-	  MAttribute newAt = parseAttribute(s);
-	  if (newAt != null) {
+            MAttribute newAt = parseAttribute(s);
+            if (newAt != null) {
 		newAt.setOwnerScope(at.getOwnerScope());
 		if (i != -1) {
-		  cls.removeFeature(i);
-		  cls.addFeature(i,newAt);
-	    } else {
+                    cls.removeFeature(i);
+                    cls.addFeature(i,newAt);
+                } 
+            else {
 		  cls.addFeature(newAt);
-	    }
-	  }
-    } else {
-	  cls.removeFeature(i);
+            }
+            }
+        }   
+        else {
+            cls.removeFeature(i);
 	}
   }
 
@@ -185,12 +187,11 @@ public class ParserDisplay extends Parser {
       s = parseOutVisibility(newAttribute, s);
       s = parseOutKeywords(newAttribute, s);
       s = parseOutName(newAttribute, s);
-      s = parseOutInitValue(newAttribute, s);
       s = parseOutColon(s);
       s = parseOutType(newAttribute, s);
-
+      s = parseOutInitValue(newAttribute, s);
       if (s.length() > 2){
-          System.out.println("leftover in parseAttribute=|" + s + "|");
+          System.out.println("Value left over in parseAttribute=|" + s + "|");
       }
       return newAttribute;
   }
@@ -304,50 +305,49 @@ public class ParserDisplay extends Parser {
     return s.substring(namePos + nameStr.length());
   }
 
+
 	public String parseOutType(MAttribute attr, String s) {
-		s = s.trim();
-		int i, len = s.length();
-		for (i=0; i<len; i++) {
-			if (" \t,;()".indexOf(s.charAt(i)) != -1)
-				break;
-		}
-		String typeStr = (i>0) ? s.substring(0,i) : "";
-		String retStr = (i<len) ? s.substring(i) : "";
+            int equalIndex = s.indexOf("=");
+            String typeStr = "";
+            String retStr  = "";
 
-		Project p = ProjectBrowser.TheInstance.getProject();
-		MClassifier type=null; // = p.findType("int");
-		/*
-		int firstSpace = s.indexOf(" ");
-		int firstEq = s.indexOf("=");
-		if (firstEq != -1 && firstEq < firstSpace) firstSpace = firstEq;
-		if (firstSpace != -1) {
-			String typeStr = s.substring(0, firstSpace);
-			// System.out.println("Trying to find "+typeStr+" in project...");
-			type = p.findType(typeStr);
-		}
-		*/
-		// System.out.println("Trying to find "+typeStr+" in project...");
-		type = p.findType(typeStr);
-		// System.out.println("setting attribute type: " + type.getName());
-		attr.setType(type);
+            int i, len = s.length();
+            for (i = 0; ((i < len) && (i != equalIndex)); i++) {
+		typeStr = (i > 0) ? s.substring(0,i) : "";
+		retStr = (i < len) ? s.substring(i, len) : "";
+            }
+            Project p = ProjectBrowser.TheInstance.getProject();
+            MClassifier type = null; // = p.findType("int");
+            /*
+            int firstSpace = s.indexOf(" ");
+            int firstEq = s.indexOf("=");
+            if (firstEq != -1 && firstEq < firstSpace) firstSpace = firstEq;
+            if (firstSpace != -1) {
+                    String typeStr = s.substring(0, firstSpace);
+                    // System.out.println("Trying to find "+typeStr+" in project...");
+                    type = p.findType(typeStr);
+            }
+            */
+            // System.out.println("Trying to find "+typeStr+" in project...");
+            type = p.findType(typeStr);
+            // System.out.println("setting attribute type: " + type.getName());
+            attr.setType(type);
 
-		return retStr;
+            return retStr;
 	}
 
-  public String parseOutInitValue(MAttribute attr, String s) {
-    s = s.trim();
-    int equalsIndex = s.indexOf("=");
-    int colonIndex  = s.indexOf(":");
 
-    if (equalsIndex != 0) return s;
-    String initStr = s.substring(1, colonIndex); //move past "=" to end of "initvalue"--pjs--
-    if (initStr.trim().length() == 0) return ""; // trim it here...pjs
-    MExpression initExpr = new MExpression("Java", initStr);
+    public String parseOutInitValue(MAttribute attr, String s) {
+        s = s.trim();
+        int equalsIndex = s.indexOf("=");
 
-      //System.out.println("setting return type: " + rtStr);
-      attr.setInitialValue(initExpr);
-      String retStr = s.substring(colonIndex,s.length()); //return whats left --pjs--
-    return retStr;
+//        if (equalsIndex != 0) return s;
+        String initStr = s.substring(1, s.length()); //move past "=" to end of "initvalue"--pjs--
+//        if (initStr.trim().length() == 0) return ""; // trim it here...pjs
+        MExpression initExpr = new MExpression("Java", initStr);
+
+          attr.setInitialValue(initExpr);
+          return "";
   }
 
   private String parseOutColon(String s) {
@@ -358,8 +358,10 @@ public class ParserDisplay extends Parser {
   }
 
   public MParameter parseParameter(String s) {
-    java.util.StringTokenizer st = new java.util.StringTokenizer(s, ": \t");
-    String typeStr = "int", paramNameStr = "parameterName?";
+    java.util.StringTokenizer st = new java.util.StringTokenizer(s, ": = \t");
+    String typeStr = "int"; 
+    String paramNameStr = "parameterName?";
+
     if (st.hasMoreTokens()) paramNameStr = st.nextToken();
     if (st.hasMoreTokens()) typeStr = st.nextToken();
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -368,6 +370,7 @@ public class ParserDisplay extends Parser {
     param.setType(cls);
     param.setKind(MParameterDirectionKind.IN);
     param.setName(paramNameStr);
+
     return param;
   }
 
