@@ -223,6 +223,7 @@ public class ModelFacade {
     public static final Object CLASSIFIER_ROLE = MClassifierRole.class;
     public static final Object COMPONENT = MComponent.class;
     public static final Object COMPONENT_INSTANCE = MComponentInstance.class;
+    public static final Object EXCEPTION = MException.class;
     public static final Object INSTANCE = MInstance.class;
     public static final Object INTERFACE = MInterface.class;
     public static final Object NODE = MNode.class;
