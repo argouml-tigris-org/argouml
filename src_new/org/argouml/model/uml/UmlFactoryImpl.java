@@ -43,6 +43,7 @@ import org.argouml.model.UmlFactory;
 import org.argouml.model.UseCasesFactory;
 
 import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.behavior.activity_graphs.MCallState;
 import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
@@ -55,6 +56,8 @@ import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MActionSequence;
 import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
@@ -92,6 +95,7 @@ import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.behavior.use_cases.MUseCaseInstance;
+import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationClass;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
@@ -659,7 +663,7 @@ class UmlFactoryImpl
                     }
                 } else if (elem instanceof MComment) {
                     getCore().deleteComment(elem);
-                } else if (ModelFacade.isAAction(elem)) {
+                } else if (elem instanceof MAction) {
                     deleteAction(elem);
                 } else if (elem instanceof MAttributeLink) {
                     getCommonBehavior().deleteAttributeLink(elem);
@@ -819,7 +823,7 @@ class UmlFactoryImpl
             }
         } else if (elem instanceof MDependency) {
             getCore().deleteDependency(elem);
-            if (ModelFacade.isAAbstraction(elem)) {
+            if (elem instanceof MAbstraction) {
                 getCore().deleteAbstraction(elem);
             } else if (elem instanceof MBinding) {
                 getCore().deleteBinding(elem);
@@ -843,7 +847,7 @@ class UmlFactoryImpl
      */
     private void deleteAction(Object elem) {
         getCommonBehavior().deleteAction(elem);
-        if (ModelFacade.isAActionSequence(elem)) {
+        if (elem instanceof MActionSequence) {
             getCommonBehavior().deleteActionSequence(elem);
         } else if (elem instanceof MCreateAction) {
             getCommonBehavior().deleteCreateAction(elem);
@@ -913,7 +917,7 @@ class UmlFactoryImpl
                 }
             } else if (elem instanceof MSimpleState) {
                 getStateMachines().deleteSimpleState(elem);
-                if (ModelFacade.isAActionState(elem)) {
+                if (elem instanceof MActionState) {
                     getActivityGraphs().deleteActionState(elem);
                     if (elem instanceof MCallState) {
                         getActivityGraphs().deleteCallState(elem);

@@ -384,7 +384,7 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
      * @param baseClass the baseclass
      */
     public void setBaseClass(Object handle, Object baseClass) {
-        if (ModelFacade.isAStereotype(handle) && baseClass instanceof String) {
+        if (handle instanceof MStereotype && baseClass instanceof String) {
             ((MStereotype) handle).setBaseClass((String) baseClass);
             return;
         }

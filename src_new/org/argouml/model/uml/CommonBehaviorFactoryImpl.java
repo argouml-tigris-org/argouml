@@ -31,6 +31,7 @@ import org.argouml.model.CommonBehaviorFactory;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.common_behavior.MArgument;
 import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
@@ -53,6 +54,7 @@ import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.common_behavior.MTerminateAction;
 import ru.novosoft.uml.behavior.common_behavior.MUninterpretedAction;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MOperation;
 
 /**
@@ -380,7 +382,7 @@ public class CommonBehaviorFactoryImpl
      */
     public Object buildUninterpretedAction(Object actionState) {
         Object action = createUninterpretedAction();
-        if (ModelFacade.isAActionState(actionState)) {
+        if (actionState instanceof MActionState) {
             nsmodel.getStateMachinesHelper().setEntry(actionState, action);
         }
         return action;
@@ -457,7 +459,7 @@ public class CommonBehaviorFactoryImpl
      * @return the stimulus
      */
     public Object buildStimulus(Object link) {
-        if (ModelFacade.isALink(link)
+        if (link instanceof MLink
             && nsmodel.getUmlHelper().getCore().getSource(link) != null
             && nsmodel.getUmlHelper().getCore().getDestination(link) != null) {
             Object stimulus = createStimulus();
@@ -485,7 +487,7 @@ public class CommonBehaviorFactoryImpl
      */
     public Object buildReception(Object aClassifier) {
         Object reception = createReception();
-        if (ModelFacade.isAClassifier(aClassifier)) {
+        if (aClassifier instanceof MClassifier) {
             nsmodel.getCoreHelper().setOwner(reception, aClassifier);
         }
         return reception;

@@ -24,20 +24,19 @@
 
 package org.argouml.model.uml;
 
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeSupport;
 
-import org.argouml.model.ModelFacade;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
  * Event adaptor for the explorer to decouple the explorer from the nsuml model.
  *
  * @author  alexb
  */
-public class ExplorerNSUMLEventAdaptor
+public final class ExplorerNSUMLEventAdaptor
     extends PropertyChangeSupport
     implements MElementListener {
 
@@ -53,7 +52,9 @@ public class ExplorerNSUMLEventAdaptor
 	return instance;
     }
 
-    /** Creates a new instance of ExplorerUMLEventAdaptor */
+    /**
+     * Creates a new instance of ExplorerUMLEventAdaptor.
+     */
     private ExplorerNSUMLEventAdaptor() {
         // PropertyChangeSupport needs a source object
         super(UmlModelEventPump.getPump());
@@ -167,7 +168,7 @@ public class ExplorerNSUMLEventAdaptor
      *         ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-	if (ModelFacade.isAStereotype(e.getSource())
+	if (e.getSource() instanceof MStereotype
 	    && "extendedElement".equals(e.getName())) {
 	    return;
 	}
@@ -184,15 +185,16 @@ public class ExplorerNSUMLEventAdaptor
     // ------- property change events ----------
 
     /**
-     * source of the model element changed translates to the new value.
+     * Source of the model element changed translates to the new value.
      */
     private void firePropertyChanged(String propertyName,
 				     Object source) {
-        PropertyChangeEvent pce = new PropertyChangeEvent(
-                            this,
-                            propertyName,
-                            null,
-                            source);
+        PropertyChangeEvent pce =
+            new PropertyChangeEvent(
+                    this,
+                    propertyName,
+                    null,
+                    source);
 
         this.firePropertyChange(pce);
     }
