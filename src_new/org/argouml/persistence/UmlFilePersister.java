@@ -347,7 +347,7 @@ public class UmlFilePersister extends AbstractFilePersister {
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer(xsltStreamSource);
 
-            File file = File.createTempFile("transformation", ".uml");
+            File file = File.createTempFile("upgrade_" + version + "_", ".uml");
             file.deleteOnExit();
 
             String encoding = "UTF-8";
