@@ -212,6 +212,12 @@ public class Argo
     public static final ConfigurationKey KEY_USER_IMPORT_CLASSPATH =
 	Configuration.makeKey("import", "clazzpath");
     
+    /** Key for input source file encoding used in RE. 
+	 *  Will be used for generated file also.
+     */
+    public static final ConfigurationKey KEY_INPUT_SOURCE_ENCODING =
+	Configuration.makeKey("import", "file", "encoding");
+    
     /** Key for user explorer perspectives.
      *<pre>
      * format:
