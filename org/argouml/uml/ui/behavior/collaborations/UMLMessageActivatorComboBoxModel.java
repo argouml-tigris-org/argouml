@@ -23,27 +23,13 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.DefaultComboBoxModel;
-
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
-import org.argouml.uml.ui.UMLComboBoxModel;
 import org.argouml.uml.ui.UMLComboBoxModel2;
-import org.argouml.uml.ui.UMLUserInterfaceComponent;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
-
-import com.sun.corba.se.internal.iiop.messages.Message;
-
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * The model behind the UMLMessageActivatorComboBox. I don't use the UMLComboBoxModel
