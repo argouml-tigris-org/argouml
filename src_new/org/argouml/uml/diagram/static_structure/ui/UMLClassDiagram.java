@@ -70,12 +70,16 @@ public class UMLClassDiagram extends UMLDiagram {
 					   "edgeClass", MDependency.class,
 					   "Dependency");
     
-    /* in work: uncomment to test - mkl
     protected static Action _actionPermission =
         new CmdSetMode(ModeCreatePolyEdge.class,
                        "edgeClass", MPermission.class,
                        "Permission");
-    */
+
+    protected static Action _actionUsage =
+        new CmdSetMode(ModeCreatePolyEdge.class,
+                       "edgeClass", MUsage.class,
+                       "Usage");
+
 
 	protected static Action _actionAssoc =
 		new CmdSetMode(ModeCreatePolyEdge.class,
@@ -158,7 +162,8 @@ public class UMLClassDiagram extends UMLDiagram {
     _toolBar.add(_actionClass);
     _toolBar.add(_actionAssoc);
     _toolBar.add(_actionDepend);
-//    _toolBar.add(_actionPermission);
+    _toolBar.add(_actionPermission);
+    _toolBar.add(_actionUsage);
     _toolBar.add(_actionGeneralize);
     _toolBar.addSeparator();
 
