@@ -24,34 +24,53 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.Model;
 
 /**
- * Well-formedness rule [2] for MAssociationClass. See page 28 of UML 1.1
- * Semantics. OMG document ad/97-08-04.
- *
- * @author jrobbins
+ * Critic to check that an association class does not take part in further
+ * association class relations. Circular is to be read in "quotes".
+ * 
+ * @author Markus Klink
  */
 public class CrCircularAssocClass extends CrUML {
 
     /**
      * The constructor.
-     *
+     *  
      */
     public CrCircularAssocClass() {
         setupHeadAndDesc();
-	addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
-	setKnowledgeTypes(Critic.KT_SEMANTICS);
+        addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
+        setKnowledgeTypes(Critic.KT_SEMANTICS);
     }
 
     /**
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
-     * java.lang.Object, org.argouml.cognitive.Designer)
+     *      java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	// TODO: not implemented
-	return NO_PROBLEM;
+        System.out.println("predicate2:" + dm);
+        // self.allConnections->forAll(ar|ar.participant <> self)
+        if (!Model.getFacade().isAAssociationClass(dm))
+            return NO_PROBLEM;
+        Collection participants = Model.getFacade().getConnections(dm);
+        if (participants == null)
+            return NO_PROBLEM;
+        Iterator iter = participants.iterator();
+        while (iter.hasNext()) {
+            Object aEnd = iter.next();
+            if (Model.getFacade().isAAssociationEnd(aEnd)) {
+                Object type = Model.getFacade().getType(aEnd);
+                if (Model.getFacade().isAAssociationClass(type))
+                    return PROBLEM_FOUND; 
+            }           
+        }
+        return NO_PROBLEM;
     }
 
 } /* end class CrCircularAssocClass.java */
