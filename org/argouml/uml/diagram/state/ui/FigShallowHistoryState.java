@@ -46,123 +46,169 @@ public class FigShallowHistoryState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    public final int MARGIN = 2;
+    private static final int MARGIN = 2;
 
-    public int x = 0;
+    private static final int X = 0;
 
-    public int y = 0;
+    private static final int Y = 0;
 
-    public int width = 24;
+    private static final int WIDTH = 24;
 
-    public int height = 24;
+    private static final int HEIGTH = 24;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
     /** The main label on this icon. */
-    FigText _name;
+    private FigText name;
 
     /**
      * UML does not really use ports, so just define one big one so that users
      * can drag edges to or from any point in the icon.
      */
+    private FigCircle bigPort;
 
-    FigCircle _bigPort;
-
-    // add other Figs here aes needed
-
-    FigCircle _head;
+    private FigCircle head;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Main constructor
+     */
     public FigShallowHistoryState() {
-        _bigPort = new FigCircle(x, y, width, height, Color.cyan, Color.cyan);
-        _head = new FigCircle(x, y, width, height, Color.black, Color.white);
-        _name = new FigText(x, y, width - 10, height - 10);
-        _name.setText("H");
-        _name.setTextColor(Color.black);
-        _name.setFilled(false);
-        _name.setLineWidth(0);
+        bigPort = new FigCircle(X, Y, WIDTH, HEIGTH, Color.cyan, Color.cyan);
+        head = new FigCircle(X, Y, WIDTH, HEIGTH, Color.black, Color.white);
+        name = new FigText(X, Y, WIDTH - 10, HEIGTH - 10);
+        name.setText("H");
+        name.setTextColor(Color.black);
+        name.setFilled(false);
+        name.setLineWidth(0);
 
         // add Figs to the FigNode in back-to-front order
-        addFig(_bigPort);
-        addFig(_head);
-        addFig(_name);
+        addFig(bigPort);
+        addFig(head);
+        addFig(name);
 
         setBlinkPorts(false); //make port invisble unless mouse enters
         Rectangle r = getBounds();
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
+     */
     public String placeString() {
         return "H";
     }
 
+    /**
+     * The constructor which links the Fig into the existing UML element 
+     * @param gm ignored
+     * @param node the UML element
+     */
     public FigShallowHistoryState(GraphModel gm, Object node) {
         this();
         setOwner(node);
     }
 
+    /**
+     * @see java.lang.Object#clone()
+     */
     public Object clone() {
         FigShallowHistoryState figClone = (FigShallowHistoryState) super
                 .clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone._bigPort = (FigCircle) it.next();
-        figClone._head = (FigCircle) it.next();
-        figClone._name = (FigText) it.next();
+        figClone.bigPort = (FigCircle) it.next();
+        figClone.head = (FigCircle) it.next();
+        figClone.name = (FigText) it.next();
         return figClone;
     }
 
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
     public void setOwner(Object node) {
         super.setOwner(node);
-        bindPort(node, _bigPort);
+        bindPort(node, bigPort);
     }
 
-    /** History states are fixed size. */
+    /** History states are fixed size. 
+     * @see org.tigris.gef.presentation.Fig#isResizable()
+     */
     public boolean isResizable() {
         return false;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
     public void setLineColor(Color col) {
-        _head.setLineColor(col);
+        head.setLineColor(col);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
     public Color getLineColor() {
-        return _head.getLineColor();
+        return head.getLineColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
     public void setFillColor(Color col) {
-        _head.setFillColor(col);
+        head.setFillColor(col);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
     public Color getFillColor() {
-        return _head.getFillColor();
+        return head.getFillColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
     public void setFilled(boolean f) {
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFilled()
+     */
     public boolean getFilled() {
         return true;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
     public void setLineWidth(int w) {
-        _head.setLineWidth(w);
+        head.setLineWidth(w);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
     public int getLineWidth() {
-        return _head.getLineWidth();
+        return head.getLineWidth();
     }
 
     ////////////////////////////////////////////////////////////////
     // Event handlers
 
+    /**
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
     public void mouseClicked(MouseEvent me) {
     }
 
+    /**
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
     public void keyPressed(KeyEvent ke) {
     }
 
