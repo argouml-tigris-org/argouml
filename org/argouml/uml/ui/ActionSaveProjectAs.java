@@ -63,7 +63,10 @@ public class ActionSaveProjectAs extends ActionSaveProject {
      * The constructor. 
      */
     protected ActionSaveProjectAs() {
-        super(Translator.localize("action.save-project-as"));
+        super(Translator.localize("action.save-project-as"), 
+                ResourceLoaderWrapper.lookupIconResource(
+                        Translator.getImageBinding("SaveProjectAs"),
+                        Translator.localize("SaveProjectAs")));
     }
 
     ////////////////////////////////////////////////////////////////
