@@ -438,6 +438,70 @@ public class TestUmlModelEventPump extends TestCase {
         dep.addBehavior(StateMachinesFactory.getFactory().createStateMachine());
         assertTrue(eventcalled);
     }
+    
+    /**
+     * Tests if a listener that registered for all events for some modelClass
+     * receives all events
+     */
+    public void testPropertySetClass2() {        
+        UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass());
+        elem.setRoot(true);
+        assertTrue(eventcalled);
+    }
+    
+    /**
+     * Tests if a listener that registered for all events for some modelClass
+     * receives all events
+     */
+    public void testListRoleItemSetClass2() {        
+        elem.addFeature(new MOperationImpl());
+        UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass());
+        elem.setFeature(0, new MOperationImpl());
+        assertTrue(eventcalled);
+    }
+    
+    /**
+     * Tests if a listener that registered for all events for some modelClass
+     * receives all events
+     */
+    public void testRecoveredClass2() {       
+        // this is never done, not by NSUML and not by Argo... 
+        // therefore no implementation possible
+    }
+    
+    /**
+     * Tests if a listener that registered for all events for some modelClass
+     * receives all events
+     */
+    public void testRemovedClass2() {        
+        UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass());
+        elem.remove();
+        assertTrue(eventcalled);
+    }
+    
+    /**
+     * Tests if a listener that registered for all events for some modelClass
+     * receives all events
+     */
+    public void testRoleAddedSetClass2() {        
+        UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass());
+        elem.addParameter(new MParameterImpl());
+        assertTrue(eventcalled);
+    }
+    
+    /**
+     * Tests if a listener that registered for all events for some modelClass
+     * receives all events
+     */
+    public void testRoleRemovedSetClass2() {  
+        MParameter param = new MParameterImpl()      ;
+        elem.addParameter(param);
+        UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass());
+        elem.removeParameter(param);
+        assertTrue(eventcalled);
+    }
+    
+    
 }
 
 
