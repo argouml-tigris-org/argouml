@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrNodeInstanceInsideElement.java
-// Classes: CrNodeInstanceWithoutClassifier
-// Original Author: jrobbins@5eichler@informatik.uni-hamburg.de
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -37,11 +33,11 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.tigris.gef.util.VectorSet;
+
 /**
  * A critic to detect when there are node-instances that
- * are inside another element
- **/
-
+ * are inside another element.
+ */
 public class CrNodeInstanceWithoutClassifier extends CrUML {
 
     /**
@@ -58,16 +54,20 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
+	if (!(dm instanceof UMLDeploymentDiagram)) {
+	    return NO_PROBLEM;
+	}
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
 	VectorSet offs = computeOffenders(dd); 
-	if (offs == null) return NO_PROBLEM; 
+	if (offs == null) {
+	    return NO_PROBLEM; 
+	}
 	return PROBLEM_FOUND; 
     }
 
     /**
-     * @see org.argouml.cognitive.critics.Critic#toDoItem(j
-     * ava.lang.Object, org.argouml.cognitive.Designer)
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(
+     * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) { 
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm; 
@@ -80,7 +80,9 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) { 
-	if (!isActive()) return false; 
+	if (!isActive()) {
+	    return false; 
+	}
 	VectorSet offs = i.getOffenders(); 
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement(); 
 	//if (!predicate(dm, dsgr)) return false; 
@@ -104,13 +106,17 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
 	VectorSet offs = null;
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();
-	    if (!(obj instanceof FigMNodeInstance)) continue;
+	    if (!(obj instanceof FigMNodeInstance)) {
+	        continue;
+	    }
 	    FigMNodeInstance fn = (FigMNodeInstance) obj;
 	    if (fn != null) {
 		Object noi = /*(MNodeInstance)*/ fn.getOwner();
 		if (noi != null) {
 		    Collection col = ModelFacade.getClassifiers(noi);
-		    if (col.size() > 0) continue;     
+		    if (col.size() > 0) {
+		        continue;     
+		    }
 		}       
 		if (offs == null) {
 		    offs = new VectorSet();

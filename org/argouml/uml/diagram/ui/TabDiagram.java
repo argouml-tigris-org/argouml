@@ -447,7 +447,7 @@ class ArgoJGraph extends JGraph {
 
     /**
      * Make a new {@link JGraph} with a the {@link GraphModel} and 
-     * {@link Layer} from the given Diagram.
+     * {@link org.tigris.gef.base.Layer} from the given Diagram.
      *
      * @param d The Diagram.
      */

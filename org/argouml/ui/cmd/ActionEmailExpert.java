@@ -75,7 +75,7 @@ public class ActionEmailExpert extends ToDoItemAction {
                     + "?subject=" + subject 
                     + "&body=" + dsgr); 
             } catch (Exception ex) {
-                /*ignore for now*/;
+                /*ignore for now*/
             }
         } else {
             EmailExpertDialog dialog = new EmailExpertDialog();
@@ -85,7 +85,7 @@ public class ActionEmailExpert extends ToDoItemAction {
     }
 
     /**
-     * @see org.argouml.ui.ToDoItemAction#shouldBeEnabled(java.lang.Object)
+     * @see org.argouml.ui.cmd.ToDoItemAction#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object target) {
         return getRememberedTarget() != null 
