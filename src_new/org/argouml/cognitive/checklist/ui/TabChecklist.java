@@ -40,6 +40,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
+import org.tigris.gef.presentation.Fig;
+
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.checklist.CheckItem;
 import org.argouml.cognitive.checklist.CheckManager;
@@ -47,6 +49,7 @@ import org.argouml.cognitive.checklist.Checklist;
 import org.argouml.cognitive.checklist.ChecklistStatus;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabSpawnable;
@@ -56,7 +59,7 @@ import org.argouml.uml.ui.TabModelTarget;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
-/** Doesn't work, checked the argo.ini and it is not commented out
+/** Tab to show the checklist for a certain element.
  */
 public class TabChecklist extends TabSpawnable
     implements TabModelTarget, ActionListener, ListSelectionListener
@@ -64,9 +67,6 @@ public class TabChecklist extends TabSpawnable
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    protected org.argouml.cognitive.checklist.CheckManager SINGLTON =
-	new org.argouml.cognitive.checklist.CheckManager();
-
     Object _target;
     TableModelChecklist _tableModel = null;
     boolean _shouldBeEnabled = false;
@@ -106,16 +106,41 @@ public class TabChecklist extends TabSpawnable
 	setLayout(new BorderLayout());
 	add(sp, BorderLayout.CENTER);
     }
+    
+    
+    /** Converts a selected element to a target that is appropriate for a 
+     * checklist.<p>
+     *
+     * The argument can be either 
+     * a Fig, if a Figure when something is selected from a diagram
+     * or a model element when an object is selected from the explorer.<p>
+     *
+     * @param target that is an object.
+     * @returns target that is always model element.
+     */
+    private Object findTarget(Object target) {
+        if (target instanceof Fig) {
+            Fig f = (Fig) target;
+            target = f.getOwner();
+        }
+        return target;
+    }
+ 
 
     ////////////////////////////////////////////////////////////////
     // accessors
+    /** Actually prepares the Tab.
+     *
+     * @param t is the target to show the list for.
+     */
     public void setTarget(Object t) {
-	if (!(org.argouml.model.ModelFacade.isAModelElement(t))) {
-	    _target = null;
-	    _shouldBeEnabled = false;
-	    return;
-	}
-	_target = t;
+        _target = findTarget(t);
+        
+        if (_target == null) {
+            _shouldBeEnabled = false;
+            return;
+        }
+
 	_shouldBeEnabled = true;
 	Checklist cl = CheckManager.getChecklistFor(_target);
 	if (cl == null) {
@@ -141,12 +166,19 @@ public class TabChecklist extends TabSpawnable
 
     public void refresh() { setTarget(_target); }
 
+    /** Decides if the tab should be enabled or not.<p>
+     *
+     * @param target is the object element that it is then enabled for
+     * @return true if it should be enabled.
+     */
     public boolean shouldBeEnabled(Object target) {
-
-	if (!(org.argouml.model.ModelFacade.isAModelElement(target))) {
-	    _shouldBeEnabled = false;
-	    return _shouldBeEnabled;
-	}
+        target = findTarget(target);
+  
+        if (target == null) {
+            _shouldBeEnabled = false;
+            return _shouldBeEnabled;
+        }
+        
 	_shouldBeEnabled = true;
 	Checklist cl = CheckManager.getChecklistFor(target);
 	if (cl == null) {
@@ -220,10 +252,10 @@ class TableModelChecklist extends AbstractTableModel
     }
 
     public void setTarget(Object t) {
-	if (org.argouml.model.ModelFacade.isAElement(_target))
+	if (ModelFacade.isAElement(_target))
 	    getPump().removeModelEventListener(this, _target);
 	_target = t;
-	if (org.argouml.model.ModelFacade.isAElement(_target))
+	if (ModelFacade.isAElement(_target))
 	    getPump().addModelEventListener(this, _target);
 	fireTableStructureChanged();
     }
