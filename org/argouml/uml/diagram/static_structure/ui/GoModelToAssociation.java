@@ -33,9 +33,9 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.ui.*;
 
-public class GoModelToAssociation implements TreeModel {
+public class GoModelToAssociation extends AbstractGoRule {
 
-  public String toString() { return "Package->MAssociation"; }
+  public String getRuleName() { return "Package->MAssociation"; }
   
   public Object getRoot() {
       throw
@@ -44,71 +44,26 @@ public class GoModelToAssociation implements TreeModel {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     if (children != null) return children.elementAt(index);
     throw 
 	new UnsupportedOperationException("getChild should never get here");
   }
 
-//   public void xxx() {
-//     if (parent instanceof MPackage) {
-//       Vector eos = ((MPackage)parent).getOwnedElements();
-//       for (int i = 0; i < eos.size(); i++) {
-// 	MElementImport eo = (MElementImport) eos.elementAt(i);
-// 	MModelElement me = eo.getModelElement();
-// 	if (me instanceof MAssociation) index--;
-// 	if (index == 0) return me;
-//       }
-//     }
-//     throw new Error("getChild should never be get here GoModelToAssociation");
-//     return null;
-//   }
-
   public int getChildCount(Object parent) {
-    Vector children = getChildren(parent);
+    Collection children = getChildren(parent);
     if (children != null) return children.size();
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     if (children != null) return children.indexOf(child);
     return -1;
   }
 
-//   public int getChildCountxx(Object parent) {
-//     int res = 0;
-//     if (parent instanceof MPackage) {
-//       Vector oes = ((MPackage) parent).getOwnedElements();
-//       if (oes == null) return 0;
-//       java.util.Enumeration enum = oes.elements();
-//       while (enum.hasMoreElements()) {
-// 	MElementImport eo = (MElementImport) enum.nextElement();
-// 	MModelElement me = eo.getModelElement();
-// 	if (me instanceof MAssociation) res++;
-//       }
-//     }
-//     return res;
-//   }
 
-//   public int getIndexOfChildxx(Object parent, Object child) {
-//     int res = 0;
-//     if (parent instanceof MPackage) {
-//       Vector oes = ((MPackage)parent).getOwnedElements();
-//       if (oes == null) return -1;
-//       java.util.Enumeration enum = oes.elements();
-//       while (enum.hasMoreElements()) {
-// 	MElementImport eo = (MElementImport) enum.nextElement();
-// 	MModelElement me = eo.getModelElement();
-// 	if (me == child) return res;
-// 	if (me instanceof MAssociation) res++;
-//       }
-//     }
-//     return -1;
-//   }
-
-
-  public Vector getChildren(Object parent) {
+  public Collection getChildren(Object parent) {
     if (!(parent instanceof MPackage)) return null; 
     Vector res = new Vector();
     Vector oes = new Vector(((MPackage)parent).getOwnedElements());

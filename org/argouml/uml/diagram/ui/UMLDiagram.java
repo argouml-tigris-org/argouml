@@ -36,8 +36,9 @@ import org.apache.log4j.Category;
 import org.argouml.ui.*;
 
 public class UMLDiagram extends ArgoDiagram {
+    
 
-  Category cat = Category.getInstance(org.argouml.uml.diagram.ui.UMLDiagram.class);
+  protected static Category cat = Category.getInstance(UMLDiagram.class);
   ////////////////////////////////////////////////////////////////
   // actions for toolbar
 
@@ -101,7 +102,7 @@ public class UMLDiagram extends ArgoDiagram {
   public void initialize(Object owner) {
     super.initialize(owner);
     if (owner instanceof MNamespace) setNamespace((MNamespace) owner);
-    else System.out.println("unknown object in UMLDiagram initialize:"
+    else cat.debug("unknown object in UMLDiagram initialize:"
 			    + owner);
   }
 

@@ -34,7 +34,7 @@
 package org.argouml.uml.ui;
 
 import org.argouml.uml.*;
-import org.argouml.uml.ui.*;
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 
 import javax.swing.event.*;
@@ -57,6 +57,8 @@ import ru.novosoft.uml.model_management.*;
 public class UMLModelElementComboBoxModel
     extends AbstractListModel
     implements ComboBoxModel, UMLUserInterfaceComponent, ActionListener {
+        protected static Category cat = Category.getInstance(UMLModelElementComboBoxModel.class);
+       
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -203,9 +205,9 @@ public class UMLModelElementComboBoxModel
                 _getMethod = container.getClass().getMethod(getMethod,getArgs);
             }
             catch(Exception e) {
-                System.out.println(e.toString() + ". " +
+                cat.error(e.toString() + ". " +
                                    this.getClass().toString() +
-                                   ": invalid get method " + getMethod);
+                                   ": invalid get method " + getMethod, e);
             }
         }
 
@@ -216,9 +218,9 @@ public class UMLModelElementComboBoxModel
                 _setMethod = container.getClass().getMethod(setMethod,setArgs);
             }
             catch(Exception e) {
-                System.out.println(e.toString() + ". " +
+                cat.error(e.toString() + ". " +
                                    this.getClass().toString() +
-                                   ": invalid set method " + setMethod);
+                                   ": invalid set method " + setMethod, e);
             }
         }
 
@@ -316,7 +318,7 @@ public class UMLModelElementComboBoxModel
     protected void setDropDown(Collection dropDown) {
 
         if (dropDown == null) {
-            System.out.println(getClass().toString() +
+            cat.warn(getClass().toString() +
                                ": getDropDown() - " + 
                                "attempted to set null collection");
             return;
@@ -592,10 +594,10 @@ public class UMLModelElementComboBoxModel
             targetObj = _getMethod.invoke(_container, args);
         }
         catch(Exception e) {
-            System.out.println(e.toString() + ". " +
+            cat.error(e.toString() + ". " +
                                getClass().toString() +
                                ": findSelectedItem() - " +
-                               "get method failed.");
+                               "get method failed.", e);
         }
 
         // Find the selected item.
@@ -975,9 +977,9 @@ public class UMLModelElementComboBoxModel
             _setMethod.invoke(_container, args);
         }
         catch(Exception e) {
-            System.out.println(e.toString() + ". " +
+            cat.error(e.toString() + ". " +
                                this.getClass().toString() +
-                               ": actionPerformed() - set method failed.");
+                               ": actionPerformed() - set method failed.", e );
         }
     }
 

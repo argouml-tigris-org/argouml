@@ -45,9 +45,13 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import org.apache.log4j.Category;
+import org.apache.log4j.helpers.RelativeTimeDateFormat;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 import org.argouml.uml.*;
@@ -62,7 +66,8 @@ import org.argouml.util.*;
 
 public abstract class FigEdgeModelElement extends FigEdgePoly
 implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener, NotationContext, ArgoNotationEventListener  {
-
+    
+    protected static Category cat = Category.getInstance(FigEdgeModelElement.class);
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -281,7 +286,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     Object src = pve.getSource();
     String pName = pve.getPropertyName();
     if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
-      //System.out.println("finished editing");
+      cat.debug("finished editing");
       try {
 	startTrans();
 	textEdited((FigText) src);
@@ -289,7 +294,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	endTrans();
       }
       catch (PropertyVetoException ex) {
-	System.out.println("could not parse and use the text you entered");
+        cat.error("could not parse the text entered. Propertyvetoexception", ex);
       }
     }
     else super.propertyChange(pve);
@@ -345,14 +350,6 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   public void keyReleased(KeyEvent ke) { }
 
   public void keyTyped(KeyEvent ke) {
-//     if (ke.isConsumed()) return;
-//     System.out.println("hjasdjsg222");
-//     _name.keyTyped(ke);
-//     //ke.consume();
-//     MModelElement me = (MModelElement) getOwner();
-//      if (me == null) return;
-//     try { me.setName(new Name(_name.getText())); }
-//     catch (PropertyVetoException pve) { }
   }
 
   ////////////////////////////////////////////////////////////////
@@ -364,17 +361,18 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   protected void modelChanged() {
     updateNameText();
     updateStereotypeText();
+    if (!updateClassifiers()) return;
   }
 
 
-  public void updateNameText() {
+  private void updateNameText() {
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
     String nameStr = Notation.generate(this, me.getName());
     _name.setText(nameStr);
   }
 
-  public void updateStereotypeText() {
+  protected void updateStereotypeText() {
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
     MStereotype stereos = me.getStereotype();
@@ -390,25 +388,31 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   }
 
   public void setOwner(Object own) {
-    Object oldOwner = getOwner();
-    super.setOwner(own);
-    if (oldOwner instanceof MModelElement)
-      ((MModelElement)oldOwner).removeMElementListener(this);
-    if (own instanceof MModelElement) {
-	MModelElement me = (MModelElement)own;
-    me.removeMElementListener(this);
-	me.addMElementListener(this);
-	if ( me.getUUID() == null) 
-	    me.setUUID(UUIDManager.SINGLETON.getNewUUID());
-    }
-    modelChanged();
+  	super.setOwner(own);
+  	if (own != null) {
+	    Object oldOwner = getOwner();
+	    
+	    if (oldOwner instanceof MModelElement)
+	      ((MModelElement)oldOwner).removeMElementListener(this);
+	    if (own instanceof MModelElement) {
+		MModelElement me = (MModelElement)own;
+	        me.removeMElementListener(this);
+		me.addMElementListener(this);
+		if ( me.getUUID() == null) 
+		    me.setUUID(UUIDManager.SINGLETON.getNewUUID());
+	    }
+	    modelChanged();
+  	}
+  		
   }
 
 
 	public void propertySet(MElementEvent mee) {
 	    //if (_group != null) _group.propertySet(mee);
-	    modelChanged();
-	    damage();
+	    if (mee.getOldValue() != mee.getNewValue()) {
+	    	modelChanged();
+	    	damage();
+	    }
 	}
 	public void listRoleItemSet(MElementEvent mee) {
 	    //if (_group != null) _group.listRoleItemSet(mee);
@@ -419,7 +423,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	    //if (_group != null) _group.recovered(mee);
 	}
 	public void removed(MElementEvent mee) {
-		//System.out.println("deleting: "+this + mee);
+		cat.debug("deleting: "+this + mee);
 	    //if (_group != null) _group.removed(mee);
 	    this.delete();
 	}
@@ -435,24 +439,22 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	}
 
     /**
-     * Add the owner of this element to the trash, so other Argo components (i.e. critics) 
-     * realize, that it is deleted.
+     * @see org.tigris.gef.presentation.Fig#dispose()
      */
-    public void delete() {
-	if(getOwner() != null) {
-	    Trash.SINGLETON.addItemFrom( getOwner(), null);
+    public void dispose() {
+	Object own = getOwner();
+	if(own != null) {
+	    Trash.SINGLETON.addItemFrom(getOwner(), null);
+	    if (own instanceof MModelElement) {	
+                UmlFactory.getFactory().delete((MModelElement)own);
+	    }
 	}
-	super.delete();
+        Iterator it = getPathItemFigs().iterator();
+        while (it.hasNext()) {
+            ((Fig)it.next()).dispose();
+        }
+		super.dispose();
     }
-
-
-    /** delete just this object.
-     * The owner is preserved.
-     */
-    public void remove() {
-        super.delete();
-    }
-
 
    /** This default implementation simply requests the default notation.
    */
@@ -471,24 +473,111 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     public void renderingChanged() {
     }
 
-	/**
-	 * Necessary since GEF contains some errors regarding the hit subject.
-	 * TODO make the bigBounds port go off a little less
-	 * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
-	 */
-	public boolean hit(Rectangle r) {
-		if (_fig.hit(r)) return true;
-		int size = _pathItems.size();
-		for (int i = 0; i < size; i++) {
-	  		Fig f = getPathItemFig((FigEdge.PathItem) _pathItems.elementAt(i));
-	  		if (f.hit(r)) return true;
-		}
-		Rectangle bigBounds = getBounds();
-		FigRect rect = new FigRect(bigBounds.x, bigBounds.y, bigBounds.width, bigBounds.height);
-		if (rect.hit(r)) return true;
-		return false;
-	}
+    /**
+     * Necessary since GEF contains some errors regarding the hit subject.
+     * TODO make the bigBounds port go off a little less
+     * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
+     */
+    public boolean hit(Rectangle r) {
+        if (_fig.hit(r)) return true;
+        Polygon polOuter = ((FigPoly)_fig).getPolygon();
+        polOuter.translate(-8, -8);
+        Polygon polInner = ((FigPoly)_fig).getPolygon();
+        polInner.translate(8, 8);
+        Polygon containing = new Polygon();
+        for (int i = 0; i < polOuter.xpoints.length ; i++) {
+            containing.addPoint(polOuter.xpoints[i], polOuter.ypoints[i]);
+        }
+        for (int i = polInner.xpoints.length-1; i >= 0; i--) {
+            containing.addPoint(polInner.xpoints[i], polInner.ypoints[i]);
+        }
+        if (containing.intersects(r)) return true;
+        // if (polOuter.intersects(r) && !polInner.intersects(r)) return true;
+            
+        int size = _pathItems.size();
+        for (int i = 0; i < size; i++) {
+        	Fig f = getPathItemFig((FigEdge.PathItem) _pathItems.elementAt(i));
+        	if (f.hit(r)) return true;
+        }
+        Rectangle bigBounds = getBounds();
+        /*
+        FigRect rect = new FigRect(bigBounds.x, bigBounds.y, bigBounds.width, bigBounds.height);
+        if (rect.hit(r)) return true;
+        */
+        return false;
+    }
 		
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#delete()
+     */
+    public void delete() {
+        super.delete();
+        Iterator it = getPathItemFigs().iterator();
+        while (it.hasNext()) {
+            Fig fig = (Fig)it.next();
+            fig.delete();
+        }
+        // GEF does not take into account the multiple diagrams we have
+        // therefore we loop through our diagrams and delete each and every 
+        // occurence on our own
+        it = ProjectBrowser.TheInstance.getProject().getDiagrams().iterator();
+        while (it.hasNext()) {
+            ArgoDiagram diagram = (ArgoDiagram)it.next();
+            diagram.damage();
+        }
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#damage()
+     */
+    public void damage() {
+        super.damage();
+        _fig.damage();
+    }
+    
+    private boolean updateClassifiers() {
+    Object owner = getOwner();
+    if (owner == null || getLayer() == null) return false;
+    if (!(owner instanceof MRelationship)) throw new IllegalStateException("Owner not instance of Relationship");
+    
+    MModelElement newSource = CoreHelper.getHelper().getSource((MRelationship)owner);
+    MModelElement newDest = (MClassifier)CoreHelper.getHelper().getDestination((MRelationship)owner);
+    
+    Fig currentSourceFig = getSourceFigNode();
+    Fig currentDestFig = getDestFigNode();
+    MModelElement currentSource = null;
+    MModelElement currentDestination = null;
+    if (currentSourceFig != null && currentDestFig != null) {       
+        currentSource = (MModelElement)currentSourceFig.getOwner();
+        currentDestination = (MModelElement)currentDestFig.getOwner();
+    }
+    if (newSource != currentSource || newDest != currentDestination) {
+        Fig newSourceFig = getLayer().presentationFor(newSource);
+        Fig newDestFig = getLayer().presentationFor(newDest);
+        if (newSourceFig == null || newDestFig == null) {
+            delete();
+            return false;
+        }
+        if (newSourceFig != currentSourceFig || currentSourceFig == null) {
+            setSourceFigNode((FigNode)newSourceFig);
+            setSourcePortFig(newSourceFig);
+            
+        }
+        if (newDestFig != currentDestFig || currentDestFig == null) {
+            setDestFigNode((FigNode)newDestFig);
+            setDestPortFig(newDestFig);            
+        }
+        if (newDestFig != null) {
+            ((FigNode)newSourceFig).updateEdges();
+        }
+        if (newSourceFig != null) {
+            ((FigNode)newDestFig).updateEdges();
+        }
+        calcBounds();
+    }
+    return true;
+  }
 
 } /* end class FigEdgeModelElement */
 

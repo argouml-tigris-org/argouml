@@ -38,6 +38,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 
 /** Dialog box to list all critics and allow editing of some of their
@@ -45,6 +46,9 @@ import org.argouml.application.api.*;
  *  supported decisions, critic network. */
 public class CriticBrowserDialog extends JDialog
 implements ActionListener, ListSelectionListener, ItemListener, DocumentListener {
+    
+    protected static Category cat = Category.getInstance(CriticBrowserDialog.class);
+    
   public static int _numCriticBrowser = 0;
 
   ////////////////////////////////////////////////////////////////
@@ -338,7 +342,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
   }
 
   public void setTargetUseClarifiers() {
-    System.out.println("setting clarifier usage rule");
+    cat.debug("setting clarifier usage rule");
   }
 
   ////////////////////////////////////////////////////////////////
@@ -352,39 +356,39 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
       return;
     }
     if (e.getSource() == _goButton) {
-      System.out.println("needs-more-work go!");
+      cat.debug("needs-more-work go!");
       return;
     }
     if (e.getSource() == _networkButton) {
-      System.out.println("needs-more-work network!");
+      cat.debug("needs-more-work network!");
       return;
     }
     if (e.getSource() == _configButton) {
-      System.out.println("needs-more-work config!");
+      cat.debug("needs-more-work config!");
       return;
     }
     if (e.getSource() == _wakeButton) {
       _target.unsnooze();
       return;
     }
-    System.out.println("unknown src in CriticBrowserDialog: " + e.getSource());
+    cat.debug("unknown src in CriticBrowserDialog: " + e.getSource());
   }
 
   public void valueChanged(ListSelectionEvent lse) {
     if (lse.getValueIsAdjusting()) return;
     Object src = lse.getSource();
     if (src != _table.getSelectionModel()) {
-      System.out.println("src = " + src);
+      cat.debug("src = " + src);
       return;
     }
-    //System.out.println("got valueChanged from " + src);
+    cat.debug("got valueChanged from " + src);
     int row = _table.getSelectedRow();
     Vector critics = Agency.getCritics();
     setTarget(critics.elementAt(row));
   }
 
   public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
+    cat.debug(getClass().getName() + " insert");
     Document hDoc = _headline.getDocument();
     Document miDoc = _moreInfo.getDocument();
     Document dDoc = _desc.getDocument();
@@ -396,23 +400,19 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
   public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
   public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
+    cat.debug(getClass().getName() + " changed");
     // Apparently, this method is never called.
   }
 
   public void itemStateChanged(ItemEvent e) {
     Object src = e.getSource();
     if (src == _priority) {
-      //System.out.println("class keywords now is " +
-      //_keywordsField.getSelectedItem());
       setTargetPriority();
     }
     else if (src == _useClar) {
-      //System.out.println("class MVisibilityKind now is " +
-      //_visField.getSelectedItem());
       setTargetUseClarifiers();
     }
-    else System.out.println("unknown itemStateChanged src: "+ src);
+    else cat.debug("unknown itemStateChanged src: "+ src);
   }
 
 } /* end class CriticBrowserDialog */
@@ -422,6 +422,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
 
 class TableModelCritics extends AbstractTableModel
 implements VetoableChangeListener, DelayedVChangeListener {
+    protected static Category cat = Category.getInstance(TableModelCritics.class);
   ////////////////
   // instance varables
   Vector _target;
@@ -473,7 +474,7 @@ implements VetoableChangeListener, DelayedVChangeListener {
   }
 
   public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
-    //System.out.println("setting table value " + rowIndex + ", " + columnIndex);
+    cat.debug("setting table value " + rowIndex + ", " + columnIndex);
     if (columnIndex != 0) return;
     if (!(aValue instanceof Boolean)) return;
     Boolean enable = (Boolean) aValue;

@@ -95,7 +95,6 @@ public class StylePanelFigRRect extends StylePanelFig {
   // event handling
 
   public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
     Document roundingDoc = _roundingField.getDocument();
     if (e.getDocument() == roundingDoc) setTargetRounding();
     super.insertUpdate(e);

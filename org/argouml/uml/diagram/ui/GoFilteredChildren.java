@@ -36,7 +36,7 @@ import org.tigris.gef.util.*;
 import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
 
-public class GoFilteredChildren implements TreeModel {
+public class GoFilteredChildren extends AbstractGoRule {
 
   ////////////////////////////////////////////////////////////////
   // instance vars
@@ -61,7 +61,7 @@ public class GoFilteredChildren implements TreeModel {
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
   
-  public String toString() { return _name; }
+  public String getRuleName() { return _name; }
   
   public Object getRoot() { return _tm.getRoot(); }
   
@@ -76,6 +76,11 @@ public class GoFilteredChildren implements TreeModel {
       }
     }
     return null;
+  }
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
   }
   
   public int getChildCount(Object parent) {

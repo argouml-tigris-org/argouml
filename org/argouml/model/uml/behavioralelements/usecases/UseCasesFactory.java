@@ -154,10 +154,29 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
          }
          
          // build an extensionpoint in the base
-         extend.addExtensionPoint(buildExtensionPoint(base));
+         MExtensionPoint point = buildExtensionPoint(base);
+         extend.addExtensionPoint(point);
 
          return extend;
      }
+     
+     public MExtend buildExtend(MUseCase base, MUseCase extension, MExtensionPoint point) {
+        if (base == null || extension == null) 
+            throw new IllegalArgumentException("Either the base usecase or the extension usecase is null");
+        if (point != null) {
+            if (!base.getExtensionPoints().contains(point)) {
+                throw new IllegalArgumentException("The extensionpoint is no part of the base usecase");
+            }
+        } else
+            point = buildExtensionPoint(base);
+        MExtend extend = createExtend();
+        extend.setBase(base);
+        extend.setExtension(extension);
+        extend.addExtensionPoint(point);
+        return extend;
+     }
+     
+     
      
      /**
      * <p>Build an extension point for a use case.</p>
@@ -181,10 +200,14 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
              extensionPoint.setUseCase(useCase);
 
              // Set the namespace to that of the useCase if possible.
-
+             
+             // the usecase itself is a namespace...
+             extensionPoint.setNamespace(useCase);
+/*
              if (useCase.getNamespace() != null) {
                  extensionPoint.setNamespace(useCase.getNamespace());
              }
+             */
          }
 
          // For consistency with attribute and operation, give it a default
@@ -260,6 +283,18 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      	actor.setName("newActor");
      	return actor;
      }
+     
+     public void deleteActor(MActor elem) {}
+     
+     public void deleteExtend(MExtend elem) {}
+     
+     public void deleteExtensionPoint(MExtensionPoint elem) {}
+     
+     public void deleteInclude(MInclude elem) {}
+     
+     public void deleteUseCase(MUseCase elem) {}
+     
+     public void deleteUseCaseInstance(MUseCaseInstance elem) {}
 
 
 

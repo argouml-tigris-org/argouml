@@ -34,9 +34,9 @@ import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.argouml.ui.*;
 
-public class GoMachineToTrans implements TreeModel {
+public class GoMachineToTrans extends AbstractGoRule {
 
-  public String toString() { return "State Machine->Transition"; }
+  public String getRuleName() { return "State Machine->Transition"; }
   
   public Object getRoot() {
       throw
@@ -53,6 +53,11 @@ public class GoMachineToTrans implements TreeModel {
     }
     throw
 	new UnsupportedOperationException("getChild should never be get here");
+  }
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
   }
 
   public int getChildCount(Object parent) {

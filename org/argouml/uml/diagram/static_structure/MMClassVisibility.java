@@ -62,17 +62,8 @@ public class MMClassVisibility implements java.io.Serializable {
   public String toString() { return _label.toString(); }
 
   public void set(MClassifier target) {
-//     try {
     if (target == null) return;
     if (this == PUBLIC)
       target.setVisibility(MVisibilityKind.PUBLIC);
-
-	// no PACKAGE in nsuml!
-	//    if (this == PACKAGE)
-	// target.setVisibility(MVisibilityKind.PACKAGE);
-//     }
-//     catch (PropertyVetoException pve) {
-//       System.out.println("could not set class visibility");
-//     }
   }
 } /* end class MMClassVisibility */

@@ -44,9 +44,11 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 import org.argouml.uml.*;
@@ -62,6 +64,7 @@ import org.argouml.util.*;
 public abstract class FigNodeModelElement extends FigNode
 implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener, NotationContext, ArgoNotationEventListener  {
 
+     protected static Category cat = Category.getInstance(FigNodeModelElement.class);
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -310,18 +313,18 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   // event handlers
 
   public void vetoableChange(PropertyChangeEvent pce) {
-    //System.out.println("in vetoableChange");
+    cat.debug("in vetoableChange");
     Object src = pce.getSource();
     if (src == getOwner()) {
       DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
       SwingUtilities.invokeLater(delayedNotify);
     }
-    else System.out.println("FigNodeModelElement got vetoableChange"+
+    else cat.debug("FigNodeModelElement got vetoableChange"+
 			    " from non-owner:" + src);
   }
 
   public void delayedVetoableChange(PropertyChangeEvent pce) {
-    //System.out.println("in delayedVetoableChange");
+    cat.debug("in delayedVetoableChange");
     Object src = pce.getSource();
     startTrans();
     // update any text, colors, fonts, etc.
@@ -345,7 +348,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     Object src = pve.getSource();
     String pName = pve.getPropertyName();
     if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
-      //System.out.println("finished editing");
+      cat.debug("finished editing");
       try {
 	startTrans();
 	//parse the text that was edited
@@ -359,7 +362,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	endTrans();
       }
       catch (PropertyVetoException ex) {
-	System.out.println("could not parse and use the text you entered");
+        cat.error("could not parse the text entered. PropertyVetoException", ex);
       }
     }
     else super.propertyChange(pve);
@@ -392,7 +395,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 				_readyToEdit = true;
 			}
 			else {
-				System.out.println("not ready to edit name");
+				cat.debug("not ready to edit name");
 				return;
 			}
 		}
@@ -423,7 +426,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	_readyToEdit = true;
       }
       else {
-	System.out.println("not ready to edit name");
+	cat.debug("not ready to edit name");
 	return;
       }
     }
@@ -485,11 +488,38 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	    //if (_group != null) _group.recovered(mee);
 	}
 	public void removed(MElementEvent mee) {
-		//System.out.println("deleting: "+this + mee);
-	    //if (_group != null) _group.removed(mee);
-	    // this.delete();
-	    this.dispose();
+	   cat.debug("deleting: "+this + mee);
+	   Object o = mee.getSource(); 
+           if (isPartlyOwner(o)) {
+               updateBounds();
+                damage();
+                return;
+           } 
 	}
+    
+        protected boolean isPartlyOwner(Object o) {
+            if (o == null) return false;
+            if (o == getOwner()) return true;
+            Iterator it = getFigs().iterator();
+            while (it.hasNext()) {
+                Fig fig = (Fig)it.next();
+                if (isPartlyOwner(fig, o)) return true;
+            }
+            return false;
+        }
+        
+        protected boolean isPartlyOwner(Fig fig, Object o) {
+            if (o == null) return false;
+            if (o == fig.getOwner()) return true;
+            if (fig instanceof FigGroup) {
+                Iterator it = ((FigGroup)fig).getFigs().iterator();
+                while (it.hasNext()) {
+                    Fig fig2 = (Fig)it.next();
+                    if (isPartlyOwner(fig2, o)) return true;
+                }
+            }
+            return false;
+        }
 	public void roleAdded(MElementEvent mee) {
 	    //if (_group != null) _group.roleAdded(mee);
 	    modelChanged();
@@ -501,24 +531,35 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	    damage();
 	}
 
+
     /**
-     * Deletes this object including its owner.
+     * Deletes this object EXcluding its owner. Thereby conforming to GEF
      * Add the owner of this element to the trash, so other Argo components (i.e. critics)
      * realize, that it is deleted.
      */
+    /*
     public void delete() {
 	if(getOwner() != null) {
-		ProjectBrowser.TheInstance.getProject().findFigsForMember(getOwner());
+		Collection figs = ProjectBrowser.TheInstance.getProject().findFigsForMember(getOwner());
 	    Trash.SINGLETON.addItemFrom( getOwner(), null);
 	}
 	super.delete();
     }
+ */
     
     public void dispose() {
-	if(getOwner() != null) {
-	    Trash.SINGLETON.addItemFrom( getOwner(), null);
-	}
-	super.dispose();
+    	Object own = getOwner();
+		if(own != null) {
+	    	Trash.SINGLETON.addItemFrom(own, null);
+	    	if (own instanceof MModelElement) {
+	    		UmlFactory.getFactory().delete((MModelElement)own);
+	    	  }
+		}
+        Iterator it = getFigs().iterator();
+        while (it.hasNext()) {
+            ((Fig)it.next()).dispose();
+        }
+		super.dispose();
     }
 
     /**
@@ -536,7 +577,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
       ((MModelElement)oldOwner).removeMElementListener(this);
     if (own instanceof MModelElement) {
 	MModelElement me = (MModelElement)own;
-    me.removeMElementListener(this);
+        me.removeMElementListener(this);
 	me.addMElementListener(this);
 	if ( me.getUUID() == null)
 	    me.setUUID(UUIDManager.SINGLETON.getNewUUID());
@@ -626,5 +667,36 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     	if (_filled) return cornersHit > 0 || intersects(r);
     	else return (cornersHit > 0 && cornersHit < 4) || intersects(r);
 	}
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#delete()
+     */
+    public void delete() {
+        super.delete();
+        Object own = getOwner();
+        if (own instanceof MClassifier) {
+            MClassifier cls = (MClassifier)own;
+            Iterator it = cls.getFeatures().iterator();
+            while (it.hasNext()) {
+                MFeature feature = (MFeature)it.next();
+                if (feature instanceof MOperation) {
+                    MOperation oper = (MOperation)feature;
+                    Iterator it2 = oper.getParameters().iterator();
+                    while (it2.hasNext()) {
+                        ((MParameter)it2.next()).removeMElementListener(this);
+                    }
+                }
+                feature.removeMElementListener(this);
+            }
+        }
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#damage()
+     */
+    public void damage() {
+        updateEdges();
+        super.damage();
+    }
 
 } /* end class FigNodeModelElement */

@@ -20,10 +20,14 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.ui.*;
 
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.uml.ui.ActionAddNote;
+import org.apache.log4j.Category;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.deployment.*;
 
 public class UMLDeploymentDiagram extends UMLDiagram {
+    protected static Category cat = 
+        Category.getInstance(UMLDeploymentDiagram.class);
 
   ////////////////
   // actions for toolbar
@@ -109,7 +113,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
   /** initialize the toolbar for this diagram type */
   protected void initToolBar() {
-    //System.out.println("making deployment toolbar");
+    cat.debug("making deployment toolbar");
     _toolBar = new ToolBar();
     _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 //     _toolBar.add(Actions.Cut);
@@ -130,6 +134,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     _toolBar.add(_actionMObject); 
     _toolBar.add(_actionMLink);
 // other actions
+   _toolBar.addSeparator();
+    _toolBar.add(ActionAddNote.SINGLETON);
     _toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);

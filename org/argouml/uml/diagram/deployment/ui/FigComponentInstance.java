@@ -45,6 +45,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.generator.*;
@@ -52,7 +53,7 @@ import org.argouml.uml.generator.*;
 /** Class to display graphics for a UML ComponentInstance in a diagram. */
 
 public class FigComponentInstance extends FigNodeModelElement {
-
+    protected static Category cat = Category.getInstance(FigComponentInstance.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -180,12 +181,43 @@ public class FigComponentInstance extends FigNodeModelElement {
 
 
   public void setEnclosingFig(Fig encloser) {
+    
+    if (encloser != null && encloser.getOwner() instanceof MNodeInstance && getOwner() != null) {
+        MNodeInstance node = (MNodeInstance)encloser.getOwner();
+        MComponentInstance comp = (MComponentInstance)getOwner();
+        if (comp.getNodeInstance() != node) {
+            comp.setNodeInstance(node);
+        }
+        super.setEnclosingFig(encloser);
+        
+
+        Vector figures = getEnclosedFigs();
+    
+        if (getLayer() != null) {
+          // elementOrdering(figures);
+          Vector contents = getLayer().getContents();
+          int contentsSize = contents.size();
+          for (int j=0; j<contentsSize; j++) {
+            Object o = contents.elementAt(j);
+            if (o instanceof FigEdgeModelElement) {
+              FigEdgeModelElement figedge = (FigEdgeModelElement) o;
+              figedge.getLayer().bringToFront(figedge);
+            }
+          }
+        }
+    } else
+    if (encloser == null && getEnclosingFig() != null) {
+        if (getEnclosingFig() instanceof FigNodeModelElement)
+            ((FigNodeModelElement)getEnclosingFig()).getEnclosedFigs().removeElement(this);
+        _encloser = null;
+    }
+    /*
     super.setEnclosingFig(encloser);
 
     Vector figures = getEnclosedFigs();
 
     if (getLayer() != null) {
-      elementOrdering(figures);
+      // elementOrdering(figures);
       Vector contents = getLayer().getContents();
       int contentsSize = contents.size();
       for (int j=0; j<contentsSize; j++) {
@@ -221,9 +253,11 @@ public class FigComponentInstance extends FigNodeModelElement {
         setNode(figures);
       }
       catch (Exception e) {
-        System.out.println("could not set package");
+        cat.error("could not set package", e);
+       
       }
     }
+    */
   }
 
   public void setNode(Vector figures) {

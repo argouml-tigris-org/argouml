@@ -41,8 +41,10 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
+import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.*;
 
 
@@ -61,6 +63,8 @@ import org.argouml.uml.diagram.ui.*;
 
 public class NavigatorPane extends JPanel
 implements ItemListener, TreeSelectionListener, PropertyChangeListener, QuadrantPanel {
+    protected static Category cat = Category.getInstance(NavigatorPane.class);
+    
   //, CellEditorListener
 
   ////////////////////////////////////////////////////////////////
@@ -288,7 +292,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
     //if (tm == _curPerspective) return;
     _curPerspective = tm;
     if (_curPerspective == null) {
-	//System.out.println("null perspective!");
+	cat.warn("null perspective!");
       _tree.setVisible(false);
     }
     else {
@@ -344,18 +348,29 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
 		popup.add((AbstractAction) e.nextElement());
 	    }
 	}
-        else if (obj instanceof MClassifier || obj instanceof MUseCase
-		 || obj instanceof MActor || obj instanceof MPackage
-		 || obj instanceof MStateVertex || obj instanceof MInstance) {
-			popup.add(new ActionGoToDetails(menuLocalize("Properties")));
-			popup.add(new ActionAddExistingNode(menuLocalize("menu.popup.add-to-diagram"),obj));
-			popup.add(ActionRemoveFromModel.SINGLETON);
+        else {
+            if ((obj instanceof MClassifier && !(obj instanceof MDataType))
+                || ((obj instanceof MPackage) && (obj != ProjectBrowser.TheInstance.getProject().getModel())) 
+	        || obj instanceof MStateVertex 
+                || (obj instanceof MInstance && !(obj instanceof MDataValue) && !(ProjectBrowser.TheInstance.getActiveDiagram() instanceof UMLSequenceDiagram))) {
+                    UMLAction action = new ActionAddExistingNode(menuLocalize("menu.popup.add-to-diagram"),obj);
+                    action.setEnabled(action.shouldBeEnabled());
+	       popup.add(action);
+            }
+            if ((obj instanceof MRelationship && !(obj instanceof MFlow)) || 
+                ((obj instanceof MLink) && !(ProjectBrowser.TheInstance.getActiveDiagram() instanceof UMLSequenceDiagram)) ||
+                (obj instanceof MTransition)) {
+                    UMLAction action = new ActionAddExistingEdge(menuLocalize("menu.popup.add-to-diagram"),obj);
+                    action.setEnabled(action.shouldBeEnabled());  
+                popup.add(action);
+            }
+                
+            if ((obj instanceof MModelElement && (obj != ProjectBrowser.TheInstance.getProject().getModel())) || obj instanceof Diagram ) {
+	        popup.add(ActionRemoveFromModel.SINGLETON);
+            }
+            popup.add(new ActionGoToDetails(menuLocalize("Properties")));
         }
-		else if (obj instanceof MModelElement || obj instanceof Diagram) {
-			popup.add(new ActionGoToDetails(menuLocalize("Properties")));
-			popup.add(ActionRemoveFromModel.SINGLETON);
-        }
-		popup.show(_tree,me.getX(),me.getY());
+	popup.show(_tree,me.getX(),me.getY());
     }
 
     public void mousePressed(MouseEvent me) {
@@ -377,7 +392,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
   class NavigatorKeyListener extends KeyAdapter {
     // maybe use keyTyped?
     public void keyPressed(KeyEvent e) {
-      //System.out.println("got key: " + e.getKeyCode());
+      cat.debug("got key: " + e.getKeyCode());
       int code = e.getKeyCode();
       if (code == KeyEvent.VK_ENTER || code  == KeyEvent.VK_SPACE) {
 	Object newTarget = getSelectedObject();

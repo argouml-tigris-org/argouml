@@ -33,10 +33,13 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.kernel.*;
 
 public class TabHistory extends TabSpawnable
 implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
+    protected static Category cat = 
+        Category.getInstance(TabHistory.class);
 
   ////////////////////////////////////////////////////////////////
   // class variables
@@ -120,7 +123,7 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
    */
   public void valueChanged(ListSelectionEvent e) {
     // needs-more-work: called on each critique!
-    //System.out.println("user selected " + _list.getSelectedValue());
+    cat.debug("user selected " + _list.getSelectedValue());
     Object sel = _list.getSelectedValue();
     if (sel instanceof HistoryItem) {
       _description.setText(((HistoryItem)sel).toString());
@@ -176,7 +179,7 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
     int index = _list.locationToIndex(me.getPoint());
     if (index == -1) return;
     String tip = _list.getModel().getElementAt(index).toString();
-    //System.out.println("tip=" + tip);
+    cat.debug("tip=" + tip);
     _list.setToolTipText(tip + " ");
   }
 

@@ -36,6 +36,7 @@ import java.util.*;
 import javax.swing.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
@@ -101,14 +102,9 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
         Object target = getTarget();
         if(target instanceof MEvent) {
             MEvent ev = (MEvent) target;
-            MParameter newParam = ev.getFactory().createParameter();
+            MParameter newParam = CoreFactory.getFactory().buildParameter(ev);
             newParam.setKind(MParameterDirectionKind.INOUT);
-            ev.addParameter(newParam);
             navigateTo(newParam);
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 

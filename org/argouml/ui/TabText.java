@@ -127,29 +127,20 @@ implements TabModelTarget, DocumentListener {
 
   protected void parseText(String s) {
     if (s == null) s = "(null)";
-    System.out.println("parsing text:" + s); // THN
+    cat.debug("parsing text:" + s); // THN
   }
 
   ////////////////////////////////////////////////////////////////
   // event handlers
   public void insertUpdate(DocumentEvent e) {
-    //needs-more-work: should fire its own event and ProjectBrowser
-    //should register a listener
-    //System.out.println(getClass().getName() + " insert");
     if (_parseChanges) parseText(_text.getText());
   }
 
   public void removeUpdate(DocumentEvent e) {
-    //needs-more-work: should fire its own event and ProjectBrowser
-    //should register a listener
-    //System.out.println(getClass().getName() +  " remove");
     if (_parseChanges) parseText(_text.getText());
   }
 
   public void changedUpdate(DocumentEvent e) {
-    //needs-more-work: should fire its own event and ProjectBrowser
-    //should register a listener
-    //System.out.println(getClass().getName() + " changed");
     if (_parseChanges) parseText(_text.getText());
   }
 

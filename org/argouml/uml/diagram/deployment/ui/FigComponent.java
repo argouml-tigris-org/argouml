@@ -44,13 +44,15 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.uml.diagram.ui.*;
 
 /** Class to display graphics for a UML Component in a diagram. */
 
 public class FigComponent extends FigNodeModelElement {
-
+    protected static Category cat = Category.getInstance(FigComponent.class);
+    
 /** The distance between the left edge of the fig and the left edge of the
   	  main rectangle. */
   private static final int BIGPORT_X = 10;
@@ -187,22 +189,37 @@ public class FigComponent extends FigNodeModelElement {
 
 
   public void setEnclosingFig(Fig encloser) {
-    super.setEnclosingFig(encloser);
-
-    Vector figures = getEnclosedFigs();
-
-    if (getLayer() != null) {
-      elementOrdering(figures);
-      Vector contents = getLayer().getContents();
-      int contentsSize = contents.size();
-      for (int j=0; j<contentsSize; j++) {
-        Object o = contents.elementAt(j);
-        if (o instanceof FigEdgeModelElement) {
-          FigEdgeModelElement figedge = (FigEdgeModelElement) o;
-          figedge.getLayer().bringToFront(figedge);
+    
+    if (encloser != null && encloser.getOwner() instanceof MNode && getOwner() != null) {
+        MNode node = (MNode)encloser.getOwner();
+        MComponent comp = (MComponent)getOwner();
+        if (!comp.getDeploymentLocations().contains(node)) {
+            comp.addDeploymentLocation(node);
         }
-      }
+        super.setEnclosingFig(encloser);
+        
+
+        Vector figures = getEnclosedFigs();
+    
+        if (getLayer() != null) {
+          // elementOrdering(figures);
+          Vector contents = getLayer().getContents();
+          int contentsSize = contents.size();
+          for (int j=0; j<contentsSize; j++) {
+            Object o = contents.elementAt(j);
+            if (o instanceof FigEdgeModelElement) {
+              FigEdgeModelElement figedge = (FigEdgeModelElement) o;
+              figedge.getLayer().bringToFront(figedge);
+            }
+          }
+        }
+    } else
+    if (encloser == null && getEnclosingFig() != null) {
+        if (getEnclosingFig() instanceof FigNodeModelElement)
+            ((FigNodeModelElement)getEnclosingFig()).getEnclosedFigs().removeElement(this);
+        _encloser = null;
     }
+    /*
 
     if (!(getOwner() instanceof MModelElement)) return;
     if (getOwner() instanceof MComponent) {
@@ -238,9 +255,10 @@ public class FigComponent extends FigNodeModelElement {
         setNode(figures);
       }
       catch (Exception e) {
-        System.out.println("could not set package");
+        cat.error("could not set package", e);
       }
     }
+    */
   }
 
   public void setNode(Vector figures) {

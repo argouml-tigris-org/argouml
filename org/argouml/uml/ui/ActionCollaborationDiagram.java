@@ -43,69 +43,52 @@ import java.awt.event.*;
 import java.beans.*;
 
 
-public class ActionCollaborationDiagram extends UMLChangeAction {
+public class ActionCollaborationDiagram extends ActionAddDiagram {
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
-    
     public static ActionCollaborationDiagram SINGLETON = new ActionCollaborationDiagram(); 
+    
+    private ActionCollaborationDiagram() { super("CollaborationDiagram"); }
 
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    public ActionCollaborationDiagram() { super("CollaborationDiagram"); }
-
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
-    public void actionPerformed(ActionEvent ae) {
-	Project p = ProjectBrowser.TheInstance.getProject();
-	try {
-		// Object target = ProjectBrowser.TheInstance.getTarget();
-		Object target = ProjectBrowser.TheInstance.getDetailsTarget();
-		MCollaboration c = null;
-		MNamespace ns = p.getCurrentNamespace();
-		// check for valid target and valid collaboration
-		if (target instanceof MOperation) {
-			c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
-			c.setRepresentedOperation((MOperation)target);
-		} else {
-		if (target instanceof MClassifier) {
-			c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
-			c.setRepresentedClassifier((MClassifier)target);
-		} else {
-		if (target instanceof MModel) {
-			c = UmlFactory.getFactory().getCollaborations().buildCollaboration((MModel)target);
-		} else {
-		if (target instanceof UMLCollaborationDiagram) {
-			Object o = ((UMLCollaborationDiagram)target).getOwner();
-			if (o instanceof MCollaboration) { //preventing backward compat problems
-				c = (MCollaboration)o;
-			} else {
-				c = UmlFactory.getFactory().getCollaborations().buildCollaboration(p.getModel());
-			}
-		} else {
-			if (target instanceof MCollaboration) {
-			c = (MCollaboration)target;
-		} else {
- 		//if (target instanceof UMLDiagram) {
-			c = UmlFactory.getFactory().getCollaborations().buildCollaboration(p.getModel());
-		//} else {
-			
-		} } } } }  
-		if (c != null) {
-			// UmlFactory.getFactory().getCollaborations().buildInteraction(c);
-	    	UMLCollaborationDiagram d  = new UMLCollaborationDiagram(c);
-	    	p.addMember(d);
-	    	ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-	    	ProjectBrowser.TheInstance.setTarget(d);
-		} else {
-			ProjectBrowser.TheInstance.getStatusBar().showStatus(Argo.localize("UMLMenu", "diagram.collaboration.notpossible"));
-		}
-	}
-	catch (PropertyVetoException pve) { }
-	super.actionPerformed(ae);
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace)
+     */
+    public ArgoDiagram createDiagram(MNamespace ns, Object target) {
+        MCollaboration c = null;
+        if (target instanceof MOperation) {
+            c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+            c.setRepresentedOperation((MOperation)target);
+        } else 
+        if (target instanceof MClassifier) {
+            c = UmlFactory.getFactory().getCollaborations().buildCollaboration((MClassifier)target);
+            c.setRepresentedClassifier((MClassifier)target);
+        } else 
+        if (target instanceof MModel) {
+            c = UmlFactory.getFactory().getCollaborations().buildCollaboration((MModel)target);
+        } else 
+        if (target instanceof MInteraction) {
+            c = ((MInteraction)target).getContext();
+        } else
+        if (target instanceof UMLCollaborationDiagram) {
+            Object o = ((UMLCollaborationDiagram)target).getOwner();
+            if (o instanceof MCollaboration) { //preventing backward compat problems
+                c = (MCollaboration)o;
+            } 
+        } else 
+        if (target instanceof MCollaboration) {
+            c = (MCollaboration)target;
+        } else {
+            c =  UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+        }   
+        UMLCollaborationDiagram d  = new UMLCollaborationDiagram(c);
+        return d;
     }
+
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
+     */
+    public boolean isValidNamespace(MNamespace ns) {
+        if (ns instanceof MCollaboration) return true;
+        return false;
+    }
+
 } /* end class ActionCollaborationDiagram */

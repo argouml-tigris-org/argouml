@@ -30,10 +30,13 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
 public class ToDoByPoster extends ToDoPerspective
 implements ToDoListListener {
+    protected static Category cat = 
+        Category.getInstance(ToDoByPoster.class);
 
   public ToDoByPoster() {
     super("todo.perspective.poster");
@@ -44,7 +47,7 @@ implements ToDoListListener {
   // ToDoListListener implementation
 
   public void toDoItemsChanged(ToDoListEvent tde) {
-    //System.out.println("toDoItemsChanged");
+    cat.debug("toDoItemsChanged");
     Vector items = tde.getToDoItems();
     int nItems = items.size();
     Object path[] = new Object[2];
@@ -79,7 +82,7 @@ implements ToDoListListener {
   }
 
   public void toDoItemsAdded(ToDoListEvent tde) {
-    //System.out.println("toDoItemAdded");
+    cat.debug("toDoItemAdded");
     Vector items = tde.getToDoItems();
     int nItems = items.size();
     Object path[] = new Object[2];
@@ -114,7 +117,7 @@ implements ToDoListListener {
   }
 
   public void toDoItemsRemoved(ToDoListEvent tde) {
-    //System.out.println("toDoItemRemoved");
+    cat.debug("toDoItemRemoved");
     ToDoList list = Designer.TheDesigner.getToDoList(); //source?
     Vector items = tde.getToDoItems();
     int nItems = items.size();

@@ -21,45 +21,47 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.awt.event.ActionEvent;
-
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
-import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
+
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * The combobox for activators on the message proppanel. The only reason this 
- * combobox implements melementlistener is to conform to UMLChangeDispatch. The 
- * combobox serves as a proxy for the 
- * model (UMLActivatorComboBoxModel). Kind of strange...
+ * @since Oct 3, 2002
+ * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLActivatorComboBox extends UMLComboBox2 {
+public class UMLInteractionCollaborationListModel
+    extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLActivatorComboBox.
+     * Constructor for UMLInteractionCollaborationListModel.
      * @param container
-     * @param arg0
      */
-    public UMLActivatorComboBox(
-        UMLUserInterfaceContainer container,
-        UMLComboBoxModel2 arg0) {
-        super(container, arg0);
+    public UMLInteractionCollaborationListModel(UMLUserInterfaceContainer container) {
+        super(container);
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLComboBox2#doIt(ActionEvent)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
-    protected void doIt(ActionEvent event) {
-        Object o = getModel().getElementAt(getSelectedIndex());
-        MMessage activator = (MMessage)o;
-        MMessage mes = (MMessage)getContainer().getTarget();
-        if (activator != mes.getActivator()) {
-            CollaborationsHelper.getHelper().setActivator(mes, activator);
-        }
+    protected void buildModelList() {
+        removeAllElements();
+        addElement(((MInteraction)getContainer().getTarget()).getContext());
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidRoleAdded(MElementEvent e) {
+        Object elem = getChangedElement(e);
+        return elem instanceof MCollaboration && 
+            ((MCollaboration)elem).getInteractions().contains(getContainer().getTarget());
     }
 
 }

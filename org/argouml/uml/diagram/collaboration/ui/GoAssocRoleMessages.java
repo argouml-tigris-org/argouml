@@ -34,9 +34,9 @@ import ru.novosoft.uml.behavior.collaborations.*;
 
 import org.argouml.ui.*;
 
-public class GoAssocRoleMessages implements TreeModel {
+public class GoAssocRoleMessages extends AbstractGoRule {
 
-  public String toString() { return "AssociationRole->Messages"; }
+  public String getRuleName() { return "AssociationRole->Messages"; }
 
   public Object getRoot() {
       throw new UnsupportedOperationException("getRoot should never be called");
@@ -44,25 +44,25 @@ public class GoAssocRoleMessages implements TreeModel {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     if (children != null) return children.elementAt(index);
     throw new UnsupportedOperationException("getChild should never be get here GoCollaborationDiagram");
   }
 
   public int getChildCount(Object parent) {
-    Vector children = getChildren(parent);
+    Collection children = getChildren(parent);
     if (children != null) return children.size();
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     if (children != null && children.contains(child))
       return children.indexOf(child);
     return -1;
   }
 
-  public Vector getChildren(Object parent) {
+  public Collection getChildren(Object parent) {
     if (!(parent instanceof MAssociationRole)) return null;
     return new Vector(((MAssociationRole)parent).getMessages());
   }

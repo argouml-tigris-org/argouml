@@ -36,9 +36,9 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
 
-public class GoElement2DependentElement implements TreeModel {
+public class GoElement2DependentElement extends AbstractGoRule {
 
-  public String toString() {
+  public String getRuleName() {
     return Argo.localize ("Tree", "misc.element.dependent-element");
   }
 
@@ -57,6 +57,11 @@ public class GoElement2DependentElement implements TreeModel {
     }
     throw
 	new UnsupportedOperationException("getChild should never be get here");
+  }
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
   }
 
   public int getChildCount(Object parent) {

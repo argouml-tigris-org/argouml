@@ -32,7 +32,7 @@ import java.awt.event.*;
 import java.beans.*;
 
 
-public class ActionDeploymentDiagram extends UMLChangeAction {
+public class ActionDeploymentDiagram extends ActionAddDiagram {
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -43,25 +43,24 @@ public class ActionDeploymentDiagram extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionDeploymentDiagram() { super("DeploymentDiagram"); }
+    private ActionDeploymentDiagram() { super("DeploymentDiagram"); }
 
 
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    public void actionPerformed(ActionEvent ae) {
-	//_cmdCreateNode.doIt();
-	Project p = ProjectBrowser.TheInstance.getProject();
-	try {
-	    Object target = ProjectBrowser.TheInstance.getDetailsTarget();
-	    MNamespace ns = p.getCurrentNamespace();
-	    if (target instanceof MPackage) ns = (MNamespace) target;
-	    ArgoDiagram d  = new UMLDeploymentDiagram(ns);
-	    p.addMember(d);
-	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-	    ProjectBrowser.TheInstance.setTarget(d);
-	}
-	catch (PropertyVetoException pve) { }
-	super.actionPerformed(ae);
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace)
+     */
+    public ArgoDiagram createDiagram(MNamespace ns, Object target) {
+        return new UMLDeploymentDiagram(ns);
     }
+
+    /**
+     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
+     */
+    public boolean isValidNamespace(MNamespace ns) {
+        return false; // may only occur as child of the model
+    }
+
 } /* end class ActionDeploymentDiagram */

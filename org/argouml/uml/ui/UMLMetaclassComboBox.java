@@ -24,11 +24,15 @@
 
 package org.argouml.uml.ui;
 import javax.swing.*;
+
+import org.apache.log4j.Category;
+
 import java.awt.event.*;
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 
 public class UMLMetaclassComboBox extends JComboBox implements UMLUserInterfaceComponent, ItemListener {
+   protected static Category cat = Category.getInstance(UMLMetaclassComboBox.class);
 
   private String[] _metaclasses =
     { "ModelElement", "Classifier", "Class", "Interface", "DataType", "Exception", "Signal",
@@ -51,15 +55,13 @@ public class UMLMetaclassComboBox extends JComboBox implements UMLUserInterfaceC
       _getMethod = container.getClass().getMethod(getMethod,new Class[] { });
     }
     catch(Exception e) {
-      System.out.println("Error in UMLMetaclassComboBox:" + getMethod);
-      e.printStackTrace();
+        cat.error("Error in UMLMetaclassComboBox:" + getMethod, e);
     }
     try {
       _setMethod = container.getClass().getMethod(setMethod,new Class[] { String.class });
     }
     catch(Exception e) {
-      System.out.println("Error in UMLMetaclassComboBox:" + setMethod);
-      e.printStackTrace();
+        cat.error("Error in UMLMetaclassComboBox:" + setMethod, e);
     }
   }
 

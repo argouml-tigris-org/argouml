@@ -28,8 +28,10 @@
 // $Id$
 
 package org.argouml.uml.diagram.collaboration;
+import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 
 import java.util.*;
 import java.beans.*;
@@ -49,6 +51,7 @@ import org.tigris.gef.graph.*;
 
 public class CollabDiagramGraphModel extends MutableGraphSupport
 implements MutableGraphModel, MElementListener, VetoableChangeListener {
+    protected static Category cat = Category.getInstance(CollabDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Vector _nodes = new Vector();
@@ -70,8 +73,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
   public MNamespace getNamespace() { return _collab; }
   public void setNamespace(MNamespace m) {
     if (!(m instanceof MCollaboration)) {
-      System.out.println("invalid namespace for CollabDiagramGraphModel");
-      return;
+      throw new IllegalArgumentException("invalid namespace for CollabDiagramGraphModel");
     }
     if (_collab != null) _collab.removeMElementListener(this);
     _collab = (MCollaboration) m;
@@ -123,23 +125,19 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
 
   /** Return one end of an edge */
   public Object getSourcePort(Object edge) {
-    if (edge instanceof MAssociationRole ) {
-      MAssociationRole assoc = (MAssociationRole) edge;
-      Collection conns = assoc.getConnections();
-      return ((Object[])conns.toArray())[0];
+    if (edge instanceof MRelationship) {
+        return CoreHelper.getHelper().getSource((MRelationship)edge);
     }
-    System.out.println("needs-more-work getSourcePort");
+    cat.debug("needs-more-work getSourcePort");
     return null;
   }
 
   /** Return  the other end of an edge */
   public Object getDestPort(Object edge) {
-    if (edge instanceof MAssociation) {
-      MAssociationRole assoc = (MAssociationRole) edge;
-      Collection conns = assoc.getConnections();
-      return ((Object[])conns.toArray())[1];
+    if (edge instanceof MRelationship) {
+        return CoreHelper.getHelper().getDestination((MRelationship)edge);
     }
-    System.out.println("needs-more-work getDestPort");
+    cat.debug("needs-more-work getDestPort");
     return null;
   }
 
@@ -149,6 +147,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
 
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
+    if (_nodes.contains(node)) return false;
     return (node instanceof MClassifierRole || node instanceof MMessage);
   }
 
@@ -165,6 +164,11 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
       end0 = ae0.getType();
       end1 = ae1.getType();
     }
+    if (edge instanceof MGeneralization) {
+        MGeneralization gen = (MGeneralization)edge;
+        end0 = gen.getParent();
+        end1 = gen.getChild();
+    }
     if (end0 == null || end1 == null) return false;
     if (!_nodes.contains(end0)) return false;
     if (!_nodes.contains(end1)) return false;
@@ -180,7 +184,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
-    //System.out.println("adding MClassifierRole node!!");
+    cat.debug("adding MClassifierRole node!!");
     if (_nodes.contains(node)) return;
     _nodes.addElement(node);
     // needs-more-work: assumes public, user pref for default visibility?
@@ -194,14 +198,14 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
 
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
-    //System.out.println("adding class edge!!!!!!");
+    cat.debug("adding class edge!!!!!!");
     if (_edges.contains(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public
-      if (edge instanceof MAssociation) {
-		  _collab.addOwnedElement((MAssociation) edge);
-		  // ((MAssociation)edge).setNamespace(_collab.getNamespace());
-      }
+       if (edge instanceof MModelElement &&
+       ((MModelElement)edge).getNamespace() == null) {
+      _collab.addOwnedElement((MModelElement) edge);
+    }
     fireEdgeAdded(edge);
   }
 
@@ -213,6 +217,38 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
          MAssociationEndRole ae = (MAssociationEndRole) iter.next();
          if(canAddEdge(ae.getAssociation()))
            addEdge(ae.getAssociation());
+      }
+    }
+    if ( node instanceof MGeneralizableElement ) {
+      Collection gn = ((MGeneralizableElement)node).getGeneralizations();
+      Iterator iter = gn.iterator();
+      while (iter.hasNext()) {
+         MGeneralization g = (MGeneralization) iter.next();
+         if(canAddEdge(g)) {
+           addEdge(g);
+           return;
+         }
+      }
+      Collection sp = ((MGeneralizableElement)node).getSpecializations();
+      iter = sp.iterator();
+      while (iter.hasNext()) {
+         MGeneralization s = (MGeneralization) iter.next();
+         if(canAddEdge(s)) {
+           addEdge(s);
+           return;
+         }
+      }
+    }
+    if ( node instanceof MModelElement ) {
+      Vector specs = new Vector(((MModelElement)node).getClientDependencies());
+      specs.addAll(((MModelElement)node).getSupplierDependencies());
+      Iterator iter = specs.iterator();
+      while (iter.hasNext()) {
+         MDependency dep = (MDependency) iter.next();
+         if(canAddEdge(dep)) {
+           addEdge(dep);
+           return;
+         }
       }
     }
  }
@@ -257,14 +293,10 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
       }
       
       else {
-	    System.out.println("Incorrect edge");
+	    cat.debug("Incorrect edge");
 	    return null;
       }
       return null;
-    //}
-    //catch (java.beans.PropertyVetoException ex) { }
-    //System.out.println("should not enter here! connect3");
-    //return null;
   }
 
 
@@ -279,13 +311,13 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
       MElementImport eo = (MElementImport) pce.getNewValue();
       MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
-	    //System.out.println("model removed " + me);
+	    cat.debug("model removed " + me);
 	    if (me instanceof MClassifier) removeNode(me);
 	    if (me instanceof MMessage) removeNode(me);
 	    if (me instanceof MAssociation) removeEdge(me);
       }
       else {
-	    //System.out.println("model added " + me);
+	    cat.debug("model added " + me);
       }
     }
   }

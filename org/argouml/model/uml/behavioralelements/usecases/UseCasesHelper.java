@@ -35,6 +35,7 @@ import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
+import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MClass;
@@ -159,6 +160,18 @@ public class UseCasesHelper {
 		}
 		return list;
 	}
+    
+    public Collection getExtendingUseCases(MUseCase usecase) {
+        if (usecase == null) return new ArrayList();
+        Iterator it = usecase.getExtends2().iterator();
+        List list = new ArrayList();
+        while (it.hasNext()) {
+            MExtend ext = (MExtend)it.next();
+            MUseCase extension = ext.getExtension();
+            list.add(extension);
+        }
+        return list;
+    }
 	
 	/**
 	 * Returns the extend relation between two usecases base and extension. If there is none
@@ -234,6 +247,25 @@ public class UseCasesHelper {
 		}
 		return set2;
 	}
+    
+    /**
+     * Sets the base usecase of a given extend. Updates the extensionpoints of the
+     * extend too.
+     * @param extend
+     * @param base
+     */
+    public void setBase(MExtend extend, MUseCase base) {
+        if (extend == null || base == null) throw new IllegalArgumentException("Either base or extend null");
+        if (base == extend.getBase()) return;
+        Iterator it = extend.getExtensionPoints().iterator();
+        while (it.hasNext()) {
+            MExtensionPoint point = (MExtensionPoint)it.next();
+            point.removeExtend(extend);
+        }
+        MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(base);
+        extend.setBase(base);
+        extend.addExtensionPoint(point);
+    }
     	
 }
 

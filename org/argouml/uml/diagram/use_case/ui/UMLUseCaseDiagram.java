@@ -55,6 +55,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.ui.*;
 
 import org.argouml.uml.ui.*;
+import org.apache.log4j.Category;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.use_case.*;
@@ -69,6 +70,7 @@ import org.argouml.uml.diagram.use_case.*;
  */
 
 public class UMLUseCaseDiagram extends UMLDiagram {
+    protected static Category cat = Category.getInstance(UMLUseCaseDiagram.class);
 
     // Actions specific to the use case diagram toolbar
 
@@ -240,8 +242,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     protected void initToolBar() {
 
-        // System.out.println(this.getClass().toString() +
-        //                    ": making usecase toolbar");
+        cat.debug(this.getClass().toString() +
+                            ": making usecase toolbar");
 
         // Create a toolbar
 
@@ -281,6 +283,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         // The extension point button
 
         _toolBar.add(ActionAddExtensionPoint.singleton());
+        _toolBar.addSeparator();
+        _toolBar.add(ActionAddNote.SINGLETON);
         _toolBar.addSeparator();
 
         // General graphics actions

@@ -141,12 +141,10 @@ public class AddToDoItemDialog extends JDialog implements ActionListener {
       VectorSet offs = new VectorSet();  //? null
       ToDoItem item = new ToDoItem(dsgr, head, pri, desc, more, offs);
       dsgr.getToDoList().addElement(item); //? inform()
-      //System.out.println("add an item");
       setVisible(false);
       dispose();
     }
     if (e.getSource() == _cancelButton) {
-      //System.out.println("cancel");
       hide();
       dispose();
     }

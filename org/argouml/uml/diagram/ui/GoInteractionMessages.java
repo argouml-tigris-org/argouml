@@ -35,9 +35,9 @@ import ru.novosoft.uml.behavior.collaborations.*;
 import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
 
-public class GoInteractionMessages implements TreeModel {
+public class GoInteractionMessages extends AbstractGoRule {
 
-  public String toString() {
+  public String getRuleName() {
     return Argo.localize ("Tree", "misc.interaction.messages");
   }
 
@@ -48,26 +48,26 @@ public class GoInteractionMessages implements TreeModel {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     if (children != null) return children.elementAt(index);
     throw
 	new UnsupportedOperationException("getChild should never be get here");
   }
 
   public int getChildCount(Object parent) {
-    Vector children = getChildren(parent);
+    Collection children = getChildren(parent);
     if (children != null) return children.size();
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    Vector children = getChildren(parent);
+    Vector children = new Vector(getChildren(parent));
     if (children != null && children.contains(child))
       return children.indexOf(child);
     return -1;
   }
 
-  public Vector getChildren(Object parent) {
+  public Collection getChildren(Object parent) {
     if (!(parent instanceof MInteraction)) return null;
     return new Vector(((MInteraction)parent).getMessages());
   }

@@ -26,6 +26,7 @@
 // Original Author: agauthie@ics.uci.edu
 // $Id$
 
+
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.*;
@@ -45,6 +46,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 
@@ -54,11 +56,11 @@ import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.ui.*;
 
-import org.argouml.uml.diagram.static_structure.ui.*;
 
 /** Class to display graphics for a UML MState in a diagram. */
 
 public class FigPackage extends FigNodeModelElement {
+    protected static Category cat = Category.getInstance(FigPackage.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -452,7 +454,7 @@ public class FigPackage extends FigNodeModelElement {
         }
     }
     catch (Exception e) {
-      System.out.println("could not set package due to:"+e + "' at "+encloser);
+        cat.error("could not set package due to:"+e + "' at "+encloser, e);
     }
   }
 
@@ -604,7 +606,7 @@ public class FigPackage extends FigNodeModelElement {
     ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
 
     modifierMenu.addCheckItem(new ActionModifier("Abstract", "isAbstract", "isAbstract", "setAbstract", mclass));
-    modifierMenu.addCheckItem(new ActionModifier("Final", "isLeaf", "isLeaf", "setLeaf", mclass));
+    modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", mclass));
     modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mclass));
 
     popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);

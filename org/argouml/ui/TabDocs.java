@@ -34,9 +34,12 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.presentation.*;
 
+import org.apache.log4j.Category;
 import org.argouml.uml.*;
 
 public class TabDocs extends TabText {
+    protected static Category cat = 
+        Category.getInstance(TabDocs.class);
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabDocs() {
@@ -46,7 +49,7 @@ public class TabDocs extends TabText {
   ////////////////////////////////////////////////////////////////
   // accessors
   protected String genText() {
-    //System.out.println("Docstab getting docs for " + _target);
+    cat.debug("Docstab getting docs for " + _target);
     Object modelObject = _target;
     if ( !(modelObject instanceof MElement) ) return null;
     if (_target instanceof FigNode)
@@ -58,7 +61,7 @@ public class TabDocs extends TabText {
   }
 
   protected void parseText(String s) {
-    //System.out.println("Docstab   setting docs for "+ _target);
+    cat.debug("Docstab   setting docs for "+ _target);
     Object modelObject = _target;
     if (_target instanceof FigNode)
       modelObject = ((FigNode)_target).getOwner();

@@ -129,7 +129,7 @@ public class UMLGeneralizationListModel extends UMLBinaryRelationListModel  {
 		if (getTarget() instanceof MGeneralizableElement) {
 			return CoreHelper.getHelper().getExtendedClassifiers((MGeneralizableElement)getTarget());
 		} else
-			throw new IllegalArgumentException("In getSelected of UMLGeneralizaitonListModel: target is not an instanceof GeneralizbleElement");
+			throw new IllegalStateException("In getSelected of UMLGeneralizaitonListModel: target is not an instanceof GeneralizbleElement");
 	}
 
 } /* End of class UMLGeneralizationListModel */

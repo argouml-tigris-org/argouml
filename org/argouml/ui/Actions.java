@@ -151,6 +151,10 @@ public class Actions {
 	public static void addAction(AbstractAction newAction) {
 		_allActions.addElement(newAction);
 	}
+    
+    public static boolean isGlobalAction(AbstractAction action) {
+        return _allActions.contains(action);
+    }
 
 }  /* end class Actions */
 

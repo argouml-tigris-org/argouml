@@ -26,6 +26,7 @@ package org.argouml.uml.reveng.java;
 import java.util.*;
 
 import org.argouml.ui.*;
+import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -51,6 +52,7 @@ import ru.novosoft.uml.foundation.data_types.*;
  */
 public class Modeller
 {
+        protected static Category cat = Category.getInstance(Modeller.class);
     /** Current working model. */
     private MModel model;
 
@@ -425,10 +427,10 @@ public class Modeller
         mOperation.setStereotype(getStereotype("create"));
           }
           else {
-	      mParameter = UmlFactory.getFactory().getCore().buildParameter();
-        mParameter.setName("return");
-        mParameter.setKind(MParameterDirectionKind.RETURN);
-        mOperation.addParameter(mParameter);
+	      mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
+              mParameter.setName("return");
+              mParameter.setKind(MParameterDirectionKind.RETURN);
+       
 
         mClassifier =
             getContext(returnType).get(getClassifierName(returnType));
@@ -437,10 +439,10 @@ public class Modeller
 
           for(Iterator i=parameters.iterator(); i.hasNext(); ) {
         Vector parameter = (Vector)i.next();
-        mParameter = UmlFactory.getFactory().getCore().buildParameter();
+        mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
         mParameter.setName((String)parameter.elementAt(2));
         mParameter.setKind(MParameterDirectionKind.IN);
-        mOperation.addParameter(mParameter);
+       
 
         typeName = (String)parameter.elementAt(1);
         mClassifier =
@@ -481,7 +483,7 @@ public class Modeller
     public void addBodyToOperation(Object op, String body)
     {
 	if (op == null || !(op instanceof MOperation)) {
-	    System.out.println("adding body failed: no operation!");
+	    cat.warn("adding body failed: no operation!");
 	    return;
 	}
 	if (body == null || body.length() == 0)
@@ -740,6 +742,12 @@ public class Modeller
 	if(mOperation == null) {
 	    mOperation = UmlFactory.getFactory().getCore().buildOperation(parseState.getClassifier());
 	    mOperation.setName(name);
+            Iterator it2 = ProjectBrowser.TheInstance.getProject().findFigsForMember(parseState.getClassifier()).iterator();
+            while (it2.hasNext()) {
+                MElementListener listener = (MElementListener)it2.next();
+                mOperation.addMElementListener(listener);
+                mOperation.getParameter(0).addMElementListener(listener);
+            }
 	}
 	return mOperation;
     }
@@ -869,7 +877,7 @@ public class Modeller
 	for(Iterator i = element.getTaggedValues().iterator(); i.hasNext(); ) {
 	    MTaggedValue tv = (MTaggedValue)i.next();
 	    if (tv.getTag().equals(MMUtil.GENERATED_TAG)) {
-		tv.remove();
+		UmlFactory.getFactory().delete(tv);
 	    }
 	}
     }
@@ -1080,7 +1088,7 @@ public class Modeller
     if ((sJavaDocs != null) &&
         (! "".equals (sJavaDocs))) {
 
-      //System.out.println ("Modeller.addDocumentationTag: sJavaDocs = \"" + sJavaDocs + "\"");
+      cat.debug ("Modeller.addDocumentationTag: sJavaDocs = \"" + sJavaDocs + "\"");
 
       StringBuffer sbPureDocs = new StringBuffer(80);
 
@@ -1136,10 +1144,10 @@ public class Modeller
                     nTemp
                   );
 
-                //System.out.println (
-                //    "Modeller.addDocumentationTag (starting tag): " +
-                //    "current tag name: " + sCurrentTagName
-                //  );
+                cat.debug (
+                    "Modeller.addDocumentationTag (starting tag): " +
+                    "current tag name: " + sCurrentTagName
+                );
 
                 int nTemp1 = sJavaDocs.indexOf ('\n', ++nTemp);
                 if (nTemp1 == -1) {
@@ -1150,10 +1158,10 @@ public class Modeller
                 }
 
                 sCurrentTagData = sJavaDocs.substring (nTemp, nTemp1);
-                //System.out.println (
-                //    "Modeller.addDocumentationTag (starting tag): "+
-                //    "current tag data: " + sCurrentTagData
-                //  );
+                cat.debug (
+                    "Modeller.addDocumentationTag (starting tag): "+
+                    "current tag data: " + sCurrentTagData
+                  );
 
                 nStartPos = nTemp1;
               }
@@ -1168,20 +1176,19 @@ public class Modeller
                 }
 
                 if (sCurrentTagName != null) {
-                  //System.out.println (
-                  //    "Modeller.addDocumentationTag (continuing tag): nTemp = " +
-                  //    nTemp + ", nStartPos = " + nStartPos
-                  //  );
+                  cat.debug (
+                      "Modeller.addDocumentationTag (continuing tag): nTemp = " +
+                      nTemp + ", nStartPos = " + nStartPos
+                    );
                   sCurrentTagData +=
                       " " +
                       sJavaDocs.substring (nStartPos, nTemp);
-                  //System.out.println (
-                  //    "Modeller.addDocumentationTag (continuing tag): tag data = " +
-                  //    sCurrentTagData
-                  //  );
+                  cat.debug (
+                     "Modeller.addDocumentationTag (continuing tag): tag data = " +
+                      sCurrentTagData);
                 }
                 else {
-                  //System.out.println ("Modeller.addDocumentationTag: nTemp = " + nTemp + ", nStartPos = " + nStartPos);
+                  cat.debug ("Modeller.addDocumentationTag: nTemp = " + nTemp + ", nStartPos = " + nStartPos);
                   sbPureDocs.append (sJavaDocs.substring (nStartPos, nTemp));
                 }
 
@@ -1249,9 +1256,9 @@ public class Modeller
 
     public void addCall(String method, String obj) {
 	if (obj.equals(""))
-	    System.out.println("Add call to method " + method);
+	    cat.debug("Add call to method " + method);
 	else
-	    System.out.println("Add call to method " + method + " in " + obj);
+	    cat.debug("Add call to method " + method + " in " + obj);
     }
 }
 

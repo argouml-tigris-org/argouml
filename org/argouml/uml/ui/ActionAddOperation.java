@@ -62,15 +62,10 @@ public class ActionAddOperation extends UMLChangeAction {
 	Project p = pb.getProject();
 	Object target = pb.getDetailsTarget();
 	if (!(target instanceof MClassifier)) return;
-
 	MClassifier cls = (MClassifier) target;
 	MOperation oper = UmlFactory.getFactory().getCore().buildOperation(cls);
-	// need to add FigClass as modeleventlistener to oper
-	// FigClass can be the selected class if this was called from within the diagram
-	oper.addMElementListener((FigNodeModelElement)pb.getActiveDiagram().presentationFor(cls));
 	pb.getNavPane().addToHistory(oper);
 	pb.setTarget(oper);
-	pb.getNavPane().forceUpdate();
 	 super.actionPerformed(ae);
 	
     }

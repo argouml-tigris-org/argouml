@@ -35,12 +35,15 @@ package org.argouml.uml.ui;
 
 import javax.swing.event.*;
 import javax.swing.*;
+
+import org.apache.log4j.Category;
+import org.apache.log4j.Priority;
+
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import java.awt.event.*;
 import java.awt.*;
-import java.lang.*;
 
 
 /**
@@ -54,6 +57,7 @@ import java.lang.*;
  */
 
 public class UMLListSubMenuItem extends JMenuItem implements ActionListener {
+    protected static Category cat = Category.getInstance(UMLListSubMenuItem.class);
 
     /**
      * <p>The object (typically a list model of some sort) on which the method
@@ -141,10 +145,9 @@ public class UMLListSubMenuItem extends JMenuItem implements ActionListener {
                                                       _PARAMETER_SIGNATURE);
         }
         catch(Exception e) {
-            System.out.println(this.getClass().toString() + ":" +
+            cat.error(this.getClass().toString() + ":" +
                                e.toString() + " while getting method " +
-                               action + "(int, MModelElement)");
-            setEnabled(false);
+                               action + "(int, MModelElement)", e);
         }
         
         // Listen for anything happening on this entry
@@ -175,17 +178,24 @@ public class UMLListSubMenuItem extends JMenuItem implements ActionListener {
             _action.invoke(_actionObj, argValue);
         }
         catch(InvocationTargetException ex) {
-            System.out.println(this.getClass().toString() +
+            if (cat.getPriority().equals(Priority.ERROR)) {
+                StringBuffer buf = new StringBuffer();
+                buf.append(this.getClass().toString() +
                                ": actionPerformed(). " + 
                                ex.getTargetException().toString() +
                                " when invoking ");
-            System.out.println(_actionObj.toString() + "(" + _index + ", " +
+                buf.append("\n");
+                buf.append(_actionObj.toString() + "(" + _index + ", " +
                                _subEntry.toString() + ")");
+                buf.append("\n");
+                cat.error(buf.toString(), ex);
+            }
+           
         }
         catch(Exception e) {
-            System.out.println(this.getClass().toString() +
+            cat.error(this.getClass().toString() +
                                ": actionPerformed(). " + 
-                               e.toString());
+                               e.toString(), e);
         }
     }
 }

@@ -48,12 +48,14 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.tigris.gef.ui.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
-import org.argouml.ui.*;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 public class StylePanelFig extends StylePanel
 implements ItemListener, DocumentListener {
+    protected static Category cat = 
+        Category.getInstance(StylePanelFig.class);
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -355,9 +357,9 @@ implements ItemListener, DocumentListener {
             res.height = Integer.parseInt(st.nextToken());
         }
         catch (Exception ex) {
-            System.out.println(getClass().toString() + 
+            cat.error(getClass().toString() + 
                                ": parseBBox - could not parse bounds '" +
-                               bboxStr + "'");
+                               bboxStr + "'", ex);
             return null;
         }
 

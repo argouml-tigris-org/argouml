@@ -24,6 +24,9 @@
 package org.argouml.uml.ui;
 import java.beans.PropertyVetoException;
 import java.lang.reflect.*;
+
+import org.apache.log4j.Category;
+
 import ru.novosoft.uml.*;
 
 /** This abstract base class is used to define derived classes that interact
@@ -32,6 +35,8 @@ import ru.novosoft.uml.*;
  *  @author Curt Arnold
  */
 abstract public class UMLBooleanProperty  {
+    protected static Category cat = 
+        Category.getInstance(UMLBooleanProperty.class);
 
     private String _propertyName;
     
@@ -66,7 +71,7 @@ abstract public class UMLBooleanProperty  {
      */
     public boolean isAffected(MElementEvent event) {
         String propName = event.getName();
-	//System.out.println("eventName: "+propName);
+	cat.debug("eventName: "+propName);
         if(_propertyName == null || propName == null || propName.equals(_propertyName)) 
             return true;
         return false;

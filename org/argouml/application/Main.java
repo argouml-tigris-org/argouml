@@ -497,7 +497,9 @@ class StartCritics implements Runnable {
         dsgr.setChildGenerator(new ChildGenUML());
         java.util.Enumeration models = (p.getModels()).elements();
         while (models.hasMoreElements()) {
-            ((ru.novosoft.uml.model_management.MModel)models.nextElement()).addMElementListener(dsgr);
+            Object o = models.nextElement();     
+            ((MModel)o).removeMElementListener(dsgr);
+            ((MModel)o).addMElementListener(dsgr);
         }
         Argo.log.info("spawned critiquing thread");
 

@@ -209,7 +209,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 		
 		JPanel okCancelPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-		_okButton = new JButton(Argo.localize("UMLMenu", "button.add"));
+		_okButton = new JButton(Argo.localize("UMLMenu", "button.ok"));
 		_okButton.addActionListener(this);
 		_cancelButton = new JButton(Argo.localize("UMLMenu", "button.cancel"));
 		_cancelButton.addActionListener(this);		

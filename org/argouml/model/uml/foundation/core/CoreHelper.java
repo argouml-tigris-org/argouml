@@ -29,11 +29,17 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 import java.util.Vector;
 
+import org.apache.log4j.Category;
+import org.argouml.kernel.Project;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.ui.ProjectBrowser;
 
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.behavior.use_cases.MExtend;
+import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAbstractionImpl;
 import ru.novosoft.uml.foundation.core.MAssociation;
@@ -45,6 +51,7 @@ import ru.novosoft.uml.foundation.core.MComponent;
 import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MFlow;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MInterface;
@@ -53,12 +60,13 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MNode;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.MModel;
-import sun.security.action.GetBooleanAction;
+
 
 /**
  * Helper class for UML Foundation::Core Package.
@@ -70,6 +78,7 @@ import sun.security.action.GetBooleanAction;
  * @author Jaap Branderhorst
  */
 public class CoreHelper {
+    protected static Category cat = Category.getInstance(CoreHelper.class);
 
     /** Don't allow instantiation.
      */
@@ -217,7 +226,7 @@ public class CoreHelper {
 		Iterator parents = classifier.getParents().iterator();
 		while (parents.hasNext()) {
 			MClassifier parent = (MClassifier)parents.next();
-  			System.out.println("Adding attributes for: "+parent);
+  			cat.debug("Adding attributes for: "+parent);
 			result.addAll(getAttributesInh(parent));
 		}
 		return result;
@@ -263,10 +272,10 @@ public class CoreHelper {
 		case 1:
 			return (MParameter)returnParams.elementAt(0);
 		case 0:
-		    // System.out.println("No ReturnParameter found!");
+		    cat.debug("No ReturnParameter found!");
 			return null;
 		default:
-			System.out.println("More than one ReturnParameter found, returning first!");
+			cat.debug("More than one ReturnParameter found, returning first!");
 			return (MParameter)returnParams.elementAt(0);
 		}
 	}
@@ -332,7 +341,7 @@ public class CoreHelper {
 		return result;
 	}
 	
-	/**
+    /**
      * Build a returnparameter. Removes all current return parameters from the
      * operation and adds the supplied parameter. The directionkind of the 
      * parameter will be return. The name will be equal to the name of the last
@@ -342,20 +351,29 @@ public class CoreHelper {
      * @param newReturnParameter
      */
 	public void setReturnParameter(MOperation operation, MParameter newReturnParameter) {
-		Iterator params = operation.getParameters().iterator();
-        String name = "return";
-		while (params.hasNext()) {
-			MParameter parameter = (MParameter)params.next();
-			if ((parameter.getKind()).equals(MParameterDirectionKind.RETURN)) {
-				operation.removeParameter(parameter);
-                if (parameter.getName() != null || parameter.getName() == "") {
-                    name = parameter.getName();
-                }
-			}
-		}
-        newReturnParameter.setName(name);
-		newReturnParameter.setKind(MParameterDirectionKind.RETURN);
-		operation.addParameter(0, newReturnParameter);
+	   Iterator params = operation.getParameters().iterator();
+           String name = "return";
+	   while (params.hasNext()) {
+	       MParameter parameter = (MParameter)params.next();
+	       if ((parameter.getKind()).equals(MParameterDirectionKind.RETURN)) {
+	           operation.removeParameter(parameter);
+                   if (parameter.getName() != null || parameter.getName() == "") {
+                        name = parameter.getName();
+                   }
+	       }
+	   }
+           newReturnParameter.setName(name);
+	   newReturnParameter.setKind(MParameterDirectionKind.RETURN);
+	   operation.addParameter(0, newReturnParameter);
+           // we set the listeners to the figs here too
+            // it would be better to do that in the figs themselves
+            Project p = ProjectBrowser.TheInstance.getProject();
+            Iterator it = p.findFigsForMember(operation).iterator();
+            while (it.hasNext()) {
+                MElementListener listener = (MElementListener)it.next();
+                newReturnParameter.removeMElementListener(listener);
+                newReturnParameter.addMElementListener(listener);
+            }
 	}
 	
 	/**
@@ -568,6 +586,26 @@ public class CoreHelper {
 		}
 		return null;
 	}
+    
+    /**
+     * Returns all flows from some source modelelement to a target modelelement.
+     * @param source
+     * @param target
+     * @return Collection
+     */
+    public Collection getFlows(MModelElement source, MModelElement target) {
+        if (source == null || target == null) return null;
+        List ret = new ArrayList();
+        Collection targetFlows = target.getTargetFlows();
+        Iterator it = source.getSourceFlows().iterator();
+        while (it.hasNext()) {
+            MFlow flow = (MFlow)it.next();
+            if (targetFlows.contains(flow)) {
+                ret.add(flow);
+            }
+        }
+        return ret;
+    }
 		
 	/**
 	 * Returns all elements that extend some class clazz.
@@ -722,27 +760,28 @@ public class CoreHelper {
 	}
 	
 	/**
-	 * Gets the association between the classifiers from and to. Returns null
+	 * Gets the associations between the classifiers from and to. Returns null
 	 * if from or to is null or if there is no association between them.
 	 * @param from
 	 * @param to
 	 * @return MAssociation
 	 */
-	public MAssociation getAssociation(MClassifier from, MClassifier to) {
-		if (from == null || to == null) return null;
-		Iterator it = from.getAssociationEnds().iterator();
-		while (it.hasNext()) {
-			MAssociationEnd end = (MAssociationEnd)it.next();
-			MAssociation assoc = end.getAssociation();
-			Iterator it2 = assoc.getConnections().iterator();
-			while (it2.hasNext()) {
-				MAssociationEnd end2 = (MAssociationEnd)it2.next();
-				if (end2.getType() == to) {
-					return assoc;
-				}
-			}
-		}
-		return null;
+	public Collection getAssociations(MClassifier from, MClassifier to) {
+	    Set ret = new HashSet();	
+            if (from == null || to == null) return ret;              
+            Iterator it = from.getAssociationEnds().iterator();
+            while (it.hasNext()) {
+            	MAssociationEnd end = (MAssociationEnd)it.next();
+            	MAssociation assoc = end.getAssociation();
+            	Iterator it2 = assoc.getConnections().iterator();
+            	while (it2.hasNext()) {
+            		MAssociationEnd end2 = (MAssociationEnd)it2.next();
+            		if (end2.getType() == to) {
+            			ret.add(assoc);
+            		}
+            	}
+            }
+            return ret;
 	}
 	
 	/**
@@ -851,9 +890,143 @@ public class CoreHelper {
 		}
 		return list;
 	}
-		
-		
-		
-	
+    
+    /**
+     * Returns the source of a relation. The source of a relation is defined as
+     * the modelelement that propagates this relation. If there are more then 1 
+     * sources, only the first is returned. If there is no source, null is 
+     * returned. Examples of sources include classifiers that are types to
+     * associationends, usecases that are bases to extend and include relations
+     * and so on.
+     * @param relation
+     * @return MModelElement
+     */
+    public MModelElement getSource(MRelationship relation) {
+        if (relation instanceof MAssociation) {
+            MAssociation assoc = (MAssociation) relation;
+            List conns = assoc.getConnections();
+            if (conns.isEmpty()) return null;
+            return ((MAssociationEnd)conns.get(0)).getType();
+        }
+        if (relation instanceof MGeneralization) {
+            MGeneralization gen = (MGeneralization) relation;
+            return gen.getParent();
+        }
+        if (relation instanceof MDependency) {
+            MDependency dep = (MDependency) relation;
+            Collection col = dep.getSuppliers();
+            if (col.isEmpty()) return null;
+            return (MModelElement)(col.toArray())[0];
+        }
+        if (relation instanceof MFlow) {
+            MFlow flow = (MFlow) relation;
+            Collection col = flow.getSources();
+            if (col.isEmpty()) return null;
+            return (MModelElement)(col.toArray())[0];
+        }
+        if (relation instanceof MExtend) {
+            MExtend extend = (MExtend) relation;
+            return extend.getExtension(); // we have to follow the arrows..
+        }
+        if (relation instanceof MInclude) {
+            MInclude include = (MInclude) relation;
+            return include.getBase();
+        }
+        return null;
+    }
+    
+    /**
+     * Returns the destination of a relation. The destination of a relation is 
+     * defined as the modelelement that receives this relation. If there are 
+     * more then 1 destinations, only the first is returned. If there is no 
+     * destination, null is returned. Examples of sources include classifiers that 
+     * are types to associationends, usecases that are bases to extend and 
+     * include relations and so on. In the case of an association, the destination
+     * is defined as the type of the second element in the connections list.
+     * @param relation
+     * @return MModelElement
+     */
+    public MModelElement getDestination(MRelationship relation) {
+        if (relation instanceof MAssociation) {
+            MAssociation assoc = (MAssociation) relation;
+            List conns = assoc.getConnections();
+            if (conns.size() <= 1) return null;
+            return ((MAssociationEnd)conns.get(1)).getType();
+        }
+        if (relation instanceof MGeneralization) {
+            MGeneralization gen = (MGeneralization) relation;
+            return gen.getChild();
+        }
+        if (relation instanceof MDependency) {
+            MDependency dep = (MDependency) relation;
+            Collection col = dep.getClients();
+            if (col.isEmpty()) return null;
+            return (MModelElement)(col.toArray())[0];
+        }
+        if (relation instanceof MFlow) {
+            MFlow flow = (MFlow) relation;
+            Collection col = flow.getTargets();
+            if (col.isEmpty()) return null;
+            return (MModelElement)(col.toArray())[0];
+        }
+        if (relation instanceof MExtend) {
+            MExtend extend = (MExtend) relation;
+            return extend.getBase();
+        }
+        if (relation instanceof MInclude) {
+            MInclude include = (MInclude) relation;
+            return include.getAddition();
+        }
+        return null;
+    }	
+    
+    /**
+     * Returns the dependencies between some supplier modelelement and some client
+     * modelelement. Does not return the vica versa relationship (dependency 'from
+     * client to supplier'.
+     * @param supplier
+     * @param client
+     * @return Collection
+     */
+    public Collection getDependencies(MModelElement supplier, MModelElement client) {
+        if (supplier == null || client == null) return null;
+        List ret = new ArrayList();
+        Collection clientDependencies = client.getClientDependencies();
+        Iterator it = supplier.getSupplierDependencies().iterator();
+        while (it.hasNext()) {
+            MDependency dep = (MDependency)it.next();
+            if (clientDependencies.contains(dep)) {
+                ret.add(dep);
+            }
+        }
+        return ret;
+    }
+        
+    
+    /**
+     * Returns all relationships between the source and dest modelelement and
+     * vica versa.
+     * @param source
+     * @param dest
+     * @return Collection
+     */
+    public Collection getRelationships(MModelElement source, MModelElement dest) {
+        Set ret = new HashSet();
+        if (source == null || dest == null) return ret;
+        ret.addAll(getFlows(source, dest));
+        ret.addAll(getFlows(dest, source));
+        ret.addAll(getDependencies(source, dest));
+        ret.addAll(getDependencies(dest, source));
+        if (source instanceof MGeneralizableElement && dest instanceof MGeneralizableElement) {
+            ret.add(getGeneralization((MGeneralizableElement)source, (MGeneralizableElement)dest));
+            ret.add(getGeneralization((MGeneralizableElement)dest, (MGeneralizableElement)source));				
+            if (source instanceof MClassifier && dest instanceof MClassifier) {
+                ret.addAll(getAssociations((MClassifier)source, (MClassifier)dest));
+            }
+        }
+        return ret;
+    }
+                
+                
 }
 

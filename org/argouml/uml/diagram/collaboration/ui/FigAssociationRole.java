@@ -25,12 +25,14 @@ package org.argouml.uml.diagram.collaboration.ui;
 
 import org.argouml.application.api.Notation;
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.util.Trash;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
 import java.awt.Graphics;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -81,6 +83,14 @@ public class FigAssociationRole extends FigAssociation {
     	_messages.damage();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#delete()
+     */
+    public void delete() {
+        super.delete();
+        _messages.delete();
+    }
+
 } /* end class FigAssociationRole */
 
 class FigMessageGroup extends FigGroup {
@@ -127,17 +137,22 @@ class FigMessageGroup extends FigGroup {
 	public void calcBounds() {
 		super.calcBounds();
 		Vector figs = getFigs();
-		Fig last = (Fig)figs.lastElement();
-		Fig first = (Fig)figs.firstElement();
-		// _x = first.getX();
-		// _y = first.getY();
-		_h = last.getY() + last.getHeight() - first.getY();
-		_w = 0;
-		for (int i = 0; i < figs.size(); i++) {
-			Fig fig = (Fig)figs.get(i);
-			if (fig.getWidth() > _w) { 
-				_w = fig.getWidth();
+		if (!figs.isEmpty()) {
+			Fig last = (Fig)figs.lastElement();
+		    Fig first = (Fig)figs.firstElement();
+			// _x = first.getX();
+			// _y = first.getY();
+			_h = last.getY() + last.getHeight() - first.getY();
+			_w = 0;
+			for (int i = 0; i < figs.size(); i++) {
+				Fig fig = (Fig)figs.get(i);
+				if (fig.getWidth() > _w) { 
+					_w = fig.getWidth();
+				}
 			}
+		} else {
+			_w = 0;
+			_h = 0;
 		}
 		
 	}
@@ -152,6 +167,42 @@ class FigMessageGroup extends FigGroup {
 		updateFigPositions();
 		calcBounds();
 	}
+
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#delete()
+     */ 
+    public void delete() { 
+        Vector figs = getFigs();
+        if (figs != null) {
+            Iterator it = figs.iterator();
+            while (it.hasNext()) {
+                Fig fig = (Fig)it.next();
+                fig.delete();
+            }
+        } 
+        removeAll();
+        super.delete();
+    }
+
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#dispose()
+     */
+    public void dispose() {
+    	Vector figs = getFigs();
+        if (figs != null) {
+        	Iterator it = figs.iterator();
+        	while (it.hasNext()) {
+        		Fig fig = (Fig)it.next();
+        		fig.dispose();
+        	}
+        }
+        removeAll();
+        super.dispose();
+    }
+
+    
 
 }
 

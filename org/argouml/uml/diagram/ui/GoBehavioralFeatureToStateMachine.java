@@ -36,6 +36,8 @@ import ru.novosoft.uml.foundation.core.MBehavioralFeature;
  */
 public class GoBehavioralFeatureToStateMachine extends AbstractGoRule {
 
+    public String getRuleName() { return "BehavioralFeature->State Machine";}
+
 	/**
 	 * @see javax.swing.tree.TreeModel#isLeaf(Object)
 	 */

@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
@@ -96,7 +97,7 @@ public class ActionAddNote extends UMLChangeAction {
                     if (y < 0) {
                         y = elemFig.getY() + elemFig.getHeight() + DISTANCE;
                         if (y + fig.getHeight() > drawingArea.getHeight()) {
-                            comment.remove();
+                            UmlFactory.getFactory().delete(comment);
                             return;
                         }
                     }
@@ -110,7 +111,7 @@ public class ActionAddNote extends UMLChangeAction {
             Point endPoint = new Point(elemFig.getX() + elemFig.getWidth(), 
                 elemFig.getY() + elemFig.getHeight());
             */
-            comment.remove();
+            UmlFactory.getFactory().delete(comment);
             return;
         }
         fig.setLocation(x, y);

@@ -91,9 +91,6 @@ public class CrUnconventionalAttrName extends CrUML {
     if (!predicate(f, dsgr)) return false;
     VectorSet newOffs = computeOffenders(f);
     boolean res = offs.equals(newOffs);
-//      System.out.println("offs="+ offs.toString() +
-//  		       " newOffs="+ newOffs.toString() +
-//  		       " res = " + res);
     return res;
   }
 

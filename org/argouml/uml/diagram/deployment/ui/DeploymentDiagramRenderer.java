@@ -12,10 +12,12 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
 import org.argouml.uml.diagram.ui.*;
+import org.apache.log4j.Category;
 import org.argouml.uml.diagram.static_structure.ui.*;
 
 public class DeploymentDiagramRenderer
 implements GraphNodeRenderer, GraphEdgeRenderer {
+    protected static Category cat = Category.getInstance(DeploymentDiagramRenderer.class);
 
   /** Return a Fig that can be used to represent the given node */
 
@@ -27,7 +29,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
     else if (node instanceof MClass) return new FigClass(gm, node); 
     else if (node instanceof MInterface) return new FigInterface(gm, node); 
     else if (node instanceof MObject) return new FigObject(gm, node);
-    System.out.println("needs-more-work DeploymentDiagramRenderer getFigNodeFor");
+    cat.debug("needs-more-work DeploymentDiagramRenderer getFigNodeFor");
     return null;
   }
 
@@ -37,29 +39,13 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
     if (edge instanceof MAssociation) {
       MAssociation asc = (MAssociation) edge;
       FigAssociation ascFig = new FigAssociation(asc, lay);
-      /*
-      Collection connections = asc.getConnections();
-      if (connections == null) System.out.println("null connections....");
-      
-	  Object[] connArray = connections.toArray();
-      MAssociationEnd fromEnd = (MAssociationEnd) connArray[0];
-      MClassifier fromCls = (MClassifier) fromEnd.getType();
-      MAssociationEnd toEnd = (MAssociationEnd) connArray[1];
-      MClassifier toCls = (MClassifier) toEnd.getType();
-      FigNode fromFN = (FigNode) lay.presentationFor(fromCls);
-      FigNode toFN = (FigNode) lay.presentationFor(toCls);
-      ascFig.setSourcePortFig(fromFN);
-      ascFig.setSourceFigNode(fromFN);
-      ascFig.setDestPortFig(toFN);
-      ascFig.setDestFigNode(toFN);
-      */
       return ascFig;
     }
     if (edge instanceof MLink) {
       MLink lnk = (MLink) edge;
       FigLink lnkFig = new FigLink(lnk);
       Collection linkEnds = lnk.getConnections();
-      if (linkEnds == null) System.out.println("null linkRoles....");
+      if (linkEnds == null) cat.debug("null linkRoles....");
 	  Object[] leArray = linkEnds.toArray();
       MLinkEnd fromEnd = (MLinkEnd) leArray[0];
       MInstance fromInst = fromEnd.getInstance();

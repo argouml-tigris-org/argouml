@@ -44,11 +44,14 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.util.*;
 
+import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.state.*;
 
 public class SelectionState extends SelectionWButtons {
+    protected static Category cat = 
+        Category.getInstance(SelectionState.class);
   ////////////////////////////////////////////////////////////////
   // constants
   public static Icon trans = ResourceLoader.lookupIconResource("Transition");
@@ -152,7 +155,7 @@ public class SelectionState extends SelectionWButtons {
       bx = cx;
       break;
     default:
-      System.out.println("invalid handle number");
+      cat.warn("invalid handle number");
       break;
     }
     if (edgeClass != null && nodeClass != null) {

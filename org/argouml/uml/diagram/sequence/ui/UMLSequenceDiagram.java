@@ -46,13 +46,16 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.ui.*;
 
+import org.apache.log4j.Category;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.uml.ui.ActionAddNote;
 import org.argouml.uml.diagram.sequence.*;
 
 
 
 public class UMLSequenceDiagram extends UMLDiagram {
+    protected static Category cat = Category.getInstance(UMLSequenceDiagram.class);
 
   ////////////////
   // actions for toolbar
@@ -117,7 +120,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     
     LayerPerspective lay;
     if (m == null) {
-        System.out.println("SEVERE WARNING: Sequence diagram was created " +
+        cat.error("SEVERE WARNING: Sequence diagram was created " +
                            "without a valid namesspace. " + 
                            "Setting namespace to empty.");
         lay = new SequenceDiagramLayout("", gm);
@@ -153,6 +156,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
     _toolBar.add(_actionLinkWithStimulusReturn);
 
     // other actions
+   _toolBar.addSeparator();
+    _toolBar.add(ActionAddNote.SINGLETON);
     _toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);

@@ -49,6 +49,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.ui.*;
@@ -75,6 +76,8 @@ import org.argouml.swingext.*;
 
 public class TabProps extends TabSpawnable
 implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
+    protected static Category cat = 
+        Category.getInstance(TabProps.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Object    _target;
@@ -283,7 +286,7 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
 
   public TabModelTarget findPanelFor(Class targetClass) {
     TabModelTarget p = (TabModelTarget) _panels.get(targetClass);
-    //System.out.println("Getting prop panel for:" + targetClass+", found"+p);
+    cat.debug("Getting prop panel for:" + targetClass+", found"+p);
     if (p == null) {
       Class panelClass = panelClassFor(targetClass);
       if (panelClass == null) return null;
@@ -293,7 +296,7 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
       catch (Exception ignore) { return null; }
       _panels.put(targetClass, p);
     }
-    //else System.out.println("found props for " + targetClass.getName());
+    else cat.debug("found props for " + targetClass.getName());
     return p;
   }
 
@@ -327,7 +330,7 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
       return Class.forName(panelClassName);
     }
     catch (ClassNotFoundException ignore) {
-        System.out.println("Class "+panelClassName+" for Panel not found!");
+        cat.error("Class "+panelClassName+" for Panel not found!", ignore);
     }
     return null;
   }
@@ -356,6 +359,8 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
 
 
 class InitPanelsLater implements Runnable {
+    protected static Category cat = 
+        Category.getInstance(InitPanelsLater.class);
     private Hashtable _panels = null;
     private TabProps _tabProps;
     private Orientation _orientation;
@@ -424,10 +429,11 @@ class InitPanelsLater implements Runnable {
         _panels.put(MGuardImpl.class,new PropPanelGuard());
         _panels.put(MCallEventImpl.class,new PropPanelCallEvent());
 	_panels.put(MCallActionImpl.class,new PropPanelCallAction());
+        _panels.put(MInteraction.class, new PropPanelInteraction());
     }
     catch(Exception e) {
-        System.out.println(e.toString() + " in InitPanelsLater.run()");
-        e.printStackTrace();
+        cat.error("Exception in InitPanelsLater.run()", e);
+     
     }
 
     Iterator iter = _panels.values().iterator();

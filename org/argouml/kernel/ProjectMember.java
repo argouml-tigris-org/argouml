@@ -28,7 +28,11 @@ import java.io.*;
 import java.util.*;
 import java.beans.*;
 
+import org.apache.log4j.Category;
+
 public abstract class ProjectMember {
+    protected static Category cat = 
+        Category.getInstance(ProjectMember.class);
 
   ////////////////////////////////////////////////////////////////
   // instance varables
@@ -91,11 +95,11 @@ public abstract class ProjectMember {
   public void setName(String s) { 
     if ((s != null) &&
         (s.startsWith (_project.getBaseName()))) {
-      //System.out.println ("Setting project member name excluding project base name...");
+      cat.debug ("Setting project member name excluding project base name...");
       _name = s.substring (_project.getBaseName().length());
     }
     else {
-      //System.out.println ("Setting project member name including project base name...");
+      cat.debug ("Setting project member name including project base name...");
       _name = s;
     }
   }
@@ -107,16 +111,6 @@ public abstract class ProjectMember {
 
   public URL getURL() {
     return getProject().findMemberURLInSearchPath(getName());
-//     try {
-//       String base = getProject().getURL().toString();
-//       base = base.substring(0, base.lastIndexOf("/") + 1);
-//       if (!base.endsWith("/")) base += "/";
-//       return new URL(base + _name);
-//     }
-//     catch (MalformedURLException murle) {
-//       System.out.println("bad url in ProjectMember");
-//       return null;
-//     }
   }
 
   ////////////////////////////////////////////////////////////////
@@ -128,168 +122,3 @@ public abstract class ProjectMember {
 
 } /* end class ProjectMember */
 
-//   public Object getMember() { return member; }
-//   public void setMember(Object m) {
-//     name = null;
-//     member = m;
-//   }
-
-
-
-//   public String getPathname() {
-//     //needs-more-work: ignoring search path for now
-//     return proj.getPathname();
-//   }
-
-
-//   protected static String stripJunk(String s) {
-//     String res = "";
-//     int len = s.length();
-//     for (int i = 0; i < len; i++) {
-//       char c = s.charAt(i);
-//       if (Character.isJavaIdentifierPart(c)) res += c;
-//     }
-//     return res;
-//   }
-
-//   public String getName() {
-//     if (name != null) return name;
-//     String n = null;
-//     if (type.equalsIgnoreCase("pgml"))
-//       n = stripJunk(proj.getBaseName()) + "_" +
-// 	stripJunk(((Diagram)member).getName()) + ".pgml";
-//     if (type.equalsIgnoreCase("xmi"))
-//       n = stripJunk(proj.getBaseName()) + ".xmi";
-//     //needs-more-work other cases
-//     return n;
-//   }
-//   public void setName(String s) { name = s; }
-//   public String getType() { return type; }
-//   public void setType(String s) { type = s; }
-
-
-//   public void save(boolean overwrite) {
-//     String path = getPathname();
-//     String filename = getName();
-//     if ("pgml".equalsIgnoreCase(type)) {
-//       //System.out.println("save diagram:" + filename);
-//       Hashtable templates = TemplateReader.readFile("/uci/dtd/PGML.tee");
-//       OCLExpander expander = new OCLExpander(templates);
-
-//       try {
-// 	Diagram d = (Diagram) member;
-// 	if (filename != null) {
-// 	  System.out.println("Writing " + path + filename + "...");
-// 	  Globals.showStatus("Writing " + path + filename + "...");
-// 	  File f = new File(path + filename);
-// 	  if (f.exists() && !overwrite) {
-// 	    System.out.println("Are you sure you want to overwrite " +
-// 			       path + filename + "?");
-// 	  }
-// 	  FileWriter fw = new FileWriter(f);
-// 	  expander.expand(fw, d, "", "");
-// 	  System.out.println("Wrote " + path + filename);
-// 	  Globals.showStatus("Wrote " + path + filename);
-// 	  // needs-more-work: progress bar in ProjectBrowser
-// 	  fw.close();
-// 	}
-//       }
-//       catch (FileNotFoundException ignore) {
-// 	System.out.println("got an FileNotFoundException");
-//       }
-//       catch (IOException ignore) {
-// 	System.out.println("got an IOException");
-// 	ignore.printStackTrace();
-
-//       }
-//     }
-//     else if ("xmi".equalsIgnoreCase(type)) {
-//       //System.out.println("save model:" + filename);
-
-//       //@@@: just for rapid edig-compile-debug 
-//       Hashtable templates = TemplateReader.readFile("/uci/dtd/XMI.tee");
-//       OCLExpander expander = new OCLExpander(templates);
-
-//       try {
-// 	System.out.println("Writing " + path + filename + "...");
-// 	Globals.showStatus("Writing " + path + filename + "...");
-// 	FileWriter fw = new FileWriter(path + filename);
-// 	expander.expand(fw, proj, "", "");
-// 	fw.close();
-// 	System.out.println("Wrote " + path + filename);
-// 	Globals.showStatus("Wrote " + path + filename);
-//       }
-//       catch (FileNotFoundException ignore) {
-// 	System.out.println("got an FileNotFoundException");
-//       }
-//       //       catch (PropertyVetoException ignore) {
-//       // 	System.out.println("got an PropertyVetoException in Save XMI");
-//       //       }
-//       //    catch (java.lang.ClassMismatchException ignore) {
-//       //      System.out.println("got an ClassMismatchException");
-//       //    }
-//       catch (IOException ignore) {
-// 	System.out.println("got an IOException");
-// 	ignore.printStackTrace();
-//       }
-//     }
-//     else if ("text".equalsIgnoreCase(type)) {
-//       System.out.println("save text file:" + filename);
-//     }
-//     else if ("html".equalsIgnoreCase(type)) {
-//       System.out.println("save html file:" + filename);
-//     }
-//     else if ("other".equalsIgnoreCase(type)) {
-//       System.out.println("save other file:" + filename);
-//     }
-//     else if ("argo".equalsIgnoreCase(type)) {
-//       System.out.println("save nested project?:" + filename);
-//     }
-//   }
-
-
-
-//   public void load() {
-//     //needs-more-work: should be done with subclasses?
-//     String path = getPathname();
-//     //System.out.println("search path found: " + path);
-//     if ("pgml".equalsIgnoreCase(type)) {
-//       System.out.println("Reading " + path + name + "...");
-//       //System.out.println("_idRegistry size=" + proj.getIDRegistry().size());
-//       PGMLParserIBM.SINGLETON.setOwnerRegistery(proj.getIDRegistry());
-//       Diagram d = PGMLParserIBM.SINGLETON.readDiagram(path, name);
-//       setMember(d);
-//       try { proj.addDiagram(d); }
-//       catch (PropertyVetoException pve) { }
-//     }
-//     else if ("xmi".equalsIgnoreCase(type)) {
-//       System.out.println("Reading " + path + name + "...");
-//       XMIParserIBM.SINGLETON.setIDs(proj.getIDRegistry());
-//       XMIParserIBM.SINGLETON.setProject(proj);
-//       XMIParserIBM.SINGLETON.readModels(path, name);
-//       //System.out.println("_idRegistry size=" + proj.getIDRegistry().size());
-//       setName(null); //needs-more-work: awkward!
-//     }
-//     else if ("text".equalsIgnoreCase(type)) {
-//       System.out.println("load text file");
-//     }
-//     else if ("html".equalsIgnoreCase(type)) {
-//       System.out.println("load html file");
-//     }
-//     else if ("other".equalsIgnoreCase(type)) {
-//       System.out.println("load other file");
-//     }
-//     else if ("argo".equalsIgnoreCase(type)) {
-//       System.out.println("load nested project?");
-//     }
-//   }
-
-//   public String name = "untitled";
-//   public String type = "xmi";
-//   public Object member = null;
-
-//   public ProjectMember(String n, String t, Project p) {
-//     name = n;
-//     type = t;
-//     proj = p;
-//   }

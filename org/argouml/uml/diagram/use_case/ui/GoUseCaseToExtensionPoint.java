@@ -41,6 +41,7 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.*;
@@ -53,7 +54,8 @@ import org.argouml.uml.MMUtil;
  * @author  16 Apr 2002. Jeremy Bennett (mail@jeremybennett.com).
  */
 
-public class GoUseCaseToExtensionPoint implements TreeModel {
+public class GoUseCaseToExtensionPoint extends AbstractGoRule {
+    protected static Category cat = Category.getInstance(GoUseCaseToExtensionPoint.class);
 
 
     /**
@@ -63,7 +65,7 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
      *          Point</code>"). 
      */
 
-    public String toString() {
+    public String getRuleName() {
         return Argo.localize ("Tree", "Use Case->Extension Point");
     }
   
@@ -94,7 +96,7 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
      */
 
     public void setRoot(Object r) {
-        System.out.println(getClass().toString() +
+        cat.error(getClass().toString() +
                            ": setRoot() should never be called");
     }
 
@@ -200,6 +202,12 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
 
         return -1;
     }
+
+    public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
+    }
+
 
 
     /**

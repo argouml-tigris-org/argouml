@@ -35,6 +35,8 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import org.argouml.ui.*;
 
 public class GoStateToInternalTrans extends AbstractGoRule {
+
+    public String getRuleName() { return "State->Internal Transitions"; }
 	
 	/**
 	 * @see org.argouml.ui.AbstractGoRule#getChildren(Object)

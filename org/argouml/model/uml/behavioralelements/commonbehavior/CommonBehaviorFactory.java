@@ -380,9 +380,51 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     	}
     	return reception;
     }
+    
+    public void deleteAction(MAction elem) {}
+    
+    public void deleteActionSequence(MActionSequence elem) {}
     	
-    	
+    public void deleteArgument(MArgument elem) {}	
         
-
+    public void deleteAttributeLink(MAttributeLink elem) {}
+    
+    public void deleteCallAction(MCallAction elem) {}
+    
+    public void deleteComponentInstance(MComponentInstance elem) {}
+    
+    public void deleteCreateAction(MCreateAction elem) {}
+    
+    public void deleteDataValue(MDataValue elem) {}
+    
+    public void deleteDestroyAction(MDestroyAction elem) {}
+    
+    public void deleteException(MException elem) {}
+    
+    public void deleteInstance(MInstance elem) {}
+    
+    public void deleteLink(MLink elem) {}
+    
+    public void deleteLinkEnd(MLinkEnd elem) {}
+    
+    public void deleteLinkObject(MLinkObject elem) {}
+    
+    public void deleteNodeInstance(MNodeInstance elem) {}
+    
+    public void deleteObject(MObject elem) {}
+    
+    public void deleteReception(MReception elem) {}
+    
+    public void deleteReturnAction(MReturnAction elem) {}
+    
+    public void deleteSendAction(MSendAction elem) {}
+    
+    public void deleteSignal(MSignal elem) {}
+    
+    public void deleteStimulus(MStimulus elem) {}
+    
+    public void deleteTerminateAction(MTerminateAction elem) {}
+    
+    public void deleteUninterpretedAction(MUninterpretedAction elem) {}
 }
 

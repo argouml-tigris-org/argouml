@@ -39,6 +39,7 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
 import org.argouml.uml.diagram.ui.*;
+import org.apache.log4j.Category;
 import org.argouml.uml.MMUtil;
 
 // could be singleton
@@ -62,6 +63,7 @@ import org.argouml.uml.MMUtil;
 public class ClassDiagramRenderer
 implements GraphNodeRenderer, GraphEdgeRenderer {
 
+    protected static Category cat = Category.getInstance(ClassDiagramRenderer.class);
   /** Return a Fig that can be used to represent the given node */
   public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
     if (node instanceof MClass) return new FigClass(gm, node);
@@ -69,39 +71,23 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
     else if (node instanceof MInstance) return new FigInstance(gm, node);
     else if (node instanceof MPackage) return new FigPackage(gm, node);
     else if (node instanceof MModel) return new FigPackage(gm, node);
-    System.out.println("needs-more-work ClassDiagramRenderer getFigNodeFor "+node);
+    cat.debug("needs-more-work ClassDiagramRenderer getFigNodeFor "+node);
     return null;
   }
 
   /** Return a Fig that can be used to represent the given edge */
   public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-    //System.out.println("making figedge for " + edge);
+    cat.debug("making figedge for " + edge);
     if (edge instanceof MAssociation) {
       MAssociation asc = (MAssociation) edge;
       FigAssociation ascFig = new FigAssociation(asc, lay);
-      /*
-      Collection connections = asc.getConnections();
-      if (connections == null) System.out.println("null connections....");
-	  Object[] connArray = connections.toArray();
-      MAssociationEnd fromEnd = (MAssociationEnd) connArray[0];
-      MClassifier fromCls = (MClassifier) fromEnd.getType();
-      MAssociationEnd toEnd = (MAssociationEnd) connArray[1];
-      MClassifier toCls = (MClassifier) toEnd.getType();
-      FigNode fromFN = (FigNode) lay.presentationFor(fromCls);
-      FigNode toFN = (FigNode) lay.presentationFor(toCls);
-      ascFig.setSourcePortFig(fromFN);
-      ascFig.setSourceFigNode(fromFN);
-      ascFig.setDestPortFig(toFN);
-      ascFig.setDestFigNode(toFN);
-      ascFig.getFig().setLayer(lay);
-      */
       return ascFig;
     }
     if (edge instanceof MLink) {
       MLink lnk = (MLink) edge;
       FigLink lnkFig = new FigLink(lnk);
       Collection linkEnds = lnk.getConnections();
-      if (linkEnds == null) System.out.println("null linkRoles....");
+      if (linkEnds == null) cat.debug("null linkRoles....");
 	  Object[] leArray = linkEnds.toArray();
       MLinkEnd fromEnd = (MLinkEnd) leArray[0];
       MInstance fromInst = fromEnd.getInstance();
@@ -121,24 +107,10 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       FigGeneralization genFig = new FigGeneralization(gen, lay);
       return genFig;
     }
-	/*    if (edge instanceof Realization) {
-      Realization real = (Realization) edge;
-      FigRealization realFig = new FigRealization(real);
-      MGeneralizableElement subType = real.getSubtype();
-      MGeneralizableElement superType = real.getSupertype();
-      FigNode subTypeFN = (FigNode) lay.presentationFor(subType);
-      FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
-      realFig.setSourcePortFig(subTypeFN);
-      realFig.setSourceFigNode(subTypeFN);
-      realFig.setDestPortFig(superTypeFN);
-      realFig.setDestFigNode(superTypeFN);
-      realFig.getFig().setLayer(lay);
-      return realFig;
-	  }*/
     if (edge instanceof MDependency) {
-	//System.out.println("get fig for "+edge);
+	cat.debug("get fig for "+edge);
       MDependency dep = (MDependency) edge;
-      //System.out.println("stereo "+dep.getStereotype());
+      cat.debug("stereo "+dep.getStereotype());
       if (dep.getStereotype() != null && dep.getStereotype().getName().equals("realize")) {
 		  FigRealization realFig = new FigRealization(dep);
 		  
@@ -174,11 +146,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
 		  return depFig;
 	  }
 	}
-    // what about realizations? They are not distince objects in my UML model
-    // maybe they should be, just as an implementation issue, dont
-    // remove any of the methods that are there now.
-
-    System.out.println("needs-more-work ClassDiagramRenderer getFigEdgeFor");
+    cat.debug("needs-more-work ClassDiagramRenderer getFigEdgeFor");
     return null;
   }
 

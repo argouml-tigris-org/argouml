@@ -113,15 +113,9 @@ public class ProjectMemberModel extends ProjectMember {
 
     try {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
-      //System.out.println("Writing " + fullpath + "...");
-      //pb.showStatus("Writing " + fullpath + "...");
 
       xmiwriter = new XMIWriter(_model,writer);
       xmiwriter.gen();
-      	
-
-      //System.out.println("Wrote " + fullpath);
-      //pb.showStatus("Wrote " + fullpath);
     }
     catch (Exception ex) {
       logNotContainedElements(xmiwriter);

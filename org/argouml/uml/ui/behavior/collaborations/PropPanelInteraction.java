@@ -29,10 +29,13 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLList;
-import org.argouml.uml.ui.UMLMessagesInteractionListModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.util.ConfigLoader;
+
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 
 /**
@@ -41,26 +44,27 @@ import ru.novosoft.uml.behavior.collaborations.MInteraction;
  */
 public class PropPanelInteraction extends PropPanelModelElement {
 
-	public PropPanelInteraction() {
-		super("Interaction", _interactionIcon, 2);
-		
-		addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    	addField(nameField,1,0,0);
-    	
-    	addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,1);
-    	addField(stereotypeBox,2,0,0);
-
-		// no namespace since this should not be altered
-    	// addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,1);
-    	// addField(namespaceScroll,3,0,0);
-    	
-    	addCaption(Argo.localize("UMLMenu", "label.messages"),1,1,0);
-            
-        JList messagesList = new UMLList(new UMLMessagesInteractionListModel(this,"messages",true),true);
+    public PropPanelInteraction() {
+        super("Interaction", _interactionIcon, ConfigLoader.getTabPropsOrientation());
+ //       removeNavigationListener(this);
+ //       addNavigationListener(this);
+	
+    	addField(Argo.localize("UMLMenu", "label.name"), nameField);  	
+    	addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
+        JList contextList = new UMLLinkedList(this, new UMLInteractionCollaborationListModel(this));
+        contextList.setVisibleRowCount(1);
+        JScrollPane contextScroll = new JScrollPane(contextList);
+        addField(Argo.localize("UMLMenu", "label.context"), contextScroll);
+        
+        add(LabelledLayout.getSeperator());
+        /*    
+        JList messagesList = new UMLList(new UMLInteractionMessagesListModel(this,"messages",true),true);
       	messagesList.setBackground(getBackground());
       	messagesList.setForeground(Color.blue);
-      	JScrollPane messagesScroll= new JScrollPane(messagesList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED); 	
-        addField(messagesScroll,1,1,1);
+        */
+        JList messagesList = new UMLLinkedList(this, new UMLInteractionMessagesListModel(this));
+      	JScrollPane messagesScroll= new JScrollPane(messagesList); 	
+        addField(Argo.localize("UMLMenu", "label.messages"), messagesScroll);
     	
     	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
         new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
@@ -69,7 +73,7 @@ public class PropPanelInteraction extends PropPanelModelElement {
     	
     	/*
     	addCaption("Messages:",0,1,0);
-    	JList messageList = new UMLList(new UMLMessagesListModel(this,"message",true), true);
+    	JList messageList = new UMLList(new UMLAssociationRoleMessageListModel(this,"message",true), true);
     	messageList.setBackground(getBackground());
     	messageList.setForeground(Color.blue);
     	addField(new JScrollPane(messageList),0,1,1);
