@@ -124,6 +124,9 @@ public class SettingsTabAppearance
         _metalTheme.setEnabled(enabled);
     }
 
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabRefresh()
+     */
     public void handleSettingsTabRefresh() {
         String laf = LookAndFeelMgr.getInstance().getCurrentLookAndFeelName();
     	String theme = LookAndFeelMgr.getInstance().getCurrentThemeName();
@@ -135,6 +138,9 @@ public class SettingsTabAppearance
             Argo.KEY_SMOOTH_EDGES, false));
     }
 
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabSave()
+     */
     public void handleSettingsTabSave() {
         LookAndFeelMgr.getInstance().setCurrentLookAndFeel(
             LookAndFeelMgr.getInstance().getLookAndFeelFromName(
@@ -148,11 +154,38 @@ public class SettingsTabAppearance
             _smoothEdges.isSelected());
     }
 
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabCancel()
+     */
     public void handleSettingsTabCancel() { }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleName()
+     */
     public String getModuleName() { return "SettingsTabAppearance"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
+     */
     public String getModuleDescription() { return "Appearance Settings"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
+     */
     public String getModuleAuthor() { return "ArgoUML Core"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
+     */
     public String getModuleVersion() { return ArgoVersion.getVersion(); }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleKey()
+     */
     public String getModuleKey() { return "module.settings.appearance"; }
+    
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
+     */
     public String getTabKey() { return "tab.appearance"; }
 }
