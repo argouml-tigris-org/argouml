@@ -56,9 +56,11 @@ public class FigClass extends FigNodeWithCompartments {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
+  protected FigCompartment _stereoCompartment;
   protected FigCompartment _attr;
   protected FigCompartment _oper;
   protected FigRect _bigPort;
+  protected FigRect _stereoLineBlinder;
   public MElementResidence resident = new MElementResidenceImpl();
 
   ////////////////////////////////////////////////////////////////
@@ -85,8 +87,26 @@ public class FigClass extends FigNodeWithCompartments {
     _oper.setTextColor(Color.black);
     _oper.setJustification(FigText.JUSTIFY_LEFT);
 
+    _stereo.setExpandOnly(true);
+//     _stereo.setFilled(false);
+//     _stereo.setLineWidth(0);
+    _stereo.setEditable(false);
+    _stereo.setHeight(15);
+
+    _stereoLineBlinder = new FigRect(0, 15, 2, 60, Color.white, Color.white);
+
+//     _stereoCompartment = new FigCompartment(10, 50, 90, 21);
+//     _stereoCompartment.setFont(LABEL_FONT);
+//     _stereoCompartment.setExpandOnly(true);
+//     _stereoCompartment.setTextColor(Color.black);
+//     _stereoCompartment.setFilled(false);
+//     _stereoCompartment.setLineWidth(0);
+//     _stereoCompartment.setDisplayed(true);
+
+
     setPort(_bigPort);
 
+//     addCompartment(_stereoCompartment);
     addFig(_name);
     addCompartment(_attr);
     addCompartment(_oper);
@@ -371,8 +391,9 @@ public class FigClass extends FigNodeWithCompartments {
     if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) {
 	if (_figs.contains(_stereo)) {
 	    removeFig(_stereo);
+	    removeFig(_stereoLineBlinder);
 	    Rectangle oldBounds = getBounds();
-	    setBounds(oldBounds.x, oldBounds.y + 10, oldBounds.width, oldBounds.height-10);
+	    setBounds(oldBounds.x, oldBounds.y + 15, oldBounds.width, oldBounds.height-15);
 	    calcBounds();
 	    firePropChange("bounds", oldBounds, getBounds());
 	}
@@ -383,16 +404,38 @@ public class FigClass extends FigNodeWithCompartments {
 	_stereo.setText("<<" + stereoStr + ">>");
 	Rectangle oldBounds = getBounds();
 	if (! _figs.contains(_stereo)) {
-	    _stereo.setBounds(oldBounds.x, oldBounds.y - 10, oldBounds.width, 10);
+	    _stereo.setBounds(oldBounds.x, oldBounds.y - 15, oldBounds.width, 15);
 	    int namePosition = _figs.indexOf(_name);
 	    _figs.insertElementAt(_stereo, namePosition);
 	    _stereo.setGroup(this);
+	    _stereoLineBlinder.setBounds(oldBounds.x, oldBounds.y+1, oldBounds.width, 2);
+	    _figs.insertElementAt(_stereoLineBlinder, namePosition+1);
+	    _stereoLineBlinder.setGroup(this);
 	}
-	_stereo.calcBounds();
+	// _stereo.calcBounds();
 	calcBounds();
 	firePropChange("bounds", oldBounds, getBounds());
     }
   }
+
+
+//   protected void updateStereotypeText() {
+//     MModelElement me = (MModelElement) getOwner();
+//     if (me == null) return;
+//     MStereotype stereo = me.getStereotype();
+//     if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) 
+// 	_stereo.setText("");
+//     else {
+// 	String stereoStr = stereo.getName();
+// 	_stereo.setText("<<" + stereoStr + ">>");
+//     }
+//     Rectangle oldBounds = getBounds();
+//     _stereo.calcBounds();
+//     calcBounds();
+//     firePropChange("bounds", oldBounds, getBounds());
+  
+//   }
+  
   
 
 } /* end class FigClass */
