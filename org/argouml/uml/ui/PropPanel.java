@@ -116,10 +116,10 @@ public abstract class PropPanel
     private JPanel captionPanel = new JPanel();
 
     protected static ImageIcon _deleteIcon =
-	ResourceLoaderWrapper.getResourceLoaderWrapper()
+	ResourceLoaderWrapper
 	    .lookupIconResource("RedDelete");
     protected static ImageIcon _navUpIcon =
-	ResourceLoaderWrapper.getResourceLoaderWrapper()
+	ResourceLoaderWrapper
 	    .lookupIconResource("NavigateUp");
 
     protected Font smallFont = LookAndFeelMgr.getInstance().getSmallFont();

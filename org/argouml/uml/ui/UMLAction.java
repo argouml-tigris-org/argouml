@@ -102,7 +102,6 @@ public class UMLAction extends AbstractAction {
 	if (iconName != null && Action.SMALL_ICON.equals(key)) {
 	    Icon icon =
 		ResourceLoaderWrapper
-		    .getResourceLoaderWrapper()
 		    .lookupIconResource(Translator.getImageBinding(iconName),
 				    Translator.localize(iconName));
 
