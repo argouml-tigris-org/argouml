@@ -30,17 +30,16 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-import javax.swing.*;
+import javax.swing.Icon;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.state_machines.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.kernel.Wizard;
+import org.argouml.model.ModelFacade;
 
-import org.argouml.kernel.*;
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class CrMissingStateName extends CrUML {
 
@@ -52,11 +51,9 @@ public class CrMissingStateName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MModelElement)) return NO_PROBLEM;
-    MModelElement e = (MModelElement) dm;
-    String myName = e.getName();
-    if (myName == null || myName.equals("") ||
-	 myName == null || myName.length() == 0)
+    if (!ModelFacade.isAStateVertex(dm) || ModelFacade.isTop(dm)) return NO_PROBLEM;   
+    String myName = ModelFacade.getName(dm);
+    if (myName == null || myName.equals(""))
       return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
