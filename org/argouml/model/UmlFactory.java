@@ -69,6 +69,17 @@ public interface UmlFactory {
     	throws IllegalModelElementConnectionException;
 
     /**
+     * Creates a UML model element of the given type.
+     * This only works for UML elements. If a diagram contains
+     * elements of another type then it is the responsibility
+     * of the diagram manage those items and not call this
+     * method. It also only works for UML model elements that
+     * are represented in diagrams by a node.
+     * @param elementType the type of model element to build
+     */
+    Object buildNode(Object elementType);
+    
+    /**
      * Checks if some type of UML model element is valid to
      * connect two other existing UML model elements.
      * This only works for UML elements. If a diagram contains

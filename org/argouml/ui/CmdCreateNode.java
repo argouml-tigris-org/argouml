@@ -70,22 +70,6 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
     private static Dictionary cache = new Hashtable();
 
     /**
-     * List of factories to search for the methods in.
-     */
-    private static List factories = new Vector();
-    static {
-        factories.add(Model.getActivityGraphsFactory());
-        factories.add(Model.getCollaborationsFactory());
-        factories.add(Model.getCommonBehaviorFactory());
-        factories.add(Model.getCoreFactory());
-        factories.add(Model.getDataTypesFactory());
-        factories.add(Model.getExtensionMechanismsFactory());
-        factories.add(Model.getModelManagementFactory());
-        factories.add(Model.getStateMachinesFactory());
-        factories.add(Model.getUseCasesFactory());
-    }
-
-    /**
      * Prefix for the action key.
      */
     private static final String ACTION_PREFIX_KEY = "action.new";
@@ -169,80 +153,18 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
     }
 
     /**
-     * Creates a modelelement using the uml model factories. If it finds a
-     * suitable match it will but the factory and method of this factory in a
-     * cache, so that subsequent lookups do not have to iterate through all
-     * methods again. If no match is found it will delegate to
-     * <code>super.makeNode()</code>.
+     * Delegate creation of the node to the uml model subsystem.
      *
-     * @return an object which represents in most cases a particular UML
+     * @return an object which represents a particular UML
      *         Element.
      *
      * @see org.tigris.gef.graph.GraphFactory#makeNode()
      * @see org.tigris.gef.base.CmdCreateNode#makeNode()
      */
     public Object makeNode() {
-        LOG.info("Trying to create a new node");
-        // here we should implement usage of the factories
-        // since i am kind of lazy i use reflection
-
-        // factories
-
-        try {
-            Object[] cachedParams = (Object[]) cache
-                    .get(_args.get("className"));
-            if (cachedParams != null) {
-                LOG.debug("Using method and factory from cache");
-                return ((Method) cachedParams[1]).invoke(cachedParams[0],
-                        new Object[] {});
-            }
-            Iterator it = factories.iterator();
-            while (it.hasNext()) {
-                Object factory = it.next();
-                List createMethods =
-                    Arrays.asList(factory.getClass().getMethods());
-                Iterator it2 = createMethods.iterator();
-                String classname = getCreateClassName();
-                while (it2.hasNext()) {
-                    Method method = (Method) it2.next();
-                    String methodname = method.getName();
-                    if (methodname.endsWith(classname)
-                            && (methodname.substring(0, methodname
-                                    .lastIndexOf(classname)).equals("build"))
-                            && method.getParameterTypes().length == 0) {
-                        LOG.debug("Using method: " + method);
-                        Object[] params = new Object[] {
-			    factory, method,
-			};
-                        cache.put(_args.get("className"), params);
-                        return method.invoke(factory, new Object[] {});
-                    }
-                }
-                it2 = createMethods.iterator();
-                while (it2.hasNext()) {
-                    Method method = (Method) it2.next();
-                    String methodname = method.getName();
-                    if (methodname.endsWith(classname)
-                            && (methodname.substring(0,
-			            methodname.lastIndexOf(classname))
-				    .equals("create"))) {
-                        LOG.debug("Using method: " + method);
-                        Object[] params = new Object[] {
-			    factory, method,
-			};
-                        cache.put(_args.get("className"), params);
-                        return method.invoke(factory, new Object[] {});
-                    }
-                }
-
-            }
-        } catch (IllegalAccessException e2) {
-            LOG.error(e2);
-        } catch (InvocationTargetException e3) {
-            LOG.error(e3);
-        }
-        LOG.debug("delegating to super.makeNode");
-        return super.makeNode();
+        Object newNode =
+            Model.getUmlFactory().buildNode(_args.get("className"));
+        return newNode;
     }
 
     /**
