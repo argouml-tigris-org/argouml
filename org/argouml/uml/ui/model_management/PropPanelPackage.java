@@ -31,6 +31,7 @@
 package org.argouml.uml.ui.model_management;
 
 import org.argouml.application.api.*;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -137,6 +138,10 @@ implements PluggablePropertyPanel {
             MActor actor = pkg.getFactory().createActor();
             pkg.addOwnedElement(actor);
             navigateTo(actor);
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -147,6 +152,10 @@ implements PluggablePropertyPanel {
             MUseCase useCase = pkg.getFactory().createUseCase();
             pkg.addOwnedElement(useCase);
             navigateTo(useCase);
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -157,6 +166,10 @@ implements PluggablePropertyPanel {
             MModelElement element = pkg.getFactory().createGeneralization();
             pkg.addOwnedElement(element);
             navigateTo(element);
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -208,6 +221,10 @@ implements PluggablePropertyPanel {
 
     public void deleteElement(MModelElement element) {
         element.remove();
+        // 2002-07-15
+        // Jaap Branderhorst
+        // Force an update of the navigation pane to solve issue 323
+        ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
     public void addStereotype(MModelElement element) {

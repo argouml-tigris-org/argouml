@@ -26,6 +26,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -35,7 +36,6 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.*;
 
-import org.argouml.uml.ui.foundation.core.*;
 
 public abstract class PropPanelNamespace extends PropPanelModelElement {
 
@@ -57,6 +57,10 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
             MModelElement ownedElem = ns.getFactory().createClass();
             ns.addOwnedElement(ownedElem);
             navigateTo(ownedElem);
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -67,6 +71,10 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
             MModelElement ownedElem = ns.getFactory().createInterface();
             ns.addOwnedElement(ownedElem);
             navigateTo(ownedElem);
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -77,6 +85,10 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
             MModelElement ownedElem = ns.getFactory().createPackage();
             ns.addOwnedElement(ownedElem);
             navigateTo(ownedElem);
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 

@@ -34,6 +34,8 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import javax.swing.*;
+
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import java.awt.*;
 import ru.novosoft.uml.*;
@@ -111,6 +113,10 @@ public class PropPanelAssociation extends PropPanelModelElement {
             MAssociationEnd assocEnd = assoc.getFactory().createAssociationEnd();
             assoc.addConnection(assocEnd);
             navigateTo(assocEnd);
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -126,6 +132,10 @@ public class PropPanelAssociation extends PropPanelModelElement {
                 newAssoc.addConnection(factory.createAssociationEnd());
                 ns.addOwnedElement(newAssoc);
                 navigateTo(newAssoc);
+                // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             }
         }
     }
@@ -144,6 +154,10 @@ public class PropPanelAssociation extends PropPanelModelElement {
                 }
             }
         }
+        // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {

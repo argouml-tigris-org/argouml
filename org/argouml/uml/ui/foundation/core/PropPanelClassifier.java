@@ -36,6 +36,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import org.argouml.uml.ui.*;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
 
 abstract public class PropPanelClassifier extends PropPanelNamespace {
@@ -118,6 +119,10 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
             MClassifier classifier = (MClassifier) target;
             MOperation oper = MMUtil.SINGLETON.buildOperation(classifier);
             navigateTo(oper);
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -126,7 +131,11 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
         if(target instanceof MClassifier) {
 	    MClassifier cls = (MClassifier) target;
 	    MAttribute attr = MMUtil.SINGLETON.buildAttribute(cls);
-            navigateTo(attr);
+	      navigateTo(attr);
+          // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -149,6 +158,10 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
                 }
             }
         }
+        // 2002-07-15
+        // Jaap Branderhorst
+        // Force an update of the navigation pane to solve issue 323
+        ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
     public void addGeneralization() {
@@ -165,6 +178,10 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
                 }
             }
         }
+        // 2002-07-15
+        // Jaap Branderhorst
+        // Force an update of the navigation pane to solve issue 323
+        ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
     public void removeElement() {
@@ -180,6 +197,10 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
             if(newTarget != null) {
                 navigateTo(newTarget);
             }
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 

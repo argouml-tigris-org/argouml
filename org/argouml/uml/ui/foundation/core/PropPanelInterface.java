@@ -34,6 +34,8 @@ import java.awt.*;
 import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 
 public class PropPanelInterface extends PropPanelClassifier {
@@ -103,6 +105,10 @@ public class PropPanelInterface extends PropPanelClassifier {
         MInterface newInterface = iface.getFactory().createInterface();
         iface.getNamespace().addOwnedElement(newInterface);
         navigateTo(newInterface);
+        // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
   }
 

@@ -42,6 +42,7 @@ import java.awt.*;
 import java.util.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.*;
 
 import org.tigris.gef.util.*;
@@ -234,7 +235,14 @@ public class PropPanelStimulus extends PropPanelModelElement {
 	MModelElement newTarget = (MModelElement) target.getNamespace();
                 
         MMUtil.SINGLETON.remove(target);
-	if(newTarget != null) navigateTo(newTarget);
+		if(newTarget != null) { 
+			navigateTo(newTarget);
+		}
+			 // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
+            
     }
 
 }

@@ -143,6 +143,10 @@ public class PropPanelAttribute extends PropPanelModelElement {
 		MAttribute attr = MMUtil.SINGLETON.buildAttribute(owner);
                 navigateTo(attr);
             }
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 

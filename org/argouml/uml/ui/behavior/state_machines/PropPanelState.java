@@ -35,6 +35,7 @@ import java.util.*;
 
 import javax.swing.*;
 
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 
 import ru.novosoft.uml.MFactory;
@@ -122,6 +123,10 @@ public abstract class PropPanelState extends PropPanelStateVertex {
             entryAction = factory.createCallAction();
             entryAction.setName("anon");
             ((MState) target).setEntry(entryAction);
+             // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
         return entryAction;
     }
@@ -130,6 +135,10 @@ public abstract class PropPanelState extends PropPanelStateVertex {
         Object target = getTarget();
         if(target instanceof MState) {
             ((MState) target).setEntry(null);
+             // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -150,6 +159,10 @@ public abstract class PropPanelState extends PropPanelStateVertex {
             exitAction = factory.createCallAction();
             exitAction.setName("anon");
             ((MState) target).setExit(exitAction);
+             // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
         return exitAction;
     }
@@ -158,6 +171,10 @@ public abstract class PropPanelState extends PropPanelStateVertex {
         Object target = getTarget();
         if(target instanceof MState) {
             ((MState) target).setExit(null);
+             // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -178,6 +195,10 @@ public abstract class PropPanelState extends PropPanelStateVertex {
             doActivity = factory.createCallAction();
             doActivity.setName("anon");
             ((MState) target).setDoActivity(doActivity);
+             // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
         return doActivity;
     }
@@ -186,6 +207,10 @@ public abstract class PropPanelState extends PropPanelStateVertex {
         Object target = getTarget();
         if(target instanceof MState) {
             ((MState) target).setDoActivity(null);
+             // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -209,6 +234,10 @@ public abstract class PropPanelState extends PropPanelStateVertex {
             transition.setSource(state);
             transition.setTarget(state);
             ((MState) target).addInternalTransition(transition);
+             // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
         return transition;
     }

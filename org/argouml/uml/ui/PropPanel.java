@@ -581,6 +581,10 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
                 navigateTo(newTarget);
             }
         }
+        // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
     public boolean isAcceptibleStereotype(MModelElement element) {

@@ -700,10 +700,20 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
             while(iter2.hasNext()) {
                 UMLComboBoxEntry entry = (UMLComboBoxEntry) iter2.next();
+                // 2002-07-13
+                // Jaap Branderhorst
+                // the next if statement doesn't work since the element from the model
+                // equals the currentObj but is not the same object in case of an abstraction
+                // with a stereotype.
+                // this is an error while constructing the abstraction probably.
 
                 if(!(entry.isPhantom()) &&
                    (entry.getElement(model) == currentObj)) {
                     _selectedItem = entry;
+                    // 2002-07-15
+                    // Jaap Branderhorst
+                    // probably good idea for performance to break out of the while loop
+                    break;
                 }
             }
         }

@@ -37,6 +37,7 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
 
@@ -231,6 +232,10 @@ public class PropPanelUseCase extends PropPanelClassifier {
                 navigateTo(useCase);
             }
         }
+        // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
 
@@ -262,6 +267,10 @@ public class PropPanelUseCase extends PropPanelClassifier {
                 ns.addOwnedElement(extensionPoint);
 
                 navigateTo(extensionPoint);
+                // 2002-07-15
+            	// Jaap Branderhorst
+            	// Force an update of the navigation pane to solve issue 323
+            	ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             }
         }
     }
