@@ -43,7 +43,7 @@ public class PropPanelSimpleState extends PropPanelState {
 
     public PropPanelSimpleState(String name, ImageIcon icon,
             Orientation orientation) {
-        super("Simple State", _stateIcon, ConfigLoader.getTabPropsOrientation());
+        super(name, _stateIcon, ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());

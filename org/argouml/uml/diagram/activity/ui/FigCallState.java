@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,40 +22,59 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+//File: FigCallState.java
+//Classes: FigCallState
+//Original Author: MVW
 
 package org.argouml.uml.diagram.activity.ui;
 
-import org.argouml.model.ModelFacade;
-import org.argouml.uml.diagram.state.ui.StateDiagramRenderer;
-import org.tigris.gef.base.Layer;
+
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.FigNode;
 
 
-/**
- * 
- * @author mkl
- *
+/** Class to display graphics for a UML CallState in a diagram. 
+ * The UML 1.3 standard does not contain a description of CallState 
+ * in the Notation Guide chapters. The later UML versions correct this omission.
+ * So, for UML 1.3 it looks the same as an ActionState. 
+ * The only difference with an ActionState is 
+ * the extra Well-Formedness rule for a CallState.
  */
-public class ActivityDiagramRenderer extends StateDiagramRenderer {
-
-    /** Return a Fig that can be used to represent the given node
-     *  
-     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, java.lang.Object)
+public class FigCallState extends FigActionState {
+    
+    ////////////////////////////////////////////////////////////////
+    // constructors
+    
+    /**
+     * Main Constructor FigCallState (called from file loading)
      */
-    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-        if (ModelFacade.isAPartition(node)) {
-            return new FigPartition(gm, node);
-        }
-        if (ModelFacade.isACallState(node)) {
-            return new FigCallState(gm, node);
-        }
-        if (ModelFacade.isAObjectFlowState(node)) {
-            return new FigObjectFlowState(gm, node);
-        }
-        if (ModelFacade.isASubactivityState(node)) {
-            return new FigSubactivityState(gm, node);
-        }
-        return super.getFigNodeFor(gm, lay, node);
+    public FigCallState() {
+        super();
     }
-}
+    
+    /**
+     * Constructor FigCallState that hooks the Fig into 
+     * an existing UML model element
+     * @param gm ignored!
+     * @param node owner, i.e. the UML element
+     */
+    public FigCallState(GraphModel gm, Object node) {
+        this();
+        setOwner(node);
+    }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
+     */
+    public String placeString() {
+        return "new CallState";
+    }
+    
+    /**
+     * @see java.lang.Object#clone()
+     */
+    public Object clone() {
+        FigCallState figClone = (FigCallState) super.clone();
+        return figClone;
+    }
+        
+} /* end class FigCallState */

@@ -41,7 +41,7 @@ public class PropPanelCallState extends PropPanelActionState {
      *  
      */
     public PropPanelCallState() {
-        this("Action State", _actionStateIcon, ConfigLoader
+        this("CallState", _callStateIcon, ConfigLoader
                 .getTabPropsOrientation());
     }
 

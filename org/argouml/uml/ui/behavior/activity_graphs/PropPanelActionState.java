@@ -51,7 +51,7 @@ public class PropPanelActionState extends PropPanelState {
     public PropPanelActionState(String name, ImageIcon icon,
             Orientation orientation) {
 
-        super("Action State", _actionStateIcon, orientation);
+        super(name, _actionStateIcon, orientation);
 
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());

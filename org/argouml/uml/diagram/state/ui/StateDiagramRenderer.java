@@ -71,15 +71,12 @@ import org.tigris.gef.presentation.FigNode;
 public class StateDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer
 {
-    /** @deprecated by MVW in 0.16. Use LOG instead.
-    */
-    protected static Logger cat = 
-        Logger.getLogger(StateDiagramRenderer.class);
-    
     private static final Logger LOG = 
         Logger.getLogger(StateDiagramRenderer.class);
 
-    /** Return a Fig that can be used to represent the given node 
+    /** 
+     * Return a Fig that can be used to represent the given node 
+     *
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, java.lang.Object)
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {

@@ -76,6 +76,14 @@ public final class ResourceLoaderWrapper {
 	ResourceLoader.lookupIconResource("SignalSending");
     private static ImageIcon commentIcon =
 	ResourceLoader.lookupIconResource("Note");
+    private static ImageIcon callStateIcon =
+        ResourceLoader.lookupIconResource("CallState");
+    private static ImageIcon objectFlowStateIcon =
+        ResourceLoader.lookupIconResource("ObjectFlowState");
+    private static ImageIcon subactivityStateIcon =
+        ResourceLoader.lookupIconResource("SubactivityState");
+
+
 
     private Hashtable iconCache = new Hashtable();
 
@@ -260,10 +268,10 @@ public final class ResourceLoaderWrapper {
 		if (helper.equalsINITIALKind(kind)) {
 		    icon = initialStateIcon;
 		}
-		if (helper.equalsDEEP_HISTORYKind(kind)) {
+		if (helper.equalsDeepHistoryKind(kind)) {
 		    icon = deepIcon;
 		}
-		if (helper.equalsSHALLOW_HISTORYKind(kind)) {
+		if (helper.equalsShallowHistoryKind(kind)) {
 		    icon = shallowIcon;
 		}
 		if (helper.equalsFORKKind(kind)) {

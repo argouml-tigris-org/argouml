@@ -46,6 +46,8 @@ public final class Uml {
 
     /** Get a map containing entries for all the name/identifier pairs
      * identified by Argo
+     * TODO: MVW: This function is not used withing ArgoUML, 
+     * except in the junit tests. So, what is it doing here?
      * 
      * @return a collection of all recognized Uml class types
      */
@@ -459,7 +461,7 @@ public final class Uml {
         umlClassList.add(Uml.BOOLEAN_EXPRESSION);
         umlClassList.add(Uml.CALL_ACTION);
         umlClassList.add(Uml.CALL_EVENT);
-        umlClassList.add(Uml.CALL_STATE);
+        //umlClassList.add(Uml.CALL_STATE);
         umlClassList.add(Uml.CHANGE_EVENT);
         umlClassList.add(Uml.CLASS);
         umlClassList.add(Uml.CLASSIFIER);
@@ -509,7 +511,7 @@ public final class Uml {
         umlClassList.add(Uml.NODE);
         umlClassList.add(Uml.NODE_INSTANCE);
         umlClassList.add(Uml.OBJECT);
-        umlClassList.add(Uml.OBJECT_FLOW_STATE);
+        //umlClassList.add(Uml.OBJECT_FLOW_STATE);
         umlClassList.add(Uml.OBJECT_SET_EXPRESSION);
         umlClassList.add(Uml.OPERATION);
         umlClassList.add(Uml.PACKAGE);
@@ -533,7 +535,7 @@ public final class Uml {
         umlClassList.add(Uml.STIMULUS);
         umlClassList.add(Uml.STRUCTURAL_FEATURE);
         umlClassList.add(Uml.STUB_STATE);
-        umlClassList.add(Uml.SUBACTIVITY_STATE);
+        //umlClassList.add(Uml.SUBACTIVITY_STATE);
         umlClassList.add(Uml.SUBMACHINE_STATE);
         umlClassList.add(Uml.SUBSYSTEM);
         umlClassList.add(Uml.SYNCH_STATE);

@@ -44,9 +44,11 @@ import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MExtension;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
+import ru.novosoft.uml.behavior.activity_graphs.MCallState;
 import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
 import ru.novosoft.uml.behavior.activity_graphs.MObjectFlowState;
 import ru.novosoft.uml.behavior.activity_graphs.MPartition;
+import ru.novosoft.uml.behavior.activity_graphs.MSubactivityState;
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
@@ -241,6 +243,9 @@ public class ModelFacade {
     public static final Object PSEUDOSTATE = MPseudostate.class;
     public static final Object FINALSTATE = MFinalState.class;
     public static final Object USE_CASE = MUseCase.class;
+    public static final Object CALLSTATE = MCallState.class;
+    public static final Object OBJECTFLOWSTATE = MObjectFlowState.class;
+    public static final Object SUBACTIVITYSTATE = MSubactivityState.class;
 
     // Invisible model elements
     public static final Object ACTION = MAction.class;
@@ -429,6 +434,36 @@ public class ModelFacade {
      */
     public static boolean isAActionState(Object handle) {
         return handle instanceof MActionState;
+    }
+
+    /**
+     * Recognizer for CallState
+     *
+     * @param handle candidate
+     * @return true if handle is an call state
+     */
+    public static boolean isACallState(Object handle) {
+        return handle instanceof MCallState;
+    }
+
+    /**
+     * Recognizer for ObjectFlowState
+     *
+     * @param handle candidate
+     * @return true if handle is an objectflow state
+     */
+    public static boolean isAObjectFlowState(Object handle) {
+        return handle instanceof MObjectFlowState;
+    }
+
+    /**
+     * Recognizer for SubactivityState
+     *
+     * @param handle candidate
+     * @return true if handle is an subactivity state
+     */
+    public static boolean isASubactivityState(Object handle) {
+        return handle instanceof MSubactivityState;
     }
 
     /**

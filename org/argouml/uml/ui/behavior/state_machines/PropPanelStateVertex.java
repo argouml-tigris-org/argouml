@@ -54,6 +54,9 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
     protected static ImageIcon _compositeStateIcon = ResourceLoaderWrapper
             .lookupIconResource("CompositeState");
 
+    protected static ImageIcon _submachineStateIcon = ResourceLoaderWrapper
+        .lookupIconResource("SubmachineState");
+
     protected static ImageIcon _simpleStateIcon = ResourceLoaderWrapper
             .lookupIconResource("SimpleState");
 
@@ -74,6 +77,15 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
 
     protected static ImageIcon _joinIcon = ResourceLoaderWrapper
             .lookupIconResource("Join");
+    
+    protected static ImageIcon _callStateIcon = ResourceLoaderWrapper
+            .lookupIconResource("CallState");
+    
+    protected static ImageIcon _objectFlowStateIcon = ResourceLoaderWrapper
+            .lookupIconResource("ObjectFlowState");
+    
+    protected static ImageIcon _subactivityStateIcon = ResourceLoaderWrapper
+            .lookupIconResource("SubactivityState");
 
     protected static ImageIcon _transitionIcon = ResourceLoaderWrapper
             .lookupIconResource("Transition");
