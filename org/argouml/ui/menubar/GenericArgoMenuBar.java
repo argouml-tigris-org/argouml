@@ -373,20 +373,14 @@ public class GenericArgoMenuBar extends JMenuBar
         _view.addSeparator();
 
         JMenu zoom = (JMenu) _view.add(new JMenu(menuLocalize("Zoom")));
-        // zoom.add(new ActionZoom(10));
-        // zoom.add(new ActionZoom(25));
-        // zoom.add(new ActionZoom(50));
-        // zoom.add(new ActionZoom(75));
-        // zoom.add(new ActionZoom(100));
-        // zoom.add(new ActionZoom(150));
+      
         JMenuItem zoomOut = zoom.add(new CmdZoom(0.9));
         zoomOut.setAccelerator(ctrlMinus);
 
         zoom.add(new CmdZoom(0.0));
 
-        JMenuItem zoomIn = zoom.add(new CmdZoom(1.1));
+        JMenuItem zoomIn = zoom.add(new CmdZoom((1.0)/(0.9)));
         zoomIn.setAccelerator(ctrlEquals);
-
 
         _view.addSeparator();
 
