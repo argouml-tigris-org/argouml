@@ -31,12 +31,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import uci.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
-import com.sun.java.swing.text.*;
-import com.sun.java.swing.table.*;
-import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+import javax.swing.text.*;
+import javax.swing.table.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;

@@ -32,8 +32,8 @@ import java.util.*;
 import java.net.*;
 import java.beans.*;
 import java.io.File;
-import com.sun.java.swing.*;
-import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
 import uci.uml.ui.*;

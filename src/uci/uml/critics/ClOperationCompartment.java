@@ -25,7 +25,7 @@
 package uci.uml.critics;
 
 import java.awt.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.gef.*;

@@ -24,9 +24,9 @@
 package uci.uml.ui.nav;
 
 import java.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
 
 import uci.gef.Diagram;
 import uci.uml.Model_Management.*;
@@ -46,7 +46,7 @@ public class GoDiagramToEdge implements TreeModelPrereqs {
       Vector edges = ((Diagram)parent).getEdges();
       return edges.elementAt(index);
     }
-    System.out.println("getChild should never be get here GoModelToElements");
+    System.out.println("getChild should never be get here GoDiagramToEdge");
     return null;
   }
 
@@ -60,7 +60,7 @@ public class GoDiagramToEdge implements TreeModelPrereqs {
 
   public int getIndexOfChild(Object parent, Object child) {
     if (parent instanceof Diagram) {
-      Vector edges = ((Diagram)child).getEdges();
+      Vector edges = ((Diagram)parent).getEdges();
       if (edges.contains(child)) return edges.indexOf(child);
     }
     return -1;

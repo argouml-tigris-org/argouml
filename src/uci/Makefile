@@ -4,10 +4,12 @@ include ../Makefile.config
 
 all: classes archive
 
-classes: gefDir umlDir argoumlDir criticsDir swingDir
+classes: gefDir umlDir argoumlDir criticsDir
 
+#swingDir
 
-archive:: objdir gefDir umlDir argoumlDir criticsDir swingDir
+#swingDir
+archive:: objdir gefDir umlDir argoumlDir criticsDir 
 	@if [ ! -d $(OUT_DIR)/xml/dtd ] ; \
 		then $(MKDIR) $(OUT_DIR)/xml/dtd ; \
 	fi
@@ -21,7 +23,8 @@ archive:: objdir gefDir umlDir argoumlDir criticsDir swingDir
 	$(COPY) COPYRIGHT $(OUT_DIR)
 
 
-clean: gefDir umlDir argoumlDir criticsDir swingDir
+clean: gefDir umlDir argoumlDir criticsDir
+# swingDir
 
 processDir:
 	@echo
@@ -54,16 +57,17 @@ UML_DIRS= uml/Foundation/Core                   \
 
 ARGOUML_DIRS= argo/kernel        \
 	argo/checklist           \
-	uml                      \
 	uml/ui                   \
 	uml/ui/nav               \
 	uml/ui/todo              \
 	uml/ui/props             \
 	uml/ui/table             \
 	uml/ui/style             \
+	uml/ui/colorize          \
 	uml/visual               \
 	xml/xmi                  \
-	xml/argo
+	xml/argo                 \
+	uml                      
 
 CRITICS_DIRS= uml/checklist       \
 	uml/critics               \
@@ -72,10 +76,10 @@ CRITICS_DIRS= uml/checklist       \
 	uml/critics/presentation
 
 
-SWING_DIR=../com/sun/java
-SWING_DIRS=$(SWING_DIR)/swing         \
-	$(SWING_DIR)/swing/text       \
-	$(SWING_DIR)/swing/plaf/metal 
+#SWING_DIR=../com/sun/java
+#SWING_DIRS=$(SWING_DIR)/swing         \
+#	$(SWING_DIR)/swing/text       \
+#	$(SWING_DIR)/swing/plaf/metal 
 
 
 gefDir:
@@ -110,9 +114,9 @@ criticsDir:
 		$(MAKE) TARGET=$(TARGET) DIR=$$d processDir ; done
 
 
-swingDir:
-	@echo
-	@echo
-	@echo "PROCESSING SWING MODIFICATIONS ========="
-	test ! -d $(SWING_DIR) || for d in $(SWING_DIRS) ; do \
-		$(MAKE) TARGET=$(TARGET) DIR=$$d processDir ; done
+#swingDir:
+#	@echo
+#	@echo
+#	@echo "PROCESSING SWING MODIFICATIONS ========="
+#	test ! -d $(SWING_DIR) || for d in $(SWING_DIRS) ; do \
+#		$(MAKE) TARGET=$(TARGET) DIR=$$d processDir ; done

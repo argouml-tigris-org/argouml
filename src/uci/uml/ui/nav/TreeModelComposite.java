@@ -24,9 +24,9 @@
 package uci.uml.ui.nav;
 
 import java.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
 
 import uci.argo.kernel.ToDoItem;
 
@@ -139,7 +139,7 @@ implements TreeModel, Cloneable {
     System.out.println("TreeModelComposite should never get here");
     return null;
   }
-  
+
   public int getChildCount(Object parent) {
     if (_flat && parent == _root) {
       return _flatChildren.size();
@@ -152,7 +152,7 @@ implements TreeModel, Cloneable {
     }
     return childCount;
   }
-  
+
   public int getIndexOfChild(Object parent, Object child) {
     if (_flat && parent == _root) {
       return _flatChildren.indexOf(child);
@@ -165,7 +165,8 @@ implements TreeModel, Cloneable {
       if (childIndex != -1) return childIndex + childCount;
       childCount += tm.getChildCount(parent);
     }
-    System.out.println("child not found!");
+    //System.out.println("child not found!");
+    //The child is sometimes not found when the tree is being updated
     return 0;
   }
 

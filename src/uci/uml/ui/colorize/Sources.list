@@ -1,0 +1,7 @@
+SOURCES= \
+	JavaContext.java \
+	JavaDocument.java \
+	JavaEditorKit.java \
+	TabJavaSrc.java \
+	Token.java
+

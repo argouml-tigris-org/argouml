@@ -3080,8 +3080,12 @@
 <!ENTITY % targetState 'targetState' >
 <!ELEMENT targetState (XMI.reference) >
 
+
+
+<!-- jer 99/03/16: allowed empty trigger -->
+
 <!ENTITY % trigger 'trigger' >
-<!ELEMENT trigger (SignalEvent | CallEvent | TimeEvent | ChangeEvent) >
+<!ELEMENT trigger (SignalEvent | CallEvent | TimeEvent | ChangeEvent)? >
 
 <!ENTITY % TransitionAssociations '%ModelElementAssociations;,
                                    %sourceState;,

@@ -86,14 +86,18 @@ public class StateMachine extends ModelElementImpl {
   }
   public void addTransition(Transition x) throws PropertyVetoException {
     if (_transitions == null) _transitions = new Vector();
+    if (_transitions.contains(x)) return;
     fireVetoableChange("transitions", _transitions, x);
     _transitions.addElement(x);
+    x.setStateMachine(this);
     x.setNamespace(getNamespace());
   }
   public void removeTransition(Transition x) throws PropertyVetoException {
     if (_transitions == null) return;
+    if (!_transitions.contains(x)) return;
     fireVetoableChange("transitions", _transitions, x);
     _transitions.removeElement(x);
+    x.setStateMachine(null);
   }
 
   public Vector getSubmachineState() { return _submachineState; }

@@ -26,9 +26,6 @@ SOURCES= \
 	JasonsBigTheme.java \
 	JasonsHugeTheme.java \
 	JasonsTheme.java \
-	JavaContext.java \
-	JavaDocument.java \
-	JavaEditorKit.java \
 	Menu.java \
 	ModelElementRenderer.java \
 	MultiEditorPane.java \
@@ -53,7 +50,6 @@ SOURCES= \
 	TabFigTarget.java \
 	TabHash.java \
 	TabHistory.java \
-	TabJavaSrc.java \
 	TabModelTarget.java \
 	TabProps.java \
 	TabResults.java \
@@ -68,7 +64,6 @@ SOURCES= \
 	TabUMLDisplay.java \
 	ToDoPane.java \
 	ToDoTreeRenderer.java \
-	Token.java \
 	Trash.java \
 	UMLAction.java \
 	UMLListCellRenderer.java \

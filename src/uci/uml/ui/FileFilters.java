@@ -25,9 +25,9 @@
 package uci.uml.ui;
 
 import java.io.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.preview.*;
-import com.sun.java.swing.preview.filechooser.*;
+import javax.swing.*;
+//import javax.swing.preview.*;
+import javax.swing.filechooser.*;
 
 public class FileFilters {
 

@@ -24,9 +24,9 @@
 package uci.uml.ui.nav;
 
 import java.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
 
 import uci.gef.Diagram;
 import uci.graph.GraphModel;
@@ -61,7 +61,7 @@ public class GoDiagramToNode implements TreeModelPrereqs {
 
   public int getIndexOfChild(Object parent, Object child) {
     if (parent instanceof Diagram) {
-      Vector nodes = ((Diagram)child).getNodes();
+      Vector nodes = ((Diagram)parent).getNodes();
       if (nodes.contains(child)) return nodes.indexOf(child);
     }
     return -1;

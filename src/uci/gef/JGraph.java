@@ -28,9 +28,9 @@ package uci.gef;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.border.*;
-import com.sun.java.swing.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.event.*;
 
 import uci.ui.*;
 import uci.graph.*;
@@ -50,7 +50,7 @@ public class JGraph extends JPanel implements Cloneable {
   protected Editor _editor;
   protected JGraphInternalPane _drawingPane;
   protected JScrollPane _scroll;
-  
+
   ////////////////////////////////////////////////////////////////
   // constructor
 
@@ -116,7 +116,7 @@ public class JGraph extends JPanel implements Cloneable {
     int ctrl = KeyEvent.CTRL_MASK;
     int ctrlShift = KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK;
     int alt = KeyEvent.ALT_MASK;
-    
+
     bindKey(new CmdSelectNext(true), KeyEvent.VK_TAB, 0);
     bindKey(new CmdSelectNext(false), KeyEvent.VK_TAB, shift);
 
@@ -150,7 +150,7 @@ public class JGraph extends JPanel implements Cloneable {
 					KeyStroke.getKeyStroke(keyCode, modifiers),
 					WHEN_FOCUSED);
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // accessors
 
@@ -170,7 +170,7 @@ public class JGraph extends JPanel implements Cloneable {
   public void setDrawingSize(int width, int height) {
     _drawingPane.setPreferredSize(new Dimension(width, height));
   }
-  
+
   /** Get and set the GraphModel the Editor is using. */
   public void setGraphModel(GraphModel gm) { _editor.setGraphModel(gm); }
   public GraphModel getGraphModel() { return _editor.getGraphModel(); }
@@ -198,15 +198,14 @@ public class JGraph extends JPanel implements Cloneable {
     _drawingPane.setVisible(b);
     _editor.setActiveTextEditor(null);
   }
-  
+
   /** Tell Swing/AWT that JGraph handles tab-order itself. */
   public boolean isManagingFocus() { return true; }
 
   /** Tell Swing/AWT that JGraph can be tabbed into. */
   public boolean isFocusTraversable() { return true; }
-  
 
-  
+
   ////////////////////////////////////////////////////////////////
   // events
 
@@ -290,7 +289,7 @@ public class JGraph extends JPanel implements Cloneable {
   public void toggleItems(Vector items) {
     _editor.getSelectionManager().toggle(items);
   }
-  
+
   /** reply a Vector of all selected Figs. Used in many Cmds.*/
   public Vector selectedFigs() {
     return _editor.getSelectionManager().getFigs();
@@ -345,6 +344,17 @@ class JGraphInternalPane extends JPanel {
 		   bounds.width + 1, bounds.height + 1);
     }
     return res;
+  }
+
+  public void setToolTipText(String text) {
+    if ("".equals(text)) text = null;
+    putClientProperty(TOOL_TIP_TEXT_KEY, text);
+    ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
+    //if (text != null) {
+    toolTipManager.registerComponent(this);
+    //} else {
+    //    toolTipManager.unregisterComponent(this);
+    //}
   }
 
   /** Tell Swing/AWT that JGraph handles tab-order itself. */

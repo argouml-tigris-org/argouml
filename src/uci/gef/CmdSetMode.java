@@ -32,7 +32,7 @@
 package uci.gef;
 
 import java.util.*;
-import com.sun.java.swing.ImageIcon;
+import javax.swing.ImageIcon;
 
 /** Cmd that sets the next global editor mode. The global editor
  *  mode effects the next editor that you move the mouse into. For

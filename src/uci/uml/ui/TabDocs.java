@@ -30,10 +30,10 @@ package uci.uml.ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
-//import com.sun.java.swing.border.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+//import javax.swing.border.*;
 
 import uci.util.*;
 import uci.gef.*;

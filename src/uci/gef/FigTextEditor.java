@@ -34,9 +34,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.text.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.text.*;
+import javax.swing.border.*;
 
 import uci.ui.*;
 import uci.util.*;
@@ -51,7 +52,7 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
   JPanel _glass;
   boolean _editing = false;
 
-  public static int EXTRA = 5;
+  public static int EXTRA = 2;
 
 
   /** Needs-more-work: does not open if I use tab to select the
@@ -106,6 +107,7 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
       setSelectionStart(getDocument().getLength());
       setSelectionEnd(getDocument().getLength());
     }
+    setBorder(LineBorder.createGrayLineBorder());
   }
 
   public void propertyChange(PropertyChangeEvent pve) { updateFigText(); }
@@ -156,8 +158,7 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
     //else super.keyTyped(ke);
   }
 
-  public void keyReleased(KeyEvent ke) {
-  }
+  public void keyReleased(KeyEvent ke) { }
 
   public void keyPressed(KeyEvent ke) {
     if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -189,9 +190,9 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
   // event handlers for DocumentListener implementaion
 
   public void insertUpdate(DocumentEvent e) { updateFigText(); }
-  
+
   public void removeUpdate(DocumentEvent e) { updateFigText(); }
-  
+
   public void changedUpdate(DocumentEvent e) { updateFigText(); }
 
 

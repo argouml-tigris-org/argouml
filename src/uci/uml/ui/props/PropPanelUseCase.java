@@ -35,13 +35,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
-import com.sun.java.swing.text.*;
-import com.sun.java.swing.border.*;
-import com.sun.java.swing.table.*;
-import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+import javax.swing.text.*;
+import javax.swing.border.*;
+import javax.swing.table.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
@@ -88,8 +88,8 @@ public class PropPanelUseCase extends PropPanel {
     //_extPts.getSelectionModel().addListSelectionListener(this);
     _extPts.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
-    TableColumn descCol = _extPts.getColumnModel().getColumn(0);
-    descCol.setMinWidth(50);
+    //TableColumn descCol = _extPts.getColumnModel().getColumn(0);
+    //descCol.setMinWidth(50);
 
 
 //     SpacerPanel spacer1 = new SpacerPanel();
@@ -147,8 +147,9 @@ public class PropPanelUseCase extends PropPanel {
     // set the values to be shown in all widgets based on model
 
     _tableModel.setTarget(uc);
-    TableColumn descCol = _extPts.getColumnModel().getColumn(0);
-    descCol.setMinWidth(50);
+//     TableColumn descCol = _extPts.getColumnModel().getColumn(0);
+//     descCol.setMinWidth(50);
+    _extPts.sizeColumnsToFit(0);
     validate();
   }
 

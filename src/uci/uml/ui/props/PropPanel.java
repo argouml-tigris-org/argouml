@@ -31,11 +31,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
-import com.sun.java.swing.text.*;
-//import com.sun.java.swing.border.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+import javax.swing.text.*;
+//import javax.swing.border.*;
 
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
@@ -128,6 +128,8 @@ implements TabModelTarget, DocumentListener {
       _inChange = true;
       ModelElement me = (ModelElement) _target;
       String n = me.getName().getBody();
+      // this is a small hack to get the text to update for an empty string
+      if (n.equals("")) _nameField.setText(" ");
       _nameField.setText(n);
       _nameField.setCaretPosition(0);
       Vector stereos = me.getStereotype();

@@ -29,9 +29,9 @@ package uci.uml.ui.todo;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.border.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.border.*;
 
 import uci.util.*;
 import uci.argo.kernel.*;
@@ -51,7 +51,7 @@ public class WizStepCue extends WizStep {
   public WizStepCue(Wizard w, String cue) {
     // store wizard?
     _instructions.setText(cue);
-
+    _instructions.setWrapStyleWord(true);
     _instructions.setEditable(false);
     _instructions.setBorder(null);
     _instructions.setBackground(_mainPanel.getBackground());
@@ -66,9 +66,10 @@ public class WizStepCue extends WizStep {
     c.weightx = 0.0; c.weighty = 0.0;
     c.anchor = GridBagConstraints.EAST;
 
-    // needs-more-work: should have an image of a wizard or some logo
-    SpacerPanel image = new SpacerPanel(50, 100);
-    image.setBorder(new EtchedBorder());
+    JButton image = new JButton("");
+    image.setMargin(new Insets(0, 0, 0, 0));
+    image.setIcon(WIZ_ICON);
+    image.setBorder(null);
     c.gridx = 0;
     c.gridheight = GridBagConstraints.REMAINDER;
     c.gridy = 0;

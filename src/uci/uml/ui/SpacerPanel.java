@@ -29,7 +29,7 @@
 package uci.uml.ui;
 
 import java.awt.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 /** A Swing panel that displays nothing, but takes up a specified
  *  amount of space.  Used to make panels with GridBagLayouts look

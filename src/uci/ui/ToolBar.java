@@ -27,9 +27,9 @@ import java.util.*;
 import java.beans.*;
 import java.awt.*;
 import java.awt.event.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.border.*;
-import com.sun.java.swing.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.event.*;
 
 import uci.gef.*;
 
@@ -205,6 +205,7 @@ public class ToolBar extends JToolBar implements MouseListener {
       JButton b = (JButton) src;
       if (canLock(b)) {
 	b.getModel().setPressed(true);
+	b.getModel().setArmed(true);
 	uci.gef.Globals.setSticky(true);
       }
     }

@@ -36,7 +36,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.beans.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 import uci.util.*;
 import uci.ui.*;

@@ -32,10 +32,10 @@ import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
 
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.table.*;
-import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.table.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
 import uci.uml.Foundation.Core.*;

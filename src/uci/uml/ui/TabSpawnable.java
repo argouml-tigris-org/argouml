@@ -28,7 +28,7 @@ package uci.uml.ui;
 
 import java.awt.*;
 import java.util.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 /** A subclass of JPanel that can act as a tab in the DetailsPane or
  *  MultiEditorPane.  When the tab is double-clicked, this JPanel will

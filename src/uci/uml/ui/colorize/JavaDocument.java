@@ -40,14 +40,14 @@
  * THIS SOFTWARE OR ITS DERIVATIVES.
  *
  */
-package uci.uml.ui;
+package uci.uml.ui.colorize;
 
 import java.io.*;
 import java.util.Vector;
 import java.awt.Color;
 
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.text.*;
+import javax.swing.event.*;
+import javax.swing.text.*;
 
 /**
  * A document to represent text in the form of the

@@ -29,10 +29,10 @@ package uci.uml.ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
-import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.ui.ToolBar;
 import uci.util.*;

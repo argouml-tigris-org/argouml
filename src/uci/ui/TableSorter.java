@@ -43,18 +43,18 @@ package uci.ui;
 
 import java.util.*;
 
-import com.sun.java.swing.table.TableModel;
-import com.sun.java.swing.event.TableModelEvent;
+import javax.swing.table.TableModel;
+import javax.swing.event.TableModelEvent;
 
 // Imports for picking up mouse events from the JTable. 
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.InputEvent;
-import com.sun.java.swing.JTable;
-import com.sun.java.swing.table.JTableHeader;
-import com.sun.java.swing.table.TableColumn;
-import com.sun.java.swing.table.TableColumnModel;
+import javax.swing.JTable;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 public class TableSorter extends TableMap
 {

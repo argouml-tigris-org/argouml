@@ -38,7 +38,7 @@ import java.io.Serializable;
 
 import uci.util.*;
 import uci.gef.event.*;
-import com.sun.java.swing.event.EventListenerList;
+import javax.swing.event.EventListenerList;
 
 /** ModeManager keeps track of all the Modes for a given Editor.
  *  Events are passed to the Modes for handling.  The submodes are

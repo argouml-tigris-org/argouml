@@ -35,9 +35,9 @@
 
 package uci.ui;
 
-import com.sun.java.swing.table.*;
-import com.sun.java.swing.event.TableModelListener;
-import com.sun.java.swing.event.TableModelEvent;
+import javax.swing.table.*;
+import javax.swing.event.TableModelListener;
+import javax.swing.event.TableModelEvent;
 
 public class TableMap extends AbstractTableModel implements TableModelListener
 {

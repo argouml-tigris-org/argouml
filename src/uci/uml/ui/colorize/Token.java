@@ -40,7 +40,7 @@
  * THIS SOFTWARE OR ITS DERIVATIVES.
  *
  */
-package uci.uml.ui;
+package uci.uml.ui.colorize;
 
 import java.io.Serializable;
 import sun.tools.java.Constants;

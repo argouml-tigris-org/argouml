@@ -23,9 +23,9 @@
 
 package uci.ui;
 
-import com.sun.java.swing.table.*;
+import javax.swing.table.*;
 
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 
 public class JSortedTable extends JTable {

@@ -27,10 +27,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.text.Document;
-import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.text.Document;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
 import uci.ui.*;
@@ -110,6 +110,8 @@ public class TablePanelUMLClassDiagram extends TablePanel {
     super.valueChanged(lse);
     if (lse.getValueIsAdjusting()) return;
     Object src = lse.getSource();
+    _table2.sizeColumnsToFit(-1);
+    _table3.sizeColumnsToFit(-1);
     if (src == _table2.getSelectionModel()) {
       int row = lse.getFirstIndex();
       if (_tableModelOper != null) {

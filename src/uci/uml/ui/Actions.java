@@ -31,11 +31,11 @@ import java.net.URL;
 import java.beans.*;
 import java.awt.*;
 import java.awt.event.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
-import com.sun.java.swing.preview.*;
-import com.sun.java.swing.preview.filechooser.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+//import javax.swing.preview.*;
+import javax.swing.filechooser.*;
 
 import uci.util.*;
 import uci.gef.*;

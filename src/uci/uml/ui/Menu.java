@@ -27,9 +27,9 @@
 package uci.uml.ui;
 
 import java.awt.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.border.*;
-import com.sun.java.swing.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
+import javax.swing.event.*;
 
 public class Menu extends JMenu {
 

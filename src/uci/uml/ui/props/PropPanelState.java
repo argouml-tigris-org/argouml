@@ -35,13 +35,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
-import com.sun.java.swing.text.*;
-import com.sun.java.swing.table.*;
-import com.sun.java.swing.plaf.metal.*;
-import com.sun.java.swing.border.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+import javax.swing.text.*;
+import javax.swing.table.*;
+import javax.swing.plaf.metal.*;
+import javax.swing.border.*;
 
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
@@ -115,9 +115,9 @@ implements DocumentListener, ItemListener {
     //_internalTable.getSelectionModel().addListSelectionListener(this);
     _internalTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
-    TableColumn descCol = _internalTable.getColumnModel().getColumn(0);
-    descCol.setMinWidth(50);
-
+//     TableColumn descCol = _internalTable.getColumnModel().getColumn(0);
+//     descCol.setMinWidth(50);
+    _internalTable.sizeColumnsToFit(-1);
 
     SpacerPanel spacer1 = new SpacerPanel();
     c.gridx = 0;
@@ -152,7 +152,6 @@ implements DocumentListener, ItemListener {
     add(scroll);
     _internalTable.setTableHeader(null);
 
-    
     _entryField.getDocument().addDocumentListener(this);
     _entryField.setFont(_stereoField.getFont());
     _exitField.getDocument().addDocumentListener(this);
@@ -171,8 +170,9 @@ implements DocumentListener, ItemListener {
     _exitField.setText(GeneratorDisplay.Generate(st.getExit()));
 
     _tableModel.setTarget(st);
-    TableColumn descCol = _internalTable.getColumnModel().getColumn(0);
-    descCol.setMinWidth(50);
+    _internalTable.sizeColumnsToFit(-1);
+//     TableColumn descCol = _internalTable.getColumnModel().getColumn(0);
+//     descCol.setMinWidth(50);
     validate();
   }
 

@@ -21,12 +21,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package uci.uml.ui;
+package uci.uml.ui.colorize;
 
 import java.awt.*;
 import java.util.Vector;
 
-import com.sun.java.swing.text.*;
+import javax.swing.text.*;
 
 /**
  * A collection of styles used to render java text.  

@@ -29,7 +29,7 @@
 package uci.ui;
 
 import java.awt.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 import java.awt.event.*;
 import java.beans.*;
 

@@ -29,9 +29,9 @@ package uci.uml.ui.todo;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.border.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.border.*;
 
 import uci.util.*;
 import uci.argo.kernel.*;
@@ -52,10 +52,11 @@ public class WizStepManyTextFields extends WizStep {
   public WizStepManyTextFields(Wizard w, String instr, Vector strings) {
     // store wizard?
     _instructions.setText(instr);
-
+    _instructions.setWrapStyleWord(true);
     _instructions.setEditable(false);
     _instructions.setBorder(null);
     _instructions.setBackground(_mainPanel.getBackground());
+
 
     _mainPanel.setBorder(new EtchedBorder());
 
@@ -67,9 +68,10 @@ public class WizStepManyTextFields extends WizStep {
     c.weightx = 0.0; c.weighty = 0.0;
     c.anchor = GridBagConstraints.EAST;
 
-    // needs-more-work: should have an image of a wizard or some logo
-    SpacerPanel image = new SpacerPanel(50, 100);
-    image.setBorder(new EtchedBorder());
+    JButton image = new JButton("");
+    image.setMargin(new Insets(0, 0, 0, 0));
+    image.setIcon(WIZ_ICON);
+    image.setBorder(null);
     c.gridx = 0;
     c.gridheight = GridBagConstraints.REMAINDER;
     c.gridy = 0;
@@ -77,12 +79,12 @@ public class WizStepManyTextFields extends WizStep {
     gb.setConstraints(image, c);
     _mainPanel.add(image);
 
-    c.weightx = 1.0;
+    c.weightx = 0.0;
     c.gridx = 2;
     c.gridheight = 1;
     c.gridwidth = 3;
     c.gridy = 0;
-    c.fill = GridBagConstraints.HORIZONTAL;
+    c.fill = GridBagConstraints.NONE;
     gb.setConstraints(_instructions, c);
     _mainPanel.add(_instructions);
 
@@ -103,8 +105,8 @@ public class WizStepManyTextFields extends WizStep {
     for (int i = 0; i < size; i++) {
       c.gridy = 2 + i;
       String s = (String) strings.elementAt(i);
-      JTextField tf = new JTextField(30);
-      tf.setText(s);
+      JTextField tf = new JTextField(s, 50);
+      tf.setMinimumSize(new Dimension(200, 20));
       tf.getDocument().addDocumentListener(this);
       _fields.addElement(tf);
       gb.setConstraints(tf, c);

@@ -24,9 +24,9 @@
 package uci.uml.ui.todo;
 
 import java.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
 
 import uci.argo.kernel.*;
 import uci.uml.ui.nav.TreeModelPrereqs;

@@ -30,7 +30,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.util.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 import uci.gef.*;
 import uci.uml.ui.*;

@@ -27,16 +27,16 @@ package uci.ui;
 import java.awt.*;
 import java.util.*;
 
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
-import com.sun.java.swing.text.*;
-import com.sun.java.swing.border.*;
-import com.sun.java.swing.plaf.basic.*;
-import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+import javax.swing.text.*;
+import javax.swing.border.*;
+import javax.swing.plaf.basic.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 
-public class ColorRenderer extends BasicListCellRenderer {
+public class ColorRenderer extends DefaultListCellRenderer {
   public Component getListCellRendererComponent(JList list,
         Object value, int index, boolean isSelected, 
         boolean cellHasFocus) {

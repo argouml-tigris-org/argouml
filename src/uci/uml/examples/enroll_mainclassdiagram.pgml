@@ -4,7 +4,7 @@
       name="main class diagram"
 >
   <group name="Fig0"
-       description="uci.uml.visual.FigClass[264, 32, 98, 85]"
+       description="uci.uml.visual.FigClass[264, 32, 98, 89]"
        href="S.100078"
        fill="1"
        fillcolor="-1"
@@ -18,7 +18,7 @@
       x="265"
       y="33"
       width="96"
-      height="83"
+      height="87"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -47,7 +47,7 @@
 public String name</text>
     <text name="Fig0.3"
       x="264"
-      y="86"
+      y="88"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -57,7 +57,7 @@ public String name</text>
     ></text>
   </group>
   <group name="Fig1"
-       description="uci.uml.visual.FigClass[272, 184, 131, 85]"
+       description="uci.uml.visual.FigClass[272, 184, 131, 89]"
        href="S.100079"
        fill="1"
        fillcolor="-56"
@@ -71,7 +71,7 @@ public String name</text>
       x="273"
       y="185"
       width="129"
-      height="83"
+      height="87"
       fill="1"
       fillcolor="-56"
       stroke="1"
@@ -100,7 +100,7 @@ public String name</text>
 public int studentID</text>
     <text name="Fig1.3"
       x="272"
-      y="238"
+      y="240"
       fill="1"
       fillcolor="-56"
       stroke="1"
@@ -266,7 +266,7 @@ public int studentID</text>
     ></text>
   </group>
   <group name="Fig5"
-       description="uci.uml.visual.FigClass[48, 40, 98, 81]"
+       description="uci.uml.visual.FigClass[48, 40, 98, 82]"
        href="S.100083"
        fill="1"
        fillcolor="-1"
@@ -280,7 +280,7 @@ public int studentID</text>
       x="49"
       y="41"
       width="96"
-      height="79"
+      height="80"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -305,11 +305,10 @@ public int studentID</text>
       strokecolor="-16777216"
       font="Dialog"
       textsize="9"
-    >public start
-public end</text>
+    ></text>
     <text name="Fig5.3"
       x="48"
-      y="92"
+      y="87"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -319,7 +318,7 @@ public end</text>
     ></text>
   </group>
   <group name="Fig6"
-       description="uci.uml.visual.FigClass[40, 176, 140, 83]"
+       description="uci.uml.visual.FigClass[40, 176, 140, 87]"
        href="S.100084"
        fill="1"
        fillcolor="-1"
@@ -333,7 +332,7 @@ public end</text>
       x="41"
       y="177"
       width="138"
-      height="81"
+      height="85"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -362,7 +361,7 @@ public end</text>
 public String building</text>
     <text name="Fig6.3"
       x="40"
-      y="229"
+      y="231"
       fill="1"
       fillcolor="-1"
       stroke="1"
@@ -609,7 +608,7 @@ public String building</text>
       <moveto x="288"
               y="345" />
       <lineto x="288"
-              y="268" />
+              y="272" />
     </path>
   </group>
   <group name="Fig13"
@@ -632,7 +631,7 @@ public String building</text>
       <moveto x="385"
               y="345" />
       <lineto x="385"
-              y="268" />
+              y="272" />
     </path>
   </group>
   <group name="Fig14"
@@ -676,7 +675,7 @@ public String building</text>
       strokecolor="-16777216"
     >
       <moveto x="88"
-              y="120" />
+              y="121" />
       <lineto x="88"
               y="177" />
     </path>
@@ -699,7 +698,7 @@ public String building</text>
       strokecolor="-16777216"
     >
       <moveto x="288"
-              y="116" />
+              y="120" />
       <lineto x="288"
               y="185" />
     </path>
@@ -719,10 +718,10 @@ public String building</text>
       fill="0"
       fillcolor="-1"
       stroke="1"
-      strokecolor="-12829496"
+      strokecolor="-16777216"
     >
       <moveto x="352"
-              y="116" />
+              y="120" />
       <lineto x="352"
               y="185" />
     </path>

@@ -24,21 +24,22 @@
 
 
 
-package uci.uml.ui;
+package uci.uml.ui.colorize;
 
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
-import com.sun.java.swing.text.*;
-import com.sun.java.swing.plaf.metal.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+import javax.swing.text.*;
+import javax.swing.plaf.metal.*;
 
 import uci.util.*;
 import uci.gef.*;
+import uci.uml.ui.*;
 import uci.uml.generate.*;
 import uci.uml.Foundation.Core.ModelElement;
 

@@ -29,6 +29,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.net.MalformedURLException;
+import javax.swing.*;
 
 /**
  * @author Piotr Kaminski
@@ -73,7 +74,27 @@ public class Util {
       }
     }
     return url;
-}
+  }
+
+  public static ImageIcon loadIconResource(String imgName, String desc) {
+    ImageIcon res = null;
+    try {
+      java.net.URL imgURL = Util.class.getResource(imageName(imgName));
+      if (imgURL == null) return null;
+      //System.out.println(imgName);
+      //System.out.println(imgURL);
+      return new ImageIcon(imgURL, desc);
+    }
+    catch (Exception ex) {
+      System.out.println("Exception in loadIconResource");
+      ex.printStackTrace();
+      return new ImageIcon(desc);
+    }
+  }
+
+  protected static String imageName(String name) {
+    return "/uci/Images/" + stripJunk(name) + ".gif";
+  }
 
   /*
    * Strip all characters out of <var>s</var> that could not be part of a valid

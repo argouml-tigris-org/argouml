@@ -34,7 +34,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.io.Serializable;
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 import uci.util.*;
 import uci.graph.*;
@@ -622,11 +622,12 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     setUnderMouse(me);
     if (_curFig != null && Globals.getShowFigTips()) {
       String tip = _curFig.getTipString(me);
-      if (tip != null && (_awt_component instanceof JComponent))
+      if (tip != null && (_awt_component instanceof JComponent)) {
  	((JComponent)_awt_component).setToolTipText(tip);
+      }
     }
     else if (_awt_component instanceof JComponent)
-	((JComponent)_awt_component).setToolTipText("");
+      ((JComponent)_awt_component).setToolTipText(null); //was ""
 
     _selectionManager.mouseMoved(me);
     _modeManager.mouseMoved(me);

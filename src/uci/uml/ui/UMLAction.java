@@ -29,9 +29,9 @@ package uci.uml.ui;
 import java.util.*;
 import java.beans.*;
 import java.awt.event.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
 
 import uci.util.*;
 import uci.argo.kernel.*;

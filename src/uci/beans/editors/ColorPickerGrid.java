@@ -33,7 +33,7 @@ package uci.beans.editors;
 
 import java.awt.*;
 import java.awt.event.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 //import java.beans.*;
 
 /** A small window that allows the user to choose a color. This window

@@ -26,9 +26,9 @@
 
 package uci.uml.ui;
 
-import com.sun.java.swing.plaf.metal.*;
-import com.sun.java.swing.plaf.*;
-import com.sun.java.swing.*;
+import javax.swing.plaf.metal.*;
+import javax.swing.plaf.*;
+import javax.swing.*;
 import java.awt.*;
 
 /**

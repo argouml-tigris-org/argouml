@@ -33,7 +33,7 @@ package uci.gef;
 
 import java.util.*;
 import java.awt.event.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 /** Abstract class for all editor commands. The editor serves as a
  *  command shell for executing actions in much the same way that a

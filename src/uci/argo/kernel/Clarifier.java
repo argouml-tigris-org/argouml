@@ -25,7 +25,7 @@
 package uci.argo.kernel;
 
 import java.awt.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 import uci.gef.*;
 
 public interface Clarifier extends Icon {

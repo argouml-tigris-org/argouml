@@ -29,11 +29,11 @@ package uci.uml.ui.todo;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
 
-import uci.ui.ToolBar;
+import uci.ui.*;
 import uci.util.*;
 import uci.argo.kernel.*;
 import uci.uml.ui.*;
@@ -50,6 +50,11 @@ import uci.uml.ui.*;
 
 public class WizStep extends JPanel
 implements TabToDoTarget, ActionListener, DocumentListener {
+
+  ////////////////////////////////////////////////////////////////
+  // constants
+
+  public static final ImageIcon WIZ_ICON = Util.loadIconResource("Wiz", "Wiz");
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -162,6 +167,11 @@ implements TabToDoTarget, ActionListener, DocumentListener {
     }
   }
   public void doHelp() {
+    if (!(_target instanceof ToDoItem)) return;
+    ToDoItem item = (ToDoItem) _target;
+    String urlString = item.getMoreInfoURL();
+    TinyHTMLViewer viewer = new TinyHTMLViewer(urlString);
+    viewer.setVisible(true);
     System.out.println("needs-more-work: display critic/wizard help");
   }
 

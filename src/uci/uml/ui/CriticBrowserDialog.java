@@ -30,11 +30,11 @@ import java.beans.*;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.table.*;
-import com.sun.java.swing.text.*;
-import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.table.*;
+import javax.swing.text.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
 import uci.argo.kernel.*;

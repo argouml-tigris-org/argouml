@@ -30,7 +30,7 @@
 package uci.argo.kernel;
 
 import java.util.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 import uci.util.*;
 

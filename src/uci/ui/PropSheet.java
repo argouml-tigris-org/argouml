@@ -34,7 +34,7 @@ package uci.ui;
 import java.beans.*;
 import java.lang.reflect.*;
 import java.awt.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 import java.util.*;
 
 import uci.gef.Fig;

@@ -27,7 +27,7 @@ package uci.uml.ui;
 
 import java.awt.*;
 import java.util.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 import uci.ui.IStatusBar;
 

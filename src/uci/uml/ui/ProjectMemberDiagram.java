@@ -45,6 +45,8 @@ public class ProjectMemberDiagram extends ProjectMember {
 
   public static final String MEMBER_TYPE = "pgml";
   public static final String FILE_EXT = "." + MEMBER_TYPE;
+  public static final OCLExpander expander =
+  new OCLExpander(TemplateReader.readFile("/uci/xml/dtd/PGML.tee"));
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -80,8 +82,6 @@ public class ProjectMemberDiagram extends ProjectMember {
   }
 
   public void save(String path, boolean overwrite) {
-    Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/PGML.tee");
-    OCLExpander expander = new OCLExpander(templates);
     if (!path.endsWith("/")) path += "/";
     String fullpath = path + getName();
     try {

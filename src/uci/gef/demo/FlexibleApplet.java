@@ -34,7 +34,7 @@ package uci.gef.demo;
 import java.applet.*;
 import java.awt.*;
 import java.util.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 import uci.util.*;
 import uci.gef.*;

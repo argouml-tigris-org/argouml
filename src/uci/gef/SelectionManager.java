@@ -35,7 +35,7 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
-import com.sun.java.swing.event.EventListenerList;
+import javax.swing.event.EventListenerList;
 
 import uci.util.*;
 import uci.gef.event.*;

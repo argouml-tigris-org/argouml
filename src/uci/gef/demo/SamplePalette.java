@@ -33,7 +33,7 @@ package uci.gef.demo;
 
 import java.awt.*;
 import java.util.*;
-import com.sun.java.swing.Action;
+import javax.swing.Action;
 
 import uci.gef.*;
 

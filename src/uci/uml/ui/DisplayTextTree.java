@@ -28,16 +28,17 @@ package uci.uml.ui;
 
 import java.util.*;
 import java.beans.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
-import com.sun.java.swing.plaf.basic.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+import javax.swing.plaf.basic.*;
 
 import uci.argo.kernel.*;
 import uci.gef.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.generate.*;
+import uci.uml.ui.nav.*;
 
 public class DisplayTextTree extends JTree
 implements VetoableChangeListener {
@@ -164,18 +165,25 @@ implements VetoableChangeListener {
   public static final int CHANGE = 1;
   public static final int ADD = 2;
   public static final int REMOVE = 3;
-  public static Object path[] = new Object[DEPTH_LIMIT];
+  //public static Object path[] = new Object[DEPTH_LIMIT];
 
   public void reexpand() {
     if (_expandedPathsInModel == null) return;
     _reexpanding = true;
-    ((AbstractTreeUI)getUI()).rebuild();
+    Object[] path2 = new Object[1];
+    path2[0] = getModel().getRoot();
+    TreeModelEvent tme = new TreeModelEvent(this, path2, null, null);
+    treeModelListener.treeStructureChanged(tme);
+    //((AbstractTreeUI)getUI()).rebuild();
     //In Swing 1.1.1 try: treeDidChange();
     //In Swing 1.1.1 try: fireTreeStructureChanged();
+
     java.util.Enumeration enum = getExpandedPaths().elements();
     while (enum.hasMoreElements()) {
       TreePath path = (TreePath) enum.nextElement();
-      getUI().expandPath(path);
+      tme = new TreeModelEvent(this, path, null, null);
+      treeModelListener.treeStructureChanged(tme);
+      expandPath(path);
       addListenerToPath(path);
     }
     _reexpanding = false;
@@ -222,6 +230,24 @@ class UpdateTreeHack implements Runnable {
   }
 
   public void run() {
-    _tree.reexpand();
+      int n = 0;
+      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      NavPerspective np = pb.getNavPane().getCurPerspective();
+      Vector pers = pb.getNavPane().getPerspectives();
+      NavPerspective curPerspective = pb.getNavPane().getCurPerspective();
+      if ( curPerspective.equals(np))
+	n = pers.indexOf(curPerspective) + 1;
+      else
+	n = 0;
+      NavPerspective npX = (NavPerspective) pers.elementAt(n);
+      pb.getNavPane().setCurPerspective(npX);
+      pb.getNavPane().setCurPerspective(np);
+      //pb.getNavPane().updateTree();
+      //_tree.resetModel();
+      //_tree.reexpand();
   }
+
+//   public void run() {
+//     _tree.reexpand();
+//   }
 } /* end class UpdateTreeHack */

@@ -31,7 +31,7 @@
 package uci.argo.kernel;
 
 import java.util.*;
-import com.sun.java.swing.event.EventListenerList;
+import javax.swing.event.EventListenerList;
 
 import uci.util.*;
 

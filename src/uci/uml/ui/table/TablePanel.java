@@ -27,11 +27,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.text.Document;
-import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
-import com.sun.java.swing.border.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.text.Document;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.border.*;
 
 import uci.util.*;
 import uci.ui.*;
@@ -210,8 +210,10 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
     if (_tableModel != null) {
       _tableModel.setTarget(_target);
       _table.setModel(_tableModel);
+      _table.sizeColumnsToFit(0);
+      updateContext();
     }
-    updateContext();
+    else setTablePerspective();
   }
 
   public void updateContext() {
@@ -256,6 +258,7 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
     _tableModel = (TableModelComposite) _persCombo.getSelectedItem();
     _tableModel.setTarget(_target);
     _table.setModel(_tableModel);
+    _table.sizeColumnsToFit(0);
     updateContext();
   }
 
@@ -302,7 +305,7 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
     if (lse.getValueIsAdjusting()) return;
     Object src = lse.getSource();
     if (src == _table.getSelectionModel()) {
-      int row = lse.getFirstIndex();
+      int row = ((DefaultListSelectionModel)lse.getSource()).getMinSelectionIndex();
       if (_tableModel != null) {
 	Vector rowObjects = _tableModel.getRowObjects();
 	if (row >= 0 && row < rowObjects.size()) {

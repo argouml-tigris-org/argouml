@@ -32,7 +32,7 @@
 package uci.beans.editors;
 
 import java.awt.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 import java.beans.*;
 
 /** A widget that allows the user to edit rectangles in the property

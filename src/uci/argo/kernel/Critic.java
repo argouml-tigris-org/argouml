@@ -29,7 +29,7 @@
 package uci.argo.kernel;
 
 import java.util.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 import uci.util.*;
 
@@ -476,7 +476,7 @@ public class Critic implements Poster, java.io.Serializable {
   }
   public void setMoreInfoURL(String m) {  _moreInfoURL = m; }
   public String getMoreInfoURL() {
-    return _moreInfoURL;
+    return getMoreInfoURL(null, null);
   }
 
   protected void setArg(String name, Object value) {

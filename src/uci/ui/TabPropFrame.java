@@ -36,8 +36,8 @@ package uci.ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
 
 /** A window that displays a tabbed Property Sheet user interface with
  *  one tab for each PropSheet instance that is added to this object.

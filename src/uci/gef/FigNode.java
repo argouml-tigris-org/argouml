@@ -35,7 +35,7 @@ import java.awt.event.*;
 import java.util.*;
 import java.io.Serializable;
 import java.beans.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 import uci.util.*;
 import uci.ui.*;

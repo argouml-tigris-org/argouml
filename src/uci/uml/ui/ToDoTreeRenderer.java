@@ -30,11 +30,12 @@ package uci.uml.ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.border.*;
-import com.sun.java.swing.plaf.basic.*;
-import com.sun.java.swing.plaf.metal.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+import javax.swing.border.*;
+import javax.swing.plaf.basic.*;
+import javax.swing.plaf.metal.*;
 
 import uci.argo.kernel.*;
 import uci.uml.Foundation.Core.*;
@@ -42,7 +43,7 @@ import uci.uml.Model_Management.*;
 import uci.uml.ui.todo.PriorityNode;
 import uci.uml.ui.todo.KnowledgeTypeNode;
 
-public class ToDoTreeRenderer extends BasicTreeCellRenderer {
+public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
   // class variables
   public ImageIcon _PostIt0     = loadIconResource("PostIt0");
@@ -103,13 +104,14 @@ public class ToDoTreeRenderer extends BasicTreeCellRenderer {
       lab.setToolTipText(tip);
       tree.setToolTipText(tip);
 
-      if (sel) {
+      if (!sel)
+	lab.setBackground(getBackgroundNonSelectionColor());
+      else {
 	Color high = uci.gef.Globals.getPrefs().getHighlightColor();
 	high = high.brighter().brighter();
 	lab.setBackground(high);
       }
       lab.setOpaque(sel);
-
     }
     return r;
   }

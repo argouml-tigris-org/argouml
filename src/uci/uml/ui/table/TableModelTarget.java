@@ -25,7 +25,7 @@ package uci.uml.ui.table;
 
 import java.beans.*;
 import java.util.*;
-import com.sun.java.swing.table.TableModel;
+import javax.swing.table.TableModel;
 
 import uci.util.Predicate;
 import uci.uml.ui.DelayedVChangeListener;

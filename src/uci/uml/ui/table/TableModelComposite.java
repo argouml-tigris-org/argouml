@@ -29,8 +29,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.table.*;
+import javax.swing.*;
+import javax.swing.table.*;
 
 import uci.util.*;
 import uci.uml.ui.*;

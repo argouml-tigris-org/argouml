@@ -29,10 +29,11 @@ package uci.uml.ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.border.*;
-import com.sun.java.swing.plaf.basic.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+import javax.swing.border.*;
+import javax.swing.plaf.basic.*;
 
 import uci.gef.*;
 import uci.uml.visual.*;
@@ -44,7 +45,7 @@ import uci.uml.Behavioral_Elements.Use_Cases.*;
 import uci.uml.Behavioral_Elements.Collaborations.*;
 import uci.uml.Model_Management.*;
 
-public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
+public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
   // class variables
 

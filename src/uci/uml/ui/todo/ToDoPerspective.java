@@ -30,8 +30,8 @@ package uci.uml.ui.todo;
 import java.util.*;
 import java.awt.*;
 import java.io.Serializable;
-import com.sun.java.swing.tree.*;
-import com.sun.java.swing.event.*;
+import javax.swing.tree.*;
+import javax.swing.event.*;
 import uci.argo.kernel.*;
 import uci.uml.ui.nav.*;
 

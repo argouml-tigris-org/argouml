@@ -27,56 +27,69 @@ import java.awt.*;
 import java.net.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import com.sun.java.swing.*;
-import com.sun.java.swing.text.*;
-import com.sun.java.swing.event.*;
-  
-public class TinyHTMLViewer extends JFrame {
-  
-    public TinyHTMLViewer(String startPage) {
-	super("Help");
+import javax.swing.*;
+import javax.swing.text.*;
+import javax.swing.event.*;
 
-	setBounds( 200, 25, 600, 400);
-	HtmlPane html = new HtmlPane(startPage);
-	setContentPane(html);
-    }
+public class TinyHTMLViewer extends JFrame {
+
+  public TinyHTMLViewer(String startPage) {
+    super("Help -- " + startPage);
+    setBounds(200, 25, 600, 400);
+    HtmlPane html = new HtmlPane(startPage);
+    setContentPane(html);
+  }
 
   ////////////////////////////////////////////////////////////////
   // testing
-  public static void main(String args[]) {
-    if (args.length != 1) {
-      System.out.println("use resourceName as the only cmdline arg");
-      return;
-    }
-    TinyHTMLViewer v = new TinyHTMLViewer(args[0]);
-    v.setVisible(true);
-  }
-  
-
-  
-}
-
-  
+  //   public static void main(String args[]) {
+  //     if (args.length != 1) {
+  //       System.out.println("use resourceName as the only cmdline arg");
+  //       return;
+  //     }
+  //     TinyHTMLViewer v = new TinyHTMLViewer(args[0]);
+  //     v.setVisible(true);
+  //   }
+} /* end class TinyHTMLViewer */
 
 
 class HtmlPane extends JScrollPane implements HyperlinkListener {
-    JEditorPane html;
+  public static String DEFAULT_PAGE = "/uci/uml/help/index.html";
 
-    public HtmlPane(String startPage) {
+  JEditorPane html;
+
+  public HtmlPane(String startPage) {
+    URL url = null;
+    try { url = new URL(startPage); }
+    catch (Exception ex) {
+      try { url = TinyHTMLViewer.class.getResource(startPage); }
+      catch (Exception ex2) {
 	try {
-	    URL url = TinyHTMLViewer.class.getResource(startPage);
-	    html = new JEditorPane(url);
-	    html.setEditable(false);
-	    html.addHyperlinkListener(this);
-
-	    JViewport vp = getViewport();
-	    vp.add(html);
-	} catch (MalformedURLException e) {
-	    System.out.println("Malformed URL: " + e);
-	} catch (IOException e) {
-	    System.out.println("IOException: " + e);
-	}	
+	  if (DEFAULT_PAGE.startsWith("http"))
+	    url = new URL(DEFAULT_PAGE);
+	  else
+	    url = TinyHTMLViewer.class.getResource(DEFAULT_PAGE);
+	}
+	catch (Exception ex3) {
+	  url = null;
+	}
+      }
     }
+
+    if (url != null) {
+      try {
+	html = new JEditorPane(url);
+	html.setEditable(false);
+	html.addHyperlinkListener(this);
+
+	JViewport vp = getViewport();
+	vp.add(html);
+      }
+      catch (Exception ex4) {
+	System.out.println("could not open HTML pane");
+      }
+    }
+  }
 
     /**
      * Notification of a change relative to a 

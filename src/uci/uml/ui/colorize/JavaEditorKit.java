@@ -40,9 +40,9 @@
  * THIS SOFTWARE OR ITS DERIVATIVES.
  *
  */
-package uci.uml.ui;
+package uci.uml.ui.colorize;
 
-import com.sun.java.swing.text.*;
+import javax.swing.text.*;
 
 /**
  * This kit supports a fairly minimal handling of

@@ -27,7 +27,7 @@ package uci.gef.demo;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 import uci.ui.*;
 import uci.gef.*;
 

@@ -32,7 +32,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 /** A Mode that allows the user to scroll the Editor by clicking and dragging
  * with the middle mouse button.

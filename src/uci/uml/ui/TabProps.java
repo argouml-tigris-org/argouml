@@ -31,10 +31,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import uci.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
-//import com.sun.java.swing.border.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+//import javax.swing.border.*;
 
 import uci.gef.Diagram;
 import uci.uml.Foundation.Core.*;
@@ -68,7 +68,7 @@ implements TabModelTarget {
   public TabProps() {
     this("Properties", "props.PropPanel");
   }
-  
+
   protected void initPanels() {
     //_panels.put(Diagram.class, new PropPanelDiagram());
     //_panels.put(Model.class, new PropPanelModel());
@@ -87,14 +87,14 @@ implements TabModelTarget {
     //_panels.put(Generalization.class, new PropPanelGeneralization());
     //_panels.put(Realization.class, new PropPanelRealization());
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // accessors
   public void setTarget(Object t) {
     _target = t;
     if (_lastPanel != null) remove(_lastPanel);
     if (t == null) {
-      add(_blankPanel, BorderLayout.NORTH);      
+      add(_blankPanel, BorderLayout.NORTH);
       _shouldBeEnabled = false;
       _lastPanel = _blankPanel;
       return;
@@ -113,11 +113,12 @@ implements TabModelTarget {
       _lastPanel = (JPanel) newPanel;
     }
     else {
-      add(_blankPanel, BorderLayout.NORTH);      
+      add(_blankPanel, BorderLayout.NORTH);
       _shouldBeEnabled = false;
       _lastPanel = _blankPanel;
     }
     validate();
+    repaint();
   }
 
   public void refresh() { setTarget(_target); }

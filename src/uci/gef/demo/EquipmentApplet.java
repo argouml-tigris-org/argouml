@@ -38,7 +38,7 @@ import java.util.*;
 import uci.util.*;
 import uci.gef.*;
 import uci.graph.*;
-import com.sun.java.swing.*;
+import javax.swing.*;
 
 /** An example application to show off <B>some</B> of the capabilities
  *  of the UCI Graph Editing Framework. This example is about

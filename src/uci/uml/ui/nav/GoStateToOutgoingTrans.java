@@ -24,10 +24,10 @@
 package uci.uml.ui.nav;
 
 import java.util.*;
-import com.sun.java.swing.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.event.*;
-import com.sun.java.swing.tree.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
 
 import uci.uml.Model_Management.*;
 import uci.uml.Foundation.Core.*;
