@@ -3752,6 +3752,11 @@ Remove the line for the tab from
 	<primary>ResourceBundles</primary>
       </indexterm>
       <para>
+The internationalization is currently changing from ListResourceBundles
+to Property files. This chapter is not updated to fit the change.
+Please read carefully.
+</para>
+      <para>
 In ArgoUML internationalization (sometimes called i18n) is done using
 the ListResourceBundle-classes and parts of it is handled by the 
 GEF infrastructure.
