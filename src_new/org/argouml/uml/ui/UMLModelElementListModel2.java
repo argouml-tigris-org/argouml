@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JPopupMenu;
 
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
@@ -427,4 +428,15 @@ public abstract class UMLModelElementListModel2
             super.fireIntervalRemoved(source, index0, index1);
     }
 
+    /**
+     * Override this if you want a popup menu.
+     * 
+     * @param popup the popup menu
+     * @param index the selected item in the list at the moment 
+     *              the mouse was clicked
+     * @return true if a popup menu is created, and needs to be shown
+     */
+    public boolean buildPopup(JPopupMenu popup, int index) {
+        return false;
+    }
 }
