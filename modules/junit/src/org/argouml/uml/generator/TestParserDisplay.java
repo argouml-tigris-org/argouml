@@ -44,7 +44,7 @@ public class TestParserDisplay extends TestCase {
 	private final String attr05 = "public name {a=b, c = d } : [1..*] int = 0";
 	private final String attr06 = "private name {a=b, c = d } [*..*] : int = 15 {frozen}";
 	private final String attr07 = "+name : String = \'val[15] \'";
-	private final String attr08 = "  +name : String = \"a <<string>>\"";
+	private final String attr08 = "  + name : String = \"a <<string>>\"";
 	private final String attr09 = "+name : String = (a * (b+c) - d)";
 	private final String attr10 = "+name << organization >> : String = 2 * (b+c) - 10";
 	private final String attr11 = "<<machine>> +name : String = a[15]";
@@ -67,7 +67,7 @@ public class TestParserDisplay extends TestCase {
 	private final String oper01 = "name()";
 	private final String oper02 = "<<create>> -name(in foo: float = 0) {root, abstract = false} : int";
 	private final String oper03 = "<< destroy >> protected name2(out foo: double = 0., inout bar = \"\"some\"\":String) {leaf,query} : String";
-	private final String oper04 = "<<>> name2()";
+	private final String oper04 = "<<>> # name2()";
 
 	private final String noper01 = "name(";
 	private final String noper02 = "\"name\"()";
@@ -144,6 +144,9 @@ public class TestParserDisplay extends TestCase {
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
 		checkVisibility(attr, attr08, "public");
+
+		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		checkVisibility(attr, attr11, "public");
 	}
 
 	public void testAttributeProperty() {
@@ -278,6 +281,9 @@ public class TestParserDisplay extends TestCase {
 		checkVisibility(op, oper03, "protected");
 		checkVisibility(op, oper01, "protected");
 		checkVisibility(op, oper02, "private");
+
+		op = UmlFactory.getFactory().getCore().buildOperation();
+		checkVisibility(op, oper04, "protected");
 	}
 
 	public void testOperationParameters() {

@@ -665,6 +665,7 @@ public class ParserDisplay extends Parser {
 				"be an expression", st.getTokenIndex());
 
 		    if (name == null && visibility == null &&
+			    token.length() > 1 &&
 			    visibilityChars.indexOf(token.charAt(0)) >= 0) {
 			visibility = token.substring(0, 1);
 			token = token.substring(1);
@@ -1073,6 +1074,7 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 				"be an expression", st.getTokenIndex());
 
 		    if (name == null && visibility == null &&
+			    token.length() > 1 &&
 			    visibilityChars.indexOf(token.charAt(0)) >= 0) {
 			visibility = token.substring(0, 1);
 			token = token.substring(1);
