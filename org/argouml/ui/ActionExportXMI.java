@@ -42,13 +42,9 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
-import org.argouml.persistence.DiagramMemberFilePersister;
 import org.argouml.persistence.MemberFilePersister;
 import org.argouml.persistence.ModelMemberFilePersister;
-import org.argouml.persistence.TodoListMemberFilePersister;
 import org.argouml.uml.ProjectMemberModel;
-import org.argouml.uml.cognitive.ProjectMemberTodoList;
-import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.ui.UMLAction;
 
 /**

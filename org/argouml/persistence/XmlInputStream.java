@@ -82,22 +82,22 @@ public class XmlInputStream extends BufferedInputStream {
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
      * @param theTag the tag name from which to start reading
-     * @param length the expected length of the input stream
-     * @param eventSpacing the number of characers to read before
+     * @param theLength the expected length of the input stream
+     * @param theEventSpacing the number of characers to read before
      *        firing a progress event.
      */
     public XmlInputStream(
             InputStream in, 
             String theTag, 
-            long length, 
-            long eventSpacing) {
+            long theLength, 
+            long theEventSpacing) {
         super(in);
         this.tagName = theTag;
         this.endTagName = '/' + theTag;
         this.attributes = null;
         this.childOnly = false;
-        this.length = length;
-        this.eventSpacing = eventSpacing;
+        this.length = theLength;
+        this.eventSpacing = theEventSpacing;
     }
 
     /**
@@ -382,27 +382,33 @@ public class XmlInputStream extends BufferedInputStream {
     }
     
     private void fireProgressEvent() {
-        LOG.info("firing sub-progress event "+ readCount + " of " + length);
+        LOG.info("firing sub-progress event " + readCount + " of " + length);
         ProgressEvent event = null;
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
         // those that are interested in this event
-        for (int i = listeners.length-2; i>=0; i-=2) {
-            if (listeners[i]==ProgressListener.class) {
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == ProgressListener.class) {
                 // Lazily create the event:
                 if (event == null) {
                     event = new ProgressEvent(this, readCount, length);
                 }
-                ((ProgressListener)listeners[i+1]).progress(event);
+                ((ProgressListener) listeners[i + 1]).progress(event);
             }
         }
     }
     
+    /**
+     * @param listener the progress listener
+     */
     public void addProgressListener(ProgressListener listener) {
         listenerList.add(ProgressListener.class, listener);
     }
     
+    /**
+     * @param listener the progress listener
+     */
     public void removeProgressListener(ProgressListener listener) {
         listenerList.remove(ProgressListener.class, listener);
     }

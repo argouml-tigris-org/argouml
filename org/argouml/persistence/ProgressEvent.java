@@ -42,33 +42,33 @@ public class ProgressEvent extends EventObject {
     /**
      * Constructor for a new ProgressEvent
      * @param source the source that generated this event
-     * @param position the position to which progress has reach as a proportion
-     *        of length
-     * @param length the total length the progress is measuring
+     * @param thePosition the position to which progress has reach as a 
+     *        proportion of length
+     * @param theLength the total length the progress is measuring
      */
-    public ProgressEvent(Object source, long position, long length) {
+    public ProgressEvent(Object source, long thePosition, long theLength) {
         super(source);
-        this.length = length;
-        this.position = position;
+        this.length = theLength;
+        this.position = thePosition;
     }
 
     /**
      * Constructor for a new ProgressEvent
      * @param source the source that generated this event
-     * @param position the position to which progress has reach as a proportion
-     *        of length
-     * @param length the total length the progress is measuring
-     * @param description a text description of progress
+     * @param thePosition the position to which progress has reach as a 
+     *        proportion of length
+     * @param theLength the total length the progress is measuring
+     * @param theDescription a text description of progress
      */
     public ProgressEvent(
             Object source, 
-            long position, 
-            long length, 
-            String description) {
+            long thePosition, 
+            long theLength, 
+            String theDescription) {
         super(source);
-        this.length = length;
-        this.position = position;
-        this.description = description;
+        this.length = theLength;
+        this.position = thePosition;
+        this.description = theDescription;
     }
 
     /**

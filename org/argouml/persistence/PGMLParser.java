@@ -611,15 +611,15 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             f = (Fig) nodeClass.newInstance();
             setStyleAttributes(f, attributeMap);
         } catch (IllegalAccessException e) {
-            // TODO Change to SAXException on next release of GEF
+            // TODO: Change to SAXException on next release of GEF
             LOG.error("IllegalAccessException caught ", e);
             throw new IllegalStateException();
         } catch (InstantiationException e) {
-            // TODO Change to SAXException on next release of GEF
+            // TODO: Change to SAXException on next release of GEF
             LOG.error("InstantiationException caught ", e);
             throw new IllegalStateException();
         } catch (ClassNotFoundException e) {
-            // TODO Change to SAXException on next release of GEF
+            // TODO: Change to SAXException on next release of GEF
             LOG.error("ClassNotFoundException caught ", e);
             throw new IllegalStateException();
         }
@@ -759,51 +759,54 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         LOG.info("Diagram name is " + _diagram.getName());
     }
     
+    /**
+     * @see org.tigris.gef.xml.pgml.PGMLParser#privateStateEndElement(java.lang.String)
+     */
     protected void privateStateEndElement(String tagName) {
         try {
-            if(_currentNode != null) {
-                if(_currentEdge != null) {
+            if (_currentNode != null) {
+                if (_currentEdge != null) {
                     _currentEdge = null;
                 }
 
                 String body = _textBuf.toString();
                 StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
-                while(st2.hasMoreElements()) {
+                while (st2.hasMoreElements()) {
                     String t = st2.nextToken();
                     String v = "no such fig";
-                    if(st2.hasMoreElements()) {
+                    if (st2.hasMoreElements()) {
                         v = st2.nextToken();
                     }
 
-                    if(t.equals("enclosingFig")) {
+                    if (t.equals("enclosingFig")) {
                         _currentEncloser = findFig(v);
                     }
                 }
             }
 
-            if(_currentEdge != null) {
+            if (_currentEdge != null) {
                 Fig spf = null;
                 Fig dpf = null;
                 FigNode sfn = null;
                 FigNode dfn = null;
                 String body = _textBuf.toString();
                 StringTokenizer st2 = new StringTokenizer(body, "=\"' \t\n");
-                while(st2.hasMoreElements()) {
+                while (st2.hasMoreElements()) {
                     String t = st2.nextToken();
                     String v = st2.nextToken();
 
-                    if(t.equals("sourceFigNode")) {
-                        sfn = (FigNodeModelElement)_figRegistry.get(v);
-                        spf = (Fig)sfn.getPortFigs().get(0);
+                    if (t.equals("sourceFigNode")) {
+                        sfn = (FigNodeModelElement) _figRegistry.get(v);
+                        spf = (Fig) sfn.getPortFigs().get(0);
                     }
 
-                    if(t.equals("destFigNode")) {
-                        dfn = (FigNodeModelElement)_figRegistry.get(v);
-                        dpf = (Fig)dfn.getPortFigs().get(0);
+                    if (t.equals("destFigNode")) {
+                        dfn = (FigNodeModelElement) _figRegistry.get(v);
+                        dpf = (Fig) dfn.getPortFigs().get(0);
                     }
                 }
 
-                if(spf == null || dpf == null || sfn == null || dfn == null) {
+                if (spf == null || dpf == null || sfn == null || dfn == null) {
                     setDetectedFailure(true);
                 }
                 else {
@@ -814,21 +817,24 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 }
             }
         }
-        catch(Exception ex) {
+        catch (Exception ex) {
             ex.printStackTrace();
         }
     }
     
+    /**
+     * @see org.tigris.gef.xml.pgml.PGMLParser#findFig(java.lang.String)
+     */
     protected Fig findFig(String uri) {
         Fig f = null;
-        if(uri.indexOf(".") == -1) {
-            f = (Fig)_figRegistry.get(uri);
+        if (uri.indexOf(".") == -1) {
+            f = (Fig) _figRegistry.get(uri);
         }
         else {
             StringTokenizer st = new StringTokenizer(uri, ".");
             String figNum = st.nextToken();
-            f = (Fig)_figRegistry.get(figNum);
-            if(f == null) {
+            f = (Fig) _figRegistry.get(figNum);
+            if (f == null) {
                 return null;
             }
 
@@ -836,12 +842,12 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 //                return ((FigEdge)f).getFig();
 //            }
 
-            while(st.hasMoreElements()) {
+            while (st.hasMoreElements()) {
                 String subIndex = st.nextToken();
-                if(f instanceof FigGroup) {
-                    FigGroup figGroup = (FigGroup)f;
+                if (f instanceof FigGroup) {
+                    FigGroup fg = (FigGroup) f;
                     int i = Integer.parseInt(subIndex);
-                    f = (Fig)figGroup.getFigAt(i);
+                    f = (Fig) fg.getFigAt(i);
                 }
             }
         }
