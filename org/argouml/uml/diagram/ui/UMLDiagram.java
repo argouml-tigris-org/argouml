@@ -113,25 +113,24 @@ public abstract class UMLDiagram
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public UMLDiagram() { 
+    public UMLDiagram() { 
   	super();
-    initToolBar();
-  }
+    }
 
   
-  public UMLDiagram(MNamespace ns) {
-  	this();
-    setNamespace(ns);
-  }
-  
-  
-  public UMLDiagram(String diagramName, MNamespace ns) {
-  	this(ns);
-    try { setName(diagramName); }
-    catch (PropertyVetoException pve) { 
-        cat.fatal("Name not allowed in construction of diagram");
+    public UMLDiagram(MNamespace ns) {
+        this();
+        setNamespace(ns);
     }
-  }
+  
+  
+    public UMLDiagram(String diagramName, MNamespace ns) {
+        this(ns);
+        try { setName(diagramName); }
+        catch (PropertyVetoException pve) { 
+            cat.fatal("Name not allowed in construction of diagram");
+        }
+    }
 
   public void initialize(Object owner) {
     super.initialize(owner);
@@ -185,6 +184,9 @@ public abstract class UMLDiagram
      * @return the diagram toolbar
      */
     public ToolBar getToolBar() {
+        if (_toolBar == null) {
+            initToolBar();
+        }
         return _toolBar;
     }
   
