@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,13 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: PropPanelSimpleState.java
-// Classes: PropPanelSimpleState
-// Original Author: 5heyden
-// $Id:
-
+// $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.application.api.Argo;
@@ -35,29 +29,31 @@ import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.util.ConfigLoader;
 
-public class PropPanelSimpleState extends PropPanelState {
+/**
+ * @since Dec 15, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ */
+public class PropPanelStubState extends PropPanelStateVertex {
 
-    public PropPanelSimpleState() {
-        super("Simple State",_stateIcon, ConfigLoader.getTabPropsOrientation());
+    /**
+     * Constructor for PropPanelStubState.
+     * @param name
+     * @param icon
+     * @param orientation
+     */
+    public PropPanelStubState() {
+        // TODO: give the stubstate it's own icon
+        super("Stub State", _stateIcon, ConfigLoader.getTabPropsOrientation());
 
         addField(Argo.localize("UMLMenu", "label.name"), nameField);
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), stereotypeBox));
         addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
-        addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
-        addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);;
-        addField(Argo.localize("UMLMenu", "label.do-activity"), doScroll);
+        // TODO: add the referenced state. This is a string which is IMHO not necessary.
         
         add(LabelledLayout.getSeperator());
-        
+
         addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
         addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
-        addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
-        
     }
 
-
-
-} /* end class PropPanelSimpleState */
-
-
-
+}
