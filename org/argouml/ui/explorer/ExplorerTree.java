@@ -177,8 +177,6 @@ extends DisplayTextTree
     int row,
     boolean hasFocus) {
         
-        //cat.debug("convertValueToText");
-        
         // do model elements first
         if (ModelFacade.isAModelElement(value)) {
             
@@ -195,8 +193,12 @@ extends DisplayTextTree
             // displayed in the perspective
             else if (ModelFacade.isAComment(value)) {
                 name = ModelFacade.getName(value);
-                if (name != null && name.length() > 10) {
-                    name = name.substring(0, 10) + "...";
+                
+                if (name != null && name.indexOf("\n") < 80) {
+                    name = name.substring(0, name.indexOf("\n")) + "...";
+                }
+                else if (name != null && name.length() > 80) {
+                    name = name.substring(0, 80) + "...";
                 }
             } else {
                 name = ModelFacade.getName(value);
