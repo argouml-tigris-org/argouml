@@ -35,28 +35,34 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.ToDoListEvent;
 import org.argouml.cognitive.ToDoListListener;
 
+/**
+ * Represents a perspective for ToDo items: grouping by decision type.
+ *
+ */
 public class ToDoByDecision extends ToDoPerspective
     implements ToDoListListener
 {
-    protected static Logger cat = 
+    private static final Logger LOG = 
         Logger.getLogger(ToDoByDecision.class);
 
 
+    /**
+     * The constructor.
+     * 
+     */
     public ToDoByDecision() {
 	super("combobox.todo-perspective-decision");
 	addSubTreeModel(new GoListToDecisionsToItems());
     }
 
-    //public String toString() { return "Decision"; }
-
-    ////////////////////////////////////////////////////////////////
-    // DecisionModelListener implementation
-
     ////////////////////////////////////////////////////////////////
     // ToDoListListener implementation
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsChanged(ToDoListEvent tde) {
-	cat.debug("toDoItemChanged");
+	LOG.debug("toDoItemChanged");
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
 	Object path[] = new Object[2];
@@ -88,8 +94,11 @@ public class ToDoByDecision extends ToDoPerspective
 	}
     }
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsAdded(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsAdded(ToDoListEvent tde) {
-	cat.debug("toDoItemAdded");
+	LOG.debug("toDoItemAdded");
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
 	Object path[] = new Object[2];
@@ -121,8 +130,11 @@ public class ToDoByDecision extends ToDoPerspective
 	}
     }
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsRemoved(ToDoListEvent tde) {
-	cat.debug("toDoItemRemoved");
+	LOG.debug("toDoItemRemoved");
 	ToDoList list = Designer.TheDesigner.getToDoList(); //source?
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
@@ -133,7 +145,7 @@ public class ToDoByDecision extends ToDoPerspective
 	Enumeration elems = decs.elements();
 	while (elems.hasMoreElements()) {
 	    Decision dec = (Decision) elems.nextElement();
-	    cat.debug("toDoItemRemoved updating decision node!");
+	    LOG.debug("toDoItemRemoved updating decision node!");
 	    boolean anyInDec = false;
 	    for (int i = 0; i < nItems; i++) {
 		ToDoItem item = (ToDoItem) items.elementAt(i);
@@ -146,6 +158,9 @@ public class ToDoByDecision extends ToDoPerspective
 	}
     }
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoListChanged(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoListChanged(ToDoListEvent tde) { }
 
 

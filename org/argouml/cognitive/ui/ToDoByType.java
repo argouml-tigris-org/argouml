@@ -34,12 +34,20 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.ToDoListEvent;
 import org.argouml.cognitive.ToDoListListener;
 
+/**
+ * Represents a perspective for ToDo items: grouping by type.
+ *
+ */
 public class ToDoByType extends ToDoPerspective
     implements ToDoListListener 
 {
-    protected static Logger cat = 
+    private static final Logger LOG = 
         Logger.getLogger(ToDoByType.class);
 
+    /**
+     * The constructor.
+     * 
+     */
     public ToDoByType() {
 	super("combobox.todo-perspective-type");
 	addSubTreeModel(new GoListToTypeToItem());
@@ -49,8 +57,11 @@ public class ToDoByType extends ToDoPerspective
     ////////////////////////////////////////////////////////////////
     // ToDoListListener implementation
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsChanged(ToDoListEvent tde) {
-	cat.debug("toDoItemsChanged");
+	LOG.debug("toDoItemsChanged");
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
 	Object path[] = new Object[2];
@@ -82,8 +93,11 @@ public class ToDoByType extends ToDoPerspective
 	}
     }
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsAdded(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsAdded(ToDoListEvent tde) {
-	cat.debug("toDoItemAdded");
+	LOG.debug("toDoItemAdded");
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
 	Object path[] = new Object[2];
@@ -115,8 +129,11 @@ public class ToDoByType extends ToDoPerspective
 	}
     }
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsRemoved(ToDoListEvent tde) {
-	cat.debug("toDoItemRemoved");
+	LOG.debug("toDoItemRemoved");
 	ToDoList list = Designer.TheDesigner.getToDoList(); //source?
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
@@ -133,18 +150,17 @@ public class ToDoByType extends ToDoPerspective
 		if (item.containsKnowledgeType(kt)) anyInKT = true;
 	    }
 	    if (!anyInKT) continue;
-	    cat.debug("toDoItemRemoved updating PriorityNode");
+	    LOG.debug("toDoItemRemoved updating PriorityNode");
 	    path[1] = ktn;
 	    //fireTreeNodesChanged(this, path, childIndices, children);
 	    fireTreeStructureChanged(path);
 	}
     }
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoListChanged(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoListChanged(ToDoListEvent tde) { }
-
-
-  
-  
 
 } /* end class ToDoByType */
 
