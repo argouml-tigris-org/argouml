@@ -81,33 +81,44 @@ public class CheckResourceBundle {
     }
 
     /**
-     * check that two ResourceBundles has the same set of keys.
-     */
-    private static void checkSameSetOfKeys(TestCase tc,
-					   ResourceBundle b1,
-					   ResourceBundle b2) {
-	checkAllKeysFromAreIn(tc, b1, b2);
-	checkAllKeysFromAreIn(tc, b2, b1);
-    }
-
-    /**
      * check that all keys in ARG1 are present in ARG2.
      */
     private static void checkAllKeysFromAreIn(TestCase tc,
-					      ResourceBundle b1,
-					      ResourceBundle b2) {
-	for (Enumeration e = b1.getKeys();
+					      ResourceBundle b,
+					      ResourceBundle locb) {
+	for (Enumeration e = b.getKeys();
 	     e.hasMoreElements();
 	     ) {
 	    String tag = (String) e.nextElement();
 	    tc.assert("Missing tag \""
 		      + tag
 		      + "\" in "
-		      + b2.getClass().getName()
+		      + locb.getClass().getName()
 		      + " (it was present in "
-		      + b1.getClass().getName()
+		      + b.getClass().getName()
 		      + ")",
-		      bundleContains(b2, tag));
+		      bundleContains(locb, tag));
+	}
+    }
+
+    /**
+     * check that all keys in ARG2 are present in ARG1.
+     */
+    private static void checkAllKeysAreInFrom(TestCase tc,
+					      ResourceBundle b,
+					      ResourceBundle locb) {
+	for (Enumeration e = locb.getKeys();
+	     e.hasMoreElements();
+	     ) {
+	    String tag = (String) e.nextElement();
+	    tc.assert("Extra tag \""
+		      + tag
+		      + "\" in "
+		      + locb.getClass().getName()
+		      + " (it was not present in "
+		      + b.getClass().getName()
+		      + ")",
+		      bundleContains(b, tag));
 	}
     }
 
@@ -185,7 +196,8 @@ public class CheckResourceBundle {
 
 	    checkContainsAllFrom(tc, locb, tags);
 	    checkNoDuplicates(tc, locb);
-	    checkSameSetOfKeys(tc, b, locb);
+	    checkAllKeysFromAreIn(tc, b, locb);
+	    checkAllKeysAreInFrom(tc, b, locb);
 	}
     }
 
