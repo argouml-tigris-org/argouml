@@ -281,14 +281,12 @@ public class FigComponent extends FigNodeModelElement {
   protected void updateStereotypeText() {
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
-    // MStereotype stereo = me.getStereotype();
-    // if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) 
-    //    _stereo.setText("");
-    // else {
-    //    String stereoStr = stereo.getName();
-    //    _stereo.setText("<<" + stereoStr + ">>");
-    // }
-    _stereo.setText(Notation.generateStereotype(this, me.getStereotype()));
+    MStereotype stereo = me.getStereotype();
+    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) 
+        _stereo.setText("");
+    else {
+        _stereo.setText(Notation.generateStereotype(this, stereo));
+    }
 
     Rectangle oldBounds = getBounds();
     _stereo.calcBounds();
