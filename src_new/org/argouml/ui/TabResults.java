@@ -177,7 +177,7 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
       sel = _related.elementAt(row);
     }
 
-    cat.debug("go " + sel + " in " + d.getName());
+    if (d != null) cat.debug("go " + sel + " in " + d.getName());
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     if (d != null) pb.setTarget(d);
     pb.setTarget(sel);
