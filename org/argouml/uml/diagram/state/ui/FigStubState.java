@@ -47,70 +47,85 @@ public class FigStubState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    public final int MARGIN = 2;
-    public int x = 0;
-    public int y = 0;
-    public int width = 45;
-    public int height = 20;
+    private static final int MARGIN = 2;
+    private int x = 0;
+    private int y = 0;
+    private int width = 45;
+    private int height = 20;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    public FigText _reference;
-    FigLine _stubline;
+    private FigText referenceFig;
+    private FigLine stubline;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     */
     public FigStubState() {
         super();
 
         setBigPort(new FigRect(x, y, width, height));
         getBigPort().setLineWidth(0);
         getBigPort().setFilled(false);
-        _stubline = new FigLine(x,
+        stubline = new FigLine(x,
                 y,
                 width,
                 y,
                 Color.black);
 
-        _reference = new FigText(0, 0, width, height, true);
-        _reference.setFont(getLabelFont());
-        _reference.setTextColor(Color.black);
-        _reference.setMultiLine(false);
-        _reference.setAllowsTab(false);
-        _reference.setJustification(FigText.JUSTIFY_CENTER);
-        _reference.setLineWidth(0);
-        _reference.setBounds(x, y,
-                width, _reference.getBounds().height);
-        _reference.setFilled(false);
-        _reference.setEditable(false);
+        referenceFig = new FigText(0, 0, width, height, true);
+        referenceFig.setFont(getLabelFont());
+        referenceFig.setTextColor(Color.black);
+        referenceFig.setMultiLine(false);
+        referenceFig.setAllowsTab(false);
+        referenceFig.setJustification(FigText.JUSTIFY_CENTER);
+        referenceFig.setLineWidth(0);
+        referenceFig.setBounds(x, y,
+                width, referenceFig.getBounds().height);
+        referenceFig.setFilled(false);
+        referenceFig.setEditable(false);
 
 
         addFig(getBigPort());
-        addFig(_reference);
-        addFig(_stubline);
+        addFig(referenceFig);
+        addFig(stubline);
 
         setShadowSize(0);
         setBlinkPorts(false); //make port invisble unless mouse enters
         Rectangle r = getBounds();
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param gm (ignored)
+     * @param node the UML owner element
+     */
     public FigStubState(GraphModel gm, Object node) {
         this();
         setOwner(node);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
     public void setOwner(Object node) {
         super.setOwner(node);
         updateReference();
     }
 
+    /**
+     * @see java.lang.Object#clone()
+     */
     public Object clone() {
         FigStubState figClone = (FigStubState) super.clone();
         Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
-        figClone._reference = (FigText) it.next();
-        figClone._stubline = (FigLine) it.next();
+        figClone.referenceFig = (FigText) it.next();
+        figClone.stubline = (FigLine) it.next();
         return figClone;
     }
 
@@ -119,59 +134,89 @@ public class FigStubState extends FigStateVertex {
 
     /**
      * Synch states are fixed size.
+     *
+     * @see org.tigris.gef.presentation.Fig#isResizable()
      */
     public boolean isResizable() {
         return false;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
+     */
     public Selection makeSelection() {
         return new SelectionMoveClarifiers(this);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
     public void setLineColor(Color col) {
-        _stubline.setLineColor(col);
+        stubline.setLineColor(col);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
     public Color getLineColor() {
-        return _stubline.getLineColor();
+        return stubline.getLineColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
     public void setFillColor(Color col) {
-        _reference.setFillColor(col);
+        referenceFig.setFillColor(col);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
     public Color getFillColor() {
-        return _reference.getFillColor();
+        return referenceFig.getFillColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
     public void setFilled(boolean f) {
-        _reference.setFilled(f);
+        referenceFig.setFilled(f);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFilled()
+     */
     public boolean getFilled() {
-        return _reference.getFilled();
+        return referenceFig.getFilled();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
     public void setLineWidth(int w) {
-        _stubline.setLineWidth(w);
+        stubline.setLineWidth(w);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
     public int getLineWidth() {
-        return _stubline.getLineWidth();
+        return stubline.getLineWidth();
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    public void setBounds(int x, int y, int w, int h) {
+    public void setBounds(int theX, int theY, int theW, int theH) {
         Rectangle oldBounds = getBounds();
-        w = 60;
+        theW = 60;
 
-        _reference.setBounds(x, y, w, _reference.getBounds().height);
-        _stubline.setShape(x, y,
-                x + w, y);
+        referenceFig.setBounds(theX, theY, theW, 
+                referenceFig.getBounds().height);
+        stubline.setShape(theX, theY,
+                theX + theW, theY);
 
-        getBigPort().setBounds(x, y, w, h);
+        getBigPort().setBounds(theX, theY, theW, theH);
 
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
         updateEdges();
@@ -183,8 +228,9 @@ public class FigStubState extends FigStateVertex {
 
     /**
      * Update the text labels
+     *
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (getOwner() == null)
@@ -276,6 +322,9 @@ public class FigStubState extends FigStateVertex {
         }
     }
 
+    /**
+     * Update the reference text.
+     */
     protected void updateReference() {
         Object text = null;
         try {
@@ -283,15 +332,18 @@ public class FigStubState extends FigStateVertex {
         } catch (Exception e) {
         }
         if (text != null)
-            _reference.setText((String) text);
+            referenceFig.setText((String) text);
         else
-            _reference.setText("");
+            referenceFig.setText("");
 
         calcBounds();
         setBounds(getBounds());
         damage();
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
     protected void updateListeners(Object newOwner) {
         super.updateListeners(newOwner);
         Object container = null;
@@ -371,6 +423,10 @@ public class FigStubState extends FigStateVertex {
         }
     }
 
+    /**
+     * @param newOwner the new owner UML object
+     * @param oldV the old owner UML object
+     */
     protected void updateListeners(Object newOwner, Object oldV) {
         Object container = null;
         if (oldV != null) {

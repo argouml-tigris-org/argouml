@@ -24,7 +24,14 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import org.apache.log4j.Logger;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.text.ParseException;
+import java.util.Iterator;
+
 import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
@@ -35,12 +42,6 @@ import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.text.ParseException;
-import java.util.Iterator;
-
 /**
  * Class to display graphics for a UML MSubmachineState in a diagram.
  *
@@ -48,35 +49,36 @@ import java.util.Iterator;
  */
 
 public class FigSubmachineState extends FigState {
-    protected static Logger cat =
-            Logger.getLogger(FigSubmachineState.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
 
-    public final int MARGIN = 2;
+    private static final int MARGIN = 2;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    FigRect _cover;
-    FigLine _divider;
-    FigLine _divider2;
-    FigRect _circle1;
-    FigRect _circle2;
-    FigLine _circle1tocircle2;
-    public FigText _include;
+    private FigRect cover;
+    private FigLine divider;
+    private FigLine divider2;
+    private FigRect circle1;
+    private FigRect circle2;
+    private FigLine circle1tocircle2;
+    private FigText include;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     */
     public FigSubmachineState() {
         super();
 
         setBigPort(new FigRRect(getInitialX() + 1, getInitialY() + 1,
                 getInitialWidth() - 2, getInitialHeight() - 2,
                 Color.cyan, Color.cyan));
-        _cover = new FigRRect(getInitialX(), getInitialY(),
+        cover = new FigRRect(getInitialX(), getInitialY(),
                 getInitialWidth(), getInitialHeight(),
                 Color.black, Color.white);
 
@@ -86,42 +88,42 @@ public class FigSubmachineState extends FigState {
                 getInitialWidth() - 4, getNameFig().getBounds().height);
         getNameFig().setFilled(false);
 
-        _divider =
+        divider =
                 new FigLine(getInitialX(),
                         getInitialY() + 2 + getNameFig().getBounds().height + 1,
                         getInitialWidth() - 1,
                         getInitialY() + 2 + getNameFig().getBounds().height + 1,
                         Color.black);
 
-        _include = new FigText(10, 10, 90, 21, true);
-        _include.setFont(getLabelFont());
-        _include.setTextColor(Color.black);
-        _include.setMultiLine(false);
-        _include.setAllowsTab(false);
-        _include.setText(placeString());
-        _include.setLineWidth(0);
-        _include.setBounds(getInitialX() + 2, getInitialY() + 2,
-                getInitialWidth() - 4, _include.getBounds().height);
-        _include.setFilled(false);
-        _include.setEditable(false);
+        include = new FigText(10, 10, 90, 21, true);
+        include.setFont(getLabelFont());
+        include.setTextColor(Color.black);
+        include.setMultiLine(false);
+        include.setAllowsTab(false);
+        include.setText(placeString());
+        include.setLineWidth(0);
+        include.setBounds(getInitialX() + 2, getInitialY() + 2,
+                getInitialWidth() - 4, include.getBounds().height);
+        include.setFilled(false);
+        include.setEditable(false);
 
-        _divider2 =
+        divider2 =
                 new FigLine(getInitialX(),
                         getInitialY() + 2 + getNameFig().getBounds().height + 1,
                         getInitialWidth() - 1,
                         getInitialY() + 2 + getNameFig().getBounds().height + 1,
                         Color.black);
 
-        _circle1 = new FigRRect(getInitialX() + getInitialWidth() - 55,
+        circle1 = new FigRRect(getInitialX() + getInitialWidth() - 55,
                 getInitialY() + getInitialHeight() - 15,
                 20, 10,
                 Color.black, Color.white);
-        _circle2 = new FigRRect(getInitialX() + getInitialWidth() - 25,
+        circle2 = new FigRRect(getInitialX() + getInitialWidth() - 25,
                 getInitialY() + getInitialHeight() - 15,
                 20, 10,
                 Color.black, Color.white);
 
-        _circle1tocircle2 =
+        circle1tocircle2 =
                 new FigLine(getInitialX() + getInitialWidth() - 35,
                         getInitialY() + getInitialHeight() - 10,
                         getInitialX() + getInitialWidth() - 25,
@@ -129,40 +131,52 @@ public class FigSubmachineState extends FigState {
                         Color.black);
 
         addFig(getBigPort());
-        addFig(_cover);
+        addFig(cover);
         addFig(getNameFig());
-        addFig(_divider);
-        addFig(_include);
-        addFig(_divider2);
+        addFig(divider);
+        addFig(include);
+        addFig(divider2);
         addFig(getInternal());
-        addFig(_circle1);
-        addFig(_circle2);
-        addFig(_circle1tocircle2);
+        addFig(circle1);
+        addFig(circle2);
+        addFig(circle1tocircle2);
 
         //setBlinkPorts(false); //make port invisble unless mouse enters
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param gm (ignored)
+     * @param node the owner UML object
+     */
     public FigSubmachineState(GraphModel gm, Object node) {
         this();
         setOwner(node);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
     public void setOwner(Object node) {
         super.setOwner(node);
         updateInclude();
     }
 
+    /**
+     * @see java.lang.Object#clone()
+     */
     public Object clone() {
         FigSubmachineState figClone = (FigSubmachineState) super.clone();
         Iterator it = figClone.getFigs().iterator();
         figClone.setBigPort((FigRect) it.next());
-        figClone._cover = (FigRect) it.next();
+        figClone.cover = (FigRect) it.next();
         figClone.setNameFig((FigText) it.next());
-        figClone._divider = (FigLine) it.next();
-        figClone._include = (FigText) it.next();
-        figClone._divider2 = (FigLine) it.next();
+        figClone.divider = (FigLine) it.next();
+        figClone.include = (FigText) it.next();
+        figClone.divider2 = (FigLine) it.next();
         figClone.setInternal((FigText) it.next());
         return figClone;
     }
@@ -170,10 +184,13 @@ public class FigSubmachineState extends FigState {
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
     public Dimension getMinimumSize() {
         Dimension nameDim = getNameFig().getMinimumSize();
         Dimension internalDim = getInternal().getMinimumSize();
-        Dimension includeDim = _include.getMinimumSize();
+        Dimension includeDim = include.getMinimumSize();
 
         int h = nameDim.height + 4 + internalDim.height + includeDim.height;
         int waux = Math.max(nameDim.width + 4, internalDim.width + 4);
@@ -181,26 +198,33 @@ public class FigSubmachineState extends FigState {
         return new Dimension(w, h);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
+     */
     public boolean getUseTrapRect() {
         return true;
     }
 
-    /* Override setBounds to keep shapes looking right */
+    /**
+     * Override setBounds to keep shapes looking right. 
+     * 
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     */
     public void setBounds(int x, int y, int w, int h) {
         if (getNameFig() == null)
             return;
 
         Rectangle oldBounds = getBounds();
         Dimension nameDim = getNameFig().getMinimumSize();
-        Dimension includeDim = _include.getMinimumSize();
+        Dimension includeDim = include.getMinimumSize();
 
         getNameFig().setBounds(x + 2, y + 2, w - 4, nameDim.height);
-        _divider.setShape(x, y + nameDim.height + 1,
+        divider.setShape(x, y + nameDim.height + 1,
                 x + w - 1, y + nameDim.height + 1);
 
-        _include.setBounds(x + 2, y + 3 + nameDim.height,
+        include.setBounds(x + 2, y + 3 + nameDim.height,
                 w - 4, includeDim.height);
-        _divider2.setShape(x,
+        divider2.setShape(x,
                 y + nameDim.height + 2 + includeDim.height + 1,
                 x + w - 1,
                 y + nameDim.height + 2 + includeDim.height + 1);
@@ -209,19 +233,19 @@ public class FigSubmachineState extends FigState {
                 y + nameDim.height + includeDim.height + 4,
                 w - 4, h - nameDim.height - includeDim.height - 4);
 
-        _circle1.setBounds(x + w - 55,
+        circle1.setBounds(x + w - 55,
                 y + h - 15,
                 20, 10);
-        _circle2.setBounds(x + w - 25,
+        circle2.setBounds(x + w - 25,
                 y + h - 15,
                 20, 10);
-        _circle1tocircle2.setShape(x + w - 35,
+        circle1tocircle2.setShape(x + w - 35,
                 y + h - 10,
                 x + w - 25,
                 y + h - 10);
 
         getBigPort().setBounds(x, y, w, h);
-        _cover.setBounds(x, y, w, h);
+        cover.setBounds(x, y, w, h);
 
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
         updateEdges();
@@ -231,43 +255,67 @@ public class FigSubmachineState extends FigState {
     ////////////////////////////////////////////////////////////////
     // fig accessors
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
     public void setLineColor(Color col) {
-        _cover.setLineColor(col);
-        _divider.setLineColor(col);
-        _divider2.setLineColor(col);
-        _circle1.setLineColor(col);
-        _circle2.setLineColor(col);
-        _circle1tocircle2.setLineColor(col);
+        cover.setLineColor(col);
+        divider.setLineColor(col);
+        divider2.setLineColor(col);
+        circle1.setLineColor(col);
+        circle2.setLineColor(col);
+        circle1tocircle2.setLineColor(col);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
     public Color getLineColor() {
-        return _cover.getLineColor();
+        return cover.getLineColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
     public void setFillColor(Color col) {
-        _cover.setFillColor(col);
+        cover.setFillColor(col);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
     public Color getFillColor() {
-        return _cover.getFillColor();
+        return cover.getFillColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
     public void setFilled(boolean f) {
-        _cover.setFilled(f);
+        cover.setFilled(f);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFilled()
+     */
     public boolean getFilled() {
-        return _cover.getFilled();
+        return cover.getFilled();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
     public void setLineWidth(int w) {
-        _cover.setLineWidth(w);
-        _divider.setLineWidth(w);
-        _divider2.setLineWidth(w);
+        cover.setLineWidth(w);
+        divider.setLineWidth(w);
+        divider2.setLineWidth(w);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
     public int getLineWidth() {
-        return _cover.getLineWidth();
+        return cover.getLineWidth();
     }
 
     ////////////////////////////////////////////////////////////////
@@ -275,6 +323,8 @@ public class FigSubmachineState extends FigState {
 
     /**
      * Update the text labels and listeners
+     *
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
@@ -288,8 +338,8 @@ public class FigSubmachineState extends FigState {
                 }
             }
         } else {
-            if (mee.getSource() ==
-                    Model.getFacade().getSubmachine(getOwner())) {
+            if (mee.getSource() 
+                    == Model.getFacade().getSubmachine(getOwner())) {
                 // The Machine State has got a new name
                 if (mee.getPropertyName().equals("name")) {
                     updateInclude();
@@ -302,6 +352,9 @@ public class FigSubmachineState extends FigState {
         }
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
     protected void updateListeners(Object newOwner) {
         super.updateListeners(newOwner);
         if (newOwner != null) {
@@ -318,19 +371,22 @@ public class FigSubmachineState extends FigState {
         }
     }
 
-    protected void updateListeners(Object newOwner, Object oldV) {
+    private void updateListeners(Object newOwner, Object oldV) {
         this.updateListeners(newOwner);
         if (oldV != null)
             Model.getPump().removeModelEventListener(this, oldV);
     }
 
-    protected void updateInclude() {
-        _include.setText(Notation.generate(this, getOwner()));
+    private void updateInclude() {
+        include.setText(Notation.generate(this, getOwner()));
         calcBounds();
         setBounds(getBounds());
         damage();
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     */
     public void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
         if (ft == getInternal()) {
