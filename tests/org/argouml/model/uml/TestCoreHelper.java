@@ -26,6 +26,7 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.foundation.core.MClassifierImpl;
@@ -62,10 +63,26 @@ public class TestCoreHelper extends TestCase {
      * Test stereotypes.
      */
     public void testIsValidStereoType() {
-	CheckUMLModelHelper.isValidStereoType(
-		      this,
-		      CoreFactory.getFactory(),
-		      TestCoreFactory.getAllModelElements());
+        CheckUMLModelHelper.isValidStereoType(
+                          this,
+                          CoreFactory.getFactory(),
+                          TestCoreFactory.getAllModelElements());
+    }
+
+    /**
+     * Test subtype check.
+     */
+    public void testIsSubType() {
+    	assertTrue("Is not a subtype", 
+                       CoreHelper.getHelper().
+                       isSubType(ModelFacade.CLASSIFIER, ModelFacade.CLASS));
+        assertTrue("Is not a parent type", 
+                        !CoreHelper.getHelper().
+                        isSubType(ModelFacade.CLASS, ModelFacade.CLASSIFIER));
+        assertTrue("Is not a parent type", 
+                        !CoreHelper.getHelper().
+                        isSubType(ModelFacade.CLASS, 
+                                  ModelFacade.AGGREGATIONKIND));
     }
 
     /**
