@@ -5,15 +5,25 @@ strange behaviour. Some of them are known, some are not.
 
 To make sure the problems you find are known, do the following:
 1.  Visit our web site: http://argouml.tigris.org
-2.  Go to Issuezilla.
-3.  Search for the problem among the problems in the database.
-6.  Register as a member on Tigris. If not already.
-7.  Request the observer role in the project.
-8.  Get the role granted.
-4.  If found, add yourself as CC to the Issue. You are done.
-5.  If not found or some of your peculiarities or details is missing, go on.
-9.  Enter a new issue or add information to an already existing issue.
-10. You will get updates via mail when someone comments or does
+2.  Register as a member on Tigris. If not already.
+3.  Request the observer role in the project. If not already.
+4.  Go to Issuezilla (Bugs and Issues).
+5.  Search for the problem among the problems in the database.
+6.  If found, add yourself as CC to the Issue. You are done.
+7.  If not found or some of your peculiarities or details is missing, go on.
+8.  Enter a new issue or add information to an already existing issue. Be
+    sure to include what version you are running, what version of jdk, 
+    all the steps that lead up to this, what happens, what you expected
+    to happen, what the problem is.
+9.  If the problem is repeatable, rerun with debug logging enabled
+    (java -Dlog4j.configuration=org/argouml/resource/full.lcf -jar argouml.jar)
+    and add the log file argo_full.log to the issue.
+10. Add extra information that might be relevant for the issue as attachments.
+    These could be screen shots, your project file, log files...
+11. You will get updates via mail when someone comments or does
     something with your issue.
-11. When it is verified, close the issue after you have accepted the
-    solution.
+12. When it is resolved and verified, close the issue after you have 
+    accepted the solution.
+
+By doing this you are taking part in the ArgoUML project contributing
+information that will lead to making ArgoUML a better product.
