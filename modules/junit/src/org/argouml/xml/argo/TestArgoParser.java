@@ -43,40 +43,38 @@ public class TestArgoParser extends TestCase {
 	try {
 	    url = new URL(filename);
 	    Project p = Project.loadProject(url);
-	    assert("Load Status", ArgoParser.SINGLETON.getLastLoadStatus());
+	    assert("Load Status for " + filename + ".",
+		   ArgoParser.SINGLETON.getLastLoadStatus());
 	} catch (java.net.MalformedURLException e) {
 	    assert("Incorrect test case, malformed filename: " 
 		   + filename + ".", false);
-    // 2002-07-18
-	// Jaap Branderhorst
-	// Added catch block to solve issue 913
 	} catch (Exception io) {
-		fail("Incorrect test case, projectfile corrupted: " + filename);
+	    fail("Projectfile corrupted: " + filename);
 	}
 	
     }
 
-    public void testLoadProjects() {
+    public void testLoadProject1() { 
 	loadProject("file:testmodels/Empty.zargo");
+    }
+    public void testLoadProject2() {
 	loadProject("file:testmodels/Alittlebitofeverything.zargo");
     }
 
     public void testLoadGarbage() {
 	URL url = null;
+	boolean loaded = true;
 	try {
 	    url = new URL("file:testmodels/Garbage.zargo");
 	    Project p = Project.loadProject(url);
 	    assert("Load Status", !ArgoParser.SINGLETON.getLastLoadStatus());
 	} catch (java.net.MalformedURLException e) {
 	    assert("Incorrect test case.", false);
-	// 2002-07-18
-	// Jaap Branderhorst
-	// Added catch block to solve issue 913
 	} catch (Exception io) {
-		fail("Incorrect test case, projectfile corrupted: " + url.toString());
+	    // This is the normal case.
+	    loaded = false;
 	}
-	
-	
+	assert("No exception was thrown.", !loaded);
     }
 }
 

@@ -191,7 +191,12 @@ public class Project implements java.io.Serializable {
      *
      *    Unlike the constructor which forces an .argo extension
      *    This method will attempt to load a raw XMI file
-     * This method NEEDS a refactoring.
+     * <P>
+     * This method can fail in several different ways. Either by throwing
+     * an exception or by having the ArgoParser.SINGLETON.getLastLoadStatus()
+     * set to not true.
+     * <P>
+     * Needs-more-work: This method NEEDS a refactoring.
      */
     public static Project loadProject(URL url) throws IOException, Exception {
         Project p = null;
@@ -265,6 +270,11 @@ public class Project implements java.io.Serializable {
     /**
      * Loads a model (XMI only) from a .zargo file. BE ADVISED this method has a side
      * effect. It sets _UUIDREFS to the model.
+     * <p>
+     * If there is a problem with the xmi file, an error is set in the
+     * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
+     * examined by the calling function.
+     *
      * @param url The url with the .zargo file
      * @return MModel The model loaded
      * @throws IOException Thrown if the model or the .zargo file itself is corrupted in any way.
@@ -292,7 +302,7 @@ public class Project implements java.io.Serializable {
         InputSource source = new InputSource(zis);
         source.setEncoding("UTF-8");
         mmodel = xmiReader.parse(new InputSource(zis));
-        if (mmodel != null && !xmiReader.getErrors()) {
+        // if (mmodel != null && !xmiReader.getErrors()) {
             try {
                 addMember(mmodel);
             }
@@ -301,17 +311,33 @@ public class Project implements java.io.Serializable {
                     url.toString() +
                     "could not be added to the project.");
             }
-        }
-        else {
-            throw new IOException("XMI file " + url.toString() + 
-                " could not be parsed.");
-        }
+	    //}
+	    //        else {
+            //throw new IOException("XMI file " + url.toString() + 
+	    //" could not be parsed.");
+	    //}
+	    if (xmiReader.getErrors()) {
+		ArgoParser.SINGLETON.setLastLoadStatus(false);
+		ArgoParser.SINGLETON.setLastLoadMessage("XMI file "
+							+ url.toString()
+							+ " could not be "
+							+ "parsed.");
+	    }
+
         _UUIDRefs = new HashMap(xmiReader.getXMIUUIDToObjectMap());
         return mmodel;
     }
 
     
-    public void loadZippedProjectMembers(URL url) throws Exception {
+    /**
+     * Loads all the members from a zipped input stream.
+     *
+     * @throws IOException if there is something wrong with the zipped archive
+     *                     or with the model.
+     * @throws PropertyVetoException if the adding of a diagram is vetoed.
+     */
+    public void loadZippedProjectMembers(URL url) 
+	throws IOException, PropertyVetoException {
 
      
         loadModelFromXMI(url); // throws a IOException if things go wrong
@@ -342,7 +368,7 @@ public class Project implements java.io.Serializable {
             zis.close();
 
 	    
-        } catch (Exception e) {
+        } catch (IOException e) {
             ArgoParser.SINGLETON.setLastLoadStatus(false);
             ArgoParser.SINGLETON.setLastLoadMessage(e.toString());
             System.out.println("Oops, something went wrong in Project.loadZippedProjectMembers() "+e );

@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
+import org.argouml.xml.argo.*;
 import org.argouml.util.*;
 import org.argouml.util.osdep.*;
 
@@ -39,6 +40,14 @@ import java.text.MessageFormat;
 
 import javax.swing.*;
 
+/**
+ * Action that loads the project.
+ * This will throw away the project that we were working with up to this 
+ * point so some extra caution.
+ *
+ * @see ActionSaveProject
+ * @stereotype singleton
+ */
 public class ActionOpenProject extends UMLAction {
   
   ////////////////////////////////////////////////////////////////
@@ -154,6 +163,7 @@ public class ActionOpenProject extends UMLAction {
     				JOptionPane.ERROR_MESSAGE);
                // restore old state of the project browser
                pb.setProject(oldProject);
+	       return;
             }
             catch (IOException io) {
                 // now we have to handle the case of a corrupted XMI file
@@ -165,6 +175,7 @@ public class ActionOpenProject extends UMLAction {
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
                 pb.setProject(oldProject);
+		return;
             }
             catch (Exception ex) {
             	// now show some errorpane
@@ -177,7 +188,28 @@ public class ActionOpenProject extends UMLAction {
 
             	// lets restore the state of the projectbrowser
             	pb.setProject(oldProject);
+		return;
             }
+	    if (ArgoParser.SINGLETON.getLastLoadStatus() != true) {
+            	JOptionPane.
+		    showMessageDialog(pb,
+				      "Problem in loading the project " 
+				      + url.toString()
+				      + "\n" 
+				      + "Project file probably corrupt from "
+				      + "an earlier version or ArgoUML.\n"
+				      + "Error message:\n" 
+				      + ArgoParser.SINGLETON.getLastLoadMessage()
+				      + "\n"
+				      + "Since the project was incorrectly "
+				      + "saved some things might be missing "
+				      + "from before you saved it.\n"
+				      + "These things cannot be restored. "
+				      + "You can continue working with what "
+				      + "was actually loaded.\n",
+				      "Error",
+				      JOptionPane.ERROR_MESSAGE);
+	    }
           }
           
           return;
