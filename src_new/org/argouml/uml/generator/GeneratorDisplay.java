@@ -607,7 +607,29 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
 
   public String generateMultiplicityRange(MMultiplicityRange mr) {
 
+	  // 2002-07-25
+	  // Jaap Branderhorst
+	  // this does not work when the multiplicity is *
+	  /*
       return mr.toString();
+      */
+      mr.toString();
+      int lower = mr.getLower();
+      String lowerStr = "" + lower;
+      int upper = mr.getUpper();
+      String upperStr = "" + upper;
+      if (lower == MMultiplicity.N) {
+      	lowerStr = "*";
+      }
+      if (upper == MMultiplicity.N) {
+      	upperStr = "*";
+      } 
+      if (lower == upper) return lowerStr;
+      return lowerStr + ".." + upperStr;
+  }
+      
+      
+      
 //     Integer lower = new Integer(mr.getLower());
 //     Integer upper = new Integer(mr.getUpper());
 //     if (lower == null && upper == null) return ANY_RANGE;
@@ -615,7 +637,7 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
 //     if (upper == null) return lower.toString() + "..*";
 //     if (lower.intValue() == upper.intValue()) return lower.toString();
 //     return lower.toString() + ".." + upper.toString();
-  }
+ 
 
   public String generateState(MState m) {
     return m.getName();
