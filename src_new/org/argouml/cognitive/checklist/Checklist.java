@@ -50,33 +50,51 @@ public class Checklist implements Serializable {
     // instance variables
 
     /** Pending CheckItems for the designer to consider. */
-    protected Vector _items = new Vector();
+    private Vector items = new Vector();
 
-    protected String _nextCategory = "General";
+    private String nextCategory = "General";
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
-
+    /**
+     * The constructor.
+     * 
+     */
     public Checklist() { }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public Vector getCheckItems() { return _items; }
+    /**
+     * @return the items
+     */
+    public Vector getCheckItems() { return items; }
 
+    /**
+     * @param item the item to be added to the list
+     */
     public void addItem(CheckItem item) {
-	_items.addElement(item);
+	items.addElement(item);
     }
 
+    /**
+     * @param item the item to be removed
+     */
     public void removeItem(CheckItem item) {
-	_items.removeElement(item);
+	items.removeElement(item);
     }
 
+    /**
+     * @param description the description for a new item
+     */
     public void addItem(String description) {
-	CheckItem item = new CheckItem(_nextCategory, description);
-	_items.addElement(item);
+	CheckItem item = new CheckItem(nextCategory, description);
+	items.addElement(item);
     }
 
+    /**
+     * Replace the list by the given new list.
+     * 
+     * @param list the given new list 
+     */
     public synchronized void addAll(Checklist list) {
 	Enumeration cur = list.elements();
 	while (cur.hasMoreElements()) {
@@ -85,17 +103,33 @@ public class Checklist implements Serializable {
 	}
     }
 
-    public Enumeration elements() { return _items.elements(); }
+    /**
+     * @return the list in enumeration format
+     */
+    public Enumeration elements() { return items.elements(); }
 
-    public int size() { return _items.size(); }
+    /**
+     * @return the number of items in the list
+     */
+    public int size() { return items.size(); }
 
+    /**
+     * @param index the position of the item to retrieve
+     * @return the item
+     */
     public CheckItem elementAt(int index) {
-	return (CheckItem) _items.elementAt(index);
+	return (CheckItem) items.elementAt(index);
     }
 
-    public void setNextCategory(String cat) { _nextCategory = cat; }
+    /**
+     * @param cat the category
+     */
+    public void setNextCategory(String cat) { nextCategory = cat; }
     
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
 	String res;
 	res = getClass().getName() + " {\n";
