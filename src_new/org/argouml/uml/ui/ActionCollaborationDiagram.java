@@ -26,7 +26,7 @@ package org.argouml.uml.ui;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -60,7 +60,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
                 "The argument " + handle + "is not a namespace.");
         }
         MNamespace ns = (MNamespace) handle;
-        Object target = ProjectBrowser.getInstance().getTarget();
+        Object target = TargetManager.getInstance().getTarget();
         MCollaboration c = null;
         if (target instanceof MOperation) {
             c =
@@ -118,7 +118,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
      */
     public boolean shouldBeEnabled() {
 
-        Object target = ProjectBrowser.getInstance().getTarget();
+        Object target = TargetManager.getInstance().getTarget();
         if (target instanceof MNamespace)
             return isValidNamespace((MNamespace) target);
         else
