@@ -436,7 +436,7 @@ After these operations the file will still be visible in the GUI.
          directory  -->
 
     <delete dir="${documentation.dir}/${doc.subdir}/images"/>
-    <delete file="${documentation.dir}/${doc.subdir}/imglist.txt"/>
+    <delete file="${documentation.dir}/${doc.subdir}/imglist.txt" quiet="true"/>
   </target>
   
   <!-- =================================================================== -->
