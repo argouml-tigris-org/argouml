@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>2.3.&nbsp;Build Process</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Building from source"><link rel="previous" href="ch02s02.html" title="2.2.&nbsp;Download from the CVS repository"><link rel="next" href="ch02s04.html" title="2.4.&nbsp;The JUnit test cases"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.3.&nbsp;Build Process</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;2.&nbsp;Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch02s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="Build"></a>2.3.&nbsp;Build Process</h2></div></div><div></div></div><a class="indexterm" name="d0e483"></a><a class="indexterm" name="d0e488"></a><p>
+   <title>2.3.&nbsp;Build Process</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Building from source"><link rel="previous" href="ch02s02.html" title="2.2.&nbsp;Download from the CVS repository"><link rel="next" href="ch02s04.html" title="2.4.&nbsp;The JUnit test cases"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.3.&nbsp;Build Process</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;2.&nbsp;Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch02s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="Build"></a>2.3.&nbsp;Build Process</h2></div></div><div></div></div><a class="indexterm" name="d0e482"></a><a class="indexterm" name="d0e487"></a><p>
 The ArgoUML build process is driven by ANT, and it is highly recommend
 that you stick to that.
 There are people known to build from JBuilder or Netbeans, but always
@@ -9,13 +9,13 @@ make sure that your work compile with the plain vanilla build process.
 Ant is a tool written in java developed for Apache that reads an xml-file
 with rules telling what to compile to what result and what files to include
 in what jar-file.
-</p><a class="indexterm" name="d0e495"></a><p>
+</p><a class="indexterm" name="d0e494"></a><p>
 The rule file is named <tt class="filename">build.xml</tt>.
 There is one of those in every separate build directory
 (<tt class="filename">src_new</tt>,
 <tt class="filename">documentation</tt>, and
 <tt class="filename">modules/<i class="replaceable"><tt>whatever</tt></i></tt>).
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e515"></a>2.3.1.&nbsp;How ANT is run from the ArgoUML development environment</h3></div></div><div></div></div><a class="indexterm" name="d0e518"></a><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e514"></a>2.3.1.&nbsp;How ANT is run from the ArgoUML development environment</h3></div></div><div></div></div><a class="indexterm" name="d0e517"></a><p>
 For your convenience the ant tool of the correct version is present in the
 CVS repository of ArgoUML in the file
 <tt class="filename">argouml/tools/ant-1.4.1/lib/ant.jar</tt>.
@@ -47,7 +47,7 @@ Also, you must execute
 <b class="command">/where/ever/you/placed/your/new/ant <i class="replaceable"><tt>target</tt></i></b>
 rather than
 <b class="command">build <i class="replaceable"><tt>target</tt></i></b>.
-</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e574"></a>2.3.1.1.&nbsp;Compiling for Unix</h4></div></div><div></div></div><a class="indexterm" name="d0e577"></a><a class="indexterm" name="d0e582"></a><p>
+</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e573"></a>2.3.1.1.&nbsp;Compiling for Unix</h4></div></div><div></div></div><a class="indexterm" name="d0e576"></a><a class="indexterm" name="d0e581"></a><p>
 Here is what you need to do in order to compile and run
 your checked out copy of ArgoUML under Unix.
 </p><div class="orderedlist"><ol type="1"><li><p><b class="command">JAVA_HOME=<i class="replaceable"><tt>/where/you/have/installed/jdk</tt></i></b></p><p><b class="command">export JAVA_HOME</b></p><p>
@@ -63,7 +63,7 @@ Compile and run Argouml using <b class="command">./build.sh run</b>
 </p><p>
 You can do this over and over again when you have modified something
 or want to compile and run again.
-</p></li></ol></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e631"></a>2.3.1.2.&nbsp;Compiling for Windows</h4></div></div><div></div></div><a class="indexterm" name="d0e634"></a><a class="indexterm" name="d0e639"></a><div class="orderedlist"><ol type="1"><li><p>
+</p></li></ol></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e630"></a>2.3.1.2.&nbsp;Compiling for Windows</h4></div></div><div></div></div><a class="indexterm" name="d0e633"></a><a class="indexterm" name="d0e638"></a><div class="orderedlist"><ol type="1"><li><p>
 <b class="command">set JAVA_HOME=<i class="replaceable"><tt>\where\you\have\installed\jdk</tt></i></b>
 </p></li><li><p>
 Change the current directory to the directory you are building
@@ -74,9 +74,9 @@ Compile and run Argouml using <b class="command">build run</b>
 </p><p>
 You can do this over and over again when you have modified something
 or want to compile and run again.
-</p></li></ol></div><a class="indexterm" name="d0e678"></a><a class="indexterm" name="d0e683"></a><p>
+</p></li></ol></div><a class="indexterm" name="d0e677"></a><a class="indexterm" name="d0e682"></a><p>
 If you do this from Cygwin you work just like for Unix.
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e688"></a>2.3.1.3.&nbsp;Customizing and configuring your build</h4></div></div><div></div></div><a class="indexterm" name="d0e691"></a><a class="indexterm" name="d0e696"></a><a class="indexterm" name="d0e701"></a><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e687"></a>2.3.1.3.&nbsp;Customizing and configuring your build</h4></div></div><div></div></div><a class="indexterm" name="d0e690"></a><a class="indexterm" name="d0e695"></a><a class="indexterm" name="d0e700"></a><p>
 It is possible to customize your compilation of ArgoUML.
 </p><p>
 If you issue the command
@@ -98,13 +98,40 @@ anyone else when checking in things
 developed using this modified environment, 
 remove these files temporarily for the compiling and testing
 you do just before you commit.
-	  </p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e723"></a>2.3.1.4.&nbsp;Building javadoc</h4></div></div><div></div></div><a class="indexterm" name="d0e726"></a><a class="indexterm" name="d0e729"></a><p>
+	  </p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e722"></a>2.3.1.4.&nbsp;Building javadoc</h4></div></div><div></div></div><a class="indexterm" name="d0e725"></a><a class="indexterm" name="d0e728"></a><p>
 By running ANT again using <b class="command">build prepare-docs</b>
 the javadoc documentation is generated and put into
 <tt class="filename">argouml/build/javadocs</tt>.
-</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e742"></a>2.3.2.&nbsp;How documentation is presented</h3></div></div><div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e741"></a>2.3.1.5.&nbsp;Building one of the modules</h4></div></div><div></div></div><p>
+If you want to run ArgoUML with modules enabled the 
+<tt class="filename">build.xml</tt>s are set up to do this in two ways:
+            </p><div class="orderedlist"><ol type="1"><li><p>Test just one module</p><div class="orderedlist"><ol type="a"><li><p>Build argouml, the package</p><p>
+This is done with <b class="command">ant package</b>
+in the <tt class="filename">argouml/src_new</tt>-directory.
+</p></li><li><p>Run the module</p><p>
+This is done with <b class="command">ant run</b>-command 
+in the 
+<tt class="filename">
+argouml/modules/<i class="replaceable"><tt>whatever</tt></i>
+</tt>-directory.
+</p></li></ol></div></li><li><p>Test several modules together</p><div class="orderedlist"><ol type="a"><li><p>Build argouml, the package</p><p>
+This is done with <b class="command">ant package</b>
+in the <tt class="filename">argouml/src_new</tt>-directory.
+</p></li><li><p>Compile and install the modules</p><p>
+This is done with <b class="command">ant install</b>-command
+in each of the 
+<tt class="filename">
+argouml/modules/<i class="replaceable"><tt>whatever</tt></i>
+</tt>-directories.
+</p></li><li><p>Start argouml</p><p>
+This is done with <b class="command">ant run</b>
+in the <tt class="filename">argouml/src_new</tt>-directory.
+</p></li></ol></div><p>
+This will start ArgoUML with all modules available.
+</p></li></ol></div><p>         
+</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e822"></a>2.3.2.&nbsp;How documentation is presented</h3></div></div><div></div></div><p>
 This describes how the documentation arrives on the web site.
-</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="how_the_web_site_works"></a>2.3.2.1.&nbsp;How the ArgoUML web site works</h4></div></div><div></div></div><a class="indexterm" name="d0e750"></a><p>
+</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="how_the_web_site_works"></a>2.3.2.1.&nbsp;How the ArgoUML web site works</h4></div></div><div></div></div><a class="indexterm" name="d0e830"></a><p>
 Tigris provides the ArgoUML site to be edited through CVS. Everything
 that is checked in under <tt class="filename">argouml/www</tt>
 becomes immediatly available at the url 
@@ -116,7 +143,7 @@ available at
 <a href="http://argouml.tigris.org/project.html" target="_top">http://argouml.tigris.org/project.html</a>.
 </p><p>
 This is the way the site is maintained and updated.
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e773"></a>2.3.2.2.&nbsp;The ArgoUML documentation</h4></div></div><div></div></div><a class="indexterm" name="d0e776"></a><a class="indexterm" name="d0e779"></a><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e853"></a>2.3.2.2.&nbsp;The ArgoUML documentation</h4></div></div><div></div></div><a class="indexterm" name="d0e856"></a><a class="indexterm" name="d0e859"></a><p>
 For the ArgoUML project the same documenation shall be available in both
 html, pdf and javahelp. To this end the documentation is written in
 docbook xml and generated into two versions of html 
@@ -197,7 +224,7 @@ Commit the changes thus publishing it on the web site.
 <b class="command">cvs commit -m'New version of the documentation published'</b>
 </p></li><li><p>
 The pdf book is uploaded to the download page.
-</p></li></ol></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e916"></a>2.3.2.3.&nbsp;How developers work with documentation</h4></div></div><div></div></div><a class="indexterm" name="d0e919"></a><p>
+</p></li></ol></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e996"></a>2.3.2.3.&nbsp;How developers work with documentation</h4></div></div><div></div></div><a class="indexterm" name="d0e999"></a><p>
 Developers that work with the documentation or with the tools 
 to generate the documentation (or anyone else interested in this)
 can generate the documentation like described above and examine
@@ -230,7 +257,7 @@ It contains the xsl rules for all the generation.
 The subdirectory
 <tt class="filename">images</tt>
 contains all the required pictures for all the books.
-</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e963"></a>2.3.3.&nbsp;Troubleshooting the development build</h3></div></div><div></div></div><a class="indexterm" name="d0e966"></a><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e971"></a>2.3.3.1.&nbsp;Compiling failed. Any suggestions?</h4></div></div><div></div></div><p>
+</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e1043"></a>2.3.3.&nbsp;Troubleshooting the development build</h3></div></div><div></div></div><a class="indexterm" name="d0e1046"></a><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1051"></a>2.3.3.1.&nbsp;Compiling failed. Any suggestions?</h4></div></div><div></div></div><p>
 It might be that some other developer has made a misstake in checking
 in things that contain errors, or forgotten to check in some files
 in a change.
@@ -256,7 +283,7 @@ and that is doing something. If in doubt, remove those files.
 </p><p>
 If nothing helps, ask the 
 <a href="mailto:dev@argouml.tigris.org" target="_top">developers mailing list</a>!
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1000"></a>2.3.3.2.&nbsp;Can't commit my changes?</h4></div></div><div></div></div><a class="indexterm" name="d0e1003"></a><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e1080"></a>2.3.3.2.&nbsp;Can't commit my changes?</h4></div></div><div></div></div><a class="indexterm" name="d0e1083"></a><p>
 You need to have a developer role in the ArgoUML project.
 If you don't then you cannot do commit yourself.
 Discuss what you have done and how best to test it on the

@@ -1,92 +1,117 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>Chapter&nbsp;9.&nbsp;How to work with CVS</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="previous" href="ch08.html" title="Chapter&nbsp;8.&nbsp;Organization of ArgoUML documentation"><link rel="next" href="ch09s02.html" title="9.2.&nbsp;Creating and using branches"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;9.&nbsp;How to work with CVS</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch09s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="cvs"></a>Chapter&nbsp;9.&nbsp;How to work with CVS</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>9.1. <a href="ch09.html#groundrules">Ground rules</a></dt><dt>9.2. <a href="ch09s02.html">Creating and using branches</a></dt><dd><dl><dt>9.2.1. <a href="ch09s02.html#howdoi_cvs">How do I ...?</a></dt></dl></dd><dt>9.3. <a href="ch09s03.html">Other CVS comments</a></dt></dl></div><a class="indexterm" name="d0e6796"></a><a class="indexterm" name="d0e6801"></a><a class="indexterm" name="d0e6806"></a><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="groundrules"></a>9.1.&nbsp;Ground rules</h2></div></div><div></div></div><p>
-When you have done all the work, and all the testing and
-are about to commit something please do:
-</p><div class="orderedlist"><ol type="1"><li><p>
-Compile argouml 
-(<b class="command">build run</b> or <b class="command">build package</b>).
-</p><p>
-This goes for all changes, even changes in comments.
+   <title>Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="previous" href="ch08s04.html" title="8.4.&nbsp;CVS repository contents"><link rel="next" href="ch09s02.html" title="9.2.&nbsp;Settings for NetBeans"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch08s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch09s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="standards"></a>Chapter&nbsp;9.&nbsp;Standards for coding in ArgoUML</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>9.1. <a href="ch09.html#d0e7655">Settings for Eclipse</a></dt><dt>9.2. <a href="ch09s02.html">Settings for NetBeans</a></dt><dt>9.3. <a href="ch09s03.html">Settings for Emacs</a></dt></dl></div><a class="indexterm" name="d0e7578"></a><a class="indexterm" name="d0e7581"></a><p>
+The coding style for ArgoUML is the following
+</p><div class="itemizedlist"><ul type="disc"><li><p>
+Each file starts with some header info: 
+file, 
+version info, 
+copyright notice,
+classes in this file (if more than one),
+original author (if you want).
+Like this:
+</p><pre class="programlisting">
+// $Id$
+// Copyright (c) 2003 The Regents of the University of California. All
+// ...
+
+// Classes: blabla, blabla (all classes of interest in this file)
+// Original Author: who ever
+</pre><p>
 </p></li><li><p>
-If your changes include removing files make a clean compile.
-(<b class="command">build clean</b> followed by
-<b class="command">build run</b> or <b class="command">build package</b>).
+All instance variables are private and their names begin with an underscore.
+If the variable should be accessible then add public or protected
+accessor methods with the same name as the variable without the
+underscore with "get" or "set" prepended.
+For example:
+<tt class="varname">_lineWidth</tt>, 
+<tt class="methodname">setLineWidth()</tt>, and 
+<tt class="methodname">getLineWidth()</tt>.
 </p></li><li><p>
-If your changes include removing public or protected operations and
-attributes make a clean compile
-(<b class="command">build clean</b> followed by
-<b class="command">build run</b> or <b class="command">build package</b>).
-</p><p>
-The build mechanism does not yet have reliable 
-dependancy checker enabled so this is the best way to make sure.
+In general, write short code.
+If a method will fit comfortably on one line, then put it on one line.
 </p></li><li><p>
-If your changes include adding abstract operations make a clean compile
-(<b class="command">build clean</b> followed by
-<b class="command">build run</b> or <b class="command">build package</b>).
-</p><p>
-The build mechanism does not yet have reliable 
-dependancy checker enabled so this is the best way to make sure.
+Use javadoc for each class, instance variable, and method. 
+In general do not put comments in the body of a method. 
+If you are doing something complex enough to need a comment, consider
+breaking it out into its own private commented method.
 </p></li><li><p>
-If you have changed anything that has the potential of affecting
-something in a totally different part of the code like internal
-data structure, handling of exceptions, 
-run all JUnit test cases
-and start the tool and do some more testing.
-</p><p>
-If in doubt, run all JUnit test cases.
+Indicate places of future modifications with 
+</p><pre class="programlisting">
+// TODO: reason
+</pre><p>
 </p></li><li><p>
-Do a <b class="command">cvs update</b> in src_new to make sure that 
-you do not forget to commit any file and to make sure that no one 
-else has commited anything in the mean time.
-</p><p>
-Remember that if you do not commit all the files from src_new
-that <b class="command">cvs update</b> found (marked A, R, and M)
-in the same commit then you would better remove those file
-from the checked out copy, update to get the original version
-from the repository and start over with the compilation.
-</p><p>
-If someone else have updated a file 
-(<b class="command">cvs update </b> shown U, or no longer pertinent)
-please compile again.
+Name all classes with an initial uppercase letter, and all variables
+and methods with a lowercase one. 
+I use the <tt class="varname">allTogetherWithCaps</tt> naming style.
+Name static variables with an underscore and an inital capital letter,
+e.g., <tt class="varname">_PossibleLanguages</tt>.
+Name constants with all upper case and underscores, e.g., 
+<tt class="constant">GRIP_MARGIN</tt>.
 </p></li><li><p>
-Commit all files that are included in a change at the same time.
-</p><p>
-This reduces the chance of anyone getting an inconsistant set of files
-by updating in the middle of your commit.
+To emphasize clusters of classes we are using what we call the binomial
+naming style (I am sure others have thought of this also): 
+The root class of the cluster has a short name (e.g., Layer), 
+other members of the cluster use that name as a prefix (e.g., LayerGrid).
+This makes many of the class name longer than they might be normally (e.g., Grid would be shorter).
+But this provides a lot of context without
+having to look at a class inheritance diagram.
+It is also very nice when you have to look at an alphabetical list
+of classes. I try to name class clusters so that they are not lexigraphically close others (e.g., the Net cluster
+used to be named Model, but that lexigraphically overlapped the Mode cluster).
 </p></li><li><p>
-Commit often.
+Four spaces should be used as the unit of indentation.
+Tabs must be set exactly every 8 spaces (not 4) and represent 2 indents.
 </p><p>
-Remember that the repository is also a backup copy of your work.
+This is exactly as it is stated in the Sun Code Conventions.
+It is here just for the emphasis.
+</p></li><li><p>
+If possible use lines shorter than 80 charaters wide.
 </p><p>
-If your change is so big and involves so many files that you would
-like to commit it for backup reasons but it doesn't compile or
-doesn't work or for some other reason should not confuse the main 
-branch in cvs, create a branch to work in.
-Then when your work is complete, you merge the branch into 
-the main branch.
-</p></li></ol></div><p>
+This is exactly as it is stated in the Sun Code Conventions.
+It is here just for the emphasis.
+</p></li><li><p>
+Open brace on same line (at end).
+Both for if/while/for and for class and functions definitions.
 </p><p>
-<span class="emphasis"><em>Rationale:</em></span>
-These ground rules is for the purpose of not stopping or hindering
-the work for anyone.
-Remember that there might be several developers working with
-different agendas and different efficiency (slower or faster)
-and the commits is the melting point of this.
+This is exactly as it is stated in the Sun Code Conventions.
+It is here just for the emphasis.
+</p></li><li><p>
+For everything else follow
+<a href="http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html" target="_top">
+Code Conventions for the Java Programming Language
+</a>!
+</p></li></ul></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e7655"></a>9.1.&nbsp;Settings for Eclipse</h2></div></div><div></div></div><span class="author"></span><p>
+These style guides correspond to the following settings in Eclipse:
+        </p><div class="itemizedlist"><ul type="disc"><li><p>In Preferences =&gt; Java =&gt; Code Formatter =&gt; New Lines</p><p>
+None of the boxes 
+"Insert a new line before opening brace",
+"Insert new lines in control statements",
+"Clear all blank lines",
+"Insert new line between 'else if'",
+or
+"Insert a new line inside an empty block"
+are checked.
+</p></li><li><p>
+In Preferences =&gt; Java =&gt; Code Formatter =&gt; Line Splitting
 </p><p>
-<span class="emphasis"><em>Perspective:</em></span>
-If this will take you an extra two minutes before every commit
-remember that if you commit something that will not work this
-will take everyone else (guess 10 persons) the extra time of
-looking at the compilation error or see the tool crash (1 minute),
-wonder why (1 minute),
-search for the error in his own changes (3 minutes),
-search for the error somewhere else (1 minute),
-glance at the mailing list to see if someone else has noticed this 
-and send a mail (1 minute),
-wait for some response (1 hour wait),
-update (1 minute),
-compile (1 minute).
-This amounts to 10 hours wait and 1,5 hours extra work for
-all developers in the project.
-</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch09s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;8.&nbsp;Organization of ArgoUML documentation&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;9.2.&nbsp;Creating and using branches</td></tr></table></div></body></html>
+Maximum line length is 80.
+</p></li><li><p>In Preferences =&gt; Java =&gt; Code Formatter =&gt; Style</p><p>
+None of the boxes
+"Compact assignment"
+or
+"Indentation is represented by a tab"
+are checked.
+</p><p>
+Number of spaces representing a tab: 4.
+This should probably be read as Number of spaces representing a 
+level of indentation.
+</p></li><li><p>In Preferences =&gt; Java =&gt; Java Editor =&gt; Appearance</p><p>
+Displayed tab width: 8
+</p><p>
+"Insert space for tabs (see Formatting preferences)" checked.
+There seems to be no way of having tabs set at width 8 and the
+indentation level set at 4 at the same time so we must let
+Eclipse generate code without tabs to obey the Sun Coding standard.
+</p></li></ul></div><p>
+      </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch08s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch09s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">8.4.&nbsp;CVS repository contents&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;9.2.&nbsp;Settings for NetBeans</td></tr></table></div></body></html>

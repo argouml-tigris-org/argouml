@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>5.7.&nbsp;Java - Code generations and Reverse Engineering</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components"><link rel="previous" href="ch05s06.html" title="5.6.&nbsp;Code Generation Component"><link rel="next" href="ch05s08.html" title="5.8.&nbsp;Other languages"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.7.&nbsp;Java - Code generations and Reverse Engineering</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s06.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s08.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="java"></a>5.7.&nbsp;Java - Code generations and Reverse Engineering</h2></div></div><div></div></div><a class="indexterm" name="d0e4683"></a><a class="indexterm" name="d0e4688"></a><a class="indexterm" name="d0e4693"></a><a class="indexterm" name="d0e4698"></a><p>
+   <title>5.7.&nbsp;Java - Code generations and Reverse Engineering</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components"><link rel="previous" href="ch05s06.html" title="5.6.&nbsp;Code Generation Component"><link rel="next" href="ch05s08.html" title="5.8.&nbsp;Other languages"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.7.&nbsp;Java - Code generations and Reverse Engineering</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s06.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s08.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="java"></a>5.7.&nbsp;Java - Code generations and Reverse Engineering</h2></div></div><div></div></div><a class="indexterm" name="d0e5042"></a><a class="indexterm" name="d0e5047"></a><a class="indexterm" name="d0e5052"></a><a class="indexterm" name="d0e5057"></a><p>
 Purpose - two purposes:
 to allow the model to be converted into java code and updated either
 in java or in the model;
@@ -10,7 +10,7 @@ The java things are located in
 <tt class="classname">org.argouml.language.java</tt>.
 </p><p>
 The Java component is a Layer 3 component. See <a href="ch04s07.html" title="4.7.&nbsp;Layer 3 - Description of components">Section&nbsp;4.7, &#8220;Layer 3 - Description of components&#8221;</a>.
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="howdoi_reverse"></a>5.7.1.&nbsp;How do I ...?</h3></div></div><div></div></div><p>...</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4717"></a>5.7.2.&nbsp;Which sources are involved?</h3></div></div><div></div></div><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="howdoi_reverse"></a>5.7.1.&nbsp;How do I ...?</h3></div></div><div></div></div><p>...</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5076"></a>5.7.2.&nbsp;Which sources are involved?</h3></div></div><div></div></div><p>
 The package org.argouml.uml.reveng is supposed to hold those classes
 that are common to all RE packages. At the moment this is the Import
 class which is mainly responsible to recognize directories, get their
@@ -23,7 +23,7 @@ metamodel objects then.
 The package org.argouml.uml.reveng.java holds the Java specific parts
 of the current RE code. C++ RE might go to org.argouml.uml.reveng.cc,
 or so...
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4724"></a>5.7.3.&nbsp;How is the grammar of the target language implemented?</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5083"></a>5.7.3.&nbsp;How is the grammar of the target language implemented?</h3></div></div><div></div></div><p>
 It's an Antlr (<a href="http://www.antlr.org" target="_top">http://www.antlr.org</a>)
 grammar, based on the Antlr Java parser
 example. The main difference is the missing AST (Abstract Syntax Tree)
@@ -32,12 +32,12 @@ generation and treeparser. So the original example generates an AST
 ArgoUML code parses the source file and generates NSUML objects
 directly from the sources. This was done to avoid the memory usage
 of an AST and the frequent GC while parsing many source files.
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4732"></a>5.7.4.&nbsp;Which model/diagram elements are generated?</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5091"></a>5.7.4.&nbsp;Which model/diagram elements are generated?</h3></div></div><div></div></div><p>
 The *context classes hold the current context for a package, class
 etc. When the required information for an object is available, the
 corresponding NSUML object is created and passed to the DiagramInterface
 to visualize it.
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e4737"></a>5.7.5.&nbsp;Which layout algorithm is used?</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5096"></a>5.7.5.&nbsp;Which layout algorithm is used?</h3></div></div><div></div></div><p>
 The classes in org.argouml.uml.diagram.static_structure.layout.* hold
 the Classdiagram layout code. No layout for other diagram types yet.
 It's based on a ranking scheme for classes and interfaces. The rank of

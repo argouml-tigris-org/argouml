@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>5.11.&nbsp;Internationalization</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components"><link rel="previous" href="ch05s10.html" title="5.10.&nbsp;Help System"><link rel="next" href="ch05s12.html" title="5.12.&nbsp;Logging"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.11.&nbsp;Internationalization</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s10.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s12.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="internationalization"></a>5.11.&nbsp;Internationalization</h2></div></div><div></div></div><a class="indexterm" name="d0e4995"></a><a class="indexterm" name="d0e4998"></a><a class="indexterm" name="d0e5001"></a><a class="indexterm" name="d0e5004"></a><a class="indexterm" name="d0e5007"></a><p>
+   <title>5.11.&nbsp;Internationalization</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components"><link rel="previous" href="ch05s10.html" title="5.10.&nbsp;Help System"><link rel="next" href="ch05s12.html" title="5.12.&nbsp;Logging"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.11.&nbsp;Internationalization</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s10.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s12.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="internationalization"></a>5.11.&nbsp;Internationalization</h2></div></div><div></div></div><a class="indexterm" name="d0e5354"></a><a class="indexterm" name="d0e5357"></a><a class="indexterm" name="d0e5360"></a><a class="indexterm" name="d0e5363"></a><a class="indexterm" name="d0e5366"></a><p>
 Purpose - to provide the infrastructure that the other components can
 use to translate strings;
 to provide the infrastructure that makes it possible to plug in
@@ -24,7 +24,7 @@ GEF infrastructure.
 There are several sets of Bundle files for different domains within ArgoUML.
 Each domain has a name and is handled by a file.
 This is set up in <tt class="classname">org.argouml.application.Main</tt>.
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5030"></a>5.11.1.&nbsp;Organizing translators</h3></div></div><div></div></div><a class="indexterm" name="d0e5033"></a><a class="indexterm" name="d0e5036"></a><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5389"></a>5.11.1.&nbsp;Organizing translators</h3></div></div><div></div></div><a class="indexterm" name="d0e5392"></a><a class="indexterm" name="d0e5395"></a><p>
 The problems with internationalization are not so much the technical
 problems as to how it works but more so the problems are with
 getting, keeping and coordinating the correct competences to do
@@ -82,7 +82,7 @@ as to how best to provide the localization for those parts.
 Either by providing localization for that team to include in the
 package or by having ArgoUML overriding that package in that respect.
 </p></li></ol></div><p>
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5073"></a>5.11.2.&nbsp;Ambitions for localization</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5432"></a>5.11.2.&nbsp;Ambitions for localization</h3></div></div><div></div></div><p>
 Let me (Linus Tolke, May 2002) try to define the levels of
 ambition for us to try to make it possible to discuss where
 we are going.

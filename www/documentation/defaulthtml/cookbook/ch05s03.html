@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>5.3.&nbsp;Diagrams</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components"><link rel="previous" href="ch05s02.html" title="5.2.&nbsp;Critics and other cognitive tools"><link rel="next" href="ch05s04.html" title="5.4.&nbsp;Property panels"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.3.&nbsp;Diagrams</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="diagrams"></a>5.3.&nbsp;Diagrams</h2></div></div><div></div></div><a class="indexterm" name="d0e2796"></a><p>
+   <title>5.3.&nbsp;Diagrams</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components"><link rel="previous" href="ch05s02.html" title="5.2.&nbsp;Critics and other cognitive tools"><link rel="next" href="ch05s04.html" title="5.4.&nbsp;Property panels"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.3.&nbsp;Diagrams</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="diagrams"></a>5.3.&nbsp;Diagrams</h2></div></div><div></div></div><a class="indexterm" name="d0e3155"></a><p>
 Purpose - to generate a graphical view of the diagrams in the model with
 tools.
 The contents of the diagrams and model is modifyable.
@@ -32,11 +32,11 @@ commented and have full Javadoc descriptions, to help when examining
 the code. 
 You will need to read the description here in conjunction
 with looking at the code.
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e2833"></a>5.3.2.&nbsp;How to add a new Fig</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3192"></a>5.3.2.&nbsp;How to add a new Fig</h3></div></div><div></div></div><p>
 The new item must be added to the toolbar. Both the graph model and
 diagram renderer for the diagram will need modifying for any new fig
 object.
-</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2838"></a>5.3.2.1.&nbsp;Adding to the toolbar</h4></div></div><div></div></div><p>
+</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3197"></a>5.3.2.1.&nbsp;Adding to the toolbar</h4></div></div><div></div></div><p>
 Find the diagram object in
 <tt class="literal">uml/diagram/XXXX/ui/UMLYYYYDiagram.java</tt>, where
 <tt class="literal">XXXX</tt> is the diagram type (lower case) and
@@ -86,7 +86,7 @@ as an argument, and sets up a graph model
 (<tt class="literal">UseCaseDiagramGraphModel</tt>), layer perspective and
 renderer (<tt class="literal">UseCaseDigramRenderer</tt>) for nodes and
 edges.
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2907"></a>5.3.2.2.&nbsp;Changing the graph model</h4></div></div><div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3266"></a>5.3.2.2.&nbsp;Changing the graph model</h4></div></div><div></div></div><p>
 The graph model is the bridge between the UML meta-model
 representation of the design and the graph model of GEF. They are
 found in the parent directory of the corresponding diagram class, and
@@ -100,7 +100,7 @@ The graph model is defined as a child of the GEF class
 <tt class="literal">MutableGraphModel</tt> (GEF),
 <tt class="literal">VetoableChangeListener</tt> (Java) and
 <tt class="literal">MElementListener</tt> (NSUML).
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2935"></a>5.3.2.3.&nbsp;Changing the renderer</h4></div></div><div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3294"></a>5.3.2.3.&nbsp;Changing the renderer</h4></div></div><div></div></div><p>
 The renderer is responsible for creating graphic figs as required on
 the diagram. It is found in the same directory of the corresponding
 diagram class, and has the general name
@@ -117,7 +117,7 @@ represent a given NSUML edge object.
 In our example, we must extend <tt class="literal">getFigEdgeFor()</tt> so
 it can handle NSUML MExtend objects (producing a
 <tt class="literal">FigExtend</tt>).
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2965"></a>5.3.2.4.&nbsp;Creating a new Fig (explanation 1)</h4></div></div><div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e3324"></a>5.3.2.4.&nbsp;Creating a new Fig (explanation 1)</h4></div></div><div></div></div><p>
 New objects that are to appear on a diagram will require new Fig
 classes to represent them. In our example we have created
 FigExtend. They are placed in the same directory as the diagram that

@@ -25,7 +25,7 @@ There is also a Explorer Configurator dialog, which allows the user
 to tailor the existing perspectives and create new perspectives 
 to their needs 
 (although the settings are not persisted).
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5596"></a>5.15.1.&nbsp;Details of current implementation</h3></div></div><div></div></div><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5955"></a>5.15.1.&nbsp;Details of current implementation</h3></div></div><div></div></div><p>
 Some of the classes are actually reused by the other tree view, 
 i.e. the todo/critics list.
 </p><p>
@@ -42,7 +42,7 @@ under <tt class="classname">org.argouml.uml.diagram.ui</tt> and
 <tt class="classname">org.argouml.uml.diagram.<i class="replaceable"><tt>diagram</tt></i>.ui</tt>.
 </p><p>
 Explorer was previously called Navigator Tree or Navigator Pane.
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5619"></a>5.15.2.&nbsp;Requirements</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5978"></a>5.15.2.&nbsp;Requirements</h3></div></div><div></div></div><p>
 The Explorer must react to user and application events.
 </p><p>
 User events include
@@ -68,7 +68,7 @@ model changed,
 the tree must update to reflect additions/deletions 
 and name changes in the model.
 </p></li></ol></div><p>
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5653"></a>5.15.3.&nbsp;Key Classes</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6012"></a>5.15.3.&nbsp;Key Classes</h3></div></div><div></div></div><p>
 The Explorer contains Swing components, and there is currently
 no abstraction layer (to help implement a IDE plugin for example.
 </p><p>
@@ -107,7 +107,7 @@ the <tt class="methodname">convertValueToText(...)</tt> method in
 Event handling is done in 
 <tt class="classname">DisplayTextTree</tt> and 
 <tt class="classname">NavigatorPane</tt>.
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5706"></a>5.15.4.&nbsp;How do I ...?</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6065"></a>5.15.4.&nbsp;How do I ...?</h3></div></div><div></div></div><p>
 </p><div class="itemizedlist"><ul type="disc"><li><p>...add another perspective?</p><p>
 </p><div class="itemizedlist"><ul type="circle"><li><p>
 at runtime perspectives can be changed using the 
