@@ -85,8 +85,6 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         {"decision.storage", "Storage"},
         {"decision.uncategorized", "Uncategorised"},
 
-        {"goal.unspecified", "Unspecified"},
-
         {"knowledge.completeness", "Completeness"},
         {"knowledge.consistency", "Consistency"},
         {"knowledge.correctness", "Correctness"},
@@ -98,16 +96,6 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         {"knowledge.semantics", "Semantics"},
         {"knowledge.syntax", "Syntax"},
         {"knowledge.tool", "Tool"},
-
-        {"todopane.label.no-items", " No Items "},
-        {"todopane.label.item", " {0} Item "},
-        {"todopane.label.items", " {0} Items "},
-
-        {"button.open", "Open"},
-        {"button.back", "Back"},
-        {"button.next", "Next"},
-        {"button.finish", "Finish"},
-        {"button.help", "Help"},
 
         {"mnemonic.button.back", "B"},
         {"mnemonic.button.next", "N"},

@@ -74,7 +74,7 @@ public class ArgoDialog extends org.argouml.swingext.Dialog {
     
     protected void nameButton(AbstractButton button, String key) {
         if (button != null) {
-            button.setText(Translator.localize(BUNDLE, key));
+            button.setText(Translator.localize(key));
             String mnemonic = Translator.localize(BUNDLE, key + MNEMONIC_KEY_SUFFIX);
             if (mnemonic != null && mnemonic.length() > 0) {
                 button.setMnemonic(mnemonic.charAt(0));

@@ -65,7 +65,6 @@ import org.tigris.gef.presentation.Fig;
  */
 public class TabDocumentation extends PropPanel {
 
-    private static final String BUNDLE = "label";
     ////////////////////////////////////////////////////////////////
 
     /**
@@ -77,7 +76,7 @@ public class TabDocumentation extends PropPanel {
         //TODO: the title of the prop panel is localized using the localisation of documentation
         //- should this change? (Raphael)
         super(
-	      Translator.localize(BUNDLE, "label.documentation"),
+	      Translator.localize("label.documentation"),
 	      (Configuration.getString(
                     Configuration.makeKey("layout", "tabdocumentation"))
                     .equals("West") ||
@@ -90,21 +89,21 @@ public class TabDocumentation extends PropPanel {
         //        super("tab.documentation", null, 2); 
 
         addField(
-		 Translator.localize(BUNDLE, "label.author"),
+		 Translator.localize("label.author"),
 		 new UMLTextField2(new UMLModelElementTaggedValueDocument("author")));
 
         //unknown where this information is stored; it does not go to myproject.argo (xml file)
         addField(
-		 Translator.localize(BUNDLE, "label.version"),
+		 Translator.localize("label.version"),
 		 new UMLTextField2(new UMLModelElementTaggedValueDocument("version")));
 
         addField(
-		 Translator.localize(BUNDLE, "label.since"),
+		 Translator.localize("label.since"),
 		 new UMLTextField2(new UMLModelElementTaggedValueDocument("since")));
 
         //TODO: change UMLCheckBox to UMLCheckBox2 (Raphael)
         addField(
-		 Translator.localize(BUNDLE, "label.deprecated"),
+		 Translator.localize("label.deprecated"),
 		 new UMLCheckBox(
 				 "",
 				 this,
@@ -117,7 +116,7 @@ public class TabDocumentation extends PropPanel {
         _see.setWrapStyleWord(true);
         JScrollPane spSee = new JScrollPane();
         spSee.getViewport().add(_see);
-        addField(Translator.localize(BUNDLE, "label.see"), spSee);
+        addField(Translator.localize("label.see"), spSee);
 
         //make new column with LabelledLayout
         add(LabelledLayout.getSeperator());
@@ -131,7 +130,7 @@ public class TabDocumentation extends PropPanel {
         JScrollPane spDocs = new JScrollPane();
         spDocs.getViewport().add(_doc);
         addField(
-		 Translator.localize(BUNDLE, "label.documentation"),
+		 Translator.localize("label.documentation"),
 		 spDocs);
     }
 

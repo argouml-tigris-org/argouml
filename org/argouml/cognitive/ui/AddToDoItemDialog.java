@@ -65,7 +65,7 @@ public class AddToDoItemDialog extends ArgoDialog {
      */
     public AddToDoItemDialog() {
         super(ProjectBrowser.getInstance(), 
-	      localize("dialog.title.add-todo-item"), 
+	      Translator.localize("dialog.title.add-todo-item"), 
 	      ArgoDialog.OK_CANCEL_OPTION, true);
         
         _headline = new JTextField(TEXT_COLUMNS);
@@ -73,9 +73,9 @@ public class AddToDoItemDialog extends ArgoDialog {
         _moreinfo = new JTextField(TEXT_COLUMNS);
         _description = new JTextArea(TEXT_ROWS, TEXT_COLUMNS);
 
-        JLabel headlineLabel = new JLabel(localize("label.headline"));
-        JLabel priorityLabel = new JLabel(localize("label.priority"));
-        JLabel moreInfoLabel = new JLabel(localize("label.more-info-url"));
+        JLabel headlineLabel = new JLabel(Translator.localize("label.headline"));
+        JLabel priorityLabel = new JLabel(Translator.localize("label.priority"));
+        JLabel moreInfoLabel = new JLabel(Translator.localize(BUNDLE, "label.more-info-url"));
    
         _priority.setSelectedItem(PRIORITIES[0]);
 
@@ -93,7 +93,7 @@ public class AddToDoItemDialog extends ArgoDialog {
         panel.add(moreInfoLabel);
         panel.add(_moreinfo);
     
-        _description.setText(localize("label.enter-todo-item") + "\n");
+        _description.setText(Translator.localize("label.enter-todo-item") + "\n");
         JScrollPane descriptionScroller = new JScrollPane(_description);
         descriptionScroller.setPreferredSize(_description.getPreferredSize());
         panel.add(descriptionScroller);
@@ -132,15 +132,4 @@ public class AddToDoItemDialog extends ArgoDialog {
         designer.getToDoList().addElement(item); //? inform()
         ProjectManager.getManager().getCurrentProject().setNeedsSave(true);
     }
-
-
-    /** Localize label for this class.
-     *
-     * @param label the label to localize
-     * @return the localized value.
-     */
-    private static String localize(String label) {
-	return Translator.localize(BUNDLE, label);
-    }
-
 } /* end class AddToDoItemDialog */
