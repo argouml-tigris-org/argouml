@@ -41,6 +41,17 @@ import org.argouml.model.uml.UmlFactory;
  */
 public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 
+    private static Vector factoryMethods = new Vector();
+    static {
+		Method[] methodArray = UmlFactory.class.getMethods();
+		for (int i = 0 ; i<methodArray.length; i++) {
+			if (methodArray[i].getName().startsWith("get") && 
+				!methodArray[i].getName().equals("getFactory") && 
+				!methodArray[i].getName().equals("getClass")) {
+                factoryMethods.add(methodArray[i]);
+			}
+		}
+    }
 	/**
 	 * Constructor for CmdCreateNode.
 	 * @param args
@@ -87,10 +98,10 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 	 * @param name
 	 */
 	public CmdCreateNode(
-		Class nodeClass,
-		boolean sticky,
-		String resource,
-		String name) {
+                         Class nodeClass,
+                         boolean sticky,
+                         String resource,
+                         String name) {
 		super(nodeClass, sticky, resource, name);
 	}
 
@@ -117,33 +128,28 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 		// factories
 		
 	
-	try {
-		Vector factoryMethods = new Vector();
-		Method[] methodArray = UmlFactory.class.getMethods();
-		for (int i = 0 ; i<methodArray.length; i++) {
-			if (methodArray[i].getName().startsWith("get") && 
-				!methodArray[i].getName().equals("getFactory") && 
-				!methodArray[i].getName().equals("getClass")) {
-					factoryMethods.add(methodArray[i]);
-			}
-		}
-		Iterator it = factoryMethods.iterator();
-		while (it.hasNext()) {
-			Object factory = ((Method) it.next()).invoke(UmlFactory.getFactory(), new Object[] {});
-			List createMethods = Arrays.asList(factory.getClass().getMethods());
-			Iterator it2 = createMethods.iterator();
-			String classname = getCreateClassName();
-			while (it2.hasNext()) {
-				Method method = (Method)it2.next();
-				String methodname = method.getName();
-				if (methodname.endsWith(classname) && methodname.substring(0, methodname.lastIndexOf(classname)).equals("create")) {					
-					return method.invoke(factory, new Object[] {});
-				}
-			}
-		}					
-	} catch (IllegalAccessException e2) {
-	} catch (InvocationTargetException e3) {
-	}
+        try {
+            Iterator it = factoryMethods.iterator();
+            while (it.hasNext()) {
+                Object factory = 
+                    ((Method) it.next()).invoke(UmlFactory.getFactory(), 
+                                                new Object[] {});
+                List createMethods = 
+                    Arrays.asList(factory.getClass().getMethods());
+                Iterator it2 = createMethods.iterator();
+                String classname = getCreateClassName();
+                while (it2.hasNext()) {
+                    Method method = (Method)it2.next();
+                    String methodname = method.getName();
+                    if (methodname.endsWith(classname) && 
+                        methodname.substring(0, methodname.lastIndexOf(classname)).equals("create")) {					
+                        return method.invoke(factory, new Object[] {});
+                    }
+                }
+            }					
+        } catch (IllegalAccessException e2) {
+        } catch (InvocationTargetException e3) {
+        }
 	
 		return super.makeNode();
 	}
