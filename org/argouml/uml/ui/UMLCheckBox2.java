@@ -33,7 +33,6 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
 
-//import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 

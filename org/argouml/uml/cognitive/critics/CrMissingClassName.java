@@ -34,7 +34,6 @@ package org.argouml.uml.cognitive.critics;
 import javax.swing.Icon;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;

@@ -58,7 +58,6 @@ import org.argouml.uml.ui.ActionCopy;
 import org.argouml.uml.ui.ActionCut;
 import org.argouml.uml.diagram.ui.ActionDeleteFromDiagram;
 import org.argouml.uml.ui.ActionDeploymentDiagram;
-//import org.argouml.uml.ui.ActionEmptyTrash;
 import org.argouml.uml.ui.ActionExit;
 import org.argouml.uml.ui.ActionGenerateAll;
 import org.argouml.uml.ui.ActionGenerateOne;

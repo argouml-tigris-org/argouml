@@ -30,7 +30,6 @@ package org.argouml.uml.diagram.ui;
 
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.JButton;
 import org.argouml.kernel.ProjectManager;
 
 import org.argouml.uml.diagram.ui.UMLDiagram;

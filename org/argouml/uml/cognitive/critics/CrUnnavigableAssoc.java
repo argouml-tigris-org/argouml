@@ -33,7 +33,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.model.ModelFacade;
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */

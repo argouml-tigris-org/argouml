@@ -35,7 +35,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
 

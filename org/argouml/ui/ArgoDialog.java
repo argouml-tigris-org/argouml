@@ -33,7 +33,6 @@ package org.argouml.ui;
 import java.awt.Frame;
 
 import javax.swing.AbstractButton;
-//import javax.swing.JButton;
 
 import org.argouml.i18n.Translator;
 

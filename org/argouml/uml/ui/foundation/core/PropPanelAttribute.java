@@ -30,8 +30,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.JScrollPane;
-
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
@@ -40,7 +38,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLInitialValueComboBox;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
 
 public class PropPanelAttribute extends PropPanelStructuralFeature {

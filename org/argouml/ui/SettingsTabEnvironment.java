@@ -31,7 +31,6 @@ import java.awt.Insets;
 import java.io.File;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-//import javax.swing.JFileChooser;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import org.argouml.application.ArgoVersion;

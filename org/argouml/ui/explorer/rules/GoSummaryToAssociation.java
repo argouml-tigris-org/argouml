@@ -26,7 +26,6 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
 
-//import org.argouml.i18n.Translator;
 import org.argouml.model.uml.UmlHelper;
 
 /**

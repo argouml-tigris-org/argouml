@@ -41,8 +41,6 @@ import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
-// import org.argouml.application.events.*;
-//import org.argouml.language.*;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MOperation;

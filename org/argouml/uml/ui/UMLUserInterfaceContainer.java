@@ -24,7 +24,6 @@
 
 
 package org.argouml.uml.ui;
-import org.argouml.ui.*;
 import org.argouml.uml.*;
 import java.util.*;
 import ru.novosoft.uml.foundation.core.MModelElement;

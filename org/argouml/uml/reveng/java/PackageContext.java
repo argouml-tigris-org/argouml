@@ -28,7 +28,6 @@
 
 package org.argouml.uml.reveng.java;
 
-import org.argouml.uml.*;
 import org.argouml.uml.reveng.ImportClassLoader;
 
 import org.argouml.model.ModelFacade;
