@@ -37,6 +37,8 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.ui.*;
 import org.tigris.gef.util.*;
 
+import org.argouml.application.api.*;
+import org.argouml.application.events.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
@@ -47,7 +49,7 @@ import org.argouml.uml.ui.*;
 /** The main window of the Argo/UML application. */
 
 public class ProjectBrowser extends JFrame
-implements IStatusBar, NavigationListener {
+implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -87,6 +89,7 @@ implements IStatusBar, NavigationListener {
   protected MultiEditorPane _multiPane;
   protected DetailsPane _detailsPane;
   protected JMenuBar _menuBar = new JMenuBar();
+  protected JMenu _tools = null;
   protected StatusBar _statusBar = new StatusBar();
   //protected JToolBar _toolBar = new JToolBar();
 
@@ -370,10 +373,19 @@ implements IStatusBar, NavigationListener {
     critique.add(Actions.OpenGoals);
     critique.add(Actions.OpenCritics);
 
-    // Test Menu
-    JMenu test = new JMenu(menuLocalize("Test"));
-    test.add(ActionTest.getInstance());
-    _menuBar.add(test);
+    // Tools Menu
+    _tools = new JMenu(menuLocalize("Tools"));
+    _tools.setEnabled(false);
+    ArrayList list = Argo.getPlugins(PluggableMenu.class);
+    ListIterator iterator = list.listIterator();
+    while (iterator.hasNext()) {
+        Object o = iterator.next();
+	_tools.setEnabled(true);
+    }
+
+    _menuBar.add(_tools);
+
+    // tools.add(ActionTest.getInstance());
 
     // Help Menu
     JMenu help = new JMenu(menuLocalize("Help"));
@@ -381,6 +393,8 @@ implements IStatusBar, NavigationListener {
     help.add(Actions.AboutArgoUML);
     //_menuBar.setHelpMenu(help);
     _menuBar.add(help);
+
+    ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
   }
 
 
@@ -598,6 +612,20 @@ implements IStatusBar, NavigationListener {
         return _history.isNavigateForwardEnabled();
     }
 
+    public void moduleLoaded(ArgoModuleEvent event) {
+	if (event.getSource() instanceof PluggableMenu) {
+	    PluggableMenu module = (PluggableMenu)event.getSource();
+	    if (module.inContext(module.buildContext(_tools, "Tools"))) {
+                // Argo.log.info("Module loaded:" + module); 
+		_tools.add(module.getMenuItem(_tools, "Tools"));
+	        _tools.setEnabled(true);
+	    }
+	}
+    }
+
+    public void moduleUnloaded(ArgoModuleEvent event) {
+        Argo.log.info("Module unloaded:" + event);
+    }
 
 
 } /* end class ProjectBrowser */

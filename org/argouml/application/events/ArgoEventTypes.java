@@ -21,39 +21,29 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui;
+package org.argouml.application.events;
+import org.argouml.application.api.*;
 import java.util.*;
-import org.argouml.util.*;
-import javax.swing.*;
-import java.awt.event.*;
 
+/** The root class from which all event state objects within Argo are derived. 
+ *
+ *  All ArgoEvents are constructed with a reference to the object,
+ *  the "source", that is logically deemed to be the object
+ *  upon which the Event in question initially occurred upon.
+ */
+public interface ArgoEventTypes {
 
-/** German Resource bundle for internationalization of Settings dialog
-*
-*  @author Thierry Lach
-*  @since 0.9.4
-*/
-public class SettingsResourceBundle_de extends ListResourceBundle {
+    public final static int ANY_EVENT                =  1000;
 
-   static final Object[][] _contents = {
-        {"button_ok", "OK" },
-        {"button_cancel", "Abbrechen" },
-        {"button_apply", "\u00dcbernehmen" },
-        {"tab_user", "Benutzer" },
-        {"label_user", "Vollst\u00e4ndiger Name:" },
-        {"label_email", "Email Adresse:" },
-        {"label_splash", "Splash Panel anzeigen" },
-        {"label_preload", "Allgemeine Klassen im Voraus laden" },
-        {"label_edem", "Benutzerstatistik anzeigen" },
-        {"label_profile", "Ladezeiten anzeigen" },
-        {"tab_preferences", "Voreinstellungen" },
-        {"tab_environment", "I18N: Environment" },
-        {"caption_settings", "Einstellungen" }
-   };
+    public final static int ANY_MODULE_EVENT         =  1100;
+    public final static int MODULE_LOADED            =  1101;
+    public final static int MODULE_UNLOADED          =  1102;
 
-     public Object[][] getContents() {
-        return _contents;
-     }
+    public final static int ARGO_EVENT_END           = 99999;
+
+    public int getEventType();
+
+    public int getEventStartRange();
+
+    public int getEventEndRange();
 }
-
-

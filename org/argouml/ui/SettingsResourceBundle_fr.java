@@ -47,6 +47,7 @@ public class SettingsResourceBundle_fr extends ListResourceBundle {
         {"label_edem", "Rendre compte des statistiques d'utilisation"},
         {"label_profile", "Rendre compte des temps de chargement"},
         {"tab_preferences", "Pr\u00e9f\u00e9rences"},
+        {"tab_environment", "I18N: Environment"},
         {"caption_settings", "Param\u00e9trages"},
    };
 

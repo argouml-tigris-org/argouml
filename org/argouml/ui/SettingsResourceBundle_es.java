@@ -48,6 +48,7 @@ public class SettingsResourceBundle_es extends ListResourceBundle {
         {"label_edem", "Informe de Estad\u00edsticas de uso" },
         {"label_profile", "Informe de Tiempo de Carga" },
         {"tab_preferences", "Preferencias" },
+        {"tab_environment", "I18N: Environment" },
         {"caption_settings", "Configuraci\u00f3n" }
    };
 

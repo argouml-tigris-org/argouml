@@ -23,6 +23,7 @@
 
 package org.argouml.ui;
 import org.argouml.application.api.*;
+import org.argouml.application.events.*;
 import org.argouml.kernel.*;
 import org.argouml.uml.ui.UMLAction;
 import java.awt.*;
@@ -38,14 +39,11 @@ import org.tigris.gef.util.*;
  *  @author Thierry Lach
  *  @since  0.9.4
  */
-public class ActionSettings extends UMLAction {
+public class ActionSettings extends UMLAction
+implements ArgoModuleEventListener {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-
-    /** Localization key for Settings
-     */
-    public final static String SETTINGS_BUNDLE = "CoreSettings";
 
     /** One and only instance.
      */
@@ -72,7 +70,7 @@ public class ActionSettings extends UMLAction {
     /** Helper for localization.
      */
     protected String localize(String key) {
-        return Argo.localize(SETTINGS_BUNDLE, key);
+        return Argo.localize("CoreSettings", key);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -134,11 +132,16 @@ public class ActionSettings extends UMLAction {
         
 	            dlg.getContentPane().add(buttons, BorderLayout.SOUTH);
         
-	            tabs.addTab(localize("tab_preferences"),
-		                new PreferencesTab(SETTINGS_BUNDLE));
-	            tabs.addTab(localize("tab_user"),
-		                new UserTab(SETTINGS_BUNDLE));
-        
+		    ArrayList list = Argo.getPlugins(PluggableSettingsTab.class);
+		    ListIterator iterator = list.listIterator();
+                    while (iterator.hasNext()) {
+	                Object o = iterator.next();
+			SettingsTabPanel stp = ((PluggableSettingsTab)o).getSettingsTabPanel();
+
+	                tabs.addTab(Argo.localize(stp.getTabResourceBundleKey(),
+			                          stp.getTabKey()),
+		                    stp.getTabPanel());
+                    }
                 } catch (Exception exception) {
                     Argo.log.error("got an Exception in ActionSettings");
 	            Argo.log.error(exception);
@@ -157,158 +160,15 @@ public class ActionSettings extends UMLAction {
 	    dlg.setVisible(true);
 	}
     }
+
+    public void moduleLoaded(ArgoModuleEvent event) {
+        Argo.log.info ("ActionSettings got moduleLoaded()");
+    }
+
+    public void moduleUnloaded(ArgoModuleEvent event) {
+        Argo.log.info ("ActionSettings got moduleLoaded()");
+    }
+
 }
 /* end class ActionSettings */
-
-class PreferencesTab extends SettingsTabHelper
-implements SettingsTabPanel {
-
-    JCheckBox _splash = null;
-    JCheckBox _preload = null;
-    JCheckBox _edem = null;
-    JCheckBox _profile = null;
-
-    PreferencesTab(String bundle) {
-        super(bundle);
-        setLayout(new BorderLayout());
-	JPanel top = new JPanel();
-    	top.setLayout(new GridBagLayout()); 
-
-	GridBagConstraints checkConstraints = new GridBagConstraints();
-	checkConstraints.anchor = GridBagConstraints.WEST;
-	checkConstraints.gridy = 0;
-	checkConstraints.gridx = 0;
-	checkConstraints.gridwidth = 1;
-	checkConstraints.gridheight = 1;
-	checkConstraints.insets = new Insets(0, 30, 0, 4);
-
-	GridBagConstraints labelConstraints = new GridBagConstraints();
-	labelConstraints.anchor = GridBagConstraints.EAST;
-	labelConstraints.gridy = 0;
-	labelConstraints.gridx = 0;
-	labelConstraints.gridwidth = 1;
-	labelConstraints.gridheight = 1;
-	labelConstraints.insets = new Insets(2, 10, 2, 4);
-
-	GridBagConstraints fieldConstraints = new GridBagConstraints();
-	fieldConstraints.anchor = GridBagConstraints.WEST;
-	fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-	fieldConstraints.gridy = 0;
-	fieldConstraints.gridx = 1;
-	fieldConstraints.gridwidth = 3;
-	fieldConstraints.gridheight = 1;
-	fieldConstraints.weightx = 1.0;
-	fieldConstraints.insets = new Insets(0, 4, 0, 20);
-
-	checkConstraints.gridy = 0;
-	labelConstraints.gridy = 0;
-	fieldConstraints.gridy = 0;
-        _splash = createCheckBox("label_splash");
-	top.add(_splash, checkConstraints);
-	top.add(new JLabel(""), labelConstraints);
-	top.add(new JLabel(""), fieldConstraints);
-
-	checkConstraints.gridy = 1;
-        _preload = createCheckBox("label_preload");
- 	top.add(_preload, checkConstraints);
-
-	checkConstraints.gridy = 2;
-        _edem = createCheckBox("label_edem");
- 	top.add(_edem, checkConstraints);
-
-	checkConstraints.gridy = 3;
-        _profile = createCheckBox("label_profile");
- 	top.add(_profile, checkConstraints);
-
-	add(top, BorderLayout.NORTH);
-    }
-
-    public void handleSettingsTabRefresh() {
-        _splash.setSelected(Configuration.getBoolean(Argo.KEY_SPLASH, true));
-        _preload.setSelected(Configuration.getBoolean(Argo.KEY_PRELOAD, true));
-        _edem.setSelected(Configuration.getBoolean(Argo.KEY_EDEM, true));
-        _profile.setSelected(Configuration.getBoolean(Argo.KEY_PROFILE, false));
-    }
-
-    public void handleSettingsTabSave() {
-        Configuration.setBoolean(Argo.KEY_SPLASH, _splash.isSelected());
-        Configuration.setBoolean(Argo.KEY_PRELOAD, _preload.isSelected());
-        Configuration.setBoolean(Argo.KEY_EDEM, _edem.isSelected());
-        Configuration.setBoolean(Argo.KEY_PROFILE, _profile.isSelected());
-    }
-
-    public void handleSettingsTabCancel() {
-        handleSettingsTabRefresh();
-    }
-}
-
-class UserTab extends SettingsTabHelper
-implements SettingsTabPanel {
-
-    JTextField _fullname = null;
-    JTextField _email = null;
-    // JTextField _smtp = new JTextField();
-
-    UserTab(String bundle) {
-        super(bundle);
-        setLayout(new BorderLayout());
-	JPanel top = new JPanel();
-    	top.setLayout(new GridBagLayout()); 
-
-	GridBagConstraints labelConstraints = new GridBagConstraints();
-	labelConstraints.anchor = GridBagConstraints.WEST;
-	labelConstraints.gridy = 0;
-	labelConstraints.gridx = 0;
-	// labelConstraints.ipadx = 16;
-	// labelConstraints.ipady = 4;
-	labelConstraints.gridwidth = 1;
-	labelConstraints.gridheight = 1;
-	labelConstraints.insets = new Insets(2, 20, 2, 4);
-	// labelConstraints.weightx = 0.3;
-
-	GridBagConstraints fieldConstraints = new GridBagConstraints();
-	fieldConstraints.anchor = GridBagConstraints.EAST;
-	fieldConstraints.fill = GridBagConstraints.HORIZONTAL;
-	fieldConstraints.gridy = 0;
-	fieldConstraints.gridx = 1;
-	fieldConstraints.gridwidth = 3;
-	fieldConstraints.gridheight = 1;
-	fieldConstraints.weightx = 1.0;
-	fieldConstraints.insets = new Insets(2, 4, 2, 20);
-
-	labelConstraints.gridy = 0;
-	fieldConstraints.gridy = 0;
-	top.add(createLabel("label_user"), labelConstraints);
-        _fullname = createTextField();
-	top.add(_fullname, fieldConstraints);
-
-	labelConstraints.gridy = 1;
-	fieldConstraints.gridy = 1;
- 	top.add(createLabel("label_email"), labelConstraints);
-        _email = createTextField();
-	top.add(_email, fieldConstraints);
-
-	// labelConstraints.gridy = 2;
-	// fieldConstraints.gridy = 2;
-  	// top.add(createLabel("label_smtp"), labelConstraints);
-	// top.add(_smtp, fieldConstraints);
-
-	add(top, BorderLayout.NORTH);
-    }
-
-    public void handleSettingsTabRefresh() {
-        _fullname.setText(Configuration.getString(Argo.KEY_USER_FULLNAME));
-        _email.setText(Configuration.getString(Argo.KEY_USER_EMAIL));
-    }
-
-    public void handleSettingsTabSave() {
-        Configuration.setString(Argo.KEY_USER_FULLNAME, _fullname.getText());
-        Configuration.setString(Argo.KEY_USER_EMAIL, _email.getText());
-        // Configuration.setString(Argo.KEY_USER_NAME);
-    }
-
-    public void handleSettingsTabCancel() {
-	handleSettingsTabRefresh();
-    }
-}
 

@@ -83,10 +83,11 @@ implements NotationName {
         if (_notations == null) _notations = new Hashtable();
 	NotationName nn = null;
 	nn = (NotationName)_notations.get(getNotationNameString(k1, k2));
-	System.out.println ("k1:" + k1 + " nn:" + nn);
-	// new NotationNameImpl(k1);
+	if (nn == null) {
+	    nn = (NotationName)new NotationNameImpl(k1, k2);
+	    _notations.put(getNotationNameString(k1, k2), nn);
+	}
         return nn;
     }
 }
-
 

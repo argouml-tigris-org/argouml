@@ -21,39 +21,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui;
-import java.util.*;
-import org.argouml.util.*;
+package org.argouml.application.api;
 import javax.swing.*;
-import java.awt.event.*;
 
+/**  An interface which identifies an ArgoUML plug-in as a generic plugin.
+ *   Plug-ins are replacements or additions to standard Argo classes.
+ *   
+ *   @author Thierry Lach
+ *   @since 0.9.4
+ */
+public interface PluggableModule extends Pluggable {
 
-/** German Resource bundle for internationalization of Settings dialog
-*
-*  @author Thierry Lach
-*  @since 0.9.4
-*/
-public class SettingsResourceBundle_de extends ListResourceBundle {
-
-   static final Object[][] _contents = {
-        {"button_ok", "OK" },
-        {"button_cancel", "Abbrechen" },
-        {"button_apply", "\u00dcbernehmen" },
-        {"tab_user", "Benutzer" },
-        {"label_user", "Vollst\u00e4ndiger Name:" },
-        {"label_email", "Email Adresse:" },
-        {"label_splash", "Splash Panel anzeigen" },
-        {"label_preload", "Allgemeine Klassen im Voraus laden" },
-        {"label_edem", "Benutzerstatistik anzeigen" },
-        {"label_profile", "Ladezeiten anzeigen" },
-        {"tab_preferences", "Voreinstellungen" },
-        {"tab_environment", "I18N: Environment" },
-        {"caption_settings", "Einstellungen" }
-   };
-
-     public Object[][] getContents() {
-        return _contents;
-     }
-}
-
-
+} /* End interface PluggableModule */
