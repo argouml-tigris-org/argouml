@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.CoreFactory;
 import org.argouml.ui.ArgoDiagram;
 
 import org.tigris.gef.presentation.Fig;

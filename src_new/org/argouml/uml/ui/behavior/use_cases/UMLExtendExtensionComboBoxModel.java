@@ -25,8 +25,8 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 

@@ -27,7 +27,7 @@ package org.argouml.cognitive;
 // Diagrams
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.CoreFactory;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.FigClassifierRole;

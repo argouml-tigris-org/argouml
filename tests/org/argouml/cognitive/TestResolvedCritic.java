@@ -29,7 +29,7 @@ import java.util.Vector;
 import junit.framework.TestCase;
 
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.CoreFactory;
 import org.tigris.gef.util.VectorSet;
 
 /**

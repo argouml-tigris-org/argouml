@@ -25,8 +25,8 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**

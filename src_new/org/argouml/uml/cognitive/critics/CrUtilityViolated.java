@@ -33,7 +33,7 @@ import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.CoreHelper;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). This is done by checking that there

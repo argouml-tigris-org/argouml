@@ -34,8 +34,8 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.ExtensionMechanismsHelper;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigGeneralization;

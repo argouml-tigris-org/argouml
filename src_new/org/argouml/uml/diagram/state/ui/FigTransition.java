@@ -30,8 +30,8 @@ import java.awt.Graphics;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.StateMachinesHelper;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
 

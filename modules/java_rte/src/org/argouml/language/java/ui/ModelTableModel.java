@@ -32,7 +32,7 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.kernel.*;
 import org.argouml.uml.generator.Generator2;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**

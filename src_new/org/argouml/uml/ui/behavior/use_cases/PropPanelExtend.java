@@ -31,7 +31,7 @@ import javax.swing.JTextArea;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
+import org.argouml.model.uml.UseCasesFactory;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;

@@ -26,6 +26,7 @@ package org.argouml.model.uml.behavioralelements.commonbehavior;
 
 import junit.framework.*;
 
+import org.argouml.model.uml.CommonBehaviorFactory;
 import org.argouml.util.*;
 
 /**

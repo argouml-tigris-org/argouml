@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 import junit.framework.TestCase;
 
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
+import org.argouml.model.uml.UseCasesFactory;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;

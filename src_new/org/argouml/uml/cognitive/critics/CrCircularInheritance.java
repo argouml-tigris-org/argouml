@@ -38,7 +38,7 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.CoreHelper;
 import org.argouml.uml.SuperclassGen;
 import org.tigris.gef.util.VectorSet;
 

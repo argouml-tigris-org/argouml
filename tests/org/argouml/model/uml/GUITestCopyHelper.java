@@ -43,10 +43,6 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
 
-import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.model
-    .uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
-import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 
 /**
  * Testing the CopyHelper.<p>

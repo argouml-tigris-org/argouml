@@ -26,7 +26,9 @@ package org.argouml.model.uml.foundation.extensionmechanisms;
 
 import java.util.Collection;
 
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.uml.ExtensionMechanismsFactory;
+import org.argouml.model.uml.ExtensionMechanismsHelper;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.foundation.core.MNamespace;

@@ -26,6 +26,7 @@ package org.argouml.model.uml.behavioralelements.usecases;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.UseCasesFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.behavior.use_cases.MExtend;

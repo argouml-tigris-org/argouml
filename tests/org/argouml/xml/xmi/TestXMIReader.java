@@ -36,7 +36,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.IllegalFormatException;
 import org.argouml.kernel.XmiFilePersister;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.CoreFactory;
 
 import ru.novosoft.uml.foundation.core.MOperation;
 

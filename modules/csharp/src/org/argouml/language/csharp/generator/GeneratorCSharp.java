@@ -1187,7 +1187,7 @@ public class GeneratorCSharp extends Generator2
 
     /**
      * TODO: Once the {@link 
-     * org.argouml.model.uml.foundation.core.CoreHelper#getRealizedInterfaces(
+     * org.argouml.model.uml.CoreHelper#getRealizedInterfaces(
      * ru.novosoft.uml.foundation.core.MClassifier)} can be called without
      * using NSUML interfaces, this class can be NSUML-free.
      * 

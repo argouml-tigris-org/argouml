@@ -38,7 +38,7 @@ import java.util.Set;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.CoreHelper;
 
 /** Critic to detect whether a class implements unneedded realizations through
  *  inheritance.

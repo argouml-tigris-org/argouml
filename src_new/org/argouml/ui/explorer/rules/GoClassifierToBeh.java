@@ -30,7 +30,7 @@ import java.util.Set;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.CoreHelper;
 
 /**
  * Go rule to navigate from a classifier to the behavioral 

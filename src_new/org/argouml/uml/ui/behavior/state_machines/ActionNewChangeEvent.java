@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
+import org.argouml.model.uml.StateMachinesFactory;
 
 /**
  * @since Dec 15, 2002

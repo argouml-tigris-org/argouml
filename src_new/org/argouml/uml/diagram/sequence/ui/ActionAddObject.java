@@ -25,13 +25,7 @@
 package org.argouml.uml.diagram.sequence.ui;
 
 import org.argouml.model.ModelFacade;
-import org
-    .argouml
-    .model
-    .uml
-    .behavioralelements
-    .collaborations
-    .CollaborationsFactory;
+import org.argouml.model.uml.CollaborationsFactory;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.tigris.gef.base.Editor;

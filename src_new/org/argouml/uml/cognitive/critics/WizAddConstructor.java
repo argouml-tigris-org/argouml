@@ -32,9 +32,9 @@ import javax.swing.JPanel;
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.ExtensionMechanismsHelper;
+import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ProfileJava;
 

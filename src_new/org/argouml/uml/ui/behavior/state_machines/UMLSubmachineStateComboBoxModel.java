@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.model.uml.StateMachinesHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**

@@ -26,8 +26,8 @@ package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
-import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsHelper;
+import org.argouml.model.uml.ActivityGraphsFactory;
+import org.argouml.model.uml.ActivityGraphsHelper;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;

@@ -31,15 +31,6 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
-import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsHelper;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
-import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.model.uml.foundation.datatypes.DataTypesHelper;
-import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 

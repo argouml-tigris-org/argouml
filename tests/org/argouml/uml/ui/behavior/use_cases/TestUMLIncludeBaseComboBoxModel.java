@@ -28,9 +28,9 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.ModelManagementFactory;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
-import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.model.uml.UseCasesFactory;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.MFactoryImpl;

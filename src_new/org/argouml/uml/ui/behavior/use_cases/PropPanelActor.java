@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
+import org.argouml.model.uml.UseCasesFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;

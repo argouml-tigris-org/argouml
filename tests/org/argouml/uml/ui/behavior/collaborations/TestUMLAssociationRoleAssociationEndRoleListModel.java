@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
+import org.argouml.model.uml.CollaborationsFactory;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 import ru.novosoft.uml.MBase;

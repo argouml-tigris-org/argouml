@@ -26,6 +26,8 @@ package org.argouml.model.uml.foundation.core;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.uml.CoreHelper;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.foundation.core.MClassifierImpl;

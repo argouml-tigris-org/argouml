@@ -28,6 +28,7 @@ import java.util.LinkedList;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.DataTypesFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**

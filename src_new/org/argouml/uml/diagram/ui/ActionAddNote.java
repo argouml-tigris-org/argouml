@@ -29,8 +29,8 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;

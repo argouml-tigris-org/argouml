@@ -31,7 +31,7 @@ import javax.swing.JTabbedPane;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.CoreFactory;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.tigris.gef.presentation.FigText;

@@ -30,8 +30,8 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.apache.log4j.Logger;
 
+import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.ModelFacade;
 
 /**

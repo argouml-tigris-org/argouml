@@ -36,14 +36,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
-import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
-import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
-import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 import org.argouml.ui.NavigatorPane;
 import org.argouml.util.CheckUMLModelHelper;
 import org.w3c.dom.Document;

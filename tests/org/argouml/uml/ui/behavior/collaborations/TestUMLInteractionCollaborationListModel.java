@@ -26,8 +26,8 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.CollaborationsFactory;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;

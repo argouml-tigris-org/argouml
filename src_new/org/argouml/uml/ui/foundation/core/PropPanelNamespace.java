@@ -29,8 +29,8 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import org.argouml.model.ModelFacade;
 
-import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.uml.ModelManagementFactory;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLLinkedList;

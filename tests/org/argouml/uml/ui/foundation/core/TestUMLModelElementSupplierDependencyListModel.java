@@ -25,7 +25,7 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.CoreFactory;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 import ru.novosoft.uml.MBase;

@@ -28,7 +28,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.ModelFacade;
 
 import org.tigris.gef.base.Layer;

@@ -24,8 +24,8 @@
 
 package org.argouml.uml.ui;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.CollaborationsHelper;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;

@@ -26,6 +26,7 @@ package org.argouml.model.uml.behavioralelements.statemachines;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.StateMachinesFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**

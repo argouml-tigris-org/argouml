@@ -26,9 +26,9 @@ package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.uml.ModelManagementFactory;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MConstraint;

@@ -25,8 +25,8 @@
 package org.argouml.uml.ui;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.model.uml.StateMachinesFactory;
+import org.argouml.model.uml.StateMachinesHelper;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;

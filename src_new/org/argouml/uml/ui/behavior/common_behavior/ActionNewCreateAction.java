@@ -28,7 +28,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
+import org.argouml.model.uml.CommonBehaviorFactory;
 
 /**
  * @since Dec 15, 2002

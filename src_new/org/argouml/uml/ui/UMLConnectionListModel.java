@@ -26,9 +26,9 @@ package org.argouml.uml.ui;
 
 import java.util.*;
 
-import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.uml.CoreHelper;
+import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.graph.MutableGraphModel;

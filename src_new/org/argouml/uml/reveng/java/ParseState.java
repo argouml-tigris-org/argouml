@@ -31,7 +31,7 @@ package org.argouml.uml.reveng.java;
 import java.util.*;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.CoreFactory;
 
 /**
    The parse state keep control of data during parsing.

@@ -26,6 +26,7 @@ package org.argouml.model.uml.modelmanagement;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.ModelManagementFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**

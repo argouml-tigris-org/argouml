@@ -25,8 +25,8 @@
 package org.argouml.ui;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.ModelManagementFactory;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 
 import ru.novosoft.uml.MFactoryImpl;

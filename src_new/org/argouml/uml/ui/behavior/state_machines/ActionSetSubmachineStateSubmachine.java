@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.model.uml.StateMachinesHelper;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
 

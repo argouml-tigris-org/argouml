@@ -30,7 +30,7 @@ import java.util.Set;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.model.uml.StateMachinesHelper;
 
 /**
  * Rule for State->Outgoing States.

@@ -32,8 +32,8 @@ import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetEvent;

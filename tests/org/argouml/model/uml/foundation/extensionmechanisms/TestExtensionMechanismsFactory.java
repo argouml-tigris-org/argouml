@@ -26,6 +26,7 @@ package org.argouml.model.uml.foundation.extensionmechanisms;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.ExtensionMechanismsFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**

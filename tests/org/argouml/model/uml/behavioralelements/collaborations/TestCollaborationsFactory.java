@@ -28,8 +28,9 @@ import java.lang.ref.WeakReference;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.CollaborationsFactory;
+import org.argouml.model.uml.ModelManagementFactory;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;

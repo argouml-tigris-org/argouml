@@ -27,6 +27,7 @@ package org.argouml.model.uml.behavioralelements.collaborations;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.CollaborationsFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**

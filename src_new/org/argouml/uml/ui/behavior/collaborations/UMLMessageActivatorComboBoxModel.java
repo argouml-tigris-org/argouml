@@ -25,8 +25,8 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.CollaborationsHelper;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**

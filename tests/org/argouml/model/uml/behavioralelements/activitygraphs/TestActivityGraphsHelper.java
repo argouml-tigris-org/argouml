@@ -27,6 +27,7 @@ package org.argouml.model.uml.behavioralelements.activitygraphs;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.ActivityGraphsFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**

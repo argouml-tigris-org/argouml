@@ -27,7 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.CoreFactory;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 /**
  * @since Oct 12, 2002

@@ -39,8 +39,8 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.model.uml.foundation.core.CoreHelper;
 
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;

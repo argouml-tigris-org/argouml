@@ -29,7 +29,7 @@ import javax.swing.JPanel;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.CoreFactory;
 import org.argouml.swingext.Horizontal;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;

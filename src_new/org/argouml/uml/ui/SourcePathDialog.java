@@ -38,7 +38,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.Generator2;
