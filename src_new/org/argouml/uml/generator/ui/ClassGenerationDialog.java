@@ -304,18 +304,21 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
                             //
                             // TODO 2: it's a change in the model ->
                             // save needed!
-                            String savedLang =
-                                ModelFacade.getValueOfTag(
-                                    ModelFacade.getTaggedValue(
-                                        node,
-                                        "src_lang"));
-                            if (!language
+                            Object taggedValue = ModelFacade.getTaggedValue(
+                                node, "src_lang");
+                            String savedLang = null;
+                            if (taggedValue != null) {
+                                savedLang = ModelFacade.getValueOfTag(
+                                    taggedValue);
+                            }
+                            if (taggedValue == null || !language
                                 .getConfigurationValue()
-                                .equals(savedLang))
+                                .equals(savedLang)) {
                                 ModelFacade.setTaggedValue(
                                     node,
                                     "src_lang",
                                     language.getConfigurationValue());
+                            }
                         }
                     }
                 }
@@ -406,11 +409,18 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
         private boolean isSupposedToBeGeneratedAsLanguage(
             NotationName lang,
             Object cls) {
-            if (lang == null)
+            if (lang == null) {
+                return false;                
+            }
+            if (cls == null) {
                 return false;
-            String savedLang =
-                ModelFacade.getValueOfTag(
-                    ModelFacade.getTaggedValue(cls, "src_lang"));
+            } 
+            
+            Object taggedValue = ModelFacade.getTaggedValue(cls, "src_lang");
+            if (taggedValue == null) {
+                return false;
+            } 
+            String savedLang = ModelFacade.getValueOfTag(taggedValue);
             return (lang.getConfigurationValue().equals(savedLang));
         }
 
