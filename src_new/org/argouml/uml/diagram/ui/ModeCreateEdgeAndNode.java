@@ -259,7 +259,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             if (mgm.canAddNode(newNode)) {
                 GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
                 Layer lay = editor.getLayerManager().getActiveLayer();
-                fn = renderer.getFigNodeFor(gm, lay, newNode);
+                fn = renderer.getFigNodeFor(gm, lay, newNode, null);
                 editor.add(fn);
                 mgm.addNode(newNode);
                 Fig encloser = null;

@@ -95,7 +95,7 @@ public class ActionAddMessage extends UMLAction {
         GraphModel gm = e.getGraphModel();
         Layer lay = e.getLayerManager().getActiveLayer();
         GraphNodeRenderer gr = e.getGraphNodeRenderer();
-        FigNode figMsg = gr.getFigNodeFor(gm, lay, message);
+        FigNode figMsg = gr.getFigNodeFor(gm, lay, message, null);
         ((FigMessage) figMsg).addPathItemToFigAssociationRole(lay);
         TargetManager.getInstance().setTarget(message);
     }

@@ -24,9 +24,12 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
+import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
@@ -63,8 +66,7 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @author abonner
  */
-public class UseCaseDiagramRenderer
-    implements GraphNodeRenderer, GraphEdgeRenderer {
+public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
     private static final Logger LOG =
         Logger.getLogger(UseCaseDiagramRenderer.class);
 
@@ -82,7 +84,7 @@ public class UseCaseDiagramRenderer
      *              one.
      */
 
-    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map styleAttributes) {
 
         // Create a new version of the relevant fig
 
@@ -125,7 +127,7 @@ public class UseCaseDiagramRenderer
      * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object)
      */
-    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, Map styleAttributes) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("making figedge for " + edge);

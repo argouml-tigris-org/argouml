@@ -24,9 +24,12 @@
 
 package org.argouml.uml.diagram.state.ui;
 
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 
 import org.argouml.model.ModelFacade;
+import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
@@ -64,8 +67,7 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @author ics125b spring 1998
  */
-public class StateDiagramRenderer
-    implements GraphNodeRenderer, GraphEdgeRenderer {
+public class StateDiagramRenderer extends UmlDiagramRenderer {
     private static final Logger LOG =
         Logger.getLogger(StateDiagramRenderer.class);
 
@@ -76,23 +78,18 @@ public class StateDiagramRenderer
      * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object)
      */
-    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map styleAttributes) {
         if (ModelFacade.isAActionState(node)) {
             return new FigActionState(gm, node);
-        }
-        else if (org.argouml.model.ModelFacade.isAFinalState(node)) {
+        } else if (org.argouml.model.ModelFacade.isAFinalState(node)) {
             return new FigFinalState(gm, node);
-        }
-        else if (org.argouml.model.ModelFacade.isACompositeState(node)) {
+        } else if (org.argouml.model.ModelFacade.isACompositeState(node)) {
             return new FigCompositeState(gm, node);
-        }
-        else if (org.argouml.model.ModelFacade.isAState(node)) {
+        } else if (org.argouml.model.ModelFacade.isAState(node)) {
             return new FigSimpleState(gm, node);
-        }
-        else if (ModelFacade.isAComment(node)) {
+        } else if (ModelFacade.isAComment(node)) {
             return new FigComment(gm, node);
-        }
-        else if (org.argouml.model.ModelFacade.isAPseudostate(node)) {
+        } else if (org.argouml.model.ModelFacade.isAPseudostate(node)) {
             Object pState = node;
             Object kind = ModelFacade.getKind(pState);
             if (kind == null) {
@@ -100,26 +97,19 @@ public class StateDiagramRenderer
             }
             if (kind.equals(ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
                 return new FigInitialState(gm, node);
-            }
-            else if (kind.equals(ModelFacade.BRANCH_PSEUDOSTATEKIND)) {
+            } else if (kind.equals(ModelFacade.BRANCH_PSEUDOSTATEKIND)) {
                 return new FigBranchState(gm, node);
-            }
-            else if (kind.equals(ModelFacade.JUNCTION_PSEUDOSTATEKIND)) {
+            } else if (kind.equals(ModelFacade.JUNCTION_PSEUDOSTATEKIND)) {
                 return new FigJunctionState(gm, node);
-            }
-            else if (kind.equals(ModelFacade.FORK_PSEUDOSTATEKIND)) {
+            } else if (kind.equals(ModelFacade.FORK_PSEUDOSTATEKIND)) {
                 return new FigForkState(gm, node);
-            }
-            else if (kind.equals(ModelFacade.JOIN_PSEUDOSTATEKIND)) {
+            } else if (kind.equals(ModelFacade.JOIN_PSEUDOSTATEKIND)) {
                 return new FigJoinState(gm, node);
-            }
-            else if (kind.equals(ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND)) {
+            } else if (kind.equals(ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND)) {
                 return new FigShallowHistoryState(gm, node);
-            }
-            else if (kind.equals(ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND)) {
+            } else if (kind.equals(ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND)) {
                 return new FigDeepHistoryState(gm, node);
-            }
-            else {
+            } else {
                 LOG.warn("found a type not known");
             }
         }
@@ -132,17 +122,17 @@ public class StateDiagramRenderer
      * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object)
      */
-    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-	LOG.debug("making figedge for " + edge);
-	if (org.argouml.model.ModelFacade.isATransition(edge)) {
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, Map styleAttributes) {
+        LOG.debug("making figedge for " + edge);
+        if (org.argouml.model.ModelFacade.isATransition(edge)) {
             FigTransition trFig = new FigTransition(edge, lay);
             return trFig;
         } else if (edge instanceof CommentEdge) {
             return new FigEdgeNote(edge, lay);
         }
-
-	LOG.debug("TODO: StateDiagramRenderer getFigEdgeFor");
-	return null;
+        
+        LOG.debug("TODO: StateDiagramRenderer getFigEdgeFor");
+        return null;
     }
 
 
