@@ -97,6 +97,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  upper bound of length of list.
      */
     protected int _upper;
+    public final int NO_LIMIT = -1;
 
     /**
      *   Creates a new list model
@@ -112,7 +113,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         _showNone = showNone;
         _property = property;
         _recalcSize = true;
-        _upper = -1;
+        _upper = NO_LIMIT;
         _none = _container.localize("none");
         if(_none == null) _none = "none";
     }
@@ -566,10 +567,10 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         return null;
     }
     
-	/**
-	 * Standard delete method.
-	 * @param index
-	 */
+    /**
+     * Standard delete method.
+     * @param index
+     */
      public void delete(int index) {
         MModelElement modElem = getModelElementAt(index);
         Object target = ProjectBrowser.TheInstance.getTarget();
@@ -580,8 +581,5 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         if (!target.equals(modElem)) {
         	ProjectBrowser.TheInstance.setTarget(target);
         }
-
     }
-
-
 }
