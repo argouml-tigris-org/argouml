@@ -54,12 +54,16 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelOperation extends PropPanelFeature {
 
-    private static UMLClassifierParameterListModel parameterListModel = new UMLClassifierParameterListModel();
+    private static UMLClassifierParameterListModel parameterListModel = 
+        new UMLClassifierParameterListModel();
 
     private JScrollPane parameterScroll;
 
     ////////////////////////////////////////////////////////////////
     // contructors
+    /**
+     * The constructor.
+     */
     public PropPanelOperation() {
         super("Operation", _operationIcon, ConfigLoader
                 .getTabPropsOrientation());
@@ -69,8 +73,8 @@ public class PropPanelOperation extends PropPanelFeature {
         //   this will cause the components on this page to be notified
         //      anytime a stereotype, namespace, operation, etc
         //      has its name changed or is removed anywhere in the model
-        Class[] namesToWatch = { (Class) ModelFacade.STEREOTYPE,
-                (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER };
+        Class[] namesToWatch = {(Class) ModelFacade.STEREOTYPE,
+            (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER };
         setNameEventListening(namesToWatch);
 
         addField(Translator.localize("UMLMenu", "label.name"),
@@ -86,17 +90,17 @@ public class PropPanelOperation extends PropPanelFeature {
 
         add(getVisibilityPanel());
 
-        JPanel _modifiersPanel = new JPanel(new GridLayout2(0, 3,
+        JPanel modifiersPanel = new JPanel(new GridLayout2(0, 3,
                 GridLayout2.ROWCOLPREFERRED));
-        _modifiersPanel.setBorder(new TitledBorder(Translator.localize(
+        modifiersPanel.setBorder(new TitledBorder(Translator.localize(
                 "UMLMenu", "label.modifiers")));
-        _modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
-        _modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
-        _modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
-        _modifiersPanel.add(new UMLBehavioralFeatureQueryCheckBox());
-        _modifiersPanel.add(new UMLFeatureOwnerScopeCheckBox());
+        modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
+        modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
+        modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
+        modifiersPanel.add(new UMLBehavioralFeatureQueryCheckBox());
+        modifiersPanel.add(new UMLFeatureOwnerScopeCheckBox());
 
-        add(_modifiersPanel);
+        add(modifiersPanel);
         // TODO: i18n
         add(new UMLOperationConcurrencyRadioButtonPanel("Concurrency:", true));
 
@@ -115,7 +119,8 @@ public class PropPanelOperation extends PropPanelFeature {
 
         buttonPanel.add(new PropPanelButton2(this, new ActionNavigateOwner()));
         buttonPanel
-                .add(new PropPanelButton2(this, ActionAddOperation.SINGLETON));
+                .add(new PropPanelButton2(this, 
+                        ActionAddOperation.getSingleton()));
         buttonPanel
                 .add(new PropPanelButton2(this, ActionNewParameter.SINGLETON));
         new PropPanelButton(this, buttonPanel, _signalIcon,
@@ -125,6 +130,9 @@ public class PropPanelOperation extends PropPanelFeature {
 
     }
 
+    /**
+     * @return
+     */
     public Object getReturnType() {
         Object type = null;
         Object target = getTarget();
@@ -136,7 +144,8 @@ public class PropPanelOperation extends PropPanelFeature {
                 Object param;
                 while (iter.hasNext()) {
                     param = /* (MParameter) */iter.next();
-                    if (ModelFacade.getKind(param) == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
+                    if (ModelFacade.getKind(param) 
+                            == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
                         type = ModelFacade.getType(param);
                         break;
                     }
@@ -160,7 +169,8 @@ public class PropPanelOperation extends PropPanelFeature {
                     Iterator iter = params.iterator();
                     while (iter.hasNext()) {
                         param = /* (MParameter) */iter.next();
-                        if (ModelFacade.getKind(param) == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
+                        if (ModelFacade.getKind(param)  
+                                == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
                             ModelFacade.removeParameter(oper, param);
                             break;
                         }
@@ -172,7 +182,8 @@ public class PropPanelOperation extends PropPanelFeature {
                     Iterator iter = params.iterator();
                     while (iter.hasNext()) {
                         param = /* (MParameter) */iter.next();
-                        if (ModelFacade.getKind(param) == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
+                        if (ModelFacade.getKind(param) 
+                                == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
                             retParam = param;
                             break;
                         }
@@ -209,7 +220,9 @@ public class PropPanelOperation extends PropPanelFeature {
         if (org.argouml.model.ModelFacade.isAOperation(target)) {
             Object oper = /* (MOperation) */target;
             Object newSignal = UmlFactory.getFactory().getCommonBehavior()
-                    .createSignal();//((MOperation)oper).getFactory().createSignal();
+                    .createSignal(); 
+                    //((MOperation)oper).getFactory().createSignal();
+            
             ModelFacade.addOwnedElement(ModelFacade.getNamespace(ModelFacade
                     .getOwner(oper)), newSignal);
             ModelFacade.addRaisedSignal(oper, newSignal);
@@ -226,6 +239,8 @@ public class PropPanelOperation extends PropPanelFeature {
 
     /**
      * Appropriate namespace is the namespace of our class, not the class itself
+     *
+     * @see org.argouml.uml.ui.PropPanel#getDisplayNamespace()
      */
     protected Object getDisplayNamespace() {
         Object namespace = null;

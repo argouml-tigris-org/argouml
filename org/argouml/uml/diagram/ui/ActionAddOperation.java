@@ -44,16 +44,22 @@ public class ActionAddOperation extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static ActionAddOperation SINGLETON = new ActionAddOperation();
+    private static ActionAddOperation singleton = new ActionAddOperation();
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     */
     public ActionAddOperation() { super("button.new-operation", true); }
 
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
@@ -67,7 +73,7 @@ public class ActionAddOperation extends UMLChangeAction {
 	else
 	    return;
 
-	Object/*MOperation*/ oper = UmlFactory.getFactory().getCore().buildOperation(cls);
+	Object oper = UmlFactory.getFactory().getCore().buildOperation(cls);
         TargetManager.getInstance().setTarget(oper);
 
         Iterator it =
@@ -83,6 +89,9 @@ public class ActionAddOperation extends UMLChangeAction {
 	super.actionPerformed(ae);
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Object target =  TargetManager.getInstance().getModelTarget();
@@ -90,5 +99,11 @@ public class ActionAddOperation extends UMLChangeAction {
 	    && (ModelFacade.isAClassifier(target)
 		|| ModelFacade.isAFeature(target))
 	    && !ModelFacade.isASignal(target);
+    }
+    /**
+     * @return Returns the singleton.
+     */
+    public static ActionAddOperation getSingleton() {
+        return singleton;
     }
 } /* end class ActionAddOperation */

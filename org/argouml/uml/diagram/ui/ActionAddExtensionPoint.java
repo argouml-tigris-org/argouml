@@ -59,10 +59,9 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
     ///////////////////////////////////////////////////////////////////////////
 
     /**
-     * <p>Our private copy of the instance. Only accessible through the proper
+     * Our private copy of the instance. Only accessible through the proper
      *   access method.</p>
      */
-
     private static ActionAddExtensionPoint singleton = null;
 
 

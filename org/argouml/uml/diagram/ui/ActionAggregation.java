@@ -31,34 +31,43 @@ import java.util.*;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 
+/**
+ * Action to set the Aggregation kind.
+ *
+ */
 public class ActionAggregation extends UMLAction {
-    String str = "";
-    Object/*MAggregationKind*/ agg = null;
+    private String str = "";
+    private Object/*MAggregationKind*/ agg = null;
 
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
     // aggregation
-    public static UMLAction SrcAgg =
+    private static UMLAction srcAgg =
 	new ActionAggregation(ModelFacade.AGGREGATE_AGGREGATIONKIND, "src");
-    public static UMLAction DestAgg =
+    private static UMLAction destAgg =
 	new ActionAggregation(ModelFacade.AGGREGATE_AGGREGATIONKIND, "dest");
 
-    public static UMLAction SrcAggComposite =
+    private static UMLAction srcAggComposite =
 	new ActionAggregation(ModelFacade.COMPOSITE_AGGREGATIONKIND, "src");
-    public static UMLAction DestAggComposite =
+    private static UMLAction destAggComposite =
 	new ActionAggregation(ModelFacade.COMPOSITE_AGGREGATIONKIND, "dest");
 
-    public static UMLAction SrcAggNone =
+    private static UMLAction srcAggNone =
 	new ActionAggregation(ModelFacade.NONE_AGGREGATIONKIND, "src");
-    public static UMLAction DestAggNone =
+    private static UMLAction destAggNone =
 	new ActionAggregation(ModelFacade.NONE_AGGREGATIONKIND, "dest");
 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     * @param a the aggregation kind object
+     * @param s "src" or "dest". Anything else is interpreted as "dest".
+     */
     protected ActionAggregation(Object/*MAggregationKind*/ a, String s) {
 	super(ModelFacade.getName(a), NO_ICON);
 	str = s;
@@ -69,6 +78,9 @@ public class ActionAggregation extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	Vector sels = Globals.curEditor().getSelectionManager().selections();
 	if ( sels.size() == 1 ) {
@@ -89,7 +101,58 @@ public class ActionAggregation extends UMLAction {
 	}
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() { 
 	return true; 
+    }
+
+
+    /**
+     * @return Returns the srcAgg.
+     */
+    public static UMLAction getSrcAgg() {
+        return srcAgg;
+    }
+
+
+    /**
+     * @return Returns the destAgg.
+     */
+    public static UMLAction getDestAgg() {
+        return destAgg;
+    }
+
+
+    /**
+     * @return Returns the srcAggComposite.
+     */
+    public static UMLAction getSrcAggComposite() {
+        return srcAggComposite;
+    }
+
+
+    /**
+     * @return Returns the destAggComposite.
+     */
+    public static UMLAction getDestAggComposite() {
+        return destAggComposite;
+    }
+
+
+    /**
+     * @return Returns the srcAggNone.
+     */
+    public static UMLAction getSrcAggNone() {
+        return srcAggNone;
+    }
+
+
+    /**
+     * @return Returns the destAggNone.
+     */
+    public static UMLAction getDestAggNone() {
+        return destAggNone;
     }
 } /* end class ActionSrcMultOneToMany */

@@ -44,24 +44,29 @@ import org.tigris.gef.base.Globals;
 public class ActionAddAllClassesFromModel extends UMLAction {
 
     // Instance Variables
-    protected String _tabName;
-    protected Object _object;
+    private String tabName;
+    private Object object;
 
     /**
      * Constructor
+     *
+     * @param myTabName the name of the tab
      */
-    public ActionAddAllClassesFromModel(String tabName) {
-        super(tabName, NO_ICON);
-        _tabName = tabName;
+    public ActionAddAllClassesFromModel(String myTabName) {
+        super(myTabName, NO_ICON);
+        tabName = myTabName;
     }
 
     /**
      * Constructor
+     *
+     * @param myTabName the name of the tab
+     * @param o the Diagram
      */
-    public ActionAddAllClassesFromModel(String tabName, Object o) {
-        super(tabName, NO_ICON);
-        _tabName = tabName;
-        _object = o;
+    public ActionAddAllClassesFromModel(String myTabName, Object o) {
+        super(myTabName, NO_ICON);
+        tabName = myTabName;
+        object = o;
     }
 
     /**
@@ -72,9 +77,11 @@ public class ActionAddAllClassesFromModel extends UMLAction {
      *
      * @author Timothy M. Lebo (Oct 2003)
      * Smart Information Flow Technologies.
+     *
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {	
-	return _object instanceof UMLClassDiagram;
+	return object instanceof UMLClassDiagram;
     }
 
     /**
@@ -91,14 +98,14 @@ public class ActionAddAllClassesFromModel extends UMLAction {
      */
     public void actionPerformed(ActionEvent ae) {
 
-	if ( _object instanceof UMLClassDiagram ) {
+	if ( object instanceof UMLClassDiagram ) {
 
 	    // Use DiagramInterface to add classes to diagram
 	    DiagramInterface diagram =
 		new DiagramInterface( Globals.curEditor() );
-	    diagram.setCurrentDiagram( (UMLClassDiagram) _object );
+	    diagram.setCurrentDiagram( (UMLClassDiagram) object );
 
-	    Object namespace = ((UMLClassDiagram) _object).getNamespace();
+	    Object namespace = ((UMLClassDiagram) object).getNamespace();
 	    Iterator elements =
 		ModelFacade.getOwnedElements( namespace ).iterator();
 	    while ( elements.hasNext() ) {
