@@ -223,10 +223,9 @@ the pace in which you are working.
 </para>
 	    <para>
 There are a lot of special requirements on you to get this granted.
-	      <footnote>
-		<para>
-Noted here for Linus to keep track on what to verify.
 </para>
+	    <para>
+Noted here for Linus to keep track on what to verify.
 		<itemizedlist>
 		  <listitem>
 		    <para>
@@ -253,10 +252,9 @@ Good knowledge of CVS.
 Understanding the set of tools (ant, junit) and how to use them.
 </para>
 		  </listitem>
-		</itemizedlist>
-	      </footnote>
+	      </itemizedlist>
 </para>
-	    </listitem>
+	  </listitem>
 	    <listitem>
 	      <para>Focus your work in a specific area.</para>
 	      <para>
@@ -3116,6 +3114,8 @@ event and not for all events fired by some modelelement.
 		<imagedata fileref="images/cookbook/eventsbeforepump.gif" format="gif"/>
 	      </imageobject>
 	    </mediaobject>
+</para>
+	  <para>
 <mediaobject>
 	      <imageobject>
 		<imagedata fileref="images/cookbook/eventsafterpump.gif" format="gif"/>
