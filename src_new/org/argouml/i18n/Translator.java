@@ -62,7 +62,7 @@ public class Translator {
         org.workingfrog.i18n.util.Translator.setDefaultLocale(
 							      new Locale("en", ""));
         org.workingfrog.i18n.util.Translator.setBundlesPath("org.argouml.i18n");
-        org.workingfrog.i18n.util.Translator.setLogLevel("all");
+        org.workingfrog.i18n.util.Translator.setLogLevel("none");
   
         Localizer.addResource("GefBase",
 			      "org.tigris.gef.base.BaseResourceBundle");
