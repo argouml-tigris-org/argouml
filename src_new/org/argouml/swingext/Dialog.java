@@ -43,7 +43,10 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 
 /**
- * Base class for all dialogs, setting borders and component spacing.
+ * Base class for all dialogs, setting borders and component spacing.<p>
+ * 
+ * This class is supposed to be an extension of swing, 
+ * without any knowledge of the remainder of ArgoUML.
  *
  * @author Bob Tarling
  * @author Jeremy Jones
