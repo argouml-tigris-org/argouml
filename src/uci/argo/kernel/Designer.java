@@ -288,8 +288,8 @@ implements Poster, Runnable, PropertyChangeListener, java.io.Serializable {
 
    public static void setCritiquingRoot(Object d) {
      _CritiquingRoot = d;
-     theDesigner()._toDoList.removeAllElements();
      synchronized (theDesigner()) {
+       theDesigner()._toDoList.removeAllElements(); //v71
        theDesigner()._hotQueue.removeAllElements();
        theDesigner()._hotReasonQueue.removeAllElements();
        theDesigner()._addQueue.removeAllElements();
