@@ -49,7 +49,9 @@ compiler you want to use. Just add the line
 build.compiler=jikes
 (without a blank after "jikes"!)
 
-to this .ant.properties file and you'll use jikes.
+to this .ant.properties file and you'll use jikes. Note: on Windows platforms
+you can't "rename" files to names with a dot at the beginning of the name, so
+you have to use an editor ("Notepad", "UltraEdit" or alike) and use "Save as...".
 
 If you want to compile ArgoUML, you need to have following:
 - your compiler in your PATH
@@ -111,7 +113,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 
     <property name="src.dir" value="../src_new"/>
     <property name="docs.dir" value="../docs"/>
-    <property name="lib.dir" value="../lib"/> 
+    <property name="lib.dir" value="../lib"/>
+    <property name="dist.dir" value="./dist"/>
 
     <property name="classpath" value="${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/xml4j.jar:${lib.dir}/gef.jar"/> 
     <property name="packages" value="org.argouml.*"/>
@@ -130,7 +133,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <!-- Help on usage                                                       -->
   <!-- =================================================================== -->
-  <target name="usage">
+  <target name="usage" depends="init" >
     <echo message=""/>
     <echo message=""/>
     <echo message="${Name} Build file"/>
@@ -215,7 +218,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <echo message="Building the distribution files (zip,tar)"/>
     <mkdir dir="${dist.dir}"/>
     <copydir src="${build.dir}" dest="${dist.dir}" 
-        excludes="**/classes/**, **/${ignore_this}"/>
+        excludes="**/${ignore_this}"/>
     <zip zipfile="${Name}-${version}.zip" basedir="${dist.dir}" includes="**"/>
     <tar tarfile="${Name}-${version}.tar" basedir="${dist.dir}" includes="**"/>
     <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar" />
@@ -243,6 +246,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 
   <target name="distclean" depends="clean">
     <deltree dir="${dist.dir}"/>
+    <delete file="${Name}-${version}.zip" />
+    <delete file="${Name}-${version}.tar.gz" />
   </target>
 
 
