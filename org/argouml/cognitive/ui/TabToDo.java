@@ -166,6 +166,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
         else {
             showDescription();
         }
+        updateActionsEnabled(item);
+        
         
     }
 
@@ -212,7 +214,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);
-        updateActionsEnabled(e.getNewTargets()[0]);
+        // updateActionsEnabled(e.getNewTargets()[0]);
     }
 
 } /* end class TabToDo */
