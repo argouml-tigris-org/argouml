@@ -37,8 +37,6 @@ import org.tigris.gef.util.*;
 
 import org.argouml.kernel.*;
 
-import org.argouml.util.logging.*;
-
 /** Implements a list of ToDoItem's.  If desired it can also
  * spawn a "sweeper" thread that periodically goes through the list
  * and elimiates ToDoItem's that are no longer valid.
@@ -197,18 +195,12 @@ implements Runnable, java.io.Serializable {
     // needs-more-work: not implemented
     public VectorSet getOffenders() {
 	if (_allOffenders == null) {
-	    SimpleTimer st = new SimpleTimer();
-	    st.mark("getOffenders");
-
 	    int size = _items.size();
 	    _allOffenders = new VectorSet(size*2);
 	    for (int i = 0; i < size; i++) {
 		ToDoItem item = (ToDoItem) _items.elementAt(i);
 		_allOffenders.addAllElements(item.getOffenders());
 	    }
-	    st.mark();
-	    for (Enumeration e = st.result(); e.hasMoreElements();)
-		System.out.println(e.nextElement());
 	}
 	return _allOffenders; 
     }
@@ -219,18 +211,12 @@ implements Runnable, java.io.Serializable {
 
     public VectorSet getPosters() { 
 	if (_allPosters == null) {
-	    SimpleTimer st = new SimpleTimer();
-	    st.mark("getPosters");
-
 	    _allPosters = new VectorSet();
 	    int size = _items.size();
 	    for (int i = 0; i < size; i++) {
 		ToDoItem item = (ToDoItem) _items.elementAt(i);
 		_allPosters.addElement(item.getPoster());
 	    }
-	    st.mark();
-	    for (Enumeration e = st.result(); e.hasMoreElements();)
-		System.out.println(e.nextElement());
 	}
 	return _allPosters;
     }
