@@ -23,18 +23,21 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.ui.*;
-import org.argouml.kernel.*;
+import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
+
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.uml.diagram.static_structure.ui.*;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.generator.Generator;
-import org.argouml.uml.generator.ui.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
-
-import java.awt.event.*;
-import java.util.*;
+import org.argouml.uml.generator.ui.ClassGenerationDialog;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /** Action to trigger code generation for all classes/interfaces in the
  *  project, which have a source code path set in tagged value 'src_path'
