@@ -463,7 +463,7 @@ public abstract class FigEdgeModelElement
             return;
     }
 
-    private void updateNameText() {
+    protected void updateNameText() {
         
         if (getOwner() == null)
             return;
