@@ -750,8 +750,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                 } else if (ModelFacade.isAAction(elem)) {
                     deleteAction(elem);
                 } else if (elem instanceof MAttributeLink) {
-                    getCommonBehavior()
-                        .deleteAttributeLink((MAttributeLink) elem);
+                    getCommonBehavior().deleteAttributeLink(elem);
                 } else if (elem instanceof MInstance) {
                     deleteInstance((MInstance) elem);
                 } // no else to handle multiple inheritance of linkobject

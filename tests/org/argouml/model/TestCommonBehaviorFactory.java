@@ -22,16 +22,14 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model.uml;
+package org.argouml.model;
 
 import junit.framework.TestCase;
 
 import org.argouml.util.CheckUMLModelHelper;
 
 /**
- * Test the NSUML-implementation of the CommonBehaviorFactory.<p>
- *
- * No imports from org.argouml.model package!
+ * Test the CommonBehaviorFactory.
  */
 public class TestCommonBehaviorFactory extends TestCase {
 
@@ -65,8 +63,6 @@ public class TestCommonBehaviorFactory extends TestCase {
 	"UninterpretedAction",
     };
 
-    private NSUMLModelImplementation nsumlmodel;
-
     /**
      * The constructor.
      *
@@ -74,13 +70,6 @@ public class TestCommonBehaviorFactory extends TestCase {
      */
     public TestCommonBehaviorFactory(String n) {
 	super(n);
-    }
-
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    public void setUp() {
-        nsumlmodel = new NSUMLModelImplementation();
     }
 
     /**
@@ -115,9 +104,9 @@ public class TestCommonBehaviorFactory extends TestCase {
 	};
 
 	CheckUMLModelHelper.createAndRelease(
-	        this,
-	        nsumlmodel.getCommonBehaviorFactory(),
-	        objs);
+					     this,
+					     Model.getCommonBehaviorFactory(),
+					     objs);
 
     }
 
@@ -126,9 +115,9 @@ public class TestCommonBehaviorFactory extends TestCase {
      */
     public void testDeleteComplete() {
 	CheckUMLModelHelper.deleteComplete(
-	        this,
-		nsumlmodel.getCommonBehaviorFactory(),
-		allModelElements);
+					   this,
+					   Model.getCommonBehaviorFactory(),
+					   allModelElements);
     }
 
     /**

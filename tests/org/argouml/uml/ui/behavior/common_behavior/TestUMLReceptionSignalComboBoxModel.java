@@ -29,12 +29,8 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
-
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.common_behavior.MReception;
-import ru.novosoft.uml.behavior.common_behavior.MSignal;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * @since Nov 2, 2002
@@ -42,11 +38,10 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class TestUMLReceptionSignalComboBoxModel extends TestCase {
 
-    private int oldEventPolicy;
-    private MSignal[] signals;
+    private Object[] signals;
     private UMLReceptionSignalComboBoxModel model;
-    private MReception elem;
-    
+    private Object elem;
+
     /**
      * Constructor for TestUMLReceptionSignalComboBoxModel.
      * @param arg0 is the name of the test case.
@@ -62,18 +57,16 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         super.setUp();
         Project p = ProjectManager.getManager().getCurrentProject();
         elem = Model.getCommonBehaviorFactory().createReception();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        signals = new MSignal[10];
-        MModel m = Model.getModelManagementFactory().createModel();
+        signals = new Object[10];
+        Object m = Model.getModelManagementFactory().createModel();
         p.setRoot(m);
-        elem.setNamespace(m);
+        ModelFacade.setNamespace(elem, m);
         for (int i = 0; i < 10; i++) {
             signals[i] = Model.getCommonBehaviorFactory().createSignal();
-            m.addOwnedElement(signals[i]);
-        }      
+            ModelFacade.addOwnedElement(m, signals[i]);
+        }
         model = new UMLReceptionSignalComboBoxModel();
-        model.targetSet(new TargetEvent(this, "set", new Object[0], 
+        model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
     }
 
@@ -86,10 +79,9 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         for (int i = 0; i < 10; i++) {
             Model.getUmlFactory().delete(signals[i]);
         }
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Set up the test.
      */
@@ -99,23 +91,23 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         assertTrue(model.contains(signals[0]));
         assertTrue(model.contains(signals[9]));
     }
-    
+
     /**
      * Test setSignal().
      */
     public void testSetSignal() {
-        elem.setSignal(signals[0]);
+        ModelFacade.setSignal(elem, signals[0]);
         assertTrue(model.getSelectedItem() == signals[0]);
     }
-    
+
     /**
      * Test setSignal() with null argument.
      */
     public void testSetSignalToNull() {
-        elem.setSignal(null);
+        ModelFacade.setSignal(elem, null);
         assertNull(model.getSelectedItem());
     }
-    
+
 
     /**
      * Test removing signals.
@@ -124,6 +116,6 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         Model.getUmlFactory().delete(signals[9]);
         assertEquals(9, model.getSize());
         assertTrue(!model.contains(signals[9]));
-    } 
+    }
 
 }

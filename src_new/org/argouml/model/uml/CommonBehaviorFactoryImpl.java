@@ -103,7 +103,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML Argument instance.
      */
-    public MArgument createArgument() {
+    public Object createArgument() {
         MArgument modelElement = MFactory.getDefaultFactory().createArgument();
         super.initialize(modelElement);
         return modelElement;
@@ -114,7 +114,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML AttributeLink instance.
      */
-    public MAttributeLink createAttributeLink() {
+    public Object createAttributeLink() {
         MAttributeLink modelElement =
             MFactory.getDefaultFactory().createAttributeLink();
         super.initialize(modelElement);
@@ -138,7 +138,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML ComponentInstance instance.
      */
-    public MComponentInstance createComponentInstance() {
+    public Object createComponentInstance() {
         MComponentInstance modelElement =
             MFactory.getDefaultFactory().createComponentInstance();
         super.initialize(modelElement);
@@ -150,7 +150,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML CreateAction instance.
      */
-    public MCreateAction createCreateAction() {
+    public Object createCreateAction() {
         MCreateAction modelElement =
             MFactory.getDefaultFactory().createCreateAction();
         super.initialize(modelElement);
@@ -174,7 +174,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML DestroyAction instance.
      */
-    public MDestroyAction createDestroyAction() {
+    public Object createDestroyAction() {
         MDestroyAction modelElement =
             MFactory.getDefaultFactory().createDestroyAction();
         super.initialize(modelElement);
@@ -186,7 +186,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML Exception instance.
      */
-    public MException createException() {
+    public Object createException() {
         MException modelElement =
             MFactory.getDefaultFactory().createException();
         super.initialize(modelElement);
@@ -198,7 +198,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML Instance instance.
      */
-    public MInstance createInstance() {
+    public Object createInstance() {
         MInstance modelElement = MFactory.getDefaultFactory().createInstance();
         super.initialize(modelElement);
         return modelElement;
@@ -209,7 +209,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML Link instance.
      */
-    public MLink createLink() {
+    public Object createLink() {
         MLink modelElement = MFactory.getDefaultFactory().createLink();
         super.initialize(modelElement);
         return modelElement;
@@ -231,7 +231,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML LinkObject instance.
      */
-    public MLinkObject createLinkObject() {
+    public Object createLinkObject() {
         MLinkObject modelElement =
             MFactory.getDefaultFactory().createLinkObject();
         super.initialize(modelElement);
@@ -243,7 +243,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML NodeInstance instance.
      */
-    public MNodeInstance createNodeInstance() {
+    public Object createNodeInstance() {
         MNodeInstance modelElement =
             MFactory.getDefaultFactory().createNodeInstance();
         super.initialize(modelElement);
@@ -255,7 +255,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML Object instance.
      */
-    public MObject createObject() {
+    public Object createObject() {
         MObject modelElement = MFactory.getDefaultFactory().createObject();
         super.initialize(modelElement);
         return modelElement;
@@ -266,7 +266,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML Reception instance.
      */
-    public MReception createReception() {
+    public Object createReception() {
         MReception modelElement =
             MFactory.getDefaultFactory().createReception();
         super.initialize(modelElement);
@@ -278,7 +278,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML ReturnAction instance.
      */
-    public MReturnAction createReturnAction() {
+    public Object createReturnAction() {
         MReturnAction modelElement =
             MFactory.getDefaultFactory().createReturnAction();
         super.initialize(modelElement);
@@ -290,7 +290,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML SendAction instance.
      */
-    public MSendAction createSendAction() {
+    public Object createSendAction() {
         MSendAction modelElement =
             MFactory.getDefaultFactory().createSendAction();
         super.initialize(modelElement);
@@ -302,7 +302,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML Signal instance.
      */
-    public MSignal createSignal() {
+    public Object createSignal() {
         MSignal modelElement = MFactory.getDefaultFactory().createSignal();
         super.initialize(modelElement);
         return modelElement;
@@ -313,7 +313,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML Stimulus instance.
      */
-    public MStimulus createStimulus() {
+    public Object createStimulus() {
         MStimulus modelElement = MFactory.getDefaultFactory().createStimulus();
         super.initialize(modelElement);
         return modelElement;
@@ -324,7 +324,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML TerminateAction instance.
      */
-    public MTerminateAction createTerminateAction() {
+    public Object createTerminateAction() {
         MTerminateAction modelElement =
             MFactory.getDefaultFactory().createTerminateAction();
         super.initialize(modelElement);
@@ -336,7 +336,7 @@ public class CommonBehaviorFactoryImpl
      *
      * @return an initialized UML UninterpretedAction instance.
      */
-    public MUninterpretedAction createUninterpretedAction() {
+    public Object createUninterpretedAction() {
         MUninterpretedAction modelElement =
             MFactory.getDefaultFactory().createUninterpretedAction();
         super.initialize(modelElement);
@@ -353,9 +353,8 @@ public class CommonBehaviorFactoryImpl
      * @param name the name for the CallAction
      * @return MCallAction
      */
-    public Object /*MCallAction*/
-    buildCallAction(MOperation oper, String name) {
-        if (oper == null) {
+    public Object buildCallAction(Object oper, String name) {
+        if (!(oper instanceof MOperation)) {
             throw new IllegalArgumentException(
                 "There should be an operation" + " with a callaction.");
         }
@@ -432,12 +431,12 @@ public class CommonBehaviorFactoryImpl
      * @param feature the given behaviouralfeature
      * @return the newly build Signal
      */
-    public MSignal buildSignal(MBehavioralFeature feature) {
-        if (feature == null) {
+    public Object buildSignal(Object feature) {
+        if (!(feature instanceof MBehavioralFeature)) {
             return null;
         }
-        MSignal signal = createSignal();
-        signal.addContext(feature);
+        MSignal signal = (MSignal) createSignal();
+        signal.addContext((MBehavioralFeature) feature);
         return signal;
     }
 
@@ -499,49 +498,81 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteArgument(MArgument elem) {
+    public void deleteArgument(Object elem) {
+        if (!(elem instanceof MArgument)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteAttributeLink(MAttributeLink elem) {
+    public void deleteAttributeLink(Object elem) {
+        if (!(elem instanceof MAttributeLink)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteCallAction(MCallAction elem) {
+    public void deleteCallAction(Object elem) {
+        if (!(elem instanceof MCallAction)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteComponentInstance(MComponentInstance elem) {
+    public void deleteComponentInstance(Object elem) {
+        if (!(elem instanceof MComponentInstance)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteCreateAction(MCreateAction elem) {
+    public void deleteCreateAction(Object elem) {
+        if (!(elem instanceof MCreateAction)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteDataValue(MDataValue elem) {
+    public void deleteDataValue(Object elem) {
+        if (!(elem instanceof MDataValue)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteDestroyAction(MDestroyAction elem) {
+    public void deleteDestroyAction(Object elem) {
+        if (!(elem instanceof MDestroyAction)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteException(MException elem) {
+    public void deleteException(Object elem) {
+        if (!(elem instanceof MException)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
@@ -551,10 +582,14 @@ public class CommonBehaviorFactoryImpl
      *
      * @param elem the element to be deleted
      */
-    public void deleteInstance(MInstance elem) {
+    public void deleteInstance(Object elem) {
+        if (!(elem instanceof MInstance)) {
+            throw new IllegalArgumentException();
+        }
+
 
         if (elem != null) {
-            Collection col = elem.getLinkEnds();
+            Collection col = ((MInstance) elem).getLinkEnds();
             Iterator it = col.iterator();
             while (it.hasNext()) {
                 Model.getUmlFactory().delete(it.next());
@@ -565,7 +600,11 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteLink(MLink elem) {
+    public void deleteLink(Object elem) {
+        if (!(elem instanceof MLink)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
@@ -574,9 +613,13 @@ public class CommonBehaviorFactoryImpl
      *
      * @param elem the element to be deleted
      */
-    public void deleteLinkEnd(MLinkEnd elem) {
+    public void deleteLinkEnd(Object elem) {
+        if (!(elem instanceof MLinkEnd)) {
+            throw new IllegalArgumentException();
+        }
 
-        MLink link = elem.getLink();
+
+        MLink link = ((MLinkEnd) elem).getLink();
         if (link != null
             && link.getConnections() != null
             && link.getConnections().size() == 2) { // binary link
@@ -587,60 +630,100 @@ public class CommonBehaviorFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteLinkObject(MLinkObject elem) {
+    public void deleteLinkObject(Object elem) {
+        if (!(elem instanceof MLinkObject)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteNodeInstance(MNodeInstance elem) {
+    public void deleteNodeInstance(Object elem) {
+        if (!(elem instanceof MNodeInstance)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteObject(MObject elem) {
+    public void deleteObject(Object elem) {
+        if (!(elem instanceof MObject)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteReception(MReception elem) {
+    public void deleteReception(Object elem) {
+        if (!(elem instanceof MReception)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteReturnAction(MReturnAction elem) {
+    public void deleteReturnAction(Object elem) {
+        if (!(elem instanceof MReturnAction)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteSendAction(MSendAction elem) {
+    public void deleteSendAction(Object elem) {
+        if (!(elem instanceof MSendAction)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteSignal(MSignal elem) {
+    public void deleteSignal(Object elem) {
+        if (!(elem instanceof MSignal)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteStimulus(MStimulus elem) {
+    public void deleteStimulus(Object elem) {
+        if (!(elem instanceof MStimulus)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteTerminateAction(MTerminateAction elem) {
+    public void deleteTerminateAction(Object elem) {
+        if (!(elem instanceof MTerminateAction)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteUninterpretedAction(MUninterpretedAction elem) {
+    public void deleteUninterpretedAction(Object elem) {
+        if (!(elem instanceof MUninterpretedAction)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 }

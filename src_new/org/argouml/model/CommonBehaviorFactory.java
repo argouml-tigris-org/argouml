@@ -24,29 +24,6 @@
 
 package org.argouml.model;
 
-import ru.novosoft.uml.behavior.common_behavior.MArgument;
-import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
-import ru.novosoft.uml.behavior.common_behavior.MCallAction;
-import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
-import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
-import ru.novosoft.uml.behavior.common_behavior.MDataValue;
-import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
-import ru.novosoft.uml.behavior.common_behavior.MException;
-import ru.novosoft.uml.behavior.common_behavior.MInstance;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
-import ru.novosoft.uml.behavior.common_behavior.MLinkObject;
-import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
-import ru.novosoft.uml.behavior.common_behavior.MObject;
-import ru.novosoft.uml.behavior.common_behavior.MReception;
-import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
-import ru.novosoft.uml.behavior.common_behavior.MSendAction;
-import ru.novosoft.uml.behavior.common_behavior.MSignal;
-import ru.novosoft.uml.behavior.common_behavior.MStimulus;
-import ru.novosoft.uml.behavior.common_behavior.MTerminateAction;
-import ru.novosoft.uml.behavior.common_behavior.MUninterpretedAction;
-import ru.novosoft.uml.foundation.core.MBehavioralFeature;
-import ru.novosoft.uml.foundation.core.MOperation;
 
 /**
  * The interface for the factory of the CommonBehavior.<p>
@@ -73,14 +50,14 @@ public interface CommonBehaviorFactory {
      *
      * @return an initialized UML Argument instance.
      */
-    MArgument createArgument();
+    Object createArgument();
 
     /**
      * Create an empty but initialized instance of a UML AttributeLink.
      *
      * @return an initialized UML AttributeLink instance.
      */
-    MAttributeLink createAttributeLink();
+    Object createAttributeLink();
 
     /**
      * Create an empty but initialized instance of a UML CallAction.
@@ -94,49 +71,42 @@ public interface CommonBehaviorFactory {
      *
      * @return an initialized UML ComponentInstance instance.
      */
-    MComponentInstance createComponentInstance();
+    Object createComponentInstance();
 
     /**
      * Create an empty but initialized instance of a UML CreateAction.
      *
      * @return an initialized UML CreateAction instance.
      */
-    MCreateAction createCreateAction();
-
-    /**
-     * Create an empty but initialized instance of a UML DataValue.
-     *
-     * @return an initialized UML DataValue instance.
-     */
-    MDataValue createDataValue();
+    Object createCreateAction();
 
     /**
      * Create an empty but initialized instance of a UML DestroyAction.
      *
      * @return an initialized UML DestroyAction instance.
      */
-    MDestroyAction createDestroyAction();
+    Object createDestroyAction();
 
     /**
      * Create an empty but initialized instance of a UML Exception.
      *
      * @return an initialized UML Exception instance.
      */
-    MException createException();
+    Object createException();
 
     /**
      * Create an empty but initialized instance of a UML Instance.
      *
      * @return an initialized UML Instance instance.
      */
-    MInstance createInstance();
+    Object createInstance();
 
     /**
      * Create an empty but initialized instance of a UML Link.
      *
      * @return an initialized UML Link instance.
      */
-    MLink createLink();
+    Object createLink();
 
     /**
      * Create an empty but initialized instance of a UML LinkEnd.
@@ -150,70 +120,70 @@ public interface CommonBehaviorFactory {
      *
      * @return an initialized UML LinkObject instance.
      */
-    MLinkObject createLinkObject();
+    Object createLinkObject();
 
     /**
      * Create an empty but initialized instance of a UML NodeInstance.
      *
      * @return an initialized UML NodeInstance instance.
      */
-    MNodeInstance createNodeInstance();
+    Object createNodeInstance();
 
     /**
      * Create an empty but initialized instance of a UML Object.
      *
      * @return an initialized UML Object instance.
      */
-    MObject createObject();
+    Object createObject();
 
     /**
      * Create an empty but initialized instance of a UML Reception.
      *
      * @return an initialized UML Reception instance.
      */
-    MReception createReception();
+    Object createReception();
 
     /**
      * Create an empty but initialized instance of a UML ReturnAction.
      *
      * @return an initialized UML ReturnAction instance.
      */
-    MReturnAction createReturnAction();
+    Object createReturnAction();
 
     /**
      * Create an empty but initialized instance of a UML SendAction.
      *
      * @return an initialized UML SendAction instance.
      */
-    MSendAction createSendAction();
+    Object createSendAction();
 
     /**
      * Create an empty but initialized instance of a UML Signal.
      *
      * @return an initialized UML Signal instance.
      */
-    MSignal createSignal();
+    Object createSignal();
 
     /**
      * Create an empty but initialized instance of a UML Stimulus.
      *
      * @return an initialized UML Stimulus instance.
      */
-    MStimulus createStimulus();
+    Object createStimulus();
 
     /**
      * Create an empty but initialized instance of a UML TerminateAction.
      *
      * @return an initialized UML TerminateAction instance.
      */
-    MTerminateAction createTerminateAction();
+    Object createTerminateAction();
 
     /**
      * Create an empty but initialized instance of a UML UninterpretedAction.
      *
      * @return an initialized UML UninterpretedAction instance.
      */
-    MUninterpretedAction createUninterpretedAction();
+    Object createUninterpretedAction();
 
     /**
      * Builds a CallAction belonging to operation oper with a given name.
@@ -226,7 +196,7 @@ public interface CommonBehaviorFactory {
      * @param name the name for the CallAction
      * @return MCallAction
      */
-    Object buildCallAction(MOperation oper, String name);
+    Object buildCallAction(Object oper, String name);
 
     /**
      * Builds a new uninterpreted action. If the argument is an action state,
@@ -260,7 +230,7 @@ public interface CommonBehaviorFactory {
      * @param feature the given behaviouralfeature
      * @return the newly build Signal
      */
-    MSignal buildSignal(MBehavioralFeature feature);
+    Object buildSignal(Object feature);
 
     /**
      * Builds a stimulus based on a given link. The link must have two
@@ -294,42 +264,42 @@ public interface CommonBehaviorFactory {
     /**
      * @param elem the element to be deleted
      */
-    void deleteArgument(MArgument elem);
+    void deleteArgument(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteAttributeLink(MAttributeLink elem);
+    void deleteAttributeLink(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteCallAction(MCallAction elem);
+    void deleteCallAction(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteComponentInstance(MComponentInstance elem);
+    void deleteComponentInstance(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteCreateAction(MCreateAction elem);
+    void deleteCreateAction(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteDataValue(MDataValue elem);
+    void deleteDataValue(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteDestroyAction(MDestroyAction elem);
+    void deleteDestroyAction(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteException(MException elem);
+    void deleteException(Object elem);
 
     /**
      * when an instance is deleted,
@@ -338,12 +308,12 @@ public interface CommonBehaviorFactory {
      *
      * @param elem the element to be deleted
      */
-    void deleteInstance(MInstance elem);
+    void deleteInstance(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteLink(MLink elem);
+    void deleteLink(Object elem);
 
     /**
      * When a linkend is deleted,
@@ -351,55 +321,55 @@ public interface CommonBehaviorFactory {
      *
      * @param elem the element to be deleted
      */
-    void deleteLinkEnd(MLinkEnd elem);
+    void deleteLinkEnd(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteLinkObject(MLinkObject elem);
+    void deleteLinkObject(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteNodeInstance(MNodeInstance elem);
+    void deleteNodeInstance(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteObject(MObject elem);
+    void deleteObject(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteReception(MReception elem);
+    void deleteReception(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteReturnAction(MReturnAction elem);
+    void deleteReturnAction(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteSendAction(MSendAction elem);
+    void deleteSendAction(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteSignal(MSignal elem);
+    void deleteSignal(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteStimulus(MStimulus elem);
+    void deleteStimulus(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteTerminateAction(MTerminateAction elem);
+    void deleteTerminateAction(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteUninterpretedAction(MUninterpretedAction elem);
+    void deleteUninterpretedAction(Object elem);
 }

@@ -130,10 +130,19 @@ public class TestModel extends TestCase {
     /**
      * Test if the CollaborationsFactory is really a singleton.
      */
-    public void testSingleton() {
+    public void testCollaborationsFactoryInstance() {
         Object o1 = Model.getCollaborationsFactory();
         Object o2 = Model.getCollaborationsFactory();
 
         assertTrue("Different singletons", o1 == o2);
+    }
+    
+    /**
+     * Test if the factory is really a singleton.
+     */
+    public void testCommonBehaviorFactoryInstance() {
+	Object o1 = Model.getCommonBehaviorFactory();
+	Object o2 = Model.getCommonBehaviorFactory();
+	assertTrue("Different singletons", o1 == o2);
     }
 }
