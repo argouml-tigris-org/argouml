@@ -115,8 +115,10 @@ Earlier versions of &argouml; (0.9 and earlier) implemented extend and
     <para>Within the UML metamodel, actor is a sub-class of
      <literal>classifier</literal>.</para>
 
-    <para>The actor icon is a stick man (see <xref
-      linkend="fig.ref.use_case_diagram"/>).</para>
+    <para>The actor is represented by a <quote>stick man</quote>
+      figure on the diagram 
+      (see <xref linkend="fig.ref.use_case_diagram"/>).
+    </para>
 
     <!-- The details tabs -->
 
@@ -165,12 +167,12 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
-          <listitem><para>Standard tab. Fill color is used for the stick
+          <listitem><para>Standard tab. The fill color is used for the stick
             man's head.</para></listitem>
         </varlistentry>
 
@@ -179,12 +181,12 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Source</literal></term>
 
-          <listitem><para>Standard tab. It would not be usual to provide any
-            code for an actor, since it is external to the
+          <listitem><para>Standard tab. Usually, no code is provided
+            for an actor, since it is external to the
             system.</para>
 
-          <note><para>The source tab content can be changed, but this has
-            no effect.</para></note></listitem>
+          <note><para>The source tab content can be changed, but the
+            changes are not retained.</para></note></listitem>
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
@@ -239,6 +241,14 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for a Classifier. </para></listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
 
@@ -291,9 +301,10 @@ This creates a new actor within the model, (but not
             within the diagram), navigating immediately to the
             properties tab for that actor.</para>
 
-          <tip><para>This method of creating new actors can be
-            confusing. Much better to create them within diagrams where you
-            want them.</para></tip></listitem>
+            <tip><para>This method of creating a new actor may be
+              confusing. It is much better to create an actor on the diagram.
+            </para></tip>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -342,8 +353,9 @@ This creates a new actor within the model, (but not
             </indexterm>
 
             <para>Text box.
-The name of the actor.
-Since an actor is a
+			  The name of the actor. 
+			  The diagram shows this name below the stick man figure.
+			  Since an actor is a
             classifier, it would be conventional to Capitalize the first
             letter (and initial letters of any component words),
             e.g. <literal>RemoteSensor</literal>.</para>
@@ -481,7 +493,7 @@ Lists any actor that
             <emphasis>generalizes</emphasis> this actor.</para>
 
             <para>
-&Button1; Double Click
+&Button1; double click
 navigates to the generalization and opens
             its property tab.</para>
 
@@ -507,7 +519,7 @@ Lists any specialized actor (i.e. for which
             this actor is a generalization. The specialized actors can
             communicate with the same use case instances as this actor.</para>
 
-          <para>&button1; click navigates to the generalization and opens
+          <para>&Button1; double click navigates to the generalization and opens
             its property tab.</para>
 
           </listitem>
@@ -531,7 +543,7 @@ Lists any specialized actor (i.e. for which
 Lists any association ends of associations connected to this actor.
 </para>
             <para>
-              &Button1; Double Click navigates to the selected entry.
+              &Button1; double click navigates to the selected entry.
             </para>
 
           </listitem>
@@ -563,13 +575,13 @@ Lists any association ends of associations connected to this actor.
 
     <caution><para>By default &argouml; does not show the extension point
       compartment. It may be revealed by the context sensitive
-      <literal>Show</literal> menu (using &button2; click), or from the Style
-      tab.</para></caution>
+      <literal>Show</literal> menu (using &button2; click), or from the 
+      Presentation tab.</para></caution>
 
     <warning>
       <para>
 <!-- Issue: 2140 -->
-The current release of &argouml; does not preserve
+The current release of &argouml; (V0.18) does not preserve
 information about whether the extension point compartment is showing on save.
 On reload, no compartments will be visible.
 </para>
@@ -623,20 +635,19 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
-          <listitem><para>Standard tab. Fill color is used for the use case
+          <listitem><para>Standard tab. The Fill color is used for the use case
             oval.</para>
 
           <para>The <literal>Display: Extension Points</literal> check box is
             used to control whether an extension point compartment is
             displayed.</para>
 
-          <caution><para>The <literal>Shadow</literal> field has no effect on
-            use cases.</para></caution></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -648,17 +659,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             code for a use case, since it is primarily a vehicle for
             capturing requirements about the system under construction, not
             creating the solution.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -703,6 +703,15 @@ See <xref linkend="s2.ref.documentation_tab"/>.
 
           </listitem>
         </varlistentry>
+        
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for a Classifier. </para></listitem>
+        </varlistentry>
+        
       </variablelist>
     </sect2>
 
@@ -726,13 +735,13 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             model.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Add use case button -->
+        <!-- Entry for New use case button -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/use_case.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add use
+          </imageobject></inlinemediaobject></guiicon> <literal>New use
             case</literal></term>
 
           <listitem>
@@ -749,21 +758,24 @@ See <xref linkend="s2.ref.documentation_tab"/>.
 
             <para>
 This creates a new use case within the model, (but
-            not within the diagram), navigating immediately to the
+            not within the diagram), and shows immediately the
             properties tab for that use case.</para>
 
-          <tip><para>This method of creating new use cases can be
-            confusing. Much better to create them within diagrams where you
-            want them.</para></tip></listitem>
+            <tip><para>This method of creating a new use case can be
+              confusing. 
+              It is much better to create a new use case 
+              on the diagram of your choice.
+            </para></tip>
+          </listitem>
         </varlistentry>
 
-        <!-- Entry for Add extension point button -->
+        <!-- Entry for New extension point button -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/extension_point.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add extension
+          </imageobject></inlinemediaobject></guiicon> <literal>New extension
             point</literal></term>
 
           <listitem>
@@ -835,7 +847,9 @@ The name of the use case.
 Since a use case
             is a classifier, it would be conventional to Capitalize the
             first letter (and initial letters of any component words),
-            e.g. <literal>RemoteSensor</literal>.</para>
+            e.g. <literal>RemoteSensor</literal>. 
+            The name is shown inside the oval representation 
+            of the use case on the diagram.</para>
 
           <note><para>&argouml; does not enforce any naming convention for
             use cases</para></note></listitem>
@@ -923,15 +937,23 @@ Records the namespace for the
 
             <para>Check box,
 with entries
-<literal>leaf</literal> and
-<literal>root</literal>.
+<literal>Abstract</literal>
+<literal>Leaf</literal> and
+<literal>Root</literal>.
 </para>
 
             <itemizedlist>
               <listitem>
-                <para><literal>leaf</literal>
+                <para><literal>Abstract</literal>
+					is used to declare
+	                that this actor cannot be instantiated, but must always be
+                    specialized. .
+				</para>
+              </listitem>
+              <listitem>
+                <para><literal>Leaf</literal>
 indicates that this use case can have no further children, 
-while <literal>root</literal> indicates it is a top level
+while <literal>Root</literal> indicates it is a top level
 use case with no parent.
 </para>
               </listitem>
@@ -1048,7 +1070,7 @@ Lists any specialized use case (i.e. for
             which this use case is a generalization.</para>
 
             <para>
-&button1; Double Click
+			  &Button1; double click
 navigates to the generalization and opens its property tab.
 </para>
 
@@ -1075,7 +1097,7 @@ Lists any class that is extended by this
 
             <para>
 Where an extends relationship has been created,
-&button1; Double Click
+&button1; double click
 will navigate to that relationship.
 </para>
 
@@ -1277,23 +1299,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
-
-        <varlistentry>
-          <term><literal>Style</literal></term>
-
-          <listitem>
-            <para>Standard tab</para>
-
-            <note>
-              <para>
-The <literal>Style</literal> tab is grayed out, 
-since the extension points has no style of their own in the diagram.
-</para>
-            </note>
-          </listitem>
-        </varlistentry>
-
         <!-- Entry for Source tab -->
 
         <varlistentry>
@@ -1310,17 +1315,6 @@ since it is external to the system.
 The source tab content can be changed, but this has no effect.
 </para>
             </note>
-          </listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
           </listitem>
         </varlistentry>
 
@@ -1369,6 +1363,65 @@ The source tab content can be changed, but this has no effect.
           <listitem><para>Navigate up to the use case which owns this extension
             point.</para></listitem>
         </varlistentry>
+
+        <!-- Entry for New Extensionpoint button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/extension_point.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Extension Point</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Extension Point</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Extension Point</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Extension Point</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Extension Point 
+			  below the selected extension point, 
+              navigating immediately to the properties tab
+              of the newly created extension point.</para>
+		  </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected extension point, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
+
 
         <!-- Entry for Delete button -->
 
@@ -1520,7 +1573,7 @@ Lists all use cases which extend the base
 
             <para>
 Where an extending use case exists, 
-&button1; Double Click will navigate to that relationship.
+&button1; double click will navigate to that relationship.
 </para>
           </listitem>
         </varlistentry>
@@ -1652,18 +1705,19 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab</para>
 
-          <note><para>The values for the bounds of the generalization
-            appear to have no meaning. Changing them has no effect on the
-            diagram. This is sensible behavior, given the generalization
-            is tied to a particular actor and use
-            case.</para></note></listitem>
+            <note><para>The values for the bounds of the generalization
+              are downlighted, since they have no meaning, 
+              given that the generalization
+              is tied to a particular actor and use
+              case.</para></note>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -1672,19 +1726,8 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           <term><literal>Source</literal></term>
 
           <listitem><para>Standard tab. You would not expect to generate any
-code for an association end so this is empty.
-</para>
-          </listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
+			  code for a generalization end so this is empty.
+		    </para>
           </listitem>
         </varlistentry>
 
@@ -1733,6 +1776,35 @@ code for an association end so this is empty.
           <listitem><para>Navigate up through the package structure of the
             model. For a generalization this will be the package containing
             the generalization.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected generalization, 
+              navigating immediately to the properties tab
+              for that generalization.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -2075,28 +2147,27 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab</para>
 
-          <note><para>The values for the bounds of the extend relationships
-            appear to have no meaning. Changing them has no effect on the
-            diagram. This is sensible behavior, given the extend
-            is tied to a particular pair of use
+          <note><para>The values for the bounds are downlighted, since
+            the extend is tied to a particular pair of use
             cases.</para></note></listitem>
         </varlistentry>
 
-        <!-- Entry for Constraints tab -->
+        <!-- Entry for Source tab -->
 
         <varlistentry>
-          <term><literal>Constraints</literal></term>
+          <term><literal>Source</literal></term>
 
           <listitem>
-            <para>&constraintssupport;
-</para>
+            <para>Standard tab. You would not expect to generate any
+			  code for an extend relationship so this is empty.
+		    </para>
           </listitem>
         </varlistentry>
 
@@ -2147,13 +2218,13 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             the extend.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Add extension point button -->
+        <!-- Entry for New extension point button -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/extension_point.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add extension
+          </imageobject></inlinemediaobject></guiicon> <literal>New extension
             point</literal></term>
 
           <listitem>
@@ -2186,6 +2257,36 @@ below).
 </para>
             </tip>
           </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected 
+              extent relationship, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -2380,27 +2481,27 @@ If this use case is, or can be extended,
 
             <para>
 Where an extension point has been created,
-&button1; Double Click
+&button1; double click
 will navigate to that relationship.
 &Button2; gives a pop up menu with two entries.
-<!-- Issue: 2149 -->
 </para>
 
           <itemizedlist>
               <listitem>
                 <para><literal>Add</literal>.
-<!-- Issue: 2150 -->
 <!-- Issue: 2157 -->
-The selected extension points window opens.
-In this window it is possible to select extension points.
+The <quote>Ad/Remove ExtensionPoints</quote> window opens.
+In this window it is possible to build a list of extension points.
 </para>
               </listitem>
 
               <listitem>
                 <para><literal>New</literal>.
 Add a new extension point
-              before the current extension point in the list and navigate to
+              <!--before the current extension point-->
+              in the list and navigate to
               it. The current extend relationship is added as the first in list
+              <!-- TODO: Check this! -->
               of extending relationships of the new extension
               point.</para></listitem>
 
@@ -2418,6 +2519,7 @@ Add a new extension point
 Multi-line textual description of any condition 
 attached to the extend relationship.
 </para>
+			<!-- TODO: Issue 3166 to show this on the diagram. -->
           </listitem>
         </varlistentry>
 
@@ -2499,29 +2601,17 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab</para>
 
           <note><para>The values for the bounds of the include relationships
-            appear to have no meaning. Changing them has no effect on the
-            diagram. This is sensible behavior, given the include
-            is tied to a particular pair of use
+            are downlighted, since the include relationship
+            is represented by a line between a particular pair of use
             cases.</para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2570,6 +2660,36 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           <listitem><para>Navigate up through the package structure of the
             model. For a include this will be the package containing
             the include.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected 
+              include relationship, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -2697,7 +2817,7 @@ Records the namespace for the
         <!-- Entry for Base -->
 
         <varlistentry>
-          <term><literal>Base</literal></term>
+          <term><literal>Base Use Case</literal></term>
 
           <listitem>
             <indexterm>
@@ -2712,18 +2832,12 @@ Records the namespace for the
 Records the use case that is
             doing the including in this include relationship.  &Button1; click
             on this entry will give a drop down menu of all available use cases
-            (and an empty entry) which may be selected by &button1;
+            <!-- TODO: The empty entry is missing in the implementation! -->
+            <!-- (and an empty entry) -->
+            which may be selected by &button1;
             click.</para>
 
-            <caution>
-              <!-- Issue: 2159 -->
-              <para>
-In the current version of &argouml; if you change the
-            base use case on an include relationship that is already shown on a
-            diagram, then it will NOT be redrawn. Currently the only way to
-            effect a redraw is to remove the use cases at each end from the
-            diagram and then add them back from the explorer.
-          </para></caution></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Included Usecase -->
@@ -2747,15 +2861,7 @@ Records the use case that is
             cases (and an empty entry) which may be selected by &button1;
             click.</para>
 
-            <caution>
-              <!-- Issue: 2159 -->
-              <para>
-In the current version of &argouml; if you change the
-            addition use case on an include relationship that is already shown
-            on a diagram, then it will NOT be redrawn. Currently the only way
-            to effect a redraw is to remove the use cases at each end from the
-            diagram and then add them back from the explorer.
-          </para></caution></listitem>
+          </listitem>
         </varlistentry>
 
       </variablelist>

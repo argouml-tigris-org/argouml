@@ -278,8 +278,8 @@ While it can make sense to create Packages of the
 
             <para>
 			  This creates a new Stereotype (see <xref
-              linkend="s1.ref.stereotype"/>) within the model (which appears
-              on no diagram), navigating immediately to the properties tab
+              linkend="s1.ref.stereotype"/>) within the model, 
+              navigating immediately to the properties tab
               for that stereotype.</para>
 		  </listitem>
         </varlistentry>
