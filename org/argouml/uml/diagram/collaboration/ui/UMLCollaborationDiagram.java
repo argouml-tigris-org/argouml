@@ -213,8 +213,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 	    actionGeneralize,
 	    actionDepend,
 	    null,
-	    _actionComment,
-            _actionCommentLink};
+	    actionComment,
+            actionCommentLink};
         return actions;
     }
 

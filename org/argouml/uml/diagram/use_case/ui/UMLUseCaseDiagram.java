@@ -58,13 +58,13 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     /**
      * Tool to add an actor node.<p>
      */
-    protected static Action _actionActor =
+    private static Action actionActor =
 	    new RadioAction(new CmdCreateNode(ModelFacade.ACTOR, "Actor"));
     
     /**
      * Tool to add a use case node.<p>
      */
-    protected static Action _actionUseCase =
+    private static Action actionUseCase =
         new RadioAction(new CmdCreateNode(ModelFacade.USE_CASE, "UseCase"));
 
     /**
@@ -74,32 +74,32 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     //protected static Action _actionAssoc = new
     //CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
     //MAssociation.class, "Association");
-    protected static Action _actionAssociation = new RadioAction(
+    private static Action actionAssociation = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.NONE_AGGREGATIONKIND,
             false,
             "Association"));
-    protected static Action _actionAggregation = new RadioAction(
+    private static Action actionAggregation = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.AGGREGATE_AGGREGATIONKIND,
             false,
             "Aggregation"));
-    protected static Action _actionComposition = new RadioAction(
+    private static Action actionComposition = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.COMPOSITE_AGGREGATIONKIND,
             false,
             "Composition"));
-    protected static Action _actionUniAssociation = new RadioAction(
+    private static Action actionUniAssociation = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.NONE_AGGREGATIONKIND,
             true,
             "UniAssociation"));
-    protected static Action _actionUniAggregation = new RadioAction(
+    private static Action actionUniAggregation = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.AGGREGATE_AGGREGATIONKIND,
             true,
             "UniAggregation"));
-    protected static Action _actionUniComposition = new RadioAction(
+    private static Action actionUniComposition = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.COMPOSITE_AGGREGATIONKIND,
             true,
@@ -109,7 +109,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * Tool to create a generalization between UML artifacts using a
      * polyedge.<p>
      */
-    protected static Action _actionGeneralize = new RadioAction(
+    private static Action actionGeneralize = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
@@ -120,7 +120,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * Tool to create an extend relationship between UML use cases
      * using a polyedge.<p>
      */
-    protected static Action _actionExtend = new RadioAction(
+    private static Action actionExtend = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
@@ -131,7 +131,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * Tool to create an include relationship between UML use cases
      * using a polyedge.<p>
      */
-    protected static Action _actionInclude = new RadioAction(
+    private static Action actionInclude = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
@@ -142,7 +142,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * Tool to create a dependency between UML artifacts using a
      * polyedge.<p>
      */
-    protected static Action _actionDependency = new RadioAction(
+    private static Action actionDependency = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
@@ -267,28 +267,28 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Object[] getUmlActions() {
         Object actions[] =
         {
-	    _actionActor,
-	    _actionUseCase,
+	    actionActor,
+	    actionUseCase,
 	    null,
 	    getAssociationActions(),
-	    _actionDependency,
-	    _actionGeneralize,
-	    _actionExtend,
-	    _actionInclude,
+	    actionDependency,
+	    actionGeneralize,
+	    actionExtend,
+	    actionInclude,
 	    null,
 	    ActionAddExtensionPoint.singleton(),
 	    null,
-	    _actionComment,
-	    _actionCommentLink
+	    actionComment,
+	    actionCommentLink
 	};
         return actions;
     }
 
     private Object[] getAssociationActions() {
         Object actions[][] = {
-	    {_actionAssociation, _actionUniAssociation },
-	    {_actionAggregation, _actionUniAggregation },
-	    {_actionComposition, _actionUniComposition },
+	    {actionAssociation, actionUniAssociation },
+	    {actionAggregation, actionUniAggregation },
+	    {actionComposition, actionUniComposition },
         };
 
         return actions;
