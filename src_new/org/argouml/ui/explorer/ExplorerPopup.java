@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -57,15 +57,21 @@ import org.tigris.gef.ui.PopupGenerator;
  * @author  alexb
  * @since 0.15.2
  */
-public class ExplorerPopup extends JPopupMenu{
+public class ExplorerPopup extends JPopupMenu {
     
-    /** Creates a new instance of ExplorerPopup */
+    /**
+     * Creates a new instance of ExplorerPopup.
+     *
+     * @param selectedItem is the item that we are pointing at.
+     * @param me is the event.
+     */
     public ExplorerPopup(Object selectedItem, MouseEvent me) {
         
         super("Explorer popup menu");
         
         if (selectedItem instanceof PopupGenerator) {
-            Vector actions = ((PopupGenerator) selectedItem).getPopUpActions(me);
+            Vector actions =
+		((PopupGenerator) selectedItem).getPopUpActions(me);
             for (Enumeration e = actions.elements(); e.hasMoreElements();) {
                 this.add((AbstractAction) e.nextElement());
             }
@@ -74,12 +80,13 @@ public class ExplorerPopup extends JPopupMenu{
                 ProjectManager.getManager().getCurrentProject();
             final Diagram activeDiagram = currentProject.getActiveDiagram();
             
-            // TODO I've made some attempt to rationalize the conditions here
+            // TODO: I've made some attempt to rationalize the conditions here
             // and make them more readable. However I'd suggest that the
             // conditions should move to each diagram.
-            // Break up one complex method into a few simple ones and give
-            // the diagrams more knowledge of themselelves (although the diagrams
-            // may in fact delegate this in turn to the Model component).
+            // Break up one complex method into a few simple ones and
+            // give the diagrams more knowledge of themselelves
+            // (although the diagrams may in fact delegate this in
+            // turn to the Model component).
             // Bob Tarling 31 Jan 2004
             // eg the code here should be something like -
             //if (activeDiagram.canAdd(selectedItem)) {
@@ -126,7 +133,8 @@ public class ExplorerPopup extends JPopupMenu{
                     
                 final Object selectedStateMachine
                     = (stateVertexSelected)
-                    ? StateMachinesHelper.getHelper().getStateMachine(selectedItem)
+                    ? StateMachinesHelper.getHelper()
+		          .getStateMachine(selectedItem)
                     : null;
                 
                 final Object diagramStateMachine 
@@ -152,17 +160,18 @@ public class ExplorerPopup extends JPopupMenu{
                         || (linkSelected && !sequenceDiagramActive)
                         || transitionSelected) {
                     UMLAction action = new ActionAddExistingEdge(
-                        menuLocalize("menu.popup.add-to-diagram"), selectedItem);
+                        menuLocalize("menu.popup.add-to-diagram"),
+			selectedItem);
                     action.setEnabled(action.shouldBeEnabled());
                     this.add(action);
                 }
                 
                 if (selectedItem != projectModel || diagramSelected) {
-                    this.add(ActionRemoveFromModel.SINGLETON);
+                    this.add(new ActionRemoveFromModel());
                 }
     
-                if (ModelFacade.isAClassifier(selectedItem) ||
-                        ModelFacade.isAPackage(selectedItem)) {
+                if (ModelFacade.isAClassifier(selectedItem)
+		    || ModelFacade.isAPackage(selectedItem)) {
                     this.add(ActionSetSourcePath.SINGLETON);
                 }
     
@@ -176,9 +185,9 @@ public class ExplorerPopup extends JPopupMenu{
             // condition -tml
 	    if (selectedItem instanceof UMLClassDiagram) {
                 UMLAction action =
-                new ActionAddAllClassesFromModel(
-		    menuLocalize("menu.popup.add-all-classes-to-diagram"),
-                    selectedItem);
+		    new ActionAddAllClassesFromModel(
+		        menuLocalize("menu.popup.add-all-classes-to-diagram"),
+			selectedItem);
                 action.setEnabled(action.shouldBeEnabled());
                 this.add(action);
 	    }

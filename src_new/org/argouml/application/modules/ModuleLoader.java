@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,8 +66,10 @@ import org.argouml.application.security.ArgoJarClassLoader;
  * @since   0.9.4
  */
 public class ModuleLoader {
-	/** logger */
-	private static Logger LOG = Logger.getLogger(ModuleLoader.class);
+    /**
+     * Logger for this class.
+     */
+    private static final Logger LOG = Logger.getLogger(ModuleLoader.class);
 
     /** Class file suffix */
     public static final String CLASS_SUFFIX = ".class";
@@ -91,7 +93,7 @@ public class ModuleLoader {
 	// Use a little trick to find out where Argo is being loaded from.
         String extForm = 
 	    org.argouml.application.Main.class.getResource(Argo.ARGOINI)
-	    .toExternalForm();
+	        .toExternalForm();
 	argoRoot = extForm.substring(0, 
 				     extForm.length() - Argo.ARGOINI.length());
 
@@ -119,7 +121,7 @@ public class ModuleLoader {
 	        argoHome = java.net.URLDecoder.decode(argoHome);
 	    }
 	    catch (Exception e) {
-             LOG.warn(e);
+		LOG.warn(e);
             }
 
 	    LOG.info("argoHome is " + argoHome);
@@ -238,11 +240,10 @@ public class ModuleLoader {
 
 		// String key = atrs.getValue(Attributes.Name.EXTENSION_NAME);
 		String key = cname;
-		if (Pluggable.PLUGIN_TITLE.equals(s1) &&
-		    Pluggable.PLUGIN_VENDOR.equals(s2) &&
-		    key != null &&
-		    cname.endsWith(CLASS_SUFFIX))
-		{
+		if (Pluggable.PLUGIN_TITLE.equals(s1)
+		        && Pluggable.PLUGIN_VENDOR.equals(s2)
+		        && key != null
+		        && cname.endsWith(CLASS_SUFFIX)) {
 		    int cslen = CLASS_SUFFIX.length();
 		    // This load is not secure.
 		    loadClassFromLoader(classloader, key,
@@ -409,8 +410,8 @@ public class ModuleLoader {
             ArgoModule aModule = (ArgoModule) obj;
 	    if (aModule.getModuleKey().equals(key) || (!secure)) {
                 if (aModule.initializeModule()) {
-                    LOG.info("Loaded Module: " +
-				  aModule.getModuleName());
+                    LOG.info("Loaded Module: "
+			     + aModule.getModuleName());
                     _moduleClasses.add(aModule);
 		    fireEvent(ArgoModuleEvent.MODULE_LOADED, aModule);
 		    if (aModule instanceof ArgoSingletonModule) {
@@ -464,9 +465,9 @@ public class ModuleLoader {
 		    sClassName = line.substring(equalPos + 1).trim();
 		}
 		catch (Exception e) {
-		    LOG.warn ("Unable to process " + filename +
-		                        " at line " + lnr.getLineNumber() +
-					" data = '" + realLine + "'");
+		    LOG.warn ("Unable to process " + filename
+			      + " at line " + lnr.getLineNumber()
+			      + " data = '" + realLine + "'");
 		    continue;
 		}
 
@@ -540,7 +541,7 @@ public class ModuleLoader {
      * @return the list of modules.
      */
     public ArrayList getModules() {
-        // TODO change signature to return Collection
+        // TODO: change signature to return Collection
 	return _moduleClasses;
     }
 
@@ -637,15 +638,15 @@ public class ModuleLoader {
 				Object[] context) {
 	//  Make sure that we are only looking at real extensions
 	if (!(pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
-	    LOG.warn ("Class " + pluginType.getName() +
-			   " is not a core Argo pluggable type.");
+	    LOG.warn ("Class " + pluginType.getName()
+		      + " is not a core Argo pluggable type.");
 	    return null;
 	}
 
 	// Check to see that the class is not Pluggable itself
 	if (pluginType.equals(Pluggable.class)) {
-	    LOG.warn ("This is " + pluginType.getName() +
-			   ", it cannot be used here.");
+	    LOG.warn ("This is " + pluginType.getName()
+		      + ", it cannot be used here.");
 	    return null;
 	}
 
@@ -691,22 +692,22 @@ public class ModuleLoader {
 			      Object[] context) {
 	//  Make sure that we are only looking at real extensions
 	if (!(pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
-	    LOG.warn ("Class " + pluginType.getName() +
-			   " is not a core Argo pluggable type.");
+	    LOG.warn ("Class " + pluginType.getName()
+		      + " is not a core Argo pluggable type.");
 	    return false;
 	}
 
 	// Check to see that the class implements Pluggable
 	if (!(pluginType.isAssignableFrom(Pluggable.class))) {
-	    LOG.warn ("Class " + pluginType.getName() +
-			   " does not extend Pluggable.");
+	    LOG.warn ("Class " + pluginType.getName()
+		      + " does not extend Pluggable.");
 	    return false;
 	}
 
 	// Check to see that the class is not Pluggable itself
 	if (pluginType.equals(Pluggable.class)) {
-	    LOG.warn ("Class " + pluginType.getName() +
-			   " does not extend Pluggable.");
+	    LOG.warn ("Class " + pluginType.getName()
+		      + " does not extend Pluggable.");
 	    return false;
 	}
 
@@ -750,15 +751,15 @@ public class ModuleLoader {
     public ArrayList getPlugins (Class pluginType, Object[] context) {
 
 	if (!(pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
-	    LOG.warn ("Class " + pluginType.getName() +
-			   " is not a core Argo pluggable type.");
+	    LOG.warn ("Class " + pluginType.getName()
+		      + " is not a core Argo pluggable type.");
 	    return null;
 	}
 
 	// Check to see that the class is not Pluggable itself
 	if (pluginType.equals(Pluggable.class)) {
-	    LOG.warn ("This is " + pluginType.getName() +
-			   ", it cannot be used here.");
+	    LOG.warn ("This is " + pluginType.getName()
+		      + ", it cannot be used here.");
 	    return null;
 	}
 
@@ -814,9 +815,9 @@ public class ModuleLoader {
 
     class JarFileFilter implements FileFilter {
 	public boolean accept(File pathname) {
-	    return (pathname.canRead() &&
-		    pathname.isFile() &&
-		    pathname.getPath().toLowerCase().endsWith(".jar"));
+	    return (pathname.canRead()
+		    && pathname.isFile()
+		    && pathname.getPath().toLowerCase().endsWith(".jar"));
 	}
     }
 
