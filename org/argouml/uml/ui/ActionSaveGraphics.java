@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -59,21 +59,42 @@ import org.tigris.gef.persistence.*;
  */
 
 public class ActionSaveGraphics extends UMLAction {
+    /**
+     * @deprecated as of 0.15.4. Will be made private. Use your own logger.
+     */
     protected static Logger cat =
 	Logger.getLogger(ActionSaveGraphics.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4 this should not be
+     * used. We are changing this action so that it will no longer be
+     * a singleton. Use the constructor to create yourself a new
+     * instance of this object instead.
+     */
     public static ActionSaveGraphics SINGLETON = new ActionSaveGraphics(); 
 
-    public static final String separator = "/";
+    /**
+     * Separator between file path elements.
+     */
+    private static final String SEPARATOR = "/";
+
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use {@link #SEPARATOR}
+     * instead.
+     */
+    public static final String separator = SEPARATOR;
 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected ActionSaveGraphics() {
+    /**
+     * Constructor for this action.
+     */
+    public ActionSaveGraphics() {
 	super( "action.save-graphics", NO_ICON);
     }
 
@@ -81,148 +102,186 @@ public class ActionSaveGraphics extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see UMLAction#actionPerformed(ActionEvent)
+     */
     public void actionPerformed( ActionEvent ae ) {
 	trySave( false );
     }
 
+    /**
+     * Method that does almost everything in this class.<p>
+     *
+     * @param overwrite True if we shouldn't care that we erase an old copy.
+     * @return true if all went well.
+     */
     public boolean trySave( boolean overwrite ) {
 	Object target =
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-	if ( target instanceof Diagram ) {
-	    String defaultName = ((Diagram) target).getName();
-	    defaultName = Util.stripJunk(defaultName);
 
-	    // FIX - It's probably worthwhile to abstract and factor
-	    // this chooser and directory stuff. More file handling is
-	    // coming, I'm sure.
+	if (!(target instanceof Diagram)) {
+	    return false;
+	}
 
-	    ProjectBrowser pb = ProjectBrowser.getInstance();
-	    Project p =  ProjectManager.getManager().getCurrentProject();
-	    try {
-		JFileChooser chooser = null;
-		try {
-		    if ( p != null && p.getURL() != null &&
-			 p.getURL().getFile().length() > 0 ) {
-			String filename = p.getURL().getFile();
-			if ( !filename.startsWith( "/FILE1/+/" ) )
-			    chooser  =
-				OsUtil.getFileChooser( p.getURL().getFile() );
-		    }
+	String defaultName = ((Diagram) target).getName();
+	defaultName = Util.stripJunk(defaultName);
+
+	// FIX - It's probably worthwhile to abstract and factor
+	// this chooser and directory stuff. More file handling is
+	// coming, I'm sure.
+
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	Project p =  ProjectManager.getManager().getCurrentProject();
+	try {
+	    JFileChooser chooser = null;
+
+	    if (p != null
+		&& p.getURL() != null
+		&& p.getURL().getFile().length() > 0 ) {
+
+		String filename = p.getURL().getFile();
+		if (!filename.startsWith("/FILE1/+/")) {
+		    chooser = OsUtil.getFileChooser(p.getURL().getFile());
 		}
-		catch ( Exception ex ) {
-                    cat.error("exception in opening JFileChooser", ex);
-		}
+	    }
 
-		if ( chooser == null ) chooser = OsUtil.getFileChooser();
+	    if (chooser == null) {
+		chooser = OsUtil.getFileChooser();
+	    }
 
-		chooser.setDialogTitle( "Save Diagram as Graphics: "
-					+ defaultName );
-		// Only specified format are allowed.
-		chooser.removeChoosableFileFilter(chooser.
-						  getAcceptAllFileFilter());
-		chooser.addChoosableFileFilter( FileFilters.GIFFilter );
-		chooser.addChoosableFileFilter( FileFilters.PSFilter );
-		chooser.addChoosableFileFilter( FileFilters.EPSFilter );
-		chooser.addChoosableFileFilter( FileFilters.SVGFilter );
-		// concerning the following lines: is .GIF preferred?
-		chooser.setFileFilter( FileFilters.GIFFilter );
-		File def = new File(  defaultName + "."
-				      + FileFilters.GIFFilter._suffix );
-		chooser.setSelectedFile( def );
+	    chooser.setDialogTitle("Save Diagram as Graphics: "
+				   + defaultName );
+	    // Only specified format are allowed.
+	    chooser.removeChoosableFileFilter(chooser.
+					      getAcceptAllFileFilter());
+	    chooser.addChoosableFileFilter(FileFilters.GIFFilter);
+	    chooser.addChoosableFileFilter(FileFilters.PSFilter);
+	    chooser.addChoosableFileFilter(FileFilters.EPSFilter);
+	    chooser.addChoosableFileFilter(FileFilters.SVGFilter);
+	    // concerning the following lines: is .GIF preferred?
+	    chooser.setFileFilter(FileFilters.GIFFilter);
+	    File def = new File(defaultName + "."
+				+ FileFilters.GIFFilter._suffix);
+	    chooser.setSelectedFile(def);
 
-		int retval = chooser.showSaveDialog( pb );
-		if ( retval == 0 ) {
-		    File theFile = chooser.getSelectedFile();
-		    if ( theFile != null ) {
-			String path = theFile.getParent();
-			String name = theFile.getName();
-			String extension = SuffixFilter.getExtension(theFile);
-			// 2002-07-16 Jaap Branderhorst patch to issue
-			// 517 issue is: a file should be saved with
-			// the extension from the selected filter and
-			// according to the format of the selected
-			// filter.  start new code
+	    int retval = chooser.showSaveDialog(pb);
+	    if (retval == 0) {
+		File theFile = chooser.getSelectedFile();
+		if (theFile != null) {
+		    String path = theFile.getParent();
+		    String name = theFile.getName();
+		    String suffix = SuffixFilter.getExtension(theFile);
+		    // 2002-07-16 Jaap Branderhorst patch to issue
+		    // 517 issue is: a file should be saved with
+		    // the suffix from the selected filter and
+		    // according to the format of the selected
+		    // filter.  start new code
 			
-			if (extension == null || 
-			    !((extension.equals(FileFilters.PSFilter._suffix)) || 
-			      (extension.equals(FileFilters.EPSFilter._suffix)) ||
-			      (extension.equals(FileFilters.GIFFilter._suffix)) ||
-			      (extension.equals(FileFilters.SVGFilter._suffix))
-			      )) {
-			    // add the selected filter extension
-			    FileFilter filter = chooser.getFileFilter();
-			    extension = FileFilters.getSuffix(filter);  
-			    theFile =
-				new File(theFile.getParentFile(),
-					 theFile.getName() + "." + extension);
-			}
-			// end new code
-				
-			CmdSaveGraphics cmd = null;
-			if (FileFilters.PSFilter._suffix.equals(extension))
-			    cmd = new CmdSavePS();
-			else if (FileFilters.EPSFilter._suffix.equals(extension))
-                            // override gef default to cope with scaling.
-			    cmd = new CmdSaveEPS(){
-                                
-                                protected void saveGraphics(OutputStream s, Editor ce,
-                                Rectangle drawingArea)
-                                throws IOException {
-                                    
-                                      double scale=ce.getScale();
-                                      int x=(int)(drawingArea.x * scale);
-                                      int y=(int)(drawingArea.y * scale);
-                                      int h=(int)(drawingArea.height * scale);
-                                      int w=(int)(drawingArea.width * scale);
-                                    drawingArea = new Rectangle(x,y,w,h);
-                                    
-                                    PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
-                                    
-                                      ps.scale(scale,scale);
-                                      
-                                    ce.print(ps);
-                                    ps.dispose();
-                                }
-                                
-                            };
-			else if (FileFilters.GIFFilter._suffix.equals(extension))
-			    cmd = new CmdSaveGIF();
-			else if (FileFilters.SVGFilter._suffix.equals(extension))
-			    cmd = new CmdSaveSVG();
-			else {
-			    pb.showStatus("Unknown graphics file type withextension "
-					  + extension);
-			    return false;
-			}
-
-			if ( !path.endsWith( separator ) ) path += separator;
-			pb.showStatus( "Writing " + path + name + "..." );
-			if ( theFile.exists() && !overwrite ) {
-			    String t = "Overwrite " + path + name;
-			    int response =
-				JOptionPane.showConfirmDialog(pb, t, t,
-							      JOptionPane.YES_NO_OPTION);
-			    if (response == JOptionPane.NO_OPTION) return false;
-			}
-			FileOutputStream fo = new FileOutputStream( theFile );
-			cmd.setStream(fo);
-			cmd.doIt();
-			fo.close();
-			pb.showStatus( "Wrote " + path + name );
-			return true;
+		    if (suffix == null
+			|| !(suffix.equals(FileFilters.PSFilter._suffix)
+			     || suffix.equals(FileFilters.EPSFilter._suffix)
+			     || suffix.equals(FileFilters.GIFFilter._suffix)
+			     || suffix.equals(FileFilters.SVGFilter._suffix))) {
+			// add the selected filter suffix
+			FileFilter filter = chooser.getFileFilter();
+			suffix = FileFilters.getSuffix(filter);  
+			theFile =
+			    new File(theFile.getParentFile(),
+				     theFile.getName() + "." + suffix);
 		    }
+		    // end new code
+				
+		    return doSave(path, name, theFile,
+				  suffix, overwrite);
 		}
 	    }
-	    catch ( FileNotFoundException ignore )
-	    {
-		cat.error("got a FileNotFoundException", ignore);
-	    }
-	    catch ( IOException ignore )
-	    {
-		cat.error("got an IOException", ignore);
-	    }
+	}
+	catch (FileNotFoundException ignore) {
+	    cat.error("got a FileNotFoundException", ignore);
+	}
+	catch (IOException ignore) {
+	    cat.error("got an IOException", ignore);
 	}
 
 	return false;
     }
+
+    /**
+     * Actually do the saving.
+     *
+     * @return true if it was successful.
+     */
+    private boolean doSave(String path, String name,
+			   File theFile,
+			   String suffix, boolean overwrite)
+	throws FileNotFoundException, IOException {
+
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+
+	CmdSaveGraphics cmd = null;
+	if (FileFilters.PSFilter._suffix.equals(suffix)) {
+	    cmd = new CmdSavePS();
+	} else if (FileFilters.EPSFilter._suffix.equals(suffix)) {
+	    cmd = new ActionSaveGraphicsCmdSaveEPS();
+	} else if (FileFilters.GIFFilter._suffix.equals(suffix)) {
+	    cmd = new CmdSaveGIF();
+	} else if (FileFilters.SVGFilter._suffix.equals(suffix)) {
+	    cmd = new CmdSaveSVG();
+	} else {
+	    pb.showStatus("Unknown graphics file type with suffix "
+			  + suffix);
+	    return false;
+	}
+
+	if (!path.endsWith(SEPARATOR)) {
+	    path += SEPARATOR;
+	}
+	pb.showStatus("Writing " + path + name + "...");
+	if (theFile.exists() && !overwrite) {
+	    String t = "Overwrite " + path + name;
+	    int response =
+		JOptionPane.showConfirmDialog(pb, t, t,
+					      JOptionPane.YES_NO_OPTION);
+	    if (response == JOptionPane.NO_OPTION) {
+		return false;
+	    }
+	}
+	FileOutputStream fo = new FileOutputStream(theFile);
+	cmd.setStream(fo);
+	cmd.doIt();
+	fo.close();
+	pb.showStatus("Wrote " + path + name);
+	return true;
+
+    }
 } /* end class ActionSaveGraphics */
+
+
+/**
+ * Class to adjust {@link org.tigris.gef.base.CmdSaveEPS} for our purpuses.<p>
+ *
+ * While doing this refactoring (February 2004) it is unclear to me (Linus
+ * Tolke) why this modification in the {@link org.tigris.gef.base.CmdSaveEPS}
+ * behavior is needed. Is it a bug in GEF? Is it an added feature? 
+ * The old comment was: override gef default to cope with scaling.
+ */
+class ActionSaveGraphicsCmdSaveEPS extends CmdSaveEPS {
+    protected void saveGraphics(OutputStream s, Editor ce,
+				Rectangle drawingArea)
+	throws IOException {
+
+	double scale = ce.getScale();
+	int x = (int) (drawingArea.x * scale);
+	int y = (int) (drawingArea.y * scale);
+	int h = (int) (drawingArea.height * scale);
+	int w = (int) (drawingArea.width * scale);
+	drawingArea = new Rectangle(x, y, w, h);
+
+	PostscriptWriter ps = new PostscriptWriter(s, drawingArea);
+
+	ps.scale(scale, scale);
+
+	ce.print(ps);
+	ps.dispose();
+    }
+}
