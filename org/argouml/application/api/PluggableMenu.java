@@ -44,10 +44,24 @@ public interface PluggableMenu extends Pluggable {
      *  @param menuType The type of the parentMenu.
      *
      *  @return A JMenuItem object controlled by the plug-in.
+     *
+     *  @deprecated use the Object[] format as returned by
+     *              {@link #buildContext(JMenuItem, String) } 
      */
     public JMenuItem getMenuItem(JMenuItem parentMenuItem, String menuType);
 
-    // public boolean inContext(Object[] context);
+    /** Return the JMenuItem controlled by the plugin under the specific
+     *  context.  One menu plugin may control multiple menu items.
+     *
+     *  @param context array of objects
+     *             as created by {@link #buildContext(JMenuItem, String) }.
+     *
+     *  @return A JMenuItem object controlled by the plug-in.
+     *
+     *  @since ARGO0.11.3
+     *  @author Thierry Lach
+     */
+    public JMenuItem getMenuItem(Object[] context);
 
     public Object[] buildContext(JMenuItem parentMenuItem, String menuType);
 
