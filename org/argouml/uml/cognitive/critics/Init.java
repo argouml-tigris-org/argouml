@@ -48,7 +48,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 // import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.model.ModelFacade;
 
-/** Registers critics for use in Argo/UML.  This class is called at
+/** Registers critics for use in ArgoUML.  This class is called at
  *  system startup time. If you add a new critic, you need to add a
  *  line here.
  *

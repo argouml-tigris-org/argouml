@@ -75,7 +75,9 @@ public class StateDiagramRenderer
     private static final Logger LOG = 
         Logger.getLogger(StateDiagramRenderer.class);
 
-    /** Return a Fig that can be used to represent the given node */
+    /** Return a Fig that can be used to represent the given node 
+     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, java.lang.Object)
+     */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
         if (ModelFacade.isAActionState(node)) {
             return new FigActionState(gm, node);
@@ -125,11 +127,13 @@ public class StateDiagramRenderer
                 LOG.warn("found a type not known");
             }
         }
-        LOG.debug("TODO StateDiagramRenderer getFigNodeFor");
+        LOG.debug("TODO: StateDiagramRenderer getFigNodeFor");
         return null;
     }
 
-    /** Return a Fig that can be used to represent the given edge */
+    /** Return a Fig that can be used to represent the given edge 
+     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, java.lang.Object)
+     */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 	LOG.debug("making figedge for " + edge);
 	if (org.argouml.model.ModelFacade.isATransition(edge)) {
@@ -137,7 +141,7 @@ public class StateDiagramRenderer
 	    return trFig;
 	}
 
-	LOG.debug("TODO StateDiagramRenderer getFigEdgeFor");
+	LOG.debug("TODO: StateDiagramRenderer getFigEdgeFor");
 	return null;
     }
 
