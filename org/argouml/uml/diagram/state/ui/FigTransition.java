@@ -234,6 +234,7 @@ public class FigTransition extends FigEdgeModelElement {
 	/**
 	 * @see org.tigris.gef.presentation.FigEdgePoly#layoutEdge()
 	 */
+/*
 	protected void layoutEdge() {
 		Object owner = getOwner();
     	if (owner != null) {
@@ -286,6 +287,6 @@ public class FigTransition extends FigEdgeModelElement {
 		    ((FigPoly)_fig).setPolygon(routePoly);
     	}			
 	}
-
+*/
 } /* end class FigTransition */
 

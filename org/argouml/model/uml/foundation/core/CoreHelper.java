@@ -485,16 +485,18 @@ public class CoreHelper {
 		Iterator it = clazz.getClientDependencies().iterator();
 		List list = new ArrayList();
 		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
-		MStereotype stereo = ExtensionMechanismsFactory.getFactory().buildStereotype(new MAbstractionImpl(), "realize", model);
 		while (it.hasNext()) {
 			Object o = it.next();
-			if (o instanceof MAbstraction && 
-				((MAbstraction)o).getStereotype().equals(stereo)) {
-				Iterator it2 = ((MAbstraction)o).getSuppliers().iterator();
-				while (it2.hasNext()) {
-					Object o2 = it2.next();
-					if (o2 instanceof MInterface) {
-						list.add(o2);
+			if (o instanceof MAbstraction) {
+				MAbstraction abstraction = (MAbstraction)o;
+				MStereotype stereo = abstraction.getStereotype();
+				if (stereo != null && stereo.getBaseClass().equals("Abstraction") && stereo.getName().equals("realize")) {					
+					Iterator it2 = abstraction.getSuppliers().iterator();
+					while (it2.hasNext()) {
+						Object o2 = it2.next();
+						if (o2 instanceof MInterface) {
+							list.add(o2);
+						}
 					}
 				}
 			}

@@ -25,6 +25,8 @@ package org.argouml.uml.ui;
 
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.activity.ui.*;
@@ -60,6 +62,23 @@ public class ActionActivityDiagram extends UMLChangeAction {
 	Project p = pb.getProject();
 	try {
 	    Object me = pb.getDetailsTarget();
+	    if (me == null) {
+	    	me = pb.getTarget();
+	    }
+	    // don't need to check target, allready done in shouldbeenabled
+	    MActivityGraph activity = ActivityGraphsFactory.getFactory().buildActivityGraph((MModelElement)me);
+	    // next line isn't worlds most beautifull constructor but i don't want to change the world atm.
+	    MNamespace ns = null;
+	    if (me instanceof MBehavioralFeature) {
+	    	ns = ((MBehavioralFeature)me).getNamespace();
+	    } else 
+	    	ns = (MNamespace)me;
+		
+	    UMLActivityDiagram d = new UMLActivityDiagram(ns, activity);
+	    p.addMember(d);
+	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+	    pb.setTarget(d);
+	    /*
 	    if (!((me instanceof MNamespace) && ((me instanceof MUseCase) || (me instanceof MClass))))  {
 	    	JOptionPane.showMessageDialog(null, 
 	    	"You need to have a class or use case as your target in order to\nspecify for what you want to define a behaviour for.",
@@ -81,15 +100,22 @@ public class ActionActivityDiagram extends UMLChangeAction {
 	    p.addMember(d);
 	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
 	    pb.setTarget(d);
+	    */
 	} catch (PropertyVetoException pve) {
 	    System.out.println("PropertyVetoException in ActionActivityDiagram");
 	}
 	super.actionPerformed(ae);
     }
+    
     public boolean shouldBeEnabled() {
-    	return true;
-//	ProjectBrowser pb = ProjectBrowser.TheInstance;
-//	Project p = pb.getProject();
+    	ProjectBrowser pb = ProjectBrowser.TheInstance;
+    	Object target = pb.getDetailsTarget();
+    	if (target == null) {
+    		target = pb.getTarget();
+    	}
+    	return target instanceof MBehavioralFeature || target instanceof MClassifier;
+//	
+//	
 //	Object target = pb.getDetailsTarget();
 //	return super.shouldBeEnabled() && p != null &&
 //	    ((target instanceof MUseCase)||(target instanceof MClass)); // or MOperation

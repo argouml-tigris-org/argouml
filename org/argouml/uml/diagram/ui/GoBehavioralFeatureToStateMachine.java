@@ -21,40 +21,34 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui.behavior.common_behavior;
+package org.argouml.uml.diagram.ui;
 
 import java.util.Collection;
 
-import org.argouml.application.api.Argo;
 import org.argouml.ui.AbstractGoRule;
-import ru.novosoft.uml.behavior.common_behavior.MSignal;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 
 /**
- * Navigation rule for navperspective to navigate from signal to reception.
- * Causes reception to be shown as child of signal.
+ * Navigation rule for navperspective to navigate from behavioral feature to statemachine.
+ * Causes statemachine to be shown as child of behavioral feature.
  * 
  * @author jaap.branderhorst@xs4all.nl
  */
-public class GoSignalToReception extends AbstractGoRule {
-	
-	public String toString() {
-    	return Argo.localize ("Tree", "misc.interaction.messages");
-  	}
+public class GoBehavioralFeatureToStateMachine extends AbstractGoRule {
 
 	/**
 	 * @see javax.swing.tree.TreeModel#isLeaf(Object)
 	 */
-	public boolean isLeaf(Object node) {
-		return !((node instanceof MSignal) && (getChildCount(node) > 0));
+	public boolean isLeaf(Object arg0) {
+		return !(arg0 instanceof MBehavioralFeature && getChildCount(arg0) > 0);
 	}
 
 	/**
 	 * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
 	 */
 	public Collection getChildren(Object parent) {
-		if (parent instanceof MSignal) {
-			return ((MSignal)parent).getReceptions();
-		}
+		if (parent instanceof MBehavioralFeature) 
+			return ((MBehavioralFeature)parent).getBehaviors();
 		return null;
 	}
 

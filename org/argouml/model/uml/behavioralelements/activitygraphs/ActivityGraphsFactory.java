@@ -25,6 +25,7 @@ package org.argouml.model.uml.behavioralelements.activitygraphs;
 
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
@@ -34,6 +35,12 @@ import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
 import ru.novosoft.uml.behavior.activity_graphs.MObjectFlowState;
 import ru.novosoft.uml.behavior.activity_graphs.MPartition;
 import ru.novosoft.uml.behavior.activity_graphs.MSubactivityState;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * Factory to create UML classes for the UML
@@ -128,6 +135,27 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
         MSubactivityState modelElement = MFactory.getDefaultFactory().createSubactivityState();
 	super.initialize(modelElement);
 	return modelElement;
+    }
+    
+	/**
+	 * Builds an activity graph owned by the given context
+	 * @param context
+	 * @return MActivityGraph
+	 */
+    public MActivityGraph buildActivityGraph(MModelElement context) {
+    	if (context != null && (context instanceof MBehavioralFeature || context instanceof MClassifier)) {
+    		MActivityGraph graph = createActivityGraph();
+    		graph.setContext(context);
+    		if (context instanceof MNamespace) {
+    			graph.setNamespace((MNamespace)context);
+    		} else
+    		if (context instanceof MBehavioralFeature) {
+    			graph.setNamespace(context.getNamespace());
+    		}
+    		StateMachinesFactory.getFactory().buildCompositeState(graph);
+    		return graph;
+    	} else 
+    		throw new IllegalArgumentException("In buildActivityGraph: context null or not legal");
     }
 
 }

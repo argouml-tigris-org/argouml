@@ -23,72 +23,36 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Collection;
+import java.util.Vector;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
+import org.argouml.ui.AbstractGoRule;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 
-import org.argouml.ui.*;
+/**
+ * Navigation rule for navperspective to navigate from statemachine to its top state.
+ * 
+ * @author jaap.branderhorst@xs4all.nl
+ */
+public class GoMachineToState extends AbstractGoRule {
+	
+	/**
+	 * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
+	 */
+	public Collection getChildren(Object parent) {
+		if (parent instanceof MStateMachine) {
+			Vector children = new Vector();
+			children.add(((MStateMachine)parent).getTop());
+			return children;
+		}
+		return null;
+	}
 
-public class GoMachineToState implements TreeModel {
-
-  public String toString() { return "State Machine->State"; }
-  
-  public Object getRoot() {
-      throw new Error("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof MStateMachine) {
-      MStateMachine sm = (MStateMachine)parent;
-      if (sm == null) return null;
-      MState top = sm.getTop();
-      if (top == null) return null;
-      if (top instanceof MCompositeState)
-	return new Vector(((MCompositeState)top).getSubvertices()).elementAt(index);
-      if (index == 0) return top;
-      return null;
-    }
-    throw new Error("getChild should never get here GoMachineToState");
-  }
-
-  public int getChildCount(Object parent) {
-    if (parent instanceof MStateMachine) {
-      MStateMachine sm = (MStateMachine)parent;
-      if (sm == null) return 0;
-      MState top = sm.getTop();
-      if (top == null) return 0;
-      if (top instanceof MCompositeState)
-	return ((MCompositeState)top).getSubvertices().size();
-      return 1; // atomic top state
-    }
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof MStateMachine) {
-      MStateMachine sm = (MStateMachine)parent;
-      if (sm == null) return -1;
-      MState top = sm.getTop();
-      if (top == null) return -1;
-      if (top instanceof MCompositeState)
-	return new Vector(((MCompositeState)top).getSubvertices()).indexOf(child);
-      if (top == child) return 0; // atomic substate
-    }
-    return -1;
-  }
-
-  public boolean isLeaf(Object node) {
-    return !(node instanceof MStateMachine && getChildCount(node) > 0);
-  }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
+	/**
+	 * @see javax.swing.tree.TreeModel#isLeaf(Object)
+	 */
+	public boolean isLeaf(Object arg0) {
+		return !(arg0 instanceof MStateMachine && getChildCount(arg0) > 0);
+	}
 
 }

@@ -124,7 +124,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                       cName = cName.substring(0,cName.length() -4 );
                   icon = ResourceLoader.lookupIconResource(cName);
                   if (icon != null) _iconCache.put(value.getClass(), icon);
-                  if (icon == null) System.out.println("UMLTreeCellRenderer: using default Icon for " + cName);
+                  if (icon == null) ; //System.out.println("UMLTreeCellRenderer: using default Icon for " + cName);
               }
           }
 
