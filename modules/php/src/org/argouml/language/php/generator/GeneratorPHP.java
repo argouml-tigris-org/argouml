@@ -402,8 +402,9 @@ implements PluggableNotation, FileGenerator {
     //needs-more-work: initial value
 
     MExpression default_val = param.getDefaultValue();
-    if ( (default_val != null) && (default_val.getBody() != null) ) {
-        s += " = " + default_val.getBody();
+    if ( (default_val != null) && (default_val.getBody() != null) && 
+         (default_val.getBody().trim().length() > 0)) {
+        s += " = " + default_val.getBody().trim();
     }
 
     return s;
