@@ -78,9 +78,13 @@ public class EmailExpertDialog extends ArgoDialog {
   // constructors
 
     public EmailExpertDialog() {
-        super(ProjectBrowser.getInstance(), "Send Email to an Expert", true);
+        super(ProjectBrowser.getInstance(), 
+            "Send Email to an Expert", 
+            ArgoDialog.OK_CANCEL_OPTION,
+            true);
         
         getOkButton().setText("Send");
+        getOkButton().setMnemonic('S');
         
         _to = new JTextField(30);
         _cc = new JTextField(30);
@@ -110,7 +114,6 @@ public class EmailExpertDialog extends ArgoDialog {
         panel.add(bodyScroller);
         
         setContent(panel);
-        setButtons(new JButton[] { getOkButton(), getCancelButton() }, getOkButton());
     }
     
   public void setTarget(Object t) {

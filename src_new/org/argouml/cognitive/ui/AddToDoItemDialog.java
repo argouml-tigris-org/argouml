@@ -63,7 +63,9 @@ public class AddToDoItemDialog extends ArgoDialog {
      * Create a new AddToDoItemDialog
      */
     public AddToDoItemDialog() {
-        super(ProjectBrowser.getInstance(), Argo.localize(BUNDLE, "dialog.title.add-todo-item"), true);
+        super(ProjectBrowser.getInstance(), 
+            Argo.localize(BUNDLE, "dialog.title.add-todo-item"), 
+            ArgoDialog.OK_CANCEL_OPTION, true);
         
         _headline = new JTextField(TEXT_COLUMNS);
         _priority = new JComboBox(PRIORITIES);
@@ -96,7 +98,6 @@ public class AddToDoItemDialog extends ArgoDialog {
         panel.add(descriptionScroller);
         
         setContent(panel);
-        setButtons(new JButton[] { getOkButton(), getCancelButton() }, getOkButton());
     }
     
     ////////////////////////////////////////////////////////////////
