@@ -29,6 +29,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLMultiplicityComboBox2;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
@@ -59,7 +60,7 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
 
     /**
      * Returns the multiplicityComboBox.
-     * @return UMLComboBox2
+     * @return UMLMultiplicityComboBox2
      */
     public UMLComboBox2 getMultiplicityComboBox() {
 	if (_multiplicityComboBox == null) {
@@ -68,7 +69,7 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
 		    new UMLStructuralFeatureMultiplicityComboBoxModel();
 	    }
 	    _multiplicityComboBox =
-		new UMLComboBox2(
+		new UMLMultiplicityComboBox2(
 				 multiplicityComboBoxModel,
 				 ActionSetStructuralFeatureMultiplicity.SINGLETON);
 	    _multiplicityComboBox.setEditable(true);
