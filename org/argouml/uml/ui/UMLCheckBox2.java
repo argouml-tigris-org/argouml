@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2002-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui;
 
 import javax.swing.Action;
@@ -60,7 +60,11 @@ public abstract class UMLCheckBox2
         super(text);
         _propertySetName = propertySetName;
         addActionListener(a);
-        setActionCommand((String)a.getValue(Action.ACTION_COMMAND_KEY));
+
+	// TODO: When no longer requiring support for JDK1.2 this constant
+	// can be changed to Action.ACTION_COMMAND_KEY.
+	final String ACTION_COMMAND_KEY = "ActionCommandKey";
+        setActionCommand((String)a.getValue(ACTION_COMMAND_KEY));
     }
 
     /**
