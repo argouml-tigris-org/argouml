@@ -136,9 +136,9 @@ public class GoalsDialog extends ArgoDialog implements ChangeListener
 
 
 	c.gridy = 1;
-	Enumeration enum = goals.elements();
-	while (enum.hasMoreElements()) {
-	    Goal d = (Goal) enum.nextElement();
+	Enumeration elems = goals.elements();
+	while (elems.hasMoreElements()) {
+	    Goal d = (Goal) elems.nextElement();
 	    JLabel decLabel = new JLabel(d.getName());
 	    JLabel valueLabel = new JLabel("    " + d.getPriority());
 	    JSlider decSlide = new JSlider(SwingConstants.HORIZONTAL,

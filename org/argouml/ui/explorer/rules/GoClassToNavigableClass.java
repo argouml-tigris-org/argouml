@@ -49,9 +49,9 @@ public class GoClassToNavigableClass extends AbstractPerspectiveRule {
         if (ends == null)
             return null;
         
-        Iterator enum = ends.iterator();
-        while (enum.hasNext()) {
-            Object ae = /*(MAssociationEnd)*/ enum.next();
+        Iterator it = ends.iterator();
+        while (it.hasNext()) {
+            Object ae = /*(MAssociationEnd)*/ it.next();
             Object asc = ModelFacade.getAssociation(ae);
             Collection allEnds = ModelFacade.getConnections(asc);
             

@@ -364,10 +364,10 @@ public class ToDoList extends Observable implements Runnable, Serializable {
             try {
                 rc = new ResolvedCritic((Critic) item.getPoster(),
                                         item.getOffenders(), false);
-                Enumeration enum = _resolvedItems.elements();
+                Enumeration elems = _resolvedItems.elements();
                 //cat.debug("Checking for inhibitors " + rc);
-                while (enum.hasMoreElements()) {
-                    if (enum.nextElement().equals(rc)) {
+                while (elems.hasMoreElements()) {
+                    if (elems.nextElement().equals(rc)) {
                         cat.debug("ToDoItem not added because it was resolved");
                         return;
                     }

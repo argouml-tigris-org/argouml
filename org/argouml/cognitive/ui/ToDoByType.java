@@ -56,9 +56,9 @@ public class ToDoByType extends ToDoPerspective
 	Object path[] = new Object[2];
 	path[0] = Designer.TheDesigner.getToDoList();
 
-	Enumeration enum = KnowledgeTypeNode.getTypes().elements();
-	while (enum.hasMoreElements()) {
-	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) enum.nextElement();
+	Enumeration elems = KnowledgeTypeNode.getTypes().elements();
+	while (elems.hasMoreElements()) {
+	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) elems.nextElement();
 	    String kt = ktn.getName();
 	    path[1] = ktn;
 	    int nMatchingItems = 0;
@@ -89,9 +89,9 @@ public class ToDoByType extends ToDoPerspective
 	Object path[] = new Object[2];
 	path[0] = Designer.TheDesigner.getToDoList();
 
-	Enumeration enum = KnowledgeTypeNode.getTypes().elements();
-	while (enum.hasMoreElements()) {
-	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) enum.nextElement();
+	Enumeration elems = KnowledgeTypeNode.getTypes().elements();
+	while (elems.hasMoreElements()) {
+	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) elems.nextElement();
 	    String kt = ktn.getName();
 	    path[1] = ktn;
 	    int nMatchingItems = 0;
@@ -123,9 +123,9 @@ public class ToDoByType extends ToDoPerspective
 	Object path[] = new Object[2];
 	path[0] = Designer.TheDesigner.getToDoList();
 
-	Enumeration enum = KnowledgeTypeNode.getTypes().elements();
-	while (enum.hasMoreElements()) {
-	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) enum.nextElement();
+	Enumeration elems = KnowledgeTypeNode.getTypes().elements();
+	while (elems.hasMoreElements()) {
+	    KnowledgeTypeNode ktn = (KnowledgeTypeNode) elems.nextElement();
 	    boolean anyInKT = false;
 	    String kt = ktn.getName();
 	    for (int i = 0; i < nItems; i++) {

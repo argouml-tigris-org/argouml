@@ -55,9 +55,9 @@ public class ToDoByOffender extends ToDoPerspective {
 
 	VectorSet allOffenders =
 	    Designer.TheDesigner.getToDoList().getOffenders();
-	Enumeration enum = allOffenders.elements();
-	while (enum.hasMoreElements()) {
-	    Object off = enum.nextElement();
+	Enumeration elems = allOffenders.elements();
+	while (elems.hasMoreElements()) {
+	    Object off = elems.nextElement();
 	    path[1] = off;
 	    int nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
@@ -91,9 +91,9 @@ public class ToDoByOffender extends ToDoPerspective {
 
 	VectorSet allOffenders =
 	    Designer.TheDesigner.getToDoList().getOffenders();
-	Enumeration enum = allOffenders.elements();
-	while (enum.hasMoreElements()) {
-	    Object off = enum.nextElement();
+	Enumeration elems = allOffenders.elements();
+	while (elems.hasMoreElements()) {
+	    Object off = elems.nextElement();
 	    path[1] = off;
 	    int nMatchingItems = 0;
 	    for (int i = 0; i < nItems; i++) {
@@ -127,9 +127,9 @@ public class ToDoByOffender extends ToDoPerspective {
 
 	VectorSet allOffenders =
 	    Designer.TheDesigner.getToDoList().getOffenders();
-	Enumeration enum = allOffenders.elements();
-	while (enum.hasMoreElements()) {
-	    Object off = enum.nextElement();
+	Enumeration elems = allOffenders.elements();
+	while (elems.hasMoreElements()) {
+	    Object off = elems.nextElement();
 	    //       boolean anyInOff = false;
 	    //       for (int i = 0; i < nItems; i++) {
 	    // 	ToDoItem item = (ToDoItem) items.elementAt(i);

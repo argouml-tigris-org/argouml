@@ -144,9 +144,9 @@ public class Agency extends Observable { //implements java.io.Serialization
             _critics.addElement(cr);
 	} else {
             Vector subs = ((CompoundCritic) cr).getCritics();
-            Enumeration enum = subs.elements();
-            while (enum.hasMoreElements()) {
-                addCritic((Critic) enum.nextElement());
+            Enumeration subCritics = subs.elements();
+            while (subCritics.hasMoreElements()) {
+                addCritic((Critic) subCritics.nextElement());
 	    }
             return;
         }

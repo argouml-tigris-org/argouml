@@ -141,9 +141,9 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
 
 
         c.gridy = 2;
-        Enumeration enum = decs.elements();
-        while (enum.hasMoreElements()) {
-            Decision d = (Decision) enum.nextElement();
+        Enumeration elems = decs.elements();
+        while (elems.hasMoreElements()) {
+            Decision d = (Decision) elems.nextElement();
             JLabel decLabel = new JLabel(d.getName());
             JLabel valueLabel = new JLabel(getValueText(d.getPriority()));
             JSlider decSlide = 

@@ -51,9 +51,9 @@ public class GoCollaborationDiagram extends AbstractPerspectiveRule {
         Vector diagrams = p.getDiagrams();
         if (diagrams == null)
             return null;
-        java.util.Enumeration enum = diagrams.elements();
-        while (enum.hasMoreElements()) {
-            Object d = enum.nextElement();
+        java.util.Enumeration elems = diagrams.elements();
+        while (elems.hasMoreElements()) {
+            Object d = elems.nextElement();
             if (d instanceof UMLCollaborationDiagram
                 && ((UMLCollaborationDiagram)d).getNamespace() == parent)
                 res.addElement(d);

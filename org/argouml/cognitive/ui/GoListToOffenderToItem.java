@@ -84,9 +84,9 @@ public class GoListToOffenderToItem implements TreeModel {
 	if (allOffenders.contains(parent)) {
 	    Vector res = new Vector();
 	    ToDoList list = Designer.TheDesigner.getToDoList();
-	    Enumeration enum = list.elements();
-	    while (enum.hasMoreElements()) {
-		ToDoItem item = (ToDoItem) enum.nextElement();
+	    Enumeration elems = list.elements();
+	    while (elems.hasMoreElements()) {
+		ToDoItem item = (ToDoItem) elems.nextElement();
 		VectorSet offs = new VectorSet();
                 offs.addAllElementsSuchThat(item.getOffenders(),
                     new PredicateNotInTrash());

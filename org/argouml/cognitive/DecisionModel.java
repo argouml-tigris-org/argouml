@@ -126,9 +126,9 @@ public class DecisionModel extends Observable implements Serializable
      * @return a decision or null if not found.
      */
     protected Decision findDecision(String decName) {
-	Enumeration enum = _decisions.elements();
-	while (enum.hasMoreElements()) {
-	    Decision d = (Decision) enum.nextElement();
+	Enumeration elems = _decisions.elements();
+	while (elems.hasMoreElements()) {
+	    Decision d = (Decision) elems.nextElement();
 	    if (decName.equals(d.getName())) return d;
 	}
 	return null;
