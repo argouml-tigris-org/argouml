@@ -102,6 +102,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _classifierRoleIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("ClassifierRole");
     protected static ImageIcon _associationRoleIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("AssociationRole");
     protected static ImageIcon _callActionIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("CallAction");
+    protected static ImageIcon _eventIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Event");
     protected static ImageIcon _interactionIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Interaction");
     // added next one so someone can change the icon independant of callaction
     protected static ImageIcon _actionIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("CallAction");
