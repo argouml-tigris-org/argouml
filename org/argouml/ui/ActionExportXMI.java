@@ -42,7 +42,8 @@ import org.argouml.uml.ui.ActionFileOperations;
  * @author jaap.branderhorst@xs4all.nl
  * Jun 7, 2003
  */
-public final class ActionExportXMI extends ActionFileOperations implements PluggableMenu {
+public final class ActionExportXMI extends ActionFileOperations 
+    implements PluggableMenu {
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(ActionExportXMI.class);
@@ -53,7 +54,7 @@ public final class ActionExportXMI extends ActionFileOperations implements Plugg
      * Constructor.
      */
     private ActionExportXMI() {
-        super("action.export-project-as-xmi");
+        super(Translator.localize("action.export-project-as-xmi"));
     }
 
     /**
