@@ -25,7 +25,6 @@
 package org.argouml.language.ui;
 
 import org.argouml.application.api.*;
-import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
 import java.awt.event.*;
 import java.util.*;
@@ -53,25 +52,25 @@ public class ActionNotation extends UMLAction
     public static final ActionNotation getInstance() { return SINGLETON; }
 
     public ActionNotation() {
-	super("Notation", NO_ICON);
-	_menu = new JMenu("Notation");
-	_menu.add(this);
-	_menu.addMenuListener(this);
+        super("Notation", NO_ICON);
+        _menu = new JMenu("Notation");
+        _menu.add(this);
+        _menu.addMenuListener(this);
     }
 
     public void actionPerformed(ActionEvent ae) {
-	String key = ae.getActionCommand();
+        String key = ae.getActionCommand();
         ArrayList list = Notation.getAvailableNotations();
         ListIterator iterator = list.listIterator();
         while (iterator.hasNext()) {
             Object o = iterator.next();
-	    if (o instanceof NotationName) {
-		NotationName nn = (NotationName) o;
-	        if (key.equals(nn.getTitle())) {
-		    Notation.setDefaultNotation(nn);
-		    break;
-		}
-	    }
+            if (o instanceof NotationName) {
+                NotationName nn = (NotationName) o;
+                if (key.equals(nn.getTitle())) {
+                    Notation.setDefaultNotation(nn);
+                    break;
+                }
+            }
         }
     }
 
@@ -82,21 +81,21 @@ public class ActionNotation extends UMLAction
         _menu.removeAll();
         ArrayList list = Notation.getAvailableNotations();
         ListIterator iterator = list.listIterator();
-	ButtonGroup b = new ButtonGroup();
+        ButtonGroup b = new ButtonGroup();
         while (iterator.hasNext()) {
             Object o = iterator.next();
-	    if (o instanceof NotationName) {
-		NotationName nn = (NotationName) o;
-	        JRadioButtonMenuItem mi =
-		    new JRadioButtonMenuItem(nn.getTitle());
+            if (o instanceof NotationName) {
+                NotationName nn = (NotationName) o;
+                JRadioButtonMenuItem mi =
+                    new JRadioButtonMenuItem(nn.getTitle());
                 if (nn.getIcon() != null) {
                     mi.setIcon(nn.getIcon());
                 }
-		mi.addActionListener(this);
-		b.add(mi);
-		mi.setSelected(dflt.equals(nn));
-		_menu.add(mi);
-	    }
+                mi.addActionListener(this);
+                b.add(mi);
+                mi.setSelected(dflt.equals(nn));
+                _menu.add(mi);
+            }
         }
     }
 
