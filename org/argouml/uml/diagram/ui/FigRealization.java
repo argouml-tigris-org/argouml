@@ -41,9 +41,11 @@ public class FigRealization extends FigEdgeModelElement {
   ////////////////////////////////////////////////////////////////
   // constructors
 
+  ArrowHeadTriangle endArrow;
+
   public FigRealization() {
     addPathItem(_stereo, new PathConvPercent(this, 50, 10));
-    ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
+    endArrow = new ArrowHeadTriangle();
     endArrow.setFillColor(Color.white);
     setDestArrowHead(endArrow);
     setBetweenNearestPoints(true);
@@ -72,6 +74,11 @@ public class FigRealization extends FigEdgeModelElement {
   protected void modelChanged() {
     // do not set _name
       //updateStereotypeText();
+  }
+
+  public void paint(Graphics g) {
+        endArrow.setLineColor(getLineColor());
+        super.paint(g);
   }
 
 } /* end class FigRealization */
