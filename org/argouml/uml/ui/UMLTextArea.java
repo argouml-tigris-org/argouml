@@ -209,6 +209,7 @@ public class UMLTextArea
      * @see java.awt.event.FocusListener#focusGained(FocusEvent)
      */
     public void focusGained(FocusEvent arg0) {
+    	counter = 0;
     }
     /**
      * @see java.awt.event.FocusListener#focusLost(FocusEvent)
