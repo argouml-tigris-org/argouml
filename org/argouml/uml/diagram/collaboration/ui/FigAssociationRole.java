@@ -72,7 +72,7 @@ public class FigAssociationRole extends FigAssociation {
         //change the name
         MAssociationRole ar = (MAssociationRole) getOwner();
         if (ar == null) return;
-        String asNameStr = Notation.generate(this, ar);
+        String asNameStr = ((ar.getName() == null) && (ar.getBase() == null)) ? "" : Notation.generate(this, ar);
         _name.setText(asNameStr);
     }
     
