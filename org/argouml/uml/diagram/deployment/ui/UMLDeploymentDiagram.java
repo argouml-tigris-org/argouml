@@ -80,7 +80,6 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
     ////////////////////////////////////////////////////////////////
     // contructors
-    private static int deploymentDiagramSerial = 1;
 
     /**
      * Constructor
@@ -173,10 +172,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * Creates a new diagramname.
      * @return String
      */
-    protected static String getNewDiagramName() {
-        String name = null;
-        name = "Deployment Diagram " + deploymentDiagramSerial;
-        deploymentDiagramSerial++;
+    protected String getNewDiagramName() {
+        String name = "Deployment Diagram " + getNextDiagramSerial();
         if (!ProjectManager.getManager().getCurrentProject()
 	        .isValidDiagramName(name)) {
             name = getNewDiagramName();

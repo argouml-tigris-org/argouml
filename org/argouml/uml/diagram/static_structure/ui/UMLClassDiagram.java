@@ -24,6 +24,8 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
+import java.beans.PropertyVetoException;
+
 import javax.swing.Action;
 
 import org.apache.log4j.Logger;
@@ -66,8 +68,6 @@ public class UMLClassDiagram extends UMLDiagram {
     private Action actionAttribute;
     private Action actionOperation;
 
-    private static int classDiagramSerial = 1;
-
     /**
      * constructor
      */
@@ -85,11 +85,14 @@ public class UMLClassDiagram extends UMLDiagram {
     }
 
     /**
-     * constructor
+     * The constructor. A default unique diagram name is constructed.
      * @param m the namespace
      */
     public UMLClassDiagram(Object m) {
-        this(getNewDiagramName(), m);
+        super(m);
+        try {
+            setName(getNewDiagramName());
+        } catch (PropertyVetoException pve) { }
     }
 
     /**
@@ -191,10 +194,8 @@ public class UMLClassDiagram extends UMLDiagram {
      * Creates a new diagramname.
      * @return String
      */
-    protected static String getNewDiagramName() {
-        String name = null;
-        name = "Class Diagram " + classDiagramSerial;
-        classDiagramSerial++;
+    protected String getNewDiagramName() {
+        String name = "Class Diagram " + getNextDiagramSerial();
         if (!ProjectManager.getManager().getCurrentProject()
 	        .isValidDiagramName(name)) {
             name = getNewDiagramName();

@@ -47,22 +47,6 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  */
 public class UMLSequenceDiagram extends UMLDiagram {
 
-    /**
-     * This is the default sequence number for newly created anonymous
-     * sequence diagrams.
-     */
-    private static int sequenceDiagramSerial = 1;
-
-    /**
-     * Returns the next available sequence diagram number.
-     *
-     * @return a number.
-     */
-    private static int getNextSequenceDiagramNumber() {
-	return sequenceDiagramSerial++;
-    }
-
-
     private Object[] actions;
 
     /**
@@ -114,9 +98,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
      *
      * @return a new unique name.
      */
-    protected static String getNewDiagramName() {
-        String name = null;
-        name = "Sequence Diagram " + getNextSequenceDiagramNumber();
+    protected String getNewDiagramName() {
+        String name = "Sequence Diagram " + getNextDiagramSerial();
         if (!(ProjectManager.getManager().getCurrentProject()
 	      .isValidDiagramName(name))) {
             name = getNewDiagramName();
