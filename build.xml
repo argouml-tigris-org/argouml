@@ -154,7 +154,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
     <property name="version" value="${lastversion}-${DSTAMP}-${TSTAMP}"/>
-    <property name="year" value="2001"/>
+    <property name="year" value="2002"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
 
@@ -169,7 +169,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="build.src" value="${src.dir}"/>
     <property name="build.dest" value="${build.dir}/classes"/>
     <property name="dist.dir" value="${build.dir}/dist"/>
-    <property name="docs.dir" value="${build.dir}/doc"/>
+    <property name="docs.dir" value="${build.dir}/javadocs"/>
     <property name="snapshot.dir" value="../www/snapshots"/>
 
     <property name="argo.bin.dir" value="${build.dir}/bin"/>
@@ -197,10 +197,15 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <!-- .argo.ant.properties first, to allow setting properties that     -->
     <!-- we know will be argo-oriented, then the more generic             -->
     <!-- .ant.properties, which could be used by other ant buildfiles.    -->
+    <!--                                                                  -->
+    <!-- Also allow the same two files in local directory which are used  -->
+    <!-- for properties not set in properties files found in user.home.   -->
     <!-- ===============================================================  -->
 
     <property file="${user.home}/.argo.ant.properties"/>
     <property file="${user.home}/.ant.properties"/>
+    <property file=".argo.ant.properties"/>
+    <property file=".ant.properties"/>
 
     <!-- The following can be set in .argo.ant.properties                 -->
     <!--     or .ant.properties to some other value                       -->
@@ -218,6 +223,11 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <!-- "build install"  will not do anything.                           -->
     <property name="developer.bin.dir" value="${argo.bin.dir}"/>
 
+    <property name="javadoc.use" value="true"/>
+    <!-- General javadocs probably should not show private -->
+    <property name="javadoc.private" value="false"/>
+    <property name="javadoc.splitindex" value="true"/>
+    <property name="javadoc.author" value="false"/>
     <property name="xerces.javadoc.link"
               value="http://xml.apache.org/xerces-j/apiDocs"/>
     <property name="log4j.javadoc.link"
@@ -398,19 +408,23 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <!-- Prepares the docs                                                   -->
   <!-- =================================================================== -->
-  <target name="prepare-docs" depends="init">
+  <target name="prepare-docs" depends="init, javadocs">
+  </target>
+
+  <target name="javadocs" depends="init">
     <mkdir dir="${docs.dir}"/>
 
     <!-- Links allow reference to external classes from within Argo javadocs -->
     <javadoc sourcepath="${build.src}"
              destdir="${docs.dir}"
              packagenames="${packages}"
-	     use="true"
-	     private="true"
-	     splitindex="true"
-	     windowtitle="ArgoUML API Documentation"
+	     use="${javadoc.use}"
+	     private="${javadoc.private}"
+	     splitindex="${javadoc.splitindex}"
+	     author="${javadoc.author}"
+	     windowtitle="ArgoUML Documentation"
 	     overview="org/argouml/overview-argo.html"
-	     >
+             bottom="&lt;table width='100%'&gt;&lt;tr&gt;&lt;td width='20%'&gt;ArgoUML (c) 1996-2002&lt;/td&gt;&lt;td width='20%'&gt;&lt;center&gt;&lt;a href='http://argouml.tigris.org/' target='_blank'&gt;ArgoUML Project Home&lt;/a&gt;&lt;/center&gt;&lt;/td&gt;&lt;td width='20%'&gt;&lt;center&gt;&lt;a href='http://argouml.tigris.org/documentation/defaulthtml/cookbook/index.html' target='_blank'&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/center&gt;&lt;/td&gt;&lt;td width='20%'&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;">
       <classpath>
           <pathelement path="${java.home}/../lib/tools.jar"/>
           <pathelement path="${lib.dir}/nsuml.jar"/>
