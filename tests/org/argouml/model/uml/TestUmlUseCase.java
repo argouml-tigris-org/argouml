@@ -41,13 +41,24 @@ public class TestUmlUseCase extends GenericUmlObjectTestFixture
 		validateTestClassIsGeneric(this);
 	}
 
-    public void testNamespace() {
-    	Object o = ModelFacade.getFacade().create(Uml.USE_CASE);
-    	assertNotNull("Didn't create object", o);
+	public void testUseCaseLegacy() {
+		UmlFactory.getFactory().setJmiProxyCreated(false);
+		Object o = ModelFacade.getFacade().create(Uml.USE_CASE);
+		assertNotNull("Didn't create object", o);
 		assertTrue("Should be a base", ModelFacade.isABase(o));
 		assertTrue("Should be a use case", ModelFacade.isAUseCase(o));
 		runTruthTests(o);
-    }
+	}
+
+	public void testUseCase() {
+		UmlFactory.getFactory().setJmiProxyCreated(true);
+		Object o = ModelFacade.getFacade().create(Uml.USE_CASE);
+		assertNotNull("Didn't create object", o);
+		assertTrue("Should be a base", ModelFacade.isABase(o));
+		assertTrue("Should be a use case", ModelFacade.isAUseCase(o));
+		runTestRefBaseObject(o);
+		runTruthTests(o);
+	}
 
     protected void initializeTruth() {
 		setTruth(Uml.ELEMENT, true);

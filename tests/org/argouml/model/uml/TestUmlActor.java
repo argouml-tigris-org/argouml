@@ -41,13 +41,24 @@ public class TestUmlActor extends GenericUmlObjectTestFixture
 		validateTestClassIsGeneric(this);
 	}
 
-    public void testNamespace() {
-    	Object o = ModelFacade.getFacade().create(Uml.ACTOR);
-    	assertNotNull("Didn't create object", o);
+	public void testActorLegacy() {
+		UmlFactory.getFactory().setJmiProxyCreated(false);
+		Object o = ModelFacade.getFacade().create(Uml.ACTOR);
+		assertNotNull("Didn't create object", o);
 		assertTrue("Should be a base", ModelFacade.isABase(o));
 		assertTrue("Should be a actor", ModelFacade.isAActor(o));
 		runTruthTests(o);
-    }
+	}
+
+	public void testActor() {
+		UmlFactory.getFactory().setJmiProxyCreated(true);
+		Object o = ModelFacade.getFacade().create(Uml.ACTOR);
+		assertNotNull("Didn't create object", o);
+		assertTrue("Should be a base", ModelFacade.isABase(o));
+		assertTrue("Should be a actor", ModelFacade.isAActor(o));
+		runTestRefBaseObject(o);
+		runTruthTests(o);
+	}
 
 	protected void initializeTruth() {
 		setTruth(Uml.ELEMENT, true);

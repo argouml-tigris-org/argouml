@@ -23,6 +23,8 @@
 
 package org.argouml.model.uml;
 
+import javax.jmi.reflect.RefBaseObject;
+
 import org.argouml.model.ModelFacade;
 
 
@@ -41,54 +43,28 @@ public class TestUmlModelElement extends GenericUmlObjectTestFixture
 		validateTestClassIsGeneric(this);
 	}
 
-    public void testModelElement() {
-    	Object me = ModelFacade.getFacade().create(Uml.OBJECT);
-    	assertNotNull("Didn't create object", me);
+	public void testModelElementLegacy() {
+		UmlFactory.getFactory().setJmiProxyCreated(false);
+		Object me = ModelFacade.getFacade().create(Uml.OBJECT);
+		assertNotNull("Didn't create object", me);
 		assertTrue("Should be a base", ModelFacade.isABase(me));
 		assertTrue("Should be a model element", ModelFacade.isAModelElement(me));
-    }
+		runTruthTests(me);
+	}
 
-    protected void initializeTruth() {
-		setTruth(Uml.ABSTRACTION, true);
-		setTruth(Uml.ASSOCIATION, true);
-		setTruth(Uml.ASSOCIATION_ROLE, true);
-		setTruth(Uml.DEPENDENCY, true);
-		setTruth(Uml.EXTEND, true);
-		setTruth(Uml.GENERALIZATION, true);
-		setTruth(Uml.INCLUDE, true);
-		setTruth(Uml.LINK, true);
-		setTruth(Uml.PERMISSION, true);
-		setTruth(Uml.USAGE, true);
-		setTruth(Uml.TRANSITION, true);
-		setTruth(Uml.ACTOR, true);
-		setTruth(Uml.CLASS, true);
-		setTruth(Uml.CLASSIFIER, true);
-		setTruth(Uml.CLASSIFIER_ROLE, true);
-		setTruth(Uml.COMPONENT, true);
-		setTruth(Uml.COMPONENT_INSTANCE, true);
-		setTruth(Uml.INSTANCE, true);
-		setTruth(Uml.INTERFACE , true);
-		setTruth(Uml.NODE, true);
-		setTruth(Uml.NODE_INSTANCE, true);
-		setTruth(Uml.OBJECT, true);
-		setTruth(Uml.PACKAGE, true);
-		setTruth(Uml.STATE, true);
-		setTruth(Uml.COMPOSITE_STATE, true);
-		setTruth(Uml.STATE_VERTEX, true);
-		setTruth(Uml.PSEUDOSTATE, true);
-		setTruth(Uml.USE_CASE, true);
-		setTruth(Uml.ACTION, true);
-		setTruth(Uml.ACTION_EXPRESSION, true);
-		setTruth(Uml.ASSOCIATION_END, true);
-		setTruth(Uml.CALL_ACTION, true);
-		setTruth(Uml.NAMESPACE, true);
-		setTruth(Uml.RECEPTION, true);
-		setTruth(Uml.STEREOTYPE, true);
-		setTruth(Uml.ATTRIBUTE, true);
-		setTruth(Uml.OPERATION, true);
-		setTruth(Uml.EVENT, true);
-		setTruth(Uml.MODEL_ELEMENT, true);
-		setTruth(Uml.DATATYPE , true);
+	public void testModelElement() {
+		UmlFactory.getFactory().setJmiProxyCreated(true);
+		Object me = ModelFacade.getFacade().create(Uml.OBJECT);
+		assertNotNull("Didn't create object", me);
+		assertTrue("Should be a base", ModelFacade.isABase(me));
+		assertTrue("Should be a model element", ModelFacade.isAModelElement(me));
+		runTestRefBaseObject(me);
+		runTruthTests(me);
+	}
+
+	protected void initializeTruth() {
+		setShouldBe(Uml.ELEMENT);
+		setShouldBe(Uml.MODEL_ELEMENT);
     }
 
 }

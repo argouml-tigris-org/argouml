@@ -41,13 +41,24 @@ public class TestUmlNamespace extends GenericUmlObjectTestFixture
 		validateTestClassIsGeneric(this);
 	}
 
-    public void testNamespace() {
-    	Object o = ModelFacade.getFacade().create(Uml.NAMESPACE);
-    	assertNotNull("Didn't create object", o);
+	public void testNamespaceLegacy() {
+		UmlFactory.getFactory().setJmiProxyCreated(false);
+		Object o = ModelFacade.getFacade().create(Uml.NAMESPACE);
+		assertNotNull("Didn't create object", o);
 		assertTrue("Should be a base", ModelFacade.isABase(o));
 		assertTrue("Should be a namespace", ModelFacade.isANamespace(o));
 		runTruthTests(o);
-    }
+	}
+
+	public void testNamespace() {
+		UmlFactory.getFactory().setJmiProxyCreated(true);
+		Object o = ModelFacade.getFacade().create(Uml.NAMESPACE);
+		assertNotNull("Didn't create object", o);
+		assertTrue("Should be a base", ModelFacade.isABase(o));
+		assertTrue("Should be a namespace", ModelFacade.isANamespace(o));
+		runTestRefBaseObject(o);
+		runTruthTests(o);
+	}
 
     protected void initializeTruth() {
 		setTruth(Uml.ELEMENT, true);
