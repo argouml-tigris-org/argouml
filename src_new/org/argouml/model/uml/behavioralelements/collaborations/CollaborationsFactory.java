@@ -26,8 +26,8 @@ package org.argouml.model.uml.behavioralelements.collaborations;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.argouml.model.ModelFacade;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
@@ -55,7 +55,7 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     /** Singleton instance.
      */
     private static CollaborationsFactory SINGLETON =
-	new CollaborationsFactory();
+        new CollaborationsFactory();
 
     /** Singleton instance access method.
      */
@@ -65,8 +65,7 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
 
     /** Don't allow instantiation
      */
-    private CollaborationsFactory() {
-    }
+    private CollaborationsFactory() {}
 
     /** Create an empty but initialized instance of a UML AssociationEndRole.
      *  
@@ -74,9 +73,9 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      */
     public MAssociationEndRole createAssociationEndRole() {
         MAssociationEndRole modelElement =
-	    MFactory.getDefaultFactory().createAssociationEndRole();
-	super.initialize(modelElement);
-	return modelElement;
+            MFactory.getDefaultFactory().createAssociationEndRole();
+        super.initialize(modelElement);
+        return modelElement;
     }
 
     /** Create an empty but initialized instance of a UML AssociationRole.
@@ -85,9 +84,9 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      */
     public MAssociationRole createAssociationRole() {
         MAssociationRole modelElement =
-	    MFactory.getDefaultFactory().createAssociationRole();
-	super.initialize(modelElement);
-	return modelElement;
+            MFactory.getDefaultFactory().createAssociationRole();
+        super.initialize(modelElement);
+        return modelElement;
     }
 
     /** Create an empty but initialized instance of a UML ClassifierRole.
@@ -96,9 +95,9 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      */
     public MClassifierRole createClassifierRole() {
         MClassifierRole modelElement =
-	    MFactory.getDefaultFactory().createClassifierRole();
-	super.initialize(modelElement);
-	return modelElement;
+            MFactory.getDefaultFactory().createClassifierRole();
+        super.initialize(modelElement);
+        return modelElement;
     }
 
     /** Create an empty but initialized instance of a UML Collaboration.
@@ -107,9 +106,9 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      */
     public MCollaboration createCollaboration() {
         MCollaboration modelElement =
-	    MFactory.getDefaultFactory().createCollaboration();
-	super.initialize(modelElement);
-	return modelElement;
+            MFactory.getDefaultFactory().createCollaboration();
+        super.initialize(modelElement);
+        return modelElement;
     }
 
     /** Create an empty but initialized instance of a UML Interaction.
@@ -118,9 +117,9 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      */
     public MInteraction createInteraction() {
         MInteraction modelElement =
-	    MFactory.getDefaultFactory().createInteraction();
-	super.initialize(modelElement);
-	return modelElement;
+            MFactory.getDefaultFactory().createInteraction();
+        super.initialize(modelElement);
+        return modelElement;
     }
 
     /** Create an empty but initialized instance of a UML Message.
@@ -129,63 +128,89 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      */
     public MMessage createMessage() {
         MMessage modelElement = MFactory.getDefaultFactory().createMessage();
-	super.initialize(modelElement);
-	return modelElement;
+        super.initialize(modelElement);
+        return modelElement;
     }
-    
+
+    /**
+     * Creates a classifierrole and adds it to the given collaboration
+     * @param collaboration
+     * @return
+     */
+    public Object buildClassifierRole(Object collaboration) {
+        if (ModelFacade.isACollaboration(collaboration)) {
+            Object classifierRole = createClassifierRole();
+            ModelFacade.addOwnedElement(collaboration, classifierRole);
+            return classifierRole;
+        }
+        throw new IllegalArgumentException("Argument is not a collaboration");
+    }
     /**
      * Builds a default collaboration not attached to a classifier
      */
-    public MCollaboration buildCollaboration(Object/*MNamespace*/ ns) {
-        MNamespace namespace = (MNamespace)ns;
-    	MCollaboration modelelement = createCollaboration();
-    	modelelement.setNamespace(namespace);
-    	modelelement.setName("newCollaboration");
-    	modelelement.setAbstract(false);
-        if (namespace instanceof MClassifier) {
-            modelelement.setRepresentedClassifier((MClassifier) namespace);
+
+    public MCollaboration buildCollaboration(Object handle) {
+        if (ModelFacade.isANamespace(handle)) {
+            MNamespace namespace = (MNamespace)handle;
+            MCollaboration modelelement = createCollaboration();
+            modelelement.setNamespace(namespace);
+            modelelement.setName("newCollaboration");
+            modelelement.setAbstract(false);
+            if (namespace instanceof MClassifier) {
+                modelelement.setRepresentedClassifier((MClassifier)namespace);
+            }
+            return modelelement;
+
         }
-    	return modelelement;
+        throw new IllegalArgumentException("Argument is not a namespace");
+
     }
-    
+
     /**
      * Builds an interaction belonging to some collaboration
      */
-    public MInteraction buildInteraction(MCollaboration collab) {
-    	MInteraction inter = createInteraction();
-    	inter.setContext(collab);
-    	inter.setName("newInteraction");
-    	return inter;
+
+    public MInteraction buildInteraction(Object handle) {
+        if (ModelFacade.isACollaboration(handle)) {
+            MCollaboration collab = (MCollaboration)handle;
+            MInteraction inter = createInteraction();
+            inter.setContext(collab);
+            inter.setName("newInteraction");
+            return inter;
+        }
+        throw new IllegalArgumentException("Argument is not a collaboration");
+
     }
-    
+
     /**
      * Builds an associationendrole based on some classifierrole
      */
     public MAssociationEndRole buildAssociationEndRole(Object atype) {
-        MClassifierRole type = (MClassifierRole) atype;
-    	MAssociationEndRole end = createAssociationEndRole();
-    	end.setType(type);
-    	return end;
+        MClassifierRole type = (MClassifierRole)atype;
+        MAssociationEndRole end = createAssociationEndRole();
+        end.setType(type);
+        return end;
     }
-    
+
     /**
      * Builds a binary associationrole on basis of two classifierroles
      */
-    public MAssociationRole buildAssociationRole(Object/*MClassifierRole*/ from,
-						 Object/*MClassifierRole*/ to) 
-    {
-    	MCollaboration colFrom = (MCollaboration) ModelFacade.getNamespace(from);
-    	MCollaboration colTo = (MCollaboration) ModelFacade.getNamespace(to);
-    	if (colFrom != null && colFrom.equals(colTo)) {
-	    MAssociationRole role = createAssociationRole();
-	    // we do not create on basis of associations between the
-	    // bases of the classifierroles
-	    role.addConnection(buildAssociationEndRole(from));
-	    role.addConnection(buildAssociationEndRole(to));
-	    colFrom.addOwnedElement(role);
-	    return role;
-    	}
-    	return null;
+    public MAssociationRole buildAssociationRole(Object /*MClassifierRole*/
+    from, Object
+    /*MClassifierRole*/
+    to) {
+        MCollaboration colFrom = (MCollaboration)ModelFacade.getNamespace(from);
+        MCollaboration colTo = (MCollaboration)ModelFacade.getNamespace(to);
+        if (colFrom != null && colFrom.equals(colTo)) {
+            MAssociationRole role = createAssociationRole();
+            // we do not create on basis of associations between the
+            // bases of the classifierroles
+            role.addConnection(buildAssociationEndRole(from));
+            role.addConnection(buildAssociationEndRole(to));
+            colFrom.addOwnedElement(role);
+            return role;
+        }
+        return null;
     }
 
     /**
@@ -193,16 +218,18 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      * navigation and aggregation
      */
     public MAssociationRole buildAssociationRole(
-						 MClassifierRole from,
-						 MAggregationKind agg1,
-						 MClassifierRole to, 
-						 MAggregationKind agg2,
-						 Boolean unidirectional) {
-    	MCollaboration colFrom = (MCollaboration) from.getNamespace();
-    	MCollaboration colTo = (MCollaboration) to.getNamespace();
-        if (agg1 == null) agg1 = MAggregationKind.NONE;
-        if (agg2 == null) agg2 = MAggregationKind.NONE;
-    	if (colFrom != null && colFrom.equals(colTo)) {
+        MClassifierRole from,
+        MAggregationKind agg1,
+        MClassifierRole to,
+        MAggregationKind agg2,
+        Boolean unidirectional) {
+        MCollaboration colFrom = (MCollaboration)from.getNamespace();
+        MCollaboration colTo = (MCollaboration)to.getNamespace();
+        if (agg1 == null)
+            agg1 = MAggregationKind.NONE;
+        if (agg2 == null)
+            agg2 = MAggregationKind.NONE;
+        if (colFrom != null && colFrom.equals(colTo)) {
             boolean nav1 = Boolean.FALSE.equals(unidirectional);
             boolean nav2 = true;
             MAssociationRole role = createAssociationRole();
@@ -220,8 +247,8 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
 
             colFrom.addOwnedElement(role);
             return role;
-    	}
-    	return null;
+        }
+        return null;
     }
 
     /**
@@ -233,38 +260,37 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      * predecessors of this message.
      */
     public MMessage buildMessage(MInteraction inter, MAssociationRole role) {
-	if (inter == null || role == null)
-	    return null;
+        if (inter == null || role == null)
+            return null;
 
-	MMessage message = createMessage();
+        MMessage message = createMessage();
 
-	inter.addMessage(message);
-        
-	message.setCommunicationConnection(role);
+        inter.addMessage(message);
 
-	if (role.getConnections().size() == 2) {
-	    message.setSender((MClassifierRole) role
-			      .getConnection(0).getType());
-	    message.setReceiver((MClassifierRole) role
-				.getConnection(1).getType());
+        message.setCommunicationConnection(role);
 
-	    Collection messages = message.getSender().getMessages1();
-	    MMessage lastMsg = lastMessage(messages, message);
+        if (role.getConnections().size() == 2) {
+            message.setSender((MClassifierRole)role.getConnection(0).getType());
+            message.setReceiver(
+                (MClassifierRole)role.getConnection(1).getType());
 
-	    if (lastMsg != null) {
+            Collection messages = message.getSender().getMessages1();
+            MMessage lastMsg = lastMessage(messages, message);
+
+            if (lastMsg != null) {
                 message.setActivator(lastMsg);
                 messages = lastMsg.getMessages4();
-	    } else {
-		messages = message.getSender().getMessages2();
-	    }
-            
-	    lastMsg = lastMessage(messages, message);
-	    if (lastMsg != null)
-		message.addPredecessor(findEnd(lastMsg));
-        
-	}
+            } else {
+                messages = message.getSender().getMessages2();
+            }
 
-	return message;
+            lastMsg = lastMessage(messages, message);
+            if (lastMsg != null)
+                message.addPredecessor(findEnd(lastMsg));
+
+        }
+
+        return message;
     }
 
     /**
@@ -276,14 +302,14 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      * @return The last message in the collection, or null.
      */
     private MMessage lastMessage(Collection c, MMessage m) {
-	MMessage last = null;
-	Iterator it = c.iterator();
-	while (it.hasNext()) {
-	    MMessage msg = (MMessage) it.next();
-	    if (msg != null && msg != m)
-		last = msg;
-	}
-	return last;
+        MMessage last = null;
+        Iterator it = c.iterator();
+        while (it.hasNext()) {
+            MMessage msg = (MMessage)it.next();
+            if (msg != null && msg != m)
+                last = msg;
+        }
+        return last;
     }
 
     /**
@@ -294,13 +320,13 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      * @return The last message in one branch of the tree rooted at m.
      */
     private MMessage findEnd(MMessage m) {
-	while (true) {
-	    Collection c = m.getMessages3();
-	    Iterator it = c.iterator();
-	    if (!it.hasNext())
-		return m;
-	    m = (MMessage) it.next();
-	}
+        while (true) {
+            Collection c = m.getMessages3();
+            Iterator it = c.iterator();
+            if (!it.hasNext())
+                return m;
+            m = (MMessage)it.next();
+        }
     }
 
     /**
@@ -311,46 +337,47 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     public MMessage buildMessage(Object acollab, Object arole) {
         MCollaboration collab = (MCollaboration)acollab;
         MAssociationRole role = (MAssociationRole)arole;
-    	MInteraction inter = null;
-    	if (collab.getInteractions().size() == 0) {
-	    inter = buildInteraction(collab);
-    	} else {
-	    inter = (MInteraction) (collab.getInteractions().toArray())[0];
-    	}
-    	return buildMessage(inter, role);
+        MInteraction inter = null;
+        if (collab.getInteractions().size() == 0) {
+            inter = buildInteraction(collab);
+        } else {
+            inter = (MInteraction) (collab.getInteractions().toArray())[0];
+        }
+        return buildMessage(inter, role);
     }
-    
+
     /**
      * Builds an activator for some message
      */
     public MMessage buildActivator(MMessage owner, MInteraction interaction) {
-    	if (owner == null) return null;
-    	if (interaction == null) interaction = owner.getInteraction();
-    	if (interaction == null) return null;
-    	
-    	MMessage activator = createMessage();
-    	activator.setInteraction(interaction);
-    	owner.setActivator(activator);
-    	return activator;
+        if (owner == null)
+            return null;
+        if (interaction == null)
+            interaction = owner.getInteraction();
+        if (interaction == null)
+            return null;
+
+        MMessage activator = createMessage();
+        activator.setInteraction(interaction);
+        owner.setActivator(activator);
+        return activator;
     }
-    
-    public void deleteAssociationEndRole(MAssociationEndRole elem) { }
-    
+
+    public void deleteAssociationEndRole(MAssociationEndRole elem) {}
+
     public void deleteAssociationRole(MAssociationRole elem) {
         Iterator it = elem.getMessages().iterator();
         while (it.hasNext()) {
-            UmlFactory.getFactory().delete((MMessage) it.next());
+            UmlFactory.getFactory().delete((MMessage)it.next());
         }
     }
-    
-    public void deleteClassifierRole(MClassifierRole elem) { }
-    
-    public void deleteCollaboration(MCollaboration elem) { }
-    
-    public void deleteInteraction(MInteraction elem) { }
-    
-    public void deleteMessage(MMessage elem) { }
-    
+
+    public void deleteClassifierRole(MClassifierRole elem) {}
+
+    public void deleteCollaboration(MCollaboration elem) {}
+
+    public void deleteInteraction(MInteraction elem) {}
+
+    public void deleteMessage(MMessage elem) {}
 
 }
-

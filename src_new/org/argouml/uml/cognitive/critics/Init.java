@@ -136,13 +136,12 @@ public class Init {
     public static Critic crInstanceWithoutClassifier =
 	new CrInstanceWithoutClassifier();
 
-    public static Critic crCallWithoutReturn = new CrCallWithoutReturn();
-    public static Critic crReturnWithoutCall = new CrReturnWithoutCall();
-    public static Critic crLinkWithoutStimulus = new CrLinkWithoutStimulus();
-    public static Critic crSeqInstanceWithoutClassifier =
-	new CrSeqInstanceWithoutClassifier();
-    public static Critic crStimulusWithWrongPosition =
-	new CrStimulusWithWrongPosition();
+    // public static Critic crCallWithoutReturn = new CrCallWithoutReturn();
+    // public static Critic crReturnWithoutCall = new CrReturnWithoutCall(); 
+    // public static Critic crSeqInstanceWithoutClassifier =
+	// new CrSeqInstanceWithoutClassifier();
+    // public static Critic crStimulusWithWrongPosition =
+	// new CrStimulusWithWrongPosition();
 
     // from UML 1.1 Semantics spec
 
@@ -326,11 +325,11 @@ public class Init {
 	Agency.register(crWrongLinkEnds, deploymentDiagramCls);
 	Agency.register(crInstanceWithoutClassifier, deploymentDiagramCls);
 
-	Agency.register(crCallWithoutReturn, sequenceDiagramCls);
-	Agency.register(crReturnWithoutCall, sequenceDiagramCls);
-	Agency.register(crLinkWithoutStimulus, sequenceDiagramCls);
-	Agency.register(crSeqInstanceWithoutClassifier, sequenceDiagramCls);
-	Agency.register(crStimulusWithWrongPosition, sequenceDiagramCls);
+	// Agency.register(crCallWithoutReturn, sequenceDiagramCls);
+	// Agency.register(crReturnWithoutCall, sequenceDiagramCls);
+	// Agency.register(crLinkWithoutStimulus, sequenceDiagramCls);
+	// Agency.register(crSeqInstanceWithoutClassifier, sequenceDiagramCls);
+	// Agency.register(crStimulusWithWrongPosition, sequenceDiagramCls);
 
 	Agency.register(crNodesOverlap, diagramCls);
 	Agency.register(crZeroLengthEdge, edgeCls);
