@@ -515,6 +515,11 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
         damage();
     }
 
+    public void notationAdded(ArgoNotationEvent event) { }
+    public void notationRemoved(ArgoNotationEvent event) { }
+    public void notationProviderAdded(ArgoNotationEvent event) { }
+    public void notationProviderRemoved(ArgoNotationEvent event) { }
+
     public void renderingChanged() {
     }
 
