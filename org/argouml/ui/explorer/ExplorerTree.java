@@ -340,7 +340,7 @@ public class ExplorerTree
                 TreePath[] addedOrRemovedPaths = e.getPaths();                
                 TreePath[] selectedPaths = getSelectionPaths();
                 List elementsAsList = new ArrayList();                
-                for (int i = 0; i < selectedPaths.length; i++) {
+                for (int i = 0; selectedPaths != null && i < selectedPaths.length; i++) {
                     Object element = ((DefaultMutableTreeNode)selectedPaths[i].getLastPathComponent()).getUserObject();
                     elementsAsList.add(element);
 //                  // scan the visible rows for duplicates of this elem and select them
