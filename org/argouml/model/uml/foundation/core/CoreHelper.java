@@ -34,9 +34,13 @@ import java.util.Vector;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.ui.ProjectBrowser;
 
+import com.icl.saxon.functions.Extensions;
+
 import ru.novosoft.uml.foundation.core.MAbstraction;
+import ru.novosoft.uml.foundation.core.MAbstractionImpl;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MDependency;
@@ -362,6 +366,10 @@ public class CoreHelper {
 		return dep;
 	}
 	
+	/**
+	 * Returns all behavioralfeatures found in this element and its children
+	 * @return Collection
+	 */
 	public Collection getAllBehavioralFeatures(MModelElement element) {
 		Iterator it = element.getModelElementContents().iterator();
 		List list = new ArrayList();
@@ -377,6 +385,10 @@ public class CoreHelper {
 		return list;
 	}
 	
+	/**
+	 * Returns all behavioralfeatures found in this classifier and its children
+	 * @return Collection
+	 */
 	public Collection getAllBehavioralFeatures(MClassifier clazz) {
 		List features = new ArrayList();
 		if (!(clazz instanceof MDataType)) {
@@ -391,10 +403,100 @@ public class CoreHelper {
 		return features;
 	}
 	
+	/**
+	 * Returns all behavioralfeatures found in the projectbrowser model
+	 * @return Collection
+	 */
 	public Collection getAllBehavioralFeatures() {
 		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
 		return getAllBehavioralFeatures(model);
 	}
+	
+	/**
+	 * Returns all interfaces found in the projectbrowser model
+	 * @return Collection
+	 */
+	public Collection getAllInterfaces() {
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		return getAllInterfaces(model);
+	}
+	
+	/**
+	 * Returns all behavioralfeatures found in this element and its children
+	 * @return Collection
+	 */
+	public Collection getAllInterfaces(MNamespace ns) {
+		Iterator it = ns.getOwnedElements().iterator();
+		List list = new ArrayList();
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MNamespace) {
+				list.addAll(getAllInterfaces((MNamespace)o));
+			} 
+			if (o instanceof MInterface) {
+				list.add(o);
+			}
+			
+		}
+		return list;
+	}
+	
+	/**
+	 * Return all interfaces the given class realizes.
+	 * @param clazz
+	 * @return Collection
+	 */
+	public Collection getRealizedInterfaces(MClass clazz) {
+		if (clazz == null) return new ArrayList();
+		Iterator it = clazz.getClientDependencies().iterator();
+		List list = new ArrayList();
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MStereotype stereo = ExtensionMechanismsFactory.getFactory().buildStereotype(new MAbstractionImpl(), "realize", model);
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MAbstraction && 
+				((MAbstraction)o).getStereotype().equals(stereo)) {
+				Iterator it2 = ((MAbstraction)o).getSuppliers().iterator();
+				while (it2.hasNext()) {
+					Object o2 = it2.next();
+					if (o2 instanceof MInterface) {
+						list.add(o2);
+					}
+				}
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * Returns the realization (abstraction) between some class and some interface
+	 *
+	 * @param source
+	 * @param clazz
+	 * @return MAbstraction
+	 */
+	public MAbstraction getRealization(MInterface source, MClass clazz) {
+		if (source == null || clazz == null) return null;
+		Iterator it = clazz.getClientDependencies().iterator();
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MStereotype stereo = ExtensionMechanismsFactory.getFactory().buildStereotype(new MAbstractionImpl(), "realize", model);
+		while (it.hasNext()) {
+			Object o = it.next();
+			if (o instanceof MAbstraction && 
+				((MAbstraction)o).getStereotype().equals(stereo)) {
+				Iterator it2 = ((MAbstraction)o).getSuppliers().iterator();
+				while (it2.hasNext()) {
+					Object o2 = it2.next();
+					if (o2.equals(source)) {
+						return (MAbstraction)o;
+					}
+				}
+			}
+		}
+		return null;
+	}
+				
+		
 		
 	
 }

@@ -129,7 +129,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  Called when an external event may have changed the size of the list
      *  to force recalculation of list size.
      */
-    protected void resetSize() {
+    public void resetSize() {
         _recalcSize = true;
     }
 
