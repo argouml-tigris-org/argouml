@@ -23,8 +23,12 @@
 
 package org.argouml.model;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Proxy;
+
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.RefBaseObjectProxy;
 import org.argouml.model.uml.Uml;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
@@ -83,23 +87,49 @@ public class TestUmlObjectCreation extends TestCase {
 
 	public TestUmlObjectCreation(String n) { super(n); }
 
-    private void testObjectFactoryType(Uml.UmlEntity c, Class expected, Object legacy, boolean runTest) {
-        // Certain objects cannot be instantiated by NSUML.
-        // We allow these to be part of the test list for completeness, but do not test them.
-        if (! runTest) {
-        	return;
-        }
-    	assertTrue("Not a valid entity: " + c.getClass(),
-		           c instanceof Uml.UmlEntity);
+	private void runObjectFactoryType(boolean useProxy,
+	                                  Uml.UmlEntity c,
+	                                  Class expected,
+	                                  Object legacy,
+	                                  boolean runTest) {
+		// First test the traditional proxy
+		UmlFactory.getFactory().setJmiProxyCreated(useProxy);
+
+		assertTrue("Not a valid entity: " + c.getClass(),
+				   c instanceof Uml.UmlEntity);
 		
-        Object o = null;
+		Object o = null;
 		o = factory.create(c);
 		assertNotNull("Could not create " + c.getClass().getName(), o);
 		
 		// Make sure that the new create() mechanism gives the same class as the legacy create
 		if (legacy != null) {
-			assertEquals("Not the same class", o.getClass(), legacy.getClass());
+			if (useProxy) {
+				if (Proxy.isProxyClass(o.getClass())) {
+					InvocationHandler ih = Proxy.getInvocationHandler(o);
+					// This assumes that all objects must be proxied
+					assertTrue(o.getClass().getName() + " is not a proxy", ih instanceof RefBaseObjectProxy);
+					Object proxiedObject = RefBaseObjectProxy.getProxiedObject((RefBaseObjectProxy)ih);
+					assertEquals("Not the correct class", proxiedObject.getClass(), legacy.getClass());
+				}
+				else {
+					fail("Did not get a proxy class for " + legacy.getClass());
+				}
+			}
+			else {
+				assertEquals("Not the same class", o.getClass(), legacy.getClass());
+			}
 		}
+	}
+	
+	private void testObjectFactoryType(Uml.UmlEntity c, Class expected, Object legacy, boolean runTest) {
+        // Certain objects cannot be instantiated by NSUML.
+        // We allow these to be part of the test list for completeness, but do not test them.
+        if (! runTest) {
+        	return;
+        }
+		runObjectFactoryType(false, c, expected, legacy, runTest);
+		runObjectFactoryType(true, c, expected, legacy, runTest);
     }
 
 	public void testObjectFactory() {
