@@ -778,7 +778,8 @@ the JUnit test cases and the modules correctly.
 	<para>
 Code conventions.
 </para>
-	<para>
+	<para>See in the menu Window => Preferences. 
+      Then select Java => Code Style => Code Formatter.
 Set the Code Formatter to "Java conventions [built-in]".
 </para>
       </listitem>
@@ -788,11 +789,10 @@ Set the Code Formatter to "Java conventions [built-in]".
 TAB character width is 8.
 </para>
 	<para>
-Displayed tab width: 8
-(under
-Window => Preferences,
-Java => Editor
-Tab Appearance).
+See in the menu Window => Preferences.
+Then select
+Java => Editor. Then select the tab Appearance.
+Set the Displayed tab width to 8.
 </para>
       </listitem>
 
@@ -802,7 +802,11 @@ New file templates.
 </para>
 
 	<para>
-Set the Code Templates for Overriding methods (under Comments) to
+See in the menu Window => Preferences.
+Then select
+Java => Code Style => Code Templates.
+At the right hand side, open the tree for Comments, and
+set the Code Templates for Overriding methods to
 <programlisting>
 /**
  * ${see_to_overridden}
@@ -811,7 +815,9 @@ Set the Code Templates for Overriding methods (under Comments) to
 </para>
 
 	<para>
-Set the Code Templates for New Java files (under Code) to
+      In the same tree for Code Templates, 
+      open the Code node and select New Java Files.
+      Set it to
 <programlisting>
 // &dollar;&dollar;Id&dollar;&dollar;
 // Copyright (c) 2004 The Regents of the University of California. All
@@ -850,11 +856,15 @@ ${type_declaration}
 Compiler options.
 </para>
 	<para>
+      See in the menu Window => Preferences.
+      Then select
+      Java => Compiler.
+      At the right hand side, select the tab
 Compliance and classfiles => Compiler compliance level: 1.3.
 </para>
 	<para>
-Suggested settings.
-Only things diverting from the Eclipse Defaults are listed:
+Suggested settings for these tabs
+(Only things diverting from the Eclipse defaults are listed):
           <itemizedlist>
 	    <listitem>
 	      <para>
@@ -958,19 +968,23 @@ pserver
 Check out.
 </para>
 	<para>
-Unfold the CVS Repository and within it, HEAD.
+      In the CVS Repository Exploring perspective,
+unfold the CVS Repository and within it, HEAD.
 </para>
 	<para>
-Select the argouml project and do Check Out As.
+Select the argouml project, right-click on it, and do Check Out As.
 Check out as a project configured using the New Project Wizard.
-Finish.
-Select Java Project.
-Choose name: argouml.
+Press the button Finish.
+Select Java Project, and press Next.
+Type the new project name: argouml, and press Next.
 Ignore the build path settings. We will come back to them later.
+Press Finish, which starts the checking out process.
 </para>
 	<para>
-This takes a while.
-The download is around 60Meg.
+This takes a while, since the download is around 60Meg.
+</para>
+    <para>
+Remark: 
 If you are on a modem or other low bandwidth connection,
 this is not recommended since you will download
 all of the web site,
@@ -988,11 +1002,19 @@ five hours on a 56K modem.
 	<para>
 Build using ant.
 </para>
+    <para>
+Remark from MVW: This did not work for me, 
+I first had to set the Java Build path as described below. 
+Please confirm or deny this statement, 
+so that I can adapt this explanation!
+</para>
 	<para>
 Browse to <filename>argouml/src_new/build.xml</filename>
 and do 
-<command>Run ant</command> on it.
-Select compile (default target) and Run.
+<!-- Linus says: <command>Run ant</command> on it. 
+MVW: But I do not find such a command, so I presume: -->
+<command>Ant build</command> (without the ...) on it
+<!--Select compile (default target in the Targets tab) and Run.-->
 </para>
 	<para>
 There are some files that are built using rules in the
@@ -1021,22 +1043,32 @@ Set build path.
 </para>
 
 	<para>
-Enter Java Build Path (under Project => Properties).
+Enter Java Build Path
 </para>
 
+    <para>
+      In the Java perspective, select the project argouml, 
+      i.e. the icon at the top of the Package Explorer.
+      Then, in the menu, select Project => Properties).
+    </para>
 	<para>
-Under source:
+Under Source:
 Remove everything.
-Add <filename class="directory">argouml/src_new</filename>.
+Add <filename class="directory">argouml/src_new</filename>
+(simply add a checkmark in front of the src_new folder icon).
 </para>
 	<para>
 Under Libraries:
-Add JARs:
+Press the Add JARs... button and add
 all files in <filename class="directory">argouml/lib</filename>
-Add JARs:
+Press the Add JARs... button and add
 the file <filename>argouml/tools/ant-1.4.1/lib/xerces-1.2.3.jar</filename>
 </para>
-	<para>
+    <para>
+      Set the Default output folder to 
+      <filename class="directory">argouml/build</filename>.
+    </para>
+	<para> Press OK.
 Eclipse shall rebuild.
 Verify that there are no errors, just warnings left among the problems.
 </para>
@@ -1046,17 +1078,34 @@ Verify that there are no errors, just warnings left among the problems.
 	<para>
 Select the class with the main method.
 </para>
+    <para>
+      In the Java perspective, select the project argouml, 
+      i.e. the icon at the top of the Package Explorer.
+      Then, in the menu, select Run => Run...). 
+      This will open the dialog for creating, managing 
+      and running Run Configurations.
+    </para>
 	<para>
-It is in
-<filename>argouml/src_new/org/argouml/application/Main.java</filename>.
-<!-- TODO: MVW: Yes, but what do I do with it? 
-Select the class... means clicking on it with the mouse. 
-What else do I do here? -->
-</para>
+      Select Java Application on the left and press the New button. 
+      Name the configuration "Run ArgoUML", 
+      and press the Search... button in the Main class box.
+      In the new dialog that appears (Choose Main Type), simply press OK.
+    </para>
+	<para>
+      This sets the Main class to: 
+      <filename>org.argouml.application.Main</filename>.
+    </para>
+	<para>
+      Press the Run button.
+      This will start ArgoUML. 
+      From now on, you can start ArgoUML 
+      by a single press on the Run icon in the toolbar.
+    </para>
       </listitem>
       <listitem>
 	<para>
-Verify that you can start ArgoUML from the debugger within Eclipse.
+Verify that you can start ArgoUML from the debugger within Eclipse. 
+You can do this by clicking on the Debug icon in the toolbar.
 </para>
       </listitem>
 
@@ -1072,43 +1121,51 @@ this "revert to ant"-way can be used to run the tests:
 	<itemizedlist>
 	  <listitem>
 	    <para>
-Select Ant Home Entries 
-(under Window => Preferences,
-Ant => Runtime,
-Tab Classpath)
+          In the menu select Window => Preferences. 
+          Select Ant => Runtime at the left hand side.
+          Select the tab Classpath.
+          Select Ant Home Entries.
 </para>
 	  </listitem>
 
 	  <listitem>
 	    <para>
-Press <command>Add Jars</command> and add
+Press the <command>Add Jars...</command> button and add
 <filename>optional.jar</filename> from 
-<filename>tools/ant-1.4.1</filename>.
+<filename>argouml/tools/ant-1.4.1</filename>.
 </para>
 	  </listitem>
 
 	  <listitem>
 	    <para>
-Press <command>Add Jars</command> and add
+Press the <command>Add Jars...</command> button and add
 all jars from
-<filename>tools/ant-<replaceable>1.4.1</replaceable>/lib</filename>.
+<filename>argouml/tools/ant-<replaceable>1.4.1</replaceable>/lib</filename>.
 </para>
 	  </listitem>
 
 	  <listitem>
 	    <para>
-Press <command>Add Jars</command> and add
+Press the <command>Add Jars...</command> button and add
 <filename>jdepend.jar</filename> from 
-<filename>tools/jdepend-<replaceable>2.2</replaceable>/lib</filename>.
+<filename>argouml/tools/jdepend-<replaceable>2.2</replaceable>/lib</filename>.
 </para>
 	  </listitem>
 
 	  <listitem>
 	    <para>
-Press OK.
+Press the <command>Add Jars...</command> button and add
+<filename>junit.jar</filename> from 
+<filename>argouml/tools/junit-<replaceable>3.8.1</replaceable></filename>.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Press OK to store the new Ant classpath entries.
 </para>
 	    <para>
-These first items needs only be done once as a set up.
+These first items need only be done once as a set up.
 </para>
 	  </listitem>
 
@@ -1118,25 +1175,25 @@ Run ant with the
 <command>alltests</command> target.
 </para>
 	    <para>
-This is done by right-clicking on 
-<filename>src_new/build.xml</filename>
-and selecting 
-<command>Run Ant</command>
-<!-- TODO: MVW: I do not get this. 
-If I rightclick on the build.xml file, 
-I get "Run" and submenu "Run..." which opens the 
-"Create manage and run configurations" dialog. -->
-and then selecting the <command>alltests</command> target,
-deselecting all other targets,
-and pressing run.
+This is done by 
+selecting in the menu: Run => External Tools => External Tools...
+This will open the "Create, manage, and run configurations" dialog.
+</para>
+    <para>
+      Select the Ant Build at the left and press the New button.
+      Rename to ArgoUML AllTests.
+Then, in the Targets tab, select the <command>alltests</command> target,
+deselect all other targets, press the Apply button,
+and finally press Run.
 </para>
 
 	    <para>
-This setting, i.e. the 
-<filename>src_new/build.xml</filename> file 
-and the 
-<command>alltests</command> target
-are remembered by Eclipse so after this the Run tool can be used.
+This run configuration
+is remembered by Eclipse so after this the 
+drop-down next to the
+Run tool can be used.
+In the same way, you can make other run configurations 
+for the other ant targets in the build.xml file.
 </para>
 	  </listitem>
 	</itemizedlist>
@@ -1147,10 +1204,16 @@ are remembered by Eclipse so after this the Run tool can be used.
 Settings for checkclipse.
 </para>
 	<para>
-In Project => Properties,
+      Checkclipse is a plugin for Eclipse wich needs to be installed seperately.
+      It enables style checking according the rules set for the ArgoUML project.
+    </para>
+	<para>
+      In the Java perspective, select the project argouml, 
+      i.e. the icon at the top of the Package Explorer.
+      Then, in the menu, select Project => Properties,
 select Checkclipse (appears only if checkclipse is correctly installed)
 and then fill the fields like this:
-          <itemizedlist>
+      <itemizedlist>
 	    <listitem>
 	      <para>Enable Checkstyle
 Checked.
