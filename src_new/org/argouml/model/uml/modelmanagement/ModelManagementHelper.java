@@ -245,30 +245,6 @@ public class ModelManagementHelper {
     }
 
     /**
-     * Move a modelelement to a new namespace. The way this is currently
-     * implemented this means that ALL modelelements that share the same
-     * namespace as the element to be moved are moved.
-     * TODO: make this into a copy function
-     * TODO: make this only move/copy the asked element
-     * @param element
-     * @param to
-     * @deprecated As of ArgoUml version 0.13.5, 
-     *             You should use 
-     *          {@link #getCorrespondingElement(MModelElement,MModel,boolean)} 
-     *             instead.
-     */
-    public void moveElement(MModelElement element, MModel to) {
-        MModel currentModel = element.getModel();
-        if (currentModel != to) {
-            if (element.getNamespace() != currentModel) { // handle packages
-                moveElement(element.getNamespace(), to);
-            } else {
-                element.setNamespace(to);
-            }
-        }
-    }
-
-    /**
      * Utility function for managing several overlayed models, eg a user
      * model to which elements from some profile models is imported when
      * needed. This version of the function assumes it is permissible to

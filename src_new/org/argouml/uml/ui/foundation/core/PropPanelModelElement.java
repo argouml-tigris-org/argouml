@@ -146,34 +146,12 @@ abstract public class PropPanelModelElement extends PropPanel {
     private static UMLModelElementSupplierDependencyListModel supplierDependencyListModel = new UMLModelElementSupplierDependencyListModel();
     private static UMLModelElementTargetFlowListModel targetFlowListModel = new UMLModelElementTargetFlowListModel();
 
-    /**
-     *    Constructs the PropPanel.
-     *    @param title Title of panel
-     *    @param panelCount number of horizontal panels
-     *    @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002),
-     *                {@link #PropPanelModelElement(String title, Orientation orientation)}
-     *                I propose to remove this by version 0.15 (Bob Tarling)
-     */
-    public PropPanelModelElement(String name, int columns) {
-        this(name, null, columns);
-    }
-
     public PropPanelModelElement(String name, ImageIcon icon, Orientation orientation) {
         super(name, icon, orientation);
     }
 
     public PropPanelModelElement(String name, Orientation orientation) {
         super(name, orientation);
-    }
-
-    /**
-     * Constructs the PropPanelModelElement - DO NOT USE.
-     *    @deprecated As of ArgoUml version 0.13.5 (10-May-2003),
-     *                {@link #PropPanelModelElement(String title, ImageIcon icon, Orientation orientation)}
-     *                I propose to remove this by version 0.15 (Bob Tarling)
-     */
-    public PropPanelModelElement(String name, ImageIcon icon, int columns) {
-        super(name, icon, columns);
     }
 
     /**

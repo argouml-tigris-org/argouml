@@ -286,13 +286,4 @@ public abstract class Generator
         return null;
     }
 
-    /**   
-     * @deprecated must be added to all leaf classes from this class,
-     * these are the modules not this abstract class
-     * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
-     */
-    public boolean isModuleEnabled() {
-        return true;
-    }
-
 } /* end class Generator */

@@ -128,9 +128,8 @@ public abstract class ProjectMember {
     // actions
 
     public abstract void load() throws IOException, org.xml.sax.SAXException;
+
     /**
-     * @deprecated As of 7 June 2003 (ArgoUml version 0.13.6).
-     *             Will be removed in future.
      * @param path
      * @param overwrite
      * @throws Exception
@@ -138,8 +137,6 @@ public abstract class ProjectMember {
     public abstract void save(String path, boolean overwrite) throws Exception;
 
     /**
-     * @deprecated As of 7 June 2003 (ArgoUml version 0.13.6).
-     *             Will be removed in future.
      * @param path
      * @param overwrite
      * @param writer

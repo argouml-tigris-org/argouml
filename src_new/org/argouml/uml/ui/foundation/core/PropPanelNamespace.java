@@ -46,15 +46,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
 
     ////////////////////////////////////////////////////////////////
     // contructors
-    /**
-     *    @deprecated As of ArgoUml version 0.13.5 (10-May-2003),
-     *                {@link #PropPanelNamespace(String title, ImageIcon icon, Orientation orientation)}
-     *                I propose to remove this by version 0.15 (Bob Tarling)
-     */
-    public PropPanelNamespace(String panelName, ImageIcon icon, int columns) {
-        super(panelName, icon, columns);
-    }
-    
+
     public PropPanelNamespace(String panelName, ImageIcon icon, Orientation orientation) {
         super(panelName, icon, orientation);
     }
@@ -63,15 +55,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
     	super(title, orientation);
     }
 
-    /**
-     *    @deprecated As of ArgoUml version 0.13.5 (10-May-2003),
-     *                {@link #PropPanelNamespace(String title, ImageIcon icon, Orientation orientation)}
-     *                I propose to remove this by version 0.15 (Bob Tarling)
-     */
-    public PropPanelNamespace(String panelName, int columns) {
-        this(panelName, null, columns);
-    }
-    
+
     public void addClass() {
         Object target = getTarget();
         if (target instanceof MNamespace) {
