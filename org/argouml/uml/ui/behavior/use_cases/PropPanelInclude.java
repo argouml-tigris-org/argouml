@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,18 +25,6 @@
 // File: PropPanelInclude.java
 // Classes: PropPanelInclude
 // Original Author: mail@jeremybennett.com
-// $Id$
-
-// 2 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Created to support a
-// proper Include implementation with Use Cases
-
-// 3 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). There is a bug in
-// NSUML, where the "include" and "include2" associations of a use case are
-// back to front, i.e "include" is used as the opposite end of "addition" to
-// point to an including use case, rather than an included use case. Fixed
-// within the include relationship, rather than the use case, by reversing the
-// use of access functions for the "base" and "addition" associations.
-
 
 package org.argouml.uml.ui.behavior.use_cases;
 
@@ -116,24 +105,6 @@ public class PropPanelInclude extends PropPanelModelElement {
                             "isNavigateForwardEnabled");
         new PropPanelButton(this, buttonPanel, _deleteIcon,
                             localize("Delete"), "removeElement", null); 
-    }
-
-
-    /**
-     * <p>Check if a given name is our metaclass name, or that of one of our
-     *   parents. Used to determine which stereotypes to show.</p>
-     *
-     * <p>Since we ignore Relationship, we effectively have no parents.</p>
-     *
-     * @param baseClass  the string representation of the base class to test.
-     *
-     * @return           <code>true</code> if baseClass is our metaclass name
-     *                   of that of one of our parents.
-     */
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-
-        return baseClass.equals("Include");
     }
 
 

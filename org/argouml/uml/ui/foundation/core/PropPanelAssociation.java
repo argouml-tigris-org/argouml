@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -20,13 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-
-// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
-// labels "Generalizes:" and "Specializes:" for inheritance.
-
-// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Labels corrected to
-// "Generalizations:" and "Specializations".
 
 package org.argouml.uml.ui.foundation.core;
 
@@ -166,11 +160,4 @@ public class PropPanelAssociation extends PropPanelModelElement {
 
   }
     
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("Association") ||
-          baseClass.equals("ModelElement");
-    }
-
-
-
 } /* end class PropPanelAssociation */

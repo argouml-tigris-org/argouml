@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -331,7 +332,7 @@ public class SelectionSeqObject extends SelectionWButtons  {
     /**
      * Not used. Only implemented here since SelectionSeqObject does not comply to the 
      * rest of the selection with buttons classes.
-     * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode()
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
         return null;

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -47,7 +48,7 @@ public class ActionAutoResize extends UMLAction {
     }
 
     /** Accessor to determine whether the nodes should be resized or not.
-     *  @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged()
+     *  @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(MElementEvent)
      */
     static public boolean isAutoResizable() { return _autoResize; }
 } /* end class ActionAutoResize */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -297,12 +298,6 @@ public class PropPanelOperation extends PropPanelModelElement {
                 navigateTo(owner);
             }
         }
-    }
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("Operation") ||
-            baseClass.equals("BehavioralFeature") ||
-            baseClass.equals("Feature");
     }
 
     /**

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -275,46 +276,8 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         return isCompatible;
     }
 
-    public boolean isAcceptibleParent(MModelElement element) {
-        boolean isAcceptible = false;
-        Object target = getTarget();
-        if(target instanceof MGeneralization) {
-            MGeneralizableElement child = ((MGeneralization) target).getChild();
-            if(child == null) {
-              isAcceptible = element instanceof MGeneralizableElement;
-            }
-            else {
-              isAcceptible = isAcceptible(child,element);
-            }
-        }
-        return isAcceptible;
-    }
-
-    public boolean isAcceptibleChild(MModelElement element) {
-        boolean isAcceptible = false;
-	cat.debug("PropPanelGeneralization: testing isAcceptibleChild");
-        Object target = getTarget();
-        if(target instanceof MGeneralization) {
-            MGeneralizableElement parent = ((MGeneralization) target).getParent();
-            if(parent == null) {
-              isAcceptible = element instanceof MGeneralizableElement;
-            }
-            else {
-              isAcceptible = isAcceptible(parent,element);
-            }
-        }
-	cat.debug("isAcceptible: "+isAcceptible);
-        return isAcceptible;
-    }
-
-
     public boolean isAcceptiblePowertype(MModelElement element) {
         return element instanceof MClassifier;
     }
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("Generalization");
-    }
-
 
 } /* end class PropPanelGeneralization */
