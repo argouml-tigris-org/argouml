@@ -140,7 +140,6 @@ public class DetailsPane
         setFont(new Font("Dialog", Font.PLAIN, 10));
         add(_tabs, BorderLayout.CENTER);
 
-        _tabs.addChangeListener(this);
         for (int i = 0; i < _tabPanels.size(); i++) {
             String title = "tab";
             JPanel t = (JPanel)_tabPanels.elementAt(i);
