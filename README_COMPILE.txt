@@ -11,7 +11,7 @@ Then, you need jakarta-ant installed. This includes
 
 Next, you need to have 
 
---- xml4j.jar, nsuml.jar and ocl-argo.jar in argouml/lib
+--- gef.jar, xml4j.jar, nsuml.jar and ocl-argo.jar in argouml/lib
 
 which must be next to argouml/src_new in your directory structure.
 
