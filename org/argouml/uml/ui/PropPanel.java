@@ -30,7 +30,6 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
@@ -55,7 +54,6 @@ import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.ui.targetmanager.TargettableModelView;
 import org.argouml.uml.Profile;
-import org.argouml.uml.ProfileJava;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.LabelledLayout;
 import org.tigris.swidgets.Orientation;
@@ -85,8 +83,6 @@ public abstract class PropPanel
     // instance vars
     private Object target;
     private Object modelElement;
-
-    private ResourceBundle bundle = null;
 
     private Vector panels = new Vector();
 
@@ -130,9 +126,9 @@ public abstract class PropPanel
 
         if (icon != null) {
             titleLabel =
-                new JLabel(localize(title), icon, SwingConstants.LEFT);
+                new JLabel(title, icon, SwingConstants.LEFT);
         } else {
-            titleLabel = new JLabel(localize(title));
+            titleLabel = new JLabel(title);
         }
         //buttonPanel = new JPanel(new SerialLayout());
         titleLabel.setLabelFor(buttonPanel);
@@ -164,11 +160,7 @@ public abstract class PropPanel
      * @param button the button to be added to the button panel
      */
     protected void addButton(Component button) {
-        // TODO: (MVW) The next line works!
-        // Add it when we require Java 1.4,
-        // and stop supporting earlier versions...
-        // I do not find a way to do this for Java 1.3.  :(
-        //button.setFocusable(false); //MVW
+        button.setFocusable(false); //Buttons shall not go in the tabbing loop
         buttonPanel.add(button);
     }
 
@@ -180,7 +172,7 @@ public abstract class PropPanel
      * @return the label added
      */
     public JLabel addField(String label, Component component) {
-        JLabel jlabel = new JLabel(localize(label));
+        JLabel jlabel = new JLabel(label);
         jlabel.setFont(smallFont);
         component.setFont(smallFont);
         jlabel.setLabelFor(component);
@@ -204,7 +196,7 @@ public abstract class PropPanel
         int nComponent = this.getComponentCount();
         for (int i = 0; i < nComponent; ++i) {
             if (getComponent(i) == afterComponent) {
-                JLabel jlabel = new JLabel(localize(label));
+                JLabel jlabel = new JLabel(label);
                 jlabel.setFont(smallFont);
                 component.setFont(smallFont);
                 jlabel.setLabelFor(component);
@@ -231,7 +223,7 @@ public abstract class PropPanel
         int nComponent = this.getComponentCount();
         for (int i = 0; i < nComponent; ++i) {
             if (getComponent(i) == beforeComponent) {
-                JLabel jlabel = new JLabel(localize(label));
+                JLabel jlabel = new JLabel(label);
                 jlabel.setFont(smallFont);
                 component.setFont(smallFont);
                 jlabel.setLabelFor(component);
@@ -261,26 +253,6 @@ public abstract class PropPanel
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#localize(java.lang.String)
-     */
-    public final String localize(String key) {
-        String localized = key;
-        if (bundle == null) {
-            bundle = getResourceBundle();
-        }
-        if (bundle != null) {
-            try {
-                localized = bundle.getString(key);
-            } catch (MissingResourceException e) {
-            }
-            if (localized == null) {
-                localized = key;
-            }
-        }
-        return localized;
-    }
-
-    /**
      * Add a seperator.
      */
     protected final void addSeperator() {
@@ -296,12 +268,6 @@ public abstract class PropPanel
         return null;
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getProfile()
-     */
-    public Profile getProfile() {
-        return ProjectManager.getManager().getCurrentProject().getProfile();
-    }
 
 //    /**
 //     * This method (and addMElementListener) can be overriden if the
@@ -422,13 +388,7 @@ public abstract class PropPanel
         return target;
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getModelElement()
-     */
-    public final Object getModelElement() {
-        return modelElement;
-    }
-
+    
     /**
      * @see org.argouml.ui.TabTarget#refresh()
      */
@@ -512,6 +472,20 @@ public abstract class PropPanel
             ns = Model.getFacade().getNamespace(theTarget);
         }
         return ns;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getProfile()
+     */
+    public Profile getProfile() {
+        return ProjectManager.getManager().getCurrentProject().getProfile();
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getModelElement()
+     */
+    public final Object getModelElement() {
+        return modelElement;
     }
 
     /**
