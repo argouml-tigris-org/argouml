@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -339,6 +339,19 @@ public class CoreHelper {
             }
         }
         return (Collection)returnParams;
+    }
+    /**
+     * Returns the operation that some method realized. Returns null if
+     * object isn't a method or, possibly, if the method isn't properly
+     * defined.
+     *
+     * @param object  the method you want the realized operation of.
+     * @return an operation, or null.
+     */
+    public MOperation getSpecification(Object object) {
+	if (!(object instanceof MMethod))
+	    return null;
+	return ((MMethod)object).getSpecification();
     }
     /**
      * Returns all Interfaces of which this class is a realization.

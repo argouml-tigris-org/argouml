@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,6 +30,7 @@ import java.util.List;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -229,6 +230,50 @@ public class ExtensionMechanismsHelper {
             stereo.setNamespace(m.getModel());
         }
         m.setStereotype(stereo);
+    }
+
+    /**
+     * Tests if a stereotype is a stereotype with some name and base class.
+     *
+     * @param object is the stereotype.
+     * @param name is the name of the stereotype.
+     * @param base is the base class of the stereotype.
+     * @return true if object is a stereotype with the desired characteristics.
+     */
+    public boolean isStereotype(Object object, String name, String base) {
+	if (object == null || !(object instanceof MStereotype))
+	    return false;
+
+	MStereotype st = (MStereotype) object;
+	if (name == null && st.getName() != null)
+	    return false;
+	if (base == null && st.getBaseClass() != null)
+	    return false;
+
+	return name.equals(st.getName()) && base.equals(st.getBaseClass());
+    }
+
+    /**
+     * Tests if a stereotype is or inherits from a stereotype with some
+     * name and base class.
+     *
+     * @param object is the stereotype.
+     * @param name is the name of the stereotype.
+     * @param base is the base class of the stereotype.
+     * @return true if object is a (descendant of a) stereotype with the
+     *	desired characteristics.
+     */
+    public boolean isStereotypeInh(Object object, String name, String base) {
+	if (object == null || !(object instanceof MStereotype))
+	    return false;
+	if (isStereotype(object, name, base))
+	    return true;
+	Iterator it = CoreHelper.getHelper().getSupertypes(object).iterator();
+	while (it.hasNext()) {
+	    if (isStereotypeInh(it.next(), name, base))
+		return true;
+	}
+	return false;
     }
 }
 
