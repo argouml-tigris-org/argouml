@@ -93,7 +93,7 @@ public class ZoomSliderButton extends PopupButton {
             JSlider.VERTICAL, 
             MINIMUM_ZOOM, 
             MAXIMUM_ZOOM, 
-            0);
+            MINIMUM_ZOOM);
         _slider.setInverted(true);
         _slider.setMajorTickSpacing(MAXIMUM_ZOOM / 10);
         _slider.setMinorTickSpacing(MAXIMUM_ZOOM / 20);
@@ -108,7 +108,7 @@ public class ZoomSliderButton extends PopupButton {
         }
         
         _slider.setToolTipText(Argo.localize(BUNDLE, 
-            "button.zoom.slider-tooltip"));        
+            "button.zoom.slider-tooltip"));   
         
         _slider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {

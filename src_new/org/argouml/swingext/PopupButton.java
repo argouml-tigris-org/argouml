@@ -1,6 +1,7 @@
 package org.argouml.swingext;
 
 import java.awt.Component;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
@@ -28,11 +29,20 @@ public class PopupButton extends ModalButton {
      */
     public PopupButton() {
         super(null);
+        
         setAction(new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 showPopup();
             }
         });
+        
+        String javaVersion = System.getProperties().getProperty(
+            "java.specification.version");
+        if (javaVersion.equals("1.3")) {
+            setBorderPainted(false);
+            // This is needed specifically for JDK1.3 on Windows & Motif
+            setMargin(new Insets(0,0,0,0));
+        }
     }
     
     /**
