@@ -70,7 +70,8 @@ public class PropPanelMessage extends PropPanelModelElement {
 
     addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
     addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-    addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+    // a message does not have a namespace. removed therefore
+    // addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
     JList senderList = new UMLLinkedList(new UMLMessageSenderListModel());
     senderList.setVisibleRowCount(1);
