@@ -39,7 +39,7 @@ import org.argouml.ui.ProjectBrowser;
  *
  * @see ActionOpenProject
  */
-public class ActionRevertToSaved extends UMLAction {
+public class ActionRevertToSaved extends ActionFileOperations {
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -84,7 +84,7 @@ public class ActionRevertToSaved extends UMLAction {
                   JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {        
-            new ActionOpenProject().loadProject(p.getURL());
+            loadProject(p.getURL());
         }
     }
     

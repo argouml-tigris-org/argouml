@@ -29,25 +29,19 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.MessageFormat;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
-import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.OpenException;
 import org.argouml.kernel.PersisterManager;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectFilePersister;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.util.osdep.OsUtil;
-import org.argouml.xml.argo.ArgoParser;
 import org.tigris.gef.base.Globals;
 
 /**
@@ -57,8 +51,7 @@ import org.tigris.gef.base.Globals;
  *
  * @see ActionSaveProject
  */
-public class ActionOpenProject
-    extends UMLAction
+public class ActionOpenProject extends ActionFileOperations
     implements CommandLineInterface {
 
     private static final Logger LOG =
@@ -77,46 +70,6 @@ public class ActionOpenProject
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    /**
-     * If the current project is dirty (needs saving) then this function will
-     * ask confirmation from the user. 
-     * If the user indicates that saving is needed, then saving is attempted.
-     *  
-     * @return true if we can continue with opening
-     */
-    protected boolean askConfirmationAndSave() {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
-        Project p = ProjectManager.getManager().getCurrentProject();
-
-
-        if (p != null && p.needsSave()) {
-            String t = MessageFormat.format(Translator.localize(
-                        "optionpane.open-project-save-changes-to"),
-                        new Object[] {p.getName()});
-
-            int response = JOptionPane.showConfirmDialog(pb, t, t, 
-                    JOptionPane.YES_NO_CANCEL_OPTION);
-
-            if (response == JOptionPane.CANCEL_OPTION 
-                    || response == JOptionPane.CLOSED_OPTION) {
-                return false;
-            }
-            if (response == JOptionPane.YES_OPTION) {
-                boolean safe = false;
-
-                if (ActionSaveProject.SINGLETON.shouldBeEnabled()) {
-                    safe = ActionSaveProject.SINGLETON.trySave(true);
-                }
-                if (!safe) {
-                    safe = ActionSaveProjectAs.SINGLETON.trySave(false);
-                }
-                if (!safe) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
     
     /** 
      * Performs the action of opening a project.
@@ -181,103 +134,6 @@ public class ActionOpenProject
             LOG.error("got an IOException in ActionOpenProject", ignore);
         }
     }
-
-
-
-    /**
-     * Loads the project file and opens all kinds of error message windows
-     * if it doesn't work for some reason. In those cases it preserves
-     * the old project.
-     * 
-     * @param url the url to open.
-     */
-    public void loadProject(URL url) {
-        PersisterManager pm = new PersisterManager();
-        Project oldProject = ProjectManager.getManager().getCurrentProject();
-
-	// TODO:
-        // This is actually a hack! Some diagram types
-        // (like the statechart diagrams) access the current
-        // diagram to get some info. This might cause 
-        // problems if there's another statechart diagram
-        // active, so I remove the current project, before
-        // loading the new one.
-
-        Designer.disableCritiquing();
-        Designer.clearCritiquing();
-
-        Project p = null;
-        try {
-            ProjectFilePersister persister = 
-                pm.getPersisterFromFileName(url.getFile());
-            if (persister == null)
-                throw new IllegalStateException("Filename " + url.getFile() 
-                        + " is not of a known file type");
-            
-            p = persister.loadProject(url);
-
-            ProjectBrowser.getInstance().showStatus(
-		    MessageFormat.format(Translator.localize(
-			    "label.open-project-status-read"),
-					 new Object[] {
-					     url.toString()
-					 }));
-        } catch (OpenException ex) {
-            LOG.error("Exception while loading project", ex);
-            showErrorPane(
-			  "Could not load the project "
-			  + url.toString()
-			  + " due to parser configuration errors.\n"
-			  + "Please read the instructions at www.argouml.org "
-			  + "on the "
-			  + "requirements of argouml and how to install it.");
-            p = oldProject;
-        } finally {
-            if (!ArgoParser.getInstance().getLastLoadStatus()) {
-                p = oldProject;
-                showErrorPane(
-			      "Problem in loading the project "
-			      + url.toString()
-			      + "\n"
-			      + "Project file probably corrupt from "
-			      + "an earlier version or ArgoUML.\n"
-			      + "Error message:\n"
-			      + ArgoParser.getInstance().getLastLoadMessage()
-			      + "\n"
-			      + "Since the project was incorrectly "
-			      + "saved some things might be missing "
-			      + "from before you saved it.\n"
-			      + "These things cannot be restored. "
-			      + "You can continue working with what "
-			      + "was actually loaded.\n");
-            }
-            else if (oldProject != null) {
-                // if p equals oldProject there was an exception and we do
-                // not have to gc the old project
-                if (p != null && !p.equals(oldProject)) {
-		    //prepare the old project for gc
-		    ProjectManager.getManager().removeProject(oldProject);
-                }
-            }
-            ProjectManager.getManager().setCurrentProject(p);
-            Designer.enableCritiquing();
-        }
-    }
-
-
-    /**
-     * Open a Message Dialog with an error message.
-     *
-     * @param message the message to display.
-     */
-    private void showErrorPane(String message) {
-        JOptionPane.showMessageDialog(
-				      ProjectBrowser.getInstance(),
-				      message,
-				      "Error",
-				      JOptionPane.ERROR_MESSAGE);
-    }
-
 
     /**
      * Execute this action from the command line.
