@@ -84,5 +84,6 @@ public class ActionNew extends UMLAction {
     }
 
     p = ProjectManager.getManager().makeEmptyProject();
+    ProjectBrowser.TheInstance.setTarget(p.getDiagrams().toArray()[0]);
   }
 } /* end class ActionNew */
