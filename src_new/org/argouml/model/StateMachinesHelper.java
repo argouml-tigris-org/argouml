@@ -109,13 +109,12 @@ public interface StateMachinesHelper {
 
     /**
      * Returns all states that can be recursively contained by the given State.
-     * 
-     * @param oState the Composite state we are searching the states for
-     * 
+     *
+     * @param oState the Composite state we are searching the states for,
      * @return Collection the collection with found states
      */
-    public Collection getAllPossibleSubvertices(Object oState);
-    
+    Collection getAllPossibleSubvertices(Object oState);
+
     /**
      * Connects a given statemachine to a submachinestate as being the
      * statemachine the submachinestate represents. To decouple ArgoUML as much
@@ -323,12 +322,13 @@ public interface StateMachinesHelper {
      * @param container of the state
      * @return Object
      */
-    public Object getStatebyName(String path, Object container);
+    Object getStatebyName(String path, Object container);
 
     /**
      * Sets the Referenced State of a StubState.
+     *
      * @param o Stub State
      * @param referenced state
      */
-    public void setReferenceState(Object o, String referenced);
+    void setReferenceState(Object o, String referenced);
 }
