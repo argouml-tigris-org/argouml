@@ -33,6 +33,9 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
+import java.util.List;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.ToolTipManager;
@@ -40,6 +43,7 @@ import javax.swing.ToolTipManager;
 import org.apache.log4j.Category;
 import org.apache.log4j.PropertyConfigurator;
 import org.argouml.application.api.Argo;
+import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.application.security.ArgoSecurityManager;
@@ -52,6 +56,7 @@ import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 import org.argouml.uml.ui.ActionOpenProject;
+import org.argouml.uml.ui.ActionExit;
 import org.argouml.util.FileConstants;
 import org.argouml.util.Trash;
 import org.argouml.util.logging.SimpleTimer;
@@ -121,6 +126,8 @@ public class Main {
         boolean profileLoad = Configuration.getBoolean(Argo.KEY_PROFILE, false);
         boolean reloadRecent =
             Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT, false);
+	boolean batch = false;
+	List commands = new ArrayList();
 
         String projectName = null;
 
@@ -155,6 +162,10 @@ public class Main {
                         "  -profileload    report on load times");
                     System.err.println(
                         "  -norecentfile   don't reload last saved file");
+                    System.err.println(
+                        "  -command <arg>  command to perform on startup");
+                    System.err.println(
+                        "  -batch          don't start GUI");
                     System.err.println("");
                     System.err.println(
                         "You can also set java settings which influence "
@@ -177,6 +188,12 @@ public class Main {
                     profileLoad = true;
                 } else if (args[i].equalsIgnoreCase("-norecentfile")) {
                     reloadRecent = false;
+                } else if (args[i].equalsIgnoreCase("-command")
+			   && i + 1 < args.length) {
+		    commands.add(args[i + 1]);
+		    i++;
+                } else if (args[i].equalsIgnoreCase("-batch")) {
+                    batch = true;
                 } else {
                     System.err.println(
                         "Ignoring unknown option '" + args[i] + "'");
@@ -189,8 +206,11 @@ public class Main {
                 }
             }
         }
-                
-        initializeGUI(st, doSplash, themeMemory);
+
+	// The reason the gui is initialized before the commands are run
+	// is that some of the commands will use the projectbrowser.
+	st.mark("initialize gui");
+	initializeGUI(doSplash && !batch, themeMemory);
 
         if (reloadRecent && projectName == null) {
             // If no project was entered on the command line,
@@ -229,10 +249,17 @@ public class Main {
             }
         }
 
-        
+	ProjectBrowser pb = ProjectBrowser.getInstance();
 
-        
-        ProjectBrowser pb = ProjectBrowser.getInstance();
+	performCommands(commands);
+	commands = null;
+
+	if (batch) {
+	    System.out.println("Exiting because we are running in batch.");
+	    ActionExit.SINGLETON.actionPerformed(null);
+	    return;
+	}
+
         if (doSplash) {
             SplashScreen splash = pb.getSplashScreen();
             if (urlToOpen == null)
@@ -336,6 +363,86 @@ public class Main {
         postLoadActions.addElement(r);
     }
 
+    /** Perform a list of commands that were given on the command line.
+     *
+     * This first implementation just has a list of commands that
+     * is possible to give.
+     *
+     * @param list The commands, a list of strings.
+     */
+    public static void performCommands(List list) {
+	Iterator iter = list.iterator();
+
+	while (iter.hasNext()) {
+	    String commandstring = (String) iter.next();
+
+	    int pos = commandstring.indexOf('=');
+
+	    String commandname;
+	    String commandargument;
+
+	    if (pos == -1) {
+		commandname = commandstring;
+		commandargument = null;
+	    }
+	    else {
+		commandname = commandstring.substring(0, pos);
+		commandargument = commandstring.substring(pos + 1);
+	    }
+
+	    // Perform one command.
+	    Class c;
+	    try {
+		c = Class.forName(commandname);
+	    } catch (ClassNotFoundException e) {
+		System.out.println("Cannot find the command: " + commandname);
+		continue;
+	    }
+
+	    // Now create a new object.
+	    Object o = null;
+	    try {
+		o = c.newInstance();
+	    }
+	    catch (InstantiationException e) { 
+		System.out.println(commandname 
+				   + " could not be instantiated - skipping"
+				   + " (InstantiationException)");
+		continue;
+	    }
+	    catch (IllegalAccessException e) { 
+		System.out.println(commandname 
+				   + " could not be instantiated - skipping"
+				   + " (IllegalAccessException)");
+		continue;
+	    }
+
+
+	    if (o == null || !(o instanceof CommandLineInterface)) {
+		System.out.println(commandname 
+				   + " is not a command - skipping.");
+		continue;
+	    }
+		
+	    CommandLineInterface clio = (CommandLineInterface) o;
+
+	    System.out.println("Performing command " 
+			       + commandname + "( " 
+			       + (commandargument == null 
+				  ? "" : commandargument ) + " )");
+	    boolean result = clio.doCommand(commandargument);
+	    if (!result) {
+		System.out.println("There was an error executing "
+				   + "the command "
+				   + commandname + "( " 
+				   + (commandargument == null 
+				      ? "" : commandargument ) + " )");
+		System.out.println("Aborting the rest of the commands.");
+		return;
+	    }
+	}
+    }
+
     /** Install our security handlers,
      *  and do basic initialization of log4j.
      *
@@ -392,11 +499,8 @@ public class Main {
         // initLogging();
     }
     
-    private static void initializeGUI(SimpleTimer st, 
-				      boolean doSplash, String themeMemory) 
+    private static void initializeGUI(boolean doSplash, String themeMemory) 
     {
-        st.mark("projectbrowser");
-
 	// Register the default notation.
 	org.argouml.uml.generator.GeneratorDisplay.getInstance();
 
