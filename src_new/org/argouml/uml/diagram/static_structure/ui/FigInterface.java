@@ -56,22 +56,75 @@ public class FigInterface extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
+  /**
+   * <p>The vector of graphics for operations (if any). First one is the
+   *   rectangle for the entire operations box.</p>
+   */
   protected FigGroup _operVec;
+
+  /**
+   * <p>The rectangle for the entire operations box.</p>
+   */
   protected FigRect _operBigPort;
+
+  /**
+   * <p>A rectangle to blank out the line that would otherwise appear at the
+   *   bottom of the stereotype text box.</p>
+   */
   protected FigRect _stereoLineBlinder;
+
+  /**
+   * <p>Manages residency of an interface within a component on a deployment
+   *   diagram. Not clear why it is public, or even why it is an instance
+   *   variable (rather than local to the method).</p>
+   */
   public MElementResidence resident = new MElementResidenceImpl();
 
+  /**
+   * <p>Text highlighted by mouse actions on the diagram.</p>
+   */
   protected CompartmentFigText highlightedFigText = null;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
+  /**
+   * <p>Main constructor for a {@link FigInterface}.</p>
+   *
+   * <p>Parent {@link FigNodeModelElement} will have created the main box
+   *   {@link #_bigPort} and its name {@link #_name} and stereotype (@link
+   *   #_stereo}. This constructor creates a box for the operations.</p>
+   *
+   * <p>The properties of all these graphic elements are adjusted
+   *   appropriately. The main boxes are all filled and have outlines.</p>
+   *
+   * <p>For reasons I don't understand the stereotype is created in a box
+   *   with lines. So we have to created a blanking rectangle to overlay the
+   *   bottom line, and avoid three compartments showing.</p>
+   *
+   * <p><em>Warning</em>. Much of the graphics positioning is hard coded. The
+   *   overall figure is placed at location (10,10). The name compartment (in
+   *   the parent {@link FigNodeModelElement} is 21 pixels high. The
+   *   stereotype compartment is created 15 pixels high in the parent, but we
+   *   change it to 19 pixels, 1 more than ({@link #STEREOHEIGHT} here. The
+   *   operations box is created at 19 pixels, 2 more than
+   *   {@link #ROWHEIGHT}.</p>
+   *
+   * <p>CAUTION: This constructor (with no arguments) is the only one
+   *   that does enableSizeChecking(false), all others must set it true.
+   *   This is because this constructor is the only one called when loading
+   *   a project. In this case, the parsed size must be maintained.</p>
+   */
+
   public FigInterface() {
+
+    // Set name box. Note the upper line will be blanked out if there is
+    // eventually a stereotype above.
     _name.setLineWidth(1);
     _name.setFilled(true);
 
     // this rectangle marks the operation section; all operations are inside it:
-    _operBigPort = new FigRect(10, 30+ROWHEIGHT, 60, ROWHEIGHT+2, Color.black, Color.white);
+    _operBigPort = new FigRect(10, 31+ROWHEIGHT, 60, ROWHEIGHT+2, Color.black, Color.white);
     _operBigPort.setFilled(true);
     _operBigPort.setLineWidth(1);
 
@@ -80,6 +133,10 @@ public class FigInterface extends FigNodeModelElement {
     _operVec.setLineWidth(1);
     _operVec.addFig(_operBigPort);
 
+    // Set properties of the stereotype box. Make it 1 pixel higher than
+    // before, so it overlaps the name box, and the blanking takes out both
+    // lines. Initially not set to be displayed, but this will be changed
+    // when we try to render it, if we find we have a stereotype.
     _stereo.setText(NotationHelper.getLeftGuillemot()+"Interface"+NotationHelper.getRightGuillemot());
     _stereo.setExpandOnly(true);
     _stereo.setFilled(true);
@@ -88,11 +145,17 @@ public class FigInterface extends FigNodeModelElement {
     _stereo.setHeight(STEREOHEIGHT+1); // +1 to have 1 pixel overlap with _name
     _stereo.setDisplayed(true);
 
+    // A thin rectangle to overlap the boundary line between stereotype
+    // and name. This is just 2 pixels high, and we rely on the line
+    // thickness, so the rectangle does not need to be filled. Whether to
+    // display is linked to whether to display the stereotype.
     _stereoLineBlinder = new FigRect(11, 10+STEREOHEIGHT, 58, 2, Color.white, Color.white);
     _stereoLineBlinder.setLineWidth(1);
-    //_stereoLineBlinder.setFilled(true);
     _stereoLineBlinder.setDisplayed(true);
 
+    // Put all the bits together, suppressing bounds calculations until
+    // we're all done for efficiency.
+    enableSizeChecking(false);
     suppressCalcBounds = true;
     addFig(_bigPort);
     addFig(_stereo);
@@ -101,20 +164,30 @@ public class FigInterface extends FigNodeModelElement {
     addFig(_operVec);
     suppressCalcBounds = false;
 
+    // Set the bounds of the figure to the total of the above (hardcoded)
     setBounds(10, 10, 60, 21+ROWHEIGHT);
   }
 
+  /**
+   * <p>Constructor for use if this figure is created for an existing interface
+   *   node in the metamodel.</p>
+   *
+   * <p>Set the figure's name according to this node. This is used when the
+   *   user click's on 'add to diagram' in the navpane.  Don't know if this
+   *   should rather be done in one of the super classes, since similar code
+   *   is used in FigClass.java etc.  Andreas Rueckert
+   *   &lt;a_rueckert@gmx.net&gt;</p>
+   *
+   * @param gm   Not actually used in the current implementation
+   *
+   * @param node The UML object being placed.
+   */
   public FigInterface(GraphModel gm, Object node) {
     this();
     setOwner(node);
-    // If this figure is created for an existing interface node in the
-    // metamodel, set the figure's name according to this node. This is
-    // used when the user click's on 'add to diagram' in the navpane.
-    // Don't know if this should rather be done in one of the super
-    // classes, since similar code is used in FigClass.java etc.
-    // Andreas Rueckert <a_rueckert@gmx.net>
+    enableSizeChecking(true);
     if (node instanceof MInterface && (((MInterface)node).getName() != null))
-        _name.setText(((MModelElement)node).getName());
+      _name.setText(((MModelElement)node).getName());
   }
 
   public String placeString() { return "new Interface"; }
@@ -126,7 +199,7 @@ public class FigInterface extends FigNodeModelElement {
 	figClone._stereo = (FigText) v.elementAt(1);
 	figClone._name = (FigText) v.elementAt(2);
 	figClone._stereoLineBlinder = (FigRect) v.elementAt(3);
-	figClone._operVec = (FigGroup) v.elementAt(5);
+	figClone._operVec = (FigGroup) v.elementAt(4);
 	return figClone;
   }
 
@@ -149,6 +222,13 @@ public class FigInterface extends FigNodeModelElement {
     addMenu.add(ActionAddOperation.SINGLETON);
     addMenu.add(ActionAddNote.SINGLETON);
     popUpActions.insertElementAt(addMenu, popUpActions.size() - 1);
+    JMenu showMenu = new JMenu("Show");
+    if (_operVec.isDisplayed())
+      showMenu.add(ActionCompartmentDisplay.HideOperCompartment);
+    else
+      showMenu.add(ActionCompartmentDisplay.ShowOperCompartment);
+
+    popUpActions.insertElementAt(showMenu, popUpActions.size() - 1);
 
     // Block added by BobTarling 7-Jan-2001
     MInterface mclass = (MInterface) getOwner();
@@ -165,24 +245,89 @@ public class FigInterface extends FigNodeModelElement {
     return popUpActions;
   }
 
+  public FigGroup getOperationsFig() { return _operVec; }
+
+  /**
+   * Returns the status of the operation field.
+   * @return true if the operations are visible, false otherwise
+   */
+  public boolean isOperationVisible() { return _operVec.isDisplayed(); }
+
+  public void setOperationVisible(boolean isVisible) {
+    Rectangle rect = getBounds();
+    int h = checkSize ? (ROWHEIGHT*Math.max(1,_operVec.getFigs().size()-1)+2) * rect.height / getMinimumSize().height : 0;
+    if ( _operVec.isDisplayed() ) {
+      if ( !isVisible ) {
+        damage();
+        Enumeration enum = _operVec.getFigs().elements();
+        while (enum.hasMoreElements())
+            ((Fig)(enum.nextElement())).setDisplayed(false);
+        _operVec.setDisplayed(false);
+        setBounds(rect.x, rect.y, rect.width, rect.height - h);
+      }
+    }
+    else {
+      if ( isVisible ) {
+        Enumeration enum = _operVec.getFigs().elements();
+        while (enum.hasMoreElements())
+            ((Fig)(enum.nextElement())).setDisplayed(true);
+        _operVec.setDisplayed(true);
+        setBounds(rect.x, rect.y, rect.width, rect.height + h);
+        damage();
+      }
+    }
+  }
+
+  /**
+   * <p>Gets the minimum size permitted for an interface on the diagram.</p>
+   *
+   * <p>Parts of this are hardcoded, notably the fact that the name
+   *   compartment has a minimum height of 21 pixels.</p>
+   *
+   * @return  the size of the minimum bounding box.
+   */
   public Dimension getMinimumSize() {
+
+    // Use "aSize" to build up the minimum size. Start with the size of the
+    // name compartment and build up.
+
     Dimension aSize = _name.getMinimumSize();
     int h = aSize.height;
     int w = aSize.width;
+
+    // Ensure that the minimum height of the name compartment is at least
+    // 21 pixels (hardcoded).
+
     if (aSize.height < 21)
         aSize.height = 21;
+
+    // If we have a stereotype displayed, then allow some space for that
+    // (width and height)
+
     if (_stereo.isDisplayed()) {
       aSize.width = Math.max(aSize.width, _stereo.getMinimumSize().width);
       aSize.height += STEREOHEIGHT;
     }
+
+    // Allow space for each of the operations we have
+
     if (_operVec.isDisplayed()) {
-      // get minimum size of the operation section
+
+      // Loop through all the operations, to find the widest (remember
+      // the first fig is the box for the whole lot, so ignore it).
+
       Enumeration enum = _operVec.getFigs().elements();
-      enum.nextElement(); // _operBigPort
-      while (enum.hasMoreElements())
-        aSize.width = Math.max(aSize.width,((FigText)enum.nextElement()).getMinimumSize().width+2);
-      aSize.height += ROWHEIGHT*Math.max(1,_operVec.getFigs().size()-1)+1;
+      enum.nextElement();  // ignore
+
+      while (enum.hasMoreElements()) {
+        int elemWidth = ((FigText)enum.nextElement()).getMinimumSize().width + 2;
+        aSize.width = Math.max(aSize.width, elemWidth);
+      }
+      aSize.height += ROWHEIGHT * Math.max(1, _operVec.getFigs().size() - 1) + 1;
     }
+
+    // And now aSize has the answer
+
     return aSize;
   }
 
@@ -430,59 +575,130 @@ public class FigInterface extends FigNodeModelElement {
 	setBounds(rect.x, rect.y, rect.width, rect.height); // recalculates all bounds
   }
 
-  static final long serialVersionUID = 4928213949795787107L;
-
   public void renderingChanged() {
     super.renderingChanged();
     _stereo.setText(NotationHelper.getLeftGuillemot()+"Interface"+NotationHelper.getRightGuillemot());
 	modelChanged();
   }
 
-  /** sets the bounds, but the size will be at least the
-      one returned by getMinimunSize(); if the required
-      height is bigger, then the additional height is equally
-      distributed among all figs, such that the cumulated
-      height of all visible figs equals the demanded height
-  */
+  /**
+   * <p>Sets the bounds, but the size will be at least the one returned by
+   *   {@link #getMinimunSize()}, unless checking of size is disabled.</p>
+   *
+   * <p>If the required height is bigger, then the additional height is
+   *   equally distributed among all figs (i.e. compartments), such that the
+   *   cumulated height of all visible figs equals the demanded height<p>.
+   *
+   * <p>Some of this has "magic numbers" hardcoded in. In particular there is
+   *   a knowledge that the minimum height of a name compartment is 21
+   *   pixels.</p>
+   *
+   * @param x  Desired X coordinate of upper left corner
+   *
+   * @param y  Desired Y coordinate of upper left corner
+   *
+   * @param w  Desired width of the FigInterface
+   *
+   * @param h  Desired height of the FigInterface
+   */
   public void setBounds(int x, int y, int w, int h) {
+
+    // Save our old boundaries (needed later), and get minimum size
+    // info. "aSize will be used to maintain a running calculation of our
+    // size at various points.
+
+    // "extra_each" is the extra height per displayed fig if requested
+    // height is greater than minimal. "height_correction" is the height
+    // correction due to rounded division result, will be added to the name
+    // compartment
+
 	Rectangle oldBounds = getBounds();
 	Dimension aSize = checkSize ? getMinimumSize() : new Dimension(w,h);
+
 	int newW = Math.max(w,aSize.width);
 	int newH = h;
-	int extra_each = 0; // extra height per displayed fig if requested height is greater than minimal
-	int height_correction = 0; // height correction due to rounded division result, will be added to _name
 
-	//first compute all nessessary height data
-	if (newH < aSize.height) {
-		newH = aSize.height;
-	} else if (newH > aSize.height) {
-	    extra_each = newH - aSize.height;
-	    int displayedFigs = 1; //this is for _name
-        if (_operVec.isDisplayed())
-	        displayedFigs++;
-	    extra_each = extra_each / displayedFigs; // result might be rounded, so:
-	    height_correction = (newH - aSize.height) - (extra_each * displayedFigs); // will be added to _name only
-	}
+	int extra_each = 0;
+	int height_correction = 0;
 
-	//now resize all sub-figs, including not displayed figs
+    // First compute all nessessary height data. Easy if we want less than
+    // the minimum
+
+    if (newH <= aSize.height) {
+
+      // Just use the mimimum
+
+      newH = aSize.height;
+
+    } else {
+
+      // Split the extra amongst the number of displayed compartments
+
+      int displayedFigs = 1; //this is for _name
+
+      if (_operVec.isDisplayed()) {
+        displayedFigs++;
+      }
+
+      // Calculate how much each, plus a correction to put in the name
+      // comparment if the result is rounded
+
+      extra_each        = (newH - aSize.height) / displayedFigs;
+      height_correction = (newH - aSize.height) -
+                          (extra_each * displayedFigs);
+    }
+
+    // Now resize all sub-figs, including not displayed figs. Start by the
+    // name. We override the getMinimumSize if it is less than our view (21
+    // pixels hardcoded!). Add in the shared extra, plus in this case the
+    // correction.
+
     int height = _name.getMinimumSize().height;
-    if (height < 21)
-        height = 21;
-    height += extra_each+height_correction;
-    int currentY = y;
-    if (_stereo.isDisplayed())
-        currentY += STEREOHEIGHT;
-    _name.setBounds(x,currentY,newW,height);
-	_stereo.setBounds(x,y,newW,STEREOHEIGHT+1);
-    _stereoLineBlinder.setBounds(x+1,y+STEREOHEIGHT,newW-2,2);
-    currentY += height-1; // -1 for 1 pixel overlap
-   	aSize = getUpdatedSize(_operVec,x,currentY,newW,newH+y-currentY);
 
-	// set bounds of big box
+    if (height < 21) {
+      height = 21;
+    }
+
+    height += extra_each + height_correction;
+
+    // Now sort out the stereotype display. If the stereotype is displayed,
+    // move the upper boundary of the name compartment up and set new
+    // bounds for the name and the stereotype compatments and the
+    // stereoLineBlinder that blanks out the line between the two
+
+    int currentY = y;
+
+    if (_stereo.isDisplayed()) {
+      currentY += STEREOHEIGHT;
+    }
+
+    _name.setBounds(x,currentY,newW,height);
+    _stereo.setBounds(x,y,newW,STEREOHEIGHT + 1);
+    _stereoLineBlinder.setBounds(x + 1,y + STEREOHEIGHT,newW - 2,2);
+
+    // Advance currentY to where the start of the attribute box is,
+    // remembering that it overlaps the next box by 1 pixel. Calculate the
+    // size of the attribute box, and update the Y pointer past it if it is
+    // displayed.
+
+    currentY += height-1;  // -1 for 1 pixel overlap
+
+    // Finally update the bounds of the operations box
+
+    aSize = getUpdatedSize(_operVec, x, currentY, newW,
+                           newH + y - currentY);
+
+    // set bounds of big box
+
     _bigPort.setBounds(x,y,newW,newH);
 
-	calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-	updateEdges();
-	firePropChange("bounds", oldBounds, getBounds());
+    // Now force calculation of the bounds of the figure, update the edges
+    // and trigger anyone who's listening to see if the "bounds" property
+    // has changed.
+
+    calcBounds();
+    updateEdges();
+    firePropChange("bounds", oldBounds, getBounds());
   }
+
 } /* end class FigInterface */
