@@ -1,51 +1,42 @@
-//Copyright (c) 1996-2004 The Regents of the University of California. All
-//Rights Reserved. Permission to use, copy, modify, and distribute this
-//software and its documentation without fee, and without a written
-//agreement is hereby granted, provided that the above copyright notice
-//and this paragraph appear in all copies.  This software program and
-//documentation are copyrighted by The Regents of the University of
-//California. The software program and documentation are supplied "AS
-//IS", without any accompanying services from The Regents. The Regents
-//does not warrant that the operation of the program will be
-//uninterrupted or error-free. The end-user understands that the program
-//was developed for research purposes and is advised not to rely
-//exclusively on the program for any reason.  IN NO EVENT SHALL THE
-//UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-//SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-//ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-//THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-//SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-//WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-//MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-//PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-//CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-//UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+// $Id$
+// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.argouml.kernel;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Hashtable;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.util.FileConstants;
 import org.argouml.xml.xmi.XMIParser;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
-import org.xml.sax.SAXException;
 
 /**
  * To persist to and from XMI file storage.
@@ -57,6 +48,10 @@ public class XmiFilePersister extends AbstractFilePersister {
     private static final Logger LOG = 
         Logger.getLogger(XmiFilePersister.class);
     
+    /**
+     * The constructor.
+     * Sets the extensionname and the description. 
+     */
     public XmiFilePersister() {
         extension = "xmi";
         desc = "XML Metadata Interchange";
@@ -70,7 +65,7 @@ public class XmiFilePersister extends AbstractFilePersister {
      * @throws SaveException if anything goes wrong.
      */
     public void save(Project project, File file)
-            throws SaveException {
+        throws SaveException {
         
         project.setFile(file);
         project.setVersion(ArgoVersion.getVersion());
@@ -132,7 +127,7 @@ public class XmiFilePersister extends AbstractFilePersister {
             LOG.error("Exception occured during save attempt", e);
             try {
                 writer.close();
-            } catch (IOException ex) {}
+            } catch (IOException ex) { }
             
             // frank: in case of exception 
             // delete name and mv name+"#" back to name if name+"#" exists
@@ -163,11 +158,9 @@ public class XmiFilePersister extends AbstractFilePersister {
      * 
      * @param url The URL to load the project from.
      * @return The newly loaded project.
-     * @throws IOException if the file cannot be read.
-     * @throws IllegalFormatException if we don't understand the contents.
-     * @throws SAXException if there is some syntax error in the file.
-     * @throws ParserConfigurationException if the XML parser is not 
-     *         configured properly - shouldn't happen.
+     * @throws OpenException if the file can not be opened
+     *
+     * @see org.argouml.kernel.ProjectFilePersister#loadProject(java.net.URL)
      */
     public Project loadProject(URL url) throws OpenException {
         try {
