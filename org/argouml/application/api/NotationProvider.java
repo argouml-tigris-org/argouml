@@ -52,7 +52,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MPackage;
 
-/*
+/**
  * @deprecated by Thomas Neustupny as of 0.15.6. Replaced by the NSUML free
  *             version NotationProvider2.
  */
