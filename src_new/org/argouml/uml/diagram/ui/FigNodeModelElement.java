@@ -54,6 +54,7 @@ import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.*;
+import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.cognitive.*;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
@@ -499,6 +500,13 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
       _name.setText(nameStr);
     }
     updateStereotypeText();
+
+    if (ActionAutoResize.isAutoResizable()) {
+        CmdSetPreferredSize cmdSPS = 
+            new CmdSetPreferredSize(CmdSetPreferredSize.MINIMUM_SIZE);
+        cmdSPS.setFigToResize(this);
+        cmdSPS.doIt();
+    }
   }
 
   protected void createFeatureIn(FigGroup fg, InputEvent me) {
