@@ -128,8 +128,8 @@ public class Project implements java.io.Serializable, TargetListener {
     private String description;
     private String version;
 
-    private Vector _searchpath;
-    private Vector _members;
+    private Vector searchpath;
+    private Vector members;
     private String historyFile;
 
     /**
@@ -140,13 +140,13 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Instances of the uml diagrams.
      */
-    private Vector _diagrams;
+    private Vector diagrams;
     protected Object _defaultModel;
     private boolean needsSave;
     protected Object _currentNamespace;
     private HashMap uuidRefs;
-    private GenerationPreferences _cgPrefs;
-    private transient VetoableChangeSupport _vetoSupport;
+    private GenerationPreferences cgPrefs;
+    private transient VetoableChangeSupport vetoSupport;
 
     /**
      * The root of the modeltree the user is working on. (The untitled_model in
@@ -196,12 +196,12 @@ public class Project implements java.io.Serializable, TargetListener {
         // this should be moved to a ui action.
         version = ArgoVersion.getVersion();
         
-        _searchpath = new Vector();
-        _members = new Vector();
+        searchpath = new Vector();
+        members = new Vector();
         historyFile = "";
         _models = new Vector();
-        _diagrams = new Vector();
-        _cgPrefs = new GenerationPreferences();
+        diagrams = new Vector();
+        cgPrefs = new GenerationPreferences();
         defaultModelCache = new HashMap();
         
         _saveRegistry = new UMLChangeRegistry();
@@ -351,10 +351,11 @@ public class Project implements java.io.Serializable, TargetListener {
             ZipEntry currentEntry = null;
             while ((currentEntry = sub.getNextEntry()) != null) {
                 if (currentEntry.getName().endsWith(".pgml")) {
-                    LOG.info(
-				  "Now going to load "
-				  + currentEntry.getName()
-				  + " from ZipInputStream");
+                    if (LOG.isInfoEnabled()) {
+                        LOG.info("Now going to load "
+                                 + currentEntry.getName()
+                                 + " from ZipInputStream");
+                    }
 
                     // "false" means the stream shall not be closed,
                     // but it doesn't seem to matter...
@@ -370,7 +371,9 @@ public class Project implements java.io.Serializable, TargetListener {
                             + currentEntry.getName());
                     }
                     // sub.closeEntry();
-                    LOG.info("Finished loading " + currentEntry.getName());
+                    if (LOG.isInfoEnabled()) {
+                        LOG.info("Finished loading " + currentEntry.getName());
+                    }
                 }
                 if (currentEntry.getName().endsWith(".todo")) {
                     ProjectMemberTodoList pm =
@@ -492,11 +495,11 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     public Vector getSearchPath() {
-        return _searchpath;
+        return searchpath;
     }
 
     public void addSearchPath(String searchpath) {
-        _searchpath.addElement(searchpath);
+        this.searchpath.addElement(searchpath);
     }
 
     public URL findMemberURLInSearchPath(String name) {
@@ -524,7 +527,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return a Vector with all members.
      */
     public Vector getMembers() {
-        return _members;
+        return members;
     }
 
     /**
@@ -551,18 +554,18 @@ public class Project implements java.io.Serializable, TargetListener {
             pm = new ProjectMemberModel(name, this);
         else
             throw new RuntimeException("Unknown member type " + type);
-        _members.addElement(pm);
+        members.addElement(pm);
     }
 
     public void addMember(ArgoDiagram d) {
         ProjectMember pm = new ProjectMemberDiagram(d, this);
         addDiagram(d);
         // if diagram added successfully, add the member too
-        _members.addElement(pm);
+        members.addElement(pm);
     }
 
     public void addMember(ProjectMemberTodoList pm) {
-        Iterator iter = _members.iterator();
+        Iterator iter = members.iterator();
         Object currentMember = null;
         while (iter.hasNext()) {
             currentMember = iter.next();
@@ -572,7 +575,7 @@ public class Project implements java.io.Serializable, TargetListener {
             }
         }
         // got past the veto, add the member
-        _members.addElement(pm);
+        members.addElement(pm);
     }
 
     public void addMember(Object m) {
@@ -581,7 +584,7 @@ public class Project implements java.io.Serializable, TargetListener {
             throw new IllegalArgumentException();
 	}
         
-        Iterator iter = _members.iterator();
+        Iterator iter = members.iterator();
         Object currentMember = null;
         boolean memberFound = false;
         while (iter.hasNext()) {
@@ -601,7 +604,7 @@ public class Project implements java.io.Serializable, TargetListener {
             }
             // got past the veto, add the member
             ProjectMember pm = new ProjectMemberModel(m, this);
-            _members.addElement(pm);
+            members.addElement(pm);
         }
     }
 
@@ -636,13 +639,13 @@ public class Project implements java.io.Serializable, TargetListener {
         // _members.removeElement(d);
         // ehhh lets remove the diagram really and remove it from its
         // corresponding projectmember too
-        Iterator it = _members.iterator();
+        Iterator it = members.iterator();
         while (it.hasNext()) {
             Object obj = it.next();
             if (obj instanceof ProjectMemberDiagram) {
                 ProjectMemberDiagram pmd = (ProjectMemberDiagram) obj;
                 if (pmd.getDiagram() == d) {
-                    _members.removeElement(pmd);
+                    members.removeElement(pmd);
                     break;
                 }
             }
@@ -651,8 +654,8 @@ public class Project implements java.io.Serializable, TargetListener {
 
     public ProjectMember findMemberByName(String name) {
         LOG.debug("findMemberByName called for \"" + name + "\".");
-        for (int i = 0; i < _members.size(); i++) {
-            ProjectMember pm = (ProjectMember) _members.elementAt(i);
+        for (int i = 0; i < members.size(); i++) {
+            ProjectMember pm = (ProjectMember) members.elementAt(i);
             if (name.equals(pm.getPlainName()))
                 return pm;
         }
@@ -664,10 +667,10 @@ public class Project implements java.io.Serializable, TargetListener {
     public void loadMembersOfType(String type) {
         if (type == null)
             return;
-        java.util.Enumeration members = getMembers().elements();
+        java.util.Enumeration enumeration = getMembers().elements();
         try {
-            while (members.hasMoreElements()) {
-                ProjectMember pm = (ProjectMember) members.nextElement();
+            while (enumeration.hasMoreElements()) {
+                ProjectMember pm = (ProjectMember) enumeration.nextElement();
                 if (type.equalsIgnoreCase(pm.getType()))
                     pm.load();
             }
@@ -773,7 +776,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
         String path = file.getParent();
         LOG.info("Dir ==" + path);
-        int size = _members.size();
+        int size = members.size();
 
         try {
             // First we save all objects that are not XMI objects i.e. the
@@ -783,10 +786,10 @@ public class Project implements java.io.Serializable, TargetListener {
             Collection names = new ArrayList();
             int counter = 0;  
             for (int i = 0; i < size; i++) {
-                ProjectMember p = (ProjectMember) _members.elementAt(i);
+                ProjectMember p = (ProjectMember) members.elementAt(i);
                 if (!(p.getType().equalsIgnoreCase("xmi"))) {
                     LOG.info("Saving member of type: "
-				  + ((ProjectMember) _members.elementAt(i))
+				  + ((ProjectMember) members.elementAt(i))
 				        .getType());
                     String name = p.getName();
                     String originalName = name;
@@ -802,10 +805,10 @@ public class Project implements java.io.Serializable, TargetListener {
             }
 
             for (int i = 0; i < size; i++) {
-                ProjectMember p = (ProjectMember) _members.elementAt(i);
+                ProjectMember p = (ProjectMember) members.elementAt(i);
                 if (p.getType().equalsIgnoreCase("xmi")) {
                     LOG.info("Saving member of type: "
-				  + ((ProjectMember) _members.elementAt(i))
+				  + ((ProjectMember) members.elementAt(i))
 				        .getType());
                     stream.putNextEntry(new ZipEntry(p.getName()));
                     p.save(path, overwrite, writer);
@@ -1091,7 +1094,7 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     public Vector getDiagrams() {
-        return _diagrams;
+        return diagrams;
     }
 
     /**
@@ -1101,22 +1104,22 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param name is the name to search for.
      */
     public ArgoDiagram getDiagram(String name) {
-	Iterator it = _diagrams.iterator();
-	while (it.hasNext()) {
-	    ArgoDiagram ad = (ArgoDiagram) it.next();
-	    if (ad.getName() != null
-		&& ad.getName().equals(name))
-		return ad;
-	    if (ad.getItemUID() != null
-		&& ad.getItemUID().toString().equals(name))
-		return ad;
-	}
-	return null;
+        Iterator it = diagrams.iterator();
+        while (it.hasNext()) {
+            ArgoDiagram ad = (ArgoDiagram) it.next();
+            if (ad.getName() != null
+        	&& ad.getName().equals(name))
+        	return ad;
+            if (ad.getItemUID() != null
+        	&& ad.getItemUID().toString().equals(name))
+        	return ad;
+        }
+        return null;
     } 
 
     public void addDiagram(ArgoDiagram d) {
         // send indeterminate new value instead of making copy of vector
-        _diagrams.addElement(d);
+        diagrams.addElement(d);
         d.addChangeRegistryAsListener(_saveRegistry);
         setNeedsSave(true);
     }
@@ -1132,7 +1135,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param d
      */
     protected void removeDiagram(ArgoDiagram d) {
-        _diagrams.removeElement(d);
+        diagrams.removeElement(d);
         // if the diagram is a statechart,
         // remove its associated statemachine model elements
         if (d instanceof UMLStateDiagram) {
@@ -1155,54 +1158,55 @@ public class Project implements java.io.Serializable, TargetListener {
 	}
         
         int presentations = 0;
-        int size = _diagrams.size();
+        int size = diagrams.size();
         for (int i = 0; i < size; i++) {
-            Diagram d = (Diagram) _diagrams.elementAt(i);
+            Diagram d = (Diagram) diagrams.elementAt(i);
             presentations += d.getLayer().presentationCountFor(me);
         }
         return presentations;
     }
 
     public Object getInitialTarget() {
-        if (_diagrams.size() > 0)
-            return _diagrams.elementAt(0);
+        if (diagrams.size() > 0)
+            return diagrams.elementAt(0);
         if (_models.size() > 0)
             return _models.elementAt(0);
         return null;
     }
 
     public void setGenerationPrefs(GenerationPreferences cgp) {
-        _cgPrefs = cgp;
+        cgPrefs = cgp;
     }
     public GenerationPreferences getGenerationPrefs() {
-        return _cgPrefs;
+        return cgPrefs;
     }
 
     ////////////////////////////////////////////////////////////////
     // event handling
 
     public VetoableChangeSupport getVetoSupport() {
-        if (_vetoSupport == null)
-            _vetoSupport = new VetoableChangeSupport(this);
-        return _vetoSupport;
+        if (vetoSupport == null) {
+            vetoSupport = new VetoableChangeSupport(this);
+        }
+        return vetoSupport;
     }
 
     private void preSave() {
-        for (int i = 0; i < _diagrams.size(); i++)
-	    ((Diagram) _diagrams.elementAt(i)).preSave();
+        for (int i = 0; i < diagrams.size(); i++)
+	    ((Diagram) diagrams.elementAt(i)).preSave();
         // TODO: is preSave needed for models?
     }
 
     private void postSave() {
-        for (int i = 0; i < _diagrams.size(); i++)
-	    ((Diagram) _diagrams.elementAt(i)).postSave();
+        for (int i = 0; i < diagrams.size(); i++)
+	    ((Diagram) diagrams.elementAt(i)).postSave();
         // TODO: is postSave needed for models?
         setNeedsSave(false);
     }
 
     protected void postLoad() {
-        for (int i = 0; i < _diagrams.size(); i++)
-	    ((Diagram) _diagrams.elementAt(i)).postLoad();
+        for (int i = 0; i < diagrams.size(); i++)
+	    ((Diagram) diagrams.elementAt(i)).postLoad();
         // issue 1725: the root is not set, which leads to problems
         // with displaying prop panels
         setRoot( getModel());
@@ -1251,12 +1255,12 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         if (ModelFacade.isABase(obj)) { // an object that can be represented
             ProjectBrowser.getInstance().getEditorPane()
-		.removePresentationFor(obj, getDiagrams());
+        		.removePresentationFor(obj, getDiagrams());
             // UmlModelEventPump.getPump().stopPumpingEvents();
             UmlFactory.getFactory().delete(obj);
             // UmlModelEventPump.getPump().startPumpingEvents();
-            if (_members.contains(obj)) {
-                _members.remove(obj);
+            if (members.contains(obj)) {
+                members.remove(obj);
             }
             if (_models.contains(obj)) {
                 _models.remove(obj);
@@ -1343,7 +1347,7 @@ public class Project implements java.io.Serializable, TargetListener {
 	}
         
         if (treeRoot != null) {
-            _members.remove(treeRoot);
+            members.remove(treeRoot);
             _models.remove(treeRoot);
         }
         treeRoot = root;
@@ -1377,7 +1381,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return GenerationPreferences
      */
     public GenerationPreferences getCgPrefs() {
-        return _cgPrefs;
+        return cgPrefs;
     }
 
     /**
@@ -1401,7 +1405,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return Vector
      */
     public Vector getSearchpath() {
-        return _searchpath;
+        return searchpath;
     }
 
     /**
@@ -1425,7 +1429,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param cgPrefs The cgPrefs to set
      */
     public void setCgPrefs(GenerationPreferences cgPrefs) {
-        _cgPrefs = cgPrefs;
+        this.cgPrefs = cgPrefs;
     }
 
     /**
@@ -1433,7 +1437,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param diagrams The diagrams to set
      */
     public void setDiagrams(Vector diagrams) {
-        _diagrams = diagrams;
+        this.diagrams = diagrams;
     }
 
     /**
@@ -1441,7 +1445,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param members The members to set
      */
     public void setMembers(Vector members) {
-        _members = members;
+        this.members = members;
     }
 
     /**
@@ -1465,7 +1469,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param searchpath The searchpath to set
      */
     public void setSearchpath(Vector searchpath) {
-        _searchpath = searchpath;
+        this.searchpath = searchpath;
     }
 
     /**
@@ -1489,7 +1493,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param vetoSupport The vetoSupport to set
      */
     public void setVetoSupport(VetoableChangeSupport vetoSupport) {
-        _vetoSupport = vetoSupport;
+        this.vetoSupport = vetoSupport;
     }
 
     /**
@@ -1558,22 +1562,22 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void remove() {
         
-        if (_members != null) {
-            Iterator membersIt = _members.iterator();
+        if (members != null) {
+            Iterator membersIt = members.iterator();
             while (membersIt.hasNext()) {
                 
                 ((ProjectMember) membersIt.next()).remove();
             }
             
-            _members.clear();
+            members.clear();
         }
         
         if (_models != null) {
             _models.clear();
 	}
         
-        if (_diagrams != null) {
-            _diagrams.clear();
+        if (diagrams != null) {
+            diagrams.clear();
 	}
         
         if (uuidRefs != null) {
@@ -1584,9 +1588,9 @@ public class Project implements java.io.Serializable, TargetListener {
             defaultModelCache.clear();
 	}
         
-        _members = null;
+        members = null;
         _models = null;
-        _diagrams = null;
+        diagrams = null;
         uuidRefs = null;
         defaultModelCache = null;
         
@@ -1596,12 +1600,12 @@ public class Project implements java.io.Serializable, TargetListener {
         authorname = null;
         description = null;
         version = null;
-        _searchpath = null;
+        searchpath = null;
         historyFile = null;
         _defaultModel = null;
         _currentNamespace = null;
-        _cgPrefs = null;
-        _vetoSupport = null;
+        cgPrefs = null;
+        vetoSupport = null;
         treeRoot = null;
         activeDiagram = null;
         defaultModelCache = null;

@@ -161,11 +161,11 @@ public class ActionOpenProject
                     Globals.setLastDirectory(path);
                     URL url = theFile.toURL();
                     if (url != null) {
-			loadProject(url);
-			// notification of menu bar
-			GenericArgoMenuBar menuBar =
-			    (GenericArgoMenuBar) pb.getJMenuBar();
-			menuBar.addFileSaved(theFile.getCanonicalPath());
+                        loadProject(url);
+                        // notification of menu bar
+                        GenericArgoMenuBar menuBar =
+                            (GenericArgoMenuBar) pb.getJMenuBar();
+                        menuBar.addFileSaved(theFile.getCanonicalPath());
                     }
                 }
             }

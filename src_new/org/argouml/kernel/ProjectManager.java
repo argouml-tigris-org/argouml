@@ -63,7 +63,8 @@ import org.xml.sax.SAXException;
 public final class ProjectManager {
 
     public static final String CURRENT_PROJECT_PROPERTY_NAME =
-	"currentProject";
+        "currentProject";
+    
     public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
 
     /** logger */
@@ -301,19 +302,13 @@ public final class ProjectManager {
      *         configured. - Shouldn't happen.
      */
     private Project loadProjectFromZargo(URL url)
-        throws IOException, SAXException, ParserConfigurationException {
+            throws IOException, SAXException, ParserConfigurationException {
         Project p = null;
         // read the argo 
         try {
-            ZipInputStream zis = new ZipInputStream(url.openStream());
-
             // first read the .argo file from Zip
-            ZipEntry entry = zis.getNextEntry();
-            while (entry != null
-		   && !entry.getName().endsWith(FileConstants.PROJECT_FILE_EXT))
-	    {
-                entry = zis.getNextEntry();
-            }
+            ZipInputStream zis = 
+                openZipStreamAt(url, FileConstants.PROJECT_FILE_EXT);
 
             // the "false" means that members should not be added,
             // we want to do this by hand from the zipped stream.
@@ -323,7 +318,6 @@ public final class ProjectManager {
             ArgoParser.SINGLETON.setProject(null); // clear up project refs
 
             zis.close();
-
         } catch (IOException e) {
             // exception can occur both due to argouml code as to J2SE
             // code, so lets log it
@@ -338,21 +332,22 @@ public final class ProjectManager {
             String name = zis.getNextEntry().getName();
             while (!name.endsWith(".xmi")) {
                 ZipEntry nextEntry = zis.getNextEntry();
-                if (nextEntry == null)
+                if (nextEntry == null) {
                     throw new IOException("The XMI file is missing "
 					  + "from the .zargo file.");
+                }
                 name = nextEntry.getName();
             }
 
             XMIReader xmiReader = null;
             try {
                 xmiReader = new XMIReader();
-            } catch (SAXException se) { // duh, this must be catched and handled
-                LOG.error(se);
+            } catch (SAXException se) { // duh, this must be caught and handled
+                LOG.error("SAXException caught", se);
                 throw se;
             } catch (ParserConfigurationException pc) {
-		// duh, this must be catched and handled
-                LOG.error(pc);
+                // duh, this must be caught and handled
+                LOG.error("ParserConfigurationException caught", pc);
                 throw pc;
             }
 //            Object mmodel = null;
@@ -367,20 +362,16 @@ public final class ProjectManager {
                 if (xmiReader.getErrors()) {
                     ArgoParser.SINGLETON.setLastLoadStatus(false);
                     ArgoParser.SINGLETON.setLastLoadMessage(
-                        "XMI file "
-                            + url.toString()
-                            + " could not be "
-                            + "parsed.");
+                        "XMI file " + url.toString()
+                        + " could not be parsed.");
                     LOG.error(
                         "XMI file "
-                            + url.toString()
-                            + " could not be "
-                            + "parsed.");
+                        + url.toString()
+                        + " could not be parsed.");
                     throw new SAXException(
                         "XMI file "
-                            + url.toString()
-                            + " could not be "
-                            + "parsed.");
+                        + url.toString()
+                        + " could not be parsed.");
                 }
             }
             zis.close();
@@ -388,7 +379,7 @@ public final class ProjectManager {
         } catch (IOException e) {
             // exception can occur both due to argouml code as to J2SE
             // code, so lets log it
-            LOG.error(e);
+            LOG.error("IOException caught", e);
             throw e;
         }
         p.loadZippedProjectMembers(url);
@@ -396,6 +387,24 @@ public final class ProjectManager {
         return p;
     }
 
+    /**
+     * Open a ZipInputStream to the first file found with
+     * a given extension.
+     * @param url The URL of the zip file.
+     * @param ext The required extension.
+     * @return the zip stream positioned at the required location.
+     */
+    private ZipInputStream openZipStreamAt(URL url, String ext)
+            throws IOException{
+        ZipInputStream zis = new ZipInputStream(url.openStream());
+        ZipEntry entry = zis.getNextEntry();
+        while (entry != null
+                && !entry.getName().endsWith(FileConstants.PROJECT_FILE_EXT)) {
+            entry = zis.getNextEntry();
+        }
+        return zis;
+    }
+    
     /**
      * Notify the gui from the project manager that the
      * current project's save state has changed.
