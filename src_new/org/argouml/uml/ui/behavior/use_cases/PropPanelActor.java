@@ -70,8 +70,14 @@ public class PropPanelActor extends PropPanelClassifier {
 
     public PropPanelActor() {
     	super("Actor", ConfigLoader.getTabPropsOrientation());
+
+
     	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
     	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+
+        addField(Argo.localize("UMLMenu", "label.modifiers"),
+                 _modifiersPanel);
+
     	addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceComboBox());
 
     	addSeperator();
