@@ -42,7 +42,7 @@ public class ActivityGraphsHelper {
     
     /** Singleton instance.
      */
-    private static ActivityGraphsHelper SINGLETON =
+    private static ActivityGraphsHelper singleton =
                    new ActivityGraphsHelper();
 
     
@@ -50,7 +50,7 @@ public class ActivityGraphsHelper {
      * @return the singleton instance of the helper
      */
     public static ActivityGraphsHelper getHelper() {
-        return SINGLETON;
+        return singleton;
     }
 }
 
