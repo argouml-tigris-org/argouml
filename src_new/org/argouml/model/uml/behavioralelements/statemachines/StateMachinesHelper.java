@@ -32,6 +32,7 @@ import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MStubState;
 import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
@@ -234,5 +235,7 @@ public class StateMachinesHelper {
             ((MSubmachineState)oSubmachineState).setSubmachine((MStateMachine)oStatemachine);
         }
     }
+    
+    
 
 }
