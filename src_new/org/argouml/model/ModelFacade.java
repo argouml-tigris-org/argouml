@@ -1578,9 +1578,10 @@ public class ModelFacade {
      * @param flag
      */
     public static void setAbstract(Object o, boolean flag) {
-        if (o != null && o instanceof MClassifier) {
-            ((MClassifier)o).setAbstract(flag);
-        }
+        if (o != null ) {
+        	if ( o instanceof MClassifier)  ((MClassifier)o).setAbstract(flag);
+        	else if ( o instanceof MOperation)  ((MOperation)o).setAbstract(flag);
+        } 
     }
 
     /**
