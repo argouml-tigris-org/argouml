@@ -48,8 +48,6 @@ import org.argouml.model.uml.UmlHelper;
 /**
  * This class extends the default Argo JTree with Drag and drop capabilities.
  *
- * <p>$Id$
- *
  * @author  alexb
  * @since Created on 16 April 2003
  */

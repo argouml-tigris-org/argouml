@@ -32,9 +32,9 @@ import org.argouml.i18n.Translator;
 
 /**
  * Represents a perspective (or view) of the uml model for display in the
- * explorer.
+ * explorer.<p>
  *
- * This class replaces the old NavPerspective class. This is much simpler.
+ * This class replaces the old NavPerspective class. This is much simpler.<p>
  *
  * The rules in the perspective generate child nodes for any given parent
  * node in the explorer tree view. Those nodes are then stored as user objects

@@ -61,12 +61,12 @@ import org.argouml.uml.ui.TabProps;
 import org.argouml.util.ConfigLoader;
 
 /**
- * The lower-right pane of the main Argo/UML window, which shows
- * the details of a selected model element. 
+ * The lower-right pane of the main ArgoUML window, which shows
+ * the details of a selected model element. <p>
  * 
  * This panel has several tabs that show details of the selected
- * ToDoItem, or the selected model element in the NavigationPane, or
- * the MultiEditorPane.
+ * ToDoItem, or the selected model element in the Explorer (NavigatorPane), 
+ * or the MultiEditorPane. <p>
  *
  * There are requests to have the cursor automatically
  * be set to the primary field.
@@ -101,7 +101,7 @@ public class DetailsPane
     private Object currentTarget;
 
     /**
-     * a list of all the tabs, which are JPanels, in the JTabbedPane _tabs.
+     * a list of all the tabs, which are JPanels, in the JTabbedPane tabs.
      */
     private Vector tabPanelList = new Vector();
 
@@ -136,7 +136,7 @@ public class DetailsPane
     // constructors
 
     /**
-     * Gets all of the _tabPanels from the ConfigLoader, then 
+     * Gets all of the tabPanels from the ConfigLoader, then 
      * adds them to the JTabbedPane.<p>
      *
      * Sets the target to null.<p>

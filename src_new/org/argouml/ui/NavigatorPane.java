@@ -114,10 +114,9 @@ public class NavigatorPane
      * Constructs a new navigator panel.
      * 
      * <p>This panel consists of a Combobox to select a navigation
-     * perspective, a JTree to display the UML model, some history
-     * (back and forward arrows) buttons that are currently disabled,
-     * and a configuration dialog to tailor the perspectives (but this
-     * is not saved).
+     * perspective, a combobox to select ordering,
+     * a JTree to display the UML model, 
+     * and a configuration dialog to tailor the perspectives.
      */
     private NavigatorPane(boolean doSplash) {
         

@@ -60,7 +60,7 @@ public class DisplayTextTree extends JTree {
     private boolean reexpanding;
 
     /** Sets the label renderer, line style angled, enable tooltips,
-     *  sets row hieght to 18 pixels.
+     *  sets row height to 18 pixels.
      */
     public DisplayTextTree() {
 
@@ -81,7 +81,7 @@ public class DisplayTextTree extends JTree {
     // ------------ methods that override JTree methods ---------
 
     /**
-     * override default JTree implementation to display the
+     * Override the default JTree implementation to display the
      * appropriate text for any object that will be displayed in
      * the todo list.
      * 
