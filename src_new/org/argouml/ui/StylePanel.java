@@ -23,22 +23,22 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.text.Document;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.border.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.tigris.gef.presentation.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Category;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.tigris.gef.presentation.Fig;
 
 public class StylePanel extends TabSpawnable
 implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, ActionListener {
@@ -84,7 +84,11 @@ implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, 
   /**
    * style panels ony apply when a Fig is selected.
    */
-  public boolean shouldBeEnabled(Object target) { return (_target instanceof Fig) ; }
+  public boolean shouldBeEnabled(Object target) { 
+      ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+      target = (target instanceof Fig) ? target : diagram.getContainingFig(target);
+      return (target instanceof Fig) ; 
+  }
 
   ////////////////////////////////////////////////////////////////
   // actions
@@ -125,6 +129,30 @@ implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, 
   }
 
   
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
 } /* end class StylePanel */
 
 

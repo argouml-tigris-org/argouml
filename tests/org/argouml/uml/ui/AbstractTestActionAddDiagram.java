@@ -40,11 +40,14 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
     }
 
     protected void setUp() {
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-        _action = getAction();
+        try {
+            ArgoSecurityManager.getInstance().setAllowExit(true);
+            _action = getAction();
 
-        _ns = getNamespace();
-        _validNamespaces = getValidNamespaceClasses();
+            _ns = getNamespace();
+            _validNamespaces = getValidNamespaceClasses();
+        } catch (Exception noHead) {
+        }
     }
 
     protected void tearDown() {

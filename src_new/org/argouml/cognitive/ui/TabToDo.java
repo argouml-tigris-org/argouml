@@ -23,158 +23,194 @@
 
 package org.argouml.cognitive.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.awt.BorderLayout;
 
-import org.argouml.cognitive.ui.*;
+import javax.swing.JPanel;
+import javax.swing.JToolBar;
 
-import org.argouml.kernel.*;
-import org.argouml.cognitive.*;
-import org.argouml.ui.*;
-import org.argouml.uml.ui.*;
-
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.kernel.Wizard;
 import org.argouml.swingext.Toolbar;
+import org.argouml.ui.Actions;
+import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.UMLAction;
 
 public class TabToDo extends TabSpawnable implements TabToDoTarget {
-  ////////////////////////////////////////////////////////////////
-  // static variables
-  public static int _numHushes = 0;
+    ////////////////////////////////////////////////////////////////
+    // static variables
+    public static int _numHushes = 0;
 
-  public static UMLAction _actionNewToDoItem = Actions.NewToDoItem;
-  public static UMLAction _actionResolve = Actions.Resolve;
-  public static UMLAction _actionEmailExpert = Actions.EmailExpert;
-  //public static UMLAction _actionMoreInfo = Actions.MoreInfo;
-  public static UMLAction _actionSnooze = Actions.Snooze;
-  //public static UMLAction _actionRecordFix = Actions.RecordFix;
-  //public static UMLAction _actionReplayFix = Actions.ReplayFix;
-  //public static UMLAction _actionFixItNext = Actions.FixItNext;
-  //public static UMLAction _actionFixItBack = Actions.FixItBack;
-  //public static UMLAction _actionFixItFinish = Actions.FixItFinish;
-  
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  Object _target;  //not ToDoItem
-  //JButton _newButton = new JButton("New");
-  //JButton _resolveButton = new JButton("Resolve");
-  //JButton _fixItButton = new JButton("FixIt");  //html
-  //JButton _moreInfoButton = new JButton("More Info"); //html
-  //JButton _emailExpertButton = new JButton("Email Expert"); //html
-  //JButton _snoozeButton = new JButton("Snooze");
-  //JTextArea _description = new JTextArea();
-  WizDescription _description = new WizDescription();
-  JPanel _lastPanel = null;
-  
+    public static UMLAction _actionNewToDoItem = Actions.NewToDoItem;
+    public static UMLAction _actionResolve = Actions.Resolve;
+    public static UMLAction _actionEmailExpert = Actions.EmailExpert;
+    //public static UMLAction _actionMoreInfo = Actions.MoreInfo;
+    public static UMLAction _actionSnooze = Actions.Snooze;
+    //public static UMLAction _actionRecordFix = Actions.RecordFix;
+    //public static UMLAction _actionReplayFix = Actions.ReplayFix;
+    //public static UMLAction _actionFixItNext = Actions.FixItNext;
+    //public static UMLAction _actionFixItBack = Actions.FixItBack;
+    //public static UMLAction _actionFixItFinish = Actions.FixItFinish;
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public TabToDo() {
-    super("tab.todo-item");
-    setLayout(new BorderLayout());
-//     JPanel buttonPane = new JPanel();
-//     buttonPane.setFont(new Font("Dialog", Font.PLAIN, 9));
-//     buttonPane.setLayout(new FlowLayout());
-//     buttonPane.add(_newButton);
-//     _newButton.setFont(new Font("Dialog", Font.PLAIN, 9));
-//     buttonPane.add(_resolveButton);
-//     _resolveButton.setFont(new Font("Dialog", Font.PLAIN, 9));
-//     buttonPane.add(_fixItButton);
-//     _fixItButton.setFont(new Font("Dialog", Font.PLAIN, 9));
-//     buttonPane.add(_moreInfoButton);
-//     _moreInfoButton.setFont(new Font("Dialog", Font.PLAIN, 9));
-//     buttonPane.add(_emailExpertButton);
-//     _emailExpertButton.setFont(new Font("Dialog", Font.PLAIN, 9));
-//     buttonPane.add(_snoozeButton);
-//     _snoozeButton.setFont(new Font("Dialog", Font.PLAIN, 9));
-//     add(buttonPane, BorderLayout.NORTH);
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    //JButton _newButton = new JButton("New");
+    //JButton _resolveButton = new JButton("Resolve");
+    //JButton _fixItButton = new JButton("FixIt");  //html
+    //JButton _moreInfoButton = new JButton("More Info"); //html
+    //JButton _emailExpertButton = new JButton("Email Expert"); //html
+    //JButton _snoozeButton = new JButton("Snooze");
+    //JTextArea _description = new JTextArea();
+    WizDescription _description = new WizDescription();
+    JPanel _lastPanel = null;
 
-    Toolbar toolBar = new Toolbar(JToolBar.VERTICAL);
-    //toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.Y_AXIS));
-    toolBar.add(_actionNewToDoItem);
-    toolBar.add(_actionResolve);
-    toolBar.add(_actionEmailExpert);
-    //toolBar.add(_actionMoreInfo);
-    toolBar.add(_actionSnooze);
-    toolBar.addSeparator();
-    
-//     toolBar.add(_actionRecordFix);
-//     toolBar.add(_actionReplayFix);
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public TabToDo() {
+        super("tab.todo-item");
+        setLayout(new BorderLayout());
+        //     JPanel buttonPane = new JPanel();
+        //     buttonPane.setFont(new Font("Dialog", Font.PLAIN, 9));
+        //     buttonPane.setLayout(new FlowLayout());
+        //     buttonPane.add(_newButton);
+        //     _newButton.setFont(new Font("Dialog", Font.PLAIN, 9));
+        //     buttonPane.add(_resolveButton);
+        //     _resolveButton.setFont(new Font("Dialog", Font.PLAIN, 9));
+        //     buttonPane.add(_fixItButton);
+        //     _fixItButton.setFont(new Font("Dialog", Font.PLAIN, 9));
+        //     buttonPane.add(_moreInfoButton);
+        //     _moreInfoButton.setFont(new Font("Dialog", Font.PLAIN, 9));
+        //     buttonPane.add(_emailExpertButton);
+        //     _emailExpertButton.setFont(new Font("Dialog", Font.PLAIN, 9));
+        //     buttonPane.add(_snoozeButton);
+        //     _snoozeButton.setFont(new Font("Dialog", Font.PLAIN, 9));
+        //     add(buttonPane, BorderLayout.NORTH);
 
-    //     toolBar.add(_actionFixItNext);
-    //     toolBar.add(_actionFixItBack);
-    //     toolBar.add(_actionFixItFinish);
+        Toolbar toolBar = new Toolbar(JToolBar.VERTICAL);
+        //toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.Y_AXIS));
+        toolBar.add(_actionNewToDoItem);
+        toolBar.add(_actionResolve);
+        toolBar.add(_actionEmailExpert);
+        //toolBar.add(_actionMoreInfo);
+        toolBar.add(_actionSnooze);
+        toolBar.addSeparator();
 
-    //     addTool(toolBar, "New");
-    //     addTool(toolBar, "FixIt");
-    //     addTool(toolBar, "Resolve");
-    //     addTool(toolBar, "EmailExpert");
-    //     addTool(toolBar, "MoreInfo");
-    //     addTool(toolBar, "Snooze");
-    //     //_description.setFont(new Font("Dialog", Font.PLAIN, 9));
-    add(toolBar, BorderLayout.WEST);
-//     _description.setLineWrap(true);
-//     _description.setWrapStyleWord(true);
+        //     toolBar.add(_actionRecordFix);
+        //     toolBar.add(_actionReplayFix);
 
-    //Font userFont = MetalLookAndFeel.getUserTextFont();
-    //_description.setFont(userFont);
-    //add(new JScrollPane(_description), BorderLayout.CENTER);
-    //@ add(_description, BorderLayout.CENTER);
-    setTarget(null);
-  }
+        //     toolBar.add(_actionFixItNext);
+        //     toolBar.add(_actionFixItBack);
+        //     toolBar.add(_actionFixItFinish);
 
-  public void showDescription() {
-    if (_lastPanel != null) remove(_lastPanel);
-    add(_description, BorderLayout.CENTER);
-    _lastPanel = _description;
-    validate();
-    repaint();
-  }
+        //     addTool(toolBar, "New");
+        //     addTool(toolBar, "FixIt");
+        //     addTool(toolBar, "Resolve");
+        //     addTool(toolBar, "EmailExpert");
+        //     addTool(toolBar, "MoreInfo");
+        //     addTool(toolBar, "Snooze");
+        //     //_description.setFont(new Font("Dialog", Font.PLAIN, 9));
+        add(toolBar, BorderLayout.WEST);
+        //     _description.setLineWrap(true);
+        //     _description.setWrapStyleWord(true);
 
-  public void showStep(JPanel ws) {
-    if (_lastPanel != null) remove(_lastPanel);
-    if (ws != null) {
-      add(ws, BorderLayout.CENTER);
-      _lastPanel = ws;
+        //Font userFont = MetalLookAndFeel.getUserTextFont();
+        //_description.setFont(userFont);
+        //add(new JScrollPane(_description), BorderLayout.CENTER);
+        //@ add(_description, BorderLayout.CENTER);
+        setTarget(null);
     }
-    else {
-      add(_description, BorderLayout.CENTER);
-      _lastPanel = _description;
+
+    public void showDescription() {
+        if (_lastPanel != null)
+            remove(_lastPanel);
+        add(_description, BorderLayout.CENTER);
+        _lastPanel = _description;
+        validate();
+        repaint();
     }
-    validate();
-    repaint();
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
-  public void setTarget(Object item) {  //ToDoItem
-    _target = item;
-    updateActionsEnabled();
-    _description.setTarget(_target);
-    Wizard w = null;
-    if (_target instanceof ToDoItem) w = ((ToDoItem)_target).getWizard();
-    if (w != null) showStep(w.getCurrentPanel());
-    else { showDescription(); }
-  }
+    public void showStep(JPanel ws) {
+        if (_lastPanel != null)
+            remove(_lastPanel);
+        if (ws != null) {
+            add(ws, BorderLayout.CENTER);
+            _lastPanel = ws;
+        } else {
+            add(_description, BorderLayout.CENTER);
+            _lastPanel = _description;
+        }
+        validate();
+        repaint();
+    }
 
-  public Object getTarget() { return _target; }
+    /**
+     * Sets the target of the TabToDo
+     * @deprecated Replaced by implementing TargetListener. Will change visibility
+     * to protected in a couple of releases.
+     * @param Object the new target
+     */
+    public void setTarget(Object item) {
+        Object target = item;
+        updateActionsEnabled();
+        // the target of description will allways be set directly by tabtodo
+        _description.setTarget(target);
+        Wizard w = null;
+        if (target instanceof ToDoItem)
+            w = ((ToDoItem) target).getWizard();
+        if (w != null)
+            showStep(w.getCurrentPanel());
+        else {
+            showDescription();
+        }
+    }
 
-  public void refresh() { setTarget(_target); }
+   /**
+    * Returns the target of the TabToDo
+    * @deprecated this method will be removed in a couple of releases
+    * Use TargetManager.getInstance().getTarget() instead
+    * @return The current target of the TabToDo
+    */
+    public Object getTarget() {
+        return TargetManager.getInstance().getTarget();
+    }
 
-  protected void updateActionsEnabled() {
-    _actionResolve.updateEnabled(_target);
-    _actionEmailExpert.updateEnabled(_target);
-    _actionSnooze.updateEnabled(_target);
-  }
+    public void refresh() {
+        setTarget(TargetManager.getInstance().getTarget());
+    }
 
+    protected void updateActionsEnabled() {
+        Object target = TargetManager.getInstance().getTarget();
+        _actionResolve.updateEnabled(target);
+        _actionEmailExpert.updateEnabled(target);
+        _actionSnooze.updateEnabled(target);
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        // we can neglect this, the todopane allways selects the first target
+        // in a set of targets. The first target can only be 
+        // changed in a targetRemoved or a TargetSet event
+
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        // how to handle empty target lists?
+        // probably the TabTodo should only show an empty pane in that case
+        setTarget(e.getNewTargets()[0]);
+
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        setTarget(e.getNewTargets()[0]);
+    }
 
 } /* end class TabToDo */
-
-
-
-
-
-

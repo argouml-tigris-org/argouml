@@ -24,12 +24,14 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-import org.argouml.util.ConfigLoader;
+import javax.swing.JScrollPane;
+
+import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.swingext.LabelledLayout;
-import ru.novosoft.uml.foundation.core.*;
-import javax.swing.*;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.util.ConfigLoader;
+import org.tigris.gef.presentation.Fig;
 
 /** This the tab in the details pane for documentation.
  * It has been tested for saving and does work.
@@ -59,9 +61,9 @@ import javax.swing.*;
  */
 public class TabDocumentation extends PropPanel {
 
-  private static final String BUNDLE = "Cognitive";
+    private static final String BUNDLE = "Cognitive";
     ////////////////////////////////////////////////////////////////
-  
+
     /**
      * Construct new documentation tab
      */
@@ -70,47 +72,94 @@ public class TabDocumentation extends PropPanel {
         //uses the new LabelledLayout;
         //TODO: the title of the prop panel is localized using the localisation of documentation
         //- should this change? (Raphael)
-        super(Argo.localize(BUNDLE,"docpane.label.documentation"),ConfigLoader.getTabPropsOrientation());
-//        super("tab.documentation", null, 2); // Change this to call labelled layout constructor
+        super(
+            Argo.localize(BUNDLE, "docpane.label.documentation"),
+            ConfigLoader.getTabPropsOrientation());
+        //        super("tab.documentation", null, 2); // Change this to call labelled layout constructor
 
-        addField(Argo.localize(BUNDLE, "docpane.label.author") + ":",
-                 new UMLTextField2(new UMLModelElementTaggedValueDocument("author")));
+        addField(
+            Argo.localize(BUNDLE, "docpane.label.author") + ":",
+            new UMLTextField2(
+                new UMLModelElementTaggedValueDocument("author")));
 
         //unknown where this information is stored; it does not go to myproject.argo (xml file)
-        addField(Argo.localize(BUNDLE, "docpane.label.version") + ":",
-                 new UMLTextField2(new UMLModelElementTaggedValueDocument("version")));
+        addField(
+            Argo.localize(BUNDLE, "docpane.label.version") + ":",
+            new UMLTextField2(
+                new UMLModelElementTaggedValueDocument("version")));
 
-        addField(Argo.localize(BUNDLE, "docpane.label.since") + ":",
-                 new UMLTextField2(new UMLModelElementTaggedValueDocument("since")));
+        addField(
+            Argo.localize(BUNDLE, "docpane.label.since") + ":",
+            new UMLTextField2(new UMLModelElementTaggedValueDocument("since")));
 
         //TODO: change UMLCheckBox to UMLCheckBox2 (Raphael)
-        addField(Argo.localize(BUNDLE, "docpane.label.deprecated") + ":",
-                 new UMLCheckBox("",this,new UMLTaggedBooleanProperty("deprecated")));
+        addField(
+            Argo.localize(BUNDLE, "docpane.label.deprecated") + ":",
+            new UMLCheckBox(
+                "",
+                this,
+                new UMLTaggedBooleanProperty("deprecated")));
 
-        UMLTextArea2 _see = new UMLTextArea2(new UMLModelElementTaggedValueDocument("see"));
+        UMLTextArea2 _see =
+            new UMLTextArea2(new UMLModelElementTaggedValueDocument("see"));
         _see.setRows(2);
         _see.setLineWrap(true);
         _see.setWrapStyleWord(true);
         JScrollPane spSee = new JScrollPane();
         spSee.getViewport().add(_see);
-        addField(Argo.localize(BUNDLE, "docpane.label.see") + ":",spSee);
+        addField(Argo.localize(BUNDLE, "docpane.label.see") + ":", spSee);
 
         //make new column with LabelledLayout
         add(LabelledLayout.getSeperator());
 
-        UMLTextArea2 _doc = new UMLTextArea2(new UMLModelElementTaggedValueDocument("documentation"));
+        UMLTextArea2 _doc =
+            new UMLTextArea2(
+                new UMLModelElementTaggedValueDocument("documentation"));
 
         _doc.setRows(2);
         _doc.setLineWrap(true);
         _doc.setWrapStyleWord(true);
         JScrollPane spDocs = new JScrollPane();
         spDocs.getViewport().add(_doc);
-        addField(Argo.localize(BUNDLE, "docpane.label.documentation") + ":",spDocs);
+        addField(
+            Argo.localize(BUNDLE, "docpane.label.documentation") + ":",
+            spDocs);
     }
 
+    /**
+     * Checks if the tabprops should be enabled. Returns true if the target returned
+     * by getTarget is a modelelement or if that target shows up as Fig on the
+     * active diagram and has a modelelement as owner.
+     * @return true if this tab should be enabled, otherwise false.
+     */
     public boolean shouldBeEnabled() {
         Object target = getTarget();
-        return target instanceof MModelElement;
+        target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
+        return ModelFacade.isAModelElement(target);
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        // TODO Auto-generated method stub
+
     }
 
 } /* end class TabDocumentation */

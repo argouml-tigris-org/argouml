@@ -42,6 +42,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
 import org.argouml.ui.*;
+import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.*;
 
 public class PropPanelString extends TabSpawnable implements TabModelTarget, PropertyChangeListener, DocumentListener {
@@ -129,5 +130,29 @@ public class PropPanelString extends TabSpawnable implements TabModelTarget, Pro
 		}
 			
 	}
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
 
 } /* end class PropPanelString */

@@ -21,10 +21,26 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// TODO: remove all methods before release 0.16. They are all deprecated
+
 package org.argouml.cognitive.ui;
 
-public interface TabToDoTarget {
-  public void setTarget(Object o); //ToDoItem
-  public Object getTarget(); //ToDoItem
-  public void refresh();
+import org.argouml.ui.targetmanager.TargetListener;
+
+public interface TabToDoTarget extends TargetListener {
+    /**
+     * Sets the target of the TabToDo
+     * @deprecated this method will be removed in a couple of releases
+     * @param o
+     */
+    public void setTarget(Object o); //ToDoItem
+    /**
+     * Returns the target of the TabToDo
+     * @deprecated this method will be removed in a couple of releases
+     * Use TargetManager.getInstance().getTarget() instead
+     * @return The current target of the TabToDo
+     */
+    public Object getTarget();
+    
+    public void refresh();
 }

@@ -941,8 +941,10 @@ public class FigClass extends FigNodeModelElement {
                 ProjectBrowser.getInstance().setTarget(f);
             }
         }
+        
         if (targetIsSet == false)
             ProjectBrowser.getInstance().setTarget(getOwner());
+            
 
     }
 

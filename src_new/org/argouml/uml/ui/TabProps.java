@@ -49,12 +49,14 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.events.ArgoModuleEventListener;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.swingext.Orientable;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.NavigationListener;
 import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
@@ -114,6 +116,7 @@ import org.argouml.uml.ui.foundation.core.PropPanelOperation;
 import org.argouml.uml.ui.foundation.core.PropPanelParameter;
 import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelStereotype;
 import org.argouml.util.ConfigLoader;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.behavior.activity_graphs.MActionStateImpl;
@@ -335,13 +338,21 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
 
   ////////////////////////////////////////////////////////////////
   // accessors
+  /**
+   * Sets the target of the property panel. The given target t may either be a 
+   * Diagram or a modelelement. If the target given is a Fig, a check is made if the fig has an owning modelelement and occurs on
+   * the current diagram. If so, that modelelement is the target.
+   */
 	public void setTarget(Object t) {
             
 		// don't need to change the target if it is the same as the
                 // existing one!
                 if(_target == t)
                     return;
-                
+       // targets ought to be modelelements or diagrams 
+        ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+       t = (t instanceof Fig) ? ((Fig)t).getOwner() : t;
+       if (!(ModelFacade.isABase(t) || t instanceof ArgoDiagram)) return;
                 _target = t;
                 
 		if (_lastPanel != null) remove(_lastPanel);
@@ -438,12 +449,18 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
   /**
    * Determines if the property panel should be enabled. Returns true if it
    * should be enabled. The property panel should allways be enabled if the
-   * target is an instance of a modelelement or an argodiagram.
+   * target is an instance of a modelelement or an argodiagram. If the target given
+   * is a Fig, a check is made if the fig has an owning modelelement and occurs on
+   * the current diagram. If so, that modelelement is the target.
    * @see org.argouml.ui.TabTarget#shouldBeEnabled(Object)
    */
   public boolean shouldBeEnabled(Object target) {
+      ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+      target = (target instanceof Fig) ? ((Fig)target).getOwner() : target;
         if (ModelFacade.isADiagram(target) || ModelFacade.isABase(target)) {
             _shouldBeEnabled = true;              
+        } else {
+            _shouldBeEnabled = false;
         }
         /*
 		if (target == null) {
@@ -483,6 +500,30 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
   public void moduleUnloaded (ArgoModuleEvent event) { }
   public void moduleEnabled (ArgoModuleEvent event) { }
   public void moduleDisabled (ArgoModuleEvent event) { }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
 
 } /* end class TabProps */
 

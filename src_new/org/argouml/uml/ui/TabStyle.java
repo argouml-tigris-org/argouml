@@ -29,217 +29,291 @@
 // 12 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
 // use case style panel that handles optional display of extension points.
 
-
 package org.argouml.uml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Collection;
+import java.util.Hashtable;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.model_management.*;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
-import org.tigris.gef.base.Diagram;
+import org.argouml.kernel.DelayedChangeNotify;
+import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
+import org.argouml.ui.StylePanel;
+import org.argouml.ui.StylePanelFig;
+import org.argouml.ui.TabFigTarget;
+import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.uml.diagram.state.ui.FigSimpleState;
+import org.argouml.uml.diagram.state.ui.FigTransition;
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigInstance;
+import org.argouml.uml.diagram.static_structure.ui.FigInterface;
+import org.argouml.uml.diagram.static_structure.ui.FigLink;
+import org.argouml.uml.diagram.static_structure.ui.StylePanelFigClass;
+import org.argouml.uml.diagram.static_structure.ui.StylePanelFigInterface;
+import org.argouml.uml.diagram.ui.FigAssociation;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigGeneralization;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.FigRealization;
+import org.argouml.uml.diagram.ui.SPFigEdgeModelElement;
+import org.argouml.uml.diagram.use_case.ui.FigActor;
+import org.argouml.uml.diagram.use_case.ui.FigUseCase;
+import org.argouml.uml.diagram.use_case.ui.StylePanelFigUseCase;
 import org.tigris.gef.presentation.Fig;
 
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.state.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.uml.diagram.use_case.ui.*;
+public class TabStyle
+    extends TabSpawnable
+    implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    protected Fig _target;
+    protected boolean _shouldBeEnabled = false;
+    protected JPanel _blankPanel = new JPanel();
+    protected Hashtable _panels = new Hashtable();
+    protected JPanel _lastPanel = null;
+    protected TabFigTarget _stylePanel = null;
+    protected String _panelClassBaseName = "";
+    protected String _alternativeBase = "";
 
-public class TabStyle extends TabSpawnable
-implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected Fig           _target;
-  protected boolean       _shouldBeEnabled    = false;
-  protected JPanel        _blankPanel         = new JPanel();
-  protected Hashtable     _panels             = new Hashtable();
-  protected JPanel        _lastPanel          = null;
-  protected TabFigTarget  _stylePanel         = null;
-  protected String        _panelClassBaseName = "";
-  protected String        _alternativeBase    = "";
-
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public TabStyle(String tabName, String panelClassBase, String altBase) {
-    super(tabName);
-    _panelClassBaseName = panelClassBase;
-    _alternativeBase = altBase;
-    setLayout(new BorderLayout());
-    //setFont(new Font("Dialog", Font.PLAIN, 10));
-    initPanels();
-  }
-
-  public TabStyle() {
-    this("tab.style", "style.StylePanel", "style.SP");
-  }
-
-  protected void initPanels() {
-    StylePanelFigClass spfc      = new StylePanelFigClass();
-    StylePanelFigInterface spfi  = new StylePanelFigInterface();
-    StylePanelFigUseCase spfuc   = new StylePanelFigUseCase();
-    SPFigEdgeModelElement spfeme = new SPFigEdgeModelElement();
-    StylePanelFig spf            = new StylePanelFig();
-
-    _panels.put(FigClass.class, spfc);
-    _panels.put(FigUseCase.class, spfuc);
-    _panels.put(FigNodeModelElement.class, spf);
-    _panels.put(FigEdgeModelElement.class, spfeme);
-    _panels.put(FigInterface.class, spfi);
-    _panels.put(FigAssociation.class, spfeme);
-    _panels.put(FigSimpleState.class, spf);
-    _panels.put(FigTransition.class, spfeme);
-    _panels.put(FigActor.class, spf);
-    _panels.put(FigInstance.class, spf);
-    _panels.put(FigLink.class, spfeme);
-    _panels.put(FigGeneralization.class, spfeme);
-    _panels.put(FigRealization.class, spfeme);
-  }
-
-   /** Adds a style panel to the internal list. This allows a plugin to
-   *  add and register a new style panel at run-time. This property style will
-   *  then be displayed in the detatils pane whenever an element of the given 
-   *  metaclass is selected.
-   *
-   * @param c the metaclass whose details show be displayed in the property panel p
-   * @param s an instance of the style panel for the metaclass m
-   *
-   */
-  public void addPanel(Class c, StylePanel s) {
-    _panels.put(c,s);
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-  public void setTarget(Object t) {
-    if (_target != null) _target.removePropertyChangeListener(this);
-    
-    if( !(t instanceof Fig))
-        return;
-    
-    _target = (Fig)t;
-    if (_target != null) _target.addPropertyChangeListener(this);
-    if (_lastPanel != null) remove(_lastPanel);
-    if (t == null) {
-      add(_blankPanel, BorderLayout.NORTH);
-      _shouldBeEnabled = false;
-      _lastPanel = _blankPanel;
-      return;
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public TabStyle(String tabName, String panelClassBase, String altBase) {
+        super(tabName);
+        _panelClassBaseName = panelClassBase;
+        _alternativeBase = altBase;
+        setLayout(new BorderLayout());
+        //setFont(new Font("Dialog", Font.PLAIN, 10));
+        initPanels();
     }
-    _shouldBeEnabled = true;
-    _stylePanel = null;
-    Class targetClass = t.getClass();
-    while (targetClass != null && _stylePanel == null) {
-      _stylePanel = findPanelFor(targetClass);
-      targetClass = targetClass.getSuperclass();
+
+    public TabStyle() {
+        this("tab.style", "style.StylePanel", "style.SP");
     }
-    if (_stylePanel != null) {
-      _stylePanel.setTarget(_target);
-      add((JPanel)_stylePanel, BorderLayout.NORTH);
-      _shouldBeEnabled = true;
-      _lastPanel = (JPanel) _stylePanel;
+
+    protected void initPanels() {
+        StylePanelFigClass spfc = new StylePanelFigClass();
+        StylePanelFigInterface spfi = new StylePanelFigInterface();
+        StylePanelFigUseCase spfuc = new StylePanelFigUseCase();
+        SPFigEdgeModelElement spfeme = new SPFigEdgeModelElement();
+        StylePanelFig spf = new StylePanelFig();
+
+        _panels.put(FigClass.class, spfc);
+        _panels.put(FigUseCase.class, spfuc);
+        _panels.put(FigNodeModelElement.class, spf);
+        _panels.put(FigEdgeModelElement.class, spfeme);
+        _panels.put(FigInterface.class, spfi);
+        _panels.put(FigAssociation.class, spfeme);
+        _panels.put(FigSimpleState.class, spf);
+        _panels.put(FigTransition.class, spfeme);
+        _panels.put(FigActor.class, spf);
+        _panels.put(FigInstance.class, spf);
+        _panels.put(FigLink.class, spfeme);
+        _panels.put(FigGeneralization.class, spfeme);
+        _panels.put(FigRealization.class, spfeme);
     }
-    else {
-      add(_blankPanel, BorderLayout.NORTH);
-      _shouldBeEnabled = false;
-      _lastPanel = _blankPanel;
+
+    /** Adds a style panel to the internal list. This allows a plugin to
+    *  add and register a new style panel at run-time. This property style will
+    *  then be displayed in the detatils pane whenever an element of the given 
+    *  metaclass is selected.
+    *
+    * @param c the metaclass whose details show be displayed in the property panel p
+    * @param s an instance of the style panel for the metaclass m
+    *
+    */
+    public void addPanel(Class c, StylePanel s) {
+        _panels.put(c, s);
     }
-    validate();
-    repaint();
-  }
 
-  public void refresh() { setTarget(_target); }
+    ////////////////////////////////////////////////////////////////
+    // accessors
+    public void setTarget(Object t) {
+        if (_target != null)
+            _target.removePropertyChangeListener(this);
 
-  public TabFigTarget findPanelFor(Class targetClass) {
-    TabFigTarget p = (TabFigTarget) _panels.get(targetClass);
-    if (p == null) {
-      Class panelClass = panelClassFor(targetClass);
-      if (panelClass == null) return null;
-      try { p = (TabFigTarget) panelClass.newInstance(); }
-      catch (IllegalAccessException ignore) { return null; }
-      catch (InstantiationException ignore) { return null; }
-      _panels.put(targetClass, p);
+        // the responsibility of determining if the given target is a correct one 
+        // for this tab has been moved from the DetailsPane to the member tabs of th
+        // detailpane. Reason for this is that the detailspane is configurable and
+        // cannot know what's the correct target for some tab.
+        if (!(t instanceof Fig)) {
+            if (ModelFacade.isABase(t)) {
+                Project p = ProjectManager.getManager().getCurrentProject();
+                Collection col = p.findFigsForMember(t);
+                if (col == null || col.isEmpty()) {
+                    return;
+                } else {
+                    t = col.iterator().next();
+                }
+            }
+        }
+
+        _target = (Fig) t;
+        if (_target != null)
+            _target.addPropertyChangeListener(this);
+        if (_lastPanel != null)
+            remove(_lastPanel);
+        if (t == null) {
+            add(_blankPanel, BorderLayout.NORTH);
+            _shouldBeEnabled = false;
+            _lastPanel = _blankPanel;
+            return;
+        }
+        _shouldBeEnabled = true;
+        _stylePanel = null;
+        Class targetClass = t.getClass();
+        while (targetClass != null && _stylePanel == null) {
+            _stylePanel = findPanelFor(targetClass);
+            targetClass = targetClass.getSuperclass();
+        }
+        if (_stylePanel != null) {
+            _stylePanel.setTarget(_target);
+            add((JPanel) _stylePanel, BorderLayout.NORTH);
+            _shouldBeEnabled = true;
+            _lastPanel = (JPanel) _stylePanel;
+        } else {
+            add(_blankPanel, BorderLayout.NORTH);
+            _shouldBeEnabled = false;
+            _lastPanel = _blankPanel;
+        }
+        validate();
+        repaint();
     }
-    else cat.debug("found style for " + targetClass.getName());
-    return p;
-  }
 
-  public Class panelClassFor(Class targetClass) {
-    String pack = "org.argouml.ui";
-    String base = getClassBaseName();
-    String alt = getAlternativeClassBaseName();
-
-    String targetClassName = targetClass.getName();
-    int lastDot = targetClassName.lastIndexOf(".");
-    if (lastDot > 0) targetClassName = targetClassName.substring(lastDot+1);
-    try {
-      String panelClassName = pack + "." + base + targetClassName;
-      Class cls = Class.forName(panelClassName);
-      return cls;
+    public void refresh() {
+        setTarget(_target);
     }
-    catch (ClassNotFoundException ignore) { }
-    try {
-      String panelClassName = pack + "." + alt + targetClassName;
-      Class cls = Class.forName(panelClassName);
-      return cls;
+
+    public TabFigTarget findPanelFor(Class targetClass) {
+        TabFigTarget p = (TabFigTarget) _panels.get(targetClass);
+        if (p == null) {
+            Class panelClass = panelClassFor(targetClass);
+            if (panelClass == null)
+                return null;
+            try {
+                p = (TabFigTarget) panelClass.newInstance();
+            } catch (IllegalAccessException ignore) {
+                return null;
+            } catch (InstantiationException ignore) {
+                return null;
+            }
+            _panels.put(targetClass, p);
+        } else
+            cat.debug("found style for " + targetClass.getName());
+        return p;
     }
-    catch (ClassNotFoundException ignore) { }
-    return null;
-  }
 
-  protected String getClassBaseName() { return _panelClassBaseName; }
+    public Class panelClassFor(Class targetClass) {
+        String pack = "org.argouml.ui";
+        String base = getClassBaseName();
+        String alt = getAlternativeClassBaseName();
 
-  protected String getAlternativeClassBaseName() {
-    return _alternativeBase; }
-
-  public Object getTarget() { return _target; }
-
-  public boolean shouldBeEnabled(Object target) {
-  
-    if (target == null) {
-      _shouldBeEnabled = false;
-      return _shouldBeEnabled;
+        String targetClassName = targetClass.getName();
+        int lastDot = targetClassName.lastIndexOf(".");
+        if (lastDot > 0)
+            targetClassName = targetClassName.substring(lastDot + 1);
+        try {
+            String panelClassName = pack + "." + base + targetClassName;
+            Class cls = Class.forName(panelClassName);
+            return cls;
+        } catch (ClassNotFoundException ignore) {
+        }
+        try {
+            String panelClassName = pack + "." + alt + targetClassName;
+            Class cls = Class.forName(panelClassName);
+            return cls;
+        } catch (ClassNotFoundException ignore) {
+        }
+        return null;
     }
-    
-    _shouldBeEnabled = true;
-    _stylePanel = null;
-    Class targetClass = target.getClass();
-    while (targetClass != null && _stylePanel == null) {
-      _stylePanel = findPanelFor(targetClass);
-      targetClass = targetClass.getSuperclass();
+
+    protected String getClassBaseName() {
+        return _panelClassBaseName;
     }
-    if (_stylePanel != null) {
-      _shouldBeEnabled = true;
+
+    protected String getAlternativeClassBaseName() {
+        return _alternativeBase;
     }
-    else {
-      _shouldBeEnabled = false;
+
+    public Object getTarget() {
+        return _target;
     }
-    
-    return _shouldBeEnabled;
-  }
 
+    public boolean shouldBeEnabled(Object target) {
 
-  ////////////////////////////////////////////////////////////////
-  // PropertyChangeListener implementation
+        if (!(target instanceof Fig)) {
+            if (ModelFacade.isABase(target)) {
+                Project p = ProjectManager.getManager().getCurrentProject();
+                Collection col = p.findFigsForMember(target);
+                if (col == null || col.isEmpty()) {
+                    _shouldBeEnabled = false;
+                    return false;
+                } else {
+                    target = col.iterator().next();
+                }
+            } else {
+                _shouldBeEnabled = false;
+                return false;
+            }
+        }
 
-  public void propertyChange(PropertyChangeEvent pce) {
-    DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-    SwingUtilities.invokeLater(delayedNotify);
-  }
+        _shouldBeEnabled = true;
+        _stylePanel = null;
 
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    if (_stylePanel != null) _stylePanel.refresh();
-  }
+        Class targetClass = target.getClass();
+        while (targetClass != null && _stylePanel == null) {
+            _stylePanel = findPanelFor(targetClass);
+            targetClass = targetClass.getSuperclass();
+        }
+        if (_stylePanel == null) {
+            _shouldBeEnabled = false;
+        }
+
+        return _shouldBeEnabled;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // PropertyChangeListener implementation
+
+    public void propertyChange(PropertyChangeEvent pce) {
+        DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
+        SwingUtilities.invokeLater(delayedNotify);
+    }
+
+    public void delayedVetoableChange(PropertyChangeEvent pce) {
+        if (_stylePanel != null)
+            _stylePanel.refresh();
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
 
 } /* end class TabStyle */

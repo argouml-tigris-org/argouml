@@ -54,7 +54,10 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
      * @param text
      */
     protected void setProperty(String text) {
-        ((MModelElement)getTarget()).setTaggedValue(this.getEventName(),text);
+        if (getTarget() != null)
+            ((MModelElement) getTarget()).setTaggedValue(
+                this.getEventName(),
+                text);
     }
 
     /**

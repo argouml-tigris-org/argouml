@@ -61,6 +61,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.LabelledLayout;
@@ -69,8 +70,11 @@ import org.argouml.swingext.Vertical;
 import org.argouml.ui.NavigationListener;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabSpawnable;
+import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileJava;
+import org.tigris.gef.presentation.Fig;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -408,6 +412,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      */
 
     public void setTarget(Object t) {
+        t = (t instanceof Fig) ? ((Fig)t).getOwner() : t;
 
         // If the target has changed notify the third party listener if it
         // exists and dispatch a new NSUML element listener to
@@ -454,12 +459,8 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     }
 
     public boolean shouldBeEnabled(Object target) {
-
-        if (target instanceof MModelElement) {
-                return true;
-        }
-        else
-            return false;
+        target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
+        return ModelFacade.isAModelElement(target);
     }
 
     public void propertySet(MElementEvent mee) {
@@ -681,6 +682,30 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      */
     public boolean isRemovableElement() {
         return ((getTarget() != null) && (getTarget() != ProjectManager.getManager().getCurrentProject().getModel()));
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        // TODO Auto-generated method stub
+
     }
 
 } /* end class PropPanel */
