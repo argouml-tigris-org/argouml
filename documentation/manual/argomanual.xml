@@ -317,7 +317,7 @@ The details pane lets the user edit various details of the model.
     <sect1>
       <title>From the User FAQ</title>
       <para>
-+++ From the User FAQ. Needs rework.
+// Needs-More-Work: Directly from the User FAQ.
 </para>
       <sect2>
 	<title>Sequence Diagrams</title>
@@ -766,7 +766,7 @@ ArgoUML is a pure design tool for now, no IDE functionality but the desire is th
       <sect1>
 	<title>From the User FAQ</title>
 	<para>
-+++ This information needs to be added into the manual in a better way.
+// Needs-More-Work: This information needs to be added into the manual in a better way.
 </para>
 		<qandaset>
 	  <qandadiv>
