@@ -1,7 +1,3 @@
-
-
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -369,8 +365,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	}
 	if ( org.argouml.model.ModelFacade.isAModelElement(node) ) {
 	    Vector specs =
-		new Vector(((MModelElement) node).getClientDependencies());
-	    specs.addAll(((MModelElement) node).getSupplierDependencies());
+		new Vector(ModelFacade.getClientDependencies(node));
+	    specs.addAll(ModelFacade.getSupplierDependencies(node));
 	    Iterator iter = specs.iterator();
 	    while (iter.hasNext()) {
 		MDependency dep = (MDependency) iter.next();

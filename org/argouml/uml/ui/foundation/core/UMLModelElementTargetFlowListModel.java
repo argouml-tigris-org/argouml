@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,11 +25,10 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 12, 2002
@@ -53,7 +50,7 @@ public class UMLModelElementTargetFlowListModel
      */
     protected void buildModelList() {
         if (_target != null) {
-            setAllElements(((MModelElement) getTarget()).getTargetFlows());
+            setAllElements(ModelFacade.getTargetFlows(getTarget()));
         }
     }
 
@@ -62,7 +59,7 @@ public class UMLModelElementTargetFlowListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase o) {
-        return org.argouml.model.ModelFacade.isAFlow(o) && ((MModelElement) getTarget()).getTargetFlows().contains(o);
+        return ModelFacade.isAFlow(o) && ModelFacade.getTargetFlows(getTarget()).contains(o);
     }
 
 }

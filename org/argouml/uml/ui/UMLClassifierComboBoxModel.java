@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -41,6 +40,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.log4j.Category;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.Profile;
 
 import ru.novosoft.uml.MElementEvent;
@@ -85,14 +85,14 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
     }
 
 
-    private void makeSelection(MModel model, MClassifier selClass) {
+    private void makeSelection(Object model, MClassifier selClass) {
 	getSet().clear();
 	Profile profile = getContainer().getProfile();
 	if (allowVoid()) {
 	    getSet().add(new UMLComboBoxEntry(null, profile, false));
 	}
 	if (model != null) {
-	    collectElements(model, profile, false);
+	    collectElements((MModel)model, profile, false);
 	}
                  
 	if (addElementsFromProfileModel()) {
@@ -152,8 +152,8 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 	Iterator it = null;
         String eventName = event.getName();
         if (eventName != null && eventName.equals("classifier")) {
-	    MModel model = ((MModelElement) event.getSource()).getModel();
-	    if (org.argouml.model.ModelFacade.isAInstance(event.getSource()) ) {
+	    Object model = ModelFacade.getModel(event.getSource());
+	    if (ModelFacade.isAInstance(event.getSource()) ) {
 		
 		MInstance instance = (MInstance) event.getSource();	    	    
 		Collection col = instance.getClassifiers();	
@@ -173,7 +173,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 
     public void targetChanged() {
         Object target = getContainer().getTarget();	
-        if (org.argouml.model.ModelFacade.isAModelElement(target)) {
+        if (ModelFacade.isAModelElement(target)) {
 
             MModelElement element = (MModelElement) target;	 	   
             MModel model = element.getModel();

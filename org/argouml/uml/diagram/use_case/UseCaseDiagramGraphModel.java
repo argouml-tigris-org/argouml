@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -47,6 +44,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Category;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import ru.novosoft.uml.behavior.use_cases.MActor;
@@ -635,9 +633,9 @@ public class UseCaseDiagramGraphModel
 
         if ( org.argouml.model.ModelFacade.isAModelElement(node) ) {
             Vector specs =
-                new Vector(((MModelElement) node).getClientDependencies());
+                new Vector(ModelFacade.getClientDependencies(node));
 
-            specs.addAll(((MModelElement) node).getSupplierDependencies());
+            specs.addAll(ModelFacade.getSupplierDependencies(node));
 
             Iterator iter = specs.iterator();
 

@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,11 +24,10 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * The listmodel of the client dependencies for some modelelement
@@ -53,14 +50,13 @@ public class UMLModelElementClientDependencyListModel
      */
     protected void buildModelList() {
         if (_target != null) 
-            setAllElements(((MModelElement) getTarget()).getClientDependencies());
+            setAllElements(ModelFacade.getClientDependencies(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {  
-        return org.argouml.model.ModelFacade.isADependency(o) && ((MModelElement) getTarget()).getClientDependencies().contains(o);
+        return ModelFacade.isADependency(o) && ModelFacade.getClientDependencies(getTarget()).contains(o);
     }
-
 }

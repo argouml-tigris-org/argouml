@@ -31,6 +31,7 @@ import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 import java.awt.event.*;
 import java.util.*;
+import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
@@ -137,7 +138,7 @@ public class UMLComboBoxEntry implements Comparable {
                     ownedElement = (MModelElement) iter.next();
                     targetName = ownedElement.getName();
                     if (targetName != null && phantomName.equals(targetName)) {
-                        if (org.argouml.model.ModelFacade.isAPackage(ownedElement)) {
+                        if (ModelFacade.isAPackage(ownedElement)) {
                             ns = (MPackage) ownedElement;
                             break;
                         }
@@ -153,19 +154,19 @@ public class UMLComboBoxEntry implements Comparable {
         return ns;
     }
 
-    public MModelElement getElement(MModel targetModel) {
+    public MModelElement getElement(Object targetModel) {
         //
         //  if phantom then
         //    we need to possibly recreate the package structure
         //       in the target model
         if (_isPhantom && targetModel != null) {
-            MNamespace targetNS = findNamespace(_element.getNamespace(), targetModel);
+            MNamespace targetNS = findNamespace(_element.getNamespace(), (MModel)targetModel);
             MModelElement clone = null;
             try {
                 clone = (MModelElement) _element.getClass().getConstructor(new Class[] {}).newInstance(new Object[] {});
                 clone.setName(_element.getName());
                 clone.setStereotype(_element.getStereotype());
-                if (org.argouml.model.ModelFacade.isAStereotype(clone)) {
+                if (ModelFacade.isAStereotype(clone)) {
                     ((MStereotype) clone).setBaseClass(((MStereotype) _element).getBaseClass());
                 }
                 targetNS.addOwnedElement(clone);

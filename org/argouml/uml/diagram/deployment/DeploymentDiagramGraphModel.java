@@ -289,8 +289,8 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	}
 	if ( ModelFacade.isAModelElement(node) ) {
 	    Vector specs =
-		new Vector(((MModelElement) node).getClientDependencies());
-	    specs.addAll(((MModelElement) node).getSupplierDependencies());
+		new Vector(ModelFacade.getClientDependencies(node));
+	    specs.addAll(ModelFacade.getSupplierDependencies(node));
 	    Iterator iter = specs.iterator();
 	    while (iter.hasNext()) {
 		MDependency dep = (MDependency) iter.next();
