@@ -38,14 +38,23 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.tigris.gef.base.*;
+import org.tigris.gef.base.CmdSetMode;
+import org.tigris.gef.base.ModeBroom;
+import org.tigris.gef.base.ModeCreateFigCircle;
+import org.tigris.gef.base.ModeCreateFigInk;
+import org.tigris.gef.base.ModeCreateFigLine;
+import org.tigris.gef.base.ModeCreateFigPoly;
+import org.tigris.gef.base.ModeCreateFigRRect;
+import org.tigris.gef.base.ModeCreateFigRect;
+import org.tigris.gef.base.ModeCreateFigSpline;
+import org.tigris.gef.base.ModeCreateFigText;
+import org.tigris.gef.base.ModeSelect;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.ToolBar;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**

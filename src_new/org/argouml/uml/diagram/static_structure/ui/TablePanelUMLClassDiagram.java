@@ -24,22 +24,27 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.util.Vector;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import org.argouml.ui.TablePanel;
+import org.argouml.uml.TableModelAttr;
+import org.argouml.uml.TableModelComposite;
+import org.argouml.uml.TableModelOper;
+import org.argouml.uml.diagram.static_structure.TableModelAssocByProps;
+import org.argouml.uml.diagram.static_structure.TableModelClassByProps;
+import org.tigris.gef.ui.JSortedTable;
 
-import org.tigris.gef.ui.*;
-
-import org.argouml.ui.*;
-import org.argouml.uml.*;
-import org.argouml.uml.diagram.static_structure.*;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 public class TablePanelUMLClassDiagram extends TablePanel {
 

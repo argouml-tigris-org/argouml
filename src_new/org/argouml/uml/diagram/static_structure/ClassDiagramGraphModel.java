@@ -40,7 +40,6 @@ import java.util.Vector;
 import org.apache.log4j.Category;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.uml.MMUtil;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
@@ -57,7 +56,6 @@ import ru.novosoft.uml.foundation.core.MInterface;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MRelationship;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.MElementImport;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
