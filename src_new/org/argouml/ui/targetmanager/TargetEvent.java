@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,38 +26,37 @@ package org.argouml.ui.targetmanager;
 import java.util.EventObject;
 
 /**
- * A targetevent indicating that the target of argouml is about to change 
- * from the given oldtargets (which still is the the target when this event is
- * fired) to newtargets (which will be the new targets).
+ * A targetevent indicating that the target of ArgoUML has changed 
+ * from the _oldTargets to _newTargets.
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TargetEvent extends EventObject {
-    
+
     /**
      * Indicates that a total new set of targets is set
      */
     public static final String TARGET_SET = "set";
-    
+
     /**
      * Indicates that a target is being added to the list of targets
      */
     public static final String TARGET_ADDED = "added";
-    
+
     /**
      * Indicates that a target is being removed from the list of targets
      */
     public static final String TARGET_REMOVED = "removed";
-    
+
     /**
      * The name of the event
      */
     private String _name;
-    
+
     /**
      * The old targets before the change took place
      */
     private Object[] _oldTargets;
-    
+
     /**
      * The new targets after the change took place
      */
@@ -80,7 +79,6 @@ public class TargetEvent extends EventObject {
         _oldTargets = oldTargets;
         _newTargets = newTargets;
     }
-    
 
     /**
      * Getter for the name
@@ -95,7 +93,7 @@ public class TargetEvent extends EventObject {
      * @return an object array with the old targets
      */
     public Object[] getOldTargets() {
-	return _oldTargets == null ? new Object[] {null} : _oldTargets;
+	return _oldTargets == null ? new Object[] {} : _oldTargets;
     }
 
     /**
@@ -103,7 +101,15 @@ public class TargetEvent extends EventObject {
      * @return an object array with the new targets
      */
     public Object[] getNewTargets() {
-        return _newTargets == null ? new Object[] {null} : _newTargets;
+        return _newTargets == null ? new Object[] {} : _newTargets;
     }
 
+    /**
+     * Helper for getting the new target
+     * @return the zero'th element in _newTargets, or null
+     */
+    public Object getNewTarget() {
+        return _newTargets == null || _newTargets.length < 1 ? null : _newTargets[0];
+    }
 }
+

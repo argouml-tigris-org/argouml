@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -79,7 +81,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
     /**
      * The current target element.
      */
-    private Object/*MModelElement*/ m_mmeiTarget;
+    private MModelElement m_mmeiTarget;
 
     public TabConstraints() {
         super("tab.constraints");
@@ -173,7 +175,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         /**
      * The target element being edited.
      */
-        private Object/*MModelElement*/ m_mmeiTarget;
+        private MModelElement m_mmeiTarget;
 
         /**
      * A list of all the constraints in m_nmeiTarget. This is necessary to
@@ -186,15 +188,15 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
      */
         private EventListenerList m_ellListeners = new EventListenerList();
 
-    /**
+        /**
      * Construct a new ConstraintModel.
      */
-    public ConstraintModel(Object/*MModelElement*/ mmeiTarget) {
+    public ConstraintModel(MModelElement mmeiTarget) {
         super();
 
         m_mmeiTarget = mmeiTarget;
 
-        m_alConstraints = new ArrayList(ModelFacade.getConstraints(m_mmeiTarget));
+        m_alConstraints = new ArrayList(m_mmeiTarget.getConstraints());
     }
 
     /**
@@ -225,10 +227,10 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
             return;
         }
 
-        Object/*MConstraint*/ mc = (MConstraint) m_alConstraints.remove(nIdx);
+        MConstraint mc = (MConstraint) m_alConstraints.remove(nIdx);
 
         if (mc != null) {
-            ModelFacade.removeConstraint(m_mmeiTarget, mc);
+            m_mmeiTarget.removeConstraint(mc);
         }
 
         fireConstraintRemoved(mc, nIdx);
@@ -249,11 +251,11 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
         // check ocl parsing constraints
         // sz9: I think this should read mmeContext = OclUtil.getInnerMostEnclosingNamespace (m_mmeiTarget);
-        Object/*MModelElement*/ mmeContext = m_mmeiTarget;
+        MModelElement mmeContext = m_mmeiTarget;
 
-        while (!(ModelFacade.isAClassifier(mmeContext)) && 
+        while (!(org.argouml.model.ModelFacade.isAClassifier(mmeContext)) && 
                (mmeContext != null)) {
-            mmeContext = ModelFacade.getModelElementContainer(mmeContext);
+            mmeContext = mmeContext.getModelElementContainer();
         }
 
         if (ModelFacade.getName(mmeContext) == null   ||
@@ -298,7 +300,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         /**
      * The constraint being represented.
      */
-        private Object/*MConstraint*/ m_mcConstraint;
+        private MConstraint m_mcConstraint;
 
         /**
      * The constraint's index in the list of constraints. Necessary only for
@@ -306,7 +308,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
      */
         private int m_nIdx = -1;
 
-        public CR(Object/*MConstraint*/ mcConstraint, int nIdx) {
+        public CR(MConstraint mcConstraint, int nIdx) {
             super();
 
             m_mcConstraint = mcConstraint;
@@ -324,7 +326,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
             if (m_mcConstraint == null) {
                 return "newConstraint";
             } else {
-                return ModelFacade.getName(m_mcConstraint);
+                return m_mcConstraint.getName();
             }
         }
 
@@ -335,7 +337,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
             if (m_mcConstraint == null) {
                 return OCLUtil.getContextString(m_mmeiTarget);
             } else {
-                return (String)ModelFacade.getBody(ModelFacade.getBody(m_mcConstraint));
+                return m_mcConstraint.getBody().getBody();
             }
         }
 
@@ -357,11 +359,11 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         // Parse and check specified constraint.
         OclTree tree = null;
 
-        Object/*MModelElement*/ mmeContext = m_mmeiTarget;
+        MModelElement mmeContext = m_mmeiTarget;
 
         try {
-            while (!(ModelFacade.isAClassifier(mmeContext))) {
-                mmeContext = ModelFacade.getModelElementContainer(mmeContext);
+            while (!(org.argouml.model.ModelFacade.isAClassifier(mmeContext))) {
+                mmeContext = mmeContext.getModelElementContainer();
             }
 
             try {
@@ -383,17 +385,17 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                     for (Iterator i = lConstraints.iterator(); i.hasNext(); ) {
                         OclTree ocltCurrent = (OclTree) i.next();
 
-                        Object/*MConstraint*/ mc =
+                        MConstraint mc =
                             UmlFactory.getFactory().getCore().createConstraint();
-                        ModelFacade.setName(mc, ocltCurrent.getConstraintName());
+                        mc.setName(ocltCurrent.getConstraintName());
                         ModelFacade.setBody(mc, UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",ocltCurrent.getExpression()));
-                        ModelFacade.addConstraint(m_mmeiTarget, mc);
+                        m_mmeiTarget.addConstraint(mc);
 
                         // the constraint _must_ be owned by a namespace
-                        if (ModelFacade.getNamespace(m_mmeiTarget) != null) {
-                            ModelFacade.addOwnedElement(ModelFacade.getNamespace(m_mmeiTarget), mc);
-                        } else if (ModelFacade.getNamespace(mmeContext) != null) {
-                            ModelFacade.addOwnedElement(ModelFacade.getNamespace(mmeContext), m_mcConstraint);
+                        if (m_mmeiTarget.getNamespace() != null) {
+                            m_mmeiTarget.getNamespace().addOwnedElement(mc);
+                        } else if (mmeContext.getNamespace() != null) {
+                            mmeContext.getNamespace().addOwnedElement(m_mcConstraint);
                         }
 
                         m_alConstraints.add(mc);
@@ -405,30 +407,30 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
             }
 
             // Store constraint body
-            Object/*MConstraint*/ mcOld = null;
+            MConstraint mcOld = null;
 
             if (m_mcConstraint == null) {
                 // New constraint, first time setData is called
                 m_mcConstraint = UmlFactory.getFactory().getCore().createConstraint();
 
-                ModelFacade.setName(m_mcConstraint, "newConstraint");
+                m_mcConstraint.setName("newConstraint");
                 ModelFacade.setBody(m_mcConstraint, UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",sData));
 
-                ModelFacade.addConstraint(m_mmeiTarget, m_mcConstraint);
+                m_mmeiTarget.addConstraint(m_mcConstraint);
 
                 // the constraint _must_ be owned by a namespace
-                if (ModelFacade.getNamespace(m_mmeiTarget) != null) {
-                    ModelFacade.addOwnedElement(ModelFacade.getNamespace(m_mmeiTarget), m_mcConstraint);
-                } else if (ModelFacade.getNamespace(mmeContext) != null) {
-                    ModelFacade.addOwnedElement(ModelFacade.getNamespace(mmeContext), m_mcConstraint);
+                if (m_mmeiTarget.getNamespace() != null) {
+                    m_mmeiTarget.getNamespace().addOwnedElement(m_mcConstraint);
+                } else if (mmeContext.getNamespace() != null) {
+                    mmeContext.getNamespace().addOwnedElement(m_mcConstraint);
                 }
 
                 m_alConstraints.set(m_nIdx, m_mcConstraint);
             } else {
                 mcOld = UmlFactory.getFactory().getCore().createConstraint();
-                ModelFacade.setName(mcOld, ModelFacade.getName(m_mcConstraint));
-                ModelFacade.setBody(mcOld, UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL", (String)ModelFacade.getBody(ModelFacade.getBody(m_mcConstraint))));
-                ModelFacade.setBody(m_mcConstraint,UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",(String)sData));
+                mcOld.setName(m_mcConstraint.getName());
+                ModelFacade.setBody(mcOld, UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",m_mcConstraint.getBody().getBody()));
+                ModelFacade.setBody(m_mcConstraint,UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",sData));
             }
 
             fireConstraintDataChanged(m_nIdx, mcOld, m_mcConstraint);
@@ -460,18 +462,18 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                 }
 
                 // Set name
-                Object/*MConstraint*/ mcOld =
+                MConstraint mcOld =
                     UmlFactory.getFactory().getCore().createConstraint();
-                ModelFacade.setName(mcOld, ModelFacade.getName(m_mcConstraint));
+                mcOld.setName(m_mcConstraint.getName());
                 ModelFacade.setBody(mcOld,
                                       UmlFactory
                                       .getFactory()
                                       .getDataTypes()
                                       .createBooleanExpression(
                                                    "OCL",
-                                                   (String)ModelFacade.getBody(ModelFacade.getBody(m_mcConstraint))));
+                                                   m_mcConstraint.getBody().getBody()));
 
-                ModelFacade.setName(m_mcConstraint, sName);
+                m_mcConstraint.setName(sName);
 
                 fireConstraintNameChanged(m_nIdx, mcOld, m_mcConstraint);
 
@@ -479,14 +481,14 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                 try {
                     OclTree tree = null;
 
-                    Object/*MModelElement*/ mmeContext = m_mmeiTarget;
-                    while (!(ModelFacade.isAClassifier(mmeContext))) {
-                        mmeContext = ModelFacade.getModelElementContainer(mmeContext);
+                    MModelElement mmeContext = m_mmeiTarget;
+                    while (!(org.argouml.model.ModelFacade.isAClassifier(mmeContext))) {
+                        mmeContext = mmeContext.getModelElementContainer();
                     }
 
                     tree =
                         euHelper.parseAndCheckConstraint(
-                             (String)ModelFacade.getBody(ModelFacade.getBody(m_mcConstraint)),
+                             m_mcConstraint.getBody().getBody(),
                              new ArgoFacade(mmeContext));
 
                     if (tree != null) {
@@ -545,7 +547,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
             return null;
         }
 
-        Object/*MConstraint*/ mc = (MConstraint) m_alConstraints.get(nIdx);
+        MConstraint mc = (MConstraint) m_alConstraints.get(nIdx);
 
         if (mc != null) {
             return new CR(mc, nIdx);
@@ -572,7 +574,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
             m_ellListeners.remove(ConstraintChangeListener.class, ccl);
         }
 
-        protected void fireConstraintRemoved(Object/*MConstraint*/ mc, int nIdx) {
+        protected void fireConstraintRemoved(MConstraint mc, int nIdx) {
             // Guaranteed to return a non-null array
             Object[] listeners = m_ellListeners.getListenerList();
 
@@ -631,8 +633,8 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
         protected void fireConstraintDataChanged(
                          int nIdx,
-                         Object/*MConstraint*/ mcOld,
-                         Object/*MConstraint*/ mcNew) {
+                         MConstraint mcOld,
+                         MConstraint mcNew) {
             // Guaranteed to return a non-null array
             Object[] listeners = m_ellListeners.getListenerList();
 
@@ -662,8 +664,8 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
         protected void fireConstraintNameChanged(
                          int nIdx,
-                         Object/*MConstraint*/ mcOld,
-                         Object/*MConstraint*/ mcNew) {
+                         MConstraint mcOld,
+                         MConstraint mcNew) {
             // Guaranteed to return a non-null array
             Object[] listeners = m_ellListeners.getListenerList();
 
@@ -702,7 +704,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTargets()[0]);
+        setTarget(e.getNewTarget());
 
     }
 
@@ -710,7 +712,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTargets()[0]);
+        setTarget(e.getNewTarget());
 
     }
 

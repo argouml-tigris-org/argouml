@@ -965,9 +965,8 @@ public class ProjectBrowser
     }
 
     public void targetSet(TargetEvent e) {
-        Object[] targets = e.getNewTargets();
-        if (targets != null && targets.length >= 1 && targets[0] instanceof UMLDiagram)
-        {
+        Object target = e.getNewTarget();
+        if (target instanceof UMLDiagram) {
             updateTitle();
         }
     }    

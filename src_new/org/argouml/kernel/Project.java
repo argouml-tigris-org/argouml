@@ -873,7 +873,7 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Finds a diagram with a specific name or UID.
      *
-     * @return the diagram object (if found). Otherwize null.
+     * @returns the diagram object (if found). Otherwize null.
      * @param name is the name to search for.
      */
     public ArgoDiagram getDiagram(String name) {
@@ -1110,7 +1110,7 @@ public class Project implements java.io.Serializable, TargetListener {
     /** Find a type by name in the default model.
      *
      * @param the name.
-     * @return the type.
+     * @returns the type.
      */
     public Object findTypeInDefaultModel(String name) {
 	if (_defaultModelCache.containsKey(name))
@@ -1307,22 +1307,21 @@ public class Project implements java.io.Serializable, TargetListener {
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {       
+	setTarget(e.getNewTarget());
     }
 
     /** 
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTargets()[0]);
-
+	setTarget(e.getNewTarget());
     }
 
     /** 
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTargets()[0]);
-
+	setTarget(e.getNewTarget());
     }
     
     /**
