@@ -22,21 +22,43 @@ The coding style for ArgoUML is the following
 Each file starts with some header info: 
 file, 
 version info, 
-copyright notice,
-classes in this file (if more than one),
-original author (if you want).
+copyright notice.
 Like this:
 <programlisting>
 // &dollar;Id&dollar;
 // Copyright (c) 2004 The Regents of the University of California. All
-// ...
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// Classes: blabla, blabla (all classes of interest in this file)
-// Original Author: who ever
+package <replaceable>whatever</replaceable>;
+<replaceable>...</replaceable>
 </programlisting>
-        </para>
+</para>
         <para>
-This is in violation with the Sun Code Conventions that 
+The file and version is maintained by cvs using keyword substitution.
+The year in the copyright notice is maintained manually.
+</para>
+        <para>
+This differs from the Sun Code Conventions that 
 requires the initial comment to be a c-style comment.
 </para>
         <para>
@@ -80,7 +102,7 @@ Indicate places of future modifications with
 </programlisting>
         </para>
         <para>
-This is in violation with the Sun Code Conventions that 
+This differs from the Sun Code Conventions that 
 uses either XXX or FIXME depending on if it works or not.
 </para>
       </listitem>
@@ -107,6 +129,12 @@ It is here just for the emphasis.
 </para>
         <para>
 This is checked by checkstyle.
+Checkstyle ignores three kinds of lines in this check because of the
+historical use of long class names and package names.
+These are lines that contain
+"// &dollar;Id:<replaceable>whatever</replaceable>&dollar;",
+import statements, and
+javadoc comments with @see tags.
 </para>
       </listitem>
       <listitem>
@@ -147,6 +175,16 @@ we can allow an exception to this rule for
 methods, attributes and classes 
 that are not.
 (See <xref linkend="subsystems_relationships"></xref>.)
+</para>
+        <para>
+Write deprecation statements like this:
+<programlisting>
+     * @deprecated by <replaceable>your name</replaceable> in <replaceable>the upcoming release</replaceable>. Use {@link <replaceable>whatever</replaceable>}
+     *             <replaceable>a complete explanation on what to do instead</replaceable>
+</programlisting>
+</para>
+        <para>
+This is not checked by checkstyle.
 </para>
         <para>
 Rationale:
@@ -199,6 +237,43 @@ versions of different subtools.
 This problem is seen by "the person responsible for sourceing of the subtool"
 when actually trying to upgrade the subtool.
 (See <xref linkend="issues_subproducts"></xref>.)
+</para>
+      </listitem>
+
+      <listitem>
+        <para>
+Don't use very long package and class names.
+</para>
+        <para>
+To make the code readable,
+keep class names shorter than 25 chars, and
+have at most four levels of packages.
+</para>
+        <para>
+Historically in the ArgoUML design,
+a deep package structure has been used.
+There are several places in the code where the package structure is
+mimicing the UML hierarchy of objects resulting in impossibly long
+package names like
+<classname>org.argouml.model.uml.behavioralelements.collaborations.<replaceable>classname</replaceable></classname>, and
+<classname>org.argouml.uml.ui.behavior.common_behavior.<replaceable>classname</replaceable></classname>.
+</para>
+        <para>
+While establishing the subsystems we use a two-level approach much
+like the rest of the java world.
+For the subsystem API we always use:
+<classname>org.argouml.<replaceable>subsystem package name</replaceable></classname>
+i.e. the classes are in the subsystem's directory and all subsystems have
+package names that is a single level below <classname>org.argouml</classname>.
+If a subsystem is really complex or will be complex
+w.r.t. the amount of classes (meaning more than 50 files with classes),
+we create new packages with internal classes on a single level below
+the subsystem package.
+</para>
+        <para>
+This is the plan for the subsystems and new classes.
+Don't move old classes just yet!
+That would create more confusion that it would help.
 </para>
       </listitem>
 
@@ -285,6 +360,273 @@ run a development environment.
         </para>
       </listitem>
     </itemizedlist>
+  </sect1>
+
+  <sect1>
+    <title>Checklist for using subproducts</title>
+    <sect1info>
+      <author>
+        <firstname>Linus</firstname>
+        <surname>Tolke</surname>
+      </author>
+    </sect1info>
+
+    <para>
+In the ArgoUML project we use several subproducts to solve parts
+of the problem for us.
+These subproducts are an important part of the ArgoUML tool and
+must be handled in a good way if ArgoUML is going to be successful.
+</para>
+    <para>
+When this is written (March 2004) we have had problems with the
+discontinuance of one of the subproducts (NSUML) and will continue to 
+have it for well some time in the future, until we have managed to replace it.
+The problem with NSUML could probably not have been foreseen or avoided
+if this checklist would have been in place when NSUML was taken into
+the project but some more appearant risks with subproduct candidates might be.
+</para>
+    <para>
+Here is the list of things to check in the subproduct
+and to discuss with yourself and maybe with the ArgoUML development team
+before considering to use it in the ArgoUML project.
+</para>
+    <itemizedlist>
+      <listitem>
+        <para>
+License
+</para>
+        <para>
+We must be allowed to
+develop against,
+release with,
+distribute, and
+use
+the subproduct indefinately
+without monetary or other compensation.
+</para>
+        <para>
+Rationale: 
+We have no money in the ArgoUML project,
+we don't want to have money in the ArgoUML project.
+We have no organization that can enter agreements and live up to them.
+We don't want to require our users to enter agreements to use ArgoUML.
+</para>
+      </listitem>
+      <listitem>
+        <para>
+Java version
+</para>
+        <para>
+The subproduct must have a policy that matches the ArgoUML project policy
+on java version requirements.
+</para>
+        <para>
+Rationale: 
+The ambition for ArgoUML is to be a working tool for
+as many people as possible.
+Java is still under development and there are nice features available in
+future releases.
+In ArgoUML we have a plan for how to handle this. It is to always support
+two major releases of Java (currently JDK 1.3 and 1.4).
+We cannot have a subproduct that restricts us in this aspect.
+</para>
+      </listitem>
+      <listitem>
+        <para>
+Distribution
+</para>
+        <para>
+We require the subproducts to make it possible for us to take the distribution,
+enter it in our CVS repository and write rules to automate
+the use of the subproduct while developing, releasing and running ArgoUML.
+This automated use must be able to run without relying on access to some
+server and without user intervention.
+</para>
+        <para>
+The API documentation of the subproduct (assumed to be javadoc)
+we can use from some web site belonging to that subproduct.
+</para>
+        <para>
+Rationale: 
+In the ArgoUML project we want to make it as easy as possible for our users
+to install ArgoUML.
+We also want to make it as easy as possible for our developers to get their
+development environment working and for the release manager to prepare
+the releases.
+</para>
+      </listitem>
+      <listitem>
+        <para>
+Roadmap
+</para>
+        <para>
+The project developing the subproduct must have a plan that fits
+the ArgoUML plan for the future.
+</para>
+        <para>
+Rationale: 
+If a subproduct will soon go somewhere else
+i.e. stop doing what we require or stop supporting what we require,
+then we will soon have troubles with that subproduct.
+</para>
+      </listitem>
+      <listitem>
+        <para>
+Working project
+</para>
+        <para>
+The project that develops the subproduct should be a working project.
+Check that there is some person responsible for it,
+preferably with a team or organization backing him.
+Check that there is a plan for upcoming releases.
+Check that there is a way to report bugs and enhancement requests.
+</para>
+        <para>
+Rationale:
+We don't want to rely on a subproduct where there is no chance of ever
+getting a bug that we encounter fixed.
+We are also part of an ever-evolving world.
+Soon we want the tool to do more for us.
+We should then be able to wish that and eventually get an updated subproduct.
+</para>
+      </listitem>
+    </itemizedlist>
+  <para>
+Notice that we should not and don't need to do this in a passive way.
+We should explain to the subproduct team what we want and why.
+Especially for subproducts that we have already in ArgoUML but also
+for project that we consider taking in.
+This is to increase the likelyhood that they will have us in mind when
+planning and evolving.
+</para>
+    <para>
+Here are the steps to go through and the recommended order
+once the decision is taken to use the subproduct in ArgoUML:
+</para>
+    <itemizedlist>
+      <listitem>
+        <para>
+Documentation
+</para>
+        <para>
+Describe in the Cookbook in the appropriate subsystem section
+what part of the problem that the subproduct solves and
+how it is used in ArgoUML.
+</para>
+      </listitem>
+      <listitem>
+        <para>
+Javadoc
+</para>
+        <para>
+Enter the package list file in a special directory under
+<filename class="directory">argouml/lib/javadocs</filename>.
+Update the list of links used when building the javadocs.
+One place in <filename>default.properties</filename>,
+One or two places in <filename>build.xml</filename>
+(targets javadocs and javadocs-api).
+</para>
+        <para>
+Test by referencing some class from the subproduct,
+building the javadoc, and
+check that the link is working.
+</para>
+      </listitem>
+      <listitem>
+        <para>
+Repository
+</para>
+        <para>
+Assuming that the subproduct is distributed in a set of jar files,
+add the jar files to the <filename class="directory">lib</filename> directory
+in a versioned way together with the license file.
+Use filenames like:
+<filename><replaceable>subproduct</replaceable>-<replaceable>version</replaceable>.jar</filename>, and
+<filename><replaceable>subproduct</replaceable>.LICENSE.txt</filename>.
+</para>
+        <para>
+A future plan is to have each subsystem in their own directory.
+If the subproduct in question belongs to a subsystem that is moved to a
+separate directory you should put it in
+the <filename class="directory">lib</filename> directory for that subsystem.
+For the time being, there is only one
+<filename class="directory">lib</filename> directory.
+</para>
+      </listitem>
+      <listitem>
+        <para>
+Building
+</para>
+        <para>
+Assuming that the subproduct is distributed in a set of jar files,
+add the jar files to the list of files that are to be included
+when building ArgoUML.
+One place in <filename>default.properties</filename>,
+Four places in <filename>build.xml</filename>
+(targets init (tree places),
+prerequisites,
+package (two places),
+new target check.<replaceable>subproduct</replaceable>), and
+One possibly place in <filename>AboutBox.java</filename> (Constructor).
+Notice especially that <filename>build.xml</filename> shall not contain
+any version information.
+Notice also that the text in <filename>AboutBox.java</filename>
+shall not contain anything that needs to be localized but just
+the subproduct name, reference and possibly version.
+</para>
+        <para>
+Check by having some class from the subproduct loaded immediatly
+when starting ArgoUML and start using
+<command>build run</command>.
+</para>
+      </listitem>
+      <listitem>
+        <para>
+Running from modules
+</para>
+        <para>
+With the current modules set up
+(in <filename class="directory">argouml/modules</filename>) the
+idea is that we are supposed to be able to start ArgoUML from any
+of the modules directory.
+This means that whenever changing the list of modules you will have
+to update the classpaths in all these modules.
+Go through the list of files <filename>argouml/modules/*/build.xml</filename>
+and update.
+</para>
+        <para>
+Check by having some class from the subproduct loaded immediatly
+when starting ArgoUML and start in each of these directories.
+</para>
+      </listitem>
+      <listitem>
+        <para>
+Distribution
+</para>
+        <para>
+Assuming that the subproduct is distributed in a set of jar files,
+add the jar files to the list of files that are to be included
+when releasing ArgoUML.
+One place in <filename>build.xml</filename> (target dist-javawebstart),
+One place in <filename>manifest.template</filename> (Class-Path),
+In each of the Java Web Start files (resources),
+In the <filename>Info.plist</filename> (ClassPath).
+</para>
+        <para>
+Check by having some class from the subproduct loaded immediatly
+when starting ArgoUML and start with
+<command>java -jar argouml.jar</command>,
+using each of the Java Web Start files, and
+from the Appbund (on a Mac).
+</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>
+See <xref linkend="issues_subproducts"></xref> for a discussion on 
+how to handle bugs found in subproducts and
+updates of the version of a subproduct.
+</para>
   </sect1>
 
   <sect1>
