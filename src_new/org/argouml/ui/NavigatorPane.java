@@ -196,24 +196,35 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
   public void mySingleClick(int row, TreePath path) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
+    /*
     Object sel = getSelectedObject();
     if (sel  == null) return;
-    if (sel instanceof Diagram) {
+    //if (sel instanceof Diagram) {
       myDoubleClick(row, path);
       return;
+    
     }
     ProjectBrowser.TheInstance.select(sel);
+    */
+    mouseClick(row, path);
     _clicksInNavPane++;
+  }
+  
+  protected void mouseClick(int row, TreePath path) {
+  	 Object sel = getSelectedObject();
+     if (sel == null) return;
+  	 addToHistory(sel);
+     ProjectBrowser.TheInstance.setTarget(sel);
+     // ProjectBrowser.TheInstance.setDetailsTarget(sel);
+     repaint();
   }
 
   /** called when the user clicks twice on an item in the tree. */
   public void myDoubleClick(int row, TreePath path) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
-    Object sel = getSelectedObject();
-    if (sel == null) return;
-    addToHistory(sel);
-    ProjectBrowser.TheInstance.setTarget(sel);
+    mouseClick(row, path);
+    _clicksInNavPane += 2;
     repaint();
   }
 
