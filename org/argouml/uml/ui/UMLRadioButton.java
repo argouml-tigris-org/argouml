@@ -106,8 +106,8 @@ public class UMLRadioButton extends JRadioButton implements ItemListener,
     public void removed(final MElementEvent p1) {
     }
     public void propertySet(final MElementEvent event) {
-        /*if(_property.isAffected(event))
-	  update();*/
+      if(_property.isAffected(event))
+	  update();
     }
     
 /** update the radio button selection on a target change to reflect the 
