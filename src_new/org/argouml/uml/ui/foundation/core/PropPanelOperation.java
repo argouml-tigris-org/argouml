@@ -47,6 +47,7 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.util.ConfigLoader;
+import org.argouml.ui.LookAndFeelMgr;
 
 /**
  * A property panel for operations. TODO: this property panel needs refactoring
@@ -113,7 +114,7 @@ public class PropPanelOperation extends PropPanelFeature {
                 "signal", true, "getRaisedSignals", "setRaisedSignals",
                 "addRaisedSignal", null), true);
         exceptList.setForeground(Color.blue);
-        exceptList.setFont(smallFont);
+        exceptList.setFont(LookAndFeelMgr.getInstance().getSmallFont());
         addField(Translator.localize("UMLMenu", "label.raisedsignals"),
                 new JScrollPane(exceptList));
 
