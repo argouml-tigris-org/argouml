@@ -222,7 +222,13 @@ public class ProfileJava extends Profile {
 
 	public MModel getProfileModel() {
 		if (_defaultModel == null) {
-			//
+			_defaultModel = loadProfileModel();
+		}
+		return _defaultModel;
+	}
+	
+	public static MModel loadProfileModel() {
+		//
 			//    get a file name for the default model
 			//
 			String defaultModelFileName =
@@ -242,7 +248,7 @@ public class ProfileJava extends Profile {
 				//   no file found, try looking in the resources
 				//
 				catch (FileNotFoundException ex) {
-					is = getClass().getResourceAsStream(defaultModelFileName);
+					is = new Object().getClass().getResourceAsStream(defaultModelFileName);
 					if (is == null) {
 						System.out.println(
 							"Value of property argo.defaultModel ("
@@ -257,7 +263,7 @@ public class ProfileJava extends Profile {
 			//        load the default
 			if (is == null) {
 				defaultModelFileName = "/org/argouml/default.xmi";
-				is = getClass().getResourceAsStream(defaultModelFileName);
+				is = new Object().getClass().getResourceAsStream(defaultModelFileName);
 				if (is == null) {
 					try {
 						is =
@@ -277,7 +283,7 @@ public class ProfileJava extends Profile {
 					//
 					//   would really like to turn validation off to save
 					//      a lot of scary messages
-					_defaultModel = xmiReader.parse(new InputSource(is));
+					MModel model = xmiReader.parse(new InputSource(is));
 					// 2002-07-18
 					// Jaap Branderhorst
 					// changed the loading of the projectfiles to solve hanging 
@@ -289,13 +295,14 @@ public class ProfileJava extends Profile {
 								+ defaultModelFileName
 								+ " could not be parsed.");
 					}
+					return model;
 				} catch (Exception ex) {
 					System.out.println(
 						"Error reading " + defaultModelFileName + "\n");
 					ex.printStackTrace();
 				}
 			}
-		}
-		return _defaultModel;
+			return null;
 	}
+		
 }
