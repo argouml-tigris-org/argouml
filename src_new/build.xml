@@ -361,7 +361,8 @@ ${Name} Build file
 
    compile      --> compiles the source code to the tree under ${argo.build.dir}
    run          --> runs ArgoUML from compiled source
-   package      --> generates the ${name}.jar file
+   package      --> copies files in place
+   jar          --> generates the ${name}.jar file
    dist         --> generates ${Name} .tar.gz and .zip files into ${argo.dist.dir}
    prepare-docs --> writes the documentation to ${argo.javadocs.dir}
    clean        --> cleans up the ${build.dir} directory
@@ -568,9 +569,9 @@ ${Name} Build file
   </target>
 
   <!-- =================================================================== -->
-  <!-- Creates the class package                                           -->
+  <!-- Creates the jar file                                                -->
   <!-- =================================================================== -->
-  <target name="package" depends="compile">
+  <target name="jar" depends="compile">
     <filter token="version" value="${argo.build.version}"/>
     <copy file="${argo.src.dir}/templates/manifest.template"
           tofile="${argo.build.manifest}"
@@ -581,11 +582,14 @@ ${Name} Build file
          includes="org/argouml/**"
          excludes="*.txt,*.bat,*.xml,*.sh"
          manifest="${argo.build.manifest}"/>
+  </target>
 
-    <!-- 
-	Keep names here in synch with copied-to names in build 
-	and manifest.mf!
-     -->
+  <!-- =================================================================== -->
+  <!-- Copies the complete set of jar files to the build directory.        -->
+  <!-- The purpose of this is to keep names here in synch with copied-to   -->
+  <!-- names in build and manifest.mf!                                     -->
+  <!-- =================================================================== -->
+  <target name="package" depends="jar">
     <property name="names.of.all.included.libs"
               value="antlrall.jar gef.jar log4j.jar nsuml.jar ocl-argo.jar xerces.jar"
      />
