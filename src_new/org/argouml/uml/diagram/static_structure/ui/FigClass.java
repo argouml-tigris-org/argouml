@@ -950,6 +950,16 @@ public class FigClass extends FigNodeModelElement
         // First compute all nessessary height data. Easy if we want less than
         // the minimum
 
+        int displayedFigs = 1; //this is for getNameFig()
+
+        if (getAttributesFig().isVisible()) {
+            displayedFigs++;
+        }
+
+        if (isOperationsVisible()) {
+            displayedFigs++;
+        }
+
         if (newH <= aSize.height) {
 
             // Just use the mimimum
@@ -957,25 +967,11 @@ public class FigClass extends FigNodeModelElement
             newH = aSize.height;
 
         } else {
-
-            // Split the extra amongst the number of displayed compartments
-
-            int displayedFigs = 1; //this is for getNameFig()
-
-            if (getAttributesFig().isVisible()) {
-                displayedFigs++;
-            }
-
-            if (isOperationsVisible()) {
-                displayedFigs++;
-            }
-
             // Calculate how much each, plus a correction to put in the name
             // comparment if the result is rounded
-
             extraEach = (newH - aSize.height) / displayedFigs;
             heightCorrection =
-		(newH - aSize.height) - (extraEach * displayedFigs);
+                (newH - aSize.height) - (extraEach * displayedFigs);
         }
 
         // Now resize all sub-figs, including not displayed figs. Start by the
@@ -1002,7 +998,13 @@ public class FigClass extends FigNodeModelElement
             currentY += STEREOHEIGHT;
         }
 
+        if (displayedFigs == 1) {
+            height = newH;
+        }
+        
         getNameFig().setBounds(x, currentY, newW, height);
+        
+        
         getStereotypeFig().setBounds(x, y, newW, STEREOHEIGHT + 1);
         getFigAt(BLINDER_POSN).setBounds(x + 1, y + STEREOHEIGHT, newW - 2, 2);
 
