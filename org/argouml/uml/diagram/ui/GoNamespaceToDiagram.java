@@ -50,28 +50,31 @@ public class GoNamespaceToDiagram extends AbstractGoRule {
     }
 
     public Collection getChildren(Object parent) {
-        if (org.argouml.model.ModelFacade.isANamespace(parent)) {
+        if (ModelFacade.isANamespace(parent)) {
             List returnList = new ArrayList();
             Object namespace = parent;//MNamespace
             Project proj = ProjectManager.getManager().getCurrentProject();
             Iterator it = proj.getDiagrams().iterator();
             while (it.hasNext()) {
-                UMLDiagram d = (UMLDiagram) it.next();
-                if (d instanceof UMLStateDiagram) {
-                    UMLStateDiagram sd = (UMLStateDiagram) d;
-                    if (ModelFacade.isABehavioralFeature(ModelFacade.getContext(ModelFacade.getStateMachine(sd))))
+                UMLDiagram diagram = (UMLDiagram) it.next();
+                if (diagram instanceof UMLStateDiagram) {
+                    UMLStateDiagram stateDiagram = (UMLStateDiagram)diagram;
+                    Object stateMachine = stateDiagram.getStateMachine();
+                    Object context = ModelFacade.getContext(stateMachine);
+                    if (ModelFacade.isABehavioralFeature(context)) {
                     	continue;
+                    }
                 }
                 // patch for 0.14 stability to disable SD's
-                if (d instanceof UMLSequenceDiagram) {
+                if (diagram instanceof UMLSequenceDiagram) {
                     continue;
                 }
-                if (d.getNamespace() == namespace)
-                	returnList.add(d);                 
+                if (diagram.getNamespace() == namespace) {
+                    returnList.add(diagram);
+                }
             }
             return returnList;
         }
         return null;
     }
-
 }
