@@ -76,7 +76,7 @@ public interface NotationProvider {
     public String generateAction(Object m);
     public String generateGuard(MGuard m);
     public String generateMessage(MMessage m);
-    public String generateClassifierRef(MClassifier m);
+    public String generateClassifierRef(Object m);
     public String generateAssociationRole(MAssociationRole m);
 
     /** Can the notation be parsed for this object?

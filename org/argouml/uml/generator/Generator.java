@@ -213,10 +213,10 @@ public abstract class Generator
         return un;
     }
 
-    public String generateClassifierRef(MClassifier cls) {
+    public String generateClassifierRef(Object cls) {
         if (cls == null)
             return "";
-        return cls.getName();
+        return ModelFacade.getName(cls);
     }
 
     public String generateStereotype(MStereotype st) {

@@ -1269,6 +1269,20 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Count the number of Connections or AssociationEnds to an Association.
+     *
+     * @param handle to the association.
+     * @return an Iterator with all connections.
+     */
+    public static int getConnectionCount(Object handle) {
+        if (handle instanceof MAssociation) {
+            return ((MAssociation) handle).getConnections().size();
+        }
+
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
     /**
      * Returns the effect of some transition
      * @param handle
@@ -1416,6 +1430,17 @@ public class ModelFacade {
             return m;
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Get the Multiplicity from an AssociationEnd.
+     *
+     * @param handle Classifier to retrieve from.
+     * @return Collection with Features
+     */
+    public static Object getMultiplicity(Object handle) {
+        if (!(handle instanceof MAssociationEnd))
+            throw new IllegalArgumentException("Unrecognized object " + handle);
+        return ((MAssociationEnd) handle).getMultiplicity();
     }
 
     /**
@@ -2800,14 +2825,14 @@ public class ModelFacade {
      * @param parameter
      * @param type
      */
-    public static void setType(Object p, Object cls) {
-        if (p != null && (cls == null || cls instanceof MClassifier)) {
-            if (p instanceof MParameter)
-		((MParameter) p).setType((MClassifier) cls);
-            else if (p instanceof MAssociationEnd)
-		((MAssociationEnd) p).setType((MClassifier) cls);
-            else if (p instanceof MAttribute)
-		((MAttribute) p).setType((MClassifier) cls);
+    public static void setType(Object parameter, Object type) {
+        if (parameter != null && (type == null || type instanceof MClassifier)) {
+            if (parameter instanceof MParameter)
+		((MParameter) parameter).setType((MClassifier) type);
+            else if (parameter instanceof MAssociationEnd)
+		((MAssociationEnd) parameter).setType((MClassifier) type);
+            else if (parameter instanceof MAttribute)
+		((MAttribute) parameter).setType((MClassifier) type);
         }
     }
 
