@@ -99,9 +99,6 @@ public class PerspectiveConfigurator extends ArgoDialog {
     private JPanel  configPanelSouth;
     private JSplitPane splitPane;
     private JTextField renameTextField;
-    private JList   perspectiveList;
-    private JList   perspectiveRulesList;
-    private JList   ruleLibraryList;
     private JButton newPerspectiveButton;
     private JButton removePerspectiveButton;
     private JButton duplicatePerspectiveButton;
@@ -109,9 +106,16 @@ public class PerspectiveConfigurator extends ArgoDialog {
     private JButton addRuleButton;
     private JButton removeRuleButton;
     
+    private JList   perspectiveList;
+    private JList   perspectiveRulesList;
+    private JList   ruleLibraryList;
     private DefaultListModel perspectiveListModel;       // at the top
     private DefaultListModel perspectiveRulesListModel;  // right bottom
     private DefaultListModel ruleLibraryListModel;       // left bottom
+    
+    private JLabel persLabel;
+    private JLabel ruleLibLabel;
+    private JLabel rulesLabel;
     
     /** 
      * Creates a new instance of PerspectiveDesignerDialog.
@@ -133,6 +137,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         makeButtons();
         
         makeLayout();
+        updateRuleLabel();
 
         makeListeners();
 
@@ -216,8 +221,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         GridBagConstraints c = new GridBagConstraints();
         c.ipadx = 3;      c.ipady = 3;
         
-        JLabel persLabel = new JLabel(
-            Translator.localize("label.perspectives"));
+        persLabel = new JLabel(); // the text will be set later
         persLabel.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));
         c.fill = GridBagConstraints.BOTH;
@@ -256,8 +260,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         gb.setConstraints(persButtonWrapper, c);
         configPanelNorth.add(persButtonWrapper);
         
-        JLabel ruleLibLabel = new JLabel(
-            Translator.localize("label.rules-library"));
+        ruleLibLabel = new JLabel(); // the text will be set later
         ruleLibLabel.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));
         c.gridx = 0; c.gridy = 3;
@@ -281,8 +284,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         gb.setConstraints(xferButtons, c);
         configPanelSouth.add(xferButtons);
         
-        JLabel rulesLabel = new JLabel(
-            Translator.localize("label.selected-rules"));
+        rulesLabel = new JLabel(); // the text will be set later
         rulesLabel.setBorder(BorderFactory.createEmptyBorder(
                 INSET_PX, INSET_PX, INSET_PX, INSET_PX));
         c.gridx = 3;      c.gridy = 3;
@@ -380,6 +382,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         for (int i = 0; i < rulesLib.size(); i++) {
             ruleLibraryListModel.addElement(rulesLib.get(i));
         }
+        updateLibLabel();
     }
 
     /**
@@ -405,8 +408,36 @@ public class PerspectiveConfigurator extends ArgoDialog {
             
             perspectiveListModel.addElement(editablePerspective);
         }
+        
+        updatePersLabel();
     }
     
+    /**
+     * Update the label above the list of perspectives with count. 
+     */
+    private void updatePersLabel() {
+        persLabel.setText(Translator.localize("label.perspectives") 
+                + " (" + perspectiveListModel.size() + ")");
+    }
+
+    /**
+     * Update the label above the library of rules list with count.
+     */
+    private void updateLibLabel() {
+        // update the label (which shows the number of rules)
+        ruleLibLabel.setText(Translator.localize("label.rules-library") 
+                + " (" + ruleLibraryListModel.size() + ")");
+    }
+
+    /**
+     * Update the label above the library of rules list with count.
+     */
+    private void updateRuleLabel() {
+        // update the label (which shows the number of rules)
+        rulesLabel.setText(Translator.localize("label.selected-rules") 
+                + " (" + perspectiveRulesListModel.size() + ")");
+    }
+
     /**
      * @param list the JList to be sorted
      */
@@ -460,6 +491,8 @@ public class PerspectiveConfigurator extends ArgoDialog {
 	    perspectiveListModel.insertElementAt(newPers, 0);
 	    perspectiveList.setSelectedValue(newPers, true);
 	    perspectiveRulesListModel.clear();
+	    updatePersLabel();
+	    updateRuleLabel();
         }
     }
     
@@ -476,6 +509,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
             if (perspectiveListModel.getSize() == 1) {
                 removePerspectiveButton.setEnabled(false);
 	    }
+            updatePersLabel();
         }
     }
     
@@ -493,6 +527,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
                 perspectiveListModel.insertElementAt(newPers, 0);
                 perspectiveList.setSelectedValue(newPers, true);
             }
+            updatePersLabel();
         }
     }
     
@@ -558,6 +593,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
             selLibNr = ruleLibraryListModel.size() > selLibNr 
                 ? selLibNr : ruleLibraryListModel.size() - 1;
             ruleLibraryList.setSelectedIndex(selLibNr);
+            updateRuleLabel();
         } catch (Exception e) {
             LOG.error("problem adding rule");
         }
@@ -585,6 +621,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         loadLibrary();
         // set the newly selected item in the library list
         ruleLibraryList.setSelectedIndex(selLibNr);
+        updateRuleLabel();
     }
     
     /**
@@ -698,6 +735,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
             }
             sortJListModel(perspectiveRulesList);
             addRuleButton.setEnabled(selPers != null && selRule != null);
+            updateRuleLabel();
         }
     }
     
