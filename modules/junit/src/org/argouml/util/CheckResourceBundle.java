@@ -51,6 +51,14 @@ public class CheckResourceBundle {
 	return true;
     }
 
+    private static String getResourceIdentifier(ResourceBundle b) {
+	String lnam = b.getLocale().toString();
+
+	if ("".equals(lnam))
+	    lnam = "default";
+	return lnam + " (" + b.getClass().getName() + ")";
+    }
+
     /**
      * check that no key is entered twice
      */
@@ -63,8 +71,8 @@ public class CheckResourceBundle {
 	    Object c = e.nextElement();
 	    tc.assert("Duplicate key \"" 
 		      + c
-		      + "\" in "
-		      + b.getClass().getName(),
+		      + "\" for "
+		      + getResourceIdentifier(b),
 		      !set.contains(c));
 	    set.add(c);
         }
@@ -75,8 +83,8 @@ public class CheckResourceBundle {
 					    String[] tags) {
 	for (int i = 0; i < tags.length; i++)
 	    tc.assert("Can't find tag \"" + tags[i]
-		      + "\" in "
-		      + b.getClass().getName(),
+		      + "\" for "
+		      + getResourceIdentifier(b),
 		      bundleContains(b, tags[i]));
     }
 
@@ -92,10 +100,10 @@ public class CheckResourceBundle {
 	    String tag = (String) e.nextElement();
 	    tc.assert("Missing tag \""
 		      + tag
-		      + "\" in "
-		      + locb.getClass().getName()
-		      + " (it was present in "
-		      + b.getClass().getName()
+		      + "\" for "
+		      + getResourceIdentifier(locb)
+		      + " (it was present for "
+		      + getResourceIdentifier(b)
 		      + ")",
 		      bundleContains(locb, tag));
 	}
@@ -113,10 +121,10 @@ public class CheckResourceBundle {
 	    String tag = (String) e.nextElement();
 	    tc.assert("Extra tag \""
 		      + tag
-		      + "\" in "
-		      + locb.getClass().getName()
-		      + " (it was not present in "
-		      + b.getClass().getName()
+		      + "\" for "
+		      + getResourceIdentifier(locb)
+		      + " (it was not present for "
+		      + getResourceIdentifier(b)
 		      + ")",
 		      bundleContains(b, tag));
 	}
@@ -124,12 +132,16 @@ public class CheckResourceBundle {
 
     /**
      * Localizations that we do.
+     *
+     * This reflects the languages that are completed and working.
      */
     private static final String[][] supportedLanguages = { 
-	{ "fr", "", "" },
-	{ "de", "", "" },
-	{ "en", "GB", "" },
-	{ "es", "", "" },
+	// If you want to use the tests for your language, uncomment
+	// and run. When all tests goes through, leave it uncommented.
+	//	{ "fr", "", "" },
+	//	{ "de", "", "" },
+	//	{ "en", "GB", "" },
+	//	{ "es", "", "" },
 	null };
     /**
      * Returns a Vector of Locales modified from list of supported languages.
