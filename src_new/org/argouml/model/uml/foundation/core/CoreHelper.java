@@ -1073,8 +1073,8 @@ public class CoreHelper {
      */
     public Object getSource(Object relationship) {        
         if (!(relationship instanceof MRelationship)
-	    && !(ModelFacade.isALink(relationship)) 
-	    && !(relationship instanceof CommentEdge)) {
+	    && !(ModelFacade.isALink(relationship))) {
+
 
             throw new IllegalArgumentException("Argument " 
                     			       + relationship.toString() 
