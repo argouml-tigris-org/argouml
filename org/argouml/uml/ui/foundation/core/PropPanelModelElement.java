@@ -292,8 +292,8 @@ public abstract class PropPanelModelElement extends PropPanel {
     protected Box getStereotypeBox() {
         if (stereotypeBox == null) {
             stereotypeBox = new Box(BoxLayout.X_AXIS);
-            stereotypeBox.add(new UMLComboBoxNavigator(this, Translator
-                    .localize("tooltip.nav-stereo"),
+            stereotypeBox.add(new UMLComboBoxNavigator(this,
+                    Translator.localize("label.stereotype.navigate.tooltip"),
                     getStereotypeComboBox()));
             JButton stereoTypeButton = new JButton(new AbstractAction(null,
                     lookupIcon("Stereotype")) {

@@ -50,10 +50,6 @@ public class PropPanelCollaboration extends PropPanelNamespace {
 
         addField(Translator.localize("label.name"), 
                 getNameTextField());
-//        addField(Translator.localize("UMLMenu", "label.stereotype"),
-//            new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
-//							 "tooltip.nav-stereo"),
-//				     getStereotypeBox()));
         addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
         addField(Translator.localize("label.namespace"), 

@@ -73,9 +73,6 @@ public class PropPanelAssociation extends PropPanelRelationship {
         this("Association", ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        // addField(Translator.localize("label.stereotype"), new
-        // UMLComboBoxNavigator(this, Translator.localize(
-        // "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
         addField(Translator.localize("label.namespace"),
