@@ -24,6 +24,9 @@
 package org.argouml.uml.reveng.java;
 
 import java.util.*;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
 
 import org.argouml.ui.*;
 import org.apache.log4j.Category;
@@ -34,6 +37,8 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.*;
 import org.argouml.uml.reveng.*;
@@ -58,6 +63,12 @@ public class Modeller
 
     /** The package which the currentClassifier belongs to. */
     private Object currentPackage;
+    
+    /** Last package name used in addPackage().
+     * It is null for classes wich are not packaged.
+     * Used in popClassifier() to create diagram for that
+     * packaget. 
+     */
     private String currentPackageName;
 
     /** Keeps the data that varies during parsing. */
@@ -112,7 +123,7 @@ public class Modeller
 	// since I need diagrams for all the packages.
 	String ownerPackageName, currentName = name;
 	while( ! "".equals(ownerPackageName = getPackageName(currentName))) {
-	    if(getDiagram() != null && getDiagram().isDiagramInProject(ownerPackageName)) {
+	    if(getDiagram() != null && Import.isCreateDiagramsChecked() && getDiagram().isDiagramInProject(ownerPackageName)) {
                 getDiagram().selectClassDiagram( getPackage(ownerPackageName), ownerPackageName);
                 getDiagram().addPackage(getPackage(currentName));
             }
@@ -355,16 +366,29 @@ public class Modeller
     public void popClassifier()
     {
         // now create diagram if it doesn't exists in project
-	if (getDiagram() != null && currentPackageName != null) {
-           getDiagram().selectClassDiagram(currentPackage, currentPackageName);
-        }
+		if (Import.isCreateDiagramsChecked()) {
+			if (getDiagram() == null) {
+				if (currentPackageName != null && !currentPackageName.trim().equals("")) {
+					// create new diagram or select existing diagram for package
+					DiagramInterface.createOrSelectClassDiagram(currentPackage, currentPackageName);
+				} else {
+					// create new diagram in root for classifier without package
+					DiagramInterface.createRootClassDiagram();
+				}
+				_diagram = new DiagramInterface(Globals.curEditor());
+			} else {
+				if (currentPackageName != null) {
+					getDiagram().selectClassDiagram(currentPackage, currentPackageName);
+				}
+			}
+		}
         // add the current classifier to the diagram.
         Object classifier = parseState.getClassifier();
         if(ModelFacade.isAInterface(classifier)) {
-            if (getDiagram() != null) getDiagram().addInterface(classifier);
+            if (getDiagram() != null && Import.isCreateDiagramsChecked()) _diagram.addInterface(classifier);
         } else {
             if(ModelFacade.isAClass(classifier)) {
-                if (getDiagram() != null) getDiagram().addClass(classifier);
+                if (getDiagram() != null && Import.isCreateDiagramsChecked()) _diagram.addClass(classifier);
             }
         }
 
