@@ -242,19 +242,47 @@ This will force Ant to compile with jikes if you have it on your system. Refer t
   </target>
   
   <target name="jimi-check" depends="prepare" unless="jimi-is-available">
-      <fail message="Cannot build PDF documentation">
+      <echo message="Jimi is not available.">
 
-Unable to create PDF documentation because the Sun JIMI library
-is not available.  Please refer to the readme file in the tools/fop-0.20.3
+The Jimi file is not available. The pdf result will be poor since
+most of the images cannot be included and you will get several
+[fop] [ERROR]:-messages.
+
+Please refer to the readme file in the tools/fop-0.20.3
 directory for further information.
 
-      </fail>
+      </echo>
   </target>
+
+  <target name="jimi-get" depends="prepare" unless="jimi-is-available">
+    <!-- We are missing an URL for this. -->
+    <get src="http://where.ever.jimi/is/residing/jimi-1.0.jar"
+         dest="${jimi.jar.path}"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+    <!-- Alternative solution:
+    <get src="http://where.ever.jimi/is/residing/jimi-1.0.tar.Z"
+         dest="${jimi.jar.path}"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+    <unpack/>
+    <build/>
+    <move/>
+     -->
+
+    <!-- Check availability again - if the get worked, it will be there. -->
+    <available file="${jimi.jar.path}" property="jimi-is-available"/>
+  </target>
+
+
   <!-- =================================================================== -->
   <!-- pdf: Create PDF documentation                                       -->
   <!-- =================================================================== -->
 
-  <target name="pdf" depends="prepare, jimi-check" if="jimi-is-available">
+  <target name="pdf" depends="prepare">
     <!-- Set switch for "create-pdf" target to ensure that it runs -->
     <property name="generate-pdf" value="true" />
     <!-- Call "internal-scheduler" target to start the process -->
@@ -265,7 +293,7 @@ directory for further information.
   <!-- docs: Generates pdf and html documentation                          -->
   <!-- =================================================================== -->
 
-  <target name="docs" depends="prepare,jimi-check">
+  <target name="docs" depends="prepare">
     <!-- Set switch for pdf, defaulthtml and printablehtml builders       -->
     <property name="generate-defaulthtml" value="true" />
     <property name="generate-printablehtml" value="true" />
@@ -514,7 +542,12 @@ directory for further information.
   <target name="create-pdf" if="generate-pdf">
     <mkdir dir="${target.dir}"/>
 
+    <!-- This could be an idea if jimi-1.0.jar were available anywhere.
+      <antcall target="jimi-get"/>
+     -->
+
     <echo message="Building Formatting Objects for ${source.xml}..."/>
+    <antcall target="jimi-check"/>
 
     <java classname="com.icl.saxon.StyleSheet"
           fork="yes"
@@ -528,21 +561,15 @@ directory for further information.
       <arg value="${source.xsl}"/>
     </java>
 
-    <!-- Fop won't handle tables properly. Use sed to mangle the source.fo file
+    <!-- Fop won't handle tables properly. Mangle the source.fo file
          in to a form where at least admonitions work. Get rid of this
-         transformation once Fop is fixed. This only works for Unix at
-         present, so uncomment it if you wish to use it. -->
+         transformation once Fop is fixed.  -->
 
-    <!--
-    <move file="${source.dir}/${source.fo}" tofile="${source.dir}/tmp.fo"/>
-
-    <exec executable="/bin/sed" output="${source.dir}/${source.fo}">
-      <arg line="-e 's#&lt;fo:table&gt;&lt;fo:table-body#&lt;fo:table&gt;&lt;fo:table-column column-width=&quot;1.5cm&quot;/&gt;&lt;fo:table-column column-width=&quot;14.0cm&quot;/&gt;&lt;fo:table-body#g'"/>
-      <arg value="${source.dir}/tmp.fo"/>
-    </exec>
-
-    <delete file="${source.dir}/tmp.fo"/>
-    -->
+    <echo message="Patching up Fop data because of problems with Fop."/>
+    <replace file="${source.dir}/${source.fo}">
+      <replacetoken><![CDATA[<fo:table><fo:table-body]]></replacetoken>
+      <replacevalue><![CDATA[<fo:table><fo:table-column column-width="1.5cm"/><fo:table-column column-width="14.0cm"/><fo:table-body]]></replacevalue>
+    </replace>
 
     <!-- Invoke Fop on our terms. This is the only place we need more memory
          (for the user manual), so we invoke as a forked process with a bigger
@@ -562,7 +589,7 @@ directory for further information.
 
     <java classname="org.apache.fop.apps.Fop"
           fork="yes"
-          maxmemory="128M"
+          maxmemory="176M"
 	  taskname="fop"
           dir="${source.dir}">
       <classpath>
@@ -573,14 +600,16 @@ directory for further information.
         <pathelement location="${fop.lib.dir}/logkit-1.0.jar"/>
         <pathelement location="${fop.lib.dir}/xalan-2.0.0.jar"/>
         <pathelement location="${fop.lib.dir}/xalanj1compat.jar"/>
-        <pathelement location="${argo.lib.dir}/xerces-1.2.3.jar"/>         
+        <pathelement location="${xerces.jar.path}"/>         
       </classpath>
       <arg value="-q"/>
       <arg line="-fo ${source.dir}/${source.fo}"/>
       <arg line="-pdf ${target.dir}/${target.pdf}"/>
     </java>
 
-    <delete file="${source.dir}/${source.fo}"/>
+<!--    <delete file="${source.dir}/${source.fo}"/> -->
+    <antcall target="jimi-check"/>
+
   </target>
 
   <!-- =================================================================== -->
