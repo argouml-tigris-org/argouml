@@ -30,13 +30,9 @@ import ru.novosoft.uml.MElementListener;
  * This interface accepts all notifications signaled by NSUML's
  * MElementListener interface plus accepts notification that a
  * container's target model element has been changed (typically due to
- * navigation).  This interface is implemented by 
- * UMLTextField, UMLMultiplicityComboBox, etc.
+ * navigation).  
  *
  * @author Curt Arnold
- * @see UMLUserInterfaceContainer
- * @see UMLTextField
- * @see UMLMultiplicityComboBox2
  */
 public interface UMLUserInterfaceComponent extends MElementListener {
     /**
