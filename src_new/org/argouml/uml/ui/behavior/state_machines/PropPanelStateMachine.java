@@ -29,6 +29,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 
+import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -46,8 +47,17 @@ public class PropPanelStateMachine extends PropPanelModelElement {
      * Constructor for PropPanelStateMachine.
      */
     public PropPanelStateMachine() {
-        super("StateMachine", ConfigLoader.getTabPropsOrientation());
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+        this("StateMachine", ConfigLoader.getTabPropsOrientation());
+        
+    }
+
+    public PropPanelStateMachine(String name, Orientation orient ) {
+        super(name, orient);
+        initialize();
+    }
+
+    protected void initialize() {
+         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
@@ -76,9 +86,11 @@ public class PropPanelStateMachine extends PropPanelModelElement {
         new PropPanelButton(this, buttonPanel, _deleteIcon,
                             localize("Delete"), "removeElement",
                             null);
-
+       
 
     }
 
-
 }
+
+
+
