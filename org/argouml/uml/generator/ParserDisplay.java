@@ -1607,13 +1607,16 @@ public class ParserDisplay extends Parser {
              * if it isn't, continue with parsing:
              */
             if (!internalsInfo.checkRetain(line)) {
-                if (line.toLowerCase().startsWith("entry")) {
+                if (line.toLowerCase().startsWith("entry") 
+                        && line.substring(5).trim().startsWith("/")) {
                     parseStateEntryAction(st, line);
                     foundEntry = true;
-                } else if (line.toLowerCase().startsWith("exit")) {
+                } else if (line.toLowerCase().startsWith("exit") 
+                        && line.substring(4).trim().startsWith("/")) {
                     parseStateExitAction(st, line);
                     foundExit = true;
-                } else if (line.toLowerCase().startsWith("do")) {
+                } else if (line.toLowerCase().startsWith("do") 
+                        && line.substring(2).trim().startsWith("/")) {
                     parseStateDoAction(st, line);
                     foundDo = true;
                 } else {
@@ -1621,6 +1624,9 @@ public class ParserDisplay extends Parser {
                         .buildInternalTransition(st);
                     if (t == null)
                         continue;
+                    /* TODO: If the next line trows an exception, then what 
+                     * do we do with the remainder of the 
+                     * parsed/to be parsed lines? */
                     parseTransition(t, line);
                     /* Add this new one, and mark it to be retained: */
                     internalsInfo.add(t, true);
@@ -1776,16 +1782,15 @@ public class ParserDisplay extends Parser {
 
 
     /**
-     * Parse a line of the form: "entry /action" and create an action. The word
-     * "entry" is case-independent.
+     * Parse a line of the form: "entry /action" and create an action. 
+     * We do not need to check for the presence of the word "entry" - that 
+     * is done by the caller.
      * 
-     * @param st
-     *            the state object
-     * @param s
-     *            the string to be parsed
+     * @param st  the state object
+     * @param s   the string to be parsed
      */
-    public void parseStateEntryAction(Object st, String s) {
-        if (s.toLowerCase().startsWith("entry") && s.indexOf("/") > -1)
+    private void parseStateEntryAction(Object st, String s) {
+        if (s.indexOf("/") > -1)
             s = s.substring(s.indexOf("/") + 1).trim();
         Object oldEntry = ModelFacade.getEntry(st);
         if (oldEntry == null) {
@@ -1796,16 +1801,17 @@ public class ParserDisplay extends Parser {
     }
 
     /**
-     * Parse a line of the form: "exit /action" and create an action. The word
-     * "exit" is case-independent.
+     * Parse a line of the form: "exit /action" and create an action. 
+     * We do not need to check for the presence of the word "exit" - that 
+     * is done by the caller.
      * 
      * @param st
      *            the state object
      * @param s
      *            the string to be parsed
      */
-    public void parseStateExitAction(Object st, String s) {
-        if (s.toLowerCase().startsWith("exit") && s.indexOf("/") > -1)
+    private void parseStateExitAction(Object st, String s) {
+        if (s.indexOf("/") > -1)
             s = s.substring(s.indexOf("/") + 1).trim();
         Object oldExit = ModelFacade.getExit(st);
         if (oldExit == null) {
@@ -1816,16 +1822,15 @@ public class ParserDisplay extends Parser {
     }
 
     /**
-     * Parse a line of the form: "do /action" and create an action. The word
-     * "do" is case-independent.
+     * Parse a line of the form: "do /action" and create an action. 
+     * We do not need to check for the presence of the word "do" - that 
+     * is done by the caller.
      * 
-     * @param st
-     *            the state object
-     * @param s
-     *            the string to be parsed
+     * @param st  the state object
+     * @param s   the string to be parsed
      */
-    public void parseStateDoAction(Object st, String s) {
-        if (s.toLowerCase().startsWith("do") && s.indexOf("/") > -1)
+    private void parseStateDoAction(Object st, String s) {
+        if (s.indexOf("/") > -1)
             s = s.substring(s.indexOf("/") + 1).trim();
         Object oldDo = ModelFacade.getDoActivity(st);
         if (oldDo == null) {
