@@ -40,6 +40,7 @@ package org.argouml.uml.ui;
 
 import java.util.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 import javax.swing.*;
 
@@ -48,7 +49,14 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.argouml.ui.*;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 
 
 /**
@@ -221,16 +229,58 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
     /**
      * <p>Implement the "add" function of the pop up menu.</p>
      *
-     * <p>Create a new {@link MExtend} in the same namespace as the target (do
-     *   nothing if it doesn't have a namespace). Then navigate to the
-     *   extend. Uses the NSUML Factory class.</p>
+     * <p>Creates a dialog in which the user can select usecases this usecase should extend</p>
      *
      * @param index  Offset in the list of the element at which the pop-up was
      *               invoked.
      */
 
     public void add(int index) {
-
+    	Object target = getTarget();
+    	if (target instanceof MUseCase) {
+    		MUseCase usecase = (MUseCase)target;	
+	    	Vector choices = new Vector();
+	    	Vector selected = new Vector();
+	    	choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
+	    	choices.remove(usecase);
+	    	selected.addAll(UseCasesHelper.getHelper().getExtendedUseCases(usecase));
+	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-extended-usecases"), true, true);
+	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
+	    	if (returnValue == JOptionPane.OK_OPTION) {
+	    		Iterator it = dialog.getSelected().iterator();
+	    		while (it.hasNext()) {
+	    			MUseCase eusecase = (MUseCase)it.next();
+	    			if (!selected.contains(eusecase)) {
+	    				ProjectBrowser pb = ProjectBrowser.TheInstance;
+	    				ArgoDiagram diagram = pb.getActiveDiagram();
+	    				Fig figclass = diagram.getLayer().presentationFor(usecase);
+	    				Fig figeusecase = diagram.getLayer().presentationFor(eusecase);
+	    				if (figclass != null && figeusecase != null) {
+	    					GraphModel gm = diagram.getGraphModel();
+	    					if (gm instanceof MutableGraphModel) {
+	    						((MutableGraphModel)gm).connect(usecase, eusecase, MExtend.class);
+	    					}
+	    				} else {
+	    					UseCasesFactory.getFactory().buildExtend(eusecase, usecase);
+	    				}
+	    			}
+	    		}
+	    		it = selected.iterator();
+	    		while (it.hasNext()) {
+	    			MUseCase eusecase = (MUseCase)it.next();
+	    			if (!dialog.getSelected().contains(eusecase)) {
+	    				MExtend extend = UseCasesHelper.getHelper().getExtends(eusecase, usecase);
+			    		Object pt = ProjectBrowser.TheInstance.getTarget();
+			    		ProjectBrowser.TheInstance.setTarget(extend);
+			    		ActionEvent event = new ActionEvent(this, 1, "delete");
+			    		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+			    		ProjectBrowser.TheInstance.setTarget(pt);
+	    			}
+	    		}
+	    	}
+    	}
+    }
+/*
         // Give up if the target isn't an extension point or use case or if it
         // doesn't have a namespace.
 
@@ -309,7 +359,7 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
         fireIntervalAdded(this,index,index);
         navigateTo(newExtend);
     }
-    
+ */   
 
     /**
      * <p>Implement the "delete" function of the pop up menu. Delete the
@@ -328,53 +378,18 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
      */
 
     public void delete(int index) {
-
-        // Only do this if it really is an extends relationship
-
-        MModelElement modElem = getModelElementAt(index);
-
-        if (!(modElem instanceof MExtend)) {
-            return ;
-        }
-
-        // Get the extend relationship and its two ends and namespace.
-
-        MExtend    xtend     = (MExtend) modElem;
-
-        MUseCase   extension = xtend.getExtension();
-        MUseCase   base      = xtend.getBase();
-        MNamespace ns        = xtend.getNamespace();
-
-        // Remove the extension end of the relationship. Note we do not need to
-        // do anything about the extend relationship's extension attribute - it
-        // will have been done by the removeExtend.
-
-        if (extension != null) {
-            extension.removeExtend(xtend);
-        }
-
-        // Remove the base end of the relationship (if there was one). Note we
-        // do not need to do anything about the extend relationship's base
-        // attribute - it will have been done by the removeExtend2.
-
-        if(base != null) {
-            base.removeExtend2(xtend);
-        }
-
-        // Finally remove from the namespace
-
-        if (ns != null) {
-            ns.removeOwnedElement(xtend);
-        }
-
-        // Having removed an extend relationship, mark as needing saving
-
-        Project p = ProjectBrowser.TheInstance.getProject();
-        p.setNeedsSave(true);
-
-        // Tell Swing this entry has gone
-        
-        fireIntervalRemoved(this,index,index);
+		Object target = getTarget();
+    	if (target instanceof MUseCase) {
+    		MUseCase usecase = (MUseCase)target;
+    		MUseCase eusecase = (MUseCase)UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getExtendedUseCases(usecase), index, null);
+    		MExtend gen = UseCasesHelper.getHelper().getExtends(eusecase, usecase);
+    		Object pt = ProjectBrowser.TheInstance.getTarget();
+    		ProjectBrowser.TheInstance.setTarget(gen);
+    		ActionEvent event = new ActionEvent(this, 1, "delete");
+    		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+    		ProjectBrowser.TheInstance.setTarget(pt);
+    		fireIntervalRemoved(this,index,index);
+    	}
     }
 
 
@@ -467,5 +482,28 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
         fireContentsChanged(this,index,index+1);
     }
 
+
+	/**
+	 * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
+	 */
+	public boolean buildPopup(JPopupMenu popup, int index) {
+		UMLUserInterfaceContainer container = getContainer();
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
+        if(getModelElementSize() <= 0) {
+            open.setEnabled(false);
+            delete.setEnabled(false);
+        }
+
+        popup.add(open);
+        UMLListMenuItem add =new UMLListMenuItem(container.localize("Add"),this,"add",index);
+        if(_upper >= 0 && getModelElementSize() >= _upper) {
+            add.setEnabled(false);
+        }
+        popup.add(add);
+        popup.add(delete);
+
+        return true;
+	}
 
 } /* End of class UMLExtendListModel */
