@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,6 +43,9 @@ import org.apache.log4j.Logger;
  * @author Bob Tarling
  */
 public class NewspaperLayout extends GridLayout2 {
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     protected static Logger cat = Logger.getLogger(NewspaperLayout.class);
 
     private int gridGap = 0;
@@ -124,8 +127,8 @@ public class NewspaperLayout extends GridLayout2 {
 		    parent.getWidth()
 		    - (insets.left + insets.right + (ncols - 1) * getHgap());
                 int availableHeight =
-		    parent.getHeight() -
-		    (insets.top + insets.bottom + (nrows - 1) * getVgap());
+		    parent.getHeight()
+		    - (insets.top + insets.bottom + (nrows - 1) * getVgap());
                 largestWidth = availableWidth / ncols;
                 largestHeight = availableHeight / nrows;
             }
@@ -135,25 +138,22 @@ public class NewspaperLayout extends GridLayout2 {
                     for (int r = 0; r < nrows; ++r) {
                         int i = r * ncols + c;
                         if (parent.getComponent(i).getPreferredSize().getWidth()
-			    > colWidth[c])
-			{
+			    > colWidth[c]) {
                             colWidth[c] =
-				(int)
-				parent.getComponent(i)
-				.getPreferredSize().getWidth();
+				(int) parent.getComponent(i)
+				    .getPreferredSize().getWidth();
                             if (colWidth[c] > largestWidth)
 				largestWidth = colWidth[c];
                         }
                         if ((parent.getComponent(i)
 			     .getPreferredSize().getHeight())
-			    > rowHeight[r])
-			{
+			    > rowHeight[r]) {
                             rowHeight[r] =
-				(int)
-				parent.getComponent(i)
-				.getPreferredSize().getHeight();
-                            if (rowHeight[r] > largestHeight)
+				(int) parent.getComponent(i)
+				    .getPreferredSize().getHeight();
+                            if (rowHeight[r] > largestHeight) {
 				largestHeight = rowHeight[r];
+			    }
                         }
                     }
                 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -80,7 +80,8 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
 
     /** Don't allow instantiation
      */
-    private CommonBehaviorFactory() {}
+    private CommonBehaviorFactory() {
+    }
 
     /** Create an empty but initialized instance of a UML Action.
      *  
@@ -354,11 +355,11 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
      */
     public Object buildLink(Object fromInstance, Object toInstance) {
         Object link = UmlFactory.getFactory().getCommonBehavior().createLink();
-        Object /*MLinkEnd*/
-        le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
+        Object /*MLinkEnd*/ le0 =
+	    UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
         ModelFacade.setInstance(le0, fromInstance);
-        Object /*MLinkEnd*/
-        le1 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
+        Object /*MLinkEnd*/ le1 =
+	    UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
         ModelFacade.setInstance(le1, toInstance);
         ModelFacade.addConnection(link, le0);
         ModelFacade.addConnection(link, le1);
@@ -399,10 +400,11 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds a stimulus based on a given link. The link must have two linkends that 
-     * are connected to an instance. These instances are used as sender and receiver
-     * of the stimulus. The source will become the sender, the destination the 
-     * receiver.
+     * Builds a stimulus based on a given link. The link must have two
+     * linkends that are connected to an instance. These instances are
+     * used as sender and receiver of the stimulus. The source will
+     * become the sender, the destination the receiver.
+     *
      * @param link the link
      * @return the stimulus
      */
@@ -419,7 +421,10 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
             ModelFacade.setCommunicationLink(stimulus, link);
             return stimulus;
         }
-        throw new IllegalArgumentException("Argument is not a link or does not has a source or destination instance");
+        throw new IllegalArgumentException("Argument is not a link or "
+					   + "does not have "
+					   + "a source or "
+					   + "destination instance");
 
     }
 
@@ -438,25 +443,35 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         return reception;
     }
 
-    public void deleteAction(Object elem) {}
+    public void deleteAction(Object elem) {
+    }
 
-    public void deleteActionSequence(Object elem) {}
+    public void deleteActionSequence(Object elem) {
+    }
 
-    public void deleteArgument(MArgument elem) {}
+    public void deleteArgument(MArgument elem) {
+    }
 
-    public void deleteAttributeLink(MAttributeLink elem) {}
+    public void deleteAttributeLink(MAttributeLink elem) {
+    }
 
-    public void deleteCallAction(MCallAction elem) {}
+    public void deleteCallAction(MCallAction elem) {
+    }
 
-    public void deleteComponentInstance(MComponentInstance elem) {}
+    public void deleteComponentInstance(MComponentInstance elem) {
+    }
 
-    public void deleteCreateAction(MCreateAction elem) {}
+    public void deleteCreateAction(MCreateAction elem) {
+    }
 
-    public void deleteDataValue(MDataValue elem) {}
+    public void deleteDataValue(MDataValue elem) {
+    }
 
-    public void deleteDestroyAction(MDestroyAction elem) {}
+    public void deleteDestroyAction(MDestroyAction elem) {
+    }
 
-    public void deleteException(MException elem) {}
+    public void deleteException(MException elem) {
+    }
 
     /**
      * when an instance is deleted,
@@ -474,7 +489,8 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         }
     }
 
-    public void deleteLink(MLink elem) {}
+    public void deleteLink(MLink elem) {
+    }
 
     /**
      * when a linkend is deleted,
@@ -490,23 +506,33 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         }
     }
 
-    public void deleteLinkObject(MLinkObject elem) {}
+    public void deleteLinkObject(MLinkObject elem) {
+    }
 
-    public void deleteNodeInstance(MNodeInstance elem) {}
+    public void deleteNodeInstance(MNodeInstance elem) {
+    }
 
-    public void deleteObject(MObject elem) {}
+    public void deleteObject(MObject elem) {
+    }
 
-    public void deleteReception(MReception elem) {}
+    public void deleteReception(MReception elem) {
+    }
 
-    public void deleteReturnAction(MReturnAction elem) {}
+    public void deleteReturnAction(MReturnAction elem) {
+    }
 
-    public void deleteSendAction(MSendAction elem) {}
+    public void deleteSendAction(MSendAction elem) {
+    }
 
-    public void deleteSignal(MSignal elem) {}
+    public void deleteSignal(MSignal elem) {
+    }
 
-    public void deleteStimulus(MStimulus elem) {}
+    public void deleteStimulus(MStimulus elem) {
+    }
 
-    public void deleteTerminateAction(MTerminateAction elem) {}
+    public void deleteTerminateAction(MTerminateAction elem) {
+    }
 
-    public void deleteUninterpretedAction(MUninterpretedAction elem) {}
+    public void deleteUninterpretedAction(MUninterpretedAction elem) {
+    }
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,7 +36,7 @@ import org.argouml.model.ModelFacade;
  * @since 0.15.2, Created on 28 September 2003, 10:02
  */
 public class NameOrder 
- implements Comparator{
+    implements Comparator {
     
     /** Creates a new instance of NameOrder */
     public NameOrder() {
@@ -59,15 +59,17 @@ public class NameOrder
     /**
      * alphabetic ordering of user object names instead of type names
      */
-    protected int compareUserObjects(Object obj, Object obj1){
-        if ((ModelFacade.isADiagram(obj) ||
-	     ModelFacade.isABase(obj) )&&
-	    (ModelFacade.isADiagram(obj1) ||
-	     ModelFacade.isABase(obj1) )){
-	    String name = ModelFacade.getName(obj) == null ?
-		    "" : ModelFacade.getName(obj);
-	    String name1 = ModelFacade.getName(obj1) == null ?
-		    "" : ModelFacade.getName(obj1);
+    protected int compareUserObjects(Object obj, Object obj1) {
+        if ((ModelFacade.isADiagram(obj)
+	     || ModelFacade.isABase(obj) )
+	    && (ModelFacade.isADiagram(obj1)
+		|| ModelFacade.isABase(obj1) )) {
+	    String name =
+		ModelFacade.getName(obj) == null
+		? "" : ModelFacade.getName(obj);
+	    String name1 =
+		ModelFacade.getName(obj1) == null
+		? "" : ModelFacade.getName(obj1);
             int ret = name.compareTo(name1);
 
 	    return ret;
@@ -76,7 +78,7 @@ public class NameOrder
 	return 0;
     }
     
-    public String toString(){
+    public String toString() {
         return "Order By Name";
     }
 }

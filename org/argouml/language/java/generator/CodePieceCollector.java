@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,8 +34,6 @@ package org.argouml.language.java.generator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.FileInputStream;
@@ -75,9 +73,9 @@ public class CodePieceCollector {
 	// Insert in sorted order
 	for (Iterator i = codePieces.iterator(); i.hasNext(); index++) {
 	    CodePiece cp = (CodePiece) i.next();
-	    if (cp.getStartLine() > codePiece.getStartLine() ||
-		(cp.getStartLine() == codePiece.getStartLine() &&
-		 cp.getStartPosition() > codePiece.getStartPosition())) {
+	    if (cp.getStartLine() > codePiece.getStartLine()
+		|| (cp.getStartLine() == codePiece.getStartLine()
+		    && cp.getStartPosition() > codePiece.getStartPosition())) {
 		break;
 	    }
 	}
@@ -85,27 +83,30 @@ public class CodePieceCollector {
     }
 
     /**
-       Replace all the code pieces in a source file with new code from
-       the model, or maintain them if nothing is found in the model.
-
-       @param source The source file.
-       @param destination The destination file.
-       @param mNamespace The package the source belongs to.
-    */
+     * Replace all the code pieces in a source file with new code from
+     * the model, or maintain them if nothing is found in the model.
+     *
+     * @param source The source file.
+     * @param destination The destination file.
+     * @param mNamespace The package the source belongs to.
+     */
     public void filter(File source,
                        File destination,
                        Object/*MNamespace*/ mNamespace) throws Exception {
 	String encoding = null;
-      if ( Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null 
-	|| Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING).trim().equals(""))
-      	encoding = System.getProperty("file.encoding");
-	else
-      	encoding = Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
-      FileInputStream in = new FileInputStream(source);
-      FileOutputStream out = new FileOutputStream(destination);
+	if (Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null 
+	    || Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING).trim().equals("")) {
+	    encoding = System.getProperty("file.encoding");
+	} else {
+	    encoding = Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
+	}
+	FileInputStream in = new FileInputStream(source);
+	FileOutputStream out = new FileOutputStream(destination);
 
-	BufferedReader reader = new BufferedReader(new InputStreamReader(in, encoding));
-	BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, encoding));
+	BufferedReader reader =
+	    new BufferedReader(new InputStreamReader(in, encoding));
+	BufferedWriter writer =
+	    new BufferedWriter(new OutputStreamWriter(out, encoding));
 	int line = 0;
 	int column = 0;
 	Stack parseStateStack = new Stack();

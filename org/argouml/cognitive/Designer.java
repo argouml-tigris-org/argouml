@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,11 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: Designer.java
-// Classes: Designer
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.cognitive;
 
@@ -67,15 +62,19 @@ import ru.novosoft.uml.MElementListener;
  *
  * <p>TODO: implement as singleton?? There are comments that suggest this
  * should be done.
+ *
+ * @author Jason Robbins
  */
 public class Designer
      implements Poster,
-         Runnable, // TODO remove/refactor per issue 1024
+         Runnable, // TODO: remove/refactor per issue 1024
          PropertyChangeListener,
-         MElementListener, // TODO remove.
+         MElementListener, // TODO: remove.
          java.io.Serializable
 {
-    
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     protected static Logger cat = Logger.getLogger(Designer.class);
     
     /** the singleton of this class: TODO: needs to be made private.*/
@@ -230,7 +229,7 @@ public class Designer
     /** Start a separate thread to continually select and execute
      *  critics that are relevant to this designer's work. */
     public void spawnCritiquer(Object root) {
-        /* TODO really should be a separate class */
+        /* TODO: really should be a separate class */
         _critiquer = new Thread(this, "CritiquingThread");
         _critiquer.setDaemon(true);
         _critiquer.setPriority(Thread.currentThread().getPriority() - 1);
@@ -253,10 +252,10 @@ public class Designer
             
             // the critiquing thread should wait if disabled.
             synchronized (this) {
-                while(!_autoCritique){
-                    try{
+                while (!_autoCritique) {
+                    try {
                         this.wait();
-                    }catch (InterruptedException ignore) {
+                    } catch (InterruptedException ignore) {
                         cat.error("InterruptedException!!!", ignore);
                     }
                 }
@@ -299,9 +298,9 @@ public class Designer
                     
                     if (_warmQueue.size() == 0)
                         _warmQueue.addElement(_CritiquingRoot);
-                    while (_warmQueue.size() > 0 &&
-			   (System.currentTimeMillis() < cutoffTime ||
-			    minWarmElements > 0)) {
+                    while (_warmQueue.size() > 0
+			   && (System.currentTimeMillis() < cutoffTime
+			       || minWarmElements > 0)) {
                         if (minWarmElements > 0)
                             minWarmElements--;
                         Object dm = _warmQueue.elementAt(0);
@@ -413,23 +412,34 @@ public class Designer
     public boolean getAutoCritique() { return _autoCritique; }
     
     /** see getAutoCritique() */
-    public void setAutoCritique(boolean b) { _autoCritique = b; 
+    public void setAutoCritique(boolean b) {
+	_autoCritique = b; 
     
-    synchronized (this) {
-        if(_autoCritique){
-            this.notifyAll();
-        }
-    }
+	synchronized (this) {
+	    if (_autoCritique) {
+		this.notifyAll();
+	    }
+	}
     }
     
-    /** needs documenting */
+    /**
+     * Get the Critiquing interval.
+     *
+     * @return The interval.
+     */
     public int getCritiquingInterval() {
         
         return _critiquingInterval;
     }
 
-    /** needs documenting */
-    public void setCritiquingInterval(int i) { _critiquingInterval = i; }
+    /**
+     * Set the Critiquing Interval.
+     *
+     * @param i The new interval.
+     */
+    public void setCritiquingInterval(int i) {
+	_critiquingInterval = i;
+    }
     
     /** needs documenting */
     public static void disableCritiquing() {

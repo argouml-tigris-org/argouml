@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,19 +56,19 @@ public class ArrowIcon implements Icon, Serializable, SwingConstants {
     private int[][] buffer;
 
     private int[][] northWestBuffer = {
-    {0, 0, 0, 2, 2, 0, 0, 0, 0},
-    {0, 0, 2, 1, 1, 1, 0, 0, 0},
-    {0, 2, 1, 1, 1, 1, 1, 0, 0},
-    {2, 1, 1, 1, 1, 1, 1, 1, 0},
-    {0, 3, 3, 3, 3, 3, 3, 3, 3}
+	{0, 0, 0, 2, 2, 0, 0, 0, 0},
+	{0, 0, 2, 1, 1, 1, 0, 0, 0},
+	{0, 2, 1, 1, 1, 1, 1, 0, 0},
+	{2, 1, 1, 1, 1, 1, 1, 1, 0},
+	{0, 3, 3, 3, 3, 3, 3, 3, 3}
     };
 
     private int[][] southEastBuffer = {
-    {2, 2, 2, 2, 2, 2, 2, 2, 0},
-    {0, 1, 1, 1, 1, 1, 1, 3, 3},
-    {0, 0, 1, 1, 1, 1, 3, 3, 0},
-    {0, 0, 0, 1, 1, 3, 3, 0, 0},
-    {0, 0, 0, 0, 3, 3, 0, 0, 0}
+	{2, 2, 2, 2, 2, 2, 2, 2, 0},
+	{0, 1, 1, 1, 1, 1, 1, 3, 3},
+	{0, 0, 1, 1, 1, 1, 3, 3, 0},
+	{0, 0, 0, 1, 1, 3, 3, 0, 0},
+	{0, 0, 0, 0, 3, 3, 0, 0, 0}
     };
 
     int direction;
@@ -77,11 +77,11 @@ public class ArrowIcon implements Icon, Serializable, SwingConstants {
 
     /** Construct an ArrowIcon pointing in the given direction
      *
-     * @param direction the direction the arrow will point, this being
+     * @param dir The direction the arrow will point, this being
      * one of the constants NORTH, SOUTH, EAST, WEST
      */        
-    public ArrowIcon(int direction) {
-        this.direction = direction;
+    public ArrowIcon(int dir) {
+        this.direction = dir;
     }
 
     /** Paints the icon. The top-left corner of the icon is drawn at
@@ -163,10 +163,10 @@ public class ArrowIcon implements Icon, Serializable, SwingConstants {
         return SIZE;
     }
     
-    public void setIconHeight(int height) {
-        this.height = height;
+    public void setIconHeight(int h) {
+        height = h;
     }
-    public void setIconWidth(int width) {
-        this.width = width;
+    public void setIconWidth(int w) {
+        width = w;
     }
 }

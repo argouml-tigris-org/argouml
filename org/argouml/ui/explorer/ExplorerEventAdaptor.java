@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -40,7 +40,7 @@ import org.argouml.model.uml.ExplorerNSUMLEventAdaptor;
  * @author  alexb
  */
 public class ExplorerEventAdaptor 
-implements PropertyChangeListener{
+    implements PropertyChangeListener {
     
     private static ExplorerEventAdaptor instance;
     
@@ -49,12 +49,11 @@ implements PropertyChangeListener{
      */
     private TreeModelUMLEventListener treeModel;
     
-    public static ExplorerEventAdaptor getInstance(){
-        
-        if(instance == null)
+    public static ExplorerEventAdaptor getInstance() {
+        if (instance == null) {
             return instance = new ExplorerEventAdaptor();
-        else
-            return instance;
+	}
+	return instance;
     }
     
     /** Creates a new instance of ExplorerUMLEventAdaptor */
@@ -69,35 +68,36 @@ implements PropertyChangeListener{
     /**
      * forwards this event to the tree model.
      */
-    public void structureChanged(){
+    public void structureChanged() {
         treeModel.structureChanged();
     }
     
     /**
      * forwards this event to the tree model.
      */
-    public void modelElementRemoved(Object source){
+    public void modelElementRemoved(Object source) {
         treeModel.modelElementRemoved(source);
     }
     
     /**
      * forwards this event to the tree model.
      */
-    public void modelElementAdded(Object source){
+    public void modelElementAdded(Object source) {
         treeModel.modelElementAdded(source);
     }
     
     /**
      * forwards this event to the tree model.
      */
-    public void modelElementChanged(Object source){
+    public void modelElementChanged(Object source) {
         treeModel.modelElementChanged(source);
     }
     
     /**
      * sets the tree model that will receive events.
      */
-    public void setTreeModelUMLEventListener(TreeModelUMLEventListener newTreeModel){
+    public void setTreeModelUMLEventListener(
+	    TreeModelUMLEventListener newTreeModel) {
         treeModel = newTreeModel;
     }
     

@@ -60,7 +60,6 @@ public class DnDNavigatorTree extends ExplorerTree
     implements DragGestureListener,
 	       DragSourceListener
 {
-    
     private static Logger _cat = Logger.getLogger(DnDNavigatorTree.class);
     
     /** the selected node */
@@ -191,17 +190,16 @@ public class DnDNavigatorTree extends ExplorerTree
                 if (msg != null) {
                     dropTargetDropEvent.rejectDrop();
                     
-                    SwingUtilities.invokeLater(new Runnable() 
-			{
-			    public void run() {
-				JOptionPane.showMessageDialog(
-					ProjectBrowser.getInstance(),
-					msg,
-					"Error Dialog", 
-					JOptionPane.ERROR_MESSAGE
-					);
-			    }
-			});
+                    SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+			    JOptionPane.showMessageDialog(
+				    ProjectBrowser.getInstance(),
+				    msg,
+				    "Error Dialog", 
+				    JOptionPane.ERROR_MESSAGE
+				    );
+			}
+		    });
                     // reset the cursor.
                     //dropTargetDropEvent.getDropTargetContext()
                     //  .getComponent().setCursor(Cursor.getDefaultCursor());
@@ -215,7 +213,7 @@ public class DnDNavigatorTree extends ExplorerTree
                 //get old parent node
                 Object oldParentME =
 		    ((DefaultMutableTreeNode) _selectedTreePath.getParentPath()
-		     .getLastPathComponent()).getUserObject();
+			    .getLastPathComponent()).getUserObject();
                 
                 int action = dropTargetDropEvent.getDropAction();
                 boolean copyAction = (action == DnDConstants.ACTION_COPY);
@@ -262,9 +260,8 @@ public class DnDNavigatorTree extends ExplorerTree
         private String isValidDropTarget(TreePath destinationPath,
 					 TreePath sourceTreePath) {
             
-            if (destinationPath == null ||
-		sourceTreePath == null)
-	    {
+            if (destinationPath == null
+		|| sourceTreePath == null) {
                 return null;
             }
             

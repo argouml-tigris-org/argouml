@@ -74,64 +74,59 @@ public class PerspectiveManager {
         loadRules();
     }
     
-    public void addListener(PerspectiveManagerListener listener){
-        
+    public void addListener(PerspectiveManagerListener listener) {
         perspectiveListeners.add(listener);
     }
     
-    public void removeListener(PerspectiveManagerListener listener){
-        
+    public void removeListener(PerspectiveManagerListener listener) {
         perspectiveListeners.remove(listener);
     }
     
-    public void addPerspective(Object perspective){
-        
+    public void addPerspective(Object perspective) {
         perspectives.add(perspective);
         Iterator listenerIt = perspectiveListeners.iterator();
-        while(listenerIt.hasNext()){
+        while (listenerIt.hasNext()) {
             
             PerspectiveManagerListener listener = 
-                (PerspectiveManagerListener)listenerIt.next();
+                (PerspectiveManagerListener) listenerIt.next();
             
             listener.addPerspective(perspective);
         }
     }
     
-    public void addAllPerspectives(Collection newPerspectives){
+    public void addAllPerspectives(Collection newPerspectives) {
         
         Iterator newPerspectivesIt = newPerspectives.iterator();
-        while(newPerspectivesIt.hasNext()){
+        while (newPerspectivesIt.hasNext()) {
             
             Object newPerspective = newPerspectivesIt.next();
             addPerspective(newPerspective);
         }
     }
     
-    public void removePerspective(Object perspective){
+    public void removePerspective(Object perspective) {
         
         perspectives.remove(perspective);
         Iterator listenerIt = perspectiveListeners.iterator();
-        while(listenerIt.hasNext()){
+        while (listenerIt.hasNext()) {
             
             PerspectiveManagerListener listener = 
-                (PerspectiveManagerListener)listenerIt.next();
+                (PerspectiveManagerListener) listenerIt.next();
             
             listener.removePerspective(perspective);
         }
     }
     
-    public void removeAllPerspectives(){
+    public void removeAllPerspectives() {
         
         List pers = new ArrayList();
         pers.addAll(getPerspectives());
-        for(int i=0;i<pers.size();i++){
-            
+        for (int i = 0; i < pers.size(); i++) {
             removePerspective(pers.get(i));
         }
     }
     
-    public List getPerspectives(){
-        
+    public List getPerspectives() {
         return perspectives;
     }
     
@@ -139,81 +134,82 @@ public class PerspectiveManager {
      * tries to load user defined perspectives, if it can't it
      * calls oldLoadDefaultPerspectives() to load the default perspectives.
      */
-    public void loadDefaultPerspectives(){
+    public void loadDefaultPerspectives() {
         
 //        oldLoadDefaultPerspectives();
-        try{
-        String userPerspectives = 
-            Configuration.getString(Argo.KEY_USER_EXPLORER_PERSPECTIVES, "");
+        try {
+	    String userPerspectives = 
+		Configuration.getString(Argo.KEY_USER_EXPLORER_PERSPECTIVES,
+					"");
         
-        StringTokenizer perspectives =new StringTokenizer(userPerspectives,";");
+	    StringTokenizer perspectives =
+		new StringTokenizer(userPerspectives, ";");
         
-        if(perspectives.hasMoreTokens()){
+	    if (perspectives.hasMoreTokens()) {
             
-            // load user perspectives
-            while(perspectives.hasMoreTokens()){
-                String perspective = perspectives.nextToken();
-                StringTokenizer perspectiveDetails =
-                    new StringTokenizer(perspective,",");
+		// load user perspectives
+		while (perspectives.hasMoreTokens()) {
+		    String perspective = perspectives.nextToken();
+		    StringTokenizer perspectiveDetails =
+			new StringTokenizer(perspective, ",");
                 
-                //get the perspective name
-                String perspectiveName = perspectiveDetails.nextToken();
+		    //get the perspective name
+		    String perspectiveName = perspectiveDetails.nextToken();
                 
-                ExplorerPerspective userDefinedPerspective =
-                    new ExplorerPerspective(perspectiveName);
+		    ExplorerPerspective userDefinedPerspective =
+			new ExplorerPerspective(perspectiveName);
                 
-                // make sure there are some rules...
-                if(perspectiveDetails.hasMoreTokens()){
+		    // make sure there are some rules...
+		    if (perspectiveDetails.hasMoreTokens()) {
                     
-                    //get the rules
-                    while(perspectiveDetails.hasMoreTokens()){
+			//get the rules
+			while (perspectiveDetails.hasMoreTokens()) {
                         
-                        //get the rule name
-                        String ruleName = perspectiveDetails.nextToken();
+			    //get the rule name
+			    String ruleName = perspectiveDetails.nextToken();
                         
-                        // create the rule:
-                        try{
-                            Class ruleClass = 
-                                Class.forName(ruleName);
+			    // create the rule:
+			    try {
+				Class ruleClass = 
+				    Class.forName(ruleName);
                             
-                            PerspectiveRule rule =
-                                (PerspectiveRule)ruleClass.newInstance();
+				PerspectiveRule rule =
+				    (PerspectiveRule) ruleClass.newInstance();
                             
-                            userDefinedPerspective.addRule(rule);
+				userDefinedPerspective.addRule(rule);
                             
-                        }catch(Exception ex){
-                            cat.error("could not create rule "+ex);
-                        }
-                    }
-                    
-                }
-                // rule name but no rules
-                else{
-                    continue;
-                }
+			    } catch (Exception ex) {
+				cat.error("could not create rule ", ex);
+			    }
+			}
+		    }
+		    // rule name but no rules
+		    else {
+			continue;
+		    }
                 
-                // add the perspective
-                addPerspective(userDefinedPerspective);
-            }
-        }
-        // no user defined perspectives, so load defaults.
-        else{
-            oldLoadDefaultPerspectives();
-        }
+		    // add the perspective
+		    addPerspective(userDefinedPerspective);
+		}
+	    }
+	    // no user defined perspectives, so load defaults.
+	    else {
+		oldLoadDefaultPerspectives();
+	    }
         
-        // one last check that some loaded.
-        if(getPerspectives().size() ==0){
-            oldLoadDefaultPerspectives();
-        }
-        }catch(Exception e1){
-            int i=0;
+	    // one last check that some loaded.
+	    if (getPerspectives().size() == 0) {
+		oldLoadDefaultPerspectives();
+	    }
+        } catch (Exception e1) {
+            int i = 0;
         }
     }
         
     /**
      * loads a default set of perspectives.
      */
-    public void oldLoadDefaultPerspectives(){
+    public void oldLoadDefaultPerspectives() {
         ExplorerPerspective classPerspective = 
             new ExplorerPerspective("Class centric");
         classPerspective.addRule(new GoProjectToModel());
@@ -312,80 +308,81 @@ public class PerspectiveManager {
      * get all possible rule names in "org.argouml.ui.explorer.rules" from
      * the classpath.
      */
-    public void loadRules(){
+    public void loadRules() {
         
         PerspectiveRule[] ruleNamesArray =
-        {new GoAssocRoleMessages(),
-         new GoBehavioralFeatureToStateDiagram(),
-         new GoBehavioralFeatureToStateMachine(),
-         new GoClassifierToBeh(),
-         new GoClassifierToCollaboration(),
-         new GoClassifierToInstance(),
-         new GoClassifierToSequenceDiagram(),
-         new GoClassifierToStateMachine(),
-         new GoClassifierToStructuralFeature(),
-         new GoClassToAssociatedClass(),
-         new GoClassToNavigableClass(),
-         new GoClassToSummary(),
-         new GoCollaborationDiagram(),
-         new GoCollaborationInteraction(),
-         new GoCompositeStateToSubvertex(),
-         new GoDiagramToEdge(),
-         new GoDiagramToNode(),
-         new GoElementToMachine(),
-         new GoGenElementToDerived(),
-         new GoInteractionMessage(),
-         new GoInteractionMessages(),
-         new GoLinkStimuli(),
-         new GoMachineDiagram(),
-         new GoMachineToState(),
-         new GoMachineToTrans(),
-         new GoMessageAction(),
-         new GoModelElementToComment(),
-         new GoModelToBaseElements(),
-         new GoModelToClass(),
-         new GoModelToCollaboration(),
-         new GoModelToDiagrams(),
-         new GoModelToElements(),
-         new GoNamespaceToClassifierAndPackage(),
-         new GoNamespaceToDiagram(),
-         new GoNamespaceToOwnedElements(),
-         new GoOperationToCollaborationDiagram(),
-         new GoOperationToCollaboration(),
-         new GoOperationToSequenceDiagram(),
-         new GoProjectToCollaboration(),
-         new GoProjectToDiagram(),
-         new GoProjectToModel(),
-         new GoProjectToStateMachine(),
-         new GoSignalToReception(),
-         new GoStateMachineToTop(),
-         new GoStateMachineToTransition(),
-         new GoStateToDoActivity(),
-         new GoStateToDownstream(),
-         new GoStateToEntry(),
-         new GoStateToExit(),
-         new GoStateToIncomingTrans(),
-         new GoStateToInternalTrans(),
-         new GoStateToOutgoingTrans(),
-         new GoStimulusToAction(),
-         new GoSummaryToAssociation(),
-         new GoSummaryToAttribute(),
-         new GoSummaryToIncomingDependency(),
-         new GoSummaryToInheritance(),
-         new GoSummaryToOperation(),
-         new GoSummaryToOutgoingDependency(),
-         new GoTransitionToSource(),
-         new GoTransitionToTarget(),
-         new GoUseCaseToExtensionPoint()};
+	{new GoAssocRoleMessages(),
+	 new GoBehavioralFeatureToStateDiagram(),
+	 new GoBehavioralFeatureToStateMachine(),
+	 new GoClassifierToBeh(),
+	 new GoClassifierToCollaboration(),
+	 new GoClassifierToInstance(),
+	 new GoClassifierToSequenceDiagram(),
+	 new GoClassifierToStateMachine(),
+	 new GoClassifierToStructuralFeature(),
+	 new GoClassToAssociatedClass(),
+	 new GoClassToNavigableClass(),
+	 new GoClassToSummary(),
+	 new GoCollaborationDiagram(),
+	 new GoCollaborationInteraction(),
+	 new GoCompositeStateToSubvertex(),
+	 new GoDiagramToEdge(),
+	 new GoDiagramToNode(),
+	 new GoElementToMachine(),
+	 new GoGenElementToDerived(),
+	 new GoInteractionMessage(),
+	 new GoInteractionMessages(),
+	 new GoLinkStimuli(),
+	 new GoMachineDiagram(),
+	 new GoMachineToState(),
+	 new GoMachineToTrans(),
+	 new GoMessageAction(),
+	 new GoModelElementToComment(),
+	 new GoModelToBaseElements(),
+	 new GoModelToClass(),
+	 new GoModelToCollaboration(),
+	 new GoModelToDiagrams(),
+	 new GoModelToElements(),
+	 new GoNamespaceToClassifierAndPackage(),
+	 new GoNamespaceToDiagram(),
+	 new GoNamespaceToOwnedElements(),
+	 new GoOperationToCollaborationDiagram(),
+	 new GoOperationToCollaboration(),
+	 new GoOperationToSequenceDiagram(),
+	 new GoProjectToCollaboration(),
+	 new GoProjectToDiagram(),
+	 new GoProjectToModel(),
+	 new GoProjectToStateMachine(),
+	 new GoSignalToReception(),
+	 new GoStateMachineToTop(),
+	 new GoStateMachineToTransition(),
+	 new GoStateToDoActivity(),
+	 new GoStateToDownstream(),
+	 new GoStateToEntry(),
+	 new GoStateToExit(),
+	 new GoStateToIncomingTrans(),
+	 new GoStateToInternalTrans(),
+	 new GoStateToOutgoingTrans(),
+	 new GoStimulusToAction(),
+	 new GoSummaryToAssociation(),
+	 new GoSummaryToAttribute(),
+	 new GoSummaryToIncomingDependency(),
+	 new GoSummaryToInheritance(),
+	 new GoSummaryToOperation(),
+	 new GoSummaryToOutgoingDependency(),
+	 new GoTransitionToSource(),
+	 new GoTransitionToTarget(),
+	 new GoUseCaseToExtensionPoint(),
+	};
          
-         rules = Arrays.asList(ruleNamesArray);
+	rules = Arrays.asList(ruleNamesArray);
     }
     
-    public Collection getRules(){
+    public Collection getRules() {
         return rules;
     }
     
-    public void saveUserPerspectives(){
+    public void saveUserPerspectives() {
         Configuration.setString(Argo.KEY_USER_EXPLORER_PERSPECTIVES, 
             this.toString());
     }
@@ -394,33 +391,33 @@ public class PerspectiveManager {
      * string representation of the perspectives in the same format as
      * saved in the user properties.
      */
-    public String toString(){
+    public String toString() {
         
-        String perspectives="";
+        String perspectives = "";
         
         Iterator perspectivesIt = getPerspectives().iterator();
-        while(perspectivesIt.hasNext()){
+        while (perspectivesIt.hasNext()) {
             
             ExplorerPerspective perspective = 
-                (ExplorerPerspective)perspectivesIt.next();
+                (ExplorerPerspective) perspectivesIt.next();
             
             String name = perspective.toString();
             
-            perspectives+=name+",";
+            perspectives += name + ",";
             
             Object[] rules = perspective.getRulesArray();
             
-            for(int x=0;x<rules.length;x++){
+            for (int x = 0; x < rules.length; x++) {
                 
-                PerspectiveRule rule = (PerspectiveRule)rules[x];
-                perspectives+=rule.getClass().getName();
+                PerspectiveRule rule = (PerspectiveRule) rules[x];
+                perspectives += rule.getClass().getName();
                 
-                if(x<rules.length-1)
-                    perspectives+=",";
+                if (x < rules.length - 1)
+                    perspectives += ",";
             }
             
-            if(perspectivesIt.hasNext()){
-                perspectives+=";";
+            if (perspectivesIt.hasNext()) {
+                perspectives += ";";
             }
         }
         

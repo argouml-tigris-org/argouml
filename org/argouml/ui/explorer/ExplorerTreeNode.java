@@ -44,7 +44,6 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode {
 
     /** Creates a new instance of ExplorerTreeNode */
     public ExplorerTreeNode(Object userObj, ExplorerTreeModel model) {
-
         super(userObj);
 	this.model = model;
     }
@@ -82,7 +81,7 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode {
     /**
      * cleans up for gc.
      */
-    public void remove(){
+    public void remove() {
 	this.userObject = null;
 
 	if (children != null) {

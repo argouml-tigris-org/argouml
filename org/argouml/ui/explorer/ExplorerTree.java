@@ -65,10 +65,12 @@ import org.tigris.gef.presentation.Fig;
  * @since 0.15.2
  */
 public class ExplorerTree
-extends DisplayTextTree
-{
+    extends DisplayTextTree {
     
-    /** holds state info about whether to display stereotypes in the nav pane.*/
+    /**
+     * Holds state info about whether to display stereotypes in the
+     * nav pane.
+     */
     private boolean showStereotype;
     
     /**
@@ -87,16 +89,18 @@ extends DisplayTextTree
         ProjectManager.getManager()
             .addPropertyChangeListener(new ProjectPropertyChangeListener());
         
-        this.setModel(new ExplorerTreeModel(ProjectManager.getManager().getCurrentProject()));
+        this.setModel(new ExplorerTreeModel(ProjectManager.getManager()
+					        .getCurrentProject()));
         this.addMouseListener(new NavigatorMouseListener(this));
         this.addTreeSelectionListener(new NavigationTreeSelectionListener());
         this.addTreeWillExpandListener(new ExplorerTreeWillExpandListener());
         this.addTreeExpansionListener(new ExplorerTreeExpansionListener());
         
-        TargetManager.getInstance().addTargetListener(new ExplorerTargetListener());
+        TargetManager.getInstance()
+	    .addTargetListener(new ExplorerTargetListener());
         
         showStereotype =
-        Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
+	    Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
         
     }
     
@@ -107,7 +111,7 @@ extends DisplayTextTree
         
         JTree mLTree;
         
-        public NavigatorMouseListener(JTree newtree){
+        public NavigatorMouseListener(JTree newtree) {
             super();
             mLTree = newtree;
         }
@@ -144,11 +148,12 @@ extends DisplayTextTree
         /** builds a pop-up menu for extra functionality for the Tree*/
         public void showPopupMenu(MouseEvent me) {
             
-            if(getLastSelectedPathComponent() == null)
+            if (getLastSelectedPathComponent() == null) {
                 return;
+	    }
             
             Object selectedItem = 
-                ((DefaultMutableTreeNode)getLastSelectedPathComponent())
+                ((DefaultMutableTreeNode) getLastSelectedPathComponent())
                         .getUserObject();
             JPopupMenu popup = new ExplorerPopup(selectedItem, me);
             
@@ -164,13 +169,12 @@ extends DisplayTextTree
      * appropriate text for any object that will be displayed in
      * the Nav pane.
      */
-    public String convertValueToText(
-    Object value,
-    boolean selected,
-    boolean expanded,
-    boolean leaf,
-    int row,
-    boolean hasFocus) {
+    public String convertValueToText(Object value,
+				     boolean selected,
+				     boolean expanded,
+				     boolean leaf,
+				     int row,
+				     boolean hasFocus) {
         
         // do model elements first
         if (ModelFacade.isAModelElement(value)) {
@@ -179,7 +183,7 @@ extends DisplayTextTree
             
             // Jeremy Bennett patch
             if (ModelFacade.isATransition(value)
-            || ModelFacade.isAExtensionPoint(value)) {
+		    || ModelFacade.isAExtensionPoint(value)) {
                 name = GeneratorDisplay.Generate(value);
             }
             // changing the label in case of comments
@@ -189,9 +193,9 @@ extends DisplayTextTree
             else if (ModelFacade.isAComment(value)) {
                 name = ModelFacade.getName(value);
                 
-                if (name != null &&
-                    name.indexOf("\n") < 80 &&
-                    name.indexOf("\n") > -1) {
+                if (name != null
+		    && name.indexOf("\n") < 80
+		    && name.indexOf("\n") > -1) {
                         
                     name = name.substring(0, name.indexOf("\n")) + "...";
                 }
@@ -203,16 +207,15 @@ extends DisplayTextTree
             }
             
             if (name == null || name.equals("")) {
-                
-                name =
-                "(anon " + ModelFacade.getUMLClassName(value) + ")";
+                name = "(anon " + ModelFacade.getUMLClassName(value) + ")";
             }
             
             // Look for stereotype
             if (showStereotype) {
                 Object stereo = null;
                 if (ModelFacade.getStereotypes(value).size() > 0) {
-                    stereo = ModelFacade.getStereotypes(value).iterator().next();
+                    stereo =
+			ModelFacade.getStereotypes(value).iterator().next();
                 }
                 if (stereo != null) {
                     name += " " + GeneratorDisplay.Generate(stereo);
@@ -241,10 +244,11 @@ extends DisplayTextTree
     /**
      * helps prepare state before a node is expanded.
      */
-    class ExplorerTreeWillExpandListener implements TreeWillExpandListener{
+    class ExplorerTreeWillExpandListener implements TreeWillExpandListener {
         
         /** does nothing **/
-        public void treeWillCollapse(TreeExpansionEvent tee) {}
+        public void treeWillCollapse(TreeExpansionEvent tee) {
+	}
         
         /**
          * updates stereotype setting,
@@ -253,11 +257,11 @@ extends DisplayTextTree
         public void treeWillExpand(TreeExpansionEvent tee) {
             
             showStereotype =
-            Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
+		Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
             
-            if(getModel() instanceof ExplorerTreeModel){
+            if (getModel() instanceof ExplorerTreeModel) {
                 
-                ((ExplorerTreeModel)getModel()).updateChildren(tee.getPath());
+                ((ExplorerTreeModel) getModel()).updateChildren(tee.getPath());
             }
             
         }
@@ -266,7 +270,7 @@ extends DisplayTextTree
     /**
      * helps react to tree expansion events.
      */
-    class ExplorerTreeExpansionListener implements TreeExpansionListener{
+    class ExplorerTreeExpansionListener implements TreeExpansionListener {
         
         /**
          * does nothing
@@ -288,25 +292,26 @@ extends DisplayTextTree
     /**
      * Sets the selection state for a given set of targets.
      */
-    private void setSelection(Object[] targets){
+    private void setSelection(Object[] targets) {
         
         this.clearSelection();
         
         int rows = getRowCount();
         for (int i = 0; i < targets.length; i++) {
             Object target = targets[i];
-            target = target instanceof Fig ? ((Fig)target).getOwner() : target;
+            target =
+		target instanceof Fig ? ((Fig) target).getOwner() : target;
             for (int j = 0; j < rows; j++) {
-                Object rowItem = ((DefaultMutableTreeNode)getPathForRow(j)
-                                    .getLastPathComponent())
-                                    .getUserObject();
+                Object rowItem =
+		    ((DefaultMutableTreeNode) getPathForRow(j)
+		            .getLastPathComponent()).getUserObject();
                 if (rowItem == target) {
                     this.addSelectionRow(j);
                 }
             }
         }
         
-        if(this.getSelectionCount()>0){
+        if (this.getSelectionCount() > 0) {
             scrollRowToVisible(this.getSelectionRows()[0]);
         }
     }
@@ -322,17 +327,17 @@ extends DisplayTextTree
          */
         public void valueChanged(TreeSelectionEvent e) {
             
-            if(!updatingSelection){
+            if (!updatingSelection) {
                 updatingSelection = true;
                 
                 Set targets = new HashSet();
                 
                 //get existing selection
                 for (int i = 0; i < getSelectionCount(); i++) {
-                    Object rowItem = ((DefaultMutableTreeNode)
-                        getPathForRow(getSelectionRows()[i])
-                        .getLastPathComponent())
-                            .getUserObject();
+                    Object rowItem =
+			((DefaultMutableTreeNode)
+			     getPathForRow(getSelectionRows()[i])
+			         .getLastPathComponent()).getUserObject();
                     targets.add(rowItem);
                 }
                 
@@ -342,11 +347,12 @@ extends DisplayTextTree
                     // normally this will only be 1 path
                     for (int i = 0; i < paths.length; i++) {
                         
-                        if (e.isAddedPath(paths[i])){
+                        if (e.isAddedPath(paths[i])) {
                             
-                            Object element = ((DefaultMutableTreeNode)paths[i]
-                                .getLastPathComponent())
-                                .getUserObject();
+                            Object element =
+				((DefaultMutableTreeNode) paths[i]
+				     .getLastPathComponent())
+                                         .getUserObject();
                             
                             // add a new target for notifying the other views
                             targets.add(element);
@@ -355,11 +361,11 @@ extends DisplayTextTree
                             int rows = getRowCount();
                             for (int row = 0; row < rows; row++) {
                                 Object rowItem =
-                                ((DefaultMutableTreeNode)getPathForRow(row)
-                                    .getLastPathComponent())
-                                    .getUserObject();
-                                if (rowItem == element &&
-                                !(isRowSelected(row)) ) {
+				    ((DefaultMutableTreeNode) getPathForRow(row)
+				            .getLastPathComponent())
+				            .getUserObject();
+                                if (rowItem == element
+				    && !(isRowSelected(row))) {
                                     addSelectionRow(row);
                                 }
                             }
@@ -372,14 +378,14 @@ extends DisplayTextTree
         }
     }
     
-    class ExplorerTargetListener implements TargetListener{
+    class ExplorerTargetListener implements TargetListener {
     
         /**
          * actions a change in targets received from the TargetManager.
          */
         private void setTargets(Object[] targets) {
             
-            if(!updatingSelection){
+            if (!updatingSelection) {
                 updatingSelection = true;
                 
                 if (targets.length <= 0) {
@@ -393,24 +399,24 @@ extends DisplayTextTree
         }
         
         /**
-         * @see
-         * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+         * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
+	 *         org.argouml.ui.targetmanager.TargetEvent)
          */
         public void targetAdded(TargetEvent e) {
             setTargets(e.getNewTargets());
         }
         
         /**
-         * @see
-         * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+         * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
+	 *         org.argouml.ui.targetmanager.TargetEvent)
          */
         public void targetRemoved(TargetEvent e) {
             setTargets(e.getNewTargets());
         }
         
         /**
-         * @see
-         * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+         * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
+	 *         org.argouml.ui.targetmanager.TargetEvent)
          */
         public void targetSet(TargetEvent e) {
             setTargets(e.getNewTargets());
@@ -418,7 +424,7 @@ extends DisplayTextTree
         }
     }
     
-    class ProjectPropertyChangeListener implements PropertyChangeListener{
+    class ProjectPropertyChangeListener implements PropertyChangeListener {
         
         /**
          * Listens to events coming from the project manager,
@@ -432,7 +438,7 @@ extends DisplayTextTree
                         
                 TreeModel model = getModel();
                 
-                if(model != null && model.getRoot() != null) {
+                if (model != null && model.getRoot() != null) {
                     
                     expandPath(getPathForRow(0));
                     

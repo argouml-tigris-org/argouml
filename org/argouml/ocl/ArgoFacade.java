@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -52,8 +52,9 @@ public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
     public Object target;
 
     public ArgoFacade(Object target) {
-	if (org.argouml.model.ModelFacade.isAClassifier(target))
+	if (org.argouml.model.ModelFacade.isAClassifier(target)) {
 	    this.target = target;
+	}
     }
 
     public Any getClassifier(String name) {
@@ -93,6 +94,9 @@ public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
 }
 
 class ArgoAny implements Any, Type2 {
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     protected static Logger cat = Logger.getLogger(ArgoAny.class);
 
     Object classifier;
@@ -117,7 +121,7 @@ class ArgoAny implements Any, Type2 {
 	Type type = Basic.navigateAnyQualified(name, this, qualifiers);
 	if (type != null) return type;
 
-	Object foundAssocType = null, foundAttribType = null;// MClassifiers
+	Object foundAssocType = null, foundAttribType = null; // MClassifiers
 	boolean isSet = false, isSequence = false; // cannot be Bag
 
 	// first search for appropriate attributes
@@ -136,15 +140,16 @@ class ArgoAny implements Any, Type2 {
 	    UmlHelper.getHelper().getCore().getAssociateEndsInh(classifier);
 	Iterator asciter = associationEnds.iterator();
 	while (asciter.hasNext() && foundAssocType == null) {
-	    Object ae = asciter.next();//MAssociationEnd
-	    if (ModelFacade.getName(ae) != null &&
-                name.equals(ModelFacade.getName(ae))) {
+	    Object ae = asciter.next(); //MAssociationEnd
+	    if (ModelFacade.getName(ae) != null
+		&& name.equals(ModelFacade.getName(ae))) {
                     
 		foundAssocType = ModelFacade.getType(ae);
-	    } else if (ModelFacade.getName(ae) == null || 
-                       ModelFacade.getName(ae).equals("")) {
+	    } else if (ModelFacade.getName(ae) == null
+		       || ModelFacade.getName(ae).equals("")) {
                            
-		String oppositeName = ModelFacade.getName(ModelFacade.getType(ae));
+		String oppositeName =
+		    ModelFacade.getName(ModelFacade.getType(ae));
 		if (oppositeName != null) {
                     
 		    String lowerOppositeName =
@@ -167,9 +172,9 @@ class ArgoAny implements Any, Type2 {
                         stereotype = ModelFacade.getStereotypes(ae).iterator().next();
                     }
 		    if (stereotype != null
-			&& stereotype.toString() != null
-			&& "ordered".equals(stereotype.toString()) ) {
-                            isSequence = true;
+			    && stereotype.toString() != null
+			    && "ordered".equals(stereotype.toString())) {
+			isSequence = true;
 		    } else {
 			isSet = true;
 		    }
@@ -233,7 +238,7 @@ class ArgoAny implements Any, Type2 {
 	Type type = Basic.navigateAnyParameterized(name, params);
 	if (type != null) return type;
 
-	Object foundOp = null;//MOperation
+	Object foundOp = null; //MOperation
 	java.util.Collection operations = ModelFacade.getOperations(classifier);
 	Iterator iter = operations.iterator();
 	while (iter.hasNext() && foundOp == null) {
@@ -304,7 +309,8 @@ class ArgoAny implements Any, Type2 {
     }
 
     public boolean hasState(String name) {
-	cat.warn("ArgoAny.hasState() has been called, but is not implemented yet!");
+	cat.warn("ArgoAny.hasState() has been called, but is "
+		 + "not implemented yet!");
 	return false;
     }
 
@@ -359,14 +365,12 @@ class ArgoAny implements Any, Type2 {
         Collection operationParameters = ModelFacade.getParameters(operation);
 	if (!ModelFacade.isReturn(operationParameters.iterator().next())) {
 	    cat.warn(
-                "ArgoFacade$ArgoAny expects the first operation parameter to be the return type; this isn't the case"
+                "ArgoFacade$ArgoAny expects the first operation parameter "
+		+ "to be the return type; this isn't the case"
 	    );
 	}
-	if (!
-            (ModelFacade.isReturn(operationParameters.iterator().next())
-	      && operationParameters.size() == (callParams.length + 1)
-            )
-           ) {
+	if (!(ModelFacade.isReturn(operationParameters.iterator().next())
+	      && operationParameters.size() == (callParams.length + 1))) {
 	    return false;
 	}
 	Iterator paramIter = operationParameters.iterator();
@@ -375,7 +379,7 @@ class ArgoAny implements Any, Type2 {
 	while (paramIter.hasNext())
 	{
 	    Object nextParam = paramIter.next();
-	    Object paramType = ModelFacade.getType(nextParam);//MClassifier
+	    Object paramType = ModelFacade.getType(nextParam); //MClassifier
 	    Type operationParam = getOclRepresentation(paramType);
 	    if ( !callParams[index].conformsTo(operationParam) )
 	    {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -70,16 +70,20 @@ import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 
-/** Dialog box to list all critics and allow editing of some of their
- *  properties.  TODO: knowledge type, supported goals,
- *  supported decisions, critic network, localize labels. */
+/**
+ * Dialog box to list all critics and allow editing of some of their
+ * properties.  TODO: knowledge type, supported goals,
+ * supported decisions, critic network, localize labels.
+ */
 public class CriticBrowserDialog extends ArgoDialog
     implements ActionListener, 
 	       ListSelectionListener, 
 	       ItemListener, 
 	       DocumentListener 
 {
-    
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     protected static Logger cat =
 	Logger.getLogger(CriticBrowserDialog.class);
     
@@ -146,12 +150,12 @@ public class CriticBrowserDialog extends ArgoDialog
     
 	JPanel tablePanel = new JPanel(new BorderLayout(5, 5));
     
-    _critics = new ArrayList(Agency.getCritics());
-    Collections.sort(_critics, new Comparator() {
-        public int compare(Object o1, Object o2) {
-            return ((Critic) o1).getHeadline().compareTo(((Critic) o2).getHeadline());
-        }
-    });
+	_critics = new ArrayList(Agency.getCritics());
+	Collections.sort(_critics, new Comparator() {
+	    public int compare(Object o1, Object o2) {
+		return ((Critic) o1).getHeadline().compareTo(((Critic) o2).getHeadline());
+	    }
+	});
 
 	_tableModel.setTarget(_critics);
 	_table.setModel(_tableModel);
@@ -168,7 +172,7 @@ public class CriticBrowserDialog extends ArgoDialog
 	checkCol.setWidth(30);
 	int descWidth =
 	    _table.getFontMetrics(_table.getFont())
-	    .stringWidth(DESC_WIDTH_TEXT);
+	        .stringWidth(DESC_WIDTH_TEXT);
 	descCol.setMinWidth(descWidth);
 	descCol.setWidth(descWidth);
 	actCol.setMinWidth(50);
@@ -294,8 +298,8 @@ public class CriticBrowserDialog extends ArgoDialog
 	_target = (Critic) t;
 	_goButton.setEnabled(false);
 	_networkButton.setEnabled(false);
-	_wakeButton.setEnabled(_target != null &&
-			       _target.snoozeOrder().getSnoozed());
+	_wakeButton.setEnabled(_target != null
+			       && _target.snoozeOrder().getSnoozed());
 	_configButton.setEnabled(false);
 	_className.setText(_target.getClass().getName());
 	_headline.setText(_target.getHeadline());
@@ -357,15 +361,15 @@ public class CriticBrowserDialog extends ArgoDialog
     public void actionPerformed(ActionEvent e) {
 	super.actionPerformed(e);
 	if (e.getSource() == _goButton) {
-	    cat.debug("TODO go!");
+	    cat.debug("TODO: go!");
 	    return;
 	}
 	if (e.getSource() == _networkButton) {
-	    cat.debug("TODO network!");
+	    cat.debug("TODO: network!");
 	    return;
 	}
 	if (e.getSource() == _configButton) {
-	    cat.debug("TODO config!");
+	    cat.debug("TODO: config!");
 	    return;
 	}
 	if (e.getSource() == _wakeButton) {
@@ -423,6 +427,9 @@ public class CriticBrowserDialog extends ArgoDialog
 class TableModelCritics extends AbstractTableModel
     implements VetoableChangeListener, DelayedVChangeListener 
 {
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     protected static Logger cat =
 	Logger.getLogger(TableModelCritics.class);
     ////////////////
