@@ -316,6 +316,8 @@ public abstract class UMLComboBoxModel2
      * @param target
      */
     protected void setTarget(Object target) {
+	UmlModelEventPump eventPump = UmlModelEventPump.getPump();
+
 	if (ModelFacade.isABase(_target)) {
 	    eventPump.removeModelEventListener(this, _target,
 					       _propertySetName);
@@ -327,8 +329,6 @@ public abstract class UMLComboBoxModel2
 
 	target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
-            UmlModelEventPump eventPump = UmlModelEventPump.getPump();
-
             if (ModelFacade.isABase(target)) {
                 _target = target;
                 // UmlModelEventPump.getPump()

@@ -129,6 +129,7 @@ public abstract class UMLPlainTextDocument
      * @param target The target to set
      */
     public final void setTarget(Object target) {
+	UmlModelEventPump eventPump = UmlModelEventPump.getPump();
 	if (ModelFacade.isABase(_target)) {
 	    eventPump.removeModelEventListener(this, _target,
 					       getEventName());
@@ -137,7 +138,6 @@ public abstract class UMLPlainTextDocument
 
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target)) {
-            UmlModelEventPump eventPump = UmlModelEventPump.getPump();
             _target = target;
             // UmlModelEventPump.getPump().removeModelEventListener(this,
             // (MBase)_target, getEventName());
