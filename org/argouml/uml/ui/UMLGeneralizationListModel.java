@@ -263,31 +263,7 @@ public class UMLGeneralizationListModel extends UMLModelElementListModel  {
     }
     
 
-    /**
-     * <p>The action that occurs with the "Delete" pop up.</p>
-     *
-     * <p>Delete the generalization at the given index in the list from the
-     *   model. This is done by setting both ends (parent and child) to
-     *   null. Garbage collection will do the rest.</p>
-     *
-     * <p><em>Note</em>. We don't actually need to check the target PropPanel
-     *   is a generalisable element&mdash;given a generalization we can delete
-     *   it.</p>
-     *
-     * @param index  the index in the list of the  generalization to be
-     *               deleted.
-     */
-
-    public void delete(int index) {
-        MModelElement modElem = getModelElementAt(index);
-        Object target = ProjectBrowser.TheInstance.getTarget();
-        ProjectBrowser.TheInstance.setTarget(modElem);
-        ActionEvent event = new ActionEvent(this, 1, "delete");
-        ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-        ProjectBrowser.TheInstance.setTarget(target);
-        
-        fireIntervalRemoved(this,index,index);
-    }
+    
 
     
     /**

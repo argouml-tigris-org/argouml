@@ -101,7 +101,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       extendsList.setForeground(Color.blue);
       extendsScroll= new JScrollPane(extendsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-      JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
+      JList implementsList = new UMLList(new UMLClientDependencyListModel(this,"implements",true),true);
       implementsList.setBackground(getBackground());
       implementsList.setForeground(Color.blue);
       implementsScroll= new JScrollPane(implementsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
