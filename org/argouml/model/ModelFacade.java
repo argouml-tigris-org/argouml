@@ -940,11 +940,14 @@ public class ModelFacade {
      * @returns the type
      */
     public static Object getType(Object handle) {
-        if (handle instanceof MAttribute) {
+        if (handle instanceof MStructuralFeature) {
             return ((MAttribute)handle).getType();
         }
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd)handle).getType();
+        }
+        if (handle instanceof MParameter) {
+            return ((MParameter)handle).getType();
         }
 
         // ...
