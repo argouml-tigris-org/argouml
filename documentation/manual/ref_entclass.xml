@@ -1542,44 +1542,58 @@ Lists any specialized package (i.e. for
   <sect1 id="s1.ref.operation">
     <title>Operation</title>
 
-    <para>Operation is a service that can be requested from an object to effect
+    <para>An operation is a service that can be requested from an object to effect
       behavior. In the UML metamodel it is a sub-class of
       <literal>BehavioralFeature</literal> which is itself a sub-class of
       <literal>Feature</literal>.</para>
 
-    <para>An operation is represented on a single line within the operation
-      compartment of the class. Its syntax is as follows:</para>
+    <!-- TODO: This whole description of editing on the diagram should be more
+      visible. Maybe in a seperate chapter? 
+      This applies to other editable elements, too.
+      For info, see the javadocs of "Parser" and "ParserDisplay" classes.-->
 
-    <blockquote><para><emphasis>visibility</emphasis>
-      [<literal>static</literal>] [<literal>final</literal>]
-      <emphasis>operationName</emphasis> <literal>(</literal>
-      [<emphasis>argumentDeclaration</emphasis> 
-      [,&nbsp;<emphasis>argumentDeclaration</emphasis>]*] ) <literal>:</literal>
-      <emphasis>returnType</emphasis></para></blockquote>
+    <para>In the diagram, an operation is represented on a single line 
+      within the operation compartment of the class. 
+      Its syntax is as follows:</para>
 
-    <para><emphasis>visibility</emphasis> is <literal>+</literal>,
+    <blockquote><para>visibility name (parameter list) : return-type-expression
+     {property-string} </para></blockquote>
+
+    <para>You can edit this line directly in the diagram, 
+      by double-clicking on it.
+      All elements are optional and, if left unspecified, 
+      the old values will be preserved.
+    </para>
+
+    <para>A <emphasis>stereotype</emphasis> can be given 
+      between any two elements in the line in the format: 
+      <literal>&lt;&lt;stereotype&gt;&gt;</literal>.
+    </para>
+
+    <para>The following properties are recognized to have special meaning:
+      abstract, concurrency, concurrent, guarded, leaf, query, root and
+     	sequential.
+    </para>
+
+    <para>The <emphasis>visibility</emphasis> is <literal>+</literal>,
       <literal>#</literal> or <literal>-</literal> corresponding to
       <literal>public</literal>, <literal>protected</literal> or
       <literal>private</literal> visibility respectively.</para>
 
     <para><literal>static</literal> and <literal>final</literal> optionally
-      appear if the operation has those modifiers</para>
-
-    <para>In addition any operation declared static will have its whole entry
+      appear if the operation has those modifiers. 
+      Any operation declared static will have its whole entry
       underlined on the diagram.</para>
 
-    <para><emphasis>operationName</emphasis> is the name of the operation
-      actually being declared.</para>
-
-    <para>There may be zero or more <emphasis>argumentDeclarations</emphasis>
-      separated by commas. An <emphasis>argumentDeclaration</emphasis> is a
-      pair of the form:</para>
+    <para>There may be zero or more entries in the 
+      <emphasis>parameter list</emphasis> separated by commas. 
+      Every entry is a pair of the form:</para>
 
     <blockquote><para><emphasis>name</emphasis> <literal>:</literal>
       <emphasis>type</emphasis></para></blockquote>
 
-    <para><emphasis>returnType</emphasis> is the type (UML datatype, class or
-      interface) of the result returned.</para>
+    <para>The <emphasis>return-type-expression</emphasis> is the type 
+      (UML datatype, class or interface) of the result returned.</para>
 
     <para>Finally the whole entry is shown in italics if the operation is
       declared abstract.</para>
