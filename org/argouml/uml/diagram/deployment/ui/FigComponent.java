@@ -32,6 +32,7 @@ package org.argouml.uml.diagram.deployment.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
@@ -229,16 +230,22 @@ public class FigComponent extends FigNodeModelElement {
 	    super.setEnclosingFig(encloser);
         
 	    if (getLayer() != null) {
-		// elementOrdering(figures);
-		Collection contents = getLayer().getContents(null);
-                Iterator it = contents.iterator();
-		while (it.hasNext()) {
-		    Object o = it.next();
-		    if (o instanceof FigEdgeModelElement) {
-			FigEdgeModelElement figedge = (FigEdgeModelElement) o;
-			figedge.getLayer().bringToFront(figedge);
-		    }
-		}
+	            // elementOrdering(figures);
+	            Collection contents = getLayer().getContents(null);
+	            Collection bringToFrontList = new ArrayList();
+	            Iterator it = contents.iterator();
+	            while (it.hasNext()) {
+	                Object o = it.next();
+	                if (o instanceof FigEdgeModelElement) {
+	                    bringToFrontList.add(o);
+	                    
+	                }
+	            }
+	            Iterator bringToFrontIter = bringToFrontList.iterator();
+	            while (bringToFrontIter.hasNext()) {
+	                FigEdgeModelElement figEdge = (FigEdgeModelElement) bringToFrontIter.next();
+	                figEdge.getLayer().bringToFront(figEdge);
+	            }
 	    }
 	} else
 	    if (encloser == null && getEnclosingFig() != null) {
