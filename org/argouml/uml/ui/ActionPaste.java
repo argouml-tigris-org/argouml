@@ -23,36 +23,136 @@
 
 package org.argouml.uml.ui;
 
-import org.tigris.gef.base.*;
-import java.awt.event.*;
+import java.awt.Component;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.io.IOException;
 
-/** @stereotype singleton
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.text.JTextComponent;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
+import org.tigris.gef.base.CmdPaste;
+import org.tigris.gef.base.Globals;
+
+/** 
+ * Action to paste the content of either the GEF clipboard or the system clipboard. 
+ * The action is enabled if there is content on either clipboard AND either the 
+ * mouse hovers over the JGraph (the diagram) or the caret in a UMLTextField2 or
+ * UMLTextArea2 is enabled. 
  */
-public class ActionPaste extends UMLChangeAction {
+public class ActionPaste
+    extends AbstractAction
+    implements CaretListener, FocusListener {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
-    public static ActionPaste SINGLETON = new ActionPaste(); 
 
+    private static ActionPaste _Instance = new ActionPaste();
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    public ActionPaste() { super("action.paste"); }
-
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
-    public boolean shouldBeEnabled() {
-	if (Globals.clipBoard != null)
-	    return true;
-	return false;
+    /**
+     * Default constructor for action. We cannot use UMLChangeAction as a parent
+     * for this class since it works with shouldBeEnabled etc. which doesn't give
+     * enough control about enabling/disabling this action.
+     *
+     */
+    private ActionPaste() {
+        Icon icon =
+            ResourceLoaderWrapper
+                .getResourceLoaderWrapper()
+                .lookupIconResource(
+                Translator.getImageBinding("action.paste"),
+                Translator.localize("CoreMenu", "action.paste"));
+        if (icon != null)
+            putValue(Action.SMALL_ICON, icon);
+        putValue(
+            Action.SHORT_DESCRIPTION,
+            Translator.localize("CoreMenu", "action.paste") + " ");
+        // setEnabled((Globals.clipBoard != null && !Globals.clipBoard.isEmpty()) || !isSystemClipBoardEmpty());
+        setEnabled(false);
     }
+
+    /**
+     * Singleton implementation.
+     * @return The singleton
+     */
+    public static ActionPaste getInstance() {
+        return _Instance;
+    }
+
+    /**
+     * The source textcomponent where the caret is positioned
+     */
+    private JTextComponent _textSource;
+
+    /**
+     * Flag to indicate that the mouse is hovering over the JGraph
+     */
+    private boolean _inJGraph;
+
+    /**
+     * Copies some text or a fig
+     */
     public void actionPerformed(ActionEvent ae) {
-	CmdPaste cmd = new CmdPaste();
-	cmd.doIt();
-	super.actionPerformed(ae);
+        if (Globals.clipBoard != null && !Globals.clipBoard.isEmpty()) {
+            CmdPaste cmd = new CmdPaste();
+            cmd.doIt();
+        } else {
+            if (!isSystemClipBoardEmpty() && _textSource != null) {
+                _textSource.paste();
+            }
+        }
+              
     }
+
+    
+
+    private boolean isSystemClipBoardEmpty() {
+        //      if there is a selection on the clipboard
+         boolean hasContents = false;
+         try {
+             Object text =
+                 Toolkit
+                     .getDefaultToolkit()
+                     .getSystemClipboard()
+                     .getContents(null)
+                     .getTransferData(DataFlavor.stringFlavor);
+             return text == null;
+         } catch (IOException ignorable) {
+         } catch (UnsupportedFlavorException ignorable) {
+         }
+         return true;
+    }    
+
+    /**
+     * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+     */
+    public void focusLost(FocusEvent e) {        
+        if (e.getSource() == _textSource) _textSource = null;
+    }
+
+    /**
+     * @see javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
+     */
+    public void caretUpdate(CaretEvent e) {
+        _textSource = (JTextComponent)e.getSource();
+
+    }
+
+    /**
+     * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+     */
+    public void focusGained(FocusEvent e) {
+        _textSource = (JTextComponent)e.getSource();
+    }
+
 } /* end class ActionPaste */

@@ -226,7 +226,7 @@ public abstract class UMLPlainTextDocument
      * @param editing The editing to set
      */
     public void setEditing(boolean editing) {
-        _editing = editing;
+        _editing = editing;       
     }
 
     /**

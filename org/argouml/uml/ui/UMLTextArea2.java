@@ -34,8 +34,6 @@ import ru.novosoft.uml.MElementListener;
 
 /**
  * A JTextArea especially made to represent UMLPlainTextDocuments. 
- * TODO: refactor the UMLChangeDispatch class so this class can be replaced with
- * ordinary JTextAreas.
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 28, 2002
  */
@@ -48,6 +46,10 @@ public class UMLTextArea2 extends JTextArea implements MElementListener, Targett
      */
     public UMLTextArea2(UMLPlainTextDocument doc) {
         super(doc);
+        addCaretListener(ActionCopy.getInstance());
+        addCaretListener(ActionCut.getInstance());  
+        addCaretListener(ActionPaste.getInstance());
+        addFocusListener(ActionPaste.getInstance());
     }
 
     /**

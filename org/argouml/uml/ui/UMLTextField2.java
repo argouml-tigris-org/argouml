@@ -45,6 +45,10 @@ public class UMLTextField2
      */
     public UMLTextField2(UMLPlainTextDocument doc) {
         super(doc, null, 0);
+        addCaretListener(ActionCopy.getInstance());
+        addCaretListener(ActionCut.getInstance());  
+        addCaretListener(ActionPaste.getInstance());
+        addFocusListener(ActionPaste.getInstance()); 
     }
 
     /**

@@ -26,6 +26,8 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -37,7 +39,13 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.ActionCopy;
+import org.argouml.uml.ui.ActionCut;
+import org.argouml.uml.ui.ActionPaste;
 import org.argouml.uml.ui.TabModelTarget;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.FigModifyingMode;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerManager;
 import org.tigris.gef.base.ModeSelect;
@@ -45,6 +53,8 @@ import org.tigris.gef.event.GraphSelectionEvent;
 import org.tigris.gef.event.GraphSelectionListener;
 import org.tigris.gef.event.ModeChangeEvent;
 import org.tigris.gef.event.ModeChangeListener;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.presentation.DefaultGraphModel;
 import org.tigris.gef.graph.presentation.JGraph;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.ToolBar;
@@ -59,7 +69,7 @@ public class TabDiagram
     extends TabSpawnable
     implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
 
-    protected static Category cat = Category.getInstance(TabDiagram.class);
+    private Category cat = Category.getInstance(TabDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -98,7 +108,7 @@ public class TabDiagram
     public TabDiagram(String tag) {
         super(tag);
         setLayout(new BorderLayout());
-        _jgraph = new JGraph();
+        _jgraph = new ArgoJGraph();
         _jgraph.setDrawingSize((612 - 30) * 2, (792 - 55 - 20) * 2);
         // TODO: should update to size of diagram contents
 
@@ -153,7 +163,7 @@ public class TabDiagram
         if (_target != null) {
             _target.removeAsTarget();
         }
-        UMLDiagram target = (UMLDiagram) t;
+        UMLDiagram target = (UMLDiagram)t;
 
         target.setAsTarget();
 
@@ -209,8 +219,12 @@ public class TabDiagram
      */
     public void selectionChanged(GraphSelectionEvent gse) {
         Vector sels = gse.getSelections();
-        ProjectBrowser pb = ProjectBrowser.getInstance();
-
+        ActionCut.getInstance().setEnabled(sels != null && !sels.isEmpty());
+        ActionCopy.getInstance().setEnabled(sels != null && !sels.isEmpty());
+        /*
+        ActionPaste.getInstance().setEnabled(
+            Globals.clipBoard != null && !Globals.clipBoard.isEmpty());
+            */
         TargetManager.getInstance().setTargets(sels);
 
     }
@@ -239,7 +253,7 @@ public class TabDiagram
     public void setToolBar(ToolBar toolbar) {
         if (!Arrays.asList(getComponents()).contains(toolbar)) {
             if (_target != null) {
-                remove(((UMLDiagram) getTarget()).getToolBar());
+                remove(((UMLDiagram)getTarget()).getToolBar());
             }
             add(toolbar, BorderLayout.NORTH);
 
@@ -307,13 +321,65 @@ public class TabDiagram
  */
 class ArgoJGraph extends JGraph {
 
+    
+
     public boolean equals(Object o) {
         if (o instanceof ArgoJGraph) {
-            ArgoJGraph a = (ArgoJGraph) o;
+            ArgoJGraph a = (ArgoJGraph)o;
             if (this._currentDiagramId.equals(a._currentDiagramId)
                 && this.getEditor().equals(a.getEditor()))
                 return true;
         }
         return false;
     }
+
+    /** Make a new JGraph with a new DefaultGraphModel.
+       * @see uci.graph.DefaultGraphModel */
+    public ArgoJGraph() {
+        this(new DefaultGraphModel());
+    }
+
+    /** Make a new JGraph with a the GraphModel and Layer from the given
+     *  Diagram. */
+    public ArgoJGraph(Diagram d) {
+        this(new ArgoEditor(d));
+    }
+
+    /** Make a new JGraph with the given GraphModel */
+    public ArgoJGraph(GraphModel gm) {
+        this(new ArgoEditor(gm, null));
+    }
+    
+    /** Make a new JGraph with the given Editor.  All JGraph contructors
+     *  eventually call this contructor. */
+    public ArgoJGraph(Editor ed) {
+        super(ed); 
+    }
+        
+
 }
+
+class ArgoEditor extends Editor {
+        
+        public ArgoEditor(Diagram d) {
+            super(d);
+        }
+        
+        public ArgoEditor(GraphModel gm, Component c) {
+            super(gm, c);
+        }
+
+        /**
+         * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+         */
+        public void mouseEntered(MouseEvent me) {
+            if (_activeTextEditor != null)
+                _activeTextEditor.requestFocus();         
+            translateMouseEvent(me);
+            Globals.curEditor(this);
+            mode((FigModifyingMode)Globals.mode());
+            setUnderMouse(me);
+            _modeManager.mouseEntered(me);
+        }
+
+    }

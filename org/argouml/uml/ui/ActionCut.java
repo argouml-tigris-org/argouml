@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,55 +24,110 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
 
-import org.argouml.ui.targetmanager.TargetManager;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.text.JTextComponent;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.tigris.gef.base.CmdCut;
-import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.base.Globals;
 
 /** @stereotype singleton
  */
-public class ActionCut extends UMLAction {
+public class ActionCut extends AbstractAction implements CaretListener {
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    public static ActionCut SINGLETON = new ActionCut(); 
-
+    private static ActionCut _Instance = new ActionCut();
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionCut() { super("action.cut"); }
+    private ActionCut() {
+        Icon icon =
+            ResourceLoaderWrapper
+                .getResourceLoaderWrapper()
+                .lookupIconResource(
+                Translator.getImageBinding("action.cut"),
+                Translator.localize("CoreMenu", "action.cut"));
+        if (icon != null)
+            putValue(Action.SMALL_ICON, icon);
+        putValue(
+            Action.SHORT_DESCRIPTION,
+            Translator.localize("CoreMenu", "action.cut") + " ");
+    }
 
+    public static ActionCut getInstance() {
+        return _Instance;
+    }
 
-   /**
-    * This action should only be enabled if the only selection are figs.
-    */
+    private JTextComponent _textSource;
 
-    public boolean shouldBeEnabled() { 
-        Collection col = TargetManager.getInstance().getTargets();
-        if (col == null) return false;
-        Iterator it = col.iterator();
-        boolean returnvalue = true;
-        while (it.hasNext()) {
-            if (!(it.next() instanceof Fig)) {
-                 returnvalue = false;
-                 break; 
-            } 
+    /**
+     * Cuts some text or a fig
+     */
+    public void actionPerformed(ActionEvent ae) {
+        if (_textSource == null) {
+            CmdCut cmd = new CmdCut();
+            cmd.doIt();
+        } else {
+            _textSource.cut();
         }
-        return returnvalue;
+        if (isSystemClipBoardEmpty()
+            && Globals.clipBoard == null
+            || Globals.clipBoard.isEmpty()) {
+            ActionPaste.getInstance().setEnabled(false);
+        } else {
+            ActionPaste.getInstance().setEnabled(true);
+        }
     }
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e) {
-        CmdCut cmd = new CmdCut();
-        cmd.doIt();
-        super.actionPerformed(e);
+    * @see javax.swing.event.CaretListener#caretUpdate(javax.swing.event.CaretEvent)
+    */
+    public void caretUpdate(CaretEvent e) {
+        if (e.getMark() != e.getDot()) { // there is a selection        
+            setEnabled(true);
+            _textSource = (JTextComponent)e.getSource();
+        } else {
+            Collection figSelection =
+                Globals.curEditor().getSelectionManager().selections();
+            if (figSelection == null || figSelection.isEmpty()) {
+                setEnabled(false);
+            } else
+                setEnabled(true);
+            _textSource = null;
+        }
+
+    }
+
+    private boolean isSystemClipBoardEmpty() {
+        //      if there is a selection on the clipboard
+        boolean hasContents = false;
+        Transferable content =
+            Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
+        DataFlavor[] flavors = content.getTransferDataFlavors();
+        try {
+            for (int i = 0; i < flavors.length; i++) {
+                if (content.getTransferData(flavors[i]) != null) {
+                    hasContents = true;
+                    break;
+                }
+            }
+        } catch (UnsupportedFlavorException ignorable) {
+        } catch (IOException ignorable) {
+        }
+        return !hasContents;
     }
 
 } /* end class ActionCut */
