@@ -498,7 +498,17 @@ Property files to be searched:
 
     <!-- Links allow reference to external classes from within Argo javadocs
       -->
-    <javadoc author="${javadoc.author}" bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;33%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2003 (${DSTAMP})&lt;/td&gt;&lt;td width=&apos;34%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Project Home&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;33%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" destdir="${argo.javadocs.dir}" overview="org/argouml/overview-argo.html" packagenames="${packages}" private="${javadoc.private}" sourcepath="${argo.src.dir}" splitindex="${javadoc.splitindex}" use="${javadoc.use}" windowtitle="ArgoUML Documentation">
+    <javadoc author="${javadoc.author}" 
+             bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;33%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2003 (${DSTAMP})&lt;/td&gt;&lt;td width=&apos;34%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Project Home&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;33%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+             destdir="${argo.javadocs.dir}" 
+             maxmemory="128M"
+             overview="org/argouml/overview-argo.html" 
+             packagenames="${packages}" 
+             private="${javadoc.private}"
+             sourcepath="${argo.src.dir}"
+             splitindex="${javadoc.splitindex}" 
+             use="${javadoc.use}" 
+             windowtitle="ArgoUML Documentation">
       <classpath>
 	  <path refid="argo.compile.classpath"/>
       </classpath>
@@ -1101,6 +1111,55 @@ you will have to resurrect them using cvs update.
 
    </target>
 
+
+  <!-- =================================================================== -->
+  <!-- Creates the java web start folder                                   -->
+  <!-- =================================================================== -->
+  <target name="dist-javawebstart"
+          depends="package,dist-dir">
+    <property name="jwsdir" value="${argo.dist.dir}/jws"/>
+    <mkdir dir="${jwsdir}"/>
+
+    <!-- copy: all jars -->
+    <!-- For Java Web Start we really would like to use versioned files. -->
+    <!-- But I can't figure out how to solve this wihtout having a list  -->
+    <!-- of files both here and in the template. I will go for the       -->
+    <!-- non-versioned files until this is solved.                       -->
+    <!-- At least then we wont have to update the list below and the     -->
+    <!-- list in the jnlp-template file every time we change version     -->
+    <!-- of an included library. We still need to remember to update     -->
+    <!-- these two list when adding to the list of jars.                 -->
+    <copy todir="${jwsdir}">
+          <fileset dir="${argo.build.dir}"
+                   includes="${names.of.all.included.libs} argouml.jar"/>
+    </copy>
+
+    <!-- sign: all jars -->
+    <!-- For this to work you need to have created a key in the default  -->
+    <!-- keystore on your machine. This is done with the command:        -->
+    <!--   keytool -genkey -alias argouml -storepass secret              -->
+    <signjar jar="${jwsdir}/argouml.jar"   alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/antlrall.jar"  alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/gef.jar"       alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/i18n.jar"      alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/jmi.jar"       alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/log4j.jar"     alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/nsuml.jar"     alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/ocl-argo.jar"  alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/toolbar.jar"   alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/toolbutton.jar" alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/xerces.jar"    alias="argouml" storepass="secret"/>
+
+    <copy todir="${argo.dist.dir}/jws/">
+      <fileset dir="${argo.src.dir}/templates/jnlp"/>
+      <filterset>
+        <filter token="VERSION" 
+                value="${argo.build.version}"/>
+        <filter token="URLROOT"
+                value="http://argouml.tigris.org/files/documents/4/0/argouml-${argo.build.version}"/>
+      </filterset>
+    </copy>
+  </target>
 
   <!-- =================================================================== -->
   <!-- Creates the whole distribution                                      -->
