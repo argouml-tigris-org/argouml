@@ -42,7 +42,7 @@ public class UmlTestSuite {
 			  + UmlTestSuite.class.getPackage().getName());
         suite.addTestSuite(TestUml.class);
         suite.addTestSuite(TestCopyHelper.class);
-        suite.addTestSuite(TestUmlModelEventPump.class);
+        suite.addTestSuite(TestUmlModelEventPumpDeprecated.class);
 
 	suite.addTest(new TestSuite(TestUmlModelElement.class));
 	suite.addTest(new TestSuite(TestUmlNamespace.class));

@@ -49,7 +49,7 @@ import ru.novosoft.uml.model_management.MModel;
  * @since Oct 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class TestUmlModelEventPump extends TestCase {
+public class TestUmlModelEventPumpDeprecated extends TestCase {
 
     private MClass elem;
     private MockModelEventListener listener;
@@ -110,7 +110,7 @@ public class TestUmlModelEventPump extends TestCase {
      *
      * @param arg0 is the name of the test case.
      */
-    public TestUmlModelEventPump(String arg0) {
+    public TestUmlModelEventPumpDeprecated(String arg0) {
         super(arg0);
     }
 
