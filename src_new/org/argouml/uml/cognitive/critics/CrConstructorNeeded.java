@@ -72,6 +72,13 @@ public class CrConstructorNeeded extends CrUML {
     Iterator enum = str.iterator();
     while (enum.hasNext()) {
       Object feature = enum.next();
+      // if this class element is an Operation and the operation is marked
+      // as constructor (Stereotype create) there is no problem
+      if (feature instanceof MOperation) {
+          MOperation oper = (MOperation) feature;
+           if ((oper.getStereotype()!=null) && "create".equals(oper.getStereotype().getName()) )
+               return NO_PROBLEM;
+      }
       if (!(feature instanceof MAttribute))
         continue;
       MAttribute attr = (MAttribute) feature;
