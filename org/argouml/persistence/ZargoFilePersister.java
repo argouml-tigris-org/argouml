@@ -1,26 +1,26 @@
-// $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
-// Rights Reserved. Permission to use, copy, modify, and distribute this
-// software and its documentation without fee, and without a written
-// agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
-// documentation are copyrighted by The Regents of the University of
-// California. The software program and documentation are supplied "AS
-// IS", without any accompanying services from The Regents. The Regents
-// does not warrant that the operation of the program will be
-// uninterrupted or error-free. The end-user understands that the program
-// was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
-// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
-// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
-// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
-// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
-// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+//$Id$
+//Copyright (c) 1996-2004 The Regents of the University of California. All
+//Rights Reserved. Permission to use, copy, modify, and distribute this
+//software and its documentation without fee, and without a written
+//agreement is hereby granted, provided that the above copyright notice
+//and this paragraph appear in all copies.  This software program and
+//documentation are copyrighted by The Regents of the University of
+//California. The software program and documentation are supplied "AS
+//IS", without any accompanying services from The Regents. The Regents
+//does not warrant that the operation of the program will be
+//uninterrupted or error-free. The end-user understands that the program
+//was developed for research purposes and is advised not to rely
+//exclusively on the program for any reason.  IN NO EVENT SHALL THE
+//UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+//SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+//ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+//THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+//SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+//WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+//MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+//PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+//CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+//UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.persistence;
 
@@ -51,22 +51,21 @@ import org.tigris.gef.ocl.TemplateReader;
 
 /**
  * To persist to and from zargo (zipped file) storage.
- *
+ * 
  * @author Bob Tarling
  */
 public class ZargoFilePersister extends UmlFilePersister {
     /**
      * Logger.
      */
-    private static final Logger LOG =
-        Logger.getLogger(ZargoFilePersister.class);
+    private static final Logger LOG = Logger
+            .getLogger(ZargoFilePersister.class);
 
     /**
-     * This is the old version of the ArgoUML tee file which
-     * does not contain the detail of member elements.
+     * This is the old version of the ArgoUML tee file which does not contain
+     * the detail of member elements.
      */
-    private static final String ARGO_MINI_TEE =
-        "/org/argouml/persistence/argo.tee";
+    private static final String ARGO_MINI_TEE = "/org/argouml/persistence/argo.tee";
 
     /**
      * The constructor.
@@ -89,19 +88,20 @@ public class ZargoFilePersister extends UmlFilePersister {
     }
 
     /**
-     * It is being considered to save out individual
-     * xmi's from individuals diagrams to make
-     * it easier to modularize the output of Argo.
-     *
-     * @param file The file to write.
-     * @param project the project to save
-     * @throws SaveException when anything goes wrong
-     *
+     * It is being considered to save out individual xmi's from individuals
+     * diagrams to make it easier to modularize the output of Argo.
+     * 
+     * @param file
+     *            The file to write.
+     * @param project
+     *            the project to save
+     * @throws SaveException
+     *             when anything goes wrong
+     * 
      * @see org.argouml.persistence.ProjectFilePersister#save(
-     *         org.argouml.kernel.Project, java.io.File)
+     *      org.argouml.kernel.Project, java.io.File)
      */
-    public void doSave(Project project, File file)
-        throws SaveException {
+    public void doSave(Project project, File file) throws SaveException {
 
         // frank: first backup the existing file to name+"#"
         File tempFile = new File(file.getAbsolutePath() + "#");
@@ -121,18 +121,16 @@ public class ZargoFilePersister extends UmlFilePersister {
             project.setVersion(ArgoVersion.getVersion());
             project.setPersistenceVersion(PERSISTENCE_VERSION);
 
-            ZipOutputStream stream =
-                new ZipOutputStream(new FileOutputStream(file));
-            writer =
-                new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
+            ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(
+                    file));
+            writer = new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
 
-            ZipEntry zipEntry =
-                new ZipEntry(project.getBaseName()
-                        + FileConstants.UNCOMPRESSED_FILE_EXT);
+            ZipEntry zipEntry = new ZipEntry(project.getBaseName()
+                    + FileConstants.UNCOMPRESSED_FILE_EXT);
             stream.putNextEntry(zipEntry);
 
-            Hashtable templates =
-                TemplateReader.getInstance().read(ARGO_MINI_TEE);
+            Hashtable templates = TemplateReader.getInstance().read(
+                    ARGO_MINI_TEE);
             OCLExpander expander = new OCLExpander(templates);
             expander.expand(writer, project, "", "");
 
@@ -148,16 +146,16 @@ public class ZargoFilePersister extends UmlFilePersister {
             // when reloading it is better to load XMI first
             // then the diagrams.
             Collection names = new ArrayList();
-            int counter = 0;  
+            int counter = 0;
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
-                ProjectMember projectMember = 
-                    (ProjectMember) project.getMembers().elementAt(i);
+                ProjectMember projectMember = (ProjectMember) project
+                        .getMembers().elementAt(i);
                 if (!(projectMember.getType().equalsIgnoreCase("xmi"))) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member: "
-                              + ((ProjectMember) project.getMembers()
-                                    .elementAt(i)).getName());
+                                + ((ProjectMember) project.getMembers()
+                                        .elementAt(i)).getName());
                     }
                     String name = projectMember.getName();
                     String originalName = name;
@@ -173,13 +171,13 @@ public class ZargoFilePersister extends UmlFilePersister {
             }
 
             for (int i = 0; i < size; i++) {
-                ProjectMember projectMember = 
-                    (ProjectMember) project.getMembers().elementAt(i);
+                ProjectMember projectMember = (ProjectMember) project
+                        .getMembers().elementAt(i);
                 if (projectMember.getType().equalsIgnoreCase("xmi")) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member of type: "
-                              + ((ProjectMember) project.getMembers()
-                                    .elementAt(i)).getType());
+                                + ((ProjectMember) project.getMembers()
+                                        .elementAt(i)).getType());
                     }
                     stream.putNextEntry(new ZipEntry(projectMember.getName()));
                     projectMember.save(writer, null);
@@ -230,14 +228,12 @@ public class ZargoFilePersister extends UmlFilePersister {
             file.deleteOnExit();
 
             String encoding = "UTF-8";
-            FileOutputStream stream =
-                new FileOutputStream(file);
-            PrintWriter writer =
-                new PrintWriter(new BufferedWriter(new OutputStreamWriter(
-                        stream, encoding)));
+            FileOutputStream stream = new FileOutputStream(file);
+            PrintWriter writer = new PrintWriter(new BufferedWriter(
+                    new OutputStreamWriter(stream, encoding)));
 
-            writer.println("<?xml version = \"1.0\" "
-                    + "encoding = \"" + encoding + "\" ?>");
+            writer.println("<?xml version = \"1.0\" " + "encoding = \""
+                    + encoding + "\" ?>");
 
             // first read the .argo file from Zip
             ZipInputStream zis;
@@ -306,16 +302,18 @@ public class ZargoFilePersister extends UmlFilePersister {
     }
 
     /**
-     * Open a ZipInputStream to the first file found with
-     * a given extension.
-     *
-     * @param url The URL of the zip file.
-     * @param ext The required extension.
+     * Open a ZipInputStream to the first file found with a given extension.
+     * 
+     * @param url
+     *            The URL of the zip file.
+     * @param ext
+     *            The required extension.
      * @return the zip stream positioned at the required location.
-     * @throws IOException if there is a problem opening the file.
+     * @throws IOException
+     *             if there is a problem opening the file.
      */
     private ZipInputStream openZipStreamAt(URL url, String ext)
-        throws IOException {
+            throws IOException {
         ZipInputStream zis = new ZipInputStream(url.openStream());
         ZipEntry entry = zis.getNextEntry();
         while (entry != null && !entry.getName().endsWith(ext)) {
@@ -323,8 +321,6 @@ public class ZargoFilePersister extends UmlFilePersister {
         }
         return zis;
     }
-    
-
 
     /**
      * A stream of input streams for reading the Zipped file.
@@ -334,8 +330,9 @@ public class ZargoFilePersister extends UmlFilePersister {
 
         /**
          * The constructor.
-         *
-         * @param z the zip input stream
+         * 
+         * @param z
+         *            the zip input stream
          */
         public SubInputStream(ZipInputStream z) {
             super(z);
@@ -345,16 +342,17 @@ public class ZargoFilePersister extends UmlFilePersister {
         /**
          * @see java.io.InputStream#close()
          */
-        public void close() throws IOException  {
+        public void close() throws IOException {
             in.closeEntry();
         }
 
         /**
          * Reads the next ZIP file entry and positions stream at the beginning
          * of the entry data.
-         *
+         * 
          * @return the ZipEntry just read
-         * @throws IOException if an I/O error has occurred
+         * @throws IOException
+         *             if an I/O error has occurred
          */
         public ZipEntry getNextEntry() throws IOException {
             return in.getNextEntry();

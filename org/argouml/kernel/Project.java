@@ -142,17 +142,6 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Constructor.
-     * 
-     * @param file File to read from.
-     * @throws MalformedURLException if the file name is incorrect.
-     * @throws IOException if we cannot read the file.
-     */
-    public Project(File file) throws MalformedURLException, IOException {
-        this(Util.fileToURL(file));
-    }
-
-    /**
-     * Constructor.
      *
      * @param theProjectUrl Url to read the project from.
      */
@@ -213,25 +202,6 @@ public class Project implements java.io.Serializable, TargetListener {
         setActiveDiagram((ArgoDiagram) getDiagrams().get(0));
     }
  
-    /**
-     * Constructor.
-     * 
-     * @param model The new model.
-     */
-    public Project(Object model) {
-        this();
-        
-        if (!ModelFacade.isAModel(model)) {
-            throw new IllegalArgumentException();
-        }
-        
-        LOG.info("making empty project with model: "
-		        + ModelFacade.getName(model));
-        setRoot(model);
-        setCurrentNamespace(model);
-        setNeedsSave(false);
-    }
-    
     /**
      * Find the base name of this project.<p>
      * 
