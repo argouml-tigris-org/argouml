@@ -271,6 +271,9 @@ implements ItemListener, DocumentListener {
         else {
             _shadowField.setSelectedIndex(0);
         }
+        
+        // lets redraw the box
+        setTargetBBox();
     }
 
 
