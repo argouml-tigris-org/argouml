@@ -24,7 +24,6 @@
 
 package org.argouml.model.uml;
 
-import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.UUIDManager;
 
