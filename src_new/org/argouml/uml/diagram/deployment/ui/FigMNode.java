@@ -53,7 +53,7 @@ public class FigMNode extends FigNodeModelElement {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
- 
+
   protected FigCube _cover;
   protected FigRect _test;
 
@@ -94,7 +94,7 @@ public class FigMNode extends FigNodeModelElement {
     figClone._name = (FigText) v.elementAt(3);
     figClone._test = (FigRect) v.elementAt(4);
     return figClone;
-  }	
+  }
 
   ////////////////////////////////////////////////////////////////
   // acessors
@@ -111,13 +111,13 @@ public class FigMNode extends FigNodeModelElement {
 
   public Selection makeSelection() {
       return new SelectionNode(this);
-  } 
+  }
 
   public Dimension getMinimumSize() {
     Dimension stereoDim = _stereo.getMinimumSize();
     Dimension nameDim = _name.getMinimumSize();
-    
-    int w = Math.max(stereoDim.width, nameDim.width);
+
+    int w = Math.max(stereoDim.width, nameDim.width + 1);
     int h = stereoDim.height + nameDim.height - 4;
     return new Dimension(w, h);
   }
@@ -131,7 +131,7 @@ public class FigMNode extends FigNodeModelElement {
 
     Dimension stereoDim = _stereo.getMinimumSize();
     Dimension nameDim = _name.getMinimumSize();
-    _name.setBounds(x, y + stereoDim.height + 1, w, nameDim.height);
+    _name.setBounds(x + 1, y + stereoDim.height + 1, w - 1, nameDim.height);
     _stereo.setBounds(x+1,y+1,w-2,stereoDim.height);
     _x = x; _y = y; _w = w; _h = h;
     firePropChange("bounds", oldBounds, getBounds());
@@ -149,11 +149,11 @@ public class FigMNode extends FigNodeModelElement {
 
   public void setEnclosingFig(Fig encloser) {
     super.setEnclosingFig(encloser);
-    
+
     Vector figures = getEnclosedFigs();
-   
+
     if (getLayer() != null) {
-      // elementOrdering(figures); 
+      // elementOrdering(figures);
       Vector contents = getLayer().getContents();
       int contentsSize = contents.size();
       for (int j=0; j<contentsSize; j++) {
@@ -164,7 +164,7 @@ public class FigMNode extends FigNodeModelElement {
         }
       }
     }
-    
+
   }
 
   protected void updateStereotypeText() {
@@ -179,7 +179,7 @@ public class FigMNode extends FigNodeModelElement {
   }
 
   public boolean getUseTrapRect() { return true; }
-	
+
   static final long serialVersionUID = 8822005566372687713L;
 
 } /* end class FigMNode */
