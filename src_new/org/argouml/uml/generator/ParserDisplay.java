@@ -2019,7 +2019,7 @@ nextProp:
     } catch (NoSuchElementException nsee) {
 	throw new ParseException("Unexpected end of attribute", s.length());
     } catch (ParseException pre) {
-	System.out.println(pre);
+	// System.out.println(pre);
 	throw pre;
     }
 
