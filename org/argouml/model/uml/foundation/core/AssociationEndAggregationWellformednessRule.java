@@ -42,7 +42,8 @@ public class AssociationEndAggregationWellformednessRule
 
     /**
      * Constructor for AssociationEndAggregationWellformednessRule.
-     * @param key
+     * @param key the message key to be looked up 
+     *            to show the message to the user
      */
     public AssociationEndAggregationWellformednessRule(String key) {
 	super(key);
@@ -61,7 +62,8 @@ public class AssociationEndAggregationWellformednessRule
      * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(Object,Object)
      */
     public boolean isWellformed(Object/*MBase*/ element, Object newValue) {
-	if (element instanceof MAssociationEnd && newValue instanceof MAggregationKind) {
+	if (element instanceof MAssociationEnd 
+            && newValue instanceof MAggregationKind) {
 	    MAssociationEnd modelelement = (MAssociationEnd) element;
 	    MAggregationKind aggregation = (MAggregationKind) newValue;
 	    if (aggregation.equals(MAggregationKind.NONE)) return true;

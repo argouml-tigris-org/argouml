@@ -40,7 +40,8 @@ public class AssociationEndNamespaceWellformednessRule
 
     /**
      * Constructor for AssociationEndNamespaceWellformednessRule.
-     * @param key
+     * @param key the message key to be looked up to show the message 
+     *            to the user
      */
     public AssociationEndNamespaceWellformednessRule(String key) {
 	super(key);
@@ -60,7 +61,8 @@ public class AssociationEndNamespaceWellformednessRule
      * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(Object,Object)
      */
     public boolean isWellformed(Object /*MBase*/ element, Object newValue) {
-	if (element instanceof MAssociationEnd && newValue instanceof MNamespace) {
+	if (element instanceof MAssociationEnd 
+            && newValue instanceof MNamespace) {
 	    MAssociation assoc = ((MAssociationEnd) element).getAssociation();
 	    if (assoc != null && assoc.getNamespace().equals(newValue)) {
 		return true;
