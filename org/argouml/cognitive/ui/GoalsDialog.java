@@ -31,9 +31,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-
 import org.argouml.cognitive.*;
 
 public class GoalsDialog extends JDialog

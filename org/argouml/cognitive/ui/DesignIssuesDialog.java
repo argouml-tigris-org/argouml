@@ -31,9 +31,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-
 import org.argouml.cognitive.*;
 
 /** A dialog to set the priorities for decisions. These will be evulated
