@@ -32,35 +32,70 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
     private Object[] _trueArg = new Object[1];
     private Object[] _falseArg = new Object[1];
     private Class _enumClass;
+    /**
+     * wellformednessRules are rules that should be hold true if the property is set
+     * they are defined in the model helpers (CoreHelper etc) and conform to the
+     * wellformednessRules defined in the UML 1.3 spec
+     * They are of the form:
+     * wellformednessRule(modelelement, newvalue)
+     */
+    private Method[] _wellformednessRules = null;
     
     /** Creates new BooleanChangeListener */
     public UMLEnumerationBooleanProperty(String propertyName,Class elementClass,
                                          String getMethod,String setMethod,Class enumClass,
                                          Object trueValue,Object falseValue) {
-        super(propertyName);
-
-        _enumClass = enumClass;
-        _trueArg[0] = trueValue;
-        _falseArg[0] = falseValue;
-        
-        Class[] noClass = {};
-        try {
-            _getMethod = elementClass.getMethod(getMethod,noClass);
-        }
-        catch(Exception e) {
-            System.out.println(getMethod + " not found in UMLEnumerationBooleanProperty(): " + e.toString());
-        }
-        Class[] boolClass = { enumClass };
-        try {
-            _setMethod = elementClass.getMethod(setMethod,boolClass);
-        }
-        catch(Exception e) {
-            System.out.println(setMethod + " not found in UMLEnumerationBooleanProperty(): " + e.toString());
-        }
+        this(propertyName, elementClass, getMethod, setMethod, enumClass, trueValue, falseValue, null);
     }
+    
+     public UMLEnumerationBooleanProperty(String propertyName,Class elementClass,
+                                         String getMethod,String setMethod,Class enumClass,
+                                         Object trueValue,Object falseValue, Method[] wellformdnessRules) {
+	        super(propertyName);
+	        _enumClass = enumClass;
+	        _trueArg[0] = trueValue;
+	        _falseArg[0] = falseValue;
+	        Class[] noClass = {};
+	        _wellformednessRules = wellformdnessRules;
+	        try {
+	            _getMethod = elementClass.getMethod(getMethod,noClass);
+	        }
+	        catch(Exception e) {
+	            System.out.println(getMethod + " not found in UMLEnumerationBooleanProperty(): " + e.toString());
+	        }
+	        Class[] boolClass = { enumClass };
+	        try {
+	            _setMethod = elementClass.getMethod(setMethod,boolClass);
+	        }
+	        catch(Exception e) {
+	            System.out.println(setMethod + " not found in UMLEnumerationBooleanProperty(): " + e.toString());
+	        }
+    }  
     
     
     public void setProperty(Object element,boolean newState) {
+    	/*
+    	if (_wellformednessRules != null) {
+    		Object helper = getHelper(element);
+    		if (helper != null) {
+    		for (int i = 0; i < _wellformednessRules.length; i++) {
+    			Object arg = _falseArg;
+    			if (newState) {
+    				arg = _trueArg;
+    			}
+    			Object value = _wellformednessRules[i].invoke(helper, new Object[] {arg});
+    			if (value instanceof Boolean) {
+    				if (!((Boolean)value).booleanValue()) {
+    					return;
+    				}
+    			} else {
+    				System.out.println("FATAL: wellformednessRule returned not a boolean but a " + 
+    					value.getClass().getName());
+    			}
+    		}
+    		}
+    	}
+    	*/
         if(_setMethod != null && element != null) {
             try {
                 //
