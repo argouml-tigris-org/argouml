@@ -1571,35 +1571,6 @@ public class CoreFactoryImpl
 	return comment;
     }
 
-    /**
-     * Builds the model behind a connection between a comment and
-     * the annotated modelelement.
-     *
-     * @param from The comment or annotated element.
-     * @param to The comment or annotated element.
-     * @return A commentEdge representing the model behind the connection
-     *         between a comment and an annotated modelelement.
-     */
-    public CommentEdge buildCommentConnection(Object from, Object to) {
-        if (from == null || to == null) {
-            throw new IllegalArgumentException("Either fromNode == null "
-                    			       + "or toNode == null");
-        }
-        Object comment = null;
-        Object annotatedElement = null;
-        if (ModelFacade.isAComment(from)) {
-            comment = from;
-            annotatedElement = to;
-        } else {
-            comment = to;
-            annotatedElement = from;
-        }
-
-        CommentEdge connection = new CommentEdge(from, to);
-        ModelFacade.addAnnotatedElement(comment, annotatedElement);
-        return connection;
-
-    }
 
     /**
      * Builds a constraint that constraints the given modelelement.
