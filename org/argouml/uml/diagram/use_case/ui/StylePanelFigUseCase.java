@@ -3,14 +3,14 @@
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -30,7 +30,6 @@
 // 12 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Created to support
 // optional display of extension points.
 
-
 package org.argouml.uml.diagram.use_case.ui;
 
 import java.awt.FlowLayout;
@@ -42,42 +41,32 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.argouml.ui.StylePanelFig;
+import org.argouml.ui.StylePanelFigNodeModelElement;
 
 /**
- * <p>A class to provide a style panel for use cases.</p>
- *
- * <p>This adds a check box to control the display of he extension point
- *   compartment.</p>
+ * <p>
+ * A class to provide a style panel for use cases.
+ * </p>
+ * 
+ * <p>
+ * This adds a check box to control the display of he extension point
+ * compartment.
+ * </p>
  */
-
-public class StylePanelFigUseCase extends StylePanelFig {
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Constants
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Instance vars
-    //
-    ///////////////////////////////////////////////////////////////////////////
+public class StylePanelFigUseCase extends StylePanelFigNodeModelElement {
 
     /**
-     * <p>The check box for extension points.</p>
+     * <p>
+     * The check box for extension points.
+     * </p>
      */
-    
     protected JCheckBox _epCheckBox = new JCheckBox("Extension Points");
 
-
     /**
-     * <p>The label alongside the check box for extension points.</p>
+     * <p>
+     * The label alongside the check box for extension points.
+     * </p>
      */
-
     protected JLabel _displayLabel = new JLabel("Display: ");
 
     /**
@@ -85,16 +74,11 @@ public class StylePanelFigUseCase extends StylePanelFig {
      */
     private boolean _refreshTransaction = false;
 
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // contructors
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
-     * <p>Build a style panel. Just layout the relevant boxes.</p>
+     * <p>
+     * Build a style panel. Just layout the relevant boxes.
+     * </p>
      */
-
     public StylePanelFigUseCase() {
 
         // Invoke the parent constructor first
@@ -107,16 +91,16 @@ public class StylePanelFigUseCase extends StylePanelFig {
         GridBagLayout gb = (GridBagLayout) getLayout();
         GridBagConstraints c = new GridBagConstraints();
 
-        c.fill  = GridBagConstraints.BOTH;
+        c.fill = GridBagConstraints.BOTH;
         c.ipadx = 0;
         c.ipady = 0;
 
         // Set constraints for the display label, and then add it.
 
-        c.gridx     = 0;
+        c.gridx = 0;
         c.gridwidth = 1;
-        c.gridy     = 0;
-        c.weightx   = 0.0;
+        c.gridy = 0;
+        c.weightx = 0.0;
 
         gb.setConstraints(_displayLabel, c);
         add(_displayLabel);
@@ -128,10 +112,10 @@ public class StylePanelFigUseCase extends StylePanelFig {
         pane.setLayout(new FlowLayout(FlowLayout.LEFT));
         pane.add(_epCheckBox);
 
-        c.gridx     = 1;
+        c.gridx = 1;
         c.gridwidth = 1;
-        c.gridy     = 0;
-        c.weightx   = 0.0;
+        c.gridy = 0;
+        c.weightx = 0.0;
 
         gb.setConstraints(pane, c);
         add(pane);
@@ -143,22 +127,16 @@ public class StylePanelFigUseCase extends StylePanelFig {
         _epCheckBox.addItemListener(this);
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Accessors
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
-     * <p>Refresh the display. This means setting the check box from the target
-     *   use case fig.</p>
+     * <p>
+     * Refresh the display. This means setting the check box from the target use
+     * case fig.
+     * </p>
      */
-
     public void refresh() {
 
         _refreshTransaction = true;
-        
+
         // Invoke the parent refresh first
 
         super.refresh();
@@ -166,24 +144,18 @@ public class StylePanelFigUseCase extends StylePanelFig {
         FigUseCase target = (FigUseCase) getTarget();
 
         _epCheckBox.setSelected(target.isExtensionPointVisible());
-        
+
         _refreshTransaction = false;
     }
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Event handling
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
-
     /**
-     * <p>Something has changed, check if its the check box.</p>
-     *
-     * @param e  The event that triggeed us.
+     * <p>
+     * Something has changed, check if its the check box.
+     * </p>
+     * 
+     * @param e
+     *            The event that triggeed us.
      */
-
     public void itemStateChanged(ItemEvent e) {
         if (!_refreshTransaction) {
             Object src = e.getSource();
@@ -194,14 +166,12 @@ public class StylePanelFigUseCase extends StylePanelFig {
                 FigUseCase target = (FigUseCase) getTarget();
 
                 target.setExtensionPointVisible(_epCheckBox.isSelected());
-            
+
                 markNeedsSave();
-            }
-            else {
+            } else {
                 super.itemStateChanged(e);
             }
         }
     }
 
-    
 } /* end class StylePanelFigUseCase */

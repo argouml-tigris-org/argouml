@@ -3,14 +3,14 @@
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -45,156 +45,157 @@ import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
 
-public class StylePanel
-    extends TabSpawnable
-    implements
-        TabFigTarget,
-        ItemListener,
-        DocumentListener,
-        ListSelectionListener,
-        ActionListener {
+public class StylePanel extends TabSpawnable implements TabFigTarget,
+                ItemListener, DocumentListener, ListSelectionListener,
+                ActionListener {
 
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat = Logger.getLogger(StylePanel.class);
+        /**
+         * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+         *             class. This will be removed.
+         */
+        protected static Logger cat = Logger.getLogger(StylePanel.class);
 
-    ////////////////////////////////////////////////////////////////
-    // instance vars
-    protected Fig _target;
+        protected Fig _target;
 
-    /**
-     * This method must be overriden by implementors if they don't
-     * want to refresh the whole stylepanel every time a property
-     * change events is fired.<p>
-     *
-     * @since 8 june 2003, 0.13.6
-     * @see org.argouml.ui.TabTarget#refresh()
-     */
-    public void refresh(PropertyChangeEvent e) {
-        refresh();
+        public StylePanel(String title) {
+                super(title);
+                GridBagLayout gb = new GridBagLayout();
+                setLayout(gb);
+                GridBagConstraints c = new GridBagConstraints();
+                c.fill = GridBagConstraints.BOTH;
+                c.weightx = 0.0;
+                c.weighty = 0.0;
+                c.ipadx = 3;
+                c.ipady = 3;
+        }
 
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    public StylePanel(String title) {
-        super(title);
-        GridBagLayout gb = new GridBagLayout();
-        setLayout(gb);
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 0.0;
-        c.weighty = 0.0;
-        c.ipadx = 3;
-        c.ipady = 3;
-    }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
-    public void setTarget(Object t) {
-        if (!(t instanceof Fig)) {
-            if (ModelFacade.isABase(t)) {
-                Project p = ProjectManager.getManager().getCurrentProject();
-                Collection col = p.findFigsForMember(t);
-                if (col == null || col.isEmpty()) {
-                    return;
-                } else {
-                    t = col.iterator().next();
-                    if (!(t instanceof Fig)) return;
-                }
-            } else {
-                return;
-            }
+        /**
+         * This method must be overriden by implementors if they don't want to
+         * refresh the whole stylepanel every time a property change events is
+         * fired.
+         * <p>
+         * 
+         * @since 8 june 2003, 0.13.6
+         * @see org.argouml.ui.TabTarget#refresh()
+         */
+        public void refresh(PropertyChangeEvent e) {
+                refresh();
 
         }
-        _target = (Fig) t;
-        refresh();
-    }
 
-    public Object getTarget() {
-        return _target;
-    }
+        /**
+         * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
+         */
+        public void setTarget(Object t) {
+                if (!(t instanceof Fig)) {
+                        if (ModelFacade.isABase(t)) {
+                                Project p = ProjectManager.getManager()
+                                                .getCurrentProject();
+                                Collection col = p.findFigsForMember(t);
+                                if (col == null || col.isEmpty()) {
+                                        return;
+                                } else {
+                                        t = col.iterator().next();
+                                        if (!(t instanceof Fig)) return;
+                                }
+                        } else {
+                                return;
+                        }
 
-    public void refresh() {
-        //_tableModel.setTarget(_target);
-        //_table.setModel(_tableModel);
-    }
+                }
+                _target = (Fig) t;
+                refresh();
+        }
 
-    /**
-     * Style panels ony apply when a Fig is selected.
-     */
-    public boolean shouldBeEnabled(Object target) {
-        ArgoDiagram diagram =
-            ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-        target =
-            (target instanceof Fig) ? target : diagram.getContainingFig(target);
-        return (target instanceof Fig);
-    }
+        /**
+         * @see org.argouml.ui.TabTarget#getTarget()
+         */
+        public Object getTarget() {
+                return _target;
+        }
 
-    ////////////////////////////////////////////////////////////////
-    // actions
+        /**
+         * @see org.argouml.ui.TabTarget#refresh()
+         */
+        public void refresh() {
+                //_tableModel.setTarget(_target);
+                //_table.setModel(_tableModel);
+        }
 
-    ////////////////////////////////////////////////////////////////
-    // document event handling
+        /**
+         * Style panels ony apply when a Fig is selected.
+         */
+        public boolean shouldBeEnabled(Object target) {
+                ArgoDiagram diagram = ProjectManager.getManager()
+                                .getCurrentProject().getActiveDiagram();
+                target = (target instanceof Fig) ? target : diagram
+                                .getContainingFig(target);
+                return (target instanceof Fig);
+        }
 
-    public void insertUpdate(DocumentEvent e) {
-        cat.debug(getClass().getName() + " insert");
-    }
+        /**
+         * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+         */
+        public void insertUpdate(DocumentEvent e) {
+                cat.debug(getClass().getName() + " insert");
+        }
 
-    public void removeUpdate(DocumentEvent e) {
-        insertUpdate(e);
-    }
+        /**
+         * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+         */
+        public void removeUpdate(DocumentEvent e) {
+                insertUpdate(e);
+        }
 
-    public void changedUpdate(DocumentEvent e) {
-    }
+        /**
+         * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+         */
+        public void changedUpdate(DocumentEvent e) {
+        }
 
-    ////////////////////////////////////////////////////////////////
-    // combobox event handling
+        /**
+         * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+         */
+        public void itemStateChanged(ItemEvent e) {
+                Object src = e.getSource();
+        }
 
-    public void itemStateChanged(ItemEvent e) {
-        Object src = e.getSource();
-    }
+        /**
+         * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+         */
+        public void valueChanged(ListSelectionEvent lse) {
+        }
 
-    /////////////////////////////////////////////////////////////////
-    // ListSelectionListener implemention
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent ae) {
+                Object src = ae.getSource();
+                //if (src == _config) doConfig();
+        }
 
-    public void valueChanged(ListSelectionEvent lse) {
-    }
+        /**
+         * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
+         *      TargetEvent)
+         */
+        public void targetAdded(TargetEvent e) {
+        }
 
-    /////////////////////////////////////////////////////////////////
-    // ActionListener implementation
+        /**
+         * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
+         *      TargetEvent)
+         */
+        public void targetRemoved(TargetEvent e) {
+                setTarget(e.getNewTarget());
 
-    public void actionPerformed(ActionEvent ae) {
-        Object src = ae.getSource();
-        //if (src == _config) doConfig();
-    }
+        }
 
-    /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
-     *          TargetEvent)
-     */
-    public void targetAdded(TargetEvent e) {
-    }
+        /**
+         * @see org.argouml.ui.targetmanager.TargetListener#targetSet(TargetEvent)
+         */
+        public void targetSet(TargetEvent e) {
+                setTarget(e.getNewTarget());
 
-    /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
-     *          TargetEvent)
-     */
-    public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTarget());
-
-    }
-
-    /**
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(TargetEvent)
-     */
-    public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTarget());
-
-    }
+        }
 
 } /* end class StylePanel */
