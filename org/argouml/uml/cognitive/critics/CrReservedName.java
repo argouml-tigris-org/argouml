@@ -42,6 +42,9 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
+/** This critic checks whether a given name in the Model resembles or matches
+ * a reserved UML keyword or java keyword.
+ */
 public class CrReservedName extends CrUML {
 
   ////////////////////////////////////////////////////////////////
@@ -201,34 +204,28 @@ public class CrReservedName extends CrUML {
   ////////////////////////////////////////////////////////////////
   // Critic implementation
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MModelElement)) return NO_PROBLEM;
-    MModelElement me = (MModelElement) dm;
-    String meName = me.getName();
-    if (meName == null || meName.equals("")) return NO_PROBLEM;
-    String nameStr = meName;
-    if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
+    public boolean predicate2(Object dm, Designer dsgr) {
+        if (!(dm instanceof MModelElement)) return NO_PROBLEM;
+        MModelElement me = (MModelElement) dm;
+        String meName = me.getName();
+        if (meName == null || meName.equals("")) return NO_PROBLEM;
+        String nameStr = meName;
+        if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
 
-    // Dont critique the built-in java types, they are supposed to
-    // have those "reserved" names.
-    Project p = ProjectBrowser.TheInstance.getProject();
-    Hashtable definedTypes = p.getDefinedTypes();
-    if (definedTypes.get(nameStr) == dm) return NO_PROBLEM;
+        // Dont critique the built-in java types, they are supposed to
+        // have those "reserved" names.
+        Project p = ProjectBrowser.TheInstance.getProject();
+        Hashtable definedTypes = p.getDefinedTypes();
+        if (definedTypes.get(nameStr).equals(nameStr)) return NO_PROBLEM;
 
-    java.util.Enumeration enum = _umlReserved.elements();
-    while (enum.hasMoreElements()) {
-      String word = (String) enum.nextElement();
-      if (word.equalsIgnoreCase(nameStr)) return PROBLEM_FOUND;
+        java.util.Enumeration enum = _umlReserved.elements();
+        while (enum.hasMoreElements()) {
+            String word = (String) enum.nextElement();
+            if (word.equalsIgnoreCase(nameStr)) return PROBLEM_FOUND;
+        }
+
+        return NO_PROBLEM;
     }
-
-    enum = _javaReserved.elements();
-    while (enum.hasMoreElements()) {
-      String word = (String) enum.nextElement();
-      if (word.equalsIgnoreCase(nameStr)) return PROBLEM_FOUND;
-    }
-
-    return NO_PROBLEM;
-  }
 
   public Icon getClarifier() { return ClClassName.TheInstance; }
 
