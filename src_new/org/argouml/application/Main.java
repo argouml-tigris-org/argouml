@@ -57,68 +57,6 @@ public class Main {
 
   private static Vector postLoadActions = new Vector();
 
-    // this is also in AboutBox, but should help getting feedback here as well...
-    static String packageList[] = new String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.xml.sax","java.lang"};
-    static String getVersionInfo(String packageList[]) throws ClassNotFoundException
-    {
-	// do some preloading...
-	Class cls = Class.forName("ru.novosoft.uml.MBase");
-	cls = Class.forName("org.tigris.gef.base.Editor");
-	cls = Class.forName("ru.novosoft.uml.MBase");
-	cls = Class.forName("org.xml.sax.AttributeList");
-
-
-	String in = "";
-	StringBuffer sb = new StringBuffer();
-	for(int i=0;i<packageList.length;i++)
-	    {
-		sb.append("Package: ");
-		sb.append(packageList[i]);
-		sb.append('\n');
-		Package pkg = Package.getPackage(packageList[i]);
-		if(pkg == null)
-		    {
-			sb.append("-- No Versioning Information --\nMaybe you don't use the jar?\n\n");
-			continue;
-		    }
-		in = pkg.getImplementationTitle();
-		if(in!=null)
-		    {
-			sb.append("Component: ");
-			sb.append(in);
-		    }
-		in = pkg.getImplementationVendor();
-		if(in!=null)
-		    {
-			sb.append(", by: ");
-			sb.append(in);
-		    }
-		in = pkg.getImplementationVersion();
-		if(in!=null)
-		    {
-			sb.append(", version: ");
-			sb.append(in);
-			sb.append('\n');
-		    }
-		sb.append('\n');
-	    }
-
-	sb.append("Operation System is: ");
-	sb.append(System.getProperty("os.name", "unknown"));
-	sb.append('\n');
-	sb.append("Operation System Version: ");
-	sb.append(System.getProperty("os.version", "unknown"));
-	sb.append('\n');
-	sb.append("Language: ");
-	sb.append(System.getProperty("user.language", "unknown"));
-	sb.append('\n');
-	sb.append("Region: ");
-	sb.append(System.getProperty("user.region", "unknown"));
-	sb.append('\n');
-
-	return sb.toString();
-    }
-
   ////////////////////////////////////////////////////////////////
   // main
 
@@ -245,10 +183,7 @@ public class Main {
 
     if (urlToOpen == null) p = Project.makeEmptyProject();
     else {
-      ArgoParser.SINGLETON.readProject(urlToOpen);
-      p = ArgoParser.SINGLETON.getProject();
-      p.loadAllMembers();
-      p.postLoad();
+	p = Project.loadProject(urlToOpen);
     }
 
     phase3 = System.currentTimeMillis();
