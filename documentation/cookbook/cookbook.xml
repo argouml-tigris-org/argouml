@@ -3397,6 +3397,15 @@ Country: unknown
 		</listitem>
 		<listitem>
 		  <para>
+Examine GEF to see if GEF supports the language you want to add.
+If not then some of the things in the menues will not be localized.
+To get this done you need to contribute your localization to 
+the GEF project and make sure to get it included in an up-coming
+GEF release.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
 Look at the files in
 <filename class="directory">org/argouml/i18n</filename>,
 under <filename class="directory">argouml/src_new</filename>.
@@ -3474,11 +3483,46 @@ This means that strings are denoted by "labels" or "tags" and then
 the resolution of the "tag" is in a 
 <filename><replaceable>Domain</replaceable>ResourceBundle.java</filename>-file.
 </para>
+		  <para>
+The name for the domain is most often specified in a variable like
+<programlisting>
+    protected static final String BUNDLE = <replaceable>Domain</replaceable>;
+</programlisting>
+or
+<programlistingco>
+    protected static final String RESOURCE_BUNDLE = <replaceable>Domain</replaceable>;
+</programlistingco>
+in a base class to what you are doing and there is 
+a convenience method in the class
+<classname>org.argouml.application.api.Argo</classname>
+so normal strings are written
+<programlisting>
+import org.argouml.application.api.*;
+...
+    String localized = Argo.localize(BUNDLE, <replaceable>tag</replaceable>);
+</programlisting>
+</para>
 		</listitem>
 		<listitem>
 		  <para>
 Add your "tag" and resolution in English in the non-localized 
 <filename><replaceable>Domain</replaceable>ResourceBundle.java</filename>-file.
+</para>
+		  <para>
+How do I choose the tag?
+Jean-Hugues de Raigniac has made a small investigation as to how this
+is done in the java world and found that there is no real consensus on
+how to do this.
+He suggests a hierarchical choice of tags like this:
+<programlisting>
+   {"docpane.label.since", "Since"},
+   {"docpane.label.deprecated", "Deprecated"},
+   {"docpane.label.see", "See"},
+
+   {"stylepane.label.bounds", "Bounds"},
+   {"stylepane.label.fill", "Fill"},
+   {"stylepane.label.no-fill", "No Fill"},
+</programlisting>
 </para>
 		</listitem>
 		<listitem>
