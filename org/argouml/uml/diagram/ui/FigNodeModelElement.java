@@ -719,7 +719,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
      * @see org.tigris.gef.presentation.Fig#delete()
      */
     public void delete() {
-        super.delete();
+        
         Object own = getOwner();
         if (own instanceof MClassifier) {
             MClassifier cls = (MClassifier)own;
@@ -730,12 +730,16 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
                     MOperation oper = (MOperation)feature;
                     Iterator it2 = oper.getParameters().iterator();
                     while (it2.hasNext()) {
-                        ((MParameter)it2.next()).removeMElementListener(this);
+                        UmlModelEventPump.getPump().removeModelEventListener(this, (MParameter)it2.next());
                     }
                 }
-                feature.removeMElementListener(this);
+                UmlModelEventPump.getPump().removeModelEventListener(this, feature);
             }
         }
+        if (own instanceof MBase) {
+            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)own);
+        }
+        super.delete();
     }
 
     /**
