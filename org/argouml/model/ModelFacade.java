@@ -1489,7 +1489,7 @@ public class ModelFacade {
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-    
+
     /**
      * Returns the effect of some transition
      * @param handle
@@ -1648,6 +1648,18 @@ public class ModelFacade {
         if (!(handle instanceof MAssociationEnd))
             throw new IllegalArgumentException("Unrecognized object " + handle);
         return ((MAssociationEnd) handle).getMultiplicity();
+    }
+
+    /** Get the comments of an element.
+     *
+     * @param handle the model element that we are getting the comments of
+     * @returns the comment (or null)
+     */
+    public static Collection getComments(Object handle) {
+        if (handle instanceof MModelElement)
+            return ((MModelElement) handle).getComments();
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /**
@@ -1838,7 +1850,7 @@ public class ModelFacade {
         MParameter parameter = (MParameter)o;
         return (parameter.getKind().equals(MParameterDirectionKind.RETURN));
     }
-        
+
     /** Get a parameter of a behavioral feature.
      *
      * @param handle behavioral feature to retrieve from
