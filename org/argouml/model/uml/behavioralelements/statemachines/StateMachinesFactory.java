@@ -230,7 +230,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
 	/**
 	 * Builds a complete transition including all associations (statemachine the
      * transition belongs to, source the transition is coming from, destination
-     * the transition is going to).
+     * the transition is going to). The transition is owned by the statemachine.
 	 * @param owningStatemachine
 	 * @param source
 	 * @param dest
@@ -278,6 +278,29 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     		return graph;
     	} else 
     		throw new IllegalArgumentException("In buildStateMachine: context null or not legal");
+    }
+    
+    /**
+	 * Builds a complete transition including all associations (composite state the
+     * transition belongs to, source the transition is coming from, destination
+     * the transition is going to). The transition is owned by the compositestate.
+	 * @param owningState
+	 * @param source
+	 * @param dest
+	 * @return MTransition
+	 */
+    public MTransition buildTransition(MCompositeState owningState, 
+        MStateVertex source, MStateVertex dest) {
+      	if (owningState != null && source != null && dest != null && 
+      		owningState.getSubvertices().contains(source) &&
+      		owningState.getSubvertices().contains(dest)) { 
+      		MTransition trans = createTransition();
+     		owningState.addInternalTransition(trans);
+      		trans.setSource(source);
+      		trans.setTarget(dest);
+      		return trans;
+      	} else 
+      		throw new IllegalArgumentException("In buildTransition: arguments not legal");
     }
 
 }

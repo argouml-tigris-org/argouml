@@ -34,55 +34,23 @@ import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.argouml.ui.*;
 
-public class GoStateToInternalTrans implements TreeModel {
+public class GoStateToInternalTrans extends AbstractGoRule {
+	
+	/**
+	 * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
+	 */
+	public Collection getChildren(Object parent) {
+		if (parent instanceof MState) {
+			return ((MState)parent).getInternalTransitions();
+		}
+		return null;
+	}
 
-  public String toString() { return "State->Internal Transitions"; }
-
-  public Object getRoot() {
-      throw new Error("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    Vector children = getChildren(parent);
-    return (children == null) ? null : children.elementAt(index);
-  }
-
-  public int getChildCount(Object parent) {
-    Vector children = getChildren(parent);
-    return (children == null) ? 0 : children.size();
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    Vector children = getChildren(parent);
-    return (children == null) ? -1 : children.indexOf(child);
-  }
-
-  public boolean isLeaf(Object node) {
-    return !(node instanceof MStateVertex && getChildCount(node) > 0);
-  }
-
-  public Vector getChildren(Object parent) {
-    if (!(parent instanceof MState)) return null;
-    MState st = (MState) parent;
-    //return st.getInternalTransition();
-
-    Vector in = new Vector(st.getIncomings());
-    Vector out = new Vector(st.getOutgoings());
-
-    if (in == null || in.size() == 0) return null;
-    if (out == null || out.size() == 0) return null;
-    Vector children = new Vector();
-    int size = in.size();
-    for (int i = 0; i < size; i++) {
-      Object t = in.elementAt(i);
-      if (out.contains(t)) children.addElement(t);
-    }
-    return children;
-  }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
+	/**
+	 * @see javax.swing.tree.TreeModel#isLeaf(Object)
+	 */
+	public boolean isLeaf(Object arg0) {
+		return !(arg0 instanceof MState && getChildCount(arg0)>0);
+	}
 
 } /* end class GoStateToInternalTrans */
