@@ -73,9 +73,6 @@ public class ActionClassDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        MNamespace ns = (MNamespace)handle;
-        if (ns instanceof MPackage)
-            return true;
-        return false;
+        return true;       
     }
 } /* end class ActionClassDiagram */

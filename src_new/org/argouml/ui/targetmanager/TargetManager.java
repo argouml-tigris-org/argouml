@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.ui.Actions;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.presentation.Fig;
 
@@ -64,6 +65,16 @@ public final class TargetManager {
      * The targets stored in an object array to improve performance
      */
     private Object[] _targets = new Object[0];
+    
+    /** 
+     * Cache for the modeltarget. See getModelTarget
+     */
+    private Object _modelTarget = null;
+    
+    /**
+     * Cache for the figTarget. See getFigTarget
+     */
+    private Fig _figTarget = null;
 
     /**
      * The list with targetlisteners
@@ -103,9 +114,12 @@ public final class TargetManager {
             Object[] targets = new Object[] { o };
             if (!targets.equals(_targets)) {
                 _newTarget = o;
+                _figTarget = determineFigTarget(_newTarget);
+                _modelTarget = determineModelTarget(_newTarget);
                 fireTargetSet(targets);
-                _targets = new Object[] { o };
+                _targets = new Object[] { o };                                
                 _newTarget = null;
+                Actions.updateAllEnabled();
 
             }
             endTargetTransaction();
@@ -113,9 +127,7 @@ public final class TargetManager {
     }
 
     /**
-     * Returns the current target. If there are more then 1 target, 
-     * a TargetException will be fired because this is clearly a programming
-     * error.
+     * Returns the current target. 
      * @return The current target
      * @throws TargetException if there are more then 1 target.
      */
@@ -141,13 +153,18 @@ public final class TargetManager {
                 Object[] targets = targetsList.toArray();
                 if (!targets.equals(_targets)) {
                     _newTarget = targets[0];
+                    _figTarget = determineFigTarget(_newTarget);
+                    _modelTarget = determineModelTarget(_newTarget);
                     fireTargetSet(targets);
-                    _targets = targets;
+                    _targets = targets;                  
                     _newTarget = null;
                 }
             } else {
                 _targets = new Object[0];
+                _modelTarget = null;
+                _figTarget = null;
             }
+            Actions.updateAllEnabled();
             endTargetTransaction();
         }
     }
@@ -298,19 +315,22 @@ public final class TargetManager {
      * @return the target in it's 'fig-form'
      */
     public Fig getFigTarget() {
-        Object target = getTarget();
+        return _figTarget;
+    }
+    
+    private Fig determineFigTarget(Object target) {
         if (!(target instanceof Fig)) {
 
-            Project p = ProjectManager.getManager().getCurrentProject();
-            Collection col = p.findFigsForMember(target);
-            if (col == null || col.isEmpty()) {
-                target = null;
-            } else {
-                target = col.iterator().next();
-            }
-        }
+                    Project p = ProjectManager.getManager().getCurrentProject();
+                    Collection col = p.findFigsForMember(target);
+                    if (col == null || col.isEmpty()) {
+                        target = null;
+                    } else {
+                        target = col.iterator().next();
+                    }
+                }
 
-        return target instanceof Fig ? (Fig) target : null;
+                return target instanceof Fig ? (Fig) target : null; 
     }
 
    /**
@@ -321,14 +341,19 @@ public final class TargetManager {
     * @return the target in it's 'modelform'.
     */
     public Object getModelTarget() {
-        Object target = getTarget();
+       return _modelTarget;
+        
+    }
+    
+    private Object determineModelTarget(Object target) {
         if (target instanceof Fig) {
-            Object owner = ((Fig)target).getOwner();
-            if (ModelFacade.isABase(owner)) {
-                target = owner;
-            }
-        }
-        return target instanceof UMLDiagram || ModelFacade.isABase(target) ? target : null;
+                    Object owner = ((Fig)target).getOwner();
+                    if (ModelFacade.isABase(owner)) {
+                        target = owner;
+                    }
+                }
+                return target instanceof UMLDiagram || ModelFacade.isABase(target) ? target : null;
+        
     }
 
 }

@@ -35,6 +35,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -112,7 +113,12 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        Object[] targets = getTargets();
+        Object[] targets = null;
+        if (ae.getSource() instanceof PropPanel) {
+            targets = new Object[] {TargetManager.getInstance().getModelTarget()};
+            }
+        else
+          targets = getTargets();
         for (int i = 0; i < targets.length; i++) {
             Object target = targets[i];
             if (sureRemove(target)) {

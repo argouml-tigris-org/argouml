@@ -319,6 +319,7 @@ public abstract class UMLDiagram
               fig.setOwner(owner);
           }
       }    
+      
   }
 
 

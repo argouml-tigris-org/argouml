@@ -133,6 +133,7 @@ public class TabDiagram
      * Sets the target of the tab. The target should allways be an instance of
      * UMLDiagram
      * @param t
+     * @deprecated the visibility of this method will change in the future
      */
     public void setTarget(Object t) {
 
@@ -205,12 +206,11 @@ public class TabDiagram
         Vector sels = gse.getSelections();
         ProjectBrowser pb = ProjectBrowser.getInstance();
 
- 
-            if (sels.size() == 1)
-                pb.setTarget(sels.elementAt(0));
-            else
-                pb.setTarget(null);
-   
+        if (sels.size() == 1)
+            pb.setTarget(sels.elementAt(0));
+        else
+            pb.setTarget(null);
+
     }
 
     public void removeGraphSelectionListener(GraphSelectionListener listener) {
@@ -247,28 +247,40 @@ public class TabDiagram
         }
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // TODO Auto-generated method stub
-
+        // we can neglect this, the TabDiagram allways selects the first target
+        // in a set of targets. The first target can only be 
+        // changed in a targetRemoved or a TargetSet event
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // TODO Auto-generated method stub
+        // how to handle empty target lists?
+        // probably the TabDiagram should only show an empty pane in that case
+        setTarget(e.getNewTargets()[0]);
+        select(e.getNewTargets());
 
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        // TODO Auto-generated method stub
+        setTarget(e.getNewTargets()[0]);
+        select(e.getNewTargets());
+    }
 
+    private void select(Object[] targets) {
+        _jgraph.deselectAll();
+        for (int i = 0; i < targets.length; i++) {
+           
+                _jgraph.selectByOwnerOrFig(targets[i]);
+        }
     }
 
 }

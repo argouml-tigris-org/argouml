@@ -44,6 +44,7 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.*;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.tigris.gef.presentation.Fig;
 
 public class TabTaggedValues extends TabSpawnable
 implements TabModelTarget {
@@ -138,7 +139,7 @@ implements TabModelTarget {
   public void refresh() { setTarget(_target); }
 
   public boolean shouldBeEnabled(Object target) {
-  
+      target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
     if (!(target instanceof MModelElement)) {
       _shouldBeEnabled = false;
       return _shouldBeEnabled;

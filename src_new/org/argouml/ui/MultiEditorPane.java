@@ -45,6 +45,7 @@ import org.argouml.application.api.QuadrantPanel;
 import org.argouml.swingext.Horizontal;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.TabDiagram;
 import org.argouml.uml.ui.TabModelTarget;
 import org.argouml.uml.ui.TabProps;
@@ -97,10 +98,13 @@ public class MultiEditorPane
             if (t instanceof TabSpawnable)
                 title = ((TabSpawnable) t).getTitle();
             _tabs.addTab("As " + title, t);
+            _tabs.setEnabledAt(i, false);
+            if (t instanceof TargetListener) {
+                TargetManager.getInstance().addTargetListener((TargetListener)t);
+            }
         } /* end for */
 
-        for (int i = 0; i < _tabPanels.size(); i++)
-            _tabs.setEnabledAt(i, false);
+        
 
         _tabs.addChangeListener(this);
         _tabs.addMouseListener(this);
@@ -120,34 +124,33 @@ public class MultiEditorPane
      * model elements) that tab should display the target if the target is an 
      * ArgoDiagram.
      * @param target
+     * @deprecated this method will change visibility in the near future
      */
     public void setTarget(Object target) {
-        if (_target == target)
-            return;
-        int nextTab = -1;
-        int currentTab = _tabs.getSelectedIndex();
-        int tabCount = _tabs.getTabCount();
-        _target = target;
-        for (int i = 0; i < tabCount; i++) {
+        enableTabs(target);
+        for (int i = 0; i < _tabs.getTabCount(); i++) {
             Component tab = _tabs.getComponentAt(i);
-            if (tab instanceof TabModelTarget) {
-                TabModelTarget tabMT = (TabModelTarget) tab;
-                tabMT.setTarget(_target);
-                boolean shouldEnable = tabMT.shouldBeEnabled(_target);
-                _tabs.setEnabledAt(i, shouldEnable);
-                if (shouldEnable && (nextTab == -1 || i == currentTab))
-                    nextTab = i;
+            if (tab.isEnabled()) {
+                _tabs.setSelectedComponent(tab);
+                break;
+            }
+        }       
+    }
+    
+    /**
+     * Enables the tabs on the MultiEditorPane depending on the result of its
+     * shouldBeEnabled method.
+     * @param target The target for which the shouldBeEnabled test should hold true.
+     */
+    private void enableTabs(Object target) {
+        for (int i = 0; i < _tabs.getTabCount(); i++) {
+            Component tab = _tabs.getComponentAt(i);
+            if (tab instanceof TabTarget) {
+                TabTarget targetTab = (TabTarget)tab;
+                boolean shouldBeEnabled = targetTab.shouldBeEnabled(target);
+                _tabs.setEnabledAt(i, shouldBeEnabled);                
             }
         }
-        if (target != null)
-            select(target);
-        //    if this target doesn't match the tabs expectation    
-        //        leave the previous tab displayed
-
-        //    
-        //    if (nextTab != -1 && nextTab != currentTab) 
-        //        _tabs.setSelectedIndex(nextTab);
-        //    _tabs.setVisible(nextTab != -1);
     }
     
     
@@ -156,9 +159,10 @@ public class MultiEditorPane
      * TODO: check if the target is needed for the multieditorpane as an
      * instance variable.
      * @return Object
+     * @deprecated use TargetManager.getInstance().getTarget() instead
      */
     public Object getTarget() {
-        return _target;
+        return TargetManager.getInstance().getTarget();
     }
 
     ////////////////////////////////////////////////////////////////
@@ -208,6 +212,8 @@ public class MultiEditorPane
     /**
      * Selects a Fig on a TabDiagram if the TabDiagram is currently shown. 
      * @param o The Fig or the owner of the Fig to select.
+     * @deprecated The tabdiagram arranges for it's own selection now via 
+     * it's targetlistener
      */
     public void select(Object o) {
         Component curTab = _tabs.getSelectedComponent();
@@ -219,13 +225,13 @@ public class MultiEditorPane
         //TODO: handle tables
     }
 
-    ////////////////////////////////////////////////////////////////
-    // event handlers
+    
 
 
-    /* called when the user selects a tab, by clicking or otherwise. */
-
-    public void stateChanged(ChangeEvent e) {
+      /**
+       *  called when the user selects a tab, by clicking or otherwise. 
+       */
+    public void stateChanged(ChangeEvent  e) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
         if (_lastTab != null) {
@@ -369,29 +375,30 @@ public class MultiEditorPane
         return returnList;
     }
 
-	/* (non-Javadoc)
-	 * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
-	 */
-	public void targetAdded(TargetEvent e) {
-		// TODO Auto-generated method stub
+	/**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        // we can neglect this, the MultiEditorPane allways selects the first target
+        // in a set of targets. The first target can only be 
+        // changed in a targetRemoved or a TargetSet event
+    }
 
-	}
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        // how to handle empty target lists?
+        // probably the MultiEditorPane should only show an empty pane in that case
+        setTarget(e.getNewTargets()[0]);
+    }
 
-	/* (non-Javadoc)
-	 * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
-	 */
-	public void targetRemoved(TargetEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/* (non-Javadoc)
-	 * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-	 */
-	public void targetSet(TargetEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        setTarget(e.getNewTargets()[0]);
+    }
 
 }
 
