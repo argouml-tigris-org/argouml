@@ -462,6 +462,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
                 perspectiveListModel.set(sel, prevObj);
                 perspectiveListModel.set(sel - 1, selObj);
                 perspectiveList.setSelectedIndex(sel - 1);
+                perspectiveList.ensureIndexIsVisible(sel - 1);
             }
         }
     }
@@ -475,6 +476,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
                 perspectiveListModel.set(sel, nextObj);
                 perspectiveListModel.set(sel + 1, selObj);
                 perspectiveList.setSelectedIndex(sel + 1);
+                perspectiveList.ensureIndexIsVisible(sel + 1);
             }
         }
     }
