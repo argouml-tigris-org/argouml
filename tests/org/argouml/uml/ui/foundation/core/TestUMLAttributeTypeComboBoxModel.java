@@ -24,17 +24,15 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import junit.framework.TestCase;
+
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
-
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.model_management.MModel;
-
-import junit.framework.TestCase;
 
 /**
  * @since Nov 2, 2002
@@ -63,9 +61,8 @@ public class TestUMLAttributeTypeComboBoxModel extends TestCase {
         elem = CoreFactory.getFactory().createAttribute();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLAttributeTypeComboBoxModel(cont);
+        model = new UMLAttributeTypeComboBoxModel();
+        model.targetChanged(elem);
         types = new MClassifier[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
         elem.setNamespace(m);

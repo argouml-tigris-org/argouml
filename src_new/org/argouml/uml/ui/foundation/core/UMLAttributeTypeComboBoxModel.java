@@ -30,10 +30,7 @@ import java.util.Set;
 
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.UMLComboBoxModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
-
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -52,9 +49,8 @@ public class UMLAttributeTypeComboBoxModel extends UMLComboBoxModel2 {
      * @param propertySetName
      * @param clearable
      */
-    public UMLAttributeTypeComboBoxModel(
-        UMLUserInterfaceContainer container) {
-        super(container, "type", false);
+    public UMLAttributeTypeComboBoxModel() {
+        super("type", false);
     }
 
     /**
@@ -69,7 +65,7 @@ public class UMLAttributeTypeComboBoxModel extends UMLComboBoxModel2 {
      */
     protected void buildModelList() {
         Set elements = new HashSet();
-        Project p = ProjectBrowser.TheInstance.getProject();
+        Project p = Project.getCurrentProject();
         Iterator it = p.getUserDefinedModels().iterator();
         while (it.hasNext()) {
            MModel model = (MModel)it.next();

@@ -99,7 +99,6 @@ public class ProjectBrowser extends JFrame
     // instance variables
 
     protected String _appName = "ProjectBrowser";
-    protected Project _project = null;
 
     protected NavigatorPane _navPane;
     /** The toDoPane currently does not remember todos
@@ -300,25 +299,20 @@ public class ProjectBrowser extends JFrame
     // accessors
 
     public void setProject(Project p) {
-        _project = p;
-        _navPane.setRoot(_project);
-        updateTitle();
+        _navPane.setRoot(p);
+        updateTitle(p);
         Actions.updateAllEnabled();
         //Designer.TheDesigner.getToDoList().removeAllElements();
-        Designer.TheDesigner.setCritiquingRoot(_project);
+        Designer.TheDesigner.setCritiquingRoot(p);
         // update all panes
-        setTarget(_project.getInitialTarget());
+        setTarget(p.getInitialTarget());
         _navPane.forceUpdate();
     }
-    public Project getProject() {
-        // only for testing...
-        // if (_project == null) _project = Project.makeEmptyProject();
-        return _project;
-    }
+   
 
-    public void updateTitle() {
-        if (_project == null) setTitle(null);
-        else setTitle(_project.getName());
+    public void updateTitle(Project p) {
+        if (p == null) setTitle(null);
+        setTitle(p.getName());
     }
 
     public void setTitle(String title) {
@@ -367,10 +361,10 @@ public class ProjectBrowser extends JFrame
             detailsPane.setTarget(o);
         }
          
-        if (o instanceof MNamespace) _project.setCurrentNamespace((MNamespace)o);
+        if (o instanceof MNamespace) Project.getCurrentProject().setCurrentNamespace((MNamespace)o);
         if (o instanceof UMLDiagram) {
             MNamespace m = ((UMLDiagram)o).getNamespace();
-            if (m != null) _project.setCurrentNamespace(m);
+            if (m != null) Project.getCurrentProject().setCurrentNamespace(m);
         }
         if (o instanceof ArgoDiagram) {
             setActiveDiagram ((ArgoDiagram) o);
@@ -379,9 +373,9 @@ public class ProjectBrowser extends JFrame
             MModelElement eo = (MModelElement)o;
             if (eo == null) { cat.debug("no path to model"); return; }
             if (eo.getNamespace() != null) {
-                _project.setCurrentNamespace(eo.getNamespace());
+                Project.getCurrentProject().setCurrentNamespace(eo.getNamespace());
             } else
-                _project.setCurrentNamespace((MNamespace)_project.getUserDefinedModels().get(0));
+                Project.getCurrentProject().setCurrentNamespace((MNamespace)Project.getCurrentProject().getUserDefinedModels().get(0));
 	}
 	Actions.updateAllEnabled();
     }
@@ -529,7 +523,7 @@ public class ProjectBrowser extends JFrame
             select(null);
             return;
         }
-        Vector diagrams = getProject().getDiagrams();
+        Vector diagrams = Project.getCurrentProject().getDiagrams();
         Object target = _editorPane.getTarget();
         if ((target instanceof Diagram) && ((Diagram)target).countContained(dms) == dms.size()) {
             select(first);

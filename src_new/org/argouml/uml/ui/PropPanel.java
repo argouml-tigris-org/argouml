@@ -77,7 +77,6 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     private ResourceBundle _bundle = null;
 
     private Vector _panels = new Vector();
-    private UMLNameEventListener _nameListener;
 
     private int lastRow;
 

@@ -139,7 +139,7 @@ public class UMLTextProperty  {
                             		
                             	_setMethod.invoke(element,args);
                             	// Mark the project as having been changed 
-                            	Project p = ProjectBrowser.TheInstance.getProject(); 
+                            	Project p = Project.getCurrentProject(); 
 								if (p != null) p.setNeedsSave(true); 
                             }
                             catch (InvocationTargetException inv) {

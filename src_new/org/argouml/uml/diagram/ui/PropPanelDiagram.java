@@ -54,7 +54,7 @@ public class PropPanelDiagram extends PropPanel  {
         if(target instanceof ArgoDiagram) {
           try {
             ArgoDiagram diagram = (ArgoDiagram) target;
-            Project project = ProjectBrowser.TheInstance.getProject();
+            Project project = Project.getCurrentProject();
             //
             //  can't easily find owner of diagram
             //    set new target to the model

@@ -74,7 +74,7 @@ public class ActionOpenProject extends UMLAction {
      */
   public void actionPerformed (ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
+    Project p = Project.getCurrentProject();
     
     if (p != null && p.needsSave()) {
       String t = MessageFormat.format (
@@ -129,10 +129,7 @@ public class ActionOpenProject extends UMLAction {
         	// changed the loading of the projectfiles to solve hanging 
         	// of argouml if a project is corrupted. Issue 913
         	// made it possible to return to the old project if loading went wrong
-        	Project oldProject = pb.getProject();
-        	if (oldProject == null) {
-        		oldProject = Project.makeEmptyProject();
-        	}
+        	Project oldProject = Project.getCurrentProject();
             // This is actually a hack! Some diagram types
             // (like the state diagrams) access the current
             // diagram to get some info. This might cause 
@@ -148,7 +145,7 @@ public class ActionOpenProject extends UMLAction {
             // pb.setProject(Project.makeEmptyProject());
             
             // new code:
-            pb.setProject(oldProject);
+            
             // 2002-07-18
         	// Jaap Branderhorst
         	// changed the loading of the projectfiles to solve hanging 

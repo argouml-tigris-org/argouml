@@ -24,18 +24,16 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import junit.framework.TestCase;
+
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
-
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.model_management.MModel;
-
-import junit.framework.TestCase;
 
 /**
  * @since Nov 2, 2002
@@ -63,9 +61,7 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
         super.setUp();
         elem = CollaborationsFactory.getFactory().createMessage();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);      
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);    
         activators = new MMessage[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
         MInteraction inter = CollaborationsFactory.getFactory().createInteraction();
@@ -77,7 +73,8 @@ public class TestUMLMessageActivatorComboBoxModel extends TestCase {
             activators[i] = CollaborationsFactory.getFactory().createMessage();
             inter.addMessage(activators[i]);
         }  
-        model = new UMLMessageActivatorComboBoxModel(cont);    
+        model = new UMLMessageActivatorComboBoxModel(); 
+        model.targetChanged(elem);   
     }
 
     /**

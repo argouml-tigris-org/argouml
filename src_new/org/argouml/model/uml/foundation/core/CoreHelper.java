@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 import java.util.Vector;
 
@@ -38,7 +37,6 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
-
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
@@ -74,7 +72,6 @@ import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
 
 
@@ -378,7 +375,7 @@ public class CoreHelper {
 	   operation.addParameter(0, newReturnParameter);
            // we set the listeners to the figs here too
             // it would be better to do that in the figs themselves
-            Project p = ProjectBrowser.TheInstance.getProject();
+            Project p = Project.getCurrentProject();
             Iterator it = p.findFigsForMember(operation).iterator();
             while (it.hasNext()) {
                 MElementListener listener = (MElementListener)it.next();
@@ -392,8 +389,8 @@ public class CoreHelper {
 	 */
 	public MDependency buildSupportDependency(MModelElement from, MModelElement to) {
 		MDependency dep = CoreFactory.getFactory().buildDependency(from, to);
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
-		MStereotype stereo = ExtensionMechanismsFactory.getFactory().buildStereotype(dep, "support", ProjectBrowser.TheInstance.getProject().getModel());
+		MNamespace model = Project.getCurrentProject().getModel();
+		MStereotype stereo = ExtensionMechanismsFactory.getFactory().buildStereotype(dep, "support", Project.getCurrentProject().getModel());
 		return dep;
 	}
 	
@@ -439,7 +436,7 @@ public class CoreHelper {
 	 * @return Collection
 	 */
 	public Collection getAllBehavioralFeatures() {
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MNamespace model = Project.getCurrentProject().getModel();
 		return getAllBehavioralFeatures(model);
 	}
 	
@@ -448,7 +445,7 @@ public class CoreHelper {
 	 * @return Collection
 	 */
 	public Collection getAllInterfaces() {
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MNamespace model = Project.getCurrentProject().getModel();
 		return getAllInterfaces(model);
 	}
 	
@@ -478,7 +475,7 @@ public class CoreHelper {
 	 * @return Collection
 	 */
 	public Collection getAllClasses() {
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MNamespace model = Project.getCurrentProject().getModel();
 		return getAllClasses(model);
 	}
 	
@@ -512,7 +509,7 @@ public class CoreHelper {
 		if (clazz == null) return new ArrayList();
 		Iterator it = clazz.getClientDependencies().iterator();
 		List list = new ArrayList();
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MNamespace model = Project.getCurrentProject().getModel();
 		while (it.hasNext()) {
 			Object o = it.next();
 			if (o instanceof MAbstraction) {
@@ -542,7 +539,7 @@ public class CoreHelper {
 	public MAbstraction getRealization(MInterface source, MClassifier clazz) {
 		if (source == null || clazz == null) return null;
 		Iterator it = clazz.getClientDependencies().iterator();
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MNamespace model = Project.getCurrentProject().getModel();
 		MStereotype stereo = ExtensionMechanismsFactory.getFactory().buildStereotype(new MAbstractionImpl(), "realize", model);
 		while (it.hasNext()) {
 			Object o = it.next();
@@ -661,7 +658,7 @@ public class CoreHelper {
 	 * @return Collection
 	 */
 	public Collection getAllComponents() {
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MNamespace model = Project.getCurrentProject().getModel();
 		return getAllComponents(model);
 	}
 	
@@ -691,7 +688,7 @@ public class CoreHelper {
 	 * @return Collection
 	 */
 	public Collection getAllDataTypes() {
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MNamespace model = Project.getCurrentProject().getModel();
 		return getAllDataTypes(model);
 	}
 	
@@ -721,7 +718,7 @@ public class CoreHelper {
 	 * @return Collection
 	 */
 	public Collection getAllNodes() {
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MNamespace model = Project.getCurrentProject().getModel();
 		return getAllNodes(model);
 	}
 	
@@ -800,7 +797,7 @@ public class CoreHelper {
 	 * @return Collection
 	 */
 	public Collection getAllClassifiers() {
-		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+		MNamespace model = Project.getCurrentProject().getModel();
 		return getAllClassifiers(model);
 	}
 	
@@ -1196,7 +1193,7 @@ public class CoreHelper {
     public Collection getAllPossibleNamespaces(MModelElement m) {
         List ret = new ArrayList();
         if (m == null) return ret;
-        MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+        MNamespace model = Project.getCurrentProject().getModel();
         if (isValidNamespace(m, model)) ret.add(model);
         Iterator it = ModelManagementHelper.getHelper().getAllModelElementsOfKind(model, MNamespace.class).iterator();
         while (it.hasNext()) {

@@ -64,7 +64,7 @@ public class GoCollaborationDiagram extends AbstractGoRule {
   }
 
   public Collection getChildren(Object parent) {
-    Project p = ProjectBrowser.TheInstance.getProject();
+    Project p = Project.getCurrentProject();
     if (p == null) return null;
     if (!(parent instanceof MCollaboration)) return null;
     Vector res = new Vector();

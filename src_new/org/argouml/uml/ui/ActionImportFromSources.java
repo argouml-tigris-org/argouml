@@ -67,7 +67,7 @@ public class ActionImportFromSources extends UMLAction {
 
     public void actionPerformed(ActionEvent event) {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Project p = pb.getProject();
+        Project p = Project.getCurrentProject();
 
         try {
             String directory = Globals.getLastDirectory();

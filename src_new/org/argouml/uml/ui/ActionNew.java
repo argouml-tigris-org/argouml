@@ -52,7 +52,7 @@ public class ActionNew extends UMLAction {
 
   public void actionPerformed(ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
+    Project p = Project.getCurrentProject();
 
     if (p != null && p.needsSave()) {
       String t = MessageFormat.format (

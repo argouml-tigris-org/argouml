@@ -30,16 +30,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.argouml.kernel.Project;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
-
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.model_management.MSubsystem;
 
@@ -92,7 +91,7 @@ public class UseCasesHelper {
 	 * @return Collection
 	 */
     public Collection getAllUseCases() {
-    	MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+    	MNamespace model = Project.getCurrentProject().getModel();
 		return getAllUseCases(model);
 	}
 	
@@ -121,7 +120,7 @@ public class UseCasesHelper {
 	 * @return Collection
 	 */
 	public Collection getAllActors() {
-    	MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
+    	MNamespace model = Project.getCurrentProject().getModel();
 		return getAllActors(model);
 	}
 	

@@ -201,7 +201,7 @@ class ActionGotoDiagram extends UMLAction {
   public ActionGotoDiagram() { super("Goto Diagram...", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
+    Project p = Project.getCurrentProject();
     //TODO: class TearOffHostFrame and TearOffManager.
     //idea: pop-up on tab that lists docking locations, new window.
     JDialog f = new JDialog(pb, "Goto Diagram...");
@@ -222,7 +222,7 @@ class ActionNavBack extends UMLAction {
   public ActionNavBack() { super("Navigate Back"); }
   public boolean shouldBeEnabled() {
     if (ProjectBrowser.TheInstance != null) {
-        Project p = ProjectBrowser.TheInstance.getProject();
+        Project p = Project.getCurrentProject();
         if (!(super.shouldBeEnabled() && p != null)) return false;
         NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
 	if ((np == null)) return false;
@@ -242,7 +242,7 @@ class ActionNavForw extends UMLAction {
   public ActionNavForw() { super("Navigate Forward"); }
   public boolean shouldBeEnabled() {
     if (ProjectBrowser.TheInstance != null) {
-        Project p = ProjectBrowser.TheInstance.getProject();
+        Project p = Project.getCurrentProject();
         if (!(super.shouldBeEnabled() && p != null)) return false;
         NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
         return np.canNavForw();

@@ -89,7 +89,7 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
 
             // Having set a property, mark as needing saving
 
-            Project p = ProjectBrowser.TheInstance.getProject();
+            Project p = Project.getCurrentProject();
             p.setNeedsSave(true);
         }
     }

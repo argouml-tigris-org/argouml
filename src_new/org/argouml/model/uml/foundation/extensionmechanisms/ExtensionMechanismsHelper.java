@@ -133,7 +133,7 @@ public class ExtensionMechanismsHelper {
         String baseClass = stereo.getBaseClass();
         if (name == null || baseClass == null) return null;
         ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Iterator it2 = pb.getProject().getModels().iterator(); 
+        Iterator it2 = Project.getCurrentProject().getModels().iterator(); 
         while (it2.hasNext()) {
             MModel model = (MModel)it2.next();
             Iterator it = getStereotypes(model).iterator();
@@ -210,7 +210,7 @@ public class ExtensionMechanismsHelper {
     public Collection getStereotypes() {
         List ret = new ArrayList();
         if (ProjectBrowser.TheInstance != null) {
-            Project p = ProjectBrowser.TheInstance.getProject();
+            Project p = Project.getCurrentProject();
             Iterator it = p.getModels().iterator();
             while (it.hasNext()) {
                 MModel model = (MModel)it.next();

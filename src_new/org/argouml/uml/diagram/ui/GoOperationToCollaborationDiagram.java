@@ -60,7 +60,7 @@ public class GoOperationToCollaborationDiagram extends AbstractGoRule {
             MOperation operation = (MOperation)parent;
             Collection col = operation.getCollaborations();
             Vector ret = new Vector();
-            Project p = ProjectBrowser.TheInstance.getProject();
+            Project p = Project.getCurrentProject();
             Vector diagrams = p.getDiagrams();
             Iterator it = diagrams.iterator();
             while (it.hasNext()) {

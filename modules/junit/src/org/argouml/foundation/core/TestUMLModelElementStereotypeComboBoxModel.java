@@ -28,8 +28,6 @@ import junit.framework.TestCase;
 
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 import org.argouml.uml.ui.foundation.core.UMLModelElementStereotypeComboBoxModel;
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClassImpl;
@@ -61,9 +59,8 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         super.setUp();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         elem = new MClassImpl();
-        MockUMLUserInterfaceContainer mockcomp = new MockUMLUserInterfaceContainer();
-        mockcomp.setTarget(elem);
-        model = new UMLModelElementStereotypeComboBoxModel(mockcomp);
+        model = new UMLModelElementStereotypeComboBoxModel();
+        model.targetChanged(elem);
     }
     
     /**

@@ -27,6 +27,7 @@ import java.util.*;
 
 import org.argouml.ui.*;
 import org.apache.log4j.Category;
+import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreFactory;
@@ -743,7 +744,7 @@ public class Modeller
 	if(mOperation == null) {
 	    mOperation = UmlFactory.getFactory().getCore().buildOperation(parseState.getClassifier());
 	    mOperation.setName(name);
-            Iterator it2 = ProjectBrowser.TheInstance.getProject().findFigsForMember(parseState.getClassifier()).iterator();
+            Iterator it2 = Project.getCurrentProject().findFigsForMember(parseState.getClassifier()).iterator();
             while (it2.hasNext()) {
                 MElementListener listener = (MElementListener)it2.next();
                 // UmlModelEventPump.getPump().removeModelEventListener(listener, mOperation);

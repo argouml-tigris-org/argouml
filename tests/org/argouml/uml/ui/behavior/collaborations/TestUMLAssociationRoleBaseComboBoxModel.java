@@ -24,22 +24,19 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import junit.framework.TestCase;
+
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
-
 import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.model_management.MModel;
-
-import junit.framework.TestCase;
 
 /**
  * @since Oct 30, 2002
@@ -84,9 +81,8 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         elem = CollaborationsFactory.getFactory().buildAssociationRole(role1, role2);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLAssociationRoleBaseComboBoxModel(cont);
+        model = new UMLAssociationRoleBaseComboBoxModel();
+        model.targetChanged(elem);
     }
     
     /**

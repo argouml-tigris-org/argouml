@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,45 +21,41 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui.behavior.collaborations;
-
-import java.awt.event.ActionEvent;
-
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
-import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
+// $header$
+package org.argouml.uml.ui;
 
 /**
- * The combobox for activators on the message proppanel. The only reason this 
- * combobox implements melementlistener is to conform to UMLChangeDispatch. The 
- * combobox serves as a proxy for the 
- * model (UMLMessageActivatorComboBoxModel). Kind of strange...
+ * Classes implementing this interface are interested in changes of the
+ * target. Target changes occur when the user or argouml itself (programmatically)
+ * select another modelelement. 
+ *<p>
+ * This listener is introduced to remove the very close dependency between
+ * property panel and GUI elements. More specifically to support the need to
+ * implement GUI elements as singletons which is not possible with the implementation
+ * that uses UMLUserInterfaceComponent as the interface.
+ * </p>
+ * <p>
+ * The methods are called at the moment via UMLChangeDispatch. In the future
+ * an eventpump will come into place that does not call the components on a 
+ * property panel but that will call the interested instances (GUI elements) 
+ * directly.
+ * </p>
+ * @since Nov 8, 2002
+ * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLMessageActivatorComboBox extends UMLComboBox2 {
-
+public interface TargetChangedListener {
+    
     /**
-     * Constructor for UMLMessageActivatorComboBox.
-     * @param container
-     * @param arg0
+     * This method is called when a new target is selected, either by the
+     * program or by the user.
+     * @param newTarget
      */
-    public UMLMessageActivatorComboBox(
-        UMLUserInterfaceContainer container,
-        UMLComboBoxModel2 arg0) {
-        super(arg0);
-    }
-
+    public void targetChanged(Object newTarget);
+    
     /**
-     * @see org.argouml.uml.ui.UMLComboBox2#doIt(ActionEvent)
+     * This method is called when the navigation history is updated.
+     * @param newTarget
      */
-    protected void doIt(ActionEvent event) {
-        Object o = getModel().getElementAt(getSelectedIndex());
-        MMessage activator = (MMessage)o;
-        MMessage mes = (MMessage)getTarget();
-        if (activator != mes.getActivator()) {
-            CollaborationsHelper.getHelper().setActivator(mes, activator);
-        }
-    }
+    public void targetReasserted(Object newTarget);
 
 }

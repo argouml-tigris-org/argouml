@@ -27,37 +27,37 @@ package org.argouml.uml.ui.foundation.core;
 import javax.swing.ImageIcon;
 
 import org.argouml.swingext.Orientation;
+import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLVisibilityPanel;
+import org.argouml.uml.ui.UMLTextField2;
 
 /**
  * @since Nov 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class PropPanelFeature extends PropPanelModelElement {
+public class PropPanelStructuralFeature extends PropPanelFeature {
 
-    protected UMLFeatureOwnerScopeCheckBox ownerScopeCheckbox;
-    protected UMLComboBox2 ownerComboBox;
     
-    private static UMLFeatureOwnerComboBoxModel featureOwnerComboBoxModel = new UMLFeatureOwnerComboBoxModel();
-
+    protected UMLTextField2 _multiplicityTextField;
+    protected UMLCheckBox2 _targetScopeCheckBox;
+    
     /**
-     * Constructor for PropPanelFeature.
+     * Constructor for PropPanelStructuralFeature.
      * @param name
      * @param columns
      */
-    public PropPanelFeature(String name, int columns) {
+    public PropPanelStructuralFeature(String name, int columns) {
         super(name, columns);
         initialize();
     }
 
     /**
-     * Constructor for PropPanelFeature.
+     * Constructor for PropPanelStructuralFeature.
      * @param name
      * @param icon
      * @param orientation
      */
-    public PropPanelFeature(
+    public PropPanelStructuralFeature(
         String name,
         ImageIcon icon,
         Orientation orientation) {
@@ -66,24 +66,22 @@ public class PropPanelFeature extends PropPanelModelElement {
     }
 
     /**
-     * Constructor for PropPanelFeature.
+     * Constructor for PropPanelStructuralFeature.
      * @param name
      * @param icon
      * @param columns
      */
-    public PropPanelFeature(String name, ImageIcon icon, int columns) {
+    public PropPanelStructuralFeature(
+        String name,
+        ImageIcon icon,
+        int columns) {
         super(name, icon, columns);
         initialize();
     }
     
     private void initialize() {
-        ownerScopeCheckbox = new UMLFeatureOwnerScopeCheckBox(this);
-        // according to the UML spec we need an attribute visibility here
-        // but it seems that NSUML thinks that elementownership visibility
-        // and feature visibility are the same
-        ownerComboBox = new UMLComboBox2(featureOwnerComboBoxModel, ActionSetFeatureOwner.SINGLETON); 
-    }
-
-
+    }   
+        
+        
 
 }

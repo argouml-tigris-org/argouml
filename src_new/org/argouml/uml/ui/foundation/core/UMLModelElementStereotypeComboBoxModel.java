@@ -46,8 +46,8 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      * Constructor for UMLModelElementStereotypeComboBoxModel.
      * @param container
      */
-    public UMLModelElementStereotypeComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, "stereotype", true);
+    public UMLModelElementStereotypeComboBoxModel() {
+        super("stereotype", true);
         UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 

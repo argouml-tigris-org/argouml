@@ -25,36 +25,43 @@
 
 package org.argouml.application;
 
-import org.argouml.application.api.*;
-
-import java.awt.*;
-import java.util.*;
-import java.net.*;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.ToolTipManager;
+import javax.swing.UIManager;
 
-import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.*;
-
-import org.tigris.gef.util.*;
-
-import org.argouml.kernel.*;
-import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.ui.*;
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.ui.*;
-import org.argouml.i18n.Translator;
-import org.argouml.uml.cognitive.critics.*;
-import org.argouml.util.*;
-import org.argouml.util.logging.*;
-
-import org.argouml.application.security.ArgoSecurityManager;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Category;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
-
-import org.apache.log4j.*;
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ui.ToDoPerspective;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.LookAndFeelMgr;
+import org.argouml.ui.NavPerspective;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.SplashScreen;
+import org.argouml.uml.cognitive.critics.ChildGenUML;
+import org.argouml.util.Trash;
+import org.argouml.util.logging.SimpleTimer;
+import org.tigris.gef.util.ResourceLoader;
+import org.tigris.gef.util.Util;
+import ru.novosoft.uml.MFactoryImpl;
+import ru.novosoft.uml.model_management.MModel;
 
 public class Main {
     ////////////////////////////////////////////////////////////////
@@ -272,7 +279,7 @@ public class Main {
 	st.mark("make empty project");
 
         if (urlToOpen == null) {
-            p = Project.makeEmptyProject();
+            p = Project.getCurrentProject();
         }
         else {
             try {
@@ -505,8 +512,7 @@ class StartCritics implements Runnable {
         Designer dsgr = Designer.theDesigner();
         org.argouml.uml.cognitive.critics.Init.init();
         org.argouml.uml.cognitive.checklist.Init.init(Locale.getDefault());
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Project p = pb.getProject();
+        Project p = Project.getCurrentProject();
         dsgr.spawnCritiquer(p);
         dsgr.setChildGenerator(new ChildGenUML());
         java.util.Enumeration models = (p.getUserDefinedModels()).elements();

@@ -82,7 +82,7 @@ public class UMLAction extends AbstractAction {
 
   public void markNeedsSave() {
     if (ProjectBrowser.TheInstance != null) {
-        Project p = ProjectBrowser.TheInstance.getProject();
+        Project p = Project.getCurrentProject();
         if (p != null) {
             p.setNeedsSave(true);
         }

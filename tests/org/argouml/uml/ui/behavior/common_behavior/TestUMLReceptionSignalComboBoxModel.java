@@ -24,17 +24,15 @@
 // $header$
 package org.argouml.uml.ui.behavior.common_behavior;
 
+import junit.framework.TestCase;
+
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
-
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.model_management.MModel;
-
-import junit.framework.TestCase;
 
 /**
  * @since Nov 2, 2002
@@ -63,8 +61,6 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         elem = CommonBehaviorFactory.getFactory().createReception();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
         signals = new MSignal[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
         elem.setNamespace(m);
@@ -72,7 +68,8 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
             signals[i] = CommonBehaviorFactory.getFactory().createSignal();
             m.addOwnedElement(signals[i]);
         }      
-        model = new UMLReceptionSignalComboBoxModel(cont);
+        model = new UMLReceptionSignalComboBoxModel();
+        model.targetChanged(elem);
     }
 
     /**

@@ -24,15 +24,13 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
+import junit.framework.TestCase;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClassImpl;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotypeImpl;
-
-import junit.framework.TestCase;
 
 /**
  * @since Oct 13, 2002
@@ -58,10 +56,8 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         super.setUp();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         elem = new MClassImpl();
-        MockUMLUserInterfaceContainer mockcomp = new MockUMLUserInterfaceContainer();
-        mockcomp.setTarget(elem);
-        model = new UMLModelElementStereotypeComboBoxModel(mockcomp);
-        elem.addMElementListener(model); 
+        model = new UMLModelElementStereotypeComboBoxModel();
+        model.targetChanged(elem);
     }
     
     /**

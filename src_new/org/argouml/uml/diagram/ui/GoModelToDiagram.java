@@ -49,7 +49,7 @@ public class GoModelToDiagram extends AbstractGoRule {
   public Object getChild(Object parent, int index) {
     if (parent instanceof MNamespace) {
       MNamespace m = (MNamespace) parent;
-      Project proj = ProjectBrowser.TheInstance.getProject();
+      Project proj = Project.getCurrentProject();
       Vector diags = proj.getDiagrams();
       java.util.Enumeration diagEnum = diags.elements();
       while (diagEnum.hasMoreElements()) {
@@ -70,7 +70,7 @@ public class GoModelToDiagram extends AbstractGoRule {
     if (parent instanceof MNamespace) {
       int count = 0;
       MNamespace m = (MNamespace) parent;
-      Project proj = ProjectBrowser.TheInstance.getProject();
+      Project proj = Project.getCurrentProject();
       Vector diags = proj.getDiagrams();
       java.util.Enumeration diagEnum = diags.elements();
       while (diagEnum.hasMoreElements()) {
@@ -86,7 +86,7 @@ public class GoModelToDiagram extends AbstractGoRule {
     if (parent instanceof MNamespace) {
       int count = 0;
       MNamespace m = (MNamespace) parent;
-      Project proj = ProjectBrowser.TheInstance.getProject();
+      Project proj = Project.getCurrentProject();
       Vector diags = proj.getDiagrams();
       java.util.Enumeration diagEnum = diags.elements();
       while (diagEnum.hasMoreElements()) {

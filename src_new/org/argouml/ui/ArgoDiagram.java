@@ -102,7 +102,7 @@ public class ArgoDiagram extends Diagram implements VetoablePropertyChange {
   				// Jaap Branderhorst
   				// check the new name if it does not exist as a diagram name
   				// patch for issue 738
-  				Project project = ProjectBrowser.TheInstance.getProject();
+  				Project project = Project.getCurrentProject();
   				if (project != null) {
   					Vector diagrams = project.getDiagrams();
   					Iterator it = diagrams.iterator();
@@ -114,7 +114,8 @@ public class ArgoDiagram extends Diagram implements VetoablePropertyChange {
   							return true;
   						}
   					}
-  				}
+  				} else
+                                    return false;
     		}
     	}
         return false;

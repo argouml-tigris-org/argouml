@@ -29,7 +29,6 @@ import junit.framework.TestCase;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
@@ -64,9 +63,7 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
         elem = UseCasesFactory.getFactory().createInclude();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLIncludeBaseComboBoxModel(cont);
+        model = new UMLIncludeBaseComboBoxModel();
         bases = new MUseCase[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
         elem.setNamespace(m);

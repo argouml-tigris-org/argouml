@@ -33,15 +33,12 @@ import java.util.Set;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
 import org.argouml.kernel.Project;
-import org.argouml.model.ModelHelper;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
-
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
@@ -582,8 +579,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         //build the default attribute
         // this should not be here via the ProjectBrowser but the CoreHelper 
         // should provide this functionality
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Project p = pb.getProject();
+        Project p = Project.getCurrentProject();
         MClassifier intType = p.findType("int");
         if (p.getModel() != intType.getNamespace() && !ModelManagementHelper.getHelper().getAllNamespaces(p.getModel()).contains(intType.getNamespace())) {
         	intType.setNamespace(p.getModel());
@@ -615,7 +611,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
        cls.addFeature(attr);
        // we set the listeners to the figs here too
         // it would be better to do that in the figs themselves
-        Project p = ProjectBrowser.TheInstance.getProject();
+        Project p = Project.getCurrentProject();
         Iterator it = p.findFigsForMember(cls).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener)it.next();
@@ -826,7 +822,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         // we set the listeners to the figs here too
         // it would be better to do that in the figs themselves
         // the elementlistener for the parameter is allready set in buildparameter(oper)
-        Project p = ProjectBrowser.TheInstance.getProject();
+        Project p = Project.getCurrentProject();
         Iterator it = p.findFigsForMember(cls).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener)it.next();
@@ -846,8 +842,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
     public MParameter buildParameter() {
         // this should not be here via the ProjectBrowser but the CoreHelper 
         // should provide this functionality
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Project p = pb.getProject();
+        Project p = Project.getCurrentProject();
         MClassifier voidType = p.findType("void");
         if (voidType.getModel() != p.getModel()) {
         	voidType.setNamespace(p.getModel());
@@ -890,7 +885,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         
         // we set the listeners to the figs here too
         // it would be better to do that in the figs themselves
-        Project p = ProjectBrowser.TheInstance.getProject();
+        Project p = Project.getCurrentProject();
         it = p.findFigsForMember(oper).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener)it.next();
@@ -950,7 +945,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         if (nsc != null && nsc.equals(nss)) {
         	ns = nsc;
         } else
-        	ns = ProjectBrowser.TheInstance.getProject().getModel();
+        	ns = Project.getCurrentProject().getModel();
         ExtensionMechanismsFactory.getFactory().buildStereotype(realization, "realize", ns);
         client.addClientDependency(realization);
         supplier.addSupplierDependency(realization);
@@ -994,7 +989,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
             comment.addAnnotatedElement(elementToComment);
             comment.setNamespace(elementToComment.getModel());
         } else
-            comment.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+            comment.setNamespace(Project.getCurrentProject().getModel());
         
         return comment;
     }

@@ -46,8 +46,8 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
      * Constructor for UMLReceptionSignalComboBoxModel.
      * @param container
      */
-    public UMLReceptionSignalComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container,"signal", false);
+    public UMLReceptionSignalComboBoxModel() {
+        super("signal", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 

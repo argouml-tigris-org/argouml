@@ -188,6 +188,11 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         this();
         setNamespace(m);
     }
+    
+    public UMLUseCaseDiagram(String name, MNamespace m) {
+        super(name, m);
+        setNamespace(m);
+    }
 
     /**
      * <p> perform a number of important initializations of a <em>Use Case

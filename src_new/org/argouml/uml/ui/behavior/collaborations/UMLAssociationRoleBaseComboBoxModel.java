@@ -54,9 +54,8 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      * @param container
      * @param propertySetName
      */
-    public UMLAssociationRoleBaseComboBoxModel(
-        UMLUserInterfaceContainer container) {
-        super(container, "base", true);
+    public UMLAssociationRoleBaseComboBoxModel() {
+        super("base", true);
         UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 

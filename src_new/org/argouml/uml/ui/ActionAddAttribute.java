@@ -58,7 +58,7 @@ public class ActionAddAttribute extends UMLChangeAction {
 
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = pb.getProject();
+	Project p = Project.getCurrentProject();
 	Object target = pb.getDetailsTarget();
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;

@@ -62,7 +62,7 @@ public class PropPanelReception extends PropPanelModelElement {
         addField(modPanel,4,0,0);
         
         addCaption(Argo.localize("UMLMenu", "label.signal"),1,1,0);
-        addField(new UMLReceptionSignalComboBox(this, new UMLReceptionSignalComboBoxModel(this)),1,1,0);
+        addField(new UMLReceptionSignalComboBox(this, new UMLReceptionSignalComboBoxModel()),1,1,0);
         
         addCaption(Argo.localize("UMLMenu", "label.specification"),3,1,0);
         JScrollPane specificationScroll = new JScrollPane(new UMLTextArea(this, new UMLTextProperty(mclass, "specification", "getSpecification" , "setSpecification")),JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

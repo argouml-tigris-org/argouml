@@ -84,7 +84,7 @@ public class ActionSetElementOwnershipVisibility extends AbstractAction {
     private void markAsChanged() {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
         if (pb == null) return;
-        Project p = pb.getProject();
+        Project p = Project.getCurrentProject();
         if (p == null) return;
         p.setNeedsSave(true);
     }

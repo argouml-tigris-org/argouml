@@ -24,17 +24,15 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import junit.framework.TestCase;
+
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
-
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.model_management.MModel;
-
-import junit.framework.TestCase;
 
 /**
  * @since Nov 3, 2002
@@ -63,9 +61,7 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         elem = CoreFactory.getFactory().createGeneralization();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLGeneralizationPowertypeComboBoxModel(cont);
+        model = new UMLGeneralizationPowertypeComboBoxModel();
         types = new MClassifier[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
         elem.setNamespace(m);

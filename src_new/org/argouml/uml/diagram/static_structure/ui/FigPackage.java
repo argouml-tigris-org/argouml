@@ -154,7 +154,7 @@ public class FigPackage extends FigNodeModelElement {
 					MNamespace	lNS = lPkg;
 
 					ProjectBrowser lPB = ProjectBrowser.TheInstance;
-					Project lP = lPB.getProject();
+					Project lP = Project.getCurrentProject();
 
 					Vector diags = lP.getDiagrams();
 					Enumeration diagEnum = diags.elements();

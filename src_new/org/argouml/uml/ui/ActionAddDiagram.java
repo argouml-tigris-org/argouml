@@ -57,7 +57,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
      */
     public void actionPerformed(ActionEvent e) {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Project p = pb.getProject();
+        Project p = Project.getCurrentProject();
         Object target = pb.getDetailsTarget();
         MNamespace ns = null;
         Object realTarget = null;
@@ -73,7 +73,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
                 ns = (MNamespace)target;
             }
         }      
-        if (ns == null || !isValidNamespace(ns)) ns = ProjectBrowser.TheInstance.getProject().getModel();
+        if (ns == null || !isValidNamespace(ns)) ns = Project.getCurrentProject().getModel();
         ArgoDiagram diagram = createDiagram(ns, realTarget);
         try {
             p.addMember(diagram);

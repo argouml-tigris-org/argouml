@@ -46,8 +46,8 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
      * Constructor for UMLExtendExtensionComboBoxModel.
      * @param container
      */
-    public UMLExtendExtensionComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, "extension", false);
+    public UMLExtendExtensionComboBoxModel() {
+        super("extension", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 

@@ -127,6 +127,10 @@ public class UMLClassDiagram extends UMLDiagram {
     try { setName(getNewDiagramName()); }
     catch (PropertyVetoException pve) { }
   }
+  
+  public UMLClassDiagram(String name, MNamespace m) {
+    super(name, m);
+  }
 
   public UMLClassDiagram(MNamespace m) {
     super(getNewDiagramName(), m);

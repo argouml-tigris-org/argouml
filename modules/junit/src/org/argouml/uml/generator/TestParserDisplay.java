@@ -24,18 +24,22 @@
 package org.argouml.uml.generator;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
 
-import org.argouml.model.uml.UmlHelper;
+import junit.framework.TestCase;
+
+import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.ProjectBrowser;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-
-import junit.framework.*;
+import org.argouml.model.uml.UmlHelper;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 
 public class TestParserDisplay extends TestCase {
 	private final String attr01 = "name";
@@ -238,15 +242,15 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+		attr.setNamespace(Project.getCurrentProject().getModel());
 		checkStereotype(attr, attr01, null);
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+		attr.setNamespace(Project.getCurrentProject().getModel());
 		checkStereotype(attr, attr10, "organization");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+		attr.setNamespace(Project.getCurrentProject().getModel());
 		checkStereotype(attr, attr11, "machine");
 		checkStereotype(attr, attr01, "machine");
 	}
@@ -342,15 +346,15 @@ public class TestParserDisplay extends TestCase {
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
-		op.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+		op.setNamespace(Project.getCurrentProject().getModel());
 		checkStereotype(op, oper01, null);
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
-		op.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+		op.setNamespace(Project.getCurrentProject().getModel());
 		checkStereotype(op, oper02, "create");
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
-		op.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+		op.setNamespace(Project.getCurrentProject().getModel());
 		checkStereotype(op, oper03, "destroy");
 		checkStereotype(op, oper01, "destroy");
 		checkStereotype(op, oper04, null);

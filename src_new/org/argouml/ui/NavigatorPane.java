@@ -23,30 +23,52 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Enumeration;
+import java.util.Vector;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.ui.PopupGenerator;
+import javax.swing.AbstractAction;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.swingext.*;
-import org.argouml.uml.ui.*;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
+import org.argouml.application.api.Notation;
+import org.argouml.application.api.QuadrantPanel;
+import org.argouml.kernel.Project;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-import org.argouml.uml.diagram.ui.*;
+import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
+import org.argouml.uml.diagram.ui.ActionAddExistingNode;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.ui.PopupGenerator;
+import ru.novosoft.uml.behavior.common_behavior.MDataValue;
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MDataType;
+import ru.novosoft.uml.foundation.core.MFlow;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MRelationship;
+import ru.novosoft.uml.model_management.MPackage;
 
 
 /** The upper-left pane of the main Argo/UML window.  This shows the
@@ -351,7 +373,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
 	}
         else {
             if ((obj instanceof MClassifier && !(obj instanceof MDataType))
-                || ((obj instanceof MPackage) && (obj != ProjectBrowser.TheInstance.getProject().getModel())) 
+                || ((obj instanceof MPackage) && (obj != Project.getCurrentProject().getModel())) 
 	        || obj instanceof MStateVertex 
                 || (obj instanceof MInstance && !(obj instanceof MDataValue) && !(ProjectBrowser.TheInstance.getActiveDiagram() instanceof UMLSequenceDiagram))) {
                     UMLAction action = new ActionAddExistingNode(menuLocalize("menu.popup.add-to-diagram"),obj);
@@ -366,7 +388,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
                 popup.add(action);
             }
                 
-            if ((obj instanceof MModelElement && (obj != ProjectBrowser.TheInstance.getProject().getModel())) || obj instanceof Diagram ) {
+            if ((obj instanceof MModelElement && (obj != Project.getCurrentProject().getModel())) || obj instanceof Diagram ) {
 	        popup.add(ActionRemoveFromModel.SINGLETON);
             }
             popup.add(new ActionGoToDetails(menuLocalize("Properties")));

@@ -23,15 +23,12 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.kernel.*;
+import java.awt.event.ActionEvent;
+import java.beans.PropertyVetoException;
+
+import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.*;
-
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.model_management.*;
-
-import java.awt.event.*;
-import java.beans.*;
+import ru.novosoft.uml.model_management.MModel;
 
 /** @stereotype singleton
  */
@@ -55,7 +52,7 @@ public class ActionAddTopLevelPackage extends UMLChangeAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-	Project p = ProjectBrowser.TheInstance.getProject();
+	Project p = Project.getCurrentProject();
 	try {
 	    int numPacks = p.getUserDefinedModels().size();
 	    String nameStr = "package_" + (numPacks + 1);

@@ -96,7 +96,9 @@ public class UMLDiagram extends ArgoDiagram {
   public UMLDiagram(String diagramName, MNamespace ns) {
   	this(ns);
     try { setName(diagramName); }
-    catch (PropertyVetoException pve) { }
+    catch (PropertyVetoException pve) { 
+        cat.fatal("Name not allowed in construction of diagram");
+    }
   }
 
   public void initialize(Object owner) {

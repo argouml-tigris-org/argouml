@@ -91,7 +91,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         "powertype","getPowertype","setPowertype",false,MClassifier.class,true);
     addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),new UMLComboBox(powerModel)),2,1,0);
     */
-    addField(new UMLComboBox2(this, new UMLGeneralizationPowertypeComboBoxModel(this), ActionSetGeneralizationPowertype.SINGLETON),2,1,0);
+    addField(new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(), ActionSetGeneralizationPowertype.SINGLETON),2,1,0);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");

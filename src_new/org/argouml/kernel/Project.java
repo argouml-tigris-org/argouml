@@ -130,6 +130,16 @@ public class Project implements java.io.Serializable {
     public HashMap _UUIDRefs = null;
     public GenerationPreferences _cgPrefs = new GenerationPreferences();
     public transient VetoableChangeSupport _vetoSupport = null;
+    
+    /**
+     * The project the user is working on at the moment
+     */
+    private static Project _currentProject;
+    
+    /**
+     * True if we are in the proces of making a project, otherwise false
+     */
+    private static boolean _creatingProject;
    
     protected static Category cat = 
         Category.getInstance(org.argouml.kernel.Project.class);
@@ -188,8 +198,8 @@ public class Project implements java.io.Serializable {
         addSearchPath("PROJECT_DIR");
 
         try {
-            addMember(new UMLClassDiagram(model));
-            addMember(new UMLUseCaseDiagram(model));
+            addMember(new UMLClassDiagram("class diagram 1", model));
+            addMember(new UMLUseCaseDiagram("use case diagram 1", model));
             addMember(model);
             setNeedsSave(false);
         }
@@ -413,14 +423,14 @@ public class Project implements java.io.Serializable {
 
     public static Project makeEmptyProject() {
         Argo.log.info("making empty project");
-
+        _creatingProject = true;
         MModel m1 = UmlFactory.getFactory().getModelManagement().createModel();
         m1.setName("untitledModel");
         Project p = new Project(m1);
-
+         setCurrentProject(p);
 
         p.addSearchPath("PROJECT_DIR");
-
+        _creatingProject = false;
        
 
         return p;
@@ -1144,6 +1154,31 @@ public class Project implements java.io.Serializable {
     }
 
     static final long serialVersionUID = 1399111233978692444L;
+
+    /**
+     * Returns the currentProject.
+     * @return Project
+     */
+    public static Project getCurrentProject() {
+        if (_currentProject == null && !_creatingProject) {
+            Project newProject = makeEmptyProject();
+            setCurrentProject(newProject);
+        }
+        return _currentProject;
+    }
+
+    /**
+     * Sets the currentProject.
+     * @param currentProject The currentProject to set
+     */
+    public static void setCurrentProject(Project currentProject) {
+        // update the graphics
+        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        if (pb != null) {
+            pb.setProject(currentProject);
+        }
+        _currentProject = currentProject;
+    }
 
 } /* end class Project */
 

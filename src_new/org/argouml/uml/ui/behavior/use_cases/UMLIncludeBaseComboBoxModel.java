@@ -49,8 +49,8 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
      * Constructor for UMLIncludeBaseComboBoxModel.
      * @param container
      */
-    public UMLIncludeBaseComboBoxModel(UMLUserInterfaceContainer container) {
-        super(container, "base", false);
+    public UMLIncludeBaseComboBoxModel() {
+        super("base", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 
