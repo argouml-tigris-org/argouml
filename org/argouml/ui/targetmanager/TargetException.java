@@ -29,10 +29,9 @@ import java.io.PrintWriter;
 import org.apache.log4j.Logger;
 
 /**
- * @author gebruiker
- *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
+ * @deprecated Having Exceptions that are RuntimeException is a violation
+ * against the "code-to-find-errors-earlier"-rule because it makes it 
+ * impossible for the compiler to find omissions.
  */
 public class TargetException extends RuntimeException {
 
