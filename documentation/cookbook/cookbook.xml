@@ -570,19 +570,23 @@ CVS repository of ArgoUML in the file
 </para>
 	<para>
 Normally ant is started with the command
-<command>ant <replaceable>parameter</replaceable></command>
-but the ArgoUML CVS repository does not contain that convenience program
-so you would instead have to write:
-<command>java -Dant.home=<replaceable>/your/checked/out/copy/of/argouml</replaceable> -classpath <replaceable>a:complex:classpath</replaceable> -jar ant.jar <replaceable>parameter</replaceable></command>.
+<command>../tools/ant-1.4.1/bin/ant <replaceable>arg</replaceable></command>
+and in the modules
+<command>
+../../tools/ant-1.4.1/bin/ant <replaceable>arg</replaceable>
+</command>.
+On windows the command
+<command>..\tools\ant-1.4.1\bin\ant <replaceable>arg</replaceable></command>
+runs the program <filename>ant.bat</filename>.
 </para>
 	<para>
-To help you there are instead two scripts (one for Unix and one for
+To keep you from having to write this and keeping track if you are
+working with a module or not
+there are two scripts (one for Unix and one for
 Windows) that are called <filename>build.sh</filename> and
 <filename>build.bat</filename> respectively present in most
 of the directories that contain a <filename>build.xml</filename> file.
-These contain some definitions of classpath to simplify the setup.
-All you have to do is to set the variable JAVA_HOME.
-These two scripts use the bundled version of ANT. 
+These two scripts runs the equivalence of the above paths.
 </para>
 	<para>
 By setting JAVA_HOME to different values you can at different times
@@ -4974,6 +4978,11 @@ The JUnit panel called Run Test Suite opens on top of ArgoUML.
 	    <para>
 Enter the word <classname>TestAll</classname> in the field 
 "Enter the name of the Test class:" to run all tests.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Uncheck the "Reload classes every run" checkbox.
 </para>
 	  </listitem>
 	  <listitem>
