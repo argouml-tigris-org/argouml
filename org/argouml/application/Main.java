@@ -166,8 +166,8 @@ public class Main {
     //  sets locale for menus
     //
 
-    Locale.setDefault(new Locale(System.getProperty("user.language","null"),
-				 System.getProperty("user.region","null")));
+    Locale.setDefault(new Locale(System.getProperty("user.language","en"),
+				 System.getProperty("user.country","CA")));
 	ResourceLoader.addResourceExtension("gif");
 	ResourceLoader.addResourceLocation("/org/argouml/Images");
 	ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
@@ -435,8 +435,12 @@ class StartCritics implements Runnable {
 class PostLoad implements Runnable {
   Vector postLoadActions = null;
   Thread myThread = null;
-  public PostLoad(Vector v) { postLoadActions = v; }
-  public void setThread(Thread t) { myThread = t; }
+  public PostLoad(Vector v) { 
+      postLoadActions = v; 
+  }
+  public void setThread(Thread t) { 
+      myThread = t; 
+  }
   public void run() {
     try { myThread.sleep(1000); }
     catch (Exception ex) { Argo.log.error("post load no sleep", ex); }
