@@ -31,10 +31,9 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.MModel;
 
@@ -44,10 +43,9 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
 
-    private int oldEventPolicy;
-    private MClass elem;
+    private Object elem;
     private UMLModelElementStereotypeComboBoxModel model;
-    private MStereotype[] stereotypes;
+    private Object[] stereotypes;
 
     /**
      * Constructor for TestUMLAssociationRoleBaseComboBoxModel.
@@ -67,18 +65,17 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         elem = Model.getCoreFactory().createClass();
         MModel m = Model.getModelManagementFactory().createModel();
         p.setRoot(m);
-        elem.setNamespace(m);
+        ModelFacade.setNamespace(elem, m);
         stereotypes = new MStereotype[10];
         Object theModel =
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection models =
             ProjectManager.getManager().getCurrentProject().getModels();
         for (int i = 0; i < 10; i++) {
-            stereotypes[i] = Model.getExtensionMechanismsFactory()
-                .buildStereotype(elem, "test" + i, theModel, models);
+            stereotypes[i] =
+                Model.getExtensionMechanismsFactory()
+                	.buildStereotype(elem, "test" + i, theModel, models);
         }
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model.targetSet(new TargetEvent(this, "set", new Object[0],
                                         new Object[] {elem}));
     }
@@ -89,7 +86,6 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
 
@@ -106,7 +102,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
      * Test setStereotype().
      */
     public void testSetBase() {
-        elem.setStereotype(stereotypes[0]);
+        ModelFacade.setStereotype(elem, stereotypes[0]);
         assertTrue(model.getSelectedItem() == stereotypes[0]);
     }
 
@@ -114,7 +110,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
      * Test setStereotype() with null argument.
      */
     public void testSetBaseToNull() {
-        elem.setStereotype(null);
+        ModelFacade.setStereotype(elem, null);
         assertNull(model.getSelectedItem());
     }
 

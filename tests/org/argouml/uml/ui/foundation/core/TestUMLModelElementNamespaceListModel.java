@@ -27,10 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
+import org.argouml.model.ModelFacade;
 
 /**
  * @since Oct 30, 2002
@@ -38,10 +35,9 @@ import ru.novosoft.uml.foundation.core.MNamespace;
  */
 public class TestUMLModelElementNamespaceListModel extends TestCase {
 
-    private int oldEventPolicy;
     private UMLModelElementNamespaceListModel model;
-    private MModelElement elem;
-    
+    private Object elem;
+
     /**
      * Constructor for TestUMLModelElementNamespaceListModel.
      *
@@ -50,48 +46,44 @@ public class TestUMLModelElementNamespaceListModel extends TestCase {
     public TestUMLModelElementNamespaceListModel(String arg0) {
         super(arg0);
     }
-   
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getCoreFactory().createClass();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);       
         model = new UMLModelElementNamespaceListModel();
         model.setTarget(elem);
-        elem.addMElementListener(model);
     }
-    
+
     /**
      * @see junit.framework.TestCase#tearDown()
      */
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Test for setNameSpace.
      */
     public void testSetNamespace() {
-        MNamespace ns = Model.getCoreFactory().createNamespace();
-        elem.setNamespace(ns);
+        Object ns = Model.getCoreFactory().createNamespace();
+        ModelFacade.setNamespace(elem, ns);
         assertEquals(1, model.getSize());
         assertEquals(ns, model.getElementAt(0));
     }
-    
+
     /**
      * Test removing a namespace.
      */
     public void testRemoveNamespace() {
-        MNamespace ns = Model.getCoreFactory().createNamespace();
-        elem.setNamespace(ns);
-        elem.setNamespace(null);
+        Object ns = Model.getCoreFactory().createNamespace();
+        ModelFacade.setNamespace(elem, ns);
+        ModelFacade.setNamespace(elem, null);
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
-    } 
+    }
 }

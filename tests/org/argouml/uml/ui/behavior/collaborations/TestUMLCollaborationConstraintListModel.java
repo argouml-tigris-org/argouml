@@ -25,11 +25,8 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
-
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.foundation.core.MConstraint;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 /**
@@ -66,10 +63,10 @@ public class TestUMLCollaborationConstraintListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
-        MConstraint[] constraints = new MConstraint[10];
+        Object[] constraints = new Object[10];
         for (int i = 0; i < constraints.length; i++) {
             constraints[i] = Model.getCoreFactory().createConstraint();
-            ((MCollaboration) getElem()).addConstrainingElement(constraints[i]);
+            ModelFacade.addConstrainingElement(getElem(), constraints[i]);
         }
         return constraints;
     }
@@ -79,8 +76,7 @@ public class TestUMLCollaborationConstraintListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MCollaboration) getElem()).removeConstrainingElement(
-	            (MModelElement) elements[i]);
+            ModelFacade.removeConstrainingElement(getElem(), elements[i]);
         }
     }
 

@@ -55,7 +55,7 @@ import ru.novosoft.uml.model_management.MPackage;
  */
 public class GUITestCopyHelper extends TestCase {
     /**
-     * @see junit.framework.TestCase#TestCase()
+     * @see junit.framework.TestCase#TestCase(String)
      */
     public GUITestCopyHelper(String name) {
 	super(name);
@@ -75,7 +75,7 @@ public class GUITestCopyHelper extends TestCase {
 	MClass k;
 	MStereotype st;
 
-	k = Model.getCoreFactory().createClass();
+	k = (MClass) Model.getCoreFactory().createClass();
 	m1.addOwnedElement(k);
 
 	st =
@@ -138,7 +138,7 @@ public class GUITestCopyHelper extends TestCase {
 	MDataType d;
 	MStereotype st;
 
-	d = Model.getCoreFactory().createDataType();
+	d = (MDataType) Model.getCoreFactory().createDataType();
 	m1.addOwnedElement(d);
 
 	st =
@@ -198,7 +198,7 @@ public class GUITestCopyHelper extends TestCase {
 	MInterface i;
 	MStereotype st;
 
-	i = Model.getCoreFactory().createInterface();
+	i = (MInterface) Model.getCoreFactory().createInterface();
 	m1.addOwnedElement(i);
 
 	st =
@@ -410,10 +410,11 @@ public class GUITestCopyHelper extends TestCase {
 
     private void checkModelElementCopy(MModelElement e1, MModelElement e2) {
 	checkElementCopy(e1, e2);
-	if (e1.getName() == null)
+	if (e1.getName() == null) {
 	    assertNull(e2.getName());
-	else
+	} else {
 	    assertEquals(e1.getName(), e2.getName());
+	}
 	assertTrue(e1.getVisibility() == e2.getVisibility());
 	assertTrue(e1.isSpecification() == e2.isSpecification());
 
@@ -421,10 +422,11 @@ public class GUITestCopyHelper extends TestCase {
 	Iterator it = e1.getTaggedValues().iterator();
 	while (it.hasNext()) {
 	    MTaggedValue tv = (MTaggedValue) it.next();
-	    if (tv.getValue() == null)
-		assertNull(e2.getTaggedValue(tv.getTag()));
-	    else
-		assertEquals(tv.getValue(), e2.getTaggedValue(tv.getTag()));
+	    if (tv.getValue() == null) {
+	        assertNull(e2.getTaggedValue(tv.getTag()));
+	    } else {
+	        assertEquals(tv.getValue(), e2.getTaggedValue(tv.getTag()));
+	    }
 	}
 
 	if (e1.getStereotype() == null) {
@@ -447,15 +449,17 @@ public class GUITestCopyHelper extends TestCase {
 
     private void checkStereotypeCopy(MStereotype s1, MStereotype s2) {
 	checkGeneralizableElementCopy(s1, s2);
-	if (s1.getBaseClass() == null)
+	if (s1.getBaseClass() == null) {
 	    assertNull(s2.getBaseClass());
-	else
+	} else {
 	    assertEquals(s1.getBaseClass(), s2.getBaseClass());
+	}
 
-	if (s1.getIcon() == null)
+	if (s1.getIcon() == null) {
 	    assertNull(s2.getIcon());
-	else
+	} else {
 	    assertEquals(s1.getIcon(), s2.getIcon());
+	}
 
 	// TODO: constraints
 	// TODO: reuired tags

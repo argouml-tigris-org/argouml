@@ -294,11 +294,11 @@ public class CollaborationsFactoryImpl
             throw new IllegalArgumentException();
         }
 
-        if (!(agg2 instanceof MAggregationKind)) {
-            throw new IllegalArgumentException();
-        }
         if (agg2 == null) {
             agg2 = MAggregationKind.NONE;
+        }
+        if (!(agg2 instanceof MAggregationKind)) {
+            throw new IllegalArgumentException();
         }
 
         if (colFrom != null && colFrom.equals(colTo)) {
@@ -367,6 +367,10 @@ public class CollaborationsFactoryImpl
      * last to the list of messages allready attached to the
      * role. Effectively, the allready attached messages become
      * predecessors of this message.
+     *
+     * @param inter The Interaction.
+     * @param role The Association Role.
+     * @return The newly created Message.
      */
     private MMessage buildMessageInteraction(MInteraction inter,
 					     MAssociationRole role) {

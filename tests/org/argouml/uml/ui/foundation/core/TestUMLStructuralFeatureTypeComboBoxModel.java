@@ -28,12 +28,8 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
-
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * @since Nov 2, 2002
@@ -41,11 +37,10 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
 
-    private int oldEventPolicy;
-    private MClassifier[] types;
+    private Object[] types;
     private UMLStructuralFeatureTypeComboBoxModel model;
-    private MAttribute elem;
-    
+    private Object elem;
+
     /**
      * Constructor for TestUMLStructuralFeatureTypeComboBoxModel.
      * @param arg0 is the name of the test case.
@@ -53,27 +48,25 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
     public TestUMLStructuralFeatureTypeComboBoxModel(String arg0) {
         super(arg0);
     }
-    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getCoreFactory().createAttribute();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLStructuralFeatureTypeComboBoxModel();
-        model.targetSet(new TargetEvent(this, "set", new Object[0], 
+        model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
-        types = new MClassifier[10];
-        MModel m = Model.getModelManagementFactory().createModel();
+        types = new Object[10];
+        Object m = Model.getModelManagementFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
-        elem.setNamespace(m);
+        ModelFacade.setNamespace(elem, m);
         for (int i = 0; i < 10; i++) {
             types[i] = Model.getCoreFactory().createClassifier();
-            m.addOwnedElement(types[i]);
-        }      
-        elem.setType(types[0]);
+            ModelFacade.addOwnedElement(m, types[i]);
+        }
+        ModelFacade.setType(elem, types[0]);
     }
 
     /**
@@ -85,45 +78,44 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
         for (int i = 0; i < 10; i++) {
             Model.getUmlFactory().delete(types[i]);
         }
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
-     * set up the test
+     * Test the test set up.
      */
     public void testSetUp() {
         assertTrue(model.contains(types[5]));
         assertTrue(model.contains(types[0]));
         assertTrue(model.contains(types[9]));
     }
-    
+
     /**
      * Test the setType function.
      */
     public void testSetType() {
-        elem.setType(types[0]);
+        ModelFacade.setType(elem, types[0]);
         assertTrue(model.getSelectedItem() == types[0]);
     }
-    
+
     /**
      * this test does make a huge amount of sense because
      * the model cannot present null types. therefore until
-     * the combobox model is changed itself, we test for 
+     * the combobox model is changed itself, we test for
      * a not null value.
      */
     public void testSetTypeToNull() {
-        elem.setType(null);
+        ModelFacade.setType(elem, null);
         assertNotNull(model.getSelectedItem());
     }
-    
+
     /**
      * The test for removing types.
      */
     public void testRemoveType() {
         Model.getUmlFactory().delete(types[9]);
         assertTrue(!model.contains(types[9]));
-    } 
+    }
 
 
 }

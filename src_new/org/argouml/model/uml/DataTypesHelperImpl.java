@@ -54,11 +54,18 @@ class DataTypesHelperImpl implements DataTypesHelper {
      * @param from source
      * @param to destination
      */
-    public void copyTaggedValues(MModelElement from, MModelElement to) {
-	Iterator it = from.getTaggedValues().iterator();
+    public void copyTaggedValues(Object from, Object to) {
+        if (!(from instanceof MModelElement)) {
+            throw new IllegalArgumentException();
+        }
+        if (!(to instanceof MModelElement)) {
+            throw new IllegalArgumentException();
+        }        
+        
+	Iterator it = ((MModelElement) from).getTaggedValues().iterator();
 	while (it.hasNext()) {
 	    MTaggedValue tv = (MTaggedValue) it.next();
-	    to.setTaggedValue(tv.getTag(), tv.getValue());
+	    ((MModelElement) to).setTaggedValue(tv.getTag(), tv.getValue());
 	}
     }
 

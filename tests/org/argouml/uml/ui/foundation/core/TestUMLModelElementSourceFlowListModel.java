@@ -22,14 +22,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 import ru.novosoft.uml.foundation.core.MFlow;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 30, 2002
@@ -64,10 +63,10 @@ public class TestUMLModelElementSourceFlowListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
-        MFlow[] ext = new MFlow[10];
+        Object[] ext = new Object[10];
         for (int i = 0; i < 10; i++) {
-            ext[i] = Model.getCoreFactory().createFlow();
-            ((MModelElement) getElem()).addSourceFlow(ext[i]);
+            ext[i] = (MFlow) Model.getCoreFactory().createFlow();
+            ModelFacade.addSourceFlow(getElem(), ext[i]);
         }
         return ext;
     }
@@ -77,7 +76,7 @@ public class TestUMLModelElementSourceFlowListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MModelElement) getElem()).removeSourceFlow((MFlow) elements[i]);
+            ModelFacade.removeSourceFlow(getElem(), elements[i]);
         }
     }
 

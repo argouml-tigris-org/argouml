@@ -26,8 +26,6 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
-import org.argouml.util.CheckUMLModelHelper;
-
 /**
  * Test the NSUML-implementation of the CommonBehaviorFactory.<p>
  *
@@ -114,7 +112,7 @@ public class TestCommonBehaviorFactory extends TestCase {
 	    null,
 	};
 
-	CheckUMLModelHelper.createAndRelease(
+	CheckNSUMLModelHelper.createAndRelease(
 	        this,
 	        nsumlmodel.getCommonBehaviorFactory(),
 	        objs);
@@ -125,7 +123,7 @@ public class TestCommonBehaviorFactory extends TestCase {
      * Test for deletion.
      */
     public void testDeleteComplete() {
-	CheckUMLModelHelper.deleteComplete(
+	CheckNSUMLModelHelper.deleteComplete(
 	        this,
 		nsumlmodel.getCommonBehaviorFactory(),
 		allModelElements);

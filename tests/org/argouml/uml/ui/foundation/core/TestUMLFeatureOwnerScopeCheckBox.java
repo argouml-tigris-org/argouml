@@ -27,9 +27,8 @@ package org.argouml.uml.ui.foundation.core;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
 /**
@@ -37,9 +36,9 @@ import ru.novosoft.uml.foundation.data_types.MScopeKind;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
-    
+
     private UMLFeatureOwnerScopeCheckBox box = null;
-    private MFeature elem = null;
+    private Object elem = null;
 
     /**
      * Constructor for TestUMLFeatureOwnerScopeCheckBox.
@@ -48,15 +47,14 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
     public TestUMLFeatureOwnerScopeCheckBox(String arg0) {
         super(arg0);
     }
-    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        elem = Model.getCoreFactory().createAttribute();       
-	
+        elem = Model.getCoreFactory().createAttribute();
+
 	box = new UMLFeatureOwnerScopeCheckBox();
         box.setTarget(elem);
     }
@@ -66,34 +64,39 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        elem.remove();
+        Model.getUmlFactory().delete(elem);
         elem = null;
         box = null;
     }
-    
+
     /**
-     * Tests the marking/clicking of the checkbox. Simulates the behaviour when 
+     * Tests the marking/clicking of the checkbox. Simulates the behaviour when
      * the users selects the checkbox. Tests if the ownerscope of the element
      * is really changed
      */
     public void testDoClick() {
-        MScopeKind spec = elem.getOwnerScope();
-	if (box == null) return; // Inconclusive
+        Object spec = ModelFacade.getOwnerScope(elem);
+	if (box == null) {
+	    return; // Inconclusive
+	}
         box.doClick();
-        assertEquals(MScopeKind.CLASSIFIER, elem.getOwnerScope());
+        assertEquals(MScopeKind.CLASSIFIER, ModelFacade.getOwnerScope(elem));
     }
-    
+
     /**
-     * Tests wether a change in the NSUML modelelement is reflected in the 
-     * checkbox
+     * Tests wether a change in the NSUML modelelement is reflected in the
+     * checkbox.
      */
     public void testPropertySet() {
-	if (box == null) return; // Inconclusive
+	if (box == null) {
+	    return; // Inconclusive
+	}
         boolean selected = box.isSelected();
-        if (selected) 
-            elem.setOwnerScope(MScopeKind.INSTANCE);
-        else
-            elem.setOwnerScope(MScopeKind.CLASSIFIER);
+        if (selected) {
+            ModelFacade.setOwnerScope(elem, MScopeKind.INSTANCE);
+        } else {
+            ModelFacade.setOwnerScope(elem, MScopeKind.CLASSIFIER);
+        }
         assertEquals(!selected, box.isSelected());
     }
 

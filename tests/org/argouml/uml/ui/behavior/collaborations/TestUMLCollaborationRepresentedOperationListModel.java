@@ -29,9 +29,6 @@ import junit.framework.TestCase;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.foundation.core.MOperation;
-
 /**
  * @since Oct 29, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -39,7 +36,6 @@ import ru.novosoft.uml.foundation.core.MOperation;
 public class TestUMLCollaborationRepresentedOperationListModel
     extends TestCase {
 
-    private int oldEventPolicy;
     private Object elem;
     private UMLCollaborationRepresentedOperationListModel model;
 
@@ -58,8 +54,6 @@ public class TestUMLCollaborationRepresentedOperationListModel
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getCollaborationsFactory().createCollaboration();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLCollaborationRepresentedOperationListModel();
         model.setTarget(elem);
     }
@@ -70,7 +64,6 @@ public class TestUMLCollaborationRepresentedOperationListModel
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
 
@@ -78,9 +71,8 @@ public class TestUMLCollaborationRepresentedOperationListModel
      * Test setting the represented operation.
      */
     public void testSetRepresentedOperation() {
-        MOperation oper = Model.getCoreFactory().createOperation();
+        Object oper = Model.getCoreFactory().createOperation();
         ModelFacade.setRepresentedOperation(elem, oper);
-//        elem.setRepresentedOperation(oper);
         assertEquals(1, model.getSize());
         assertEquals(oper, model.getElementAt(0));
     }
@@ -89,7 +81,7 @@ public class TestUMLCollaborationRepresentedOperationListModel
      * Test removing the represented operation.
      */
     public void testRemoveRepresentedOperation() {
-        MOperation oper = Model.getCoreFactory().createOperation();
+        Object oper = Model.getCoreFactory().createOperation();
         ModelFacade.setRepresentedOperation(elem, oper);
         ModelFacade.setRepresentedOperation(elem, null);
         assertEquals(0, model.getSize());

@@ -26,7 +26,6 @@ package org.argouml.model;
 
 import java.util.Collection;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.MModel;
@@ -94,7 +93,7 @@ public interface ExtensionMechanismsHelper {
      * @param m the ModelElement
      * @return the meta name of the ModelElement
      */
-    String getMetaModelName(MModelElement m);
+    String getMetaModelName(Object m);
 
     /**
      * Returns all possible stereotypes for some

@@ -136,7 +136,7 @@ public class TestModel extends TestCase {
 
         assertTrue("Different singletons", o1 == o2);
     }
-    
+
     /**
      * Test if the factory is really a singleton.
      */
@@ -145,4 +145,15 @@ public class TestModel extends TestCase {
 	Object o2 = Model.getCommonBehaviorFactory();
 	assertTrue("Different singletons", o1 == o2);
     }
+
+    /**
+     * Test if the CoreFactory is really a singleton.
+     */
+    public void testCoreFactoryInstance() {
+	Object o1 = Model.getCoreFactory();
+	Object o2 = Model.getCoreFactory();
+	assertTrue("Different singletons", o1 == o2);
+    }
+
+
 }

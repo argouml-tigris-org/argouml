@@ -25,10 +25,8 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
-
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MFeature;
 
 /**
  * @since Oct 27, 2002
@@ -37,7 +35,7 @@ import ru.novosoft.uml.foundation.core.MFeature;
 public class TestUMLClassifierRoleAvailableFeaturesListModel
     extends AbstractUMLModelElementListModel2Test {
 
-    private MClassifier base;
+    private Object base;
 
     /**
      * Constructor for TestUMLClassifierRoleAvailableFeaturesListModel.
@@ -66,10 +64,10 @@ public class TestUMLClassifierRoleAvailableFeaturesListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
-        MFeature[] features = new MFeature[10];
+        Object[] features = new Object[10];
         for (int i = 0; i < features.length; i++) {
             features[i] = Model.getCoreFactory().createOperation();
-            base.addFeature(features[i]);
+            ModelFacade.addFeature(base, features[i]);
         }
         return features;
     }
@@ -79,7 +77,7 @@ public class TestUMLClassifierRoleAvailableFeaturesListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            base.removeFeature((MFeature) elements[i]);
+            ModelFacade.removeFeature(base, elements[i]);
         }
     }
 

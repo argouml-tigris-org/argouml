@@ -24,7 +24,6 @@
 
 package org.argouml.model;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * The interface for the helper for DataTypes.<p>
@@ -36,7 +35,7 @@ public interface DataTypesHelper {
      * @param from source
      * @param to destination
      */
-    void copyTaggedValues(MModelElement from, MModelElement to);
+    void copyTaggedValues(Object from, Object to);
 
     /**
      * @param kind the pseudostate kind

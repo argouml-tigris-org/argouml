@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2005 The Regents of the University of California. All
+// Copyright (c) 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.util;
+package org.argouml.model.uml;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.InvocationTargetException;
@@ -33,19 +33,29 @@ import junit.framework.TestCase;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 
 /**
- * This class is a helper class of tests that tests
+ * This class is the base class of tests that tests
  * the model stuff.<p>
  *
- * This class is used for testing the Model subsystem. It should not have any
- * dependency on any specific implementation.
+ * This class is used for testing the NSUML model subsystem. It uses
+ * the NSUML interfaces.
  *
  * @author Linus Tolke
- * @since 0.11.2
+ * @since 0.17.5
  */
-public class CheckUMLModelHelper {
+public final class CheckNSUMLModelHelper {
+    /**
+     * Constructor to forbid creation.
+     */
+    private CheckNSUMLModelHelper() {
+    }
 
     /**
      * Deleted a model object, looses the refence and then checks that
@@ -86,7 +96,7 @@ public class CheckUMLModelHelper {
      * @param name the class name of the uml object
      */
     private static void deleteAndRelease(TestCase tc,
-					 Object mo,
+					 MBase mo,
 					 String name) {
 	Class c = mo.getClass();
 
@@ -99,7 +109,7 @@ public class CheckUMLModelHelper {
 
 	TestCase.assertTrue(
             "getUMLClassName() different from expected in " + c,
-	    name.equals(ModelFacade.getUMLClassName(mo)));
+	    name.equals(mo.getUMLClassName()));
 
 	Model.getUmlFactory().delete(mo);
 
@@ -146,11 +156,8 @@ public class CheckUMLModelHelper {
 		// Extra careful now, not to keep any references to the
 		// second argument.
 		try {
-		    deleteAndRelease(tc, m.invoke(f, args), names[i]);
+		    deleteAndRelease(tc, (MBase) m.invoke(f, args), names[i]);
 		} catch (ClassCastException e) {
-		    // Here it is another object sent to the test.
-		    deleteAndRelease(tc, m.invoke(f, args));
-		} catch (IllegalArgumentException e) {
 		    // Here it is another object sent to the test.
 		    deleteAndRelease(tc, m.invoke(f, args));
 		}
@@ -233,11 +240,11 @@ public class CheckUMLModelHelper {
                         f.getClass()
                         	.getMethod("create" + names[i], new Class[] {});
                     Object base = m.invoke(f, new Object[] {});
-                    if (ModelFacade.isAModelElement(base)) {
+                    if (base instanceof MModelElement) {
                         TestCase.assertTrue(
                             "not a valid metaModelName " + names[i],
                             Model.getExtensionMechanismsHelper()
-                                .getMetaModelName(base)
+                                .getMetaModelName((MModelElement) base)
                                     .equals(names[i]));
                     }
                 } catch (NoSuchMethodException ns) { }
@@ -263,9 +270,10 @@ public class CheckUMLModelHelper {
             Object f,
             String[] names) {
         try {
-            Object ns = Model.getCoreFactory().createNamespace();
-            Object clazz = Model.getCoreFactory().buildClass(ns);
-            Object stereo1 =
+            MNamespace ns =
+                (MNamespace) Model.getCoreFactory().createNamespace();
+            MClass clazz = (MClass) Model.getCoreFactory().buildClass(ns);
+            MStereotype stereo1 =
                 Model.getExtensionMechanismsFactory()
                 	.buildStereotype(clazz, "test1", ns);
             for (int i = 0; i < names.length; i++) {
@@ -274,15 +282,15 @@ public class CheckUMLModelHelper {
                         f.getClass()
                         	.getMethod("create" + names[i], new Class[] {});
                     Object base = m.invoke(f, new Object[] {});
-                    if (ModelFacade.isAModelElement(base)) {
-                        Object stereo2 =
+                    if (base instanceof MModelElement) {
+                        MStereotype stereo2 =
                             Model.getExtensionMechanismsFactory()
                                 .buildStereotype(base, "test2", ns);
                         TestCase.assertTrue(
                             "Unexpected invalid stereotype",
                             Model.getExtensionMechanismsHelper()
                                 .isValidStereoType(base, stereo2));
-                        if (!(ModelFacade.isAClass(base))) {
+                        if (!(base instanceof MClass)) {
                             TestCase.assertTrue(
                                 "Unexpected invalid stereotype",
                                 !Model.getExtensionMechanismsHelper()

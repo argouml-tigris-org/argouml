@@ -27,9 +27,6 @@ package org.argouml.model.uml;
 import java.lang.ref.WeakReference;
 
 import junit.framework.TestCase;
-
-import org.argouml.util.CheckUMLModelHelper;
-
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
@@ -90,7 +87,7 @@ public class TestCollaborationsFactory extends TestCase {
 	    null,
 	};
 
-        CheckUMLModelHelper.createAndRelease(
+        CheckNSUMLModelHelper.createAndRelease(
             this,
             nsumlmodel.getCollaborationsFactory(),
             objs);
@@ -101,7 +98,7 @@ public class TestCollaborationsFactory extends TestCase {
      * Test for deletion.
      */
     public void testDeleteComplete() {
-        CheckUMLModelHelper.deleteComplete(
+        CheckNSUMLModelHelper.deleteComplete(
             this,
             nsumlmodel.getCollaborationsFactory(),
             allModelElements);

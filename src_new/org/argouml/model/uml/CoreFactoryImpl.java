@@ -90,7 +90,7 @@ import ru.novosoft.uml.model_management.MModel;
  * Factory to create UML classes for the UML
  * Foundation::Core package. <p>
  *
- * Feature, StructuralFeature, and PresentationElement do not have a 
+ * Feature, StructuralFeature, and PresentationElement do not have a
  * create method since it is called an "abstract metaclass" in the
  * UML specifications.
  *
@@ -150,7 +150,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Association instance.
      */
-    public MAssociation createAssociation() {
+    public Object createAssociation() {
 	MAssociation modelElement =
 	    MFactory.getDefaultFactory().createAssociation();
 	super.initialize(modelElement);
@@ -162,7 +162,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML AssociationClass instance.
      */
-    public MAssociationClass createAssociationClass() {
+    public Object createAssociationClass() {
 	MAssociationClass modelElement =
 	    MFactory.getDefaultFactory().createAssociationClass();
 	super.initialize(modelElement);
@@ -174,7 +174,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML AssociationEnd instance.
      */
-    public MAssociationEnd createAssociationEnd() {
+    public Object createAssociationEnd() {
 	MAssociationEnd modelElement =
 	    MFactory.getDefaultFactory().createAssociationEnd();
 	super.initialize(modelElement);
@@ -186,7 +186,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Attribute instance.
      */
-    public MAttribute createAttribute() {
+    public Object createAttribute() {
 	MAttribute modelElement =
 	    MFactory.getDefaultFactory().createAttribute();
 	super.initialize(modelElement);
@@ -198,7 +198,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Binding instance.
      */
-    public MBinding createBinding() {
+    public Object createBinding() {
 	MBinding modelElement = MFactory.getDefaultFactory().createBinding();
 	super.initialize(modelElement);
 	return modelElement;
@@ -209,7 +209,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Class instance.
      */
-    public MClass createClass() {
+    public Object createClass() {
 	MClass modelElement = MFactory.getDefaultFactory().createClass();
 	super.initialize(modelElement);
 	return modelElement;
@@ -220,7 +220,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Classifier instance.
      */
-    public MClassifier createClassifier() {
+    public Object createClassifier() {
 	MClassifier modelElement =
 	    MFactory.getDefaultFactory().createClassifier();
 	super.initialize(modelElement);
@@ -232,7 +232,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Comment instance.
      */
-    public MComment createComment() {
+    public Object createComment() {
 	MComment modelElement = MFactory.getDefaultFactory().createComment();
 	super.initialize(modelElement);
 	return modelElement;
@@ -243,7 +243,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Component instance.
      */
-    public MComponent createComponent() {
+    public Object createComponent() {
 	MComponent modelElement =
 	    MFactory.getDefaultFactory().createComponent();
 	super.initialize(modelElement);
@@ -257,7 +257,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Constraint instance.
      */
-    public MConstraint createConstraint() {
+    public Object createConstraint() {
 	MConstraint modelElement =
 	    MFactory.getDefaultFactory().createConstraint();
 	super.initialize(modelElement);
@@ -269,7 +269,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML DataType instance.
      */
-    public MDataType createDataType() {
+    public Object createDataType() {
 	MDataType modelElement = MFactory.getDefaultFactory().createDataType();
 	super.initialize(modelElement);
 	return modelElement;
@@ -280,7 +280,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Dependency instance.
      */
-    public MDependency createDependency() {
+    public Object createDependency() {
 	MDependency modelElement =
 	    MFactory.getDefaultFactory().createDependency();
 	super.initialize(modelElement);
@@ -292,7 +292,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML ElementResidence instance.
      */
-    public MElementResidence createElementResidence() {
+    public Object createElementResidence() {
 	MElementResidence modelElement =
 	    MFactory.getDefaultFactory().createElementResidence();
 	super.initialize(modelElement);
@@ -304,7 +304,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Flow instance.
      */
-    public MFlow createFlow() {
+    public Object createFlow() {
 	MFlow modelElement = MFactory.getDefaultFactory().createFlow();
 	super.initialize(modelElement);
 	return modelElement;
@@ -315,7 +315,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Generalization instance.
      */
-    public MGeneralization createGeneralization() {
+    public Object createGeneralization() {
 	MGeneralization modelElement =
 	    MFactory.getDefaultFactory().createGeneralization();
 	super.initialize(modelElement);
@@ -327,7 +327,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Interface instance.
      */
-    public MInterface createInterface() {
+    public Object createInterface() {
 	MInterface modelElement =
 	    MFactory.getDefaultFactory().createInterface();
 	super.initialize(modelElement);
@@ -339,7 +339,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Method instance.
      */
-    public MMethod createMethod() {
+    public Object createMethod() {
 	MMethod modelElement = MFactory.getDefaultFactory().createMethod();
 	super.initialize(modelElement);
 	return modelElement;
@@ -350,7 +350,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Namespace instance.
      */
-    public MNamespace createNamespace() {
+    public Object createNamespace() {
 	MNamespace modelElement =
 	    MFactory.getDefaultFactory().createNamespace();
 	super.initialize(modelElement);
@@ -362,7 +362,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Node instance.
      */
-    public MNode createNode() {
+    public Object createNode() {
 	MNode modelElement = MFactory.getDefaultFactory().createNode();
 	super.initialize(modelElement);
 	return modelElement;
@@ -373,7 +373,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Operation instance.
      */
-    public MOperation createOperation() {
+    public Object createOperation() {
 	MOperation modelElement =
 	    MFactory.getDefaultFactory().createOperation();
 	super.initialize(modelElement);
@@ -385,7 +385,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Parameter instance.
      */
-    public MParameter createParameter() {
+    public Object createParameter() {
 	MParameter modelElement =
 	    MFactory.getDefaultFactory().createParameter();
 	super.initialize(modelElement);
@@ -397,7 +397,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Permission instance.
      */
-    public MPermission createPermission() {
+    public Object createPermission() {
 	MPermission modelElement =
 	    MFactory.getDefaultFactory().createPermission();
 	super.initialize(modelElement);
@@ -409,7 +409,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Relationship instance.
      */
-    public MRelationship createRelationship() {
+    public Object createRelationship() {
 	MRelationship modelElement =
 	    MFactory.getDefaultFactory().createRelationship();
 	super.initialize(modelElement);
@@ -421,7 +421,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML TemplateParameter instance.
      */
-    public MTemplateParameter createTemplateParameter() {
+    public Object createTemplateParameter() {
 	MTemplateParameter modelElement =
 	    MFactory.getDefaultFactory().createTemplateParameter();
 	super.initialize(modelElement);
@@ -433,7 +433,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Usage instance.
      */
-    public MUsage createUsage() {
+    public Object createUsage() {
 	MUsage modelElement = MFactory.getDefaultFactory().createUsage();
 	super.initialize(modelElement);
 	return modelElement;
@@ -469,7 +469,7 @@ public class CoreFactoryImpl
 					       + "belong to a namespace");
         }
         MAssociation assoc =
-            Model.getUmlFactory().getCore().createAssociation();
+            (MAssociation) Model.getUmlFactory().getCore().createAssociation();
         assoc.setName("");
         assoc.setNamespace(Model.getCoreHelper().getFirstSharedNamespace(ns1,
         								  ns2));
@@ -535,7 +535,7 @@ public class CoreFactoryImpl
         				       + "belong to a namespace");
         }
         MAssociation assoc =
-                Model.getUmlFactory().getCore().createAssociation();
+            (MAssociation) Model.getUmlFactory().getCore().createAssociation();
         assoc.setName("");
         assoc.setNamespace(
         		   Model.getCoreHelper().getFirstSharedNamespace(ns1,
@@ -593,7 +593,7 @@ public class CoreFactoryImpl
      * @param classifier2 The second classifier to connect
      * @return MAssociation
      */
-    public MAssociation buildAssociation(
+    public Object buildAssociation(
             Object classifier1,
 			Object classifier2) {
         MClassifier c1 = (MClassifier) classifier1;
@@ -632,11 +632,11 @@ public class CoreFactoryImpl
      * @param end2 the second given classifier
      * @return MAssociationClass
      */
-    public MAssociationClass buildAssociationClass(
-						   MClassifier end1,
-						   MClassifier end2) {
+    public Object buildAssociationClass(Object end1, Object end2) {
         if (end1 == null
                 || end2 == null
+                || !(end1 instanceof MClassifier)
+                || !(end2 instanceof MClassifier)
                 || end1 instanceof MAssociationClass
                 || end2 instanceof MAssociationClass) {
             throw new IllegalArgumentException(""
@@ -645,7 +645,9 @@ public class CoreFactoryImpl
         				       + "was instanceof "
         				       + "MAssociationClass");
         }
-        return buildAssociationClass((MClass) buildClass(), end1, end2);
+        return buildAssociationClass(
+                (MClass) buildClass(),
+                (MClassifier) end1, (MClassifier) end2);
     }
 
     /**
@@ -666,23 +668,55 @@ public class CoreFactoryImpl
      * @param visibility the visibilitykind
      * @return MAssociationEnd
      */
-    public MAssociationEnd buildAssociationEnd(
-					       MAssociation assoc,
+    public Object buildAssociationEnd(
+					       Object assoc,
 					       String name,
-					       MClassifier type,
-					       MMultiplicity multi,
-					       MStereotype stereo,
+					       Object type,
+					       Object multi,
+					       Object stereo,
 					       boolean navigable,
-					       MOrderingKind order,
-					       MAggregationKind aggregation,
-					       MScopeKind scope,
-					       MChangeableKind changeable,
-					       MVisibilityKind visibility) {
+					       Object order,
+					       Object aggregation,
+					       Object scope,
+					       Object changeable,
+					       Object visibility) {
         // wellformednessrules and preconditions
-        if (assoc == null || type == null) {
+        if (assoc == null
+                || !(assoc instanceof MAssociation)
+                || type == null
+                || !(type instanceof MClassifier)) {
             throw new IllegalArgumentException("either type or association "
 					       + "are null");
         }
+        if (multi != null
+                && !(multi instanceof MMultiplicity)) {
+            throw new IllegalArgumentException("Multiplicity");
+        }
+        if (stereo != null
+                && !(stereo instanceof MStereotype)) {
+            throw new IllegalArgumentException("Stereotype");
+        }
+        if (order != null
+                && !(order instanceof MOrderingKind)) {
+            throw new IllegalArgumentException("OrderingKind");
+        }
+        if (aggregation != null
+                && !(aggregation instanceof MAggregationKind)) {
+            throw new IllegalArgumentException("AggregationKind");
+        }
+        if (scope != null
+                && !(scope instanceof MScopeKind)) {
+            throw new IllegalArgumentException("ScopeKind");
+        }
+        if (changeable != null
+                && !(changeable instanceof MChangeableKind)) {
+            throw new IllegalArgumentException("ChangeableKind");
+        }
+        if (visibility != null
+                && !(visibility instanceof MVisibilityKind)) {
+            throw new IllegalArgumentException("VisibilityKind");
+        }
+
         if (type instanceof MDataType || type instanceof MInterface) {
             if (!navigable) {
                 throw new IllegalArgumentException(
@@ -692,7 +726,7 @@ public class CoreFactoryImpl
                         + "navigable away from that end.");
             }
             List ends = new ArrayList();
-            ends.addAll(assoc.getConnections());
+            ends.addAll(((MAssociation) assoc).getConnections());
             Iterator it = ends.iterator();
             while (it.hasNext()) {
                 MAssociationEnd end = (MAssociationEnd) it.next();
@@ -707,47 +741,48 @@ public class CoreFactoryImpl
         if (aggregation != null
                 && aggregation.equals(MAggregationKind.COMPOSITE)
                 && multi != null
-                && multi.getUpper() > 1) {
+                && ((MMultiplicity) multi).getUpper() > 1) {
             throw new IllegalArgumentException("aggregation is composite "
 					   + "and multiplicity > 1");
         }
 
         MAssociationEnd end =
-            Model.getUmlFactory().getCore().createAssociationEnd();
-        end.setAssociation(assoc);
-        end.setType(type);
+            (MAssociationEnd)
+            	Model.getUmlFactory().getCore().createAssociationEnd();
+        end.setAssociation((MAssociation) assoc);
+        end.setType((MClassifier) type);
         end.setName(name);
         if (multi != null) {
-            end.setMultiplicity(multi);
+            end.setMultiplicity((MMultiplicity) multi);
         } else {
             end.setMultiplicity(MMultiplicity.M1_1);
         }
         if (stereo != null) {
-            end.setStereotype(stereo);
+            end.setStereotype((MStereotype) stereo);
         }
         end.setNavigable(navigable);
         if (order != null) {
-            end.setOrdering(order);
+            end.setOrdering((MOrderingKind) order);
         } else {
             end.setOrdering(MOrderingKind.UNORDERED);
         }
         if (aggregation != null) {
-            end.setAggregation(aggregation);
+            end.setAggregation((MAggregationKind) aggregation);
         } else {
             end.setAggregation(MAggregationKind.NONE);
         }
         if (scope != null) {
-            end.setTargetScope(scope);
+            end.setTargetScope((MScopeKind) scope);
         } else {
             end.setTargetScope(MScopeKind.INSTANCE);
         }
         if (changeable != null) {
-            end.setChangeability(changeable);
+            end.setChangeability((MChangeableKind) changeable);
         } else {
             end.setChangeability(MChangeableKind.CHANGEABLE);
         }
         if (visibility != null) {
-            end.setVisibility(visibility);
+            end.setVisibility((MVisibilityKind) visibility);
         } else {
             end.setVisibility(MVisibilityKind.PUBLIC);
         }
@@ -755,16 +790,21 @@ public class CoreFactoryImpl
     }
 
     /**
-     * Builds a simply configured association end
+     * Builds a simply configured association end.
+     *
      * @param type the given classifier
      * @param assoc the given association
      * @return the newly build associationend
      */
-    public MAssociationEnd buildAssociationEnd(
-            MClassifier type,
-            MAssociation assoc) {
-        if (type == null || assoc == null)
+    public Object buildAssociationEnd(
+            Object type,
+            Object assoc) {
+        if (type == null
+                || !(type instanceof MClassifier)
+                || assoc == null
+                || !(assoc instanceof MAssociation)) {
             throw new IllegalArgumentException("one of the arguments is null");
+        }
         return buildAssociationEnd(
                 assoc,
                 "",
@@ -777,7 +817,7 @@ public class CoreFactoryImpl
                 null,
                 null,
                 MVisibilityKind.PUBLIC);
-    } 
+    }
 
     /**
      * Builds an association class from a class and two classifiers
@@ -800,7 +840,7 @@ public class CoreFactoryImpl
         				       + "was null or was instanceof "
         				       + "MAssociationClass");
         }
-        MAssociationClass assoc = createAssociationClass();
+        MAssociationClass assoc = (MAssociationClass) createAssociationClass();
         assoc.setName(cl.getName());
         assoc.setAbstract(cl.isAbstract());
         assoc.setActive(cl.isActive());
@@ -877,7 +917,7 @@ public class CoreFactoryImpl
         	        .contains(intType.getNamespace()))) {
             intType.setNamespace((MModel) model);
         }
-        MAttribute attr = createAttribute();
+        MAttribute attr = (MAttribute) createAttribute();
         attr.setName("newAttr");
         attr.setMultiplicity(
             Model.getUmlFactory().getDataTypes().createMultiplicity(1, 1));
@@ -899,9 +939,9 @@ public class CoreFactoryImpl
      * Builds an attribute owned by some classifier cls. I don't know
      * if this is legal for an interface (purely UML speaking). In
      * this method it is.
-     * 
-     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object, 
-     * java.lang.Object, java.lang.Object, java.util.Collection)
+     *
+     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object,
+     *         java.lang.Object, java.lang.Object, java.util.Collection)
      */
     public Object buildAttribute(Object handle, Object model, Object intType,
             			 Collection propertyChangeListeners) {
@@ -930,7 +970,7 @@ public class CoreFactoryImpl
      * @return MClass
      */
     public Object buildClass() {
-        MClass cl = createClass();
+        MClass cl = (MClass) createClass();
         // cl.setNamespace(ProjectBrowser.getInstance().getProject()
         // .getModel());
         cl.setName("");
@@ -997,7 +1037,7 @@ public class CoreFactoryImpl
      * @return MInterface
      */
     public Object buildInterface() {
-	MInterface cl = createInterface();
+	MInterface cl = (MInterface) createInterface();
 	// cl.setNamespace(ProjectBrowser.getInstance().getProject()
 	// .getModel());
 	cl.setName("");
@@ -1063,7 +1103,7 @@ public class CoreFactoryImpl
      * @return an initialized UML DataType instance.
      */
     public Object buildDataType(String name, Object owner) {
-	MDataType dt = createDataType();
+	MDataType dt = (MDataType) createDataType();
 	dt.setName(name);
 	if (owner instanceof MNamespace) {
 	    dt.setNamespace((MNamespace) owner);
@@ -1090,7 +1130,7 @@ public class CoreFactoryImpl
 	    throw new IllegalArgumentException("client or supplier is null "
 					       + "or their namespaces.");
 	}
-	MDependency dep = createDependency();
+	MDependency dep = (MDependency) createDependency();
 	dep.addSupplier(supplier);
 	dep.addClient(client);
 	if (supplier.getNamespace() != null) {
@@ -1108,7 +1148,7 @@ public class CoreFactoryImpl
      * @param supplierObj is the supplier
      * @return MPermission
      */
-    public MPermission buildPermission(Object clientObj,
+    public Object buildPermission(Object clientObj,
 				       Object supplierObj) {
 
 	MModelElement client = (MModelElement) clientObj;
@@ -1120,7 +1160,7 @@ public class CoreFactoryImpl
 	    throw new IllegalArgumentException("client or supplier is null "
 					       + "or their namespaces.");
 	}
-	MPermission per = createPermission();
+	MPermission per = (MPermission) createPermission();
 	per.addSupplier(supplier);
 	per.addClient(client);
 	if (supplier.getNamespace() != null) {
@@ -1164,7 +1204,7 @@ public class CoreFactoryImpl
      * @param parent1 is the parent
      * @return MGeneralization
      */
-    public MGeneralization buildGeneralization(Object child1, Object parent1) {
+    public Object buildGeneralization(Object child1, Object parent1) {
         if (!(child1 instanceof MGeneralizableElement)
 	    || !(parent1 instanceof MGeneralizableElement)) {
             throw new IllegalArgumentException();
@@ -1196,7 +1236,7 @@ public class CoreFactoryImpl
             return null;
         }
 
-        MGeneralization gen = createGeneralization();
+        MGeneralization gen = (MGeneralization) createGeneralization();
         gen.setParent(parent);
         gen.setChild(child);
         if (parent.getNamespace() != null) {
@@ -1215,7 +1255,7 @@ public class CoreFactoryImpl
      * @param op is the operation
      * @return MMethod
      */
-    public MMethod buildMethod(MOperation op) {
+    public Object buildMethod(Object op) {
 	return buildMethod(op, Notation.getDefaultNotation(), "");
     }
 
@@ -1226,12 +1266,15 @@ public class CoreFactoryImpl
      * @param body The actual body of the method
      * @return MMethod
      */
-    public MMethod buildMethod(MOperation op, NotationName notation,
+    public Object buildMethod(Object op, NotationName notation,
 			       String body) {
-	MMethod method = createMethod();
+	MMethod method = (MMethod) createMethod();
 	if (op != null) {
-	    method.setSpecification(op);
-	    MClassifier owner = op.getOwner();
+	    if (!(op instanceof MOperation)) {
+	        throw new IllegalArgumentException();
+	    }
+	    method.setSpecification((MOperation) op);
+	    MClassifier owner = ((MOperation) op).getOwner();
 	    if (owner != null) {
 		method.setOwner(owner);
 	    }
@@ -1249,8 +1292,8 @@ public class CoreFactoryImpl
      * @param name is the given name
      * @return method
      */
-    public MMethod buildMethod(String name) {
-        MMethod method = createMethod();
+    public Object buildMethod(String name) {
+        MMethod method = (MMethod) createMethod();
         if (method != null) {
             method.setName(name);
         }
@@ -1272,7 +1315,7 @@ public class CoreFactoryImpl
             throw new IllegalArgumentException("Handle is not a classifier");
         }
         MClassifier cls = (MClassifier) classifier;
-        MOperation oper = createOperation();
+        MOperation oper = (MOperation) createOperation();
         oper.setName("newOperation");
         oper.setStereotype(null);
         oper.setOwner(cls);
@@ -1290,8 +1333,9 @@ public class CoreFactoryImpl
         // oper.setNamespace(cls);
         oper.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
 
-        MParameter returnParameter = buildParameter(oper, model, voidType,
-                propertyChangeListeners);
+        MParameter returnParameter =
+            (MParameter)
+            	buildParameter(oper, model, voidType, propertyChangeListeners);
         returnParameter.setKind(MParameterDirectionKind.RETURN);
         returnParameter.setName("return");
         // we set the listeners to the figs here too it would be
@@ -1340,7 +1384,7 @@ public class CoreFactoryImpl
         if (voidType.getModel() != model) {
             voidType.setNamespace(model);
         }
-        MParameter res = Model.getUmlFactory().getCore().createParameter();
+        MParameter res = (MParameter) Model.getUmlFactory().getCore().createParameter();
         res.setName("");
         res.setStereotype(null);
         res.setType(voidType);
@@ -1360,7 +1404,7 @@ public class CoreFactoryImpl
      * @param propertyChangeListeners the listeners
      * @return the parameter
      */
-    public MParameter buildParameter(Object o, Object model, Object voidType,
+    public Object buildParameter(Object o, Object model, Object voidType,
             Collection propertyChangeListeners) {
         if (o instanceof MEvent) {
             MEvent event = (MEvent) o;
@@ -1456,23 +1500,31 @@ public class CoreFactoryImpl
      * @param supplier is the supplier
      * @return MUsage
      */
-    public MUsage buildUsage(MModelElement client, MModelElement supplier) {
+    public Object buildUsage(Object client, Object supplier) {
 	if (client == null || supplier == null) {
 	    throw new IllegalArgumentException("In buildUsage null arguments.");
 	}
-	if (client.getModel() != supplier.getModel()) {
+	if (!(client instanceof MModelElement)) {
+	    throw new IllegalArgumentException("client ModelElement");
+	}
+	if (!(supplier instanceof MModelElement)) {
+	    throw new IllegalArgumentException("supplier ModelElement");
+	}
+
+	if (((MModelElement) client).getModel()
+	        != ((MModelElement) supplier).getModel()) {
 	    throw new IllegalArgumentException("To construct a usage, the "
 					       + "client and the supplier "
 					       + "must be part of the same "
 					       + "model.");
 	}
-	MUsage usage = Model.getUmlFactory().getCore().createUsage();
-	usage.addSupplier(supplier);
-	usage.addClient(client);
-	if (supplier.getNamespace() != null) {
-	    usage.setNamespace(supplier.getNamespace());
-	} else if (client.getNamespace() != null) {
-	    usage.setNamespace(client.getNamespace());
+	MUsage usage = (MUsage) Model.getUmlFactory().getCore().createUsage();
+	usage.addSupplier((MModelElement) supplier);
+	usage.addClient((MModelElement) client);
+	if (((MModelElement) supplier).getNamespace() != null) {
+	    usage.setNamespace(((MModelElement) supplier).getNamespace());
+	} else if (((MModelElement) client).getNamespace() != null) {
+	    usage.setNamespace(((MModelElement) client).getNamespace());
 	}
 	return usage;
     }
@@ -1489,7 +1541,7 @@ public class CoreFactoryImpl
      */
     public Object buildComment(Object element, Object model) {
         MModelElement elementToAnnotate = (MModelElement) element;
-	MComment comment = createComment();
+	MComment comment = (MComment) createComment();
 	if (elementToAnnotate != null) {
 	    comment.addAnnotatedElement(elementToAnnotate);
 	    comment.setNamespace(elementToAnnotate.getModel());
@@ -1545,7 +1597,7 @@ public class CoreFactoryImpl
 					       + "mandatory and may not be "
 					       + "null.");
 	}
-	MConstraint con = createConstraint();
+	MConstraint con = (MConstraint) createConstraint();
 	con.addConstrainedElement(constrainedElement);
 	con.setNamespace(constrainedElement.getNamespace());
 	return con;
@@ -1562,7 +1614,7 @@ public class CoreFactoryImpl
 	if (bexpr == null || !(bexpr instanceof MBooleanExpression)) {
 	    throw new IllegalArgumentException("invalid boolean expression.");
 	}
-	MConstraint con = createConstraint();
+	MConstraint con = (MConstraint) createConstraint();
 	if (name != null) {
 	    con.setName(name);
 	}
@@ -1579,13 +1631,19 @@ public class CoreFactoryImpl
     /**
      * @param elem the association to be deleted
      */
-    public void deleteAssociation(MAssociation elem) {
+    public void deleteAssociation(Object elem) {
+        if (!(elem instanceof MAssociation)) {
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
      * @param elem the a. to be deleted
      */
-    public void deleteAssociationClass(MAssociationClass elem) {
+    public void deleteAssociationClass(Object elem) {
+        if (!(elem instanceof MAssociationClass)) {
+            throw new IllegalArgumentException();
+        }
     }
 
     /**
@@ -1603,8 +1661,11 @@ public class CoreFactoryImpl
      * @param elem
      * @see UmlFactoryImpl#delete(Object)
      */
-    public void deleteAssociationEnd(MAssociationEnd elem) {
-	MAssociation assoc = elem.getAssociation();
+    public void deleteAssociationEnd(Object elem) {
+        if (!(elem instanceof MAssociationEnd)) {
+            throw new IllegalArgumentException();
+        }
+	MAssociation assoc = ((MAssociationEnd) elem).getAssociation();
 	if (assoc != null
 	    && assoc.getConnections() != null
 	    && assoc.getConnections().size() == 2) { // binary association
@@ -1615,25 +1676,41 @@ public class CoreFactoryImpl
     /**
      * @param elem the attribute to be deleted
      */
-    public void deleteAttribute(MAttribute elem) {
+    public void deleteAttribute(Object elem) {
+        if (!(elem instanceof MAttribute)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteBehavioralFeature(MBehavioralFeature elem) {
+    public void deleteBehavioralFeature(Object elem) {
+        if (!(elem instanceof MBehavioralFeature)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteBinding(MBinding elem) {
+    public void deleteBinding(Object elem) {
+        if (!(elem instanceof MBinding)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteClass(MClass elem) {
+    public void deleteClass(Object elem) {
+        if (!(elem instanceof MClass)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
@@ -1663,66 +1740,106 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteComment(MComment elem) {
+    public void deleteComment(Object elem) {
+        if (!(elem instanceof MComment)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteComponent(MComponent elem) {
+    public void deleteComponent(Object elem) {
+        if (!(elem instanceof MComponent)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteConstraint(MConstraint elem) {
+    public void deleteConstraint(Object elem) {
+        if (!(elem instanceof MConstraint)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteDataType(MDataType elem) {
+    public void deleteDataType(Object elem) {
+        if (!(elem instanceof MDataType)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteDependency(MDependency elem) {
+    public void deleteDependency(Object elem) {
+        if (!(elem instanceof MDependency)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteElement(MElement elem) {
+    public void deleteElement(Object elem) {
+        if (!(elem instanceof MElement)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteElementResidence(MElementResidence elem) {
+    public void deleteElementResidence(Object elem) {
+        if (!(elem instanceof MElementResidence)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteFeature(MFeature elem) {
+    public void deleteFeature(Object elem) {
+        if (!(elem instanceof MFeature)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteFlow(MFlow elem) {
+    public void deleteFlow(Object elem) {
+        if (!(elem instanceof MFlow)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteGeneralizableElement(MGeneralizableElement elem) {
-	Iterator it = elem.getGeneralizations().iterator();
+    public void deleteGeneralizableElement(Object elem) {
+        if (!(elem instanceof MGeneralizableElement)) {
+            throw new IllegalArgumentException();
+        }
+
+	Iterator it = ((MGeneralizableElement) elem).getGeneralizations().iterator();
 	while (it.hasNext()) {
 	    Model.getUmlFactory().delete(it.next());
 	}
-	it = elem.getSpecializations().iterator();
+	it = ((MGeneralizableElement) elem).getSpecializations().iterator();
 	while (it.hasNext()) {
 	    Model.getUmlFactory().delete(it.next());
 	}
@@ -1731,19 +1848,31 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteGeneralization(MGeneralization elem) {
+    public void deleteGeneralization(Object elem) {
+        if (!(elem instanceof MGeneralization)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteInterface(MInterface elem) {
+    public void deleteInterface(Object elem) {
+        if (!(elem instanceof MInterface)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteMethod(MMethod elem) {
+    public void deleteMethod(Object elem) {
+        if (!(elem instanceof MMethod)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
@@ -1761,9 +1890,13 @@ public class CoreFactoryImpl
      * @param elem
      * @see UmlFactoryImpl#delete(Object)
      */
-    public void deleteModelElement(MModelElement elem) {
-	Collection supplierDep = elem.getSupplierDependencies();
-	Collection clientDep = elem.getClientDependencies();
+    public void deleteModelElement(Object elem) {
+        if (!(elem instanceof MModelElement)) {
+            throw new IllegalArgumentException();
+        }
+
+	Collection supplierDep = ((MModelElement) elem).getSupplierDependencies();
+	Collection clientDep = ((MModelElement) elem).getClientDependencies();
 	Set deps = new HashSet();
 	deps.addAll(supplierDep);
 	deps.addAll(clientDep);
@@ -1777,7 +1910,7 @@ public class CoreFactoryImpl
 	    }
 	}
 
-	it = elem.getComments().iterator();
+	it = ((MModelElement) elem).getComments().iterator();
         while (it.hasNext()) {
             MComment comment = (MComment) it.next();
             if (comment.getAnnotatedElements().size() == 1) {
@@ -1786,7 +1919,7 @@ public class CoreFactoryImpl
         }
 
         List ownedBehaviors = new ArrayList();
-        ownedBehaviors.addAll(elem.getBehaviors());
+        ownedBehaviors.addAll(((MModelElement) elem).getBehaviors());
         it = ownedBehaviors.iterator();
         while (it.hasNext()) {
             Model.getUmlFactory().delete(it.next());
@@ -1798,10 +1931,13 @@ public class CoreFactoryImpl
      *
      * @param elem is the namespace.
      */
-    public void deleteNamespace(MNamespace elem) {
+    public void deleteNamespace(Object elem) {
+        if (!(elem instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
 
 	List ownedElements = new ArrayList();
-	ownedElements.addAll(elem.getOwnedElements());
+	ownedElements.addAll(((MNamespace) elem).getOwnedElements());
 	Iterator it = ownedElements.iterator();
 	while (it.hasNext()) {
 	    Model.getUmlFactory().delete(it.next());
@@ -1811,55 +1947,91 @@ public class CoreFactoryImpl
     /**
      * @param elem the element to be deleted
      */
-    public void deleteNode(MNode elem) {
+    public void deleteNode(Object elem) {
+        if (!(elem instanceof MNode)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteOperation(MOperation elem) {
+    public void deleteOperation(Object elem) {
+        if (!(elem instanceof MOperation)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteParameter(MParameter elem) {
+    public void deleteParameter(Object elem) {
+        if (!(elem instanceof MParameter)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deletePermission(MPermission elem) {
+    public void deletePermission(Object elem) {
+        if (!(elem instanceof MPermission)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deletePresentationElement(MPresentationElement elem) {
+    public void deletePresentationElement(Object elem) {
+        if (!(elem instanceof MPresentationElement)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteRelationship(MRelationship elem) {
+    public void deleteRelationship(Object elem) {
+        if (!(elem instanceof MRelationship)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteStructuralFeature(MStructuralFeature elem) {
+    public void deleteStructuralFeature(Object elem) {
+        if (!(elem instanceof MStructuralFeature)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteTemplateParameter(MTemplateParameter elem) {
+    public void deleteTemplateParameter(Object elem) {
+        if (!(elem instanceof MTemplateParameter)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
      * @param elem the element to be deleted
      */
-    public void deleteUsage(MUsage elem) {
+    public void deleteUsage(Object elem) {
+        if (!(elem instanceof MUsage)) {
+            throw new IllegalArgumentException();
+        }
+
     }
 
     /**
@@ -1870,9 +2042,17 @@ public class CoreFactoryImpl
      * @param ns is the namespace to put the copy in.
      * @return a newly created class.
      */
-    public MClass copyClass(MClass source, MNamespace ns) {
-	MClass c = createClass();
-	ns.addOwnedElement(c);
+    public Object copyClass(Object source, Object ns) {
+        if (!(source instanceof MClass)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
+        MClass c = (MClass) createClass();
+	((MNamespace) ns).addOwnedElement(c);
 	doCopyClass(source, c);
 	return c;
     }
@@ -1885,9 +2065,17 @@ public class CoreFactoryImpl
      * @param ns is the namespace to put the copy in.
      * @return a newly created data type.
      */
-    public MDataType copyDataType(MDataType source, MNamespace ns) {
-	MDataType i = createDataType();
-	ns.addOwnedElement(i);
+    public Object copyDataType(Object source, Object ns) {
+        if (!(source instanceof MDataType)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
+	MDataType i = (MDataType) createDataType();
+	((MNamespace) ns).addOwnedElement(i);
 	doCopyDataType(source, i);
 	return i;
     }
@@ -1900,9 +2088,17 @@ public class CoreFactoryImpl
      * @param ns is the namespace to put the copy in.
      * @return a newly created interface.
      */
-    public MInterface copyInterface(MInterface source, MNamespace ns) {
-	MInterface i = createInterface();
-	ns.addOwnedElement(i);
+    public Object copyInterface(Object source, Object ns) {
+        if (!(source instanceof MInterface)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
+	MInterface i = (MInterface) createInterface();
+	((MNamespace) ns).addOwnedElement(i);
 	doCopyInterface(source, i);
 	return i;
     }
@@ -1910,7 +2106,7 @@ public class CoreFactoryImpl
     /**
      * Used by the copy functions. Do not call this function directly.
      */
-    private void doCopyElement(MElement source, MElement target) {
+    private void doCopyElement(Object source, Object target) {
 	// Nothing more to do.
     }
 
@@ -1920,10 +2116,18 @@ public class CoreFactoryImpl
      * @param source the source class
      * @param target the target class
      */
-    public void doCopyClass(MClass source, MClass target) {
+    public void doCopyClass(Object source, Object target) {
+        if (!(source instanceof MClass)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!(target instanceof MClass)) {
+            throw new IllegalArgumentException();
+        }
+
 	doCopyClassifier(source, target);
 
-	target.setActive(source.isActive());
+	((MClass) target).setActive(((MClass) source).isActive());
     }
 
     /**
@@ -1933,7 +2137,15 @@ public class CoreFactoryImpl
      * @param source the source classifier
      * @param target the target classifier
      */
-    public void doCopyClassifier(MClassifier source, MClassifier target) {
+    public void doCopyClassifier(Object source, Object target) {
+        if (!(source instanceof MClassifier)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!(target instanceof MClassifier)) {
+            throw new IllegalArgumentException();
+        }
+
 	// TODO: how to merge multiple inheritance? Necessary?
 	doCopyNamespace(source, target);
 	doCopyGeneralizableElement(source, target);
@@ -1947,7 +2159,15 @@ public class CoreFactoryImpl
      * @param source the source datatype
      * @param target the target datatype
      */
-    public void doCopyDataType(MDataType source, MDataType target) {
+    public void doCopyDataType(Object source, Object target) {
+        if (!(source instanceof MDataType)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!(target instanceof MDataType)) {
+            throw new IllegalArgumentException();
+        }
+
 	doCopyClassifier(source, target);
     }
 
@@ -1958,13 +2178,21 @@ public class CoreFactoryImpl
      * @param source the source generalizable element
      * @param target the target generalizable element
      */
-    public void doCopyGeneralizableElement(MGeneralizableElement source,
-					   MGeneralizableElement target) {
+    public void doCopyGeneralizableElement(Object source,
+					   Object target) {
+        if (!(source instanceof MGeneralizableElement)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!(target instanceof MGeneralizableElement)) {
+            throw new IllegalArgumentException();
+        }
+
 	doCopyModelElement(source, target);
 
-	target.setAbstract(source.isAbstract());
-	target.setLeaf(source.isLeaf());
-	target.setRoot(source.isRoot());
+	((MGeneralizableElement) target).setAbstract(((MGeneralizableElement) source).isAbstract());
+	((MGeneralizableElement) target).setLeaf(((MGeneralizableElement) source).isLeaf());
+	((MGeneralizableElement) target).setRoot(((MGeneralizableElement) source).isRoot());
     }
 
     /**
@@ -1973,7 +2201,15 @@ public class CoreFactoryImpl
      * @param source the source interface
      * @param target the target interface
      */
-    public void doCopyInterface(MInterface source, MInterface target) {
+    public void doCopyInterface(Object source, Object target) {
+        if (!(source instanceof MInterface)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!(target instanceof MInterface)) {
+            throw new IllegalArgumentException();
+        }
+
 	doCopyClassifier(source, target);
     }
 
@@ -1987,26 +2223,35 @@ public class CoreFactoryImpl
      * @param source the source me
      * @param target the target me
      */
-    public void doCopyModelElement(MModelElement source, MModelElement target) {
+    public void doCopyModelElement(Object source, Object target) {
+        if (!(source instanceof MModelElement)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!(target instanceof MModelElement)) {
+            throw new IllegalArgumentException();
+        }
+
 	// Set the name so that superclasses can find the newly
 	// created element in the model, if necessary.
-	target.setName(source.getName());
+	((MModelElement) target).setName(((MModelElement) source).getName());
 	doCopyElement(source, target);
 
-	target.setSpecification(source.isSpecification());
-	target.setVisibility(source.getVisibility());
+	((MModelElement) target).setSpecification(((MModelElement) source).isSpecification());
+	((MModelElement) target).setVisibility(((MModelElement) source).getVisibility());
 	Model.getDataTypesHelper().copyTaggedValues(source, target);
 
-	if (source.getStereotype() != null) {
+	if (((MModelElement) source).getStereotype() != null) {
 	    // Note that if we're copying this element then we
 	    // must also be allowed to copy other necessary
 	    // objects.
-	    MStereotype st = (MStereotype)
-		Model.getModelManagementHelper()
-		    .getCorrespondingElement(source.getStereotype(),
-					     target.getModel(),
-					     true);
-	    target.setStereotype(st);
+	    MStereotype st =
+	        (MStereotype) Model.getModelManagementHelper()
+		    .getCorrespondingElement(
+		            ((MModelElement) source).getStereotype(),
+		            ((MModelElement) target).getModel(),
+		            true);
+	    ((MModelElement) target).setStereotype(st);
 	}
     }
 
@@ -2016,9 +2261,16 @@ public class CoreFactoryImpl
      * @param source the source namespace
      * @param target the target namespace
      */
-    public void doCopyNamespace(MNamespace source, MNamespace target) {
+    public void doCopyNamespace(Object source, Object target) {
+        if (!(source instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
+        if (!(target instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
 	doCopyModelElement(source, target);
 	// Nothing more to do, don't copy owned elements.
     }
 }
-

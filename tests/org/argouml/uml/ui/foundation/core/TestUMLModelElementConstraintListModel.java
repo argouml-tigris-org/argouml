@@ -27,11 +27,9 @@ package org.argouml.uml.ui.foundation.core;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * @since Oct 27, 2002
@@ -39,11 +37,10 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class TestUMLModelElementConstraintListModel extends TestCase {
 
-    private MModelElement elem = null;
-    private int oldEventPolicy;
+    private Object elem;
     private UMLModelElementConstraintListModel model;
-    private MModel ns;
-    
+    private Object ns;
+
     /**
      * Constructor for TestUMLModelElementConstraintListModel.
      * @param arg0 is the name of the test case.
@@ -59,10 +56,7 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
         super.setUp();
         ns = Model.getModelManagementFactory().createModel();
         elem = (MModelElement) Model.getCoreFactory().buildClass(ns);
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLModelElementConstraintListModel();
-        elem.addMElementListener(model);
         model.setTarget(elem);
     }
 
@@ -73,39 +67,37 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
         Model.getUmlFactory().delete(ns);
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
 
     /**
      * Tests the programmatically adding of multiple elements to the list.
      */
-    public void testAddMultiple() {  
-        MConstraint[] constraints = new MConstraint[10];
+    public void testAddMultiple() {
+        Object[] constraints = new Object[10];
         for (int i = 0; i < constraints.length; i++) {
             constraints[i] = Model.getCoreFactory().createConstraint();
-            elem.addConstraint(constraints[i]);
+            ModelFacade.addConstraint(elem, constraints[i]);
         }
         assertEquals(10, model.getSize());
         assertEquals(model.getElementAt(5), constraints[5]);
         assertEquals(model.getElementAt(0), constraints[0]);
-        assertEquals(model.getElementAt(9), constraints[9]);           
+        assertEquals(model.getElementAt(9), constraints[9]);
     }
-    
+
      /**
-     * Test the removal of several elements from the list
+     * Test the removal of several elements from the list.
      */
     public void testRemoveMultiple() {
-        MConstraint[] constraints = new MConstraint[10];
+        Object[] constraints = new Object[10];
         for (int i = 0; i < constraints.length; i++) {
             constraints[i] = Model.getCoreFactory().createConstraint();
-            elem.addConstraint(constraints[i]);
+            ModelFacade.addConstraint(elem, constraints[i]);
         }
         for (int i = 0; i < 5; i++) {
-            elem.removeConstraint(constraints[i]);
+            ModelFacade.removeConstraint(elem, constraints[i]);
         }
         assertEquals(5, model.getSize());
         assertEquals(constraints[5], model.getElementAt(0));
     }
-    
 }

@@ -25,10 +25,8 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
-
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.foundation.core.MClassifier;
 
 /**
  * @since Oct 27, 2002
@@ -64,10 +62,10 @@ public class TestUMLClassifierRoleBaseListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
-        MClassifier[] bases = new MClassifier[10];
+        Object[] bases = new Object[10];
         for (int i = 0; i < bases.length; i++) {
             bases[i] = Model.getCoreFactory().createClass();
-            ((MClassifierRole) getElem()).addBase(bases[i]);
+            ModelFacade.addBase(getElem(), bases[i]);
         }
         return bases;
     }
@@ -77,7 +75,7 @@ public class TestUMLClassifierRoleBaseListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MClassifierRole) getElem()).removeBase((MClassifier) elements[i]);
+            ModelFacade.removeBase(getElem(), elements[i]);
         }
     }
 

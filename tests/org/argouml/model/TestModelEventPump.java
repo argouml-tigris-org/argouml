@@ -33,26 +33,16 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MOperationImpl;
-import ru.novosoft.uml.foundation.core.MParameter;
-import ru.novosoft.uml.foundation.core.MParameterImpl;
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  * This test case is initially very much a copy of the applicable parts
  * of the TestUmlModelEventPump test case.
- *
- * TODO: For the proof of concept purpose it would be valuable if this
- * test case could be rewritten without importing any of the ru.novosoft
- * things.
  *
  * TODO: We have not documented exactly what events arrive and when.
  *
  * @author Linus Tolke
  */
 public class TestModelEventPump extends TestCase {
-    private MClass elem;
+    private Object elem;
     private boolean eventcalled;
     private TestListener listener;
 
@@ -92,8 +82,8 @@ public class TestModelEventPump extends TestCase {
         super.setUp();
         elem = Model.getCoreFactory().createClass();
         Project project = ProjectManager.getManager().getCurrentProject();
-        MModel model = (MModel) project.getRoot();
-        model.addOwnedElement(elem);
+        Object model = project.getRoot();
+        ModelFacade.addOwnedElement(model, elem);
         eventcalled = false;
         listener = new TestListener();
     }
@@ -132,7 +122,7 @@ public class TestModelEventPump extends TestCase {
                 				   new String[] {
 						       "isRoot",
         					   });
-        elem.setRoot(true);
+        ModelFacade.setRoot(elem, true);
         assertTrue(eventcalled);
     }
 
@@ -146,7 +136,7 @@ public class TestModelEventPump extends TestCase {
                 				   new String[] {
 						       "remove",
         					   });
-        elem.remove();
+        Model.getUmlFactory().delete(elem);
         assertTrue(eventcalled);
     }
 
@@ -160,7 +150,9 @@ public class TestModelEventPump extends TestCase {
                 				   new String[] {
 						       "parameter",
         					   });
-        elem.addParameter(new MParameterImpl());
+        ModelFacade.addParameter(
+                elem,
+                Model.getCoreFactory().createParameter());
         assertTrue(eventcalled);
     }
 
@@ -169,14 +161,14 @@ public class TestModelEventPump extends TestCase {
      * the class level really receive the event.
      */
     public void testRoleRemovedSetClass() {
-        MParameter param = new MParameterImpl();
-        elem.addParameter(param);
+        Object param = Model.getCoreFactory().createParameter();
+        ModelFacade.addParameter(elem, param);
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
 						       "parameter",
         					   });
-        elem.removeParameter(param);
+        ModelFacade.removeParameter(elem, param);
         assertTrue(eventcalled);
     }
 
@@ -185,7 +177,9 @@ public class TestModelEventPump extends TestCase {
      */
     public void testFireNonRegistredListener() {
         Model.getCoreFactory().createClass();
-        elem.addParameter(new MParameterImpl());
+        ModelFacade.addParameter(
+                elem,
+                Model.getCoreFactory().createParameter());
         assertTrue(!eventcalled);
     }
 
@@ -194,13 +188,16 @@ public class TestModelEventPump extends TestCase {
      * receive the event.
      */
     public void testListRoleItemSet() {
-        elem.addFeature(new MOperationImpl());
+        ModelFacade.addFeature(
+                elem,
+                Model.getCoreFactory().createOperation());
         Model.getPump().addModelEventListener(listener,
                 			      elem,
                 			      new String[] {
                 				  "feature",
         				      });
-        elem.setFeature(0, new MOperationImpl());
+        ModelFacade.setFeature(
+                elem, 0, Model.getCoreFactory().createOperation());
         assertTrue(eventcalled);
     }
 
@@ -214,7 +211,7 @@ public class TestModelEventPump extends TestCase {
                 			      new String[] {
                 				  "isRoot",
         				      });
-        elem.setRoot(true);
+        ModelFacade.setRoot(elem, true);
         assertTrue(eventcalled);
     }
 
@@ -228,7 +225,7 @@ public class TestModelEventPump extends TestCase {
                 			      new String[] {
 				       		  "remove",
 				   	      });
-        elem.remove();
+        Model.getUmlFactory().delete(elem);
         assertTrue(eventcalled);
     }
 
@@ -242,7 +239,9 @@ public class TestModelEventPump extends TestCase {
                 			      new String[] {
                 				  "parameter",
         				      });
-        elem.addParameter(new MParameterImpl());
+        ModelFacade.addParameter(
+                elem,
+                Model.getCoreFactory().createParameter());
         assertTrue(eventcalled);
     }
 
@@ -251,14 +250,14 @@ public class TestModelEventPump extends TestCase {
      * receive the event.
      */
     public void testRoleRemovedSet() {
-        MParameter param = new MParameterImpl();
-        elem.addParameter(param);
+        Object param = Model.getCoreFactory().createParameter();
+        ModelFacade.addParameter(elem, param);
         Model.getPump().addModelEventListener(listener,
                 			      elem,
                 			      new String[] {
                 				  "parameter",
         				      });
-        elem.removeParameter(param);
+        ModelFacade.removeParameter(elem, param);
         assertTrue(eventcalled);
     }
 
@@ -277,7 +276,9 @@ public class TestModelEventPump extends TestCase {
                 				      new String[] {
 					       		  "isRoot",
         					      });
-        elem.addParameter(new MParameterImpl());
+        ModelFacade.addParameter(
+                elem,
+                Model.getCoreFactory().createParameter());
         assertTrue(!eventcalled);
     }
 
@@ -291,7 +292,9 @@ public class TestModelEventPump extends TestCase {
         };
         Model.getPump().addModelEventListener(listener, elem, map);
         Model.getPump().removeModelEventListener(listener, elem, map);
-        elem.addParameter(new MParameterImpl());
+        ModelFacade.addParameter(
+                elem,
+                Model.getCoreFactory().createParameter());
         assertTrue(!eventcalled);
     }
 }

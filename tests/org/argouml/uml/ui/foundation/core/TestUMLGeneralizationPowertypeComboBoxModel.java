@@ -28,12 +28,8 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
-
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * @since Nov 3, 2002
@@ -41,11 +37,10 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
 
-    private int oldEventPolicy;
-    private MClassifier[] types;
+    private Object[] types;
     private UMLGeneralizationPowertypeComboBoxModel model;
-    private MGeneralization elem;
-    
+    private Object elem;
+
     /**
      * Constructor for TestUMLGeneralizationPowertypeComboBoxModel.
      * @param arg0 is the name of the test case.
@@ -53,28 +48,26 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
     public TestUMLGeneralizationPowertypeComboBoxModel(String arg0) {
         super(arg0);
     }
-    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getCoreFactory().createGeneralization();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLGeneralizationPowertypeComboBoxModel();
         model.targetSet(new TargetEvent(this,
 					"set",
 					new Object[0],
 					new Object[] {elem}));
-        types = new MClassifier[10];
-        MModel m = Model.getModelManagementFactory().createModel();
+        types = new Object[10];
+        Object m = Model.getModelManagementFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
-        elem.setNamespace(m);
+        ModelFacade.setNamespace(elem, m);
         for (int i = 0; i < 10; i++) {
             types[i] = Model.getCoreFactory().createClassifier();
-            m.addOwnedElement(types[i]);
-        }      
+            ModelFacade.addOwnedElement(m, types[i]);
+        }
     }
 
     /**
@@ -86,10 +79,9 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         for (int i = 0; i < 10; i++) {
             Model.getUmlFactory().delete(types[i]);
         }
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Test setup.
      */
@@ -98,29 +90,29 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         assertTrue(model.contains(types[0]));
         assertTrue(model.contains(types[9]));
     }
-    
+
     /**
      * Test setPowertype().
      */
     public void testSetPowertype() {
-        elem.setPowertype(types[0]);
+        ModelFacade.setPowertype(elem, types[0]);
         assertTrue(model.getSelectedItem() == types[0]);
     }
-    
+
     /**
      * Test setPowertype() with null argument.
      */
     public void testSetPowertypeToNull() {
-        elem.setPowertype(null);
+        ModelFacade.setPowertype(elem, null);
         assertNull(model.getSelectedItem());
     }
-    
+
     /**
      * Test deletion.
      */
     public void testRemovePowertype() {
         Model.getUmlFactory().delete(types[9]);
         assertTrue(!model.contains(types[9]));
-    } 
+    }
 
 }

@@ -27,7 +27,6 @@ package org.argouml.model.uml;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.util.CheckUMLModelHelper;
 
 /**
  * @since Oct 10, 2002
@@ -48,7 +47,7 @@ public class TestCommonBehaviorHelper extends TestCase {
      * Test the metamodel name.
      */
     public void testGetMetaModelName() {
-	CheckUMLModelHelper.metaModelNameCorrect(
+	CheckNSUMLModelHelper.metaModelNameCorrect(
 			 this,
 			 Model.getCommonBehaviorFactory(),
 			 TestCommonBehaviorFactory.getAllModelElements());
@@ -58,7 +57,7 @@ public class TestCommonBehaviorHelper extends TestCase {
      * Test if the steareotype is valid.
      */
     public void testIsValidStereoType() {
-	CheckUMLModelHelper.isValidStereoType(
+	CheckNSUMLModelHelper.isValidStereoType(
 		      this,
 		      Model.getCommonBehaviorFactory(),
 		      TestCommonBehaviorFactory.getAllModelElements());

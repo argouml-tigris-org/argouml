@@ -32,9 +32,6 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
 
 /**
  * @since Oct 27, 2002
@@ -46,7 +43,7 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
     private Object elem;
     private UMLModelElementListModel2 model;
     private Object baseAssoc;
-    private MAssociationEnd baseEnd;
+    private Object baseEnd;
     private Object assocRole;
 
     /**
@@ -70,7 +67,7 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
         baseAssoc = Model.getCoreFactory().createAssociation();
         ModelFacade.setAssociation(elem, assocRole);
         ModelFacade.setBase(assocRole, baseAssoc);
-        baseEnd.setAssociation((MAssociation) baseAssoc);
+        ModelFacade.setAssociation(baseEnd, baseAssoc);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLAssociationEndRoleBaseListModel();

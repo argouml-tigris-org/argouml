@@ -32,10 +32,6 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  * @since Oct 30, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -44,7 +40,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
 
     private Object elem;
     private UMLAssociationRoleBaseComboBoxModel model;
-    private MAssociation[] bases;
+    private Object[] bases;
 
     /**
      * Constructor for TestUMLAssociationRoleBaseComboBoxModel.
@@ -62,13 +58,13 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         super.setUp();
         Project p = ProjectManager.getManager().getCurrentProject();
         model = new UMLAssociationRoleBaseComboBoxModel();
-        MClass class1 = Model.getCoreFactory().createClass();
-        MClass class2 = Model.getCoreFactory().createClass();
-        MModel m = Model.getModelManagementFactory().createModel();
+        Object class1 = Model.getCoreFactory().createClass();
+        Object class2 = Model.getCoreFactory().createClass();
+        Object m = Model.getModelManagementFactory().createModel();
         p.setRoot(m);
-        class1.setNamespace(m);
-        class2.setNamespace(m);
-        bases = new MAssociation[10];
+        ModelFacade.setNamespace(class1, m);
+        ModelFacade.setNamespace(class2, m);
+        bases = new Object[10];
         for (int i = 0; i < 10; i++) {
             bases[i] =
 		Model.getCoreFactory().buildAssociation(class1, class2);

@@ -28,11 +28,9 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.model_management.MModel;
 
 /**
@@ -41,11 +39,10 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
 
-    private int oldEventPolicy;
-    private MClassifier[] types;
+    private Object[] types;
     private UMLFeatureOwnerComboBoxModel model;
-    private MFeature elem;
-    
+    private Object elem;
+
     /**
      * Constructor for TestUMLFeatureOwnerComboBoxModel.
      * @param arg0 is the name of the test case.
@@ -53,25 +50,23 @@ public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
     public TestUMLFeatureOwnerComboBoxModel(String arg0) {
         super(arg0);
     }
-    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getCoreFactory().createAttribute();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLFeatureOwnerComboBoxModel();
-        model.targetSet(new TargetEvent(this, "set", new Object[0], 
+        model.targetSet(new TargetEvent(this, "set", new Object[0],
                                         new Object[] {elem}));
-        types = new MClassifier[10];
+        types = new Object[10];
         MModel m = Model.getModelManagementFactory().createModel();
 	ProjectManager.getManager().getCurrentProject().setRoot(m);
         for (int i = 0; i < 10; i++) {
             types[i] = Model.getCoreFactory().createClassifier();
-            m.addOwnedElement(types[i]);
-        }      
+            ModelFacade.addOwnedElement(m, types[i]);
+        }
     }
 
     /**
@@ -83,10 +78,9 @@ public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
         for (int i = 0; i < 10; i++) {
             Model.getUmlFactory().delete(types[i]);
         }
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Test setup.
      */
@@ -96,23 +90,23 @@ public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
         assertTrue(model.contains(types[0]));
         assertTrue(model.contains(types[9]));
     }
-    
+
     /**
      * Test setOwner().
      */
     public void testSetOwner() {
-        elem.setOwner(types[0]);
+        ModelFacade.setOwner(elem, types[0]);
         assertTrue(model.getSelectedItem() == types[0]);
     }
-    
+
     /**
      * Test setOwner() with null argument.
      */
     public void testSetOwnerToNull() {
-        elem.setOwner(null);
+        ModelFacade.setOwner(elem, null);
         assertNull(model.getSelectedItem());
     }
-    
+
     /**
      * Test deletion.
      */
@@ -120,5 +114,5 @@ public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
         Model.getUmlFactory().delete(types[9]);
         assertEquals(9, model.getSize());
         assertTrue(!model.contains(types[9]));
-    } 
+    }
 }
