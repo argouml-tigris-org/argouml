@@ -543,7 +543,7 @@ navigates to that artifact.
     <note><para><literal>void</literal> is implemented as a class rather than a
       datatype within &argouml;</para></note>
 
-<!-- Issue 2114.
+<!-- Issue 1761, (Issue 2114).
     <para>
 This was so in earlier versions of ArgoUML. How does it work now?
 Within &argouml; new datatypes may be created using the <literal>New
@@ -907,13 +907,6 @@ the first time it is used.
 Records the namespace for the datatype.
 This is the package hierarchy.
 </para>
-
-<!-- Issue: 2111
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-namespace).
-</para>
--->
           </listitem>
         </varlistentry>
 
@@ -1276,7 +1269,7 @@ Add a new literal and navigate to it.
 
     <para>
 New stereotypes are added from 
-<!-- Issue: 2121
+<!-- Issue 1761, (Issue: 2121)
 the model property tab (see <xref linkend="s1.ref.model"/>, 
 the package property tab (see <xref linkend="s1.ref.package"/>) or 
 -->
@@ -1571,13 +1564,6 @@ Any stereotype must be derived
 Text box.
 Records the namespace for the
             stereotype. This is the package hierarchy.</para>
-
-<!-- Issue: 2111
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-namespace).
-</para>
- -->
           </listitem>
         </varlistentry>
 
