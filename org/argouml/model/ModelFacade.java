@@ -4526,13 +4526,18 @@ public class ModelFacade {
             return;
         }
 
+        /* TODO: MVW: The next part is fooling the user of setBody() 
+         * in thinking that the body of the object is changed. 
+         * Instead, a new object is created as a side-effect. 
+         * There is no other way: a MExpression can not be altered, 
+         * once created! */
         if (handle instanceof MExpression) {
-            MExpression expression = (MExpression) handle;
             MExpressionEditor expressionEditor =
 		(MExpressionEditor) UmlFactory.getFactory().getDataTypes()
 		    .createExpressionEditor(handle);
             expressionEditor.setBody((String) expr);
-            expression = expressionEditor.toExpression();
+            handle = (Object) expressionEditor.toExpression(); 
+            // this last step creates a new MExpression
             return;
         }
 	illegalArgument(handle, expr);
