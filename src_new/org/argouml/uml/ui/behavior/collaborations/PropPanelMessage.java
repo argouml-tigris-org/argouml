@@ -40,9 +40,7 @@ import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
@@ -68,7 +66,7 @@ public class PropPanelMessage extends PropPanelModelElement {
         MAction.class };
     setNameEventListening(namesToWatch);
 
-    addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
+    addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
     addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
     // a message does not have a namespace. removed therefore
     // addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());

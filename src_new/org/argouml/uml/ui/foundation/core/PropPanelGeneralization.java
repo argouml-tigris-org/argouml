@@ -36,7 +36,6 @@ import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLModelElementListModel;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.UMLTextField;
-import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.UMLTextProperty;
 
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
@@ -67,7 +66,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     setNameEventListening(namesToWatch);
 
     addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(new UMLTextField2(new UMLModelElementNameDocument()),1,0,0);
+    addField(getNameTextField(),1,0,0);
 
     addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
     addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()),2,0,0);

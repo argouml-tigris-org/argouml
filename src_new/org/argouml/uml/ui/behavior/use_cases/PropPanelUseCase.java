@@ -49,9 +49,7 @@ import org.argouml.uml.ui.PropPanelModifiers;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
-import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
@@ -82,7 +80,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
         super("UseCase", ConfigLoader.getTabPropsOrientation());
         
-        addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
+        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
     	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
     	addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceComboBox());
 		

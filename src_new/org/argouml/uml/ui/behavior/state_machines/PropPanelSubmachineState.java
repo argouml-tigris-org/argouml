@@ -32,8 +32,6 @@ import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.uml.ui.UMLTextField2;
-import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -48,7 +46,7 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
     public PropPanelSubmachineState() {
         // TODO: get the submachine state it's own icon
         super("Submachine State", _compositeStateIcon, ConfigLoader.getTabPropsOrientation());
-        addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
+        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
         JComboBox submachineBox = new UMLComboBox2(new UMLSubmachineStateComboBoxModel(), ActionSetSubmachineStateSubmachine.SINGLETON);

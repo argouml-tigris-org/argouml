@@ -40,9 +40,7 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLMultiplicityComboBox;
 import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
-import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
@@ -58,7 +56,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 
     Class mclass = MClassifierRole.class;
    
-    addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
+    addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
     addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
     addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceScroll());
     
