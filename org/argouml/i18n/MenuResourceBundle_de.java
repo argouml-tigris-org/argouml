@@ -41,8 +41,6 @@ public class MenuResourceBundle_de extends ListResourceBundle {
         {"action.new", "Neu" },
         {"action.open-project", "Projekt \u00d6ffnen..." },
         {"action.save-project", "Projekt speichern" },
-        {"Load model from DB", "Lade Modell aus DB" },
-        {"Store model to DB", "Speichere Modell in DB" },
 	{"action.save-project-as", "Projekt speichern unter..." },
 	{"Import", "Importieren" },
 	{"action.import-sources", "Dateien importieren..." },

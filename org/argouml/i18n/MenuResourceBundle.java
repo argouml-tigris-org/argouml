@@ -65,8 +65,6 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"action.save-project", "Save Project" },
         {"action.send-backward", "Send Backward" },
         {"action.send-to-back", "Send To Back" },
-        {"Load model from DB", "Load Model from DB" },
-        {"Store model to DB", "Store Model to DB" },
         {"action.save-project-as", "Save Project As..." },
         {"Import", "Import" },
         {"action.import-sources", "Import sources..." },
