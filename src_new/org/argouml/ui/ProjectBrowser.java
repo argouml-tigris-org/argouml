@@ -25,7 +25,6 @@ package org.argouml.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
@@ -45,7 +44,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
@@ -64,8 +62,8 @@ import org.argouml.ui.menubar.GenericArgoMenuBar;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionExit;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.IStatusBar;
-import org.tigris.gef.util.Localizer;
 import org.tigris.gef.util.ResourceLoader;
 import org.tigris.gef.util.VectorSet;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -281,29 +279,26 @@ public class ProjectBrowser extends JFrame
 
     public void setTarget(Object o) {
         
-         
         if (o instanceof MNamespace) {
             ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace)o);
         } else 
         if (o instanceof MModelElement) {
-            MModelElement eo = (MModelElement)o;
-            if (eo == null) { cat.debug("no path to model"); return; }
-            if (eo.getNamespace() != null) {
-                ProjectManager.getManager().getCurrentProject().setCurrentNamespace(eo.getNamespace());
+            if (((MModelElement)o).getNamespace() != null) {
+                ProjectManager.getManager().getCurrentProject().setCurrentNamespace(((MModelElement)o).getNamespace());
             } else
-                ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace)ProjectManager.getManager().getCurrentProject().getUserDefinedModels().get(0));
+                ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace)ProjectManager.getManager().getCurrentProject().getRoot());
         }
-        if (o instanceof UMLDiagram) {
-            MNamespace m = ((UMLDiagram)o).getNamespace();
-            if (m != null) ProjectManager.getManager().getCurrentProject().setCurrentNamespace(m);
-        }
+        
         if (o instanceof ArgoDiagram) {
             setActiveDiagram ((ArgoDiagram) o);
-        } else {       
-                 
-            setDetailsTarget(o);
+            if (o instanceof UMLDiagram) {
+                MNamespace m = ((UMLDiagram)o).getNamespace();
+                if (m != null) 
+                    ProjectManager.getManager().getCurrentProject().setCurrentNamespace(m);
+            }       
         }
-         _editorPane.setTarget(o);  
+        _editorPane.setTarget(o);
+        setDetailsTarget(o);         
 	Actions.updateAllEnabled();
     }
 
@@ -353,7 +348,6 @@ public class ProjectBrowser extends JFrame
             DetailsPane detailsPane = (DetailsPane)it.next();
             detailsPane.setTarget(o);
         }
-        Actions.updateAllEnabled();
     }
 
     public Object getDetailsTarget() {
