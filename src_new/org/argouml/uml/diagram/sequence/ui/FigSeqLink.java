@@ -169,9 +169,10 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
     MLinkEnd endB = (MLinkEnd) conns.elementAt(1);
     MObject moA = (MObject) endA.getInstance();
     MObject moB = (MObject) endB.getInstance();
-
+   
     setArrowHeads(ml, contents);
 
+    
   }
 
 
@@ -190,8 +191,8 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
       action = (MAction) stimulus.getDispatchAction();
    }
 
-  
-   // if (action != null ) {
+
+   if (action != null ) {
 
     FigSeqObject dest = (FigSeqObject) getDestFigNode();
     FigSeqObject source = (FigSeqObject) getSourceFigNode();
@@ -252,93 +253,42 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
       //source.concatActivation(this, contents);
     }
     }
-    //}
+   }
   }
   }
 
 
 
-  public void  addStimulusWithAction() {
-
-    // if we have a link without a stimulus, then we have a new link
-    // with a given action set in the arguments of the global Mode
-    // If this is the case, a new Stimulus and Action of the given type
-    // will be created and associated to the link. After this, the
-    // figure of the Stimulus will be created and added to the layer
-
-    Editor curEditor = Globals.curEditor();
+  /** After a new link with a stimulus is added to the model and the figure of the link is created
+   *  the figure of the stimulus has to be created and added to the layer
+   */
+  public void  addFigSeqStimulusWithAction() {
+  
     LayerPerspective lay = (LayerPerspective)getLayer();
-    if (lay == null ) lay = (LayerPerspective)curEditor.getLayerManager().getActiveLayer();
     GraphNodeRenderer renderer = lay.getGraphNodeRenderer();
     GraphModel gm = lay.getGraphModel();
-
-
     MLink link = (MLink) getOwner();
-    if (link.getStimuli()==null || link.getStimuli().size() == 0) {
-
-      ModeManager modeManager = curEditor.getModeManager();
-
-      Mode mode = (Mode)modeManager.top();
-      Hashtable args = mode.getArgs();
-
-      if ( args != null ) {
-        MAction action=null;
-        Class actionClass = (Class) args.get("action");
-        if (actionClass != null) {
-          try { action = (MAction) actionClass.newInstance(); }
-          catch (java.lang.IllegalAccessException ignore) { }
-          catch (java.lang.InstantiationException ignore) { }
-
-          if (action != null)  {
-          // determine action type of arguments in mode
-
-            action.setName("new action");
-            if (action instanceof MSendAction || action instanceof MReturnAction) {
-              action.setAsynchronous(true);
-            } else {
-               action.setAsynchronous(false); }
-
-            // create stimulus
-            MStimulus stimulus = new MStimulusImpl();
-            stimulus.setName("");
-            //set sender and receiver
-            Collection liEnds = link.getConnections();
-            if (liEnds.size() != 2 ) return;
-            Iterator iter = liEnds.iterator();
-            MLinkEnd le1 = (MLinkEnd)iter.next();
-            MLinkEnd le2 = (MLinkEnd)iter.next();
-            MObject objSrc = (MObject)le1.getInstance();
-            MObject objDst = (MObject)le2.getInstance();
-            stimulus.setSender(objSrc);
-            stimulus.setReceiver(objDst);
-            // set action type
-            stimulus.setDispatchAction(action);
-            // add stimulus to link
-            link.addStimulus(stimulus);
-            // add new modelelements: stimulus and action to namesapce
-            MNamespace ns = (MNamespace) link.getNamespace();
-            ns.addOwnedElement(stimulus);
-            ns.addOwnedElement(action);
-
-            if (lay.presentationFor(stimulus) == null ) {
-
-              Point center = this.center();
-              FigNode pers = renderer.getFigNodeFor(gm, lay, stimulus);
-              Collection stimuli = link.getStimuli();
-              int stiSize = stimuli.size();
-              int percent = 35 + stiSize*10;
-              if (percent > 100) percent = 100;
-              this.addPathItem(pers, new PathConvPercent(this, percent, 10));
-              this.updatePathItemLocations();
-              lay.add(pers);
-
-            }
-
-          }
-        }
+    if (link.getStimuli()!=null && link.getStimuli().size() > 0) {
+      Collection stimuli = link.getStimuli();
+      Iterator it = stimuli.iterator();
+      MStimulus stimulus = null;
+      while (it.hasNext()) {
+        stimulus = (MStimulus) it.next();
+      }
+      if (lay.presentationFor(stimulus) == null ) {
+        Point center = this.center();
+        FigNode pers = renderer.getFigNodeFor(gm, lay, stimulus);
+        int stiSize = stimuli.size();
+        int percent = 35 + stiSize*10;
+        if (percent > 100) percent = 100;
+        this.addPathItem(pers, new PathConvPercent(this, percent, 10));
+        this.updatePathItemLocations();
+        lay.add(pers);
+        setArrowHeads(link, lay.getContents() );
       }
     }
   }
+
 
 
 
@@ -347,11 +297,10 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
    *    Every object must update its activations, when a FigSeqLink
    *    is moved into position. */
   public void setActivations(FigSeqObject fso, FigSeqObject sourcePort, FigSeqObject destPort, int portNumber) {
-    
-    if (fso._activations != null && fso._activations.size() > 0) {
+      if (fso._activations != null && fso._activations.size() > 0) {
       int actSize = fso._activations.size();
       if ( (fso != sourcePort) && (fso != destPort) ) {
-	
+
         for (int j=0; j<actSize; j++) {
           FigActivation act = (FigActivation) fso._activations.elementAt(j);
           if (act.getFromPosition() >= portNumber) {
@@ -365,7 +314,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
             // do nothing
           }
           int dynPos = act.getDynVectorPos();
-         
+
           fso._dynVector.removeElementAt(dynPos);
           String newDynStr = "a|"+act.getFromPosition()+"|"+act.getToPosition()+"|"+act.isFromTheBeg()+"|"+act.isEnd();
           fso._dynVector.insertElementAt(newDynStr, dynPos);
@@ -490,7 +439,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
         FigSeqLink fsl = (FigSeqLink) contents.elementAt(i);
 
         if (((fsl.getBounds()).y < getBounds().y) && ((fsl.getBounds()).y > rect.y)) {
-	   
+
           portObj = fsl;
           rect = fsl.getBounds();
         }
@@ -500,11 +449,11 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
 
       FigSeqObject fso = (FigSeqObject) portObj.getSourceFigNode();
       FigRect port = (FigRect) portObj.getSourcePortFig();
-   
+
       if (port instanceof FigDynPort) {
         FigDynPort fsp = (FigDynPort) port;
          portNumber = fsp.getPosition()+1;
-        
+
       }
     }
     return portNumber;
@@ -516,14 +465,14 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
   public Vector getContents() {
     if (getLayer() != null ) {
       return getLayer().getContents();
-    } else {  
+    } else {
       Editor _editor = Globals.curEditor();
       Layer lay = _editor.getLayerManager().getActiveLayer();
       Vector contents = lay.getContents();
       return contents;
     }
 
-    
+
   }
 
   /** Deletes all path-items of this FigSeqLink,
@@ -553,7 +502,8 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
 			FigDynPort sourceFig, FigDynPort destFig, Vector contents, int size, int portNumber) {
 
 
-   if (sourceFig == sourceObj._lifeline || destFig == destObj._lifeline) return;
+    if (sourceFig == sourceObj._lifeline || destFig == destObj._lifeline) return;
+     
     sourceObj._ports.remove(sourceFig);
     destObj._ports.remove(destFig);
 
@@ -663,6 +613,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
 			FigRect sourceFig, FigRect destFig, Vector contents, int size, int portNumber) {
 
     if (sourceFig == sourceObj._lifeline || destFig == destObj._lifeline) return;
+   
     FigSeqObject fso = null;
     for (int i=0; i<getContents().size(); i++) {
       if (getContents().elementAt(i) instanceof FigSeqObject) {
@@ -670,13 +621,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
         if (fso._terminated && fso._terminateHeight > portNumber) fso._terminateHeight--;
         if (fso._created && fso._createHeight > portNumber) {
           fso._createHeight--;
-          // update create attributes in _dynVector of FigSeqObject
-          /*
-          fso._dynVector.removeElementAt(0);
-          String dynStr="c|" + "true" + "|" + fso._createHeight;
-          fso._dynVector.insertElementAt(dynStr,0);
-          fso._dynObjects = fso._dynVector.toString();
-          */
+         
         }
 
 
@@ -782,7 +727,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
   /** If the action of this Link cannot be set, this
    *   default action will be created and set */
   public void setDefaultAction() {
-    
+
     MLink ml = (MLink) getOwner();
     Collection col = ml.getStimuli();
     Iterator it = col.iterator();
@@ -809,8 +754,8 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
   }
 
   /** Deletes this FigSeqLink from the diagram*/
-  public void delete() { 
-    
+  public void delete() {
+
     FigSeqObject sourceObj = (FigSeqObject) getSourceFigNode();
     FigSeqObject destObj = (FigSeqObject) getDestFigNode();
     FigDynPort sourceFig = (FigDynPort) getSourcePortFig();
@@ -837,13 +782,13 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
               if (action instanceof MCreateAction) {
                 destObj.setForCreate(this, "Dest", false);
               }
-             
+
               // if stimulus is DestroyAction, the termination Symbol has to
               // be removed at the receiver
               if (action instanceof MDestroyAction) {
                 destObj.setForDestroy(this, "Dest", false);
               }
-              
+
               ((MNamespace)action.getNamespace()).removeOwnedElement(action);
             }
           }
@@ -858,21 +803,21 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
       }
     }
 
-   
+
 
     contents = getContents();
     size = contents.size();
-   
+
     updatePorts(sourceObj, destObj, sourceFig, destFig, contents, size, portNumber);
 
     super.delete();
 
     contents = getContents();
-   
+
     size = contents.size();
-   
+
     updateActivations(sourceObj, destObj, sourceFig, destFig, contents, size, portNumber);
-    
+
   }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -887,15 +832,16 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
         fso.setEnclosingFig(fso);
       }
     }
-  
+
     super.mouseClicked(me);
   }
 
 
   public void mouseReleased(MouseEvent me) {
     super.mouseReleased(me);
-    addStimulusWithAction();
    
+    addFigSeqStimulusWithAction();
+
     if (getLayer() != null) ((SequenceDiagramLayout)getLayer()).placeAllFigures();
 
   }
@@ -911,7 +857,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
       if (contents.elementAt(j) instanceof FigSeqObject) {
         FigSeqObject fso = (FigSeqObject) contents.elementAt(j);
         fso.setEnclosingFig(fso);
-  
+
       }
       if (contents.elementAt(j) instanceof FigSeqLink) {
         FigSeqLink fsl = (FigSeqLink) contents.elementAt(j);
@@ -919,7 +865,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
         if (ml != null) fsl.setArrowHeads(ml, contents);
       }
     }
-   
+
   }
 
 
