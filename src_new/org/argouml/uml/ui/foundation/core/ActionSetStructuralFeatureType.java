@@ -71,17 +71,18 @@ public class ActionSetStructuralFeatureType extends UMLChangeAction {
             o = box.getSelectedItem();
             if (o instanceof MClassifier) {
                 newClassifier = (MClassifier) o;
-                if (newClassifier != oldClassifier && attr != null) {
-                    if (newClassifier != null) {
-                        ModelManagementHelper.getHelper().moveElement(
-                            newClassifier,
-                            attr.getModel());
-                    }
-                    attr.setType(newClassifier);
-                }
             }
         }
+        if (newClassifier != oldClassifier && attr != null) {
+            if (newClassifier != null) {
+                newClassifier =
+                    (MClassifier) ModelManagementHelper.getHelper().getCorrespondingElement(
+                                    newClassifier,
+                                    attr.getModel());
+            }
 
+            attr.setType(newClassifier);
+        }
     }
 
 }
