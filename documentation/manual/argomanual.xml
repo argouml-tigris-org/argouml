@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE book SYSTEM "docbookx/docbookx.dtd">
+<book>
+	<bookinfo>
+		<date>2/22/2000
+</date>
+		<title>Argo user manual</title>
+		<subtitle>A introduction to Argo</subtitle>
+		<authorgroup>
+			<author>
+				<firstname>Alejandro</firstname>
+				<surname>Ramirez</surname>
+			</author>
+			<author>
+				<firstname>Philippe</firstname>
+				<surname>Vanpeperstraete</surname>
+			</author>
+			<author>
+				<firstname>Andreas</firstname>
+				<surname>Rueckert</surname>
+			</author>
+		</authorgroup>
+		<copyright>
+			<year>2000
+</year>
+			<holder>Philippe</holder>
+		</copyright>
+		<legalnotice>
+			<para>No notice here.</para>
+		</legalnotice>
+	</bookinfo>
+	<toc/>
+	<chapter id="getting-started">
+		<title>Getting started with ArgoUML</title>
+		<para>Here's the introduction.</para>
+		<sect1 id="installation">
+			<title>Installation</title>
+			<para>...
+</para>
+		</sect1>
+		<sect1 id="quick-tour">
+			<title>Quick tour</title>
+			<sect2 id="navigator-pane">
+				<title>The navigator pane</title>
+				<para>
+This pane list all the classes, interfaces and datatypes of your model as a treeview.
+<mediaobject>
+						<imageobject>
+							<imagedata format="GIF" fileref="images/screenshots/NavigatorPaneScreen.gif"/>
+						</imageobject>
+						<textobject>
+							<phrase>The Argo navigator pane
+</phrase>
+						</textobject>
+						<caption>
+							<para>This is the navigator pane, where you can navigate through your model.
+</para>
+						</caption>
+					</mediaobject>
+				</para>
+			</sect2>
+			<sect2 id="diagram-editor-pane">
+				<title>The diagram editor pane</title>
+				<para>
+This pane lets the user edit her diagram in a graphical way.
+<mediaobject>
+						<imageobject>
+							<imagedata format="GIF" fileref="images/screenshots/DiagramEditorScreen.gif"/>
+						</imageobject>
+						<textobject>
+							<phrase>The Argo diagram editor pane
+</phrase>
+						</textobject>
+						<caption>
+							<para>
+This is the diagram editor pane, where you can edit your diagram.
+</para>
+						</caption>
+					</mediaobject>
+				</para>
+			</sect2>
+			<sect2 id="todo-pane">
+				<title>The ToDo pane</title>
+				<para>
+The todo pane list the items on the users todo list.
+<mediaobject>
+						<imageobject>
+							<imagedata format="GIF" fileref="images/screenshots/ToDoPaneScreen.gif"/>
+						</imageobject>
+						<textobject>
+							<phrase>The Argo todo pane
+</phrase>
+						</textobject>
+						<caption>
+							<para>This is the todo pane, that shows all the items on your todo list.
+</para>
+						</caption>
+					</mediaobject>
+				</para>
+			</sect2>
+			<sect2 id="details-pane">
+				<title>The details pane</title>
+				<para>
+The details pane lets the user edit various details of the model.
+<mediaobject>
+						<imageobject>
+							<imagedata format="GIF" fileref="images/screenshots/DetailsPaneScreen.gif"/>
+						</imageobject>
+						<textobject>
+							<phrase>The Argo details pane
+</phrase>
+						</textobject>
+						<caption>
+							<para>This is the detials pane, that allows you to edit various details of your model.
+</para>
+						</caption>
+					</mediaobject>
+				</para>
+			</sect2>
+		</sect1>
+		<sect1 id="tutorial">
+			<title>ArgoUML tutorial</title>
+			<para>...
+</para>
+		</sect1>
+	</chapter>
+	<chapter>
+		<title>ArgoUML user manual</title>
+		<sect1>
+			<title>An introduction to UML modeling</title>
+			<para>...
+</para>
+		</sect1>
+		<sect1>
+			<title>Working with projects</title>
+			<sect2>
+				<title>The startup screen </title>
+				<para>Right after startup, Argo/UML's main window appears as follows: </para>
+				<mediaobject>
+					<imageobject>
+						<imagedata format="GIF" fileref="images/screenshots/StartupScreen.gif"/>
+					</imageobject>
+				</mediaobject>
+				<para>The main window's client area, below the menu bar, is subdivided into four panes: Starting at the leftmost top pane, and working around the clock, you can see the navigation pane, showing an explorer-like tree view of your UML model, the editing pane with its toolbar, two scroll bars and grey drawing area, the details pane with the ToDoItem tab selected, and the todo pane with a tree view of the to do items, ranked into three priority levels (High, Medium and Low). 
+</para>
+				<para>Notice that the title bar says "Argo/UML - Untitled". The "Untitled means that the current project has not yet been saved. After saving the current project, the "Untitled" will be replaced by the file name of the current project. 
+</para>
+				<para>Each time Argo/UML is started up without a project file as an argument, a new blank project is created. This project contains a model called untitledModel. This model contains a blank class diagram, called "class diagram 1", and a blank use case diagram called "use case diagram 1". 
+</para>
+				<para>The model and both empty diagrams can be seen in the navigation pane, which is the main tool for you to navigate through your model. 
+</para>
+				<para>Let's assume for a moment that this is the point where you want to start modeling a new purchasing system. You want to give the name "purchasingmodel" to your model, and you want to store it in a file called "FirstProject". 
+</para>
+				<para>First, let's save the model in it's current (empty and unnamed) state. On the menu bar, click on "File", then on "Save Project As..., as shown in the following screen shot. 
+</para>
+			</sect2>
+			<sect2>
+				<title>Saving a project - the file menu </title>
+				<para>Please notice that the File menu contains the usual options for creating a new project, for opening an existing project, for saving a project under a new name, for printing the currently displayed diagram (which of course is empty at this moment), for saving the currently displayed diagram as a file, and for program Exit. 
+</para>
+				<mediaobject>
+					<imageobject>
+						<imagedata format="GIF" fileref="images/screenshots/SaveAsCommand.gif"/>
+					</imageobject>
+				</mediaobject>
+				<para>Some of these menu commands can be invoked by pressing key combinations, as indicated on the drop-down menu. For instance, holding down the "Ctrl" key, and pressing "N", will create a new project. 
+</para>
+				<para>In the current version, Argo/UML can only contain one active project at a time. In addition, a project can only contain one UML model. Since an UML model can contain an unlimited number of elements and diagrams, this should not present any serious limitations, even for modelling quite large and complex systems. 
+</para>
+				<para>Also take notice of a number of disabled commands, greyed out on the drop-down menu. First, the "Save Project" command (Ctrl-S), which obviously cannot be executed since we haven't entered a file name yet to store our project. Second, you can see the two commands "Load model from DB" and "Store model to DB". This is a unique feature of Argo/UML that allows you to save and retrieve your model into a relational database. Currently, the only database supported is MySQL, but support for other database engines will undoubtedly be introduced in the future. 
+</para>
+				<para>But let's go back to saving our project. After clicking on the "Save Project As..." menu command, we get the following file chooser dialog to enter the file name we wish to use: 
+</para>
+			</sect2>
+			<sect2>
+				<title>The File Chooser Dialog </title>
+				<para>This is a standard Java FileChooser. Let's go over it in some detail: 
+</para>
+				<mediaobject>
+					<imageobject>
+						<imagedata format="GIF" fileref="images/screenshots/FileChooseDialog.gif"/>
+					</imageobject>
+				</mediaobject>
+				<para>The main, outstanding feature, is the scrollable folders list in the center of the dialog. By using the scrollbar on the right, you can move up and down in the list of folders contained inside the currently selected folder. 
+</para>
+				<para>Double-clicking on one of the displayed folders navigates you into that folder, allowing you to quickly navigate down into the folders hierarchy on your hard disk. 
+</para>
+				<para>Notice that only folder names , and no file names are displayed in the scrollable area. Indeed, the dialog is currently set up in order to show only Argo project files with an extension of .argo, as can be seen on the lower drop-down control labeled "Files of type:" 
+</para>
+				<para>Also notice that the currently selected folder's name is displayed in the upper drop-down control labeled "Look in:". A single click on a folder inside the scrollable area does select that folder on screen but does not select the folder for saving. 
+</para>
+				<para>At the top of the dialog, above the scrollable folder chooser area, there are a few more folder navigation tools: 
+</para>
+				<itemizedlist>
+					<listitem>
+						<para>
+							<guiicon>
+								<inlinegraphic format="GIF" fileref="images/screenshots/FolderDropdown.gif"/>
+							</guiicon> The Folder drop-down control. Clicking on the down-arrow displays a tree view of the folder hierarchy, allowing you to navigate quickly up the hierarchy, and at the same time to quickly determine where in the hierarchy you are currently positioned.</para>
+					</listitem>
+					<listitem>
+						<para>
+							<guiicon>
+								<inlinegraphic format="GIF" fileref="images/screenshots/FolderUpIcon.gif"/>
+							</guiicon> The Folder-Up icon. Clicking on this icon will bring you to the parent folder of the current folder.</para>
+					</listitem>
+					<listitem>
+						<para>
+							<guiicon>
+								<inlinegraphic format="GIF" fileref="images/screenshots/HomeFolderIcon.gif"/>
+							</guiicon> The Home Folder icon. Clicking on this icon will bring you to your home directory</para>
+					</listitem>
+					<listitem>
+						<para>
+							<guiicon>
+								<inlinegraphic format="GIF" fileref="images/screenshots/NewFolderIcon.gif"/>
+							</guiicon> The New Folder icon. Clicking on this icon will create a new folder called "New Folder" under the current folder. (I haven't been able to create a folder with a specific name, using this button. This forces me to use my file manager to rename the newly created folder. Any suggestions on how this can be done would be welcome)</para>
+					</listitem>
+					<listitem>
+						<para>
+							<guiicon>
+								<inlinegraphic format="GIF" fileref="images/screenshots/FoldersPresentationIcon.gif"/>
+							</guiicon> The Folders Presentation Icon. This button is not functional at this time.</para>
+					</listitem>
+				</itemizedlist>
+				<para>Ok, now navigate to the directory where you want to save your Argo/UML project, fill in the "File name" with an appropriate name, such as "FirstProject" and click on the "Save button. 
+</para>
+			</sect2>
+			<sect2>
+				<title>File formats used by Argo/UML</title>
+				<para>Notice that the file name of your project (FirstProject.argo) is now reflected in the title bar of Argo/UML. If you select the java console, you will notice that three files have been written to the hard disk: 
+</para>
+				<itemizedlist>
+					<listitem>
+						<para>A file FirstProject.xmi - this is a representation of your (still empty) model in xmi format. If you want to know more about the Xml Metadata Interchange format (XMI), you can start at the following <ulink url="http://www.oasis-open.org/cover/xmi.html">rather extensive XMI page</ulink>. In short, XMI allows your models created with Argo/UML to be used by other applications. That is, only the contents of your model, without the graphic representation of the diagrams. 
+</para>
+					</listitem>
+					<listitem>
+						<para>A file FirstProject_classdiagram1.pgml, containing the graphical representation of the (still empty) class diagram "classdiagram1" in pgml format. The PGML (Precision Graphics Markup Language) is probably the first proposal for sending vector graphics over the Web. You can find more information at the <ulink url="http://www.w3.org/TR/1998/NOTE-PGML">PGML specification page</ulink>. 
+</para>
+					</listitem>
+					<listitem>
+						<para>A file FirstProject_usecasediagram1.pgml, containing a graphical representation of the (still empty) use case diagram "usecasediagram1". 
+</para>
+					</listitem>
+				</itemizedlist>
+				<para>You have now an active project called "FirstProject", connected to the file "FirstProject.argo" 
+</para>
+			</sect2>
+		</sect1>
+		<sect1>
+			<title>Working with diagrams</title>
+			<para>...
+</para>
+		</sect1>
+		<sect1>
+			<title>The diagram editor - general features</title>
+			<para>...
+</para>
+		</sect1>
+		<sect1>
+			<title>Use case diagrams</title>
+			<para>...
+</para>
+		</sect1>
+		<sect1>
+			<title>Class diagrams</title>
+			<para>...
+</para>
+		</sect1>
+		<sect1>
+			<title>Working with design critics</title>
+			<sect2>
+				<title>The To Do pane - messages from the design critics </title>
+				<para>Where do we stand now? A new project has been created, and is connected to the file FirstProject.argo. Your Argo/UML screen should look as follows: 
+</para>
+				<mediaobject>
+					<imageobject>
+						<imagedata format="GIF" fileref="images/screenshots/ProjectSavedScreen.gif"/>
+					</imageobject>
+				</mediaobject>
+				<para>The project filename is displayed in the title bar, the project contains a top-level package, called "untitledModel", which contains a class diagram and a use case diagram. 
+</para>
+				<para>If we look carefully at the screen, we can see that the "Medium" folder in the To Do pane (the lower left pane) must contain some items, since it's activation icon <guiicon>
+						<inlinegraphic format="GIF" fileref="images/screenshots/TreeFolderCloseIcon.gif"/>
+					</guiicon> is displayed. 
+</para>
+				<para>Clicking on this icon will open the "Medium" folder. An open folder is indicated by the <guiicon>
+						<inlinegraphic format="GIF" fileref="images/screenshots/TreeFolderOpenIcon.gif"/>
+					</guiicon> icon.
+</para>
+				<para>But what is this "To do" pane anyway. You haven't recorded anything yet that has to be done, so where do these to do items originate. 
+</para>
+				<para>The answer is simple, and is at the same time one of the strong points of Argo/UML. While you are working on your UML model, your work is monitored continuously and invisibly by a piece of code called a design critic. This is like a personal mentor that watches over your shoulder and notifies you each time he sees something questionable in your design. 
+</para>
+				<para>Critics are quite unobstrusive. They give you a friendly warning, but they do not force you into design principles that you don't want or like to follow.  Let us take a look at what the critics are telling us. Click on the <guiicon>
+						<inlinegraphic format="GIF" fileref="images/screenshots/TreeFolderCloseIcon.gif"/>
+					</guiicon> icon next to the "Medium" folder, and click on the "Revise Package Name UntitledModel" item. 
+</para>
+				<para>Your screen should now look as follows: 
+</para>
+				<mediaobject>
+					<imageobject>
+						<imagedata format="GIF" fileref="images/screenshots/LookatCriticsAdvice.gif"/>
+					</imageobject>
+				</mediaobject>
+				<para>Notice that your selection is highlighted in red in the To Do pane, and that a full explanation appears now in the Properties Pane (the lower right pane). You may have to resize your properties panel or to scroll down in order to see the full message as diplayed in our example. 
+</para>
+				<para>What Argo/UML is trying to tell you is that usually, package names are written in lower cases. The default top level package created by Argo/UML is called untitledModel and therefore violates a sound design principle. (Actually, this could be considered as a bug within Argo/UML, but it comes in handy to demonstrate the working of critics). 
+</para>
+				<para>At this point, you can choose to change the package name manually, to impose silence on the design critic for some time or permanently, or to request a more comprehensive explanation by Email from an expert . 
+</para>
+				<para>We will do nothing of this (we'll come back to it when we talk about the design critics in more detail) but we'll use another handy feature of ArgoUML: an auto-correct feature. 
+</para>
+				<para>In order to do that, just click on the "Next" button on the properties pane. This will cause a renaming wizard to be diplayed inside the properties panel, proposing to use the name "untitledmodel" (all in lower cases). 
+</para>
+			</sect2>
+			<sect2>
+				<title>Design critics at work: the Rename Package wizard </title>
+				<para>Replace the name "untitledmodel" with "purchasingmodel", and click on the "Finish" button as shown below: 
+</para>
+				<mediaobject>
+					<imageobject>
+						<imagedata format="GIF" fileref="images/screenshots/RenamingTopPackage.gif"/>
+					</imageobject>
+				</mediaobject>
+				<para>Watch now how the design critic note in the To Do panel disappears, leaving only the "Add Elements to Package purchasingmodel" note in the to do list. 
+</para>
+				<para>If this doen't happen at once, wait for a few seconds. Argo/UML makes heavy use of several threads of execution that execute in parallel. This can cause delays of a few seconds before the information gets updated on the screen. 
+</para>
+				<para>Normally, the package name change shoudl also be reflected in the navigation pane, in the top left corner of your Argo/UML window. 
+</para>
+				<para>Actually, that doesn't happen until you click on one of the items in the navigator pane. This is also a small bug in Argo/UML that will need to be fixed in following versions. 
+</para>
+				<para>Don't let this discourage you, but remember that Argo/UML is still pretty much "work in progress", and that still quite a bit can be done to improve the user interface. 
+</para>
+				<para>We are now ready to create our first UML diagram, a Use Case diagram, but first let's save what we've done so far. 
+</para>
+				<para>Click on the "File" menu item, and select "Save Project". You can now safely exit Argo/UML without losing your work so far, or go on creating your first diagram. 
+</para>
+			</sect2>
+		</sect1>
+	</chapter>
+	<chapter>
+		<title>ArgoUML reference</title>
+		<sect1>
+			<title>The navigator pane</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata format="GIF" fileref="images/screenshots/NavigatorPaneScreen.gif"/>
+				</imageobject>
+				<textobject>
+					<phrase>The Argo navigator pane
+</phrase>
+				</textobject>
+				<caption>
+					<para>This is the navigator pane, where you can navigate through your model.
+</para>
+				</caption>
+			</mediaobject>
+			<sect2>
+				<title>Perspective selector combo box</title>
+				<para>...
+</para>
+			</sect2>
+			<sect2>
+				<title>Back button</title>
+				<para>...
+</para>
+			</sect2>
+			<sect2>
+				<title>Forward button</title>
+				<para>...
+</para>
+			</sect2>
+			<sect2>
+				<title>Navigator configuration button</title>
+				<para>...
+</para>
+			</sect2>
+			<sect2>
+				<title>Scrollable tree view</title>
+				<para>...
+</para>
+			</sect2>
+		</sect1>
+		<sect1>
+			<title>The ToDo pane</title>
+			<sect2>
+				<title>View selector combo box</title>
+				<para>...
+</para>
+			</sect2>
+			<sect2>
+				<title>Flat/hierachical button</title>
+				<para>...
+</para>
+			</sect2>
+		</sect1>
+		<sect1>
+			<title>The multi-editor pane</title>
+			<sect2>
+				<title>As diagram tab</title>
+				<para>...
+</para>
+			</sect2>
+			<sect2>
+				<title>As table tab</title>
+				<para>...
+</para>
+			</sect2>
+		</sect1>
+		<sect1>
+			<title>The details pane</title>
+			<sect2>
+				<title>ToDo tab</title>
+				<para>...
+</para>
+			</sect2>
+			<sect2>
+				<title>Properties tab</title>
+				<para>...
+</para>
+			</sect2>
+			<sect2>
+				<title>Docs tab</title>
+				<para>...
+</para>
+			</sect2>
+			<sect2>
+				<title>Javasource tab</title>
+				<para>...
+</para>
+			</sect2>
+			<sect2>
+				<title>Constraints tab</title>
+				<para>...
+</para>
+			</sect2>
+			<sect2>
+				<title>Tagged values tab</title>
+				<para>...
+</para>
+			</sect2>
+			<sect2>
+				<title>Checklist tab</title>
+				<para>...
+</para>
+			</sect2>
+			<sect2>
+				<title>History tab</title>
+				<para>...
+</para>
+			</sect2>
+		</sect1>
+		<sect1>
+			<title>The Menu bar</title>
+			<sect2>
+				<title>The File menu</title>
+				<sect3>
+					<title>New</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Open project</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Save project</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Save project as</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Print</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Save GIF</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Exit</title>
+					<para>...
+</para>
+				</sect3>
+			</sect2>
+			<sect2>
+				<title>The Edit menu</title>
+				<sect3>
+					<title>Select</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Select all</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Select next</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Invert selection</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Undo/Redo</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Cut</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Copy</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Paste</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Remove from diagram</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Delete from model</title>
+					<para>...
+</para>
+				</sect3>
+				<sect3>
+					<title>Empty trash</title>
+					<para>...
+</para>
+				</sect3>
+			</sect2>
+		</sect1>
+		<sect1>
+			<title>The status bar</title>
+			<para>...
+</para>
+		</sect1>
+		<sect1>
+			<title>The toolbar</title>
+			<para>...
+</para>
+		</sect1>
+	</chapter>
+	<appendix>
+		<title>...</title>
+		<para>...
+</para>
+	</appendix>
+</book>
