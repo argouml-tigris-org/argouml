@@ -194,7 +194,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      */
     public boolean canAddNode(Object node) {
         if (node == null) return false;
-        if (_nodes.contains(node)) return false;
+        if (containsNode(node)) return false;
         return (ModelFacade.isAStateVertex(node) 
                 || ModelFacade.isAPartition(node) 
                 || ModelFacade.isAComment(node));
@@ -209,7 +209,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
             return true;
         }
         if (edge == null) return false;
-        if (_edges.contains(edge)) return false;
+        if (containsEdge(edge)) return false;
         Object end0 = null, end1 = null, state = null;
 
         if (ModelFacade.isATransition(edge)) {
@@ -228,8 +228,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         if (end0 == null || end1 == null) return false;
         // if all states are equal it is an internal transition
         if ((state == end0) && (state == end1)) return false;
-        if (!_nodes.contains(end0)) return false;
-        if (!_nodes.contains(end1)) return false;
+        if (!containsNode(end0)) return false;
+        if (!containsNode(end1)) return false;
         
         return true;
     }
@@ -247,8 +247,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         }
         Object sv = /* (MStateVertex) */node;
 
-        if (_nodes.contains(sv)) return;
-        _nodes.addElement(sv);
+        if (containsNode(sv)) return;
+        getNodes().addElement(sv);
         // TODO: assumes public, user pref for default visibility?
         //if (sv.getNamespace() == null)
         //_namespace.addOwnedElement(sv);
@@ -272,7 +272,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
 
         if (!canAddEdge(edge)) return;
         Object tr = /* (MTransition) */edge;
-        _edges.addElement(tr);
+        getEdges().addElement(tr);
         fireEdgeAdded(edge);
     }
 
@@ -295,7 +295,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * Return true if the two given ports can be connected by a kind of edge to
      * be determined by the ports.
      *
-     * @see org.tigris.gef.graph.MutableGraphModel#canConnect(java.lang.Object, java.lang.Object)
+     * @see org.tigris.gef.graph.MutableGraphModel#canConnect(java.lang.Object, 
+     * java.lang.Object)
      */
     public boolean canConnect(Object fromPort, Object toPort) {
         if (!(ModelFacade.isAStateVertex(fromPort))) {
@@ -317,7 +318,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
 
     /** Contruct and add a new edge of the given kind
      * 
-     * @see org.tigris.gef.graph.MutableGraphModel#connect(java.lang.Object, java.lang.Object, java.lang.Class)
+     * @see org.tigris.gef.graph.MutableGraphModel#connect(java.lang.Object, 
+     * java.lang.Object, java.lang.Class)
      */
     public Object connect(Object fromPort, Object toPort,
 			  Class edgeClass) {

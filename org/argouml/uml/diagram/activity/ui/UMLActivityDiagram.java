@@ -286,8 +286,8 @@ public class UMLActivityDiagram extends UMLDiagram {
 	    null,
 	    /*actionCallState, // uncomment these ...
             actionObjectFlowState,
-            actionSubactivityState,*/
-            null, 
+            actionSubactivityState,
+            null, */
 	    _actionComment,
             _actionCommentLink
 	};

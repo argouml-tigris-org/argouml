@@ -35,6 +35,14 @@ import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
 import org.apache.log4j.Logger;
 
+/**
+ * This class defines a bridge between the UML meta-model
+ * representation of the design and the GraphModel interface used by
+ * GEF.<p>
+ *
+ * This class handles only UML Deployment Diagrams.<p>
+ *
+ */
 public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener 
 {
@@ -46,28 +54,36 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      *  already have a model, they are placed in the "home model".
      *  Also, elements from other models will have their FigNodes add a
      *  line to say what their model is. */
-
-    protected Object _model;
+    private Object model;
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /** get the homemodel. */
-    public Object getNamespace() { return _model; }
+    /** get the homemodel
+     * 
+     * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getNamespace()
+     */
+    public Object getNamespace() { return model; }
 
-    /** set the homemodel. */
+    /** set the homemodel. 
+     * 
+     * @param namespace the namespace
+     */
     public void setNamespace(Object namespace) {
         
-        if(!ModelFacade.isANamespace(namespace))
+        if (!ModelFacade.isANamespace(namespace))
             throw new IllegalArgumentException();
-	_model = namespace;
+	model = namespace;
     }
 
     ////////////////////////////////////////////////////////////////
     // GraphModel implementation
 
 
-    /** Return all ports on node or edge */
+    /** Return all ports on node or edge 
+     *
+     * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
+     */
     public Vector getPorts(Object nodeOrEdge) {
 	Vector res = new Vector();  //wasteful!
 	if (ModelFacade.isANode(nodeOrEdge)) res.addElement(nodeOrEdge);
@@ -82,13 +98,19 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	return res;
     }
 
-    /** Return the node or edge that owns the given port */
+    /** Return the node or edge that owns the given port 
+     *    
+     * @see org.tigris.gef.graph.BaseGraphModel#getOwner(java.lang.Object)
+     */
     public Object getOwner(Object port) {
 	return port;
     }
 
 
-    /** Return all edges going to given port */
+    /** Return all edges going to given port 
+     * 
+     * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
+     */
     public Vector getInEdges(Object port) {
 	Vector res = new Vector(); //wasteful!
 	if (ModelFacade.isANode(port)) {
@@ -147,37 +169,46 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	return res;
     }
 
-    /** Return all edges going from given port */
+    /** Return all edges going from given port 
+     * 
+     * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
+     */
     public Vector getOutEdges(Object port) {
-	return new Vector(); // TODO?
+	return new Vector(); // TODO:?
     }
 
 
-    /** Return one end of an edge */
+    /** Return one end of an edge 
+     * 
+     * @see org.tigris.gef.graph.BaseGraphModel#getSourcePort(java.lang.Object)
+     */
     public Object getSourcePort(Object edge) {
 	if (ModelFacade.isARelationship(edge)) {
 	    return CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
 	} else
 	    if (ModelFacade.isALink(edge)) {
-		return CommonBehaviorHelper.getHelper().getSource(/*(MLink)*/ edge);
+		return CommonBehaviorHelper.getHelper().getSource(edge);
 	    }
     
-	LOG.debug("TODO getSourcePort");
+	LOG.debug("TODO: getSourcePort");
 
 	return null;
     }
 
 
-    /** Return  the other end of an edge */
+    /** Return  the other end of an edge
+     * 
+     * @see org.tigris.gef.graph.BaseGraphModel#getDestPort(java.lang.Object)
+     */
     public Object getDestPort(Object edge) {
 	if (ModelFacade.isARelationship(edge)) {
-	    return CoreHelper.getHelper().getDestination(/*(MRelationship)*/ edge);
+	    return CoreHelper.getHelper().getDestination(edge);
 	} else if (ModelFacade.isALink(edge)) {
 	    return CommonBehaviorHelper.getHelper()
 		.getDestination(/*(MLink)*/ edge);
 	}
     
-	LOG.debug("TODO getDestPort");
+	LOG.debug("TODO: getDestPort");
 
 	return null;
     }
@@ -187,70 +218,85 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     ////////////////////////////////////////////////////////////////
     // MutableGraphModel implementation
 
-    /** Return true if the given object is a valid node in this graph */
+    /** Return true if the given object is a valid node in this graph 
+     * 
+     * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
+     */
     public boolean canAddNode(Object node) {
 	if (node == null) return false;
-	if (_nodes.contains(node)) return false;
-	return (ModelFacade.isANode(node)) || 
-	    (ModelFacade.isAComponent(node)) || 
-	    (ModelFacade.isAClass(node)) || 
-	    (ModelFacade.isAInterface(node)) ||
-	    (ModelFacade.isAObject(node)) ||
-	    (ModelFacade.isANodeInstance(node)) || 
-	    (ModelFacade.isAComponentInstance(node) ||
-	            (ModelFacade.isAComment(node)));
+	if (containsNode(node)) return false;
+	return (ModelFacade.isANode(node))  
+	    || (ModelFacade.isAComponent(node)) 
+	    || (ModelFacade.isAClass(node))
+	    || (ModelFacade.isAInterface(node)) 
+	    || (ModelFacade.isAObject(node)) 
+	    || (ModelFacade.isANodeInstance(node))  
+	    || (ModelFacade.isAComponentInstance(node) 
+	    || (ModelFacade.isAComment(node)));
     }
 
-    /** Return true if the given object is a valid edge in this graph */
+    /** Return true if the given object is a valid edge in this graph 
+     * 
+     * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
+     */
     public boolean canAddEdge(Object edge)  {
 	if (edge == null) return false;
-	if (_edges.contains(edge)) return false;
+	if (containsEdge(edge)) return false;
 	Object end0 = null, end1 = null;
 	if (ModelFacade.isARelationship(edge)) {
-	    end0 = CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
-	    end1 = CoreHelper.getHelper().getDestination(/*(MRelationship)*/ edge);
+	    end0 = CoreHelper.getHelper().getSource(edge);
+	    end1 = CoreHelper.getHelper().getDestination(edge);
 	}
 	else if (ModelFacade.isALink(edge)) {
-	    end0 = CommonBehaviorHelper.getHelper().getSource(/*(MLink)*/ edge);
+	    end0 = CommonBehaviorHelper.getHelper().getSource(edge);
 	    end1 =
-		CommonBehaviorHelper.getHelper().getDestination(/*(MLink)*/ edge);
+		CommonBehaviorHelper.getHelper().getDestination(edge);
 	} else if (edge instanceof CommentEdge) {
-	    end0 = ((CommentEdge)edge).getSource();
-	    end1 = ((CommentEdge)edge).getDestination();
+	    end0 = ((CommentEdge) edge).getSource();
+	    end1 = ((CommentEdge) edge).getDestination();
 	}
 	if (end0 == null || end1 == null) return false;
-	if (!_nodes.contains(end0)) return false;
-	if (!_nodes.contains(end1)) return false;
+	if (!containsNode(end0)) return false;
+	if (!containsNode(end1)) return false;
 	return true;
     }
 
  
-    /** Add the given node to the graph, if valid. */
+    /** Add the given node to the graph, if valid. 
+     * 
+     * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
+     */
     public void addNode(Object node) {
         LOG.debug("adding class node!!");
 	if (!canAddNode(node)) return;
-	_nodes.addElement(node);
+	getNodes().addElement(node);
 	// TODO: assumes public, user pref for default visibility?
 	//do I have to check the namespace here? (Toby)
-	if (ModelFacade.isAModelElement(node) &&
-	    (ModelFacade.getNamespace(node) == null)) {
-	    ModelFacade.addOwnedElement(_model, node);
+	if (ModelFacade.isAModelElement(node) 
+            && (ModelFacade.getNamespace(node) == null)) {
+	    ModelFacade.addOwnedElement(model, node);
 	}
 	fireNodeAdded(node);
     }
 
-    /** Add the given edge to the graph, if valid. */
+    /** Add the given edge to the graph, if valid. 
+     * 
+     * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
+     */
     public void addEdge(Object edge) {
         LOG.debug("adding class edge!!!!!!");
 	if (!canAddEdge(edge)) return;
-	_edges.addElement(edge);
+	getEdges().addElement(edge);
 	// TODO: assumes public
 	if (ModelFacade.isAModelElement(edge)) {
-	    ModelFacade.addOwnedElement(_model, edge);
+	    ModelFacade.addOwnedElement(model, edge);
 	}
 	fireEdgeAdded(edge);
     }
 
+    /**
+     * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
+     */
     public void addNodeRelatedEdges(Object node) {
 	if (ModelFacade.isAClassifier(node) ) {
 	    Collection ends = ModelFacade.getAssociationEnds(node);
@@ -305,6 +351,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     }
 
 
+    /**
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
     public void vetoableChange(PropertyChangeEvent pce) {
 	if ("ownedElement".equals(pce.getPropertyName())) {
 	    Vector oldOwned = (Vector) pce.getOldValue();

@@ -40,17 +40,22 @@ import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociation;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
+/**
+ * The base class of the deployment diagram.<p>
+ *
+ * Defines the toolbar, provides for its initialization and provides
+ * constructors for a top level diagram and one within a defined
+ * namespace.<p>
+ *
+ */
 public class UMLDeploymentDiagram extends UMLDiagram {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    private static final Logger LOG = Logger.getLogger(UMLDeploymentDiagram.class);
+    
+    private static final Logger LOG = 
+        Logger.getLogger(UMLDeploymentDiagram.class);
 
     ////////////////
     // actions for toolbar
@@ -130,8 +135,11 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
     ////////////////////////////////////////////////////////////////
     // contructors
-    protected static int _DeploymentDiagramSerial = 1;
+    private static int deploymentDiagramSerial = 1;
 
+    /**
+     * Constructor
+     */
     public UMLDeploymentDiagram() {
 
         try {
@@ -139,6 +147,9 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         } catch (PropertyVetoException pve) { }
     }
 
+    /**
+     * @param namespace the namespace for the new diagram
+     */
     public UMLDeploymentDiagram(Object namespace) {
         this();
         setNamespace(namespace);
@@ -162,7 +173,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
-            cat.error(
+            LOG.error(
                 "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(
                 "Illegal argument. Object " + handle + " is not a namespace");
@@ -185,6 +196,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     /**
      * Get the actions from which to create a toolbar or equivilent
      * graphic triggers
+     *
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
         Object actions[] = {
@@ -220,8 +233,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     protected static String getNewDiagramName() {
         String name = null;
-        name = "Deployment Diagram " + _DeploymentDiagramSerial;
-        _DeploymentDiagramSerial++;
+        name = "Deployment Diagram " + deploymentDiagramSerial;
+        deploymentDiagramSerial++;
         if (!ProjectManager.getManager().getCurrentProject()
 	        .isValidDiagramName(name)) {
             name = getNewDiagramName();

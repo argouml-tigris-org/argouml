@@ -43,7 +43,6 @@ import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.diagram.ui.ActionAddNote;
 
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
@@ -62,7 +61,7 @@ public class UMLStateDiagram extends UMLDiagram {
     /**
      * this diagram needs to be deleted when its statemachine is deleted.
      */
-    Object theStateMachine;
+    private Object theStateMachine;
 
     ////////////////
     // actions for toolbar
@@ -114,7 +113,7 @@ public class UMLStateDiagram extends UMLDiagram {
             ModelFacade.JUNCTION_PSEUDOSTATEKIND,
             "Junction"); 
 
-    protected static int stateDiagramSerial = 1;
+    private static int stateDiagramSerial = 1;
     
     ////////////////////////////////////////////////////////////////
     // contructors

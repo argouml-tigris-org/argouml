@@ -44,13 +44,20 @@ import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.ActionAddMessage;
-import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.presentation.Fig;
 
+/**
+ * The base class of the collaboration diagram.<p>
+ *
+ * Defines the toolbar, provides for its initialization and provides
+ * constructors for a top level diagram and one within a defined
+ * namespace.<p>
+ *
+ */
 public class UMLCollaborationDiagram extends UMLDiagram {
 
     /** for logging */
@@ -117,8 +124,11 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
     ////////////////////////////////////////////////////////////////
     // contructors
-    protected static int _CollaborationDiagramSerial = 1;
+    private static int collaborationDiagramSerial = 1;
 
+    /**
+     * constructor
+     */
     public UMLCollaborationDiagram() {
 
         try {
@@ -126,11 +136,17 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         } catch (PropertyVetoException pve) { }
     }
 
+    /**
+     * @param namespace the namespace for the diagram
+     */
     public UMLCollaborationDiagram(Object namespace) {
         this();
         setNamespace(namespace);
     }
 
+    /**
+     * @return the number of UML messages in the diagram
+     */
     public int getNumMessages() {
         Layer lay = getLayer();
         Collection figs = lay.getContents(null);
@@ -163,7 +179,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
-            cat.error(
+            LOG.error(
                 "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(
                 "Illegal argument. Object " + handle + " is not a namespace");
@@ -184,6 +200,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     /**
      * Get the actions from which to create a toolbar or equivilent
      * graphic triggers
+     *
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
         Object actions[] = {
@@ -220,7 +238,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         Collection messages;
         Iterator msgIterator;
         if (getNamespace() == null) {
-            cat.error("Collaboration Diagram does not belong to a namespace");
+            LOG.error("Collaboration Diagram does not belong to a namespace");
             return;
         }
         Collection ownedElements = ModelFacade.getOwnedElements(getNamespace());
@@ -251,8 +269,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     protected static String getNewDiagramName() {
         String name = null;
-        name = "Collaboration Diagram " + _CollaborationDiagramSerial;
-        _CollaborationDiagramSerial++;
+        name = "Collaboration Diagram " + collaborationDiagramSerial;
+        collaborationDiagramSerial++;
         if (!ProjectManager.getManager().getCurrentProject()
 	        .isValidDiagramName(name)) {
             name = getNewDiagramName();

@@ -61,7 +61,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      *  Also, elements from other models will have their FigNodes add a
      *  line to say what their model is. */
 
-    protected Object _model;
+    private Object model;
 
     ////////////////////////////////////////////////////////////////
     // accessors
@@ -69,14 +69,17 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     /**
      * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getNamespace()
      */
-    public Object getNamespace() { return _model; }
+    public Object getNamespace() { return model; }
 
+    /**
+     * @param namespace the namespace to be set for this diagram
+     */
     public void setNamespace(Object namespace) {
         
         if (!ModelFacade.isANamespace(namespace)) {
             throw new IllegalArgumentException();
         }
-	_model = namespace;
+	model = namespace;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -232,7 +235,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (ModelFacade.isARelationship(edge)) {
 	    return CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
 	}
-	LOG.error("TODO getSourcePort");
+	LOG.error("TODO: getSourcePort");
 	return null;
     }
 
@@ -243,9 +246,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     public Object getDestPort(Object edge) {
 	if (ModelFacade.isARelationship(edge)) {
-	    return CoreHelper.getHelper().getDestination(/*(MRelationship)*/edge);
+	    return CoreHelper.getHelper().getDestination(edge);
 	}
-	LOG.error("TODO getSourcePort");
+	LOG.error("TODO: getSourcePort");
 	return null;
     }
 
@@ -259,10 +262,10 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Return true if the given object is a valid node in this graph.
      */
     public boolean canAddNode(Object node) {
-        if (super.canAddNode(node) && !_nodes.contains(node)) {
+        if (super.canAddNode(node) && !containsNode(node)) {
             return true;
         }
-	if (_nodes.contains(node)) {
+	if (containsNode(node)) {
 	    return false;
 	}
         // TODO: This logic may well be worth moving into the model component.
@@ -283,7 +286,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (edge == null) {
 	    return false;
 	}
-	if (_edges.contains(edge)) {
+	if (containsEdge(edge)) {
 	    return false;
 	}
 	Object end0 = null, end1 = null;
@@ -331,10 +334,10 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (end0 == null || end1 == null) {
 	    return false;	
 	}
-	if (!_nodes.contains(end0)) {
+	if (!containsNode(end0)) {
 	    return false;
 	}
-	if (!_nodes.contains(end1)) {
+	if (!containsNode(end1)) {
 	    return false;	
 	}
         
@@ -350,10 +353,10 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     public void addNode(Object node) {
 	LOG.debug("adding class node!!");
 	if (!canAddNode(node)) return;
-	_nodes.addElement(node);
+	getNodes().addElement(node);
 	if (ModelFacade.isAModelElement(node)
 	        && ModelFacade.getNamespace(node) == null) {
-            ModelFacade.addOwnedElement(_model, node);
+            ModelFacade.addOwnedElement(model, node);
 	}
 
 	fireNodeAdded(node);
@@ -368,11 +371,11 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     public void addEdge(Object edge) {
         LOG.debug("adding class edge!!!!!!");
         if (!canAddEdge(edge)) return;
-        _edges.addElement(edge);
+        getEdges().addElement(edge);
         // TODO: assumes public
         if (ModelFacade.isAModelElement(edge) 
                 && ModelFacade.getNamespace(edge) == null) {
-	    ModelFacade.addOwnedElement(_model, edge);
+	    ModelFacade.addOwnedElement(model, edge);
         }
         fireEdgeAdded(edge);
     }
