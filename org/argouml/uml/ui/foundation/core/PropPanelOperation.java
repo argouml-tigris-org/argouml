@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import javax.swing.Action;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
@@ -52,11 +51,6 @@ import org.tigris.swidgets.GridLayout2;
  * A property panel for operations. 
  */
 public class PropPanelOperation extends PropPanelFeature {
-
-    private static UMLClassifierParameterListModel parameterListModel = 
-        new UMLClassifierParameterListModel();
-
-    private JScrollPane parameterScroll;
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -105,7 +99,8 @@ public class PropPanelOperation extends PropPanelFeature {
         addSeperator();
 
         addField(Translator.localize("label.parameters"),
-                getParameterScroll());
+                new JScrollPane(new UMLLinkedList(
+                new UMLClassifierParameterListModel())));
 
         addField(Translator.localize("label.raisedsignals"),
                new JScrollPane(new UMLLinkedList(
@@ -283,19 +278,6 @@ public class PropPanelOperation extends PropPanelFeature {
             }
         }
         return namespace;
-    }
-
-    /**
-     * Returns the parameterScroll.
-     * 
-     * @return JScrollPane
-     */
-    public JScrollPane getParameterScroll() {
-        if (parameterScroll == null) {
-            JList list = new UMLLinkedList(parameterListModel);
-            parameterScroll = new JScrollPane(list);
-        }
-        return parameterScroll;
     }
 
 } /* end class PropPanelOperation */
