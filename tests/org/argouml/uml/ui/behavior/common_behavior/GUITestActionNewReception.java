@@ -23,7 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.uml.ui.behavior.common_behavior;
 
 import javax.swing.Action;
 
@@ -32,17 +32,18 @@ import junit.framework.TestCase;
 import org.argouml.i18n.Translator;
 
 
+
 /**
  * 
  * @author mkl
  *
  */
-public class TestActionAddAttribute extends TestCase {
-
+public class GUITestActionNewReception extends TestCase {
     
-    public TestActionAddAttribute(String arg0) {
+    public GUITestActionNewReception(String arg0) {
         super(arg0);
     }
+
     /*
      * @see TestCase#setUp()
      */
@@ -51,8 +52,12 @@ public class TestActionAddAttribute extends TestCase {
         Translator.init();
     }
     
+    /** test whether the icon of this action can be found 
+     * 
+     */
     public void testHasIcon() {
-        ActionAddAttribute action = ActionAddAttribute.getSingleton();
+        ActionNewReception action = new ActionNewReception();
+        
         assertNotNull(action.getValue(Action.SMALL_ICON));
     }
 
