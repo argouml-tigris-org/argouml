@@ -21,7 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui;
+package org.argouml.uml.ui.behavior.collaborations;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
@@ -30,6 +30,8 @@ import java.util.Iterator;
 import javax.swing.JPopupMenu;
 
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
@@ -40,13 +42,13 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  * 
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLMessagesInteractionListModel extends UMLModelElementListModel2 {
+public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLMessagesInteractionListModel.
+     * Constructor for UMLInteractionMessagesListModel.
      * @param container
      */
-    public UMLMessagesInteractionListModel(UMLUserInterfaceContainer container) {
+    public UMLInteractionMessagesListModel(UMLUserInterfaceContainer container) {
         super(container);
     }
 
