@@ -671,7 +671,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      *    @param panelCount number of horizontal panels
      *    @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002), replaced by
      *                {@link #PropPanel(String, ImageIcon, Orientation)}
-     *                I propose to remove this by version 0.13.7 (Bob Tarling)
+     *                I propose to remove this by version 0.15 (Bob Tarling)
      */
     public PropPanel(String title, int panelCount) {
         this(title, null, panelCount);
@@ -686,7 +686,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      *                {@link #PropPanel(????)}. Use of GridBagLayout is being
      *                dropped in favour of
      *                {@link org.argouml.swingext.LabelledLayout}
-     *                I propose to remove this by version 0.13.7 (Bob Tarling)
+     *                I propose to remove this by version 0.15 (Bob Tarling)
      */
     public PropPanel(String title, ImageIcon icon, int panelCount) {
         super(title);
@@ -725,7 +725,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
      *         GridBagConstraints is no longer used as a prop panel layout,
      *             replaced by addField(label, component) - Labelled layout method.
-     *                I propose to remove this by version 0.13.7 (Bob Tarling)
+     *                I propose to remove this by version 0.15 (Bob Tarling)
      */
     public void addCaption(Component component, int row, int panel, double weighty) {
         if (orientation == Vertical.getInstance()) {
@@ -752,7 +752,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
      *         GridBagConstraints is no longer used as a prop panel layout,
      *             replaced by addField(label, component) - Labelled layout method
-     *                I propose to remove this by version 0.13.7 (Bob Tarling)
+     *                I propose to remove this by version 0.15 (Bob Tarling)
      */
     public void addCaption(String label, int row, int panel, double weighty) {
         addCaption(new JLabel(localize(label)), row, panel, weighty);
@@ -769,7 +769,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
      *         GridBagConstraints is no longer used as a prop panel layout,
      *             replaced by addField(label, component) - Labelled layout method.
-     *                I propose to remove this by version 0.13.7 (Bob Tarling)
+     *                I propose to remove this by version 0.15 (Bob Tarling)
      */
     public void addField(Component component, int row, int panel, double weighty) {
         if (orientation == Vertical.getInstance()) {
