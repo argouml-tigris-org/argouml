@@ -97,6 +97,11 @@
 	            value="Remove line from old style header format. Use @author tag."/>
         </module>
 
+        <module name="GenericIllegalRegexp">
+            <property name="format" value="\s+$"/>
+            <property name="message" value="Line has trailing spaces."/>
+        </module>
+
         <module name="HiddenField"/>
         <module name="HideUtilityClassConstructor"/>
 
@@ -192,16 +197,50 @@
         <module name="WhitespaceAfter"/>
         <module name="WhitespaceAround"/>
 
+		<!-- Formatting of Javadoc comments.
+		
+		These rules contains some suggested formatting rules.
+		If you don't like them, please tell me (Linus) why!
+		
+		-->
+
+        <module name="GenericIllegalRegexp">
+            <property name="format" value="^\s*/\*\*.*\S"/>
+            <property name="message" value="Javadoc first sentence on same line as opening comment."/>
+        </module>
+
+        <module name="GenericIllegalRegexp">
+            <property name="format" value="^\s*\*.*\*/"/>
+            <property name="message" value="Javadoc end not on line by itself."/>
+        </module>
+
+        <module name="GenericIllegalRegexp">
+            <!-- Allow: a, code, em, img, li, ol, p, pre, strong, ul -->
+            <!-- The following HTML tags are among others forbidden by this: 
+                 Fonts: basefont, font, b, i, s, strike, u, tt, big, small, sub, sup, blink.
+                 Comments: xmp, listing, plaintext, comment
+                 Images: AREA, MAP, SPACER
+                 Lines and paragraphs: br, center, hr, nobr, wbr, blockquote, </p>
+                 lists: dir, menu, dl, dt, dd
+                 Logical: h1-h6, ins, del, cite, address, samp, kbd, var, dfn
+                 All tags to support forms, frames, scripts, sounds, applets, css, embedded objects.
+              -->
+            <property name="format" value="^\s*\*.*&lt;([^aceilopsu/]|a[^ >]|c[^o]|co[^d]|cod[^e]|code[^>]|e[^m]|em[^>]|i[^m]|im[^g]|img|l[^i]|li[^>]|o[^l]|ol[^>]|p[^r>]|pr[^e]|pre[^>]|s[^t]|st[^r]|str[^o]|stro[^n]|stron[^g]|strong[^>]|u[^l]|ul[^>])"/>
+            <property name="message" value="Strange HTML tag. There should be no reason to use this tag."/>
+        </module>
+
+        <module name="GenericIllegalRegexp">
+            <!-- Allow closing: a, code, em, ol, pre, strong, ul -->
+            <property name="format" value="^\s*\*.*&lt;/([^aceiopsu]|a[^>]|c[^o]|co[^d]|cod[^e]|code[^>]|e[^m]|em[^>]|o[^l]|ol[^>]|p[^r]|pr[^e]|pre[^>]|s[^t]|st[^r]|str[^o]|stro[^n]|stron[^g]|strong[^>]|u[^l]|ul[^>])"/>
+            <property name="message" value="End of strange HTML tag. There should be no reason to use this end tag."/>
+        </module>
+
+
 	<!-- Over the top also in the paranoid version:
 
         <module name="DesignForExtension"/>
 
         <module name="FinalParameters"/>
-
-        <module name="GenericIllegalRegexp">
-            <property name="format" value="\s+$"/>
-            <property name="message" value="Line has trailing spaces."/>
-        </module>
 	-->
 
     </module>
