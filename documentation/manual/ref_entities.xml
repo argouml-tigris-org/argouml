@@ -971,10 +971,13 @@ in the explorer.
 
             <caution>
               <para>
-<!-- Issue 2112 -->
-In version 0.18 the stereotype <literal>enumeration</literal> must be created
-before it can be used.
-</para>
+				<!-- Issue 2112 -->
+				In &argouml; version 0.18 the stereotype 
+				<literal>enumeration</literal> must be created
+			    before it can be used.
+			    However, by creating an Enumeration Literal, the stereotype 
+			    <literal>enumeration</literal> is created automatically.
+			  </para>
             </caution>
           </listitem>
 
@@ -1086,6 +1089,36 @@ In effect all datatypes are both
             <para>
  			  Records the visibility for the Datatype.
             </para>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Client Dependencies -->
+
+        <varlistentry>
+          <term><literal>Client Dependencies</literal></term>
+
+          <listitem><para>Text area. Lists any elements
+            that depend on this datatype.</para>
+
+          <caution><para>It is not clear that dependencies between
+            datatypes makes much
+            sense.</para></caution>
+<!-- TODO: Shouldn't it be removed then? See enhancement issue ... -->
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Supplier Dependencies -->
+
+        <varlistentry>
+          <term><literal>Supplier Dependencies</literal></term>
+
+          <listitem><para>Text area. Lists any elements
+            that this datatype depends on.</para>
+
+          <caution><para>It is not clear that dependencies between
+            datatypes makes much
+            sense.</para></caution>
+<!-- TODO: Shouldn't it be removed then? See enhancement issue ... -->
           </listitem>
         </varlistentry>
 
@@ -1205,71 +1238,6 @@ one.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Dependency -->
-
-        <varlistentry>
-          <term><literal>Dependency</literal></term>
-
-          <listitem>
-            <para>Text box.
-Lists any abstract classes or interfaces realized by this datatype. 
-By default this is empty.
-</para> 
-
-            <caution>
-              <para>
-It is not clear that Dependency datatypes makes much sence.
-</para>
-            </caution>
-<!-- TODO: Shouldn't it be removed then? See enhancement issue ... -->
-
-
-<!-- Issue: 2117
-          <para>&Button1; click navigates to any entry (but see the warning
-            below), &button2; gives a pop up menu with five entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Where an abstraction
-              dependency exists, navigate to it (but see warning
-              below).</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new abstraction
-              dependency.</para>
-
-            <note><para>&argouml; does not navigate to the new abstraction,
-              and this field shows the name [empty], whatever name you
-              choose to give the abstraction.</para></note>
-
-            <tip><para>While adding abstractions is possible, only the
-              supplier end is created, and there is no way to supply the
-              client end. The value of such abstractions is therefore
-              minimal.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. Where an abstraction
-              has been added this removes it completely from the
-              model.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more abstractions, and the abstraction selected
-              is not at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more abstractions listed, and the abstraction
-              selected is not at the bottom. It is moved down
-              one.</para></listitem>
-          </itemizedlist>
-
-          <tip><para>In principle a datatype could realize some
-            other artifact, but it would be unusual. Best
-            avoided.</para></tip>
-
-          <warning><para>&Button1; click on the default entry navigates to
-            the most recently selected to-do item in the to-do pane. This
-            seems to be a bug in &argouml;.</para></warning>
--->
-          </listitem>
-        </varlistentry>
-
         <!-- Entry for Operations -->
 
         <varlistentry>
@@ -1369,13 +1337,9 @@ It is not clear that Dependency datatypes makes much sence.
       values</emphasis>.</para>
 
     <para>
-New stereotypes are added from 
-<!-- Issue 1761, (Issue: 2121)
-the model property tab (see <xref linkend="s1.ref.model"/>, 
-the package property tab (see <xref linkend="s1.ref.package"/>) or 
--->
-the stereotype property tab itself (see
-        below). Properties of existing stereotypes can be reached by selecting
+	  New stereotypes are added from 
+	  the property tab of almost any artifact.
+	  Properties of existing stereotypes can be reached by selecting
         the property tab for any artifact with that stereotype and using the
         navstereo button (<guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
@@ -1447,17 +1411,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           <warning><para>You can edit this entry, but it has no effect and
             when you return to the entry it will be restored to its
             original value.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1610,20 +1563,35 @@ There is no
 Drop down selector.
 Any stereotype must be derived
             from one of the metaclasses in the UML metamodel
-            <literal>Abstraction</literal>, <literal>Association</literal>,
+            <literal>Abstraction</literal>, 
+            <literal>Actor</literal>, 
+            <literal>Association</literal>,
             <literal>AssociationEnd</literal>,
+            <literal>Attribute</literal>, 
             <literal>BehavioralFeature</literal>,
-            <literal>CallEvent</literal>, <literal>Class</literal>,
+            <literal>CallEvent</literal>, 
+            <literal>Class</literal>,
             <literal>Classifier</literal>,
-            <literal>Collaboration</literal>, <literal>Comment</literal>,
-            <literal>Component</literal>, <literal>Constraint</literal>,
-            <literal>DataType</literal>, <literal>Dependency</literal>,
-            <literal>Flow</literal>, <literal>Generalization</literal>,
-<!-- TODO: Check for completeness. 
-E.g. Link is not listed here, but implemented. -->
-            <literal>Model</literal>, <literal>ModelElement</literal>,
-            <literal>ObjectFlowState</literal>, <literal>Package</literal>,
-            <literal>Permission</literal>, <literal>Subsystem</literal> and
+            <literal>Collaboration</literal>, 
+            <literal>Comment</literal>,
+            <literal>Component</literal>, 
+            <literal>Constraint</literal>,
+            <literal>DataType</literal>, 
+            <literal>Exception</literal>,             
+            <literal>Flow</literal>, 
+            <literal>Generalization</literal>,
+            <literal>Interface</literal>,
+            <literal>Link</literal>,  
+            <literal>Model</literal>, 
+            <literal>ModelElement</literal>,
+            <literal>Node</literal>, 
+            <literal>NodeInstance</literal>, 
+            <literal>ObjectFlowState</literal>, 
+            <literal>Operation</literal>, 
+            <literal>Package</literal>,
+            <literal>Permission</literal>, 
+            <literal>Signal</literal>, 
+            <literal>Subsystem</literal> and
             <literal>Usage</literal>) or the artifact classes
             that derive from them. The stereotype will then
             be available to artifacts that derive from that same metaclass
@@ -1670,21 +1638,21 @@ Records the namespace for the
             </indexterm>
 
             <para>Check box, with entries
-<literal>abstract</literal>,
-<literal>final</literal> and
-<literal>root</literal>.
+<literal>Abstract</literal>,
+<literal>Leaf</literal> and
+<literal>Root</literal>.
 </para>
 
           <itemizedlist>
-            <listitem><para><literal>abstract</literal> is used to declare
+            <listitem><para><literal>Abstract</literal> is used to declare
               that artifacts that use this stereotype cannot be
               instantiated, but must always be
               specialized.</para></listitem>
 
               <listitem>
-                <para><literal>final</literal> indicates that
+                <para><literal>Leaf</literal> indicates that
               artifacts that use this stereotype can have no further
-              sub-types, while <literal>root</literal> indicates it is a
+              sub-types, while <literal>Root</literal> indicates it is a
               top level artifact.</para></listitem>
           </itemizedlist>
 
@@ -1707,36 +1675,6 @@ Records the namespace for the
 
           <caution><para>It is not clear that generalizing stereotypes makes
             much sense.</para></caution>
-
-          <para>&Button1; click navigates to the generalization and opens
-            its property tab.</para>
-
-          <para>&Button2; click yields a drop down menu with three
-            entries</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              generalization. The "Add/Remove Generalizations" dialog box opens.
-<!-- TODO: Where is this described? Provide a link to it! -->
-              </para>
-
-<!-- TODO: Is this nonsense?
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip>
--->
-            </listitem>
-
-            <listitem><para><literal>Delete</literal>. The 
-              generalization 
-              is deleted.
-              </para>
-            </listitem>
-
-            </itemizedlist>
           </listitem>
         </varlistentry>
 
@@ -1750,29 +1688,6 @@ Records the namespace for the
 
           <caution><para>It is not clear that specializing stereotypes makes
             much sense.</para></caution>
-
-          <para>&button1; click navigates to the specialised stereotype and opens
-            its property tab.</para>
-
-          <para>&Button2; click yields a drop down menu with three
-            entries</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected specialization.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              specialization. The "Add/Remove Specializations" dialog box opens.
-<!-- TODO: Where is this described? Provide a link to it! -->
-              </para></listitem>
-
-             <listitem><para><literal>Delete</literal>. The link
-              specialization
-              is deleted.</para>
-
-             </listitem>
-
-            </itemizedlist>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -1790,7 +1705,8 @@ Records the namespace for the
     </indexterm>
 
     <para>The UML standard specifies eight principle diagrams, all of which are
-      supported by &argouml;.</para>
+      supported by &argouml; 
+      (except currently in V0.18 the sequence diagram).</para>
 
     <itemizedlist>
       <listitem><para><emphasis>Use case diagram</emphasis>. Used to capture
@@ -1807,8 +1723,9 @@ Records the namespace for the
 
       <para>The &argouml; class diagram provides support for class and package
         diagrams. See <xref linkend="ch.ref.entclass"/> for details of the
-        artifacts it supports. The current implementation has no support for
-        object diagrams.</para></listitem>
+        artifacts it supports. 
+        The object diagram is suported on the Deployment diagram.
+      </para></listitem>
 
       <listitem><para><emphasis>Behavior diagrams</emphasis>. There are four
         such diagrams (or strictly speaking, five, since the use case diagram
@@ -1846,7 +1763,8 @@ Records the namespace for the
           <listitem><para><emphasis>Collaboration diagram</emphasis>. Shows the
             interactions (typically messages or procedure calls) between
             instances of classes (objects) and actors against the structural
-            relationships between those instances. Particularly useful where it
+            relationships between those instances. 
+            Particularly suitable where it
             is useful to relate interactions to the static structure of the
             system. See <xref linkend="ch.ref.entcollab"/> for details of the
             &argouml; collaboration diagram and the artifacts it
@@ -1862,7 +1780,8 @@ Records the namespace for the
         diagram</emphasis>.</para>
 
       <para>The &argouml; deployment diagram provides support for both
-        component and deployment diagrams. See <xref
+        component and deployment diagrams, and additionally for object diagrams. 
+        See <xref
         linkend="ch.ref.entdeploy"/> for details of the diagram and the
         artifacts it supports.</para></listitem>
     </itemizedlist>
@@ -1873,23 +1792,25 @@ Records the namespace for the
       or with the tools on the toolbar 
       (see <xref linkend="ch.ref.toolbar.create"/>).</para>
 
-    <note><para>&argouml; uses its deployment diagram to create both UML 1.3
-      component and deployment diagrams.</para></note>
+    <note><para>&argouml; uses its deployment diagram to create the UML 1.3
+      component, deployment and object diagrams.</para></note>
 
-    <caution><para>State and activity diagrams are associated with a particular
-      class, and can only be created when a class has been selected. 
+    <caution><para>Statechart and activity diagrams are associated with a 
+      particular class or operation (or the latter also with a package), 
+      and can only be created when this modelelement has been selected. 
     </para></caution>
 
-    <warning><para>In version 0.14, there is no support for the UML 1.3 object diagram
-      as a variant of the class diagram. However, it is possible to create simple object
+    <warning><para>In &argouml; version 0.18, the UML 1.3 object diagram
+      as a variant of the class diagram is not directly supported. 
+      However, it is possible to create simple object
       diagrams within the &argouml; deployment diagram.</para>
     </warning>
 
     <caution>
       <para>
-        Up until the version 0.14 the sequence diagrams were implemented 
+        Up until the &argouml; version 0.14 the sequence diagrams were implemented 
         incorrectly w.r.t. the UML model.
-        For this reason it is in 0.14 no longer possible to create sequence
+        For this reason it is in 0.18 no longer possible to create sequence
         diagrams.
         In an upcoming release correctly implemented sequence diagrams 
         will be available.
@@ -1936,6 +1857,43 @@ Records the namespace for the
       </variablelist>
 
     </sect2>
+
+	<!-- Diagram property tools -->
+
+    <sect2>
+      <title>Diagram Property Toolbar</title>
+      <variablelist>
+
+        <!-- Entry for Go up button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/navigate_up.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go
+            up</literal></term>
+
+          <listitem><para>Navigate up through the package structure of the
+            model.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for Delete button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/property_delete.gif"/>
+          </imageobject></inlinemediaobject></guiicon>
+            <literal>Delete</literal></term>
+
+          <listitem><para>This deletes the diagram from the model. 
+            As a consequence, 
+            in case of a statechart diagram or an activity diagram, 
+            all contained elements are deleted, too.</para></listitem>
+        </varlistentry>
+      </variablelist>
+
+	</sect2>
 
     <!-- Fields in the properties tab -->
 
