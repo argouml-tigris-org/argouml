@@ -40,7 +40,6 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
-import javax.swing.ToolTipManager;
 import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Logger;
@@ -410,8 +409,9 @@ class ArgoEditor extends Editor {
      * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent me) {
-	if (_activeTextEditor != null)
-	    _activeTextEditor.requestFocus();         
+	if (getActiveTextEditor() != null) {
+            getActiveTextEditor().requestFocus();         
+        }
 	translateMouseEvent(me);
 	Globals.curEditor(this);
 	mode((FigModifyingMode) Globals.mode());
@@ -426,18 +426,19 @@ class ArgoEditor extends Editor {
 	translateMouseEvent(me);
 	Globals.curEditor(this);
 	setUnderMouse(me);
-	if (_curFig != null && Globals.getShowFigTips()) {
-	    String tip = _curFig.getTipString(me);
-	    if (tip != null && (getAwtComponent() instanceof JComponent)) {
-	        JComponent c = (JComponent) getAwtComponent();
+        Fig currentFig = getCurrentFig();
+	if (currentFig != null && Globals.getShowFigTips()) {
+	    String tip = currentFig.getTipString(me);
+	    if (tip != null && (getJComponent() != null)) {
+	        JComponent c = getJComponent();
 	        if (c.getToolTipText() == null 
 		    || !(c.getToolTipText().equals(tip))) {
 	            c.setToolTipText(tip);
 	        }
             }
-	} else if (getAwtComponent() instanceof JComponent) {
-	    if (((JComponent) getAwtComponent()).getToolTipText() != null)
-		((JComponent) getAwtComponent()).setToolTipText(null); //was ""
+	} else if (getJComponent() != null && 
+                getJComponent().getToolTipText() != null) {
+            getJComponent().setToolTipText(null); //was ""
 	}
 
 	_selectionManager.mouseMoved(me);

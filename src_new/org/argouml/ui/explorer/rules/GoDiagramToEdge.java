@@ -37,7 +37,7 @@ public class GoDiagramToEdge extends AbstractPerspectiveRule{
 
     public Collection getChildren(Object parent) { 
 	if (parent instanceof Diagram) {
-	    return ((Diagram) parent).getEdges();
+	    return ((Diagram) parent).getEdges(null);
 	}
 	return null;
     }

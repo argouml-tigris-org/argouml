@@ -32,6 +32,7 @@ package org.argouml.uml.diagram.static_structure.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -90,10 +91,10 @@ public class FigInstance extends FigNodeModelElement {
 
     public Object clone() {
 	FigInstance figClone = (FigInstance) super.clone();
-	Vector v = figClone.getFigs();
-	figClone._bigPort = (FigRect) v.elementAt(0);
-	figClone._name = (FigText) v.elementAt(1);
-	figClone._attr = (FigText) v.elementAt(2);
+	Iterator iter = figClone.getFigs(null).iterator();
+	figClone._bigPort = (FigRect)iter.next();
+	figClone._name = (FigText)iter.next();
+	figClone._attr = (FigText)iter.next();
 	return figClone;
     }
 

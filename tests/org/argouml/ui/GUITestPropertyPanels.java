@@ -250,8 +250,8 @@ class ChildGenModelElements implements ChildGenerator {
         }
         
         if (o instanceof Diagram) {
-            Vector figs = ((Diagram) o).getLayer().getContents();
-            if (figs != null) return figs.elements();
+            Collection figs = ((Diagram) o).getLayer().getContents(null);
+            if (figs != null) return new Vector(figs).elements();
         }
         
         if (!ModelFacade.isAModelElement(o))

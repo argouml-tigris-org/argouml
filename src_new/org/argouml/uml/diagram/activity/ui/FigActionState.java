@@ -31,6 +31,7 @@ package org.argouml.uml.diagram.activity.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
@@ -96,10 +97,10 @@ public class FigActionState extends FigStateVertex {
 
     public Object clone() {
 	FigActionState figClone = (FigActionState) super.clone();
-	Vector v = figClone.getFigs();
-	figClone._bigPort = (FigRRect) v.elementAt(0);
-	figClone._cover = (FigRRect) v.elementAt(1);
-	figClone._name = (FigText) v.elementAt(2);
+	Iterator it = figClone.getFigs(null).iterator();
+	figClone._bigPort = (FigRRect) it.next();
+	figClone._cover = (FigRRect) it.next();
+	figClone._name = (FigText) it.next();
 	return figClone;
     }
 
