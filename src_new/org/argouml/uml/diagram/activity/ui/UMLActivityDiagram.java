@@ -61,18 +61,18 @@ public class UMLActivityDiagram extends UMLDiagram {
     ////////////////
     // actions for toolbar
 
-    private static Action actionState;
-    private static Action actionStartPseudoState;
-    private static Action actionFinalPseudoState;
-    private static Action actionJunctionPseudoState;
-    private static Action actionBranchPseudoState;
-    private static Action actionForkPseudoState;
-    private static Action actionJoinPseudoState;
-    private static Action actionTransition;
-    // private static Action actionNewSwimlane;
-    private static Action actionCallState;
-    private static Action actionObjectFlowState;
-    private static Action actionSubactivityState;
+    private Action actionState;
+    private Action actionStartPseudoState;
+    private Action actionFinalPseudoState;
+    private Action actionJunctionPseudoState;
+    private Action actionBranchPseudoState;
+    private Action actionForkPseudoState;
+    private Action actionJoinPseudoState;
+    private Action actionTransition;
+    // private Action actionNewSwimlane;
+    private Action actionCallState;
+    private Action actionObjectFlowState;
+    private Action actionSubactivityState;
 
     ////////////////////////////////////////////////////////////////
     // contructors
