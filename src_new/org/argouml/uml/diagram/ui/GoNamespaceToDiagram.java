@@ -43,7 +43,7 @@ import ru.novosoft.uml.foundation.core.MNamespace;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 30, 2002
  */
-public class GoModelToDiagram extends AbstractGoRule {
+public class GoNamespaceToDiagram extends AbstractGoRule {
 
     public String getRuleName() {
         return Argo.localize("Tree", "misc.package.diagram");

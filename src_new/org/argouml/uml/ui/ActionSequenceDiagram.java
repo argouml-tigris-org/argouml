@@ -27,6 +27,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -36,6 +37,7 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.model_management.MPackage;
 
 /** Action to add a new sequence diagram.
  * @stereotype singleton
@@ -66,7 +68,7 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
         }
         MNamespace ns = (MNamespace)handle;
         MCollaboration c = null;
-        Object target = ProjectBrowser.getInstance().getTarget();
+        Object target = TargetManager.getInstance().getModelTarget();
         if (target instanceof MOperation) {
             c =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
@@ -115,7 +117,8 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
             ns instanceof MCollaboration
                 || ns instanceof MClassifier
                 || ns
-                    == ProjectManager.getManager().getCurrentProject().getModel());
+                    == ProjectManager.getManager().getCurrentProject().getModel() ||
+                    ns instanceof MPackage);
     }
 
 } /* end class ActionSequenceDiagram */

@@ -636,7 +636,7 @@ public class NavigatorPane
         // ---------------- building the perspectives
 
         packageCentric.addSubTreeModel(new GoProjectToModel());
-        packageCentric.addSubTreeModel(new GoModelToDiagram());
+        packageCentric.addSubTreeModel(new GoNamespaceToDiagram());
         packageCentric.addSubTreeModel(new GoModelElementToComment());
         packageCentric.addSubTreeModel(modelToPackages);
         packageCentric.addSubTreeModel(modelToClassifiers);
@@ -686,12 +686,12 @@ public class NavigatorPane
         inheritanceCentric.addSubTreeModel(new GoGenElementToDerived());
 
         classAssociation.addSubTreeModel(new GoProjectToModel());
-        classAssociation.addSubTreeModel(new GoModelToDiagram());
+        classAssociation.addSubTreeModel(new GoNamespaceToDiagram());
         classAssociation.addSubTreeModel(new GoModelToClass());
         classAssociation.addSubTreeModel(new GoClassToAssociatedClass());
 
         navAssociation.addSubTreeModel(new GoProjectToModel());
-        navAssociation.addSubTreeModel(new GoModelToDiagram());
+        navAssociation.addSubTreeModel(new GoNamespaceToDiagram());
         navAssociation.addSubTreeModel(new GoModelToClass());
         navAssociation.addSubTreeModel(new GoClassToNavigableClass());
 
@@ -735,7 +735,7 @@ public class NavigatorPane
         machineToTransition.addSubTreeModel(new GoMachineToTrans());
 
         classCentric.addSubTreeModel(new GoProjectToModel());
-        classCentric.addSubTreeModel(new GoModelToDiagram());
+        classCentric.addSubTreeModel(new GoNamespaceToDiagram());
         classCentric.addSubTreeModel(modelToPackages);
         classCentric.addSubTreeModel(modelToClassifiers);
         classCentric.addSubTreeModel(new GoClassToSummary());
