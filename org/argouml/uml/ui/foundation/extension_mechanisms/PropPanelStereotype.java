@@ -87,7 +87,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
         addField("Specializations:", new JScrollPane(derivedList));
 
         new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
-        new PropPanelButton(this, buttonPanel, _stereotypeIcon, Translator.localize("UMLMenu", "button.add-new-stereotype"), "newStereotype", null);
+        new PropPanelButton(this, buttonPanel, _stereotypeIcon, Translator.localize("UMLMenu", "button.new-stereotype"), "newStereotype", null);
         new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-package"), "removeElement", null);
     }
 

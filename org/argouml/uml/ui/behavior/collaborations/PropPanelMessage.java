@@ -117,7 +117,7 @@ public class PropPanelMessage extends PropPanelModelElement {
 			    "navigateInteraction",
 			    null);
 	new PropPanelButton(this, buttonPanel, _actionIcon,
-			    Translator.localize("UMLMenu", "button.add-action"),
+			    Translator.localize("UMLMenu", "button.new-action"),
 			    "addAction",
 			    "isAddActionEnabled");
 	// ActionNewAction.SINGLETON.setTarget((MModelElement)getTarget());

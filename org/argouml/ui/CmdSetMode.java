@@ -7,6 +7,8 @@ import javax.swing.Action;
 import javax.swing.ImageIcon;
 
 import org.argouml.i18n.Translator;
+import org.tigris.gef.base.ModeBroom;
+import org.tigris.gef.base.ModeSelect;
 
 /**
  * Extends GEF CmdSetMode to add additional metadata such as tooltips.
@@ -14,6 +16,8 @@ import org.argouml.i18n.Translator;
  * @author Jeremy Jones
 **/
 public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
+
+    private static final String ACTION_PREFIX_KEY = "action.new";
 
     public CmdSetMode(Properties args) {
         super(args);
@@ -69,6 +73,15 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
      * Adds tooltip text to the Action.
      */
     private void putToolTip(String name) {
-        putValue(Action.SHORT_DESCRIPTION, Translator.localize(name));
+        Class desiredModeClass = (Class) getArg("desiredModeClass");
+        if (ModeSelect.class.isAssignableFrom(desiredModeClass)
+            || ModeBroom.class.isAssignableFrom(desiredModeClass)) {
+            putValue(Action.SHORT_DESCRIPTION, Translator.localize(name));
+        }
+        else {
+            putValue(Action.SHORT_DESCRIPTION, 
+	    	Translator.localize(ACTION_PREFIX_KEY) + " " 
+	    	+ Translator.localize(name));
+        }
     }
 }

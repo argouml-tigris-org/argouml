@@ -100,8 +100,8 @@ public class PropPanelParameter extends PropPanelModelElement {
 	addField("Kind:", kindPanel);
 
 	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-	new PropPanelButton(this, buttonPanel, _parameterIcon, Translator.localize("UMLMenu", "button.add-parameter"), "addParameter", null);
-	//	new PropPanelButton(this,buttonPanel,_dataTypeIcon, Translator.localize("UMLMenu", "button.add-datatype"),"addDataType",null);
+	new PropPanelButton(this, buttonPanel, _parameterIcon, Translator.localize("UMLMenu", "button.new-parameter"), "addParameter", null);
+	//	new PropPanelButton(this,buttonPanel,_dataTypeIcon, Translator.localize("UMLMenu", "button.new-datatype"),"addDataType",null);
 	new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-parameter"), "removeElement", null);
 
     }

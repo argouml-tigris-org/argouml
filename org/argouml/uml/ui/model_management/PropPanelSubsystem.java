@@ -54,7 +54,7 @@ public class PropPanelSubsystem extends PropPanelPackage
 
         addField(Translator.localize("UMLMenu", "label.available-features"), getFeatureScroll());
 
-        new PropPanelButton(this, buttonPanel, _addOpIcon, Translator.localize("UMLMenu", "button.add-operation"), "addOperation", null);
+        new PropPanelButton(this, buttonPanel, _addOpIcon, Translator.localize("UMLMenu", "button.new-operation"), "addOperation", null);
     
     }
 

@@ -96,7 +96,7 @@ public class PropPanelActor extends PropPanelClassifier {
                 Translator.localize("UMLMenu", "button.go-up"), "navigateUp",
                             null);
         new PropPanelButton(this, buttonPanel, _actorIcon,
-                Translator.localize("UMLMenu", "button.add-actor"), "newActor",
+                Translator.localize("UMLMenu", "button.new-actor"), "newActor",
                             null);
         new PropPanelButton(this, buttonPanel, _deleteIcon,
                             localize("Delete"), "removeElement",

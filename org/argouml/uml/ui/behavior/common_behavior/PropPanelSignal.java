@@ -81,8 +81,8 @@ public class PropPanelSignal extends PropPanelModelElement {
         addField(Translator.localize("UMLMenu", "label.receptions"), receiverScroll);
 
         new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
-        new PropPanelButton(this, buttonPanel, _signalIcon, Translator.localize("UMLMenu", "button.add-signal"), "newSignal", null);
-        new PropPanelButton(this, buttonPanel, _receptionIcon, Translator.localize("UMLMenu", "button.add-reception"), "newReception", null);
+        new PropPanelButton(this, buttonPanel, _signalIcon, Translator.localize("UMLMenu", "button.new-signal"), "newSignal", null);
+        new PropPanelButton(this, buttonPanel, _receptionIcon, Translator.localize("UMLMenu", "button.new-reception"), "newReception", null);
         new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-signal"), "removeElement", null);
     }
 
