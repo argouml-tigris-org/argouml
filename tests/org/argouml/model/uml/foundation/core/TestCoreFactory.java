@@ -304,6 +304,29 @@ public class TestCoreFactory extends TestCase {
         assertNotNull("dependency removed", depwr.get());
     }
     
+    /** construct a class, with two self associations and delete */
+    public void testDeleteModelelement4() {
+        MModel model = ModelManagementFactory.getFactory().createModel();
+        MClass class1 = CoreFactory.getFactory().buildClass(model);
+        MAssociation assoc1 = 
+            CoreFactory.getFactory().
+            buildAssociation(class1, true, class1, true);
+        MAssociation assoc2 = 
+            CoreFactory.getFactory().
+            buildAssociation(class1, true, class1, true);
+        WeakReference class1wr = new WeakReference(class1);
+        WeakReference assoc1wr = new WeakReference(assoc1);
+        WeakReference assoc2wr = new WeakReference(assoc2);
+        UmlFactory.getFactory().delete(class1);
+        class1 = null;
+        assoc1 = null;
+        assoc2 = null;
+        System.gc();
+        assertNull("class not removed", class1wr.get());
+        assertNull("assoc1 not removed", assoc1wr.get());
+        assertNull("assoc2 not removed", assoc2wr.get());
+    }
+
     public void testBuildConstraint() {
         try {
             CoreFactory.getFactory().buildConstraint(null);
