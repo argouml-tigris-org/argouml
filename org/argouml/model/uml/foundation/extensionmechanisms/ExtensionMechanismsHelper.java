@@ -68,7 +68,6 @@ public class ExtensionMechanismsHelper {
     
     /**
      * Returns all stereotypes in some namespace
-     * @deprecated asking a stereotype from a namespace is 'strange behaviour' 
      */    
     public Collection getStereotypes(MNamespace ns) {
         List l = new ArrayList();
@@ -104,9 +103,6 @@ public class ExtensionMechanismsHelper {
     
     /**
      * Finds a stereotype in some namespace. Returns null if no such stereotype is found.
-     * @deprecated It should not be possible to add stereotypes to namespaces
-     * other then the model. Searching for stereotypes in other namespaces is therefore
-     * 'strange behaviour'.
      */
     public MStereotype getStereotype(MNamespace ns, MStereotype stereo) {
     	String name = stereo.getName();
