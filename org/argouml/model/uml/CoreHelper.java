@@ -636,10 +636,11 @@ public class CoreHelper {
     /**
      * Return all interfaces the given class realizes.<p>
      *
-     * @param classifier is the class
+     * @param cls the classifier
      * @return Collection
      */
-    public Collection getRealizedInterfaces(MClassifier classifier) {
+    public Collection getRealizedInterfaces(Object cls) {
+        MClassifier classifier = (MClassifier) cls;
         if (classifier == null)
             return new ArrayList();
         Iterator it = classifier.getClientDependencies().iterator();
