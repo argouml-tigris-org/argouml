@@ -481,11 +481,11 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
           "\n" +
           "A constructor is an operation with the stereotype <<create>>.\n" +
           "\n" +
-          "By convention (Java, C++) a constructor has the same name as the" +
-          "class, is not static, and returns no value (which means you must" +
-          "remove the return parameter that ArgoUML adds by default)." +
-          "ArgoUML will accept any operation that follows these conventions" +
-          "as a constructor even if it is not stereotyped <<create>>."},
+          "By convention (Java, C++) a constructor has the same name as " +
+          "the class, is not static, and returns no value (which means you " +
+          "must remove the return parameter that ArgoUML adds by default). " +
+          "ArgoUML does still require you to stereotype the operation " +
+          "<<create>>, even if it has those characteristics."},
 
         { "CrNameConfusion_head" ,
                 "Revise Name to Avoid Confusion" },
