@@ -178,7 +178,7 @@ public class Main {
             // If no project was entered on the command line,
             // try to reload the most recent project if that option is true
             String s = Configuration.getString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
-            if (s != "") {
+            if ( ! ("".equals(s) ) ) {
                 File file = new File(s);
                 if (file.exists()) {
                     Argo.log.info("Re-opening project " + s);
@@ -468,30 +468,6 @@ public class Main {
 } /* end Class Main */
 
 
-
-class StartCritics implements Runnable {
-    public void run() {
-        Designer dsgr = Designer.theDesigner();
-        org.argouml.uml.cognitive.critics.Init.init();
-        org.argouml.uml.cognitive.checklist.Init.init(Locale.getDefault());
-        Project p = ProjectManager.getManager().getCurrentProject();
-        dsgr.spawnCritiquer(p);
-        dsgr.setChildGenerator(new ChildGenUML());
-        java.util.Enumeration models = (p.getUserDefinedModels()).elements();
-        while (models.hasMoreElements()) {
-            Object o = models.nextElement();    
-            // UmlModelEventPump.getPump().removeModelEventListener(dsgr, (MModel)o);
-            UmlModelEventPump.getPump().addModelEventListener(dsgr, (MModel)o); 
-        }
-        Argo.log.info("spawned critiquing thread");
-
-        // should be in logon wizard?
-        dsgr.startConsidering(org.argouml.uml.cognitive.critics.CrUML.decINHERITANCE);
-        dsgr.startConsidering(org.argouml.uml.cognitive.critics.CrUML.decCONTAINMENT);
-        Designer._userWorking = true;
-    }
-
-} /* end class StartCritics */
 
 class PostLoad implements Runnable {
     Vector postLoadActions = null;
