@@ -39,16 +39,27 @@ public class TestExtensionMechanismsFactory extends TestCase {
 	"TaggedValue",
     };
 
+    /**
+     * The constructor.
+     * 
+     * @param n the name of the test
+     */
     public TestExtensionMechanismsFactory(String n) {
 	super(n);
     }
 
+    /**
+     * Test if the ExtensionMechanismsFactory is really a singleton.
+     */
     public void testSingleton() {
 	Object o1 = ExtensionMechanismsFactory.getFactory();
 	Object o2 = ExtensionMechanismsFactory.getFactory();
 	assertTrue("Different singletons", o1 == o2);
     }
 
+    /**
+     * Test creation.
+     */
     public void testCreates() {
 
 	String[] objs = {
@@ -62,6 +73,9 @@ public class TestExtensionMechanismsFactory extends TestCase {
 
     }
 
+    /**
+     * Test complete deletion.
+     */
     public void testDeleteComplete() {
 	CheckUMLModelHelper.deleteComplete(
 		   this,

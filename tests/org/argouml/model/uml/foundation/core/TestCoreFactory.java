@@ -80,16 +80,27 @@ public class TestCoreFactory extends TestCase {
 	"Usage",
     };
 
+    /**
+     * The constructor.
+     * 
+     * @param n the name of the test
+     */
     public TestCoreFactory(String n) {
 	super(n);
     }
 
+    /**
+     * Test if the CoreFactory is really a singleton.
+     */
     public void testSingleton() {
 	Object o1 = CoreFactory.getFactory();
 	Object o2 = CoreFactory.getFactory();
 	assertTrue("Different singletons", o1 == o2);
     }
 
+    /**
+     * Test creation.
+     */
     public void testCreates() {
 	// Do not test BehavioralFeature, Feature, PresentationElement,
 	//    StructuralFeature yet.
@@ -137,6 +148,9 @@ public class TestCoreFactory extends TestCase {
 					     objs);
     }
 
+    /**
+     * Test complete deletion.
+     */
     public void testDeleteComplete() {
 	CheckUMLModelHelper.deleteComplete(
 					   this,
@@ -144,6 +158,9 @@ public class TestCoreFactory extends TestCase {
 					   allModelElements);
     }
 
+    /**
+     * Test if deleting a classifier does also delete its association.
+     */
     public void testDeleteClassifier1() {
         MModel model = ModelManagementFactory.getFactory().createModel();
         Object class1 = CoreFactory.getFactory().buildClass(model);
@@ -160,6 +177,9 @@ public class TestCoreFactory extends TestCase {
         assertNull("binary association not removed", assocwr.get());
     }
 
+    /**
+     * Test if deleting a classifier does also delete its association.
+     */
     public void testDeleteClassifierAssociation() {
         MModel model = ModelManagementFactory.getFactory().createModel();
         Object class1 = CoreFactory.getFactory().buildClass(model);
@@ -177,6 +197,9 @@ public class TestCoreFactory extends TestCase {
         assertNotNull("association removed", assocwr.get());
     }
 
+    /**
+     * Test if deleting a class also deletes its dependency.
+     */
     public void testDeleteModelelementDependency() {
         MModel model = ModelManagementFactory.getFactory().createModel();
         Object class1 = CoreFactory.getFactory().buildClass(model);
@@ -193,6 +216,9 @@ public class TestCoreFactory extends TestCase {
         assertNull("binary dependency not removed", depwr.get());
     }
 
+    /**
+     * Test if deleting a class also deletes its dependency.
+     */
     public void testDeleteModelelementDependencyClient() {
         MModel model = ModelManagementFactory.getFactory().createModel();
         Object class1 = CoreFactory.getFactory().buildClass(model);
@@ -211,6 +237,9 @@ public class TestCoreFactory extends TestCase {
         assertNotNull("dependency removed", depwr.get());
     }
 
+    /**
+     * Test if deleting a class also deletes its dependency.
+     */
     public void testDeleteModelelementDependencySupplier() {
         MModel model = ModelManagementFactory.getFactory().createModel();
         Object class1 = CoreFactory.getFactory().buildClass(model);
@@ -229,7 +258,10 @@ public class TestCoreFactory extends TestCase {
         assertNotNull("dependency removed", depwr.get());
     }
 
-    /** construct a class, with two self associations and delete */
+    /** 
+     * Construct a class, with two self associations and delete the class. 
+     * Test if both associations were deleted in the process. 
+     */
     public void testDeleteModelelementClassSelfAssociations() {
         MModel model = ModelManagementFactory.getFactory().createModel();
         Object class1 = CoreFactory.getFactory().buildClass(model);
@@ -250,6 +282,9 @@ public class TestCoreFactory extends TestCase {
         assertNull("assoc2 not removed", assoc2wr.get());
     }
 
+    /**
+     * Test buildConstraint().
+     */
     public void testBuildConstraint() {
 	try {
 	    CoreFactory.getFactory().buildConstraint(null);

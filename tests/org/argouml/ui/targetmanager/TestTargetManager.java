@@ -644,8 +644,8 @@ public class TestTargetManager extends TestCase {
      */
     public void testTransaction() {
 	class Listener implements TargetListener {
-	    int counter = 0;
-	    List list = new ArrayList();
+	    private int counter = 0;
+	    private List list = new ArrayList();
 
 	    /**
 	     * @see TargetListener#targetAdded(TargetEvent)

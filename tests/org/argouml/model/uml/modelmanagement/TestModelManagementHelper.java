@@ -43,6 +43,9 @@ public class TestModelManagementHelper extends TestCase {
 	super(arg0);
     }
 
+    /**
+     * Test getting the metamodel name.
+     */
     public void testGetMetaModelName() {
 	CheckUMLModelHelper.metaModelNameCorrect(
 			 this,
@@ -50,6 +53,9 @@ public class TestModelManagementHelper extends TestCase {
 			 TestModelManagementFactory.getAllModelElements());
     }
 
+    /**
+     * Test stereotypes.
+     */
     public void testIsValidStereoType() {
 	CheckUMLModelHelper.isValidStereoType(
 		      this,

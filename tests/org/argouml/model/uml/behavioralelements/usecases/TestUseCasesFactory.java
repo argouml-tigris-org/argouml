@@ -49,16 +49,27 @@ public class TestUseCasesFactory extends TestCase {
         "UseCaseInstance",
     }; 
 
+    /**
+     * The constructor.
+     * 
+     * @param n the name of the test
+     */
     public TestUseCasesFactory(String n) { super(n); }
 
 
 
+    /**
+     * Test if the UseCasesFactory is really a singleton.
+     */
     public void testSingleton() {
 	Object o1 = UseCasesFactory.getFactory();
 	Object o2 = UseCasesFactory.getFactory();
 	assertTrue("Different singletons", o1 == o2);
     }
 
+    /**
+     * Test creation.
+     */
     public void testCreates() {
 	String [] objs = {
 	    "Actor",
@@ -75,12 +86,18 @@ public class TestUseCasesFactory extends TestCase {
 					     objs);
     }
     
+    /**
+     * Test deleteComplete().
+     */
     public void testDeleteComplete() {
         CheckUMLModelHelper.deleteComplete(this, 
 					   UseCasesFactory.getFactory(), 
 					   allModelElements);
     }
     
+    /**
+     * Test building extensions.
+     */
     public void testBuildExtend1() {
         MUseCase base = UseCasesFactory.getFactory().createUseCase();
         MUseCase extension = UseCasesFactory.getFactory().createUseCase();
