@@ -32,7 +32,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import org.argouml.ui.ActionGoToDetails;
 import org.argouml.ui.ActionGoToEdit;
 import org.argouml.ui.Actions;
 import org.argouml.uml.ui.ActionLayout;

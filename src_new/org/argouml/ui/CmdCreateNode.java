@@ -35,7 +35,8 @@ import org.argouml.model.uml.UmlFactory;
 /** 
  *
  * Command to create nodes with the appropriate modelelement. The modelelement is
- * initialized via the create methods on the uml factories
+ * initialized via the build methods on the uml factories. If there is no no-parameter
+ * build method, the create method corresponding to the modelelement is used.
  * @see org.argouml.model.uml.foundation.core.CoreFactory
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -43,128 +44,148 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 
     private static Vector factoryMethods = new Vector();
     static {
-		Method[] methodArray = UmlFactory.class.getMethods();
-		for (int i = 0 ; i<methodArray.length; i++) {
-			if (methodArray[i].getName().startsWith("get") && 
-				!methodArray[i].getName().equals("getFactory") && 
-				!methodArray[i].getName().equals("getClass")) {
+        Method[] methodArray = UmlFactory.class.getMethods();
+        for (int i = 0; i < methodArray.length; i++) {
+            if (methodArray[i].getName().startsWith("get")
+                && !methodArray[i].getName().equals("getFactory")
+                && !methodArray[i].getName().equals("getClass")) {
                 factoryMethods.add(methodArray[i]);
-			}
-		}
+            }
+        }
     }
-	/**
-	 * Constructor for CmdCreateNode.
-	 * @param args
-	 * @param resource
-	 * @param name
-	 */
-	public CmdCreateNode(Hashtable args, String resource, String name) {
-		super(args, resource, name);
-	}
+    /**
+     * Constructor for CmdCreateNode.
+     * @param args
+     * @param resource
+     * @param name
+     */
+    public CmdCreateNode(Hashtable args, String resource, String name) {
+        super(args, resource, name);
+    }
 
-	/**
-	 * Constructor for CmdCreateNode.
-	 * @param args
-	 * @param name
-	 */
-	public CmdCreateNode(Hashtable args, String name) {
-		super(args, name);
-	}
+    /**
+     * Constructor for CmdCreateNode.
+     * @param args
+     * @param name
+     */
+    public CmdCreateNode(Hashtable args, String name) {
+        super(args, name);
+    }
 
-	/**
-	 * Constructor for CmdCreateNode.
-	 * @param nodeClass
-	 * @param resource
-	 * @param name
-	 */
-	public CmdCreateNode(Class nodeClass, String resource, String name) {
-		super(nodeClass, resource, name);
-	}
+    /**
+     * Constructor for CmdCreateNode.
+     * @param nodeClass
+     * @param resource
+     * @param name
+     */
+    public CmdCreateNode(Class nodeClass, String resource, String name) {
+        super(nodeClass, resource, name);
+    }
 
-	/**
-	 * Constructor for CmdCreateNode.
-	 * @param nodeClass
-	 * @param name
-	 */
-	public CmdCreateNode(Class nodeClass, String name) {
-		super(nodeClass, name);
-	}
+    /**
+     * Constructor for CmdCreateNode.
+     * @param nodeClass
+     * @param name
+     */
+    public CmdCreateNode(Class nodeClass, String name) {
+        super(nodeClass, name);
+    }
 
-	/**
-	 * Constructor for CmdCreateNode.
-	 * @param nodeClass
-	 * @param sticky
-	 * @param resource
-	 * @param name
-	 */
-	public CmdCreateNode(
-                         Class nodeClass,
-                         boolean sticky,
-                         String resource,
-                         String name) {
-		super(nodeClass, sticky, resource, name);
-	}
+    /**
+     * Constructor for CmdCreateNode.
+     * @param nodeClass
+     * @param sticky
+     * @param resource
+     * @param name
+     */
+    public CmdCreateNode(
+        Class nodeClass,
+        boolean sticky,
+        String resource,
+        String name) {
+        super(nodeClass, sticky, resource, name);
+    }
 
-	/**
-	 * Constructor for CmdCreateNode.
-	 * @param nodeClass
-	 * @param sticky
-	 * @param name
-	 */
-	public CmdCreateNode(Class nodeClass, boolean sticky, String name) {
-		super(nodeClass, sticky, name);
-	}
-	
-	
+    /**
+     * Constructor for CmdCreateNode.
+     * @param nodeClass
+     * @param sticky
+     * @param name
+     */
+    public CmdCreateNode(Class nodeClass, boolean sticky, String name) {
+        super(nodeClass, sticky, name);
+    }
 
-	/**
-	 * Creates a modelelement using the uml model factories.
-	 * @see org.tigris.gef.graph.GraphFactory#makeNode()
-	 */
-	public Object makeNode() {
-		// here we should implement usage of the factories
-		// since i am kind of lazy i use reflection
-		
-		// factories
-		
-	
+    /**
+     * Creates a modelelement using the uml model factories.
+     * @see org.tigris.gef.graph.GraphFactory#makeNode()
+     */
+    public Object makeNode() {
+        // here we should implement usage of the factories
+        // since i am kind of lazy i use reflection
+
+        // factories
+
         try {
             Iterator it = factoryMethods.iterator();
             while (it.hasNext()) {
-                Object factory = 
-                    ((Method) it.next()).invoke(UmlFactory.getFactory(), 
-                                                new Object[] {});
-                List createMethods = 
+                Object factory =
+                    (
+                        (Method)it
+                            .next())
+                            .invoke(UmlFactory.getFactory(), new Object[] {
+                });
+                List createMethods =
                     Arrays.asList(factory.getClass().getMethods());
                 Iterator it2 = createMethods.iterator();
                 String classname = getCreateClassName();
                 while (it2.hasNext()) {
                     Method method = (Method)it2.next();
                     String methodname = method.getName();
-                    if (methodname.endsWith(classname) && 
-                        methodname.substring(0, methodname.lastIndexOf(classname)).equals("create")) {					
-                        return method.invoke(factory, new Object[] {});
+                    if (methodname.endsWith(classname)
+                        && methodname.substring(
+                            0,
+                            methodname.lastIndexOf(classname)).equals(
+                            "build")
+                        && method.getParameterTypes().length == 0) {
+                        return method.invoke(factory, new Object[] {
+                        });
+
                     }
                 }
-            }					
+                it2 = createMethods.iterator();
+                while (it2.hasNext()) {
+                    Method method = (Method)it2.next();
+                    String methodname = method.getName();
+                    if (methodname.endsWith(classname)
+                        && methodname.substring(
+                            0,
+                            methodname.lastIndexOf(classname)).equals(
+                            "create")) {
+                        return method.invoke(factory, new Object[] {
+                        });
+                    }
+                }
+
+            }
         } catch (IllegalAccessException e2) {
         } catch (InvocationTargetException e3) {
         }
-	
-		return super.makeNode();
-	}
-	
-	/**
-	 * returns the name of the uml modelelement without impl, M or the fullname
-	 * @return String
-	 */
-	private String getCreateClassName() {
-		String name = ((Class)_args.get("className")).getName();
-		name = name.substring(name.lastIndexOf('.')+2, name.length());
-		if (name.endsWith("Impl")) {
-			name = name.substring(0, name.lastIndexOf("Impl"));
-		}
-		return name;
-	}
+
+        return super.makeNode();
+    }
+
+    /**
+     * returns the name of the uml modelelement without impl, M or the fullname
+     * @return String
+     */
+    private String getCreateClassName() {
+        String name = ((Class)_args.get("className")).getName();
+        name = name.substring(name.lastIndexOf('.') + 2, name.length());
+        if (name.endsWith("Impl")) {
+            name = name.substring(0, name.lastIndexOf("Impl"));
+        }
+        return name;
+    }
 
 }

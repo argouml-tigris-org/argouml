@@ -167,6 +167,9 @@ public class ModelFacade {
     public static final Object ATTRIBUTE          = MAttribute.class;
     public static final Object OPERATION          = MOperation.class;
     
+    public static final Object MODELELEMENT       = MModelElement.class;
+    public static final Object MODEL              = MModel.class;
+    
     /** Constructor that forbids instantiation.
      */
     private ModelFacade() {

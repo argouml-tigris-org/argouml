@@ -41,17 +41,12 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
 import org.argouml.application.api.Argo;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.Generator;
-
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MInterface;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.model_management.MPackage;
 
 /**
  * Provides support for setting a "src_path" tagged value used in Java 
@@ -59,108 +54,112 @@ import ru.novosoft.uml.model_management.MPackage;
  */
 public class SourcePathDialog extends JDialog implements ActionListener {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  private SrcPathTableModel _srcPathTableModel = new SrcPathTableModel();
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    private SrcPathTableModel _srcPathTableModel = new SrcPathTableModel();
 
-  protected JTable _srcPathTable;
-  protected JButton _cancelButton;
-  protected JButton _okButton;
-  protected JScrollPane _srcPathScrollPane;
+    protected JTable _srcPathTable;
+    protected JButton _cancelButton;
+    protected JButton _okButton;
+    protected JScrollPane _srcPathScrollPane;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public SourcePathDialog() {
-    super(ProjectBrowser.getInstance(), Argo.localize("CoreMenu", "action.generate-code-for-project"));
+    public SourcePathDialog() {
+        super(
+            ProjectBrowser.getInstance(),
+            Argo.localize("CoreMenu", "action.generate-code-for-project"));
 
-    GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
 
-    _cancelButton = new JButton();
-    _okButton = new JButton();
-    _srcPathScrollPane = new JScrollPane();
-    _srcPathTable = new JTable();
+        _cancelButton = new JButton();
+        _okButton = new JButton();
+        _srcPathScrollPane = new JScrollPane();
+        _srcPathTable = new JTable();
 
-    getContentPane().setLayout(new GridBagLayout());
+        getContentPane().setLayout(new GridBagLayout());
 
-    _cancelButton.setText("Cancel");
-    gridBagConstraints = new GridBagConstraints();
-    gridBagConstraints.gridx = 0;
-    gridBagConstraints.gridy = 1;
-    gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-    gridBagConstraints.anchor = GridBagConstraints.EAST;
-    getContentPane().add(_cancelButton, gridBagConstraints);
+        _cancelButton.setText("Cancel");
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        gridBagConstraints.anchor = GridBagConstraints.EAST;
+        getContentPane().add(_cancelButton, gridBagConstraints);
 
-    _okButton.setText("Ok");
-    gridBagConstraints = new GridBagConstraints();
-    gridBagConstraints.gridx = 1;
-    gridBagConstraints.gridy = 1;
-    gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-    gridBagConstraints.anchor = GridBagConstraints.EAST;
-    getContentPane().add(_okButton, gridBagConstraints);
+        _okButton.setText("Ok");
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        gridBagConstraints.anchor = GridBagConstraints.EAST;
+        getContentPane().add(_okButton, gridBagConstraints);
 
-    _srcPathTable.setModel(_srcPathTableModel);
-    _srcPathTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-    _srcPathTable.setShowVerticalLines(false);
-    _srcPathTable.setIntercellSpacing(new Dimension(0, 1));
-    TableColumn elemCol = _srcPathTable.getColumnModel().getColumn(0);
-    elemCol.setMinWidth(0);
-    elemCol.setMaxWidth(0);
-    elemCol = null;
-    _srcPathScrollPane.setViewportView(_srcPathTable);
+        _srcPathTable.setModel(_srcPathTableModel);
+        _srcPathTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        _srcPathTable.setShowVerticalLines(false);
+        _srcPathTable.setIntercellSpacing(new Dimension(0, 1));
+        TableColumn elemCol = _srcPathTable.getColumnModel().getColumn(0);
+        elemCol.setMinWidth(0);
+        elemCol.setMaxWidth(0);
+        elemCol = null;
+        _srcPathScrollPane.setViewportView(_srcPathTable);
 
-    gridBagConstraints = new GridBagConstraints();
-    gridBagConstraints.gridx = 0;
-    gridBagConstraints.gridy = 0;
-    gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
-    gridBagConstraints.fill = GridBagConstraints.BOTH;
-    gridBagConstraints.insets = new Insets(5, 5, 5, 5);
-    gridBagConstraints.weighty = 2.0;
-    getContentPane().add(_srcPathScrollPane, gridBagConstraints);
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+        gridBagConstraints.weighty = 2.0;
+        getContentPane().add(_srcPathScrollPane, gridBagConstraints);
 
-    pack();
+        pack();
 
-    // Center Dialog on Screen -- todo: this should be a support function
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    Rectangle pbBox = pb.getBounds();
-    setLocation(pbBox.x + (pbBox.width - this.getWidth())/2,
-    		pbBox.y + (pbBox.height - this.getHeight())/2);
+        // Center Dialog on Screen -- todo: this should be a support function
+        ProjectBrowser pb = ProjectBrowser.getInstance();
+        Rectangle pbBox = pb.getBounds();
+        setLocation(
+            pbBox.x + (pbBox.width - this.getWidth()) / 2,
+            pbBox.y + (pbBox.height - this.getHeight()) / 2);
 
-    getRootPane().setDefaultButton(_okButton);
-    _okButton.addActionListener(this);
-    _cancelButton.addActionListener(this);
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-  public void actionPerformed(ActionEvent e) {
-    // Cancel Button ------------------------------------------
-    if (e.getSource() == _cancelButton) {
-      buttonCancelActionPerformed();
+        getRootPane().setDefaultButton(_okButton);
+        _okButton.addActionListener(this);
+        _cancelButton.addActionListener(this);
     }
-    // Ok Button ------------------------------------------
-    if (e.getSource() == _okButton) {
-      buttonOkActionPerformed();
-    }
-  }
 
-  public void buttonCancelActionPerformed() {
-    setVisible(false);
-    dispose();
-  }
+    ////////////////////////////////////////////////////////////////
+    // event handlers
 
-  public void buttonOkActionPerformed() {
-    for (int i = 0; i < _srcPathTableModel.getRowCount(); i++) {
-      MModelElement elem = (MModelElement)_srcPathTableModel.getValueAt(i,0);
-      String path = (String)_srcPathTableModel.getValueAt(i,3);
-      if (elem != null && path != null && !path.equals(elem.getTaggedValue("src_path"))) {
-        elem.setTaggedValue("src_path",path);
-      }
+    public void actionPerformed(ActionEvent e) {
+        // Cancel Button ------------------------------------------
+        if (e.getSource() == _cancelButton) {
+            buttonCancelActionPerformed();
+        }
+        // Ok Button ------------------------------------------
+        if (e.getSource() == _okButton) {
+            buttonOkActionPerformed();
+        }
     }
-    buttonCancelActionPerformed();
-  }
+
+    public void buttonCancelActionPerformed() {
+        setVisible(false);
+        dispose();
+    }
+
+    public void buttonOkActionPerformed() {
+        for (int i = 0; i < _srcPathTableModel.getRowCount(); i++) {
+            Object elem = _srcPathTableModel.getValueAt(i, 0);
+            String path = (String)_srcPathTableModel.getValueAt(i, 3);
+            if (elem != null
+                && path != null
+                && !path.equals(ModelFacade.getTaggedValue(elem, "src_path"))) {
+                ModelFacade.setTaggedValue(elem, "src_path", path);
+            }
+        }
+        buttonCancelActionPerformed();
+    }
 } /* end class SourcePathDialog */
 
 /**
@@ -169,55 +168,44 @@ public class SourcePathDialog extends JDialog implements ActionListener {
  */
 class SrcPathTableModel extends DefaultTableModel {
 
-  /** Creates a new instance of SrcPathTableModel */
-  public SrcPathTableModel() {
-    super(
-      new Object [][] {},
-      new String [] {"", "Name", "Type", "Source path"}
-    );
-    // The following lines should be substituted by the following 2 commented lines.
-    // (This is because getting the project still does not seem to work...)
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    org.argouml.ui.ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-    if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram)) return;
-    ru.novosoft.uml.foundation.core.MNamespace ns = ((org.argouml.uml.diagram.ui.UMLDiagram)activeDiagram).getNamespace();
-    if (ns == null) return;
-    while (ns.getNamespace() != null) ns = ns.getNamespace();
-    Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns,MModelElement.class);
-    //Project p = ProjectManager.getManager().getCurrentProject();
-    //Collection elems = ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);
-    Iterator iter = elems.iterator();
-    while (iter.hasNext()) {
-      MModelElement me = (MModelElement)iter.next();
-      String path = Generator.getCodePath(me);
-      if (path != null) {
-        String type = "";
-        String name = me.getName();
-        if (me instanceof MModel) {
-          type = "Model";
+    /** Creates a new instance of SrcPathTableModel */
+    public SrcPathTableModel() {
+        super(new Object[][] {
+        }, new String[] { "", "Name", "Type", "Source path" });       
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Collection elems =
+            ModelManagementHelper.getHelper().getAllModelElementsOfKind(
+                (Class)ModelFacade.MODELELEMENT);
+        elems.add(p.getRoot());
+        Iterator iter = elems.iterator();
+        while (iter.hasNext()) {
+            Object me = iter.next();
+            String path = Generator.getCodePath(me);
+            if (path != null) {
+                String type = "";
+                String name = ModelFacade.getName(me);
+                if (ModelFacade.isAModel(me)) {
+                    type = "Model";
+                } else if (ModelFacade.isAPackage(me)) {
+                    type = "Package";
+                    Object parent = ModelFacade.getNamespace(me);
+                    while (parent != null) {
+                        // ommit root package name; it's the model's root
+                        if (ModelFacade.getNamespace(parent) != null)
+                            name = ModelFacade.getName(parent) + "." + name;
+                        parent = ModelFacade.getNamespace(parent);
+                    }
+                } else if (ModelFacade.isAClass(me)) {
+                    type = "Class";
+                } else if (ModelFacade.isAInterface(me)) {
+                    type = "Interface";
+                }
+                addRow(new Object[] { me, name, type, path });
+            }
         }
-        else if (me instanceof MPackage) {
-          type = "Package";
-          MNamespace parent = me.getNamespace();
-          while (parent != null) {
-            // ommit root package name; it's the model's root
-            if (parent.getNamespace() != null)
-              name = parent.getName() + "." + name;
-            parent = parent.getNamespace();
-          }
-        }
-        else if (me instanceof MClass) {
-          type = "Class";
-        }
-        else if (me instanceof MInterface) {
-          type = "Interface";
-        }
-        addRow(new Object[] {me, name, type, path});
-      }
     }
-  }
 
-  public boolean isCellEditable(int rowIndex, int columnIndex) {
-    return columnIndex == 3;
-  }
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return columnIndex == 3;
+    }
 }
