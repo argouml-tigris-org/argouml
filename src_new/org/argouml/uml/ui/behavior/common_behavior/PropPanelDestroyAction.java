@@ -40,12 +40,12 @@ import org.argouml.util.ConfigLoader;
  * @todo this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
-public class PropPanelCallAction extends PropPanelAction {
+public class PropPanelDestroyAction extends PropPanelAction {
 
     ////////////////////////////////////////////////////////////////
     // contructors
-    public PropPanelCallAction() {
-        super("CallAction", _callActionIcon);
+    public PropPanelDestroyAction() {
+        super("DestroyAction", _callActionIcon);
     }
 
-} /* end class PropPanelCallAction */
+} 

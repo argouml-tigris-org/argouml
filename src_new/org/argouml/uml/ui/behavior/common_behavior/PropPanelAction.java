@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
+import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
@@ -40,12 +41,50 @@ import org.argouml.util.ConfigLoader;
  * @todo this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
-public class PropPanelCallAction extends PropPanelAction {
+public abstract class PropPanelAction extends PropPanelModelElement {
 
     ////////////////////////////////////////////////////////////////
     // contructors
-    public PropPanelCallAction() {
-        super("CallAction", _callActionIcon);
+    public PropPanelAction() {
+        this("Action", _callActionIcon);
+    }
+
+    public PropPanelAction(String name, ImageIcon icon) {
+        super(name, icon, 
+              ConfigLoader.getTabPropsOrientation());
+        initialize();
+    }
+
+    public void initialize() {
+        
+        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+
+        UMLExpressionModel expressionModel =
+            new UMLExpressionModel(
+                this,
+                (Class)ModelFacade.ACTION,
+                "script",
+                (Class)ModelFacade.ACTION_EXPRESSION,
+                "getScript",
+                "setScript");
+        addField(Argo.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel, true)));
+
+        addField(Argo.localize("UMLMenu", "label.language"), new UMLExpressionLanguageField(expressionModel, true));
+
+        new PropPanelButton(
+            this,
+            buttonPanel,
+            _navUpIcon,
+            Argo.localize("UMLMenu", "button.go-up"),
+            "navigateUp",
+            null);
+        new PropPanelButton(
+            this,
+            buttonPanel,
+            _deleteIcon,
+            localize("Delete"),
+            "removeElement",
+            null);
     }
 
 } /* end class PropPanelCallAction */
