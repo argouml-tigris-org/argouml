@@ -29,6 +29,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Vector;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -159,7 +160,9 @@ public final class ProjectManager {
         Project oldProject = _currentProject;        
         _currentProject = newProject;
         if (_currentProject.getActiveDiagram() == null) {
-            _currentProject.setActiveDiagram((ArgoDiagram)_currentProject.getDiagrams().get(0));
+            Vector diagrams = _currentProject.getDiagrams();
+            if (diagrams != null && !diagrams.isEmpty())
+                _currentProject.setActiveDiagram((ArgoDiagram)_currentProject.getDiagrams().get(0));
         }
         firePropertyChanged(CURRENT_PROJECT_PROPERTY_NAME, oldProject, newProject);
     }
