@@ -49,29 +49,30 @@ import org.argouml.uml.generator.*;
 
 // needs-more-work: always check for null!!!
 
-public class GeneratorJava extends Generator
-implements PluggableNotation {
+public class GeneratorJava extends Generator implements PluggableNotation {
 
   private static GeneratorJava SINGLETON = new GeneratorJava();
 
   public static GeneratorJava getInstance() { return SINGLETON; }
 
   public GeneratorJava() {
-      super(Notation.makeNotation("Java", null,
-                                  Argo.lookupIconResource("JavaNotation")));
+    super (Notation.makeNotation ("Java",
+                                  null,
+                                  Argo.lookupIconResource ("JavaNotation")));
   }
 
-  public static String Generate(Object o) {
-    return SINGLETON.generate(o);
+  public static String Generate (Object o) {
+    return SINGLETON.generate (o);
   }
-
-  public static String GenerateFile(MClassifier cls, String path) {
+  
+  public static String GenerateFile (MClassifier cls,
+                                     String path) {
     // GenerateFile now returns the full path name of the
     // the generated file.
     String name = cls.getName();
     if (name == null || name.length() == 0) return null;
     String filename = name + ".java";
-    if (!path.endsWith(fileSep)) path += fileSep;
+    if (!path.endsWith (fileSep)) path += fileSep;
 
     String packagePath = cls.getNamespace().getName();
     MNamespace parent = cls.getNamespace().getNamespace();
@@ -82,65 +83,75 @@ implements PluggableNotation {
       parent = parent.getNamespace();
     }
 
-	int lastIndex=-1;
+	  int lastIndex=-1;
     do {
-      File f = new File(path);
+      File f = new File (path);
       if (!f.isDirectory()) {
-		  if (!f.mkdir()) {
-			  System.out.println(" could not make directory "+path);
-			  return null;
-		  }
+		    if (!f.mkdir()) {
+			    System.out.println(" could not make directory "+path);
+			    return null;
+		    }
       }
-	  if (lastIndex == packagePath.length())
-		  break;
-	  int index = packagePath.indexOf(".", lastIndex+1);
-	  if (index == -1)
-		  index = packagePath.length();
-      path += packagePath.substring(lastIndex+1, index) + fileSep;
-	  lastIndex = index;
-	} while (true);
+      
+	    if (lastIndex == packagePath.length())
+		    break;
+      
+      int index = packagePath.indexOf (".", lastIndex+1);
+	    if (index == -1)
+  		  index = packagePath.length();
+      
+      path += packagePath.substring (lastIndex+1, index) + fileSep;
+      lastIndex = index;
+	  } while (true);
+    
     String pathname = path + filename;
-	System.out.println("-----" + pathname + "-----");
+	  System.out.println("-----" + pathname + "-----");
 
     //now decide wether file exist and need an update or is to be newly generated
     File f = new File(pathname);
-	if(f.exists()) {
-		try {
-	      update(cls, f);
-	    }
-	    catch (Exception exp) {
-			System.out.println("FAILED: " + f.getPath());
-		}
-		System.out.println("----- end generating -----");
+	  if(f.exists()) {
+      try {
+        update (cls, f);
+      }
+      catch (Exception exp) {
+        System.out.println ("FAILED: " + f.getPath());
+      }
+      
+      System.out.println ("----- end generating -----");
 	    return pathname;
-	}
+	  }
 
     //String pathname = path + filename;
     // needs-more-work: package, project basepath, tagged values to configure
-	System.out.println("Generating (new) " + f.getPath());
-    String header = SINGLETON.generateHeader(cls, pathname, packagePath);
-    String src = SINGLETON.generate(cls);
+	  System.out.println ("Generating (new) " + f.getPath());
+    String header = SINGLETON.generateHeader (cls, pathname, packagePath);
+    String src = SINGLETON.generate (cls);
     BufferedWriter fos = null;
     try {
-      fos = new BufferedWriter(new FileWriter(f));
-      fos.write(header);
-      fos.write(src);
+      fos = new BufferedWriter (new FileWriter (f));
+      fos.write (header);
+      fos.write (src);
     }
     catch (IOException exp) { }
     finally {
-      try { if (fos != null) fos.close(); }
+      try {
+        if (fos != null) fos.close();
+      }
       catch (IOException exp) {
-		System.out.println("FAILED: " + f.getPath());
-	  }
+		    System.out.println("FAILED: " + f.getPath());
+	    }
     }
-	System.out.println("----- end updating -----");
+    
+	  System.out.println("----- end updating -----");
     return pathname;
   }
 
-  public String generateHeader(MClassifier cls, String pathname, String packagePath) {
+  public String generateHeader (MClassifier cls,
+                                String pathname,
+                                String packagePath) {
     String s = "";
     //needs-more-work: add user-defined copyright
-    s += "// FILE: " + pathname.replace('\\','/') +"\n\n";
+    s += "// FILE: " + pathname.replace ('\\','/') +"\n\n";
     if (packagePath.length() > 0) s += "package " + packagePath + ";\n";
     s += "import java.util.*;\n";
 
@@ -148,20 +159,13 @@ implements PluggableNotation {
     return s;
   }
 
-  public String generateOperation(MOperation op, boolean documented) {
+  public String generateOperation (MOperation op, boolean documented) {
     String s = "";
-    String nameStr = generateName(op.getName());
-    String clsName = generateName(op.getOwner().getName());
+    String nameStr = generateName (op.getName());
+    String clsName = generateName (op.getOwner().getName());
 
-    /*
-     * Replaced 2001-09-26 STEFFEN ZSCHALER
-     *
-     * Was
-     *
-    s += DocumentationManager.getDocs(op) + "\n" + INDENT;
-     */
     if (documented)
-        s += generateConstraintEnrichedDocComment (op) + "\n" + INDENT;
+      s += generateConstraintEnrichedDocComment (op) + "\n" + INDENT;
 
     s += generateAbstractness (op);
     s += generateChangeability (op);
@@ -170,11 +174,14 @@ implements PluggableNotation {
 
     // pick out return type
     MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
-    if ( rp != null) {
+	  if ( rp != null) {
       MClassifier returnType = rp.getType();
-
-      if (returnType == null && !nameStr.equals(clsName)) s += "void ";
-      else if (returnType != null) s += generateClassifierRef (returnType) + " ";
+      if (returnType == null && !nameStr.equals (clsName)) {
+        s += "void ";
+      }
+      else if (returnType != null) {
+        s += generateClassifierRef (returnType) + " ";
+      }
     }
     else {
       //          removed since it was throwing exceptions and didn't seem to do
@@ -208,43 +215,33 @@ implements PluggableNotation {
 
   }
 
-
-  public String generateAttribute(MAttribute attr, boolean documented) {
+  public String generateAttribute (MAttribute attr, boolean documented) {
     String s = "";
 
-    /*
-     * Replaced 2001-09-26 STEFFEN ZSCHALER
-     *
-     * Was:
-     *
-    s += DocumentationManager.getDocs(attr) + "\n" + INDENT;
-     */
-
-      if (documented)
-          s += generateConstraintEnrichedDocComment (attr) + "\n" + INDENT;
+    if (documented)
+      s += generateConstraintEnrichedDocComment (attr) + "\n" + INDENT;
 
     s += generateVisibility(attr);
     s += generateScope(attr);
     s += generateChangability(attr);
     if (!MMultiplicity.M1_1.equals(attr.getMultiplicity()))
-	s += generateMultiplicity(attr.getMultiplicity()) + " ";
+	    s += generateMultiplicity(attr.getMultiplicity()) + " ";
 
     MClassifier type = attr.getType();
     if (type != null) s += generateClassifierRef(type) + " ";
 
     String slash = "";
-//    if (attr.containsStereotype(MStereotype.DERIVED)) slash = "/";
+    //    if (attr.containsStereotype(MStereotype.DERIVED)) slash = "/";
 
-    s += slash + generateName(attr.getName());
+    s += slash + generateName (attr.getName());
     MExpression init = attr.getInitialValue();
     if (init != null) {
       String initStr = generateExpression(init).trim();
       if (initStr.length() > 0)
-	s += " = " + initStr;
+	      s += " = " + initStr;
     }
 
     s += ";\n";
-    // s += generateConstraints(attr);  Removed 2001-09-26 STEFFEN ZSCHALER
 
     return s;
   }
@@ -281,108 +278,229 @@ implements PluggableNotation {
     return s;
   }
 
+  /**
+   * Generate the start sequence for a classifier. The start sequence is
+   * everything from the preceding javadoc comment to the opening curly brace.
+   * Start sequences are non-empty for classes and interfaces only.
+   *
+   * This method is intented for package internal usage only.
+   *
+   * @param cls the classifier for which to generate the start sequence
+   *
+   * @return the generated start sequence
+   */
+  StringBuffer generateClassifierStart (MClassifier cls) {
+    String sClassifierKeyword;
+    if (cls instanceof MClassImpl) sClassifierKeyword = "class";
+    else if (cls instanceof MInterface) sClassifierKeyword = "interface";
+    else return null; // actors, use cases etc.
 
-  public String generateClassifier(MClassifier cls) {
-    String generatedName = generateName(cls.getName());
-    String classifierKeyword;
-    if (cls instanceof MClassImpl) classifierKeyword = "class";
-    else if (cls instanceof MInterface) classifierKeyword = "interface";
-    else return ""; // actors and use cases
+    StringBuffer sb = new StringBuffer (80);
 
-    StringBuffer sb = new StringBuffer(80);
-    sb.append(DocumentationManager.getComments(cls));  // Add the comments for this classifier first.
+    // Add the comments for this classifier first.
+    sb.append (DocumentationManager.getComments (cls))
+      .append (generateConstraintEnrichedDocComment (cls))
+      .append ("\n");
 
-    /*
-     * Replaced 2001-09-26 STEFFEN ZSCHALER
-     *
-     * Was:
-     *
-    sb.append(DocumentationManager.getDocs(cls)).append("\n");
-     */
-    sb.append (generateConstraintEnrichedDocComment (cls)).append ("\n");
+    // Now add visibility
+    sb.append (generateVisibility (cls.getVisibility()));
 
-    sb.append(generateVisibility(cls.getVisibility()));
-    if (cls.isAbstract() && !(cls instanceof MInterface)) sb.append("abstract ");
-    if (cls.isLeaf()) sb.append("final ");
-    sb.append(classifierKeyword).append(" ").append(generatedName);
-    String baseClass = generateGeneralzation(cls.getGeneralizations());
-    String tv = null;
-    if (!baseClass.equals("")) sb.append(' ').append("extends ").append(baseClass);
+    // Add other modifiers
+    if (cls.isAbstract() && !(cls instanceof MInterface)) {
+      sb.append("abstract ");
+    }
 
+    if (cls.isLeaf()) {
+      sb.append("final ");
+    }
+
+    // add classifier keyword and classifier name
+    sb.append (sClassifierKeyword)
+      .append(" ")
+      .append (generateName (cls.getName()));
+
+    // add base class/interface
+    String baseClass = generateGeneralization (cls.getGeneralizations());
+    if (!baseClass.equals ("")) {
+      sb.append (" ")
+        .append ("extends ")
+        .append (baseClass);
+    }
+
+    // add implemented interfaces, if needed
     // nsuml: realizations!
     if (cls instanceof MClass) {
-      String interfaces = generateSpecification((MClass)cls);
-      if (!interfaces.equals("")) sb.append(' ').append("implements ").append(interfaces);
-    }
-    sb.append("\n{");
-
-    tv = generateTaggedValues(cls);
-    if (tv != null && tv.length() > 0) sb.append(INDENT).append(tv);
-
-    // sb.append(generateConstraints(cls)); Removed 2001-09-26 STEFFEN ZSCHALER
-
-    Collection strs = MMUtil.SINGLETON.getAttributes(cls);
-    if (strs != null) {
-      sb.append('\n');
-
-      if (cls instanceof MClassImpl) sb.append(INDENT).append("// Attributes\n");
-      Iterator strEnum = strs.iterator();
-      while (strEnum.hasNext()) {
-        MStructuralFeature sf = (MStructuralFeature) strEnum.next();
-        sb.append('\n').append(INDENT).append(generate(sf));
-        tv = generateTaggedValues(sf);
-        if (tv != null && tv.length() > 0) sb.append(INDENT).append(tv).append('\n');
+      String interfaces = generateSpecification ((MClass) cls);
+      if (!interfaces.equals ("")) {
+        sb.append (" ")
+          .append ("implements ")
+          .append (interfaces);
       }
     }
 
+    // add opening brace
+	  sb.append (" {");
+
+    // list tagged values for documentation
+    String tv = generateTaggedValues (cls);
+    if (tv != null && tv.length() > 0) {
+      sb.append ("\n")
+        .append (INDENT)
+        .append (tv);
+    }
+
+    return sb;
+  }
+
+  /**
+   * Append the classifier end sequence to the prefix text specified. The
+   * classifier end sequence is the closing curly brace together with any
+   * comments marking the end of the classifier.
+   *
+   * This method is intented for package internal usage.
+   *
+   * @param sbPrefix the prefix text to be amended. It is OK to call append on
+   *                 this parameter.
+   * @param cls      the classifier for which to generate the classifier end
+   *                 sequence. Only classes and interfaces have a classifier
+   *                 end sequence.
+   * @param fPlain   if true, only the closing brace is generated. Otherwise,
+   *                 this may also generate some comments.
+   *
+   * @return the complete classifier code, i.e., sbPrefix plus the classifier
+   *         end sequence
+   */
+  StringBuffer appendClassifierEnd (StringBuffer sbPrefix,
+                                    MClassifier  cls,
+                                    boolean      fPlain) {
+    if (fPlain) {
+      return sbPrefix.append ("}");
+    }
+    else {
+      String sClassifierKeyword;
+      if (cls instanceof MClassImpl) sClassifierKeyword = "class";
+      else if (cls instanceof MInterface) sClassifierKeyword = "interface";
+      else return null; // actors, use cases etc.
+
+      sbPrefix.append ("} /* end of ")
+              .append (sClassifierKeyword)
+              .append (" ")
+              .append (generateName (cls.getName()))
+              .append (" */\n");
+
+      return sbPrefix;
+    }
+  }
+
+  public String generateClassifier(MClassifier cls) {
+    StringBuffer sb = generateClassifierStart (cls);
+    if (sb == null) return ""; // not a class or interface
+
+    String tv = null;  // helper for tagged values
+
+    // add attributes
+    Collection strs = MMUtil.SINGLETON.getAttributes(cls);
+    if (strs != null) {
+      sb.append ('\n');
+
+      if (cls instanceof MClassImpl) {
+        sb.append (INDENT)
+          .append("// Attributes\n");
+      }
+
+      Iterator strEnum = strs.iterator();
+      while (strEnum.hasNext()) {
+        MStructuralFeature sf = (MStructuralFeature) strEnum.next();
+
+        sb.append ('\n')
+          .append (INDENT)
+          .append (generate (sf));
+
+        tv = generateTaggedValues (sf);
+        if (tv != null && tv.length() > 0) {
+          sb.append (INDENT)
+            .append (tv)
+            .append ('\n');
+        }
+      }
+    }
+
+    // add attributes implementing associations
     Collection ends = cls.getAssociationEnds();
     if (ends != null) {
-      sb.append('\n');
-      if (cls instanceof MClassImpl) sb.append(INDENT).append("// Associations\n");
+      sb.append ('\n');
+
+      if (cls instanceof MClassImpl) {
+        sb.append (INDENT)
+          .append ("// Associations\n");
+      }
+
       Iterator endEnum = ends.iterator();
       while (endEnum.hasNext()) {
         MAssociationEnd ae = (MAssociationEnd) endEnum.next();
         MAssociation a = ae.getAssociation();
-        sb.append('\n').append(INDENT).append(generateAssociationFrom(a, ae));
-        tv = generateTaggedValues(a);
-        if (tv != null && tv.length() > 0) sb.append(INDENT).append(tv);
 
-        // sb.append(generateConstraints(a));  Removed 2001-09-26 STEFFEN ZSCHALER Why was this not in generateAssociationFrom ?
+        sb.append ('\n')
+          .append (INDENT)
+          .append (generateAssociationFrom (a, ae));
+
+        tv = generateTaggedValues (a);
+        if (tv != null && tv.length() > 0) {
+          sb.append (INDENT)
+            .append (tv);
+        }
       }
     }
 
+    // add operations
     // needs-more-work: constructors
     Collection behs = MMUtil.SINGLETON.getOperations(cls);
     if (behs != null) {
-      sb.append ('\n');
-      sb.append (INDENT).append ("// Operations\n");
+      sb.append ('\n')
+        .append (INDENT)
+        .append ("// Operations\n");
 
       Iterator behEnum = behs.iterator();
 
       while (behEnum.hasNext()) {
         MBehavioralFeature bf = (MBehavioralFeature) behEnum.next();
 
-        sb.append ('\n').append (INDENT).append (generate (bf));
+        sb.append ('\n')
+          .append (INDENT)
+          .append (generate (bf));
 
-        tv = generateTaggedValues((MModelElement)bf);
+        tv = generateTaggedValues ((MModelElement)bf);
 
         if ((cls instanceof MClassImpl) &&
             (bf instanceof MOperation) &&
             (! ((MOperation) bf).isAbstract())) {
-          sb.append ('\n').append (INDENT).append ("{\n");
+          sb.append ("\n")
+            .append (INDENT)
+            .append ("{");
 
-          if (tv.length() > 0) sb.append (INDENT).append (tv);
+          if (tv.length() > 0) {
+            sb.append (INDENT)
+              .append (tv);
+          }
 
-          sb.append (generateMethodBody ((MOperation) bf)).append ('\n')
-            .append (INDENT).append ("}\n");
+          // there is no ReturnType in behavioral feature (nsuml)
+          sb.append (generateMethodBody ((MOperation) bf))
+            .append ('\n')
+            .append (INDENT)
+            .append ("}");
         }
         else {
           sb.append (";\n");
-          if (tv.length() > 0) sb.append (INDENT).append (tv).append ('\n');
+          if (tv.length() > 0) {
+            sb.append (INDENT)
+              .append (tv)
+              .append ('\n');
+          }
         }
       }
     }
-    sb.append("} /* end ").append(classifierKeyword).append(' ').append(generatedName).append(" */\n");
+
+    sb = appendClassifierEnd (sb, cls, false);
 
     return sb.toString();
   }
@@ -540,7 +658,8 @@ implements PluggableNotation {
       if (type != null) {
           sDocComment += " @element-type " + type.getName();
       } else {
-          sDocComment += " @element-type unknown";
+          // REMOVED: 2002-03-11 STEFFEN ZSCHALER: element type unknown is not recognized by the OCL injector...
+          //sDocComment += " @element-type unknown";
       }
       sDocComment += "\n" +
                      INDENT + " */";
@@ -819,7 +938,7 @@ implements PluggableNotation {
   // internal methods?
 
 
-  public String generateGeneralzation(Collection generalizations) {
+  public String generateGeneralization(Collection generalizations) {
     if (generalizations == null) return "";
     Collection classes = new ArrayList();
     Iterator enum = generalizations.iterator();
@@ -882,7 +1001,7 @@ implements PluggableNotation {
   }
 
   /**
-   * Generate "abstract" keyword for abstract operations.
+   * Generate "abstract" keyword for an abstract operation.
    */
   public String generateAbstractness (MOperation op) {
     if (op.isAbstract()) {

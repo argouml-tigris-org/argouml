@@ -57,6 +57,9 @@ header {
  *		ESC lexer rule allowed 399 max not 377 max.
  *		java.tree.g didn't handle the expression of synchronized
  *			statements.
+ * Version 1.18 (January 07, 2002)
+ *              Added CodePiece parameter to classBlock so that '{' will be
+ *              added to ClassCodePiece.
  *
  * Version tracking now done with following ID:
  *
@@ -290,7 +293,7 @@ classDefinition[CodePiece preCode]
 		{codePiece.add(ic);
 		 cpc.add(new ClassCodePiece(codePiece, t2.getText()));}
 		// now parse the body of the class
-		classBlock
+		classBlock[codePiece]
 	;
 
 superClassClause returns [CompositeCodePiece codePiece=null]
@@ -314,14 +317,16 @@ interfaceDefinition[CodePiece preCode]
 		{codePiece.add(ie);
 		 cpc.add(new InterfaceCodePiece(codePiece, t2.getText()));}
 		// now parse the body of the interface (looks like a class...)
-		classBlock
+		classBlock[codePiece]
 	;
 
 
 // This is the body of a class.  You can have fields and extra semicolons,
 // That's about it (until you see what a field is...)
-classBlock
-	:	LCURLY
+// 01/07/2002 Steffen Zschaler: Added parameter to allow ClassCodePiece and
+// InterfaceCodePiece to generate fresh LCURLY
+classBlock[CompositeCodePiece header]
+	:	t0:LCURLY {if (header != null) {header.add (new SimpleCodePiece (t0));}}
 			( field | SEMI )*
 		t1:RCURLY 
 		{cpc.add(new ClassifierEndCodePiece(new SimpleCodePiece(t1)));}
@@ -1011,7 +1016,7 @@ newExpression
 			{cpc.add(new AnonymousClassCodePiece(
 					t, 
 					++anonymousNumber));}
-			classBlock
+			classBlock[null]
 			)?
 
 			//java 1.1
