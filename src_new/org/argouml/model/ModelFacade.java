@@ -3518,16 +3518,16 @@ public class ModelFacade {
      */
     public static String getName(Object handle) {
         if (handle instanceof MModelElement) {
-            MModelElement me = (MModelElement) handle;
-
-            return me.getName();
+            return ((MModelElement)handle).getName();
         }
         if (handle instanceof Diagram) {
-            Diagram d = (Diagram) handle;
-            return d.getName();
+            return ((Diagram)handle).getName();
         }
         if (handle instanceof MOrderingKind) {
             return ((MOrderingKind) handle).getName();
+        }
+        if (handle instanceof MAggregationKind) {
+            return ((MAggregationKind)handle).getName();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
