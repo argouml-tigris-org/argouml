@@ -71,6 +71,9 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
         }
         catch (Exception e) {
             cat.error(e.toString() + " in UMLReflectionBooleanProperty(): "  + setMethod, e);
+	    cat.error("Going to rethrow as RuntimeException");
+	    // need to throw exception again for unit testing!
+	    throw new RuntimeException(e);
         }
     }
     
