@@ -24,7 +24,6 @@
 
 package org.argouml.model;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**

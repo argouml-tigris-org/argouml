@@ -32,26 +32,26 @@ package org.argouml.model;
  */
 public abstract class AbstractModelEntity implements ModelEntity {
     
-    private String _name;
+    private String name;
 
     /**
      * @param string name of entity
      */
     public AbstractModelEntity(String string) {
-        _name = string;
+        name = string;
     }
 
     /** Returns the name
      * @return the name
      */
     public String getName() {
-        return _name;
+        return name;
     }
 
     /** @see java.lang.Object#toString()
      */
     public String toString() {
-        return _name;
+        return name;
     }
 
 

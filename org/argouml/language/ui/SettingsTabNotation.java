@@ -54,15 +54,18 @@ public class SettingsTabNotation extends SettingsTabHelper
     implements SettingsTabPanel
 {
 
-    private JCheckBox _allowNotations = null;
-    private JCheckBox _useGuillemots = null;
-    private JCheckBox _showVisibility = null;
-    private JCheckBox _showMultiplicity = null;
-    private JCheckBox _showInitialValue = null;
-    private JCheckBox _showProperties = null;
-    private JCheckBox _showStereotypes = null;
-    private ShadowComboBox _defaultShadowWidth = null;
+    private JCheckBox allowNotations = null;
+    private JCheckBox useGuillemots = null;
+    private JCheckBox showVisibility = null;
+    private JCheckBox showMultiplicity = null;
+    private JCheckBox showInitialValue = null;
+    private JCheckBox showProperties = null;
+    private JCheckBox showStereotypes = null;
+    private ShadowComboBox defaultShadowWidth = null;
 
+    /**
+     * The constructor.
+     */
     public SettingsTabNotation() {
         super();
         setLayout(new BorderLayout());
@@ -81,36 +84,36 @@ public class SettingsTabNotation extends SettingsTabHelper
         constraints.insets = new Insets(0, 30, 0, 4);
 
         constraints.gridy = 0;
-        _allowNotations = createCheckBox("label.uml-notation-only");
-        top.add(_allowNotations, constraints);
+        allowNotations = createCheckBox("label.uml-notation-only");
+        top.add(allowNotations, constraints);
 
         constraints.gridy = 1;
-        _useGuillemots = createCheckBox("label.use-guillemots");
-        top.add(_useGuillemots, constraints);
+        useGuillemots = createCheckBox("label.use-guillemots");
+        top.add(useGuillemots, constraints);
 
         // 2002-07-31
         // Jaap Branderhorst
         // from here made visibility etc. configurable
 
         constraints.gridy = 2;
-        _showVisibility = createCheckBox("label.show-visibility");
-        top.add(_showVisibility, constraints);
+        showVisibility = createCheckBox("label.show-visibility");
+        top.add(showVisibility, constraints);
 
         constraints.gridy = 3;
-        _showMultiplicity = createCheckBox("label.show-multiplicity");
-        top.add(_showMultiplicity, constraints);
+        showMultiplicity = createCheckBox("label.show-multiplicity");
+        top.add(showMultiplicity, constraints);
 
         constraints.gridy = 4;
-        _showInitialValue = createCheckBox("label.show-initialvalue");
-        top.add(_showInitialValue, constraints);
+        showInitialValue = createCheckBox("label.show-initialvalue");
+        top.add(showInitialValue, constraints);
 
         constraints.gridy = 5;
-        _showProperties = createCheckBox("label.show-properties");
-        top.add(_showProperties, constraints);
+        showProperties = createCheckBox("label.show-properties");
+        top.add(showProperties, constraints);
 
         constraints.gridy = 6;
-        _showStereotypes = createCheckBox("label.show-stereotypes");
-        top.add(_showStereotypes, constraints);
+        showStereotypes = createCheckBox("label.show-stereotypes");
+        top.add(showStereotypes, constraints);
 
         constraints.gridy = 7;
         constraints.insets = new Insets(5, 30, 0, 4);
@@ -118,26 +121,29 @@ public class SettingsTabNotation extends SettingsTabHelper
             new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         JLabel defaultShadowWidthLabel =
             createLabel("label.default-shadow-width");
-        _defaultShadowWidth = new ShadowComboBox();
-        defaultShadowWidthLabel.setLabelFor(_defaultShadowWidth);
+        defaultShadowWidth = new ShadowComboBox();
+        defaultShadowWidthLabel.setLabelFor(defaultShadowWidth);
         defaultShadowWidthPanel.add(defaultShadowWidthLabel);
-        defaultShadowWidthPanel.add(_defaultShadowWidth);
+        defaultShadowWidthPanel.add(defaultShadowWidth);
         top.add(defaultShadowWidthPanel, constraints);
 
         add(top, BorderLayout.NORTH);
     }
 
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabRefresh()
+     */
     public void handleSettingsTabRefresh() {
-        _useGuillemots.setSelected(Notation.getUseGuillemots());
-        _allowNotations.setSelected(getBoolean(Notation.KEY_UML_NOTATION_ONLY));
-        _showVisibility.setSelected(getBoolean(Notation.KEY_SHOW_VISIBILITY));
-        _showInitialValue.setSelected(
+        useGuillemots.setSelected(Notation.getUseGuillemots());
+        allowNotations.setSelected(getBoolean(Notation.KEY_UML_NOTATION_ONLY));
+        showVisibility.setSelected(getBoolean(Notation.KEY_SHOW_VISIBILITY));
+        showInitialValue.setSelected(
             getBoolean(Notation.KEY_SHOW_INITIAL_VALUE));
-        _showProperties.setSelected(getBoolean(Notation.KEY_SHOW_PROPERTIES));
-        _showMultiplicity.setSelected(
+        showProperties.setSelected(getBoolean(Notation.KEY_SHOW_PROPERTIES));
+        showMultiplicity.setSelected(
             getBoolean(Notation.KEY_SHOW_MULTIPLICITY));
-        _showStereotypes.setSelected(getBoolean(Notation.KEY_SHOW_STEREOTYPES));
-        _defaultShadowWidth.setSelectedIndex(
+        showStereotypes.setSelected(getBoolean(Notation.KEY_SHOW_STEREOTYPES));
+        defaultShadowWidth.setSelectedIndex(
                 Configuration.getInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
     }
 
@@ -150,34 +156,67 @@ public class SettingsTabNotation extends SettingsTabHelper
     return Configuration.getBoolean(key, false);
     }
 
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabSave()
+     */
     public void handleSettingsTabSave() {
-        Notation.setUseGuillemots(_useGuillemots.isSelected());
+        Notation.setUseGuillemots(useGuillemots.isSelected());
         Configuration.setBoolean(Notation.KEY_UML_NOTATION_ONLY,
-                 _allowNotations.isSelected());
+                 allowNotations.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_VISIBILITY,
-                 _showVisibility.isSelected());
+                 showVisibility.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_MULTIPLICITY,
-                 _showMultiplicity.isSelected());
+                 showMultiplicity.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_PROPERTIES,
-                 _showProperties.isSelected());
+                 showProperties.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_INITIAL_VALUE,
-                 _showInitialValue.isSelected());
+                 showInitialValue.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES,
-                 _showStereotypes.isSelected());
+                 showStereotypes.isSelected());
         Configuration.setInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH,
-                _defaultShadowWidth.getSelectedIndex());
+                defaultShadowWidth.getSelectedIndex());
     }
 
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#handleSettingsTabCancel()
+     */
     public void handleSettingsTabCancel() {
         handleSettingsTabRefresh();
     }
 
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleName()
+     */
     public String getModuleName() { return "SettingsTabNotation"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
+     */
     public String getModuleDescription() { return "Settings Tab for Notation"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleAuthor()
+     */
     public String getModuleAuthor() { return "ArgoUML Core"; }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
+     */
     public String getModuleVersion() { return ArgoVersion.getVersion(); }
+    
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleKey()
+     */
     public String getModuleKey() { return "module.settings.notation"; }
+    
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#getTabKey()
+     */
     public String getTabKey() { return "tab.notation"; }
+    
+    /**
+     * @see org.argouml.application.api.SettingsTabPanel#getTabResourceBundleKey()
+     */
     public String getTabResourceBundleKey() { return "CoreSettings"; }
 
 }
