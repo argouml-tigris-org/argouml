@@ -103,7 +103,7 @@ public class AboutBox extends JFrame {
 		     "  UML Diagrams: Marko Boger (boger@informatik.uni-hamburg.de)\n"+
 		     "  UML Metamodel, XMI: Toby Baier (Toby.Baier@gmx.net)\n"+
 		     "  Plugin-support: Sean Chen (schen@bw.webex.net)\n"+
-		     "  Java RE: Andreas Rückert (a_rueckert@gmx.net)\n"+
+		     "  Java RE: Andreas Rueckert (a_rueckert@gmx.net)\n"+
 		     "  Knowledge support: Jason Robbins (jrobbins@collab.net)\n"+
 		     "  User manual: Philippe Vanpeperstraete (Philippe.Vanpeperstraete@skynet.be)\n"+
 		     "  \n"+
@@ -115,7 +115,7 @@ public class AboutBox extends JFrame {
 		     "  Eugenio Alvarez\n"+
 		     "  Clemens Eichler\n"+
 		     "  Curt Arnolds\n"+
-		     "  Andreas Rückert\n"+
+		     "  Andreas Rueckert\n"+
 		     "  Frank Finger\n"+
 		     "  Stuart Zakon\n"+
 		     "  Frank Wienberg\n"+

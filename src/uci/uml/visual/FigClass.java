@@ -45,6 +45,7 @@ import uci.uml.util.*;
 import uci.uml.generate.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
 
 /** Class to display graphics for a UML Class in a diagram. */
@@ -90,10 +91,21 @@ public class FigClass extends FigNodeWithCompartments {
     this();
     setOwner(node);
     if (node instanceof MClassifier && (((MClassifier)node).getName() != null))
-	_name.setText(((MModelElement)node).getName());
+	_name.setText(getStereotype() + ((MModelElement)node).getName());
   }
 
   public String placeString() { return "new Class"; }
+
+  public String getStereotype() {
+    if (getOwner() instanceof MModelElement) {
+      MModelElement me = (MModelElement) getOwner();
+      MStereotype stereos = me.getStereotype();
+      if( stereos != null && stereos.getName().length() > 0 ) {
+        return "<<" + stereos.getName() + ">>\n";
+      }
+    }
+    return "";
+  }
 
   public Object clone() {
     FigClass figClone = (FigClass) super.clone();
@@ -309,6 +321,10 @@ public class FigClass extends FigNodeWithCompartments {
  
   protected void modelChanged() {
     super.modelChanged();
+    String s = _name.getText();
+    int ptr = s.lastIndexOf( '\n' ) + 1;
+    if( ptr > 0 ) s = s.substring( ptr );
+    _name.setText(getStereotype() + s );
     MClassifier cls = (MClassifier) getOwner();
     if (cls == null) return;
     // String clsNameStr = GeneratorDisplay.Generate(cls.getName());

@@ -51,7 +51,7 @@ import uci.uml.ui.*;
  * @see TabProps */
 
 public class PropPanel extends TabSpawnable
-implements TabModelTarget, DocumentListener, KeyListener, FocusListener, MElementListener{
+implements TabModelTarget, DocumentListener, KeyListener, FocusListener, MElementListener, ItemListener {
   ////////////////////////////////////////////////////////////////
   // instance vars
   Object _target;
@@ -113,11 +113,11 @@ implements TabModelTarget, DocumentListener, KeyListener, FocusListener, MElemen
 
     _stereoField.addKeyListener(this);
     _stereoField.addFocusListener(this);
-//     ed = _namespaceField.getEditor().getEditorComponent();
-//     Document nsDoc = ((JTextField)ed).getDocument();
-//     nsDoc.addDocumentListener(this);
+    _stereoField.addItemListener(this);
+
     _namespaceField.addKeyListener(this);
     _namespaceField.addFocusListener(this);
+    _namespaceField.addItemListener(this);
   }
 
   protected SetTargetRunner setTargetRunner = new SetTargetRunner();
@@ -150,6 +150,7 @@ implements TabModelTarget, DocumentListener, KeyListener, FocusListener, MElemen
   }
 
   protected void setTargetInternal(Object t) {
+  try {
     if (! t.equals(_target)) {
      if ( _target instanceof MBase )
        ((MBase)t).removeMElementListener(this);
@@ -193,6 +194,9 @@ implements TabModelTarget, DocumentListener, KeyListener, FocusListener, MElemen
       _namespaceField.setSelectedItem(null);
       ed.setText("");
     }
+    }catch( Exception te ) {
+    te.printStackTrace();
+    }
   }
 
   public Object getTarget() { return _target; }
@@ -200,7 +204,6 @@ implements TabModelTarget, DocumentListener, KeyListener, FocusListener, MElemen
   public void refresh() { setTarget(_target); }
 
   public boolean shouldBeEnabled() { return _target instanceof MModelElement; }
-
 
   protected void setTargetName() {
     if (_target == null) return;
@@ -210,18 +213,28 @@ implements TabModelTarget, DocumentListener, KeyListener, FocusListener, MElemen
   }
 
   protected void setTargetStereotype() {
+    //System.out.println( "setTargetStereotype" );
     if (_target == null) return;
     if (_inChange) return;
 	MModelElement me = (MModelElement) _target;
 	// needs-more-work: find predefined stereotype
 	Component ed = _stereoField.getEditor().getEditorComponent();
-	String stereoName = ((JTextField)ed).getText();
+	String stereoName = (String) ((JTextField)ed).getText();
+	//System.out.println( "Stereotype name is " + stereoName );
 	MNamespace m = ProjectBrowser.TheInstance.getProject().getCurrentNamespace();
+	//  This is our little loop to backup to the Model
+	while( m != null &&
+	         !((MNamespaceImpl) m).getUMLClassName().equals( "Model" )) {
+	  //System.out.println( "Namespace is " + m.toString() );
+	  //System.out.println( "Namespace is " + m.getName() );
+	  m = m.getNamespace();
+	}
 	MStereotype s = null;
    	Object eo = m.lookup(stereoName);
 	if (eo != null && eo instanceof MStereotype)
 		s = (MStereotype) eo;
 	else {
+	//System.out.println( "Adding " + stereoName + " to " + m );
 		s = new MStereotypeImpl();
 		s.setName(stereoName);
 		m.addOwnedElement(s);
@@ -235,9 +248,6 @@ implements TabModelTarget, DocumentListener, KeyListener, FocusListener, MElemen
   public void insertUpdate(DocumentEvent e) {
     //System.out.println(getClass().getName() + " insert");
     if (e.getDocument() == _nameField.getDocument()) setTargetName();
-    Component ed = _stereoField.getEditor().getEditorComponent();
-    Document stereoDoc = ((JTextField)ed).getDocument();
-    if (e.getDocument() == stereoDoc) setTargetStereotype();
   }
 
   public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
@@ -247,20 +257,20 @@ implements TabModelTarget, DocumentListener, KeyListener, FocusListener, MElemen
     // Apparently, this method is never called.
   }
 	// ItemListener implementation
- //  public void itemStateChanged(ItemEvent e) {
-// 	  if (e.getStateChange() == ItemEvent.SELECTED) {
-// 		  Object src = e.getSource();
-// 		  if (src == _namespaceField) {
-// 		      //System.out.println("namespacefield event");
-// 			  // what to do here?
-// 			  //setTargetInternal();
-// 		  }
-// 		  else if (src == _stereoField) {
-// 		      //System.out.println("stereofield event");
-// 			  setTargetStereotype();
-// 		  }
-// 	  }
-//   }
+  public void itemStateChanged(ItemEvent e) {
+ 	  if (e.getStateChange() == ItemEvent.SELECTED) {
+ 		  Object src = e.getSource();
+ 		  if (src == _namespaceField) {
+ 		      //System.out.println("namespacefield event");
+ 			  // what to do here?
+ 			  //setTargetInternal();
+ 		  }
+ 		  else if (src == _stereoField) {
+ 		      //System.out.println("stereofield event");
+ 			  setTargetStereotype();
+ 		  }
+ 	  }
+   }
 
 	// MElementListener implementation
 
@@ -307,7 +317,7 @@ implements TabModelTarget, DocumentListener, KeyListener, FocusListener, MElemen
 	    //setTargetInternal();
 	}
 	else if (src == _stereoField) {
-	    System.out.println("stereofield event");
+	    //System.out.println("stereofield event");
 	    setTargetStereotype();
 	}
     }

@@ -344,7 +344,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   ////////////////////////////////////////////////////////////////
   // internal methods
 
-  /** This is called aftern any part of the UML MModelElement has
+  /** This is called after any part of the UML MModelElement has
    *  changed. This method automatically updates the name FigText.
    *  Subclasses should override and update other parts. */
   protected void modelChanged() {
@@ -365,7 +365,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     if (me == null) return;
     MStereotype stereos = me.getStereotype();
     if (stereos == null) {
-      _stereo.setText("");
+      _stereo.setText("<<>>");
       return;
     }
     String stereoStr = stereos.getName();

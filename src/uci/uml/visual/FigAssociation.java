@@ -36,6 +36,7 @@ import uci.gef.*;
 import uci.uml.ui.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import uci.uml.generate.*;
 
 public class FigAssociation extends FigEdgeModelElement {
@@ -50,7 +51,7 @@ public class FigAssociation extends FigEdgeModelElement {
   // constructors
 
   public FigAssociation() {
-    addPathItem(_name, new PathConvPercent(this, 50, 10));
+    addPathItem(_name, new PathConvPercent(this, 50, 18));
 
     _srcMult = new FigText(10, 30, 90, 20);
     _srcMult.setFont(LABEL_FONT);
@@ -89,6 +90,7 @@ public class FigAssociation extends FigEdgeModelElement {
   public FigAssociation(Object edge) {
     this();
     setOwner(edge);
+    _name.setText(getStereotype() + ((MModelElement)edge).getName());
   }
 
   public void setOwner(Object own) {
@@ -110,6 +112,17 @@ public class FigAssociation extends FigEdgeModelElement {
       newAsc.addMElementListener(this);
     }
     modelChanged();
+  }
+
+  public String getStereotype() {
+    if (getOwner() instanceof MModelElement) {
+      MModelElement me = (MModelElement) getOwner();
+      MStereotype stereos = me.getStereotype();
+      if( stereos != null && stereos.getName().length() > 0 ) {
+        return "<<" + stereos.getName() + ">>\n";
+      }
+    }
+    return "";
   }
 
   ////////////////////////////////////////////////////////////////
@@ -141,6 +154,7 @@ public class FigAssociation extends FigEdgeModelElement {
     String asNameStr = GeneratorDisplay.Generate(as.getName());
 
     super.modelChanged();
+    _name.setText(getStereotype() + asNameStr);
 
     MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
     MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
