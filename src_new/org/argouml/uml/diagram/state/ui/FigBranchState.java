@@ -52,16 +52,6 @@ public class FigBranchState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /**
-     * UML does not really use ports, so just define one big one so that users
-     * can drag edges to or from any point in the icon.
-     */
-
-    //FigPoly _bigPort;
-
-    //FigPoly _head;
-
-    private FigCircle bigPort;
     private FigCircle head;
 
     ////////////////////////////////////////////////////////////////
@@ -71,12 +61,12 @@ public class FigBranchState extends FigStateVertex {
      * constructor
      */
     public FigBranchState() {
-        bigPort = new FigCircle(x, y, width, height, Color.cyan,
-                Color.cyan);
+        setBigPort(new FigCircle(x, y, width, height, Color.cyan,
+                Color.cyan));
         head = new FigCircle(x, y, width, height, Color.black, Color.white);
 
         // add Figs to the FigNode in back-to-front order
-        addFig(bigPort);
+        addFig(getBigPort());
         addFig(head);
 
         setBlinkPorts(false); //make port invisble unless mouse enters
@@ -98,7 +88,7 @@ public class FigBranchState extends FigStateVertex {
     public Object clone() {
         FigBranchState figClone = (FigBranchState) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone.bigPort = (FigCircle) it.next();
+        figClone.setBigPort((FigCircle) it.next());
         figClone.head = (FigCircle) it.next();
         return figClone;
     }

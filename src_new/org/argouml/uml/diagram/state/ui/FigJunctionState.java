@@ -51,7 +51,6 @@ public class FigJunctionState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private FigPoly bigPort;
     private FigPoly head;
 
     ////////////////////////////////////////////////////////////////
@@ -59,12 +58,12 @@ public class FigJunctionState extends FigStateVertex {
     /** constructor
      */
     public FigJunctionState() {
-	bigPort = new FigPoly( Color.cyan, Color.cyan);
+	setBigPort(new FigPoly( Color.cyan, Color.cyan));
 	head = new FigPoly(Color.black, Color.white);
-	bigPort.addPoint(X, Y);
-	bigPort.addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
-	bigPort.addPoint(X, Y + HEIGHT);
-	bigPort.addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
+	getBigPort().addPoint(X, Y);
+	getBigPort().addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
+	getBigPort().addPoint(X, Y + HEIGHT);
+	getBigPort().addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
 
 	head.addPoint(X, Y);
 	head.addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
@@ -73,7 +72,7 @@ public class FigJunctionState extends FigStateVertex {
 	head.addPoint(X, Y);
 
 	// add Figs to the FigNode in back-to-front order
-	addFig(bigPort);
+	addFig(getBigPort());
 	addFig(head);
 
 	setBlinkPorts(false); //make port invisble unless mouse enters
@@ -97,7 +96,7 @@ public class FigJunctionState extends FigStateVertex {
     public Object clone() {
 	FigJunctionState figClone = (FigJunctionState) super.clone();
 	Iterator it = figClone.getFigs(null).iterator();
-	figClone.bigPort = (FigPoly) it.next();
+	figClone.setBigPort((FigPoly) it.next());
 	figClone.head = (FigPoly) it.next();
 	return figClone;
     }

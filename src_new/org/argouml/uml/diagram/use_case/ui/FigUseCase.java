@@ -281,8 +281,9 @@ public class FigUseCase extends FigNodeModelElement {
 			     epSize.width,
 			     epSize.height);
 
+        setBigPort(bigPort);
+        
         // add Figs to the FigNode in back-to-front order
-
         addFig(bigPort);
         addFig(cover);
         addFig(getNameFig());
