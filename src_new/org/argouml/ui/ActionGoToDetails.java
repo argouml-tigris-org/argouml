@@ -31,6 +31,9 @@ import org.argouml.cognitive.ui.TabToDoTarget;
 import org.argouml.uml.ui.TabModelTarget;
 import org.argouml.uml.ui.UMLAction;
 
+/**
+ * Action to display a tab in the DetailsPane by name, eg "Properties".
+ */
 public class ActionGoToDetails extends UMLAction {
 
   ////////////////////////////////////////////////////////////////
@@ -59,7 +62,7 @@ public class ActionGoToDetails extends UMLAction {
             shouldBeEnabled = true;
         } else 
         if (namedTab instanceof TabModelTarget) {
-            shouldBeEnabled = ((TabModelTarget)namedTab).shouldBeEnabled();
+            shouldBeEnabled = ((TabModelTarget)namedTab).shouldBeEnabled(pb.getTarget());
         } else {
             shouldBeEnabled = namedTab != null;
         } 

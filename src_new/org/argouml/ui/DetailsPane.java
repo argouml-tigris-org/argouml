@@ -194,13 +194,17 @@ public class DetailsPane
      * selected model element or
      * the owner(model element) of a selected fig.
      *
-     * Decides which panels to enable.
+     * <p>Decides which panels to enable.
      */
     public void setTarget(Object target) {
+        
+        // check pre-conditions
         if (target == _modelTarget
             || ((target instanceof Fig)
                 && ((Fig)target).getOwner() == _modelTarget))
             return;
+        
+        // set the figTarget and modelTarget variables:
         if (target == null) {
             _figTarget = null;
             _modelTarget = null;
@@ -212,16 +216,19 @@ public class DetailsPane
         else
             _modelTarget = target;
 
+        // initialise helper local vars.
         int firstEnabled = -1;
         boolean jumpToFirstEnabledTab = false;
         boolean jumpToPrevEnabled = false;
         int currentTab = _tabs.getSelectedIndex();
+        
+        // iterate through the tabbed panels to determine wether they
+        // should be enabled. 
         for (int i = 0; i < _tabPanels.size(); i++) {
             JPanel tab = (JPanel)_tabPanels.elementAt(i);
             if (tab instanceof TabModelTarget) {
                 TabModelTarget tabMT = (TabModelTarget)tab;
-                tabMT.setTarget(_modelTarget);
-                boolean shouldEnable = tabMT.shouldBeEnabled();
+                boolean shouldEnable = tabMT.shouldBeEnabled(_modelTarget);
                 _tabs.setEnabledAt(i, shouldEnable);
                 if (shouldEnable && firstEnabled == -1)
                     firstEnabled = i;
@@ -236,8 +243,7 @@ public class DetailsPane
             }
             if (tab instanceof TabFigTarget) {
                 TabFigTarget tabFT = (TabFigTarget)tab;
-                tabFT.setTarget(_figTarget);
-                boolean shouldEnable = tabFT.shouldBeEnabled();
+                boolean shouldEnable = tabFT.shouldBeEnabled(_figTarget);
                 _tabs.setEnabledAt(i, shouldEnable);
                 if (shouldEnable && firstEnabled == -1)
                     firstEnabled = i;
@@ -251,16 +257,31 @@ public class DetailsPane
                 }
             }
         }
+        
+        // because a previously enabled tab may now be disabled
+        // select an appropriate tab
+        // and set its target.
         if (jumpToPrevEnabled) {
             _tabs.setSelectedIndex(_lastNonNullTab);
+            Component sel = _tabs.getSelectedComponent();
+            if(sel instanceof TabFigTarget)
+                ((TabTarget)sel).setTarget(_figTarget);
+            if(sel instanceof TabModelTarget)
+                ((TabTarget)sel).setTarget(_modelTarget);
             return;
         }
         if (jumpToFirstEnabledTab && firstEnabled != -1)
             _tabs.setSelectedIndex(firstEnabled);
         if (jumpToFirstEnabledTab && firstEnabled == -1)
             _tabs.setSelectedIndex(0);
-        if (target != null)
+        if (target != null){
             _lastNonNullTab = _tabs.getSelectedIndex();
+            Component sel = _tabs.getSelectedComponent();
+            if(sel instanceof TabFigTarget)
+                ((TabTarget)sel).setTarget(_figTarget);
+            if(sel instanceof TabModelTarget)
+                ((TabTarget)sel).setTarget(_modelTarget);
+        }
     }
 
     public Object getTarget() {
@@ -382,23 +403,30 @@ public class DetailsPane
     // event handlers
 
     /**
-     * Reacts to a change in the selected tab by calling refresh()
-     * on that tab (a TabToDoTarget, TabModelTarget or TabFigTarget
-     * instance).
+     * Reacts to a change in the selected tab by calling
+     * 
+     * refresh() for TabToDoTarget's
+     * &
+     * setTarget on a  TabModelTarget or TabFigTarget instance
      * 
      * old notes: called when the user selects a new tab, by clicking or
      *  otherwise.
      */
     public void stateChanged(ChangeEvent e) {
+        
         cat.debug("DetailsPane state changed");
         Component sel = _tabs.getSelectedComponent();
+        
         cat.debug(sel.getClass().getName());
+        
+        // update the tab
         if (sel instanceof TabToDoTarget)
              ((TabToDoTarget)sel).refresh();
         else if (sel instanceof TabModelTarget)
-             ((TabModelTarget)sel).refresh();
+             ((TabModelTarget)sel).setTarget(_modelTarget);
         else if (sel instanceof TabFigTarget)
-             ((TabFigTarget)sel).refresh();
+             ((TabFigTarget)sel).setTarget(_figTarget);
+        
         if (_modelTarget != null)
             _lastNonNullTab = _tabs.getSelectedIndex();
     }

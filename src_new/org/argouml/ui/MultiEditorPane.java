@@ -127,7 +127,7 @@ public class MultiEditorPane
             if (tab instanceof TabModelTarget) {
                 TabModelTarget tabMT = (TabModelTarget) tab;
                 tabMT.setTarget(_target);
-                boolean shouldEnable = tabMT.shouldBeEnabled();
+                boolean shouldEnable = tabMT.shouldBeEnabled(_target);
                 _tabs.setEnabledAt(i, shouldEnable);
                 if (shouldEnable && (nextTab == -1 || i == currentTab))
                     nextTab = i;

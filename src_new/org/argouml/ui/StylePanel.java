@@ -68,20 +68,23 @@ implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, 
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void setTarget(Fig t) {
-    _target = t;
+  public void setTarget(Object t) {
+    _target = (Fig)t;
     refresh();
   }
 
 
-  public Fig getTarget() { return _target; }
+  public Object getTarget() { return _target; }
 
   public void refresh() {
     //_tableModel.setTarget(_target);
     //_table.setModel(_tableModel);
   }
 
-  public boolean shouldBeEnabled() { return _target != null; }
+  /**
+   * style panels ony apply when a Fig is selected.
+   */
+  public boolean shouldBeEnabled(Object target) { return (_target instanceof Fig) ; }
 
   ////////////////////////////////////////////////////////////////
   // actions

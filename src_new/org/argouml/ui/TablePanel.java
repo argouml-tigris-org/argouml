@@ -259,7 +259,10 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
     updateContext();
   }
 
-  public boolean shouldBeEnabled() { return _target != null; }
+  /**
+   * the target must not be null.
+   */
+  public boolean shouldBeEnabled(Object target) { return target != null; }
 
   ////////////////////////////////////////////////////////////////
   // actions
