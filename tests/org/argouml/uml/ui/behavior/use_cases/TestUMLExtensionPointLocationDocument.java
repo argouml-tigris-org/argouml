@@ -60,10 +60,9 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
         super.setUp();
         elem = UseCasesFactory.getFactory().createExtensionPoint();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
-        cont.setTarget(elem);
-        model = new UMLExtensionPointLocationDocument(cont);
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);        
+        model = new UMLExtensionPointLocationDocument();
+        model.setTarget(elem);
     }
 
     /**
