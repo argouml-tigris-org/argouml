@@ -52,28 +52,31 @@ public class FigActor extends FigNodeModelElement {
 
     /** UML does not really use ports, so just define one big one so
      *  that users can drag edges to or from any point in the icon. */
-    FigCircle _bigPort;
+    private FigCircle bigPort;
 
     /* Put in the things for the "person" in the FigActor */
-    FigCircle _head;
-    FigLine _body;
-    FigLine _arms;
-    FigLine _leftLeg;
-    FigLine _rightLeg;
+    private FigCircle head;
+    private FigLine body;
+    private FigLine arms;
+    private FigLine leftLeg;
+    private FigLine rightLeg;
 
-    // add other Figs here aes needed
+    // add other Figs here as needed
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Main Constructor for the creation of a new Actor. 
+     */
     public FigActor() {
         // Put this rectangle behind the rest, so it goes first
-        _bigPort = new FigCircle(10, 30, 15, 15, Color.gray, Color.gray);
-        _head = new FigCircle(10, 30, 15, 15, Color.black, Color.white);
-        _body = new FigLine(20, 45, 20, 60, Color.black);
-        _arms = new FigLine(10, 50, 30, 50, Color.black);
-        _leftLeg = new FigLine(20, 60, 15, 75, Color.black);
-        _rightLeg = new FigLine(20, 60, 25, 75, Color.black);
+        bigPort = new FigCircle(10, 30, 15, 15, Color.gray, Color.gray);
+        head = new FigCircle(10, 30, 15, 15, Color.black, Color.white);
+        body = new FigLine(20, 45, 20, 60, Color.black);
+        arms = new FigLine(10, 50, 30, 50, Color.black);
+        leftLeg = new FigLine(20, 60, 15, 75, Color.black);
+        rightLeg = new FigLine(20, 60, 25, 75, Color.black);
         getNameFig().setBounds(5, 75, 35, 20);
 
         getNameFig().setTextFilled(false);
@@ -82,33 +85,46 @@ public class FigActor extends FigNodeModelElement {
         // initialize any other Figs here
 
         // add Figs to the FigNode in back-to-front order
-        addFig(_bigPort);
-        addFig(_head);
-        addFig(_body);
-        addFig(_arms);
-        addFig(_leftLeg);
-        addFig(_rightLeg);
+        addFig(bigPort);
+        addFig(head);
+        addFig(body);
+        addFig(arms);
+        addFig(leftLeg);
+        addFig(rightLeg);
         addFig(getNameFig());
     }
 
+    /**
+     * <p>Constructor for use if this figure is created for an existing actor
+     *   node in the metamodel.</p>
+     * 
+     * @param gm ignored!
+     * @param node The UML object being placed.
+     */
     public FigActor(GraphModel gm, Object node) {
         this();
         setOwner(node);
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
+     */
     public String placeString() {
         return "new MActor";
     }
 
+    /**
+     * @see java.lang.Object#clone()
+     */
     public Object clone() {
         FigActor figClone = (FigActor) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone._bigPort = (FigCircle) it.next();
-        figClone._head = (FigCircle) it.next();
-        figClone._body = (FigLine) it.next();
-        figClone._arms = (FigLine) it.next();
-        figClone._leftLeg = (FigLine) it.next();
-        figClone._rightLeg = (FigLine) it.next();
+        figClone.bigPort = (FigCircle) it.next();
+        figClone.head = (FigCircle) it.next();
+        figClone.body = (FigLine) it.next();
+        figClone.arms = (FigLine) it.next();
+        figClone.leftLeg = (FigLine) it.next();
+        figClone.rightLeg = (FigLine) it.next();
         figClone.setNameFig((FigText) it.next());
         return figClone;
     }
@@ -116,59 +132,95 @@ public class FigActor extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
+     */
     public Selection makeSelection() {
         return new SelectionActor(this);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
     public void setOwner(Object node) {
         super.setOwner(node);
-        bindPort(node, _bigPort);
+        bindPort(node, bigPort);
     }
 
-    /** Returns true if this Fig can be resized by the user. */
+    /** Returns true if this Fig can be resized by the user. 
+     * @see org.tigris.gef.presentation.Fig#isResizable()
+     */
     public boolean isResizable() {
         return false;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
     public void setLineColor(Color col) {
-        _head.setLineColor(col);
-        _body.setLineColor(col);
-        _arms.setLineColor(col);
-        _leftLeg.setLineColor(col);
-        _rightLeg.setLineColor(col);
+        head.setLineColor(col);
+        body.setLineColor(col);
+        arms.setLineColor(col);
+        leftLeg.setLineColor(col);
+        rightLeg.setLineColor(col);
     }
     
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
     public Color getLineColor() {
-        return _head.getLineColor();
+        return head.getLineColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
     public void setFillColor(Color col) {
-        _head.setFillColor(col);
+        head.setFillColor(col);
     }
+    
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
     public Color getFillColor() {
-        return _head.getFillColor();
+        return head.getFillColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
     public void setFilled(boolean f) {
-        _head.setFilled(f);
+        head.setFilled(f);
     }
     
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFilled()
+     */
     public boolean getFilled() {
-        return _head.getFilled();
+        return head.getFilled();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
     public void setLineWidth(int w) {
-        _head.setLineWidth(w);
-        _body.setLineWidth(w);
-        _arms.setLineWidth(w);
-        _leftLeg.setLineWidth(w);
-        _rightLeg.setLineWidth(w);
+        head.setLineWidth(w);
+        body.setLineWidth(w);
+        arms.setLineWidth(w);
+        leftLeg.setLineWidth(w);
+        rightLeg.setLineWidth(w);
     }
     
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
     public int getLineWidth() {
-        return _head.getLineWidth();
+        return head.getLineWidth();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
     public Dimension getMinimumSize() {
         Dimension nameDim = getNameFig().getMinimumSize();
         int w = nameDim.width;
@@ -176,16 +228,19 @@ public class FigActor extends FigNodeModelElement {
         return new Dimension(w, h);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     */
     public void setBounds(int x, int y, int w, int h) {
         int middle = w / 2;
         h = _h;
         Rectangle oldBounds = getBounds();
-        _bigPort.setLocation(x + middle - _bigPort.getWidth() / 2, y + h - 65);
-        _head.setLocation(x + middle - _head.getWidth() / 2, y + h - 65);
-        _body.setLocation(x + middle, y + h - 50);
-        _arms.setLocation(x + middle - _arms.getWidth() / 2, y + h - 45);
-        _leftLeg.setLocation(x + middle - _leftLeg.getWidth(), y + h - 35);
-        _rightLeg.setLocation(x + middle, y + h - 35);
+        bigPort.setLocation(x + middle - bigPort.getWidth() / 2, y + h - 65);
+        head.setLocation(x + middle - head.getWidth() / 2, y + h - 65);
+        body.setLocation(x + middle, y + h - 50);
+        arms.setLocation(x + middle - arms.getWidth() / 2, y + h - 45);
+        leftLeg.setLocation(x + middle - leftLeg.getWidth(), y + h - 35);
+        rightLeg.setLocation(x + middle, y + h - 35);
 
         Dimension minTextSize = getNameFig().getMinimumSize();
         getNameFig().setBounds(x + middle - minTextSize.width / 2,
@@ -219,26 +274,26 @@ public class FigActor extends FigNodeModelElement {
      */
     public Vector getGravityPoints() {
         Vector ret = new Vector();
-        int cx = _head.center().x;
-        int cy = _head.center().y;
-        int radiusx = Math.round(_head.getWidth() / 2) + 1;
-        int radiusy = Math.round(_head.getHeight() / 2) + 1;
-        int MAXPOINTS = 20;
+        int cx = head.center().x;
+        int cy = head.center().y;
+        int radiusx = Math.round(head.getWidth() / 2) + 1;
+        int radiusy = Math.round(head.getHeight() / 2) + 1;
+        final int maxPoints = 20;
         Point point = null;
-        for (int i = 0; i < MAXPOINTS; i++) {
-	    double angle = 2 * Math.PI / MAXPOINTS * i;
+        for (int i = 0; i < maxPoints; i++) {
+	    double angle = 2 * Math.PI / maxPoints * i;
             point = new Point((int) (cx + Math.cos(angle) * radiusx),
 			      (int) (cy + Math.sin(angle) * radiusy));
             ret.add(point);
         }
-        ret.add(new Point(_body.getX(), _body.getY()));
-        ret.add(new Point(_body.getX1(), _body.getY1()));
-        ret.add(new Point(_leftLeg.getX(), _leftLeg.getY()));
-        ret.add(new Point(_leftLeg.getX1(), _leftLeg.getY1()));
-        ret.add(new Point(_rightLeg.getX(), _rightLeg.getY()));
-        ret.add(new Point(_rightLeg.getX1(), _rightLeg.getY1()));
-        ret.add(new Point(_arms.getX(), _arms.getY()));
-        ret.add(new Point(_arms.getX1(), _arms.getY1()));
+        ret.add(new Point(body.getX(), body.getY()));
+        ret.add(new Point(body.getX1(), body.getY1()));
+        ret.add(new Point(leftLeg.getX(), leftLeg.getY()));
+        ret.add(new Point(leftLeg.getX1(), leftLeg.getY1()));
+        ret.add(new Point(rightLeg.getX(), rightLeg.getY()));
+        ret.add(new Point(rightLeg.getX1(), rightLeg.getY1()));
+        ret.add(new Point(arms.getX(), arms.getY()));
+        ret.add(new Point(arms.getX1(), arms.getY1()));
         return ret;
     }
 
