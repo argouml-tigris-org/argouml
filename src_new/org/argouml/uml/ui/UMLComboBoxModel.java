@@ -232,6 +232,8 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 cat.error(e.toString() + ". " +
                                    this.getClass().toString() +
                                    ": invalid filter method " + filter, e);
+                cat.error("Need to rethrow this exception as RuntimeException.");
+		throw new RuntimeException(e.toString());
             }
         }
 
@@ -245,6 +247,8 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 cat.error(e.toString() + ". " +
                                    this.getClass().toString() +
                                    ": invalid get method " + getMethod, e);
+                cat.error("Need to rethrow this exception as RuntimeException.");
+		throw new RuntimeException(e.toString());
             }
         }
 
@@ -261,7 +265,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
                                    this.getClass().toString() +
                                    ": invalid set method " + setMethod, e);
 		cat.error("Need to rethrow this exception as RuntimeException.");
-		throw new RuntimeException(e);
+		throw new RuntimeException(e.toString());
             }
         }
     }
