@@ -36,6 +36,7 @@ import java.util.Vector;
 import javax.swing.Action;
 
 import org.apache.log4j.Category;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.ui.FigMessage;
@@ -57,56 +58,48 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class UMLCollaborationDiagram extends UMLDiagram {
 
-  /** for logging */
-  private final static Category cat = 
-      Category.getInstance("org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram");
+    /** for logging */
+    private final static Category cat = Category.getInstance("org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram");
 
-  ////////////////
-  // actions for toolbar
+    ////////////////
+    // actions for toolbar
 
+    protected static Action _actionClassifierRole = new CmdCreateNode(MClassifierRole.class, "ClassifierRole");
 
-  protected static Action _actionClassifierRole =
-  new CmdCreateNode(MClassifierRole.class, "ClassifierRole");
+    protected static Action _actionAssoc = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociationRole.class, "AssociationRole");
 
-  protected static Action _actionAssoc =
-  new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MAssociationRole.class,
-		 "AssociationRole");
+    protected static Action _actionGeneralize = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MGeneralization.class, "Generalization");
 
-  protected static Action _actionGeneralize =
-		new CmdSetMode(ModeCreatePolyEdge.class,
-					   "edgeClass", MGeneralization.class,
-					   "Generalization");
+    ////////////////////////////////////////////////////////////////
+    // contructors
+    protected static int _CollaborationDiagramSerial = 1;
 
+    public UMLCollaborationDiagram() {
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  protected static int _CollaborationDiagramSerial = 1;
-
-
-  public UMLCollaborationDiagram() {
-  	
-    try { setName(getNewDiagramName()); }
-    catch (PropertyVetoException pve) { }
-  }
-
-  public UMLCollaborationDiagram(MNamespace m) {
-    this();
-    setNamespace(m);
-  }
-
-  public int getNumMessages() {
-    Layer lay = getLayer();
-    Vector figs = lay.getContents();
-    int res = 0;
-    int size = figs.size();
-    for (int i=0; i < size; i++) {
-      Fig f = (Fig) figs.elementAt(i);
-      if (f.getOwner() instanceof MMessage) res++;
+        try {
+            setName(getNewDiagramName());
+        } catch (PropertyVetoException pve) {
+        }
     }
-    return res;
-  }
-  
+
+    public UMLCollaborationDiagram(MNamespace m) {
+        this();
+        setNamespace(m);
+    }
+
+    public int getNumMessages() {
+        Layer lay = getLayer();
+        Vector figs = lay.getContents();
+        int res = 0;
+        int size = figs.size();
+        for (int i = 0; i < size; i++) {
+            Fig f = (Fig) figs.elementAt(i);
+            if (f.getOwner() instanceof MMessage)
+                res++;
+        }
+        return res;
+    }
+
     /** method to perform a number of important initializations of a <I>CollaborationDiagram</I>. 
      * 
      * each diagram type has a similar <I>UMLxxxDiagram</I> class.
@@ -118,89 +111,95 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      *           mainly in <I>LayerManager</I>(GEF) to control the adding, changing and 
      *           deleting layers on the diagram...
      *           psager@tigris.org   Jan. 24, 2oo2
-     */        
-  public void setNamespace(MNamespace m) {
-      super.setNamespace(m);
-      CollabDiagramGraphModel gm = new CollabDiagramGraphModel();
-      gm.setNamespace(m);
-      setGraphModel(gm);
-      LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
-      setLayer(lay);
-      CollabDiagramRenderer rend = new CollabDiagramRenderer(); // singleton
-      lay.setGraphNodeRenderer(rend);
-      lay.setGraphEdgeRenderer(rend);
-  }
-
-  /** initialize the toolbar for this diagram type */
-  protected void initToolBar() {
-    _toolBar = new ToolBar();
-    _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-    //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-
-    _toolBar.add(_actionSelect);
-    _toolBar.add(_actionBroom);
-    _toolBar.addSeparator();
-
-    _toolBar.add(_actionClassifierRole);
-    _toolBar.addSeparator();
-    _toolBar.add(_actionAssoc);
-    _toolBar.add(ActionAddMessage.SINGLETON);
-    _toolBar.add(_actionGeneralize);
-    // other actions
-    _toolBar.addSeparator();
-
-    _toolBar.add(_actionRectangle);
-    _toolBar.add(_actionRRectangle);
-    _toolBar.add(_actionCircle);
-    _toolBar.add(_actionLine);
-    _toolBar.add(_actionText);
-    _toolBar.add(_actionPoly);
-    _toolBar.add(_actionSpline);
-    _toolBar.add(_actionInk);
-    _toolBar.addSeparator();
-
-    _toolBar.add(_diagramName.getJComponent());
-  }
-
-
-  /**  After loading the diagram it?s necessary to connect
-    *  every FigMessage to its FigAssociationRole. 
-    *  This is done by adding the FigMessage 
-    *  to the PathItems of its FigAssociationRole */  
-  public void postLoad() {
-
-    super.postLoad();
-
-    Collection messages;
-    Iterator msgIterator;
-    if (getNamespace() == null) {
-        cat.error("Collaboration Diagram does not belong to a namespace");
-        return;
+     */
+    public void setNamespace(MNamespace m) {
+        super.setNamespace(m);
+        CollabDiagramGraphModel gm = new CollabDiagramGraphModel();
+        gm.setNamespace(m);
+        setGraphModel(gm);
+        LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
+        setLayer(lay);
+        CollabDiagramRenderer rend = new CollabDiagramRenderer(); // singleton
+        lay.setGraphNodeRenderer(rend);
+        lay.setGraphEdgeRenderer(rend);
     }
-    Collection ownedElements = getNamespace().getOwnedElements();
-    Iterator oeIterator = ownedElements.iterator();   
-    Layer lay = getLayer();
-    while(oeIterator.hasNext()) {
-	MModelElement me = (MModelElement)oeIterator.next();
-	if (me instanceof MAssociationRole) {
-           messages= ((MAssociationRole) me).getMessages();
-           msgIterator= messages.iterator();
-           while(msgIterator.hasNext()) {
-             MMessage message = (MMessage)msgIterator.next();            
-             FigMessage figMessage = (FigMessage) lay.presentationFor(message);
-             if ( figMessage != null ) {
-               figMessage.addPathItemToFigAssociationRole(lay);
-             }
-           }
-       }
+
+    /** initialize the toolbar for this diagram type */
+    protected void initToolBar() {
+        _toolBar = new ToolBar();
+        _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+        //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
+        _toolBar.add(_actionSelect);
+        _toolBar.add(_actionBroom);
+        _toolBar.addSeparator();
+
+        _toolBar.add(_actionClassifierRole);
+        _toolBar.addSeparator();
+        _toolBar.add(_actionAssoc);
+        _toolBar.add(ActionAddMessage.SINGLETON);
+        _toolBar.add(_actionGeneralize);
+        // other actions
+        _toolBar.addSeparator();
+
+        _toolBar.add(_actionRectangle);
+        _toolBar.add(_actionRRectangle);
+        _toolBar.add(_actionCircle);
+        _toolBar.add(_actionLine);
+        _toolBar.add(_actionText);
+        _toolBar.add(_actionPoly);
+        _toolBar.add(_actionSpline);
+        _toolBar.add(_actionInk);
+        _toolBar.addSeparator();
+
+        _toolBar.add(_diagramName.getJComponent());
     }
-  }
-  
-  protected static String getNewDiagramName() {
-  	String name = null;
-        name = "collaboration diagram " + _CollaborationDiagramSerial;
+
+    /**  After loading the diagram it?s necessary to connect
+      *  every FigMessage to its FigAssociationRole. 
+      *  This is done by adding the FigMessage 
+      *  to the PathItems of its FigAssociationRole */
+    public void postLoad() {
+
+        super.postLoad();
+
+        Collection messages;
+        Iterator msgIterator;
+        if (getNamespace() == null) {
+            cat.error("Collaboration Diagram does not belong to a namespace");
+            return;
+        }
+        Collection ownedElements = getNamespace().getOwnedElements();
+        Iterator oeIterator = ownedElements.iterator();
+        Layer lay = getLayer();
+        while (oeIterator.hasNext()) {
+            MModelElement me = (MModelElement) oeIterator.next();
+            if (me instanceof MAssociationRole) {
+                messages = ((MAssociationRole) me).getMessages();
+                msgIterator = messages.iterator();
+                while (msgIterator.hasNext()) {
+                    MMessage message = (MMessage) msgIterator.next();
+                    FigMessage figMessage = (FigMessage) lay.presentationFor(message);
+                    if (figMessage != null) {
+                        figMessage.addPathItemToFigAssociationRole(lay);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+       * Creates a new diagramname.
+       * @return String
+       */
+    protected static String getNewDiagramName() {
+        String name = null;
+        name = "Collaboration Diagram " + _CollaborationDiagramSerial;
         _CollaborationDiagramSerial++;
-    return name;
-  }
+        if (!ProjectManager.getManager().getCurrentProject().isValidDiagramName(name)) {
+            name = getNewDiagramName();
+        }
+        return name;
+    }
 
 } /* end class UMLCollaborationDiagram */

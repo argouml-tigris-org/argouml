@@ -70,6 +70,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
             p.addMember(diagram);
             ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(diagram);
             ProjectBrowser.TheInstance.setTarget(diagram);
+            ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
             super.actionPerformed(e);
         }
     }
