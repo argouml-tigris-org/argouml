@@ -77,7 +77,9 @@ public class StateDiagramRenderer
     /** 
      * Return a Fig that can be used to represent the given node 
      *
-     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, java.lang.Object)
+     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * java.lang.Object)
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
         if (ModelFacade.isAActionState(node)) {
@@ -131,7 +133,9 @@ public class StateDiagramRenderer
     }
 
     /** Return a Fig that can be used to represent the given edge 
-     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, java.lang.Object)
+     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * java.lang.Object)
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 	LOG.debug("making figedge for " + edge);
