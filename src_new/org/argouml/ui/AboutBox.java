@@ -35,6 +35,9 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.tigris.gef.util.*;
 
+/** This is what you see after you click the About
+ * button in the toolbar.
+ */
 public class AboutBox extends JFrame {
 
   ////////////////////////////////////////////////////////////////
@@ -42,9 +45,31 @@ public class AboutBox extends JFrame {
 
   JTabbedPane _tabs = new JTabbedPane();
   JLabel _splashButton = new JLabel("");
+  /** Version information. This is calling on
+   * a simple test file located in the resources
+   * file. One day this will be an xml file.
+   */  
   JTextArea _version = new JTextArea();
+  /** This is calling on
+   * a simple test file located in the resources
+   * file. One day this will be an xml file.
+   * Get your names in lights! Help make Argo the best
+   * choice for UML design and development.
+   */  
   JTextArea _credits = new JTextArea();
+  /** This is calling on
+   * a simple test file located in the resources
+   * file. One day this will be an xml file.
+   * This one day will allow users to send emails
+   * directly from the java window.
+   * Also see email expert.
+   */  
   JTextArea _contact = new JTextArea();
+  /** The small print.
+   * This is calling on
+   * a simple test file located in the resources
+   * file. One day this will be an xml file.
+   */  
   JTextArea _legal = new JTextArea();
 
   ////////////////////////////////////////////////////////////////
