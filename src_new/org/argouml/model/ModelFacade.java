@@ -126,6 +126,7 @@ import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MExpression;
+import ru.novosoft.uml.foundation.data_types.MIterationExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MObjectSetExpression;
 import ru.novosoft.uml.foundation.data_types.MOrderingKind;
@@ -2207,6 +2208,13 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    public static Collection getMessages2(Object handle) {
+        if (handle instanceof MClassifierRole) {
+            return ((MClassifierRole) handle).getMessages2();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /**
      * Get the model of some model element
      *
@@ -3605,6 +3613,44 @@ public class ModelFacade {
 					   + " or " + me);
     }
 
+    public static void addParameter(Object target, Object parameter) {
+        if (parameter instanceof MParameter) {
+            if (target instanceof MObjectFlowState) {
+                ((MObjectFlowState)target).addParameter((MParameter)parameter);
+                return;
+            }
+            if (target instanceof MEvent) {
+                ((MEvent)target).addParameter((MParameter)parameter);
+                return;
+            }
+            if (target instanceof MBehavioralFeature) {
+                ((MBehavioralFeature)target).addParameter((MParameter)parameter);
+                return;
+            }
+            if (target instanceof MClassifier) {
+                ((MClassifier)target).addParameter((MParameter)parameter);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + parameter);
+    }
+
+    public static void addParameter(Object target, int index, Object parameter) {
+        if (parameter instanceof MParameter) {
+            if (target instanceof MEvent) {
+                ((MEvent)target).addParameter(index, (MParameter)parameter);
+                return;
+            }
+            if (target instanceof MBehavioralFeature) {
+                ((MBehavioralFeature)target).addParameter(index, (MParameter)parameter);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + parameter);
+    }
+
     /**
      * Adds a predecessor to a message
      * @param target the message
@@ -3670,8 +3716,7 @@ public class ModelFacade {
      * @param dependency the dependency
      */
     public static void addSupplierDependency(Object supplier,
-					     Object dependency)
-    {
+					     Object dependency) {
         if (isAModelElement(supplier) && isADependency(dependency)) {
 	    MModelElement me = (MModelElement) supplier;
 	    me.addSupplierDependency((MDependency) dependency);
@@ -3733,6 +3778,15 @@ public class ModelFacade {
 	    MModelElement me = (MModelElement) handle;
 	    me.addClientDependency((MDependency) dependency);
         }
+    }
+
+    public static void addTaggedValue(Object target,
+                                      Object taggedValue) {
+        if (isAModelElement(target) && isATaggedValue(taggedValue)) {
+	    ((MModelElement)target).addTaggedValue((MTaggedValue)taggedValue);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target + " or " + taggedValue);
     }
 
     public static void removeActualArgument(Object handle, Object argument) {
@@ -4509,6 +4563,16 @@ public class ModelFacade {
 					   + " or " + value);
     }
 
+    public static void setExpression(Object handle, Object value) {
+        if (handle instanceof MGuard
+            && (value == null || value instanceof MBooleanExpression)) {
+            ((MGuard) handle).setExpression((MBooleanExpression) value);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + value);
+    }
+
     /**
      * Sets the extension points of some use cases.
      * @param target the use case
@@ -4700,6 +4764,15 @@ public class ModelFacade {
 					   + " or " + receiver);
     }
 
+    public static void setRecurrence(Object target, Object expr) {
+        if (target instanceof MAction && expr instanceof MIterationExpression) {
+            ((MAction)target).setRecurrence((MIterationExpression)expr);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + expr);
+    }
+    
     /**
      * Sets the represented classifier of some collaboration
      * @param target the collaboration
@@ -4780,6 +4853,14 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + target);
     }
 
+    public static void setScript(Object target, Object expr) {
+        if (target instanceof MAction && (expr == null || expr instanceof MActionExpression)) {
+            ((MAction)target).setScript((MActionExpression)expr);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + expr);
+    }
     /**
      * Sets the sender of some model element.
      * @param target model element
@@ -4896,6 +4977,15 @@ public class ModelFacade {
 					   + " or " + parent);
     }
 
+    public static void setPredecessors(Object target, Collection predecessors) {
+        if (target instanceof MMessage) {
+            ((MMessage)target).setPredecessors(predecessors);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + predecessors);
+    }
+    
     /**
      * Sets the query flag of a behavioral feature.
      * @param behavioral feature
@@ -4941,6 +5031,13 @@ public class ModelFacade {
         }
     }
     
+    public static void setTag(Object target, Object tag) {
+        if (target instanceof MTaggedValue && tag instanceof String) {
+            ((MTaggedValue)target).setTag((String)tag);
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target + " or " + tag);
+    }
+
     /**
      * Sets a tagged value of some modelelement.
      * @param model element

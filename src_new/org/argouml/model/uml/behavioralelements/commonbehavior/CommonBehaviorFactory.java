@@ -128,7 +128,7 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML CallAction instance.
      */
-    public MCallAction createCallAction() {
+    public Object createCallAction() {
         MCallAction modelElement =
             MFactory.getDefaultFactory().createCallAction();
         super.initialize(modelElement);
@@ -337,14 +337,14 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
      * @param name
      * @return MCallAction
      */
-    public MCallAction buildCallAction(MOperation oper, String name) {
+    public Object/*MCallAction*/ buildCallAction(MOperation oper, String name) {
         if (oper == null) {
             throw new IllegalArgumentException("There should be an operation"
 					       + " with a callaction.");
         }
-        MCallAction action = createCallAction();
-        action.setName(name);
-        action.setOperation(oper);
+        Object action = createCallAction();
+        ModelFacade.setName(action, name);
+        ModelFacade.setOperation(action, oper);
         return action;
     }
 

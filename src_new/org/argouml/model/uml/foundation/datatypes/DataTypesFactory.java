@@ -71,7 +71,7 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML ActionExpression instance.
      */
-    public MActionExpression createActionExpression(String language,
+    public Object/*MActionExpression*/ createActionExpression(String language,
 						    String body) {
         MActionExpression expression = new MActionExpression(language, body);
 	super.initialize(expression);
@@ -95,9 +95,8 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML BooleanExpression instance.
      */
-    public MBooleanExpression createBooleanExpression(String language,
-						      String body)
-    {
+    public Object/*MBooleanExpression*/ createBooleanExpression(String language,
+						      String body) {
         MBooleanExpression expression = new MBooleanExpression(language, body);
 	super.initialize(expression);
 	return expression;
