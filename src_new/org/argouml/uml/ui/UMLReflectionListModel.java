@@ -42,26 +42,36 @@ import org.argouml.ui.targetmanager.TargetManager;
  *
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
  *             replaced by {@link org.argouml.uml.ui.UMLModelElementListModel2},
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             this class is part of the 'old'(pre 0.13.*) 
+ *             implementation of proppanels
  *             that used reflection a lot.
  */
 public class UMLReflectionListModel extends UMLModelElementListModel   {
-    protected static Logger cat = Logger.getLogger(UMLReflectionListModel.class);
+    private static final Logger LOG = 
+        Logger.getLogger(UMLReflectionListModel.class);
 
-    private Method _getMethod = null;
-    private Method _setMethod = null;
-    private Method _addMethod = null;
-    private Method _deleteMethod = null;
-    private static final Object[] _noArgs = {};
+    private Method theGetMethod = null;
+    private Method theSetMethod = null;
+    private Method theAddMethod = null;
+    private Method theDeleteMethod = null;
+    private static final Object[] NOARGS = {};
 
     /**
-     *   Creates a new list model
-     *   @param container the container (typically a PropPanelClass or PropPanelInterface)
-     *                    that provides access to the target classifier.
-     *   @param property  a string that specifies the name of an event that should force a refresh
-     *                       of the list model.  A null value will cause all events to trigger a refresh.
-     *   @param showNone  if true, an element labelled "none" will be shown where there are
-     *                        no actual entries in the list.
+     * Creates a new list model
+     * @param container the container (typically a PropPanelClass or 
+     *                  PropPanelInterface)
+     *                  that provides access to the target classifier.
+     * @param property  a string that specifies the name of an event 
+     *                  that should force a refresh
+     *                  of the list model.  A null value will cause 
+     *                  all events to trigger a refresh.
+     * @param showNone  if true, an element labelled "none" will be 
+     *                  shown where there are
+     *                  no actual entries in the list.
+     * @param getMethod the method for getting
+     * @param setMethod the method for setting
+     * @param addMethod the method for adding
+     * @param deleteMethod the method for deleting
      */
     public UMLReflectionListModel(UMLUserInterfaceContainer container,
 				  String property,
@@ -74,25 +84,29 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
         super(container, property, showNone);
         Class[] noArgs = {};
         try {
-            _getMethod = container.getClass().getMethod(getMethod, noArgs);
+            theGetMethod = container.getClass().getMethod(getMethod, noArgs);
             if (setMethod != null) {
                 Class[] collectionArg = {
 		    Collection.class
 		};
-                _setMethod = container.getClass().getMethod(setMethod, collectionArg);
+                theSetMethod = container.getClass().getMethod(
+                        setMethod, collectionArg);
             }
             Class[] indexArg = {
 		Integer.class
 	    };
             if (addMethod != null) {
-                _addMethod = container.getClass().getMethod(addMethod, indexArg);
+                theAddMethod = container.getClass().getMethod(
+                        addMethod, indexArg);
             }
             if (deleteMethod != null) {
-                _deleteMethod = container.getClass().getMethod(deleteMethod, indexArg);
+                theDeleteMethod = container.getClass().getMethod(
+                        deleteMethod, indexArg);
             }
         }
         catch (Exception e) {
-            cat.error(e.toString() + " in UMLReflectionListModel:" + getMethod, e);
+            LOG.error(e.toString() + " in UMLReflectionListModel:" 
+                    + getMethod, e);
         }
     }
 
@@ -105,9 +119,9 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
      */
     protected int recalcModelElementSize() {
         int size = 0;
-        if (_getMethod != null) {
+        if (theGetMethod != null) {
             try {
-                Object collection = _getMethod.invoke(getContainer(), _noArgs);
+                Object collection = theGetMethod.invoke(getContainer(), NOARGS);
                 if (collection != null) {
                     if (collection instanceof Collection) {
                         size = ((Collection) collection).size();
@@ -118,10 +132,13 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 }
             }
 	    catch (InvocationTargetException ex) {
-                cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.recalcModelElementSize.", ex);
+                LOG.error(ex.getTargetException().toString() 
+                    + " is InvocationTargetException in " 
+                    + "UMLReflectionListModel.recalcModelElementSize.", ex);
             }
             catch (Exception e) {
-                cat.error(e.toString() + " in UMLReflectionListModel.recalcModelElementSize.", e);
+                LOG.error(e.toString() 
+                    + " in UMLReflectionListModel.recalcModelElementSize.", e);
             }
         }
         return size;
@@ -137,30 +154,33 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
      */
     protected Object getModelElementAt(int index) {
         Object/*MModelElement*/ element = null;
-        if (_getMethod != null) {
+        if (theGetMethod != null) {
             try {
-                Object collection = _getMethod.invoke(getContainer(), _noArgs);
+                Object collection = theGetMethod.invoke(getContainer(), NOARGS);
                 if (collection != null) {
                     if (collection instanceof Collection) {
                         Object obj;
                         Iterator iter = ((Collection) collection).iterator();
                         for (int i = 0; iter.hasNext(); i++) {
                             obj = iter.next();
-                            if (i == index && ModelFacade.isAModelElement(obj)) {
+                            if (i == index 
+                                    && ModelFacade.isAModelElement(obj)) {
                                 element = obj;
                                 break;
                             }
                         }
                     }
                     else {
-                        if (index == 0 && ModelFacade.isAModelElement(collection)) {
+                        if (index == 0 
+                                && ModelFacade.isAModelElement(collection)) {
                             element = collection;
                         }
                     }
                 }
             }
             catch (Exception e) {
-                cat.error(e.toString() + " in UMLReflectionListModel.getElementAt()", e);
+                LOG.error(e.toString() 
+                    + " in UMLReflectionListModel.getElementAt()", e);
             }
         }
         return /*(MModelElement)*/ element;
@@ -178,27 +198,30 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
      */
     public boolean buildPopup(JPopupMenu popup, int index) {
         UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"), this, "open", index);
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"), 
+                this, "open", index);
         int size = getModelElementSize();
         if (size == 0) {
             open.setEnabled(false);
         }
         popup.add(open);
 
-        if (_deleteMethod != null) {
-            UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"), this, "delete", index);
+        if (theDeleteMethod != null) {
+            UMLListMenuItem delete = new UMLListMenuItem(
+                    container.localize("Delete"), this, "delete", index);
             if (size <= 0) {
                 delete.setEnabled(false);
             }
             popup.add(delete);
         }
 
-        if (_addMethod != null) {
-            UMLListMenuItem add = new UMLListMenuItem(container.localize("Add"), this, "add", index);
+        if (theAddMethod != null) {
+            UMLListMenuItem add = new UMLListMenuItem(
+                    container.localize("Add"), this, "add", index);
             int upper = getUpperBound();
 
-	    cat.debug("upper " + upper);
-	    cat.debug("size " + size);
+	    LOG.debug("upper " + upper);
+	    LOG.debug("size " + size);
 
             if (upper > 0 && size >= upper) {
                 add.setEnabled(false);
@@ -206,11 +229,13 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
             popup.add(add);
         }
 
-        if (_setMethod != null) {
-            UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"), this, "moveUp", index);
+        if (theSetMethod != null) {
+            UMLListMenuItem moveUp = new UMLListMenuItem(
+                    container.localize("Move Up"), this, "moveUp", index);
             if (index == 0) moveUp.setEnabled(false);
             popup.add(moveUp);
-            UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"), this, "moveDown", index);
+            UMLListMenuItem moveDown = new UMLListMenuItem(
+                    container.localize("Move Down"), this, "moveDown", index);
             if (index == getSize() - 1) moveDown.setEnabled(false);
             popup.add(moveDown);
         }
@@ -218,79 +243,105 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
     }
 
 
+    /**
+     * @param index
+     */
     public void add(int index) {
         try {
             Object[] indexArg = {
 		new Integer(index)
 	    };
-            Object newTarget = _addMethod.invoke(getContainer(), indexArg);
+            Object newTarget = theAddMethod.invoke(getContainer(), indexArg);
             if (newTarget != null) {
                 TargetManager.getInstance().setTarget(newTarget);
             }
         }
 	catch (InvocationTargetException ex) {
-            cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.add() ", ex);
+            LOG.error(ex.getTargetException().toString() 
+                + " is InvocationTargetException in "
+                + "UMLReflectionListModel.add() ", ex);
         }
         catch (Exception e) {
-            cat.error(e.toString() + " in UMLReflectionListModel.add()", e);
+            LOG.error(e.toString() + " in UMLReflectionListModel.add()", e);
         }
 
 
     }
 
 
+    /**
+     * @param index
+     */
     public void moveUp(int index) {
-        if (_getMethod != null && _setMethod != null) {
+        if (theGetMethod != null && theSetMethod != null) {
             try {
-                Collection oldCollection = (Collection) _getMethod.invoke(getContainer(), _noArgs);
+                Collection oldCollection = (Collection) theGetMethod
+                    .invoke(getContainer(), NOARGS);
                 Collection newCollection = moveUpUtil(oldCollection, index);
-                _setMethod.invoke(getContainer(), new Object[] {
+                theSetMethod.invoke(getContainer(), new Object[] {
 		    newCollection
 		});
                 ExplorerEventAdaptor.getInstance().structureChanged();
             }
 	    catch (InvocationTargetException ex) {
-                cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveUp()", ex);
+                LOG.error(ex.getTargetException().toString() 
+                    + " is InvocationTargetException in " 
+                    + "UMLReflectionListModel.moveUp()", ex);
 	    }
             catch (Exception e) {
-                cat.error(e.toString() + " in UMLReflectionListModel.moveUp()", e);
+                LOG.error(e.toString() 
+                    + " in UMLReflectionListModel.moveUp()", e);
             }
         }
     }
 
+    /**
+     * @param index
+     */
     public void moveDown(int index) {
-        if (_getMethod != null && _setMethod != null) {
+        if (theGetMethod != null && theSetMethod != null) {
             try {
-                Collection oldCollection = (Collection) _getMethod.invoke(getContainer(), _noArgs);
+                Collection oldCollection = (Collection) theGetMethod.invoke(
+                        getContainer(), NOARGS);
                 Collection newCollection = moveDownUtil(oldCollection, index);
-                _setMethod.invoke(getContainer(), new Object[] {
+                theSetMethod.invoke(getContainer(), new Object[] {
 		    newCollection
 		});
                 ExplorerEventAdaptor.getInstance().structureChanged();
             }
 	    catch (InvocationTargetException ex) {
-                cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveDown() ", ex.getTargetException());
+                LOG.error(ex.getTargetException().toString() 
+                        + " is InvocationTargetException in " 
+                        + "UMLReflectionListModel.moveDown() ", 
+                        ex.getTargetException());
 	    }
             catch (Exception e) {
-                cat.error(e.toString() + " in UMLReflectionListModel.moveDown()", e);
+                LOG.error(e.toString() 
+                        + " in UMLReflectionListModel.moveDown()", e);
             }
         }
     }
 
 
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel#delete(int)
+     */
     public void delete(int index) {
-        if (_deleteMethod != null) {
+        if (theDeleteMethod != null) {
             try {
-                _deleteMethod.invoke(getContainer(), new Object[] {
+                theDeleteMethod.invoke(getContainer(), new Object[] {
 		    new Integer(index)
 		});
                 ExplorerEventAdaptor.getInstance().structureChanged();
             }
 	    catch (InvocationTargetException ex) {
-                cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.delete()", ex);
+                LOG.error(ex.getTargetException().toString() 
+                    + " is InvocationTargetException in " 
+                    + "UMLReflectionListModel.delete()", ex);
 	    }
 	    catch (Exception e) {
-                cat.error(e.toString() + " in UMLReflectionListModel.delete()", e);
+                LOG.error(e.toString() 
+                        + " in UMLReflectionListModel.delete()", e);
             }
         }
     }

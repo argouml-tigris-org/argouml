@@ -32,7 +32,8 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 4, 2003
  */
-public class UMLAssociationConnectionListModel extends UMLModelElementListModel2 {
+public class UMLAssociationConnectionListModel 
+    extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLModelElementClientDependencyListModel.
@@ -45,7 +46,7 @@ public class UMLAssociationConnectionListModel extends UMLModelElementListModel2
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (_target != null) 
+        if (getTarget() != null) 
             setAllElements(ModelFacade.getConnections(getTarget()));
     }
 
@@ -53,7 +54,8 @@ public class UMLAssociationConnectionListModel extends UMLModelElementListModel2
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {  
-        return org.argouml.model.ModelFacade.isAAssociationEnd(o) && ModelFacade.getConnections(getTarget()).contains(o);
+        return org.argouml.model.ModelFacade.isAAssociationEnd(o) 
+            && ModelFacade.getConnections(getTarget()).contains(o);
     }
 
 

@@ -51,33 +51,35 @@ public abstract class UMLPlainTextDocument
     extends PlainDocument
     implements MElementListener, TargetListener {
 
-    public static Logger cat =
+    private static final Logger LOG =
         Logger.getLogger(UMLPlainTextDocument.class);
 
     /**
      * True if an event should be fired when the text of the document is changed
      */
-    private boolean _firing = true;
+    private boolean firing = true;
 
     /**
      * True if an user edits the document directly (by typing in text)
      */
-    private boolean _editing = false;
+    private boolean editing = false;
 
     /**
      * The target of the propertypanel that's behind this property.
      */
-    private Object _target = null;
+    private Object panelTarget = null;
 
     /**
      * The name of the property set event that will change the
      * property this document shows.
      */
-    private String _eventName = null;
+    private String eventName = null;
 
     /**
      * Constructor for UMLPlainTextDocument. This takes a panel to set the
      * thirdpartyeventlistener to the given list of events to listen to.
+     *
+     * @param eventName the event
      */
     public UMLPlainTextDocument(String eventName) {
         super();
@@ -121,7 +123,7 @@ public abstract class UMLPlainTextDocument
      * @return Object
      */
     public final Object getTarget() {
-        return _target;
+        return panelTarget;
     }
 
     /**
@@ -132,14 +134,14 @@ public abstract class UMLPlainTextDocument
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target)) {
             UmlModelEventPump eventPump = UmlModelEventPump.getPump();
-            if (_target != null) {
-                eventPump.removeModelEventListener(this, _target,
+            if (panelTarget != null) {
+                eventPump.removeModelEventListener(this, panelTarget,
 						   getEventName());
             }
-            _target = target;
+            panelTarget = target;
             // UmlModelEventPump.getPump().removeModelEventListener(this,
             // (MBase)_target, getEventName());
-            eventPump.addModelEventListener(this, _target, getEventName());
+            eventPump.addModelEventListener(this, panelTarget, getEventName());
             handleEvent();
         }
     }
@@ -171,23 +173,29 @@ public abstract class UMLPlainTextDocument
         }
     }
 
+    /**
+     * @param text the value of the property
+     */
     protected abstract void setProperty(String text);
 
+    /**
+     * @return the value of the property
+     */
     protected abstract String getProperty();
 
-    private final void setFiring(boolean firing) {
+    private final void setFiring(boolean f) {
         UmlModelEventPump eventPump = UmlModelEventPump.getPump();
-        if (firing && _target != null) {
-            eventPump.addModelEventListener(this, _target, _eventName);
+        if (f && panelTarget != null) {
+            eventPump.addModelEventListener(this, panelTarget, eventName);
         }
         else {
-            eventPump.removeModelEventListener(this, _target, _eventName);
+            eventPump.removeModelEventListener(this, panelTarget, eventName);
         }
-        _firing = firing;
+        firing = f;
     }
 
     private final boolean isFiring() {
-        return _firing;
+        return firing;
     }
 
     private final void handleEvent() {
@@ -196,7 +204,7 @@ public abstract class UMLPlainTextDocument
             super.remove(0, getLength());
             super.insertString(0, getProperty(), null);
         } catch (BadLocationException b) {
-            cat.error(
+            LOG.error(
 		      "A BadLocationException happened\n"
 		      + "The string to set was: "
 		      + getProperty(),
@@ -211,15 +219,15 @@ public abstract class UMLPlainTextDocument
      * @return boolean
      */
     public boolean isEditing() {
-        return _editing;
+        return editing;
     }
 
     /**
      * Sets the editing.
-     * @param editing The editing to set
+     * @param ed The editing to set
      */
-    public void setEditing(boolean editing) {
-        _editing = editing;       
+    public void setEditing(boolean ed) {
+        editing = ed;       
     }
 
     /**
@@ -227,15 +235,15 @@ public abstract class UMLPlainTextDocument
      * @return String
      */
     public String getEventName() {
-        return _eventName;
+        return eventName;
     }
 
     /**
      * Sets the eventName.
-     * @param eventName The eventName to set
+     * @param en The eventName to set
      */
-    protected void setEventName(String eventName) {
-        _eventName = eventName;
+    protected void setEventName(String en) {
+        eventName = en;
     }
 
     /**

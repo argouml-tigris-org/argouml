@@ -44,7 +44,7 @@ public class UMLFeatureOwnerListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-	if (_target != null) {
+	if (getTarget() != null) {
 	    removeAllElements();
 	    addElement(ModelFacade.getOwner(getTarget()));
 	}

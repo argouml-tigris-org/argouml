@@ -49,7 +49,7 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
     /**
      * Constructor for UMLMultiplicityComboBoxModel.
      *
-     * @param propertySetName
+     * @param propertySetName the name of the property set
      */
     public UMLMultiplicityComboBoxModel(String propertySetName) {
         super(propertySetName, false);

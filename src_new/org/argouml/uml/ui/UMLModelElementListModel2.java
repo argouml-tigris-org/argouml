@@ -49,25 +49,42 @@ public abstract class UMLModelElementListModel2
     extends DefaultListModel
     implements TargetListener, MElementListener {
 
-    private String _eventName = null;
-    protected Object _target = null;
+    private String eventName = null;
+    private Object listTarget = null;
 
     /**
      * Flag to indicate wether list events should be fired
      */
-    protected boolean _fireListEvents = true;
+    private boolean fireListEvents = true;
 
     /**
      * Flag to indicate wether the model is being build
      */
-    protected boolean _buildingModel = false;
+    private boolean buildingModel = false;
 
+    
     /**
      * Constructor for UMLModelElementListModel2.
+     *
+     * @param name the event name
      */
-    public UMLModelElementListModel2(String eventName) {
+    public UMLModelElementListModel2(String name) {
         super();
-        setEventName(eventName);
+        setEventName(name);
+    }
+
+    /**
+     * @param building The buildingModel to set.
+     */
+    protected void setBuildingModel(boolean building) {
+        this.buildingModel = building;
+    }
+    
+    /**
+     * @param t the list target to set
+     */
+    protected void setListTarget(Object t) {
+        this.listTarget = t;
     }
 
     /**
@@ -92,9 +109,9 @@ public abstract class UMLModelElementListModel2
     public void propertySet(MElementEvent e) {
         if (isValidEvent(e)) {
             removeAllElements();
-            _buildingModel = true;
+            buildingModel = true;
             buildModelList();
-            _buildingModel = false;
+            buildingModel = false;
             if (getSize() > 0) {
                 fireIntervalAdded(this, 0, getSize() - 1);
             }
@@ -174,7 +191,7 @@ public abstract class UMLModelElementListModel2
     /**
      * Utility method to set the elements of this list to the contents of the
      * given collection.
-     * @param col
+     * @param col the given collection
      */
     protected void setAllElements(Collection col) {
         if (!isEmpty())
@@ -184,17 +201,17 @@ public abstract class UMLModelElementListModel2
 
     /**
      * Utility method to add a collection of elements to the model
-     * @param col
+     * @param col the given collection
      */
     protected void addAll(Collection col) {
         Iterator it = col.iterator();
-        _fireListEvents = false;
+        fireListEvents = false;
         int oldSize = getSize();
         while (it.hasNext()) {
             Object o = it.next();
             addElement(o);
         }
-        _fireListEvents = true;
+        fireListEvents = true;
         fireIntervalAdded(this, oldSize - 1, getSize() - 1);
     }
 
@@ -204,13 +221,13 @@ public abstract class UMLModelElementListModel2
      * @return MModelElement
      */
     protected Object getTarget() {
-        return _target;
+        return listTarget;
     }
 
     /**
      * Utility method to get the changed element from some event e
-     * @param e
-     * @return Object
+     * @param e the event
+     * @return Object the changed element
      */
     protected Object getChangedElement(MElementEvent e) {
         if (e.getAddedValue() != null)
@@ -245,37 +262,39 @@ public abstract class UMLModelElementListModel2
      * the model from the element listener list of the target. If the new target
      * is instanceof MBase, the model is added as element listener to the new 
      * target.
-     * @param target
+     * @param theNewTarget the new target
      */
-    public void setTarget(Object target) {
-        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
-            if (ModelFacade.isABase(_target)) {
+    public void setTarget(Object theNewTarget) {
+        theNewTarget = theNewTarget instanceof Fig 
+            ? ((Fig) theNewTarget).getOwner() : theNewTarget;
+        if (ModelFacade.isABase(theNewTarget) 
+                || ModelFacade.isADiagram(theNewTarget)) {
+            if (ModelFacade.isABase(listTarget)) {
                 UmlModelEventPump.getPump()
 		    .removeModelEventListener(this,
-					      /*(MBase)*/_target,
-					      _eventName);
+					      /*(MBase)*/listTarget,
+					      eventName);
             }
 
-            if (ModelFacade.isABase(target)) {
-                _target = target;
+            if (ModelFacade.isABase(theNewTarget)) {
+                listTarget = theNewTarget;
                 // UmlModelEventPump.getPump()
                 // .removeModelEventListener(this, (MBase)_target,
                 // _eventName);
                 UmlModelEventPump.getPump()
 		    .addModelEventListener(this,
-					   /*(MBase)*/_target,
-					   _eventName);
+					   /*(MBase)*/listTarget,
+					   eventName);
 
                 removeAllElements();
-                _buildingModel = true;
+                buildingModel = true;
                 buildModelList();
-                _buildingModel = false;
+                buildingModel = false;
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
                 }
             } else {
-                _target = null;
+                listTarget = null;
                 removeAllElements();
             }
 
@@ -286,7 +305,8 @@ public abstract class UMLModelElementListModel2
      * Returns true if the given element is valid, i.e. it may be added to the 
      * list of elements.
      *
-     * @param element
+     * @param element the element to be tested
+     * @return true if valid
      */
     protected abstract boolean isValidElement(Object/*MBase*/ element);
 
@@ -297,8 +317,8 @@ public abstract class UMLModelElementListModel2
      * subclasses if they cannot determine if it is a valid event just
      * by checking the changed element.
      *
-     * @param e
-     * @return boolean
+     * @param e the event
+     * @return boolean true if valid
      */
     protected boolean isValidEvent(MElementEvent e) {
         boolean valid = false;
@@ -343,7 +363,7 @@ public abstract class UMLModelElementListModel2
      * @return String
      */
     String getEventName() {
-        return _eventName;
+        return eventName;
     }
 
     /**
@@ -353,10 +373,10 @@ public abstract class UMLModelElementListModel2
      * a name like eventName.  This method should be called in the
      * constructor of every subclass.
      *
-     * @param eventName The eventName to set
+     * @param theEventName The eventName to set
      */
-    protected void setEventName(String eventName) {
-        _eventName = eventName;
+    protected void setEventName(String theEventName) {
+        eventName = theEventName;
     }
 
     /**
@@ -385,7 +405,7 @@ public abstract class UMLModelElementListModel2
      *          Object, int, int)
      */
     protected void fireContentsChanged(Object source, int index0, int index1) {
-        if (_fireListEvents && !_buildingModel)
+        if (fireListEvents && !buildingModel)
             super.fireContentsChanged(source, index0, index1);
     }
 
@@ -394,7 +414,7 @@ public abstract class UMLModelElementListModel2
      *          Object, int, int)
      */
     protected void fireIntervalAdded(Object source, int index0, int index1) {
-        if (_fireListEvents && !_buildingModel)
+        if (fireListEvents && !buildingModel)
             super.fireIntervalAdded(source, index0, index1);
     }
 
@@ -403,7 +423,7 @@ public abstract class UMLModelElementListModel2
      *          Object, int, int)
      */
     protected void fireIntervalRemoved(Object source, int index0, int index1) {
-        if (_fireListEvents && !_buildingModel)
+        if (fireListEvents && !buildingModel)
             super.fireIntervalRemoved(source, index0, index1);
     }
 

@@ -84,10 +84,12 @@ public class UMLClassifierRoleAvailableContentsListModel
      * @see
      * org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
-    public void setTarget(Object target) {
-        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
-            if (_target != null) {
+    public void setTarget(Object theNewTarget) {
+        theNewTarget = theNewTarget instanceof Fig 
+            ? ((Fig) theNewTarget).getOwner() : theNewTarget;
+        if (ModelFacade.isABase(theNewTarget) 
+                || ModelFacade.isADiagram(theNewTarget)) {
+            if (getTarget() != null) {
                 Collection bases = ModelFacade.getBases(getTarget());
                 Iterator it = bases.iterator();
                 while (it.hasNext()) {
@@ -102,9 +104,9 @@ public class UMLClassifierRoleAvailableContentsListModel
                         /*(MBase)*/ getTarget(),
                     "base");
             }
-            _target = target;
-            if (_target != null) {
-                Collection bases = ModelFacade.getBases(_target);
+            setListTarget(theNewTarget);
+            if (getTarget() != null) {
+                Collection bases = ModelFacade.getBases(getTarget());
                 Iterator it = bases.iterator();
                 while (it.hasNext()) {
                     Object base = /*(MBase)*/ it.next();
@@ -116,14 +118,14 @@ public class UMLClassifierRoleAvailableContentsListModel
                 // make sure we know it when a classifier is added as a base
                 UmlModelEventPump.getPump().addModelEventListener(
                         this,
-                        /*(MBase)*/ _target,
+                        /*(MBase)*/ getTarget(),
                     "base");
             }
-            if (_target != null) {
+            if (getTarget() != null) {
                 removeAllElements();
-                _buildingModel = true;
+                setBuildingModel(true);
                 buildModelList();
-                _buildingModel = false;
+                setBuildingModel(false);
                 if (getSize() > 0) {
                     fireIntervalAdded(this, 0, getSize() - 1);
                 }

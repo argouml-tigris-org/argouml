@@ -30,27 +30,31 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
 /**
- *  This class is used to dispatch a NSUML change event (which may occur on a non-UI)
- *  thread) to user interface components.  The class is created in response to a 
- *  NSUML change event being captures by a UMLUserInterfaceContainer and then
- *  is passed as an argument to InvokeLater to be run on the user interface thread.
+ * This class is used to dispatch a NSUML change event 
+ * (which may occur on a non-UI)
+ * thread) to user interface components.  
+ * The class is created in response to a 
+ * NSUML change event being captures by a 
+ * UMLUserInterfaceContainer and then
+ * is passed as an argument to InvokeLater 
+ * to be run on the user interface thread.
  */
 public class UMLNameEventListener implements MElementListener {
-    private Container _container;
-    private Class[] _metaClasses;
+    private Container container;
+    private Class[] metaClasses;
     
     /**
      *  Creates a UMLChangeDispatch.  eventType is overriden if a call to 
      *  one of the event functions is called.
-     *  @param container user interface container to which changes are dispatched.
-     *  @param metaClasses an array of classes (possibly null) whose names should
+     *  @param c user interface container to which changes are dispatched.
+     *  @param mc an array of classes (possibly null) whose names should
      *      monitored.  For example, passing MClassifier.class will monitor name
      *      changes on classifiers.
      *      
      */
-    public UMLNameEventListener(Container container, Class[] metaClasses) {
-        _container = container;
-        _metaClasses = metaClasses;
+    public UMLNameEventListener(Container c, Class[] mc) {
+        container = c;
+        metaClasses = mc;
     }
     
     /**
@@ -61,23 +65,25 @@ public class UMLNameEventListener implements MElementListener {
         boolean dispatchEvent = false;
         String eventName = mee.getName();
         
-        if (eventName != null && (eventName.equals("name") || eventName.equals("baseClass"))) {
+        if (eventName != null && (eventName.equals("name") 
+                || eventName.equals("baseClass"))) {
             Object target = mee.getSource();
             if (target != null) {
                 //
                 //   if the metaClasses weren't provided or
                 //      the source can be assigned to one of the meta classes
                 //         then proceed
-                boolean isMatch = (_metaClasses == null);
-                for (int i = 0; !isMatch && i < _metaClasses.length; i++) {
-                    isMatch = _metaClasses[i].isAssignableFrom(target.getClass());
+                boolean isMatch = (metaClasses == null);
+                for (int i = 0; !isMatch && i < metaClasses.length; i++) {
+                    isMatch = metaClasses[i].isAssignableFrom(
+                            target.getClass());
                 }
                 dispatchEvent = isMatch;
             }
         }
         
         if (dispatchEvent) {
-            UMLChangeDispatch dispatch = new UMLChangeDispatch(_container, 1);
+            UMLChangeDispatch dispatch = new UMLChangeDispatch(container, 1);
             dispatch.propertySet(mee);
             SwingUtilities.invokeLater(dispatch);
         }
@@ -109,12 +115,13 @@ public class UMLNameEventListener implements MElementListener {
             //   if the metaClasses weren't provided or
             //      the source can be assigned to one of the meta classes
             //         then proceed
-            boolean isMatch = (_metaClasses == null);
-            for (int i = 0; !isMatch && i < _metaClasses.length; i++) {
-                isMatch = _metaClasses[i].isAssignableFrom(target.getClass());
+            boolean isMatch = (metaClasses == null);
+            for (int i = 0; !isMatch && i < metaClasses.length; i++) {
+                isMatch = metaClasses[i].isAssignableFrom(target.getClass());
             }
             if (isMatch) {
-                UMLChangeDispatch dispatch = new UMLChangeDispatch(_container, 0);
+                UMLChangeDispatch dispatch = 
+                    new UMLChangeDispatch(container, 0);
                 dispatch.removed(mee);
                 SwingUtilities.invokeLater(dispatch);
             }        
@@ -134,12 +141,14 @@ public class UMLNameEventListener implements MElementListener {
                 //   if the metaClasses weren't provided or
                 //      the source can be assigned to one of the meta classes
                 //         then proceed
-                boolean isMatch = (_metaClasses == null);
-                for (int i = 0; !isMatch && i < _metaClasses.length; i++) {
-                    isMatch = _metaClasses[i].isAssignableFrom(target.getClass());
+                boolean isMatch = (metaClasses == null);
+                for (int i = 0; !isMatch && i < metaClasses.length; i++) {
+                    isMatch = metaClasses[i].isAssignableFrom(
+                            target.getClass());
                 }
                 if (isMatch) {
-                    UMLChangeDispatch dispatch = new UMLChangeDispatch(_container, 0);
+                    UMLChangeDispatch dispatch = 
+                        new UMLChangeDispatch(container, 0);
                     dispatch.removed(mee);
                     SwingUtilities.invokeLater(dispatch);
                 }        

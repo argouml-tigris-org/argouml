@@ -42,7 +42,7 @@ public class UMLGeneralizationChildListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (_target == null) return;
+        if (getTarget() == null) return;
         removeAllElements();
         addElement(ModelFacade.getChild(getTarget()));
     }

@@ -29,7 +29,8 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  */
-public class UMLGeneralizationParentListModel extends UMLModelElementListModel2 {
+public class UMLGeneralizationParentListModel 
+    extends UMLModelElementListModel2 {
 
     /**
      * Constructor.
@@ -42,7 +43,7 @@ public class UMLGeneralizationParentListModel extends UMLModelElementListModel2 
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (_target == null) return;
+        if (getTarget() == null) return;
         removeAllElements();
         addElement(ModelFacade.getParent(getTarget()));
     }

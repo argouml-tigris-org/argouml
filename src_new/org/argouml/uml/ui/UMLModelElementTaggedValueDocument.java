@@ -39,18 +39,19 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
     /**
      * Creates a UMLPlainTextDocument object that represents a tagged value of
      * an MModelElement object
-     * @param taggedValue
+     * @param taggedValue the tagged value
      */
     public UMLModelElementTaggedValueDocument(String taggedValue)
     {
-        //stores the action command into the UMLPlainTextDocument class which is also used
+        //stores the action command into the UMLPlainTextDocument 
+        //class which is also used
         //for setProperty and getProperty
         super(taggedValue);
     }
 
     /**
      * Sets the tagged value to given String
-     * @param text
+     * @param text the property
      */
     protected void setProperty(String text) {
         if (getTarget() != null)

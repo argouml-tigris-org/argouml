@@ -38,10 +38,11 @@ public class UMLMultiplicityComboBox2 extends UMLSearchableComboBox {
 
     /**
      * Constructor for UMLMultiplicityComboBox2.
-     * @param arg0
-     * @param selectAction
+     * @param arg0 the combobox model
+     * @param selectAction the action
      */
-    public UMLMultiplicityComboBox2(UMLComboBoxModel2 arg0, UMLAction selectAction) {
+    public UMLMultiplicityComboBox2(UMLComboBoxModel2 arg0, 
+            UMLAction selectAction) {
         super(arg0, selectAction);
     }
 
@@ -57,7 +58,8 @@ public class UMLMultiplicityComboBox2 extends UMLSearchableComboBox {
         String text = (String) item;
         Object/*MMultiplicity*/ multi = null;
         try {
-            multi = UmlFactory.getFactory().getDataTypes().createMultiplicity(text);//new MMultiplicity(text);
+            multi = UmlFactory.getFactory().getDataTypes()
+                .createMultiplicity(text); //new MMultiplicity(text);
         }
         catch (IllegalArgumentException e) {
             Object o = search(text);
