@@ -141,7 +141,6 @@ public class ToDoByPoster extends ToDoPerspective
 	LOG.debug("toDoItemRemoved");
 	ToDoList list = Designer.theDesigner().getToDoList(); //source?
 	Vector items = tde.getToDoItems();
-	int nItems = items.size();
 	Object[] path = new Object[2];
 	path[0] = Designer.theDesigner().getToDoList();
 

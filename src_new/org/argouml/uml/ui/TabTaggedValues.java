@@ -164,8 +164,6 @@ public class TabTaggedValues extends TabSpawnable
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         table.sizeColumnsToFit(0);
 
-        Vector tvs =
-            new Vector(Model.getFacade().getTaggedValuesCollection(target));
         tableModel.setTarget(target);
         if (target != null) {
             titleLabel.setText("Target: "

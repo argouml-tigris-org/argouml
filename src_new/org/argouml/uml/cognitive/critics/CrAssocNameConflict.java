@@ -60,7 +60,6 @@ public class CrAssocNameConflict extends CrUML {
 	if (!(Model.getFacade().isANamespace(dm))) return NO_PROBLEM;
 	Collection oes = Model.getFacade().getOwnedElements(dm);
 	if (oes == null) return NO_PROBLEM;
-	Vector namesSeen = new Vector();
 	Iterator elems = oes.iterator();
 	while (elems.hasNext()) {
 	    if (!Model.getFacade().isAAssociation(elems.next())) continue;

@@ -506,7 +506,7 @@ public class DetailsPane
         //should register a listener
         LOG.debug("double: "
                 + topLevelTabbedPane.getComponentAt(tab).toString());
-        JPanel t = (JPanel) tabPanelList.elementAt(tab);
+//        JPanel t = (JPanel) tabPanelList.elementAt(tab);
         // Currently this feature is disabled for ArgoUML.
 //        if (t instanceof TabSpawnable)
 //	    ((TabSpawnable) t).spawn();

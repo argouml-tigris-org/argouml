@@ -162,8 +162,6 @@ public class FigObject extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#getMinimumSize()
      */
     public Dimension getMinimumSize() {
-        Dimension bigPortMin = getBigPort().getMinimumSize();
-        Dimension coverMin = cover.getMinimumSize();
         Dimension nameMin = getNameFig().getMinimumSize();
 
         int w = nameMin.width + 10;

@@ -64,10 +64,10 @@ Diagram Pane or the Drawing Pane of the Multi-Editor Pane.
       being updated.</para>
 
     <para>The pane has a tool bar at the top, and a single tab labeled
-      <literal>As&nbsp;Diagram</literal> at the bottom. So long as your
-      window is big enough, you will see the name of the diagram in the top
-      right corner at the end of the tool bar.
-      <!-- TODO: This will change in V0.15.x due to issue ...  -->
+      <literal>As&nbsp;Diagram</literal> at the bottom, 
+      which has no function in the 0.18 version of &argouml;. 
+      The main area shows the currently selected diagram, of which the
+      name is shown in the window title bar.
     </para>
   </sect1>
 
@@ -85,21 +85,27 @@ Diagram Pane or the Drawing Pane of the Multi-Editor Pane.
     <sect2>
       <title>&Button1; Click</title>
 
-      <para>In the tool bar of the editing pane, &button1; click is used to
-        select the next tool for adding an artifact to the diagram 
-        (see double clicking for adding multiple artifacts).  Adding
-        to the diagram is achieved by moving the mouse to the editing area and
+      <para>In the tool bar of the editing pane, 
+        &button1; click is used to
+        select a tool for creating a new artifact and adding it to the diagram 
+        (see double clicking for creating multiple artifacts).  
+        For most tools, adding a new artifact
+        to the diagram is achieved by moving the mouse 
+        into the editing area and
         clicking again.</para>
 
       <para>In the main editing area &button1; click is used to select an
         individual artifact.</para>
 
-      <para>Some artifacts (e.g. actor, class) show special handles
-        (called <quote>Selection Action Buttons</quote>, see <xref
-        linkend="s1.ref.edit_pane_selection_action_buttons"/>)
-        at the sides, top and bottom, 
-        which can be clicked to create a new related artifact, 
-        with the relation indicated. 
+      <para>Many artifacts (e.g. actor, class) show special handles
+        when selected and the mouse hovers over them. 
+        These are
+        called <quote>Selection Action Buttons</quote>, see <xref
+        linkend="s1.ref.edit_pane_selection_action_buttons"/>.
+        They appear at the sides, top and bottom, 
+        and indicate a relationship type.
+        Clicking on a Selection Action Button creates a new related artifact, 
+        with the relation of the type that was indicated. 
         If the shift key
         is pressed when hovering the mouse over a selected artifact,
         sometimes different handles are shown, 
@@ -127,13 +133,15 @@ outside of the menu area.
         selected artifact will be added multiple times to the drawing area,
         once for each further button click, until the tool is again selected or
         another tool chosen.
+        <!-- This last part does not work, see issue 3145. -->
         <!-- TODO Make issue for the bug: The status area should indicate 
         e.g. "Click to place Class" not only the first time! -->
       </para>
 
       <para>When used within the drawing area on an artifact that has
-        sub-components, double click will select the sub-component (creating
-        it if necessary).</para> 
+        sub-components, double click will select the sub-component
+        for editing
+        (creating it if necessary).</para> 
 
       <para>For example double clicking over an operation compartment of a
         class will select the operation. Or create one if there is none yet.
@@ -149,7 +157,6 @@ outside of the menu area.
       <figure id="fig.ref.edit_add_class_diagram" float="1">
         <title>The dialog for adding a new class diagram
         </title>
-
         <screenshot><mediaobject>
           <imageobject>
             <imagedata format="PNG" align="center"
@@ -158,13 +165,6 @@ outside of the menu area.
         </mediaobject></screenshot>
       </figure>
 
-      <para>You can <quote>spawn</quote> a copy of the editing pane by
-        double-clicking on the <literal>As Diagram</literal> tab at the bottom
-        of the pane. It will then show as an individual window and you can put
-        it where you will on the screen.
-        <!-- TODO: This despite the fact that the tab is downlighted! Come up
-        with a better solution... See issue ... -->
-      </para>
     </sect2>
 
     <!-- Button1 Motion -->
@@ -216,24 +216,24 @@ outside of the menu area.
     <sect2>
       <title>Shift and Control with &Button1;</title>
 
-      <para>Where selections are to be made, the SHIFT key is used with
+      <para>Where multiple selections are to be made, the CTRL key is used with
         &button1; to <emphasis>add</emphasis> unselected artifacts to the
         current selection. Where an artifact is already selected, it is removed
         from the current selection.
-        <!-- TODO: This function is broken in V0.14. See issue ... -->
       </para>
 
-      <para>Clicking &Button1; while the CONTROL key is pressed, 
+      <para>Clicking &Button1; while the SHIFT key is pressed, 
         invokes the broom tool, which causes the selected
         artifacts (and any others swept up with them) to be moved with the
         broom tool (see <xref linkend="s2.ref.edit_layout"/>).</para>
         
-      <para>
+      <!--para>
         However, if the CONTROL key is pressed while moving an artifact, 
         then the artifact's
         movement is constrained to one orthogonal direction, i.e. either
         vertical or horizontal, depending on the first movement made.
-      </para>
+      </para-->
+      <!-- TODO: This function is broken in V0.18. See issue 3146. -->
     </sect2>
 
     <!-- Alt key -->
@@ -260,10 +260,13 @@ outside of the menu area.
         linkend="s1.ref.edit_pane_pop_up"/> for details of the specific pop-up
         menus.</para>
 
-      <para>The artifact generating the menu 
-        will be selected, and all other artifacts are deselected. 
-        This means that the pop-up menu always only applies to the artifact 
-        on which it was invoked.
+      <para>In case multiple elements are selected, the  
+        pop-up menu only appears if all the items are of the same kind.
+        The functions apply to all selected elements, 
+        but in the V0.18 implementation of &argouml;, 
+        many work only on one element,
+        or even misbehave.
+        <!-- TODO: See issue ... -->
       </para>
     </sect2>
 
@@ -332,7 +335,7 @@ graphic artifacts to diagrams.</para></listitem>
           </imageobject></inlinemediaobject></guiicon>
           <literal>Select</literal>. This tool provides for general selection
           of artifacts on the diagram. &Button1; click will select an
-          artifact. SHIFT with &button1; can be used to select (or deselect)
+          artifact. CTRL with &button1; can be used to select (or deselect)
           multiple artifacts. &Button1; motion will move selected 2D items or
           add and move a new control point on a link. &Button1; motion on a
           selected component's control point will stretch that component's
@@ -346,7 +349,7 @@ graphic artifacts to diagrams.</para></listitem>
           <quote>broom</quote> which will sweep all artifacts along. This is
           a very shortcut way of lining things up.</para>
 
-        <para>The Broom can also be invoked by using CONTROL with &button1; motion
+        <para>The Broom can also be invoked by using SHIFT with &button1; motion
           when the <literal>Select</literal> tool is in use.</para>
         <para>The Broom is discussed at length in its own chapter, see 
           <xref linkend="s1.ref.edit_pane_broom"/></para>
@@ -365,27 +368,34 @@ graphic artifacts to diagrams.</para></listitem>
     <sect2>
       <title>Annotation Tools</title>
 
-      <para>Only one annotation tool is provide, <literal>Note</literal>
+      <para>Only one annotation tool is provided, <literal>Comment</literal>
         (<guiicon><inlinemediaobject><imageobject><imagedata format="GIF"
           align="center" fileref="images/icons/note.gif"/>
         </imageobject></inlinemediaobject></guiicon>). This is used to add a
-        note to a selected UML artifact.</para>
+        comment to a selected UML artifact.</para>
 
       <caution><para>Unlike most other tools you use the
         <literal>Select</literal> tool to select an artifact, and then
-        &button1; click on <literal>Note</literal> to create the
-        note.
+        &button1; click on <literal>Comment</literal> to create the
+        comment.
         <!-- TODO: Maybe it is better to order this chapter according 
         this principle, instead of pretending it is an extension. 
         Also in the toolbar implementation itself, 
         we could order them according the way they work. -->
       </para></caution>
+      
+      <para>
+        If no element is selected when the comment tool is clicked, 
+        then the comment is created and put at the left top corner. 
+        You can link any comment to aditional elements 
+        using the <quote>CommentLink</quote> tool.
+      </para>
 
       <para>The note is created alongside the selected artifact, 
         empty by default. The text can be selected
         with &button1; double-click and edited from the keyboard.</para>
 
-      <para>The UML standard allows notes to be attached to any
+      <para>The UML standard allows comments to be attached to any
         artifact. 
       </para>
 
@@ -414,7 +424,8 @@ graphic artifacts to diagrams.</para></listitem>
         placed. The size can be controlled by &button1; motion during
         placement. One side or end of the element will be at &button1; down,
         the other side or end at &button1; up. In general after they are placed
-        on the diagram, graphical elements can be moved with the
+        on the diagram, graphical elements can be dragged with the
+        <!-- TODO: This function is broken; see issue 3139. -->
         <literal>Select</literal> tool and &button1; and re-sized by &button1;
         motion on the handles after they have been selected.</para>
 
@@ -461,7 +472,7 @@ graphic artifacts to diagrams.</para></listitem>
                      fileref="images/icons/text.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
           <literal>Text</literal>. Provides a text box. The text is entered by
-          selecting the box and typing. Text is in blue and centered and
+          selecting the box and typing. Text is centered horizontally and
           after typing, the box will shrink to the size of the text. However it
           can be re-sized by dragging on the corners.</para></listitem>
 
@@ -496,7 +507,7 @@ graphic artifacts to diagrams.</para></listitem>
     <sect2>
       <title>Use Case Diagram Specific Tools</title>
 
-      <para>Seven tools are provided specific to UML artifacts on use case
+      <para>Several tools are provided specific to UML artifacts on use case
         diagrams. The detailed properties of these artifacts are described in
         the section on use case diagram artifacts (see
         <xref linkend="ch.ref.entusecase"/>).</para>
@@ -554,13 +565,6 @@ graphic artifacts to diagrams.</para></listitem>
           </imageobject></inlinemediaobject></guiicon>
           <literal>Dependency</literal>. Add a dependency between two artifacts
           selected using &button1; motion (from the dependent artifact).</para>
-
-        <!--caution><para>Older versions of &argouml; incorrectly used stereotyped
-          dependencies to represent UML <literal>extends</literal> and
-          <literal>includes</literal> relationships. Where these are found they
-          should be replaced by proper extend and include relationships, which
-          are now supported on the use case
-          diagram.</para></caution-->
         </listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
@@ -616,7 +620,7 @@ graphic artifacts to diagrams.</para></listitem>
     <sect2>
       <title>Class Diagram Specific Tools</title>
 
-      <para>Nine tools are provided specific to UML artifacts on class
+      <para>Several tools are provided specific to UML artifacts on class
         diagrams. The detailed properties of these artifacts are described in
         the section on class diagram artifacts (see
         <xref linkend="ch.ref.entclass"/>).</para>
@@ -628,8 +632,6 @@ graphic artifacts to diagrams.</para></listitem>
           </imageobject></inlinemediaobject></guiicon>
           <literal>Package</literal>. Add a package to the
           diagram.</para>
-          <!-- TODO: Why is a package a drop-down selector with 1 item? 
-          See issue 2095. -->
         </listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
@@ -810,6 +812,56 @@ graphic artifacts to diagrams.</para></listitem>
       </itemizedlist>
     </sect2>
 
+
+    <!-- Tools just for Collaboration Diagrams -->
+
+    <sect2>
+      <title>Collaboration Diagram Specific Tools</title>
+
+      <para>Three tools are provided specific to UML artifacts on collaboration
+        diagrams. The detailed properties of these artifacts are described in
+        the section on collaboration diagram artifacts (see
+        <xref linkend="ch.ref.entcollab"/>).</para>
+
+      <itemizedlist>
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/classifier_role.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Classifier Role</literal>. Add a classifier role to the
+          diagram.</para></listitem> 
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/association_plain.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Association Role</literal>. Add an association role between 
+          two classifier roles selected using &button1; motion (from the
+          originating classifier role to the receiving classifier
+          role). 
+          There are 6 types of association roles offered here, 
+          see <xref linkend="fig.ref.edit_association_tools"/>: 
+          <literal>association</literal>,
+          <literal>aggregation</literal> and 
+          <literal>composition</literal>, and all these three can be  
+          <literal>bidirectional</literal> or
+          <literal>unidirectional</literal>.
+          </para>
+        </listitem>
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/message.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Add Message</literal>. Add a message to the selected
+          association role.</para>
+
+        <note><para>This tool is grayed out except when an association role is
+          selected.</para></note></listitem>
+      </itemizedlist>
+    </sect2>
+
+
     <!-- Tools for Statechart Diagrams and in many cases for Activity Diagrams -->
 
     <sect2>
@@ -937,54 +989,6 @@ graphic artifacts to diagrams.</para></listitem>
           </imageobject></inlinemediaobject></guiicon>
           <literal>Deep History</literal>. Add a deep history pseudostate
           to the diagram.</para></listitem>
-      </itemizedlist>
-    </sect2>
-
-    <!-- Tools just for Collaboration Diagrams -->
-
-    <sect2>
-      <title>Collaboration Diagram Specific Tools</title>
-
-      <para>Three tools are provided specific to UML artifacts on collaboration
-        diagrams. The detailed properties of these artifacts are described in
-        the section on collaboration diagram artifacts (see
-        <xref linkend="ch.ref.entcollab"/>).</para>
-
-      <itemizedlist>
-        <listitem><para><guiicon><inlinemediaobject><imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/icons/classifier_role.gif"/> 
-          </imageobject></inlinemediaobject></guiicon>
-          <literal>Classifier Role</literal>. Add a classifier role to the
-          diagram.</para></listitem> 
-
-        <listitem><para><guiicon><inlinemediaobject><imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/icons/association_plain.gif"/> 
-          </imageobject></inlinemediaobject></guiicon>
-          <literal>Association Role</literal>. Add an association role between 
-          two classifier roles selected using &button1; motion (from the
-          originating classifier role to the receiving classifier
-          role). 
-          There are 6 types of association roles offered here, 
-          see <xref linkend="fig.ref.edit_association_tools"/>: 
-          <literal>association</literal>,
-          <literal>aggregation</literal> and 
-          <literal>composition</literal>, and all these three can be  
-          <literal>bidirectional</literal> or
-          <literal>unidirectional</literal>.
-          </para>
-        </listitem>
-
-        <listitem><para><guiicon><inlinemediaobject><imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/icons/message.gif"/> 
-          </imageobject></inlinemediaobject></guiicon>
-          <literal>Add Message</literal>. Add a message to the selected
-          association role.</para>
-
-        <note><para>This tool is grayed out except when an association role is
-          selected.</para></note></listitem>
       </itemizedlist>
     </sect2>
 

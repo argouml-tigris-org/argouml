@@ -326,9 +326,6 @@ public class FigAssociationClass
                     oldMin = minIndex;
                     oldMax = minIndex + 2;
                 }
-                classFigIndex = layP.indexOf(fig);
-                myIndex = layP.indexOf(this);
-                edgeFigIndex = layP.indexOf(edge);
             }
             damageLock = false;
         }

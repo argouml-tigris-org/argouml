@@ -78,7 +78,6 @@ public class FigFeature extends CompartmentFigText {
 
                 Fig fig = getGroup().getGroup();
                 if (fig instanceof FigClass) {
-                    FigClass classFig = (FigClass) fig;
                     FigGroup group = (FigGroup) getGroup();
                 // TODO: in future version of GEF call getFigs returning array
                     Object[] figs = group.getFigs().toArray();

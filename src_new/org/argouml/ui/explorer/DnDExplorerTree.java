@@ -239,11 +239,6 @@ public class DnDExplorerTree
 		    ((DefaultMutableTreeNode) destinationPath
 		             .getLastPathComponent()).getUserObject();
 
-                //get old parent node
-                Object oldParentME =
-		    ((DefaultMutableTreeNode) selectedTreePath.getParentPath()
-		             .getLastPathComponent()).getUserObject();
-
                 int action = dropTargetDropEvent.getDropAction();
                 boolean copyAction = (action == DnDConstants.ACTION_COPY);
                 boolean moveAction = (action == DnDConstants.ACTION_MOVE);

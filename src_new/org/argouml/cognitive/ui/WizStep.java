@@ -191,7 +191,8 @@ public class WizStep extends JPanel
             nextButton.setEnabled(w != null ? w.canGoNext() : false);
             finishButton.setEnabled(w != null ? w.canFinish() : false);
 
-            if (tdi.getMoreInfoURL() == null || "".equals(tdi.getMoreInfoURL())) {
+            if (tdi.getMoreInfoURL() == null 
+                    || "".equals(tdi.getMoreInfoURL())) {
                 helpButton.setEnabled(false);
             } else
                 helpButton.setEnabled(true);

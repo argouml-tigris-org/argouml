@@ -57,7 +57,6 @@ public class FigInstance extends FigNodeModelElement {
      * Constructor
      */
     public FigInstance() {
-	Color handleColor = Globals.getPrefs().getHandleColor();
 
 	getNameFig().setUnderline(true);
 	getNameFig().setTextFilled(true);

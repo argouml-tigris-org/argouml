@@ -73,10 +73,6 @@ public class CrMultipleInheritance extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizCueCards) {
 	    WizCueCards wcc = (WizCueCards) w;
-	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    Object modelElement = /*(MModelElement)*/
-	        item.getOffenders().elementAt(0);
-	    String nameStr = Model.getFacade().getName(modelElement);
 	    wcc.addCue("Remove the generalization arrow to one of the base "
 		   + "classes of {name}.");
 	    wcc.addCue("Optionally, use the MInterface tool to create a new "

@@ -92,7 +92,6 @@ public abstract class FigLink
         if (computeRouteNumbersOfTime == 0) {
             computeRouteNumbersOfTime++;
         } else if (computeRouteNumbersOfTime == 1) {
-            FigPoly p = ((FigPoly) _fig);
             Point srcPt = getSourcePortFig().center();
             Point dstPt = getSourcePortFig().center();
             Point centerPnt =

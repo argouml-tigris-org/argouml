@@ -208,7 +208,6 @@ public class FigMNode extends FigNodeModelElement {
                 && Model.getFacade().isANode(encloser.getOwner()))) {
             super.setEnclosingFig(encloser);
         }
-        Vector figures = getEnclosedFigs();
 
         if (getLayer() != null) {
             // elementOrdering(figures);

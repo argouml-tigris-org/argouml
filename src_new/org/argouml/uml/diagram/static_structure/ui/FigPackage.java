@@ -479,7 +479,6 @@ public class FigPackage extends FigNodeModelElement {
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-        Object mpackage = /*(MPackage)*/ getOwner();
 
         // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");

@@ -222,8 +222,6 @@ public class SelectionActionState extends SelectionWButtons {
 	    return;
 	}
 
-	MutableGraphModel mgm = (MutableGraphModel) gm;
-
 	int bx = mX, by = mY;
 	boolean reverse = false;
 	switch (hand.index) {

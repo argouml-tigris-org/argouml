@@ -263,14 +263,6 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 Attributes attrList)
     	throws SAXException {
 
-        String descr = null;
-        if (attrList != null) {
-            descr = attrList.getValue("description");
-        }
-        if (descr != null) {
-            descr = descr.trim();
-        }
-
         if (_elementState == NODE_STATE
                 && elementName.equals("group")
                 && _currentNode instanceof OperationsCompartmentContainer

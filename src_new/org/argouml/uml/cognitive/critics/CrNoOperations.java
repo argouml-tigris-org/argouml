@@ -123,8 +123,6 @@ public class CrNoOperations extends CrUML {
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizAddOperation) {
-	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String ins = "Set the name of the new operation.";
 	    String sug = "newOperation";
 	    ((WizAddOperation) w).setInstructions(ins);

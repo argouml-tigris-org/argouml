@@ -233,8 +233,6 @@ public class FigMNodeInstance extends FigNodeModelElement {
             }
         }
 
-        Vector figures = getEnclosedFigs();
-
         if (getLayer() != null) {
             // elementOrdering(figures);
             List contents = getLayer().getContents();
@@ -303,7 +301,6 @@ public class FigMNodeInstance extends FigNodeModelElement {
                 getNameFig().setText(nameStr.trim() + " : " + baseStr);
             }
         }
-        Dimension nameMin = getNameFig().getMinimumSize();
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
     }

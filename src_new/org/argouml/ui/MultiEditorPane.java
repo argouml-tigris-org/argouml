@@ -289,7 +289,7 @@ public class MultiEditorPane
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
         LOG.debug("double: " + tabs.getComponentAt(tab).toString());
-        JPanel t = (JPanel) tabPanels.elementAt(tab);
+//        JPanel t = (JPanel) tabPanels.elementAt(tab);
         // Currently this feature is disabled for ArgoUML.
 //        if (t instanceof TabSpawnable)
 //             ((TabSpawnable) t).spawn();

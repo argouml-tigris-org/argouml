@@ -287,7 +287,6 @@ public class Init {
     public static void init() {
         Object modelCls = Model.getMetaTypes().getModel();
         Object packageCls = Model.getMetaTypes().getPackage();
-        Object modelElementCls = Model.getMetaTypes().getModelElement();
         Object classCls = Model.getMetaTypes().getUMLClass();
         Object classifierCls = Model.getMetaTypes().getClassifier();
         Object interfaceCls = Model.getMetaTypes().getInterface();
