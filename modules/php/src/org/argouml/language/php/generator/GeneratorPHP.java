@@ -930,6 +930,10 @@ implements PluggableNotation, FileGenerator {
     return s;
   }
 
+  public String generateAssociationRole(MAssociationRole m) {
+      return "";
+  }      
+
   public String generateAssociationEnd(MAssociationEnd ae) {
     if (!ae.isNavigable()) return "";
     //String s = INDENT + "protected ";
