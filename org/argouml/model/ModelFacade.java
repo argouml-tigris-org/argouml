@@ -1911,7 +1911,22 @@ public class ModelFacade {
     }
 
     /**
-     * Returns the incoming transitions for some statevertex
+     * Returns the instance of an AttributeLink or LinkEnd
+     * @param handle
+     * @return initial value
+     */
+    public static Object getInstance(Object handle) {
+        if (handle instanceof MAttributeLink) {
+            return ((MAttributeLink)handle).getInstance();
+        }
+        if (handle instanceof MLinkEnd) {
+            return ((MLinkEnd)handle).getInstance();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns the Instances for some Clasifier
      * @param handle
      * @return Collection
      */
@@ -1919,8 +1934,7 @@ public class ModelFacade {
         if (handle instanceof MClassifier) {
             return ((MClassifier) handle).getInstances();
         }
-        throw new IllegalArgumentException(
-					   "Unrecognized object " + handle);
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /**
