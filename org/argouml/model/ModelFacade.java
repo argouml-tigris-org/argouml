@@ -2862,6 +2862,18 @@ public class ModelFacade {
 	return illegalArgumentCollection(handle);
     }
 
+    /** 
+     * Returns the collection of ConstrainedElements of a constraint
+     * @param handle the Constraint
+     * @return the collection of ConstrainedElements
+     */
+    public static Collection getConstrainedElements(Object handle) {
+        if (handle instanceof MConstraint) {
+            return ((MConstraint) handle).getConstrainedElements();
+        }
+        return illegalArgumentCollection(handle);
+    }
+
     /**
      * Get the collection of all constraints of the given ModelElement
      * @param handle the ModelElement
