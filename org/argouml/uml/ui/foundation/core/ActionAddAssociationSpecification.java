@@ -21,40 +21,64 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
+// $Id$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.application.api.Argo;
-import org.argouml.uml.ui.UMLCheckBox2;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.data_types.MScopeKind;
+import org.argouml.application.api.Argo;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.uml.ui.AbstractActionAddModelElement;
+
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 /**
- * @since Nov 6, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 4, 2003
  */
-public class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox2 {
+public class ActionAddAssociationSpecification extends AbstractActionAddModelElement {
 
+    public final static ActionAddAssociationSpecification SINGLETON = new ActionAddAssociationSpecification();
     /**
-     * Constructor for UMLFeatureOwnerScopeCheckBox.
-     * @param container
-     * @param text
-     * @param a
+     * Constructor for ActionAddExtendExtensionPoint.
      */
-    public UMLFeatureOwnerScopeCheckBox() {
-        super(Argo.localize("UMLMenu", "static"), ActionSetFeatureOwnerScope.SINGLETON, "ownerScope");
+    protected ActionAddAssociationSpecification() {
+        super();
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
+     */
+    protected void doIt(Vector selected) {
+        ((MAssociationEnd)getTarget()).setSpecifications(selected);
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
-    public void buildModel() {
-        MScopeKind scope = ((MFeature)getTarget()).getOwnerScope();
-        if (scope != null && scope.equals(MScopeKind.CLASSIFIER)) {
-            setSelected(true);
-        } else
-            setSelected(false);
+    protected Vector getChoices() {
+        Vector ret = new Vector();
+        if (getTarget() != null) {
+            ret.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class));
+        }
+        return ret;
     }
 
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
+     */
+    protected String getDialogTitle() {
+        return Argo.localize("UMLMenu", "dialog.title.add-specifications");
+    }
+
+    /**
+     * @see org.argouml.uml.ui.AbstractActionAddModelElement#getSelected()
+     */
+    protected Vector getSelected() {
+        Vector ret = new Vector();
+        ret.addAll(((MAssociationEnd)getTarget()).getSpecifications());
+        return ret;
+    }
 }

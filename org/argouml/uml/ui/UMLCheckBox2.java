@@ -31,6 +31,7 @@ import org.argouml.model.uml.UmlModelEventPump;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 
 /**
  * The checkbox to be used to show boolean attributes in the GUI's. Mostly used
@@ -45,9 +46,8 @@ import ru.novosoft.uml.MElementEvent;
  */
 public abstract class UMLCheckBox2
     extends JCheckBox
-    implements UMLUserInterfaceComponent {
+    implements TargetChangedListener, MElementListener {
 
-    private UMLUserInterfaceContainer _container;
     private Object _target;
     private String _propertySetName;
     
@@ -56,26 +56,11 @@ public abstract class UMLCheckBox2
      * @param text
      * @param selected
      */
-    public UMLCheckBox2(UMLUserInterfaceContainer container, String text, Action a, String propertySetName) {
+    public UMLCheckBox2(String text, Action a, String propertySetName) {
         super(text);
         _propertySetName = propertySetName;
-        setContainer(container);
         addActionListener(a);
         setActionCommand((String)a.getValue(Action.ACTION_COMMAND_KEY));
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
-     */
-    public void targetChanged() {
-        setTarget(getContainer().getTarget());  
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
-     */
-    public void targetReasserted() {
-        setTarget(getContainer().getTarget());  
     }
 
     /**
@@ -115,14 +100,6 @@ public abstract class UMLCheckBox2
      */
     public void recovered(MElementEvent e) {
     }
-    
-    /**
-     * Returns the container.
-     * @return UMLUserInterfaceContainer
-     */
-    public UMLUserInterfaceContainer getContainer() {
-        return _container;
-    }
 
     /**
      * Returns the target. The target is directly asked from the _target attribute
@@ -132,17 +109,6 @@ public abstract class UMLCheckBox2
      */
     public Object getTarget() {
         return _target;
-    }
-
-    /**
-     * Sets the container.
-     * @param container The container to set
-     */
-    public void setContainer(UMLUserInterfaceContainer container) {
-        _container = container;
-        if (container != null) {
-            setTarget(container.getTarget());
-        }
     }
 
     /**
@@ -169,5 +135,20 @@ public abstract class UMLCheckBox2
      */
     abstract public void buildModel();
        
+
+    /**
+     * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
+     */
+    public void targetChanged(Object newTarget) {
+        setTarget(newTarget);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
+     */
+    public void targetReasserted(Object newTarget) {
+        if (newTarget != _target)
+            setTarget(newTarget);
+    }
 
 }

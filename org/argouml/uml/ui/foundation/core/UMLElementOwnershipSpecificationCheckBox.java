@@ -26,7 +26,7 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLCheckBox2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
@@ -41,10 +41,10 @@ public class UMLElementOwnershipSpecificationCheckBox extends UMLCheckBox2 {
      * @param text
      * @param a
      */
-    public UMLElementOwnershipSpecificationCheckBox(UMLUserInterfaceContainer container) {
-        super(container, 
-            Argo.localize("UMLMenu", "label.specialization"), 
-            ActionSetElementOwnershipSpecification.SINGLETON, "isSpecification");
+    public UMLElementOwnershipSpecificationCheckBox() {
+        super(Argo.localize("UMLMenu", "label.specialization"), 
+            ActionSetElementOwnershipSpecification.SINGLETON, 
+            "isSpecification");
     }
 
     /**

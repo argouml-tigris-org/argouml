@@ -28,7 +28,6 @@ import javax.swing.JPopupMenu;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewAction;
 import org.argouml.uml.ui.behavior.common_behavior.PopupMenuNewAction;
 

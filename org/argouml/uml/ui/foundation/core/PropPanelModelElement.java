@@ -244,7 +244,7 @@ abstract public class PropPanelModelElement extends PropPanel {
         constraintScroll = new JScrollPane(constraintList);
         namespaceVisibilityPanel = new UMLButtonPanel(new UMLElementOwnershipVisibilityButtonGroup(this));
         
-        specializationCheckBox = new UMLElementOwnershipSpecificationCheckBox(this);
+        specializationCheckBox = new UMLElementOwnershipSpecificationCheckBox();
         
         // NSUML implements the association class element residence as a connecting class 
         // between a component and the modelelement

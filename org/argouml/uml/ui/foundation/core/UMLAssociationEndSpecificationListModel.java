@@ -21,38 +21,43 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
-package org.argouml.uml.ui.behavior.state_machines;
+// $Id$
+package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.application.api.Argo;
-import org.argouml.uml.ui.UMLCheckBox2;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 /**
- * @since Dec 14, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 4, 2003
  */
-public class UMLCompositeStateConcurentCheckBox extends UMLCheckBox2 {
+public class UMLAssociationEndSpecificationListModel extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLCompositeStateConcurentCheckBox.
+     * Constructor for UMLAssociationEndSpecificationListModel.
      * @param container
-     * @param text
-     * @param a
-     * @param propertySetName
      */
-    public UMLCompositeStateConcurentCheckBox() {
-         super(Argo.localize("UMLMenu", "label.concurrent"), 
-            ActionSetCompositeStateConcurrent.SINGLETON, 
-            "isConcurent");
+    public UMLAssociationEndSpecificationListModel() {
+        super("specification");
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
-    public void buildModel() {
-        setSelected(((MCompositeState)getTarget()).isConcurent());
+    protected void buildModelList() {
+        if (_target != null) 
+            setAllElements(((MAssociationEnd)_target).getSpecifications());
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
+     */
+    protected boolean isValidElement(MBase o) {  
+        return o instanceof MClassifier && ((MAssociationEnd)getTarget()).getSpecifications().contains(o);
     }
 
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,47 +21,61 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
-package org.argouml.uml.ui.behavior.collaborations;
+// $Id$
+package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.application.api.Argo;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
-import org.argouml.uml.ui.UMLChangeAction;
-import org.argouml.uml.ui.UMLComboBox2;
+import javax.swing.JRadioButton;
 
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
-import ru.novosoft.uml.foundation.core.MAssociation;
+import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLRadioButtonPanel;
+
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 /**
- * @since Oct 4, 2002
- * @author jaap.branderhorst@xs4all.nl
- * @stereotype singleton
+ * 
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Jan 4, 2003
  */
-public class ActionSetAssociationRoleBase extends UMLChangeAction {
+public class ActionSetAssociationEndAggregation extends UMLChangeAction {
 
-    public static final ActionSetAssociationRoleBase SINGLETON = new ActionSetAssociationRoleBase();
-    
+    public static final ActionSetAssociationEndAggregation SINGLETON = new ActionSetAssociationEndAggregation();
+
+    public final static String AGGREGATE_COMMAND = "aggregate";
+    public final static String COMPOSITE_COMMAND = "composite";
+    public final static String NONE_COMMAND = "none";
+
     /**
-     * Constructor for ActionSetAssociationRoleBase.
+     * Constructor for ActionSetElementOwnershipSpecification.
      * @param s
      */
-    protected ActionSetAssociationRoleBase() {
+    protected ActionSetAssociationEndAggregation() {
         super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
-    }   
+    }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Object selected = null;
-        if (e.getSource() instanceof UMLComboBox2) {
-            UMLComboBox2 source = (UMLComboBox2)e.getSource();
-            selected = source.getSelectedItem();
-            if (selected instanceof MAssociation && source.getTarget() instanceof MAssociationRole) {
-                CollaborationsHelper.getHelper().setBase((MAssociationRole)source.getTarget(), (MAssociation)selected);
+        if (e.getSource() instanceof JRadioButton) {
+            JRadioButton source = (JRadioButton) e.getSource();
+            String actionCommand = source.getActionCommand();
+            Object target = ((UMLRadioButtonPanel) source.getParent()).getTarget();
+            if (target instanceof MAssociationEnd) {
+                MAssociationEnd m = (MAssociationEnd) target;
+                MAggregationKind kind = null;
+                if (actionCommand.equals(AGGREGATE_COMMAND)) {
+                    kind = MAggregationKind.AGGREGATE;
+                } else if (actionCommand.equals(COMPOSITE_COMMAND)) {
+                    kind = MAggregationKind.COMPOSITE;
+                } else
+                    kind = MAggregationKind.NONE;
+                m.setAggregation(kind);
+
             }
         }
     }
