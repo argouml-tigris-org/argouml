@@ -36,6 +36,7 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.application.api.*;
+import org.argouml.util.logging.*;
 import org.argouml.kernel.Project;
 
 /** XMI is an XML based exchange format between UML tools. 
@@ -89,8 +90,8 @@ public class XMIParser {
 
         _proj = p;
 
-        Argo.logger.info("=======================================");
-        Argo.logger.info("== READING MODEL " + url);
+        Console.info("=======================================");
+        Console.info("== READING MODEL " + url);
         try {
             XMIReader reader = new XMIReader();
             InputSource source = new InputSource(url.openStream());
@@ -119,7 +120,7 @@ public class XMIParser {
         catch (Exception ex) {
             ex.printStackTrace();
         }
-        Argo.logger.info("=======================================");
+        Console.info("=======================================");
 
         try {
             _proj.addModel(

@@ -51,6 +51,7 @@ import org.argouml.application.api.*;
 // get the note from the class diagram
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.util.logging.*;
 
 public class UMLStateDiagram extends UMLDiagram {
     protected static Log logger = org.apache.commons.logging.LogFactory.getLog(UMLStateDiagram.class);
@@ -117,7 +118,7 @@ public class UMLStateDiagram extends UMLDiagram {
         while (TheInstance.vetoCheck("state", args)) {
             name = diag_name + " " + (number++);
         }
-        Argo.logger.info("UMLStateDiagram constructor: String name = " + name);
+        Console.info("UMLStateDiagram constructor: String name = " + name);
 		try { setName(name); }
 		catch (PropertyVetoException pve) { }
     }
@@ -127,10 +128,10 @@ public class UMLStateDiagram extends UMLDiagram {
 
 	public MModelElement getOwner() {
 		StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
-                Argo.logger.info("UMLStateDiagram.getOwner()...GraphModel = " + gm);
+                Console.info("UMLStateDiagram.getOwner()...GraphModel = " + gm);
                 MStateMachine sm = gm.getMachine();
 		if (sm != null) return sm;
-                Argo.logger.info("UMLStateDiagram.getOwner()...NameSpace = " + gm.getNamespace());
+                Console.info("UMLStateDiagram.getOwner()...NameSpace = " + gm.getNamespace());
 		return gm.getNamespace();
 	}
 

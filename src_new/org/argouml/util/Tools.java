@@ -23,6 +23,7 @@
 
 package org.argouml.util;
 import org.argouml.application.api.*;
+import org.argouml.util.logging.*;
 import java.io.*;
 import java.util.*;
 
@@ -134,7 +135,7 @@ String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.
           while (true) {
               String s = r.readLine();
 	      if (s == null) break;
-	      Argo.logger.info(s);
+	      Console.info(s);
           }
       }
       catch (IOException ioe) { }

@@ -52,6 +52,7 @@ import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.*;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.*;
+import org.argouml.util.logging.*;
 
 /** Generator subclass to generate text for display in diagrams in in
  * text fields in the Argo/UML user interface.  The generated code
@@ -117,7 +118,7 @@ implements PluggableNotation, FileGenerator {
       File f = new File (path);
       if (!f.isDirectory()) {
 		    if (!f.mkdir()) {
-			    Argo.logger.error(" could not make directory "+path);
+			    Console.error(" could not make directory "+path);
 			    return null;
 		    }
       }
@@ -134,7 +135,7 @@ implements PluggableNotation, FileGenerator {
 	  } while (true);
 
     String pathname = path + filename;
-	//Argo.logger.info("-----" + pathname + "-----");
+	//Console.info("-----" + pathname + "-----");
 
     //now decide wether file exist and need an update or is to be newly generated
     File f = new File(pathname);
@@ -143,16 +144,16 @@ implements PluggableNotation, FileGenerator {
         update (cls, f);
       }
       catch (Exception exp) {
-        Argo.logger.error("FAILED: " + f.getPath());
+        Console.error("FAILED: " + f.getPath());
       }
 
-      //Argo.logger.info("----- end generating -----");
+      //Console.info("----- end generating -----");
 	    return pathname;
 	  }
 
     //String pathname = path + filename;
     // needs-more-work: package, project basepath, tagged values to configure
-	Argo.logger.info("Generating (new) " + f.getPath());
+	Console.info("Generating (new) " + f.getPath());
     String header = SINGLETON.generateHeader (cls, pathname, packagePath);
     String src = SINGLETON.generate (cls);
     BufferedWriter fos = null;
@@ -167,11 +168,11 @@ implements PluggableNotation, FileGenerator {
         if (fos != null) fos.close();
       }
       catch (IOException exp) {
-        Argo.logger.error("FAILED: " + f.getPath());
+        Console.error("FAILED: " + f.getPath());
       }
     }
 
-	//Argo.logger.info("----- end updating -----");
+	//Console.info("----- end updating -----");
     return pathname;
   }
 
@@ -836,7 +837,7 @@ implements PluggableNotation, FileGenerator {
    * be generated.
    */
   public String generateMethodBody (MOperation op) {
-    //Argo.logger.info("generateMethodBody");
+    //Console.info("generateMethodBody");
     if (op != null) {
       Collection methods = op.getMethods();
       Iterator i = methods.iterator();
@@ -1140,7 +1141,7 @@ implements PluggableNotation, FileGenerator {
     if (VERBOSE_DOCS) sb.append(INDENT).append("// constraints\n");
     int size = cs.size();
     // MConstraint[] csarray = (MConstraint[])cs.toArray();
-    // Argo.logger.debug("Got " + csarray.size() + " constraints.");
+    // logger.debug("Got " + csarray.size() + " constraints.");
     for (Iterator i = cs.iterator(); i.hasNext();) {
       MConstraint c = (MConstraint) i.next();
       String constrStr = generateConstraint(c);
@@ -1417,7 +1418,7 @@ implements PluggableNotation, FileGenerator {
   }
 
   public String generateStateBody(MState m) {
-    Argo.logger.info("GeneratorJava: generating state body");
+    Console.info("GeneratorJava: generating state body");
     StringBuffer sb = new StringBuffer(80);
     MAction entry = m.getEntry();
     MAction exit = m.getExit();
@@ -1510,7 +1511,7 @@ implements PluggableNotation, FileGenerator {
                         File file)
 	throws Exception
     {
-	Argo.logger.info("Parsing " + file.getPath());
+	Console.info("Parsing " + file.getPath());
 
 	BufferedReader in = new BufferedReader(new FileReader(file));
 	JavaLexer lexer = new JavaLexer(in);
@@ -1524,11 +1525,11 @@ implements PluggableNotation, FileGenerator {
 	File backupFile = new File(file.getAbsolutePath()+".backup");
 	if (backupFile.exists())
 	  backupFile.delete();
-	//Argo.logger.info("Generating " + newFile.getPath());
+	//Console.info("Generating " + newFile.getPath());
 	cpc.filter(file, newFile, mClassifier.getNamespace());
-	//Argo.logger.info("Backing up " + file.getPath());
+	//Console.info("Backing up " + file.getPath());
 	file.renameTo(backupFile);
-	Argo.logger.info("Updating " + file.getPath());
+	Console.info("Updating " + file.getPath());
 	newFile.renameTo(origFile);
     }
 

@@ -29,6 +29,7 @@ import antlr.collections.impl.*;
 import antlr.*;
 import org.argouml.kernel.*;
 import org.argouml.uml.reveng.*;
+import org.argouml.util.logging.*;
 import org.argouml.application.api.*;
 import ru.novosoft.uml.model_management.*;
 import org.tigris.gef.base.*;
@@ -161,7 +162,7 @@ public class JavaImport {
 	
 	// Print the name of the current file, so we can associate
 	// exceptions to the file.
-	Argo.logger.info("Parsing " + f.getAbsolutePath());
+	Console.info("Parsing " + f.getAbsolutePath());
 	
 	// start parsing at the compilationUnit rule
 	parser.compilationUnit(modeller, lexer);

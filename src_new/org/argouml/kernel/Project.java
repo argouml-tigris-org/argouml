@@ -78,6 +78,7 @@ import org.argouml.uml.diagram.use_case.ui.*;
 import org.argouml.language.java.generator.*;
 import org.argouml.ui.*;
 import org.argouml.util.*;
+import org.argouml.util.logging.*;
 import org.argouml.xml.argo.*;
 import org.argouml.xml.pgml.*;
 import org.argouml.xml.xmi.XMIParser;
@@ -157,7 +158,7 @@ public class Project implements java.io.Serializable {
 
     public Project (MModel model) {
     	this();
-        Argo.logger.info("making empty project with model: "+model.getName());
+        Console.info("making empty project with model: "+model.getName());
         _saveRegistry = new UMLChangeRegistry();
 		/*
         defineType(JavaUML.VOID_TYPE);     //J.101
@@ -301,7 +302,7 @@ public class Project implements java.io.Serializable {
         while(!name.endsWith(".xmi")) {
             name = zis.getNextEntry().getName();
         }
-        Argo.logger.info("Loading Model from "+url);
+        Console.info("Loading Model from "+url);
         // 2002-07-18
         // Jaap Branderhorst
         // changed the loading of the projectfiles to solve hanging 
@@ -391,13 +392,13 @@ public class Project implements java.io.Serializable {
             ZipEntry currentEntry = null;
             while ( (currentEntry = sub.getNextEntry()) != null) {
                 if (currentEntry.getName().endsWith(".pgml")) {
-                    Argo.logger.info("Now going to load "+currentEntry.getName()+" from ZipInputStream");
+                    Console.info("Now going to load "+currentEntry.getName()+" from ZipInputStream");
 
                     // "false" means the stream shall not be closed, but it doesn't seem to matter...
                     ArgoDiagram d = (ArgoDiagram)PGMLParser.SINGLETON.readDiagram(sub,false);
                     addMember(d);
                     // sub.closeEntry();
-                    Argo.logger.info("Finished loading "+currentEntry.getName());
+                    Console.info("Finished loading "+currentEntry.getName());
                 }
             }
             zis.close();
@@ -412,7 +413,7 @@ public class Project implements java.io.Serializable {
     }
 
     public static Project makeEmptyProject() {
-        Argo.logger.info("making empty project");
+        Console.info("making empty project");
 
         MModel m1 = UmlFactory.getFactory().getModelManagement().createModel();
         m1.setName("untitledModel");
@@ -700,7 +701,7 @@ public class Project implements java.io.Serializable {
         stream.closeEntry();
         
         String path = file.getParent();
-        Argo.logger.info ("Dir ==" + path);
+        Console.info ("Dir ==" + path);
         int size = _members.size();
     
         try {
@@ -711,7 +712,7 @@ public class Project implements java.io.Serializable {
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) _members.elementAt(i);
                 if (!(p.getType().equalsIgnoreCase("xmi"))){
-                    Argo.logger.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
+                    Console.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
                     stream.putNextEntry(new ZipEntry(p.getName()));
                     p.save(path,overwrite,writer);
                     writer.flush();
@@ -722,7 +723,7 @@ public class Project implements java.io.Serializable {
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) _members.elementAt(i);
                 if (p.getType().equalsIgnoreCase("xmi")) {
-                    Argo.logger.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
+                    Console.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
                     stream.putNextEntry(new ZipEntry(p.getName()));
                     p.save(path,overwrite,writer);
                 }

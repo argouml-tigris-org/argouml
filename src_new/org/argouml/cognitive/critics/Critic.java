@@ -37,6 +37,7 @@ import org.tigris.gef.util.*;
 import org.argouml.kernel.*;
 import org.argouml.cognitive.*;
 import org.argouml.util.*;
+import org.argouml.util.logging.*;
 import org.argouml.application.api.*;
 
 import org.apache.commons.logging.*;
@@ -523,7 +524,7 @@ public class Critic implements Poster, Serializable {
 	return w;
       }
       catch (Exception ex) {
-	Argo.logger.error("Could not make wizard: " + item, ex);
+	Console.error("Could not make wizard: " + item, ex);
       }
     }
     return null;

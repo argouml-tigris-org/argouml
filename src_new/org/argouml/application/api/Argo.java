@@ -25,8 +25,8 @@ package org.argouml.application.api;
 import org.argouml.application.configuration.*;
 import org.argouml.application.modules.*;
 import org.argouml.application.events.*;
-import org.argouml.util.logging.*;
-import org.apache.commons.logging.*;
+// import org.argouml.util.logging.*;
+// import org.apache.commons.logging.*;
 // import org.apache.log4j.helpers.*;
 // import org.apache.log4j.or.*;
 // import org.apache.log4j.spi.*;
@@ -52,7 +52,6 @@ import javax.swing.*;
  * <li>definitions of resource bundle identifier strings</li>
  * <li>methods for localization using <code>gef</code></li>
  * <li>methods for environment manipulation</li>
- * <li>methods for console logging</li>
  * </ul>
  *
  */
@@ -167,15 +166,15 @@ public class Argo
      */
     public static final String ARGO_CONSOLE_PREFIX = "argo.console.prefix";
 
-    /** Define a static log4j category variable for ArgoUML to log to
-     *  the console.  This would be used in preference to System.out.println
-     *  for console output because this information can be intercepted
-     *  by <code>log4j</code> and included in other logs.  This also allows
-     *  custom <code>log4j</code> formatters
-     *  to be used on objects displayed on the console log.
-     */
-    public final static Log logger =
-             org.apache.commons.logging.LogFactory.getLog("argouml.console");
+    // /** Define a static log4j category variable for ArgoUML to log to
+     // *  the console.  This would be used in preference to System.out.println
+     // *  for console output because this information can be intercepted
+     // *  by <code>log4j</code> and included in other logs.  This also allows
+     // *  custom <code>log4j</code> formatters
+     // *  to be used on objects displayed on the console log.
+     // */
+    // public final static Log logger =
+             // org.apache.commons.logging.LogFactory.getLog("argouml.console");
 
     /** Don't let this class be instantiated. */
     private Argo()

@@ -48,6 +48,7 @@ import org.argouml.uml.*;
 import org.argouml.kernel.*;
 import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
+import org.argouml.util.logging.*;
 
 import java.lang.reflect.*;
 import java.awt.event.*;
@@ -599,7 +600,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         if (model == null) {
         	// extra attempt
-            Argo.logger.error(this.getClass().toString() + " targetChanged() - " +
+            Console.error(this.getClass().toString() + " targetChanged() - " +
                            "getModel() == null for " + 
                            target.getClass().toString());
             return;

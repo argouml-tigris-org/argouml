@@ -38,6 +38,7 @@ import org.tigris.gef.presentation.*;
 import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.util.*;
+import org.argouml.util.logging.*;
 import org.argouml.uml.ui.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.swingext.*;
@@ -84,7 +85,7 @@ implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
   // constructors
 
   public DetailsPane(StatusBar sb, String pane, Orientation orientation) {
-    Argo.logger.info("making DetailsPane("+pane+")");
+    Console.info("making DetailsPane("+pane+")");
     orientation = orientation;
     ConfigLoader.loadTabs(_tabPanels, pane, sb, orientation);
 

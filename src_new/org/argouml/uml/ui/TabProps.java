@@ -71,6 +71,7 @@ import org.argouml.uml.ui.behavior.use_cases.*;
 import org.argouml.uml.ui.model_management.*;
 import org.argouml.uml.ui.foundation.extension_mechanisms.*;
 import org.argouml.util.ConfigLoader;
+import org.argouml.util.logging.*;
 
 import org.argouml.swingext.*;
 
@@ -445,6 +446,6 @@ class InitPanelsLater implements Runnable {
 	}
     }
 
-    Argo.logger.info("done preloading Property Panels");
+    Console.info("done preloading Property Panels");
   }
 } /* end class InitPanelsLater */

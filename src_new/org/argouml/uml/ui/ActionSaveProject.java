@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
+import org.argouml.util.logging.*;
 import java.io.*;
 import java.awt.event.*;
 import java.util.zip.*;
@@ -77,7 +78,7 @@ public class ActionSaveProject extends UMLAction {
     try {
 
       if (file.exists() && !overwrite) {
-        //Argo.logger.info ("Are you sure you want to overwrite " + fullpath + "?");
+        //Console.info ("Are you sure you want to overwrite " + fullpath + "?");
         String sConfirm = MessageFormat.format (
             Argo.localize ("Actions",
                                 "template.save_project.confirm_overwrite"),
@@ -111,7 +112,7 @@ public class ActionSaveProject extends UMLAction {
           new Object[] {p.getURL()}
         );
       pb.showStatus (sStatus);
-      Argo.logger.debug ("setting most recent project file to " +
+      Console.info ("Setting most recent project file to " +
                       file.getCanonicalPath());
       Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, file.getCanonicalPath());
       

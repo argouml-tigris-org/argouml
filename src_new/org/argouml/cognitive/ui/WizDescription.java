@@ -38,6 +38,7 @@ import org.tigris.gef.ui.ToolBar;
 import org.argouml.application.api.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
+import org.argouml.util.logging.*;
 
 public class WizDescription extends WizStep {
 
@@ -49,7 +50,7 @@ public class WizDescription extends WizStep {
 
   public WizDescription() {
     super();
-    Argo.logger.info("making WizDescription");
+    Console.info("making WizDescription");
 
     _description.setLineWrap(true);
     _description.setWrapStyleWord(true);

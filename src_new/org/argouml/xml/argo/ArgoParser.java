@@ -25,6 +25,7 @@ package org.argouml.xml.argo;
 
 import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
+import org.argouml.util.logging.*;
 import java.util.*;
 import java.io.*;
 import java.net.URL;
@@ -80,7 +81,7 @@ public class ArgoParser extends SAXParserBase {
         try{
             readProject(url.openStream(), addMembers);
         } catch (IOException e) {
-            Argo.logger.info("Couldn't open InputStream in ArgoParser.load("+url+") "+e);
+            Console.info("Couldn't open InputStream in ArgoParser.load("+url+") "+e);
             e.printStackTrace();
             lastLoadMessage = e.toString();
             // we need to forward this up - mkl
@@ -100,21 +101,21 @@ public class ArgoParser extends SAXParserBase {
         _addMembers = addMembers;
 
         if ((_url == null) && _addMembers) {
-            Argo.logger.info("URL not set! Won't be able to add members! Aborting...");
+            Console.info("URL not set! Won't be able to add members! Aborting...");
             lastLoadMessage = "URL not set!";
             return;
         }
 	  
 
         try {
-            Argo.logger.info("=======================================");
-            Argo.logger.info("== READING PROJECT "+_url);
+            Console.info("=======================================");
+            Console.info("== READING PROJECT "+_url);
             _proj = new Project(_url);
             parse(is);
         }
         catch(SAXException saxEx) {
             lastLoadStatus = false;
-            Argo.logger.info("Exception reading project================");
+            Console.info("Exception reading project================");
             //
             //  a SAX exception could have been generated
             //    because of another exception.
@@ -131,7 +132,7 @@ public class ArgoParser extends SAXParserBase {
             }
         }
         catch (Exception ex) {
-            Argo.logger.info("Exception reading project================");
+            Console.info("Exception reading project================");
             ex.printStackTrace();
             lastLoadMessage = ex.toString();
         }        

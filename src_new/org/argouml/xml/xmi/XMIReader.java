@@ -31,6 +31,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.argouml.application.api.Argo;
+import org.argouml.util.logging.*;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import ru.novosoft.uml.MFactory;
@@ -104,8 +105,7 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
             performLinking();
         }
         catch (Exception ex) {
-            Argo.logger.error("The model file loaded is corrupted.");
-            Argo.logger.error(ex);
+            Console.error("The model file loaded is corrupted.", ex);
             setErrors(true);
         }
 

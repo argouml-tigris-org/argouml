@@ -26,6 +26,7 @@ package org.argouml.xml;
 import org.apache.commons.logging.Log;
 // import org.apache.log4j.Priority;
 import org.argouml.application.api.*;
+import org.argouml.util.logging.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 import java.util.Stack;
@@ -105,7 +106,7 @@ public abstract class SAXParserBase extends HandlerBase {
       end = System.currentTimeMillis();
       _parseTime = end - start;
       if (_stats) {
-	Argo.logger.info("Elapsed time: " + (end - start) + " ms");
+	Console.info("Elapsed time: " + (end - start) + " ms");
       }
     }
     catch(SAXException saxEx) {

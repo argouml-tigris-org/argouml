@@ -24,6 +24,7 @@
 package org.argouml.language.ui;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
+import org.argouml.util.logging.*;
 
 import java.awt.*;
 import java.util.*;
@@ -81,7 +82,7 @@ implements ArgoNotationEventListener {
 		    addItem(nn.getConfigurationValue());
 	        }
 	        catch (Exception e) {
-	            Argo.logger.error ("Unexpected exception", e);
+	            Console.error ("Unexpected exception", e);
 	        }
 	    }
 	    setVisible(true);

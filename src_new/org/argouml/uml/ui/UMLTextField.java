@@ -133,16 +133,16 @@ public class UMLTextField
     public void targetReasserted() {
     }
     public void roleAdded(final MElementEvent p1) {
-        //        Argo.logger.info("UMLTextField.roleAdded: event p1 happened...");
+        //        Console.info("UMLTextField.roleAdded: event p1 happened...");
     }
     public void recovered(final MElementEvent p1) {
-        //        Argo.logger.info("UMLTextField.recovered: event p1 happened...");
+        //        Console.info("UMLTextField.recovered: event p1 happened...");
     }
     public void roleRemoved(final MElementEvent p1) {
-        //        Argo.logger.info("UMLTextField.roleRemoved: event p1 happened...");        
+        //        Console.info("UMLTextField.roleRemoved: event p1 happened...");        
     }
     public void listRoleItemSet(final MElementEvent p1) {
-        //        Argo.logger.info("UMLTextField.listRoleItemSet: event p1 happened...");        
+        //        Console.info("UMLTextField.listRoleItemSet: event p1 happened...");        
     }
     public void removed(final MElementEvent p1) {
     }
@@ -170,7 +170,7 @@ public class UMLTextField
             }
         }
         //        else if(_target instanceof MDataType)
-        //            Argo.logger.info("UMLTextField.propertySet: else :Target = " + _target);
+        //            Console.info("UMLTextField.propertySet: else :Target = " + _target);
     }
     
     /**
@@ -279,7 +279,7 @@ public class UMLTextField
                     if (_target instanceof MAttribute) {
                         _classifier =
                             (MClassifier) ((MAttribute) _target).getOwner();
-                        //            Argo.logger.info("UMLTextField.update()..._classifier = " + _classifier);
+                        //            Console.info("UMLTextField.update()..._classifier = " + _classifier);
                         if (_classifier == null) {
                             return;
                         }
@@ -303,7 +303,7 @@ public class UMLTextField
                         }
                         else
                             if (_target instanceof MCallEvent) {
-                                //            Argo.logger.info("UMLTextField.update()...target = " + _target);
+                                //            Console.info("UMLTextField.update()...target = " + _target);
                             }
           */
             
@@ -312,7 +312,7 @@ public class UMLTextField
     public void changedUpdate(final DocumentEvent p1) {
         // never happens since UMLTextFields don't support non-plain documents
         // handleEvent();
-        //        Argo.logger.info("UMLTextField.changedUpdate: DocumentEvent p1 " );       
+        //        Console.info("UMLTextField.changedUpdate: DocumentEvent p1 " );       
     }
     
     /**

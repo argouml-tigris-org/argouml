@@ -24,6 +24,7 @@
 package org.argouml.application.notation;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
+import org.argouml.util.logging.*;
 import java.util.*;
 import javax.swing.*;
 
@@ -148,7 +149,7 @@ implements NotationName, ArgoModuleEventListener {
 		}
 	    }
 	    catch (Exception e) {
-	        Argo.logger.error ("Unexpected exception", e);
+	        Console.error ("Unexpected exception", e);
 	    }
 	}
 	return null;
@@ -179,7 +180,7 @@ implements NotationName, ArgoModuleEventListener {
     }
 
     public void moduleLoaded(ArgoModuleEvent event) {
-        Argo.logger.info ("notation.moduleLoaded(" + event + ")");
+        Console.info ("notation.moduleLoaded(" + event + ")");
     }
 
     public void moduleUnloaded(ArgoModuleEvent event) {

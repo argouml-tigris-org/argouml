@@ -26,6 +26,7 @@ import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.kernel.*;
 import org.argouml.uml.ui.UMLAction;
+import org.argouml.util.logging.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
@@ -143,8 +144,8 @@ implements ArgoModuleEventListener {
 		                    stp.getTabPanel());
                     }
                 } catch (Exception exception) {
-                    Argo.logger.error("got an Exception in ActionSettings");
-	            Argo.logger.error(exception);
+                    Console.error("got an Exception in ActionSettings",
+	                          exception);
                 }
 	    }
 	    dlg.setSize(500, 300);

@@ -23,6 +23,7 @@
 
 package org.argouml.application.events;
 import org.argouml.application.api.*;
+import org.argouml.util.logging.*;
 import java.util.*;
 import org.apache.commons.logging.*;
 
@@ -85,7 +86,7 @@ public class ArgoEventPump {
 		break;
 
 	    default:
-	        Argo.logger.error("Invalid event:" + event.getEventType());
+	        Console.error("Invalid event:" + event.getEventType());
 		break;
 	}
     }
@@ -114,7 +115,7 @@ public class ArgoEventPump {
 		break;
 
 	    default:
-	        Argo.logger.error("Invalid event:" + event.getEventType());
+	        Console.error("Invalid event:" + event.getEventType());
 		break;
 	}
     }

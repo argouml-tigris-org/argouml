@@ -42,6 +42,7 @@ import org.tigris.gef.presentation.Fig;
 import org.apache.commons.logging.Log;
 import org.argouml.application.api.*;
 import org.argouml.util.*;
+import org.argouml.util.logging.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.swingext.*;
@@ -78,7 +79,7 @@ implements ChangeListener, MouseListener, QuadrantPanel {
   // constructors
 
   public MultiEditorPane(StatusBar sb) {
-    Argo.logger.info("making MultiEditorPane");
+    Console.info("making MultiEditorPane");
     ConfigLoader.loadTabs(_tabPanels, "multi", sb, Horizontal.getInstance());
 
     setLayout(new BorderLayout());

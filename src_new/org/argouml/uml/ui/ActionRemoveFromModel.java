@@ -27,6 +27,7 @@ import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.application.api.*;
+import org.argouml.util.logging.*;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
@@ -119,7 +120,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         Object target = getTarget();
         if (target != null) {
             if (sureRemove(target)) {
-                // Argo.logger.info("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
+                // Console.info("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
                 // move the pointer to the target in the NavPane to some other target (up)
                 ProjectBrowser pb = ProjectBrowser.TheInstance;
                 TreePath path = pb.getNavPane().getParentPath();

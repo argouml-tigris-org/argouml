@@ -24,6 +24,7 @@
 
 package org.argouml.application.configuration;
 import org.argouml.application.api.*;
+import org.argouml.util.logging.*;
 import java.io.*;
 import java.awt.event.*;
 import java.util.*;
@@ -93,12 +94,12 @@ public class ConfigurationProperties extends ConfigurationHandler {
   public boolean loadFile(File file) {
       try {
           _properties.load(new FileInputStream(file));
-	  Argo.logger.info ("Configuration loaded from " + file + "\n");
+	  Console.info ("Configuration loaded from " + file + "\n");
           return true;
       }
       catch (Exception e) {
           if (_canComplain)
-              Argo.logger.warn ("Unable to load configuration " + file + "\n");
+              Console.warn ("Unable to load configuration " + file + "\n");
           _canComplain = false;
       }
 
@@ -114,12 +115,12 @@ public class ConfigurationProperties extends ConfigurationHandler {
   boolean saveFile(File file) {
       try {
           _properties.store(new FileOutputStream(file), "Argo properties");
-	  Argo.logger.info ("Configuration saved to " + file);
+	  Console.info ("Configuration saved to " + file);
           return true;
       }
       catch (Exception e) {
           if (_canComplain)
-              Argo.logger.warn ("Unable to save configuration " + file + "\n");
+              Console.warn ("Unable to save configuration " + file + "\n");
           _canComplain = false;
       }
 
@@ -134,12 +135,12 @@ public class ConfigurationProperties extends ConfigurationHandler {
   public boolean loadURL(URL url) {
       try {
           _properties.load(url.openStream());
-	  Argo.logger.info ("Configuration loaded from " + url + "\n");
+	  Console.info ("Configuration loaded from " + url + "\n");
           return true;
       }
       catch (Exception e) {
           if (_canComplain)
-              Argo.logger.warn ("Unable to load configuration " + url + "\n");
+              Console.warn ("Unable to load configuration " + url + "\n");
           _canComplain = false;
           return false;
       }

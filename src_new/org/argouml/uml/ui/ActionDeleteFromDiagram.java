@@ -25,6 +25,7 @@ package org.argouml.uml.ui;
 
 import org.argouml.application.api.*;
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.util.logging.*;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
@@ -97,7 +98,7 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
             }
         }
         catch(Exception ex) {
-            Argo.logger.error("ActionDeleteFromDiagram.actionPerformed()Exception = ");
+            Console.error("ActionDeleteFromDiagram.actionPerformed()Exception = ");
         }
     } 
 
