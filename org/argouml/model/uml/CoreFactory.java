@@ -1867,11 +1867,19 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		UmlFactory.getFactory().delete(dep);
 	    }
 	}
-        it = elem.getComments().iterator();
+        
+	it = elem.getComments().iterator();
         while (it.hasNext()) {
             MComment comment = (MComment) it.next();
             if (comment.getAnnotatedElements().size() == 1)
                 UmlFactory.getFactory().delete(comment);
+        }
+        
+        List ownedBehaviors = new ArrayList();
+        ownedBehaviors.addAll(elem.getBehaviors());
+        it = ownedBehaviors.iterator();
+        while (it.hasNext()) {
+            UmlFactory.getFactory().delete(it.next());
         }
     }
 
