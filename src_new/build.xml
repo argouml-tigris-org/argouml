@@ -126,28 +126,6 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Global initialization                                               -->
   <!-- =================================================================== -->
 
-  <property name="argo.root.dir" value=".."/>
-
-  <property environment="env"/>
-  <property file="build.properties"/>
-  <property file="${user.home}/argouml.build.properties"/>
-  <property file="default.properties"/>
-  
-  <path id="java.tools.classpath">
-    <pathelement path="${env.JAVA_HOME}/lib/tools.jar" />
-  </path>
-
-  <path id="argo.classpath">
-    <pathelement location="${xerces.jar.path}" />
-    <pathelement location="${nsuml.jar.path}" />
-    <pathelement location="${ocl-argo.jar.path}" />
-    <pathelement location="${gef.jar.path}" />
-    <pathelement location="${antlrall.jar.path}" />
-    <pathelement location="${log4j.jar.path}" />
-    <pathelement location="${jh.jar.path}" />
-  </path>
-
-
 
   <!-- =================================================================== -->
   <!-- Initialization target                                               -->
@@ -159,18 +137,57 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
         <format property="year" pattern="yyyy"/>
     </tstamp>
 
+    <property name="argo.root.dir" value=".."/>
+
+    <!-- ============================================================= -->
+    <!-- when executed using target "dist-release", the properties     -->
+    <!-- "local.build.properties" and "user.build.properties"          -->
+    <!-- are set to "build.properties" so that there can be no         -->
+    <!-- possibility of overriding the default.                        -->
+    <!-- ============================================================= -->
+    <property name="local.build.properties" value="build.properties"/>
+    <property name="user.build.properties"
+              value="${user.home}/argouml.build.properties"/>
+
+    <property environment="env"/>
+
+
+    <property file="${local.build.properties}"/>
+    <property file="${user.build.properties}"/>
+
+    <property file="default.properties"/>
+  
+    <path id="java.tools.classpath">
+      <pathelement path="${env.JAVA_HOME}/lib/tools.jar" />
+    </path>
+
+    <path id="argo.classpath">
+      <pathelement location="${xerces.jar.path}" />
+      <pathelement location="${nsuml.jar.path}" />
+      <pathelement location="${ocl-argo.jar.path}" />
+      <pathelement location="${gef.jar.path}" />
+      <pathelement location="${antlrall.jar.path}" />
+      <pathelement location="${log4j.jar.path}" />
+      <pathelement location="${jh.jar.path}" />
+    </path>
 
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
+
+    <!-- ============================================================= -->
+    <!-- when executed using target "dist-release", argo.build.version -->
+    <!-- is set prior to "init" being executed and will not contain    -->
+    <!-- the "PRE-" portion.                                           -->
+    <!-- ============================================================= -->
+    <property name="argo.build.version" value="PRE-${argo.core.version}"/>
+
     <property name="argo.timestamp.version"
               value="${argo.build.version}-${DSTAMP}-${TSTAMP}"/>
  
-    <echo message="------------------- ${Name} ${argo.core.version} [${year}] ----------------"/>
+    <echo message="------------------- ${Name} ${argo.timestamp.version} [${year}] ----------------"/>
     <echo message="Using ${ant.version}"/>
 
     <property name="version.package" value="org/argouml/application"/>
-
-    <property name="argo.build.version" value="PRE-${argo.core.version}"/>
 
     <!-- TODO:  Change name to javadoc.packages -->
     
@@ -557,6 +574,13 @@ ${Name} Build file
         <!-- ====================================================== -->
 
         <include name="default.properties"/>
+
+        <!-- ====================================================== -->
+        <!-- Make sure that none of the other property files        -->
+        <!-- are read either.                                       -->
+        <!-- ====================================================== -->
+        <property name="local.build.properties" value="default.properties"/>
+        <property name="user.build.properties" value="default.properties"/>
 
  	<!-- ====================================================== -->
  	<!-- Developers can embed version numbers into the source   -->
