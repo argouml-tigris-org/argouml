@@ -78,7 +78,8 @@ public class PropPanelAttribute extends PropPanelModelElement {
 
 	addCaption(Argo.localize("UMLMenu", "label.type"),0,1,0);
         UMLTypeModel typeModel = new UMLTypeModel(this,"isAcceptibleType",
-            "type","getType","setType",false,MClassifier.class,true);
+            "type","getType","setType",false,MClassifier.class,
+	    MAttribute.class,true);
         addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),
             new UMLComboBox(typeModel)),0,1,0);
 
@@ -187,70 +188,4 @@ public class PropPanelAttribute extends PropPanelModelElement {
       return ns;
     }
 } /* end class PropPanelAttribute */
-
-class UMLTypeModel extends UMLComboBoxModel {
-	/**
-	 * Constructor for UMLTypeModel.
-	 * @param container
-	 * @param filter
-	 * @param property
-	 * @param getMethod
-	 * @param setMethod
-	 * @param allowVoid
-	 * @param elementType
-	 * @param addElementsFromProfileModel
-	 */
-	public UMLTypeModel(
-		UMLUserInterfaceContainer container,
-		String filter,
-		String property,
-		String getMethod,
-		String setMethod,
-		boolean allowVoid,
-		Class elementType,
-		boolean addElementsFromProfileModel) {
-		super(
-			container,
-			filter,
-			property,
-			getMethod,
-			setMethod,
-			allowVoid,
-			elementType,
-			addElementsFromProfileModel);
-	}
-
-	/**
-	 * @see ru.novosoft.uml.MElementListener#propertySet(MElementEvent)
-	 */
-	public void propertySet(MElementEvent event) {
-		// only react to type
-		if (event.getName() == null || event.getName() != "type") {
-			return;
-		}
-		
-		// only accept attribute as source
-		if (!(event.getSource() instanceof MAttribute)) {
-			return;
-		}
-		
-		// is it acceptible?
-		if (!isAcceptible((MModelElement)event.getNewValue())) {
-			return;
-		}
-		
-		if (!event.getNewValue().equals(event.getOldValue())) {
-			setSelectedItem(new UMLComboBoxEntry((MModelElement)event.getNewValue(), _container.getProfile(), false));
-		}
-		
-	}
-
-	/**
-	 * @see org.argouml.uml.ui.UMLComboBoxModel#isAcceptible(MModelElement)
-	 */
-	public boolean isAcceptible(MModelElement element) {
-		return element instanceof MClassifier;
-	}
-
-}
 
