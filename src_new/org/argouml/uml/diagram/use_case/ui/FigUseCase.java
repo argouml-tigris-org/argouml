@@ -1074,8 +1074,7 @@ public class FigUseCase extends FigNodeModelElement {
      * We check that it is one of the extension point compartments and then
      * parse accordingly.<p>
      *
-     * @param ft  The text that has been edited.
-     * @throws PropertyVetoException
+     * The parameter ft is the text that has been edited.
      *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */

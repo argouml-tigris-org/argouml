@@ -618,9 +618,9 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * @param x
-     * @param y
-     * @return
+     * @param x the x of the hit
+     * @param y the y of the hit
+     * @return the todo item of which the clarifier has been hit
      */
     public ToDoItem hitClarifier(int x, int y) {
         int iconX = getX();
@@ -978,10 +978,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * TODO: Document this! What does it do? What do the params mean?
-     * 
-     * @param o
-     * @return
+     * @param o the given object
+     * @return true if one of my figs has the given object as owner
      */
     protected boolean isPartlyOwner(Object o) {
         if (o == null || o == getOwner()) {
@@ -998,11 +996,9 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * TODO: Document this! What does it do? What do the params mean?
-     * 
-     * @param fig
-     * @param o
-     * @return
+     * @param fig the given fig (may be a group)
+     * @param o the given object
+     * @return true if one of the given figs has the given object as owner
      */
     protected boolean isPartlyOwner(Fig fig, Object o) {
         if (o == null) {
