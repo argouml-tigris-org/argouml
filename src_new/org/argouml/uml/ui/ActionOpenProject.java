@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
@@ -31,7 +32,6 @@ import org.argouml.util.*;
 import org.argouml.util.osdep.*;
 
 import org.tigris.gef.base.*;
-import org.tigris.gef.util.Localizer;
 
 import java.io.*;
 import java.net.*;
@@ -75,7 +75,7 @@ public class ActionOpenProject extends UMLAction {
     
     if (p != null && p.needsSave()) {
       String t = MessageFormat.format (
-          Localizer.localize ("Actions", "template.open_project.save_changes_to"),
+          Argo.localize ("Actions", "template.open_project.save_changes_to"),
           new Object[] {p.getName()}
         );
 
@@ -106,7 +106,7 @@ public class ActionOpenProject extends UMLAction {
       
       if (chooser == null) chooser = OsUtil.getFileChooser();
       
-      chooser.setDialogTitle (Localizer.localize ("Actions", "text.open_project.chooser_title"));
+      chooser.setDialogTitle (Argo.localize ("Actions", "text.open_project.chooser_title"));
       SuffixFilter filter = FileFilters.CompressedFileFilter;
       chooser.addChoosableFileFilter (filter);
       chooser.addChoosableFileFilter (FileFilters.UncompressedFileFilter);
@@ -155,7 +155,7 @@ public class ActionOpenProject extends UMLAction {
             	p = Project.loadProject (url);
             	pb.setProject (p);
             	pb.showStatus (MessageFormat.format (
-                Localizer.localize ("Actions", "template.open_project.status_read"),
+                Argo.localize ("Actions", "template.open_project.status_read"),
                 	new Object[] {url.toString()}
               	));
             }

@@ -33,6 +33,7 @@ import javax.swing.tree.*;
 import org.tigris.gef.ui.*;
 import org.tigris.gef.util.*;
 
+import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
@@ -59,16 +60,16 @@ implements TabToDoTarget, ActionListener, DocumentListener {
   // instance variables
 
   JPanel  _mainPanel = new JPanel();
-  JButton _backButton = new JButton(Localizer.localize(BUNDLE, "button.back"));
-  JButton _nextButton = new JButton(Localizer.localize(BUNDLE, "button.next"));
-  JButton _finishButton = new JButton(Localizer.localize(BUNDLE, "button.finish"));
-  JButton _helpButton = new JButton(Localizer.localize(BUNDLE, "button.help"));
+  JButton _backButton = new JButton(Argo.localize(BUNDLE, "button.back"));
+  JButton _nextButton = new JButton(Argo.localize(BUNDLE, "button.next"));
+  JButton _finishButton = new JButton(Argo.localize(BUNDLE, "button.finish"));
+  JButton _helpButton = new JButton(Argo.localize(BUNDLE, "button.help"));
   JPanel  _buttonPanel = new JPanel();
 
   Object _target;
 
     static final protected void setMnemonic(JButton b, String key) {
-	String m = Localizer.localize(BUNDLE, key);
+	String m = Argo.localize(BUNDLE, key);
 	if (m == null)
 	    return;
 	if (m.length() == 1) {

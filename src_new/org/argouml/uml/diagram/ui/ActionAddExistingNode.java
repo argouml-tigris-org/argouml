@@ -20,8 +20,8 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.graph.*;
-import org.tigris.gef.util.Localizer;
 
+import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
 
@@ -61,7 +61,7 @@ public class ActionAddExistingNode extends UMLAction implements GraphFactory
 
 	String instructions = null;
 	if(_object != null) {
-	    instructions =  Localizer.localize ("Tree", "misc.message.click-on-diagram-to-add") + _object.toString();
+	    instructions =  Argo.localize ("Tree", "misc.message.click-on-diagram-to-add") + _object.toString();
 	    Globals.showStatus(instructions);
 	}
 	ModePlace placeMode = new ModePlace(this,instructions);

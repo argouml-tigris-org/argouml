@@ -23,11 +23,11 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.util.*;
 import org.argouml.util.osdep.*;
-import org.tigris.gef.util.*;
 import org.tigris.gef.ocl.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -92,7 +92,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
 	}
 
 	String sChooserTitle =
-	    Localizer.localize("Actions",
+	    Argo.localize("Actions",
 			       "text.save_as_project.chooser_title");
 	chooser.setDialogTitle(sChooserTitle + p.getName());
 	chooser.setFileFilter(FileFilters.CompressedFileFilter);

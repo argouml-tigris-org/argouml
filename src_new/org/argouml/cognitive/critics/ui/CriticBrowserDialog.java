@@ -38,7 +38,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
-import org.tigris.gef.util.*;
+import org.argouml.application.api.*;
 
 /** Dialog box to list all critics and allow editing of some of their
  *  properties.  Needs-More-Work: knowledge type, supported goals,
@@ -51,9 +51,9 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
   // constants
   private static final String BUNDLE = "Cognitive";
 
-  static final String high = Localizer.localize(BUNDLE, "level.high");
-  static final String medium = Localizer.localize(BUNDLE, "level.medium");
-  static final String low = Localizer.localize(BUNDLE, "level.low");
+  static final String high = Argo.localize(BUNDLE, "level.high");
+  static final String medium = Argo.localize(BUNDLE, "level.medium");
+  static final String low = Argo.localize(BUNDLE, "level.low");
 
   public static final String PRIORITIES[] = { high, medium, low };
   public static final String USE_CLAR[] = { "Always", "If Only One", "Never" };

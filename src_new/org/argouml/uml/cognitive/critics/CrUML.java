@@ -33,6 +33,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 
 import org.tigris.gef.util.*;
 
+import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
@@ -131,9 +132,9 @@ public class CrUML extends Critic {
   }
 
   public void setResource(String key) {
-        String head = Localizer.localize("Cognitive",key + "_head");
+        String head = Argo.localize("Cognitive",key + "_head");
         super.setHeadline(head);
-        String desc = Localizer.localize("Cognitive",key + "_desc");
+        String desc = Argo.localize("Cognitive",key + "_desc");
         super.setDescription(desc);
   }
 

@@ -24,7 +24,6 @@ package org.argouml.ui;
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import java.awt.event.*;
-import org.tigris.gef.util.*;
  
 /** Action for handling Argo configuration save
 *
@@ -41,7 +40,7 @@ public class ActionSaveConfiguration extends UMLAction {
     // constructors
 
     protected ActionSaveConfiguration() {
-        super(Localizer.localize(Argo.MENU_BUNDLE,"Save Configuration"), false);
+        super(Argo.localize(Argo.MENU_BUNDLE,"Save Configuration"), false);
     }
 
     ////////////////////////////////////////////////////////////////

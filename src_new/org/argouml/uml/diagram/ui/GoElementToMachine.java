@@ -32,13 +32,13 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 
+import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
-import org.tigris.gef.util.Localizer;
 
 public class GoElementToMachine implements TreeModel {
 
   public String toString() {
-    return Localizer.localize ("Tree", "misc.class.state-machine");
+    return Argo.localize ("Tree", "misc.class.state-machine");
   }
   
   public Object getRoot() {

@@ -23,7 +23,7 @@
 
 package org.argouml.cognitive;
 
-import org.tigris.gef.util.*;
+import org.argouml.application.api.*;
 
 public class Goal {
 
@@ -41,7 +41,7 @@ public class Goal {
   ////////////////////////////////////////////////////////////////
   // constructor
   public Goal(String n, int p) {
-    setName(Localizer.localize("Cognitive", n));
+    setName(Argo.localize("Cognitive", n));
     setPriority(p);
   }
 

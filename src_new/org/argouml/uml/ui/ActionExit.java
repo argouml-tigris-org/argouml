@@ -28,8 +28,6 @@ import org.argouml.application.security.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 
-import org.tigris.gef.util.Localizer;
-
 import java.awt.event.*;
 import java.text.MessageFormat;
 
@@ -65,7 +63,7 @@ public class ActionExit extends UMLAction {
     if (p != null && p.needsSave() && !active) {
       active = true;
       String t = MessageFormat.format (
-          Localizer.localize (
+          Argo.localize (
             "Actions",
             "template.exit.save_changes_to"
           ),

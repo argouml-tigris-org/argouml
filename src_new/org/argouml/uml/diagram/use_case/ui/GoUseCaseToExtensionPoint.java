@@ -41,8 +41,8 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
+import org.argouml.application.api.Argo;
 import org.argouml.ui.*;
-import org.tigris.gef.util.Localizer;
 import org.argouml.uml.MMUtil;
 
 
@@ -63,7 +63,7 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
      */
 
     public String toString() {
-        return Localizer.localize ("Tree", "Use Case->Extension Point");
+        return Argo.localize ("Tree", "Use Case->Extension Point");
     }
   
 

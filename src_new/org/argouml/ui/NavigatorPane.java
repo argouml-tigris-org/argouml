@@ -40,7 +40,6 @@ import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.*;
-import org.tigris.gef.util.*;
 
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
@@ -295,7 +294,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
      * @return The localized string.
      */
     final protected String menuLocalize(String key) {
-	return Localizer.localize("Tree",key);
+	return Argo.localize("Tree",key);
     }
 
   ////////////////////////////////////////////////////////////////

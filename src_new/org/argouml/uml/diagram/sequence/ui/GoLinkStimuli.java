@@ -32,14 +32,14 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
+import org.argouml.application.api.*;
 import org.argouml.ui.*;
-import org.tigris.gef.util.Localizer;
 
 
 public class GoLinkStimuli implements TreeModel {
 
   public String toString() {
-    return Localizer.localize ("Tree", "misc.link.stimuli");
+    return Argo.localize ("Tree", "misc.link.stimuli");
   }
 
   public Object getRoot() {

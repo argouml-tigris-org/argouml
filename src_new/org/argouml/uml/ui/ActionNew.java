@@ -23,10 +23,9 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
-
-import org.tigris.gef.util.Localizer;
 
 import java.awt.event.*;
 import java.text.MessageFormat;
@@ -54,7 +53,7 @@ public class ActionNew extends UMLAction {
 
     if (p != null && p.needsSave()) {
       String t = MessageFormat.format (
-          Localizer.localize ("Actions", "template.new_project.save_changes_to"),
+          Argo.localize ("Actions", "template.new_project.save_changes_to"),
           new Object[] {p.getName()}
         );
       int response = JOptionPane.showConfirmDialog (

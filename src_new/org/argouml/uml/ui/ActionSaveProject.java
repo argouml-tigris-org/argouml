@@ -26,7 +26,6 @@ package org.argouml.uml.ui;
 import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
-import org.tigris.gef.util.Localizer;
 import java.io.*;
 import java.awt.event.*;
 import java.util.zip.*;
@@ -80,14 +79,14 @@ public class ActionSaveProject extends UMLAction {
       if (file.exists() && !overwrite) {
         //Argo.log.info ("Are you sure you want to overwrite " + fullpath + "?");
         String sConfirm = MessageFormat.format (
-            Localizer.localize ("Actions",
+            Argo.localize ("Actions",
                                 "template.save_project.confirm_overwrite"),
             new Object[] {file}
           );
         int nResult = JOptionPane.showConfirmDialog (
             pb,
             sConfirm,
-            Localizer.localize ("Actions", "text.save_project.confirm_overwrite_title"),
+            Argo.localize ("Actions", "text.save_project.confirm_overwrite_title"),
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE
           );
@@ -98,7 +97,7 @@ public class ActionSaveProject extends UMLAction {
       }
       
       String sStatus = MessageFormat.format (
-          Localizer.localize ("Actions", "template.save_project.status_writing"),
+          Argo.localize ("Actions", "template.save_project.status_writing"),
           new Object[] {file}
         );
       pb.showStatus (sStatus);
@@ -106,7 +105,7 @@ public class ActionSaveProject extends UMLAction {
       p.save(overwrite, file);
 
       sStatus = MessageFormat.format (
-          Localizer.localize ("Actions", "template.save_project.status_wrote"),
+          Argo.localize ("Actions", "template.save_project.status_wrote"),
           new Object[] {p.getURL()}
         );
       pb.showStatus (sStatus);
@@ -118,14 +117,14 @@ public class ActionSaveProject extends UMLAction {
     }
     catch (FileNotFoundException fnfe) {
       String sMessage = MessageFormat.format (
-          Localizer.localize ("Actions", "template.save_project.file_not_found"),
+          Argo.localize ("Actions", "template.save_project.file_not_found"),
           new Object[] {fnfe.getMessage()}
         );
       
       JOptionPane.showMessageDialog (
           pb,
           sMessage,
-          Localizer.localize ("Actions", "text.save_project.file_not_found_title"),
+          Argo.localize ("Actions", "text.save_project.file_not_found_title"),
           JOptionPane.ERROR_MESSAGE
         );
       
@@ -133,14 +132,14 @@ public class ActionSaveProject extends UMLAction {
     }
     catch (IOException ioe) {
       String sMessage = MessageFormat.format (
-          Localizer.localize ("Actions", "template.save_project.io_exception"),
+          Argo.localize ("Actions", "template.save_project.io_exception"),
           new Object[] {ioe.getMessage()}
         );
       
       JOptionPane.showMessageDialog (
           pb,
           sMessage,
-          Localizer.localize ("Actions", "text.save_project.io_exception_title"),
+          Argo.localize ("Actions", "text.save_project.io_exception_title"),
           JOptionPane.ERROR_MESSAGE
         );
       
