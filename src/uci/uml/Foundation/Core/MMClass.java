@@ -32,6 +32,7 @@ import java.util.*;
 import java.beans.*;
 
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Foundation.Extension_Mechanisms.Stereotype;
 
 public class MMClass extends Classifier {
   public boolean _isActive;
@@ -39,6 +40,36 @@ public class MMClass extends Classifier {
   public MMClass() { }
   public MMClass(Name name) { super(name); }
   public MMClass(String nameStr) { super(new Name(nameStr)); }
+
+
+  /** Change the name of this class as well as all constructor names. */
+  public void setName(Name newName) throws PropertyVetoException {
+    Name oldName = getName();
+    super.setName(newName);
+    renameConstructors(oldName);
+  }
+
+  /** Rename all constructors from oldName to the current class name. */
+  protected void renameConstructors (Name oldName) {
+    Operation aConstructor = null;
+    do {
+      aConstructor = (Operation) findBehavioralFeature(oldName);
+      // Make sure we're only renaming constructors (this test is needed
+      // when the class name is "" and there's an unnamed
+      // non-constructor operation in the class.)
+      if (aConstructor != null
+	  && aConstructor.containsStereotype(Stereotype.CONSTRUCTOR)) {
+	try {
+	  aConstructor.setName(getName());
+	}
+	catch (PropertyVetoException e) {
+	  // Ignore, but make sure we get out of the loop
+	  aConstructor = null;
+	}
+      }
+    } while (aConstructor != null);
+  }
+
 
   public boolean getIsActive(){ return _isActive; }
   public void setIsActive(boolean x) throws PropertyVetoException {

@@ -123,6 +123,10 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
 
 
   public void endEditing() {
+    // Avoid recursion resulting from call to Editor.setActiveTextEditor
+    // at the end of this method.
+    if (_editing == false) return;
+
     _editing = false;
     _target.startTrans();
     updateFigText();

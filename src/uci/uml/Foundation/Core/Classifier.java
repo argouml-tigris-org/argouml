@@ -99,6 +99,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
   public BehavioralFeature findBehavioralFeature(Name n) {
     Vector beh = getBehavioralFeature();
+    if (beh == null) return null;
     int behSize = beh.size();
     for (int i = 0; i < behSize; i++) {
       BehavioralFeature bf = (BehavioralFeature) beh.elementAt(i);
