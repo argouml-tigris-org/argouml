@@ -33,10 +33,13 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.argouml.ui.*;
+import org.tigris.gef.util.Localizer;
 
 public class GoElementToMachine implements TreeModelPrereqs {
 
-  public String toString() { return "Class->MState Machine"; }
+  public String toString() {
+    return Localizer.localize ("Tree", "Class->State Machine");
+  }
   
   public Object getRoot() {
     System.out.println("getRoot should never be called");

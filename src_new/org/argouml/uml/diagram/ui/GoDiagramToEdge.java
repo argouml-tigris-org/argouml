@@ -34,10 +34,13 @@ import ru.novosoft.uml.foundation.core.*;
 import org.tigris.gef.base.Diagram;
 
 import org.argouml.ui.*;
+import org.tigris.gef.util.Localizer;
 
 public class GoDiagramToEdge implements TreeModelPrereqs {
 
-  public String toString() { return "Diagram->Edge"; }
+  public String toString() {
+    return Localizer.localize ("Tree", "Diagram->Edge");
+  }
 
   public Object getRoot() {
     System.out.println("getRoot should never be called");

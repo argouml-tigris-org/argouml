@@ -32,10 +32,13 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.ui.*;
+import org.tigris.gef.util.Localizer;
 
 public class GoGenElementToDerived implements TreeModelPrereqs {
 
-  public String toString() { return "Class->Subclass"; }
+  public String toString() {
+    return Localizer.localize ("Tree", "Class->Subclass");
+  }
   
   public Object getRoot() {
     System.out.println("getRoot should never be called");

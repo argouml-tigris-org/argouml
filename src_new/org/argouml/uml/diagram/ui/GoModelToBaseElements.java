@@ -32,10 +32,13 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.ui.*;
+import org.tigris.gef.util.Localizer;
 
 public class GoModelToBaseElements implements TreeModelPrereqs {
 
-  public String toString() { return "Package->Base Class"; }
+  public String toString() {
+    return Localizer.localize ("Tree", "Package->Base Class");
+  }
   
   public Object getRoot() {
     System.out.println("getRoot should never be called");

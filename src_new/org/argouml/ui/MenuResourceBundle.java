@@ -38,6 +38,7 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"Load model from DB", "Load model from DB" },  
         {"Store model to DB", "Store model to DB" },  
         {"Save Project As...", "Save Project As..." },  
+        {"Import sources...", "Import sources..." },
         {"Print...", "Print..." },  
         {"Save GIF...", "Save GIF..." },  
         {"Save Graphics...", "Save Graphics..." },  
@@ -135,6 +136,8 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"Mnemonic_Critique", "R" },  
         {"Help", "Help" },  
         {"Mnemonic_Help", "H" },  
+        {"Automatic", "Automatic" },  
+        {"Incremental", "Incremental" },  
         {"As Diagram", "As Diagram" },  
         {"As Table", "As Table" },  
         {"As Metrics", "As Metrics" },  
@@ -159,6 +162,7 @@ public class MenuResourceBundle extends ListResourceBundle {
         { "Shortcut_Generate_All", KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0) },
         { "Shortcut_Exit", KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK) },
         { "Shortcut_Delete", KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0)}
+
    };
 
      public Object[][] getContents() {

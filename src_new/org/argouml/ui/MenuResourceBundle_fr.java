@@ -38,6 +38,7 @@ public class MenuResourceBundle_fr extends ListResourceBundle {
         {"Load model from DB", "Charger un mod\u00e8le depuis la BD" },  
         {"Store model to DB", "Stocker un mod\u00e8le en BD" },  
         {"Save Project As...", "Enregistrer le Projet Sous..." },  
+        {"Import sources...", "Importer depuis les sources..."},
         {"Print...", "Imprimer..." },  
         {"Save GIF...", "Enregistrer au Format GIF..." },
         {"Save Graphics...", "Enregistrer les Graphiques..." },  
@@ -122,6 +123,7 @@ public class MenuResourceBundle_fr extends ListResourceBundle {
         {"Create", "Cr\u00e9er" },  
         {"Mnemonic_Create", "C" },  
         {"Diagrams", "Diagrammes" },  
+        {"Create Diagram", "Cr\u00e9er Diagramme" },
         {"Arrange", "Organiser" },  
         {"Mnemonic_Arrange", "A" },  
         {"Align", "Aligner" },  
@@ -134,6 +136,8 @@ public class MenuResourceBundle_fr extends ListResourceBundle {
         {"Mnemonic_Critique", "R" },  
         {"Help", "Aide" },  
         {"Mnemonic_Help", "H" },  
+        {"Automatic", "Automatique" },  
+        {"Incremental", "Incr\u00e9mental" },  
         {"As Diagram", "En Tant que Diagramme" },  
         {"As Table", "En Tant que Table" },  
         {"As Metrics", "En Tant que M\u00e9triques" },  
@@ -158,6 +162,7 @@ public class MenuResourceBundle_fr extends ListResourceBundle {
         { "Shortcut_Generate_All", KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0) },
         { "Shortcut_Exit", KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK) },
         { "Shortcut_Delete", KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0)}
+
    };
 
      public Object[][] getContents() {

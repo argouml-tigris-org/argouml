@@ -29,6 +29,7 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 
 import org.argouml.cognitive.ToDoItem;
+import org.tigris.gef.util.Localizer;
 
 public class TreeModelComposite
 implements TreeModel, Cloneable {
@@ -47,7 +48,9 @@ implements TreeModel, Cloneable {
   ////////////////////////////////////////////////////////////////
   // contructors
 
-  public TreeModelComposite(String name) { setName(name); }
+  public TreeModelComposite(String name) {
+    setName(Localizer.localize("Tree", name));
+  }
 
   public TreeModelComposite(String name, Vector subs) {
     this(name);
