@@ -21,6 +21,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// $Id$
+
 /*
   JavaRE - Code generation and reverse engineering for UML and Java
   Author: Marcus Andersson andersson@users.sourceforge.net
@@ -51,7 +53,6 @@ public class AttributeCodePiece extends NamedCodePiece
     /** Indicating that the type name is fully qualified in the
         original source code. */
     private boolean typeFullyQualified;
-    private int len = 0; //  " = value" length
 
     /**
        Constructor.
@@ -69,7 +70,9 @@ public class AttributeCodePiece extends NamedCodePiece
 	attributeDef.add(type);
 	for(Iterator i = names.iterator(); i.hasNext(); ) {
 	    CodePiece cp = (CodePiece)i.next();
-	    String cpText = cp.getText().toString();
+	    String cpText = cp.getText().toString().trim();
+            if (cpText.indexOf('\n') > 0) 
+                cpText = cpText.substring(0, cpText.indexOf('\n')).trim();
 	    attributeDef.add(cp);
 	    int pos=0;
 	    if((pos=cpText.indexOf('[')) != -1) {
@@ -103,7 +106,7 @@ public class AttributeCodePiece extends NamedCodePiece
     */
     public int getEndPosition()
     {
-	return attributeDef.getEndPosition() + len; // Ugly fixed issue 1514
+	return attributeDef.getEndPosition();
     }
 
     /**
@@ -133,28 +136,25 @@ public class AttributeCodePiece extends NamedCodePiece
     {
     ParseState parseState = (ParseState)parseStateStack.peek();
     Vector features = parseState.getNewFeatures();
+    int k = 1, count=attributeNames.size();
     boolean found = false;
     // there might be multiple variable declarations in one line, so loop:
-    for(Iterator i = attributeNames.iterator(); i.hasNext(); ) {
+    for(Iterator i = attributeNames.iterator(); i.hasNext(); k++) {
         boolean checkAssociations = true;
         String name = (String)i.next();
         Iterator j;
         // now find the matching feature
-        for(j = features.iterator(); j.hasNext(); ) {
+        for(j = features.iterator(); j.hasNext();) {
             MFeature mFeature = (MFeature)j.next();
             if(mFeature instanceof MAttribute && mFeature.getName().equals(name)) {
                 // feature found, so it's an attribute (and no association end)
-                // calculate expression and encrease len
-                MExpression init = ((MAttribute)mFeature).getInitialValue();
-                if (init != null) {
-                    String initStr = GeneratorJava.getInstance().generateExpression(init).trim();
-                    if (initStr.length() > 0)
-                        len += initStr.length() + 3; // add 3 as a (" = ").length()
-                }
                 found = true;
                 checkAssociations = false;
                 parseState.newFeature(mFeature); // deletes feature from current ParseState
                 writer.write(GeneratorJava.getInstance().generateCoreAttribute((MAttribute)mFeature));
+                if ( k < count ) {
+                    writer.write("; "); // fixed comma separated attributes
+                }
                 break;
             }
         }
