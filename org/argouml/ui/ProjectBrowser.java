@@ -158,12 +158,6 @@ public class ProjectBrowser
      */
     private Object _target;
 
-    /**
-     * flag to prevent the ProjectBrowser and the GEF SelectionManager
-     * from creating cycles of setTarget(..)
-     */
-    private boolean isDoingSelection;
-
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -218,8 +212,6 @@ public class ProjectBrowser
         // adds this as listener to TargetManager so gets notified
         // when the active diagram changes
         TargetManager.getInstance().addTargetListener(this);
-
-        isDoingSelection = false;
     }
 
     public Locale getLocale() {
@@ -446,27 +438,6 @@ public class ProjectBrowser
     }
 
     /**
-     * avoids cyclic events between ProjectBrowser and the GEF SelectionManager.
-     */
-    private void startSelectionTransaction() {
-        isDoingSelection = true;
-    }
-
-    /**
-     * avoids cyclic events between ProjectBrowser and the GEF SelectionManager.
-     */
-    private boolean isInSelectionTransaction() {
-        return isDoingSelection;
-    }
-
-    /**
-     * avoids cyclic events between ProjectBrowser and the GEF SelectionManager.
-     */
-    private void selectionTransactionEnded() {
-        isDoingSelection = false;
-    }
-
-    /**
      * The method used by the NavigatorPane, MultiEditor and DetailsPane
      * to set the target of the application.
      *
@@ -483,21 +454,7 @@ public class ProjectBrowser
      * TargetManager.getInstance().setTarget(Object)}
      */
     public void setTarget(Object o) {
-
-        if (isInSelectionTransaction()) {
-            return;
-        } else {
-            startSelectionTransaction();
-        }
-
-        if (getTarget() != o) {
-
-            cat.debug("setting project target = " + o);
-            
-        }
         TargetManager.getInstance().setTarget(o);
-
-        selectionTransactionEnded();
     }
 
     /** 
