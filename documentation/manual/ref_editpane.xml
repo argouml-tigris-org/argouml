@@ -368,10 +368,10 @@ graphic artifacts to diagrams.</para></listitem>
     <sect2>
       <title>Annotation Tools</title>
 
-      <para>Only one annotation tool is provided, <literal>Comment</literal>
+      <para>The annotation tool <literal>Comment</literal>
         (<guiicon><inlinemediaobject><imageobject><imagedata format="GIF"
           align="center" fileref="images/icons/note.gif"/>
-        </imageobject></inlinemediaobject></guiicon>). This is used to add a
+        </imageobject></inlinemediaobject></guiicon>) is used to add a
         comment to a selected UML artifact.</para>
 
       <caution><para>Unlike most other tools you use the
@@ -382,21 +382,23 @@ graphic artifacts to diagrams.</para></listitem>
         this principle, instead of pretending it is an extension. 
         Also in the toolbar implementation itself, 
         we could order them according the way they work. -->
-      </para></caution>
-      
-      <para>
         If no element is selected when the comment tool is clicked, 
-        then the comment is created and put at the left top corner. 
-        You can link any comment to aditional elements 
-        using the <quote>CommentLink</quote> tool.
-      </para>
+        then the comment is created and put at the left top corner.
+      </para></caution>
 
-      <para>The note is created alongside the selected artifact, 
+      <para>The comment is created alongside the selected artifact, 
         empty by default. The text can be selected
         with &button1; double-click and edited from the keyboard.</para>
 
       <para>The UML standard allows comments to be attached to any
         artifact. 
+      </para>
+      
+      <para>You can link any comment to aditional elements 
+        using the <literal>CommentLink</literal>     
+        (<guiicon><inlinemediaobject><imageobject><imagedata format="GIF"
+        align="center" fileref="images/icons/commentlink.gif"/>
+        </imageobject></inlinemediaobject></guiicon>) tool.
       </para>
 
     </sect2>
@@ -665,30 +667,6 @@ graphic artifacts to diagrams.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
-                     fileref="images/icons/dependency.gif"/> 
-          </imageobject></inlinemediaobject></guiicon>
-          <literal>Dependency</literal>. Add a dependency between two artifacts
-          selected using &button1; motion (from the dependent
-          artifact).</para></listitem>
-
-        <listitem><para><guiicon><inlinemediaobject><imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/icons/permission.gif"/> 
-          </imageobject></inlinemediaobject></guiicon>
-          <literal>Permission</literal>. Add a permission between two artifacts
-          selected using &button1; motion (from the dependent
-          artifact).</para></listitem>
-
-        <listitem><para><guiicon><inlinemediaobject><imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/icons/usage.gif"/> 
-          </imageobject></inlinemediaobject></guiicon>
-          <literal>Usage</literal>. Add a usage between two artifacts
-          selected using &button1; motion (from the dependent
-          artifact).</para></listitem>
-
-        <listitem><para><guiicon><inlinemediaobject><imageobject>
-          <imagedata format="GIF" align="center"
                      fileref="images/icons/generalization.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
           <literal>Generalization</literal>. Add a generalization between two
@@ -715,6 +693,26 @@ graphic artifacts to diagrams.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
+                     fileref="images/icons/dependency.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Dependency</literal>. Add a dependency between two artifacts
+          selected using &button1; motion (from the dependent
+          artifact). There are also 2 special types of dependency offered here, 
+          <literal>Permission</literal> 
+          (<guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/permission.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>) and
+          <literal>Usage</literal> 
+          (<guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/usage.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>).
+          </para>
+        </listitem>
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
                      fileref="images/icons/attribute.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
           <literal>Add Attribute</literal>. Add an attribute to the
@@ -724,7 +722,7 @@ graphic artifacts to diagrams.</para></listitem>
           selecting with &button1; click (after the class has been selected)
           and using the property tab.</para>
 
-        <note><para>This tool is grayed out except when a class or interface is
+        <note><para>This tool is grayed out except when a class is
           selected.</para></note></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
@@ -751,7 +749,7 @@ graphic artifacts to diagrams.</para></listitem>
 
       <warning>
         <para>
-          Sequence diagrams are not implemented in V0.14 of &argouml;. Hence the
+          Sequence diagrams are not implemented in V0.18 of &argouml;. Hence the
           description below will (might) only become correct in future versions of
           &argouml;.
         </para>
@@ -851,6 +849,24 @@ graphic artifacts to diagrams.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
+                     fileref="images/icons/generalization.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Generalization</literal>. Add a generalization between two
+          artifacts selected using &button1; (from the child to the
+          parent).</para></listitem>
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/dependency.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Dependency</literal>. Add a dependency between two artifacts
+          selected using &button1; motion (from the dependent
+          artifact). 
+          </para>
+        </listitem>
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
                      fileref="images/icons/message.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
           <literal>Add Message</literal>. Add a message to the selected
@@ -896,6 +912,27 @@ graphic artifacts to diagrams.</para></listitem>
           <literal>Transition</literal>. Add a transition between two states
           selected using &button1; motion (from the originating state to the
           receiving state).</para></listitem>
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/synchstate.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>State</literal>. Add a synchstate to the
+          diagram.</para></listitem> 
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/submachinestate.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>State</literal>. Add a submachinestate to the
+          diagram.</para></listitem> 
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/stubstate.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>State</literal>. Add a stubstate to the
+          diagram.</para></listitem> 
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
@@ -1072,6 +1109,15 @@ graphic artifacts to diagrams.</para></listitem>
           and two or more incoming. &argouml; does not enforce this, but an
           &argouml; critic will complain about any join that does not follow
           this rule.</para></caution></listitem>
+          
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/objectflowstate.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Join</literal>. Add a objectflowstate to the
+          diagram.</para>
+        </listitem>
+          
       </itemizedlist>
     </sect2>
 
@@ -1125,6 +1171,22 @@ graphic artifacts to diagrams.</para></listitem>
           component instance it displays four handles to left, right, top and
           bottom which may be dragged to form dependency
           relationships.</para></listitem>
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/generalization.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Generalization</literal>. Add a generalization between two
+          artifacts selected using &button1; (from the child to the
+          parent).</para></listitem>
+
+        <listitem><para><guiicon><inlinemediaobject><imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/icons/realization.gif"/> 
+          </imageobject></inlinemediaobject></guiicon>
+          <literal>Realization</literal>. Add a realization between a class and
+          an interface selected using &button1; motion (from the realizing
+          class to the realized interface).</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
@@ -1273,13 +1335,9 @@ graphic artifacts to diagrams.</para></listitem>
       of the broom's face. 
       Repeatedly pressing the space bar cycles among these three 
       distribution modes 
-      and displays a brief message indicating the operation just performed.
+      and displays a brief message indicating the operation just performed:
+      Space evenly, Pack tightly, Spread out and Original.
     </para>
-    <warning><para>
-      This distribution function does not work in V0.14 of &argouml;.
-    </para></warning>
-      <!-- TODO: This does not seem to work. Did it ever?
-      See issue ...-->
 
   </sect1>
   
