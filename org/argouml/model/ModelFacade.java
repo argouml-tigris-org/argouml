@@ -40,6 +40,7 @@ import org.tigris.gef.base.Diagram;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.MExtension;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
@@ -54,6 +55,7 @@ import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MActionSequence;
+import ru.novosoft.uml.behavior.common_behavior.MArgument;
 import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
@@ -124,6 +126,7 @@ import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MExpression;
+import ru.novosoft.uml.foundation.data_types.MMessageDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MObjectSetExpression;
 import ru.novosoft.uml.foundation.data_types.MOrderingKind;
@@ -1938,6 +1941,18 @@ public class ModelFacade {
     }
 
     /**
+     * Gets the compoent of some element residence
+     * @param handle
+     * @return component
+     */
+    public static Object getImplementationLocation(Object handle) {
+        if (handle instanceof MElementResidence) {
+            return ((MElementResidence) handle).getImplementationLocation();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
      * Returns the includes for some use case
      * @param handle
      * @return
@@ -2071,6 +2086,37 @@ public class ModelFacade {
     }
 
     /**
+     * Returns the messages belonging to some other message
+     * @param handle
+     * @return Collection
+     */
+    public static Collection getMessages3(Object handle) {
+        if (handle instanceof MMessage) {
+            return ((MMessage) handle).getMessages3();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    public static Collection getMessages4(Object handle) {
+        if (handle instanceof MMessage) {
+            return ((MMessage) handle).getMessages4();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns the messages belonging to some classifier role
+     * @param handle
+     * @return Collection
+     */
+    public static Collection getMessages1(Object handle) {
+        if (handle instanceof MClassifierRole) {
+            return ((MClassifierRole) handle).getMessages1();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
      * Get the model of some model element
      *
      * @param handle to the model element.
@@ -2173,6 +2219,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + element);
     }
     
+    /** Get the component instance of an instance
+     *
+     * @param handle
+     * @returns the component instance
+     */
+    public static Object getComponentInstance(Object handle) {
+        if (handle instanceof MInstance)
+            return ((MInstance) handle).getComponentInstance();
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     public static Collection getConstrainingElements(Object handle) {
         if (handle instanceof MCollaboration) {
             return ((MCollaboration)handle).getConstrainingElements();
@@ -2700,6 +2758,18 @@ public class ModelFacade {
     }
     
     /**
+     * Get the resident element
+     * @param handle
+     * @return resident element
+     */
+    public static Object getResident(Object handle) {
+        if (handle instanceof MElementResidence) {
+            return ((MElementResidence) handle).getResident();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
      * Returns a collection with all residents belonging to the given
      * node.
      * @param handle
@@ -3160,6 +3230,13 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    public static Object getAggregation(Object handle) {
+        if (handle instanceof MAssociationEnd) {
+            return ((MAssociationEnd) handle).getAggregation();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /**
      * Returns all associated classes for some given classifier. Returns an
      * empty collection if the given argument o is not a classifier. The given
@@ -3291,6 +3368,14 @@ public class ModelFacade {
         return null;
     }
 
+    public static Object getValue(Object handle) {
+        if (handle instanceof MArgument) {
+            return ((MArgument)handle).getValue();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+
     /**
        Return the value of some tagged value.
 
@@ -3365,6 +3450,14 @@ public class ModelFacade {
             && f instanceof MFeature) {
             ((MClassifier) cls).addFeature((MFeature) f);
         }
+    }
+
+    public static void addMessage3(Object handle, Object mess) {
+        if (handle instanceof MMessage && mess instanceof MMessage) {
+            ((MMessage) handle).addMessage3((MMessage)mess);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /**
@@ -3462,6 +3555,12 @@ public class ModelFacade {
         }
     }
 
+    public static void addActualArgument(Object handle, Object argument) {
+        if (handle instanceof MAction && argument instanceof MArgument) {
+            ((MAction)handle).addActualArgument((MArgument)argument);
+        }
+    }
+
     /** This method adds a classifier to a classifier role.
      *
      * @param classifier role
@@ -3473,6 +3572,12 @@ public class ModelFacade {
             && o instanceof MClassifierRole
             && c instanceof MClassifier) {
             ((MClassifierRole) o).addBase((MClassifier) c);
+        }
+    }
+
+    public static void addClassifier(Object handle, Object classifier) {
+        if (handle instanceof MInstance && classifier instanceof MClassifier) {
+            ((MInstance)handle).addClassifier((MClassifier) classifier);
         }
     }
 
@@ -3507,6 +3612,12 @@ public class ModelFacade {
         }
     }
 
+    public static void removeActualArgument(Object handle, Object argument) {
+        if (handle instanceof MAction && argument instanceof MArgument) {
+            ((MAction)handle).removeActualArgument((MArgument)argument);
+        }
+    }
+
     /** This method removes a classifier from a classifier role.
      *
      * @param classifier role
@@ -3533,6 +3644,20 @@ public class ModelFacade {
             && dep instanceof MDependency) {
             ((MModelElement) o).removeClientDependency((MDependency) dep);
         }
+    }
+
+    /** This method classifier from an instance
+     *
+     * @param handle
+     * @param classifier
+     */
+    public static void removeClassifier(Object handle, Object classifier) {
+        if (handle instanceof MInstance && classifier instanceof MClassifier) {
+            ((MInstance)handle).removeClassifier((MClassifier) classifier);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + classifier);
     }
 
     /** This method removes a feature from a classifier.
@@ -3563,6 +3688,14 @@ public class ModelFacade {
         }
     }
 
+    public static void removeMessage3(Object handle, Object mess) {
+        if (handle instanceof MMessage && mess instanceof MMessage) {
+            ((MMessage) handle).removeMessage3((MMessage)mess);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /**
      * Removes a owned modelelement from a namespace
      * @param handle
@@ -3590,6 +3723,13 @@ public class ModelFacade {
             && o instanceof MOperation
             && p instanceof MParameter) {
             ((MOperation) o).removeParameter((MParameter) p);
+        }
+    }
+
+    public static void removePredecessor(Object handle, Object message) {
+        if (handle instanceof MMessage
+            && message instanceof MMessage) {
+            ((MMessage)handle).removePredecessor((MMessage)message);
         }
     }
 
@@ -3657,6 +3797,37 @@ public class ModelFacade {
     }
 
     /**
+     * Sets the guard of a transition.
+     * @param handle
+     * @param guard
+     */
+    public static void setGuard(Object handle, Object guard) {
+        if (handle instanceof MTransition && guard instanceof MGuard) {
+            ((MTransition)handle).setGuard((MGuard)guard);
+            return;
+        }
+        throw new IllegalArgumentException("Object "
+                                           + guard.toString()
+                                           + " cannot be owned by "
+                                           + handle.toString());
+    }
+
+    /**
+     * Sets the trigger event of a transition.
+     * @param handle
+     * @param event
+     */
+    public static void setTrigger(Object handle, Object event) {
+        if (handle instanceof MTransition && event instanceof MEvent) {
+            ((MTransition)handle).setTrigger((MEvent)event);
+            return;
+        }
+        throw new IllegalArgumentException("Object " + event
+                                           + " cannot be owned by "
+                                           + handle);
+    }
+
+    /**
      * Sets an initial value of some attribute.
      * @param attribute
      * @param expression
@@ -3666,6 +3837,14 @@ public class ModelFacade {
                 && (expr == null || expr instanceof MExpression)) {
             ((MAttribute) at).setInitialValue((MExpression) expr);
         }
+    }
+
+    public static void setMessages3(Object handle, Collection messages) {
+        if (handle instanceof MMessage) {
+            ((MMessage) handle).setMessages3(messages);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /**
@@ -3849,6 +4028,21 @@ public class ModelFacade {
         }
     }
 
+    public static void setValue(Object handle, Object value) {
+        if (handle instanceof MArgument) {
+            ((MArgument)handle).setValue((MExpression)value);
+        }
+        if (handle instanceof MAttributeLink) {
+            ((MAttributeLink)handle).setValue((MInstance)value);
+        }
+        if (handle instanceof MExtension) {
+            ((MExtension)handle).setValue((Object)value);
+        }
+        if (handle instanceof MTaggedValue) {
+            ((MTaggedValue)handle).setValue((String)value);
+        }
+    }
+
     /**
      * Set the visibility of some modelelement.
      * @param handle element
@@ -3882,6 +4076,24 @@ public class ModelFacade {
             } else if (v == ACC_PUBLIC) {
                 ((MModelElement) o).setVisibility(MVisibilityKind.PUBLIC);
             }
+        }
+    }
+
+    public static void setNodeInstance(Object handle, Object nodeInstance) {
+        if (handle instanceof MComponentInstance) {
+            ((MComponentInstance)handle).setNodeInstance((MNodeInstance)nodeInstance);
+            return;
+        }
+    }
+    
+    public static void setOperation(Object handle, Object operation) {
+        if (handle instanceof MCallAction) {
+            ((MCallAction)handle).setOperation((MOperation)operation);
+            return;
+        }
+        if (handle instanceof MCallEvent) {
+            ((MCallEvent)handle).setOperation((MOperation)operation);
+            return;
         }
     }
 
@@ -4214,6 +4426,16 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + message
 					   + " or " + action);
+    }
+
+    public static void setActivator(Object handle, Object message) {
+        if (handle instanceof MMessage
+            && (message == null || message instanceof MMessage)) {
+            ((MMessage)handle).setActivator((MMessage)message);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + message);
     }
 
     /**
@@ -4580,6 +4802,13 @@ public class ModelFacade {
             && mc != null
             && mc instanceof MConstraint) {
             ((MModelElement) me).addConstraint((MConstraint) mc);
+        }
+    }
+
+    public static void addDeploymentLocation(Object handle, Object node) {
+        if (handle instanceof MComponent
+            && node instanceof MNode) {
+            ((MComponent)handle).addDeploymentLocation((MNode)node);
         }
     }
 
