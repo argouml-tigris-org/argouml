@@ -37,8 +37,8 @@ public class TestStateMachinesFactory extends TestCase {
 
     public void testCreates() {
 
-        // Do not test Event or StateVertex yet.
-        // These are not part of NSUML.
+        // Do not test Event or StateVertex.
+        // These are abstract.
 
 	String [] objs = {
 	    "CallEvent",
