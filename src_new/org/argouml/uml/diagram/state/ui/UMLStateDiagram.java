@@ -44,6 +44,10 @@ import org.argouml.ui.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.state.*;
 
+// get the note from the class diagram
+import org.argouml.uml.ui.*;
+import org.argouml.uml.diagram.static_structure.ui.FigNote;
+
 public class UMLStateDiagram extends UMLDiagram {
 
   ////////////////
@@ -177,7 +181,9 @@ public MStateMachine getStateMachine() {
     _toolBar.add(_actionShallowHistoryPseudoState);
     _toolBar.add(_actionDeepHistoryPseudoState);
     _toolBar.addSeparator();
-
+    _toolBar.add(ActionAddNote.SINGLETON);
+    _toolBar.addSeparator();
+    
     //_toolBar.add(Actions.AddInternalTrans);
     //_toolBar.addSeparator();
 
