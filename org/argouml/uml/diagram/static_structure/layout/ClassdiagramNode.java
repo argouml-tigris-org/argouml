@@ -28,7 +28,7 @@ import java.util.*;
 import org.argouml.uml.diagram.layout.*;
 import org.argouml.uml.diagram.static_structure.ui.*;
 import org.tigris.gef.presentation.*;
-import ru.novosoft.uml.model_management.*;
+
 
 
 /**
