@@ -33,6 +33,17 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2004-09-15</entry>
+          <entry>
+Change to design of new module loader.
+(See <xref linkend="design-module-loader"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+      <tbody valign="top">
+        <row>
           <entry>2004-08-17</entry>
           <entry>
 Deemphasized the layers and instead describe the subsystems in

@@ -2162,7 +2162,7 @@ correctly for this to work.
 </para>
       </sect2>
 
-      <sect2>
+      <sect2 id="design-module-loader">
         <title>Design of a new Module Loader</title>
         <para>
 In an attempt to improve the Module Loader to make it more flexible a
@@ -2273,6 +2273,29 @@ If a module cannot be disabled, because some other module depends on it
 then this is signaled by returning false from the disabling method.
 </para>
               </listitem>
+
+            <listitem>
+              <para>
+Where modules are loaded from?
+</para>
+              <para>
+The modules are loaded from the same places as in the old module loader.
+They can be internally i.e. available in the core jar file of ArgoUML,
+from the <filename class="directory">ext</filename> directory,
+or if running from JavaWebStart, they can be downloaded from the site.
+</para>
+              <para>
+To reduce the complexity of the downloads,
+let's use it in the simplest possible way:
+organize each module in a package and a jar file,
+have the jnlp-file list that jar file as a part and a package entry
+listing the classes,
+have a file listing optional classes and
+a GUI that allows the user to download them.
+Once a class is selected in the GUI it is loaded and,
+the JavaWebStart class loader will guarantee that it is available.
+</para>
+            </listitem>
 </itemizedlist>
 </para>
       </sect2>
