@@ -171,11 +171,11 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
         LayerManager lm = editor.getLayerManager();
         Layer active = lm.getActiveLayer();
         Enumeration figs = active.elementsIn(mousePoint);
+        // last is the top fig.
         while(figs.hasMoreElements()){
             Fig candidateFig = (Fig)figs.nextElement();
             if(candidateFig instanceof FigNodeModelElement){
                 newFig = (FigNodeModelElement)candidateFig;
-                break;
             }
         }
         // check intermediate post-condition.
