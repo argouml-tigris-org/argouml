@@ -23,6 +23,8 @@
 
 package org.argouml.util;
 
+import java.util.*;
+
 import junit.framework.*;
 
 public class TestMyTokenizer extends TestCase {
@@ -31,6 +33,10 @@ public class TestMyTokenizer extends TestCase {
 	}
 
 	public void testConstructors() {
+		Vector seps = new Vector();
+		seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+		seps.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+
 		String str1 = "A String";
 		String delim1 = " ";
 		String res1[] = {"A", " ", "String"};
@@ -45,9 +51,48 @@ public class TestMyTokenizer extends TestCase {
 		String delim3 = " ,\t,<<,>>,[,],:,=,{,},\\,";
 		String res3[] = {"<<", " ", "stereo", " ", ">>", " ", "newAttr"};
 
+		String str4 = " newAttr = \": h\" ";
+		String delim4 = " ,\t,<<,>>,[,],:,=,{,},\\,";
+		String res4_1[] = {" ", "newAttr", " ", "=", " ", "\"", ":", " ", "h\"", " "};
+		String res4_2[] = {" ", "newAttr", " ", "=", " ", "\": h\"", " "};
+
+		String str5 = " newAttr = \': h\' ";
+		String delim5 = " ,\t,<<,>>,[,],:,=,{,},\\,";
+		String res5_1[] = {" ", "newAttr", " ", "=", " ", "\'", ":", " ", "h\'", " "};
+		String res5_2[] = {" ", "newAttr", " ", "=", " ", "\': h\'", " "};
+
+System.out.println("str1");
 		checkConstr(str1, delim1, res1);
+System.out.println("str1-1");
+		checkConstr(str1, delim1, res1, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+System.out.println("str1-2");
+		checkConstr(str1, delim1, res1, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+System.out.println("str1-3");
+		checkConstr(str1, delim1, res1, seps);
+
+System.out.println("str2");
 		checkConstr(str2, delim2, res2);
+		checkConstr(str2, delim2, res2, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+		checkConstr(str2, delim2, res2, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+		checkConstr(str2, delim2, res2, seps);
+
+System.out.println("str3");
 		checkConstr(str3, delim3, res3);
+		checkConstr(str3, delim3, res3, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+		checkConstr(str3, delim3, res3, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+		checkConstr(str3, delim3, res3, seps);
+
+System.out.println("str4");
+		checkConstr(str4, delim4, res4_1);
+		checkConstr(str4, delim4, res4_1, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+		checkConstr(str4, delim4, res4_2, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+		checkConstr(str4, delim4, res4_2, seps);
+
+System.out.println("str5");
+		checkConstr(str5, delim5, res5_1);
+		checkConstr(str5, delim5, res5_2, MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+		checkConstr(str5, delim5, res5_1, MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+		checkConstr(str5, delim5, res5_2, seps);
 	}
 
 	private void checkConstr(String str, String delim, String res[]) {
@@ -63,6 +108,48 @@ public class TestMyTokenizer extends TestCase {
 			idx += tok.length();
 			assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") has wrong token \"" + tok + "\" != \"" + res[i] + "\"", res[i].equals(tok));
 		}
+		assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") has too many tokens", !tokenizer.hasMoreTokens());
+	}
+
+	private void checkConstr(String str, String delim, String res[], CustomSeparator sep) {
+System.out.flush();
+		MyTokenizer tokenizer = new MyTokenizer(str, delim, sep);
+		String tok;
+		int i;
+		int idx = 0;
+
+System.out.println("Scanning string: ");
+System.out.flush();
+		for (i = 0; i < res.length; i++) {
+			assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") lacks tokens", tokenizer.hasMoreTokens());
+			tok = tokenizer.nextToken();
+			assert("tokenIndex broken", idx == tokenizer.getTokenIndex());
+			idx += tok.length();
+			assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") has wrong token \"" + tok + "\" != \"" + res[i] + "\"", res[i].equals(tok));
+		}
+		assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") has too many tokens", !tokenizer.hasMoreTokens());
+	}
+
+	private void checkConstr(String str, String delim, String res[], Collection seps) {
+System.out.flush();
+		MyTokenizer tokenizer = new MyTokenizer(str, delim, seps);
+		String tok;
+		int i;
+		int idx = 0;
+
+System.out.println("Scanning string: ");
+System.out.flush();
+		for (i = 0; i < res.length; i++) {
+			assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") lacks tokens", tokenizer.hasMoreTokens());
+			tok = tokenizer.nextToken();
+System.out.println(" \"" + tok + "\"");
+System.out.flush();
+			assert("tokenIndex broken", idx == tokenizer.getTokenIndex());
+			idx += tok.length();
+			assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") has wrong token \"" + tok + "\" != \"" + res[i] + "\"", res[i].equals(tok));
+		}
+System.out.println();
+System.out.flush();
 		assert("MyTokenizer(\"" + str + "\", \"" + delim + "\") has too many tokens", !tokenizer.hasMoreTokens());
 	}
 }
