@@ -55,7 +55,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
     // constructors
 
     protected ActionSaveProjectAs() {
-        super("action.save-project-as", NO_ICON);
+        super("action.save-project-as", HAS_ICON);
     }
 
     ////////////////////////////////////////////////////////////////

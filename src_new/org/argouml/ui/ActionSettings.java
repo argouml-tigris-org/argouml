@@ -70,7 +70,7 @@ public class ActionSettings extends UMLAction
     protected ArgoDialog dlg = null;
 
     protected ActionSettings() {
-        super(Argo.localize(Argo.MENU_BUNDLE, "action.settings"), false);
+        super(Argo.localize(Argo.MENU_BUNDLE, "action.settings"), HAS_ICON);
     }
 
     /** Helper for localization.
