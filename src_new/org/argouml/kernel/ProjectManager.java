@@ -288,7 +288,10 @@ public final class ProjectManager {
             // first read the .argo file from Zip
             String name = zis.getNextEntry().getName();
             while (!name.endsWith(".xmi")) {
-                name = zis.getNextEntry().getName();
+                ZipEntry nextEntry = zis.getNextEntry();
+                if(nextEntry == null)
+                    throw new IOException("The XMI file is missing from the .zargo file.");
+                name = nextEntry.getName();
             }
 
             XMIReader xmiReader = null;
@@ -365,5 +368,4 @@ public final class ProjectManager {
                             new Boolean(!newValue),
                             new Boolean(newValue));
     }
-
 }
