@@ -48,6 +48,7 @@ import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.StylePanel;
 import org.argouml.ui.TabFigTarget;
 import org.argouml.ui.TabSpawnable;
@@ -347,14 +348,18 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
         if (!(targetItem instanceof Fig)) {
             if (ModelFacade.isABase(targetItem)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
-                Fig f = p.getActiveDiagram().presentationFor(targetItem);
-
-                if (f != null)
-                    targetItem = f;
-                else {
+                ArgoDiagram diagram = p.getActiveDiagram();
+                if (diagram == null) {
                     shouldBeEnabled = false;
                     return false;
                 }
+                
+                Fig f = diagram.presentationFor(targetItem);
+                if (f == null) {
+                    shouldBeEnabled = false;
+                    return false;
+                }
+                targetItem = f;
             } else {
                 shouldBeEnabled = false;
                 return false;
