@@ -38,6 +38,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import org.tigris.gef.ui.*;
 
 import org.argouml.ui.*;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 public class StylePanelFig extends StylePanel
 implements ItemListener, DocumentListener {
@@ -53,6 +54,8 @@ implements ItemListener, DocumentListener {
   protected JComboBox _fillField = new JComboBox();
   protected JLabel _lineLabel = new JLabel("Line: ");
   protected JComboBox _lineField = new JComboBox();
+  protected JLabel _shadowLabel = new JLabel("Shadow: ");
+  protected JComboBox _shadowField = new JComboBox();
   //protected JLabel _dashedLabel = new JLabel("Dashed: ");
   //protected JComboBox _dashedField = new JComboBox(Fig.DASHED_CHOICES);
   protected SpacerPanel _spacer = new SpacerPanel();
@@ -73,6 +76,7 @@ implements ItemListener, DocumentListener {
     bboxDoc.addDocumentListener(this);
     _fillField.addItemListener(this);
     _lineField.addItemListener(this);
+    _shadowField.addItemListener(this);
     //_dashedField.addItemListener(this);
 
     _fillField.setRenderer(new ColorRenderer());
@@ -107,7 +111,10 @@ implements ItemListener, DocumentListener {
     c.gridy = 3;
     gb.setConstraints(_lineField, c);
     add(_lineField);
-    //c.gridy = 4;
+    c.gridy = 4;
+    gb.setConstraints(_shadowField, c);
+    add(_shadowField);
+    //c.gridy = 5;
     //gb.setConstraints(_dashedField, c);
     //add(_dashedField);
 
@@ -171,6 +178,16 @@ implements ItemListener, DocumentListener {
     _lineField.addItem(Color.orange);
     _lineField.addItem(Color.pink);
     _lineField.addItem("Custom...");
+
+    _shadowField.addItem("No Shadow");
+    _shadowField.addItem("1");
+    _shadowField.addItem("2");
+    _shadowField.addItem("3");
+    _shadowField.addItem("4");
+    _shadowField.addItem("5");
+    _shadowField.addItem("6");
+    _shadowField.addItem("7");
+    _shadowField.addItem("8");
   }
 
   ////////////////////////////////////////////////////////////////
@@ -190,6 +207,10 @@ implements ItemListener, DocumentListener {
     if (_target.getLineWidth() > 0)
       _lineField.setSelectedItem(_target.getLineColor());
     else _lineField.setSelectedItem("No Line");
+
+    if (_target instanceof FigNodeModelElement && ((FigNodeModelElement)_target).getShadowSize() > 0)
+      _shadowField.setSelectedIndex(((FigNodeModelElement)_target).getShadowSize());
+    else _shadowField.setSelectedIndex(0);
 
     //_dashedField.setSelectedItem(_target.getDashedString());
   }
@@ -235,6 +256,14 @@ implements ItemListener, DocumentListener {
     _target.endTrans();
   }
 
+  public void setTargetShadow() {
+    int i =  _shadowField.getSelectedIndex();
+    if (_target == null || !(_target instanceof FigNodeModelElement)) return;
+    _target.startTrans();
+    ((FigNodeModelElement)_target).setShadowSize(i);
+    _target.endTrans();
+  }
+
   // public void setTargetDashed() {
   //     String dashStr = (String) _dashedField.getSelectedItem();
   //     if (_target == null || dashStr == null) return;
@@ -266,6 +295,7 @@ implements ItemListener, DocumentListener {
     Object src = e.getSource();
     if (src == _fillField) setTargetFill();
     else if (src == _lineField) setTargetLine();
+    else if (src == _shadowField) setTargetShadow();
     //else if (src == _dashedField) setTargetDashed();
     else super.itemStateChanged(e);
   }
