@@ -29,14 +29,24 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JPopupMenu;
+import javax.swing.ImageIcon;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.GridLayout;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.swingext.Toolbox;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionAddAttribute;
 import org.argouml.uml.ui.ActionAddNote;
 import org.argouml.uml.ui.ActionAddOperation;
+
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
@@ -74,8 +84,6 @@ public class UMLClassDiagram extends UMLDiagram {
 
     protected static Action _actionUsage = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MUsage.class, "Usage");
 
-    protected static Action _actionAssoc = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Association");
-
     protected static Action _actionLink = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MLink.class, "Link");
 
     protected static Action _actionGeneralize = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MGeneralization.class, "Generalization");
@@ -83,6 +91,16 @@ public class UMLClassDiagram extends UMLDiagram {
     protected static Action _actionRealize = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAbstraction.class, "Realization");
 
     protected static Action _actionPackage = new CmdCreateNode(MPackage.class, "Package");
+
+    // Bob Tarling
+    // How do I change these to create associations with
+    // the required aggregation and navigability?
+    protected static Action _actionAssociation = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Association");
+    protected static Action _actionAggregation = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Aggregation");
+    protected static Action _actionComposition = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Composition");
+    protected static Action _actionUniAssociation = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "UniAssociation");
+    protected static Action _actionUniAggregation = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "UniAggregation");
+    protected static Action _actionUniComposition = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "UniComposition");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -130,15 +148,33 @@ public class UMLClassDiagram extends UMLDiagram {
     public void initToolBar() {
         _toolBar = new ToolBar();
         _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-
-        //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
         _toolBar.add(_actionSelect);
         _toolBar.add(_actionBroom);
         _toolBar.addSeparator();
 
         _toolBar.add(_actionPackage);
         _toolBar.add(_actionClass);
-        _toolBar.add(_actionAssoc);
+        final JButton associationButton = _toolBar.add(_actionAssociation);
+
+        /*
+        // Bob Tarling - uncomment this block for toolbox demo
+        // Start of code to make drop down toolbox
+        
+        ImageIcon dropDownIcon =
+            ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("DropDown", "DropDown");
+
+        Toolbox dropDownToolBox = new Toolbox(dropDownIcon, associationButton, 0, 2);
+        dropDownToolBox.add(_actionAssociation);
+        dropDownToolBox.add(_actionUniAssociation);
+        dropDownToolBox.add(_actionAggregation);
+        dropDownToolBox.add(_actionUniAggregation);
+        dropDownToolBox.add(_actionComposition);
+        dropDownToolBox.add(_actionUniComposition);
+        _toolBar.add(dropDownToolBox);
+        
+        // End of code to make drop down toolbox
+        */
+        
         _toolBar.add(_actionDepend);
         _toolBar.add(_actionPermission);
         _toolBar.add(_actionUsage);
@@ -173,5 +209,5 @@ public class UMLClassDiagram extends UMLDiagram {
 
         _toolBar.add(_diagramName.getJComponent());
     }
-
+    
 } /* end class UMLClassDiagram */
