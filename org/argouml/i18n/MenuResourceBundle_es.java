@@ -97,6 +97,7 @@ public class MenuResourceBundle_es extends ListResourceBundle {
         {"Add Internal Transition", "A\u00f1adir transici\u00f3n interna" },
         {"Generate Selected Classes", "Generar clases seleccionadas..." },
         {"Generate All Classes", "Generar todas las clases..." },
+        {"Generate Code for Project", "Generate Code for Project..." },
         {"Toggle Auto-Critique", "(Des)activar Auto-Criticos" },
         {"Design Issues...", "Temas de dise\u00f1o..." },
         {"Design Goals...", "Objetivos de dise\u00f1o..." },
