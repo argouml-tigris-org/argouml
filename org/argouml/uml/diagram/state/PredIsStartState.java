@@ -39,5 +39,4 @@ public class PredIsStartState implements Predicate {
       (MPseudostateKind.INITIAL.equals(((MPseudostate)obj).getKind()));
   }
   
-} /* end class PredIsStartState */
-
+} /* end class PredIsStartpackage */
