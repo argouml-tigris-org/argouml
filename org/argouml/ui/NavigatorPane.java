@@ -54,6 +54,7 @@ import org.argouml.kernel.PredInstanceOf;
 import org.argouml.kernel.PredNotInstanceOf;
 import org.argouml.kernel.PredOR;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.swingext.Toolbar;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -87,29 +88,6 @@ import org.tigris.gef.ui.PopupGenerator;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
-import ru.novosoft.uml.behavior.common_behavior.MDataValue;
-import ru.novosoft.uml.behavior.common_behavior.MInstance;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
-import ru.novosoft.uml.behavior.common_behavior.MObject;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MInclude;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationClass;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MDataType;
-import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.core.MFlow;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MRelationship;
-import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.model_management.MPackage;
-import ru.novosoft.uml.model_management.MSubsystem;
 
 /**
  * The upper-left pane of the main Argo/UML window, shows a tree view
@@ -531,14 +509,14 @@ public class NavigatorPane
                 "misc.package.subpackages",
                 new GoModelToElements(),
                 new PredAND(
-                    new PredInstanceOf(MPackage.class),
-                    new PredNotInstanceOf(MSubsystem.class)));
+                    new PredInstanceOf((Class)ModelFacade.PACKAGE),
+                    new PredNotInstanceOf((Class)ModelFacade.SUBSYSTEM)));
 
         GoFilteredChildren modelToClassifiers =
             new GoFilteredChildren(
                 "misc.package.classifiers",
                 new GoModelToElements(),
-                new PredInstanceOf(MClassifier.class));
+                new PredInstanceOf((Class)ModelFacade.CLASSIFIER));
 
         // AssociationClass is traversed via Classifier. Eugenio
         GoFilteredChildren modelToAssociations =
@@ -546,14 +524,14 @@ public class NavigatorPane
                 "misc.package.associations",
                 new GoModelToElements(),
                 new PredAND(
-                    new PredInstanceOf(MAssociation.class),
-                    new PredNotInstanceOf(MAssociationClass.class)));
+                    new PredInstanceOf((Class)ModelFacade.ASSOCIATION),
+                    new PredNotInstanceOf((Class)ModelFacade.ASSOCIATION_CLASS)));
 
         GoFilteredChildren modelToGeneralizations =
             new GoFilteredChildren(
                 "misc.package.generalizations",
                 new GoModelToElements(),
-                new PredInstanceOf(MGeneralization.class));
+                new PredInstanceOf((Class)ModelFacade.GENERALIZATION));
 
         // Extend and include are traversed via use case.
         GoFilteredChildren modelToExtendsAndIncludes =
@@ -561,42 +539,42 @@ public class NavigatorPane
                 "Package->Extends/Includes",
                 new GoModelToElements(),
                 new PredOR(
-                    new PredInstanceOf(MExtend.class),
-                    new PredInstanceOf(MInclude.class)));
+                    new PredInstanceOf((Class)ModelFacade.EXTEND),
+                    new PredInstanceOf((Class)ModelFacade.INCLUDE)));
 
         GoFilteredChildren modelToDependencies =
             new GoFilteredChildren(
                 "misc.package.dependencies",
                 new GoModelToElements(),
-                new PredInstanceOf(MDependency.class));
+                new PredInstanceOf((Class)ModelFacade.DEPENDENCY));
 
         GoFilteredChildren modelToInstances =
             new GoFilteredChildren(
                 "misc.package.instances",
                 new GoModelToElements(),
-                new PredInstanceOf(MObject.class));
+                new PredInstanceOf((Class)ModelFacade.OBJECT));
         GoFilteredChildren modelToLinks =
             new GoFilteredChildren(
                 "misc.package.links",
                 new GoModelToElements(),
-                new PredInstanceOf(MLink.class));
+                new PredInstanceOf((Class)ModelFacade.LINK));
         GoFilteredChildren modelToCollaboration =
             new GoFilteredChildren(
                 "misc.package.collaborations",
                 new GoModelToElements(),
-                new PredInstanceOf(MCollaboration.class));
+                new PredInstanceOf((Class)ModelFacade.COLLABORATION));
 
         GoFilteredChildren modelToComponentInstance =
             new GoFilteredChildren(
                 "misc.package.componentinstance",
                 new GoModelToElements(),
-                new PredInstanceOf(MComponentInstance.class));
+                new PredInstanceOf((Class)ModelFacade.COMPONENT_INSTANCE));
 
         GoFilteredChildren modelToNodeInstance =
             new GoFilteredChildren(
                 "misc.package.nodeinstance",
                 new GoModelToElements(),
-                new PredInstanceOf(MNodeInstance.class));
+                new PredInstanceOf((Class)ModelFacade.NODE_INSTANCE));
 
         GoFilteredChildren machineToFinalState =
             new GoFilteredChildren(
@@ -820,14 +798,15 @@ public class NavigatorPane
                     popup.add((AbstractAction) e.nextElement());
                 }
             } else {
-                if ((obj instanceof MClassifier && !(obj instanceof MDataType))
-                    || ((obj instanceof MPackage)
+                if ((ModelFacade.isAClassifier(obj) &&
+                     !(ModelFacade.isADataType(obj)))
+                    || ((ModelFacade.isAPackage(obj))
                         && (obj
                             != ProjectManager
                                 .getManager()
                                 .getCurrentProject()
                                 .getModel()))
-                    || ((obj instanceof MStateVertex)
+                    || ((ModelFacade.isAStateVertex(obj))
                         && ((ProjectManager
                             .getManager()
                             .getCurrentProject()
@@ -842,8 +821,8 @@ public class NavigatorPane
                                     .getHelper()
                                     .getStateMachine(
                                     obj))))
-                    || (obj instanceof MInstance
-                        && !(obj instanceof MDataValue)
+                    || (ModelFacade.isAInstance(obj)
+                        && !(ModelFacade.isADataValue(obj))
                         && !(ProjectManager
                             .getManager()
                             .getCurrentProject()
@@ -856,14 +835,15 @@ public class NavigatorPane
                     action.setEnabled(action.shouldBeEnabled());
                     popup.add(action);
                 }
-                if ((obj instanceof MRelationship && !(obj instanceof MFlow))
-                    || ((obj instanceof MLink)
+                if ((ModelFacade.isARelationship(obj) && 
+                     !(ModelFacade.isAFlow(obj)))
+                    || ((ModelFacade.isALink(obj))
                         && !(ProjectManager
                             .getManager()
                             .getCurrentProject()
                             .getActiveDiagram()
                             instanceof UMLSequenceDiagram))
-                    || (obj instanceof MTransition)) {
+                    || (ModelFacade.isATransition(obj))) {
                     UMLAction action =
                         new ActionAddExistingEdge(
                             menuLocalize("menu.popup.add-to-diagram"),
@@ -872,7 +852,7 @@ public class NavigatorPane
                     popup.add(action);
                 }
 
-                if ((obj instanceof MModelElement
+                if ((ModelFacade.isAModelElement(obj)
                     && (obj
                         != ProjectManager
                             .getManager()
@@ -881,10 +861,11 @@ public class NavigatorPane
                     || obj instanceof Diagram) {
                     popup.add(ActionRemoveFromModel.SINGLETON);
                 }
-                if (obj instanceof MClassifier || obj instanceof MPackage) {
+                if (ModelFacade.isAClassifier(obj) || 
+                    ModelFacade.isAPackage(obj)) {
                     popup.add(ActionSetSourcePath.SINGLETON);
                 }
-                if (obj instanceof MPackage || obj instanceof MModel) {
+                if (ModelFacade.isAPackage(obj) || ModelFacade.isAModel(obj)) {
                     popup.add(ActionAddPackage.SINGLETON);
                 }
                 if (obj != null) { 

@@ -54,6 +54,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.text.Document;
 
 import org.apache.log4j.Category;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.AttrKeyword;
@@ -65,9 +66,6 @@ import org.argouml.uml.ui.TabModelTarget;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.JSortedTable;
 
-import ru.novosoft.uml.foundation.core.MElement;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 
 public class TablePanel extends TabSpawnable
 implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener, ActionListener {
@@ -214,12 +212,13 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
 	  // doesn't have a list of all possible visibilities
 	  // this should be placed in a file MMVisibility, like MMClassVis...
 	  java.util.Vector visibilityList = new java.util.Vector();
-	  visibilityList.addElement(MVisibilityKind.PUBLIC);
-	  visibilityList.addElement(MVisibilityKind.PRIVATE);
-	  visibilityList.addElement(MVisibilityKind.PROTECTED);
+	  visibilityList.addElement(ModelFacade.PUBLIC_VISIBILITYKIND);
+	  visibilityList.addElement(ModelFacade.PRIVATE_VISIBILITYKIND);
+	  visibilityList.addElement(ModelFacade.PROTECTED_VISIBILITYKIND);
 
     JComboBox visCombo = new JComboBox(visibilityList);
-    t.setDefaultEditor(MVisibilityKind.class, new DefaultCellEditor(visCombo));
+    t.setDefaultEditor((Class)ModelFacade.VISIBILITYKIND, 
+                       new DefaultCellEditor(visCombo));
 
     JComboBox clsKeyCombo = new JComboBox(MMClassKeyword.POSSIBLES);
     t.setDefaultEditor(MMClassKeyword.class,
@@ -257,12 +256,11 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
 
   public void updateContext() {
     String targetName = "" + _target;
-    if (_target instanceof MElement) {
-      MModelElement e = (MModelElement) _target;
+    if (ModelFacade.isAModelElement(_target)) {
       String ocl = "";
-      if (e instanceof MElement) ocl = ((MElement)e).getUMLClassName();
-      targetName = e.getName();
-      if (targetName.equals("")) targetName = "(anon " + ocl + ")";
+      ocl = ModelFacade.getUMLClassName(_target);
+      targetName = ModelFacade.getName(_target);
+      if ("".equals(targetName)) targetName = "(anon " + ocl + ")";
     }
     if (_target instanceof Diagram) {
       targetName = ((Diagram)_target).getName();
