@@ -35,6 +35,7 @@ import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
@@ -50,6 +51,10 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
 
     Class mclass = MComponentInstance.class;
 
+    Class[] namesToWatch = 
+    { MStereotype.class, MNamespace.class, MClassifier.class};
+    
+    setNameEventListening(namesToWatch);
     addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
