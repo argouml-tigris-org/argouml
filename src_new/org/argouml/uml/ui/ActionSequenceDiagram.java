@@ -84,11 +84,13 @@ public class ActionSequenceDiagram extends UMLChangeAction {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        Object target = TargetManager.getInstance().getModelTarget();
-        if (ModelFacade.isAClassifier(target)
-            || ModelFacade.isAOperation(target)) {
-            return true;
-        }
+        // TODO: Once the sequence diagrams are working again, they should
+        //       be re-enabled.
+	//        Object target = TargetManager.getInstance().getModelTarget();
+	//        if (ModelFacade.isAClassifier(target)
+	//            || ModelFacade.isAOperation(target)) {
+	//            return true;
+	//        }
 
         return false;
     }
