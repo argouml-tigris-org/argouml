@@ -33,7 +33,7 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
-import org.argouml.model.uml.XmiReader;
+import org.argouml.model.XmiReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -114,7 +114,7 @@ public class XMIParser {
         LOG.info("=======================================");
         LOG.info("== READING MODEL " + url);
         try {
-            XmiReader reader = new XmiReader();
+            XmiReader reader = Model.getXmiReader();
             InputSource source = new InputSource(url.openStream());
             source.setSystemId(url.toString());
             curModel = reader.parseToModel(source);

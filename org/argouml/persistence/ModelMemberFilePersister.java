@@ -38,8 +38,9 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.model.Model;
-import org.argouml.model.uml.XmiReader;
-import org.argouml.model.uml.XmiWriter;
+import org.argouml.model.UmlException;
+import org.argouml.model.XmiReader;
+import org.argouml.model.XmiWriter;
 import org.argouml.uml.ProjectMemberModel;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -80,32 +81,16 @@ public class ModelMemberFilePersister extends MemberFilePersister {
         // Created xmireader with method getErrors to check if parsing went well
         XmiReader xmiReader = null;
         try {
-            xmiReader = new XmiReader();
+            xmiReader = Model.getXmiReader();
             source.setEncoding("UTF-8");
             mmodel = xmiReader.parseToModel(source);
-        } catch (SAXException e) { // duh, this must be caught and handled
+        } catch (UmlException e) {
             LastLoadInfo.getInstance().setLastLoadStatus(false);
             LastLoadInfo.getInstance().setLastLoadMessage(
-                    "SAXException parsing XMI.");
-            LOG.error("SAXException parsing XMI.");
-            LOG.error("SAXException caught", e);
-            throw new OpenException(e);
-        } catch (ParserConfigurationException e) {
-            LastLoadInfo.getInstance().setLastLoadStatus(false);
-            LastLoadInfo.getInstance().setLastLoadMessage(
-                    "ParserConfigurationException parsing XMI.");
-            LOG.error("ParserConfigurationException parsing XMI.");
-            LOG.error("ParserConfigurationException caught", e);
-            throw new OpenException(e);
-        } catch (IOException e) {
-            LastLoadInfo.getInstance().setLastLoadStatus(false);
-            LastLoadInfo.getInstance().setLastLoadMessage(
-                    "IOException parsing XMI.");
-            LOG.error("IOException parsing XMI.");
-            LOG.error("IOException caught", e);
+                    "UmlException parsing XMI.");
+            LOG.error("UmlException caught", e);
             throw new OpenException(e);
         }
-
         // This should probably be inside xmiReader.parse
         // but there is another place in this source
         // where XMIReader is used, but it appears to be
@@ -158,9 +143,9 @@ public class ModelMemberFilePersister extends MemberFilePersister {
         }
 
         try {
-            XmiWriter xmiWriter = new XmiWriter(model, writer);
+            XmiWriter xmiWriter = Model.getXmiWriter(model, writer);
             xmiWriter.write();
-        } catch (SAXException ex) {
+        } catch (UmlException ex) {
             throw new SaveException(ex);
         }
         if (indent != null) {
