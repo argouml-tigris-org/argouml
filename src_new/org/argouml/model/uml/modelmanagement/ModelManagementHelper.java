@@ -258,8 +258,7 @@ public class ModelManagementHelper {
      * @return An element of the same type and at the same position in the
      *  model as elem, or if that would turn out impossible then null.
      */
-    public MModelElement getCorrespondingElement(MModelElement elem,
-						 MModel model) {
+    public Object getCorrespondingElement(Object elem, Object model) {
 	return getCorrespondingElement(elem, model, true);
     }
 
@@ -280,13 +279,13 @@ public class ModelManagementHelper {
      * @return An element of the same type and at the same position in the
      *  model as elem, or if that would turn out impossible then null.
      */
-    public MModelElement getCorrespondingElement(MModelElement elem,
-					 MModel model, boolean canCreate) {
-	if (elem == null || model == null)
-	    throw new NullPointerException();
+    public Object getCorrespondingElement(Object elem,
+					 Object model, boolean canCreate) {
+	if (elem == null || model == null || !(elem instanceof MModelElement))
+ 	    throw new NullPointerException();
 
 	// Trivial case
-	if (elem.getModel() == model)
+	if (((MModelElement)elem).getModel() == model)
 	    return elem;
 
 	// Base case
@@ -295,7 +294,7 @@ public class ModelManagementHelper {
 
 	// The cast is actually safe
 	MNamespace ns = (MNamespace) getCorrespondingElement(
-					elem.getNamespace(),
+					((MModelElement)elem).getNamespace(),
 					model,
 					canCreate);
 	if (ns == null)
@@ -304,10 +303,10 @@ public class ModelManagementHelper {
 	Iterator it = ns.getOwnedElements().iterator();
 	while (it.hasNext()) {
 	    MModelElement e = (MModelElement) it.next();
-	    if (e.getClass() == elem.getClass()
-		&& ((elem.getName() == null && e.getName() == null)
-		    || (elem.getName() != null
-			&& elem.getName().equals(e.getName()))))
+	    if (e.getClass() == ((MModelElement)elem).getClass()
+		&& ((((MModelElement)elem).getName() == null && e.getName() == null)
+		    || (((MModelElement)elem).getName() != null
+			&& ((MModelElement)elem).getName().equals(e.getName()))))
 	    {
 		return (MModelElement) e;
 	    }
@@ -316,7 +315,7 @@ public class ModelManagementHelper {
 	if (!canCreate)
 	    return null;
 
-	return CopyHelper.getHelper().copy(elem, ns);
+	return CopyHelper.getHelper().copy((MModelElement)elem, ns);
     }
 
     /**
@@ -346,7 +345,7 @@ public class ModelManagementHelper {
      * Checks if a child for some ownershiprelationship (as in a
      * namespace A is owned by a namespace B) is allready in the
      * ownerhship relation.
-     * @param parent The current leaf for the ownership relation 
+     * @param parent The current leaf for the ownership relation
      * @param child The child that should be owned by the parent
      * @return true if the child is allready in the ownership relationship
      */
