@@ -305,7 +305,6 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      	actor.setNamespace(ns);
      	actor.setLeaf(false);
      	actor.setRoot(false);
-     	actor.setName("newActor");
      	return actor;
     }
      
