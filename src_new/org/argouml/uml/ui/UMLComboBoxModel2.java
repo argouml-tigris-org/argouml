@@ -340,7 +340,9 @@ public abstract class UMLComboBoxModel2
      * @see javax.swing.ListModel#getElementAt(int)
      */
     public Object getElementAt(int index) {
-        return _objects.get(index);
+        if (index >= 0 && index < _objects.size())
+            return _objects.get(index);
+        return null;
     }
 
     /**

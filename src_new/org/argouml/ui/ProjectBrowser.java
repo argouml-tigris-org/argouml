@@ -635,7 +635,8 @@ public class ProjectBrowser extends JFrame
     public void moduleDisabled(ArgoModuleEvent event) {
         // needs-more-work:  Disable menu
     }
-  
+    
+ 
     /**
      * Build a new details pane for the given compass point
      * @param compassPoint the position for which to build the pane

@@ -66,10 +66,12 @@ public class ExtensionMechanismsHelper {
     
     /**
      * Returns all stereotypes in some namespace
+     * @deprecated asking a stereotype from a namespace is 'strange behaviour' 
      */    
     public Collection getStereotypes(MNamespace ns) {
+        List l = new ArrayList();
+        if (ns == null) return l;
     	Iterator it = ns.getOwnedElements().iterator();
-    	List l = new ArrayList();
     	while (it.hasNext()) {
     		Object o = it.next();
     		if (o instanceof MStereotype) {
@@ -80,7 +82,29 @@ public class ExtensionMechanismsHelper {
     }
     
     /**
+     * Returns all stereotypes in some model
+     * @param ns
+     * @return Collection The stereotypes found. An empty arraylist is returned 
+     * if nothing is found.
+     */
+    public Collection getStereotypes(MModel ns) {
+        List l = new ArrayList();
+        if (ns == null) return l;
+        Iterator it = ns.getOwnedElements().iterator();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof MStereotype) {
+                l.add(o);
+            }
+        }
+        return l;
+    }
+    
+    /**
      * Finds a stereotype in some namespace. Returns null if no such stereotype is found.
+     * @deprecated It should not be possible to add stereotypes to namespaces
+     * other then the model. Searching for stereotypes in other namespaces is therefore
+     * 'strange behaviour'.
      */
     public MStereotype getStereotype(MNamespace ns, MStereotype stereo) {
     	String name = stereo.getName();
@@ -97,7 +121,35 @@ public class ExtensionMechanismsHelper {
     	return null;
     }
     
+    /**
+     * Searches the given stereotype in all models in the current project.
+     * @param stereo
+     * @return MStereotype
+     */
+    public MStereotype getStereotype(MStereotype stereo) {
+        if (stereo == null) return null;
+        String name = stereo.getName();
+        String baseClass = stereo.getBaseClass();
+        if (name == null || baseClass == null) return null;
+        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        Iterator it2 = pb.getProject().getModels().iterator(); 
+        while (it2.hasNext()) {
+            MModel model = (MModel)it2.next();
+            Iterator it = getStereotypes(model).iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                if (o instanceof MStereotype && 
+                    ((MStereotype)o).getName().equals(name) &&
+                    ((MStereotype)o).getBaseClass().equals(baseClass)) {
+                    return (MStereotype)o;
+                }
+            }
+        }
+        return null;
+    }
+    
     public String getMetaModelName(MModelElement m) {
+        if (m == null) return null;
         return getMetaModelName(m.getClass());
     }
     
@@ -156,11 +208,13 @@ public class ExtensionMechanismsHelper {
     
     public Collection getStereotypes() {
         List ret = new ArrayList();
-        Project p = ProjectBrowser.TheInstance.getProject();
-        Iterator it = p.getModels().iterator();
-        while (it.hasNext()) {
-            MModel model = (MModel)it.next();
-            ret.addAll(getStereotypes(model));
+        if (ProjectBrowser.TheInstance != null) {
+            Project p = ProjectBrowser.TheInstance.getProject();
+            Iterator it = p.getModels().iterator();
+            while (it.hasNext()) {
+                MModel model = (MModel)it.next();
+                ret.addAll(getStereotypes(model));
+            }
         }
         return ret;
     }

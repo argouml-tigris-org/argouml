@@ -25,6 +25,7 @@ package org.argouml.model.uml.foundation.extensionmechanisms;
 
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -80,6 +81,9 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     
     /**
      * Builds a stereotype for some kind of modelelement.
+     * @deprecated This method should not be used any more since it leads to
+     * faulty models if the namespace is not equal to the model the user is 
+     * working on.
      */
     public MStereotype buildStereotype(MModelElement m, String text, MNamespace ns) {
     	if (m == null || text == null || ns == null) throw new IllegalArgumentException("In buildStereotype: one of the arguments is null");
@@ -96,6 +100,24 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     		stereo.addExtendedElement(m);
     		return stereo;
     	}
+    }
+    
+    public MStereotype buildStereotype(MModelElement m, String text) {
+        // if (m == null && text == null) throw new IllegalArgumentException("In buildStereotype: one of the arguments is null");
+        MStereotype stereo = createStereotype();
+        stereo.setName(text);
+        stereo.setBaseClass(ExtensionMechanismsHelper.getHelper().getMetaModelName(m));
+        MStereotype stereo2 = ExtensionMechanismsHelper.getHelper().getStereotype(stereo);
+        if (stereo2 != null) {
+            stereo2.addExtendedElement(m);
+            UmlFactory.getFactory().delete(stereo);
+            return stereo2;
+        } else {
+            ProjectBrowser.TheInstance.getProject().getModel().addOwnedElement(stereo);
+            if (m != null)
+                stereo.addExtendedElement(m);
+            return stereo;
+        }
     }
     
     

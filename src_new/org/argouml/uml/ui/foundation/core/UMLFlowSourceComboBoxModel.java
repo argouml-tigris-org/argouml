@@ -24,6 +24,7 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLThirdPartyEventListener;
@@ -45,6 +46,7 @@ public class UMLFlowSourceComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLFlowSourceComboBoxModel(UMLUserInterfaceContainer container) {
         super(container, false);
+        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
 
     /**
