@@ -42,7 +42,7 @@ import org.argouml.cognitive.*;
  * to developing a fully collaborative environment
  * within argo.
  */
-public class EmailExpertDialog extends JFrame implements ActionListener {
+public class EmailExpertDialog extends JDialog implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -71,7 +71,7 @@ public class EmailExpertDialog extends JFrame implements ActionListener {
   // constructors
 
   public EmailExpertDialog() {
-    super("Send Email to an Expert");
+    super(ProjectBrowser.TheInstance, "Send Email to an Expert");
     JLabel toLabel = new JLabel("To:");
     JLabel ccLabel = new JLabel("Cc:");
     JLabel subjectLabel = new JLabel("Subject:");

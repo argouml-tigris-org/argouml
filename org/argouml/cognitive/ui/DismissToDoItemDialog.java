@@ -32,7 +32,7 @@ import javax.swing.event.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 
-public class DismissToDoItemDialog extends JFrame implements ActionListener {
+public class DismissToDoItemDialog extends JDialog implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -52,7 +52,7 @@ public class DismissToDoItemDialog extends JFrame implements ActionListener {
   // constructors
   
   public DismissToDoItemDialog() {
-    super("Dismiss Feedback Item");
+    super(ProjectBrowser.TheInstance, "Dismiss Feedback Item");
     JLabel instrLabel = new JLabel("This item should be removed because");
 
     setLocation(300, 200);

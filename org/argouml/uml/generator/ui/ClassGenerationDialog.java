@@ -44,7 +44,7 @@ import org.argouml.application.api.*;
 import org.argouml.application.notation.*;
 import org.argouml.uml.generator.*;
 
-public class ClassGenerationDialog extends JFrame implements ActionListener {
+public class ClassGenerationDialog extends JDialog implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -72,7 +72,7 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
   // constructors
 
   public ClassGenerationDialog(Vector nodes) {
-    super("Generate Classes");
+    super(ProjectBrowser.TheInstance, "Generate Classes");
     
     GridBagConstraints gridBagConstraints;
     
