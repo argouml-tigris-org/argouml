@@ -9,7 +9,6 @@ import java.util.Enumeration;
 import javax.swing.*;
 
 import java.awt.*;
-//import java.awt.event.*;
 
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
@@ -18,7 +17,8 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
  *
  * @author Bob Tarling
  */
-public class MetalBumpComponent extends JComponent {
+// TODO - This class needs a major re-write. Should be a simple subclass of Image.
+class MetalBumpComponent extends JComponent {
 
     private Color controlColor = MetalLookAndFeel.getControl();
     private Color primaryControlColor = MetalLookAndFeel.getPrimaryControl();
@@ -48,6 +48,7 @@ public class MetalBumpComponent extends JComponent {
     
     public void paint(Graphics g) {
 	MetalBumps usedBumps;
+        // TODO Is highlight ever set?
 	if (highlight) {
 	    usedBumps = highlightBumps;
 	    g.setColor(primaryControlColor);
