@@ -22,9 +22,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.xml.argo;
+package org.argouml.persistence;
 
-import java.net.MalformedURLException;
+import java.io.File;
 import java.net.URL;
 
 import junit.framework.Test;
@@ -64,57 +64,49 @@ public class TestArgoParser extends TestCase {
         return suite;
     }
 
-//    /**
-//     * Tests that a project is loadable.
-//     *
-//     * @param filename of the project file to load
-//     * @throws OpenException if something goes wrong.
-//     */
-//    private void loadProject(String filename) throws OpenException {
-//        URL url;
-//        try {
-//            url = new URL(filename);
-//        } catch (MalformedURLException e) {
-//            fail("Cannot convert filename " + filename + " to URL.");
-//            return;
-//        }
-//        ZargoFilePersister persister = new ZargoFilePersister();
-//        persister.doLoad(url);
-//        assertTrue("Load Status for " + filename + ".",
-//               LastLoadInfo.getInstance().getLastLoadStatus());
-//    }
-//
-//    /**
-//     * Test loading a zargo.
-//     *
-//     * @throws Exception when e.g. the filke is not found
-//     */
-//    public void testLoadProject1() throws Exception {
-//        loadProject("file:testmodels/Empty.zargo");
-//    }
-//    /**
-//     * Test loading a zargo.
-//     *
-//     * @throws Exception when e.g. the filke is not found
-//     */
-//    public void testLoadProject2() throws Exception {
-//        loadProject("file:testmodels/Alittlebitofeverything.zargo");
-//    }
+    /**
+     * Tests that a project is loadable.
+     *
+     * @param filename of the project file to load
+     * @throws OpenException if something goes wrong.
+     */
+    private void loadProject(String filename) throws OpenException {
+        URL url = TestArgoParser.class.getResource(filename);
+        ZargoFilePersister persister = new ZargoFilePersister();
+        persister.doLoad(url);
+        assertTrue("Load Status for " + filename + ".",
+               LastLoadInfo.getInstance().getLastLoadStatus());
+    }
+
+    /**
+     * Test loading a zargo.
+     *
+     * @throws Exception when e.g. the filke is not found
+     */
+    public void testLoadProject1() throws Exception {
+        loadProject("/testmodels/Empty.zargo");
+    }
+    /**
+     * Test loading a zargo.
+     *
+     * @throws Exception when e.g. the filke is not found
+     */
+    public void testLoadProject2() throws Exception {
+        loadProject("/testmodels/Alittlebitofeverything.zargo");
+    }
 
     /**
      * Test loading some garbage in a zargo.
      */
     public void testLoadGarbage() {
-        URL url = null;
+        File file = null;
         boolean loaded = true;
         try {
-            url = new URL("file:testmodels/Garbage.zargo");
+            file = new File("/testmodels/Garbage.zargo");
             ZargoFilePersister persister = new ZargoFilePersister();
-            persister.doLoad(url);
+            persister.doLoad(file);
             assertTrue("Load Status",
                     !LastLoadInfo.getInstance().getLastLoadStatus());
-        } catch (java.net.MalformedURLException e) {
-            assertTrue("Incorrect test case.", false);
         } catch (OpenException io) {
             // This is the normal case.
             loaded = false;
