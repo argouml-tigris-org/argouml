@@ -68,6 +68,8 @@ import javax.swing.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.beans.PropertyVetoException;
 import java.lang.reflect.*;
 
@@ -92,11 +94,21 @@ import ru.novosoft.uml.behavior.state_machines.*;
 
 public class UMLTextField
     extends JTextField
-    implements DocumentListener, UMLUserInterfaceComponent, ActionListener {
+    implements DocumentListener, UMLUserInterfaceComponent, ActionListener, FocusListener {
 
     private UMLUserInterfaceContainer _container;
 
     private UMLTextProperty _property;
+    /**
+     * value of property when focus is gained
+     */
+    protected String _oldPropertyValue; 
+    /**
+     * true if text has changed since last focusgained
+     */
+    protected boolean _textChanged = false;
+    
+    protected boolean _firstException = true;
 
     Object _target;
 
@@ -112,10 +124,11 @@ public class UMLTextField
 
         _property = property;
 
-        // getDocument().addDocumentListener(this);
-        addActionListener(this);
+        getDocument().addDocumentListener(this);
+        // addActionListener(this);
+        addFocusListener(this);
 
-        update();
+        update(); 
 
     }
 
@@ -214,7 +227,6 @@ public class UMLTextField
      * @author 16 Apr, 2002. Jeremy Bennett (mail@jeremybennett.com). Modified
      *         to support {@link FigUseCase}.
      */
-
     private void update() {
 
         String oldText = getText();
@@ -379,20 +391,24 @@ public class UMLTextField
     }
 
     public void changedUpdate(final DocumentEvent p1) {
-
-        handleEvent();
+		// never happens
+        // handleEvent();
 
         //        Argo.log.info("UMLTextField.changedUpdate: DocumentEvent p1 " );       
 
     }
 
     public void removeUpdate(final DocumentEvent p1) {
+    	_textChanged = true;
 
         handleEvent();
 
     }
 
     public void insertUpdate(final DocumentEvent p1) {
+    	// this is hit after focusgained
+    	// we must check wether the text is really changed
+    	_textChanged = (_oldPropertyValue != null) && !getText().equals(_oldPropertyValue);
 
         handleEvent();
 
@@ -407,18 +423,104 @@ public class UMLTextField
 
     protected void handleEvent() {
         try {
-            _property.setProperty(_container, getText());
+        	if ((_oldPropertyValue == null || _oldPropertyValue.length() == 0) ||  
+        	  (_oldPropertyValue != null && !(_oldPropertyValue.equals(getText())))) {
+            	_property.setProperty(_container, getText());
+        	}     			
         }
         catch (Exception ex) {
-            String message = ex.getMessage();
-            // cant show the messagebox in this container
-            JOptionPane.showMessageDialog(
-                ProjectBrowser.TheInstance,
-                message,
-                "error",
-                JOptionPane.ERROR_MESSAGE);
+           showException(ex);
+            if (_firstException) {
+            	try {
+            		_property.setProperty(_container, _oldPropertyValue);
+            	}
+            	catch (Exception ex2) {
+            		Argo.log.fatal("FATAL: Repeating exception");
+            		Argo.log.fatal(ex2);
+            		System.exit(-1);
+            	}
+            	_firstException = false;
+            }
+            else {
+            	Argo.log.fatal("FATAL: Repeating exception");
+            	Argo.log.fatal(ex);
+            }
         }
         update();
     }
+
+    /**
+     * @see java.awt.event.FocusListener#focusGained(FocusEvent)
+     */
+    public void focusGained(FocusEvent arg0) {
+    	_oldPropertyValue = _property.getProperty(_container);
+    }
+
+    /**
+     * @see java.awt.event.FocusListener#focusLost(FocusEvent)
+     */
+    public void focusLost(FocusEvent arg0) {
+    	if (_textChanged) {
+    		try {
+    	 		// check if the new property is legal
+        		if ((_oldPropertyValue == null || _oldPropertyValue.length() == 0) ||  
+        	  		(_oldPropertyValue != null && !(_oldPropertyValue.equals(getText())))) {
+        	  		// next line dirty hack to enable the continuous updating 
+        	  		// of the textfields in the figs and in the navigator
+        	  		_property.setProperty(_container, _oldPropertyValue);
+            		_property.setProperty(_container, getText(), true);
+            		_oldPropertyValue = getText();
+        		}      			
+        	}
+        	catch (PropertyVetoException pv) {
+        		try {
+        			setText(_oldPropertyValue);     			
+        		}
+        		catch (IllegalStateException i) {} // will allways throw but set the text correctly
+        		try {
+        			_property.setProperty(_container, _oldPropertyValue);
+        		}
+        		catch (Exception ex) {
+        			Argo.log.fatal("FATAL: Repeating exception");
+            		Argo.log.fatal(ex);
+            		System.exit(-1);
+        		}
+        		showException(pv);
+        	}
+        	catch (Exception ex) { // a setProperty method throws a PropertyVetoException if it is an illegal change
+            	showException(ex);
+            	if (_firstException) {
+            		try {
+                    	_property.setProperty(_container, _oldPropertyValue);
+                    	setText(_oldPropertyValue);
+                	}
+                	catch (Exception e) {
+                		Argo.log.fatal("FATAL: Repeating exception");
+            			Argo.log.fatal(e);
+            			System.exit(-1);
+                	}
+            		_firstException = false;
+            	} else {
+            		Argo.log.fatal("FATAL: Repeating exception");
+            		Argo.log.fatal(ex);
+            	}
+        	}
+        	finally {
+        		_textChanged = false;
+        	}
+    	}
+        // update();
+        // _oldPropertyValue = null;
+    }
+    
+    protected void showException(Exception ex) {
+    	String message = ex.getMessage();
+        // cant show the messagebox in this container
+        JOptionPane.showMessageDialog(
+            ProjectBrowser.TheInstance,
+            message,
+            "error",
+            JOptionPane.ERROR_MESSAGE);
+    }    
 
 } //...end of class UMLTextField...

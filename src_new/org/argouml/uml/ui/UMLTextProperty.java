@@ -50,6 +50,12 @@ public class UMLTextProperty  {
         }
         catch(Exception e) {
             System.out.println(e.toString() + " in UMLTextProperty: " + getMethod);
+            // 2002-07-20
+            // Jaap Branderhorst
+            // If it is illegal we should throw an exception
+            throw new IllegalArgumentException("The method " + 
+            	getMethod + " is not a legal method to get the property " + propertyName);
+            
         }
         Class[] stringClass = { String.class };
         try {
@@ -57,10 +63,19 @@ public class UMLTextProperty  {
         }
         catch(Exception e) {
             System.out.println(e.toString() + " in UMLTextProperty: " + setMethod);
+            // 2002-07-20
+            // Jaap Branderhorst
+            // If it is illegal we should throw an exception
+            throw new IllegalArgumentException("The method " + 
+            	setMethod + " is not a legal method to set the property " + propertyName);
         }
     }
-
+    
     public void setProperty(UMLUserInterfaceContainer container,String newValue) throws Exception {
+    	setProperty(container, newValue, false);
+    }
+
+    public void setProperty(UMLUserInterfaceContainer container,String newValue, boolean vetoableCheck) throws Exception {
         if(_setMethod != null) {
             Object element = container.getTarget();
             if(element != null) {
@@ -85,6 +100,14 @@ public class UMLTextProperty  {
                             // marking the project for change if it is thrown.
                             // this way the setmethod itself can check on some issues.
                             try {
+                            	if ((element instanceof VetoablePropertyChange &&  
+                            		vetoableCheck && 
+                            		((VetoablePropertyChange)element).vetoCheck(_propertyName, args))) {
+                            			throw new PropertyVetoException(
+  											((VetoablePropertyChange)element).getVetoMessage(_propertyName)  ,
+  											new PropertyChangeEvent(element, _propertyName, oldValue, newValue));
+                            	}
+                            		
                             	_setMethod.invoke(element,args);
                             	// Mark the project as having been changed 
                             	Project p = ProjectBrowser.TheInstance.getProject(); 
@@ -92,15 +115,12 @@ public class UMLTextProperty  {
                             }
                             catch (InvocationTargetException inv) {
                             	Throwable targetException = inv.getTargetException();
-                            	if (!(targetException instanceof PropertyVetoException)) {
-                            		Argo.log.error(inv);
-                            		Argo.log.error(targetException);
-                            	}
+                            	Argo.log.error(inv);
+                            	Argo.log.error(targetException);
                    				if (targetException instanceof Exception) {
                    					throw (Exception)targetException;
                    				}
                    				System.exit(-1); // we have a real error 
-                            	
                             	        		
                             }
                             
