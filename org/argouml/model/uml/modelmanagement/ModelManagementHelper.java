@@ -139,11 +139,18 @@ public class ModelManagementHelper {
 			if (o instanceof MNamespace) {
 				list.addAll(getAllModelElementsOfKind((MNamespace)o, kind));
 			} 
-			if (o.getClass().equals(kind)) {
+			if (isSubtypeFrom(kind, o.getClass())) {
 				list.add(o);
 			}
 		}
 		return list;
+	}
+	
+	protected boolean isSubtypeFrom(Class superType, Class subType) {
+		if (subType.equals(superType)) return true;
+		subType = subType.getSuperclass();
+		if (subType.equals(Object.class)) return false;
+		return isSubtypeFrom(superType, subType);
 	}
 }
 
