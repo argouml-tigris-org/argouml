@@ -35,55 +35,29 @@ import org.argouml.cognitive.ToDoItem;
 /**
  * This class is the TreeModel for the navigator and todo list panels.
  *
- * <p>It is called <strong>Composite</strong> because each node in
- * the tree appears to be another TreeModelComposite instance..?
+ * <p>It is called <strong>Composite</strong> because there are a set of rules
+ * that determine how to link parents to children in the tree. Those
+ * rules can now be found in PerspectiveSupport.
  *
  * <p>$Id$
  */
-public class TreeModelComposite
+public class TreeModelComposite extends TreeModelSupport
     implements
-        TreeModel,
-        Cloneable {
+        TreeModel{
     
-    protected static Category cat =
+    private static Category cat =
         Category.getInstance(TreeModelComposite.class);
-    
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-    
-    /** The go rules that this Tree model uses to build child nodes.
-     *
-     * nav perspective specific.
-     */
-    protected Vector _goRules;
-    
-    /** needs documenting */
+
+    /** root of the model */
     protected Object _root;
-    
-    /** todoList specific */
-    protected boolean _flat;
-    
-    /** todoList specific */
-    protected Vector _flatChildren;
-    
-    /** name- needed? */
-    protected String _name;
-    
+
     ////////////////////////////////////////////////////////////////
     // contructors
     
     /** needs documenting */
     public TreeModelComposite(String name) {
         
-        setName(Argo.localize("Tree", name));
-        _goRules = new Vector();
-        _flatChildren = new Vector();
-    }
-    
-    /** needs documenting */
-    public TreeModelComposite(String name, Vector subs) {
-        this(name);
-        _goRules = subs;
+        super(name);
     }
     
     ////////////////////////////////////////////////////////////////
@@ -100,9 +74,7 @@ public class TreeModelComposite
      * @return the child found at index. Null if index is out of bounds.
      */
     public Object getChild(Object parent, int index) {
-        if (_flat && parent == _root) {
-            return _flatChildren.elementAt(index);
-        }
+        
         int nSubs = _goRules.size();
         for (int i = 0; i < nSubs; i++) {
             TreeModel tm = (TreeModel) _goRules.elementAt(i);
@@ -115,9 +87,7 @@ public class TreeModelComposite
     
     /** needs documenting */
     public int getChildCount(Object parent) {
-        if (_flat && parent == _root) {
-            return _flatChildren.size();
-        }
+        
         int childCount = 0;
         int nSubs = _goRules.size();
         for (int i = 0; i < nSubs; i++) {
@@ -129,9 +99,7 @@ public class TreeModelComposite
     
     /** needs documenting */
     public int getIndexOfChild(Object parent, Object child) {
-        if (_flat && parent == _root) {
-            return _flatChildren.indexOf(child);
-        }
+        
         int childCount = 0;
         int nSubs = _goRules.size();
         for (int i = 0; i < nSubs; i++) {
@@ -177,110 +145,12 @@ public class TreeModelComposite
      * @param path path to the node that the user has altered.
      * @param newValue the new value from the TreeCellEditor.
      */
-    public void valueForPathChanged(TreePath path, Object newValue) {
-        cat.debug("valueForPathChanged TreeModelComposite");
-    }
-    
-    /** re-factor up into a new events support class
-     * eg TreeSupport.
-     */
-    public void addTreeModelListener(TreeModelListener l) {
-    }
-    
-    /** re-factor up into a new events support class
-     * eg TreeSupport.
-     */
-    public void removeTreeModelListener(TreeModelListener l) {
-    }
+    public void valueForPathChanged(TreePath path, Object newValue) {}
     
     ////////////////////////////////////////////////////////////////
     // other methods
     
     /** needs documenting */
     public void setRoot(Object r) { _root = r; }
-    
-    /** Return true if this node will always be a leaf, it is not an
-     *  "empty folder" */
-    public boolean isAlwaysLeaf(Object node) { return false; }
-    
-    /** re-factor up into a new events support class
-     * eg TreeSupport.
-     */
-    public void fireTreeStructureChanged() {
-    }
-    
-    /** re-factor up into a new events support class
-     * eg TreeSupport.
-     */
-    public void fireTreeStructureChanged(TreePath path) {
-    }
-    
-    // ------------ nav perspective specific ------------
-    
-    /** nav perspective specific */
-    public void addSubTreeModel(TreeModel tm) {
-        if (_goRules.contains(tm)) return;
-        _goRules.addElement(tm);
-    }
-    
-    /** nav perspective specific
-     *
-     * TODO: check for dangling prereqs ???
-     */
-    public void removeSubTreeModel(TreeModel tm) {
-        _goRules.removeElement(tm);
-    }
-    
-    /** nav perspective config dialog specific */
-    public Vector getSubTreeModels() {
-        return _goRules;
-    }
-    
-    // ------------ todo list specific ------------
-
-    /** todoList specific */
-    public void setFlat(boolean b) {
-        _flat = false;
-        if (b) calcFlatChildren();
-        _flat = b;
-    }
-    
-    /** todoList specific */
-    public boolean getFlat() { return _flat; }
-    
-    /** todoList specific */
-    public void calcFlatChildren() {
-        _flatChildren.removeAllElements();
-        addFlatChildren(_root);
-    }
-    
-    /** todoList specific */
-    public void addFlatChildren(Object node) {
-        if (node == null) return;
-        cat.debug("addFlatChildren");
-        // hack for to do items only, should check isLeaf(node), but that
-        // includes empty folders. Really I need alwaysLeaf(node).
-        if ((node instanceof ToDoItem) && !_flatChildren.contains(node))
-            _flatChildren.addElement(node);
-        
-        int nKids = getChildCount(node);
-        for (int i = 0; i <nKids; i++) {
-            addFlatChildren(getChild(node, i));
-        }
-    }
-    
-    // ----------- name -------------------------
-    
-    /** needs documenting */
-    public String getName() { return _name; }
-    
-    /** needs documenting */
-    public void setName(String s) { _name = s; }
-    
-    /** needs documenting */
-    public String toString() {
-        if (getName() != null) return getName();
-        else return super.toString();
-    }
     
 } /* end class TreeModelComposite */

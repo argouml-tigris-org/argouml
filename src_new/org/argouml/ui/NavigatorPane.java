@@ -66,6 +66,83 @@ import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.PopupGenerator;
 
+
+import org.argouml.kernel.PredAND;
+import org.argouml.kernel.PredInstanceOf;
+import org.argouml.kernel.PredNotInstanceOf;
+import org.argouml.kernel.PredOR;
+import org.argouml.uml.diagram.collaboration.ui.GoAssocRoleMessages;
+import org.argouml.uml.diagram.collaboration.ui.GoClassifierToCollaboration;
+import org.argouml.uml.diagram.collaboration.ui.GoCollaborationDiagram;
+import org.argouml.uml.diagram.collaboration.ui.GoCollaborationInteraction;
+import org.argouml.uml.diagram.collaboration.ui.GoInteractionMessage;
+import org.argouml.uml.diagram.collaboration.ui.GoMessageAction;
+import org.argouml.uml.diagram.collaboration.ui.GoModelToCollaboration;
+import org.argouml.uml.diagram.collaboration.ui.GoOperationToCollaboration;
+import org.argouml.uml.diagram.collaboration.ui.GoProjectToCollaboration;
+import org.argouml.uml.diagram.deployment.ui.GoDiagramToNode;
+import org.argouml.uml.diagram.sequence.ui.GoLinkStimuli;
+import org.argouml.uml.diagram.sequence.ui.GoStimulusToAction;
+import org.argouml.uml.diagram.state.PredIsFinalState;
+import org.argouml.uml.diagram.state.PredIsStartState;
+import org.argouml.uml.diagram.state.ui.GoMachineDiagram;
+import org.argouml.uml.diagram.state.ui.GoMachineToState;
+import org.argouml.uml.diagram.state.ui.GoMachineToTrans;
+import org.argouml.uml.diagram.state.ui.GoProjectToStateMachine;
+import org.argouml.uml.diagram.state.ui.GoStateMachineToTransition;
+import org.argouml.uml.diagram.state.ui.GoStateToDoActivity;
+import org.argouml.uml.diagram.state.ui.GoStateToDownstream;
+import org.argouml.uml.diagram.state.ui.GoStateToEntry;
+import org.argouml.uml.diagram.state.ui.GoStateToExit;
+import org.argouml.uml.diagram.state.ui.GoStateToIncomingTrans;
+import org.argouml.uml.diagram.state.ui.GoStateToInternalTrans;
+import org.argouml.uml.diagram.state.ui.GoStateToOutgoingTrans;
+import org.argouml.uml.diagram.state.ui.GoCompositeStateToSubvertex;
+import org.argouml.uml.diagram.state.ui.GoTransitionToSource;
+import org.argouml.uml.diagram.state.ui.GoTransitionToTarget;
+import org.argouml.uml.diagram.static_structure.ui.GoClassToAssociatedClass;
+import org.argouml.uml.diagram.static_structure.ui.GoClassToNavigableClass;
+import org.argouml.uml.diagram.static_structure.ui.GoModelToClass;
+import org.argouml.uml.diagram.static_structure.ui.GoClassToSummary;
+import org.argouml.uml.diagram.static_structure.ui.GoSummaryToAssociation;
+import org.argouml.uml.diagram.static_structure.ui.GoSummaryToAttribute;
+import org.argouml.uml.diagram.static_structure.ui.GoSummaryToInheritance;
+import org.argouml.uml.diagram.static_structure.ui.GoSummaryToIncomingDependency;
+import org.argouml.uml.diagram.static_structure.ui.GoSummaryToOutgoingDependency;
+import org.argouml.uml.diagram.static_structure.ui.GoSummaryToOperation;
+import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateDiagram;
+import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateMachine;
+import org.argouml.uml.diagram.ui.GoClassifierToBeh;
+import org.argouml.uml.diagram.ui.GoClassifierToStateMachine;
+import org.argouml.uml.diagram.ui.GoClassifierToStructuralFeature;
+import org.argouml.uml.diagram.ui.GoDiagramToEdge;
+import org.argouml.uml.diagram.ui.GoFilteredChildren;
+import org.argouml.uml.diagram.ui.GoGenElementToDerived;
+import org.argouml.uml.diagram.ui.GoInteractionMessages;
+import org.argouml.uml.diagram.ui.GoModelToBaseElements;
+import org.argouml.uml.diagram.ui.GoModelToDiagram;
+import org.argouml.uml.diagram.ui.GoModelToElements;
+import org.argouml.uml.diagram.ui.GoOperationToCollaborationDiagram;
+import org.argouml.uml.diagram.ui.GoProjectToDiagram;
+import org.argouml.uml.diagram.ui.GoProjectToModel;
+import org.argouml.uml.diagram.use_case.ui.GoUseCaseToExtensionPoint;
+import org.argouml.uml.ui.behavior.common_behavior.GoSignalToReception;
+import org.argouml.uml.ui.foundation.core.GoModelElementToComment;
+
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
+import ru.novosoft.uml.behavior.common_behavior.MObject;
+import ru.novosoft.uml.behavior.use_cases.MExtend;
+import ru.novosoft.uml.behavior.use_cases.MInclude;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationClass;
+import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.model_management.MSubsystem;
+
+
 import ru.novosoft.uml.behavior.common_behavior.MDataValue;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
@@ -91,7 +168,10 @@ import ru.novosoft.uml.model_management.MModel;
  *  <li>model changed notification via forceUpdate()</li>
  *  <li>History via various *nav*() methods</li>
  *  <li>statistics gathering - not really used</li>
+ *  <li>a collection of perspectives</li>
  * </ol>
+ *
+ * <p>Perspectives are now built here.
  *
  * $Id$
  */
@@ -183,9 +263,9 @@ public class NavigatorPane
             splash.getStatusBar().showProgress(25);
         }
         
-        setPerspectives(NavPerspective.getRegisteredPerspectives());
+        _perspectives = buildPerspectives();
+        setPerspectives(_perspectives);//NavPerspective.getRegisteredPerspectives());
         
-        _perspectives = new Vector();
         _navHistory = new Vector();
         _historyIndex = 0;
     }
@@ -261,7 +341,6 @@ public class NavigatorPane
      * TODO: More specific information needs to be provided, it is 
      * expesive to update the whole tree.
      *
-     * @see org.argouml.model.uml.UmlModelListener
      * @see org.argouml.uml.ui.ActionRemoveFromModel
      * @see org.argouml.uml.ui.ActionAddDiagram
      * @see org.argouml.uml.ui.foundation.core.PropPanelGeneralization
@@ -456,6 +535,332 @@ public class NavigatorPane
      */
     public DisplayTextTree getTree() {
         return _tree;
+    }
+    
+    // -------------- building the perspectives --------------
+    
+    /**
+     * the perspectives to be chosen in the combobox are built here.
+     */
+    public Vector buildPerspectives() {
+        
+        // should only build once
+        if(_perspectives != null)
+            return _perspectives;
+        
+        // this are meant for pane-1 of NavigatorPane, they all have
+        // Project as their only prerequiste.  These trees tend to be 3
+        // to 5 levels deep and sometimes have recursion.
+        NavPerspective packageCentric =
+            new NavPerspective("combobox.item.package-centric");
+        
+        NavPerspective diagramCentric =
+            new NavPerspective("combobox.item.diagram-centric");
+        
+        NavPerspective inheritanceCentric =
+            new NavPerspective("combobox.item.inheritance-centric");
+        
+        NavPerspective classAssociation =
+            new NavPerspective("combobox.item.class-associations");
+        
+        NavPerspective navAssociation =
+            new NavPerspective("combobox.item.navigable-associations");
+        
+        NavPerspective aggregateCentric =
+            new NavPerspective("combobox.item.aggregate-centric");
+        
+        NavPerspective compositeCentric =
+            new NavPerspective("combobox.item.composite-centric");
+        
+        NavPerspective classStates =
+            new NavPerspective("combobox.item.class-states");
+        
+        NavPerspective stateCentric =
+            new NavPerspective("combobox.item.state-centric");
+        
+        NavPerspective stateTransitions =
+            new NavPerspective("combobox.item.state-transitions");
+        
+        NavPerspective transitionCentric =
+            new NavPerspective("combobox.item.transitions-centric");
+        
+        NavPerspective transitionPaths =
+            new NavPerspective("combobox.item.transitions-paths");
+        
+        NavPerspective collabCentric =
+            new NavPerspective("combobox.item.collaboration-centric");
+        
+        NavPerspective depCentric =
+            new NavPerspective("combobox.item.dependency-centric");
+
+        // These are intended for pane-2 of NavigatorPane, the tend to be
+        // simple and shallow, and have something in pane-1 as a prerequiste
+        // TODO i8n
+        NavPerspective useCaseToExtensionPoint =
+            new NavPerspective("Extension Points of Use Case");
+        
+        NavPerspective classToBehStr =
+            new NavPerspective("misc.features-of-class");
+        
+        NavPerspective classToBeh = new NavPerspective("misc.methods-of-class");
+        
+        NavPerspective classToStr =
+            new NavPerspective("misc.attributes-of-class");
+        
+        NavPerspective machineToState =
+            new NavPerspective("misc.states-of-class");
+        
+        NavPerspective machineToTransition =
+            new NavPerspective("misc.transitions-of-class");
+        
+        // TODO i8n
+        NavPerspective classCentric =
+            new NavPerspective("Class - centric");
+
+        // -------------- GO rules --------------------------
+        
+        // Subsystem is travsersed via Classifier. Eugenio
+        GoFilteredChildren modelToPackages =
+            new GoFilteredChildren(
+                "misc.package.subpackages",
+                new GoModelToElements(),
+                new PredAND(
+                    new PredInstanceOf(MPackage.class),
+                    new PredNotInstanceOf(MSubsystem.class)));
+
+        GoFilteredChildren modelToClassifiers =
+            new GoFilteredChildren(
+                "misc.package.classifiers",
+                new GoModelToElements(),
+                new PredInstanceOf(MClassifier.class));
+
+        // AssociationClass is traversed via Classifier. Eugenio
+        GoFilteredChildren modelToAssociations =
+            new GoFilteredChildren(
+                "misc.package.associations",
+                new GoModelToElements(),
+                new PredAND(
+                    new PredInstanceOf(MAssociation.class),
+                    new PredNotInstanceOf(MAssociationClass.class)));
+
+        GoFilteredChildren modelToGeneralizations =
+            new GoFilteredChildren(
+                "misc.package.generalizations",
+                new GoModelToElements(),
+                new PredInstanceOf(MGeneralization.class));
+
+        // Extend and include are traversed via use case.
+        GoFilteredChildren modelToExtendsAndIncludes =
+            new GoFilteredChildren(
+                "Package->Extends/Includes",
+                new GoModelToElements(),
+                new PredOR(
+                    new PredInstanceOf(MExtend.class),
+                    new PredInstanceOf(MInclude.class)));
+
+        GoFilteredChildren modelToDependencies =
+            new GoFilteredChildren(
+                "misc.package.dependencies",
+                new GoModelToElements(),
+                new PredInstanceOf(MDependency.class));
+
+        GoFilteredChildren modelToInstances =
+            new GoFilteredChildren(
+                "misc.package.instances",
+                new GoModelToElements(),
+                new PredInstanceOf(MObject.class));
+        GoFilteredChildren modelToLinks =
+            new GoFilteredChildren(
+                "misc.package.links",
+                new GoModelToElements(),
+                new PredInstanceOf(MLink.class));
+        GoFilteredChildren modelToCollaboration =
+            new GoFilteredChildren(
+                "misc.package.collaborations",
+                new GoModelToElements(),
+                new PredInstanceOf(MCollaboration.class));
+
+        GoFilteredChildren modelToComponentInstance =
+            new GoFilteredChildren(
+                "misc.package.componentinstance",
+                new GoModelToElements(),
+                new PredInstanceOf(MComponentInstance.class));
+
+        GoFilteredChildren modelToNodeInstance =
+            new GoFilteredChildren(
+                "misc.package.nodeinstance",
+                new GoModelToElements(),
+                new PredInstanceOf(MNodeInstance.class));
+
+        GoFilteredChildren machineToFinalState =
+            new GoFilteredChildren(
+                "misc.state-machine.final-states",
+                new GoMachineToState(),
+                PredIsFinalState.TheInstance);
+        GoFilteredChildren machineToInitialState =
+            new GoFilteredChildren(
+                "misc.state-machine.initial-states",
+                new GoMachineToState(),
+                PredIsStartState.TheInstance);
+        transitionPaths.addSubTreeModel(machineToInitialState);
+
+        GoFilteredChildren compositeToFinalStates =
+            new GoFilteredChildren(
+                "misc.state.final-substates",
+                new GoCompositeStateToSubvertex(),
+                PredIsFinalState.TheInstance);
+        GoFilteredChildren compositeToInitialStates =
+            new GoFilteredChildren(
+                "misc.state.initial-substates",
+                new GoCompositeStateToSubvertex(),
+                PredIsStartState.TheInstance);
+        
+        // ---------------- building the perspectives
+        
+        packageCentric.addSubTreeModel(new GoProjectToModel());
+        packageCentric.addSubTreeModel(new GoModelToDiagram());
+        packageCentric.addSubTreeModel(new GoModelElementToComment());
+        packageCentric.addSubTreeModel(modelToPackages);
+        packageCentric.addSubTreeModel(modelToClassifiers);
+        packageCentric.addSubTreeModel(modelToAssociations);
+        packageCentric.addSubTreeModel(modelToExtendsAndIncludes);
+        packageCentric.addSubTreeModel(modelToInstances);
+        packageCentric.addSubTreeModel(modelToLinks);
+        packageCentric.addSubTreeModel(new GoModelToCollaboration());
+        packageCentric.addSubTreeModel(modelToComponentInstance);
+        packageCentric.addSubTreeModel(modelToNodeInstance);
+        packageCentric.addSubTreeModel(modelToGeneralizations);
+        packageCentric.addSubTreeModel(modelToDependencies);
+        packageCentric.addSubTreeModel(new GoUseCaseToExtensionPoint());
+        packageCentric.addSubTreeModel(new GoClassifierToStructuralFeature());
+        packageCentric.addSubTreeModel(new GoClassifierToBeh());
+        packageCentric.addSubTreeModel(new GoCollaborationInteraction());
+        packageCentric.addSubTreeModel(new GoInteractionMessage());
+        packageCentric.addSubTreeModel(new GoMessageAction());
+        packageCentric.addSubTreeModel(new GoSignalToReception());
+        packageCentric.addSubTreeModel(new GoLinkStimuli());
+        packageCentric.addSubTreeModel(new GoStimulusToAction());
+        packageCentric.addSubTreeModel(new GoClassifierToCollaboration());
+        packageCentric.addSubTreeModel(new GoOperationToCollaboration());
+        packageCentric.addSubTreeModel(new GoOperationToCollaborationDiagram());
+
+        // rules for statemachinediagram and activitydiagram
+        packageCentric.addSubTreeModel(new GoBehavioralFeatureToStateMachine());
+        packageCentric.addSubTreeModel(new GoBehavioralFeatureToStateDiagram());
+        packageCentric.addSubTreeModel(new GoClassifierToStateMachine());
+        packageCentric.addSubTreeModel(new GoMachineToState());
+        packageCentric.addSubTreeModel(new GoCompositeStateToSubvertex());
+        packageCentric.addSubTreeModel(new GoStateToInternalTrans());
+        packageCentric.addSubTreeModel(new GoStateMachineToTransition());
+        packageCentric.addSubTreeModel(new GoStateToDoActivity());
+        packageCentric.addSubTreeModel(new GoStateToEntry());
+        packageCentric.addSubTreeModel(new GoStateToExit());
+
+        diagramCentric.addSubTreeModel(new GoProjectToDiagram());
+        diagramCentric.addSubTreeModel(new GoDiagramToNode());
+        diagramCentric.addSubTreeModel(new GoDiagramToEdge());
+        diagramCentric.addSubTreeModel(new GoUseCaseToExtensionPoint());
+        diagramCentric.addSubTreeModel(new GoClassifierToStructuralFeature());
+        diagramCentric.addSubTreeModel(new GoClassifierToBeh());
+
+        inheritanceCentric.addSubTreeModel(new GoProjectToModel());
+        inheritanceCentric.addSubTreeModel(new GoModelToBaseElements());
+        inheritanceCentric.addSubTreeModel(new GoGenElementToDerived());
+
+        classAssociation.addSubTreeModel(new GoProjectToModel());
+        classAssociation.addSubTreeModel(new GoModelToDiagram());
+        classAssociation.addSubTreeModel(new GoModelToClass());
+        classAssociation.addSubTreeModel(new GoClassToAssociatedClass());
+
+        navAssociation.addSubTreeModel(new GoProjectToModel());
+        navAssociation.addSubTreeModel(new GoModelToDiagram());
+        navAssociation.addSubTreeModel(new GoModelToClass());
+        navAssociation.addSubTreeModel(new GoClassToNavigableClass());               
+
+        stateCentric.addSubTreeModel(new GoProjectToStateMachine());
+        stateCentric.addSubTreeModel(new GoMachineDiagram());
+        stateCentric.addSubTreeModel(new GoMachineToState());
+        stateCentric.addSubTreeModel(new GoCompositeStateToSubvertex());
+        stateCentric.addSubTreeModel(new GoStateToIncomingTrans());
+        stateCentric.addSubTreeModel(new GoStateToOutgoingTrans());
+
+        transitionCentric.addSubTreeModel(new GoProjectToStateMachine());
+        transitionCentric.addSubTreeModel(new GoMachineDiagram());
+        transitionCentric.addSubTreeModel(new GoMachineToTrans());
+        transitionCentric.addSubTreeModel(new GoTransitionToSource());
+        transitionCentric.addSubTreeModel(new GoTransitionToTarget());
+
+        transitionPaths.addSubTreeModel(new GoProjectToStateMachine());
+        transitionPaths.addSubTreeModel(new GoMachineDiagram());
+        transitionPaths.addSubTreeModel(compositeToInitialStates);
+        transitionPaths.addSubTreeModel(new GoStateToDownstream());
+
+        collabCentric.addSubTreeModel(new GoProjectToCollaboration());
+        collabCentric.addSubTreeModel(new GoCollaborationDiagram());
+        collabCentric.addSubTreeModel(new GoModelToElements());
+        collabCentric.addSubTreeModel(new GoAssocRoleMessages());
+        collabCentric.addSubTreeModel(new GoCollaborationInteraction());
+        collabCentric.addSubTreeModel(new GoInteractionMessages());        
+
+        useCaseToExtensionPoint.addSubTreeModel(new GoUseCaseToExtensionPoint());
+
+        classToBehStr.addSubTreeModel(new GoClassifierToStructuralFeature());
+        classToBehStr.addSubTreeModel(new GoClassifierToBeh());
+
+        classToBeh.addSubTreeModel(new GoClassifierToBeh());
+
+        classToStr.addSubTreeModel(new GoClassifierToStructuralFeature());
+
+        machineToState.addSubTreeModel(new GoMachineToState());
+
+        machineToTransition.addSubTreeModel(new GoMachineToTrans());
+
+        classCentric.addSubTreeModel(new GoProjectToModel());
+        classCentric.addSubTreeModel(new GoModelToDiagram());
+        classCentric.addSubTreeModel(modelToPackages);
+        classCentric.addSubTreeModel(modelToClassifiers);
+        classCentric.addSubTreeModel(new GoClassToSummary());
+        classCentric.addSubTreeModel(new GoSummaryToAssociation());
+        classCentric.addSubTreeModel(new GoSummaryToAttribute());
+        classCentric.addSubTreeModel(new GoSummaryToOperation());
+        classCentric.addSubTreeModel(new GoSummaryToInheritance());
+        classCentric.addSubTreeModel(new GoSummaryToIncomingDependency());
+        classCentric.addSubTreeModel(new GoSummaryToOutgoingDependency());
+        
+        // add each perspective to a vector for the ComboBox:
+        Vector perspectives = new Vector();
+        
+        perspectives.add(packageCentric);
+        perspectives.add(classCentric);
+        perspectives.add(diagramCentric);
+        perspectives.add(inheritanceCentric);
+        perspectives.add(classAssociation);
+        perspectives.add(navAssociation);
+        perspectives.add(stateCentric);
+        perspectives.add(transitionCentric);
+        perspectives.add(transitionPaths);
+        perspectives.add(collabCentric);
+        perspectives.add(depCentric);
+        
+        return perspectives;
+    }
+    
+    /**
+     * method for navconfig dialog to remove a perspective.
+     */
+    public void removePerspective(NavPerspective np){
+        
+        _perspectives.remove(np);
+        setPerspectives(_perspectives);
+    }
+    
+    /**
+     *
+     */
+    public void addPerspective(NavPerspective np){
+        
+        _perspectives.add(np);
+        setPerspectives(_perspectives);
     }
     
     ////////////////////////////////////////////////////////////////
