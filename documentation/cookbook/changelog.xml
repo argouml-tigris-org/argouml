@@ -34,6 +34,18 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2004-10-11</entry>
+          <entry>
+Changes to description of moduleloader making the new module loader a fact.
+(See <xref linkend="moduleloader"/> and <xref linkend="modules_and_plugins"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+
+      <tbody valign="top">
+        <row>
           <entry>2004-09-17</entry>
           <entry>
 Change to the description on how to extend ArgoUML.

@@ -343,7 +343,7 @@ ArgoUML project for whatever purpose that may be.
       <sect2>
 	<title>In this Cookbook, you will find...</title>
 	<para>
-Information on how you can compile ArgoUML.
+Information on how to compile ArgoUML.
 </para>
 	<para>
 Information on how different features of ArgoUML are implemented.
@@ -428,13 +428,10 @@ The code within ArgoUML is separated in subsystems
 that each have a few responsibilities.
 </para>
     <para>
-The subsystems were earlier called components.
-</para>
-    <para>
 In Issuezilla each subsystem has its issues sorted in a
 subcomponent with the same name as the subsystem.
 Furthermore the Diagrams subsystem has a set of subcomponents
-for issues connected to the different diagrams.
+for issues connected to the specific diagrams.
 </para>
     <para>
 This chapter gives an overall picture with 
@@ -486,12 +483,31 @@ in this directory constitute the API of that subsystem.
             <para>
 A section in the chapter <xref linkend="inside_subsystems"></xref>.
 </para>
+            <para>
+The section
+shall for each subsystem contain
+the responsibilities,
+the package name,
+the API,
+the Facade (if any),
+all the plug-in interfaces (if any),
+and documents the insides of the subsystem.
+</para>
           </listitem>
 	</itemizedlist>
 </para>
       <para>
-Each subsystem can have a Facade class that can be used by
+Each subsystem can have:
+<itemizedlist>
+          <listitem>
+            <para>
+a Facade class
+</para>
+            <para>
+The facade can be used by
 all other subsystems when using the subsystem.
+</para>
+            <para>
 The Facade class is called
 <classname><replaceable>SubsystemName</replaceable>Facade</classname>
 and is located in the subsystem package.
@@ -499,12 +515,20 @@ How it is used is primarily documented in the class file itself
 (as javadoc) but the more complex picture is documented in the
 Cookbook (in <xref linkend="inside_subsystems"></xref>).
 </para>
-      <para>
-Each subsystem can also have one or several plug-in interfaces.
+          </listitem>
+
+          <listitem>
+            <para>
+Plug-in interfaces.
+</para>
+            <para>
 These are Facade objects where modules or plug-ins can connect themselves
 to modify or augment the behavior of that subsystem.
 </para>
-      <para>
+          </listitem>
+
+          <listitem>
+            <para>
 The plug-in interfaces are also all located in the subsystem package
 and called
 <classname><replaceable>SubsystemName</replaceable>Plugin<replaceable>Plug-inType</replaceable></classname>.
@@ -513,7 +537,10 @@ Example:
 <classname>ModelPluginType</classname>.
 <!-- This latter example is very confusing! TODO: replace it. -->
 </para>
-      <para>
+          </listitem>
+
+          <listitem>
+            <para>
 If the subsystem uses a callback-technique
 the callback is always made to an interface defined by the subsystem.
 The interface is also in the subsystem package and it is called
@@ -522,24 +549,16 @@ Example:
 <classname>ModelDiagramInterface</classname>,
 <classname>ModelTypeInterface</classname>.
 </para>
-      <para>
-        <mediaobject>
-	  <imageobject>
-	    <imagedata fileref="images/cookbook/ComponentDiagram.gif" format="GIF"/>
-	  </imageobject>
-        </mediaobject>
+            <para>
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="images/cookbook/ComponentDiagram.gif" format="GIF"/>
+                </imageobject>
+              </mediaobject>
 </para>
-      <para>
-The section about the subsystem 
-in the chapter <xref linkend="inside_subsystems"></xref>
-shall for each subsystem contain
-the responsibilities,
-the package name,
-the API,
-the Facade (if any),
-all the plug-in interfaces (if any),
-and documents the insides of the subsystem.
-      </para>
+          </listitem>
+        </itemizedlist>
+</para>
     </sect1>
 
     <sect1 id="subsystems_relationships">
@@ -1591,11 +1610,6 @@ Responsibility to start the ball rolling.
 The Application is located in <classname>org.argouml.application</classname>.
 </para>
       <para>
-The Application is a Layer 3 subsystem. 
-It is however not loaded from the Module loader 
-as all other Layer 3 subsystems.
-</para>
-      <para>
 The entry point is called
 <classname>org.argouml.application.Main</classname>.
 </para>
@@ -2116,30 +2130,24 @@ maintained in the future.
     <sect1 id="moduleloader">
       <title>Module loader</title>
       <para>
-Purpose - to provide the mechanisms to load (and unload) the Layer 3
-and auxiliary modules.
+Purpose - to provide the mechanisms to load (and unload)
+the auxiliary modules.
 </para>
       <para>
-The Module loader will be located in
-<classname>org.argouml.?</classname>.
+The Module loader is located in
+<classname>org.argouml.moduleloader</classname>.
 </para>
       <para>
-The Module loader is a Layer 2 subsystem. See <xref linkend="view_control_subsystems"></xref>.
-</para>
-      <para>
-Currently the module loader is located in
+An old module loader is located in
 <classname>org.argouml.application.modules.ModuleLoader</classname>
-with interfaces in
+with interfaces (Pluggable) in
 <classname>org.argouml.application.api</classname>.
+Eventually this will be removed.
 </para>
       <para>
-This handles the enabling and disabling of every module.
-</para>
-      <para>
-An idea on how it could work:
-It is then the modules responsibility to connect and register to
+It is the modules' responsibility to connect and register to
 the subsystem or subsystems it is going to work with using that
-subsystems Facade or Plug-in interface.
+subsystem's API, Facade, or Plug-in interface.
 </para>
       <para>
 For details on how to build a module
@@ -2156,24 +2164,18 @@ you should be able to see what jar files it finds and what it does with them.
 </para>
         <para>
 A module jar contains the classes, resources and a manifest file.
-The manifest file points out the classes to be loaded.
+The manifest file points out the class to be loaded.
 Also notice that the Specification-Title and Vendor must be specified
 correctly for this to work.
 </para>
       </sect2>
 
       <sect2 id="design-module-loader">
-        <title>Design of a new Module Loader</title>
-        <para>
-In an attempt to improve the Module Loader to make it more flexible a
-new design is suggested.
-This section describes the plan and will become the design documentation
-once some code is developed.
-</para>
+        <title>Design of the new Module Loader</title>
         <para>
 The plan is to implement this new Module Loader, then have them both
 working side by side for several releases (two stable releases),
-and if all are happy with it, then remove the old module loader.
+and if we all are happy with it, then remove the old module loader.
 </para>
         <para>
 Design:
@@ -2181,12 +2183,23 @@ Design:
             <listitem>
 	      <para>
 We use a Loadable Proxy Pattern(?) for the modules.
-Each module is required to have one (1) class that implements 
-the module loader interface.
+</para>
+            </listitem>
+
+            <listitem>
+              <para>
+Each module can be enabled and disabled individually.
+Dependencies between modules is allowed allthough not yet handled gracefully.
+</para>
+            </listitem>
+
+            <listitem>
+              <para>
+Each module is required to have one (1) class that implements
+<classname>ModuleInterface</classname>.
 That class (and all other classes that constitute the module)
 needs to be made available for some classloader, either by including
-it in the classpath or by letting the module loader hunt for it in the
-same manner as the old class loader does.
+it in the classpath or by letting the module loader hunt for it.
 </para>
 </listitem>
             <listitem>
@@ -2195,12 +2208,13 @@ The modules are allowed to use all the APIs available from all
 the subsystems within ArgoUML and from other modules.
 </para>
 	      <para>
-This is the big improvement in that:
+This is a big improvement over the old module loader in that:
                 <itemizedlist>
                   <listitem>
 		    <para>
-We can use the same APIs for the modules that we use within ArgoUML.
-We don't need to have a special Pluggable class for every possible
+We use the same APIs for the modules that we use within ArgoUML
+meaning that we implement at document it only once.
+This replaces the Pluggable class at every
 point where ArgoUML can be augmented.
 </para>
                   </listitem>
@@ -2223,16 +2237,10 @@ where ArgoUML can be augmented.
 </para>
                   </listitem>
                 </itemizedlist>
-But it means that whenever a module needs to do something to ArgoUML,
+Just as in the old solution,
+whenever a module needs to do something to ArgoUML,
 there needs to be implemented an API,
 possibly with registration/deregistration and callbacks.
-</para>
-              </listitem>
-
-              <listitem>
-                <para>
-The new Module loader will be in located in
-<classname>org.argouml.moduleloader</classname>.
 </para>
               </listitem>
 
@@ -2242,6 +2250,7 @@ All modules that can be found are examined at startup.
 They can be enabled and disabled individually from a special 
 available modules window but have a default state that applies if 
 the user hasn't taken action.
+Currently the default state is "enabled".
 </para>
               </listitem>
 
@@ -2253,11 +2262,14 @@ Dependency between modules!
 If a module cannot be enabled
 because some other module needs to be enabled first or
 because some part of ArgoUML needs to be initialized first
-this is a problem since the plan is not to have any register of dependencies.
+this is a problem.
+This is because the initial implementation is such that 
+we have no register of dependencies.
 </para>
                 <para>
-The suggested solution is that the module loader persists 
-in it's attempts to enable a module so that the order is not important.
+The solution suggested is that the module loader persists 
+in it's attempts to enable a module so that the order among the modules
+is not important.
 For this to work the modules needs to signal when they fail. 
 This is done by returning false or throwing a Exception from 
 the module enabling method.
@@ -2294,6 +2306,17 @@ have a file listing optional classes and
 a GUI that allows the user to download them.
 Once a class is selected in the GUI it is loaded and,
 the JavaWebStart class loader will guarantee that it is available.
+</para>
+            </listitem>
+
+            <listitem>
+              <para>
+The scope of the modules.
+</para>
+              <para>
+Modules are always enabled and disabled on a
+per-application (per jvm) basis
+and not on a per-project or per-frame basis.
 </para>
             </listitem>
 </itemizedlist>

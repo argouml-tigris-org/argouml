@@ -47,8 +47,8 @@
   <para>
 The ArgoUML tool provides a basis
 for UML design and potentially an executable architecture 
-environment for other applications.
-This is solved by clear interfaces between the ArgoUML core
+environment for more specialized applications.
+This is solved by a clear interfaces between the ArgoUML core
 and the extensions.
 Extensions are called modules.
 </para>
@@ -387,7 +387,8 @@ It is first used in the main initialization routine.
 
       <para>
 When created it searches through all available modules and creates
-a list of their main objects.
+a list of their main objects
+(implementing <classname>ModuleInterface</classname>).
 Currently (September 2004) this also means that the found modules are
 by default selected i.e. they are marked to be enabled.
 </para>
@@ -396,10 +397,12 @@ by default selected i.e. they are marked to be enabled.
 At the end of the main initialization routine
 the selected modules are enabled.
 (The original idea was to do this several times during the main routine
-to allow for modules to add
-command line arguments,
-load things available for batch command,
+to allow for modules to
+add command line arguments,
+add languages, and
+make functions available for batch command,
 but the example used for testing loaded the ProjectBrowser "too early"
+<!-- See issue ??? -->
 and the result wasn't so good.
 I (Linus) hopes this can be eventually fixed.)
 </para>
@@ -412,8 +415,11 @@ Each class used by the <classname>ModuleLoader2</classname>
 must implement the <classname>ModuleInterface</classname> interface.
 </para>
       <para>
-This interface has methods for enabling and disabling the module
-and also for identifying the module.
+This interface has methods for
+enabling,
+disabling and
+identifying
+the module.
 </para>
       <para>
 When a module is enabled it is expected to register some class
@@ -421,10 +427,12 @@ wherever it affects ArgoUML using the interfaces provided there.
 Since the same interfaces and registration mechanism is used internally
 within ArgoUML there is a small likelyhood that there already is
 an interface and a possibility to register.
-If there isn't, ArgoUML cannot be extended
+If there isn't, ArgoUML cannot currently be extended
 at that point.
-Then the interface and registration mechanism needs to be added
-to ArgoUML before it is possible.
+If you still need ArgoUML to be extended at that point you will have to
+work in getting this interface or registration mechanism implemented within
+ArgoUML.
+(This could also be another module that has to be amended.)
 </para>
 
       <para>
@@ -451,15 +459,21 @@ rest of the ArgoUML environment.
 <para>
 <itemizedlist>
 
-<listitem><para>...create a module?</para>
-<para>
+	  <listitem>
+	    <para>...tell when a module is enabled?</para>
+	    <para>
+The method <methodname>isEnabled</methodname>
+in <classname>ModuleLoader2</classname>
+returns true if the module with that name is enabled and false otherwise.
 </para>
-</listitem>
-
-<listitem><para>...tell when a module is loaded?</para>
-<para>
+	    <note>
+	      <para>
+This only works for modules enabled in the new module loader.
+For modules loaded using the old module loader, it is not possible
+to determine if they are enabled.
 </para>
-</listitem>
+	    </note>
+	  </listitem>
 
 </itemizedlist>
 </para>
