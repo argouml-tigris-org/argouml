@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -68,11 +68,12 @@ public class PropPanelObject extends PropPanelInstance {
 	addSeperator();
 
 	AbstractActionAddModelElement action =
-	    new ActionAddInstanceClassifier(ModelFacade.getClassToken());
-	JScrollPane classifierScroll = new JScrollPane(
-            new UMLMutableLinkedList(
-	    new UMLInstanceClassifierListModel(),
-	            action, null, null, true));
+	    new ActionAddInstanceClassifier(Model.getMetaTypes().getUMLClass());
+	JScrollPane classifierScroll =
+	    new JScrollPane(
+	            new UMLMutableLinkedList(
+	                    new UMLInstanceClassifierListModel(),
+	                    action, null, null, true));
 	addField(Translator.localize("label.classifiers"),
             classifierScroll);
 
@@ -81,7 +82,7 @@ public class PropPanelObject extends PropPanelInstance {
 	addButton(new PropPanelButton2(new ActionNewStereotype(),
 	        lookupIcon("Stereotype")));
 	addButton(new PropPanelButton2(new ActionRemoveFromModel(),
-	        lookupIcon("Delete")));;
+	        lookupIcon("Delete")));
 
     }
 

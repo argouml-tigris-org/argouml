@@ -674,13 +674,13 @@ public class SequenceDiagramGraphModel
         Hashtable args = mode.getArgs();
         Class actionClass = (Class) args.get("action");
         CanConnectCmd cmd = null;
-        if (actionClass == ModelFacade.getCallActionToken()) {
+        if (actionClass == Model.getMetaTypes().getCallAction()) {
             cmd = new CanConnectCallActionCmd(fromP, toP);
-        } else if (actionClass == ModelFacade.getReturnActionToken()) {
+        } else if (actionClass == Model.getMetaTypes().getReturnAction()) {
             cmd = new CanConnectReturnActionCmd(fromP, toP);
-        } else if (actionClass == ModelFacade.getCreateActionToken()) {
+        } else if (actionClass == Model.getMetaTypes().getCreateAction()) {
             cmd = new CanConnectCreateActionCmd(fromP, toP);
-        } else if (actionClass == ModelFacade.getDestroyActionToken()) {
+        } else if (actionClass == Model.getMetaTypes().getDestroyAction()) {
             cmd = new CanConnectDestroyActionCmd(fromP, toP);
         } else {
             // not supported action
@@ -707,13 +707,13 @@ public class SequenceDiagramGraphModel
         Object fromObject = null;
         Object toObject = null;
         Object action = null;
-        if (edgeClass == ModelFacade.getLinkToken()) {
+        if (edgeClass == Model.getMetaTypes().getLink()) {
             Editor curEditor = Globals.curEditor();
             ModeManager modeManager = curEditor.getModeManager();
             Mode mode = modeManager.top();
             Hashtable args = mode.getArgs();
             Class actionClass = (Class) args.get("action");
-            if (actionClass == ModelFacade.getCallActionToken()) {
+            if (actionClass == Model.getMetaTypes().getCallAction()) {
                 if (fromPort instanceof LinkPort
                     && toPort instanceof LinkPort) {
                     fromObject = ((LinkPort) fromPort).getObject();
@@ -723,7 +723,7 @@ public class SequenceDiagramGraphModel
                         Model.getCommonBehaviorFactory()
                             .createCallAction();
                 }
-            } else if (actionClass == ModelFacade.getCreateActionToken()) {
+            } else if (actionClass == Model.getMetaTypes().getCreateAction()) {
                 if (fromPort instanceof LinkPort
                     && ModelFacade.isAObject(toPort)) {
                     fromObject = ((LinkPort) fromPort).getObject();
@@ -732,7 +732,7 @@ public class SequenceDiagramGraphModel
                         Model.getCommonBehaviorFactory()
                             .createCreateAction();
                 }
-            } else if (actionClass == ModelFacade.getReturnActionToken()) {
+            } else if (actionClass == Model.getMetaTypes().getReturnAction()) {
                 if (fromPort instanceof LinkPort
                     && toPort instanceof LinkPort) {
                     fromObject = ((LinkPort) fromPort).getObject();
@@ -742,7 +742,7 @@ public class SequenceDiagramGraphModel
                             .createReturnAction();
 
                 }
-            } else if (actionClass == ModelFacade.getDestroyActionToken()) {
+            } else if (actionClass == Model.getMetaTypes().getDestroyAction()) {
                 if (fromPort instanceof LinkPort
                     && toPort instanceof LinkPort) {
                     fromObject = ((LinkPort) fromPort).getObject();
@@ -751,9 +751,10 @@ public class SequenceDiagramGraphModel
                         Model.getCommonBehaviorFactory()
                             .createDestroyAction();
                 }
-            } else if (actionClass == ModelFacade.getSendActionToken()) {
+            } else if (actionClass == Model.getMetaTypes().getSendAction()) {
                 ;// no implementation, not of importance to sequence diagrams
-            } else if (actionClass == ModelFacade.getTerminateActionToken()) {
+            } else if (actionClass
+                    == Model.getMetaTypes().getTerminateAction()) {
                 ;// not implemented yet
             }
         }

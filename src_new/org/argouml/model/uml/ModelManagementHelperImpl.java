@@ -156,6 +156,7 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
     /**
      * Returns all modelelements of the given kind.
      *
+     * @param model The model where we search.
      * @param type is the class kind
      * @return Collection
      */
@@ -299,7 +300,9 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
      */
     public Collection getAllBehavioralFeatures(Object ns) {
         Collection classifiers =
-            getAllModelElementsOfKind(ns, ModelFacade.getClassifierToken());
+            getAllModelElementsOfKind(
+                    ns,
+                    nsmodel.getMetaTypes().getClassifier());
         ArrayList features = new ArrayList();
         Iterator i = classifiers.iterator();
         while (i.hasNext()) {

@@ -24,9 +24,8 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.ui.CmdSetMode;
-
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 /**
@@ -53,7 +52,7 @@ public class ActionAddAssociationRole extends CmdSetMode {
                                     String name) {
         super(ModeCreatePolyEdge.class,
               "edgeClass",
-              ModelFacade.getAssociationRoleToken(),
+              Model.getMetaTypes().getAssociationRole(),
               name);
         _modeArgs.put("aggregation", aggregationKind);
         _modeArgs.put("unidirectional", new Boolean(unidirectional));

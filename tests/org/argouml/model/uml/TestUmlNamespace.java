@@ -37,7 +37,7 @@ public class TestUmlNamespace extends GenericUmlObjectTestFixture {
      * @param arg0 test name
      */
     public TestUmlNamespace(String arg0) {
-	super(arg0, ModelFacade.getNamespaceToken());
+	super(arg0, Model.getMetaTypes().getNamespace());
 	validateTestClassIsGeneric(this);
     }
 
@@ -46,7 +46,8 @@ public class TestUmlNamespace extends GenericUmlObjectTestFixture {
      */
     public void testNamespace() {
 	Object o =
-	    Model.getUmlFactory().buildNode(ModelFacade.getNamespaceToken());
+	    Model.getUmlFactory().buildNode(
+	            Model.getMetaTypes().getNamespace());
 	assertNotNull("Didn't create object", o);
 	assertTrue("Should be a base", ModelFacade.isABase(o));
 	assertTrue("Should be a namespace", ModelFacade.isANamespace(o));
@@ -58,8 +59,8 @@ public class TestUmlNamespace extends GenericUmlObjectTestFixture {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        setTruth(ModelFacade.getModelElementToken(), true);
-        setTruth(ModelFacade.getNamespaceToken(), true);
+        setTruth(Model.getMetaTypes().getModelElement(), true);
+        setTruth(Model.getMetaTypes().getNamespace(), true);
     }
 
 }

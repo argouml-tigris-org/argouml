@@ -28,6 +28,7 @@ import java.util.HashMap;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.NavigatorPane;
 
@@ -121,32 +122,34 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	runTruthTest(ModelFacade.isABase(o), true, null);
 	runTruthTest(
 	        ModelFacade.isAAbstraction(o),
-	        ModelFacade.getAbstractionToken());
+	        Model.getMetaTypes().getAbstraction());
 	runTruthTest(
 	        ModelFacade.isAAssociation(o),
-	        ModelFacade.getAssociationToken());
+	        Model.getMetaTypes().getAssociation());
 	runTruthTest(ModelFacade.isAAssociationEnd(o),
-	        ModelFacade.getAssociationEndToken());
+	        Model.getMetaTypes().getAssociationEnd());
 	runTruthTest(ModelFacade.isAAssociationRole(o),
-	        ModelFacade.getAssociationRoleToken());
-	runTruthTest(ModelFacade.isAClass(o), ModelFacade.getClassToken());
+	        Model.getMetaTypes().getAssociationRole());
+	runTruthTest(ModelFacade.isAClass(o),
+	        Model.getMetaTypes().getUMLClass());
 	runTruthTest(
 	        ModelFacade.isAClassifier(o),
-	        ModelFacade.getClassifierToken());
-	runTruthTest(ModelFacade.isAComment(o), ModelFacade.getCommentToken());
+	        Model.getMetaTypes().getClassifier());
+	runTruthTest(ModelFacade.isAComment(o),
+	        Model.getMetaTypes().getComment());
 	runTruthTest(
 	        ModelFacade.isAComponent(o),
-	        ModelFacade.getComponentToken());
+	        Model.getMetaTypes().getComponent());
 	runTruthTest(ModelFacade.isAComponentInstance(o),
-            ModelFacade.getComponentInstanceToken());
+            Model.getMetaTypes().getComponentInstance());
 	runTruthTest(
 	        ModelFacade.isADataType(o),
-	        ModelFacade.getDatatypeToken());
+	        Model.getMetaTypes().getDatatype());
 	runTruthTest(
 	        ModelFacade.isADependency(o),
-	        ModelFacade.getDependencyToken());
+	        Model.getMetaTypes().getDependency());
 	runTruthTest(ModelFacade.isACompositeState(o),
-	        ModelFacade.getCompositeStateToken());
+	        Model.getMetaTypes().getCompositeState());
 
 	// Not currently present as token in ModelFacade.
 	// NIF: runTruthTest(ModelFacade.isAElement(o), ModelFacade.ELEMENT);
@@ -156,9 +159,9 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	//           ModelFacade.EXTENSION_POINT);
 	// NIF: runTruthTest(ModelFacade.isAFeature(o), ModelFacade.FEATURE);
 	runTruthTest(ModelFacade.isAGeneralizableElement(o),
-	        ModelFacade.getGeneralizableElementToken());
+	        Model.getMetaTypes().getGeneralizableElement());
 	runTruthTest(ModelFacade.isAGeneralization(o),
-	        ModelFacade.getGeneralizationToken());
+	        Model.getMetaTypes().getGeneralization());
 
 	// TODO: this fails on ModelElement - why?
 	// runTruthTest(ModelFacade.isAInstance(o), ModelFacade.INSTANCE);
@@ -167,20 +170,20 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 
 	runTruthTest(
 	        ModelFacade.isAInterface(o),
-	        ModelFacade.getInterfaceToken());
-	runTruthTest(ModelFacade.isALink(o), ModelFacade.getLinkToken());
+	        Model.getMetaTypes().getInterface());
+	runTruthTest(ModelFacade.isALink(o), Model.getMetaTypes().getLink());
 	// NIF: runTruthTest(ModelFacade.isAMethod(o), ModelFacade.METHOD);
-	runTruthTest(ModelFacade.isAModel(o), ModelFacade.getModelToken());
+	runTruthTest(ModelFacade.isAModel(o), Model.getMetaTypes().getModel());
 	runTruthTest(
 	        ModelFacade.isAModelElement(o),
-	        ModelFacade.getModelElementToken());
+	        Model.getMetaTypes().getModelElement());
 	runTruthTest(
 	        ModelFacade.isANamespace(o),
-	        ModelFacade.getNamespaceToken());
-	runTruthTest(ModelFacade.isANode(o), ModelFacade.getNodeToken());
+	        Model.getMetaTypes().getNamespace());
+	runTruthTest(ModelFacade.isANode(o), Model.getMetaTypes().getNode());
 	runTruthTest(
 	        ModelFacade.isANodeInstance(o),
-	        ModelFacade.getNodeInstanceToken());
+	        Model.getMetaTypes().getNodeInstance());
 
 	// TODO: this fails on ModelElement - why?
 	// runTruthTest(ModelFacade.isAOperation(o), ModelFacade.OPERATION);
@@ -190,36 +193,39 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 
 	runTruthTest(
 	        ModelFacade.isAPermission(o),
-	        ModelFacade.getPermissionToken());
-	runTruthTest(ModelFacade.isAPackage(o), ModelFacade.getPackageToken());
+	        Model.getMetaTypes().getPermission());
+	runTruthTest(ModelFacade.isAPackage(o),
+	        Model.getMetaTypes().getPackage());
 	runTruthTest(
 	        ModelFacade.isAReception(o),
-	        ModelFacade.getReceptionToken());
+	        Model.getMetaTypes().getReception());
 	// NIF: runTruthTest(ModelFacade.isARelationship(o),
 	//           ModelFacade.RELATIONSHIP);
 	runTruthTest(
 	        ModelFacade.isAStateMachine(o),
-	        ModelFacade.getStateMachineToken());
+	        Model.getMetaTypes().getStateMachine());
 	runTruthTest(
 	        ModelFacade.isAStateVertex(o),
-	        ModelFacade.getStateVertexToken());
+	        Model.getMetaTypes().getStateVertex());
 	runTruthTest(
 	        ModelFacade.isAStereotype(o),
-	        ModelFacade.getStereotypeToken());
+	        Model.getMetaTypes().getStereotype());
 	// NIF: runTruthTest(ModelFacade.isAStructuralFeature(o),
         //     ModelFacade.STRUCTURAL_FEATURE);
 	// NIF: runTruthTest(ModelFacade.isATaggedValue(o),
 	//           ModelFacade.TAGGED_VALUE);
 	runTruthTest(
 	        ModelFacade.isATransition(o),
-	        ModelFacade.getTransitionToken());
-	runTruthTest(ModelFacade.isAUseCase(o), ModelFacade.getUseCaseToken());
-	runTruthTest(ModelFacade.isAActor(o), ModelFacade.getActorToken());
+	        Model.getMetaTypes().getTransition());
+	runTruthTest(ModelFacade.isAUseCase(o),
+	        Model.getMetaTypes().getUseCase());
+	runTruthTest(ModelFacade.isAActor(o), Model.getMetaTypes().getActor());
     }
 
     /**
-     * @param b
-     * @param c
+     * @param result
+     * @param expected
+     * @param class1
      */
     private void runTruthTest(boolean result, boolean expected,
             Object class1) {
@@ -229,6 +235,7 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
     }
 
     /**
+     * @param result
      * @param class1
      */
     private void runTruthTest(boolean result, Object class1) {

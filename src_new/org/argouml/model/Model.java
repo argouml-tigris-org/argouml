@@ -251,4 +251,13 @@ public final class Model {
     public static UseCasesHelper getUseCasesHelper() {
         return impl.getUseCasesHelper();
     }
+
+    /**
+     * Getter for the MetaTypes object.
+     *
+     * @return the MetaTypes object.
+     */
+    public static MetaTypes getMetaTypes() {
+        return impl.getMetaTypes();
+    }
 }

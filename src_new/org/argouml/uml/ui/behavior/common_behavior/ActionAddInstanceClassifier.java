@@ -43,7 +43,7 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
  */
 public class ActionAddInstanceClassifier extends AbstractActionAddModelElement {
 
-    private Object choiceClass = ModelFacade.getClassifierToken();
+    private Object choiceClass = Model.getMetaTypes().getClassifier();
 
     /**
      * The constructor for ActionAddExtendExtensionPoint.

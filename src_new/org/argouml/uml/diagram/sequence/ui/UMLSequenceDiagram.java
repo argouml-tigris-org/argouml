@@ -30,7 +30,6 @@ import java.util.Hashtable;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
@@ -136,19 +135,19 @@ public class UMLSequenceDiagram extends UMLDiagram {
         if (actions == null) {
             actions = new Object[5];
             actions[0] =
-                new CmdCreateNode(ModelFacade.getObjectToken(), "Object");
+                new CmdCreateNode(Model.getMetaTypes().getObject(), "Object");
 	    int offset = 1;
 
 	    Object[][] actionList = {
-		{ModelFacade.getCallActionToken(), "CallAction"},
-		{ModelFacade.getReturnActionToken(), "ReturnAction"},
-		{ModelFacade.getCreateActionToken(), "CreateAction"},
-		{ModelFacade.getDestroyActionToken(), "DestroyAction"},
+		{Model.getMetaTypes().getCallAction(), "CallAction"},
+		{Model.getMetaTypes().getReturnAction(), "ReturnAction"},
+		{Model.getMetaTypes().getCreateAction(), "CreateAction"},
+		{Model.getMetaTypes().getDestroyAction(), "DestroyAction"},
 	    };
 
 	    for (int i = 0; i < actionList.length; i++) {
 		Hashtable args = new Hashtable();
-		args.put("edgeClass", ModelFacade.getLinkToken());
+		args.put("edgeClass", Model.getMetaTypes().getLink());
 		args.put("action", actionList[i][0]);
 		actions[i + offset] =
 		    new RadioAction(new CmdSetMode(ModeCreateLink.class, args,

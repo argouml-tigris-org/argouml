@@ -43,7 +43,7 @@ public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
     public UMLFeatureOwnerComboBoxModel() {
         super("owner", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this,
-                ModelFacade.getNamespaceToken(), "ownedElement");
+                Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
     /**
@@ -60,7 +60,7 @@ public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
         Project p = ProjectManager.getManager().getCurrentProject();
         setElements(Model.getModelManagementHelper()
                 .getAllModelElementsOfKindWithModel(p.getRoot(),
-                        ModelFacade.getClassifierToken()));
+                        Model.getMetaTypes().getClassifier()));
     }
 
     /**

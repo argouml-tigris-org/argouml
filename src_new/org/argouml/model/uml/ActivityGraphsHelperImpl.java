@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.ActivityGraphsHelper;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
 import ru.novosoft.uml.behavior.activity_graphs.MObjectFlowState;
@@ -91,7 +90,7 @@ class ActivityGraphsHelperImpl implements ActivityGraphsHelper {
             Collection c =
                 nsmodel.getModelManagementHelper()
                 	.getAllModelElementsOfKind(ns,
-                	        ModelFacade.getClassifierToken());
+                	        nsmodel.getMetaTypes().getClassifier());
             Iterator i = c.iterator();
             while (i.hasNext()) {
                 MModelElement classifier = (MModelElement) i.next();

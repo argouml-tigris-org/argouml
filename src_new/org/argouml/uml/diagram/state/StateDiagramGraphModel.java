@@ -364,7 +364,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
             return null;
 	}
 
-        if (edgeClass == (Class) ModelFacade.getTransitionToken()) {
+        if (edgeClass == (Class) Model.getMetaTypes().getTransition()) {
             Object tr = null;
             tr =
                 Model.getStateMachinesFactory()

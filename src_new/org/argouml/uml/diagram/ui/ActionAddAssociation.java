@@ -30,7 +30,7 @@
 package org.argouml.uml.diagram.ui;
 
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.ui.CmdSetMode;
 
 /**
@@ -54,7 +54,7 @@ public class ActionAddAssociation extends CmdSetMode {
     public ActionAddAssociation(Object aggregationKind, boolean unidirectional,
 				String name) {
         super(ModeCreateAssociation.class, "edgeClass",
-	      ModelFacade.getAssociationToken(), name);
+	      Model.getMetaTypes().getAssociation(), name);
         _modeArgs.put("aggregation", aggregationKind);
         _modeArgs.put("unidirectional", new Boolean(unidirectional));
     }

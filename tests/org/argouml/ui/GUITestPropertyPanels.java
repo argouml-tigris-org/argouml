@@ -147,7 +147,7 @@ public class GUITestPropertyPanels extends TestCase {
             Model.getModelManagementHelper()
             	.getAllModelElementsOfKind(
             	        model,
-            	        ModelFacade.getModelElementToken());
+            	        Model.getMetaTypes().getModelElement());
 
         Enumeration meEnum = getAllModelElements(p);
 

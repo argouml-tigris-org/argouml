@@ -29,18 +29,14 @@ import org.argouml.cognitive.critics.CompoundCritic;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.language.java.cognitive.critics.CrMultipleInheritance;
 import org.argouml.language.java.cognitive.critics.CrMultipleRealization;
+import org.argouml.model.Model;
 import org.argouml.pattern.cognitive.critics.CrConsiderSingleton;
 import org.argouml.pattern.cognitive.critics.CrSingletonViolatedMissingStaticAttr;
 import org.argouml.pattern.cognitive.critics.CrSingletonViolatedOnlyPrivateConstructors;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
-// import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-// import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
-// import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-// import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
-import org.argouml.model.ModelFacade;
 
 /**
  * Registers critics for use in ArgoUML.  This class is called at
@@ -259,36 +255,36 @@ public class Init {
      * static initializer, register all appropriate critics.
      */
     public static void init() {
-	java.lang.Class modelCls = (Class) ModelFacade.getModelToken();
-	java.lang.Class packageCls = (Class) ModelFacade.getPackageToken();
-	java.lang.Class modelElementCls =
-	    (Class) ModelFacade.getModelElementToken();
-	java.lang.Class classCls = (Class) ModelFacade.getClassToken();
-	java.lang.Class classifierCls =
-	    (Class) ModelFacade.getClassifierToken();
-	java.lang.Class interfaceCls = (Class) ModelFacade.getInterfaceToken();
-	java.lang.Class attrCls = (Class) ModelFacade.getAttributeToken();
-	java.lang.Class paramCls = (Class) ModelFacade.getParameterToken();
-	java.lang.Class operCls = (Class) ModelFacade.getOperationToken();
-	java.lang.Class assocCls = (Class) ModelFacade.getAssociationToken();
-	java.lang.Class assocEndCls =
-	    (Class) ModelFacade.getAssociationEndToken();
-	java.lang.Class assocClassCls =
-	    (Class) ModelFacade.getAssociationClassToken();
-	java.lang.Class namespaceCls = (Class) ModelFacade.getNamespaceToken();
-	java.lang.Class genElementCls =
-	    (Class) ModelFacade.getGeneralizableElementToken();
-	java.lang.Class genCls = (Class) ModelFacade.getGeneralizationToken();
-	java.lang.Class datatypeCls = (Class) ModelFacade.getDatatypeToken();
-	java.lang.Class useCaseCls = (Class) ModelFacade.getUseCaseToken();
-	java.lang.Class actorCls = (Class) ModelFacade.getActorToken();
-	java.lang.Class stateVertexCls =
-	    (Class) ModelFacade.getStateVertexToken();
-	java.lang.Class stateCls = (Class) ModelFacade.getStateToken();
-	java.lang.Class compositieStateCls =
-	    (Class) ModelFacade.getCompositeStateToken();
-	// java.lang.Class stateDiagramCls   = UMLStateDiagram.class;
-	// java.lang.Class useCaseDiagramCls = UMLUseCaseDiagram.class;
+	Class modelCls = (Class) Model.getMetaTypes().getModel();
+	Class packageCls = (Class) Model.getMetaTypes().getPackage();
+	Class modelElementCls =
+	    (Class) Model.getMetaTypes().getModelElement();
+	Class classCls = (Class) Model.getMetaTypes().getUMLClass();
+	Class classifierCls =
+	    (Class) Model.getMetaTypes().getClassifier();
+	Class interfaceCls = (Class) Model.getMetaTypes().getInterface();
+	Class attrCls = (Class) Model.getMetaTypes().getAttribute();
+	Class paramCls = (Class) Model.getMetaTypes().getParameter();
+	Class operCls = (Class) Model.getMetaTypes().getOperation();
+	Class assocCls = (Class) Model.getMetaTypes().getAssociation();
+	Class assocEndCls =
+	    (Class) Model.getMetaTypes().getAssociationEnd();
+	Class assocClassCls =
+	    (Class) Model.getMetaTypes().getAssociationClass();
+	Class namespaceCls = (Class) Model.getMetaTypes().getNamespace();
+	Class genElementCls =
+	    (Class) Model.getMetaTypes().getGeneralizableElement();
+	Class genCls = (Class) Model.getMetaTypes().getGeneralization();
+	Class datatypeCls = (Class) Model.getMetaTypes().getDatatype();
+	Class useCaseCls = (Class) Model.getMetaTypes().getUseCase();
+	Class actorCls = (Class) Model.getMetaTypes().getActor();
+	Class stateVertexCls =
+	    (Class) Model.getMetaTypes().getStateVertex();
+	Class stateCls = (Class) Model.getMetaTypes().getState();
+	Class compositieStateCls =
+	    (Class) Model.getMetaTypes().getCompositeState();
+	// Class stateDiagramCls   = UMLStateDiagram.class;
+	// Class useCaseDiagramCls = UMLUseCaseDiagram.class;
 
 	// TODO: Agency should allow registration by interface
 	// useful for MAssociation.
@@ -358,12 +354,12 @@ public class Init {
 	Agency.register(crTooManyOper, classCls);
 	Agency.register(crTooManyTransitions, stateVertexCls);
 	Agency.register(crTooManyStates, compositieStateCls);
-	java.lang.Class classDiagramCls   = UMLClassDiagram.class;
+	Class classDiagramCls   = UMLClassDiagram.class;
 	Agency.register(crTooManyClasses, classDiagramCls);
-	java.lang.Class pseudostateCls =
-	    (Class) ModelFacade.getPseudostateToken();
-	java.lang.Class transitionCls =
-	    (Class) ModelFacade.getTransitionToken();
+	Class pseudostateCls =
+	    (Class) Model.getMetaTypes().getPseudostate();
+	Class transitionCls =
+	    (Class) Model.getMetaTypes().getTransition();
 	Agency.register(noTrans1, stateVertexCls);
 	Agency.register(noTrans2, stateVertexCls);
 	Agency.register(crMultipleInitialStates, pseudostateCls);
@@ -380,7 +376,7 @@ public class Init {
 	Agency.register(crConsiderSingleton, classCls);
 	Agency.register(crSingletonViolatedMSA, classCls);
 	Agency.register(crSingletonViolatedOPC, classCls);
-	java.lang.Class deploymentDiagramCls = UMLDeploymentDiagram.class;
+	Class deploymentDiagramCls = UMLDeploymentDiagram.class;
 	Agency.register(crNodeInsideElement, deploymentDiagramCls);
 	Agency.register(crNodeInstanceInsideElement, deploymentDiagramCls);
 	Agency.register(crComponentWithoutNode, deploymentDiagramCls);
@@ -391,17 +387,17 @@ public class Init {
 	Agency.register(crWrongLinkEnds, deploymentDiagramCls);
 	Agency.register(crInstanceWithoutClassifier, deploymentDiagramCls);
 
-	// java.lang.Class sequenceDiagramCls = UMLSequenceDiagram.class;
+	// Class sequenceDiagramCls = UMLSequenceDiagram.class;
 	// Agency.register(crCallWithoutReturn, sequenceDiagramCls);
 	// Agency.register(crReturnWithoutCall, sequenceDiagramCls);
 	// Agency.register(crLinkWithoutStimulus, sequenceDiagramCls);
 	// Agency.register(crSeqInstanceWithoutClassifier, sequenceDiagramCls);
 	// Agency.register(crStimulusWithWrongPosition, sequenceDiagramCls);
 
-	// java.lang.Class nodeCls           = FigNodeModelElement.class;
-	java.lang.Class edgeCls           = FigEdgeModelElement.class;
+	// Class nodeCls           = FigNodeModelElement.class;
+	Class edgeCls           = FigEdgeModelElement.class;
 
-	java.lang.Class diagramCls        = UMLDiagram.class;
+	Class diagramCls        = UMLDiagram.class;
 	Agency.register(crNodesOverlap, diagramCls);
 	Agency.register(crZeroLengthEdge, edgeCls);
 	Agency.register(crOppEndConflict, assocEndCls);

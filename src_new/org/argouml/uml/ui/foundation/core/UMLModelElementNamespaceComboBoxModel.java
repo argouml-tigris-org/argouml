@@ -43,7 +43,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
     public UMLModelElementNamespaceComboBoxModel() {
         super("namespace", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this,
-                ModelFacade.getNamespaceToken(), "ownedElement");
+                Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
     /**

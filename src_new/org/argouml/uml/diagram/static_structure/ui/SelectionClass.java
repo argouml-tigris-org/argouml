@@ -34,7 +34,6 @@ import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
@@ -200,28 +199,28 @@ public class SelectionClass extends SelectionWButtons {
         Dimension minSize = _content.getMinimumSize();
         int minWidth = minSize.width, minHeight = minSize.height;
         Class edgeClass = null;
-        Class nodeClass = (Class) ModelFacade.getClassToken();
+        Class nodeClass = (Class) Model.getMetaTypes().getUMLClass();
         int bx = mX, by = mY;
         boolean reverse = false;
         switch (hand.index) {
         case 10: //add superclass
-            edgeClass = (Class) ModelFacade.getGeneralizationToken();
+            edgeClass = (Class) Model.getMetaTypes().getGeneralization();
             by = cy;
             bx = cx + cw / 2;
             break;
         case 11: //add subclass
-            edgeClass = (Class) ModelFacade.getGeneralizationToken();
+            edgeClass = (Class) Model.getMetaTypes().getGeneralization();
             reverse = true;
             by = cy + ch;
             bx = cx + cw / 2;
             break;
         case 12: //add assoc
-            edgeClass = (Class) ModelFacade.getAssociationToken();
+            edgeClass = (Class) Model.getMetaTypes().getAssociation();
             by = cy + ch / 2;
             bx = cx + cw;
             break;
         case 13: // add assoc
-            edgeClass = (Class) ModelFacade.getAssociationToken();
+            edgeClass = (Class) Model.getMetaTypes().getAssociation();
             reverse = true;
             by = cy + ch / 2;
             bx = cx;
@@ -273,7 +272,7 @@ public class SelectionClass extends SelectionWButtons {
      */
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
         return mgm.connect(_content.getOwner(), newNode,
-			   (Class) ModelFacade.getGeneralizationToken());
+			   (Class) Model.getMetaTypes().getGeneralization());
     }
 
     /**
@@ -282,7 +281,7 @@ public class SelectionClass extends SelectionWButtons {
      */
     protected Object createEdgeLeft(MutableGraphModel mgm, Object newNode) {
         return mgm.connect(newNode, _content.getOwner(),
-			   (Class) ModelFacade.getAssociationToken());
+			   (Class) Model.getMetaTypes().getAssociation());
     }
 
     /**
@@ -291,7 +290,7 @@ public class SelectionClass extends SelectionWButtons {
      */
     protected Object createEdgeRight(MutableGraphModel mgm, Object newNode) {
         return mgm.connect(_content.getOwner(), newNode,
-			   (Class) ModelFacade.getAssociationToken());
+			   (Class) Model.getMetaTypes().getAssociation());
     }
 
     /**
@@ -300,7 +299,7 @@ public class SelectionClass extends SelectionWButtons {
      */
     protected Object createEdgeToSelf(MutableGraphModel mgm) {
         return mgm.connect(_content.getOwner(), _content.getOwner(),
-			   (Class) ModelFacade.getAssociationToken());
+			   (Class) Model.getMetaTypes().getAssociation());
     }
 
     /**
@@ -309,7 +308,7 @@ public class SelectionClass extends SelectionWButtons {
      */
     protected Object createEdgeUnder(MutableGraphModel mgm, Object newNode) {
         return mgm.connect(newNode, _content.getOwner(),
-			   (Class) ModelFacade.getGeneralizationToken());
+			   (Class) Model.getMetaTypes().getGeneralization());
     }
 
 } /* end class SelectionClass */

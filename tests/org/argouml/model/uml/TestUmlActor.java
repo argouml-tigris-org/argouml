@@ -37,7 +37,7 @@ public class TestUmlActor extends GenericUmlObjectTestFixture {
      * @param arg0 test name
      */
     public TestUmlActor(String arg0) {
-	super(arg0, ModelFacade.getActorToken());
+	super(arg0, Model.getMetaTypes().getActor());
 	validateTestClassIsGeneric(this);
     }
 
@@ -45,7 +45,8 @@ public class TestUmlActor extends GenericUmlObjectTestFixture {
      * Test the creation of an actor.
      */
     public void testActor() {
-	Object o = Model.getUmlFactory().buildNode(ModelFacade.getActorToken());
+	Object o =
+	    Model.getUmlFactory().buildNode(Model.getMetaTypes().getActor());
 	assertNotNull("Didn't create object", o);
 	assertTrue("Should be a base", ModelFacade.isABase(o));
 	assertTrue("Should be a actor", ModelFacade.isAActor(o));
@@ -57,11 +58,11 @@ public class TestUmlActor extends GenericUmlObjectTestFixture {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        setTruth(ModelFacade.getModelElementToken(), true);
-        setTruth(ModelFacade.getGeneralizableElementToken(), true);
-        setTruth(ModelFacade.getClassifierToken(), true);
-        setTruth(ModelFacade.getNamespaceToken(), true);
-        setTruth(ModelFacade.getActorToken(), true);
+        setTruth(Model.getMetaTypes().getModelElement(), true);
+        setTruth(Model.getMetaTypes().getGeneralizableElement(), true);
+        setTruth(Model.getMetaTypes().getClassifier(), true);
+        setTruth(Model.getMetaTypes().getNamespace(), true);
+        setTruth(Model.getMetaTypes().getActor(), true);
     }
 
 }

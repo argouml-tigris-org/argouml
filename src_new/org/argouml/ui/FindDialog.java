@@ -50,7 +50,7 @@ import javax.swing.border.EmptyBorder;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.swingext.SpacerPanel;
 import org.argouml.uml.PredicateFind;
 import org.argouml.uml.cognitive.ChildGenFind;
@@ -333,32 +333,42 @@ public class FindDialog extends ArgoDialog
     public void initTypes() {
         type.addItem(PredicateMType.create()); // Any type
 
-        type.addItem(PredicateMType.create(ModelFacade.getClassToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getInterfaceToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getActorToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getAssociationToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getAttributeToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getClassifierToken()));
+        type.addItem(PredicateMType.create(Model.getMetaTypes().getUMLClass()));
         type.addItem(PredicateMType.create(
-                ModelFacade.getCompositeStateToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getDependencyToken()));
+                Model.getMetaTypes().getInterface()));
+        type.addItem(PredicateMType.create(Model.getMetaTypes().getActor()));
         type.addItem(PredicateMType.create(
-                ModelFacade.getGeneralizationToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getInstanceToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getInterfaceToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getLinkToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getPackageToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getOperationToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getPseudostateToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getStateToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getStateVertexToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getTransitionToken()));
-        type.addItem(PredicateMType.create(ModelFacade.getUseCaseToken()));
+                Model.getMetaTypes().getAssociation()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getAttribute()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getClassifier()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getCompositeState()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getDependency()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getGeneralization()));
+        type.addItem(PredicateMType.create(Model.getMetaTypes().getInstance()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getInterface()));
+        type.addItem(PredicateMType.create(Model.getMetaTypes().getLink()));
+        type.addItem(PredicateMType.create(Model.getMetaTypes().getPackage()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getOperation()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getPseudostate()));
+        type.addItem(PredicateMType.create(Model.getMetaTypes().getState()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getStateVertex()));
+        type.addItem(PredicateMType.create(
+                Model.getMetaTypes().getTransition()));
+        type.addItem(PredicateMType.create(Model.getMetaTypes().getUseCase()));
 
     }
 
     /**
-     * @see org.argouml.swingext.Dialog#nameButtons()
+     * @see org.tigris.swidgets.Dialog#nameButtons()
      */
     protected void nameButtons() {
         super.nameButtons();

@@ -112,7 +112,7 @@ public class SourcePathControllerImpl implements SourcePathController {
         Object model = p.getRoot();
         Collection elems =
             Model.getModelManagementHelper().getAllModelElementsOfKindWithModel(
-                model, ModelFacade.getModelElementToken());
+                model, Model.getMetaTypes().getModelElement());
 
         ArrayList mElemsWithSrcPath = new ArrayList();
 

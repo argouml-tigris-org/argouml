@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.sequence.ui;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.tigris.gef.base.Editor;
@@ -44,7 +43,7 @@ public class ActionAddObject extends CmdCreateNode {
      * The constructor.
      */
     public ActionAddObject() {
-        super(ModelFacade.getObjectToken(), false, "Object");
+        super(Model.getMetaTypes().getObject(), false, "Object");
     }
 
     /**

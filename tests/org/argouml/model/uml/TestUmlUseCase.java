@@ -37,7 +37,7 @@ public class TestUmlUseCase extends GenericUmlObjectTestFixture {
      * @param arg0 test name
      */
     public TestUmlUseCase(String arg0) {
-	super(arg0, ModelFacade.getUseCaseToken());
+	super(arg0, Model.getMetaTypes().getUseCase());
 	validateTestClassIsGeneric(this);
     }
 
@@ -46,7 +46,7 @@ public class TestUmlUseCase extends GenericUmlObjectTestFixture {
      */
     public void testUseCase() {
 	Object o =
-	    Model.getUmlFactory().buildNode(ModelFacade.getUseCaseToken());
+	    Model.getUmlFactory().buildNode(Model.getMetaTypes().getUseCase());
 	assertNotNull("Didn't create object", o);
 	assertTrue("Should be a base", ModelFacade.isABase(o));
 	assertTrue("Should be a use case", ModelFacade.isAUseCase(o));
@@ -58,11 +58,11 @@ public class TestUmlUseCase extends GenericUmlObjectTestFixture {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        setTruth(ModelFacade.getModelElementToken(), true);
-        setTruth(ModelFacade.getGeneralizableElementToken(), true);
-        setTruth(ModelFacade.getNamespaceToken(), true);
-        setTruth(ModelFacade.getClassifierToken(), true);
-        setTruth(ModelFacade.getUseCaseToken(), true);
+        setTruth(Model.getMetaTypes().getModelElement(), true);
+        setTruth(Model.getMetaTypes().getGeneralizableElement(), true);
+        setTruth(Model.getMetaTypes().getNamespace(), true);
+        setTruth(Model.getMetaTypes().getClassifier(), true);
+        setTruth(Model.getMetaTypes().getUseCase(), true);
     }
 
 }

@@ -33,15 +33,16 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
+import org.argouml.uml.diagram.ui.ActionAddMessage;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.diagram.ui.ActionAddMessage;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
@@ -259,8 +260,10 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      */
     private Action getActionClassifierRole() {
         if (actionClassifierRole == null) {
-            actionClassifierRole = new RadioAction(new CmdCreateNode(
-                    ModelFacade.getClassifierRoleToken(), "ClassifierRole"));
+            actionClassifierRole =
+                new RadioAction(new CmdCreateNode(
+                        Model.getMetaTypes().getClassifierRole(),
+                        "ClassifierRole"));
         }
         return actionClassifierRole;
     }
@@ -300,7 +303,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
                     new CmdSetMode(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
-                        ModelFacade.getDependencyToken(),
+                        Model.getMetaTypes().getDependency(),
                         "Dependency"));
         }
         return actionDepend;
@@ -314,7 +317,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
                     new CmdSetMode(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
-                        ModelFacade.getGeneralizationToken(),
+                        Model.getMetaTypes().getGeneralization(),
                         "Generalization"));
         }
         return actionGeneralize;

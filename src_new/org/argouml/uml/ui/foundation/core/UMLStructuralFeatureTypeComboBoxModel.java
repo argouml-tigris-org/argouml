@@ -52,7 +52,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         super("type", false);
         UmlModelEventPump.getPump()
 	    .addClassModelEventListener(this,
-					ModelFacade.getNamespaceToken(),
+					Model.getMetaTypes().getNamespace(),
 					"ownedElement");
     }
 
@@ -115,7 +115,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
 		paths,
 		Model.getModelManagementHelper().getAllModelElementsOfKind(
 			model,
-			ModelFacade.getClassifierToken()));
+			Model.getMetaTypes().getClassifier()));
         }
 
 	addAllUniqueModelElementsFrom(
@@ -123,7 +123,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
 	    paths,
 	    Model.getModelManagementHelper().getAllModelElementsOfKind(
 		    p.getDefaultModel(),
-		    ModelFacade.getClassifierToken()));
+		    Model.getMetaTypes().getClassifier()));
 
         setElements(elements);
     }

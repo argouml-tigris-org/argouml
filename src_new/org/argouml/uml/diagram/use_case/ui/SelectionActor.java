@@ -33,7 +33,6 @@ import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
 import org.tigris.gef.base.Editor;
@@ -142,17 +141,17 @@ public class SelectionActor extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = (Class) ModelFacade.getUseCaseToken();
+	Class nodeClass = (Class) Model.getMetaTypes().getUseCase();
 	int bx = mX, by = mY;
 	boolean reverse = false;
 	switch (hand.index) {
 	case 12: //add assoc
-	    edgeClass = (Class) ModelFacade.getAssociationToken();
+	    edgeClass = (Class) Model.getMetaTypes().getAssociation();
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13: // add assoc
-	    edgeClass = (Class) ModelFacade.getAssociationToken();
+	    edgeClass = (Class) Model.getMetaTypes().getAssociation();
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -188,7 +187,7 @@ public class SelectionActor extends SelectionWButtons {
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(),
-			  (Class) ModelFacade.getAssociationToken());
+			  (Class) Model.getMetaTypes().getAssociation());
     }
 
     /**
@@ -197,7 +196,7 @@ public class SelectionActor extends SelectionWButtons {
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
         return gm.connect(_content.getOwner(), newNode ,
-			  (Class) ModelFacade.getAssociationToken());
+			  (Class) Model.getMetaTypes().getAssociation());
     }
 
 } /* end class SelectionActor */

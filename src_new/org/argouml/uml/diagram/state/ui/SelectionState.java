@@ -33,7 +33,6 @@ import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
 import org.tigris.gef.base.Editor;
@@ -163,7 +162,7 @@ public class SelectionState extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = (Class) ModelFacade.getStateToken();
+	Class nodeClass = (Class) Model.getMetaTypes().getState();
 
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
@@ -177,12 +176,12 @@ public class SelectionState extends SelectionWButtons {
 	boolean reverse = false;
 	switch (hand.index) {
 	case 12 : //add outgoing
-	    edgeClass = (Class) ModelFacade.getTransitionToken();
+	    edgeClass = (Class) Model.getMetaTypes().getTransition();
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13 : // add incoming
-	    edgeClass = (Class) ModelFacade.getTransitionToken();
+	    edgeClass = (Class) Model.getMetaTypes().getTransition();
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -212,7 +211,7 @@ public class SelectionState extends SelectionWButtons {
      */
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
 	return mgm.connect(newNode, _content.getOwner(),
-			   (Class) ModelFacade.getTransitionToken());
+			   (Class) Model.getMetaTypes().getTransition());
     }
 
     /**
@@ -221,7 +220,7 @@ public class SelectionState extends SelectionWButtons {
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
 	return gm.connect(newNode, _content.getOwner(),
-			  (Class) ModelFacade.getTransitionToken());
+			  (Class) Model.getMetaTypes().getTransition());
     }
 
     /**
@@ -230,7 +229,7 @@ public class SelectionState extends SelectionWButtons {
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
 	return gm.connect(_content.getOwner(), newNode,
-			  (Class) ModelFacade.getTransitionToken());
+			  (Class) Model.getMetaTypes().getTransition());
     }
 
     /**
@@ -242,7 +241,7 @@ public class SelectionState extends SelectionWButtons {
 	return gm.connect(
 			  _content.getOwner(),
 			  _content.getOwner(),
-			  (Class) ModelFacade.getTransitionToken());
+			  (Class) Model.getMetaTypes().getTransition());
     }
 
     /**
@@ -251,7 +250,7 @@ public class SelectionState extends SelectionWButtons {
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
 	return gm.connect(_content.getOwner(), newNode,
-			  (Class) ModelFacade.getTransitionToken());
+			  (Class) Model.getMetaTypes().getTransition());
     }
 
 

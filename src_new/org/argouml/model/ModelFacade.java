@@ -71,7 +71,6 @@ import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
 import ru.novosoft.uml.behavior.common_behavior.MSendAction;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
-import ru.novosoft.uml.behavior.common_behavior.MTerminateAction;
 import ru.novosoft.uml.behavior.state_machines.MCallEvent;
 import ru.novosoft.uml.behavior.state_machines.MChangeEvent;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
@@ -81,7 +80,6 @@ import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.behavior.state_machines.MSignalEvent;
 import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MStateImpl;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MStubState;
@@ -126,7 +124,6 @@ import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.core.MUsage;
 import ru.novosoft.uml.foundation.data_types.MActionExpression;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MExpression;
@@ -201,41 +198,6 @@ public class ModelFacade {
 
 
     /**
-     * @return Returns the Abstraction Token.
-     */
-    public static Object getAbstractionToken() {
-        return MAbstraction.class;
-    }
-
-    /**
-     * @return Returns the Action Token.
-     */
-    public static Object getActionToken() {
-        return MAction.class;
-    }
-
-    /**
-     * @return Returns the ActionExpression Token.
-     */
-    public static Object getActionExpressionToken() {
-        return MActionExpression.class;
-    }
-
-    /**
-     * @return Returns the ActionState Token.
-     */
-    public static Object getActionStateToken() {
-        return MActionState.class;
-    }
-
-    /**
-     * @return Returns the Actor Token.
-     */
-    public static Object getActorToken() {
-        return MActor.class;
-    }
-
-    /**
      * @return Returns the AddOnly ChangeableKind.
      */
     public static Object getAddOnlyChangeableKindToken() {
@@ -250,87 +212,10 @@ public class ModelFacade {
     }
 
     /**
-     * @return Returns the AggregationKind Token.
-     */
-    public static Object getAggregationKindToken() {
-        return MAggregationKind.class;
-    }
-
-    /**
-     * @return Returns the Association Token.
-     */
-    public static Object getAssociationToken() {
-        return MAssociation.class;
-    }
-
-    /**
-     * @return Returns the AssociationClass Token.
-     */
-    public static Object getAssociationClassToken() {
-        return MAssociationClass.class;
-    }
-
-    /**
-     * @return Returns the AssociationEnd Token.
-     */
-    public static Object getAssociationEndToken() {
-        return MAssociationEnd.class;
-    }
-
-    /**
-     * @return Returns the AssociationEndRole Token.
-     */
-    public static Object getAssociationEndRoleToken() {
-        return MAssociationEndRole.class;
-    }
-
-    /**
-     * @return Returns the AssociationRole Token.
-     */
-    public static Object getAssociationRoleToken() {
-        return MAssociationRole.class;
-    }
-
-    /**
-     * @return Returns the Attribute Token.
-     */
-    public static Object getAttributeToken() {
-        return MAttribute.class;
-    }
-
-    /**
-     * @return Returns the BooleanExpression Token.
-     */
-    public static Object getBooleanExpressionToken() {
-        return MBooleanExpression.class;
-    }
-
-    /**
      * @return Returns the Branch PseudostateKind.
      */
     public static Object getBranchPseudostateKindToken() {
         return MPseudostateKind.BRANCH;
-    }
-
-    /**
-     * @return Returns the CallAction Token.
-     */
-    public static Object getCallActionToken() {
-        return MCallAction.class;
-    }
-
-    /**
-     * @return Returns the CallConcurrencyKind Token.
-     */
-    public static Object getCallConcurrencyKindToken() {
-        return MCallConcurrencyKind.class;
-    }
-
-    /**
-     * @return Returns the CallState Token.
-     */
-    public static Object getCallStateToken() {
-        return MCallState.class;
     }
 
     /**
@@ -341,59 +226,10 @@ public class ModelFacade {
     }
 
     /**
-     * @return Returns the Class Token.
-     */
-    public static Object getClassToken() {
-        return MClass.class;
-    }
-
-    /**
-     * @return Returns the Classifier Token.
-     */
-    public static Object getClassifierToken() {
-        return MClassifier.class;
-    }
-
-    /**
-     * @return Returns the ClassifierRole Token.
-     */
-    public static Object getClassifierRoleToken() {
-        return MClassifierRole.class;
-    }
-
-    /**
      * @return Returns the Classifier ScopeKind.
      */
     public static Object getClassifierScopeKindToken() {
         return MScopeKind.CLASSIFIER;
-    }
-
-    /**
-     * @return Returns the Collaboration Token.
-     */
-    public static Object getCollaborationToken() {
-        return MCollaboration.class;
-    }
-
-    /**
-     * @return Returns the Comment Token.
-     */
-    public static Object getCommentToken() {
-        return MComment.class;
-    }
-
-    /**
-     * @return Returns the Component Token.
-     */
-    public static Object getComponentToken() {
-        return MComponent.class;
-    }
-
-    /**
-     * @return Returns the ComponentInstance Token.
-     */
-    public static Object getComponentInstanceToken() {
-        return MComponentInstance.class;
     }
 
     /**
@@ -404,13 +240,6 @@ public class ModelFacade {
     }
 
     /**
-     * @return Returns the CompositeState Token.
-     */
-    public static Object getCompositeStateToken() {
-        return MCompositeState.class;
-    }
-
-    /**
      * @return Returns the Concurrent CallConcurrencyKind.
      */
     public static Object getConcurrentConcurrencyKindToken() {
@@ -418,66 +247,10 @@ public class ModelFacade {
     }
 
     /**
-     * @return Returns the CreateAction Token.
-     */
-    public static Object getCreateActionToken() {
-        return MCreateAction.class;
-    }
-
-    /**
-     * @return Returns the Datatype Token.
-     */
-    public static Object getDatatypeToken() {
-        return MDataType.class;
-    }
-
-    /**
      * @return Returns the DeepHistory PseudostateKind.
      */
     public static Object getDeepHistoryPseudostateKindToken() {
         return MPseudostateKind.DEEP_HISTORY;
-    }
-
-    /**
-     * @return Returns the Dependency Token.
-     */
-    public static Object getDependencyToken() {
-        return MDependency.class;
-    }
-
-    /**
-     * @return Returns the DestroyAction Token.
-     */
-    public static Object getDestroyActionToken() {
-        return MDestroyAction.class;
-    }
-
-    /**
-     * @return Returns the Event Token.
-     */
-    public static Object getEventToken() {
-        return MEvent.class;
-    }
-
-    /**
-     * @return Returns the Exception Token.
-     */
-    public static Object getExceptionToken() {
-        return MException.class;
-    }
-
-    /**
-     * @return Returns the Extend Token.
-     */
-    public static Object getExtendToken() {
-        return MExtend.class;
-    }
-
-    /**
-     * @return Returns the FinalState Token.
-     */
-    public static Object getFinalStateToken() {
-        return MFinalState.class;
     }
 
     /**
@@ -495,27 +268,6 @@ public class ModelFacade {
     }
 
     /**
-     * @return Returns the GeneralizableElement Token.
-     */
-    public static Object getGeneralizableElementToken() {
-        return MGeneralizableElement.class;
-    }
-
-    /**
-     * @return Returns the Generalization Token.
-     */
-    public static Object getGeneralizationToken() {
-        return MGeneralization.class;
-    }
-
-    /**
-     * @return Returns the Guard Token.
-     */
-    public static Object getGuardToken() {
-        return MGuard.class;
-    }
-
-    /**
      * @return Returns the Guarded CallConcurrencyKind.
      */
     public static Object getGuardedConcurrencyKindToken() {
@@ -527,13 +279,6 @@ public class ModelFacade {
      */
     public static Object getInParameterDirectionKindToken() {
         return MParameterDirectionKind.IN;
-    }
-
-    /**
-     * @return Returns the Include Token.
-     */
-    public static Object getIncludeToken() {
-        return MInclude.class;
     }
 
     /**
@@ -551,24 +296,10 @@ public class ModelFacade {
     }
 
     /**
-     * @return Returns the Instance Token.
-     */
-    public static Object getInstanceToken() {
-        return MInstance.class;
-    }
-
-    /**
      * @return Returns the Instance ScopeKind.
      */
     public static Object getInstanceScopeKindToken() {
         return MScopeKind.INSTANCE;
-    }
-
-    /**
-     * @return Returns the Interface Token.
-     */
-    public static Object getInterfaceToken() {
-        return MInterface.class;
     }
 
     /**
@@ -583,13 +314,6 @@ public class ModelFacade {
      */
     public static Object getJunctionPseudostateKindToken() {
         return MPseudostateKind.JUNCTION;
-    }
-
-    /**
-     * @return Returns the Link Token.
-     */
-    public static Object getLinkToken() {
-        return MLink.class;
     }
 
     /**
@@ -621,80 +345,10 @@ public class ModelFacade {
     }
 
     /**
-     * @return Returns the Message Token.
-     */
-    public static Object getMessageToken() {
-        return MMessage.class;
-    }
-
-    /**
-     * @return Returns the Model Token.
-     */
-    public static Object getModelToken() {
-        return MModel.class;
-    }
-
-    /**
-     * @return Returns the ModelElement Token.
-     */
-    public static Object getModelElementToken() {
-        return MModelElement.class;
-    }
-
-    /**
-     * @return Returns the Multiplicity Token.
-     */
-    public static Object getMultiplicityToken() {
-        return MMultiplicity.class;
-    }
-
-    /**
-     * @return Returns the Namespace Token.
-     */
-    public static Object getNamespaceToken() {
-        return MNamespace.class;
-    }
-
-    /**
-     * @return Returns the Node Token.
-     */
-    public static Object getNodeToken() {
-        return MNode.class;
-    }
-
-    /**
-     * @return Returns the NodeInstance Token.
-     */
-    public static Object getNodeInstanceToken() {
-        return MNodeInstance.class;
-    }
-
-    /**
      * @return Returns the None AggregationKind.
      */
     public static Object getNoneAggregationKindToken() {
         return MAggregationKind.NONE;
-    }
-
-    /**
-     * @return Returns the Object Token.
-     */
-    public static Object getObjectToken() {
-        return MObject.class;
-    }
-
-    /**
-     * @return Returns the ObjectFlowState Token.
-     */
-    public static Object getObjectFlowStateToken() {
-        return MObjectFlowState.class;
-    }
-
-    /**
-     * @return Returns the Operation Token.
-     */
-    public static Object getOperationToken() {
-        return MOperation.class;
     }
 
     /**
@@ -712,41 +366,6 @@ public class ModelFacade {
     }
 
     /**
-     * @return Returns the Package Token.
-     */
-    public static Object getPackageToken() {
-        return MPackage.class;
-    }
-
-    /**
-     * @return Returns the Parameter Token.
-     */
-    public static Object getParameterToken() {
-        return MParameter.class;
-    }
-
-    /**
-     * @return Returns the ParameterDirectionKind Token.
-     */
-    public static Object getParameterDirectionKindToken() {
-        return MParameterDirectionKind.class;
-    }
-
-    /**
-     * @return Returns the Partition Token.
-     */
-    public static Object getPartitionToken() {
-        return MPartition.class;
-    }
-
-    /**
-     * @return Returns the Permission Token.
-     */
-    public static Object getPermissionToken() {
-        return MPermission.class;
-    }
-
-    /**
      * @return Returns the Private VisibilityKind.
      */
     public static Object getPrivateVisibilityKindToken() {
@@ -761,20 +380,6 @@ public class ModelFacade {
     }
 
     /**
-     * @return Returns the Pseudostate Token.
-     */
-    public static Object getPseudostateToken() {
-        return MPseudostate.class;
-    }
-
-    /**
-     * @return Returns the PseudostateKind Token.
-     */
-    public static Object getPseudostateKindToken() {
-        return MPseudostateKind.class;
-    }
-
-    /**
      * @return Returns the Public VisibilityKind.
      */
     public static Object getPublicVisibilityKindToken() {
@@ -782,38 +387,10 @@ public class ModelFacade {
     }
 
     /**
-     * @return Returns the Reception Token.
-     */
-    public static Object getReceptionToken() {
-        return MReception.class;
-    }
-
-    /**
-     * @return Returns the ReturnAction Token.
-     */
-    public static Object getReturnActionToken() {
-        return MReturnAction.class;
-    }
-
-    /**
      * @return Returns the Return ParameterDirectionKind.
      */
     public static Object getReturnParameterDirectionKindToken() {
         return MParameterDirectionKind.RETURN;
-    }
-
-    /**
-     * @return Returns the ScopeKind Token.
-     */
-    public static Object getScopeKindToken() {
-        return MScopeKind.class;
-    }
-
-    /**
-     * @return Returns the SendAction Token.
-     */
-    public static Object getSendActionToken() {
-        return MSendAction.class;
     }
 
     /**
@@ -831,13 +408,6 @@ public class ModelFacade {
     }
 
     /**
-     * @return Returns the Signal Token.
-     */
-    public static Object getSignalToken() {
-        return MSignal.class;
-    }
-
-    /**
      * @return Returns the Sorted OrderingKind.
      */
     public static Object getSortedOrderingKindToken() {
@@ -845,110 +415,10 @@ public class ModelFacade {
     }
 
     /**
-     * @return Returns the State Token.
-     */
-    public static Object getStateToken() {
-        return MState.class;
-    }
-
-    /**
-     * @return Returns the StateImpl Token.
-     * @deprecated by Linus Tolke as of 0.17.3. This is implementation
-     *             creaping out! Use {@link #getStateToken()} instead.
-     */
-    public static Object getStateImplToken() {
-        return MStateImpl.class;
-    }
-
-    /**
-     * @return Returns the StateMachine Token.
-     */
-    public static Object getStateMachineToken() {
-        return MStateMachine.class;
-    }
-
-    /**
-     * @return Returns the StateVertex Token.
-     */
-    public static Object getStateVertexToken() {
-        return MStateVertex.class;
-    }
-
-    /**
-     * @return Returns the Stereotype Token.
-     */
-    public static Object getStereotypeToken() {
-        return MStereotype.class;
-    }
-
-    /**
-     * @return Returns the Stimulus Token.
-     */
-    public static Object getStimulusToken() {
-        return MStimulus.class;
-    }
-
-    /**
-     * @return Returns the SubactivityState Token.
-     */
-    public static Object getSubactivityStateToken() {
-        return MSubactivityState.class;
-    }
-
-    /**
-     * @return Returns the Subsystem Token.
-     */
-    public static Object getSubsystemToken() {
-        return MSubsystem.class;
-    }
-
-    /**
-     * @return Returns the SynchState Token.
-     */
-    public static Object getSynchStateToken() {
-        return MSynchState.class;
-    }
-
-    /**
-     * @return Returns the TerminateAction Token.
-     */
-    public static Object getTerminateActionToken() {
-        return MTerminateAction.class;
-    }
-
-    /**
-     * @return Returns the Transition Token.
-     */
-    public static Object getTransitionToken() {
-        return MTransition.class;
-    }
-
-    /**
      * @return Returns the Unordered OrderingKind.
      */
     public static Object getUnorderedOrderingKindToken() {
         return MOrderingKind.UNORDERED;
-    }
-
-    /**
-     * @return Returns the Usage Token.
-     */
-    public static Object getUsageToken() {
-        return MUsage.class;
-    }
-
-    /**
-     * @return Returns the Use Case token.
-     */
-    public static Object getUseCaseToken() {
-        return MUseCase.class;
-    }
-
-    /**
-     * @return Returns the VisibilityKind token.
-     */
-    public static Object getVisibilityKindToken() {
-        return MVisibilityKind.class;
     }
 
     ////////////////////////////////////////////////////////////////

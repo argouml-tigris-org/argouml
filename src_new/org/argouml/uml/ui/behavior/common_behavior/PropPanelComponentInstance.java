@@ -28,7 +28,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -51,8 +51,9 @@ public class PropPanelComponentInstance extends PropPanelInstance {
         super("Component Instance", lookupIcon("ComponentInstance"),
                 ConfigLoader.getTabPropsOrientation());
 
-        Object[] namesToWatch = {ModelFacade.getStereotypeToken(),
-            ModelFacade.getNamespaceToken(), ModelFacade.getClassifierToken(),
+        Object[] namesToWatch = {Model.getMetaTypes().getStereotype(),
+            Model.getMetaTypes().getNamespace(),
+            Model.getMetaTypes().getClassifier(),
 	};
 
         setNameEventListening(namesToWatch);
@@ -77,8 +78,10 @@ public class PropPanelComponentInstance extends PropPanelInstance {
 
         addSeperator();
         AbstractActionAddModelElement action =
-            new ActionAddInstanceClassifier(ModelFacade.getComponentToken());
-        JScrollPane classifierScroll = new JScrollPane(
+            new ActionAddInstanceClassifier(
+                    Model.getMetaTypes().getComponent());
+        JScrollPane classifierScroll =
+            new JScrollPane(
                 new UMLMutableLinkedList(new UMLInstanceClassifierListModel(),
                         action, null, null, true));
         addField(Translator.localize("label.classifiers"),

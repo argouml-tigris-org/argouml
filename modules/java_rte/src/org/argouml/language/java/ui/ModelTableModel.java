@@ -94,7 +94,7 @@ public class ModelTableModel extends DefaultTableModel implements Runnable {
 	    Collection elems =
 		Model.getModelManagementHelper().getAllModelElementsOfKind(
 		        ns,
-		        ModelFacade.getClassifierToken());
+		        Model.getMetaTypes().getClassifier());
 	    //Project p = ProjectManager.getManager().getCurrentProject();
 	    //Collection elems = ModelManagementHelper.getHelper()
             //       .getAllModelElementsOfKind(MClassifier.class);

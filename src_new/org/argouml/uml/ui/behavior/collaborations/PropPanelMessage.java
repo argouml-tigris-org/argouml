@@ -32,7 +32,6 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
@@ -57,10 +56,11 @@ public class PropPanelMessage extends PropPanelModelElement {
 	super("Message", ConfigLoader.getTabPropsOrientation());
 
 	Object[] namesToWatch = {
-	    ModelFacade.getStereotypeToken(),
-	    ModelFacade.getClassifierRoleToken(),
-	    ModelFacade.getActionToken(),
+	    Model.getMetaTypes().getStereotype(),
+	    Model.getMetaTypes().getClassifierRole(),
+	    Model.getMetaTypes().getAction(),
 	};
+
 	setNameEventListening(namesToWatch);
 
 	addField(Translator.localize("label.name"),
