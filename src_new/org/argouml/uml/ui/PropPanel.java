@@ -563,7 +563,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      * @param  targetList  A list of pairs, {metaclass, property, ...} to which
      *                     we are listening.  */
 
-    protected void addThirdPartyEventListening(Object[] targetArray) {
+    public void addThirdPartyEventListening(Object[] targetArray) {
 
         // Create a target list if we don't have one
 
