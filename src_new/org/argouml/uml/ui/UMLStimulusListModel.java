@@ -79,8 +79,17 @@ public class UMLStimulusListModel extends UMLModelElementListModel  {
 	return stimuli;
 		   
     }
+    
+    
 
     
+	/**
+	 * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
+	 */
+	public boolean buildPopup(JPopupMenu popup, int index) {
+		return false;
+	}
+
 }
 
 

@@ -56,7 +56,7 @@ public class UMLComboBox extends JComboBox implements UMLUserInterfaceComponent 
 
     public void targetChanged() {
         _model.targetChanged();
-        updateUI();
+        // updateUI();
     }
 
     public void targetReasserted() {
@@ -64,31 +64,31 @@ public class UMLComboBox extends JComboBox implements UMLUserInterfaceComponent 
 
     public void roleAdded(final MElementEvent event) {
         _model.roleAdded(event);
-        updateUI();
+        // updateUI();
     }
 
     public void recovered(final MElementEvent event) {
         _model.recovered(event);
-        updateUI();
+        // updateUI();
     }
 
     public void roleRemoved(final MElementEvent event) {
         _model.roleRemoved(event);
-        updateUI();
+        // updateUI();
     }
 
     public void listRoleItemSet(final MElementEvent event) {
         _model.listRoleItemSet(event);
-        updateUI();
+        // updateUI();
     }
 
     public void removed(final MElementEvent event) {
         _model.removed(event);
-        updateUI();
+        // updateUI();
     }
     public void propertySet(final MElementEvent event) {
         _model.propertySet(event);
-        updateUI();
+        // updateUI();
     }
 
 
