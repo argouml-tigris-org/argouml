@@ -47,11 +47,9 @@ import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 /**
- * Enabling an activity diagram connected to an actor has been
- * requested as a feature.<p>
- *
- * As well enabling swim lanes in the activity diagram is considered
- * valuable as well.<p>
+ * The Activity diagram.<p>
+ * 
+ * TODO: Finish the work on swimlanes, callstates, subactivity states.
  */
 public class UMLActivityDiagram extends UMLDiagram {
 
@@ -73,9 +71,6 @@ public class UMLActivityDiagram extends UMLDiagram {
     private Action actionCallState;
     private Action actionObjectFlowState;
     private Action actionSubactivityState;
-
-    ////////////////////////////////////////////////////////////////
-    // contructors
 
     /**
      * The serial number for new activity diagrams. 
@@ -290,22 +285,10 @@ public class UMLActivityDiagram extends UMLDiagram {
 	    /*actionCallState,*/ // uncomment these ...
             actionObjectFlowState,
             /*actionSubactivityState,*/
-	    /*getExtendedActions(),*/
 	};
         return actions;
     }
 
-    /*private Object[] getExtendedActions() {
-        Object actions[] =
-        {
-            actionCallState, 
-            actionObjectFlowState,
-            actionSubactivityState };
-        return actions;
-
-    }*/
-
-    
     /**
      * Creates a new diagram name.<p>
      *
