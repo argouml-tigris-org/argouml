@@ -27,6 +27,7 @@ package org.argouml.ui;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
@@ -37,39 +38,56 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.UmlFactory;
 
 /**
  * Command to create nodes with the appropriate modelelement. The modelelement
- * is initialized via the build methods on the uml factories. If there is no
- * no-parameter build method, the create method corresponding to the
- * modelelement is used.
+ * is initialized via the build methods on the uml factories.
  *
- * @see org.argouml.model.uml.CoreFactoryImpl
+ * First we search for a buildMODELELEMENTNAME method without parameters.
+ * If that is not found we use the createMODELELEMENTNAME method.
+ *
+ * @see org.argouml.model.Model
+ * @see org.argouml.model.ActivityGraphsFactory
+ * @see org.argouml.model.CollaborationsFactory
+ * @see org.argouml.model.CommonBehaviorFactory
+ * @see org.argouml.model.CoreFactory
+ * @see org.argouml.model.DataTypesFactory
+ * @see org.argouml.model.ExtensionMechanismsFactory
+ * @see org.argouml.model.ModelManagementFactory
+ * @see org.argouml.model.StateMachinesFactory
+ * @see org.argouml.model.UseCasesFactory
  * @author jaap.branderhorst@xs4all.nl
  */
 public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(CmdCreateNode.class);
 
-    private static Hashtable cache = new Hashtable();
+    /**
+     * The cache for once found creation methods.
+     */
+    private static Dictionary cache = new Hashtable();
 
-    private static Object[] emptyParam = new Object[] {};
-
-    private static Vector factoryMethods = new Vector();
+    /**
+     * List of factories to search for the methods in.
+     */
+    private static List factories = new Vector();
     static {
-        // TODO: Is this the correct way to do this after refactoring the
-        //       model component? Please review! /Linus
-        Method[] methodArray = Model.getUmlFactory().getClass().getMethods();
-        for (int i = 0; i < methodArray.length; i++) {
-            if (methodArray[i].getName().startsWith("get")
-                    && !methodArray[i].getName().equals("getFactory")
-                    && !methodArray[i].getName().equals("getClass")) {
-                factoryMethods.add(methodArray[i]);
-            }
-        }
+        factories.add(Model.getActivityGraphsFactory());
+        factories.add(Model.getCollaborationsFactory());
+        factories.add(Model.getCommonBehaviorFactory());
+        factories.add(Model.getCoreFactory());
+        factories.add(Model.getDataTypesFactory());
+        factories.add(Model.getExtensionMechanismsFactory());
+        factories.add(Model.getModelManagementFactory());
+        factories.add(Model.getStateMachinesFactory());
+        factories.add(Model.getUseCasesFactory());
     }
 
+    /**
+     * Prefix for the action key.
+     */
     private static final String ACTION_PREFIX_KEY = "action.new";
 
     /**
@@ -176,17 +194,15 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
             if (cachedParams != null) {
                 LOG.debug("Using method and factory from cache");
                 return ((Method) cachedParams[1]).invoke(cachedParams[0],
-                        emptyParam);
+                        new Object[] {});
             }
-            Iterator it = factoryMethods.iterator();
+            Iterator it = factories.iterator();
             while (it.hasNext()) {
-                Object factory = ((Method) it.next()).invoke(Model
-                        .getUmlFactory(), new Object[] {});
-                List createMethods = Arrays.asList(factory.getClass()
-                        .getMethods());
+                Object factory = it.next();
+                List createMethods =
+                    Arrays.asList(factory.getClass().getMethods());
                 Iterator it2 = createMethods.iterator();
                 String classname = getCreateClassName();
-                LOG.info("Trying to create a node for " + classname);
                 while (it2.hasNext()) {
                     Method method = (Method) it2.next();
                     String methodname = method.getName();
@@ -199,9 +215,7 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 			    factory, method,
 			};
                         cache.put(_args.get("className"), params);
-                        Object newNode = method.invoke(factory, emptyParam);
-                        LOG.info("Returning a node of " + newNode.getClass().getName());
-                        return newNode;
+                        return method.invoke(factory, new Object[] {});
                     }
                 }
                 it2 = createMethods.iterator();
@@ -217,24 +231,23 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 			    factory, method,
 			};
                         cache.put(_args.get("className"), params);
-                        Object newNode =  method.invoke(factory, emptyParam);
-                        LOG.info("Returning a node of " + newNode.getClass().getName());
-                        return newNode;
+                        return method.invoke(factory, new Object[] {});
                     }
                 }
 
             }
-        } catch (IllegalAccessException ex) {
-            LOG.error("IllegalAccessException ", ex);
-        } catch (InvocationTargetException ex) {
-            LOG.error("InvocationTargetException ", ex);
+        } catch (IllegalAccessException e2) {
+            LOG.error(e2);
+        } catch (InvocationTargetException e3) {
+            LOG.error(e3);
         }
         LOG.debug("delegating to super.makeNode");
         return super.makeNode();
     }
 
     /**
-     * returns the name of the uml modelelement without impl, M or the fullname
+     * Returns the name of the uml modelelement without impl, M
+     * or the fullname.
      *
      * @return String
      */
@@ -249,6 +262,8 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 
     /**
      * Adds tooltip text to the Action.
+     *
+     * @param name The key to localize as the name.
      */
     private void putToolTip(String name) {
         putValue(Action.SHORT_DESCRIPTION, Translator
