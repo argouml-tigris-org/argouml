@@ -102,7 +102,9 @@ public class DocumentationManager {
         for (Iterator i = tValues.iterator(); i.hasNext();) {
           MTaggedValue tv = (MTaggedValue) i.next();
           String tag = tv.getTag();
-          if (tag.equals("documentation") || tag.equals("javadocs")) {
+          String value = tv.getValue();
+          if ((tag.equals("documentation") || tag.equals("javadocs"))
+              && value != null && value.trim().length() > 0) {
             return true;
           }
         }
@@ -222,14 +224,17 @@ public class DocumentationManager {
       if(o instanceof MModelElementImpl) {
 	  Collection comments = ((MModelElement) o).getComments();
 	  if (!comments.isEmpty()) {
-	      for(Iterator iter = comments.iterator(); iter.hasNext(); ) {
+	    for(Iterator iter = comments.iterator(); iter.hasNext(); ) {
 		  MComment c = (MComment)iter.next();
-		  if(result.length() > 0) {
+		  String s = c.getName().trim();
+		  if (s != null && s.length() > 0) {
+		    if(result.length() > 0) {
 		       result.append("\n");
-		  }
-		  result.append(c.getName());
+		    }
+		    result.append(s);
 	      }
-	  }
+	    }
+      }
       }
 
       // If there are no comments, just return an empty string.
