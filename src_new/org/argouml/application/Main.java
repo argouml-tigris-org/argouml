@@ -145,6 +145,7 @@ public class Main {
                     System.err.println("  -Duser.region      [e.g. US]");
                     System.err.println("  -Dforce.nativelaf  [force ArgoUML to use the native look and feel. UNSUPPORTED]");
                     System.err.println("\n\n");
+                    ArgoSecurityManager.getInstance().setAllowExit(true);
                     System.exit(0);
                 } else if (args[i].equalsIgnoreCase("-nosplash")) {
                     doSplash = false;
