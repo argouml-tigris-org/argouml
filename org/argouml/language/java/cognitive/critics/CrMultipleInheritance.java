@@ -75,7 +75,7 @@ public class CrMultipleInheritance extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizCueCards) {
 	    WizCueCards wcc = (WizCueCards) w;
-	    ToDoItem item = w.getToDoItem();
+	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object modelElement = /*(MModelElement)*/ 
 	        item.getOffenders().elementAt(0);
 	    String nameStr = ModelFacade.getName(modelElement);
