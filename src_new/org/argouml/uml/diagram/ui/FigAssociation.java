@@ -242,25 +242,27 @@ public class FigAssociation extends FigEdgeModelElement {
       popUpActions.insertElementAt(aggMenu, popUpActions.size() - 1);
     }
     else {
-        // Options available when right click anywhere on line (added by BobTarling 7-Jan-2002)
-        MAssociation asc = (MAssociation) getOwner();
-        if (asc != null) {
-            // Navigability menu with suboptions built dynamically to allow navigability
-            // from atart to end, from end to start or bidirectional
-            JMenu navMenu = new JMenu("Navigability");
-
-            java.util.List ascEnds = ((MAssociation) asc).getConnections();
-            MAssociationEnd ascStart = (MAssociationEnd) (ascEnds.get(0));
-            MAssociationEnd ascEnd = (MAssociationEnd) (ascEnds.get(1));
-
-            navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.BIDIRECTIONAL));
-            navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.STARTTOEND));
-            navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.ENDTOSTART));
-
-            popUpActions.insertElementAt(navMenu, popUpActions.size() - 1);
-        }
-
+        // No particular options for right click in middle of line
     }
+
+    // Options available when right click anywhere on line (added by BobTarling 7-Jan-2002)
+    MAssociation asc = (MAssociation) getOwner();
+    if (asc != null) {
+        // Navigability menu with suboptions built dynamically to allow navigability
+        // from atart to end, from end to start or bidirectional
+        JMenu navMenu = new JMenu("Navigability");
+
+        java.util.List ascEnds = ((MAssociation) asc).getConnections();
+        MAssociationEnd ascStart = (MAssociationEnd) (ascEnds.get(0));
+        MAssociationEnd ascEnd = (MAssociationEnd) (ascEnds.get(1));
+
+        navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.BIDIRECTIONAL));
+        navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.STARTTOEND));
+        navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.ENDTOSTART));
+
+        popUpActions.insertElementAt(navMenu, popUpActions.size() - 1);
+    }
+
 
     return popUpActions;
   }
