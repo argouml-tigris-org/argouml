@@ -158,6 +158,7 @@ public class ActionOpenProject extends UMLAction {
             
             // new code:
             Designer.disableCritiquing();
+            Designer.clearCritiquing();
 
             // 2002-07-18
         	// Jaap Branderhorst
@@ -166,7 +167,6 @@ public class ActionOpenProject extends UMLAction {
         	// try catch block added
             try {
             	p = Project.loadProject (url);
-                Designer.clearCritiquing();
             	ProjectManager.getManager().setCurrentProject(p);
             	pb.showStatus (MessageFormat.format (
                 Argo.localize ("Actions", "template.open_project.status_read"),
