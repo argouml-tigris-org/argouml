@@ -64,7 +64,7 @@ public class FigObject extends FigNodeModelElement {
 
     public FigObject() {
 	_bigPort = new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan);
-	_cover = new FigRect(10, 10, 90, 50, Color.black, Color.white);
+	_cover = new ShadowRect(10, 10, 90, 50, Color.black, Color.white);
 	_name.setLineWidth(0);
 	_name.setFilled(false);
 	_name.setUnderline(true);
