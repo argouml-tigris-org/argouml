@@ -152,7 +152,9 @@ public class GeneratorDisplay extends Generator2 {
                 parameterListBuffer.length() - 1,
                 parameterListBuffer.length());
         }
-        String parameterStr = "(" + parameterListBuffer.toString() + ")";
+
+        StringBuffer parameterStr = new StringBuffer();
+	parameterStr.append("(").append(parameterListBuffer).append(")");
 
         // the returnparameters
         coll = UmlHelper.getHelper().getCore().getReturnParameters(op);
@@ -171,8 +173,7 @@ public class GeneratorDisplay extends Generator2 {
                 returnParasSb.length() - 1,
                 returnParasSb.length());
         }
-        String returnParasStr = returnParasSb.toString();
-
+        
         // the properties
         StringBuffer propertySb = new StringBuffer().append("{");
         // the query state
@@ -209,10 +210,9 @@ public class GeneratorDisplay extends Generator2 {
         } else {
             propertySb = new StringBuffer();
         }
-        String propertiesStr = propertySb.toString();
 
         // lets concatenate it to the resulting string (genStr)
-        StringBuffer genStr = new StringBuffer();
+        StringBuffer genStr = new StringBuffer(30);
         if ((stereoStr != null) && (stereoStr.length() > 0)) {
             genStr.append(stereoStr).append(" ");
         }
@@ -225,13 +225,13 @@ public class GeneratorDisplay extends Generator2 {
             genStr.append(nameStr);
         }
         genStr.append(parameterStr).append(" ");
-        if ((returnParasStr != null) && (returnParasStr.length() > 0)) {
-            genStr.append(returnParasStr).append(" ");
+        if ((returnParasSb != null) && (returnParasSb.length() > 0)) {
+            genStr.append(returnParasSb).append(" ");
         }
-        if ((propertiesStr != null)
-            && (propertiesStr.length() > 0)
+        if ((propertySb != null)
+            && (propertySb.length() > 0)
             && Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES)) {
-            genStr.append(propertiesStr);
+            genStr.append(propertySb);
         }
         return genStr.toString().trim();
     }
@@ -274,12 +274,12 @@ public class GeneratorDisplay extends Generator2 {
                 changeableKind = "addOnly";
 	    }
         }
-        String properties = "";
+        StringBuffer properties = new StringBuffer();
         if (changeableKind.length() > 0) {
-            properties = "{ " + changeableKind + " }";
+            properties.append("{ ").append(changeableKind).append(" }");
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer(20);
         if ((visibility != null)
             && (visibility.length() > 0)
             && Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY)) {
