@@ -29,6 +29,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -55,9 +56,15 @@ public class ActionAddNote extends UMLChangeAction {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Object target = pb.getDetailsTarget();
 	Object d = pb.getTarget();
-	
-	if (!(target instanceof MClassifier)) return;
-	MClassifier cls = (MClassifier)target;
+	MModelElement objectWithNote = null;
+    // if the target is neither of a Classifier nor a state do nothing
+	if (!(target instanceof MClassifier || 
+          target instanceof MStateVertex)) return;
+    
+    if (target instanceof MClassifier)
+        objectWithNote = (MClassifier)target;
+    else if (target instanceof MStateVertex) 
+        objectWithNote = (MStateVertex)target;
     
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
@@ -66,7 +73,7 @@ public class ActionAddNote extends UMLChangeAction {
 
 	// There are 2 FigNote classes in the project now, so I have to
 	// use the fully qualified typename here.
-	org.argouml.uml.diagram.static_structure.ui.FigNote note = new org.argouml.uml.diagram.static_structure.ui.FigNote(cls);
+	org.argouml.uml.diagram.static_structure.ui.FigNote note = new org.argouml.uml.diagram.static_structure.ui.FigNote(objectWithNote);
 
 	// place the note a few pixels right of the selected figure
 	Fig f = null;  // The figure for the associated object.
@@ -139,6 +146,7 @@ public class ActionAddNote extends UMLChangeAction {
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Object target = pb.getDetailsTarget();
-	return super.shouldBeEnabled() && target instanceof MClassifier;
+	return super.shouldBeEnabled() && 
+        (target instanceof MClassifier || target instanceof MStateVertex);
     }
 } /* end class ActionAddNote */
