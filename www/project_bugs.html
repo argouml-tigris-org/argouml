@@ -4,7 +4,7 @@
 
 <div id="bodycol">
 <div id="apphead">
-<h2>How to report bugs or register enhancements</h2>
+<h2>How to report bugs and register enhancements</h2>
 </div>
 
 <div id="projectissues" class="app">
@@ -35,20 +35,21 @@
   </tr>  
 
   <tr>
-    <th nowrap="nowrap">Enter an issue</th>
+    <th nowrap="nowrap">Prerequisites</th>
     <td>
 To enter an issue, you must be a registered and logged in member
 on Tigris.
 To follow up issues it is required that you apply for an Observer role in
 the ArgoUML and get it granted.
-(<a href="http://www.tigris.org/servlets/Join">Register</a>, 
+<p>
+<a href="http://www.tigris.org/servlets/Join">Register</a>, 
 <a href="http://www.tigris.org/servlets/TLogin">Log in</a>, and
-<a href="http://argouml.tigris.org/servlets/ProjectMembershipRequest">Apply for Observer role</a>.)
+<a href="http://argouml.tigris.org/servlets/ProjectMembershipRequest">Apply for Observer role</a>
     </td>
   </tr>
   <tr>
     <th>
-      <a href="http://argouml.tigris.org/issues/enter_bug.cgi?issue_type=DEFECT&component=argouml">Report a bug in ArgoUML</a>.
+      <a href="http://argouml.tigris.org/issues/enter_bug.cgi?issue_type=DEFECT&component=argouml">Report a bug in ArgoUML</a>
     </th>
     <td>        
       Step by step instruction on what to do:
@@ -65,9 +66,8 @@ the ArgoUML and get it granted.
           what version of ArgoUML you are running, 
           what version of jdk,
           all the steps that lead up to this,
-          what happens,
-          what you expected to happen, and
-          what the problem is.
+          what happens, and
+          what you expected to happen.
         <li>If the problem is repeatable, rerun with debug logging enabled
         (<tt>java -Dlog4j.configuration=org/argouml/resource/full.lcf -jar argouml.jar</tt>)
         and add the log file <tt>argo_full.log</tt> from your home
@@ -80,8 +80,8 @@ the ArgoUML and get it granted.
           log files...
         <li>You will get updates via mail when someone comments or does
         something with your issue.
-        <li>When it is resolved and verified, close the issue after you have 
-        accepted the solution.
+        <li>When the issue is resolved and verified, 
+        close it after you have accepted the solution.
       </ol>
     </td>
   </tr>
@@ -97,26 +97,23 @@ the ArgoUML and get it granted.
   </tr>
   <tr>
     <th>
-      <a href="http://argouml.tigris.org/issues/enter_bug.cgi?issue_type=DEFECT&component=website">Report a bug on the web site</a>
+      <a href="http://argouml.tigris.org/issues/enter_bug.cgi?issue_type=DEFECT&component=website&subcomponent=Contents">Report a bug on the web site</a>
     </th>
     <td>
       This is when you find errors among the things present on the web site.
     </td>
   </tr>  
-
  
-
   <tr>
-    <th>More about Issuezilla</th>
+    <th>More</th>
     <td>
       <form method="get" action="http://argouml.tigris.org/servlets/ProjectIssues">
       <input type="submit" value="Advanced"/>
-      If you need to do other things with Issuezilla.
+      To do other things with Issuezilla.
       </form>
     </td>
   </tr>
 </table>
-</div>
 </div>
 
 <h3>Why you should do this</h3>
@@ -126,7 +123,7 @@ your help will lead to making ArgoUML a better product.
 By voting you are showing your interest and help the active developers
 get a good idea of what is important and what is not.
 <p>
-By suggesting enhancements you are in fact helping with ideas for some
+By suggesting enhancements you are contributing ideas for some
 future version of ArgoUML.
 <p>
 If you want to contribute even more to the project
@@ -134,4 +131,5 @@ you should start with verifying, and resolving bugs.
 For details read through the <a href="/dev.html">Developer Zone</a> and
 especially the <a href="/documentation/defaulthtml/cookbook/">Cookbook</a>.
 
+</div>
 </div>
