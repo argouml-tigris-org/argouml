@@ -40,13 +40,13 @@ public class ConfigurationKeyImpl
 
     /** The string value for the key.
      */
-    private String _key = null;
+    private String key = null;
 
     /** Create a single component configuration key.
      * @param k1 key component.
      */
     public ConfigurationKeyImpl(String k1) {
-	_key = "argo." + k1;
+	key = "argo." + k1;
     }
 
     /** Create a sub-component of an existing configuration key.
@@ -54,7 +54,7 @@ public class ConfigurationKeyImpl
      * @param k1 additional key component.
      */
     public ConfigurationKeyImpl(ConfigurationKey ck, String k1) {
-	_key = ck.getKey() + "." + k1;
+	key = ck.getKey() + "." + k1;
     }
 
     /** Create a two-component configuration key.
@@ -62,7 +62,7 @@ public class ConfigurationKeyImpl
      * @param k2 key component 2.
      */
     public ConfigurationKeyImpl(String k1, String k2) {
-	_key = "argo." + k1 + "." + k2;
+	key = "argo." + k1 + "." + k2;
     }
 
     /** Create a three-component configuration key.
@@ -71,7 +71,7 @@ public class ConfigurationKeyImpl
      * @param k3 key component 3.
      */
     public ConfigurationKeyImpl(String k1, String k2, String k3) {
-	_key = "argo." + k1 + "." + k2 + "." + k3;
+	key = "argo." + k1 + "." + k2 + "." + k3;
     }
 
     /** Create a four-component configuration key.
@@ -81,7 +81,7 @@ public class ConfigurationKeyImpl
      * @param k4 key component 4.
      */
     public ConfigurationKeyImpl(String k1, String k2, String k3, String k4) {
-	_key = "argo." + k1 + "." + k2 + "." + k3 + "." + k4;
+	key = "argo." + k1 + "." + k2 + "." + k3 + "." + k4;
     }
 
     /** Create a five-component configuration key.
@@ -94,14 +94,14 @@ public class ConfigurationKeyImpl
     public ConfigurationKeyImpl(String k1, String k2, 
 				String k3, String k4, String k5) 
     {
-	_key = "argo." + k1 + "." + k2 + "." + k3 + "." + k4 + "." + k5;
+	key = "argo." + k1 + "." + k2 + "." + k3 + "." + k4 + "." + k5;
     }
 
     /** Return the actual key used to access the configuration.
      * @return the key
      */ 
     public final String getKey() {
-	return _key;
+	return key;
     }
 
     /** Compare the configuration key to a string.
@@ -110,7 +110,7 @@ public class ConfigurationKeyImpl
      */
     public boolean isChangedProperty(PropertyChangeEvent pce) {
 	if (pce == null) return false;
-	return pce.getPropertyName().equals(_key);
+	return pce.getPropertyName().equals(key);
     }
 
     /**
@@ -118,7 +118,7 @@ public class ConfigurationKeyImpl
      * @return a formatted key string.
      */
     public String toString() {
-	return "{ConfigurationKeyImpl:" + _key + "}";
+	return "{ConfigurationKeyImpl:" + key + "}";
     }
 }
 

@@ -53,18 +53,18 @@ public class ConfigurationProperties extends ConfigurationHandler {
 
     /** The location of Argo's default properties resource.
      */
-    private static String PROPERTIES =
+    private static String propertyLocation =
         "/org/argouml/resource/default.properties";
     
     /** The primary property bundle.
      */
-    private Properties _properties = null;
+    private Properties propertyBundle = null;
 
     /** Flag to ensure that only the first load failure is reported
      *  even though we keep trying because the file or URL may only
      *  be temporarily unavailable.
      */
-    private boolean _canComplain = true;
+    private boolean canComplain = true;
 
     /** Anonymous constructor.
      */
@@ -72,16 +72,16 @@ public class ConfigurationProperties extends ConfigurationHandler {
 	super(true);
 	Properties defaults = new Properties();
 	try {
-	    defaults.load(getClass().getResourceAsStream(PROPERTIES));
-	    cat.debug("Configuration loaded from " + PROPERTIES);
+	    defaults.load(getClass().getResourceAsStream(propertyLocation));
+	    cat.debug("Configuration loaded from " + propertyLocation);
 	}
 	catch (Exception ioe) {
 	    // TODO:  What should we do here?
 	    cat.warn("Configuration not loaded from "
-				   + PROPERTIES,
+				   + propertyLocation,
 				   ioe);
 	}
-	_properties = new Properties(defaults);
+	propertyBundle = new Properties(defaults);
     }
 
     /** Returns the default path for user properties.
@@ -101,12 +101,12 @@ public class ConfigurationProperties extends ConfigurationHandler {
      */
     public boolean loadFile(File file) {
         try {
-            _properties.load(new FileInputStream(file));
+            propertyBundle.load(new FileInputStream(file));
             cat.info ("Configuration loaded from " + file);
             return true;
         }
         catch (Exception e) {
-            if (_canComplain) {
+            if (canComplain) {
                 cat.warn ("Unable to load configuration " + file);
             }
             // Try to create an empty file.
@@ -122,7 +122,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
                 // Ignore an error here
                 cat.warn ("Unable to create configuration " + file, e1);
             }
-            _canComplain = false;
+            canComplain = false;
         }
 
         return false;
@@ -136,14 +136,14 @@ public class ConfigurationProperties extends ConfigurationHandler {
      */
     boolean saveFile(File file) {
 	try {
-	    _properties.store(new FileOutputStream(file), "Argo properties");
+	    propertyBundle.store(new FileOutputStream(file), "Argo properties");
 	    cat.info ("Configuration saved to " + file);
 	    return true;
 	}
 	catch (Exception e) {
-	    if (_canComplain)
+	    if (canComplain)
 		cat.warn ("Unable to save configuration " + file + "\n");
-	    _canComplain = false;
+	    canComplain = false;
 	}
 
 	return false;
@@ -156,14 +156,14 @@ public class ConfigurationProperties extends ConfigurationHandler {
      */
     public boolean loadURL(URL url) {
 	try {
-	    _properties.load(url.openStream());
+	    propertyBundle.load(url.openStream());
 	    cat.info ("Configuration loaded from " + url + "\n");
 	    return true;
 	}
 	catch (Exception e) {
-	    if (_canComplain)
+	    if (canComplain)
 		cat.warn ("Unable to load configuration " + url + "\n");
-	    _canComplain = false;
+	    canComplain = false;
 	    return false;
 	}
     }
@@ -189,7 +189,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
     public String getValue(String key, String defaultValue) {
 	String result = "";
 	try {
-	    result = _properties.getProperty(key, defaultValue);
+	    result = propertyBundle.getProperty(key, defaultValue);
 	}
 	catch (Exception e) {
 	    result = defaultValue;
@@ -207,7 +207,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
      */
     public void setValue(String key, String value) {
 	cat.debug("key '" + key + "' set to '" + value + "'");
-	_properties.setProperty(key, value);
+	propertyBundle.setProperty(key, value);
     }
 }
 

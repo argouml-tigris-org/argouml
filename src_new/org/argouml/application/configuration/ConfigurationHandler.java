@@ -53,32 +53,32 @@ public abstract class ConfigurationHandler {
     /** Internal storage for the <code>File</code> the configuration was
      *  loaded from, otherwise null.
      */
-    private File _loadedFromFile = null;
+    private File loadedFromFile = null;
 
     /** Internal storage for the <code>URL</code> the configuration was
      *  loaded from, otherwise null.
      */ 
-    private URL _loadedFromURL = null;
+    private URL loadedFromURL = null;
 
     /** Internal flag indicating whether the configuration can be updated.
      */
-    private boolean _changeable = false;
+    private boolean changeable = false;
 
     /** Internal flag indicating whether the configuration has been loaded.
      *  Configuration rules allow a single load, whether manual or automatic.
      */
-    private boolean _loaded = false;
+    private boolean loaded = false;
 
     /** Internal flag indicating whether the configuration has been modified
      *  after it was loaded.
      */
-    private boolean _changed = false;
+    private boolean changed = false;
 
     /** Internal worker for property change.
      */
-    private static PropertyChangeSupport _pcl = null; 
+    private static PropertyChangeSupport pcl = null; 
 
-    private static Logger _cat = 
+    private static final Logger LOG = 
         Logger.getLogger(ConfigurationHandler.class);
     
     /** Anonymous constructor allows configuration changes.
@@ -88,11 +88,11 @@ public abstract class ConfigurationHandler {
     }
 
     /** Constructor which optionally allows configuration changes.
-     * @param changeable indicates if the configuration can be changed
+     * @param c indicates if the configuration can be changed
      */
-    public ConfigurationHandler(boolean changeable) {
+    public ConfigurationHandler(boolean c) {
 	super();
-	_changeable = changeable;
+	changeable = c;
     }
 
     /** Returns a default configuration path.  This could be a filename
@@ -108,7 +108,7 @@ public abstract class ConfigurationHandler {
      *  loaded previously.
      */
     private void loadIfNecessary() {
-	if (!_loaded) loadDefault();
+	if (!loaded) loadDefault();
     }
 
     /** Load the configuration from the default location.
@@ -121,11 +121,11 @@ public abstract class ConfigurationHandler {
      */
     public final boolean loadDefault() {
 	// Only allow one load
-	if (_loaded) return false;
+	if (loaded) return false;
 
 	boolean status = load(new File(getDefaultPath()));
 	if (!status) status = loadUnspecified();
-	_loaded = true;
+	loaded = true;
 	return status;
     }
 
@@ -150,17 +150,17 @@ public abstract class ConfigurationHandler {
 	    File toFile = new File(getDefaultPath());
 	    boolean saved = saveFile(toFile);
 	    if (saved) {
-		_loadedFromFile = toFile;
+		loadedFromFile = toFile;
 	    }
 	    return saved;
 	}
-	if (!_loaded) return false;
+	if (!loaded) return false;
 
-	if (_loadedFromFile != null) {
-	    return saveFile(_loadedFromFile);
+	if (loadedFromFile != null) {
+	    return saveFile(loadedFromFile);
 	}
-	if (_loadedFromURL != null) {
-	    return saveURL(_loadedFromURL);
+	if (loadedFromURL != null) {
+	    return saveURL(loadedFromURL);
 	}
 	return false;
     }
@@ -169,19 +169,19 @@ public abstract class ConfigurationHandler {
      *
      *  @return true if the configuration can be saved.
      */
-    public final boolean isChangeable() { return _changeable; }
+    public final boolean isChangeable() { return changeable; }
 
     /** Indicates whether the configuration can be saved.
      *
      *  @return true if the configuration has been changed after load.
      */
-    public final boolean isChanged() { return _changed; }
+    public final boolean isChanged() { return changed; }
 
     /** Indicates whether the configuration has been loaded.
      *
      *  @return true if the configuration has been loaded.
      */
-    public final boolean isLoaded() { return _loaded; }
+    public final boolean isLoaded() { return loaded; }
 
     /** Load the configuration from a <code>File</code>.
      *
@@ -194,10 +194,10 @@ public abstract class ConfigurationHandler {
     public final boolean load(File file) {
 	boolean status = loadFile(file);
 	if (status) {
-	    if (_pcl != null) {
-		_pcl.firePropertyChange(Configuration.FILE_LOADED, null, file);
+	    if (pcl != null) {
+		pcl.firePropertyChange(Configuration.FILE_LOADED, null, file);
 	    }
-	    _loadedFromFile = file;
+	    loadedFromFile = file;
 	}
 	return status;
     }
@@ -212,10 +212,10 @@ public abstract class ConfigurationHandler {
     public final boolean load(URL url) {
 	boolean status = loadURL(url);
 	if (status) {
-	    if (_pcl != null) {
-		_pcl.firePropertyChange(Configuration.URL_LOADED, null, url);
+	    if (pcl != null) {
+		pcl.firePropertyChange(Configuration.URL_LOADED, null, url);
 	    }
-	    _loadedFromURL = url;
+	    loadedFromURL = url;
 	}
 	return status;
     }
@@ -227,13 +227,13 @@ public abstract class ConfigurationHandler {
      *  otherwise false.
      */ 
     public final boolean save(File file) {
-	if (!_loaded) {
+	if (!loaded) {
 	    return false;
 	}
 	boolean status = saveFile(file);
 	if (status) {
-	    if (_pcl != null) {
-		_pcl.firePropertyChange(Configuration.FILE_SAVED, null, file);
+	    if (pcl != null) {
+		pcl.firePropertyChange(Configuration.FILE_SAVED, null, file);
 	    }
 	}
 	return status;
@@ -246,13 +246,13 @@ public abstract class ConfigurationHandler {
      *  otherwise false.
      */ 
     public final boolean save(URL url) {
-	if (!_loaded) {
+	if (!loaded) {
 	    return false;
 	}
 	boolean status = saveURL(url);
 	if (status) {
-	    if (_pcl != null) {
-		_pcl.firePropertyChange(Configuration.URL_SAVED, null, url);
+	    if (pcl != null) {
+		pcl.firePropertyChange(Configuration.URL_SAVED, null, url);
 	    }
 	}
 	return status;
@@ -347,8 +347,8 @@ public abstract class ConfigurationHandler {
 
 	String oldValue = getValue(key.getKey(), "");
 	setValue(key.getKey(), newValue);
-	if (_pcl != null) {
-	    _pcl.firePropertyChange(key.getKey(), oldValue, newValue);
+	if (pcl != null) {
+	    pcl.firePropertyChange(key.getKey(), oldValue, newValue);
 	}
     }
 
@@ -391,55 +391,55 @@ public abstract class ConfigurationHandler {
 
     /** Adds a property change listener.
      *
-     *  @param pcl The class which will listen for property changes.
+     *  @param p The class which will listen for property changes.
      */
-    public final void addListener(PropertyChangeListener pcl) {
-	if (_pcl == null) {
-	    _pcl = new PropertyChangeSupport(this);
+    public final void addListener(PropertyChangeListener p) {
+	if (pcl == null) {
+	    pcl = new PropertyChangeSupport(this);
 	}
-	_cat.debug("addPropertyChangeListener(" + pcl + ")");
-	_pcl.addPropertyChangeListener(pcl);
+	LOG.debug("addPropertyChangeListener(" + p + ")");
+	pcl.addPropertyChangeListener(p);
     }
 
     /** Removes a property change listener.
      *
-     *  @param pcl The class to remove as a property change listener.
+     *  @param p The class to remove as a property change listener.
      */
-    public final void removeListener(PropertyChangeListener pcl) {
-	if (_pcl != null) {
-	    _cat.debug("removePropertyChangeListener()");
-	    _pcl.removePropertyChangeListener(pcl);
+    public final void removeListener(PropertyChangeListener p) {
+	if (pcl != null) {
+	    LOG.debug("removePropertyChangeListener()");
+	    pcl.removePropertyChangeListener(p);
 	}
     }
 
     /** Adds a property change listener.Static for simplicity of use.
      *
      *  @param key The specific key to listen for.
-     *  @param pcl The class which will listen for property changes.
+     *  @param p The class which will listen for property changes.
      */
     public final void addListener(ConfigurationKey key,
-				  PropertyChangeListener pcl) 
+				  PropertyChangeListener p) 
     {
-	if (_pcl == null) {
-	    _pcl = new PropertyChangeSupport(this);
+	if (pcl == null) {
+	    pcl = new PropertyChangeSupport(this);
 	}
-	_cat.debug("addPropertyChangeListener(" 
+	LOG.debug("addPropertyChangeListener(" 
 				+ key.getKey() + ")");
-	_pcl.addPropertyChangeListener(key.getKey(), pcl);
+	pcl.addPropertyChangeListener(key.getKey(), p);
     }
 
     /** Removes a property change listener.
      *
      *  @param key The specific key being listened for.
-     *  @param pcl The class to remove as a property change listener.
+     *  @param p The class to remove as a property change listener.
      */
     public final void removeListener(ConfigurationKey key, 
-				     PropertyChangeListener pcl) 
+				     PropertyChangeListener p) 
     {
-	if (_pcl != null) {
-	    _cat.debug("removePropertyChangeListener(" 
+	if (pcl != null) {
+	    LOG.debug("removePropertyChangeListener(" 
 				    + key.getKey() + ")");
-	    _pcl.removePropertyChangeListener(key.getKey(), pcl);
+	    pcl.removePropertyChangeListener(key.getKey(), p);
 	}
     }
 

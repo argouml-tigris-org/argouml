@@ -58,13 +58,6 @@ import org.argouml.util.osdep.OsUtil;
  */
 public final class ArgoSecurityManager extends SecurityManager
 {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat =
-	Logger.getLogger(ArgoSecurityManager.class);
-
     private static final Logger LOG =
 	Logger.getLogger(ArgoSecurityManager.class);
 
@@ -78,7 +71,7 @@ public final class ArgoSecurityManager extends SecurityManager
      * when running JUnit test cases and batch commands, are allowed to
      * exit immediatly.
      */
-    private boolean _allowExit = true;
+    private boolean allowExit = true;
 
     /** The only allowed instance. */
     private static final ArgoSecurityManager SINGLETON =
@@ -125,10 +118,10 @@ public final class ArgoSecurityManager extends SecurityManager
     }
 
     public boolean getAllowExit() {
-        return _allowExit;
+        return allowExit;
     }
 
-    public void setAllowExit(boolean allowExit) {
-        _allowExit = allowExit;
+    public void setAllowExit(boolean myAllowExit) {
+        allowExit = myAllowExit;
     }
 }
