@@ -25,7 +25,7 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.uml.UmlFactory;
 
 import java.lang.reflect.*;
@@ -47,7 +47,7 @@ public class UMLMultiplicityComboBox
     extends JComboBox
     implements ItemListener, UMLUserInterfaceComponent 
 {
-    protected static Category cat = Category.getInstance(UMLMultiplicityComboBox.class);
+    protected static Logger cat = Logger.getLogger(UMLMultiplicityComboBox.class);
 
     private UMLUserInterfaceContainer _container;
     private Method _getMethod;

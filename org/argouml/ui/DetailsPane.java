@@ -44,7 +44,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.QuadrantPanel;
 import org.argouml.cognitive.ui.TabToDo;
@@ -81,7 +81,7 @@ public class DetailsPane
 	       TargetListener
 {
 
-    protected static Category cat = Category.getInstance(DetailsPane.class);
+    protected static Logger cat = Logger.getLogger(DetailsPane.class);
     ////////////////////////////////////////////////////////////////
     // constants
 

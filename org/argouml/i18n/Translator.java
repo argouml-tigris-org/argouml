@@ -30,7 +30,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.tigris.gef.util.Localizer;
 
 /**
@@ -41,8 +41,8 @@ import org.tigris.gef.util.Localizer;
  */
 public class Translator {
     /** logger */
-    private static Category cat = 
-        Category.getInstance(Translator.class);
+    private static Logger cat = 
+        Logger.getLogger(Translator.class);
 
     /** Key for menu resource bundle. */
     //public static final String MENU_BUNDLE = "CoreMenu";

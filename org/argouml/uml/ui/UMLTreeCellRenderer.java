@@ -31,7 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.ModelFacade;
@@ -55,7 +55,7 @@ import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
  */
 public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
-    private Category cat = Category.getInstance(this.getClass());
+    private Logger cat = Logger.getLogger(this.getClass());
     
     private static final String BUNDLE = "UMLMenu";
 

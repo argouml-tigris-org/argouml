@@ -49,7 +49,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.QuadrantPanel;
@@ -100,7 +100,7 @@ public class ToDoPane extends JPanel
         ToDoListListener,
         QuadrantPanel {
     
-    protected static Category cat = Category.getInstance(ToDoPane.class);
+    protected static Logger cat = Logger.getLogger(ToDoPane.class);
     
     ////////////////////////////////////////////////////////////////
     // constants

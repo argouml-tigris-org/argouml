@@ -38,7 +38,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -53,7 +53,7 @@ public class StylePanel
         DocumentListener,
         ListSelectionListener,
         ActionListener {
-    protected static Category cat = Category.getInstance(StylePanel.class);
+    protected static Logger cat = Logger.getLogger(StylePanel.class);
     ////////////////////////////////////////////////////////////////
     // instance vars
     protected Fig _target;

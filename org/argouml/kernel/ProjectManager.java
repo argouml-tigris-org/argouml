@@ -35,7 +35,7 @@ import java.util.zip.ZipInputStream;
 import javax.swing.event.EventListenerList;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.model.uml.UmlHelper;
@@ -64,7 +64,7 @@ public final class ProjectManager {
 	"currentProject";
     public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
 
-    private Category cat = Category.getInstance(this.getClass());
+    private Logger cat = Logger.getLogger(this.getClass());
 
     /**
      * The singleton instance of this class

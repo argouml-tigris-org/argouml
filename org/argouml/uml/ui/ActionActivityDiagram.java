@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -43,8 +43,8 @@ public class ActionActivityDiagram extends ActionStateDiagram {
 
     public static ActionActivityDiagram SINGLETON = new ActionActivityDiagram();
 
-    protected static Category cat =
-	Category.getInstance(org.argouml.uml.ui.ActionActivityDiagram.class);
+    protected static Logger cat =
+	Logger.getLogger(org.argouml.uml.ui.ActionActivityDiagram.class);
 
     private ActionActivityDiagram() {
         super("action.activity-diagram");

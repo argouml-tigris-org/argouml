@@ -45,7 +45,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.tree.TreeModel;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.tigris.gef.util.Converter;
 
 /**
@@ -61,8 +61,8 @@ public class NavigatorConfigDialog extends JDialog
 	       MouseListener 
 {
     
-    protected static Category cat =
-	Category.getInstance(NavigatorConfigDialog.class);
+    protected static Logger cat =
+	Logger.getLogger(NavigatorConfigDialog.class);
 
     public static int _numNavConfig = 0;
     ////////////////////////////////////////////////////////////////

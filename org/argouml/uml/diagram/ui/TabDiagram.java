@@ -39,7 +39,7 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.border.EtchedBorder;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -74,7 +74,7 @@ public class TabDiagram
     extends TabSpawnable
     implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
 
-    private Category cat = Category.getInstance(TabDiagram.class);
+    private Logger cat = Logger.getLogger(TabDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables

@@ -24,7 +24,7 @@
 
 package org.argouml.model.uml;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 
@@ -42,7 +42,7 @@ public class UmlModelListener implements MElementListener {
 
     /** Log4j logging category.
      */
-    Category logger = null;
+    Logger logger = null;
 
     /** Singleton instance.
      */
@@ -58,7 +58,7 @@ public class UmlModelListener implements MElementListener {
      * Create the logger.
      */
     private UmlModelListener() {
-        logger = Category.getInstance("org.argouml.model.uml.listener");
+        logger = Logger.getLogger("org.argouml.model.uml.listener");
     }
 
     /** Handle the event.

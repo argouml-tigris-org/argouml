@@ -26,7 +26,7 @@ package org.argouml.cognitive.ui;
 
 import java.util.Enumeration;
 import java.util.Vector;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 
 import org.argouml.cognitive.Designer;
@@ -40,8 +40,8 @@ import org.tigris.gef.util.VectorSet;
 public class ToDoByPoster extends ToDoPerspective
     implements ToDoListListener 
 {
-    protected static Category cat = 
-        Category.getInstance(ToDoByPoster.class);
+    protected static Logger cat = 
+        Logger.getLogger(ToDoByPoster.class);
 
     public ToDoByPoster() {
 	super("combobox.todo-perspective-poster");

@@ -46,7 +46,7 @@ import java.util.zip.ZipOutputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ProjectMemberTodoList;
@@ -160,8 +160,8 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     private HashMap _defaultModelCache;
 
-    protected static Category cat =
-        Category.getInstance(org.argouml.kernel.Project.class);
+    protected static Logger cat =
+        Logger.getLogger(org.argouml.kernel.Project.class);
     
     ////////////////////////////////////////////////////////////////
     // constructor

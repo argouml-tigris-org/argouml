@@ -29,7 +29,7 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Helper class for tree models that provides tree event handling.
@@ -41,8 +41,8 @@ import org.apache.log4j.Category;
  */
 public class TreeModelSupport extends PerspectiveSupport {
 
-    private static Category cat =
-        Category.getInstance(TreeModelSupport.class);
+    private static Logger cat =
+        Logger.getLogger(TreeModelSupport.class);
                 
     /** tree model listener list. */
     protected EventListenerList _listenerList = new EventListenerList();

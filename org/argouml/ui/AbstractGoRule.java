@@ -29,7 +29,7 @@ import java.util.Iterator;
 
 import javax.swing.tree.TreeModel;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Abstract class to be used as a convenience class for implementing
@@ -47,8 +47,8 @@ import org.apache.log4j.Category;
  */
 public abstract class AbstractGoRule implements TreeModel {
 
-    private static Category cat =
-        Category.getInstance(org.argouml.ui.AbstractGoRule.class);
+    private static Logger cat =
+        Logger.getLogger(org.argouml.ui.AbstractGoRule.class);
  
 
     // ----------- TreeModel helpers -----------

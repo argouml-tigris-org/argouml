@@ -30,7 +30,7 @@ import java.util.Iterator;
 
 import javax.swing.JPopupMenu;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.targetmanager.TargetManager;
 
@@ -47,7 +47,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  *             that used reflection a lot.
  */
 public class UMLReflectionListModel extends UMLModelElementListModel   {
-    protected static Category cat = Category.getInstance(UMLReflectionListModel.class);
+    protected static Logger cat = Logger.getLogger(UMLReflectionListModel.class);
 
     private Method _getMethod = null;
     private Method _setMethod = null;

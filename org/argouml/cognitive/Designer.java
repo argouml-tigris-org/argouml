@@ -38,7 +38,7 @@ import java.util.Vector;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
@@ -76,7 +76,7 @@ public class Designer
          java.io.Serializable
 {
     
-    protected static Category cat = Category.getInstance(Designer.class);
+    protected static Logger cat = Logger.getLogger(Designer.class);
     
     /** the singleton of this class: TODO: needs to be made private.*/
     public static Designer TheDesigner = new Designer();

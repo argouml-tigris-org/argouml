@@ -32,7 +32,7 @@ package org.argouml.uml.ui;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import org.argouml.kernel.*;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.*;
 
 import java.lang.reflect.*;
@@ -69,8 +69,8 @@ import ru.novosoft.uml.behavior.use_cases.*;
 
 public class UMLComboBoxModel extends AbstractListModel implements
     ComboBoxModel, UMLUserInterfaceComponent, ActionListener {
-    protected static Category cat = 
-        Category.getInstance(UMLComboBoxModel.class);
+    protected static Logger cat = 
+        Logger.getLogger(UMLComboBoxModel.class);
         
 
 

@@ -27,7 +27,7 @@ package org.argouml.uml.cognitive.critics;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 
 import org.argouml.cognitive.ToDoItem;
@@ -37,8 +37,8 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
 public class ClAttributeCompartment implements Clarifier {
-    protected static Category cat =
-	Category.getInstance(ClAttributeCompartment.class);
+    protected static Logger cat =
+	Logger.getLogger(ClAttributeCompartment.class);
     public static ClAttributeCompartment TheInstance =
 	new ClAttributeCompartment();
     public static int WAVE_LENGTH = 4;

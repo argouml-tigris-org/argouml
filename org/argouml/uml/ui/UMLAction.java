@@ -31,7 +31,7 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.History;
@@ -43,7 +43,7 @@ import org.argouml.ui.StatusBar;
 import org.tigris.gef.util.Localizer;
 
 public class UMLAction extends AbstractAction {
-    protected static Category cat = Category.getInstance(UMLAction.class);
+    protected static Logger cat = Logger.getLogger(UMLAction.class);
 
     public static boolean HAS_ICON = true;
     public static boolean NO_ICON = false;

@@ -34,7 +34,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -52,7 +52,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 /** Class to display graphics for a UML Component in a diagram. */
 
 public class FigComponent extends FigNodeModelElement {
-    protected static Category cat = Category.getInstance(FigComponent.class);
+    protected static Logger cat = Logger.getLogger(FigComponent.class);
     
     /** The distance between the left edge of the fig and the left edge of the
 	main rectangle. */

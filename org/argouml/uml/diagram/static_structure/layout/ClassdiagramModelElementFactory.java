@@ -25,7 +25,7 @@
 package org.argouml.uml.diagram.static_structure.layout;
 
 import org.tigris.gef.presentation.*;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.ui.*;
 
 /** a class to get the proper layouter for a Fig.
@@ -36,8 +36,8 @@ import org.argouml.uml.diagram.ui.*;
 */
 public class ClassdiagramModelElementFactory 
 {
-    protected static Category cat =
-	Category.getInstance(ClassdiagramModelElementFactory.class);
+    protected static Logger cat =
+	Logger.getLogger(ClassdiagramModelElementFactory.class);
 
     public static ClassdiagramModelElementFactory SINGLETON =
 	new ClassdiagramModelElementFactory();

@@ -76,7 +76,7 @@ public class Tools {
             cls = Class.forName("org.tigris.gef.base.Editor");
             cls = Class.forName("ru.novosoft.uml.MBase");
             cls = Class.forName("org.xml.sax.AttributeList");
-            cls = Class.forName("org.apache.log4j.Category");
+            cls = Class.forName("org.apache.log4j.Logger");
 
             StringBuffer sb = new StringBuffer();
 

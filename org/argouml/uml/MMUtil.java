@@ -27,7 +27,7 @@
 // Original Author: not known
 package org.argouml.uml;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.model.uml.UmlFactory;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -38,7 +38,7 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class MMUtil {
 
-    Category cat = Category.getInstance(org.argouml.uml.MMUtil.class);
+    Logger cat = Logger.getLogger(org.argouml.uml.MMUtil.class);
 
     public static MMUtil SINGLETON = new MMUtil();
 

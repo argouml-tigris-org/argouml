@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
@@ -146,8 +146,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Log4j logging category.
      */
-    private Category logger =
-	Category.getInstance("org.argouml.model.uml.factory");
+    private Logger logger =
+	Logger.getLogger("org.argouml.model.uml.factory");
 
     /**
      * A map of valid connections keyed by the connection type.

@@ -33,7 +33,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ui.TabToDoTarget;
 import org.argouml.swingext.Orientable;
@@ -48,7 +48,7 @@ import org.argouml.uml.ui.TabModelTarget;
  */
 public class TabSpawnable extends JPanel implements Cloneable, Orientable {
         
-    private Category cat = Category.getInstance(TabSpawnable.class);
+    private Logger cat = Logger.getLogger(TabSpawnable.class);
     
     public final int OVERLAPP = 30;
   

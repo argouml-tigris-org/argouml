@@ -32,7 +32,7 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.tigris.gef.base.Layer;
@@ -76,8 +76,8 @@ import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 public class StateDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer
 {
-    protected static Category cat = 
-        Category.getInstance(StateDiagramRenderer.class);
+    protected static Logger cat = 
+        Logger.getLogger(StateDiagramRenderer.class);
 
     /** Return a Fig that can be used to represent the given node */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {

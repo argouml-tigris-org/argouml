@@ -55,7 +55,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -102,7 +102,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  */
 
 public class UMLIncludeListModel extends UMLModelElementListModel  {
-    protected static Category cat = Category.getInstance(UMLIncludeListModel.class);
+    protected static Logger cat = Logger.getLogger(UMLIncludeListModel.class);
 
     /**
      * <p>The default text when there is no addition class for the include

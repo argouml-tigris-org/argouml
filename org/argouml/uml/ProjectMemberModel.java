@@ -27,7 +27,7 @@ package org.argouml.uml;
 import java.io.Writer;
 import java.util.Iterator;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.xml.xmi.XMIParser;
@@ -46,8 +46,8 @@ import ru.novosoft.uml.model_management.MModel;
 
 public class ProjectMemberModel extends ProjectMember {
 
-    private static Category cat =
-        Category.getInstance(org.argouml.uml.ProjectMemberModel.class);
+    private static Logger cat =
+        Logger.getLogger(org.argouml.uml.ProjectMemberModel.class);
 
     ////////////////////////////////////////////////////////////////
     // constants

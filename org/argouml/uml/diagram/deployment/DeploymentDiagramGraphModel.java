@@ -24,7 +24,7 @@
 
 package org.argouml.uml.diagram.deployment;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -42,8 +42,8 @@ import ru.novosoft.uml.model_management.*;
 public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener 
 {
-    protected static Category cat =
-	Category.getInstance(DeploymentDiagramGraphModel.class);
+    protected static Logger cat =
+	Logger.getLogger(DeploymentDiagramGraphModel.class);
 
     /** The "home" UML model of this diagram, not all ModelElements in this
      *  graph are in the home model, but if they are added and don't

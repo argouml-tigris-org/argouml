@@ -26,7 +26,7 @@ package org.argouml.cognitive.ui;
 
 import java.util.Enumeration;
 import java.util.Vector;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
@@ -37,8 +37,8 @@ import org.argouml.cognitive.ToDoListListener;
 public class ToDoByPriority extends ToDoPerspective
     implements ToDoListListener 
 {
-    protected static Category cat = 
-        Category.getInstance(ToDoByPriority.class);
+    protected static Logger cat = 
+        Logger.getLogger(ToDoByPriority.class);
 
     public ToDoByPriority() {
 	super("combobox.todo-perspective-priority");

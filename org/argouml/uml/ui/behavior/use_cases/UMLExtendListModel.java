@@ -40,7 +40,7 @@ import org.argouml.ui.*;
 import org.argouml.uml.ui.UMLBinaryRelationListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.MutableGraphModel;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
@@ -65,7 +65,7 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
  */
 
 public class UMLExtendListModel extends UMLBinaryRelationListModel  {
-    protected static Category cat = Category.getInstance(UMLExtendListModel.class);
+    protected static Logger cat = Logger.getLogger(UMLExtendListModel.class);
 
     /**
      * <p>The default text when there is no base class for the extend

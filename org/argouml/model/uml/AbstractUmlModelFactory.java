@@ -24,7 +24,7 @@
 
 package org.argouml.model.uml;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.NavigatorPane;
 import org.argouml.uml.UUIDManager;
@@ -49,8 +49,8 @@ public abstract class AbstractUmlModelFactory {
 
     /** Log4j logging category.
      */
-    private static Category logger =
-        Category.getInstance("org.argouml.model.uml");
+    private static Logger logger =
+        Logger.getLogger("org.argouml.model.uml");
 
     /** Default constructor.
      */

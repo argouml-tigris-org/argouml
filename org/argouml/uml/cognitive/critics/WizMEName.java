@@ -33,7 +33,7 @@ package org.argouml.uml.cognitive.critics;
 
 import javax.swing.JPanel;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.kernel.Wizard;
@@ -45,7 +45,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  *  MModelElement to a better name. */
 
 public class WizMEName extends Wizard {
-    protected static Category cat = Category.getInstance(WizMEName.class);
+    protected static Logger cat = Logger.getLogger(WizMEName.class);
 					   
     protected String _instructions =
 	"Please change the name of the offending model element.";

@@ -43,7 +43,7 @@ import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
@@ -75,8 +75,8 @@ import ru.novosoft.uml.foundation.data_types.MAggregationKind;
  */
 
 public class UMLUseCaseDiagram extends UMLDiagram {
-    protected static Category cat =
-        Category.getInstance(UMLUseCaseDiagram.class);
+    protected static Logger cat =
+        Logger.getLogger(UMLUseCaseDiagram.class);
 
     // Actions specific to the use case diagram toolbar
 

@@ -35,7 +35,7 @@ import java.awt.Rectangle;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.ModelFacade;
@@ -53,8 +53,8 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
 
 public class SelectionActionState extends SelectionWButtons {
-    protected static Category cat = 
-        Category.getInstance(SelectionActionState.class);
+    protected static Logger cat = 
+        Logger.getLogger(SelectionActionState.class);
     ////////////////////////////////////////////////////////////////
     // constants
     public static Icon trans = 

@@ -25,7 +25,7 @@
 package org.argouml.uml.ui;
 import java.lang.reflect.*;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
@@ -36,8 +36,8 @@ import ru.novosoft.uml.foundation.data_types.*;
  *             that used reflection a lot.
  */
 public final class UMLExpressionModel  {
-    protected static Category cat = 
-            Category.getInstance(UMLExpressionModel.class);
+    protected static Logger cat = 
+            Logger.getLogger(UMLExpressionModel.class);
 
     private UMLUserInterfaceContainer _container;
     private Method _getMethod;

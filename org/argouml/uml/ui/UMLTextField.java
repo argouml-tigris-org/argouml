@@ -42,7 +42,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
@@ -64,8 +64,8 @@ public class UMLTextField
     extends JTextField
     implements DocumentListener, UMLUserInterfaceComponent, FocusListener {
 
-    protected final static Category cat =
-        Category.getInstance("org.argouml.uml.ui.UMLTextField");
+    protected final static Logger cat =
+        Logger.getLogger("org.argouml.uml.ui.UMLTextField");
 
     private UMLUserInterfaceContainer _container;
     private UMLTextProperty _property;

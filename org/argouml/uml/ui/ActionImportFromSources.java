@@ -27,7 +27,7 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.uml.reveng.Import;
 
@@ -37,8 +37,8 @@ import org.argouml.uml.reveng.Import;
  */
 public class ActionImportFromSources extends UMLAction {
     
-    protected static Category cat =
-	Category.getInstance(org.argouml.uml.ui.ActionImportFromSources.class);
+    protected static Logger cat =
+	Logger.getLogger(org.argouml.uml.ui.ActionImportFromSources.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables

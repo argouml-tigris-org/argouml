@@ -26,7 +26,7 @@ package org.argouml.util;
 
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 
@@ -38,8 +38,8 @@ import org.argouml.model.ModelFacade;
  * the trash, you must fix this before you empty the trash. */
 
 public class Trash {
-    protected static Category cat = 
-        Category.getInstance(Trash.class);
+    protected static Logger cat = 
+        Logger.getLogger(Trash.class);
     
     public static Trash SINGLETON = new Trash();
 

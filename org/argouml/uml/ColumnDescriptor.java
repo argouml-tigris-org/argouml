@@ -28,7 +28,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -1002,7 +1002,7 @@ class ColumnQuery extends ColumnDescriptor {
 
 
 class ColumnType extends ColumnDescriptor {
-    protected static Category cat = Category.getInstance(ColumnType.class);
+    protected static Logger cat = Logger.getLogger(ColumnType.class);
     ColumnType() {
 	super("Type", String.class, true);  //MClassifier.type?
     }

@@ -28,11 +28,11 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 public abstract class ProjectMember {
-    protected static Category cat = 
-        Category.getInstance(ProjectMember.class);
+    protected static Logger cat = 
+        Logger.getLogger(ProjectMember.class);
 
     ////////////////////////////////////////////////////////////////
     // instance varables

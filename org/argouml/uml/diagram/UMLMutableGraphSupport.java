@@ -35,7 +35,7 @@ import org.argouml.model.uml.UmlFactory;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -51,8 +51,8 @@ import org.tigris.gef.graph.MutableGraphSupport;
  */
 public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     
-    protected static Category cat =
-	Category.getInstance(UMLMutableGraphSupport.class);
+    protected static Logger cat =
+	Logger.getLogger(UMLMutableGraphSupport.class);
     
     /** contains all the nodes in the graphmodel/diagram. */    
     protected Vector _nodes = new Vector();

@@ -38,7 +38,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -58,8 +58,8 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 /** Class to display graphics for a UML ComponentInstance in a diagram. */
 
 public class FigComponentInstance extends FigNodeModelElement {
-    protected static Category cat =
-        Category.getInstance(FigComponentInstance.class);
+    protected static Logger cat =
+        Logger.getLogger(FigComponentInstance.class);
     ////////////////////////////////////////////////////////////////
     // instance variables
 

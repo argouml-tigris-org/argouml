@@ -29,7 +29,7 @@ import java.io.InputStream;
 import java.io.Writer;
 import java.util.Hashtable;
 import java.util.Vector;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.xml.sax.SAXException;
 
@@ -51,8 +51,8 @@ import org.tigris.gef.ocl.TemplateReader;
  */
 public class ProjectMemberTodoList extends ProjectMember
 {
-    protected static Category cat =
-	Category.getInstance(ProjectMemberTodoList.class);
+    protected static Logger cat =
+	Logger.getLogger(ProjectMemberTodoList.class);
 
     public static final String TODO_TEE = "/org/argouml/xml/dtd/todo.tee";
     public static final String TODO_EXT = ".todo";

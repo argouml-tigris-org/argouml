@@ -35,7 +35,7 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
@@ -56,8 +56,8 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class CompartmentFigText extends FigText
 {
-    protected static Category cat =
-	Category.getInstance(CompartmentFigText.class);
+    protected static Logger cat =
+	Logger.getLogger(CompartmentFigText.class);
 
     ///////////////////////////////////////////////////////////////////////////
     //

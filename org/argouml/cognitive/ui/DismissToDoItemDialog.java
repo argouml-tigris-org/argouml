@@ -40,7 +40,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
@@ -48,8 +48,8 @@ import org.argouml.cognitive.UnresolvableException;
 import org.argouml.ui.ProjectBrowser;
 
 public class DismissToDoItemDialog extends JDialog {
-    protected static Category cat =
-	Category.getInstance(DismissToDoItemDialog.class);
+    protected static Logger cat =
+	Logger.getLogger(DismissToDoItemDialog.class);
 
     ////////////////////////////////////////////////////////////////
     // constants

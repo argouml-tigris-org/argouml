@@ -34,7 +34,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
@@ -55,8 +55,8 @@ import org.tigris.gef.util.Util;
  */
 
 public class ActionSaveGraphics extends UMLAction {
-    protected static Category cat =
-	Category.getInstance(ActionSaveGraphics.class);
+    protected static Logger cat =
+	Logger.getLogger(ActionSaveGraphics.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables

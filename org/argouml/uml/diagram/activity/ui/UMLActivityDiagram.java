@@ -35,7 +35,7 @@ import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -58,8 +58,8 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  * diagram is considered valuable as well.
  */
 public class UMLActivityDiagram extends UMLDiagram {
-    protected static Category cat =
-        Category.getInstance(UMLActivityDiagram.class);
+    protected static Logger cat =
+        Logger.getLogger(UMLActivityDiagram.class);
 
     ////////////////
     // actions for toolbar

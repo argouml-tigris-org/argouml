@@ -36,7 +36,7 @@ import java.awt.Rectangle;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
@@ -54,8 +54,8 @@ import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MNodeImpl;
 
 public class SelectionNode extends SelectionWButtons {
-    protected static Category cat = 
-        Category.getInstance(SelectionNode.class);
+    protected static Logger cat = 
+        Logger.getLogger(SelectionNode.class);
     ////////////////////////////////////////////////////////////////
     // constants
     public static Icon dep =

@@ -31,7 +31,7 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
@@ -45,8 +45,8 @@ import org.tigris.gef.util.VectorSet;
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrCircularInheritance extends CrUML {
-    protected static Category cat =
-	Category.getInstance(CrCircularInheritance.class);
+    protected static Logger cat =
+	Logger.getLogger(CrCircularInheritance.class);
 						      
     public CrCircularInheritance() {
 	setHeadline("Remove <ocl>self</ocl>'s Circular Inheritance");

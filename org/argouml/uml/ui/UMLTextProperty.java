@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 
@@ -41,7 +41,7 @@ import ru.novosoft.uml.*;
  *             that used reflection a lot.
  */
 public class UMLTextProperty  {
-    protected static Category cat = Category.getInstance(UMLTextProperty.class);
+    protected static Logger cat = Logger.getLogger(UMLTextProperty.class);
            
     private Method _getMethod;
     private Method _setMethod;

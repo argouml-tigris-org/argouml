@@ -46,7 +46,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
@@ -117,7 +117,7 @@ public class NavigatorPane
 	       MElementListener
 {
 
-    protected transient Category cat = Category.getInstance(this.getClass());
+    protected transient Logger cat = Logger.getLogger(this.getClass());
 
     public static final int MAX_HISTORY = 10;
 

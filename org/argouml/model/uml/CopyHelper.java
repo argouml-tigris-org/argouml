@@ -29,7 +29,7 @@ package org.argouml.model.uml;
 import java.lang.reflect.*;
 import java.util.HashMap;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassImpl;
@@ -72,7 +72,7 @@ class CopyFunction {
  * @since 0.13.2
  */
 public final class CopyHelper {
-    protected static Category cat = Category.getInstance(CopyHelper.class);
+    protected static Logger cat = Logger.getLogger(CopyHelper.class);
 
     private static CopyHelper theInstance;
 

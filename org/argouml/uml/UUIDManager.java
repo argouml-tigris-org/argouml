@@ -32,14 +32,14 @@ import java.util.Iterator;
 import java.net.UnknownHostException;
 import java.rmi.server.UID;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.ModelFacade;
 
 /** @stereotype singleton
  */
 public class UUIDManager {
-    protected static Category cat = Category.getInstance(UUIDManager.class);
+    protected static Logger cat = Logger.getLogger(UUIDManager.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables

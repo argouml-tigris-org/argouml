@@ -33,7 +33,7 @@ import javax.swing.JToolBar;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.TabModelTarget;
@@ -54,7 +54,7 @@ public class TabText
      *  Contains null if no toolbar was requested.
      */
     protected JToolBar _toolbar = null;
-    protected Category cat = Category.getInstance(TabText.class);
+    protected Logger cat = Logger.getLogger(TabText.class);
 
     ////////////////////////////////////////////////////////////////
     // constructor

@@ -27,7 +27,7 @@ package org.argouml.cognitive;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Instances of this class is supposed to be attached to other instances
@@ -46,7 +46,7 @@ import org.apache.log4j.Category;
  */
 public class ItemUID
 {
-    protected static Category cat = Category.getInstance(ItemUID.class);
+    protected static Logger cat = Logger.getLogger(ItemUID.class);
 
     /** Keeps a reference to the Class object of this class */
     protected static final Class _myclass = (new ItemUID()).getClass();
