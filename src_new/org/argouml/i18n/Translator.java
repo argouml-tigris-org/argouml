@@ -72,8 +72,6 @@ public class Translator {
         "org.argouml.i18n.MenuResourceBundle");
         Localizer.addResource("CoreSettings",
         "org.argouml.i18n.SettingsResourceBundle");
-        Localizer.addResource("DiagramType",
-        "org.argouml.i18n.DiagramResourceBundle");
         Localizer.addResource("UMLMenu",
         "org.argouml.i18n.UMLResourceBundle");
         Localizer.addResource("Cognitive",
@@ -154,6 +152,6 @@ public class Translator {
      * @return the translation
      */
     public static String localize(String bundle, String key) {
-        return Localizer.localize(bundle, key);
+        return org.argouml.application.api.Argo.localize(bundle, key);
     }
 }
