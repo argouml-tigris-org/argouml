@@ -26,17 +26,17 @@ package org.argouml.uml.diagram;
 
 
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectMember;
+import org.argouml.kernel.AbstractProjectMember;
 import org.argouml.ui.ArgoDiagram;
 import org.tigris.gef.util.Util;
 
 /**
  * @author Piotr Kaminski
  */
-public class ProjectMemberDiagram extends ProjectMember {
+public class ProjectMemberDiagram extends AbstractProjectMember {
 
     private static final String MEMBER_TYPE = "pgml";
-    private static final String FILE_EXT = "." + MEMBER_TYPE;
+    private static final String FILE_EXT = ".pgml";
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -79,13 +79,13 @@ public class ProjectMemberDiagram extends ProjectMember {
         return diagram;
     }
     /**
-     * @see org.argouml.kernel.ProjectMember#getType()
+     * @see org.argouml.kernel.AbstractProjectMember#getType()
      */
     public String getType() {
         return MEMBER_TYPE;
     }
     /**
-     * @see org.argouml.kernel.ProjectMember#getFileExtension()
+     * @see org.argouml.kernel.AbstractProjectMember#getFileExtension()
      */
     public String getFileExtension() {
         return FILE_EXT;
