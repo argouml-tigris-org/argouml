@@ -32,6 +32,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -40,7 +41,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.FileChooserFactory;
+import org.argouml.ui.ExceptionDialog;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
@@ -60,11 +61,17 @@ import org.tigris.gef.util.Util;
  * Wraps a CmdSaveGIF or CmdSave(E)PS to allow selection of an output file.
  */
 public class ActionSaveGraphics
-    extends UMLAction
-    implements CommandLineInterface {
+        extends UMLAction
+        implements CommandLineInterface {
 
     private static final Logger LOG =
-	Logger.getLogger(ActionSaveGraphics.class);
+        Logger.getLogger(ActionSaveGraphics.class);
+    
+    private static final String PS_SFX = FileFilters.PS_FILTER.getSuffix();
+    private static final String EPS_SFX = FileFilters.EPS_FILTER.getSuffix();
+    private static final String GIF_SFX = FileFilters.GIF_FILTER.getSuffix();
+    private static final String PNG_SFX = FileFilters.PNG_FILTER.getSuffix();
+    private static final String SVG_SFX = FileFilters.SVG_FILTER.getSuffix();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -73,7 +80,7 @@ public class ActionSaveGraphics
      * Constructor for this action.
      */
     public ActionSaveGraphics() {
-	super("action.save-graphics", NO_ICON);
+        super("action.save-graphics", NO_ICON);
     }
 
 
@@ -84,7 +91,7 @@ public class ActionSaveGraphics
      * @see UMLAction#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	trySave(false);
+        trySave(false);
     }
 
     /**
@@ -94,95 +101,85 @@ public class ActionSaveGraphics
      * @return true if all went well.
      */
     public boolean trySave(boolean overwrite) {
-	Object target =
-	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-
-	if (!(target instanceof Diagram)) {
-	    return false;
-	}
-
-	String defaultName = ((Diagram) target).getName();
-	defaultName = Util.stripJunk(defaultName);
-
-	// FIX - It's probably worthwhile to abstract and factor
-	// this chooser and directory stuff. More file handling is
-	// coming, I'm sure.
-
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	Project p =  ProjectManager.getManager().getCurrentProject();
-	try {
-	    JFileChooser chooser = null;
-
-	    if (p != null
-		&& p.getURL() != null
-		&& p.getURL().getFile().length() > 0) {
-
-		String filename = p.getURL().getFile();
-		if (!filename.startsWith("/FILE1/+/")) {
-		    chooser =
-		        FileChooserFactory.getFileChooser(p.getURL().getFile());
-		}
-	    }
-
-	    if (chooser == null) {
-		chooser = FileChooserFactory.getFileChooser();
-	    }
-
-	    chooser.setDialogTitle("Save Diagram as Graphics: "
-				   + defaultName);
-	    // Only specified format are allowed.
-	    chooser.removeChoosableFileFilter(chooser.
-					      getAcceptAllFileFilter());
-	    chooser.addChoosableFileFilter(FileFilters.PNG_FILTER);
-	    chooser.addChoosableFileFilter(FileFilters.GIF_FILTER);
-	    chooser.addChoosableFileFilter(FileFilters.PS_FILTER);
-	    chooser.addChoosableFileFilter(FileFilters.EPS_FILTER);
-	    chooser.addChoosableFileFilter(FileFilters.SVG_FILTER);
-	    // concerning the following lines: is .GIF preferred?
-	    chooser.setFileFilter(FileFilters.PNG_FILTER);
-	    String fileName = defaultName + "."
-		+ FileFilters.PNG_FILTER.getSuffix();
-	    chooser.setSelectedFile(new File(fileName));
-
-	    int retval = chooser.showSaveDialog(pb);
-	    if (retval == 0) {
-		File theFile = chooser.getSelectedFile();
-		if (theFile != null) {
-		    String suffix = SuffixFilter.getExtension(theFile);
-		    // 2002-07-16 Jaap Branderhorst patch to issue
-		    // 517 issue is: a file should be saved with
-		    // the suffix from the selected filter and
-		    // according to the format of the selected
-		    // filter.  start new code
-
-		    if (suffix == null
-			|| !(suffix.equals(FileFilters.PS_FILTER.getSuffix())
-			|| suffix.equals(FileFilters.EPS_FILTER.getSuffix())
-			|| suffix.equals(FileFilters.GIF_FILTER.getSuffix())
-			|| suffix.equals(FileFilters.PNG_FILTER.getSuffix())
-			|| suffix.equals(FileFilters.SVG_FILTER
-			                                     .getSuffix()))) {
-			// add the selected filter suffix
-			FileFilter filter = chooser.getFileFilter();
-			suffix = FileFilters.getSuffix(filter);
-			theFile =
-			    new File(theFile.getParentFile(),
-				     theFile.getName() + "." + suffix);
-		    }
-		    // end new code
-
-		    return doSave(theFile, suffix, overwrite);
-		}
-	    }
-	}
-	catch (FileNotFoundException ignore) {
-	    LOG.error("got a FileNotFoundException", ignore);
-	}
-	catch (IOException ignore) {
-	    LOG.error("got an IOException", ignore);
-	}
-
-	return false;
+        Object target =
+            ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+        
+        if (!(target instanceof Diagram)) {
+            return false;
+        }
+        
+        String defaultName = ((Diagram) target).getName();
+        defaultName = Util.stripJunk(defaultName);
+        
+        ProjectBrowser pb = ProjectBrowser.getInstance();
+        Project p =  ProjectManager.getManager().getCurrentProject();
+        try {
+            JFileChooser chooser = null;
+        
+            if (p != null
+                	&& p.getURL() != null
+                	&& p.getURL().getFile().length() > 0) {
+        
+            	String filename = p.getURL().getFile();
+                // TODO: Someone please explain this.
+            	if (!filename.startsWith("/FILE1/+/")) {
+            	    chooser = new JFileChooser(p.getURL().getFile());
+            	}
+            }
+        
+            if (chooser == null) {
+                chooser = new JFileChooser();
+            }
+        
+            chooser.setDialogTitle("Save Diagram as Graphics: " + defaultName);
+            // Only specified format are allowed.
+            chooser.removeChoosableFileFilter(chooser.
+        				      getAcceptAllFileFilter());
+            chooser.addChoosableFileFilter(FileFilters.PNG_FILTER);
+            chooser.addChoosableFileFilter(FileFilters.GIF_FILTER);
+            chooser.addChoosableFileFilter(FileFilters.PS_FILTER);
+            chooser.addChoosableFileFilter(FileFilters.EPS_FILTER);
+            chooser.addChoosableFileFilter(FileFilters.SVG_FILTER);
+            // concerning the following lines: is .GIF preferred?
+            chooser.setFileFilter(FileFilters.PNG_FILTER);
+            String fileName = defaultName + "."
+        	+ FileFilters.PNG_FILTER.getSuffix();
+            chooser.setSelectedFile(new File(fileName));
+        
+            int retval = chooser.showSaveDialog(pb);
+            if (retval == 0) {
+                File theFile = chooser.getSelectedFile();
+                if (theFile != null) {
+                    String suffix = SuffixFilter.getExtension(theFile);
+                    if (suffix == null
+                            || !(suffix.equals(PS_SFX)
+                            || suffix.equals(EPS_SFX)
+                            || suffix.equals(GIF_SFX)
+                            || suffix.equals(PNG_SFX)
+                            || suffix.equals(SVG_SFX))) {
+                		// add the selected filter suffix
+                		FileFilter filter = chooser.getFileFilter();
+                		suffix = FileFilters.getSuffix(filter);
+                		theFile =
+                		    new File(theFile.getParentFile(),
+                			     theFile.getName() + "." + suffix);
+                    }
+                    // end new code
+                
+                    return doSave(theFile, suffix, overwrite);
+                }
+            }
+        } catch (OutOfMemoryError e) {
+            JDialog dialog = new ExceptionDialog(ProjectBrowser.getInstance(),
+                "You have run out of memory. " +
+                "Close down ArgoUML and restart with a larger heap size.", e);
+        } catch (Exception e) {
+            JDialog dialog
+                = new ExceptionDialog(ProjectBrowser.getInstance(), e);
+            LOG.error("Got some exception", e);
+        }
+        
+        return false;
     }
 
     /**
