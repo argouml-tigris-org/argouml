@@ -61,74 +61,74 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     ////////////////
     // actions for toolbar
 
-    private static Action actionMNode = new RadioAction(
+    private Action actionMNode = new RadioAction(
         new CmdCreateNode(ModelFacade.NODE, "Node"));
 
-    private static Action actionMNodeInstance = new RadioAction(
+    private Action actionMNodeInstance = new RadioAction(
         new CmdCreateNode(ModelFacade.NODE_INSTANCE, "NodeInstance"));
 
-    private static Action actionMComponent = new RadioAction(
+    private Action actionMComponent = new RadioAction(
         new CmdCreateNode(ModelFacade.COMPONENT, "Component"));
 
-    private static Action actionMComponentInstance = new RadioAction(
+    private Action actionMComponentInstance = new RadioAction(
         new CmdCreateNode(ModelFacade.COMPONENT_INSTANCE, "ComponentInstance"));
 
-    private static Action actionMClass = new RadioAction(
+    private Action actionMClass = new RadioAction(
         new CmdCreateNode(ModelFacade.CLASS, "Class"));
 
-    private static Action actionMInterface = new RadioAction(
+    private Action actionMInterface = new RadioAction(
         new CmdCreateNode(ModelFacade.INTERFACE, "Interface"));
 
-    private static Action actionMObject = new RadioAction(
+    private Action actionMObject = new RadioAction(
         new CmdCreateNode(ModelFacade.OBJECT, "Object"));
 
-    private static Action actionMDependency = new RadioAction(
+    private Action actionMDependency = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
             ModelFacade.DEPENDENCY,
             "Dependency"));
 
-    private static Action actionMAssociation = new RadioAction(
+    private Action actionMAssociation = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
             ModelFacade.ASSOCIATION,
             "Association"));
 
-    private static Action actionMLink = new RadioAction(
+    private Action actionMLink = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
             ModelFacade.LINK,
             "Link"));
 
-    private static Action actionAssociation = new RadioAction(
+    private Action actionAssociation = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.NONE_AGGREGATIONKIND,
             false,
             "Association"));
-    private static Action actionAggregation = new RadioAction(
+    private Action actionAggregation = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.AGGREGATE_AGGREGATIONKIND,
             false,
             "Aggregation"));
-    private static Action actionComposition = new RadioAction(
+    private Action actionComposition = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.COMPOSITE_AGGREGATIONKIND,
             false,
             "Composition"));
-    private static Action actionUniAssociation = new RadioAction(
+    private Action actionUniAssociation = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.NONE_AGGREGATIONKIND,
             true,
             "UniAssociation"));
-    private static Action actionUniAggregation = new RadioAction(
+    private Action actionUniAggregation = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.AGGREGATE_AGGREGATIONKIND,
             true,
             "UniAggregation"));
-    private static Action actionUniComposition = new RadioAction(
+    private Action actionUniComposition = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.COMPOSITE_AGGREGATIONKIND,
             true,
@@ -247,97 +247,97 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     /**
      * @return Returns the actionAggregation.
      */
-    protected static Action getActionAggregation() {
+    protected Action getActionAggregation() {
         return actionAggregation;
     }
     /**
      * @return Returns the actionAssociation.
      */
-    protected static Action getActionAssociation() {
+    protected Action getActionAssociation() {
         return actionAssociation;
     }
     /**
      * @return Returns the actionComposition.
      */
-    protected static Action getActionComposition() {
+    protected Action getActionComposition() {
         return actionComposition;
     }
     /**
      * @return Returns the actionMAssociation.
      */
-    protected static Action getActionMAssociation() {
+    protected Action getActionMAssociation() {
         return actionMAssociation;
     }
     /**
      * @return Returns the actionMClass.
      */
-    protected static Action getActionMClass() {
+    protected Action getActionMClass() {
         return actionMClass;
     }
     /**
      * @return Returns the actionMComponent.
      */
-    protected static Action getActionMComponent() {
+    protected Action getActionMComponent() {
         return actionMComponent;
     }
     /**
      * @return Returns the actionMComponentInstance.
      */
-    protected static Action getActionMComponentInstance() {
+    protected Action getActionMComponentInstance() {
         return actionMComponentInstance;
     }
     /**
      * @return Returns the actionMDependency.
      */
-    protected static Action getActionMDependency() {
+    protected Action getActionMDependency() {
         return actionMDependency;
     }
     /**
      * @return Returns the actionMInterface.
      */
-    protected static Action getActionMInterface() {
+    protected Action getActionMInterface() {
         return actionMInterface;
     }
     /**
      * @return Returns the actionMLink.
      */
-    protected static Action getActionMLink() {
+    protected Action getActionMLink() {
         return actionMLink;
     }
     /**
      * @return Returns the actionMNode.
      */
-    protected static Action getActionMNode() {
+    protected Action getActionMNode() {
         return actionMNode;
     }
     /**
      * @return Returns the actionMNodeInstance.
      */
-    protected static Action getActionMNodeInstance() {
+    protected Action getActionMNodeInstance() {
         return actionMNodeInstance;
     }
     /**
      * @return Returns the actionMObject.
      */
-    protected static Action getActionMObject() {
+    protected Action getActionMObject() {
         return actionMObject;
     }
     /**
      * @return Returns the actionUniAggregation.
      */
-    protected static Action getActionUniAggregation() {
+    protected Action getActionUniAggregation() {
         return actionUniAggregation;
     }
     /**
      * @return Returns the actionUniAssociation.
      */
-    protected static Action getActionUniAssociation() {
+    protected Action getActionUniAssociation() {
         return actionUniAssociation;
     }
     /**
      * @return Returns the actionUniComposition.
      */
-    protected static Action getActionUniComposition() {
+    protected Action getActionUniComposition() {
         return actionUniComposition;
     }
 } /* end class UMLDeploymentDiagram */

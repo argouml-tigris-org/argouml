@@ -58,48 +58,48 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     /**
      * Tool to add an actor node.<p>
      */
-    private static Action actionActor =
+    private Action actionActor =
 	    new RadioAction(new CmdCreateNode(ModelFacade.ACTOR, "Actor"));
     
     /**
      * Tool to add a use case node.<p>
      */
-    private static Action actionUseCase =
+    private Action actionUseCase =
         new RadioAction(new CmdCreateNode(ModelFacade.USE_CASE, "UseCase"));
 
     /**
      * Tool to create an association between UML artifacts using a
      * polyedge.<p>
      */
-    //protected static Action _actionAssoc = new
+    //protected Action _actionAssoc = new
     //CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
     //MAssociation.class, "Association");
-    private static Action actionAssociation = new RadioAction(
+    private Action actionAssociation = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.NONE_AGGREGATIONKIND,
             false,
             "Association"));
-    private static Action actionAggregation = new RadioAction(
+    private Action actionAggregation = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.AGGREGATE_AGGREGATIONKIND,
             false,
             "Aggregation"));
-    private static Action actionComposition = new RadioAction(
+    private Action actionComposition = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.COMPOSITE_AGGREGATIONKIND,
             false,
             "Composition"));
-    private static Action actionUniAssociation = new RadioAction(
+    private Action actionUniAssociation = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.NONE_AGGREGATIONKIND,
             true,
             "UniAssociation"));
-    private static Action actionUniAggregation = new RadioAction(
+    private Action actionUniAggregation = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.AGGREGATE_AGGREGATIONKIND,
             true,
             "UniAggregation"));
-    private static Action actionUniComposition = new RadioAction(
+    private Action actionUniComposition = new RadioAction(
         new ActionAddAssociation(
             ModelFacade.COMPOSITE_AGGREGATIONKIND,
             true,
@@ -109,7 +109,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * Tool to create a generalization between UML artifacts using a
      * polyedge.<p>
      */
-    private static Action actionGeneralize = new RadioAction(
+    private Action actionGeneralize = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
@@ -120,7 +120,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * Tool to create an extend relationship between UML use cases
      * using a polyedge.<p>
      */
-    private static Action actionExtend = new RadioAction(
+    private Action actionExtend = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
@@ -131,7 +131,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * Tool to create an include relationship between UML use cases
      * using a polyedge.<p>
      */
-    private static Action actionInclude = new RadioAction(
+    private Action actionInclude = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
@@ -142,7 +142,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * Tool to create a dependency between UML artifacts using a
      * polyedge.<p>
      */
-    private static Action actionDependency = new RadioAction(
+    private Action actionDependency = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
