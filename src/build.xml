@@ -86,25 +86,27 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <tstamp/>
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
-    <property name="version" value="0.7.4"/>
+    <property name="version" value="0.8.0"/>
     <property name="year" value="1999-2000"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
 
-    <property name="build.compiler" value="classic"/>
+    <property name="build.compiler" value="jikes"/>
     <property name="debug" value="off"/>
     <property name="optimize" value="on"/>
     <property name="deprecation" value="off"/>
 
-    <property name="src.dir" value="./src"/>
-    <property name="src.codegen" value="./src/codegen"/>
-    <property name="docs.dir" value="./docs"/>
-    <property name="lib.dir" value="./lib"/>
+    <property name="src.dir" value="../src"/>
+    <property name="src.codegen" value="../src/codegen"/>
+    <property name="docs.dir" value="../docs"/>
+    <property name="lib.dir" value="../lib"/>
     <property name="packages" value="uci.* Acme.*"/>
 
-    <property name="build.dir" value="./build"/>
-    <property name="build.src" value="./build/src"/>
-    <property name="build.dest" value="./build/classes"/>
+    <property name="manifest" value="./uci/argouml.mf"/>
+
+    <property name="build.dir" value="../build"/>
+    <property name="build.src" value="../src"/>
+    <property name="build.dest" value="../build/classes"/>
 
     <property name="ignore_this" value="ignore_this.java"/>
 
@@ -141,7 +143,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <!-- create directories -->
     <echo message="Preparing the build directories"/>
     <mkdir dir="${build.dir}"/>
-    <mkdir dir="${build.src}"/>
+    <!-- <mkdir dir="${build.src}"/> -->
   </target>
 
   <!-- =================================================================== -->
@@ -166,7 +168,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
-  <target name="compile" depends="prepare-src">
+  <!-- <target name="compile" depends="prepare-src"> -->
+  <target name="compile" depends="prepare">
     <echo message="Compiling the sources "/>
     <!-- create directories -->
     <mkdir dir="${build.dest}"/>
@@ -186,7 +189,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <echo message="Creating the jar file ${build.dir}/${name}.jar"/>
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
-         includes="uci/** Acme/**"/>
+         includes="uci/** Acme/**"
+         manifest="${manifest}"/>
   </target>
 
   <!-- =================================================================== -->
