@@ -208,4 +208,26 @@ public abstract class FigNodeWithCompartments extends FigNodeModelElement {
     _figs = allFigs;
   }
 
+   public Object clone() {
+     FigNodeWithCompartments _clone = (FigClass) super.clone();
+     _clone._compartments = new Vector();
+     Vector _cloneFigs = (Vector)_clone.getFigs().clone();
+     for(int i=0; i < _cloneFigs.size(); i++ ) {
+       if ( _cloneFigs.elementAt(i) instanceof FigCompartment) {
+        _clone._compartments.addElement(_cloneFigs.elementAt(i)); 
+       }
+       if ( _cloneFigs.elementAt(i) instanceof FigRect ) {
+         FigRect rect = (FigRect)_cloneFigs.elementAt(i);
+         if ( rect.getBounds().equals(_clone._bigPort.getBounds()))  {
+           _clone._bigPort = rect;
+         }
+         
+       }  
+     }
+     _cloneFigs.removeAllElements();
+     _cloneFigs = null;
+
+     return _clone;
+   }
+
 } /* end class FigNodeWithCompartments */
