@@ -259,6 +259,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
                     new ActionAddAssociationRole(
                         Model.getAggregationKind().getNone(),
                         false,
+                        "AssociationRole",
                         "Association"));
         }
         return actionAssociation;
