@@ -21,6 +21,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// $Id$
+
 package org.argouml.util;
 
 import javax.swing.filechooser.FileFilter;
@@ -82,9 +84,17 @@ public class FileFilters {
     public static final SuffixFilter LogFilter = new
         SuffixFilter("log", "Argo usage log");
 
-    /** Java File Filter */
+    /** Java Source File Filter */
     public static final SuffixFilter JavaFilter = new
         SuffixFilter("java", "Java Source File");
+
+    /** Java Class File Filter */
+    public static final SuffixFilter JavaClassFilter = new
+        SuffixFilter("class", "Java Class File");
+
+    /** Java JAR File Filter */
+    public static final SuffixFilter JavaJarFilter = new
+        SuffixFilter("jar", "Java JAR File");
 
     /** This writes the GIF file, known issues
      * http://argouml.tigris.org/issues/show_bug.cgi?id=396
