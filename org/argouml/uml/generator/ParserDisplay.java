@@ -2547,7 +2547,6 @@ public class ParserDisplay extends Parser {
 	} catch (NoSuchElementException nsee) {
 	    throw new ParseException("Unexpected end of message", s.length());
 	} catch (ParseException pre) {
-	    _cat.error("parseexception" , pre);
 	    throw pre;
 	}
 
