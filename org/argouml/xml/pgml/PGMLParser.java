@@ -138,6 +138,8 @@ public class PGMLParser implements ElementHandler, TagHandler {
 							 "org.argouml.uml.diagram.state.ui.FigShallowHistoryState");
 	  _translateUciToOrg.put("uci.uml.visual.FigState",
 							 "org.argouml.uml.diagram.state.ui.FigState");
+	  _translateUciToOrg.put("uci.uml.visual.FigActionState",
+							 "org.argouml.uml.diagram.activity.ui.FigActionState");
 	  _translateUciToOrg.put("uci.uml.visual.FigStateVertex",
 							 "org.argouml.uml.diagram.state.ui.FigStateVertex");
 	  _translateUciToOrg.put("uci.uml.visual.FigTransition",
@@ -186,24 +188,26 @@ public class PGMLParser implements ElementHandler, TagHandler {
   // internal methods
 
   protected void initDiagram(String diagDescr) {
-    String clsName = diagDescr;
-    String initStr = null;
-    int bar = diagDescr.indexOf("|");
-    if (bar != -1) {
-      clsName = diagDescr.substring(0, bar);
-      initStr = diagDescr.substring(bar + 1);
-    }
-	String newClassName = translateClassName(clsName);
-    try {
-      Class cls = Class.forName(newClassName);
-      _diagram = (Diagram) cls.newInstance();
-      if (initStr != null && !initStr.equals(""))
-	_diagram.initialize(findOwner(initStr));
-    }
-    catch (Exception ex) {
-      System.out.println("could not set diagram type to " + newClassName);
-      ex.printStackTrace();
-    }
+      String clsName = diagDescr;
+      String initStr = null;
+      int bar = diagDescr.indexOf("|");
+      if (bar != -1) {
+	  clsName = diagDescr.substring(0, bar);
+	  initStr = diagDescr.substring(bar + 1);
+      }
+      
+      String newClassName = translateClassName(clsName);
+      try {
+	  Class cls = Class.forName(newClassName);
+	  _diagram = (Diagram) cls.newInstance();
+	  
+	  if (initStr != null && !initStr.equals(""))
+	      _diagram.initialize(findOwner(initStr));
+      }
+      catch (Exception ex) {
+	  System.out.println("could not set diagram type to " + newClassName);
+	  ex.printStackTrace();
+      }
   }
 
 
@@ -259,7 +263,7 @@ public class PGMLParser implements ElementHandler, TagHandler {
 
   protected void handlePGML(TXElement e) {
     String name = e.getAttribute("name");
-    String clsName = translateClassName(e.getAttribute("description"));
+    String clsName = e.getAttribute("description");
     try {
       if (clsName != null && !clsName.equals("")) initDiagram(clsName);
       if (name != null && !name.equals("")) _diagram.setName(name);
@@ -575,11 +579,11 @@ public class PGMLParser implements ElementHandler, TagHandler {
 
 		if ( oldName.startsWith("uci.gef.") ) {
 			String className = oldName.substring(oldName.lastIndexOf(".")+1);
-			return ("org.tiris.gef.presentation." + className);
+			return ("org.tigris.gef.presentation." + className);
 		}
 
 		String translated = (String)_translateUciToOrg.get(oldName);
-		//		System.out.println( "old = " + oldName + " / new = " + translated );
+		//System.out.println( "old = " + oldName + " / new = " + translated );
 		return translated;
 	}
 
