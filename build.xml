@@ -275,36 +275,6 @@ Property files to be searched:
     <!-- In order to use ant optional tasks which use jars that are not -->
     <!-- copied into ANT_HOME/lib, we must declare the tasks ourselves. -->
 
-    <path id="ant.optional.classpath">
-      <pathelement location="${ant.home}/optional.jar"/>
-      <pathelement location="${junit.jar.path}"/>
-      <pathelement location="${jdepend.jar.path}"/>
-      <pathelement location="${xerces.jar.path}"/>
-      <pathelement location="${xalan.jar.path}"/>
-      <pathelement location="${bsf.jar.path}"/>
-      <pathelement location="${javasrc.jar.path}"/>
-    </path>
-
-    <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" name="junit">
-      <classpath>
-	 <path refid="ant.optional.classpath"/>
-      </classpath>
-    </taskdef>
-
-    <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator" name="junitreport">
-      <classpath>
-	 <path refid="ant.optional.classpath"/>
-      </classpath>
-    </taskdef>
-
-    <taskdef classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask" name="jdepend">
-      <classpath>
-	 <path refid="ant.optional.classpath"/>
-      </classpath>
-    </taskdef>
-
-    <!-- End of support section for ant optional tasks                  -->
-
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
 
@@ -344,6 +314,45 @@ Property files to be searched:
     <property name="developer.bin.dir" value="${argo.bin.dir}"/>
 
   </target>
+
+  <!-- =================================================================== -->
+  <!-- Initialization target for optional ant tasks                        -->
+  <!-- =================================================================== -->
+
+  <target name="ant.optional.init" depends="init">
+    <path id="ant.optional.classpath">
+      <pathelement location="${ant.home}/optional.jar"/>
+      <pathelement location="${junit.jar.path}"/>
+      <pathelement location="${jdepend.jar.path}"/>
+      <pathelement location="${xerces.jar.path}"/>
+      <pathelement location="${xalan.jar.path}"/>
+      <pathelement location="${bsf.jar.path}"/>
+      <pathelement location="${javasrc.jar.path}"/>
+    </path>
+
+    <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask" name="junit">
+      <classpath>
+	 <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
+
+    <taskdef classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator" name="junitreport">
+      <classpath>
+	 <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
+
+    <taskdef classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask" name="jdepend">
+      <classpath>
+	 <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
+
+    <!-- End of support section for ant optional tasks                  -->
+
+
+  </target>
+  
 
   <!-- Note this file can only make Ant display values set in the
        file correctly, but external values in the environment or
@@ -852,7 +861,7 @@ ${Name} Build file
   <!-- =================================================================== -->
   <!-- Initialize for the junit tests.                                     -->
   <!-- =================================================================== -->
-  <target depends="init" name="junit-init">
+  <target depends="init, ant.optional.init" name="junit-init">
 
      <property name="011202.xml" value="tests/testmodels/01-12-02.xml"/>
      <property name="991015.dtd" value="tests/testmodels/Model.dtd"/>
@@ -1086,7 +1095,7 @@ ${Name} Build file
   <!-- =================================================================== -->
   <!-- Perform JDepend to find about the structure in ArgoUML.             -->
   <!-- =================================================================== -->
-  <target depends="init" name="jdepend">
+  <target depends="init, ant.optional.init" name="jdepend">
     <echo>
 CC - Concrete Class Count 
 AC - Abstract Class (and Interface) Count 
