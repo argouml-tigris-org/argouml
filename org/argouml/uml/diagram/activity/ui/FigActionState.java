@@ -128,8 +128,8 @@ public class FigActionState extends FigStateVertex {
     _name.setBounds(x+PADDING, y, w-PADDING*2, h);
     _bigPort.setBounds(x+1, y+1, w-2, h-2);
     _cover.setBounds(x, y, w, h);
-    _bigPort.setCornerRadius(h);
-    _cover.setCornerRadius(h);
+    _bigPort.setCornerRadius(h / 3 * 2);
+    _cover.setCornerRadius(h / 3 * 2);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
     updateEdges();
