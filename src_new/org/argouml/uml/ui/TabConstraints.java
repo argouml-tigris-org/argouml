@@ -43,9 +43,11 @@ import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.model_management.*;
 
 import tudresden.ocl.*;
+import tudresden.ocl.parser.OclParserException;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
+import org.argouml.ocl.ArgoFacade;
 import org.argouml.ocl.ui.*;
 
 public class TabConstraints extends TabSpawnable
@@ -58,7 +60,9 @@ public class TabConstraints extends TabSpawnable
 	private boolean _shouldBeEnabled = false;
 	private boolean _updating = false;
 	private TableModelConstraints _tableModel = new TableModelConstraints();
-	private JTable _table = new JTable(4, 1);
+	private DefaultListSelectionModel _selectionModel = new DefaultListSelectionModel();
+	private JTable _table = new JTable(4, 2);
+	private JTextField _context = new JTextField();
 	private JTextArea _expr = new JTextArea();
 	private JSplitPane _splitter;
 
@@ -82,15 +86,18 @@ public class TabConstraints extends TabSpawnable
 	public TabConstraints() {
 		super("Constraints");
 
+		_selectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		_table.setModel(_tableModel);
+		_table.setSelectionModel(_selectionModel);
 		Font labelFont = MetalLookAndFeel.getSubTextFont();
 		_table.setFont(labelFont);
 
 		_table.setIntercellSpacing(new Dimension(0, 1));
 		_table.setShowVerticalLines(false);
-		_table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		//_table.getSelectionModel().addListSelectionListener(this);
 		_table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+
+		_context.setEditable(false);
 
 		//TableColumn descCol = _table.getColumnModel().getColumn(0);
 		//descCol.setMinWidth(100);
@@ -113,11 +120,22 @@ public class TabConstraints extends TabSpawnable
 
 		JPanel exprPane = new JPanel();
 		exprPane.setLayout(new BorderLayout());
+		exprPane.add(_context, BorderLayout.NORTH);
 		exprPane.add(_expr, BorderLayout.CENTER);
 		_expr.setLineWrap(true);
 		_expr.setWrapStyleWord(true);
-		_expr.setEditable(false);
-		_expr.setEnabled(false);
+		_expr.setEditable(true);
+		_expr.setEnabled(true);
+		_expr.addFocusListener(
+			new FocusListener() {
+				public void focusLost(FocusEvent fe) {
+					updateConstraintName();
+					_table.repaint();
+				}
+				public void focusGained(FocusEvent fe) {
+				}
+			}
+		);
 
 		setLayout(new BorderLayout());
 		_splitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
@@ -127,7 +145,7 @@ public class TabConstraints extends TabSpawnable
 		add(_splitter, BorderLayout.CENTER);
 		setFont(new Font("Dialog", Font.PLAIN, 10));
 
-		_table.getSelectionModel().addListSelectionListener(this);
+		_selectionModel.addListSelectionListener(this);
 		_expr.getDocument().addDocumentListener(this);
 
 		//     _gtButton.addActionListener(this);
@@ -205,11 +223,14 @@ public class TabConstraints extends TabSpawnable
 		if (e.getDocument() == _expr.getDocument()) {
 			Vector cs = new Vector(_target.getConstraints());
 			//int row = _table.getSelectionModel().getMinSelectionIndex();
-			int row = _table.getSelectedRow();
+			int row = _selectionModel.getMinSelectionIndex();
 			if (row != -1 && row < cs.size()) {
 				//System.out.println("setting constraint body: " + row);
 				MConstraint c = (MConstraint) cs.elementAt(row);
-				c.setBody(new MBooleanExpression("OCL",_expr.getText()));
+				c.setBody(new MBooleanExpression(
+					"OCL",
+					_expr.getText())
+				);
 				//System.out.println("text=" + _expr.getText());
 			}
 		}
@@ -226,50 +247,65 @@ public class TabConstraints extends TabSpawnable
 	public void actionPerformed(ActionEvent ae) {
 		Object src = ae.getSource();
 		if (src == _addButton) {
-			DialogConstraint dialog = new DialogConstraint(_target, ProjectBrowser.TheInstance);
-			dialog.setVisible(true); 
-			String result = dialog.getResultingExpression();
-			if (result != null) {
-				Vector cs = new Vector(_target.getConstraints());
-				MConstraint c = new MConstraintImpl();
-				c.setName("Constraint "+cs.size());
-				c.setBody(new MBooleanExpression("OCL", result));
-				_target.addConstraint(c);
-				_target.getNamespace().addOwnedElement(c);
-				_table.tableChanged(null);
-				_table.sizeColumnsToFit(1);
-			}
+			MConstraint c = new MConstraintImpl();
+			c.setBody(new MBooleanExpression("OCL", ""));
+			_target.addConstraint(c);
+			_target.getNamespace().addOwnedElement(c);
+			_table.tableChanged(null);
+
+			_table.sizeColumnsToFit(1);
+			Vector cs = new Vector(_target.getConstraints());
+			String contextDeclaration = "context "+_target.getName();
+			int index = cs.indexOf(c);
+			_tableModel.update();
+			_selectionModel.setSelectionInterval(index, index); //cs.indexOf(c), cs.indexOf(c));
+			_context.setText(contextDeclaration);
+			_expr.setText("");
+			_expr.setEnabled(true);
+			_expr.setEditable(true);
+			_expr.requestFocus();
 			return;
 		}
 		if (src == _editButton) {
 		    Vector cs = new Vector(_target.getConstraints());
-                    MConstraint c;
-		    int row = _table.getSelectedRow();
-		    if (row != -1 && row < cs.size()) c = (MConstraint) cs.elementAt(row);
-		    else c = null;
-		    System.out.println("user selected " + row + " = " + c);
-                    _updating = true;
-		    try {
-			DialogConstraint dialog = new DialogConstraint(_target, c, ProjectBrowser.TheInstance);
-			dialog.setVisible(true);
-			String result = dialog.getResultingExpression();
-			if (result != null) {
-			    c.setBody(new MBooleanExpression("OCL", result));
-			    
-			    _table.tableChanged(null);
-			    _table.sizeColumnsToFit(1);
-			    
-			    _expr.setText(result);
-			    _expr.setCaretPosition(0);
-			    
+	            MConstraint c;
+		    int row = _selectionModel.getMinSelectionIndex();
+		    if (row != -1 && row < cs.size()) {
+				c = (MConstraint) cs.elementAt(row);
+				System.out.println("user selected " + row + " = " + c);
+				_updating = true;
+				try {
+					DialogConstraint dialog = new DialogConstraint(_target, c, ProjectBrowser.TheInstance);
+					dialog.setVisible(true);
+					String result = dialog.getResultingExpression();
+					if (result != null) {
+						c.setBody(new MBooleanExpression("OCL", result));
+
+						if (dialog.getConstraintName()==null) {
+							c.setName("malformed constraint");
+						}
+						else {
+							c.setName(dialog.getConstraintName());
+						}
+
+						_table.tableChanged(null);
+						_table.sizeColumnsToFit(1);
+
+						_expr.setText(result);
+						_expr.setCaretPosition(0);
+
+					}
+				}
+				finally { _updating = false; }
+				updateEnabled(c);
 			}
-		    }
-		    finally { _updating = false; }
-		    updateEnabled(c);
+			else {
+				c = null;
+			}
 		    return;
 		}
 		if (src == _removeButton) {
-			int row = _table.getSelectedRow();
+			int row = _selectionModel.getMinSelectionIndex();
 			Vector cs = new Vector(_target.getConstraints());
 			if (row > -1 && row < cs.size()) {
 				MConstraint c = (MConstraint)cs.elementAt(row);
@@ -295,12 +331,13 @@ public class TabConstraints extends TabSpawnable
 
 	/** Called whenever the constraint selection changes. */
 	public void valueChanged(ListSelectionEvent lse) {
+		_context.setText("context "+_target.getName());
 		if (lse.getValueIsAdjusting()) return;
-		if (lse.getSource() == _table.getSelectionModel()) {
+		if (lse.getSource() == _selectionModel) {
 			Vector cs = new Vector(_target.getConstraints());
 			MConstraint c;
 			//int row = lse.getFirstIndex();
-			int row = _table.getSelectedRow();
+			int row = _selectionModel.getMinSelectionIndex();
 			if (row != -1 && row < cs.size()) c = (MConstraint) cs.elementAt(row);
 			else c = null;
 			//System.out.println("user selected " + row + " = " + c);
@@ -315,6 +352,24 @@ public class TabConstraints extends TabSpawnable
 			}
 			finally { _updating = false; }
 			updateEnabled(c);
+		}
+	}
+
+	private void updateConstraintName() {
+		_context.setText("context "+_target.getName());
+		Vector cs = new Vector(_target.getConstraints());
+		int row = _selectionModel.getMinSelectionIndex();
+		if (row != -1 && row < cs.size()) {
+			MConstraint c = (MConstraint) cs.elementAt(row);
+			try {
+				String ocl = "context "+_target.getName()+" "+c.getBody().getBody();
+				OclTree tree = OclTree.createTree(ocl, new ArgoFacade(_target));
+				String name = tree.getConstraintName();
+				c.setName(name);
+			}
+			catch (Exception e) {
+				c.setName("malformed constraint");
+			}
 		}
 	}
 
@@ -346,19 +401,30 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
 
   ////////////////
   // TableModel implemetation
-  public int getColumnCount() { return 1; }
+  public int getColumnCount() { return 2; }
 
   public String  getColumnName(int c) {
-    if (c == 0) return "Constraint names";
-    return "XXX";
+    if (c == 0) {
+		return "welformed";
+	}
+	else if (c == 1) {
+		return "Constraint name";
+	}
+ 	else
+		return "XXX";
   }
 
   public Class getColumnClass(int c) {
-    return String.class;
+	if (c==0) {
+		return Boolean.class;
+	}
+	else {
+	    return String.class;
+	}
   }
 
   public boolean isCellEditable(int row, int col) {
-    return col == 0;
+    return false;
   }
 
   public int getRowCount() {
@@ -373,7 +439,26 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
     if (cs == null) return "null constraints";
     //if (row == cs.size()) return ""; // allows adding new constraint
     MConstraint c = (MConstraint) cs.elementAt(row);
-    if (col == 0) return c.getName();
+
+	OclTree tree = null;
+	boolean isWelformed = false;
+	try {
+		String ocl = "context "+_target.getName()+" "+c.getBody().getBody();
+		tree = OclTree.createTree(
+			ocl,
+			new ArgoFacade(_target)
+		);
+		tree.assureTypes();
+		isWelformed = true;
+	}
+	catch (Exception e) {
+	}
+    if (col == 0) {
+		return new Boolean( isWelformed );
+	}
+	else if (col == 1) {
+		return c.getName();
+	}
     else return "C-" + row+","+col; // for debugging
   }
 
@@ -422,6 +507,10 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   public void delayedVetoableChange(PropertyChangeEvent pce) {
     fireTableStructureChanged();
   }
+
+	public void update() {
+		fireTableChanged( new TableModelEvent(this) );
+    }
 
 
 } /* end class TableModelConstraints */
