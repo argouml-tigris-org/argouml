@@ -52,6 +52,9 @@ import uci.uml.Foundation.Extension_Mechanisms.*;
 public abstract class FigEdgeModelElement extends FigEdgePoly
 implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener, KeyListener, PropertyChangeListener  { 
 
+  ////////////////////////////////////////////////////////////////
+  // constants
+
   public static Font LABEL_FONT;
   public static Font ITALIC_LABEL_FONT;
 
@@ -63,19 +66,19 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
 
   public final int MARGIN = 2;
 
+  ////////////////////////////////////////////////////////////////
+  // instance variables
+
   protected FigText _name;
   protected FigText _stereo = new FigText(10, 30, 90, 20);
-  
+
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
   /** Partially construct a new FigNode.  This method creates the
    *  _name element that holds the name of the model element and adds
    *  itself as a listener. */
-  public FigEdgeModelElement(Object edge) {
-    super();
-    setOwner(edge);
-    ModelElement me = (ModelElement) edge;
-    //me.addVetoableChangeListener(this);
-
+  public FigEdgeModelElement() {
     _name = new FigText(10, 30, 90, 20);
     _name.setFont(LABEL_FONT);
     _name.setTextColor(Color.black);
@@ -98,6 +101,17 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     setBetweenNearestPoints(true);
     ((FigPoly)_fig).setRectilinear(false);
   }
+
+  public FigEdgeModelElement(Object edge) {
+    this();
+    setOwner(edge);
+    //ModelElement me = (ModelElement) edge;
+    //me.addVetoableChangeListener(this);
+  }
+
+
+  ////////////////////////////////////////////////////////////////
+  // accessors
 
   public Stack getPopUpActions() {
     Stack popUpActions = super.getPopUpActions();
@@ -250,6 +264,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
       ((ModelElement)oldOwner).removeVetoableChangeListener(this);
     if (own instanceof ModelElement)
       ((ModelElement)own).addVetoableChangeListener(this);
+    modelChanged();
   }
 
 

@@ -59,6 +59,7 @@ public class ModeBroom extends Mode {
   // instance variables
 
   private Point	_start  = new Point(0, 0);
+  private Vector _LastTouched = new Vector();
 
   private int x1, y1, x2, y2;
   private int _lastX1, _lastY1, _lastX2, _lastY2;
@@ -257,6 +258,7 @@ public class ModeBroom extends Mode {
     _selectRect.reshape(x1 - 4, y1 - 4, x2 - x1 + 8, y2 - y1 + 8);
     _editor.damaged(_selectRect);
     _hint = null;
+    touching();
   }
 
   /** On mouse up, select or toggle the selection of items under the
@@ -266,7 +268,7 @@ public class ModeBroom extends Mode {
     _bigDamageRect.setLocation(x1 - 200, y1 - 200);
     _editor.damaged(_bigDamageRect);
     _editor.damaged(_selectRect);
-    _editor.getSelectionManager().select(touching());
+    _editor.getSelectionManager().select(_LastTouched);
     _draw = false;
     done();
     me.consume();
@@ -303,7 +305,7 @@ public class ModeBroom extends Mode {
     super.keyPressed(ke);
     if (ke.isConsumed()) return;
     if (KeyEvent.VK_SPACE == ke.getKeyCode()) {
-      doDistibute(false, ke.isShiftDown());
+      doDistibute(false, ke.isAltDown());
       ke.consume();
       _bigDamageRect.setLocation(x1 - 200, y1 - 200);
       _editor.damaged(_bigDamageRect);
@@ -315,7 +317,8 @@ public class ModeBroom extends Mode {
   // actions
 
   public void doDistibute(boolean alignToGrid, boolean doCentering) {
-    Vector figs = touching();
+    Vector figs = _LastTouched;
+    if (figs == null) figs = touching();
     int request = 0;
     if (_distributeMode == EVEN_SPACE || _distributeMode == SPREAD) {
       request = CmdDistribute.V_SPACING;
@@ -338,7 +341,7 @@ public class ModeBroom extends Mode {
     if (doCentering) {
       int centerRequest = CmdAlign.ALIGN_H_CENTERS;
       if (_dir == UPWARD || _dir == DOWNWARD)
-	centerRequest = CmdAlign.ALIGN_H_CENTERS;
+	centerRequest = CmdAlign.ALIGN_V_CENTERS;
       CmdAlign a = new CmdAlign(centerRequest);
       a.setArg("figs", figs);
       a.doIt();
@@ -368,6 +371,7 @@ public class ModeBroom extends Mode {
       if (_touched[i].getBounds().intersects(_selectRect)) //needs-more-work
 	if (!(_touched[i] instanceof FigEdge))
 	  figs.addElement(_touched[i]);
+    _LastTouched = figs;
     return figs;
   }
   

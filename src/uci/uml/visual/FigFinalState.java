@@ -75,12 +75,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public FigFinalState(GraphModel gm, Object node) {
-    super(node);
-    // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof ElementImpl)
-      ((ElementImpl)node).addVetoableChangeListener(this);
-
+  public FigFinalState() {
     Color handleColor = Globals.getPrefs().getHandleColor();
     _bigPort = new FigCircle(x,y,width,height, handleColor, Color.cyan);
     _outCircle = new FigCircle(x,y,width,height, handleColor, Color.white);
@@ -91,10 +86,13 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     addFig(_outCircle);
     addFig(_inCircle);
 
-    Object onlyPort = node;
-    bindPort(onlyPort, _bigPort);
     setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
+  }
+
+  public FigFinalState(GraphModel gm, Object node) {
+    this();
+    setOwner(node);
   }
 
   public Object clone() {
@@ -106,7 +104,14 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     return figClone;
   }
 
-  
+  public void setOwner(Object node) {
+    super.setOwner(node);
+    bindPort(node, _bigPort);
+    // if it is a UML meta-model object, register interest in any change events
+    if (node instanceof ElementImpl)
+      ((ElementImpl)node).addVetoableChangeListener(this);
+  }
+
   /** Final states are fixed size. */
   public boolean isResizable() { return false; }
 

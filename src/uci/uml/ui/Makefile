@@ -78,11 +78,13 @@ CLASSES = \
 	TabHash.class \
 	TabHistory.class \
 	TabJavaSrc.class \
+	TabFigTarget.class \
 	TabModelTarget.class \
 	TabProps.class \
 	TabResults.class \
 	TabSpawnable.class \
 	TabSrc.class \
+	TabStyle.class \
 	TabTable.class \
 	TabTaggedValues.class \
 	TabText.class \

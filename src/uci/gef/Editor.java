@@ -138,7 +138,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** Each Editor has a RedrawManager that executes in a separate
    *  thread of control to update damaged regions of the display. */
-  protected transient RedrawManager _redrawer = new RedrawManager(this);
+  protected transient RedrawManager _redrawer = null; //-new RedrawManager(this);
 
 
   protected transient FigTextEditor _activeTextEditor = null;
@@ -186,7 +186,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** Called after the Editor is loaded from a file. */
   public void postLoad() {
-    if (_redrawer == null) _redrawer = new RedrawManager(this);
+    //- if (_redrawer == null) _redrawer = new RedrawManager(this);
     _layerManager.postLoad();
   }
 
@@ -347,17 +347,24 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** Calling any one of the following damaged() methods adds a
    *  damaged region (rectangle) to this Editor's RedrawManager.   */
-  public void damaged(Rectangle r) { _redrawer.add(r); }
+  public void damaged(Rectangle r) {
+    //- _redrawer.add(r);
+     ((JComponent) getAwtComponent()).repaint(1000, r.x-16, r.y-16,
+     					     r.width+32, r.height+32);
+  }
 
   public void damaged(Fig f) {
-    if (_redrawer == null) _redrawer = new RedrawManager(this);
+    //- if (_redrawer == null) _redrawer = new RedrawManager(this);
     // the line above should not be needed, but without it I get
     // NullPointerExceptions...
-    if (f != null) _redrawer.add(f);
+    //- if (f != null) _redrawer.add(f);
+    ((JComponent) getAwtComponent()).repaint(1000, f.getX()-16, f.getY()-16,
+					     f.getWidth()+32, f.getHeight()+32);
   }
 
   public void damaged(Selection sel) {
-    if (sel != null) _redrawer.add(sel);
+    //- if (sel != null) _redrawer.add(sel);
+    damaged(sel.getBounds());
   }
 
   /** Mark the entire visible area of this Editor as
@@ -367,9 +374,11 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  modified objects, but only in cases where most of the visible
    *  area is expected to change anyway. */
   public void damageAll() {
-    if (_redrawer == null) _redrawer = new RedrawManager(this);
+    //- if (_redrawer == null) _redrawer = new RedrawManager(this);
     Dimension size = getAwtComponent().getSize();
-    _redrawer.add(new Rectangle(0, 0, size.width, size.height));
+    //- _redrawer.add(new Rectangle(0, 0, size.width, size.height));
+    ((JComponent) getAwtComponent()).repaint();
+
   }
 
   /** Tell my RedrawManager to repair all outstanding damaged regions
@@ -377,7 +386,9 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  already gets called periodically from another thread of
    *  control. You should call it if you need a very tight user
    *  interface feedback loop... */
-  public void repairDamage() { _redrawer.repairDamage(); }
+  public void repairDamage() {
+    //- _redrawer.repairDamage();
+  }
 
   ////////////////////////////////////////////////////////////////
   // display methods
@@ -433,7 +444,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     if (oldTextEditor != null)
       oldTextEditor.endEditing();
   }
-  
+
   public void setCursor(Cursor c) {
     if (getAwtComponent() != null) {
       getAwtComponent().setCursor(c);
@@ -524,15 +535,15 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Invoked after the mouse has been pressed and released.  All
    *  events are passed on the SelectionManager and then ModeManager. */
   public void mouseClicked(MouseEvent me) { 
-    RedrawManager.lock();
+    //- RedrawManager.lock();
     Globals.curEditor(this);
     //setUnderMouse(me);
     if (_curFig instanceof MouseListener)
       ((MouseListener)_curFig).mouseClicked(me);
     _selectionManager.mouseClicked(me);
-    _modeManager.mouseClicked(me);  
-    RedrawManager.unlock();
-    _redrawer.repairDamage();
+    _modeManager.mouseClicked(me);
+    //- RedrawManager.unlock();
+    //- _redrawer.repairDamage();
   }
 
   /** Invoked when a mouse button has been pressed. */
@@ -540,52 +551,52 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     if (me.isConsumed()) return;
     setActiveTextEditor(null);
     //if (getAwtComponent() != null) getAwtComponent().requestFocus();
-    RedrawManager.lock();
+    //- RedrawManager.lock();
     Globals.curEditor(this);
     //setUnderMouse(me);
     if (_curFig instanceof MouseListener)
       ((MouseListener)_curFig).mousePressed(me);
     _selectionManager.mousePressed(me);
-    _modeManager.mousePressed(me);  
-    RedrawManager.unlock();
-    _redrawer.repairDamage();    
+    _modeManager.mousePressed(me);
+    //- RedrawManager.unlock();
+    //- _redrawer.repairDamage();
   }
 
   /** Invoked when a mouse button has been released. */
   public void mouseReleased(MouseEvent me) {
-    RedrawManager.lock();
+    //- RedrawManager.lock();
     Globals.curEditor(this);
     //setUnderMouse(me);
     if (_curFig instanceof MouseListener)
       ((MouseListener)_curFig).mouseReleased(me);
     _selectionManager.mouseReleased(me);
-    _modeManager.mouseReleased(me);  
-    RedrawManager.unlock();
-    _redrawer.repairDamage();    
+    _modeManager.mouseReleased(me);
+    //- RedrawManager.unlock();
+    //- _redrawer.repairDamage();
   }
 
   /** Invoked when the mouse enters the Editor. */
   public void mouseEntered(MouseEvent me) {
     if (_activeTextEditor != null) _activeTextEditor.requestFocus();
     else if (_awt_component != null) _awt_component.requestFocus();
-    RedrawManager.lock();
+    //- RedrawManager.lock();
     Globals.curEditor(this);
     mode(Globals.mode());
     setUnderMouse(me);
-    _modeManager.mouseEntered(me);  
-    RedrawManager.unlock();
-    _redrawer.repairDamage();
+    _modeManager.mouseEntered(me);
+    //- RedrawManager.unlock();
+    //- _redrawer.repairDamage();
   }
 
   /** Invoked when the mouse exits the Editor. */
   public void mouseExited(MouseEvent me) {
-    RedrawManager.lock();
+    //- RedrawManager.lock();
     // Globals.curEditor(this);
     setUnderMouse(me);
     if (_curFig instanceof MouseListener)
       ((MouseListener)_curFig).mouseExited(me);
-    RedrawManager.unlock();
-    _redrawer.repairDamage();
+    //- RedrawManager.unlock();
+    //- _redrawer.repairDamage();
   }
 
   /** Invoked when a mouse button is pressed in the Editor and then
@@ -595,65 +606,63 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  bounds of the Editor).  BTW, this makes drag and drop editing
    *  almost impossible.  */
   public void mouseDragged(MouseEvent me) {
-    AWTEvent nextEvent = null;
-    RedrawManager.lock();
+    //- RedrawManager.lock();
     Globals.curEditor(this);
     setUnderMouse(me);
     _selectionManager.mouseDragged(me);
-    _modeManager.mouseDragged(me);  
-    RedrawManager.unlock();
-    if (nextEvent == null) _redrawer.repairDamage();
+    _modeManager.mouseDragged(me);
+    //- RedrawManager.unlock();
+    //- _redrawer.repairDamage();
   }
 
   /** Invoked when the mouse button has been moved (with no buttons no down). */
   public void mouseMoved(MouseEvent me) {
-    AWTEvent nextEvent = null;
-    RedrawManager.lock();
+    //- RedrawManager.lock();
     Globals.curEditor(this);
     setUnderMouse(me);
-    if (_curFig != null) {
+    if (_curFig != null && Globals.getShowFigTips()) {
       String tip = _curFig.getTipString(me);
       if (tip != null && (_awt_component instanceof JComponent))
-	((JComponent)_awt_component).setToolTipText(tip);
+ 	((JComponent)_awt_component).setToolTipText(tip);
     }
     else if (_awt_component instanceof JComponent)
 	((JComponent)_awt_component).setToolTipText("");
 
     _selectionManager.mouseMoved(me);
     _modeManager.mouseMoved(me);
-    RedrawManager.unlock();
-    if (nextEvent == null) _redrawer.repairDamage();
+    //- RedrawManager.unlock();
+    //- _redrawer.repairDamage();
   }
 
 
   /** Invoked when a key has been pressed and released. The KeyEvent
    *  has its keyChar ivar set to something, keyCode ivar is junk. */
   public void keyTyped(KeyEvent ke) {
-    RedrawManager.lock();
+    //- RedrawManager.lock();
     Globals.curEditor(this);
     _selectionManager.keyTyped(ke);
-    _modeManager.keyTyped(ke);  
-    RedrawManager.unlock();
-    _redrawer.repairDamage();    
+    _modeManager.keyTyped(ke);
+    //- RedrawManager.unlock();
+    //- _redrawer.repairDamage();
   }
-  
+
   /** Invoked when a key has been pressed. The KeyEvent
    *  has its keyCode ivar set to something, keyChar ivar is junk. */
   public void keyPressed(KeyEvent ke) {
-    RedrawManager.lock();
+    //- RedrawManager.lock();
     Globals.curEditor(this);
     _selectionManager.keyPressed(ke);
-    _modeManager.keyPressed(ke);  
-    RedrawManager.unlock();
-    _redrawer.repairDamage();    
+    _modeManager.keyPressed(ke);
+    //- RedrawManager.unlock();
+    //- _redrawer.repairDamage();
   }
-  
+
   /** Invoked when a key has been released. This is not very useful,
    *  so I ignore it. */
   public void keyReleased(KeyEvent ke) { }
-  
 
-  
+
+
   ////////////////////////////////////////////////////////////////
   // Command-related methods
 

@@ -158,7 +158,7 @@ public class XMITraverse {
     String commandPart = st.nextToken();
     String currentToken = null;
 
-    if (commandPart.equals("self") | commandPart.equals("traverse") | commandPart.equals("reference")) {
+    if (commandPart.equals("self") || commandPart.equals("traverse") || commandPart.equals("reference")) {
       Vector props = null;
       Object propsOne = runOn;
 
@@ -1350,7 +1350,7 @@ public class XMITraverse {
     "<isQuery XMI.value='$self.isQuery$'/>\n" +
     "<concurrency XMI.value='$self.concurrency$'/>\n" +
     "<isPolymorphic XMI.value='$self.isPolymorphic$'/>\n" +
-    "$traverse.operationSpecification$\n" +
+    "$traverse.specification$\n" +
     //"$traverse.namespace$\n" +
     "$traverse.template$\n" +
     "$traverse.stereotype$\n" +

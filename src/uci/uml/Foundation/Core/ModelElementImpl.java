@@ -101,6 +101,17 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
       x.getNamespace().addOwnedElement(x);
   }
 
+  public VisibilityKind getVisibility() {
+    if (getElementOwnership() == null) return VisibilityKind.UNSPEC;
+    return getElementOwnership().getVisibility();
+  }
+  public void setVisibility(VisibilityKind x) throws PropertyVetoException {
+    fireVetoableChange("elementOwnership", _elementOwnership, x);
+    if (getElementOwnership() == null) return;
+    getElementOwnership().setVisibility(x);
+  }
+
+
   public Vector getConstraint() { return (Vector) _constraint;}
   public void setConstraint(Vector x)
   throws PropertyVetoException {

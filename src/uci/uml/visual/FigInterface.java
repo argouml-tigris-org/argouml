@@ -51,8 +51,7 @@ public class FigInterface extends FigNodeModelElement {
   protected FigText _stereo;
   protected FigText _oper;
 
-  public FigInterface(GraphModel gm, Object node) {
-    super(gm, node);
+  public FigInterface() {
 
 //     if (node instanceof ElementImpl)
 //       ((ElementImpl)node).addVetoableChangeListener(this);
@@ -85,11 +84,13 @@ public class FigInterface extends FigNodeModelElement {
     addFig(_stereo);
     addFig(_name);
     addFig(_oper);
-
-    Object onlyPort = node; //this kngl should be in the GraphModel
-    bindPort(onlyPort, _bigPort);
     Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
+  }
+
+  public FigInterface(GraphModel gm, Object node) {
+    this();
+    setOwner(node);
   }
 
   public Object clone() {
@@ -101,6 +102,11 @@ public class FigInterface extends FigNodeModelElement {
     figClone._name = (FigText) v.elementAt(3);
     figClone._oper = (FigText) v.elementAt(4);
     return figClone;
+  }
+
+  public void setOwner(Object node) {
+    super.setOwner(node);
+    bindPort(node, _bigPort);
   }
 
   public Dimension getMinimumSize() {
@@ -117,19 +123,22 @@ public class FigInterface extends FigNodeModelElement {
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
 
+    Rectangle oldBounds = getBounds();
     Dimension stereoMin = _stereo.getMinimumSize();
     Dimension nameMin = _name.getMinimumSize();
     Dimension operMin = _oper.getMinimumSize();
 
-    _outline.setBounds(x, y, w, stereoMin.height + nameMin.height - OVERLAP);
+    _outline.setBounds(x, y, w-1,
+		       stereoMin.height + nameMin.height - OVERLAP);
     _stereo.setBounds(x, y, w, stereoMin.height);
     _name.setBounds(x, y + stereoMin.height - OVERLAP, w, nameMin.height);
-    _oper.setBounds(x+1, y + _outline.getBounds().height,
-		    w-2, h - _outline.getBounds().height);
+    _oper.setBounds(x, y + _outline.getBounds().height-1,
+		    w-1, h - _outline.getBounds().height+1);
     _bigPort.setBounds(x+1, y+1, w-2, h-2);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
     updateEdges();
+    firePropChange("bounds", oldBounds, getBounds());
   }
 
   ////////////////////////////////////////////////////////////////

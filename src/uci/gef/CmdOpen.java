@@ -42,7 +42,6 @@ import java.io.*;
  * @see CmdSave */
 
 public class CmdOpen extends Cmd implements FilenameFilter {
-
   public CmdOpen() { super("Open..."); }
 
   /** Only allow the user to select files that match the fiven
@@ -58,11 +57,12 @@ public class CmdOpen extends Cmd implements FilenameFilter {
       FileDialog fd =
 	new FileDialog(ce.findFrame(), "Open...", FileDialog.LOAD);
       fd.setFilenameFilter(this);
-      fd.setDirectory(".");
+      fd.setDirectory(Globals.getLastDirectory());
       fd.show();
       String filename = fd.getFile(); // blocking
       String path = fd.getDirectory(); // blocking
-
+      Globals.setLastDirectory(path);
+      
       if (filename != null) {
     	Globals.showStatus("Reading " + path + filename + "...");
     	FileInputStream fis = new FileInputStream(path + filename);

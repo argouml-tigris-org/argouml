@@ -26,7 +26,7 @@
 
 // File: FigMessage.java
 // Classes: FigMessage
-// Original Author: your email address here
+// Original Author: silverbullet ics125 spring 1998
 // $Id$
 
 
@@ -40,17 +40,20 @@ import uci.uml.Foundation.Core.*;
 
 public class FigMessage extends FigEdgeLine {
 
-  public FigMessage(Object edge) {
-    super();
-    setOwner(edge);
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
-    // set whatever arrow heads and colors are appropriate
+  public FigMessage() {
     _fig.setLineColor(Color.red);
-
     ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
     endArrow.setFillColor(Color.red);
     setDestArrowHead(endArrow);
     setBetweenNearestPoints(true);
+  }
+
+  public FigMessage(Object edge) {
+    this();
+    setOwner(edge);
   }
 
   public void dispose() {
@@ -60,7 +63,6 @@ public class FigMessage extends FigEdgeLine {
     p.moveToTrash(elmt);
     super.dispose();
   }
-  
 
   static final long serialVersionUID = -5076205612412365929L;
 

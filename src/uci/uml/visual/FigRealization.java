@@ -41,15 +41,24 @@ import uci.uml.Foundation.Core.*;
 
 public class FigRealization extends FigEdgeModelElement {
 
-  public FigRealization(Object edge) {
-    super(edge);
+  ////////////////////////////////////////////////////////////////
+  // constructors
+
+  public FigRealization() {
     addPathItem(_stereo, new PathConvPercent(this, 50, 10));
     ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
     endArrow.setFillColor(Color.white);
     setDestArrowHead(endArrow);
     setBetweenNearestPoints(true);
-    modelChanged();
   }
+
+  public FigRealization(Object edge) {
+    this();
+    setOwner(edge);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // accessors
 
   public void setFig(Fig f) {
     super.setFig(f);

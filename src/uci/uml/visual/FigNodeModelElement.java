@@ -50,10 +50,15 @@ import uci.uml.Foundation.Data_Types.*;
  *  resized. */
 
 public abstract class FigNodeModelElement extends FigNode
-implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener, KeyListener, PropertyChangeListener  { 
+implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener, KeyListener, PropertyChangeListener  {
+
+  ////////////////////////////////////////////////////////////////
+  // constants
 
   public static Font LABEL_FONT;
   public static Font ITALIC_LABEL_FONT;
+  public final int MARGIN = 2;
+
 
   static {
     LABEL_FONT = MetalLookAndFeel.getSubTextFont();
@@ -61,32 +66,45 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
 				 Font.ITALIC, LABEL_FONT.getSize());
   }
 
-  public final int MARGIN = 2;
+  ////////////////////////////////////////////////////////////////
+  // instance variables
 
   protected FigText _name;
 
-  /** Partially construct a new FigNode.  This method creates the
-   *  _name element that holds the name of the model element and adds
-   *  itself as a listener. */
-  public FigNodeModelElement(GraphModel gm, Object node) {
-    super(node);
+  ////////////////////////////////////////////////////////////////
+  // constructors
+
+  public FigNodeModelElement() {
     //me.addVetoableChangeListener(this);
 
-    _name = new FigText(10, 10, 90, 20);
+    _name = new FigText(10, 10, 90, 21);
     _name.setFont(LABEL_FONT);
     _name.setTextColor(Color.black);
     _name.setExpandOnly(true);
     _name.setMultiLine(false);
     _name.setAllowsTab(false);
 
+
+    //_name.addPropertyChangeListener(this);
+  }
+
+  /** Partially construct a new FigNode.  This method creates the
+   *  _name element that holds the name of the model element and adds
+   *  itself as a listener. */
+  public FigNodeModelElement(GraphModel gm, Object node) {
+    this();
+    setOwner(node);
+
     ModelElement me = (ModelElement) node;
     String placeString = me.getOCLTypeStr();
     Name n = me.getName();
     if (n != null && !n.equals(Name.UNSPEC)) placeString = n.getBody();
     _name.setText(placeString); // shown while placing node in diagram
-
-    //_name.addPropertyChangeListener(this);
   }
+
+
+  ////////////////////////////////////////////////////////////////
+  // accessors
 
 //   /** Returns true if this Fig can be resized by the user. */
 //   public boolean isResizable() { return false; }

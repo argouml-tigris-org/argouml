@@ -43,7 +43,7 @@ import uci.gef.event.*;
  *  and a status bar. */
 
 public class JGraphFrame extends JFrame
-implements IStatusBar, Cloneable {
+implements IStatusBar, Cloneable, ModeChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -100,12 +100,13 @@ implements IStatusBar, Cloneable {
     content.add(_mainPanel, BorderLayout.CENTER);
     content.add(_statusbar, BorderLayout.SOUTH);
     setSize(300, 250);
+    _graph.addModeChangeListener(this);
   }
 
   /** Set up the menus and keystrokes for menu items. Subclasses can
    *  override this, or you can use setMenuBar(). */
   protected void setUpMenus() {
-    JMenuItem openItem, saveItem, printItem, prefsItem, exitItem;
+    JMenuItem openItem, openPGMLItem, saveItem, savePGMLItem, printItem, prefsItem, exitItem;
     JMenuItem selectAllItem;
     JMenuItem deleteItem, cutItem, copyItem, pasteItem;
     JMenuItem editNodeItem;
@@ -118,7 +119,9 @@ implements IStatusBar, Cloneable {
     _menubar.add(file);
     //file.add(new CmdNew());
     openItem = file.add(new CmdOpen());
+    openPGMLItem = file.add(new CmdOpenPGML());
     saveItem = file.add(new CmdSave());
+    savePGMLItem = file.add(new CmdSavePGML());
     printItem = file.add(new CmdPrint());
     prefsItem = file.add(new CmdOpenWindow("uci.gef.PrefsEditor",
 					   "Preferences..."));
@@ -141,18 +144,19 @@ implements IStatusBar, Cloneable {
 
     //edit.add(new CmdUndo());
     //edit.add(new CmdRedo());
-    //edit.addSeparator();
-    
+    edit.addSeparator();
+
     //edit.add(new CmdCut());
-    //edit.add(new CmdCopy());
-    //edit.add(new CmdPaste());
-    
+    copyItem = edit.add(new CmdCopy());
+    copyItem.setMnemonic('C');
+    pasteItem = edit.add(new CmdPaste());
+    pasteItem.setMnemonic('P');
+
     deleteItem = edit.add(new CmdDelete());
     edit.addSeparator();
     edit.add(new CmdUseReshape());
     edit.add(new CmdUseResize());
     edit.add(new CmdUseRotate());
-    edit.addSeparator();
 
     JMenu view = new JMenu("View");
     _menubar.add(view);
@@ -192,7 +196,7 @@ implements IStatusBar, Cloneable {
     distribute.add(new CmdDistribute(CmdDistribute.H_CENTERS));
     distribute.add(new CmdDistribute(CmdDistribute.V_SPACING));
     distribute.add(new CmdDistribute(CmdDistribute.V_CENTERS));
-    
+
     JMenu reorder = new JMenu("Reorder");
     arrange.add(reorder);
     toBackItem = reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
@@ -225,8 +229,13 @@ implements IStatusBar, Cloneable {
     sUpArrow = KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.SHIFT_MASK);
     sDownArrow = KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.SHIFT_MASK);
 
-    KeyStroke delKey, ctrlG, ctrlU, ctrlB, ctrlF, sCtrlB, sCtrlF;
+    KeyStroke delKey, ctrlZ, ctrlX, ctrlC, ctrlV, ctrlG, ctrlU, ctrlB,
+      ctrlF, sCtrlB, sCtrlF;
     delKey = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
+    ctrlZ = KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_MASK);
+    ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK);
+    ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK);
+    ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK);
     ctrlG = KeyStroke.getKeyStroke(KeyEvent.VK_G, KeyEvent.CTRL_MASK);
     ctrlU = KeyStroke.getKeyStroke(KeyEvent.VK_U, KeyEvent.CTRL_MASK);
     ctrlB = KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_MASK);
@@ -244,6 +253,10 @@ implements IStatusBar, Cloneable {
     exitItem.setAccelerator(altF4);
 
     deleteItem.setAccelerator(delKey);
+    //undoItem.setAccelerator(ctrlZ);
+    //cutItem.setAccelerator(ctrlX);
+    copyItem.setAccelerator(ctrlC);
+    pasteItem.setAccelerator(ctrlV);
 
     groupItem.setAccelerator(ctrlG);
     ungroupItem.setAccelerator(ctrlU);
@@ -313,6 +326,15 @@ implements IStatusBar, Cloneable {
     if (_statusbar != null) _statusbar.setText(msg);
   }
 
+
+  ////////////////////////////////////////////////////////////////
+  // ModeChangeListener implementation
+  public void modeChange(ModeChangeEvent mce) {
+    //System.out.println("TabDiagram got mode change event");
+    if (!Globals.getSticky() && Globals.mode() instanceof ModeSelect)
+      _toolbar.unpressAllButtons();
+  }
+  
 
   static final long serialVersionUID = 7412677544814835664L;
 } /* end class JGraphFrame */

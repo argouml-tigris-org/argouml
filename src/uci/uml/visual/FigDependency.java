@@ -41,16 +41,24 @@ import uci.uml.Foundation.Core.*;
 
 public class FigDependency extends FigEdgeModelElement {
 
-  public FigDependency(Object edge) {
-    super(edge);
+  ////////////////////////////////////////////////////////////////
+  // constructors
+
+  public FigDependency() {
     addPathItem(_stereo, new PathConvPercent(this, 50, 10));
-    // set whatever arrow heads and colors are appropriate
     ArrowHeadGreater endArrow = new ArrowHeadGreater();
     endArrow.setFillColor(Color.red);
     setDestArrowHead(endArrow);
     setBetweenNearestPoints(true);
-    modelChanged();
   }
+
+  public FigDependency(Object edge) {
+    this();
+    setOwner(edge);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // accessors
 
   public void setFig(Fig f) {
     super.setFig(f);
@@ -59,13 +67,6 @@ public class FigDependency extends FigEdgeModelElement {
 
   protected boolean canEdit(Fig f) { return false; }
 
-  /** This is called aftern any part of the UML ModelElement has
-   *  changed. This method automatically updates the name FigText.
-   *  Subclasses should override and update other parts. */
-  protected void modelChanged() {
-    // do not set _name
-    updateStereotypeText();
-  }
 
   public void dispose() {
     if (!(getOwner() instanceof Dependency)) return;
@@ -80,6 +81,16 @@ public class FigDependency extends FigEdgeModelElement {
     super.dispose();
   }
 
+  ////////////////////////////////////////////////////////////////
+  // event handlers
+
+  /** This is called aftern any part of the UML ModelElement has
+   *  changed. This method automatically updates the name FigText.
+   *  Subclasses should override and update other parts. */
+  protected void modelChanged() {
+    // do not set _name
+    updateStereotypeText();
+  }
 
 
 } /* end class FigDependency */

@@ -46,12 +46,14 @@ CLASSES = \
 	CmdNudge.class \
 	CmdNull.class \
 	CmdOpen.class \
+	CmdOpenPGML.class \
 	CmdOpenWindow.class \
 	CmdPaste.class \
 	CmdPrint.class \
 	CmdRemovePoint.class \
 	CmdReorder.class \
 	CmdSave.class \
+	CmdSavePGML.class \
 	CmdScroll.class \
 	CmdSelectAll.class \
 	CmdSelectInvert.class \
@@ -128,6 +130,7 @@ CLASSES = \
 	PathConv.class \
 	PathConvPercent.class \
 	PathConvPercentPlusConst.class \
+	PGMLParserIBM.class \
 	PredFigInRect.class \
 	Prefs.class \
 	PrefsEditor.class \

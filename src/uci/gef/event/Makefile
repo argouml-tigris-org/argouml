@@ -27,7 +27,9 @@ GEN =
 
 CLASSES = \
 	GraphSelectionEvent.class \
-	GraphSelectionListener.class
+	GraphSelectionListener.class \
+	ModeChangeEvent.class \
+	ModeChangeListener.class
 
 
 all: $(GEN) $(CLASSES)

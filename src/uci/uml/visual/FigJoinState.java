@@ -74,22 +74,20 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public FigJoinState(GraphModel gm, Object node) {
-    super(node);
-    // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof ElementImpl)
-      ((ElementImpl)node).addVetoableChangeListener(this);
-
+  public FigJoinState() {
     _bigPort = new FigRect(X,Y,WIDTH,HEIGHT, Color.cyan, Color.cyan);
     _head = new FigRect(X,Y,WIDTH,HEIGHT, Color.black, Color.black);
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
     addFig(_head);
 
-    Object onlyPort = node;
-    bindPort(onlyPort, _bigPort);
     setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
+  }
+
+  public FigJoinState(GraphModel gm, Object node) {
+    this();
+    setOwner(node);
   }
 
   public Object clone() {
@@ -100,17 +98,27 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     return figClone;
   }
 
+  public void setOwner(Object node) {
+    super.setOwner(node);
+    bindPort(node, _bigPort);
+    // if it is a UML meta-model object, register interest in any change events
+    if (node instanceof ElementImpl)
+      ((ElementImpl)node).addVetoableChangeListener(this);
+  }
+
   /** Initial states are fixed size. */
   //public boolean isResizable() { return false; }
 
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
+    Rectangle oldBounds = getBounds();
     if (w > h) h = 9; else w = 9;
     _bigPort.setBounds(x, y, w, h);
     _head.setBounds(x, y, w, h);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
     updateEdges();
+    firePropChange("bounds", oldBounds, getBounds());    
   }
 
 

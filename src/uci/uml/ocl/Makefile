@@ -26,28 +26,17 @@
 
 
 
-include ../Makefile.config
+include ../../Makefile.config
 
 # gen is not used now that GEF does not use a preprocessor
 GEN = 
 
 CLASSES = \
-	ColorRenderer.class \
-	IStatusBar.class \
-	JSortedTable.class \
-	PropCategoryManager.class \
-	PropSheet.class \
-	PropSheetCategory.class \
-	PropertyCanvas.class \
-	PropertyDialog.class \
-	PropertySelector.class \
-	PropertyText.class \
-	PropsGridLayout.class \
-	TabPropFrame.class \
-	TableMap.class \
-	TableSorter.class \
-	ToolBar.class \
-	TinyHTMLViewer.class
+	TemplateReader.class 
+
+#OCLEvaluator.class \
+#TemplateExpander.class \
+#
 
 all: $(GEN) $(CLASSES)
 

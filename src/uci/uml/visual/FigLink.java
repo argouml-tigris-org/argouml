@@ -41,13 +41,17 @@ import uci.uml.Behavioral_Elements.Common_Behavior.*;
 
 public class FigLink extends FigEdgeModelElement {
 
-  public FigLink(Object edge) {
-    super(edge);
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
-    // set whatever arrow heads and colors are appropriate
+  public FigLink() {
     _fig.setLineColor(Color.black);
     setBetweenNearestPoints(true);
-    modelChanged();
+  }
+
+  public FigLink(Object edge) {
+    this();
+    setOwner(edge);
   }
 
   // needs-more-work: should edit something...
@@ -65,7 +69,7 @@ public class FigLink extends FigEdgeModelElement {
 //     }
     super.dispose();
   }
-  
+
 
 
 } /* end class FigLink */

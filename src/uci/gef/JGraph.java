@@ -72,7 +72,7 @@ public class JGraph extends JPanel implements Cloneable {
     super(false); // not double buffered. I do my own flicker-free redraw.
     _editor = ed;
     _drawingPane = new JGraphInternalPane(_editor);
-    setDrawingSize(500, 500);
+    setDrawingSize(1500, 1500);
 
     _scroll = new JScrollPane(_drawingPane);
     _scroll.setBorder(null);
@@ -321,7 +321,7 @@ class JGraphInternalPane extends JPanel {
     //addFocusListener(this);
   }
 
-  public void paint(Graphics g) { _editor.paint(g); }
+  public void paintComponent(Graphics g) { _editor.paint(g); }
 
 //   static int getGraphicsCount = 0;
 

@@ -385,7 +385,7 @@ public class FigPoly extends Fig {
     }
     if (_lineWidth > 0  && _lineColor != null) {
       g.setColor(_lineColor);
-      if (!_dashed) g.drawPolyline(_xpoints, _ypoints, _npoints);
+      if (!getDashed()) g.drawPolyline(_xpoints, _ypoints, _npoints);
       else {
 	drawDashedPerimeter(g);
       }
@@ -399,29 +399,6 @@ public class FigPoly extends Fig {
       phase = drawDashedLine(g, phase, _xpoints[i-1], _ypoints[i-1],
 			     _xpoints[i], _ypoints[i]);
     }
-  }
-
-  protected int drawDashedLine(Graphics g, int phase,
-				int x1, int y1, int x2, int y2) {
-    int segStartX, segStartY;
-    int segEndX, segEndY;
-    int dxdx = (x2 - x1) * (x2 - x1);
-    int dydy = (y2 - y1) * (y2 - y1);
-    int length = (int) Math.sqrt(dxdx + dydy);
-    for (int i= phase; i < length - DASH_LENGTH; i += DASH_LENGTH) {
-      segStartX = x1 + ((x2 - x1) * i) / length;
-      segStartY = y1 + ((y2 - y1) * i) / length;
-      i += DASH_LENGTH;
-      if (i >= length) { segEndX = x2; segEndY = y2; }
-      else {
-	segEndX = x1 + ((x2 - x1) * i) / length;
-	segEndY = y1 + ((y2 - y1) * i) / length;
-      }
-      g.drawLine(segStartX, segStartY, segEndX, segEndY );
-    }
-    // needs-more-work: phase not taken into account
-    //return length % (DASH_LENGTH + DASH_LENGTH);
-    return 0;
   }
 
   ////////////////////////////////////////////////////////////////

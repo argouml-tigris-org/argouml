@@ -46,7 +46,7 @@ import uci.ui.Highlightable;
 
 public class ElementImpl implements Element, Highlightable {
   private static int elementCount = 0;
-  public int elementID = newElementID();
+  public String elementID = newElementID();
   public Name _name = Name.UNSPEC;
   //% public TaggedValue _characteristic[];
   public Vector _characteristic = new Vector();
@@ -67,8 +67,9 @@ public class ElementImpl implements Element, Highlightable {
     catch (PropertyVetoException ex) { }
   }
 
-  public static int newElementID () {
-    return ++elementCount;
+  public static String newElementID () {
+    elementCount++;
+    return "S." + (100000 + elementCount);
   }
 
   public Vector getNamedProperty(String propName) {
@@ -100,7 +101,8 @@ public class ElementImpl implements Element, Highlightable {
   public Vector getVetoListeners() { return _vetoListeners; }
 
 
-  public String getId() { return "argo" + elementID; }
+  public String getId() { return elementID; }
+  public void setId(String id) { elementID = id; }
 
   public Vector getCharacteristic() { return (Vector) _characteristic;}
   public void setCharacteristic(Vector x) throws PropertyVetoException {

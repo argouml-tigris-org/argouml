@@ -119,6 +119,24 @@ public class Diagram implements java.io.Serializable {
     return count;
   }
 
+  
+  ////////////////////////////////////////////////////////////////
+  // accessors on the Layer
+  
+  public void add(Fig f) { _lay.add(f); }
+  public void remove(Fig f) { _lay.remove(f); }
+  public void removeAll(Fig f) { _lay.removeAll(); }
+  public Enumeration elements() { return _lay.elements(); }
+  public Fig hit(Rectangle r) { return _lay.hit(r); }
+  public Enumeration elementsIn(Rectangle r) { return _lay.elementsIn(r); }
+  public Fig presentationFor(Object obj) { return _lay.presentationFor(obj); }
+  public void sendToBack(Fig f) { _lay.sendToBack(f); }
+  public void bringForward(Fig f) { _lay.bringForward(f); }
+  public void sendBackward(Fig f) { _lay.sendBackward(f); }
+  public void bringToFront(Fig f) { _lay.bringToFront(f); }
+  public void reorder(Fig f, int function) { _lay.reorder(f, function); }
+
+
   ////////////////////////////////////////////////////////////////
   // VetoableChangeSupport
 

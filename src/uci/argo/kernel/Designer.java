@@ -147,8 +147,8 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
       long critiqueStartTime = System.currentTimeMillis();
       long cutoffTime = critiqueStartTime + 3000;
       if (_CritiquingRoot != null && getAutoCritique()) {
-        synchronized (_hotQueue) {
-	  synchronized (_addQueue) {
+        synchronized (this) {
+	  //synchronized (_addQueue) {
 	    int size = _addQueue.size();
 	    for (int i = 0; i < size; i++) {
 	      _hotQueue.addElement(_addQueue.elementAt(i));
@@ -156,9 +156,9 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
 	    }
 	    _addQueue.removeAllElements();
 	    _addReasonQueue.removeAllElements();
-	  }
+	    //}
 	}
-	synchronized (_hotQueue) {
+	synchronized (this) {
 	  _longestHot = Math.max(_longestHot, _hotQueue.size());
           _agency.determineActiveCritics(this);
 	  //_agency.setHot(true);
@@ -183,16 +183,16 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
 // 		_warmQueue.addElement(nextDM);
 // 	    }
           }
-        synchronized (_warmQueue) {
-	  synchronized (_removeQueue) {
+	  //synchronized (_warmQueue) {
+	  //synchronized (_removeQueue) {
 	    int size = _removeQueue.size();
 	    for (int i = 0; i < size; i++)
 	      _warmQueue.removeElement(_removeQueue.elementAt(i));
 	    _removeQueue.removeAllElements();
-	  }
-	}
+	    //}
+	    //}
 
-	synchronized (_warmQueue) {
+	    //synchronized (_warmQueue) {
 	    //_agency.setHot(false);
 	    if (_warmQueue.size() == 0)
 	      _warmQueue.addElement(_CritiquingRoot);
@@ -207,7 +207,7 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
 		if (!(_warmQueue.contains(nextDM)))
 		  _warmQueue.addElement(nextDM);
 	      }
-	    }
+	      //}
 	  }
 	}
       }
@@ -225,9 +225,9 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
   }
 
   // needs-more-work: what about when objects are first created?
-  public void critiqueASAP(Object dm, String reason) {
+  public synchronized void critiqueASAP(Object dm, String reason) {
     long rCode = Critic.reasonCodeFor(reason);
-    synchronized (_addQueue) {
+    //synchronized (this) {
       if (!_userWorking) return;
       //System.out.println("critiqueASAP:" + dm);
       int addQueueIndex = _addQueue.indexOf(dm);
@@ -244,7 +244,7 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
       }
       _removeQueue.addElement(dm);
       _longestAdd = Math.max(_longestAdd, _addQueue.size());
-    }
+      //}
   }
 
   /** Look for potential problems or open issues in the given design. */
@@ -284,7 +284,7 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
    public synchronized static void setCritiquingRoot(Object d) {
      _CritiquingRoot = d;
      theDesigner()._toDoList.removeAllElements();
-     synchronized (theDesigner()._hotQueue) {
+     synchronized (theDesigner()) {
        theDesigner()._hotQueue.removeAllElements();
        theDesigner()._hotReasonQueue.removeAllElements();
        theDesigner()._addQueue.removeAllElements();

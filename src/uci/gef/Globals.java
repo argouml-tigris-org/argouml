@@ -83,6 +83,18 @@ public class Globals {
   /** Until jdk 1.2, this will be our clipboard */
   public static Vector clipBoard;
 
+  /** The directory most recently used in an open or save dialog */
+  public static String LastDirectory = ".";
+
+  public static String getLastDirectory() { return LastDirectory;}
+  public static void setLastDirectory(String s) { LastDirectory = s;}
+
+  /** Determines if tool tips be are shown on Figs in diagrams,
+   *  including ToDoItem headlines. */
+  public static boolean ShowFigTips = true;
+
+  public static boolean getShowFigTips() { return ShowFigTips;}
+  public static void setShowFigTips(boolean b) { ShowFigTips = b; }
 
   /** The place where status messages will be written. */
   public static IStatusBar _StatusBar = null;

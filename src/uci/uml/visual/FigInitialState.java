@@ -74,22 +74,20 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public FigInitialState(GraphModel gm, Object node) {
-    super(node);
-    // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof ElementImpl)
-      ((ElementImpl)node).addVetoableChangeListener(this);
-
+  public FigInitialState() {
     _bigPort = new FigCircle(x,y,width,height, Color.cyan, Color.cyan);
     _head = new FigCircle(x,y,width,height, Color.black, Color.black);
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
     addFig(_head);
 
-    Object onlyPort = node;
-    bindPort(onlyPort, _bigPort);
     setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
+  }
+
+  public FigInitialState(GraphModel gm, Object node) {
+    this();
+    setOwner(node);
   }
 
   public Object clone() {
@@ -99,6 +97,15 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     figClone._head = (FigCircle) v.elementAt(1);
     return figClone;
   }
+
+  public void setOwner(Object node) {
+    super.setOwner(node);
+    bindPort(node, _bigPort);
+    // if it is a UML meta-model object, register interest in any change events
+    if (node instanceof ElementImpl)
+      ((ElementImpl)node).addVetoableChangeListener(this);
+  }
+
 
   /** Initial states are fixed size. */
   public boolean isResizable() { return false; }

@@ -53,7 +53,11 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
   public final int MIN_SIZE = 4;
 
   /** The size of the dashes drawn when the Fig is dashed. */
-  public final int DASH_LENGTH = 5;
+  //public final int DASH_LENGTH = 5;
+
+  public static String DASHED_CHOICES[] = { "Solid", "Dashed" };
+  public static int DASH_ARRAYS[][] = { null, {5}, {15, 5},
+					{3, 10},  {3, 6, 10, 6} };
 
 
   ////////////////////////////////////////////////////////
@@ -92,7 +96,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
   /** Thickness of line around object, for now limited to 0 or 1. */
   protected int _lineWidth = 1;
 
-  protected boolean _dashed;
+  protected int[] _dashes = null;
 
   /** True if the object should fill in its area. */
   protected boolean _filled = true;
@@ -276,14 +280,26 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
   }
   public int getLineWidth() { return _lineWidth; }
 
+  public void setDashedString(String dashString) {
+    if (dashString.equalsIgnoreCase("solid"))
+      _dashes = null;
+    else
+      _dashes = DASH_ARRAYS[1];
+  }
+
+  public String getDashedString() {
+    return (_dashes == null) ? DASHED_CHOICES[0] : DASHED_CHOICES[1];
+  }
+
   /** Set line to be dashed or not **/
   public void setDashed(boolean now_dashed) {
-    _dashed = now_dashed;
+    if (now_dashed) _dashes = DASH_ARRAYS[1];
+    else _dashes = null;
   }
 
   /** Get the dashed attribute **/
   public boolean getDashed() {
-    return _dashed;
+    return (_dashes != null);
   }
 
   public String getTipString(MouseEvent me) {
@@ -313,13 +329,53 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
   protected void drawDashedPerimeter(Graphics g) {
     Point segStart = new Point();
     Point segEnd = new Point();
+    int numDashes = _dashes.length;
     int length = getPerimeterLength();
-    for (int i=0; i < length; i += DASH_LENGTH + DASH_LENGTH) {
+    int i = 0, d = 0;
+    while (i < length) {
       stuffPointAlongPerimeter(i, segStart);
-      stuffPointAlongPerimeter(i + DASH_LENGTH, segEnd);
+      i += _dashes[d];
+      d = (d + 1) % numDashes;
+      stuffPointAlongPerimeter(i, segEnd);
       g.drawLine(segStart.x, segStart.y, segEnd.x, segEnd.y );
+      i += _dashes[d];
+      d = (d + 1) % numDashes;
     }
   }
+
+  protected int drawDashedLine(Graphics g, int phase,
+			       int x1, int y1, int x2, int y2) {
+    int segStartX, segStartY;
+    int segEndX, segEndY;
+    int dxdx = (x2 - x1) * (x2 - x1);
+    int dydy = (y2 - y1) * (y2 - y1);
+    int length = (int) Math.sqrt(dxdx + dydy);
+    int numDashes = _dashes.length;
+    int d, dashesDist = 0;
+    for (d = 0; d < numDashes; d++) {
+      dashesDist += _dashes[d];
+      // find first partial dash?
+    }
+    d = 0;
+    int i= 0;
+    while (i < length) {
+      segStartX = x1 + ((x2 - x1) * i) / length;
+      segStartY = y1 + ((y2 - y1) * i) / length;
+      i += _dashes[d];
+      d = (d + 1) % numDashes;
+      if (i >= length) { segEndX = x2; segEndY = y2; }
+      else {
+	segEndX = x1 + ((x2 - x1) * i) / length;
+	segEndY = y1 + ((y2 - y1) * i) / length;
+      }
+      g.drawLine(segStartX, segStartY, segEndX, segEndY );
+      i += _dashes[d];
+      d = (d + 1) % numDashes;
+    }
+    // needs-more-work: phase not taken into account
+    return (length + phase) % dashesDist;
+  }
+
 
   /** Return a Rectangle that completely encloses this Fig. */
   public Rectangle getBounds() { return new Rectangle(_x, _y, _w, _h); }

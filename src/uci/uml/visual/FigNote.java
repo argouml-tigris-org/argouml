@@ -65,12 +65,7 @@ public class FigNote extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public FigNote(GraphModel gm, Object node) {
-    super(gm, node);
-    // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof ElementImpl)
-      ((ElementImpl)node).addVetoableChangeListener(this);
-
+  public FigNote() {
     Color handleColor = Globals.getPrefs().getHandleColor();
     _bigPort = new FigRect(10, 10, 90, 20, handleColor, Color.lightGray);
     _name.setExpandOnly(true);
@@ -82,10 +77,22 @@ public class FigNote extends FigNodeModelElement {
     addFig(_name);
 
 
-    Object onlyPort = node;
-    bindPort(onlyPort, _bigPort);
     setBlinkPorts(true); //make port invisble unless mouse enters
     Rectangle r = getBounds();
+  }
+
+  public FigNote(GraphModel gm, Object node) {
+    this();
+    setOwner(node);
+
+  }
+
+  public void setOwner(Object node) {
+    super.setOwner(node);
+    // if it is a UML meta-model object, register interest in any change events
+    if (node instanceof ElementImpl)
+      ((ElementImpl)node).addVetoableChangeListener(this);
+    bindPort(node, _bigPort);
   }
 
 

@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<!DOCTYPE TemplateSet [
+  <!ELEMENT TemplateSet (macro | template)* >
+  <!ELEMENT macro (#PCDATA)>
+  <!ATTLIST macro name ID #REQUIRED>
+  <!ELEMENT template (#PCDATA)>
+  <!ATTLIST template class CDATA #REQUIRED>
+]>
+<!-- This is XMI.tee, for Argo/UML models to generate XMI -->
+<!-- files.  'tee' = Template with Embedded Expressions. -->
+
+<TemplateSet>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<macro name="NAME_VIS">
+  <name><ocl>self.name</ocl></name>
+  <visibility XMI.value = '<ocl>self.visibility</ocl>'/>
+</macro>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<macro name="ABS_LEAF_ROOT">
+      <isAbstract XMI.value='<ocl>self.isAbstract</ocl>'/>
+      <isLeaf XMI.value='<ocl>self.isLeaf</ocl>'/>
+      <isRoot XMI.value='<ocl>self.isRoot</ocl>'/>
+</macro>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<macro name="TAIL">
+  <taggedValue>
+    <ocl>self.taggedValue</ocl>
+  </taggedValue>
+</macro>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="uci.uml.ui.Project">
+<![CDATA[
+<?xml version = '1.0' encoding = 'ISO-8859-1' ?>
+<!DOCTYPE XMI SYSTEM 'uml.dtd' >
+<XMI>
+  <XMI.header>
+    <XMI.metamodel name='uml' version='1.1'/>
+  </XMI.header>
+  <XMI.content>
+    <ocl>self.currentModel</ocl>
+  </XMI.content>
+</XMI>
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="uci.uml.Model_Management.Model">
+<![CDATA[
+<Model XMI.id = '<ocl>self.id</ocl>'>
+  NAME_VIS
+  ABS_LEAF_ROOT
+  <ownedElement>
+    <ocl>self.ownedElement</ocl>
+  </ownedElement>
+</Model>
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="uci.uml.Foundation.Core.MMClass">
+<![CDATA[
+<Class XMI.id = '<ocl>self.id</ocl>'>
+  NAME_VIS
+  ABS_LEAF_ROOT
+  <isActive XMI.value = 'false'/>
+  <feature>
+    <ocl>self.behavioralFeature</ocl>
+    <ocl>self.structuralFeature</ocl>
+  </feature>
+  TAIL
+</Class>
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="uci.uml.Foundation.Core.Assocaiation">
+<![CDATA[
+<Association XMI.id='<ocl>self.id</ocl>'>
+  NAME_VIS
+  ABS_LEAF_ROOT
+  <connection>
+    <ocl>self.getConnection</ocl>
+  </connection>
+  TAIL
+</Association>
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="uci.uml.Foundation.Core.AssocaiationEnd">
+<![CDATA[
+<AssociationEnd XMI.id='<ocl>self.id</ocl>'>
+  NAME_VIS
+  <isNavigable XMI.value='<ocl>self.isNavigable</ocl>'/>
+  <isOrdered XMI.value='<ocl>self.isOrdered</ocl>'/>
+  <aggregation XMI.value='<ocl>self.aggregation</ocl>'/>
+  <multiplicity><ocl>self.multiplicity</ocl></multiplicity>
+  <changeable XMI.value='<ocl>self.changeable</ocl>'/>
+  <targetScope XMI.value='<ocl>self.targetScope</ocl>'/>
+  <type>
+    <XMI.reference target='odd.9578'/>
+  </type>
+  TAIL
+</AssociationEnd>
+
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="uci.uml.Foundation.Core.Generalization">
+<![CDATA[
+<Generalization XMI.id='<ocl>self.id</ocl>'>
+  NAME_VIS
+  <discriminator/>
+  <subtype>
+    <XMI.reference target='odd.9570'/>
+  </subtype>
+  <supertype>
+   <XMI.reference target='odd.9568'/>
+  </supertype>
+  TAIL
+</Generalization>
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="uci.uml.Foundation.Core.Operation">
+<![CDATA[
+<Operation XMI.id='<ocl>self.id</ocl>'>
+  NAME_VIS
+  <ownerScope XMI.value='<ocl>self.ownerScope</ocl>'/>
+  <isQuery XMI.value='<ocl>self.isQuery</ocl>'/>
+  <concurrency XMI.value='<ocl>self.concurrency</ocl>'/>
+  <isPolymorphic XMI.value='<ocl>self.isPolymorphic</ocl>'/>
+  <operationSpecification>
+    <ocl>self.operationSpecification</ocl>
+  </operationSpecification>
+  TAIL
+</Operation>
+]]>
+</template>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="uci.uml.Foundation.Core.Attribute">
+<![CDATA[
+<Attribute XMI.id='<ocl>self.id</ocl>'>
+  NAME_VIS
+  <ownerScope XMI.value='<ocl>self.ownerScope</ocl>'/>
+  <changeable XMI.value='<ocl>self.changeable</ocl>'/>
+  <multiplicity><ocl>self.multiplicity</ocl></multiplicity>
+  <targetScope XMI.value='<ocl>self.targetScope</ocl>'/>
+  <initialValue><ocl>self.initialValue</ocl></initialValue>
+  <type>
+    <XMI.reference target='odd.9566'/>
+  </type>
+  TAIL
+</Attribute>
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="uci.uml.Foundation.Extension_Mechanisms.TaggedValue">
+<![CDATA[
+<TaggedValue>
+  <tag><ocl>self.tag</ocl></tag>
+  <value><ocl>self.value</ocl></value>
+</TaggedValue>
+]]>
+</template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+<template class="uci.uml.Foundation.Core.DataType">
+<![CDATA[
+    <DataType XMI.id=<ocl>self.id</ocl>'>
+      NAME_VIS
+      ABS_LEAF_ROOT
+    </DataType>
+]]>
+</template>
+
+
+
+</TemplateSet>
+
+<!-- -  End of File  - - - - - - - - - - - - - - - - - - - - - - - - -->

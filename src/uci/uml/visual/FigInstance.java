@@ -60,12 +60,7 @@ public class FigInstance extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public FigInstance(GraphModel gm, Object node) {
-    super(gm, node);
-    // if it is a UML meta-model object, register interest in any change events
-//     if (node instanceof ElementImpl)
-//       ((ElementImpl)node).addVetoableChangeListener(this);
-
+  public FigInstance() {
     Color handleColor = Globals.getPrefs().getHandleColor();
 
     _bigPort = new FigRect(8, 8, 92, 62, handleColor, Color.lightGray);
@@ -87,11 +82,14 @@ public class FigInstance extends FigNodeModelElement {
     addFig(_name);
     addFig(_attr);
 
-    Object onlyPort = node;
-    bindPort(onlyPort, _bigPort);
     setBlinkPorts(true); //make port invisble unless mouse enters
     Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
+  }
+
+  public FigInstance(GraphModel gm, Object node) {
+    this();
+    setOwner(node);
   }
 
   public Object clone() {
@@ -101,6 +99,11 @@ public class FigInstance extends FigNodeModelElement {
     figClone._name = (FigText) v.elementAt(1);
     figClone._attr = (FigText) v.elementAt(2);
     return figClone;
+  }
+
+  public void setOwner(Object node) {
+    super.setOwner(node);
+    bindPort(node, _bigPort);
   }
 
   public Dimension getMinimumSize() {
@@ -116,17 +119,9 @@ public class FigInstance extends FigNodeModelElement {
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
-//     int leftSide = x;
-//     int widthP = w;
-//     int topSide = y;
-//     int heightP = h;
+    Rectangle oldBounds = getBounds();
 
     Dimension nameMinimum = _name.getMinimumSize();
-//     Dimension attrMinimum = _attr.getMinimumSize();
-
-//     int total_height = Math.max(heightP, nameMinimum.height + attrMinimum.height);
-//     int total_width = Math.max(widthP, Math.max(nameMinimum.width, attrMinimum.width));
-
 
     _name.setBounds(x, y, w, nameMinimum.height);
     _attr.setBounds(x, y + _name.getBounds().height,
@@ -135,6 +130,7 @@ public class FigInstance extends FigNodeModelElement {
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
     updateEdges();
+    firePropChange("bounds", oldBounds, getBounds());    
   }
 
 

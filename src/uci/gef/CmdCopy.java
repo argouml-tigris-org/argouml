@@ -45,7 +45,7 @@ import uci.uml.ui.*;
 
 public class CmdCopy extends Cmd {
 
-  public CmdCopy() { super("Copy..."); }
+  public CmdCopy() { super("Copy"); }
 
   public void doIt() {
     Editor ce = Globals.curEditor();

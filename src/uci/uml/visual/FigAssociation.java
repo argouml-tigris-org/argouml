@@ -47,8 +47,7 @@ public class FigAssociation extends FigEdgeModelElement {
   protected FigText _srcMult, _srcRole;
   protected FigText _destMult, _destRole;
 
-  public FigAssociation(Object edge) {
-    super(edge);
+  public FigAssociation() {
     addPathItem(_name, new PathConvPercent(this, 50, 10));
 
     _srcMult = new FigText(10, 30, 90, 20);
@@ -83,14 +82,11 @@ public class FigAssociation extends FigEdgeModelElement {
     _destRole.setLineWidth(0);
     addPathItem(_destRole, new PathConvPercentPlusConst(this, 100, -35, -15));
     setBetweenNearestPoints(true);
-    modelChanged();
+  }
 
-    //_name.addPropertyChangeListener(this);
-//     _srcRole.addPropertyChangeListener(this);
-//     _srcMult.addPropertyChangeListener(this);
-//     _destRole.addPropertyChangeListener(this);
-//     _destMult.addPropertyChangeListener(this);
-
+  public FigAssociation(Object edge) {
+    this();
+    setOwner(edge);
   }
 
 

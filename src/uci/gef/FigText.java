@@ -275,6 +275,18 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     calcBounds();
   }
 
+  public String getFontFamily() { return _font.getFamily(); }
+  public void setFontFamily(String familyName) {
+    Font f = new Font(familyName, _font.getStyle(), _font.getSize()); 
+    setFont(f);
+  }
+
+  public int getFontSize() { return _font.getSize(); }
+  public void setFontSize(int size) {
+    Font f = new Font(_font.getFamily(), _font.getStyle(), size); 
+    setFont(f);
+  }
+
   public boolean getItalic() { return _font.isItalic(); }
   public void setItalic(boolean b) {
     int style = (getBold() ? Font.BOLD : 0) + (b ? Font.ITALIC : 0);
@@ -339,9 +351,8 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
     if (_lineWidth > 0) {
       g.setColor(_lineColor);
-      g.drawRect(_x - 1, _y - 1, _w + 1, _h + 1);
+      g.drawRect(_x, _y, _w - _lineWidth, _h - _lineWidth);
     }
-
     if (_font != null) g.setFont(_font);
     _fm = g.getFontMetrics(_font);
     int chunkH = _lineHeight + _lineSpacing;

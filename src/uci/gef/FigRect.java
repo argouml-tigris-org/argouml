@@ -55,7 +55,6 @@ public class FigRect extends Fig implements Serializable {
     super(x, y, w, h, lColor, fColor);
   }
 
-  
   ////////////////////////////////////////////////////////////////
   // painting methods
 
@@ -67,7 +66,14 @@ public class FigRect extends Fig implements Serializable {
     }
     if (_lineWidth > 0 && _lineColor != null) {
       g.setColor(_lineColor);
-      g.drawRect(_x, _y, _w - _lineWidth, _h - _lineWidth);
+      if (!getDashed()) g.drawRect(_x, _y, _w - _lineWidth, _h - _lineWidth);
+      else {
+	int phase = 0;
+	phase = drawDashedLine(g, phase, _x, _y, _x + _w, _y);
+	phase = drawDashedLine(g, phase, _x + _w, _y, _x + _w, _y + _h);
+	phase = drawDashedLine(g, phase, _x + _w, _y + _h, _x, _y + _h);
+	phase = drawDashedLine(g, phase, _x, _y + _h, _x, _y);
+      }
     }
   }
 

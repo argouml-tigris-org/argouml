@@ -81,10 +81,11 @@ public class CmdSave extends Cmd implements FilenameFilter {
       FileDialog fd = new
      	FileDialog(ce.findFrame(), "Save Diagram", FileDialog.SAVE);
       fd.setFilenameFilter(this);
-      fd.setDirectory(".");
+      fd.setDirectory(Globals.getLastDirectory());
       fd.show();
       String filename = fd.getFile(); // blocking
       String path = fd.getDirectory(); // blocking
+      Globals.setLastDirectory(path);
       if (filename != null) {
      	Globals.showStatus("Writing " + path + filename + "...");
      	FileOutputStream f = new FileOutputStream(path + filename);

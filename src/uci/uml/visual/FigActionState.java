@@ -65,8 +65,7 @@ public class FigActionState extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public FigActionState(GraphModel gm, Object node) {
-    super(gm, node);
+  public FigActionState() {
     _bigPort = new FigRRect(10+1, 10+1, 90-2, 25-2, Color.cyan, Color.cyan);
     _cover = new FigRRect(10, 10, 90, 25, Color.black, Color.white);
 
@@ -80,11 +79,14 @@ public class FigActionState extends FigNodeModelElement {
     addFig(_cover);
     addFig(_name);
 
-    Object onlyPort = node;
-    bindPort(onlyPort, _bigPort);
     //setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
+  }
+
+  public FigActionState(GraphModel gm, Object node) {
+    this();
+    setOwner(node);
   }
 
   public Object clone() {
@@ -96,6 +98,11 @@ public class FigActionState extends FigNodeModelElement {
     return figClone;
   }
 
+  public void setOwner(Object node) {
+    super.setOwner(node);
+    bindPort(node, _bigPort);
+  }
+
   public Dimension getMinimumSize() {
     return new Dimension(90, 25);
   }
@@ -103,6 +110,7 @@ public class FigActionState extends FigNodeModelElement {
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
+    Rectangle oldBounds = getBounds();
 
     _name.setBounds(x+5, y+5, w-5*2, h-5*2);
     _bigPort.setBounds(x, y, w, h);
@@ -112,6 +120,7 @@ public class FigActionState extends FigNodeModelElement {
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
     updateEdges();
+    firePropChange("bounds", oldBounds, getBounds());    
   }
 
 

@@ -48,7 +48,7 @@ import uci.uml.Foundation.Core.ElementImpl;
 
 public class CmdPaste extends Cmd {
 
-  public CmdPaste() { super("Paste..."); }
+  public CmdPaste() { super("Paste"); }
 
   // needs-more-work: if the Fig was removed from the model, then I would
   // need to create a new owner.

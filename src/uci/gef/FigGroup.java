@@ -131,6 +131,147 @@ public class FigGroup extends Fig {
   public boolean isReshapable() { return false; }
   public boolean isRotatable() { return false; }
 
+  ////////////////////////////////////////////////////////////////
+  // Fig Accessors
+
+  public void setLineColor(Color col) {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++)
+      ((Fig)_figs.elementAt(i)).setLineColor(col);
+  }
+  public Color getLineColor() {
+    if (_figs.size() == 0) return super.getLineColor();
+    return ((Fig)_figs.elementAt(_figs.size()-1)).getLineColor();
+  }
+
+  public void setFillColor(Color col) {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++)
+      ((Fig)_figs.elementAt(i)).setFillColor(col);
+  }
+  public Color getFillColor() {
+    if (_figs.size() == 0) return super.getFillColor();
+    return ((Fig)_figs.elementAt(_figs.size()-1)).getFillColor();
+  }
+
+  public void setFilled(boolean f) {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++)
+      ((Fig)_figs.elementAt(i)).setFilled(f);
+  }
+  public boolean getFilled() {
+    if (_figs.size() == 0) return super.getFilled();
+    return ((Fig)_figs.elementAt(_figs.size()-1)).getFilled();
+  }
+
+  public void setLineWidth(int w) {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++)
+      ((Fig)_figs.elementAt(i)).setLineWidth(w);
+  }
+  public int getLineWidth() {
+    if (_figs.size() == 0) return super.getLineWidth();
+    return ((Fig)_figs.elementAt(_figs.size()-1)).getLineWidth();
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // FigText Accessors
+
+  public void setTextColor(Color c) {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++) {
+      Object ft = _figs.elementAt(i);
+      if (ft instanceof FigText) ((FigText)ft).setTextColor(c);
+    }
+  }
+  public Color getTextColor() {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++) {
+      Object ft = _figs.elementAt(i);
+      if (ft instanceof FigText) return ((FigText)ft).getTextColor();
+    }
+    return null;
+  }
+
+  public void setTextFilled(boolean b) {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++) {
+      Object ft = _figs.elementAt(i);
+      if (ft instanceof FigText) ((FigText)ft).setTextFilled(b);
+    }
+  }
+  public boolean getTextFilled() {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++) {
+      Object ft = _figs.elementAt(i);
+      if (ft instanceof FigText) return ((FigText)ft).getTextFilled();
+    }
+    return false;
+  }
+
+  public void setTextFillColor(Color c) {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++) {
+      Object ft = _figs.elementAt(i);
+      if (ft instanceof FigText) ((FigText)ft).setTextFillColor(c);
+    }
+  }
+  public Color getTextFillColor() {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++) {
+      Object ft = _figs.elementAt(i);
+      if (ft instanceof FigText) return ((FigText)ft).getTextFillColor();
+    }
+    return null;
+  }
+
+  public void setFont(Font f) {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++) {
+      Object ft = _figs.elementAt(i);
+      if (ft instanceof FigText) ((FigText)ft).setFont(f);
+    }
+  }
+  public Font getFont() {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++) {
+      Object ft = _figs.elementAt(i);
+      if (ft instanceof FigText) return ((FigText)ft).getFont();
+    }
+    return null;
+  }
+
+  public void setFontSize(int s) {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++) {
+      Object ft = _figs.elementAt(i);
+      if (ft instanceof FigText) ((FigText)ft).setFontSize(s);
+    }
+  }
+  public int getFontSize() {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++) {
+      Object ft = _figs.elementAt(i);
+      if (ft instanceof FigText) return ((FigText)ft).getFontSize();
+    }
+    return 10;
+  }
+
+  public void setFontFamily(String s) {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++) {
+      Object ft = _figs.elementAt(i);
+      if (ft instanceof FigText) ((FigText)ft).setFontFamily(s);
+    }
+  }
+  public String getFontFamily() {
+    int size = _figs.size();
+    for (int i = 0; i < size; i++) {
+      Object ft = _figs.elementAt(i);
+      if (ft instanceof FigText) return ((FigText)ft).getFontFamily();
+    }
+    return "Serif";
+  }
 
   ////////////////////////////////////////////////////////////////
   // Fig API

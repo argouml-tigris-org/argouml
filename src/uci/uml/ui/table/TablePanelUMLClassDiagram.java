@@ -34,6 +34,7 @@ import com.sun.java.swing.text.Document;
 import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
+import uci.ui.*;
 import uci.gef.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
@@ -43,11 +44,11 @@ public class TablePanelUMLClassDiagram extends TablePanel {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  JTable _table2     = new JTable();
-  JTable _table3     = new JTable();
+  JSortedTable _table2 = new JSortedTable();
+  JSortedTable _table3 = new JSortedTable();
   TableModelComposite _tableModelOper = new TableModelOper();
   TableModelComposite _tableModelAttr = new TableModelAttr();
-  JPanel _south      = new JPanel();
+  JPanel _south = new JPanel();
   JScrollPane _sp2;
   JScrollPane _sp3;
 

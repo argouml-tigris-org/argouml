@@ -73,13 +73,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // constructors
-
-  public FigBranchState(GraphModel gm, Object node) {
-    super(node);
-    // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof ElementImpl)
-      ((ElementImpl)node).addVetoableChangeListener(this);
-
+  public FigBranchState() {
     _bigPort = new FigPoly( Color.cyan, Color.cyan);
     _head = new FigPoly(Color.black, Color.white);
     _bigPort.addPoint(X, Y);
@@ -97,10 +91,13 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     addFig(_bigPort);
     addFig(_head);
 
-    Object onlyPort = node;
-    bindPort(onlyPort, _bigPort);
     setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
+  }
+
+  public FigBranchState(GraphModel gm, Object node) {
+    this();
+    setOwner(node);
   }
 
   public Object clone() {
@@ -109,6 +106,14 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     figClone._bigPort = (FigPoly) v.elementAt(0);
     figClone._head = (FigPoly) v.elementAt(1);
     return figClone;
+  }
+
+  public void setOwner(Object node) {
+    super.setOwner(node);
+    bindPort(node, _bigPort);
+    // if it is a UML meta-model object, register interest in any change events
+    if (node instanceof ElementImpl)
+      ((ElementImpl)node).addVetoableChangeListener(this);
   }
 
   /** Initial states are fixed size. */

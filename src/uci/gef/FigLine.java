@@ -225,9 +225,9 @@ public class FigLine extends Fig {
   /** Paint this line object. */
   public void paint(Graphics g) {
     if (_lineWidth > 0) {
-      if (_dashed) {
+      if (getDashed()) {
         g.setColor(_lineColor);
-	drawDashedPerimeter(g);
+	drawDashedLine(g, 0, _x1, _y1, _x2, _y2);
       }
       else {
         g.setColor(_lineColor);

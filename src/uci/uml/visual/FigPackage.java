@@ -74,17 +74,12 @@ public class FigPackage extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public FigPackage(GraphModel gm, Object node) {
-    super(gm, node);
-    // if it is a UML meta-model object, register interest in any change events
-//     if (node instanceof ElementImpl)
-//       ((ElementImpl)node).addVetoableChangeListener(this);
-
+  public FigPackage() {
     Color handleColor = Globals.getPrefs().getHandleColor();
     _body = new FigText(x, y + textH, width, height - textH);
     _bigPort = new FigRect(x, y + textH, width, height - textH,
 			   handleColor, Color.lightGray);
-    _name.setBounds(x, y, width - indentX, textH);
+    _name.setBounds(x, y, width - indentX, textH + 2);
     _name.setJustification(FigText.JUSTIFY_LEFT);
     _name.setTextFilled(true);
     _name.setText("Package");
@@ -94,13 +89,15 @@ public class FigPackage extends FigNodeModelElement {
     addFig(_name);
     addFig(_body);
 
-
-    Object onlyPort = node;
-    bindPort(onlyPort, _bigPort);
     setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
     updateEdges();
+  }
+
+  public FigPackage(GraphModel gm, Object node) {
+    this();
+    setOwner(node);
   }
 
   public Object clone() {
@@ -112,6 +109,11 @@ public class FigPackage extends FigNodeModelElement {
     return figClone;
   }
 
+  public void setOwner(Object node) {
+    super.setOwner(node);
+    bindPort(node, _bigPort);
+  }
+
   public Dimension getMinimumSize() {
     Dimension nameMinimum = _name.getMinimumSize();
 
@@ -119,18 +121,20 @@ public class FigPackage extends FigNodeModelElement {
     int heightP = nameMinimum.height + height - textH;
     return new Dimension(widthP, heightP);
   }
-  
+
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
+    Rectangle oldBounds = getBounds();
     Dimension nameMinimum = _name.getMinimumSize();
 
-    _name.setBounds(x, y, w - indentX, nameMinimum.height);
+    _name.setBounds(x, y, w - indentX, nameMinimum.height + 2);
     _bigPort.setBounds(x+1, y + nameMinimum.height,
 		       w-2, h - 2 - nameMinimum.height);
     _body.setBounds(x, y+1 + nameMinimum.height,
 		    w, h - 1 - nameMinimum.height);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+    firePropChange("bounds", oldBounds, getBounds());
   }
 
 

@@ -35,6 +35,7 @@ import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 import com.sun.java.swing.border.*;
 
 import uci.util.*;
+import uci.ui.*;
 import uci.gef.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
@@ -59,7 +60,7 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
   //JComboBox _selectCombo = new JComboBox();
   //JLabel    _selectLabel = new JLabel("Select:");
 
-  JTable _table          = new JTable();
+  JSortedTable _table    = new JSortedTable();
   JPanel _mainTablePane  = new JPanel();
   JPanel _north          = new JPanel();
   JPanel _content        = new JPanel();

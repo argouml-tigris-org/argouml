@@ -27,6 +27,7 @@ GEN =
 
 CLASSES = \
 	BasicApplication.class \
+	BroomStudy.class \
 	EdgeData.class \
 	EdgePower.class \
 	EquipmentApplet.class \

@@ -72,10 +72,10 @@ public class LayerGrid extends Layer {
   private int _stampWidth = 128, _stampHeight = 128;
 
   /** The color of the grid lines or dots. */
-  protected Color _color = new Color(180, 180, 180); //Color.gray;
+  protected Color _color = Color.gray;//new Color(100, 100, 100); //new Color(180, 180, 180); //Color.gray;
 
   /** The color of the space between the lines or dots.  */
-  protected Color _bgColor = Color.lightGray;
+  protected Color _bgColor = Color.gray; //Color.lightGray;
 
   /** True means to fill in the image stamp or drawing area with the
    *  background color. False means to just paint the lines or dots. */

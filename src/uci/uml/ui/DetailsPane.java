@@ -61,8 +61,9 @@ implements ChangeListener, MouseListener {
   /** Target is the currently selected object from the UML Model,
    *  usually selected from a Fig in the diagram or from the
    *  navigation panel. */
-  protected Object _target = "this is set to null in contructor";
-  protected Object _item = "this is set to null in contructor";
+  protected Fig _figTarget = null;
+  protected Object _modelTarget = null;
+  protected Object _item = null;
 
   // vector of TreeModels
   protected JTabbedPane _tabs = new JTabbedPane();
@@ -110,6 +111,9 @@ implements ChangeListener, MouseListener {
       else if (t instanceof TabModelTarget) {
 	_tabs.addTab(title, _upArrowIcon, t);
       }
+      else if (t instanceof TabFigTarget) {
+	_tabs.addTab(title, _upArrowIcon, t);
+      }
       else {
 	_tabs.addTab(title, t);
       }
@@ -142,29 +146,41 @@ implements ChangeListener, MouseListener {
 
 
   public void setTarget(Object target) {
+    if (target instanceof Fig) _figTarget = (Fig) target;
     if (target instanceof Fig && ((Fig)target).getOwner() != null)
-      target = ((Fig)target).getOwner();
+      _modelTarget = ((Fig)target).getOwner();
     int firstEnabled = -1;
     boolean jumpToFirstEnabledTab = false;
     boolean jumpToPrevEnabled = false;
     int currentTab = _tabs.getSelectedIndex();
-    if (_target == target) return;
-    _target = target;
     for (int i = 0; i < _tabPanels.size(); i++) {
       JPanel tab = (JPanel) _tabPanels.elementAt(i);
       if (tab instanceof TabModelTarget) {
 	TabModelTarget tabMT = (TabModelTarget) tab;
-	tabMT.setTarget(_target);
+	tabMT.setTarget(_modelTarget);
 	boolean shouldEnable = tabMT.shouldBeEnabled();
 	_tabs.setEnabledAt(i, shouldEnable);
 	if (shouldEnable && firstEnabled == -1) firstEnabled = i;
-	if (_lastNonNullTab == i && shouldEnable && target != null) {
+	if (_lastNonNullTab == i && shouldEnable && _modelTarget != null) {
 	  jumpToPrevEnabled = true;
 	}
 	if (currentTab == i && !shouldEnable) {
 	  jumpToFirstEnabledTab = true;
 	}
       }
+      if (tab instanceof TabFigTarget) {
+	TabFigTarget tabFT = (TabFigTarget) tab;
+	tabFT.setTarget(_figTarget);
+	boolean shouldEnable = tabFT.shouldBeEnabled();
+	_tabs.setEnabledAt(i, shouldEnable);
+	if (shouldEnable && firstEnabled == -1) firstEnabled = i;
+	if (_lastNonNullTab == i && shouldEnable && _figTarget != null) {
+	  jumpToPrevEnabled = true;
+	}
+	if (currentTab == i && !shouldEnable) {
+	  jumpToFirstEnabledTab = true;
+	}
+      }      
     }
     if (jumpToPrevEnabled) {
       _tabs.setSelectedIndex(_lastNonNullTab);
@@ -177,7 +193,7 @@ implements ChangeListener, MouseListener {
     if (target != null) _lastNonNullTab = _tabs.getSelectedIndex();
   }
 
-  public Object getTarget() { return _target; }
+  public Object getTarget() { return _modelTarget; }
 
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
   public Dimension getPreferredSize() { return new Dimension(400, 150); }
@@ -220,7 +236,9 @@ implements ChangeListener, MouseListener {
       ((TabToDoTarget)sel).refresh();
     else if (sel instanceof TabModelTarget)
       ((TabModelTarget)sel).refresh();
-    if (_target != null) _lastNonNullTab = _tabs.getSelectedIndex();
+    else if (sel instanceof TabFigTarget)
+      ((TabFigTarget)sel).refresh();
+    if (_modelTarget != null) _lastNonNullTab = _tabs.getSelectedIndex();
   }
 
   /** called when the user clicks once on a tab. */ 

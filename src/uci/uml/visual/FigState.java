@@ -72,8 +72,7 @@ public class FigState extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public FigState(GraphModel gm, Object node) {
-    super(gm, node);
+  public FigState() {
     _bigPort = new FigRRect(10+1, 10+1, 90-2, 70-2, Color.cyan, Color.cyan);
     _cover = new FigRRect(10, 10, 90, 70, Color.black, Color.white);
 
@@ -103,11 +102,14 @@ public class FigState extends FigNodeModelElement {
     addFig(_divider);
     addFig(_internal);
 
-    Object onlyPort = node;
-    bindPort(onlyPort, _bigPort);
     //setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
+  }
+
+  public FigState(GraphModel gm, Object node) {
+    this();
+    setOwner(node);
   }
 
   public Object clone() {
@@ -119,6 +121,11 @@ public class FigState extends FigNodeModelElement {
     figClone._divider = (FigLine) v.elementAt(3);
     figClone._internal = (FigText) v.elementAt(4);
     return figClone;
+  }
+
+  public void setOwner(Object node) {
+    super.setOwner(node);
+    bindPort(node, _bigPort);
   }
 
   public Dimension getMinimumSize() {
@@ -133,9 +140,8 @@ public class FigState extends FigNodeModelElement {
 /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
-
+    Rectangle oldBounds = getBounds();
     Dimension nameDim = _name.getMinimumSize();
-
 
     _name.setBounds(x+2, y+2, w-4,  nameDim.height);
     _divider.setShape(x, y + nameDim.height + 1, x + w - 1,  y + nameDim.height + 1);
@@ -148,6 +154,7 @@ public class FigState extends FigNodeModelElement {
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
     updateEdges();
+    firePropChange("bounds", oldBounds, getBounds());    
   }
 
 

@@ -50,22 +50,26 @@ import uci.uml.Foundation.Data_Types.*;
 
 public class FigClass extends FigNodeModelElement  {
 
+  ////////////////////////////////////////////////////////////////
+  // instance variables
+
   protected FigText _attr;
   protected FigText _oper;
   protected FigRect _bigPort;
 
-  public FigClass(GraphModel gm, Object node) {
-    super(gm, node);
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
+  public FigClass() {
     _bigPort = new FigRect(10, 10, 90, 60, Color.cyan, Color.cyan);
 
-    _attr = new FigText(10, 30, 90, 20);
+    _attr = new FigText(10, 30, 90, 21);
     _attr.setFont(LABEL_FONT);
     _attr.setExpandOnly(true);
     _attr.setTextColor(Color.black);
     _attr.setJustification(FigText.JUSTIFY_LEFT);
 
-    _oper = new FigText(10, 50, 90, 20);
+    _oper = new FigText(10, 50, 90, 21);
     _oper.setFont(LABEL_FONT);
     _oper.setExpandOnly(true);
     _oper.setTextColor(Color.black);
@@ -78,8 +82,6 @@ public class FigClass extends FigNodeModelElement  {
 
     //Vector ports = gm.getPorts(node);
     //Object onlyPort = ports.firstElement();
-    Object onlyPort = node; //this kngl should be in the GraphModel
-    bindPort(onlyPort, _bigPort);
     Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
 
@@ -87,15 +89,28 @@ public class FigClass extends FigNodeModelElement  {
 //     _oper.addPropertyChangeListener(this);
   }
 
+  public FigClass(GraphModel gm, Object node) {
+    this();
+    setOwner(node);
+  }
+
   public Object clone() {
     FigClass figClone = (FigClass) super.clone();
-    // error: cloning twice!
     Vector v = figClone.getFigs();
     figClone._bigPort = (FigRect) v.elementAt(0);
     figClone._name = (FigText) v.elementAt(1);
     figClone._attr = (FigText) v.elementAt(2);
     figClone._oper = (FigText) v.elementAt(3);
     return figClone;
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // accessors
+
+  public void setOwner(Object node) {
+    super.setOwner(node);
+    Object onlyPort = node; //this kngl should be in the GraphModel
+    bindPort(onlyPort, _bigPort);
   }
 
   public FigText getOperationFig() { return _oper; }
@@ -113,6 +128,7 @@ public class FigClass extends FigNodeModelElement  {
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
+    Rectangle oldBounds = getBounds();
     Dimension nameMin = _name.getMinimumSize();
     Dimension attrMin = _attr.getMinimumSize();
     Dimension operMin = _oper.getMinimumSize();
@@ -120,14 +136,16 @@ public class FigClass extends FigNodeModelElement  {
     int extra_each = (h - nameMin.height - attrMin.height - operMin.height)/2;
 
     _name.setBounds(x, y, w, nameMin.height);
-    _attr.setBounds(x, y + _name.getBounds().height,
-		    w, attrMin.height + extra_each);
-    _oper.setBounds(x, y + _attr.getBounds().height + _name.getBounds().height,
-		    w, operMin.height + extra_each);
+    _attr.setBounds(x, y + _name.getBounds().height - 1,
+		    w, attrMin.height + extra_each + 1);
+    _oper.setBounds(x, y + _attr.getBounds().height +
+		    _name.getBounds().height - 2,
+		    w, operMin.height + extra_each + 2);
     _bigPort.setBounds(x+1, y+1, w-2, h-2);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
     updateEdges();
+    firePropChange("bounds", oldBounds, getBounds());
   }
 
   ////////////////////////////////////////////////////////////////
@@ -136,7 +154,8 @@ public class FigClass extends FigNodeModelElement  {
   protected void textEdited(FigText ft) throws PropertyVetoException {
     super.textEdited(ft);
     Classifier cls = (Classifier) getOwner();
-    if (ft == _attr) { 
+    if (cls == null) return;
+    if (ft == _attr) {
       //System.out.println("\n\n\n Edited Attr");
       String s = ft.getText();
       ParserDisplay.SINGLETON.parseAttributeCompartment(cls, s);

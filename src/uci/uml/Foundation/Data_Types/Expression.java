@@ -34,13 +34,13 @@ public class Expression implements java.io.Serializable {
   public static final Name OCL = new Name("OCL");
   public static final Name[] POSSIBLE_LANGUAGES = {
     UNSPEC, JAVA, C, OCL };
-  
+
   public Name _language = UNSPEC;
   public Uninterpreted _body;
 
-  int elementID = newElementID();
+  String elementID = newElementID();
 
-  public static int newElementID () {
+  public static String newElementID() {
     return ElementImpl.newElementID();
   }
 

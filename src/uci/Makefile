@@ -74,8 +74,11 @@ argoumlClasses:
 	cd todo; make classes; cd .. ; \
 	cd props; make classes; cd .. ; \
 	cd table; make classes; cd .. ; \
+	cd style; make classes; cd .. ; \
 	cd .. ; \
 	cd visual; make classes; cd .. ; \
+	cd ocl; make classes; cd .. ; \
+	cd xmi; make classes; cd .. ; \
 	cd .. ; \
 	fi
 
@@ -153,8 +156,11 @@ argoumlClean:
 	cd todo; make clean; cd .. ; \
 	cd props; make clean; cd .. ; \
 	cd table; make clean; cd .. ; \
+	cd style; make clean; cd .. ; \
 	cd .. ; \
 	cd visual; make clean; cd .. ; \
+	cd ocl; make clean; cd .. ; \
+	cd xmi; make clean; cd .. ; \
 	cd .. ; \
 	fi
 
@@ -203,7 +209,10 @@ ARGOUMLPACKS = \
 	uci.uml.ui.nav \
 	uci.uml.ui.props \
 	uci.uml.ui.table \
-	uci.uml.visual
+	uci.uml.ui.style \
+	uci.uml.visual \
+	uci.uml.ocl \
+	uci.uml.xmi 
 
 CRITICPACKS = \
 	uci.uml.critics uci.uml.critics.patterns uci.uml.critics.java \
