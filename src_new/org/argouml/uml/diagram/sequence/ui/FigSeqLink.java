@@ -268,30 +268,13 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
 
     Editor curEditor = Globals.curEditor();
     LayerPerspective lay = (LayerPerspective)getLayer();
+    if (lay == null ) lay = (LayerPerspective)curEditor.getLayerManager().getActiveLayer();
     GraphNodeRenderer renderer = lay.getGraphNodeRenderer();
     GraphModel gm = lay.getGraphModel();
 
 
-    if (lay == null ) {
-      lay = (LayerPerspective)curEditor.getLayerManager().getActiveLayer();
-      System.out.println("lay=null");
-    }
-
-
-
     MLink link = (MLink) getOwner();
     if (link.getStimuli()==null || link.getStimuli().size() == 0) {
-
-      // new link
-      // bring the objects in front, to keep them selectable (needs more work)
-      if (lay instanceof SequenceDiagramLayout) {
-        Vector v = ((SequenceDiagramLayout)lay).getFigSeqObjects();
-        for (int i=0; i<v.size(); i++) {
-          FigSeqObject f = (FigSeqObject)v.elementAt(i);
-          lay.bringToFront(f);
-        }
-      }
-
 
       ModeManager modeManager = curEditor.getModeManager();
 
@@ -350,7 +333,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
               lay.add(pers);
 
             }
-	    
+
           }
         }
       }
@@ -678,7 +661,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
   /** Updates the Vector _activations of all FigSeqObjects */
   public void updateActivations(FigSeqObject sourceObj, FigSeqObject destObj,
 			FigRect sourceFig, FigRect destFig, Vector contents, int size, int portNumber) {
-   
+
     if (sourceFig == sourceObj._lifeline || destFig == destObj._lifeline) return;
     FigSeqObject fso = null;
     for (int i=0; i<getContents().size(); i++) {
@@ -862,7 +845,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
               }
               
               ((MNamespace)action.getNamespace()).removeOwnedElement(action);
-            }           
+            }
           }
         }
       }
