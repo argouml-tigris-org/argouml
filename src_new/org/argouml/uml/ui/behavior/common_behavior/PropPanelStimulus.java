@@ -176,7 +176,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
             }
             Object oldAssoc = ModelFacade.getAssociation(link);
             if (oldAssoc != element) {
-                ((MLink)link).setAssociation(element);
+                ModelFacade.setAssociation(link, element);
                 //
                 //  TODO: more needs to go here
                 //
