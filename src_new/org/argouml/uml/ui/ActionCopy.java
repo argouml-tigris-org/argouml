@@ -50,21 +50,24 @@ public class ActionCopy extends AbstractAction implements CaretListener {
 
     private static ActionCopy _Instance = new ActionCopy();
 
+    private static final String LOCALIZE_KEY = "action.copy";
+
     ////////////////////////////////////////////////////////////////
     // constructors
 
     private ActionCopy() {
+        super(Translator.localize("CoreMenu", LOCALIZE_KEY));
         Icon icon =
             ResourceLoaderWrapper
                 .getResourceLoaderWrapper()
                 .lookupIconResource(
-                Translator.getImageBinding("action.copy"),
-                Translator.localize("CoreMenu", "action.copy"));
+                Translator.getImageBinding(LOCALIZE_KEY),
+                Translator.localize("CoreMenu", LOCALIZE_KEY));
         if (icon != null)
             putValue(Action.SMALL_ICON, icon);
         putValue(
             Action.SHORT_DESCRIPTION,
-            Translator.localize("CoreMenu", "action.copy") + " ");
+            Translator.localize("CoreMenu", LOCALIZE_KEY) + " ");
     }
 
     public static ActionCopy getInstance() {
