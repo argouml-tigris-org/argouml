@@ -16,7 +16,7 @@
 <!ENTITY cookbookmodules SYSTEM "cookbook_modules.xml">
 <!ENTITY cookbooklogging SYSTEM "cookbook_logging.xml">
 <!ENTITY documentationstandards SYSTEM "documentationstandards.xml">
-<!ENTITY documentation_organization SYSTEM "documentation_organization.xml">
+<!ENTITY documentationorganization SYSTEM "documentation_organization.xml">
 
 <!ENTITY ooad "OOA&amp;D">
 <!ENTITY argoversion    "@VERSION@">
@@ -2429,7 +2429,7 @@ and you should see the plug-in's startup banner
 
 </chapter>
 
-  &documentation_organization;
+  &documentationorganization;
 
   &cvs;
   &standards;
