@@ -89,6 +89,7 @@ public class Main {
     boolean useEDEM = Configuration.getBoolean(Argo.KEY_EDEM, true);
     boolean preload = Configuration.getBoolean(Argo.KEY_PRELOAD, true);
     boolean profileLoad = Configuration.getBoolean(Argo.KEY_PROFILE, false);
+    boolean reloadRecent = Configuration.getBoolean(Argo.KEY_RELOAD_RECENT_PROJECT, false);
 
     File projectFile = null;
     Project p = null;
@@ -120,6 +121,7 @@ public class Main {
 	  System.err.println("  -noedem         dont report usage statistics");
 	  System.err.println("  -nopreload      dont preload common classes");
 	  System.err.println("  -profileload    report on load times");
+	  System.err.println("  -norecentfile   do not reload last saved file");
       System.err.println("");
       System.err.println("You can also set java settings which influence the behaviour of ArgoUML:");
       System.err.println("  -Duser.language e.g. en");
@@ -133,28 +135,52 @@ public class Main {
 	  preload = false;
 	} else if (args[i].equalsIgnoreCase("-profileload")) {
 	  profileLoad = true;
+	} else if (args[i].equalsIgnoreCase("-norecentfile")) {
+	  reloadRecent = false;
 	} else {
 	  System.err.println("Ingoring unknown option '" + args[i] + "'");
 	}
       } else {
-	projectName = args[i];
+        if (projectName == null) {
+            System.out.println ("Setting projectName to '" + args[i] + "'");
+	    projectName = args[i];
+	}
+      }
+    }
+
+    if (reloadRecent && projectName == null) {
+        // If no project was entered on the command line,
+	// try to reload the most recent project if that option is true
+	String s = Configuration.getString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
+	                                   "");
+	if (s != "") {
+            File file = new File(s);
+            if (file.exists()) {
+                Argo.log.info("Re-opening project " + s);
+	        projectName = s;
+            }
+            else {
+                Argo.log.warn("Cannot not re-open " + s +
+		              " because it does not exist");
+            }
+	}
+    }
+
+    if (projectName != null) {
 	if (!projectName.endsWith(Project.COMPRESSED_FILE_EXT))
-	  projectName += Project.COMPRESSED_FILE_EXT;
+	    projectName += Project.COMPRESSED_FILE_EXT;
 	projectFile = new File(projectName);
 	if (!projectFile.exists()) {
-	  System.err.println("Project file '" + projectFile +
+	    System.err.println("Project file '" + projectFile +
 			     "' does not exist.");
-	  /* this will cause an empty project to be created */
-	  p = null;
+	    /* this will cause an empty project to be created */
+	    p = null;
 	} else {
-	  try { urlToOpen = Util.fileToURL(projectFile); }
-	  catch (Exception e) {
-	    Argo.log.error("Exception opening project in main()", e);
-	  }
+	    try { urlToOpen = Util.fileToURL(projectFile); }
+	    catch (Exception e) {
+	        Argo.log.error("Exception opening project in main()", e);
+	    }
 	}
-	/* by our assumption, any following args will be ignored */
-	break;
-      }
     }
 
     //  do some initialization work before anything is drawn

@@ -93,6 +93,14 @@ public class Argo {
    */
   public static final ConfigurationKey KEY_PROFILE = Configuration.makeKey("init", "profile");
 
+   /** Key for last saved project URL.
+    */
+   public static final ConfigurationKey KEY_MOST_RECENT_PROJECT_FILE = Configuration.makeKey("project", "mostrecent", "file");
+ 
+  /** Key to reload last saved project on startup.
+   */
+  public static final ConfigurationKey KEY_RELOAD_RECENT_PROJECT = Configuration.makeKey("init", "project", "loadmostrecent");
+
   /** Key for screen top
    */
   public static final ConfigurationKey KEY_SCREEN_TOP_Y = Configuration.makeKey("screen", "top");
