@@ -43,7 +43,6 @@ public class CompartmentFigText extends FigText
   // instance variables
 
   protected Fig refFig;
-  protected int storedKey = -1; // nothing stored
   protected boolean _isHighlighted = false;
   protected MFeature _feature = null;
 
@@ -65,22 +64,6 @@ public class CompartmentFigText extends FigText
   public Color getFillColor() {return refFig.getFillColor();}
   public Color getLineColor() {return refFig.getLineColor();}
 
-  /*
-  public FigTextEditor startTextEditor(InputEvent ie) {
-    FigTextEditor te = new CompartmentFigTextEditor(this, ie);
-	_editMode = true;
-    return te;
-  }
-  */
-
-  public void setStoredKey(int keyCode) {
-    storedKey = keyCode;
-  }
-
-  public int getStoredKey() {
-    return storedKey;
-  }
-
   public void setHighlighted(boolean flag) {
     _isHighlighted = flag;
     super.setLineWidth(_isHighlighted ? 1 : 0);
@@ -99,44 +82,4 @@ public class CompartmentFigText extends FigText
   public MFeature getFeature() {
     return _feature;
   }
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-  /** This method handles backspace, enter and up/down arrow keys. */
-  public void keyPressed(KeyEvent ke) {
-	  System.out.println("CompartmentFigText.keyPressed");
-	setStoredKey(ke.getKeyCode());
-	super.keyPressed(ke);
-	System.out.println("key pressed");
-	/*
-    if (!ke.isActionKey() && !isNonStartEditingKey(ke)) {
-      if (!_editable) return;
-      CompartmentFigTextEditor te = (CompartmentFigTextEditor)startTextEditor(ke);
-      te.keyPressed(ke);
-      ke.consume();
-    }
-    */
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // inner classes
-
-  /*
-  public class CompartmentFigTextEditor extends FigTextEditor {
-    public CompartmentFigTextEditor(FigText ft, InputEvent ie) {
-      super(ft,ie);
-      System.out.println("new CompartmentFigTextEditor: "+ft.getText());
-    }
-    public void keyPressed(KeyEvent ke) {
-      int keyCode = ke.getKeyCode();
-      if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN) {
-        setStoredKey(keyCode);
-        endEditing();
-        ke.consume();
-	  } else
-	    super.keyPressed(ke);
-    }
-  }
-  */
 }

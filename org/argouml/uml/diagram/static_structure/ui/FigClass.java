@@ -78,7 +78,7 @@ public class FigClass extends FigNodeModelElement {
     _name.setFilled(true);
 
     // this rectangle marks the attribute section; all attributes are inside it:
-    _attrBigPort = new FigRect(10, 30, 60, ROWHEIGHT+1, Color.black, Color.white);
+    _attrBigPort = new FigRect(10, 30, 60, ROWHEIGHT+2, Color.black, Color.white);
     _attrBigPort.setFilled(true);
     _attrBigPort.setLineWidth(1);
 
@@ -88,7 +88,7 @@ public class FigClass extends FigNodeModelElement {
     _attrVec.addFig(_attrBigPort);
 
     // this rectangle marks the operation section; all operations are inside it:
-    _operBigPort = new FigRect(10, 30+ROWHEIGHT, 60, ROWHEIGHT+1, Color.black, Color.white);
+    _operBigPort = new FigRect(10, 31+ROWHEIGHT, 60, ROWHEIGHT+2, Color.black, Color.white);
     _operBigPort.setFilled(true);
     _operBigPort.setLineWidth(1);
 
@@ -118,7 +118,7 @@ public class FigClass extends FigNodeModelElement {
     addFig(_operVec);
     suppressCalcBounds = false;
 
-    setBounds(10, 10, 60, 20+2*ROWHEIGHT);
+    setBounds(10, 10, 60, 22+2*ROWHEIGHT);
   }
 
   public FigClass(GraphModel gm, Object node) {
@@ -200,7 +200,7 @@ public class FigClass extends FigNodeModelElement {
 
   public void setAttributeVisible(boolean isVisible) {
     Rectangle rect = getBounds();
-    int h = (ROWHEIGHT*Math.max(1,_attrVec.getFigs().size()-1)+1) * rect.height / getMinimumSize().height;
+    int h = (ROWHEIGHT*Math.max(1,_attrVec.getFigs().size()-1)+2) * rect.height / getMinimumSize().height;
     if ( _attrVec.isDisplayed() ) {
       if ( !isVisible ) {
         damage();
@@ -225,7 +225,7 @@ public class FigClass extends FigNodeModelElement {
 
   public void setOperationVisible(boolean isVisible) {
     Rectangle rect = getBounds();
-    int h = (ROWHEIGHT*Math.max(1,_operVec.getFigs().size()-1)+1) * rect.height / getMinimumSize().height;
+    int h = (ROWHEIGHT*Math.max(1,_operVec.getFigs().size()-1)+2) * rect.height / getMinimumSize().height;
     if ( _operVec.isDisplayed() ) {
       if ( !isVisible ) {
         damage();
@@ -264,7 +264,7 @@ public class FigClass extends FigNodeModelElement {
       enum.nextElement(); // _attrBigPort
       while (enum.hasMoreElements())
         aSize.width = Math.max(aSize.width,((FigText)enum.nextElement()).getMinimumSize().width+2);
-      aSize.height += ROWHEIGHT*Math.max(1,_attrVec.getFigs().size()-1);
+      aSize.height += ROWHEIGHT*Math.max(1,_attrVec.getFigs().size()-1)+1;
     }
     if (_operVec.isDisplayed()) {
       // get minimum size of the operation section
@@ -272,7 +272,7 @@ public class FigClass extends FigNodeModelElement {
       enum.nextElement(); // _operBigPort
       while (enum.hasMoreElements())
         aSize.width = Math.max(aSize.width,((FigText)enum.nextElement()).getMinimumSize().width+2);
-      aSize.height += ROWHEIGHT*Math.max(1,_operVec.getFigs().size()-1);
+      aSize.height += ROWHEIGHT*Math.max(1,_operVec.getFigs().size()-1)+1;
     }
     return aSize;
   }
@@ -670,7 +670,7 @@ public class FigClass extends FigNodeModelElement {
 	_stereo.setBounds(x,y,newW,STEREOHEIGHT+1);
     _stereoLineBlinder.setBounds(x+1,y+STEREOHEIGHT,newW-2,2);
     currentY += height-1; // -1 for 1 pixel overlap
-   	aSize = getUpdatedSize(_attrVec,x,currentY,newW,ROWHEIGHT*Math.max(1,_attrVec.getFigs().size()-1)+1+extra_each);
+   	aSize = getUpdatedSize(_attrVec,x,currentY,newW,ROWHEIGHT*Math.max(1,_attrVec.getFigs().size()-1)+2+extra_each);
    	if (_attrVec.isDisplayed())
         currentY += aSize.height-1; // -1 for 1 pixel overlap
    	aSize = getUpdatedSize(_operVec,x,currentY,newW,newH+y-currentY);

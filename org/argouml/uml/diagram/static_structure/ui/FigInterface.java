@@ -71,7 +71,7 @@ public class FigInterface extends FigNodeModelElement {
     _name.setFilled(true);
 
     // this rectangle marks the operation section; all operations are inside it:
-    _operBigPort = new FigRect(10, 30+ROWHEIGHT, 60, ROWHEIGHT+1, Color.black, Color.white);
+    _operBigPort = new FigRect(10, 30+ROWHEIGHT, 60, ROWHEIGHT+2, Color.black, Color.white);
     _operBigPort.setFilled(true);
     _operBigPort.setLineWidth(1);
 
@@ -101,7 +101,7 @@ public class FigInterface extends FigNodeModelElement {
     addFig(_operVec);
     suppressCalcBounds = false;
 
-    setBounds(10, 10, 60, 20+ROWHEIGHT);
+    setBounds(10, 10, 60, 21+ROWHEIGHT);
   }
 
   public FigInterface(GraphModel gm, Object node) {
@@ -163,7 +163,7 @@ public class FigInterface extends FigNodeModelElement {
       enum.nextElement(); // _operBigPort
       while (enum.hasMoreElements())
         aSize.width = Math.max(aSize.width,((FigText)enum.nextElement()).getMinimumSize().width+2);
-      aSize.height += ROWHEIGHT*Math.max(1,_operVec.getFigs().size()-1);
+      aSize.height += ROWHEIGHT*Math.max(1,_operVec.getFigs().size()-1)+1;
     }
     return aSize;
   }
