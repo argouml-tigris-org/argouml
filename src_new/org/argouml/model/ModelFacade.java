@@ -28,6 +28,7 @@ import java.util.*;
 
 // NS-UML imports:
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 
 // GEF imports:
 import org.tigris.gef.base.*;
@@ -69,7 +70,27 @@ public class ModelFacade {
     private ModelFacade() {
     }
 
+    ////////////////////////////////////////////////////////////////
     // Recognizer methods for the UML model (in alphabetic order)
+
+    /** Recognizer for Association.
+     *
+     * @param handle candidate
+     * @returns true if handle is an Association
+     */
+    public static boolean isAAssociation(Object handle) {
+	return handle instanceof MAssociation;
+    }
+
+    /** Recognizer for AssociationRole
+     *
+     * @param handle candidate
+     * @returns true if handle is an AssociationRole
+     */
+    public static boolean isAAssociationRole(Object handle) {
+	return handle instanceof MAssociationRole;
+    }	    
+
     /** Recognizer for abstract classes and operations.
      *
      * @param handle candidate
@@ -112,7 +133,9 @@ public class ModelFacade {
 	return handle instanceof Diagram;
     }
 
+    ////////////////////////////////////////////////////////////////
     // Getters for the UML model (in alphabetic order)
+
     /** The list of Attributes.
      *
      * Only Classifiers have attributes so if this is called with something
@@ -131,6 +154,20 @@ public class ModelFacade {
 	return CoreHelper.getHelper().getAttributes(c).iterator();
     }
 
+    /** The list of Connections to an Association.
+     *
+     * @param handle to the association.
+     * @return an Iterator with all connections.
+     */
+    public static Iterator getConnections(Object handle) {
+	if (handle instanceof MAssociation) {
+	    return ((MAssociation) handle).getConnections().iterator();
+	}
+
+	// ...
+	return emptyIterator();
+    }
+
     /** The list of Operations of this classifier and all inherited.
      *
      * @param handle classifier to examine.
@@ -146,7 +183,9 @@ public class ModelFacade {
 	return CoreHelper.getHelper().getOperationsInh(c).iterator();
     }
 
+    ////////////////////////////////////////////////////////////////
     // Common getters
+
     /** The name of a model element or some diagram part.
      *
      * @param handle that points out the object.
@@ -171,8 +210,9 @@ public class ModelFacade {
     }
 
 
-
+    ////////////////////////////////////////////////////////////////
     // Convenience methods
+
     /** The empty set.
      *
      * @returns an empty iterator.
