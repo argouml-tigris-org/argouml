@@ -247,10 +247,7 @@ to strive for unreachable goals.
 	    <listitem>
 	      <para>...verify that all translations are up to date?</para>
 	      <para>
-Run the JUnit test cases.
-See <xref linkend="run_junit_testcases"/>.
-This will verify that all tags are in sync between different
-translations.
+Run checkstyle. Search for comments on keys.
 </para>
 	    </listitem>
 	    <listitem>
