@@ -152,9 +152,19 @@ public class FigAssociation extends FigEdgeModelElement {
     MMultiplicity mult0 = ae0.getMultiplicity();
     MMultiplicity mult1 = ae1.getMultiplicity();
     _srcMult.setText(Notation.generate(this, mult0));
-    if ((mult0 == null) || (MMultiplicity.M1_1).equals(mult0)) _srcMult.setText("");
+    // 2002-07-22
+    // Jaap Branderhorst
+    // changed next line to show 1..1 multiplicity. Old code
+    // if ((mult0 == null) || (MMultiplicity.M1_1).equals(mult0)) _srcMult.setText("");
+    // new code
+    if (mult0 == null) _srcMult.setText("");
     _destMult.setText(Notation.generate(this, mult1));
-    if ((mult1 == null) ||(MMultiplicity.M1_1).equals(mult1)) _destMult.setText("");
+   // 2002-07-22
+    // Jaap Branderhorst
+    // changed next line to show 1..1 multiplicity. Old code
+    // if ((mult1 == null) || (MMultiplicity.M1_1).equals(mult1)) _srcMult.setText("");
+    // new code
+    if (mult1 == null) _srcMult.setText("");
 
     _srcRole.setText(Notation.generate(this, ae0.getName()));
     _destRole.setText(Notation.generate(this, ae1.getName()));
