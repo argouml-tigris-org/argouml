@@ -55,12 +55,11 @@ import org.tigris.gef.presentation.Fig;
 
 
 /**
- * This class takes a lot of the responsibility from the NavigatorPane.
- *
- * Provides:
+ * This class is the JTree for the explorer. It provides:<p>
+ * <pre>
  *  - selection/target management
  *  - generate a name for all nodes
- *  - mouse listener for the pop up
+ *  - mouse listener for the pop up </pre>
  *
  * @author  alexb
  * @since 0.15.2
@@ -70,22 +69,22 @@ public class ExplorerTree
     
     /**
      * Holds state info about whether to display stereotypes in the
-     * nav pane.
+     * explorer pane.
      */
     private boolean showStereotype;
     
     /**
-     * prevents target event cycles between this and the TargetManager.
+     * Prevents target event cycles between this and the TargetManager.
      */
     private boolean updatingSelection;
     
     /**
-     * prevents target event cycles between this and the Targetmanager 
-     * for tree selection events
+     * Prevents target event cycles between this and the Targetmanager 
+     * for tree selection events.
      */
     private boolean updatingSelectionViaTreeSelection;
     
-    /** Creates a new instance of ExplorerTree */
+    /** Creates a new instance of ExplorerTree. */
     public ExplorerTree() {
         super();
         
@@ -111,7 +110,8 @@ public class ExplorerTree
         
     }
     
-    /** Listens to mouse events coming from the *JTree*,
+    /** 
+     * Listens to mouse events coming from the *JTree*,
      * on right click, brings up the pop-up menu.
      */
     class NavigatorMouseListener extends MouseAdapter {
@@ -172,7 +172,7 @@ public class ExplorerTree
     } /* end class NavigatorMouseListener */
     
     /**
-     * override default JTree implementation to display the
+     * Override default JTree implementation to display the
      * appropriate text for any object that will be displayed in
      * the Nav pane.
      *
@@ -253,16 +253,16 @@ public class ExplorerTree
     }
     
     /**
-     * helps prepare state before a node is expanded.
+     * Helps prepare state before a node is expanded.
      */
     class ExplorerTreeWillExpandListener implements TreeWillExpandListener {
         
-        /** does nothing **/
+        /** Does nothing. **/
         public void treeWillCollapse(TreeExpansionEvent tee) {
 	}
         
         /**
-         * updates stereotype setting,
+         * Updates stereotype setting,
          * adds all children per treemodel 'build on demand' design.
          */
         public void treeWillExpand(TreeExpansionEvent tee) {
@@ -279,18 +279,18 @@ public class ExplorerTree
     }
     
     /**
-     * helps react to tree expansion events.
+     * Helps react to tree expansion events.
      */
     class ExplorerTreeExpansionListener implements TreeExpansionListener {
         
         /**
-         * does nothing
+         * Does nothing.
          */
         public void treeCollapsed(TreeExpansionEvent event) {
         }
         
         /**
-         * updates the selection state.
+         * Updates the selection state.
          */
         public void treeExpanded(TreeExpansionEvent event) {
             
@@ -328,13 +328,13 @@ public class ExplorerTree
     }
     
     /**
-     * manages selecting the item to show in Argo's other
+     * Manages selecting the item to show in Argo's other
      * views based on the highlighted row.
      */
     class NavigationTreeSelectionListener implements TreeSelectionListener {
         
         /**
-         * change in nav tree selection -> set target in target manager.
+         * Change in nav tree selection -> set target in target manager.
          */
         public void valueChanged(TreeSelectionEvent e) {
             
@@ -425,17 +425,15 @@ public class ExplorerTree
     class ExplorerTargetListener implements TargetListener {
     
         /**
-         * actions a change in targets received from the TargetManager.
+         * Actions a change in targets received from the TargetManager.
          */
         private void setTargets(Object[] targets) {
             
             if (!updatingSelection) {
                 updatingSelection = true;
-                
                 if (targets.length <= 0) {
                     clearSelection();
                 } else {
-                    
                     setSelection(targets);
                 }
                 updatingSelection = false;
@@ -502,7 +500,7 @@ public class ExplorerTree
                 if (getSelectionCount() > 0) {
                     scrollRowToVisible(getSelectionRows()[0]);
                 }
-                updatingSelection = true;
+                updatingSelection = false;
             }
             // setTargets(e.getNewTargets());
         }
