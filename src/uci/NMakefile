@@ -4,7 +4,7 @@ REL_DIR=uci
 
 all: classes archive
 
-classes: gefDir umlDir argoumlDir criticsDir 
+classes: acmeDir gefDir umlDir argoumlDir criticsDir 
 
 
 archive:: objdir gefDir umlDir argoumlDir criticsDir 
@@ -25,7 +25,11 @@ archive:: objdir gefDir umlDir argoumlDir criticsDir
 	copy COPYRIGHT $(OUT_DIR)
 
 
-clean: gefDir umlDir argoumlDir criticsDir 
+cleandist:
+	$(MAKE) /$(MAKEFLAGS) TARGET=clean cleandirs
+
+
+cleandirs: acmeDir gefDir umlDir argoumlDir criticsDir 
 
 processDir:
 	@echo.
@@ -35,6 +39,9 @@ processDir:
 	@$(MAKE) /$(MAKEFLAGS) $(TARGET)
 	$(CD) $(TOP)
 
+
+ACME_DIRS= ..\Acme           \
+	..\Acme\JPM\Encoders 
 
 GEF_DIRS= util           \
 	gef              \
@@ -79,6 +86,20 @@ CRITICS_DIRS= uml\checklist       \
 	uml\critics\java          \
 	uml\critics\presentation  
 
+
+gefDir:
+!IF EXIST(Acme)
+	@echo. 
+	@echo.
+	@echo PROCESSING ACME ====================
+	@for %d in ($(ACME_DIRS)) do \
+	@$(MAKE) /$(MAKEFLAGS) TARGET=$(TARGET) DIR=%d processDir
+
+!ELSE
+	@echo.
+	@echo.
+	@echo GEF directory does not exists.
+!ENDIF
 
 gefDir:
 !IF EXIST(gef)
