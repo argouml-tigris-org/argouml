@@ -33,8 +33,10 @@ import org.argouml.model.ModelFacade;
  * An UMLTaggedBooleanProperty is a property which maintains a tagged value
  * as a boolean field. It is e.g. used to work with UMLCheckbox.
  *
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- * TODO: What is this replaced by ?
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003), replaced
+ * @see ActionBooleanTaggedValue
+ * @see UMLCheckBox2
+ * @see UMLDeprecatedCheckBox
  * This class is part of the 'old'(pre 0.13.*) implementation of proppanels
  * that used reflection a lot.
  */
