@@ -52,10 +52,10 @@ public class XMIParser {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-	/** logger */
-	private static Logger cat = Logger.getLogger(XMIParser.class);
+    /** logger */
+    private static final Logger LOG = Logger.getLogger(XMIParser.class);
 
-	public static XMIParser SINGLETON = new XMIParser();
+    public static XMIParser singleton = new XMIParser();
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -90,15 +90,16 @@ public class XMIParser {
 
         _proj = p;
 
-        cat.info("=======================================");
-        cat.info("== READING MODEL " + url);
+        LOG.info("=======================================");
+        LOG.info("== READING MODEL " + url);
         try {
             XMIReader reader = new XMIReader();
             InputSource source = new InputSource(url.openStream());
             source.setSystemId(url.toString());
             _curModel = reader.parseToModel(source);
             if (reader.getErrors()) {
-            	throw new IOException("XMI file " + url.toString() + " could not be parsed.");
+            	throw new IOException("XMI file " + url.toString() 
+                        + " could not be parsed.");
             }
             _UUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
 
@@ -120,7 +121,7 @@ public class XMIParser {
         catch (Exception ex) {
             ex.printStackTrace();
         }
-        cat.info("=======================================");
+        LOG.info("=======================================");
 
         
 	_proj.addModel(_curModel);
