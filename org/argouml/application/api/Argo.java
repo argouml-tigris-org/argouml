@@ -23,10 +23,8 @@
 
 package org.argouml.application.api;
 import org.argouml.application.configuration.*;
+import org.argouml.application.modules.*;
 import org.argouml.util.logging.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.ui.*;
 
 import org.apache.log4j.*;
 import org.apache.log4j.helpers.*;
@@ -60,6 +58,14 @@ import java.io.*;
  */
 
 public class Argo {
+
+  /** Key for argo resource directory.
+   */
+  public static final String RESOURCEDIR = "/org/argouml/resource/";
+
+  /** argo.ini path
+   */
+  public static final String ARGOINI = "/org/argouml/argo.ini";
 
   /** Key for menu resource bundle.
    */
@@ -152,8 +158,8 @@ public class Argo {
    public static void setDirectory(String dir) {
        // Store in the user configuration, and
        // let gef know also.
-       Globals.setLastDirectory(dir);
-       Configuration.setString(KEY_STARTUP_DIR, dir);
+       org.tigris.gef.base.Globals.setLastDirectory(dir);
+       // Configuration.setString(KEY_STARTUP_DIR, dir);
    }
 
    /** Get the default startup directory.
@@ -162,7 +168,7 @@ public class Argo {
        // Use the configuration if it exists, otherwise
        // use what gef thinks.
        return Configuration.getString(KEY_STARTUP_DIR,
-                                      Globals.getLastDirectory());
+		      org.tigris.gef.base.Globals.getLastDirectory());
    } 
 
    /** Helper for localization to eliminate the need to import
@@ -172,39 +178,48 @@ public class Argo {
        return org.tigris.gef.util.Localizer.localize(bundle, key);
    }
 
-   /** Instance initialization to create
-    *  logging category <code>argo.console.log</code>.
+   /** Returns a vector of plugins of the class type passed
+    *  which satisfy both of the contexts required.
     *
-    *  This creates a <code>log4j</code> category which can be used globally
-    *  in place of System.out.println.  The advantage to this is
-    *  that any such output can also appear in other log output
-    *  streams.
-    *
-    *  This <code>log4j</code> configuration is completely self-enclosed.
-    *  No additional configuration files are necessary.
-    *
-    *  The system property <code>argo.console.prefix</code> can be
-    *  set to a text string that will be prepended to the log text
-    *  displayed on the console.  This allows a relatively simple
-    *  method of distinguishing log calls from System.out.println
-    *  calls when it is necessary.
-    *
-    *  <code>log4j</code> uses the system properties
-    *  <code>log4j.configuration</code> and
-    *  <code>log4j.properties</code> to configure itself.
-    *  If neither of these are set, Argo disables the standard logging.
-    *
-    *  System property <code>argo.console.supress</code> can be set
-    *  to disable any logging through the separate console logger
-    *  hierarchy.
-    *
-    *  This also adds a ThrowableRenderer to the default hierarchy
-    *  and the console hierarchy.
+    *  If no plugins are available, returns null.
     */
-   static {
-       // Initialize log4j default hierarchy
-       BasicConfigurator.configure();
+   public static final Vector getPlugins (Class pluginType,
+                                          Object context1,
+				          Object context2) {
+       return ModuleLoader.getInstance().getPlugins(pluginType,
+	                                            context1,
+						    context2);
+   }
 
+   /** Returns a vector of plugins of the class type passed
+    *  which satisfy the context required.
+    *
+    *  If no plugins are available, returns null.
+    */
+   public static final Vector getPlugins (Class pluginType,
+                                          Object context) {
+       return ModuleLoader.getInstance().getPlugins(pluginType,
+	                                            context,
+						    null);
+   }
+
+   /** Returns a vector of all plugins of the class type passed.
+    *
+    *  If no plugins are available, returns null.
+    */
+   public static final Vector getPlugins (Class pluginType) {
+       return ModuleLoader.getInstance().getPlugins(pluginType, null, null);
+   }
+
+   public String getArgoHome() {
+       return ModuleLoader.getInstance().getArgoHome();
+   }
+
+   public String getArgoRoot() {
+       return ModuleLoader.getInstance().getArgoRoot();
+   }
+
+   static {
        // Create a throwable renderer
        ThrowableRenderer tr = new ThrowableRenderer();
 
@@ -229,14 +244,7 @@ public class Argo {
        
        // Set log here.  No going back.
        log = cat; 
+    }
 
-       // Disable standard logging if no configuration was passed.
-       if ((System.getProperty(Category.DEFAULT_CONFIGURATION_KEY) == null) &&
-           (System.getProperty(Category.DEFAULT_CONFIGURATION_FILE) == null)) {
-           log.info ("Disabling non-console logging");
-           Category.getRoot().getHierarchy().disableAll();
-       }
-
-   }
 }
 
