@@ -56,7 +56,7 @@ public class FigGeneralization extends FigEdgeModelElement {
     protected ArrowHeadTriangle endArrow;
 
     public FigGeneralization() {
-	addPathItem(_stereo, new PathConvPercent(this, 50, 10));
+	addPathItem(getStereotypeFig(), new PathConvPercent(this, 50, 10));
 	endArrow = new ArrowHeadTriangle();
 
 	_discriminator.setFont(LABEL_FONT);

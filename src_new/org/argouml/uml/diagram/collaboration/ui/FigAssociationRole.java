@@ -77,7 +77,7 @@ public class FigAssociationRole extends FigAssociation {
         // String asNameStr = ((ar.getName() == null) && (ar.getBase()
         // == null)) ? "" : Notation.generate(this, ar);
         String asNameStr = Notation.generate(this, ar);
-        _name.setText(asNameStr);
+        getNameFig().setText(asNameStr);
     }
     
     public void addMessage(FigMessage message) {

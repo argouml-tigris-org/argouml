@@ -50,7 +50,7 @@ public class FigTransition extends FigEdgeModelElement {
     // constructors
     public FigTransition() {
         super();
-        addPathItem(_name, new PathConvPercent(this, 50, 10));
+        addPathItem(getNameFig(), new PathConvPercent(this, 50, 10));
         _fig.setLineColor(Color.black);
         setDestArrowHead(endArrow);
     }
@@ -216,7 +216,7 @@ public class FigTransition extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        _name.setText(Notation.generate(this, getOwner()));
+        getNameFig().setText(Notation.generate(this, getOwner()));
     }
 
 } /* end class FigTransition */

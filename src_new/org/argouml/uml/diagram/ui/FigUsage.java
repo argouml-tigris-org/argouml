@@ -55,10 +55,10 @@ public class FigUsage extends FigDependency {
     protected void modelChanged(MElementEvent e) {
 	super.modelChanged(e);
 	
-	String stereoTypeStr = _stereo.getText();
+	String stereoTypeStr = getStereotypeFig().getText();
 
 	if (stereoTypeStr == null || "".equals(stereoTypeStr)) {
-	    _stereo.setText(NotationHelper.getLeftGuillemot() + "use"
+	    getStereotypeFig().setText(NotationHelper.getLeftGuillemot() + "use"
 			    + NotationHelper.getRightGuillemot());
 	}
     } 
