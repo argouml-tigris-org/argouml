@@ -46,6 +46,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
 import org.argouml.uml.MMUtil;
 
+import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.*;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.*;
@@ -1526,7 +1527,7 @@ implements PluggableNotation, FileGenerator {
         return "Java Notation and Code Generator";
     }
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleVersion() { return ArgoVersion.VERSION; }
     public String getModuleKey() { return "module.language.java.generator"; }
 
 /**
