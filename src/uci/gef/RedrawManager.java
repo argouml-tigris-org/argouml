@@ -226,6 +226,8 @@ public class RedrawManager implements Runnable {
   /** Ask the Editor to repaint all damaged regions, if the Editor is
    *  ready and there are not Fig transactions in progress. */
   public void repairDamage() {
+    Component c = _ed.getAwtComponent();
+    if (c == null || !c.isVisible()) return;
     Graphics g = _ed.getGraphics();
     if (_lockLevel == 0 && g != null)
       synchronized (LOCK) { if (_lockLevel == 0) paint(_ed, g); }

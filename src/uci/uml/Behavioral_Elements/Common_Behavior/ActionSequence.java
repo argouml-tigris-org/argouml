@@ -45,8 +45,8 @@ public class ActionSequence extends ModelElementImpl {
   //% public MMAction _action[];
   public Vector _action;
   //public State _state;
-  public State _state;
-  public Transition _transition;
+  //public State _state;
+  //public Transition _transition;
     
   public ActionSequence() { }
   public ActionSequence(Name name) { super(name); }
@@ -72,16 +72,16 @@ public class ActionSequence extends ModelElementImpl {
     _action.removeElement(x);
   }
 
-  public State getState() { return _state; }
-  public void setState(State x) throws PropertyVetoException {
-    fireVetoableChange("state", _state, x);
-    _state = x;
-  }
+//   public State getState() { return _state; }
+//   public void setState(State x) throws PropertyVetoException {
+//     fireVetoableChange("state", _state, x);
+//     _state = x;
+//   }
 
-  public Transition getTransition() { return _transition; }
-  public void setTransition(Transition x) throws PropertyVetoException {
-    fireVetoableChange("transition", _state, x);
-    _transition = x;
-  }
+//   public Transition getTransition() { return _transition; }
+//   public void setTransition(Transition x) throws PropertyVetoException {
+//     fireVetoableChange("transition", _state, x);
+//     _transition = x;
+//   }
 
 }

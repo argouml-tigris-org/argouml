@@ -49,6 +49,11 @@ public class DesignIssuesDialog extends JDialog
 implements ActionListener, ChangeListener {
 
   ////////////////////////////////////////////////////////////////
+  // constants
+  public final int WIDTH = 300;
+  public final int HEIGHT = 450;
+  
+  ////////////////////////////////////////////////////////////////
   // instance variables
   protected JPanel  _mainPanel = new JPanel();
   protected JButton _okButton = new JButton("OK");
@@ -60,7 +65,11 @@ implements ActionListener, ChangeListener {
 
   public DesignIssuesDialog(Frame parent) {
     super(parent, "Design Issues", false);
-    setSize(300, 450);
+
+    int x = parent.getLocation().x + (parent.getSize().width - WIDTH) / 2;
+    int y = parent.getLocation().y + (parent.getSize().height - HEIGHT) / 2;
+    setLocation(x, y);
+    setSize(WIDTH, HEIGHT);
     Container content = getContentPane();
     content.setLayout(new BorderLayout());
     initMainPanel();

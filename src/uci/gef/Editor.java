@@ -391,6 +391,20 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   }
 
 
+  /** Scroll the JGraph so that the given point is visible.  This is
+   *  used when the user wants to drag an object a long distance. This
+   *  is commented out right now because it causes too many out of
+   *  memory errors and the size of the JGraphInternalPanel is not set
+   *  properly. */
+  public void scrollToShow(int x, int y) {  
+    //   Component c = getAwtComponent();
+    //   if (c != null && c.getParent() instanceof JViewport) {
+    //     JViewport view = (JViewport) c.getParent();
+    //     view.scrollRectToVisible(new Rectangle(x - 10, y - 10, 20, 20));
+    //   }
+  }
+
+
   /** Reply the current SelectionManager of this Editor. */
   public SelectionManager getSelectionManager() { return _selectionManager; }
 

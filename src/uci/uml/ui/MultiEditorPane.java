@@ -51,6 +51,7 @@ implements ChangeListener, MouseListener {
   protected Editor _ed;
  // protected ForwardingPanel _awt_comp;
   protected Vector _tabPanels = new Vector();
+  protected Component _lastTab;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -121,9 +122,7 @@ implements ChangeListener, MouseListener {
 
   public void select(Object o) {
     Component curTab = _tabs.getSelectedComponent();
-    System.out.println("select?" + curTab);
     if (curTab instanceof TabDiagram) {
-      System.out.println("selectByOwner");
       ((TabDiagram)curTab).getJGraph().selectByOwner(o);
     }
     //needs-more-work: handle tables
@@ -138,7 +137,10 @@ implements ChangeListener, MouseListener {
   public void stateChanged(ChangeEvent e) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
+    if (_lastTab != null) { _lastTab.setVisible(false); }
     System.out.println("MultiEditorPane state changed");
+    _lastTab = _tabs.getSelectedComponent();
+    _lastTab.setVisible(true);
   }
 
   public void mousePressed(MouseEvent me) { }

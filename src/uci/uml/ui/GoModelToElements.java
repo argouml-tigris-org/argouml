@@ -37,6 +37,8 @@ import uci.uml.Foundation.Core.*;
 
 public class GoModelToElements implements TreeModelPrereqs {
 
+  public String toString() { return "Package->Model Element"; }
+  
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;

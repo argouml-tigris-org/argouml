@@ -38,6 +38,8 @@ import uci.uml.Foundation.Core.*;
 
 public class GoClassifierToStr implements TreeModelPrereqs {
 
+  public String toString() { return "Class->Attribute"; }
+  
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;

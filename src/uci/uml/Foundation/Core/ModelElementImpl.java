@@ -104,6 +104,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   }
   public void removeConstraint(Constraint x)
   throws PropertyVetoException {
+    if (_constraint == null) return;
     fireVetoableChange("constraint", _constraint, x);
     _constraint.removeElement(x);
   }
@@ -122,6 +123,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   }
   public void removeProvision(Dependency x)
   throws PropertyVetoException {
+    if (_provision == null) return;
     fireVetoableChange("provision", _provision, x);
     _provision.removeElement(x);
   }
@@ -140,6 +142,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   }
   public void removeRequirement(Dependency x)
   throws PropertyVetoException {
+    if (_requirement == null) return;
     fireVetoableChange("requirement", _requirement, x);
     _requirement.removeElement(x);
   }
@@ -160,6 +163,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   }
   public void removeTemplateparameter(ModelElement x)
   throws PropertyVetoException {
+    if (_templateParameter == null) return;
     fireVetoableChange("templateParameter", _templateParameter, x);
     _templateParameter.removeElement(x);
   }
@@ -196,6 +200,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   }
   public void removeElementReference(ElementReference x)
   throws PropertyVetoException {
+    if (_elementReference == null) return;
     fireVetoableChange("elementReference", _elementReference, x);
     _elementReference.removeElement(x);
   }
@@ -214,6 +219,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   }
   public void removeStereotype(Stereotype x)
   throws PropertyVetoException {
+    if (_stereotype == null) return;
     fireVetoableChange("stereotype", _stereotype, x);
     _stereotype.removeElement(x);
   }
@@ -236,6 +242,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   }
   public void removeBehavior(StateMachine x)
   throws PropertyVetoException {
+    if (_behavior == null) return;
     fireVetoableChange("behavior", _behavior, x);
     _behavior.removeElement(x);
   }

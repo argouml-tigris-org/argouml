@@ -56,14 +56,14 @@ public class Main {
   ////////////////////////////////////////////////////////////////
   // static variables
 
-  public static Vector UMLPerspectives = new Vector();
+  //public static Vector UMLPerspectives = new Vector();
   public static Vector ToDoPerspectives = new Vector();
 
   // static initializer
   static {
-    UMLPerspectives.addElement(new NavPackageCentric());
-    UMLPerspectives.addElement(new NavDiagramCentric());
-    UMLPerspectives.addElement(new NavInheritance());
+    //UMLPerspectives.addElement(NavPackageCentric.TheInstance);
+    //UMLPerspectives.addElement(NavDiagramCentric.TheInstance);
+    //UMLPerspectives.addElement(NavInheritance.TheInstance);
 
     ToDoPerspectives.addElement(new ToDoByPriority());
     ToDoPerspectives.addElement(new ToDoByDecision());
@@ -78,11 +78,27 @@ public class Main {
 
   public static void main(String args[]) {
     defineMockHistory();
-    MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsTheme());
-    SplashScreen splash = new SplashScreen("Loading Argo/UML...", "Splash");
-    splash.setVisible(true);
+    Vector argv = new Vector();
+    for (int i = 0; i < args.length; ++i) argv.addElement(args[i]);
     
-    splash.getStatusBar().doFakeProgress("Creating Project Browser", 100);
+    if (argv.contains("-big")) {
+      MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsBigTheme());
+    }
+    else {
+      MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsTheme());
+    }
+
+    boolean doSplash = !argv.contains("-nosplash");
+
+    SplashScreen splash = null;
+    
+    if (doSplash) {
+      splash = new SplashScreen("Loading Argo/UML...", "Splash");
+      splash.setVisible(true);
+      splash.getStatusBar().showStatus("Making Project Browser");
+      splash.getStatusBar().showProgress(10);
+    }
+    
     ProjectBrowser pb = new ProjectBrowser("Argo/UML");
     pb.addWindowListener(new WindowCloser());
     JOptionPane.setRootFrame(pb);
@@ -92,21 +108,41 @@ public class Main {
     pb.setLocation(scrSize.width/2 - WIDTH/2,
 		       scrSize.height/2 - HEIGHT/2);
     pb.setSize(WIDTH, HEIGHT);
-    splash.getStatusBar().showStatus("Making Mock Project");
+
+    if (splash != null) {
+      splash.getStatusBar().showStatus("Making Mock Project");
+      splash.getStatusBar().showProgress(20);
+    }
     pb.setProject(new MockProject());
-    pb.setPerspectives(UMLPerspectives);
+
+    if (splash != null) {
+      splash.getStatusBar().showStatus("Setting Perspectives");
+      splash.getStatusBar().showProgress(50);
+    }
+    
+    pb.setPerspectives(NavPerspective.getRegisteredPerspectives());
     pb.setToDoPerspectives(ToDoPerspectives);
-    splash.getStatusBar().showStatus("Opening Project Browser");
-    pb.setVisible(true);
-    splash.setVisible(false);
 
     pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     //pb.validate();
     //pb.repaint();
     //pb.requestDefaultFocus();
 
+    if (splash != null) {
+      splash.getStatusBar().showStatus("Setting up critics");
+      splash.getStatusBar().showProgress(70);
+    }
+    
     Designer dsgr = Designer.theDesigner();
     uci.uml.critics.Init.init();
+
+    if (splash != null) {
+      splash.getStatusBar().showStatus("Opening Project Browser");
+      splash.getStatusBar().showProgress(90);
+    }
+    
+    pb.setVisible(true);
+    if (splash != null) splash.setVisible(false);
 
 
     //should be done in ProjectBrowser.setProject();
@@ -158,8 +194,10 @@ class MockProject extends Project {
   }
 
   public Model makeModel1() {
-    HumanResourcesExample hre = new HumanResourcesExample();
-    return hre.model;
+    ConcurrentSubstatesExample cse = new ConcurrentSubstatesExample();
+    return cse.model;
+//     HumanResourcesExample hre = new HumanResourcesExample();
+//     return hre.model;
   }
 
   public Model makeModel2() {

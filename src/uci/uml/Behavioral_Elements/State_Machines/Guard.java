@@ -37,14 +37,14 @@ import uci.uml.Foundation.Data_Types.*;
 
 public class Guard extends ModelElementImpl {
   public BooleanExpression _expression;
-  public Transition _guard;
+  //  public Transition _guard;
     
   public Guard() { }
-  public Guard(Name name, BooleanExpression exp, Transition t) {
+  public Guard(Name name, BooleanExpression exp) {
     super(name);
     try {
       setExpression(exp);
-      setGuard(t);
+      //setGuard(t);
     }
     catch (PropertyVetoException pve) { }
   }
@@ -64,11 +64,11 @@ public class Guard extends ModelElementImpl {
     fireVetoableChange("expression", _expression, x);
     _expression = x;
   }
-  public Transition getGuard() { return _guard; }
-  public void setGuard(Transition x) throws PropertyVetoException {
-    fireVetoableChange("guard", _guard, x);
-    _guard = x;
-  }
+//   public Transition getGuard() { return _guard; }
+//   public void setGuard(Transition x) throws PropertyVetoException {
+//     fireVetoableChange("guard", _guard, x);
+//     _guard = x;
+//   }
 
   ////////////////////////////////////////////////////////////////
   // debugging

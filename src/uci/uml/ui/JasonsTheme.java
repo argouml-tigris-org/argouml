@@ -57,7 +57,7 @@ public class JasonsTheme extends MetalTheme {
   private final FontUIResource smallFont =
   new FontUIResource("Dialog", Font.PLAIN, 9);
 
-    public String getName() { return "Steel"; }
+  public String getName() { return "JasonsSmall"; }
 
   // these are blue in Metal Default Theme
   protected ColorUIResource getPrimary1() { return primary1; } 

@@ -128,6 +128,8 @@ public class ModeSelect extends Mode {
     _editor.damaged(_selectRect);
     _selectRect.setBounds(bound_x, bound_y, bound_w, bound_h);
     _editor.damaged(_selectRect);
+    _editor.scrollToShow(x, y);
+    
     me.consume();
   }
 

@@ -51,10 +51,11 @@ implements ToDoListListener {
 //   }
 
   public ToDoByGoal() {
+    super("By Goal");
     addSubTreeModel(new GoListToGoalsToItems());
   }
 
-  public String toString() { return "Goal"; }
+  //  public String toString() { return "Goal"; }
 
   ////////////////////////////////////////////////////////////////
   // ToDoListListener implementation

@@ -58,8 +58,11 @@ public class StateMachine extends ModelElementImpl {
 
   public ModelElement getContext() { return _context; }
   public void setContext(ModelElement x) throws PropertyVetoException {
+    if (_context == x) return;
     fireVetoableChange("context", _context, x);
+    if (_context != null) _context.removeBehavior(this);
     _context = x;
+    if (_context != null) _context.addBehavior(this);
   }
 
   public State getTop() { return _top; }

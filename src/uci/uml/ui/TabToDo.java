@@ -1,3 +1,30 @@
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
+
 package uci.uml.ui;
 
 import java.awt.*;
@@ -16,14 +43,16 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
   ////////////////////////////////////////////////////////////////
   // static variables
 
-  public UMLAction _actionNewToDoItem = Actions.NewToDoItem;
-  public UMLAction _actionResolve = Actions.Resolve;
-  public UMLAction _actionEmailExpert = Actions.EmailExpert;
-  public UMLAction _actionMoreInfo = Actions.MoreInfo;
-  public UMLAction _actionHush = Actions.Hush;
-  public UMLAction _actionFixItNext = Actions.FixItNext;
-  public UMLAction _actionFixItBack = Actions.FixItBack;
-  public UMLAction _actionFixItFinish = Actions.FixItFinish;
+  public static UMLAction _actionNewToDoItem = Actions.NewToDoItem;
+  public static UMLAction _actionResolve = Actions.Resolve;
+  public static UMLAction _actionEmailExpert = Actions.EmailExpert;
+  public static UMLAction _actionMoreInfo = Actions.MoreInfo;
+  public static UMLAction _actionHush = Actions.Hush;
+  public static UMLAction _actionRecordFix = Actions.RecordFix;
+  public static UMLAction _actionReplayFix = Actions.ReplayFix;
+//   public static UMLAction _actionFixItNext = Actions.FixItNext;
+//   public static UMLAction _actionFixItBack = Actions.FixItBack;
+//   public static UMLAction _actionFixItFinish = Actions.FixItFinish;
   
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -69,9 +98,12 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     toolBar.add(_actionHush);
     toolBar.addSeparator();
     
-    toolBar.add(_actionFixItNext);
-    toolBar.add(_actionFixItBack);
-    toolBar.add(_actionFixItFinish);
+    toolBar.add(_actionRecordFix);
+    toolBar.add(_actionReplayFix);
+
+    //     toolBar.add(_actionFixItNext);
+    //     toolBar.add(_actionFixItBack);
+    //     toolBar.add(_actionFixItFinish);
 
     //     addTool(toolBar, "New");
     //     addTool(toolBar, "FixIt");
@@ -127,9 +159,11 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     _actionEmailExpert.updateEnabled(_target);
     _actionMoreInfo.updateEnabled(_target);
     _actionHush.updateEnabled(_target);
-    _actionFixItNext.updateEnabled(_target);
-    _actionFixItBack.updateEnabled(_target);
-    _actionFixItFinish.updateEnabled(_target);
+    _actionRecordFix.updateEnabled(_target);
+    _actionReplayFix.updateEnabled(_target);
+    //     _actionFixItNext.updateEnabled(_target);
+    //     _actionFixItBack.updateEnabled(_target);
+    //     _actionFixItFinish.updateEnabled(_target);
   }
 
   

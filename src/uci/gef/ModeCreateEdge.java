@@ -110,6 +110,8 @@ public class ModeCreateEdge extends ModeCreate {
    *  construct a new FigEdge and add it to the Layer and send it to
    *  the back. */
   public void mouseReleased(MouseEvent me) {
+    if (_sourceFigNode == null) { done(); me.consume(); return; }
+
     int x = me.getX(), y = me.getY();
     Class arcClass;
     Editor _editor = Globals.curEditor();

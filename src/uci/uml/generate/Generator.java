@@ -63,8 +63,8 @@ public abstract class Generator {
       return generateName(((Element)o).getName());
     if (o instanceof Multiplicity)
       return generateMultiplicity((Multiplicity)o);
-    else
-      return o.toString();
+    if (o == null) return "";
+    return o.toString();
   }
 
   public abstract String generateOperation(Operation op);

@@ -75,7 +75,7 @@ public class ConcurrentSubstatesExample {
 
       labTrack.addSubstate(labInitial = new Pseudostate(PseudostateKind.INITIAL));
       labTrack.addSubstate(lab1 = new SimpleState("Lab1"));
-      labTrack.addSubstate(lab2 = new SimpleState("Lab1"));
+      labTrack.addSubstate(lab2 = new SimpleState("Lab2"));
       labTrack.addSubstate(labFinal = new Pseudostate(PseudostateKind.FINAL));
       
       projTrack.addSubstate(projInitial = new Pseudostate(PseudostateKind.INITIAL));

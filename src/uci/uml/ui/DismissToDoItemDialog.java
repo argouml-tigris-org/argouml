@@ -59,6 +59,7 @@ public class DismissToDoItemDialog extends JFrame implements ActionListener {
     super("Dismiss Feedback Item");
     JLabel instrLabel = new JLabel("This item should be removed because");
 
+    setLocation(300, 200);
     setSize(new Dimension(300, 250));
     Container content = getContentPane();
     GridBagLayout gb = new GridBagLayout();

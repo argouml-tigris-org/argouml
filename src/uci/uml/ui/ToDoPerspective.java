@@ -47,7 +47,7 @@ implements Serializable {
 
   ////////////////////////////////////////////////////////////////
   // constructor
-  public ToDoPerspective() { }
+  public ToDoPerspective(String name) { super(name); }
 
   //
   //  Change Events

@@ -37,6 +37,7 @@ import uci.argo.kernel.*;
 
 public class ToDoByOffender extends ToDoPerspective {
 
+  public ToDoByOffender() { super("By Offender"); }
   
 //   protected void computePseudoNodes() {
 //     super.computePseudoNodes();
@@ -50,7 +51,7 @@ public class ToDoByOffender extends ToDoPerspective {
 //     }
 //   }
   
-  public String toString() { return "Offender"; }
+  //public String toString() { return "Offender"; }
 
 } /* end class ToDoByOffender */
 

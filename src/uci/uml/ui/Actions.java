@@ -68,6 +68,7 @@ public class Actions {
   public static UMLAction NavBack = new ActionNavBack();
   public static UMLAction NavForw = new ActionNavForw();
   public static UMLAction NavFavs = new ActionNavFavs();
+  public static UMLAction NavConfig = new ActionNavConfig();
   public static UMLAction NextTab = new ActionNextTab();
   public static UMLAction PrevTab = new ActionPrevTab();
   public static UMLAction ShowDiagramTab = new ActionShowDiagramTab();
@@ -111,9 +112,13 @@ public class Actions {
   public static UMLAction EmailExpert = new ActionEmailExpert();
   public static UMLAction MoreInfo = new ActionMoreInfo();
   public static UMLAction Hush = new ActionHush();
-  public static UMLAction FixItNext = new ActionFixItNext();
-  public static UMLAction FixItBack = new ActionFixItBack();
-  public static UMLAction FixItFinish = new ActionFixItFinish();
+
+  public static UMLAction RecordFix = new ActionRecordFix();
+  public static UMLAction ReplayFix = new ActionReplayFix();
+
+  //   public static UMLAction FixItNext = new ActionFixItNext();
+  //   public static UMLAction FixItBack = new ActionFixItBack();
+  //   public static UMLAction FixItFinish = new ActionFixItFinish();
 
 
   public static void updateAllEnabled() {
@@ -128,63 +133,6 @@ public class Actions {
 }  /* end class Actions */
 
 
-class UMLAction extends AbstractAction {
-
-  public UMLAction(String name) { this(name, true); }
-  
-  public UMLAction(String name, boolean global) { 
-    super(name, loadIconResource(imageName(name), name));
-    putValue(Action.SHORT_DESCRIPTION, name);
-    if (global) Actions._allActions.addElement(this);
-  }
-
-  protected static ImageIcon loadIconResource(String imgName, String desc) {
-    ImageIcon res = null;
-    try {
-      java.net.URL imgURL = UMLAction.class.getResource(imgName);
-      return new ImageIcon(imgURL, desc);
-    }
-    catch (Exception ex) {
-      return new ImageIcon(desc);
-    }
-  }
-
-  protected static String imageName(String name) {
-    return "/uci/Images/" + stripJunk(name) + ".gif";
-  }
-  
-
-  /** Perform the work the action is supposed to do. */
-  // needs-more-work: should actions run in their own threads?
-  public void actionPerformed(ActionEvent e) {
-    System.out.println("pushed " + getValue(Action.NAME));
-    StatusBar sb = ProjectBrowser.TheInstance.getStatusBar();
-    sb.doFakeProgress(stripJunk(getValue(Action.NAME).toString()), 100);
-    History.TheHistory.addItem("pushed " + getValue(Action.NAME));
-    Actions.updateAllEnabled();
-  }
-
-
-  public void updateEnabled(Object target) { setEnabled(shouldBeEnabled()); }
-  public void updateEnabled() { setEnabled(shouldBeEnabled()); }
-
-  /** return true if this action should be available to the user. This
-   *  method should examine the ProjectBrowser that owns it.  Sublass
-   *  implementations of this method should always call
-   *  super.shouldBeEnabled first. */
-  public boolean shouldBeEnabled() { return true; }
-
-
-  protected static String stripJunk(String s) {
-    String res = "";
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      char c = s.charAt(i);
-      if (Character.isJavaLetterOrDigit(c)) res += c;
-    }
-    return res;
-  }
-} /* end class UMLAction */
 
 ////////////////////////////////////////////////////////////////
 // file menu actions
@@ -304,6 +252,16 @@ class ActionNavFavs extends UMLAction {
     return super.shouldBeEnabled() && p != null;
   }
 } /* end class ActionNavFavs */
+
+class ActionNavConfig extends UMLAction {
+  public ActionNavConfig() { super("NavConfig"); }
+  public void actionPerformed(ActionEvent ae) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    NavigatorPane nav = pb.getNavPane();
+    NavigatorConfigDialog ncd = new NavigatorConfigDialog(pb);
+    ncd.setVisible(true);
+  }
+} /* end class ActionNavConfig */
 
 class ActionPrevTab extends UMLAction {
   public ActionPrevTab() { super("Previous Tab"); }
@@ -717,17 +675,25 @@ class ToDoItemAction extends UMLAction {
   }  
 }
 
-class ActionFixItNext extends ToDoItemAction {
-  public ActionFixItNext() { super("Fix It Next..."); }
-} /* end class ActionFixItNext */
+class ActionRecordFix extends ToDoItemAction {
+  public ActionRecordFix() { super("Record My Fix..."); }
+} /* end class ActionRecordFix */
 
-class ActionFixItBack extends ToDoItemAction {
-  public ActionFixItBack() { super("Fix It Back..."); }
-} /* end class ActionFixItBack */
+class ActionReplayFix extends ToDoItemAction {
+  public ActionReplayFix() { super("Replay My Fix..."); }
+} /* end class ActionReplayFix */
 
-class ActionFixItFinish extends ToDoItemAction {
-  public ActionFixItFinish() { super("Fix It Finish..."); }
-} /* end class ActionFixItFinish */
+// class ActionFixItNext extends ToDoItemAction {
+//   public ActionFixItNext() { super("Fix It Next..."); }
+// } /* end class ActionFixItNext */
+
+// class ActionFixItBack extends ToDoItemAction {
+//   public ActionFixItBack() { super("Fix It Back..."); }
+// } /* end class ActionFixItBack */
+
+// class ActionFixItFinish extends ToDoItemAction {
+//   public ActionFixItFinish() { super("Fix It Finish..."); }
+// } /* end class ActionFixItFinish */
 
 class ActionResolve extends ToDoItemAction {
   public ActionResolve() { super("Resolve Item..."); }

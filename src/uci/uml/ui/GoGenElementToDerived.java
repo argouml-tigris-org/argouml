@@ -36,8 +36,10 @@ import com.sun.java.swing.tree.*;
 import uci.uml.Model_Management.*;
 import uci.uml.Foundation.Core.*;
 
-public class GoGenElementToDerived implements TreeModel {
+public class GoGenElementToDerived implements TreeModelPrereqs {
 
+  public String toString() { return "Class->Subclass"; }
+  
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;
@@ -87,4 +89,17 @@ public class GoGenElementToDerived implements TreeModel {
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
 
-}
+  public Vector getPrereqs() {
+    Vector prereqs = new Vector();
+    prereqs.addElement(ModelElement.class);
+    return prereqs;
+  }
+  
+  public Vector getProvidedTypes() {
+    return new Vector();
+  }
+
+
+} /* end class GoGenElementToDerived */
+
+

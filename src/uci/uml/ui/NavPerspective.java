@@ -34,18 +34,219 @@ import java.io.Serializable;
 import com.sun.java.swing.tree.*;
 import com.sun.java.swing.event.*;
 
-public abstract class NavPerspective extends TreeModelComposite
-implements Serializable, TreeModel {
+public class NavPerspective extends TreeModelComposite
+implements Serializable, TreeModel, Cloneable {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
   protected EventListenerList _listenerList = new EventListenerList();
 
+
+  ////////////////////////////////////////////////////////////////
+  // static variables
+
+  protected static Vector _registeredPerspectives = new Vector();
+  protected static Vector _rules = new Vector();
+
+
+  static {
+    // this are meant for pane-1 of NavigatorPane, they all have
+    // Project as their only prerequiste.  Thesee trees tend to be 3
+    // to 5 levels deep and sometimes have recursion.
+    NavPerspective packageCentric = new NavPerspective("Package-centric");
+    NavPerspective diagramCentric = new NavPerspective("Diagram-centric");
+    NavPerspective inheritanceCentric = new NavPerspective("Inheritance-centric");
+    NavPerspective classAssociation = new NavPerspective("Class Associations");
+    NavPerspective associationCentric = new NavPerspective("Association-centric");
+    NavPerspective aggregateCentric = new NavPerspective("Aggregate-centric");
+    NavPerspective compositeCentric = new NavPerspective("Composite-centric");
+    NavPerspective classStates = new NavPerspective("Class states");
+    NavPerspective stateCentric = new NavPerspective("State-centric");
+    NavPerspective stateTransitions = new NavPerspective("State-transitions");
+    NavPerspective transitionCentric = new NavPerspective("Transitions-centric");
+    NavPerspective transitionPaths = new NavPerspective("Transitions paths");
+    NavPerspective useCaseCentric = new NavPerspective("UseCase-centric");
+
+
+    // These are intended for pane-2 of NavigatorPane, the tend to be
+    // simple and shallow, and have something in pane-1 as a prerequiste
+    NavPerspective classToBehStr = new NavPerspective("Features of Class");
+    NavPerspective classToBeh = new NavPerspective("Methods of Class");
+    NavPerspective classToStr = new NavPerspective("Attributes of Class");
+    NavPerspective machineToState = new NavPerspective("States of Class");
+    NavPerspective machineToTransition = new NavPerspective("Transitions of Class");
+
+    packageCentric.addSubTreeModel(new GoProjectModel());
+    packageCentric.addSubTreeModel(new GoModelToDiagram());
+    packageCentric.addSubTreeModel(new GoModelToElements());
+    packageCentric.addSubTreeModel(new GoClassifierToBeh());
+    packageCentric.addSubTreeModel(new GoClassifierToStr());
+
+    diagramCentric.addSubTreeModel(new GoProjectDiagram());
+    diagramCentric.addSubTreeModel(new GoDiagramToNode());
+    diagramCentric.addSubTreeModel(new GoDiagramToEdge());
+    diagramCentric.addSubTreeModel(new GoClassifierToBeh());
+    diagramCentric.addSubTreeModel(new GoClassifierToStr());
+
+    inheritanceCentric.addSubTreeModel(new GoProjectModel());
+    inheritanceCentric.addSubTreeModel(new GoModelToBaseElements());
+    inheritanceCentric.addSubTreeModel(new GoGenElementToDerived());
+
+    classAssociation.addSubTreeModel(new GoProjectModel());
+    classAssociation.addSubTreeModel(new GoModelToDiagram());
+    classAssociation.addSubTreeModel(new GoModelToClass());
+    //classAssociation.addSubTreeModel(new GoClassifierToBeh());
+    //classAssociation.addSubTreeModel(new GoClassifierToStr());
+    classAssociation.addSubTreeModel(new GoClassToAssocdClass());
+
+    aggregateCentric.addSubTreeModel(new GoProjectModel());
+    aggregateCentric.addSubTreeModel(new GoModelToDiagram());
+    aggregateCentric.addSubTreeModel(new GoModelToClass());
+    aggregateCentric.addSubTreeModel(new GoClassToAggrClass());
+
+    compositeCentric.addSubTreeModel(new GoProjectModel());
+    compositeCentric.addSubTreeModel(new GoModelToDiagram());
+    compositeCentric.addSubTreeModel(new GoModelToClass());
+    compositeCentric.addSubTreeModel(new GoClassToCompositeClass());
+
+
+    associationCentric.addSubTreeModel(new GoProjectModel());
+    associationCentric.addSubTreeModel(new GoModelToDiagram());
+    associationCentric.addSubTreeModel(new GoModelToAssociation());
+    associationCentric.addSubTreeModel(new GoAssocToSource());
+    associationCentric.addSubTreeModel(new GoAssocToTarget());
+
+//     classStates.addSubTreeModel(new GoProjectModel());
+//     classStates.addSubTreeModel(new GoModelToDiagram());
+//     classStates.addSubTreeModel(new GoModelToClass());
+//     classStates.addSubTreeModel(new GoElementToMachine());
+//     classStates.addSubTreeModel(new GoMachineToState());
+
+    stateCentric.addSubTreeModel(new GoProjectModel());
+    stateCentric.addSubTreeModel(new GoModelToDiagram());
+    stateCentric.addSubTreeModel(new GoModelToClass());
+    stateCentric.addSubTreeModel(new GoElementToMachine());
+    stateCentric.addSubTreeModel(new GoMachineToState());
+    stateCentric.addSubTreeModel(new GoStateToIncomingTrans());
+    stateCentric.addSubTreeModel(new GoStateToOutgoingTrans());
+
+    transitionCentric.addSubTreeModel(new GoProjectModel());
+    transitionCentric.addSubTreeModel(new GoModelToDiagram());
+    transitionCentric.addSubTreeModel(new GoModelToClass());
+    transitionCentric.addSubTreeModel(new GoElementToMachine());
+    transitionCentric.addSubTreeModel(new GoMachineToTrans());
+    transitionCentric.addSubTreeModel(new GoTransToSourceState());
+    transitionCentric.addSubTreeModel(new GoTransToTargetState());
+
+    transitionPaths.addSubTreeModel(new GoProjectModel());
+    transitionPaths.addSubTreeModel(new GoModelToDiagram());
+    transitionPaths.addSubTreeModel(new GoModelToClass());
+    transitionPaths.addSubTreeModel(new GoElementToMachine());
+
+    //transitionPaths.addSubTreeModel(new GoMachineToStartState());
+    GoFilteredChildren machinesToStartStates =
+      new GoFilteredChildren("State Machine->Start States",
+			     new GoMachineToState(),
+			     PredIsStartState.TheInstance);
+    transitionPaths.addSubTreeModel(machinesToStartStates);
+
+    GoFilteredChildren compositeToStartStates =
+      new GoFilteredChildren("State->Starting Substates",
+			     new GoStateToSubstate(),
+			     PredIsStartState.TheInstance);
+    transitionPaths.addSubTreeModel(compositeToStartStates);
+
+    transitionPaths.addSubTreeModel(new GoStateToOutgoingTrans());
+    transitionPaths.addSubTreeModel(new GoTransToTargetState());
+
+    useCaseCentric.addSubTreeModel(new GoProjectModel());
+    useCaseCentric.addSubTreeModel(new GoModelToDiagram());
+    useCaseCentric.addSubTreeModel(new GoModelToUseCase());
+    useCaseCentric.addSubTreeModel(new GoModelToActor());
+
+    classToBehStr.addSubTreeModel(new GoClassifierToStr());
+    classToBehStr.addSubTreeModel(new GoClassifierToBeh());
+
+    classToBeh.addSubTreeModel(new GoClassifierToBeh());
+
+    classToStr.addSubTreeModel(new GoClassifierToStr());
+
+    machineToState.addSubTreeModel(new GoMachineToState());
+
+    machineToTransition.addSubTreeModel(new GoMachineToTrans());
+
+    registerPerspective(packageCentric);
+    registerPerspective(diagramCentric);
+    registerPerspective(inheritanceCentric);
+    registerPerspective(classAssociation);
+    registerPerspective(associationCentric);
+//     registerPerspective(classStates);
+    registerPerspective(stateCentric);
+    registerPerspective(transitionCentric);
+    registerPerspective(transitionPaths);
+    registerPerspective(useCaseCentric);
+
+    registerRule(new GoProjectModel());
+    registerRule(new GoModelToDiagram());
+    registerRule(new GoModelToElements());
+    registerRule(new GoModelToClass());
+    registerRule(new GoModelToAssociation());
+    registerRule(new GoModelToBaseElements());
+    registerRule(new GoProjectDiagram());
+    registerRule(new GoClassifierToBeh());
+    registerRule(new GoClassifierToStr());
+    registerRule(new GoDiagramToNode());
+    registerRule(new GoDiagramToEdge());
+    registerRule(new GoGenElementToDerived());
+    registerRule(new GoClassToAssocdClass());
+    registerRule(new GoClassToAggrClass());
+    registerRule(new GoClassToCompositeClass());
+    registerRule(new GoElementToMachine());
+    registerRule(new GoMachineToTrans());
+    registerRule(new GoMachineToState());
+    registerRule(new GoMachineToStartState());
+    registerRule(new GoStateToIncomingTrans());
+    registerRule(new GoStateToOutgoingTrans());
+    registerRule(new GoTransToSourceState());
+    registerRule(new GoTransToTargetState());
+    registerRule(new GoModelToActor());
+    registerRule(new GoModelToUseCase());
+    registerRule(new GoAssocToTarget());
+    registerRule(new GoAssocToSource());
+    registerRule(new GoAssocToSource());
+  }
+  
+  ////////////////////////////////////////////////////////////////
+  // static methods
+
+  public static void registerPerspective(NavPerspective np) {
+    _registeredPerspectives.addElement(np);
+  }
+
+  public static void unregisterPerspective(NavPerspective np) {
+    _registeredPerspectives.removeElement(np);
+  }
+
+  public static Vector getRegisteredPerspectives() {
+    return _registeredPerspectives;
+  }
+
+  public static void registerRule(TreeModelPrereqs rule) {
+    _rules.addElement(rule);
+  }
+
+  public static Vector getRegisteredRules() { return _rules; }
+  
   ////////////////////////////////////////////////////////////////
   // constructor
-  public NavPerspective() { }
 
+  public NavPerspective(String name) { super(name); }
+
+  public Object clone() throws CloneNotSupportedException {
+    return super.clone();
+  }
+  
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
   

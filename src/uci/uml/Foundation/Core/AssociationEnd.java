@@ -41,10 +41,10 @@ import uci.uml.generate.*;
 public class AssociationEnd extends ModelElementImpl {
   public boolean _isNavigable;
   public boolean _isOrdered;
-  public AggregationKind _aggregation;
-  public ScopeKind _targetScope;
-  public Multiplicity _multiplicity;
-  public ChangeableKind _changeable;
+  public AggregationKind _aggregation = AggregationKind.NONE;
+  public ScopeKind _targetScope = ScopeKind.INSTANCE;
+  public Multiplicity _multiplicity = Multiplicity.ONE;
+  public ChangeableKind _changeable = ChangeableKind.NONE;
   public IAssociation _association;
   //% public Attribute _qualifier[];
   public Vector _qualifier;
@@ -58,22 +58,21 @@ public class AssociationEnd extends ModelElementImpl {
   public AssociationEnd() {}
   public AssociationEnd(Name name) { super(name); }
   public AssociationEnd(String nameStr) { super(new Name(nameStr)); }
+
   public AssociationEnd(Name name, Classifier c, Multiplicity m,
 			AggregationKind a) {
     super(name);
     try {
-    setType(c);
-    setMultiplicity(m);
-    setAggregation(a);
+      setType(c);
+      setMultiplicity(m);
+      setAggregation(a);
     }
     catch (PropertyVetoException pce) { }
   }
 
   public AssociationEnd(Classifier c) {
     super();
-    try {
-    setType(c);
-    }
+    try { setType(c); }
     catch (PropertyVetoException pce) { }
   }
 
@@ -136,8 +135,12 @@ public class AssociationEnd extends ModelElementImpl {
 
   public Classifier getType() { return _type; }
   public void setType(Classifier x) throws PropertyVetoException {
-    fireVetoableChange("type", _type, x);    
+    if (x == _type) return;
+    fireVetoableChange("type", _type, x);
+    Classifier oldType = _type;
+    if (oldType != null) oldType.removeAssociationEnd(this);
     _type = x;
+    if (_type != null) _type.addAssociationEnd(this);
   }
 
   public Vector getSpecification() { return _specification; }

@@ -121,9 +121,12 @@ public abstract class ModeCreate extends Mode {
    *  Note: _newItem has not been added to any Layer yet. So you cannot
    *  use _newItem.damage(), instead use _editor.damaged(_newItem). */
   public void mouseDragged(MouseEvent me) {
-    _editor.damaged(_newItem);
-    creationDrag(me.getX(), me.getY());
-    _editor.damaged(_newItem);
+    if (_newItem != null) {
+      _editor.damaged(_newItem);
+      creationDrag(me.getX(), me.getY());
+      _editor.damaged(_newItem);
+    }
+    _editor.scrollToShow(me.getX(), me.getY());
     me.consume();
   }
 
@@ -149,6 +152,7 @@ public abstract class ModeCreate extends Mode {
    *
    * @see ModeCreateFigLine#creationDrag */
   protected void creationDrag(int x, int y) {
+    if (_newItem == null) return;
     int snapX, snapY;
     synchronized (snapPt) {
       snapPt.setLocation(x, y);

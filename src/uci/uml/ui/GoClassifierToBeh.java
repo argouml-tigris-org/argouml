@@ -37,6 +37,8 @@ import uci.uml.Foundation.Core.*;
 
 public class GoClassifierToBeh implements TreeModelPrereqs {
 
+  public String toString() { return "Class->Operation"; }
+  
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;

@@ -49,8 +49,9 @@ implements IStatusBar {
     setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
     setLocation(scrSize.width/2 - imgWidth/2,
 		       scrSize.height/2 - imgHeight/2);
-    getContentPane().setLayout(new BorderLayout());
+    getContentPane().setLayout(new BorderLayout(0, 0));
     JButton splashButton = new JButton("");
+    splashButton.setMargin(new Insets(0, 0, 0, 0));
     splashButton.setIcon(splashImage);
     getContentPane().add(splashButton, BorderLayout.CENTER);
     getContentPane().add(_statusBar, BorderLayout.SOUTH);

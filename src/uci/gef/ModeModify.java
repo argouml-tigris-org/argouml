@@ -164,6 +164,8 @@ public class ModeModify extends Mode {
 
     sm.endTrans();
 
+    _editor.scrollToShow(snapX, snapY);
+	
     _lastX = snapX; _lastY = snapY;
     me.consume();
   }

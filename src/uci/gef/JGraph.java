@@ -49,7 +49,8 @@ public class JGraph extends JPanel implements Cloneable {
 
   /** The Editor object that is being shown in this panel */
   protected Editor _editor;
-  
+  protected JGraphInternalPane _drawingPane;
+  protected JScrollPane _scroll;
   
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -70,12 +71,26 @@ public class JGraph extends JPanel implements Cloneable {
   public JGraph(Editor ed) {
     super(false); // not double buffered. I do my own flicker-free redraw.
     _editor = ed;
-    _editor.setAwtComponent(this);
-    addMouseListener(_editor);
-    addMouseMotionListener(_editor);
-    addKeyListener(_editor);
+    _drawingPane = new JGraphInternalPane(_editor);
+    setDrawingSize(500, 500);
+
+    _scroll = new JScrollPane(_drawingPane);
+    _scroll.setBorder(null);
+    _scroll.getHorizontalScrollBar().setUnitIncrement(25);
+    _scroll.getVerticalScrollBar().setUnitIncrement(25);
+    
+    _editor.setAwtComponent(_drawingPane);
+    setLayout(new BorderLayout());
+    add(_scroll, BorderLayout.CENTER);
+    _drawingPane.addMouseListener(_editor);
+    _drawingPane.addMouseMotionListener(_editor);
+    _drawingPane.addKeyListener(_editor);
 
     initKeys();
+
+    invalidate();
+    validate();
+    revalidate();
   }
 
   /** Make a copy of this JGraph so that it can be shown in another window.*/
@@ -116,7 +131,7 @@ public class JGraph extends JPanel implements Cloneable {
 
   }
 
-  /** Utility frunction to bind a keystroke to a Swing Action.  Note
+  /** Utility function to bind a keystroke to a Swing Action.  Note
    *  that GEF Cmds are subclasses of Swing's Actions. */
   public void bindKey(ActionListener action, int keyCode, int modifiers) {
     registerKeyboardAction(action,
@@ -140,6 +155,10 @@ public class JGraph extends JPanel implements Cloneable {
     _editor.damageAll();
   }
 
+  public void setDrawingSize(int width, int height) {
+    _drawingPane.setPreferredSize(new Dimension(width, height));
+  }
+  
   /** Get and set the GraphModel the Editor is using. */
   public void setGraphModel(GraphModel gm) { _editor.setGraphModel(gm); }
   public GraphModel getGraphModel() { return _editor.getGraphModel(); }
@@ -191,7 +210,7 @@ public class JGraph extends JPanel implements Cloneable {
   }
 
   /** The JGraph is painted by simply painting its Editor. */
-  public void paint(Graphics g) { _editor.paint(g); }
+  //public void paint(Graphics g) { _editor.paint(getGraphics()); }
 
 
   ////////////////////////////////////////////////////////////////
@@ -235,11 +254,38 @@ public class JGraph extends JPanel implements Cloneable {
     return _editor.getSelectionManager().getFigs();
   }
 
+//   public Dimension getPreferredSize() { return new Dimension(1000, 1000); }
+
+//   public Dimension getMinimumSize() { return new Dimension(1000, 1000); }
+
+//   public Dimension getSize() { return new Dimension(1000, 1000); }
+
+  
 } /* end class JGraph */
 
 
-// class JGraphInternalPane extends JPanel {
-//   public Dimension getPreferredSize() { return new Dimension(300, 400); }
-//   public Dimension getMinimumSize() { return new Dimension(300, 400); }
-//   public Dimension getSize() { return new Dimension(300, 400); }
-// }
+class JGraphInternalPane extends JPanel {
+  protected Editor _editor;
+  
+  public JGraphInternalPane(Editor e) {
+    _editor = e;
+    // setAutoscrolls(true); // needs-more-work: no effect...
+  }
+ 
+  public void paint(Graphics g) { _editor.paint(g); }
+  
+  public Graphics getGraphics() {
+    Graphics res = super.getGraphics();
+    if (res == null) { return res; }
+    Component parent = getParent();
+   
+    if (parent instanceof JViewport) {
+      JViewport view = (JViewport) parent;
+      Rectangle bounds = view.getBounds();
+      Point pos = view.getViewPosition();
+      res.clipRect(bounds.x + pos.x - 1, bounds.y + pos.y - 1,
+		   bounds.width + 1, bounds.height + 1);
+    }
+    return res;
+  }
+}

@@ -51,20 +51,20 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     if (edge instanceof ElementImpl)
       ((ElementImpl)edge).addVetoableChangeListener(this);
 
-    _name = new FigText(10,30,90,20, Color.blue, "Times", 10);
+    _name = new FigText(10,30,90,20, Color.black, "Dialog", 9);
     _name.setTextFilled(false);
     _name.setFilled(false);
     _name.setLineWidth(0);
 
     addPathItem(_name, new PathConvPercent(this, (float).50, 0));
 
-    _source_end = new FigText(10,30,90,20, Color.blue, "Times", 10);
+    _source_end = new FigText(10,30,90,20, Color.black, "Dialog", 9);
     _source_end.setTextFilled(false);
     _source_end.setFilled(false);
     _source_end.setLineWidth(0);
     addPathItem(_source_end, new PathConvPercent(this, (float).20, 0));
 
-    _dest_end = new FigText(10,30,90,20, Color.blue, "Times", 10);
+    _dest_end = new FigText(10,30,90,20, Color.black, "dialog", 9);
     _dest_end.setTextFilled(false);
     _dest_end.setFilled(false);
     _dest_end.setLineWidth(0);

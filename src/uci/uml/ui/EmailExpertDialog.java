@@ -60,6 +60,7 @@ public class EmailExpertDialog extends JFrame implements ActionListener {
     JLabel ccLabel = new JLabel("Cc:");
     JLabel subjectLabel = new JLabel("Subject:");
 
+    setLocation(200, 100);
     setSize(new Dimension(400, 350));
     getContentPane().setLayout(new BorderLayout());
     JPanel top = new JPanel();

@@ -37,6 +37,8 @@ import uci.argo.kernel.*;
 
 public class ToDoByType extends ToDoPerspective {
 
+  public ToDoByType() { super("By Type"); }
+  
 //   protected void computePseudoNodes() {
 //     super.computePseudoNodes();
 //     ToDoList list = Designer.TheDesigner.getToDoList();
@@ -49,7 +51,7 @@ public class ToDoByType extends ToDoPerspective {
 //     }
 //   }
 
-  public String toString() { return "Type"; }
+  //public String toString() { return "Type"; }
 
   
 } /* end class ToDoByType */

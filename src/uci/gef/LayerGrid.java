@@ -72,7 +72,7 @@ public class LayerGrid extends Layer {
   private int _stampWidth = 128, _stampHeight = 128;
 
   /** The color of the grid lines or dots. */
-  protected Color _color = Color.gray;
+  protected Color _color = new Color(180, 180, 180); //Color.gray;
 
   /** The color of the space between the lines or dots.  */
   protected Color _bgColor = Color.lightGray;

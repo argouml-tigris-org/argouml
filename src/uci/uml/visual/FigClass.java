@@ -61,13 +61,13 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 
     Color handleColor = Globals.getPrefs().getHandleColor();
     _bigPort = new FigRect(8, 8, 92, 62, handleColor, Color.lightGray);
-    _clss = new FigText(10,10,90,20, Color.blue, "Times", 10);
+    _clss = new FigText(10,10,90,20, Color.black, "Dialog", 9);
     _clss.setExpandOnly(true);
     //_clss.setText((new GeneratorDisplay()).generateClassifierRef((Classifier)node));
-    _attr = new FigText(10,30,90,20, Color.blue, "Times", 10);
+    _attr = new FigText(10,30,90,20, Color.black, "Dialog", 9);
     _attr.setExpandOnly(true);
     _attr.setJustification("Left");
-    _oper = new FigText(10,50,90,20, Color.blue, "Times", 10);
+    _oper = new FigText(10,50,90,20, Color.black, "Dialog", 9);
     _oper.setExpandOnly(true);
     _oper.setJustification("Left");
     addFig(_bigPort);

@@ -38,7 +38,7 @@ import uci.uml.Foundation.Extension_Mechanisms.*;
 public class CrConsiderSingleton extends CrUML {
 
   public CrConsiderSingleton() {
-    setHeadline("Consider usins Singleton Pattern");
+    setHeadline("Consider using Singleton Pattern");
     sd("This class has no attributes or associations that are\n"+
        "navigable away from instances of this class.  This means that every\n"+
        "instance of this class will be equal() to every other instance,\n"+

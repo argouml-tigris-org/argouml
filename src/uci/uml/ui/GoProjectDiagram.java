@@ -37,6 +37,8 @@ import uci.uml.Foundation.Core.*;
 
 public class GoProjectDiagram implements TreeModelPrereqs {
 
+  public String toString() { return "Project->Diagram"; }
+  
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;

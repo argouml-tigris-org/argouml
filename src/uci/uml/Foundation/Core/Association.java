@@ -63,10 +63,10 @@ implements IAssociation {
 		     AggregationKind dstA) { 
     super(name);
     try {
-    AssociationEnd src = new AssociationEnd(srcN, srcC, srcM, srcA);
-    AssociationEnd dst = new AssociationEnd(dstN, dstC, dstM, dstA);
-    addConnection(src);
-    addConnection(dst);
+      AssociationEnd src = new AssociationEnd(srcN, srcC, srcM, srcA);
+      AssociationEnd dst = new AssociationEnd(dstN, dstC, dstM, dstA);
+      addConnection(src);
+      addConnection(dst);
     }
     catch (PropertyVetoException pce) { }
   }
@@ -74,10 +74,12 @@ implements IAssociation {
   public Association(Classifier srcC, Classifier dstC) { 
     super();
     try {
-    AssociationEnd src = new AssociationEnd(srcC);
-    AssociationEnd dst = new AssociationEnd(dstC);
-    addConnection(src);
-    addConnection(dst);
+      AssociationEnd src = new AssociationEnd(srcC);
+      AssociationEnd dst = new AssociationEnd(dstC);
+      addConnection(src);
+      //srcC.addAssociationEnd(src);
+      addConnection(dst);
+      //dstC.addAssociationEnd(dst);
     }
     catch (PropertyVetoException pce) { }
   }

@@ -67,18 +67,28 @@ public class Transition extends ModelElementImpl {
 
   public Guard getGuard() { return _guard; }
   public void setGuard(Guard x) throws PropertyVetoException {
+    if (_guard == x) return;
     fireVetoableChange("guard", _guard, x);
+    //if (_guard != null) _guard.setGuard(null);
     _guard = x;
+    //if (_guard != null) _guard.setGuard(this);    
   }
   public ActionSequence getEffect() { return _effect; }
   public void setEffect(ActionSequence x) throws PropertyVetoException {
+    if (_effect == x) return;
     fireVetoableChange("effect", _effect, x);
+    //if (_effect != null) _effect.setTransition(null);
     _effect = x;
+    //if (_effect != null) _effect.setTransition(this);
   }
   public State getState() { return _state; }
   public void setState(State x) throws PropertyVetoException {
+    if (_state == x) return;
     fireVetoableChange("state", _state, x);
+    State oldState = _state;
+    if (oldState != null) oldState.removeInternalTransition(this);
     _state = x;
+    if (_state != null) _state.addInternalTransition(this);
   }
   public Event getTrigger() { return _trigger; }
   public void setTrigger(Event x) throws PropertyVetoException {
@@ -92,13 +102,21 @@ public class Transition extends ModelElementImpl {
   }
   public StateVertex getSource() { return _source; }
   public void setSource(StateVertex x) throws PropertyVetoException {
+    if (_source == x) return;
     fireVetoableChange("source", _source, x);
+    StateVertex oldSource = _source;
+    if (oldSource != null) oldSource.removeOutgoing(this);
     _source = x;
+    if (_source != null) _source.addOutgoing(this);    
   }
   public StateVertex getTarget() { return _target; }
   public void setTarget(StateVertex x) throws PropertyVetoException {
+    if (_target == x) return;
     fireVetoableChange("target", _target, x);
+    StateVertex oldTarget = _target;
+    if (oldTarget != null) oldTarget.removeIncoming(this);
     _target = x;
+    if (_target != null) _target.addIncoming(this);
   }
 
   ////////////////////////////////////////////////////////////////

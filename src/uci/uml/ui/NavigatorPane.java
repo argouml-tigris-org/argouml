@@ -55,7 +55,7 @@ implements ItemListener, TreeSelectionListener {
   protected JTree _tree = new DisplayTextTree();
   protected Action _navBack = Actions.NavBack;
   protected Action _navForw = Actions.NavForw;
-  protected Action _navFavs = Actions.NavFavs;
+  protected Action _navConfig = Actions.NavConfig;
   
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -67,7 +67,7 @@ implements ItemListener, TreeSelectionListener {
     _toolbar.add(_combo);
     _toolbar.add(_navBack);
     _toolbar.add(_navForw);
-    _toolbar.add(_navFavs);
+    _toolbar.add(_navConfig);
     add(_toolbar, BorderLayout.NORTH);
     add(new JScrollPane(_tree), BorderLayout.CENTER);
     _combo.addItemListener(this);

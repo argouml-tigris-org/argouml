@@ -35,7 +35,8 @@ import com.sun.java.swing.tree.*;
 import uci.argo.kernel.ToDoItem;
 
 
-public class TreeModelComposite implements TreeModel {
+public class TreeModelComposite
+implements TreeModel, Cloneable {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -45,14 +46,17 @@ public class TreeModelComposite implements TreeModel {
   protected Object _root;
   protected boolean _flat;
   protected Vector _flatChildren = new Vector();
-
+  protected String _name;
   
   ////////////////////////////////////////////////////////////////
   // contructors
 
-  public TreeModelComposite() { }
+  public TreeModelComposite(String name) { setName(name); }
 
-  public TreeModelComposite(Vector subs) { _subTreeModels = subs; }
+  public TreeModelComposite(String name, Vector subs) {
+    this(name);
+    _subTreeModels = subs;
+  }
 
 
   ////////////////////////////////////////////////////////////////
@@ -66,15 +70,17 @@ public class TreeModelComposite implements TreeModel {
   public boolean getFlat() { return _flat; }
 
   public void addSubTreeModel(TreeModel tm) {
+    if (_subTreeModels.contains(tm)) return;
     if (tm instanceof TreeModelPrereqs) {
       Vector prereqs = ((TreeModelPrereqs)tm).getPrereqs();
       Enumeration preEnum = prereqs.elements();
       while (preEnum.hasMoreElements()) {
 	Object pre = preEnum.nextElement();
+	// needs-more-work: check superclasses
 	if (!_providedClasses.contains(pre)) {
 	  System.out.println("You cannot add " + tm +
 			     " until something provides " + pre);
-	  return;
+	  //return;
 	}
       }
       Vector provided = ((TreeModelPrereqs)tm).getProvidedTypes();
@@ -82,10 +88,16 @@ public class TreeModelComposite implements TreeModel {
       while (proEnum.hasMoreElements()) {
 	_providedClasses.addElement(proEnum.nextElement());
       }
-    }
-    
+    }    
     _subTreeModels.addElement(tm);
   }
+
+  public void removeSubTreeModel(TreeModel tm) {
+    // needs-more-work: check for dangling prereqs
+    _subTreeModels.removeElement(tm);
+  }
+  
+  public Vector getSubTreeModels() { return _subTreeModels; }
 
   public void calcFlatChildren() {
     _flatChildren.removeAllElements();
@@ -105,6 +117,9 @@ public class TreeModelComposite implements TreeModel {
       addFlatChildren(getChild(node, i));
     }
   }
+
+  public String getName() { return _name; }
+  public void setName(String s) { _name = s; }
   
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
@@ -177,6 +192,10 @@ public class TreeModelComposite implements TreeModel {
     return true;
   }
 
+  /** Return true if this node will always be a leaf, it is not an
+   *  "empty folder" */
+  public boolean isAlwaysLeaf(Object node) { return false; }
+
 
   /**
    * Messaged when the user has altered the value for the item identified
@@ -191,5 +210,13 @@ public class TreeModelComposite implements TreeModel {
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
   
+
+  ////////////////////////////////////////////////////////////////
+  // debugging
+
+  public String toString() {
+    if (getName() != null) return getName();
+    else return super.toString();
+  }
   
 } /* end class TreeModelComposite */

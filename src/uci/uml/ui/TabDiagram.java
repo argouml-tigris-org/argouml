@@ -61,6 +61,9 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
     super("Diagram");
     setLayout(new BorderLayout());
     _jgraph = new JGraph();
+    _jgraph.setDrawingSize(1000, 1000);
+    // needs-more-work: should update to size of diagram contents
+    
     uci.gef.Globals.setStatusBar(ProjectBrowser.TheInstance);
     //_toolBar = d.getToolBar();
     //_jgraph.setToolBar(_toolBar); //I wish this had worked...
@@ -118,6 +121,11 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
   public boolean shouldBeEnabled() { return _shouldBeEnabled; }
 
   public JGraph getJGraph() { return _jgraph; }
+
+  public void setVisible(boolean b) {
+    super.setVisible(b);
+    getJGraph().setVisible(b);
+  }
   
   ////////////////////////////////////////////////////////////////
   // events

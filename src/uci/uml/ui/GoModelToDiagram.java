@@ -38,6 +38,8 @@ import uci.uml.visual.UMLDiagram;
 
 public class GoModelToDiagram implements TreeModelPrereqs {
 
+  public String toString() { return "Package->Diagram"; }
+  
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;

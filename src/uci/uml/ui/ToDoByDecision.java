@@ -40,10 +40,11 @@ implements ToDoListListener {
 
 
   public ToDoByDecision() {
+    super("By Decision");
     addSubTreeModel(new GoListToDecisionsToItems());
   }
 
-  public String toString() { return "Decision"; }
+  //public String toString() { return "Decision"; }
 
   ////////////////////////////////////////////////////////////////
   // DecisionModelListener implementation

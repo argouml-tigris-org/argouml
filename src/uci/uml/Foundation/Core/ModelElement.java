@@ -87,6 +87,8 @@ public interface ModelElement extends Element {
 
   public Vector getBehavior();
   public void setBehavior(Vector x) throws PropertyVetoException;
+  public void addBehavior(StateMachine x) throws PropertyVetoException;
+  public void removeBehavior(StateMachine x) throws PropertyVetoException;
 
   //public Partition getPartition();
   //public void setPartition(Partition x);
