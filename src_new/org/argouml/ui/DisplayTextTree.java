@@ -52,13 +52,6 @@ import org.argouml.uml.ui.UMLTreeCellRenderer;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-import ru.novosoft.uml.foundation.core.MComment;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
-
 /**
  * This is the JTree that is the gui component view of the model navigation and
  * todo list.
@@ -132,37 +125,37 @@ public class DisplayTextTree extends JTree implements TargetListener {
         //cat.debug("convertValueToText");
 
         // do model elements first
-        if (value instanceof MModelElement) {
+        if (ModelFacade.isAModelElement(value)) {
 
             String name = null;
 
             // Jeremy Bennett patch
-            if (value instanceof MTransition
-                || value instanceof MExtensionPoint) {
+            if (ModelFacade.isATransition(value) 
+                || ModelFacade.isAExtensionPoint(value)) {
                 name = GeneratorDisplay.Generate(value);
             }
             // changing the label in case of comments
             // this is necessary since the name of the comment is the same as
             // the content of the comment causing the total comment to be
             // displayed in the navperspective
-            else if (value instanceof MComment) {
-                name = ((MComment) value).getName();
+            else if (ModelFacade.isAComment(value)) {
+                name = ModelFacade.getName(value);
                 if (name != null && name.length() > 10) {
                     name = name.substring(0, 10) + "...";
                 }
             } else {
-                name = ((MModelElement) value).getName();
+                name = ModelFacade.getName(value);
             }
 
             if (name == null || name.equals("")) {
 
                 name =
-                    "(anon " + ((MModelElement) value).getUMLClassName() + ")";
+                    "(anon " + ModelFacade.getUMLClassName(value) + ")";
             }
 
             // Look for stereotype
             if (showStereotype) {
-                MStereotype st = ((MModelElement) value).getStereotype();
+                Object st =  ModelFacade.getStereoType(value);
                 if (st != null) {
                     name += " " + GeneratorDisplay.Generate(st);
                 }
@@ -177,8 +170,8 @@ public class DisplayTextTree extends JTree implements TargetListener {
         if (value instanceof ToDoList) {
             return "ToDoList";
         }
-        if (value instanceof MTaggedValue) {
-            String tagName = ((MTaggedValue) value).getTag();
+        if (ModelFacade.isATaggedValue(value)) {
+            String tagName = ModelFacade.getTagOfTag(value);
             if (tagName == null || tagName.equals(""))
                 tagName = "(anon)";
             return ("1-" + tagName);
