@@ -66,11 +66,11 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     // constructors
     
     public ActionRemoveFromModel() {
-        super(Argo.localize("CoreMenu", "Delete From Model"));
+        super(Argo.localize("CoreMenu", "Erase From Model"));
     }
     
     protected ActionRemoveFromModel(boolean global) {
-        super(Argo.localize("CoreMenu", "Delete From Model"),global);
+        super(Argo.localize("CoreMenu", "Erase From Model"),global);
     }
     
     /**

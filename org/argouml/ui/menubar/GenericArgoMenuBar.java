@@ -312,13 +312,13 @@ public class GenericArgoMenuBar extends JMenuBar
         
         JMenuItem removeItem = _edit.add(ActionDeleteFromDiagram.SINGLETON);
         setMnemonic(removeItem,"Remove",'R');
-        setAccelerator(removeItem,ctrlDel);
+        setAccelerator(removeItem,delKey);
         editToolbar.add(ActionDeleteFromDiagram.SINGLETON);
         
         JMenuItem deleteItem = _edit.add(ActionRemoveFromModel.SINGLETON);
         setMnemonic(deleteItem,"Delete",'D');
-        setAccelerator(deleteItem,delKey);
-        editToolbar.add(ActionRemoveFromModel.SINGLETON);
+        setAccelerator(deleteItem,ctrlDel);
+        //editToolbar.add(ActionRemoveFromModel.SINGLETON); -- no toolbarbutton till a new one is designed for Erase
         
         JMenuItem emptyItem = _edit.add(ActionEmptyTrash.SINGLETON);
         
