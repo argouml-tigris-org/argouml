@@ -133,17 +133,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             would be part of the code generation activity.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
-        </varlistentry>
-
         <!-- Entry for Tagged Values tab -->
 
         <varlistentry>
@@ -194,24 +183,24 @@ in design to avoid re-computation.
             up</literal></term>
 
           <listitem><para>Navigate up through the package structure of the
-model.
-</para>
+		    model.
+			</para>
             <para>
-Since the model is the top package nothing will happen.
+			  Since the model is the top package nothing will happen.
 <!-- TODO: Shouldn't it better be downlighted or absent then? See issue ... -->
             </para>
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Add subpackage button -->
+        <!-- Entry for New subpackage button -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/package.gif"/>
-          </imageobject></inlinemediaobject></guiicon> 
-<literal>Add Package</literal>
-</term>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Package</literal>
+        </term>
           <listitem>
             <indexterm>
               <primary>Add Package</primary>
@@ -237,6 +226,64 @@ While it can make sense to create Packages of the
             within diagrams where you want them.</para></tip></listitem>
         </varlistentry>
 
+        <!-- Entry for New datatype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/datatype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New DataType</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add DataType</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New DataType</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>DataType</secondary>
+            </indexterm>
+
+            <para>
+              This creates a new DataType (see <xref
+              linkend="s1.ref.datatype"/>) within the model (which appears
+              on no diagram), navigating immediately to the properties tab
+              for that DataType.</para>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) within the model (which appears
+              on no diagram), navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
+
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -248,7 +295,7 @@ While it can make sense to create Packages of the
 
           <listitem>
             <para>
-This tool is always downlighted, since. 
+This tool is always downlighted, since 
 it is meaningless to delete the model!
 <!-- TODO: Shouldn't it better be absent then? See issue ... -->
             </para>
