@@ -253,7 +253,7 @@ public class Designer
             
             // the critiquing thread should wait if disabled.
             synchronized (this) {
-                if(!_autoCritique){
+                while(!_autoCritique){
                     try{
                         this.wait();
                     }catch (InterruptedException ignore) {

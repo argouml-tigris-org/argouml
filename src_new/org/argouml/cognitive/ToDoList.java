@@ -173,7 +173,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
             
             // the validity checking thread should wait if disabled.
             synchronized (this) {
-                if(isPaused){
+                while(isPaused){
                     try{
                         this.wait();
                     }catch (InterruptedException ignore) {
