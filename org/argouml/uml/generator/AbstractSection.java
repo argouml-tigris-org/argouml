@@ -168,7 +168,7 @@ public abstract class AbstractSection
         }
         String s = null;
         if ( (first >= 0) && (second >= 0) ) {
-            first = first + new String(begin).length();
+            first = first + begin.length();
             s = line.substring(first, second);
         }
         return s;
