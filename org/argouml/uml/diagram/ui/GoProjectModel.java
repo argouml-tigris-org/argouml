@@ -42,7 +42,7 @@ public class GoProjectModel implements TreeModel {
   }
 
   public Object getRoot() {
-    throw new Error("getRoot should never be called");
+    throw new UnsupportedOperationException("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -50,7 +50,7 @@ public class GoProjectModel implements TreeModel {
     if (parent instanceof Project) {
       return ((Project)parent).getModels().elementAt(index);
     }
-    throw new Error("getChild should never be get here GoProjectModel");
+    throw new UnsupportedOperationException("getChild should never get here");
   }
 
   public int getChildCount(Object parent) {

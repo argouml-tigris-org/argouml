@@ -17,7 +17,7 @@ import javax.swing.JPopupMenu;
 public class ActionUtilities {
 
   private ActionUtilities() {
-      throw new Error("ActionUtilities is just a container for static methods");
+      throw new UnsupportedOperationException("ActionUtilities is just a container for static methods");
   }
   /**
    * Intended for use inside an <code>actionPerformed</code> method eg:

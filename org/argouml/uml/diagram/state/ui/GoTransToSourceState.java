@@ -39,7 +39,8 @@ public class GoTransToSourceState implements TreeModel {
   public String toString() { return "Transition->Source MState"; }
   
   public Object getRoot() {
-      throw new Error("getRoot should never be called");
+      throw
+	  new UnsupportedOperationException("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -47,7 +48,8 @@ public class GoTransToSourceState implements TreeModel {
     if (parent instanceof MTransition && index == 0) {
       return ((MTransition)parent).getSource();
     }
-    throw new Error("getChild should never be get here GoTransToSourceState");
+    throw
+	new UnsupportedOperationException("getChild should never be get here");
   }
 
   public int getChildCount(Object parent) {

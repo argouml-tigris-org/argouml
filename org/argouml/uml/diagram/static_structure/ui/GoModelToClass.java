@@ -38,14 +38,16 @@ public class GoModelToClass implements TreeModel {
   public String toString() { return "Package->Class"; }
   
   public Object getRoot() {
-      throw new Error("getRoot should never be called");
+      throw
+	  new UnsupportedOperationException("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
     Vector children = getChildren(parent);
     if (children != null) return children.elementAt(index);
-    throw new Error("getChild should never get here GoModelToClass");
+    throw
+	new UnsupportedOperationException("getChild should never get here");
   }
 
   public int getChildCount(Object parent) {

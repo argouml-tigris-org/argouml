@@ -39,7 +39,7 @@ public class GoListToOffenderToItem implements TreeModel {
   // TreeModel implementation
   
   public Object getRoot() {
-      throw new Error("getRoot should never be called");
+      throw new UnsupportedOperationException("getRoot should never be called");
   } 
   public void setRoot(Object r) { }
 

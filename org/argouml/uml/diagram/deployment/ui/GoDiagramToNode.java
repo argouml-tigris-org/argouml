@@ -41,7 +41,8 @@ public class GoDiagramToNode implements TreeModel {
   public String toString() { return "Diagram->Node"; }
 
   public Object getRoot() {
-      throw new Error("getRoot should never be called");
+      throw
+	  new UnsupportedOperationException("getRoot should never be called");
   }
 
   public Object getChild(Object parent, int index) {
@@ -49,7 +50,7 @@ public class GoDiagramToNode implements TreeModel {
       Vector nodes = ((Diagram)parent).getNodes();
       return nodes.elementAt(index);
     }
-    throw new Error("getChild should never be get here GoModelToElements");
+    throw new UnsupportedOperationException("getChild should never get here");
   }
 
   public int getChildCount(Object parent) {

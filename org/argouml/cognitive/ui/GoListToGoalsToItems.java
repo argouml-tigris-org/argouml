@@ -37,7 +37,7 @@ public class GoListToGoalsToItems implements TreeModel {
   // TreeModel implementation
   
   public Object getRoot() {
-      throw new Error("getRoot should never be called");
+      throw new UnsupportedOperationException("getRoot should never be called");
   } 
   public void setRoot(Object r) { }
 
@@ -56,7 +56,7 @@ public class GoListToGoalsToItems implements TreeModel {
 	}
       }
     }
-    throw new Error("getChild shouldnt get here GoListToGoalsToItems");
+    throw new IndexOutOfBoundsException("getChild shouldnt get here GoListToGoalsToItems");
   }
   
   public int getChildCount(Object parent) {

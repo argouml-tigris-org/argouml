@@ -18,7 +18,7 @@ public class DimensionUtility {
      * Creates a new instance of DimensionUtility
      */
     private DimensionUtility() {
-        throw new Error("ActionUtility is just a container for static methods");
+        throw new UnsupportedOperationException("DimensionUtility is just a container for static methods");
     }
 
     /** Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its

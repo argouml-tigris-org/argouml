@@ -115,12 +115,12 @@ public class CompoundCritic extends Critic {
   }
 
   public Vector getSupportedDecisions() {
-      throw new Error("this method should never be called: "+
+      throw new UnsupportedOperationException("this method should never be called: "+
 		      "CompoundCritic getSupportedDecisions");
   }
 
   public void addSupportedDecision(Decision d) {
-      throw new Error("this method should never be called: "+
+      throw new UnsupportedOperationException("this method should never be called: "+
 		      "CompoundCritic addSupportedDecision");
   }
 
@@ -134,12 +134,12 @@ public class CompoundCritic extends Critic {
   }
 
   public Vector getSupportedGoals() {
-    throw new Error("this method should never be called: "+
+    throw new UnsupportedOperationException("this method should never be called: "+
 		    "CompoundCritic getSupportedGoals");
   }
 
   public void addSupportedGoal(Goal g) {
-    throw new Error("this method should never be called: "+
+    throw new UnsupportedOperationException("this method should never be called: "+
 		    "CompoundCritic addSupportedGoal");
   }
 
@@ -152,17 +152,17 @@ public class CompoundCritic extends Critic {
     return false;
   }
   public void addKnowledgeType(String type) {
-    throw new Error("this method should never be called: "+
+    throw new UnsupportedOperationException("this method should never be called: "+
 		    "CompoundCritic addKnowledgeType");
   }
   
   public String expand(String desc, VectorSet offs) {
-      throw new Error("this method should never be called: "+
+      throw new UnsupportedOperationException("this method should never be called: "+
 		      "CompoundCritic expand");
   }
 
   public Icon getClarifier() {
-      throw new Error("this method should never be called: "+
+      throw new UnsupportedOperationException("this method should never be called: "+
 		      "CompoundCritic getClarifier");
   }
   
@@ -187,7 +187,7 @@ public class CompoundCritic extends Critic {
   // design feedback
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
-      throw new Error("this method should never be called: "+
+      throw new UnsupportedOperationException("this method should never be called: "+
 		      "CompoundCritic toDoItem()");
   }
 
