@@ -50,7 +50,7 @@ public class GoModelElementToComment extends AbstractPerspectiveRule{
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return "ModelElement -> Comment";
+        return "ModelElement->Comment";
     }
 
 }

@@ -34,7 +34,7 @@ import org.argouml.model.ModelFacade;
 
 public class GoProjectToStateMachine extends AbstractPerspectiveRule{
 
-    public String getRuleName() { return "Project->Machine"; }
+    public String getRuleName() { return "Project->Statemachine"; }
 
     public Collection getChildren(Object parent) {
 	Collection col = new ArrayList();

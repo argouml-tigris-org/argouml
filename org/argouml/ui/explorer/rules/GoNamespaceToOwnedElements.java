@@ -33,7 +33,7 @@ import org.argouml.model.ModelFacade;
 public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule{
 
     public String getRuleName() {
-        return "nsp -> owned elems";
+        return "Namespace->Owned Elements";
     }
 
     public Collection getChildren(Object parent) {

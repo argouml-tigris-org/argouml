@@ -34,7 +34,7 @@ import org.argouml.model.ModelFacade;
 
 public class GoProjectToCollaboration extends AbstractPerspectiveRule{
 
-    public String getRuleName() { return "Project->MCollaboration"; }
+    public String getRuleName() { return "Project->Collaboration"; }
 
     public Collection getChildren(Object parent) {
 	Collection col = new ArrayList();

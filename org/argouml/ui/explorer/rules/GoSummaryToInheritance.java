@@ -43,7 +43,7 @@ import org.argouml.model.ModelFacade;
 public class GoSummaryToInheritance extends AbstractPerspectiveRule{
 
     public String getRuleName() {
-	return Translator.localize ("Tree", "misc.class.attribute");
+	return "Summary->Inheritance";
     }
 
     public Collection getChildren(Object parent) {

@@ -36,18 +36,10 @@ import org.argouml.model.ModelFacade;
 public class GoClassifierToInstance extends AbstractPerspectiveRule{
 
     /**
-     * 
-     */
-    public GoClassifierToInstance() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
-
-    /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return "Classifier -> Instance";
+        return "Classifier->Instance";
     }
 
     /**

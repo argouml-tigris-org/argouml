@@ -31,7 +31,7 @@ import org.argouml.model.ModelFacade;
 
 public class GoStateMachineToTop extends AbstractPerspectiveRule{
 
-    public String getRuleName() { return "State->Incoming Transitions"; }
+    public String getRuleName() { return "Statemachine->Top State"; }
 
     public Collection getChildren(Object parent) { 
 	if (ModelFacade.isAStateMachine(parent)) {

@@ -40,7 +40,7 @@ import org.argouml.model.ModelFacade;
 public class GoSummaryToOperation extends AbstractPerspectiveRule{
 
     public String getRuleName() {
-	return Translator.localize ("Tree", "misc.class.operation");
+	return "Summary->Operation";
     }
 
     public Collection getChildren(Object parent) {
