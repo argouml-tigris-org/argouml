@@ -638,6 +638,22 @@ The best solution is to always checkout with your developer role.
       </sect2>
 
  </sect1>
+
+    <sect1 id="release_process">
+      <title>Making a release</title>
+      <para>
+What needs to be done when one actually does a release:
+<itemizedlist>
+	  <listitem><para>freshmeat</para></listitem>
+	  <listitem><para>building a release</para></listitem>
+	  <listitem><para>announcing</para></listitem>
+	  <listitem><para>file uploads</para></listitem>
+	  <listitem><para>webstart</para></listitem>
+	</itemizedlist>
+Markus Klink will provide in-depth descriptions here.
+</para>
+    </sect1>
+
  <sect1 id="mailing_lists">
      <title>Mailing Lists</title>
      <indexterm><primary>mailinglist</primary></indexterm>
