@@ -33,7 +33,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -44,6 +43,8 @@ import org.apache.log4j.Category;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.ui.ArgoDialog;
 
 /** The email expert dialog does not work and is in
  * desperate need of some attention.
@@ -56,7 +57,7 @@ import org.argouml.cognitive.ToDoItem;
  * to developing a fully collaborative environment
  * within argo.
  */
-public class EmailExpertDialog extends JDialog implements ActionListener {
+public class EmailExpertDialog extends ArgoDialog {
     protected static Category cat = Category.getInstance(EmailExpertDialog.class);
 
   ////////////////////////////////////////////////////////////////
@@ -66,82 +67,62 @@ public class EmailExpertDialog extends JDialog implements ActionListener {
      * user access a list of contributors to a
      * particular argo project.
      */    
-  protected JTextField _to = new JTextField();
-  protected JTextField _cc = new JTextField();
+  protected JTextField _to;
+  protected JTextField _cc;
   /** The subject line should be automatically
    * generated based on the class or the
    * diagram.
    */  
-  protected JTextField _subject = new JTextField();
-  protected JTextArea  _body = new JTextArea();
+  protected JTextField _subject;
+  protected JTextArea  _body;
   /** Does not work.
    */  
-  protected JButton _sendButton = new JButton("Send");
   /**
    */  
-  protected JButton _cancelButton = new JButton("Cancel");
   protected ToDoItem _target;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public EmailExpertDialog() {
-    super(ProjectBrowser.getInstance(), "Send Email to an Expert");
-    JLabel toLabel = new JLabel("To:");
-    JLabel ccLabel = new JLabel("Cc:");
-    JLabel subjectLabel = new JLabel("Subject:");
+    public EmailExpertDialog() {
+        super(ProjectBrowser.getInstance(), "Send Email to an Expert", true);
+    }
 
-    setLocation(200, 100);
-    setSize(new Dimension(400, 350));
-    getContentPane().setLayout(new BorderLayout());
-    JPanel top = new JPanel();
-    GridBagLayout gb = new GridBagLayout();
-    top.setLayout(gb);
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 3; c.ipady = 3;
+    protected void addComponents() {
+        _okButton.setText("Send");
+        
+        _to = new JTextField(30);
+        _cc = new JTextField(30);
+        _subject = new JTextField(30);
+        _body = new JTextArea(10,30);
+    
+        JLabel toLabel = new JLabel("To:");
+        JLabel ccLabel = new JLabel("Cc:");
+        JLabel subjectLabel = new JLabel("Subject:");
+    
+        JPanel panel = new JPanel(new LabelledLayout(labelGap, componentGap));
+        mainPanel.add(panel);
 
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 0;
-    gb.setConstraints(toLabel, c);
-    top.add(toLabel);
-    c.gridy = 1;
-    gb.setConstraints(ccLabel, c);
-    top.add(ccLabel);
-    c.gridy = 2;
-    gb.setConstraints(subjectLabel, c);
-    top.add(subjectLabel);
+        toLabel.setLabelFor(_to);
+        panel.add(toLabel);
+        panel.add(_to);
 
-    c.weightx = 1.0;
-    c.gridx = 1;
-    c.gridwidth = GridBagConstraints.REMAINDER;
-    c.gridy = 0;
-    gb.setConstraints(_to, c);
-    top.add(_to);
-    c.gridy = 1;
-    gb.setConstraints(_cc, c);
-    top.add(_cc);
-    c.gridy = 2;
-    gb.setConstraints(_subject, c);
-    top.add(_subject);
+        ccLabel.setLabelFor(_cc);
+        panel.add(ccLabel);
+        panel.add(_cc);
+    
+        subjectLabel.setLabelFor(_subject);
+        panel.add(subjectLabel);
+        panel.add(_subject);
 
-    JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-    JPanel buttonInner = new JPanel(new GridLayout(1, 2));
-    buttonInner.add(_sendButton);
-    buttonInner.add(_cancelButton);
-    buttonPanel.add(buttonInner);
-
-    getContentPane().add(top, BorderLayout.NORTH);
-    getContentPane().add(new JScrollPane(_body), BorderLayout.CENTER);
-    getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-
-    getRootPane().setDefaultButton(_sendButton);
-    _sendButton.addActionListener(this);
-    _cancelButton.addActionListener(this);
-  }
+        JScrollPane bodyScroller = new JScrollPane(_body);
+        bodyScroller.setPreferredSize(new Dimension(100,50));
+        panel.add(bodyScroller);
+    }
+    
+    protected void addButtons() {
+        // No special buttons for this dialog
+    }
 
   public void setTarget(Object t) {
     _target = (ToDoItem) t;
@@ -153,7 +134,7 @@ public class EmailExpertDialog extends JDialog implements ActionListener {
   ////////////////////////////////////////////////////////////////
   // event handlers
   public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == _sendButton) {
+    if (e.getSource() == _okButton) {
       Designer dsgr = Designer.TheDesigner;
       String to = _to.getText();
       String cc = _cc.getText();
@@ -168,5 +149,4 @@ public class EmailExpertDialog extends JDialog implements ActionListener {
       dispose();
     }
   }
-
 } /* end class EmailExpertDialog */
