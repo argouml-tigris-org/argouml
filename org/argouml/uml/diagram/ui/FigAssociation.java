@@ -93,8 +93,8 @@ public class FigAssociation extends FigEdgeModelElement {
     
         // lets use groups to construct the different text sections at
         // the association
-        _middleGroup.addFig(_name);
-        _middleGroup.addFig(_stereo);
+        _middleGroup.addFig(getNameFig());
+        _middleGroup.addFig(getStereotypeFig());
         addPathItem(_middleGroup, new PathConvPercent(this, 50, 25));
     
         _srcMult = new FigText(10, 10, 90, 20);
@@ -477,9 +477,9 @@ public class FigAssociation extends FigEdgeModelElement {
             return;
         Object assoc =  getOwner();
         if (ModelFacade.isAbstract(assoc))
-            _name.setFont(ITALIC_LABEL_FONT);
+            getNameFig().setFont(ITALIC_LABEL_FONT);
         else
-            _name.setFont(LABEL_FONT);
+            getNameFig().setFont(LABEL_FONT);
         super.updateNameText();
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }

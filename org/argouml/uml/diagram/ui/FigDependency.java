@@ -49,7 +49,7 @@ public class FigDependency extends FigEdgeModelElement {
     protected ArrowHeadGreater endArrow;
 
     public FigDependency() {
-        addPathItem(_stereo, new PathConvPercent(this, 50, 10));
+        addPathItem(getStereotypeFig(), new PathConvPercent(this, 50, 10));
         endArrow = new ArrowHeadGreater();
         endArrow.setFillColor(Color.red);
         setDestArrowHead(endArrow);

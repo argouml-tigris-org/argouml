@@ -46,12 +46,12 @@ public class FigRealization extends FigEdgeModelElement {
     ArrowHeadTriangle endArrow;
 
     public FigRealization() {
-        addPathItem(_stereo, new PathConvPercent(this, 50, 10));
+        addPathItem(getStereotypeFig(), new PathConvPercent(this, 50, 10));
         endArrow = new ArrowHeadTriangle();
         endArrow.setFillColor(Color.white);
         setDestArrowHead(endArrow);
         setBetweenNearestPoints(true);
-        _stereo.setText("");
+        getStereotypeFig().setText("");
         getFig().setDashed(true);
     }
 

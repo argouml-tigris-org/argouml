@@ -114,8 +114,8 @@ public abstract class FigEdgeModelElement
     ////////////////////////////////////////////////////////////////
     // constants
 
-    public static Font LABEL_FONT;
-    public static Font ITALIC_LABEL_FONT;
+    public static final Font LABEL_FONT;
+    public static final Font ITALIC_LABEL_FONT;
 
     static {
         LABEL_FONT = new Font("Dialog", Font.PLAIN, 10);
@@ -123,7 +123,7 @@ public abstract class FigEdgeModelElement
             new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());
     }
 
-    public final int MARGIN = 2;
+    public static final int MARGIN = 2;
 
     /**
      * Offset from the end of the set of popup actions at which new items
@@ -134,8 +134,19 @@ public abstract class FigEdgeModelElement
     ////////////////////////////////////////////////////////////////
     // instance variables
 
+    /**
+     * The Fig that displays the name of this model element.
+     * @deprecated in 0.17.1 by Bob Tarling, this will become private.
+     * Use getNameFig(), no setter should be required.
+     */
     protected FigText _name;
+    /**
+     * The Fig that displays the stereotype of this model element.
+     * @deprecated in 0.17.1 by Bob Tarling, this will become private.
+     * Use getStereotypeFig(), no setter should be required.
+     */
     protected FigText _stereo = new FigText(10, 30, 90, 20);
+    
     private ItemUID _id;
     
     /**
@@ -888,13 +899,10 @@ public abstract class FigEdgeModelElement
 
     /**
      * Overridden to notify project that save is needed when edge is moved.
-     *
-     * @deprecated by Linus Tolke from 0.15.5. Since GEF 0.10.2 this
-     * has changed name to {@link FigEdgePoly#setPoint(Handle,int,int)}.
-     * Investigate if this is still needed!
+     * @see org.tigris.gef.presentation.FigEdgePoly#setPoint(Hand, int, int)
      */
-    public void setPoints(Handle h, int x, int y) {
-        super.setPoints(h, x, y);
+    public void setPoint(Handle h, int x, int y) {
+        super.setPoint(h, x, y);
         Project p = ProjectManager.getManager().getCurrentProject();
         if (p != null) {      
             p.setNeedsSave(true);
