@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -125,6 +125,10 @@ public class Main {
 	  System.err.println("  -noedem         dont report usage statistics");
 	  System.err.println("  -nopreload      dont preload common classes");
 	  System.err.println("  -profileload    report on load times");
+      System.err.println("");
+      System.err.println("You can also set java settings which influence the behaviour of ArgoUML:");
+      System.err.println("  -Duser.language e.g. en");
+      System.err.println("  -Duser.region   e.g. US");
 	  System.exit(0);
 	} else if (args[i].equalsIgnoreCase("-nosplash")) {
 	  doSplash = false;
