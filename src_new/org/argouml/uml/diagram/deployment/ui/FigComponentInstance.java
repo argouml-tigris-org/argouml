@@ -52,9 +52,14 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-/** Class to display graphics for a UML ComponentInstance in a diagram. */
-
+/** 
+ * Class to display graphics for a UML ComponentInstance in a diagram.
+ */
 public class FigComponentInstance extends FigNodeModelElement {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat =
         Logger.getLogger(FigComponentInstance.class);
     ////////////////////////////////////////////////////////////////
@@ -80,7 +85,7 @@ public class FigComponentInstance extends FigNodeModelElement {
 
         addFig(_bigPort);
         addFig(_cover);
-        addFig(_stereo);
+        addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(_upperRect);
         addFig(_lowerRect);
@@ -105,8 +110,8 @@ public class FigComponentInstance extends FigNodeModelElement {
         Iterator it = figClone.getFigs(null).iterator();
         figClone._bigPort = (FigRect) it.next();
         figClone._cover = (FigRect) it.next();
-        figClone._stereo = (FigText) it.next();
-        figClone._name = (FigText) it.next();
+        figClone.setStereotypeFig((FigText) it.next());
+        figClone.setNameFig((FigText) it.next());
         figClone._upperRect = (FigRect) it.next();
         figClone._lowerRect = (FigRect) it.next();
 
@@ -119,8 +124,8 @@ public class FigComponentInstance extends FigNodeModelElement {
     public void setLineColor(Color c) {
         //     super.setLineColor(c);
         _cover.setLineColor(c);
-        _stereo.setFilled(false);
-        _stereo.setLineWidth(0);
+        getStereotypeFig().setFilled(false);
+        getStereotypeFig().setLineWidth(0);
         getNameFig().setFilled(false);
         getNameFig().setLineWidth(0);
         _upperRect.setLineColor(c);
@@ -132,7 +137,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     }
 
     public Dimension getMinimumSize() {
-        Dimension stereoDim = _stereo.getMinimumSize();
+        Dimension stereoDim = getStereotypeFig().getMinimumSize();
         Dimension nameDim = getNameFig().getMinimumSize();
 
         int h = stereoDim.height + nameDim.height - OVERLAP;
@@ -149,7 +154,7 @@ public class FigComponentInstance extends FigNodeModelElement {
         _bigPort.setBounds(x, y, w, h);
         _cover.setBounds(x, y, w, h);
 
-        Dimension stereoDim = _stereo.getMinimumSize();
+        Dimension stereoDim = getStereotypeFig().getMinimumSize();
         Dimension nameDim = getNameFig().getMinimumSize();
 
         if (h < 50) {
@@ -160,7 +165,7 @@ public class FigComponentInstance extends FigNodeModelElement {
             _lowerRect.setBounds(x - 10, y + 39, 20, 10);
         }
 
-        _stereo.setBounds(x + 1, y + 1, w - 2, stereoDim.height);
+        getStereotypeFig().setBounds(x + 1, y + 1, w - 2, stereoDim.height);
         getNameFig().setBounds(x + 1,
 			       y + stereoDim.height - OVERLAP + 1,
 			       w - 2,
@@ -192,8 +197,9 @@ public class FigComponentInstance extends FigNodeModelElement {
     public void setEnclosingFig(Fig encloser) {
 
         if (encloser != null
-            && org.argouml.model.ModelFacade.isANodeInstance(encloser.getOwner())
+            && ModelFacade.isANodeInstance(encloser.getOwner())
             && getOwner() != null) {
+
             Object node = /*(MNodeInstance)*/ encloser.getOwner();
             Object comp = /*(MComponentInstance)*/ getOwner();
             if (ModelFacade.getNodeInstance(comp) != node) {
@@ -317,10 +323,14 @@ public class FigComponentInstance extends FigNodeModelElement {
         }
         if (stereo == null
             || ModelFacade.getName(stereo) == null
-            || ModelFacade.getName(stereo).length() == 0)
-            _stereo.setText("");
-        else {
-            _stereo.setText(Notation.generateStereotype(this, stereo));
+            || ModelFacade.getName(stereo).length() == 0) {
+
+            setStereotype("");
+
+	} else {
+
+            setStereotype(Notation.generateStereotype(this, stereo));
+
         }
     }
 

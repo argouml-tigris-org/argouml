@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,25 +28,29 @@ import javax.swing.*;
 import ru.novosoft.uml.MElementEvent;
 
 /**
- * This class depends on {@link org.argouml.uml.ui.UMLExpressionModel}, therefore deprecated.
- *
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by ?,
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003), because it depends on
+ * {@link org.argouml.uml.ui.UMLExpressionModel}.
+ * This class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * that used reflection a lot.
+ * TODO: What is it replaced by?
  */
-public class UMLExpressionLanguageField extends JTextField implements DocumentListener, UMLUserInterfaceComponent {
+public class UMLExpressionLanguageField
+    extends JTextField
+    implements DocumentListener, UMLUserInterfaceComponent {
 
     private UMLExpressionModel _model;
     private boolean _notifyModel;
 
     /**
-     *   Creates a new field that selects the language for an expression.
+     * Creates a new field that selects the language for an expression.
      *
-     *   @param model Expression model, should be shared between Language and Body fields
-     *   @param notifyModel Only one of Language and Body fields should forward events to model
-     **/
-    public UMLExpressionLanguageField(UMLExpressionModel model, boolean notifyModel) {
+     * @param model Expression model, should be shared between
+     * Language and Body fields
+     * @param notifyModel Only one of Language and Body fields should
+     * forward events to model
+     */
+    public UMLExpressionLanguageField(UMLExpressionModel model,
+				      boolean notifyModel) {
         _model = model;
         _notifyModel = notifyModel;
         getDocument().addDocumentListener(this);

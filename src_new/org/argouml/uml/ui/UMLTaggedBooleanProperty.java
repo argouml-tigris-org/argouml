@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,13 +29,14 @@ import org.argouml.model.uml.UmlFactory;
 import java.util.*;
 import org.argouml.model.ModelFacade;
 
-/** An UMLTaggedBooleanProperty is a property which maintains a tagged value
- *  as a boolean field. It is e.g. used to work with UMLCheckbox.
+/**
+ * An UMLTaggedBooleanProperty is a property which maintains a tagged value
+ * as a boolean field. It is e.g. used to work with UMLCheckbox.
  *
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by ?,
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * TODO: What is this replaced by ?
+ * This class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * that used reflection a lot.
  */
 public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
     private String _tagName;
@@ -70,7 +71,9 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
             }
                 
             if (!found) {
-		Object/*MTaggedValue*/ taggedValue = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
+		Object/*MTaggedValue*/ taggedValue =
+		    UmlFactory.getFactory().getExtensionMechanisms()
+		        .createTaggedValue();
 		ModelFacade.setTag(taggedValue, _tagName);
 		if (newState) {
 		    ModelFacade.setValue(taggedValue, "true");
@@ -93,7 +96,8 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
                 while (iter.hasNext()) {
                     taggedValue = iter.next();
                     if (_tagName.equals(ModelFacade.getTag(taggedValue))) {
-                        String value = (String)ModelFacade.getValue(taggedValue);
+                        String value =
+			    (String) ModelFacade.getValue(taggedValue);
                         if ("true".equals(value)) {
                             state = true;
                         }

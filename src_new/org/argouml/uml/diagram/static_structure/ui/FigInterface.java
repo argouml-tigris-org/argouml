@@ -68,7 +68,13 @@ import ru.novosoft.uml.foundation.core.MInterface;
 /** Class to display graphics for a UML Interface in a diagram. */
 
 public class FigInterface extends FigNodeModelElement {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = Logger.getLogger(FigInterface.class);
+
+    private static final Logger LOG = Logger.getLogger(FigInterface.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -161,15 +167,15 @@ public class FigInterface extends FigNodeModelElement {
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
-        _stereo.setText(NotationHelper.getLeftGuillemot()
-			+ "Interface" + NotationHelper.getRightGuillemot());
+        setStereotype(NotationHelper.getLeftGuillemot()
+		      + "Interface" + NotationHelper.getRightGuillemot());
         _stereo.setExpandOnly(true);
-        _stereo.setFilled(true);
-        _stereo.setLineWidth(1);
+        getStereotypeFig().setFilled(true);
+        getStereotypeFig().setLineWidth(1);
         _stereo.setEditable(false);
-        _stereo.setHeight(STEREOHEIGHT + 1);
+        getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         // +1 to have 1 pixel overlap with getNameFig()
-        _stereo.setVisible(true);
+        getStereotypeFig().setVisible(true);
 
         // A thin rectangle to overlap the boundary line between stereotype
         // and name. This is just 2 pixels high, and we rely on the line
@@ -186,7 +192,7 @@ public class FigInterface extends FigNodeModelElement {
         enableSizeChecking(false);
         suppressCalcBounds = true;
         addFig(_bigPort);
-        addFig(_stereo);
+        addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(_stereoLineBlinder);
         addFig(_operVec);
@@ -229,8 +235,8 @@ public class FigInterface extends FigNodeModelElement {
         FigInterface figClone = (FigInterface) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
         figClone._bigPort = (FigRect) it.next();
-        figClone._stereo = (FigText) it.next();
-        figClone._name = (FigText) it.next();
+        figClone.setStereotypeFig((FigText) it.next());
+        figClone.setNameFig((FigText) it.next());
         figClone._stereoLineBlinder = (FigRect) it.next();
         figClone._operVec = (FigGroup) it.next();
         return figClone;
@@ -367,8 +373,10 @@ public class FigInterface extends FigNodeModelElement {
         // If we have a stereotype displayed, then allow some space for that
         // (width and height)
 
-        if (_stereo.isVisible()) {
-            aSize.width = Math.max(aSize.width, _stereo.getMinimumSize().width);
+        if (getStereotypeFig().isVisible()) {
+            aSize.width =
+		Math.max(aSize.width,
+			 getStereotypeFig().getMinimumSize().width);
             aSize.height += STEREOHEIGHT;
         }
 
@@ -518,7 +526,7 @@ public class FigInterface extends FigNodeModelElement {
                 ModelFacade.setNamespace(me, m);
             }
         } catch (Exception e) {
-            cat.error("could not set package due to:" + e
+            LOG.error("could not set package due to:" + e
 		      + "' at " + encloser, e);
         }
 
@@ -754,12 +762,12 @@ public class FigInterface extends FigNodeModelElement {
 
         int currentY = y;
 
-        if (_stereo.isVisible()) {
+        if (getStereotypeFig().isVisible()) {
             currentY += STEREOHEIGHT;
         }
 
         getNameFig().setBounds(x, currentY, newW, height);
-        _stereo.setBounds(x, y, newW, STEREOHEIGHT + 1);
+        getStereotypeFig().setBounds(x, y, newW, STEREOHEIGHT + 1);
         _stereoLineBlinder.setBounds(x + 1, y + STEREOHEIGHT, newW - 2, 2);
 
         // Advance currentY to where the start of the attribute box is,
@@ -794,74 +802,74 @@ public class FigInterface extends FigNodeModelElement {
      */
     protected void updateOperations() {
         Object cls = /*(MClassifier)*/ getOwner();
-        if (cls != null) {
+        if (cls == null) {
+	    return;
+	}
 
-            int xpos = _operBigPort.getX();
-            int ypos = _operBigPort.getY();
-            int ocounter = 1;
-            Collection behs = ModelFacade.getOperations(cls);
-            if (behs != null) {
-                Iterator iter = behs.iterator();
-                // TODO: in future version of GEF call getFigs returning array
-                Vector figs = new Vector(_operVec.getFigs(null));
-                CompartmentFigText oper;
-                while (iter.hasNext()) {
-                    Object behavioralFeature =
-			/*(MBehavioralFeature)*/ iter.next();
-                    // update the listeners
-                    UmlModelEventPump.getPump().removeModelEventListener(this,
-									 behavioralFeature);
-                    UmlModelEventPump.getPump().addModelEventListener(this,
-								      behavioralFeature);
-                    if (figs.size() <= ocounter) {
-                        oper =
-			    new FigFeature(xpos + 1,
-					   (ypos
-					    + 1
-					    + (ocounter - 1) * ROWHEIGHT),
-					   0,
-					   ROWHEIGHT - 2,
-					   _operBigPort);
-                        // bounds not relevant here
-                        oper.setFilled(false);
-                        oper.setLineWidth(0);
-                        oper.setFont(LABEL_FONT);
-                        oper.setTextColor(Color.black);
-                        oper.setJustification(FigText.JUSTIFY_LEFT);
-                        oper.setMultiLine(false);
-                        _operVec.addFig(oper);
-                    } else {
-                        oper = (CompartmentFigText) figs.elementAt(ocounter);
-                    }
-                    oper.setText(Notation.generate(this, behavioralFeature));
-                    oper.setOwner(behavioralFeature);
-                    // underline, if static
-                    oper.setUnderline(ModelFacade.CLASSIFIER_SCOPEKIND
-                                      .equals(ModelFacade.getOwnerScope(behavioralFeature)));
-                    // italics, if abstract
-                    //oper.setItalic(((MOperation)bf).isAbstract());
-                    //// does not properly work (GEF bug?)
-                    if (ModelFacade.isAbstract(behavioralFeature)) {
-                        oper.setFont(ITALIC_LABEL_FONT);
-                    } else {
-                        oper.setFont(LABEL_FONT);
-                    }
-                    ocounter++;
-                }
-                if (figs.size() > ocounter) {
-                    //cleanup of unused operation FigText's
-                    for (int i = figs.size() - 1; i >= ocounter; i--) {
-                        _operVec.removeFig((Fig) figs.elementAt(i));
-                    }
-                }
-            }
-            Rectangle rect = getBounds();
-            getUpdatedSize(_operVec, xpos, ypos, 0, 0);
-            // ouch ugly but that's for a next refactoring
-            // TODO: make setBounds, calcBounds and updateBounds consistent
-            setBounds(rect.x, rect.y, rect.width, rect.height);
-            damage();
-        }
+	int xpos = _operBigPort.getX();
+	int ypos = _operBigPort.getY();
+	int ocounter = 1;
+	Collection behs = ModelFacade.getOperations(cls);
+	if (behs != null) {
+	    Iterator iter = behs.iterator();
+	    // TODO: in future version of GEF call getFigs returning array
+	    Vector figs = new Vector(_operVec.getFigs(null));
+	    CompartmentFigText oper;
+	    while (iter.hasNext()) {
+		Object behavioralFeature =
+		    /*(MBehavioralFeature)*/ iter.next();
+		// update the listeners
+		UmlModelEventPump.getPump()
+		    .removeModelEventListener(this, behavioralFeature);
+		UmlModelEventPump.getPump()
+		    .addModelEventListener(this, behavioralFeature);
+		if (figs.size() <= ocounter) {
+		    oper =
+			new FigFeature(xpos + 1,
+				       ypos + 1 + (ocounter - 1) * ROWHEIGHT,
+				       0,
+				       ROWHEIGHT - 2,
+				       _operBigPort);
+		    // bounds not relevant here
+		    oper.setFilled(false);
+		    oper.setLineWidth(0);
+		    oper.setFont(LABEL_FONT);
+		    oper.setTextColor(Color.black);
+		    oper.setJustification(FigText.JUSTIFY_LEFT);
+		    oper.setMultiLine(false);
+		    _operVec.addFig(oper);
+		} else {
+		    oper = (CompartmentFigText) figs.elementAt(ocounter);
+		}
+		oper.setText(Notation.generate(this, behavioralFeature));
+		oper.setOwner(behavioralFeature);
+		// underline, if static
+		oper.setUnderline(ModelFacade.CLASSIFIER_SCOPEKIND
+				  .equals(ModelFacade
+					  .getOwnerScope(behavioralFeature)));
+		// italics, if abstract
+		//oper.setItalic(((MOperation)bf).isAbstract());
+		//// does not properly work (GEF bug?)
+		if (ModelFacade.isAbstract(behavioralFeature)) {
+		    oper.setFont(ITALIC_LABEL_FONT);
+		} else {
+		    oper.setFont(LABEL_FONT);
+		}
+		ocounter++;
+	    }
+	    if (figs.size() > ocounter) {
+		//cleanup of unused operation FigText's
+		for (int i = figs.size() - 1; i >= ocounter; i--) {
+		    _operVec.removeFig((Fig) figs.elementAt(i));
+		}
+	    }
+	}
+	Rectangle rect = getBounds();
+	getUpdatedSize(_operVec, xpos, ypos, 0, 0);
+	// ouch ugly but that's for a next refactoring
+	// TODO: make setBounds, calcBounds and updateBounds consistent
+	setBounds(rect.x, rect.y, rect.width, rect.height);
+	damage();
     }
 
     /**
@@ -870,8 +878,9 @@ public class FigInterface extends FigNodeModelElement {
      */
     protected void updateStereotypeText() {
         Rectangle rect = getBounds();
-        _stereo.setText(NotationHelper.getLeftGuillemot()
-			+ "Interface" + NotationHelper.getRightGuillemot());
+        setStereotype(NotationHelper.getLeftGuillemot()
+		      + "Interface"
+		      + NotationHelper.getRightGuillemot());
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 

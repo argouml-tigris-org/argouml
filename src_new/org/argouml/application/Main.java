@@ -68,8 +68,8 @@ import org.tigris.gef.util.Util;
 
 public class Main {
 
-	/** logger */
-	private static Logger cat = Logger.getLogger(Main.class);
+    /** logger */
+    private static Logger cat = Logger.getLogger(Main.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -90,7 +90,7 @@ public class Main {
 	"statusmsg.bar.readingproject";
     private static final String STATBUNDLE_BAR_OPEN_PROJECT_BROWSER = 
 	"statusmsg.bar.open-project-browser";
-//	TODO : document use. No other ref.
+    // TODO: document use. No other ref.
     private static final String STATBUNDLE_BAR_LOADMODULES = 
 	"statusmsg.bar.loadmodules";
 		
@@ -107,12 +107,12 @@ public class Main {
         // check we are using a supported java version
         String javaVersion = System.getProperty("java.version", "");
         // exit if unsupported java version.
-        if(javaVersion.startsWith("1.2") ||
-           javaVersion.startsWith("1.1")){
+        if (javaVersion.startsWith("1.2")
+	    || javaVersion.startsWith("1.1")) {
             
-                System.err.println("You are using Java "+javaVersion+", "+
-                    "Please use Java 1.3 or later with ArgoUml");
-                System.exit(0);
+	    System.err.println("You are using Java " + javaVersion + ", "
+			       + "Please use Java 1.3 or later with ArgoUml");
+	    System.exit(0);
         }
         
         // Force the configuration to load
@@ -151,7 +151,7 @@ public class Main {
 
 
         boolean doSplash = Configuration.getBoolean(Argo.KEY_SPLASH, true);
-//		TODO : document use. Ref. 1/2
+	// TODO: document use. Ref. 1/2
         boolean useEDEM = Configuration.getBoolean(Argo.KEY_EDEM, true);
         boolean preload = Configuration.getBoolean(Argo.KEY_PRELOAD, true);
         boolean profileLoad = Configuration.getBoolean(Argo.KEY_PROFILE, false);
@@ -172,7 +172,7 @@ public class Main {
         for (int i = 0; i < args.length; i++) {
             if (args[i].startsWith("-")) {
                 if ((themeMemory =
-                    LookAndFeelMgr.getInstance().getThemeFromArg(args[i]))
+		        LookAndFeelMgr.getInstance().getThemeFromArg(args[i]))
                     != null) {
                     // Remembered!
                 } else if (
@@ -211,7 +211,7 @@ public class Main {
                 } else if (args[i].equalsIgnoreCase("-nosplash")) {
                     doSplash = false;
                 } else if (args[i].equalsIgnoreCase("-noedem")) {
-//					TODO : document use. Ref. 2/2
+		    // TODO: document use. Ref. 2/2
                     useEDEM = false;
                 } else if (args[i].equalsIgnoreCase("-nopreload")) {
                     preload = false;
@@ -305,16 +305,17 @@ public class Main {
             if (urlToOpen == null)
             {
 		splash.getStatusBar().showStatus(
-                Translator.localize(STATBUNDLE_BAR_DEFAULTPROJECT));
+		        Translator.localize(STATBUNDLE_BAR_DEFAULTPROJECT));
             }
             else
             {
 		Object[] msgArgs = {
 		    projectName
 		};
-		splash.getStatusBar().showStatus(Translator.messageFormat(STATBUNDLE,
-									  STATBUNDLE_BAR_READINGPROJECT,
-									  msgArgs));
+		splash.getStatusBar().showStatus(
+		        Translator.messageFormat(STATBUNDLE,
+						 STATBUNDLE_BAR_READINGPROJECT,
+						 msgArgs));
             }
 
             splash.getStatusBar().showProgress(40);
@@ -329,7 +330,7 @@ public class Main {
 
         if (urlToOpen != null) {
             
-            ActionOpenProject.SINGLETON.loadProject(urlToOpen);
+            new ActionOpenProject().loadProject(urlToOpen);
 
         }
         p = ProjectManager.getManager().getCurrentProject();
@@ -602,8 +603,8 @@ public class Main {
 } /* end Class Main */
 
 class PostLoad implements Runnable {
-	/** logger */
-	private static Logger cat = Logger.getLogger(PostLoad.class);
+    /** logger */
+    private static Logger cat = Logger.getLogger(PostLoad.class);
 
     Vector postLoadActions = null;
     Thread myThread = null;
@@ -633,10 +634,10 @@ class PostLoad implements Runnable {
 } /* end class PostLoad */
 
 class PreloadClasses implements Runnable {
-	/** logger */
-	private static Logger cat = Logger.getLogger(PreloadClasses.class);
+    /** logger */
+    private static Logger cat = Logger.getLogger(PreloadClasses.class);
 
-	public void run() {
+    public void run() {
         Class c = null;
         cat.info("preloading...");
 

@@ -51,11 +51,11 @@ import org.tigris.gef.base.Selection;
 import ru.novosoft.uml.MElementEvent;
 
 /**
- * <p>Class to display graphics for a UML classifier role in a  collaboration
- *   diagram.</p>
+ * Class to display graphics for a UML classifier role in a  collaboration
+ * diagram.<p>
  *
- * <p>Stereotype (if there is one) and name are displayed in the centre of the
- *   box.</p>
+ * Stereotype (if there is one) and name are displayed in the centre of the
+ * box.<p>
  *
  * @author 10 Apr 2002. Jeremy Bennett (mail@jeremybennett.com). Modifications
  *         to ensure stereotypes are handled correctly.
@@ -70,9 +70,8 @@ public class FigClassifierRole extends FigNodeModelElement {
 
 
     /**
-     * <p>The minimum padding above and below the stereotype and name.</p>
+     * The minimum padding above and below the stereotype and name.<p>
      */
-
     protected int _PADDING = 5;
 
 
@@ -84,10 +83,9 @@ public class FigClassifierRole extends FigNodeModelElement {
 
 
     /**
-     * <p>The fig that is used for the complete classifier role. Identical in
-     *   size to {@link #_bigPort}.</p>
+     * The fig that is used for the complete classifier role.
+     * Identical in size to {@link #_bigPort}.<p>
      */
-
     FigRect _cover;
 
     // add other Figs here as needed
@@ -101,14 +99,13 @@ public class FigClassifierRole extends FigNodeModelElement {
 
 
     /**
-     * <p>Constructor for a new classifier role.</p>
+     * Constructor for a new classifier role.<p>
      *
-     * <p>An invisible {@link FigRect} as the point of contact for connections
-     *   ({@link #_bigPort}), with matching rectangle providing the graphic
-     *   rendering {@link #_cover}). Stereotype and name are rendered centrally
-     *   in the rectangle.</p>
+     * An invisible {@link FigRect} as the point of contact for connections
+     * ({@link #_bigPort}), with matching rectangle providing the graphic
+     * rendering ({@link #_cover}). Stereotype and name are rendered centrally
+     * in the rectangle.<p>
      */
-
     public FigClassifierRole() {
 
         // The big port and cover. Color of the big port is irrelevant
@@ -119,14 +116,14 @@ public class FigClassifierRole extends FigNodeModelElement {
         // The stereotype. Width is the same as the cover, height is whatever
         // its minimum permitted is. The text should be centred.
 
-        Dimension stereoMin = _stereo.getMinimumSize();
+        Dimension stereoMin = getStereotypeFig().getMinimumSize();
 
-        _stereo.setLineWidth(0);
-        _stereo.setFilled(false);
+        getStereotypeFig().setLineWidth(0);
+        getStereotypeFig().setFilled(false);
         _stereo.setJustificationByName("Center");
-        _stereo.setVisible(false);
+        getStereotypeFig().setVisible(false);
 
-        _stereo.setBounds(10, 10, 90, stereoMin.height);
+        getStereotypeFig().setBounds(10, 10, 90, stereoMin.height);
 
         // The name. Width is the same as the cover, height is whatever its
         // minimum permitted is. The text of the name will be centred by
@@ -147,7 +144,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         addFig(_bigPort);
         addFig(_cover);
-        addFig(_stereo);
+        addFig(getStereotypeFig());
         addFig(getNameFig());
 
         // Set our bounds to those we are given.
@@ -204,8 +201,8 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         figClone._bigPort = (FigRect) it.next();
         figClone._cover   = (FigRect) it.next();
-        figClone._stereo  = (FigText) it.next();
-        figClone._name    = (FigText) it.next();
+        figClone.setStereotypeFig((FigText) it.next());
+        figClone.setNameFig((FigText) it.next());
 
         return figClone;
     }
@@ -246,33 +243,33 @@ public class FigClassifierRole extends FigNodeModelElement {
         // appropriately. Otherwise we need not work out the bounds here. That
         // will be done in setBounds().
 
-        if ((stereo == null) ||
-            (ModelFacade.getName(stereo) == null) ||
-            (ModelFacade.getName(stereo).length() == 0)) {
+        if ((stereo == null)
+	    || (ModelFacade.getName(stereo) == null)
+	    || (ModelFacade.getName(stereo).length() == 0)) {
 
-            if (_stereo.isVisible()) {
-                bounds.height -= _stereo.getBounds().height;
-                _stereo.setVisible(false);
+            if (getStereotypeFig().isVisible()) {
+                bounds.height -= getStereotypeFig().getBounds().height;
+                getStereotypeFig().setVisible(false);
             }
         }
         else {
 
-            int oldHeight = _stereo.getBounds().height;
+            int oldHeight = getStereotypeFig().getBounds().height;
 
             // If we weren't currently displayed the effective height was
             // zero. Mark the stereotype as displayed
 
-            if (!(_stereo.isVisible())) {
+            if (!(getStereotypeFig().isVisible())) {
                 oldHeight = 0;
-                _stereo.setVisible(true);
+                getStereotypeFig().setVisible(true);
             }
 
             // Set the text and recalculate its bounds
 
-            _stereo.setText(Notation.generateStereotype(this, stereo));
-            _stereo.calcBounds();
+            setStereotype(Notation.generateStereotype(this, stereo));
+            getStereotypeFig().calcBounds();
 
-            bounds.height += _stereo.getBounds().height - oldHeight;
+            bounds.height += getStereotypeFig().getBounds().height - oldHeight;
         }
 
         // Set the bounds to our old bounds (reduced if we have taken the
@@ -317,14 +314,14 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         Dimension bigPortMin = _bigPort.getMinimumSize();
         Dimension coverMin   = _cover.getMinimumSize();
-        Dimension stereoMin  = _stereo.getMinimumSize();
+        Dimension stereoMin  = getStereotypeFig().getMinimumSize();
         Dimension nameMin    = getNameFig().getMinimumSize();
 
         Dimension newMin    = new Dimension(nameMin.width, nameMin.height);
 
         // Work out whether we need to count in the stereotype
 
-        if (_stereo.isVisible()) {
+        if (getStereotypeFig().isVisible()) {
             newMin.width   = Math.max(newMin.width, stereoMin.width);
             newMin.height += stereoMin.height;
         }
@@ -381,16 +378,16 @@ public class FigClassifierRole extends FigNodeModelElement {
         int newW = (minSize.width  > w) ? minSize.width  : w;
         int newH = (minSize.height > h) ? minSize.height : h;
 
-        Dimension stereoMin = _stereo.getMinimumSize();
+        Dimension stereoMin = getStereotypeFig().getMinimumSize();
         Dimension nameMin   = getNameFig().getMinimumSize();
 
         // Work out the padding each side, depending on whether the stereotype
         // is displayed and set bounds accordingly
 
-        if (_stereo.isVisible()) {
+        if (getStereotypeFig().isVisible()) {
             int extraEach = (h - nameMin.height - stereoMin.height) / 2;
 
-            _stereo.setBounds(x, y + extraEach, w, stereoMin.height);
+            getStereotypeFig().setBounds(x, y + extraEach, w, stereoMin.height);
             getNameFig().setBounds(x, y + stereoMin.height + extraEach, w,
 				   nameMin.height);
         }
@@ -490,8 +487,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     * @see FigNodeModelElement#modelChanged(MElementEvent)
      */
     protected void modelChanged(MElementEvent mee) {
         // base should get it's own figtext and it's own update method

@@ -38,6 +38,10 @@ import org.argouml.model.ModelFacade;
 /** Class to display graphics for a UML model in a class diagram. */
 
 public class FigModel extends FigPackage {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = Logger.getLogger(FigModel.class);
 
     protected FigPoly _figPoly;
@@ -75,7 +79,7 @@ public class FigModel extends FigPackage {
         // classes, since similar code is used in FigClass.java etc.
         // Andreas Rueckert <a_rueckert@gmx.net>
         if (ModelFacade.isAModel(node) && ModelFacade.getName(node) != null) {
-            _name.setText(ModelFacade.getName(node));
+            getNameFig().setText(ModelFacade.getName(node));
 	}
     }
 

@@ -67,32 +67,33 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     /**
     * The width of an activation box
     */
-    public final static int WIDTH = 20;
+    public static final int WIDTH = 20;
 
     /**
      * The margin between the outer box and the name and stereotype text box.
      */
-    public final static int MARGIN = 10;
+    public static final int MARGIN = 10;
 
     /**
      * The distance between two rows in the object rectangle.
      */
-    public final static int ROWDISTANCE = 2;
+    public static final int ROWDISTANCE = 2;
 
     /**
      * The defaultheight of the object rectangle. That's 3 times the rowheight +
      * 3 times a distance of 2 between the rows + the stereoheight.
      */
-    public final static int DEFAULT_HEIGHT =
+    public static final int DEFAULT_HEIGHT =
         (3 * ROWHEIGHT + 3 * ROWDISTANCE + STEREOHEIGHT);
 
     /**
     * The defaultwidth of the object rectangle
     */
-    public final static int DEFAULT_WIDTH = 3 * DEFAULT_HEIGHT / 2;
+    public static final int DEFAULT_WIDTH = 3 * DEFAULT_HEIGHT / 2;
 
     /**
-     * The outer black rectangle of the object box (object fig without lifeline).
+     * The outer black rectangle of the object box (object fig without
+     * lifeline).
      */
     private FigRect _outerBox;
 
@@ -118,27 +119,29 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     private List _linkPositions = new ArrayList();
 
     /**
-     * The list where the figrects are stored that are the activation boxes. The list is only here for
-     * performance issues. When removing a figrect, it should also be removed from this list, not only from
-     * the figs list.
+     * The list where the figrects are stored that are the activation
+     * boxes. The list is only here for performance issues. When
+     * removing a figrect, it should also be removed from this list,
+     * not only from the figs list.
      */
     private List _figActivations = new ArrayList();
 
     /**
-     * The list with the figLinkPorts. The list is only here for performance issues. When deleting a figLinkPort,
-     * it should also be removed from this list, not only from the figs list.
+     * The list with the figLinkPorts. The list is only here for
+     * performance issues. When deleting a figLinkPort, it should also
+     * be removed from this list, not only from the figs list.
      */
     private List _figFigLinkPorts = new ArrayList();
 
     /**
-     * The comma seperated list of base names of the classifierRole(s) that this object
-     * represents.
+     * The comma seperated list of base names of the classifierRole(s)
+     * that this object represents.
      */
     private String _baseNames = "";
 
     /**
-     * The comma seperated list of names of the classifierRole(s) that this object
-     * represents.
+     * The comma seperated list of names of the classifierRole(s) that
+     * this object represents.
      */
     private String _classifierRoleNames = "";
 
@@ -164,30 +167,26 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         _backgroundBox.setFilled(true);
         _outerBox = new FigRect(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
         _outerBox.setFilled(false);
-        _stereo =
-            new FigText(
-                DEFAULT_WIDTH / 2,
-                ROWHEIGHT + ROWDISTANCE,
-                0,
-                0,
-                Color.black,
-                "Dialog",
-                12,
-                false);
+        setStereotypeFig(new FigText(DEFAULT_WIDTH / 2,
+				     ROWHEIGHT + ROWDISTANCE,
+				     0,
+				     0,
+				     Color.black,
+				     "Dialog",
+				     12,
+				     false));
         _stereo.setAllowsTab(false);
         _stereo.setEditable(false);
-        _stereo.setFilled(false);
-        _stereo.setLineWidth(0);
-        _name =
-            new FigText(
-                DEFAULT_WIDTH / 2,
-                2 * ROWDISTANCE + STEREOHEIGHT + ROWHEIGHT,
-                0,
-                0,
-                Color.black,
-                "Dialog",
-                12,
-                false);
+        getStereotypeFig().setFilled(false);
+        getStereotypeFig().setLineWidth(0);
+        setNameFig(new FigText(DEFAULT_WIDTH / 2,
+			       2 * ROWDISTANCE + STEREOHEIGHT + ROWHEIGHT,
+			       0,
+			       0,
+			       Color.black,
+			       "Dialog",
+			       12,
+			       false));
         getNameFig().setEditable(false);
         getNameFig().setAllowsTab(false);
         getNameFig().setFilled(false);
@@ -208,13 +207,12 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         }
         addFig(_lifeLine);
         addFig(_backgroundBox);
-        addFig(_stereo);
+        addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(_outerBox);
     }
 
     /**
-     * @param gm
      * @param node
      */
     public FigObject(Object node) {
@@ -224,7 +222,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
 
     /**
      * When the mouse button is released, this fig will be moved into position
-     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     *
+     * @see MouseListener#mouseReleased(MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
         super.mouseReleased(me);
@@ -249,7 +248,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     * @see FigNodeModelElement#updateStereotypeText()
      */
     protected void updateStereotypeText() {
         super.updateStereotypeText();
@@ -265,28 +264,31 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * Sets the bounds and coordinates of this Fig. The outerbox (the black box around
-     * the upper box) and the background box (the white box at the background) are
-     * scaled to the given size. The name text box and the stereo text box are
-     * moved to a correct position.
-     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     * Sets the bounds and coordinates of this Fig. The outerbox (the
+     * black box around the upper box) and the background box (the
+     * white box at the background) are scaled to the given size. The
+     * name text box and the stereo text box are moved to a correct
+     * position.
+     *
+     * @see Fig#setBounds(int, int, int, int)
      */
     public void setBounds(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
         if (getNameFig().getWidth() > w) {
             w = getNameFig().getWidth() + 2 * MARGIN;
         }
-        if (_stereo.getWidth() > w) {
-            w = _stereo.getWidth() + 2 * MARGIN;
+        if (getStereotypeFig().getWidth() > w) {
+            w = getStereotypeFig().getWidth() + 2 * MARGIN;
         }
         getNameFig().setCenter(
             new Point(x + w / 2,
 		      getNameFig().getY() - oldBounds.y + y
 		      + getNameFig().getHalfHeight()));
-        _stereo.setCenter(
+        getStereotypeFig().setCenter(
             new Point(
                 x + w / 2,
-                _stereo.getY() - oldBounds.y + y + _stereo.getHalfHeight()));
+                (getStereotypeFig().getY() - oldBounds.y
+		 + y + getStereotypeFig().getHalfHeight())));
         reSize(_outerBox, x, y, w, h);
         reSize(_backgroundBox, x, y, w, h);
         _lifeLine.setBounds(
@@ -316,7 +318,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * Scales the given fig that must be part of this FigObject
+     * Scales the given fig that must be part of this FigObject.<p>
+     *
      * @param f the fig to scale
      * @param x the new x coordinate for the FigObject
      * @param y the new y coordinate for the FigObject
@@ -341,17 +344,18 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
             int newH =
                 (_h == 0)
                     ? 0
-                    : (int) (((float) f.getHeight()) * ((float) h / (float) _h));
+                    : (int) (((float) f.getHeight())
+			     * ((float) h / (float) _h));
 
             f.setBounds(newX, newY, newW, newH);
         }
     }
 
     /**
-     * Just factored out this method to save me typing. Returns a beautified name
-     * to show in the name text box.
-     * @param o
-     * @return
+     * Returns a beautified name to show in the name text box.<p>
+     *
+     * @param o is the object
+     * @return a name
      */
     private String getBeautifiedName(Object o) {
         String name = ModelFacade.getName(o);
@@ -362,7 +366,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * @see org.tigris.gef.presentation.Fig#calcBounds()
+     * @see Fig#calcBounds()
+     * @see FigNodeModelElement#calcBounds()
      */
     public void calcBounds() {
         Rectangle bounds = _outerBox.getBounds();
@@ -395,9 +400,13 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
             }
             if (node instanceof ActivationNode
                 && ((ActivationNode) node).isEnd()) {
+
                 if (startActivationNode == null) {
-                    throw new IllegalStateException("End activation node without start activation node");
+                    throw new IllegalStateException(
+			    "End activation node without "
+			    + "start activation node.");
                 }
+
                 endActivationNode = (ActivationNode) node;
                 int startPos =
                     getYCoordinateForActivationBox(startActivationNode, true);
@@ -428,9 +437,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * First removes all current activation boxes, then add new ones to the figobject depending on the state
-     * of the nodes.
-     *
+     * First removes all current activation boxes, then add new ones
+     * to the figobject depending on the state of the nodes.
      */
     public void updateActivations() {
         removeActivations();
@@ -438,8 +446,9 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * The width of the FigObject should be equal to the width of the name or stereo
-     * text box.
+     * The width of the FigObject should be equal to the width of the
+     * name or stereo text box.<p>
+     *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
      */
     protected void updateBounds() {
@@ -447,7 +456,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         bounds.width =
             Math.max(
                 getNameFig().getWidth() + 2 * MARGIN,
-                _stereo.getWidth() + 2 * MARGIN);
+                getStereotypeFig().getWidth() + 2 * MARGIN);
         setBounds(bounds);
     }
 
@@ -513,25 +522,30 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     * @see FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object newOwner) {
         if (ModelFacade.isAInstance(newOwner)) {
             Object oldOwner = getOwner();
             UmlModelEventPump pump = UmlModelEventPump.getPump();
             pump.removeModelEventListener(this, oldOwner);
-            pump.addModelEventListener(
-                this,
-                newOwner,
-                new String[] { "name", "stereotype" });
+            pump.addModelEventListener(this,
+				       newOwner,
+				       new String[] {
+					   "name",
+					   "stereotype",
+				       });
             Iterator it = ModelFacade.getClassifiers(newOwner).iterator();
             while (it.hasNext()) {
                 Object classifierRole = it.next();
                 pump.removeModelEventListener(this, classifierRole);
                 pump.addModelEventListener(
-                    this,
-                    classifierRole,
-                    new String[] { "name", "base" });
+					   this,
+					   classifierRole,
+					   new String[] {
+					       "name",
+					       "base",
+					   });
                 Iterator it2 = ModelFacade.getBases(classifierRole).iterator();
                 while (it2.hasNext()) {
                     Object base = it2.next();
@@ -542,7 +556,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     * @see FigNodeModelElement#modelChanged(MElementEvent)
      */
     protected void modelChanged(MElementEvent mee) {
         boolean nameChanged = false;
@@ -612,10 +626,15 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * Returns the port for a given coordinate pair. Normally deepHitPort returns
-     * the owner of the fig in the figgroup that is present at the given coordinate
-     * pair (returning figs that are added later first). In this case it returns
-     * a LinkPort. This method has a side effect of creating a FigLinkPort if
+     * Returns the port for a given coordinate pair. Normally
+     * deepHitPort returns the owner of the fig in the FigGroup that
+     * is present at the given coordinate pair (returning figs that
+     * are added later first). In this case it returns a
+     * LinkPort.<p>
+     *
+     * This method has a side effect of creating a
+     * FigLinkPort if ???<p>
+     *
      * @see org.tigris.gef.presentation.FigNode#deepHitPort(int, int)
      */
     public Object deepHitPort(int x, int y) {
@@ -744,9 +763,11 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * Gets the FigLink that is attached to the given FigLinkPort
+     * Gets the {@link FigLink} that is attached to the given
+     * {@link FigLinkPort}.
+     *
      * @param portFig
-     * @return
+     * @return the {@link FigLink} that is attached.
      */
     public FigLink getFigLink(FigLinkPort portFig) {
         Iterator it = getFigEdges(null).iterator();
@@ -806,7 +827,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                     }
                 }
             } else {
-                // node is in between activations or does not belong to activation (yet)
+                // node is in between activations or does not belong
+                // to activation (yet)
                 if (!(nextNode(activationNode) instanceof ActivationNode)
                     || !(previousNode(activationNode)
                         instanceof ActivationNode)) {
@@ -863,10 +885,13 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * Makes an activation from the node with index startindex to the node with index endindex. An activation
-     * means in this context that the starting and ending node will be an activation node after a call to this method.
-     * The starting node is designated via the start property that's a starting node. The same is true for the ending
-     * node via the end property.
+     * Makes an activation from the node with index startindex to the
+     * node with index endindex. An activation means in this context
+     * that the starting and ending node will be an activation node
+     * after a call to this method.  The starting node is designated
+     * via the start property that's a starting node. The same is true
+     * for the ending node via the end property.<p>
+     *
      * @param startIndex
      * @param endIndex
      */
@@ -908,9 +933,11 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * Returns true if this figobject has activations. An activation is in this case a start ActivationNode and
-     * an end ActivationNode in the Nodes list (_linkPositions).
-     * @return
+     * Returns true if this {@link FigObject} has activations. An
+     * activation is in this case a start ActivationNode and an end
+     * ActivationNode in the Nodes list (_linkPositions).<p>
+     *
+     * @return true if this {@link FigObject} has activations.
      */
     public boolean hasActivations() {
         for (int i = 0; i < _linkPositions.size(); i++) {
@@ -935,7 +962,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * Sets the given node on the given index in linkPositions
+     * Sets the given node on the given index in linkPositions.<p>
+     *
      * @param index
      * @param node
      */
@@ -959,9 +987,11 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * Removes the fig from both the figs list as from the _figActivations list and the _figLinkPorts. This
-     * assures us that removal will indeed remove all 'pointers' to the object.
-     * @see org.tigris.gef.presentation.FigGroup#removeFig(org.tigris.gef.presentation.Fig)
+     * Removes the fig from both the figs list as from the
+     * _figActivations list and the _figLinkPorts. This assures us
+     * that removal will indeed remove all 'pointers' to the object.<p>
+     *
+     * @see org.tigris.gef.presentation.FigGroup#removeFig(Fig)
      */
     public void removeFig(Fig f) {
         super.removeFig(f);

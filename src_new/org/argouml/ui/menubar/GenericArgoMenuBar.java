@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -81,32 +81,33 @@ import org.tigris.gef.base.CmdAdjustGuide;
 import org.tigris.gef.base.CmdAdjustPageBreaks;
 import org.tigris.gef.base.CmdSelectAll;
 import org.tigris.gef.base.CmdSelectInvert;
-import org.tigris.gef.base.CmdSelectNext;
 import org.tigris.gef.base.CmdZoom;
 import org.tigris.gef.util.Localizer;
 import org.tigris.toolbar.ToolBar;
 
-/** GenericArgoMenuBar defines the menubar for all
- *  operating systems which do not explicitely ask
- *  for a different kind of menu bar, such as
- *  Mac OS X.
- * 
- *  Menu's and the mnemonics of menu's and the menuitems are separated 
- *  in the PropertyResourceBundle <b>menu.properties<b/>.
- * 
- *  menuitems are separated in the PropertyResourceBundle 
- *  <b>action.properties<b/>.
- * 
- *  The key's in menu.properties have the following structure:
- * 
- *  menu:                    [file].[name of menu]
- *   e.g:                    menu.file
- * 
- *  mnemonics of menu's:     [file].[name of menu].mnemonic
- *   e.g:                    menu.file.mnemonic
- * 
- *  mnemonics of menuitems:  [file].[flag for item].[name of menuitem].mnemonic
- *   e.g:                    menu.item.new.mnemonic
+/**
+ * GenericArgoMenuBar defines the menubar for all
+ * operating systems which do not explicitely ask
+ * for a different kind of menu bar, such as
+ * Mac OS X.<p>
+ *
+ * Menu's and the mnemonics of menu's and the menuitems are separated 
+ * in the PropertyResourceBundle <b>menu.properties<b/>.<p>
+ *
+ * menuitems are separated in the PropertyResourceBundle 
+ * <b>action.properties<b/>.<p>
+ *
+ * The key's in menu.properties have the following structure:<p>
+ * <pre>
+ * menu:                    [file].[name of menu]
+ *  e.g:                    menu.file
+ *
+ * mnemonics of menu's:     [file].[name of menu].mnemonic
+ *  e.g:                    menu.file.mnemonic
+ *
+ * mnemonics of menuitems:  [file].[flag for item].[name of menuitem].mnemonic
+ *  e.g:                    menu.item.new.mnemonic
+ * </pre>
  */
 public class GenericArgoMenuBar extends JMenuBar
     implements ArgoModuleEventListener {
@@ -182,7 +183,8 @@ public class GenericArgoMenuBar extends JMenuBar
      * make all components of User interface accessible
      * through keyboard
      * 
-     * @deprecated since 0.15.2. Use setMnemonic(JMenuItem item, String key) instead.
+     * @deprecated since 0.15.2.
+     * Use @{link #setMnemonic(JMenuItem item, String key)} instead.
      * @author Braun.Harald
      * @since 09/14/2003
      */
@@ -376,10 +378,10 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(newItem, "New");
         setAccelerator(newItem, ctrlN);
         _fileToolbar.add((ActionNew.SINGLETON));
-        JMenuItem openProjectItem = _file.add(ActionOpenProject.SINGLETON);
+        JMenuItem openProjectItem = _file.add(new ActionOpenProject());
         setMnemonic(openProjectItem, "Open");
         setAccelerator(openProjectItem, ctrlO);
-        _fileToolbar.add((ActionOpenProject.SINGLETON));
+        _fileToolbar.add(new ActionOpenProject());
         _file.addSeparator();
 
         JMenuItem saveProjectItem = _file.add(ActionSaveProject.SINGLETON);
@@ -397,7 +399,8 @@ public class GenericArgoMenuBar extends JMenuBar
         //_import.add(ActionImportFromSources.SINGLETON);
         //appendPluggableMenus(_import,
         //PluggableMenu.KEY_FILE_IMPORT);
-        JMenuItem importFromSources = _file.add(ActionImportFromSources.SINGLETON);
+        JMenuItem importFromSources =
+	    _file.add(ActionImportFromSources.SINGLETON);
         setMnemonic(importFromSources, "Import");
         _file.addSeparator();
     
@@ -407,7 +410,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(printItem, "Print");
         setAccelerator(printItem, ctrlP);
         _fileToolbar.add((Actions.Print));
-        JMenuItem saveGraphicsItem = _file.add(ActionSaveGraphics.SINGLETON);
+        JMenuItem saveGraphicsItem = _file.add(new ActionSaveGraphics());
         setMnemonic(saveGraphicsItem, "SaveGraphics");
         _file.addSeparator();
         JMenuItem saveConfiguration = 
@@ -457,7 +460,7 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem selectInvert = _select.add(new CmdSelectInvert());
         setMnemonic(selectInvert, "Invert Selection");
 
-        // TODO These are not yet implemented - Bob Tarling 12 Oct 2002
+        // TODO: These are not yet implemented - Bob Tarling 12 Oct 2002
         // _edit.add(Actions.Undo);
         // editToolbar.add((Actions.Undo));
         // _edit.add(Actions.Redo);
@@ -486,7 +489,7 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem deleteItem = _edit.add(ActionRemoveFromModel.SINGLETON);
         setMnemonic(deleteItem, "Delete from Model");
         setAccelerator(deleteItem, ctrlDel);
-        // TODO Bob Tarling: no toolbarbutton till a new one is
+        // TODO: Bob Tarling: no toolbarbutton till a new one is
         // designed for Erase
         //_editToolbar.add(ActionRemoveFromModel.SINGLETON);
 
@@ -608,7 +611,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(_arrange, "Arrange");
 
         JMenu align = 
-        (JMenu) _arrange.add(new JMenu(menuLocalize("Align")));
+	    (JMenu) _arrange.add(new JMenu(menuLocalize("Align")));
         setMnemonic(align, "Align");
         JMenu distribute =
 	    (JMenu) _arrange.add(new JMenu(menuLocalize("Distribute")));
@@ -617,7 +620,7 @@ public class GenericArgoMenuBar extends JMenuBar
 	    (JMenu) _arrange.add(new JMenu(menuLocalize("Reorder")));
 	setMnemonic(reorder, "Reorder");
         JMenu nudge = 
-        (JMenu) _arrange.add(new JMenu(menuLocalize("Nudge")));
+	    (JMenu) _arrange.add(new JMenu(menuLocalize("Nudge")));
         setMnemonic(nudge, "Nudge");
 
         JMenuItem preferredSize = _arrange.
@@ -625,7 +628,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(preferredSize, "Preferred Size");
 
         JMenuItem autoResize = 
-        _arrange.addCheckItem(new ActionAutoResize());
+	    _arrange.addCheckItem(new ActionAutoResize());
 	setMnemonic(autoResize, "Toggle Auto Resize");
 		
         JMenu layout = (JMenu) _arrange.add(new JMenu(menuLocalize("Layout")));
@@ -634,9 +637,7 @@ public class GenericArgoMenuBar extends JMenuBar
 
         Runnable initLater = new InitMenusLater(align, distribute,
                                                 reorder, nudge,
-                                                layout
-                                                //,editTabs //MVW  Issue 2321 and 2322
-                                                );  
+                                                layout);  
 
         org.argouml.application.Main.addPostLoadAction(initLater);
 
@@ -663,7 +664,8 @@ public class GenericArgoMenuBar extends JMenuBar
 		
         _critique = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("Critique")));
         setMnemonic(_critique, "Critique");
-        JMenuItem toggleAutoCritique = _critique.addCheckItem(Actions.AutoCritique);
+        JMenuItem toggleAutoCritique =
+	    _critique.addCheckItem(Actions.AutoCritique);
         setMnemonic(toggleAutoCritique, "Toggle Auto Critique");
         _critique.addSeparator();
         JMenuItem designIssues = _critique.add(Actions.OpenDecisions);
@@ -717,7 +719,8 @@ public class GenericArgoMenuBar extends JMenuBar
     public JToolBar getEditToolbar() {
         if (_editToolbar == null) {
             _editToolbar = new ToolBar("Edit Toolbar");
-            _editToolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
+            _editToolbar.putClientProperty("JToolBar.isRollover",
+					   Boolean.TRUE);
             _editToolbar.add(ActionCut.getInstance());
             _editToolbar.add(ActionCopy.getInstance());
             _editToolbar.add(ActionPaste.getInstance());
@@ -743,7 +746,8 @@ public class GenericArgoMenuBar extends JMenuBar
     public JToolBar getViewToolbar() {
         if (_viewToolbar == null) {
             _viewToolbar = new ToolBar("View Toolbar");
-            _viewToolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
+            _viewToolbar.putClientProperty("JToolBar.isRollover",
+					   Boolean.TRUE);
             _viewToolbar.add((Actions.Find));
             _viewToolbar.add(new ZoomSliderButton());
         }

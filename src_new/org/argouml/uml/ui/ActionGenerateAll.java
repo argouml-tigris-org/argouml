@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,21 +38,25 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
 
-/** Action to trigger code generation for one or more classes.
- *  @stereotype singleton
+/**
+ * Action to trigger code generation for one or more classes.
  */
 public class ActionGenerateAll extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Create your own action every
+     * time. This will be removed.
+     */
     public static ActionGenerateAll SINGLETON = new ActionGenerateAll();
 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected ActionGenerateAll() {
+    public ActionGenerateAll() {
 	super("action.generate-all-classes", NO_ICON);
     }
 
@@ -68,15 +72,24 @@ public class ActionGenerateAll extends UMLAction {
 
 	UMLClassDiagram d = (UMLClassDiagram) activeDiagram;
 	Vector classes = new Vector();
-	Vector nodes = d.getNodes();
+	Vector nodes = (Vector) d.getNodes(new Vector());
 	java.util.Enumeration enum = nodes.elements();
 	while (enum.hasMoreElements()) {
 	    Object owner = enum.nextElement();
-	    if (!ModelFacade.isAClass(owner) && !ModelFacade.isAInterface(owner))
+	    if (!ModelFacade.isAClass(owner)
+		&& !ModelFacade.isAInterface(owner)) {
+
 		continue;
+
+	    }
 	    String name = ModelFacade.getName(owner);
-	    if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0)))
+	    if (name == null
+		|| name.length() == 0
+		|| Character.isDigit(name.charAt(0))) {
+		
 		continue;
+
+	    }
             classes.addElement(owner);
 	}
 	 
@@ -88,9 +101,16 @@ public class ActionGenerateAll extends UMLAction {
 	    while (selectedObjects.hasNext()) {
 		Object selected = selectedObjects.next();
 		if (ModelFacade.isAPackage(selected)) {
-		    addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, (Class)ModelFacade.CLASS), classes);
-		    addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, (Class)ModelFacade.INTERFACE), classes);
-		} else if (ModelFacade.isAClass(selected) || ModelFacade.isAInterface(selected)) {
+		    addCollection(ModelManagementHelper.getHelper()
+				  .getAllModelElementsOfKind(selected,
+					  (Class) ModelFacade.CLASS),
+				  classes);
+		    addCollection(ModelManagementHelper.getHelper()
+				  .getAllModelElementsOfKind(selected,
+					  (Class) ModelFacade.INTERFACE),
+				  classes);
+		} else if (ModelFacade.isAClass(selected)
+			   || ModelFacade.isAInterface(selected)) {
 		    if (!classes.contains(selected))
 			classes.addElement(selected);
 		}

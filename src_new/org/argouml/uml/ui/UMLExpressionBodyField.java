@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,21 +31,28 @@ import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.MElementEvent;
 
 /**
- * This class depends on {@link org.argouml.uml.ui.UMLExpressionModel}, therefore deprecated.
- *
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by ?,
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003), because it depends on
+ * {@link org.argouml.uml.ui.UMLExpressionModel}.
+ * TODO: What is this replaced by?
+ * This class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * that used reflection a lot.
  */
-public class UMLExpressionBodyField extends JTextArea implements DocumentListener, UMLUserInterfaceComponent {
+public class UMLExpressionBodyField
+    extends JTextArea
+    implements DocumentListener, UMLUserInterfaceComponent {
+
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = 
         Logger.getLogger(UMLExpressionBodyField.class);
 
     private UMLExpressionModel _model;
     private boolean _notifyModel;
     
-    public UMLExpressionBodyField(UMLExpressionModel model, boolean notifyModel) {
+    public UMLExpressionBodyField(UMLExpressionModel model,
+				  boolean notifyModel) {
         _model = model;
         _notifyModel = notifyModel;
         getDocument().addDocumentListener(this);       
@@ -62,14 +69,19 @@ public class UMLExpressionBodyField extends JTextArea implements DocumentListene
     
     public void roleAdded(final MElementEvent p1) {
     }
+
     public void recovered(final MElementEvent p1) {
     }
+
     public void roleRemoved(final MElementEvent p1) {
     }
+
     public void listRoleItemSet(final MElementEvent p1) {
     }
+
     public void removed(final MElementEvent p1) {
     }
+
     public void propertySet(final MElementEvent event) {
        	cat.debug("UMLExpressionBodyField: propertySet" + event);
     }
@@ -82,7 +94,7 @@ public class UMLExpressionBodyField extends JTextArea implements DocumentListene
 	if (oldText == null || newText == null || !oldText.equals(newText)) {
             if (oldText != newText) {
 		cat.debug("setNewText!!");
-                setText((String)newText);
+                setText((String) newText);
             }
         }
     }

@@ -110,7 +110,7 @@ public class FigActor extends FigNodeModelElement {
         figClone._arms = (FigLine) it.next();
         figClone._leftLeg = (FigLine) it.next();
         figClone._rightLeg = (FigLine) it.next();
-        figClone._name = (FigText) it.next();
+        figClone.setNameFig((FigText) it.next());
         return figClone;
     }
 

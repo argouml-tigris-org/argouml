@@ -92,7 +92,7 @@ public class FigObject extends FigNodeModelElement {
 	Iterator it = figClone.getFigs(null).iterator();
 	figClone._bigPort = (FigRect) it.next();
 	figClone._cover = (FigRect) it.next();
-	figClone._name = (FigText) it.next();
+	figClone.setNameFig((FigText) it.next());
 	return figClone;
     }
 
@@ -174,19 +174,23 @@ public class FigObject extends FigNodeModelElement {
 	    Object mcomp = null;
 
 	    if (encloser != null
-		    && (ModelFacade.isAComponentInstance(encloser.getOwner()))) {
+		&& (ModelFacade.isAComponentInstance(encloser.getOwner()))) {
+
 		mcompInst = /*(MComponentInstance)*/ encloser.getOwner();
 		ModelFacade.setComponentInstance(me, mcompInst);
+
 	    }
 	    else if (ModelFacade.getComponentInstance(me) != null) {
                 ModelFacade.setComponentInstance(me, null);
 	    }
-	    if (encloser != null && 
-		(ModelFacade.isAComponent(encloser.getOwner()))) {
+	    if (encloser != null
+		&& (ModelFacade.isAComponent(encloser.getOwner()))) {
+
 		mcomp = /*(MComponent)*/ encloser.getOwner();
 		Object obj = /*(MObject)*/ getOwner();
 		ModelFacade.setImplementationLocation(resident, mcomp);
 		ModelFacade.setResident(resident, obj);
+
 	    }
 	    else {
 		if (ModelFacade.getImplementationLocation(resident) != null) {

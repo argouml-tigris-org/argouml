@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,19 +38,22 @@ import org.argouml.ui.ProjectBrowser;
  * Action that reverts to the previously saved version of the project.
  *
  * @see ActionOpenProject
- * @stereotype singleton
  */
 public class ActionRevertToSaved extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Create your own action every
+     * time. This will be removed.
+     */
     public static ActionRevertToSaved SINGLETON = new ActionRevertToSaved();
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected ActionRevertToSaved() {
+    public ActionRevertToSaved() {
         super("action.revert-to-saved");
     }
 
@@ -75,7 +78,9 @@ public class ActionRevertToSaved extends UMLAction {
                     Translator.localize(
                        "Actions",
                        "optionpane.revert-to-saved-confirm"),
-                 new Object[] { p.getName() });
+		    new Object[] {
+			p.getName()
+		    });
 
         int response =
             JOptionPane.showConfirmDialog(
@@ -87,7 +92,7 @@ public class ActionRevertToSaved extends UMLAction {
                   JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {        
-            ActionOpenProject.SINGLETON.loadProject(p.getURL());
+            new ActionOpenProject().loadProject(p.getURL());
         }
     }
     

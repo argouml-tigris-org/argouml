@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -65,7 +65,8 @@ class PackageContext extends Context
         Object mInterface = ModelFacade.lookupIn(mPackage, name);
 
         if (mInterface == null) {
-		Class classifier;
+	    Class classifier;
+
 	    // Try to find it via the classpath
 	    try {
 
@@ -80,32 +81,39 @@ class PackageContext extends Context
 		}
 		if (classifier.isInterface()) {
 		    mInterface =
-			UmlFactory.getFactory().getCore().buildInterface(name, mPackage);
-		    ModelFacade.setTaggedValue(mInterface, MMUtil.GENERATED_TAG,
+			UmlFactory.getFactory().getCore()
+			    .buildInterface(name, mPackage);
+		    ModelFacade.setTaggedValue(mInterface,
+					       ModelFacade.GENERATED_TAG,
 					       "yes");
 		}
 	    }
 	    catch (ClassNotFoundException e) {
 		// We didn't find any interface
                 // try USER classpath
-                try{
+                try {
                     // Special case for model
                     if (ModelFacade.isAModel(mPackage)) {
-                        classifier = ImportClassLoader.getInstance().loadClass(name);
+                        classifier =
+			    ImportClassLoader.getInstance().loadClass(name);
                     }
                     else {
                         String clazzName = javaName + "." + name;
-                        classifier = ImportClassLoader.getInstance().loadClass(clazzName);
+                        classifier =
+			    ImportClassLoader.getInstance()
+			        .loadClass(clazzName);
                     }
-		if (classifier.isInterface()) {
-		    mInterface =
-			UmlFactory.getFactory().getCore().buildInterface(name, mPackage);
-		    ModelFacade.setTaggedValue(mInterface, MMUtil.GENERATED_TAG,
-					       "yes");
-		}
+		    if (classifier.isInterface()) {
+			mInterface =
+			    UmlFactory.getFactory().getCore()
+			        .buildInterface(name, mPackage);
+			ModelFacade.setTaggedValue(mInterface,
+						   ModelFacade.GENERATED_TAG,
+						   "yes");
+		    }
                 }
                 catch (Exception e1) {
-                    int i=0;
+		    // Ignore.
                 }
 	    }
 	}
@@ -136,7 +144,7 @@ class PackageContext extends Context
 	Object mClassifier = ModelFacade.lookupIn(mPackage, name);
 
 	if (mClassifier == null) {
-		Class classifier;
+	    Class classifier;
 	    // Try to find it via the classpath
 	    try {
 
@@ -152,15 +160,15 @@ class PackageContext extends Context
 		if (classifier.isInterface()) {
 		    mClassifier =
 			UmlFactory.getFactory().getCore()
-			.buildInterface(name, mPackage);
+			    .buildInterface(name, mPackage);
 		}
 		else {
 		    mClassifier =
 			UmlFactory.getFactory().getCore()
-			.buildClass(name, mPackage);
+			    .buildClass(name, mPackage);
 		}
 		ModelFacade.setTaggedValue(mClassifier,
-					   MMUtil.GENERATED_TAG,
+					   ModelFacade.GENERATED_TAG,
 					   "yes");
 	    }
 	    catch (ClassNotFoundException e) {
@@ -170,28 +178,30 @@ class PackageContext extends Context
                 try {
                     // Special case for model
                     if (ModelFacade.isAModel(mPackage)) {
-                        classifier = ImportClassLoader.getInstance().loadClass(name);
+                        classifier =
+			    ImportClassLoader.getInstance().loadClass(name);
                     }
                     else {
                         String clazzName = javaName + "." + name;
-                        classifier = ImportClassLoader.getInstance().loadClass(clazzName);
+                        classifier =
+			    ImportClassLoader.getInstance()
+			        .loadClass(clazzName);
                     }
-		if (classifier.isInterface()) {
-		    mClassifier =
-			UmlFactory.getFactory().getCore()
-			.buildInterface(name, mPackage);
-		}
-		else {
-		    mClassifier =
-			UmlFactory.getFactory().getCore()
-			.buildClass(name, mPackage);
-		}
-		ModelFacade.setTaggedValue(mClassifier,
-					   MMUtil.GENERATED_TAG,
-					   "yes");
+		    if (classifier.isInterface()) {
+			mClassifier =
+			    UmlFactory.getFactory().getCore()
+			        .buildInterface(name, mPackage);
+		    } else {
+			mClassifier =
+			    UmlFactory.getFactory().getCore()
+			        .buildClass(name, mPackage);
+		    }
+		    ModelFacade.setTaggedValue(mClassifier,
+					       ModelFacade.GENERATED_TAG,
+					       "yes");
                 }
                 catch (Exception e1) {
-                    int i=0;
+		    // Ignore
                 }
             }
 	}
@@ -202,21 +212,21 @@ class PackageContext extends Context
 	    }
 	    else {
 		// Check for java data types
-		if (name.equals("int") ||
-		    name.equals("long") ||
-		    name.equals("short") ||
-		    name.equals("byte") ||
-		    name.equals("char") ||
-		    name.equals("float") ||
-		    name.equals("double") ||
-		    name.equals("boolean") ||
-		    name.equals("void") ||
+		if (name.equals("int")
+		    || name.equals("long")
+		    || name.equals("short")
+		    || name.equals("byte")
+		    || name.equals("char")
+		    || name.equals("float")
+		    || name.equals("double")
+		    || name.equals("boolean")
+		    || name.equals("void")
 		    // How do I represent arrays in UML?
-		    name.indexOf("[]") != -1)
+		    || name.indexOf("[]") != -1)
 		{
 		    mClassifier =
 			UmlFactory.getFactory().getCore()
-			.buildDataType(name, mPackage);
+			    .buildDataType(name, mPackage);
 		}
 	    }
 	}

@@ -35,6 +35,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.CommandLineInterface;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
@@ -58,7 +59,9 @@ import org.tigris.gef.persistence.*;
  *  @stereotype singleton
  */
 
-public class ActionSaveGraphics extends UMLAction {
+public class ActionSaveGraphics
+    extends UMLAction
+    implements CommandLineInterface {
     /**
      * @deprecated as of 0.15.4. Will be made private. Use your own logger.
      */
@@ -168,8 +171,6 @@ public class ActionSaveGraphics extends UMLAction {
 	    if (retval == 0) {
 		File theFile = chooser.getSelectedFile();
 		if (theFile != null) {
-		    String path = theFile.getParent();
-		    String name = theFile.getName();
 		    String suffix = SuffixFilter.getExtension(theFile);
 		    // 2002-07-16 Jaap Branderhorst patch to issue
 		    // 517 issue is: a file should be saved with
@@ -191,8 +192,7 @@ public class ActionSaveGraphics extends UMLAction {
 		    }
 		    // end new code
 				
-		    return doSave(path, name, theFile,
-				  suffix, overwrite);
+		    return doSave(theFile, suffix, overwrite);
 		}
 	    }
 	}
@@ -210,9 +210,13 @@ public class ActionSaveGraphics extends UMLAction {
      * Actually do the saving.
      *
      * @return true if it was successful.
+     * @param theFile is the file that we are writing to
+     * @param suffix is the suffix. Used for deciding what format the file 
+     * shall have.
+     * @param overwrite is true if we are not supposed to warn that we are
+     * replacing an old file.
      */
-    private boolean doSave(String path, String name,
-			   File theFile,
+    private boolean doSave(File theFile,
 			   String suffix, boolean overwrite)
 	throws FileNotFoundException, IOException {
 
@@ -233,12 +237,9 @@ public class ActionSaveGraphics extends UMLAction {
 	    return false;
 	}
 
-	if (!path.endsWith(SEPARATOR)) {
-	    path += SEPARATOR;
-	}
-	pb.showStatus("Writing " + path + name + "...");
+	pb.showStatus("Writing " + theFile + "...");
 	if (theFile.exists() && !overwrite) {
-	    String t = "Overwrite " + path + name;
+	    String t = "Overwrite " + theFile;
 	    int response =
 		JOptionPane.showConfirmDialog(pb, t, t,
 					      JOptionPane.YES_NO_OPTION);
@@ -250,9 +251,33 @@ public class ActionSaveGraphics extends UMLAction {
 	cmd.setStream(fo);
 	cmd.doIt();
 	fo.close();
-	pb.showStatus("Wrote " + path + name);
+	pb.showStatus("Wrote " + theFile);
 	return true;
+    }
 
+
+    /**
+     * Execute this action from the command line.
+     *
+     * @see org.argouml.application.api.CommandLineInterface#doCommand(String)
+     * @param argument is the file name that we save to.
+     * @return true if it is OK.
+     */
+    public boolean doCommand(String argument) {
+	File file = new File(argument);
+	String suffix = SuffixFilter.getExtension(file);
+	if (suffix == null) {
+	    return false;
+	}
+
+	try {
+	    return doSave(file, suffix, true);
+	} catch (FileNotFoundException e) {
+	    cat.error("File not found error when writing.", e);
+	} catch (IOException e) {
+	    cat.error("IO error when writing.", e);
+	}
+	return false;
     }
 } /* end class ActionSaveGraphics */
 

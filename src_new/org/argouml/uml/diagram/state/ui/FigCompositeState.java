@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigCompositeState.java
-// Classes: FigCompositeState
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
@@ -44,9 +39,17 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-/** Class to display graphics for a UML MCompositeState in a diagram. */
 
+/**
+ * Class to display graphics for a UML MCompositeState in a diagram.
+ *
+ * @author jrobbins@ics.uci.edu
+ */
 public class FigCompositeState extends FigState {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat =
 	Logger.getLogger(FigCompositeState.class);
 
@@ -118,7 +121,7 @@ public class FigCompositeState extends FigState {
         Iterator it = figClone.getFigs(null).iterator();
         figClone._bigPort = (FigRect) it.next();
         figClone._cover = (FigRect) it.next();
-        figClone._name = (FigText) it.next();
+        figClone.setNameFig((FigText) it.next());
         figClone._divider = (FigLine) it.next();
         figClone._internal = (FigText) it.next();
         return figClone;

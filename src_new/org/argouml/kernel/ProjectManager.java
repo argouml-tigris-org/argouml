@@ -67,8 +67,8 @@ public final class ProjectManager {
 	"currentProject";
     public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
 
-	/** logger */
-	private static Logger cat = Logger.getLogger(ProjectManager.class);
+    /** logger */
+    private static Logger cat = Logger.getLogger(ProjectManager.class);
 
     /**
      * The singleton instance of this class
@@ -296,7 +296,7 @@ public final class ProjectManager {
             ArgoParser.SINGLETON.setURL(url);
             ArgoParser.SINGLETON.readProject(zis, false);
             p = ArgoParser.SINGLETON.getProject();
-            ArgoParser.SINGLETON.setProject(null);// clear up project refs
+            ArgoParser.SINGLETON.setProject(null); // clear up project refs
 
             zis.close();
 
@@ -382,7 +382,7 @@ public final class ProjectManager {
         throws IOException, ParserConfigurationException, SAXException {
         ArgoParser.SINGLETON.readProject(url);
         Project p = ArgoParser.SINGLETON.getProject();
-            ArgoParser.SINGLETON.setProject(null);// clear up project refs
+	ArgoParser.SINGLETON.setProject(null); // clear up project refs
         p.loadAllMembers();
         p.postLoad();
         return p;
@@ -402,9 +402,9 @@ public final class ProjectManager {
     /**
      * prepare project for gc
      */
-    public void removeProject(Project oldProject){
+    public void removeProject(Project oldProject) {
         
-        if(_currentProject == oldProject){
+        if (_currentProject == oldProject) {
             _currentProject = null;
         }
         
@@ -417,7 +417,6 @@ public final class ProjectManager {
  * @deprecated since 0.15.1. TODO: What is this replaced by?
  */
 class ResetStatsLater implements Runnable {
-	public void run() {
-		Project.resetStats();
-	}
+    public void run() {
+    }
 } /* end class ResetStatsLater */

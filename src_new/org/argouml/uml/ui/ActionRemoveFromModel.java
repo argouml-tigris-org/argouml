@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -63,8 +63,17 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static ActionRemoveFromModel SINGLETON = new ActionRemoveFromModel();
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Create your own action every
+     * time. This will be removed.
+     */
+    public static ActionRemoveFromModel SINGLETON =
+	new ActionRemoveFromModel();
 
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat =
         Logger.getLogger(ActionRemoveFromModel.class);
     
@@ -92,23 +101,21 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             Editor ce = Globals.curEditor();
             Vector figs = ce.getSelectionManager().getFigs();
             size = figs.size();
-        } catch (Exception e) { //cat.error("Error getting number of figs.");
+        } catch (Exception e) {
+	    // Ignore
         }
         if (size > 0)
             return true;
         Object target = TargetManager.getInstance().getTarget();
         if (target instanceof Diagram) { // we cannot delete the last diagram
-            return ProjectManager
-                .getManager()
-                .getCurrentProject()
-                .getDiagrams()
-                .size()
-                > 1;
+            return (ProjectManager.getManager().getCurrentProject()
+		    .getDiagrams().size()
+		    > 1);
         }
         if (org.argouml.model.ModelFacade.isAModel(target)
-            && // we cannot delete the model itself
-	    target.equals(
-			  ProjectManager.getManager().getCurrentProject().getModel())) {
+	    // we cannot delete the model itself
+            && target.equals(ProjectManager.getManager().getCurrentProject()
+			     .getModel())) {
             return false;
         }
         return target != null;
@@ -174,7 +181,8 @@ public class ActionRemoveFromModel extends UMLChangeAction {
 
     /**
      * A utility method that asks the user if he is sure to remove the selected
-     * target. 
+     * target.<p>
+     *
      * @param target
      * @return boolean
      */
@@ -187,26 +195,26 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         } else if (target instanceof UMLDiagram) {
             // lets see if this diagram has some figs on it
             UMLDiagram diagram = (UMLDiagram) target;
-            Vector nodes = diagram.getNodes();
-            Vector edges = diagram.getNodes();
+            Collection nodes = diagram.getNodes(new Vector());
+            Collection edges = diagram.getNodes(new Vector());
             if ((nodes.size() + edges.size()) > 0) {
                 // the diagram contains figs so lets ask the user if
                 // he/she is sure
                 String confirmStr =
-                    MessageFormat.format(
-                            Translator.localize(
-						       "Actions",
-						       "optionpane.remove-from-model-confirm-delete"),
+                    MessageFormat.format(Translator.localize(
+			    "Actions",
+			    "optionpane.remove-from-model-confirm-delete"),
 					 new Object[] {
 					     diagram.getName(), "" 
 					 });
+		String text =
+		    Translator.localize(
+			"Actions",
+			"optionpane.remove-from-model-confirm-delete-title");
                 int response =
-                    JOptionPane.showConfirmDialog(
-						  ProjectBrowser.getInstance(),
+                    JOptionPane.showConfirmDialog(ProjectBrowser.getInstance(),
 						  confirmStr,
-						  Translator.localize(
-								"Actions",
-								"optionpane.remove-from-model-confirm-delete-title"),
+						  text,
 						  JOptionPane.YES_NO_OPTION);
                 sure = (response == JOptionPane.YES_OPTION);
             } else { // no content of diagram
@@ -224,7 +232,8 @@ public class ActionRemoveFromModel extends UMLChangeAction {
 
     /**
      * An utility method that asks the user if he is sure to remove a selected 
-     * modelement.
+     * modelement.<p>
+     *
      * @see ActionRemoveFromModel#sureRemove(Object)
      * @param me
      * @return boolean
@@ -238,19 +247,19 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         boolean doAsk = false;
         String confirmStr = "";
         if (count > 1) {
-            confirmStr
-                += Translator.localize(
-				 "Actions",
-				 "optionpane.remove-from-model-will-remove-from-diagrams");
+            confirmStr +=
+		Translator.localize(
+		    "Actions",
+		    "optionpane.remove-from-model-will-remove-from-diagrams");
             doAsk = true;
         }
 
         Collection beh = ModelFacade.getBehaviors(me);
         if (beh != null && beh.size() > 0) {
-            confirmStr
-                += Translator.localize(
-				 "Actions",
-				 "optionpane.remove-from-model-will-remove-subdiagram");
+            confirmStr +=
+		Translator.localize(
+			"Actions",
+			"optionpane.remove-from-model-will-remove-subdiagram");
             doAsk = true;
         }
 
@@ -261,27 +270,27 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         String name = ModelFacade.getName(me);
         if (name == null || name.equals("")) {
             name =
-            Translator.localize(
-			      "Actions",
-			      "optionpane.remove-from-model-anon-element-name");
+		Translator.localize(
+			"Actions",
+			"optionpane.remove-from-model-anon-element-name");
         }
 
         confirmStr =
             MessageFormat.format(
                     Translator.localize(
-					       "Actions",
-					       "optionpane.remove-from-model-confirm-delete"),
-				 new Object[] {
-				     name, confirmStr 
-				 });
+			    "Actions",
+			    "optionpane.remove-from-model-confirm-delete"),
+		    new Object[] {
+			name, confirmStr 
+		    });
         int response =
             JOptionPane.showConfirmDialog(
-					  pb,
-					  confirmStr,
-					  Translator.localize(
-							"Actions",
-							"optionpane.remove-from-model-confirm-delete-title"),
-					  JOptionPane.YES_NO_OPTION);
+		    pb,
+		    confirmStr,
+		    Translator.localize(
+			"Actions",
+			"optionpane.remove-from-model-confirm-delete-title"),
+		    JOptionPane.YES_NO_OPTION);
 
         return (response == JOptionPane.YES_OPTION);
     }

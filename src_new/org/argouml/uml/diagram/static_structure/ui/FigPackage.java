@@ -60,7 +60,13 @@ import org.tigris.gef.presentation.FigText;
 /** Class to display graphics for a UML package in a class diagram. */
 
 public class FigPackage extends FigNodeModelElement {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = Logger.getLogger(FigPackage.class);
+
+    private static final Logger LOG = Logger.getLogger(FigPackage.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -127,11 +133,11 @@ public class FigPackage extends FigNodeModelElement {
         // when we try to render it, if we find we have a stereotype.
 
         _stereo.setExpandOnly(true);
-        _stereo.setFilled(true);
-        _stereo.setLineWidth(1);
+        getStereotypeFig().setFilled(true);
+        getStereotypeFig().setLineWidth(1);
         _stereo.setEditable(false);
-        _stereo.setHeight(STEREOHEIGHT + 1);
-        _stereo.setVisible(false);
+        getStereotypeFig().setHeight(STEREOHEIGHT + 1);
+        getStereotypeFig().setVisible(false);
 
         // A thin rectangle to overlap the boundary line between stereotype
         // and name. This is just 2 pixels high, and we rely on the line
@@ -155,7 +161,7 @@ public class FigPackage extends FigNodeModelElement {
 
         // add Figs to the FigNode in back-to-front order
         addFig(_bigPort);
-        addFig(_stereo);
+        addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(_stereoLineBlinder);
         addFig(_body);
@@ -190,8 +196,8 @@ public class FigPackage extends FigNodeModelElement {
         FigPackage figClone = (FigPackage) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
         figClone._bigPort = (FigRect) it.next();
-        figClone._stereo = (FigText) it.next();
-        figClone._name = (FigText) it.next();
+        figClone.setStereotypeFig((FigText) it.next());
+        figClone.setNameFig((FigText) it.next());
         figClone._stereoLineBlinder = (FigRect) it.next();
         figClone._body = (FigText) it.next();
         return figClone;
@@ -202,7 +208,7 @@ public class FigPackage extends FigNodeModelElement {
 
     public void setLineColor(Color col) {
         super.setLineColor(col);
-        _stereo.setLineColor(col);
+        getStereotypeFig().setLineColor(col);
         getNameFig().setLineColor(col);
         _body.setLineColor(col);
         _stereoLineBlinder.setLineColor(_stereoLineBlinder.getFillColor());
@@ -213,7 +219,7 @@ public class FigPackage extends FigNodeModelElement {
 
     public void setFillColor(Color col) {
         super.setFillColor(col);
-        _stereo.setFillColor(col);
+        getStereotypeFig().setFillColor(col);
         getNameFig().setFillColor(col);
         _body.setFillColor(col);
         _stereoLineBlinder.setLineColor(col);
@@ -223,7 +229,7 @@ public class FigPackage extends FigNodeModelElement {
     }
 
     public void setFilled(boolean f) {
-        _stereo.setFilled(f);
+        getStereotypeFig().setFilled(f);
         getNameFig().setFilled(f);
         _body.setFilled(f);
     }
@@ -232,7 +238,7 @@ public class FigPackage extends FigNodeModelElement {
     }
 
     public void setLineWidth(int w) {
-        _stereo.setLineWidth(w);
+        getStereotypeFig().setLineWidth(w);
         getNameFig().setLineWidth(w);
         _body.setLineWidth(w);
     }
@@ -268,23 +274,23 @@ public class FigPackage extends FigNodeModelElement {
         if ((stereo == null)
                 || (ModelFacade.getName(stereo) == null)
                 || (ModelFacade.getName(stereo).length() == 0)) {
-            if (_stereo.isVisible()) {
+            if (getStereotypeFig().isVisible()) {
                 _stereoLineBlinder.setVisible(false);
-                _stereo.setVisible(false);
+                getStereotypeFig().setVisible(false);
                 //                rect.y      += STEREOHEIGHT;
                 //                rect.height -= STEREOHEIGHT;
             }
         } else {
             /* we got stereotype */
-            _stereo.setText(Notation.generateStereotype(this, stereo));
+            setStereotype(Notation.generateStereotype(this, stereo));
 
             if (!_showStereotype) {
                 _stereoLineBlinder.setVisible(false);
-                _stereo.setVisible(false);
-            } else if (!_stereo.isVisible()) {
+                getStereotypeFig().setVisible(false);
+            } else if (!getStereotypeFig().isVisible()) {
                 if (_showStereotype) {
                     _stereoLineBlinder.setVisible(true);
-                    _stereo.setVisible(true);
+                    getStereotypeFig().setVisible(true);
 
                     // Only adjust the stereotype height if we are not
                     // newly created. This gets round the problem of
@@ -342,8 +348,10 @@ public class FigPackage extends FigNodeModelElement {
         // If we have a stereotype displayed, then allow some space for that
         // (width and height)
 
-        if (_stereo.isVisible()) {
-            aSize.width = Math.max(aSize.width, _stereo.getMinimumSize().width);
+        if (getStereotypeFig().isVisible()) {
+            aSize.width =
+		Math.max(aSize.width,
+			 getStereotypeFig().getMinimumSize().width);
             aSize.height += STEREOHEIGHT;
         }
         // we want at least some of the package body to be displayed
@@ -409,12 +417,12 @@ public class FigPackage extends FigNodeModelElement {
 
         int currentY = y;
 
-        if (_stereo.isVisible()) {
+        if (getStereotypeFig().isVisible()) {
             currentY += STEREOHEIGHT;
         }
 
         getNameFig().setBounds(x, currentY, newW - indentX, height);
-        _stereo.setBounds(x, y, newW - indentX, STEREOHEIGHT + 1);
+        getStereotypeFig().setBounds(x, y, newW - indentX, STEREOHEIGHT + 1);
         _stereoLineBlinder.setBounds(
 				     x + 1,
 				     y + STEREOHEIGHT,
@@ -460,8 +468,12 @@ public class FigPackage extends FigNodeModelElement {
 						     "isAbstract",
 						     "setAbstract",
 						     mpackage));
-        modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", mpackage));
-        modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", mpackage));
+        modifierMenu.addCheckItem(new ActionModifier("Leaf",
+						     "isLeaf", "isLeaf",
+						     "setLeaf", mpackage));
+        modifierMenu.addCheckItem(new ActionModifier("Root",
+						     "isRoot", "isRoot",
+						     "setRoot", mpackage));
 
         popUpActions.insertElementAt(modifierMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
@@ -529,7 +541,7 @@ public class FigPackage extends FigNodeModelElement {
 
 			    if (lDiagram.getName() != null
 				&& lDiagram.getName().startsWith(
-								 lsDefaultName)) {
+				        lsDefaultName)) {
 				me.consume();
 				super.mouseClicked(me);
 				TargetManager.getInstance().setTarget(lDiagram);
@@ -564,10 +576,10 @@ public class FigPackage extends FigNodeModelElement {
 				+ "?";
 			    int option =
 				JOptionPane.showConfirmDialog(
-							      null,
-							      dialogText,
-							      "Add new class diagram?",
-							      JOptionPane.YES_NO_OPTION);
+					null,
+					dialogText,
+					"Add new class diagram?",
+					JOptionPane.YES_NO_OPTION);
 			    if (option == JOptionPane.YES_OPTION) {
 				ArgoDiagram lNew =
 				    new UMLClassDiagram(lNS);
@@ -581,7 +593,7 @@ public class FigPackage extends FigNodeModelElement {
 				lNew.setName(diagramName);
 			    }
 			} catch (Exception ex) {
-			    cat.error(ex);
+			    LOG.error(ex);
 			}
 
 			return;
