@@ -53,7 +53,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
     addCaption("Namespace:",3,0,0);
     addField(namespaceScroll,3,0,0);
 
-    addCaption("Extends:",4,0,0);
+    addCaption("Specializes:",4,0,0);
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
@@ -66,7 +66,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
     modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,5,0,1);
 
-    addCaption("Derived:",0,1,1);
+    addCaption("Generalizes:",0,1,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);

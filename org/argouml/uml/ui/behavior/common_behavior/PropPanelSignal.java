@@ -23,7 +23,12 @@
 
 
 
+// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
+// labels "Generalizes:" and "Specializes:" for inheritance.
+
+
 package org.argouml.uml.ui.behavior.common_behavior;
+
 import java.awt.*;
 import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -56,7 +61,7 @@ public class PropPanelSignal extends PropPanelClassifier {
         addCaption("Stereotype:",2,0,0);
         addField(stereotypeBox,2,0,0);
 
-        addCaption("Extends:",3,0,0);
+        addCaption("Specializes:",3,0,0);
 	addField(extendsScroll,3,0,0);
 
         addCaption("Implements:",4,0,0);
@@ -68,7 +73,7 @@ public class PropPanelSignal extends PropPanelClassifier {
         addCaption("Namespace:",6,0,0);
         addField(namespaceScroll,6,0,0);
 
-        addCaption("Derived:",7,0,1);
+        addCaption("Generalizes:",7,0,1);
         addField(derivedScroll,7,0,1);
 
         addCaption("Operations:",0,1,0.33);

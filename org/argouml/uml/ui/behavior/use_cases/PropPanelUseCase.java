@@ -26,6 +26,10 @@
 // Original Author: your email address here
 // $Id$
 
+// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
+// labels "Generalizes:" for inheritance (needs Specializes some time).
+
+
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.uml.ui.*;
@@ -70,7 +74,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
     //     but since extension has a specific meaning in use cases a
     //     different term had to be used
     //
-    addCaption("Generalizations:",0,1,0);
+    addCaption("Generalizes:",0,1,0);
     addField(extendsScroll,0,1,0);
 
     addCaption("Extends:",1,1,0);

@@ -27,6 +27,10 @@
 // Original Author: 5eichler@informatik.uni-hamburg.de
 // $Id$
 
+// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
+// labels "Generalizes:" and "Specializes:" for inheritance.
+
+
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.*;
@@ -47,7 +51,7 @@ public class PropPanelNode extends PropPanelClassifier {
     addCaption("Name:",1,0,0);
     addField(nameField,1,0,0);
 
-    addCaption("Extends:",2,0,0);
+    addCaption("Specializes:",2,0,0);
     addField(extendsScroll,2,0,0);
 
     addCaption("Modifiers:",3,0,0);
@@ -60,7 +64,7 @@ public class PropPanelNode extends PropPanelClassifier {
     addCaption("Namespace:",4,0,0);
    addField(namespaceScroll,4,0,0);
 
-    addCaption("Derived:",5,0,1);
+    addCaption("Generalizes:",5,0,1);
     addField(derivedScroll,5,0,1);
 
     addCaption("Components:",0,1,1);
