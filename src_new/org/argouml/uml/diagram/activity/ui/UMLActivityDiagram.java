@@ -38,9 +38,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
-import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.state.ui.ActionCreatePseudostate;
-import org.argouml.uml.diagram.state.ui.StateDiagramRenderer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
 import org.tigris.gef.base.LayerPerspective;
@@ -229,7 +227,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         }
         LayerPerspective lay =
             new LayerPerspectiveMutable(ModelFacade.getName(m), gm);
-        StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
+        ActivityDiagramRenderer rend = new ActivityDiagramRenderer();  
         lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);
 
@@ -241,7 +239,8 @@ public class UMLActivityDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
     public Object getOwner() {
-        StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
+        ActivityDiagramGraphModel gm = (ActivityDiagramGraphModel) 
+                                    getGraphModel();
         Object sm = gm.getMachine();
         if (sm != null)
             return sm;
@@ -252,7 +251,7 @@ public class UMLActivityDiagram extends UMLDiagram {
      * @return the statemachine
      */
     public Object getStateMachine() {
-        return ((StateDiagramGraphModel) getGraphModel()).getMachine();
+        return ((ActivityDiagramGraphModel) getGraphModel()).getMachine();
     }
 
     /**
@@ -263,7 +262,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         if (!ModelFacade.isAStateMachine(sm))
             throw new IllegalArgumentException();
 
-        ((StateDiagramGraphModel) getGraphModel()).setMachine(sm);
+        ((ActivityDiagramGraphModel) getGraphModel()).setMachine(sm);
     }
 
     /**
@@ -285,10 +284,10 @@ public class UMLActivityDiagram extends UMLDiagram {
 	    actionJoinPseudoState,
 	    //_actionNewSwimlane,
 	    null,
-	    /*actionCallState, /* uncomment this ...
+	    /*actionCallState, // uncomment these ...
             actionObjectFlowState,
-            actionSubactivityState,
-            null, */
+            actionSubactivityState,*/
+            null, 
 	    _actionComment,
             _actionCommentLink
 	};
