@@ -17,10 +17,16 @@ public abstract class LineLayout implements LayoutManager2 {
     final static public Orientation HORIZONTAL = Horizontal.getInstance();
     final static public Orientation VERTICAL = Vertical.getInstance();
 
-    protected Orientation orientation;
-
+    protected Orientation _orientation;
+    protected int _gap = 0;
+    
     public LineLayout(Orientation orientation) {
-        this.orientation = orientation;
+        _orientation = orientation;
+    }
+
+    public LineLayout(Orientation orientation, int gap) {
+        _orientation = orientation;
+        _gap = gap;
     }
 
     public void addLayoutComponent(String name, Component comp) {
@@ -35,12 +41,14 @@ public abstract class LineLayout implements LayoutManager2 {
     public Dimension preferredLayoutSize(Container parent) {
         int nComps = parent.getComponentCount();
         Dimension preferredSize = new Dimension(0,0);
+        int gap = 0;
         for (int i = 0 ; i < nComps ; i++) {
             Component comp = parent.getComponent(i);
             if (comp.isVisible()) {
-                preferredSize = orientation.addLength(preferredSize, comp.getPreferredSize());
-                if (orientation.getBreadth(comp.getPreferredSize()) > orientation.getBreadth(preferredSize)) {
-                    preferredSize = orientation.setBreadth(preferredSize, comp.getPreferredSize());
+                preferredSize = _orientation.addLength(preferredSize, _orientation.getLength(comp.getPreferredSize()) + gap);
+                gap = _gap;
+                if (_orientation.getBreadth(comp.getPreferredSize()) > _orientation.getBreadth(preferredSize)) {
+                    preferredSize = _orientation.setBreadth(preferredSize, comp.getPreferredSize());
                 }
             }
         }
@@ -51,12 +59,14 @@ public abstract class LineLayout implements LayoutManager2 {
     public Dimension minimumLayoutSize(Container parent) {
         int nComps = parent.getComponentCount();
         Dimension minimumSize = new Dimension(0,0);
+        int gap = 0;
         for (int i = 0 ; i < nComps ; i++) {
             Component comp = parent.getComponent(i);
             if (comp.isVisible()) {
-                minimumSize = orientation.addLength(minimumSize, orientation.getLength(comp.getMinimumSize()));
-                if (orientation.getBreadth(comp.getMinimumSize()) > orientation.getBreadth(minimumSize)) {
-                    minimumSize = orientation.setBreadth(minimumSize, comp.getMinimumSize());
+                minimumSize = _orientation.addLength(minimumSize, _orientation.getLength(comp.getMinimumSize()) + gap);
+                gap = _gap;
+                if (_orientation.getBreadth(comp.getMinimumSize()) > _orientation.getBreadth(minimumSize)) {
+                    minimumSize = _orientation.setBreadth(minimumSize, comp.getMinimumSize());
                 }
             }
         }
@@ -67,13 +77,15 @@ public abstract class LineLayout implements LayoutManager2 {
     public Dimension maximumLayoutSize(Container parent) {
         int nComps = parent.getComponentCount();
         Dimension maximumSize = new Dimension(Integer.MAX_VALUE,Integer.MAX_VALUE);
+        int gap = 0;
         for (int i = 0 ; i < nComps ; i++) {
             Component comp = parent.getComponent(i);
             Dimension componentMaxSize = comp.getMaximumSize();
             if (comp.isVisible() && componentMaxSize != null) {
-                maximumSize = orientation.addLength(maximumSize, orientation.getLength(componentMaxSize));
-                if (orientation.getBreadth(componentMaxSize) < orientation.getBreadth(maximumSize)) {
-                    maximumSize = orientation.setBreadth(maximumSize, componentMaxSize);
+                maximumSize = _orientation.addLength(maximumSize, _orientation.getLength(componentMaxSize) + gap);
+                gap = _gap;
+                if (_orientation.getBreadth(componentMaxSize) < _orientation.getBreadth(maximumSize)) {
+                    maximumSize = _orientation.setBreadth(maximumSize, componentMaxSize);
                 }
             }
         }

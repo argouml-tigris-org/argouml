@@ -60,8 +60,16 @@ public class SerialLayout extends LineLayout {
     public SerialLayout(Orientation orientation, String position, int direction) {
         this(orientation, position, direction, TOP);
     }
+    
     public SerialLayout(Orientation orientation, String position, int direction, int alignment) {
         super(orientation);
+        this.position = position;
+        this.direction = direction;
+        this.alignment = alignment;
+    }
+
+    public SerialLayout(Orientation orientation, String position, int direction, int alignment, int gap) {
+        super(orientation, gap);
         this.position = position;
         this.direction = direction;
         this.alignment = alignment;
@@ -71,39 +79,45 @@ public class SerialLayout extends LineLayout {
         Insets insets = parent.getInsets();
 
         Point loc;
-        int preferredBreadth = orientation.getBreadth(parent.getPreferredSize());
+        int preferredBreadth = _orientation.getBreadth(parent.getPreferredSize());
         if (direction == LEFTTORIGHT) {
-            loc = new Point(insets.left, insets.top);
+            if (position.equals(EAST)) {
+                loc = new Point(parent.getWidth() - (insets.right + preferredLayoutSize(parent).width), insets.top);
+            } else {
+                loc = new Point(insets.left, insets.top);
+            }
             int nComps = parent.getComponentCount();
             for (int i = 0 ; i < nComps ; i++) {
                 Component comp = parent.getComponent(i);
                 if (comp != null && comp.isVisible()) {
                     Dimension size = comp.getPreferredSize();
                     if (alignment == FILL) {
-                        orientation.setBreadth(size, preferredBreadth);
+                        _orientation.setBreadth(size, preferredBreadth);
                     }
                     comp.setSize(size);
                     comp.setLocation(loc);
-                    loc = orientation.addToPosition(loc, comp);
+                    loc = _orientation.addToPosition(loc, comp);
+                    loc = _orientation.addToPosition(loc, _gap);
                 }
             }
         }
         else {
-            int lastUsablePosition = orientation.getLastUsablePosition(parent);
-            int firstUsableOffset = orientation.getFirstUsableOffset(parent);
-            loc = orientation.newPoint(lastUsablePosition, firstUsableOffset);
+            int lastUsablePosition = _orientation.getLastUsablePosition(parent);
+            int firstUsableOffset = _orientation.getFirstUsableOffset(parent);
+            loc = _orientation.newPoint(lastUsablePosition, firstUsableOffset);
 
             int nComps = parent.getComponentCount();
             for (int i = 0 ; i < nComps ; i++) {
                 Component comp = parent.getComponent(i);
                 if (comp != null && comp.isVisible()) {
-                    loc = orientation.subtractFromPosition(loc, comp);
+                    loc = _orientation.subtractFromPosition(loc, comp);
                     Dimension size = comp.getPreferredSize();
                     if (alignment == FILL) {
-                        orientation.setBreadth(size, preferredBreadth);
+                        _orientation.setBreadth(size, preferredBreadth);
                     }
                     comp.setSize(size);
                     comp.setLocation(loc);
+                    loc = _orientation.subtractFromPosition(loc, _gap);
                 }
             }
         }

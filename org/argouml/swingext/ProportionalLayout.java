@@ -49,7 +49,7 @@ public class ProportionalLayout extends LineLayout {
         double totalProportionalLength = 0;
         int totalLength;
 
-        totalLength = orientation.getLengthMinusInsets(parent);
+        totalLength = _orientation.getLengthMinusInsets(parent);
 
         Enumeration enumKeys = componentTable.keys();
         while (enumKeys.hasMoreElements()) {
@@ -60,7 +60,7 @@ public class ProportionalLayout extends LineLayout {
                     totalProportionalLength += Double.parseDouble(size);
                 }
                 else {
-                    totalLength -= orientation.getLength(comp);
+                    totalLength -= _orientation.getLength(comp);
                 }
             }
         }
@@ -78,11 +78,11 @@ public class ProportionalLayout extends LineLayout {
                     if (length < 0) length = 0;
                 }
                 else {
-                    length = orientation.getLength(comp);
+                    length = _orientation.getLength(comp);
                 }
-                comp.setSize(orientation.setLength(parent.getSize(), length));
+                comp.setSize(_orientation.setLength(parent.getSize(), length));
                 comp.setLocation(loc);
-                loc = orientation.addToPosition(loc, length);
+                loc = _orientation.addToPosition(loc, length);
             }
         }
     }
