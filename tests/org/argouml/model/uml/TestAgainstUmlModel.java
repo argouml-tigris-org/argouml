@@ -90,7 +90,7 @@ public class TestAgainstUmlModel extends TestCase {
      */
     private static void printInconclusiveMessage(String message)
     {
-	System.out.println("warning: INCONCLUSIVE TEST!");
+	System.out.println("WARNING: INCONCLUSIVE TEST!");
 	System.out.println(message);
 	System.out.println("You will have to fetch the model using the command"
 			   + " ant junit-get-model");
