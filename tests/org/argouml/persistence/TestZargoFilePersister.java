@@ -68,11 +68,10 @@ public class TestZargoFilePersister extends TestCase {
      * @param filename of the project file to load
      * @throws OpenException if something goes wrong.
      */
-    private Project doLoad(String filename)
-            throws OpenException {
+    private Project doLoad(String filename) throws OpenException {
         URL url = TestZargoFilePersister.class.getResource(filename);
         ZargoFilePersister persister = new ZargoFilePersister();
-        Project p = persister.doLoad(new File(url.getFile()), null, null);
+        Project p = persister.doLoad(new File(url.getFile()));
         assertTrue("Load Status for " + filename + ".",
                LastLoadInfo.getInstance().getLastLoadStatus());
         return p;
@@ -116,7 +115,7 @@ public class TestZargoFilePersister extends TestCase {
         try {
             file = new File("/testmodels/Garbage.zargo");
             ZargoFilePersister persister = new ZargoFilePersister();
-            persister.doLoad(file, null, null);
+            persister.doLoad(file);
             assertTrue("Load Status",
                     !LastLoadInfo.getInstance().getLastLoadStatus());
         } catch (OpenException io) {
