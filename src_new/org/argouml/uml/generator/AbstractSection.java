@@ -55,20 +55,23 @@ public abstract class AbstractSection
     }
 
     /**
-     * @param id
-     * @param indent
+     * @param id the string to generate
+     * @param indent the current indentation
      * @return
      */
     public static String generate(String id, String indent) {
         return "";
     }
 
-    // write todo:
-    // check if sections are not used within the file and put them as comments
-    // at the end of the file.
-    // hint: use a second Map to compare with the used keys
-    // =======================================================================
-
+    /**
+     * write TODO: Check if sections are not used within the file and 
+     * put them as comments at the end of the file.
+     * Hint: use a second Map to compare with the used keys.
+     * 
+    * @param filename the file name
+     * @param indent the current indentation
+     * @param outputLostSections true if lost sections are to be written
+     */
     public void write(String filename, String indent,
 		      boolean outputLostSections)
     {

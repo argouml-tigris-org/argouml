@@ -71,6 +71,9 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
         list = null;
     }
     
+    /**
+     * Test addElementResidence().
+     */
     public void testElementAdded() {
         MElementResidence res = new MElementResidenceImpl();
         elem.addElementResidence(res);
@@ -78,6 +81,9 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
         assertTrue(list.getElementAt(0) == res);
     }
     
+    /**
+     * Test removeElementResidence().
+     */
     public void testElementRemoved() {
         MElementResidence res = new MElementResidenceImpl();
         elem.addElementResidence(res);

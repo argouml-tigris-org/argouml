@@ -51,6 +51,9 @@ public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
         super(arg0);
     }
     
+    /**
+     * Test doClick() of a public button.
+     */
     public void testDoPublicClick() {
 	if (group == null) return; // Inconclusive
         JRadioButton button = group.getPublicButton();
@@ -59,6 +62,9 @@ public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
         assertEquals(group.getSelection(), button.getModel());
     }
     
+    /**
+     * Test doClick() of a protected button.
+     */
     public void testDoProtectedClick() {
 	if (group == null) return; // Inconclusive
         JRadioButton button = group.getProtectedButton();
@@ -67,6 +73,9 @@ public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
         assertEquals(group.getSelection(), button.getModel());
     }    
     
+    /**
+     * Test doClick() of a private button.
+     */
     public void testDoPrivateClick() {
 	if (group == null) return; // Inconclusive
         JRadioButton button = group.getPrivateButton();
@@ -75,18 +84,27 @@ public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
         assertEquals(group.getSelection(), button.getModel());
     }   
     
+    /**
+     * Test setting the visibility to public.
+     */
     public void testVisibilityPublic() {
 	if (group == null) return; // Inconclusive
         elem.setVisibility(MVisibilityKind.PUBLIC);
         assertEquals(group.getSelection(), group.getPublicButton().getModel());
     }
     
+    /**
+     * Test setting the visibility to private.
+     */
     public void testVisibilityPrivate() {
 	if (group == null) return; // Inconclusive
         elem.setVisibility(MVisibilityKind.PRIVATE);
         assertEquals(group.getSelection(), group.getPrivateButton().getModel());
     }
     
+    /**
+     * Test setting the visibility to protected.
+     */
     public void testVisibilityProtected() {
 	if (group == null) return; // Inconclusive
         elem.setVisibility(MVisibilityKind.PROTECTED);

@@ -89,6 +89,9 @@ public class TestUMLExtendExtensionComboBoxModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Test setup.
+     */
     public void testSetUp() {
         assertEquals(10, model.getSize());
         assertTrue(model.contains(extensions[5]));
@@ -96,16 +99,25 @@ public class TestUMLExtendExtensionComboBoxModel extends TestCase {
         assertTrue(model.contains(extensions[9]));
     }
     
+    /**
+     * Test setExtension().
+     */
     public void testSetBase() {
         elem.setExtension(extensions[0]);
         assertTrue(model.getSelectedItem() == extensions[0]);
     }
     
+    /**
+     * Test setExtension() with null argument.
+     */
     public void testSetBaseToNull() {
         elem.setExtension(null);
         assertNull(model.getSelectedItem());
     }
     
+    /**
+     * Test delete().
+     */
     public void testRemoveBase() {
         UmlFactory.getFactory().delete(extensions[9]);
         assertEquals(9, model.getSize());

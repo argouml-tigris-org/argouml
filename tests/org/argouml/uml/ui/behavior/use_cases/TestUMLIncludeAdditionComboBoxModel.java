@@ -91,6 +91,9 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Test setup.
+     */
     public void testSetUp() {
         assertEquals(10, model.getSize());
         assertTrue(model.contains(additions[5]));
@@ -98,17 +101,26 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
         assertTrue(model.contains(additions[9]));
     }
     
+    /**
+     * Test setBase().
+     */
     public void testSetBase() {
         // NSUML has base and addition for includes mixed up. We mix it back.
         elem.setBase(additions[0]);
         assertTrue(model.getSelectedItem() == additions[0]);
     }
     
+    /**
+     * Test setAddition() with null argument.
+     */
     public void testSetBaseToNull() {
         elem.setAddition(null);
         assertNull(model.getSelectedItem());
     }
     
+    /**
+     * Test deletion.
+     */
     public void testRemoveBase() {
         UmlFactory.getFactory().delete(additions[9]);
         assertEquals(9, model.getSize());

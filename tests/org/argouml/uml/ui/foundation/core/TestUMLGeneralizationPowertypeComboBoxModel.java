@@ -92,22 +92,34 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Test setup.
+     */
     public void testSetUp() {
         assertTrue(model.contains(types[5]));
         assertTrue(model.contains(types[0]));
         assertTrue(model.contains(types[9]));
     }
     
+    /**
+     * Test setPowertype().
+     */
     public void testSetPowertype() {
         elem.setPowertype(types[0]);
         assertTrue(model.getSelectedItem() == types[0]);
     }
     
+    /**
+     * Test setPowertype() with null argument.
+     */
     public void testSetPowertypeToNull() {
         elem.setPowertype(null);
         assertNull(model.getSelectedItem());
     }
     
+    /**
+     * Test deletion.
+     */
     public void testRemovePowertype() {
         UmlFactory.getFactory().delete(types[9]);
         assertTrue(!model.contains(types[9]));

@@ -28,16 +28,16 @@
  * Created on 24. Februar 2002, 15:30
  */
 
-/**
- *
- *Reading and writing preserved sections from the code
- *
- */
+
 package org.argouml.language.cpp.generator;
 
 import org.argouml.uml.generator.AbstractSection;
 
-
+/**
+*
+*Reading and writing preserved sections from the code
+*
+*/
 public class Section extends AbstractSection {
 
     /**

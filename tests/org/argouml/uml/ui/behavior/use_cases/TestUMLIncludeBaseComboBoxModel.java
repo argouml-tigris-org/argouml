@@ -93,6 +93,9 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Test setup.
+     */
     public void testSetUp() {
         assertEquals(10, model.getSize());
         assertTrue(model.contains(bases[5]));
@@ -100,17 +103,26 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
         assertTrue(model.contains(bases[9]));
     }
     
+    /**
+     * Test setBase().
+     */
     public void testSetBase() {
         ModelFacade.setBase(elem, bases[0]);
         //elem.setBase(bases[0]);
         assertTrue(model.getSelectedItem() == bases[0]);
     }
     
+    /**
+     * Test setBase() with null argument.
+     */
     public void testSetBaseToNull() {
         elem.setBase(null);
         assertNull(model.getSelectedItem());
     }
     
+    /**
+     * Test deletion.
+     */
     public void testRemoveBase() {
         UmlFactory.getFactory().delete(bases[9]);
         assertEquals(9, model.getSize());

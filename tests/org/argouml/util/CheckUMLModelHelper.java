@@ -69,7 +69,7 @@ public class CheckUMLModelHelper {
 
 	// Call methods that exists for all objects and that always return
 	// something meaningfull.
-	tc.assertTrue("toString() corrupt in " + c, 
+	TestCase.assertTrue("toString() corrupt in " + c, 
 		      mo.toString() instanceof String);
  
 	UmlFactory.getFactory().delete(mo);
@@ -77,7 +77,7 @@ public class CheckUMLModelHelper {
 	WeakReference wo = new WeakReference(mo);
 	mo = null;
 	System.gc();
-	tc.assertTrue("Could not reclaim " + c, wo.get() == null);
+	TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);
     }
 
     /**
@@ -98,12 +98,12 @@ public class CheckUMLModelHelper {
 
 	// Call methods that exists for all objects and that always return
 	// something meaningfull.
-	tc.assertTrue("toString() corrupt in " + c, 
+	TestCase.assertTrue("toString() corrupt in " + c, 
 		      mo.toString() instanceof String);
-	tc.assertTrue("getUMLClassName() corrupt in " + c, 
+	TestCase.assertTrue("getUMLClassName() corrupt in " + c, 
 		      mo.getUMLClassName() instanceof String);
 
-	tc.assertTrue("getUMLClassName() different from expected in " + c, 
+	TestCase.assertTrue("getUMLClassName() different from expected in " + c, 
 		      name.equals(mo.getUMLClassName()));
 
 	UmlFactory.getFactory().delete(mo);
@@ -111,7 +111,7 @@ public class CheckUMLModelHelper {
 	WeakReference wo = new WeakReference(mo);
 	mo = null;
 	System.gc();
-	tc.assertTrue("Could not reclaim " + c, wo.get() == null);
+	TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);
     }
 
     public static void createAndRelease(TestCase tc,

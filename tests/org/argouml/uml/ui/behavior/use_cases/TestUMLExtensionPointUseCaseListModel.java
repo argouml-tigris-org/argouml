@@ -74,6 +74,9 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Test setUseCase().
+     */
     public void testSetUseCase() {
         MUseCase usecase = UseCasesFactory.getFactory().createUseCase();
         elem.setUseCase(usecase);
@@ -81,6 +84,9 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
         assertEquals(usecase, model.getElementAt(0));
     }
     
+    /**
+     * Test setUseCase() with null argument.
+     */
     public void testRemoveUseCase() {
         MUseCase usecase = UseCasesFactory.getFactory().createUseCase();
         elem.setUseCase(usecase);

@@ -45,6 +45,8 @@ public class TestUMLModelElementNamespaceListModel extends TestCase {
     
     /**
      * Constructor for TestUMLModelElementNamespaceListModel.
+     *
+     * @param arg0 the name of the test.
      */
     public TestUMLModelElementNamespaceListModel(String arg0) {
         super(arg0);
@@ -83,6 +85,9 @@ public class TestUMLModelElementNamespaceListModel extends TestCase {
         assertEquals(ns, model.getElementAt(0));
     }
     
+    /**
+     * Test removing a namespace.
+     */
     public void testRemoveNamespace() {
         MNamespace ns = CoreFactory.getFactory().createNamespace();
         elem.setNamespace(ns);

@@ -92,22 +92,34 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Test setup.
+     */
     public void testSetUp() {
         assertTrue(model.contains(stereotypes[5]));
         assertTrue(model.contains(stereotypes[0]));
         assertTrue(model.contains(stereotypes[9]));
     }
     
+    /**
+     * Test setStereotype().
+     */
     public void testSetBase() {
         elem.setStereotype(stereotypes[0]);
         assertTrue(model.getSelectedItem() == stereotypes[0]);
     }
     
+    /**
+     * Test setStereotype() with null argument.
+     */
     public void testSetBaseToNull() {
         elem.setStereotype(null);
         assertNull(model.getSelectedItem());
     }
     
+    /**
+     * Test deletion.
+     */
     public void testRemoveBase() {
         UmlFactory.getFactory().delete(stereotypes[9]);
         assertTrue(!model.contains(stereotypes[9]));

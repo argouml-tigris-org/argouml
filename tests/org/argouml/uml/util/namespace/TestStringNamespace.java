@@ -62,6 +62,9 @@ public class TestStringNamespace extends TestCase
         return suite;
     }
 
+    /**
+     * Test getCommonNamespace().
+     */
     public void testGetCommonNamespace()
     {
         StringNamespace sns1 =
@@ -92,6 +95,9 @@ public class TestStringNamespace extends TestCase
 
     }
 
+    /**
+     * Test parse() with a Java token.
+     */
     public void testParseWithJavaToken()
     {
         StringNamespace sns =
@@ -113,6 +119,9 @@ public class TestStringNamespace extends TestCase
         assertTrue(sns.isEmpty());
     }
 
+    /**
+     * Test parse() with a UML token. 
+     */
     public void testParseWithUMLToken()
     {
         StringNamespace sns =
@@ -134,6 +143,9 @@ public class TestStringNamespace extends TestCase
         assertTrue(sns.isEmpty());
     }
 
+    /**
+     * Test parse() with an esoteric token.
+     */
     public void testParseWithEsotericToken()
     {
         StringNamespace sns =

@@ -56,6 +56,11 @@ public class Section {
         mAry.clear();
     }
 
+    /**
+     * @param id the string to generate
+     * @param indent the indentation
+     * @return the generated string
+     */
     public static String generate(String id, String indent) {
         String s = "";
         s += indent + BEGIN + id + END1 + "\n";
@@ -118,6 +123,9 @@ public class Section {
         }
     }
 
+    /**
+     * @param filename the name of the file
+     */
     public void read(String filename) {
         try {
             System.out.println("Start reading");

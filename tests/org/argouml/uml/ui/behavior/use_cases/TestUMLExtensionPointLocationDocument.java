@@ -74,6 +74,11 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
         model = null;
     }
     
+    /**
+     * Test setLocation().
+     * 
+     * @throws BadLocationException when the lacation is refused
+     */
     public void testSetName()
 	throws BadLocationException
     {
@@ -81,6 +86,11 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
 	assertEquals("test", model.getText(0, model.getLength()));
     }
     
+    /**
+     * Test setLocation() with null argument.
+     * 
+     * @throws BadLocationException when the lacation is refused
+     */
     public void testRemoveName()
 	throws BadLocationException
     {
@@ -89,6 +99,11 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
 	assertEquals("", model.getText(0, model.getLength()));
     }
     
+    /**
+     * Test insertString().
+     * 
+     * @throws BadLocationException when the lacation is refused
+     */
     public void testInsertString()
 	throws BadLocationException
     {
@@ -96,6 +111,11 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
         assertEquals("test", elem.getLocation());
     }
     
+    /**
+     * Test remove().
+     * 
+     * @throws BadLocationException when the lacation is refused
+     */
     public void testRemoveString()
 	throws BadLocationException
     {
@@ -104,6 +124,11 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
         assertEquals("", elem.getLocation());
     }
     
+    /**
+     * Test insertString().
+     * 
+     * @throws BadLocationException when the lacation is refused
+     */
     public void testAppendString()
 	throws BadLocationException
     {
@@ -112,6 +137,11 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
         assertEquals("testtest", elem.getLocation());
     }
     
+    /**
+     * Test inserting a string in the middle.
+     * 
+     * @throws BadLocationException when the lacation is refused
+     */
     public void testInsertStringHalfway()
 	throws BadLocationException
     {
@@ -120,6 +150,11 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
         assertEquals("ttestest", elem.getLocation());
     }
     
+    /**
+     * Test remove a string from the middle.
+     * 
+     * @throws BadLocationException when the lacation is refused
+     */
     public void testRemoveStringHalfway() 
 	throws BadLocationException
     {

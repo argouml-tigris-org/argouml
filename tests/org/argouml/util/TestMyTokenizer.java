@@ -38,12 +38,15 @@ public class TestMyTokenizer extends TestCase {
     /**
      * The constructor.
      * 
-     * @param str
+     * @param str the name of the test.
      */
     public TestMyTokenizer(String str) {
 	super(str);
     }
 
+    /**
+     * Test the constructors.
+     */
     public void testConstructors() {
 	Vector seps = new Vector();
 	seps.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
@@ -269,6 +272,9 @@ public class TestMyTokenizer extends TestCase {
 	checkConstr(str7, delim7, res7dot6, seps);
     }
 
+    /**
+     * Test putToken().
+     */
     public void testPutToken() {
 	MyTokenizer st = new MyTokenizer("Hello old friend", " ");
 	int oidx;
@@ -309,6 +315,9 @@ public class TestMyTokenizer extends TestCase {
 	}
     }
 
+    /**
+     * Test lineseparators.
+     */
     public void testLineSeparator() {
 	MyTokenizer st = new MyTokenizer("str1\nstr2\r\nstr3\rstr4",
 					 "",

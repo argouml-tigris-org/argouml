@@ -72,8 +72,8 @@ public class GeneratorDisplay extends Generator2 {
     }
 
     /**
-     * @param o
-     * @return 
+     * @param o the object to be generated
+     * @return the generated string
      */
     public static String Generate(Object o) {
         return singleton.generate(o);
@@ -487,7 +487,7 @@ public class GeneratorDisplay extends Generator2 {
         } else if (kind == ModelFacade.INOUT_PARAMETERDIRECTIONKIND) {
             s.append("inout");
         } else if (kind == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
-            // return nothing
+            ;// return nothing
         } else if (kind == ModelFacade.OUT_PARAMETERDIRECTIONKIND) {
             s.append("out");
         }
@@ -801,7 +801,7 @@ public class GeneratorDisplay extends Generator2 {
      * @param impl 
      * @return a string representing the g.
      */
-    public String generateGeneralization(
+    private String generateGeneralization(
         Collection generalizations,
         boolean impl) {
         Collection classes = new ArrayList();

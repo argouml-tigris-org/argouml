@@ -32,15 +32,12 @@ import java.net.MalformedURLException;
 import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectFilePersister;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.IllegalFormatException;
 import org.argouml.kernel.XmiFilePersister;
-import org.argouml.kernel.ZargoFilePersister;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
-import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MOperation;
 
 /**
@@ -65,10 +62,10 @@ public class TestXMIReader extends TestCase {
      * our dear friends of NSUML. However you can use it to test things quite
      * easily :)
      *
-     * @throws IOException
-     * @throws MalformedURLException
-     * @throws IllegalFormatException
-     * @throws Exception
+     * @throws IOException when there is an file access problem 
+     * @throws MalformedURLException when the URL is wrong
+     * @throws IllegalFormatException when the format is incorrect
+     * @throws Exception any other exception
      */
     public void testReadReturnParameter()
         throws IOException, 
