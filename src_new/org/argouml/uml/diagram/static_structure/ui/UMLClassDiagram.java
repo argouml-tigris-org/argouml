@@ -43,6 +43,7 @@ import org.argouml.swingext.Toolbox;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.ui.ActionAddAssociation;
 import org.argouml.uml.ui.ActionAddAttribute;
 import org.argouml.uml.ui.ActionAddNote;
 import org.argouml.uml.ui.ActionAddOperation;
@@ -64,6 +65,7 @@ import ru.novosoft.uml.foundation.core.MInterface;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MPermission;
 import ru.novosoft.uml.foundation.core.MUsage;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.model_management.MPackage;
 
 public class UMLClassDiagram extends UMLDiagram {
@@ -92,15 +94,12 @@ public class UMLClassDiagram extends UMLDiagram {
 
     protected static Action _actionPackage = new CmdCreateNode(MPackage.class, "Package");
 
-    // Bob Tarling
-    // How do I change these to create associations with
-    // the required aggregation and navigability?
-    protected static Action _actionAssociation = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Association");
-    protected static Action _actionAggregation = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Aggregation");
-    protected static Action _actionComposition = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "Composition");
-    protected static Action _actionUniAssociation = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "UniAssociation");
-    protected static Action _actionUniAggregation = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "UniAggregation");
-    protected static Action _actionUniComposition = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAssociation.class, "UniComposition");
+    protected static Action _actionAssociation = new ActionAddAssociation(MAggregationKind.NONE, false, "Association");
+    protected static Action _actionAggregation = new ActionAddAssociation(MAggregationKind.AGGREGATE, false, "Aggregation");
+    protected static Action _actionComposition = new ActionAddAssociation(MAggregationKind.COMPOSITE, false, "Composition");
+    protected static Action _actionUniAssociation = new ActionAddAssociation(MAggregationKind.NONE, true, "UniAssociation");
+    protected static Action _actionUniAggregation = new ActionAddAssociation(MAggregationKind.AGGREGATE, true, "UniAggregation");
+    protected static Action _actionUniComposition = new ActionAddAssociation(MAggregationKind.COMPOSITE, true, "UniComposition");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -154,26 +153,8 @@ public class UMLClassDiagram extends UMLDiagram {
 
         _toolBar.add(_actionPackage);
         _toolBar.add(_actionClass);
-        final JButton associationButton = _toolBar.add(_actionAssociation);
 
-        /*
-        // Bob Tarling - uncomment this block for toolbox demo
-        // Start of code to make drop down toolbox
-        
-        ImageIcon dropDownIcon =
-            ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("DropDown", "DropDown");
-
-        Toolbox dropDownToolBox = new Toolbox(dropDownIcon, associationButton, 0, 2);
-        dropDownToolBox.add(_actionAssociation);
-        dropDownToolBox.add(_actionUniAssociation);
-        dropDownToolBox.add(_actionAggregation);
-        dropDownToolBox.add(_actionUniAggregation);
-        dropDownToolBox.add(_actionComposition);
-        dropDownToolBox.add(_actionUniComposition);
-        _toolBar.add(dropDownToolBox);
-        
-        // End of code to make drop down toolbox
-        */
+        _toolBar.add(buildAssociationToolbox(_toolBar.add(_actionAssociation)));
         
         _toolBar.add(_actionDepend);
         _toolBar.add(_actionPermission);
@@ -209,5 +190,18 @@ public class UMLClassDiagram extends UMLDiagram {
 
         _toolBar.add(_diagramName.getJComponent());
     }
-    
+
+    private Toolbox buildAssociationToolbox(JButton associationButton) {
+        ImageIcon dropDownIcon =
+            ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("DropDown", "DropDown");
+
+        Toolbox dropDownToolBox = new Toolbox(dropDownIcon, associationButton, 0, 2);
+        dropDownToolBox.add(_actionAssociation);
+        dropDownToolBox.add(_actionUniAssociation);
+        dropDownToolBox.add(_actionAggregation);
+        dropDownToolBox.add(_actionUniAggregation);
+        dropDownToolBox.add(_actionComposition);
+        dropDownToolBox.add(_actionUniComposition);
+        return dropDownToolBox;
+    }
 } /* end class UMLClassDiagram */

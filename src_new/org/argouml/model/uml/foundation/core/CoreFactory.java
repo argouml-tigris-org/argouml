@@ -404,67 +404,106 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		return modelElement;
 	}
 
-	/**
-	 * Builds a default binary association with two default association ends.
-	 * @param c1 The first classifier to connect to
-	 * @param nav1 The navigability of the Associaton end
-	 * @param c2 The second classifier to connect to
-	 * @param nav2 The navigability of the second Associaton end
-	 * @return MAssociation
-	 */
-	public MAssociation buildAssociation(
-		MClassifier c1,
-		boolean nav1,
-		MClassifier c2,
-		boolean nav2) {
-		if (c1 == null || c2 == null)
-			throw new IllegalArgumentException("In buildAssociation: one of the classifiers to be connected is null");
-		MNamespace ns1 = c1.getNamespace();
-		MNamespace ns2 = c2.getNamespace();
-		if (ns1 == null || ns2 == null)
-			throw new IllegalArgumentException("In buildAssociation: one of the classifiers does not belong to a namespace");
-		MAssociation assoc =
-			UmlFactory.getFactory().getCore().createAssociation();
-		assoc.setName("");
-		assoc.setNamespace(
-			CoreHelper.getHelper().getFirstSharedNamespace(ns1, ns2));
-		buildAssociationEnd(
-			assoc,
-			null,
-			c1,
-			null,
-			null,
-			nav1,
-			null,
-			null,
-			null,
-			null,
-			null);
-		buildAssociationEnd(
-			assoc,
-			null,
-			c2,
-			null,
-			null,
-			nav2,
-			null,
-			null,
-			null,
-			null,
-			null);
-		return assoc;
-	}
+    /**
+     * Builds a default binary association with two default association ends.
+     * @param c1 The first classifier to connect to
+     * @param nav1 The navigability of the Associaton end
+     * @param agg1 The aggregation type of the second Associaton end
+     * @param c2 The second classifier to connect to
+     * @param nav2 The navigability of the second Associaton end
+     * @param agg2 The aggregation type of the second Associaton end
+     * @return MAssociation
+     */
+    public MAssociation buildAssociation(
+            MClassifier c1,
+            boolean nav1,
+            MAggregationKind agg1,
+	    MClassifier c2,
+            boolean nav2,
+            MAggregationKind agg2) {
+	if (c1 == null || c2 == null)
+            throw new IllegalArgumentException("In buildAssociation: one of the classifiers to be connected is null");
+	MNamespace ns1 = c1.getNamespace();
+	MNamespace ns2 = c2.getNamespace();
+	if (ns1 == null || ns2 == null)
+            throw new IllegalArgumentException("In buildAssociation: one of the classifiers does not belong to a namespace");
+	MAssociation assoc =
+            UmlFactory.getFactory().getCore().createAssociation();
+	assoc.setName("");
+	assoc.setNamespace(
+            CoreHelper.getHelper().getFirstSharedNamespace(ns1, ns2));
+	buildAssociationEnd(
+            assoc,
+            null,
+            c1,
+            null,
+            null,
+            nav1,
+            null,
+            agg1,
+            null,
+            null,
+            null);
+	buildAssociationEnd(
+            assoc,
+            null,
+            c2,
+            null,
+            null,
+            nav2,
+            null,
+            agg2,
+            null,
+            null,
+            null);
+	return assoc;
+    }
 
-	/**
-	 * Builds a binary associations between two classifiers with default values for the
-	 * association ends and the association itself.
-	 * @param c1 The first classifier to connect
-	 * @param c2 The second classifier to connect
-	 * @return MAssociation
-	 */
-	public MAssociation buildAssociation(MClassifier c1, MClassifier c2) {
-		return buildAssociation(c1, true, c2, true);
-	}
+    /**
+     * Builds a binary associations between two classifiers with default values for the
+     * association ends and the association itself.
+     * @param c1 The first classifier to connect
+     * @param c2 The second classifier to connect
+     * @return MAssociation
+     */
+    public MAssociation buildAssociation(MClassifier c1, MClassifier c2) {
+        return buildAssociation(c1, true, MAggregationKind.NONE,
+                                c2, true, MAggregationKind.NONE);
+    }
+
+    /**
+     * Builds a default binary association with two default association ends.
+     * @param c1 The first classifier to connect to
+     * @param nav1 The navigability of the Associaton end
+     * @param c2 The second classifier to connect to
+     * @param nav2 The navigability of the second Associaton end
+     * @return MAssociation
+     */
+    public MAssociation buildAssociation(
+            MClassifier c1,
+            boolean nav1,
+	    MClassifier c2,
+            boolean nav2) {
+        return buildAssociation(c1, nav1, MAggregationKind.NONE,
+                                c2, nav2, MAggregationKind.NONE);
+    }
+
+    /**
+     * Builds a default binary association with two default association ends.
+     * @param c1 The first classifier to connect to
+     * @param agg1 The aggregation type of the second Associaton end
+     * @param c2 The second classifier to connect to
+     * @param agg2 The aggregation type of the second Associaton end
+     * @return MAssociation
+     */
+    public MAssociation buildAssociation(
+            MClassifier c1,
+            MAggregationKind agg1,
+	    MClassifier c2,
+            MAggregationKind agg2) {
+        return buildAssociation(c1, true, agg1,
+                                c2, true, agg2);
+    }
 
 	/**
 	 * Builds an associationClass between classifier end1 and end2 with a
