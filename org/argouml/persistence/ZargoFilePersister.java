@@ -21,6 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.persistence;
 
 import java.io.BufferedReader;
@@ -31,7 +32,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,21 +51,23 @@ import org.tigris.gef.ocl.TemplateReader;
 
 /**
  * To persist to and from zargo (zipped file) storage.
- * 
+ *
  * @author Bob Tarling
  */
 public class ZargoFilePersister extends UmlFilePersister {
-    
-    private static final Logger LOG = 
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
         Logger.getLogger(ZargoFilePersister.class);
-    
+
     /**
      * This is the old version of the ArgoUML tee file which
      * does not contain the detail of member elements.
      */
     private static final String ARGO_MINI_TEE =
         "/org/argouml/persistence/argo.tee";
-    
+
     /**
      * The constructor.
      */
@@ -78,19 +80,19 @@ public class ZargoFilePersister extends UmlFilePersister {
     public String getExtension() {
         return "zargo";
     }
-    
+
     /**
      * @see org.argouml.persistence.AbstractFilePersister#getDesc()
      */
     protected String getDesc() {
         return "ArgoUML compressed project file";
     }
-    
+
     /**
      * It is being considered to save out individual
      * xmi's from individuals diagrams to make
      * it easier to modularize the output of Argo.
-     * 
+     *
      * @param file The file to write.
      * @param project the project to save
      * @throws SaveException when anything goes wrong
@@ -100,21 +102,21 @@ public class ZargoFilePersister extends UmlFilePersister {
      */
     public void doSave(Project project, File file)
         throws SaveException {
-        
+
         // frank: first backup the existing file to name+"#"
-        File tempFile = new File( file.getAbsolutePath() + "#");
-        File backupFile = new File( file.getAbsolutePath() + "~");
+        File tempFile = new File(file.getAbsolutePath() + "#");
+        File backupFile = new File(file.getAbsolutePath() + "~");
         if (tempFile.exists()) {
             tempFile.delete();
         }
-        
+
         BufferedWriter writer = null;
         try {
             if (file.exists()) {
                 copyFile(tempFile, file);
             }
             // frank end
-    
+
             project.setFile(file);
             project.setVersion(ArgoVersion.getVersion());
             project.setPersistenceVersion(PERSISTENCE_VERSION);
@@ -123,47 +125,47 @@ public class ZargoFilePersister extends UmlFilePersister {
                 new ZipOutputStream(new FileOutputStream(file));
             writer =
                 new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
-    
+
             ZipEntry zipEntry =
-                new ZipEntry(project.getBaseName() 
+                new ZipEntry(project.getBaseName()
                         + FileConstants.UNCOMPRESSED_FILE_EXT);
             stream.putNextEntry(zipEntry);
-            
-            Hashtable templates = TemplateReader.getInstance()
-                .read(ARGO_MINI_TEE);
+
+            Hashtable templates =
+                TemplateReader.getInstance().read(ARGO_MINI_TEE);
             OCLExpander expander = new OCLExpander(templates);
             expander.expand(writer, project, "", "");
-                
+
             writer.flush();
-            
+
             stream.closeEntry();
-    
+
             Collection names = new ArrayList();
-            int counter = 0;  
+            int counter = 0;
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
-                ProjectMember projectMember = 
+                ProjectMember projectMember =
                     (ProjectMember) project.getMembers().elementAt(i);
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Saving member: "
-                              + ((ProjectMember) project.getMembers()
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("Saving member: "
+                            + ((ProjectMember) project.getMembers()
                                     .elementAt(i)).getName());
+                }
+                String name = projectMember.getName();
+                if (!projectMember.getType().equalsIgnoreCase("xmi")) {
+                    String originalName = name;
+                    while (names.contains(name)) {
+                        name = ++counter + originalName;
                     }
-                    String name = projectMember.getName();
-                    if (!projectMember.getType().equalsIgnoreCase("xmi")) {
-                        String originalName = name;
-                        while (names.contains(name)) {
-                            name = ++counter + originalName;
-                        }
-                        names.add(name);
-                    }
-                    stream.putNextEntry(new ZipEntry(name));
-                    projectMember.save(writer, null);
-                    writer.flush();
-                    stream.closeEntry();
+                    names.add(name);
+                }
+                stream.putNextEntry(new ZipEntry(name));
+                projectMember.save(writer, null);
+                writer.flush();
+                stream.closeEntry();
             }
-            
-            // if save did not raise an exception 
+
+            // if save did not raise an exception
             // and name+"#" exists move name+"#" to name+"~"
             // this is the correct backup file
             if (backupFile.exists()) {
@@ -179,13 +181,15 @@ public class ZargoFilePersister extends UmlFilePersister {
             LOG.error("Exception occured during save attempt", e);
             try {
                 writer.close();
-            } catch (IOException ex) { }
-            
-            // frank: in case of exception 
+            } catch (IOException ex) {
+                // Do nothing.
+            }
+
+            // frank: in case of exception
             // delete name and mv name+"#" back to name if name+"#" exists
             // this is the "rollback" to old file
             file.delete();
-            tempFile.renameTo( file);
+            tempFile.renameTo(file);
             // we have to give a message to user and set the system to unsaved!
             throw new SaveException(e);
         }
@@ -198,41 +202,41 @@ public class ZargoFilePersister extends UmlFilePersister {
     }
 
     /**
-     * @see org.argouml.persistence.ProjectFilePersister#loadProject(java.net.URL)
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.net.URL)
      */
     public Project doLoad(URL url) throws OpenException {
         try {
             File file = File.createTempFile("xxx", ".uml");
             file.deleteOnExit();
-            
+
             String encoding = "UTF-8";
             FileOutputStream stream =
                 new FileOutputStream(file);
             PrintWriter writer =
                 new PrintWriter(new BufferedWriter(new OutputStreamWriter(
                         stream, encoding)));
-            
+
             writer.println("<?xml version = \"1.0\" "
                     + "encoding = \"" + encoding + "\" ?>");
-            
+
             // first read the .argo file from Zip
             ZipInputStream zis;
             String line;
             BufferedReader reader;
-            
+
             zis = openZipStreamAt(url, FileConstants.PROJECT_FILE_EXT);
             reader = new BufferedReader(new InputStreamReader(zis));
             // Skip 2 lines
             reader.readLine();
             reader.readLine();
-            
+
             String firstLine = reader.readLine();
-            // TODO take the version attribute from first
+            // TODO: take the version attribute from first
             // line if it's there.
             // An unknown version becomes version 1.
             writer.println("<uml version=\"2\">");
             writer.println(firstLine);
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 writer.println(line);
             }
             zis.close();
@@ -243,7 +247,7 @@ public class ZargoFilePersister extends UmlFilePersister {
             reader = new BufferedReader(new InputStreamReader(zis));
             // Skip 1 lines
             reader.readLine();
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 writer.println(line);
             }
             zis.close();
@@ -262,7 +266,7 @@ public class ZargoFilePersister extends UmlFilePersister {
                     // Skip 2 lines
                     reader.readLine();
                     reader.readLine();
-                    while((line = reader.readLine()) != null) {
+                    while ((line = reader.readLine()) != null) {
                         writer.println(line);
                     }
                     sub.close();
@@ -270,7 +274,7 @@ public class ZargoFilePersister extends UmlFilePersister {
                 }
             }
             zis.close();
-            
+
             writer.println("</uml>");
             writer.close();
             Project p = super.doLoad(file.toURL());
@@ -280,13 +284,15 @@ public class ZargoFilePersister extends UmlFilePersister {
             throw new OpenException(e);
         }
     }
-    
+
     /**
      * Open a ZipInputStream to the first file found with
      * a given extension.
+     *
      * @param url The URL of the zip file.
      * @param ext The required extension.
      * @return the zip stream positioned at the required location.
+     * @throws IOException if there is a problem opening the file.
      */
     private ZipInputStream openZipStreamAt(URL url, String ext)
         throws IOException {
