@@ -381,9 +381,9 @@ class PreloadClasses implements Runnable {
       c = org.argouml.uml.diagram.ui.FigAssociation.class;
       c = org.argouml.uml.diagram.ui.FigGeneralization.class;
       c = org.argouml.uml.diagram.ui.FigRealization.class;
-      c = org.argouml.uml.diagram.static_structure.ui.PropPanelClass.class;
-      c = org.argouml.uml.diagram.static_structure.ui.PropPanelInterface.class;
-      c = org.argouml.uml.diagram.static_structure.ui.PropPanelAssociation.class;
+      c = org.argouml.uml.ui.foundation.core.PropPanelClass.class;
+      c = org.argouml.uml.ui.foundation.core.PropPanelInterface.class;
+      c = org.argouml.uml.ui.foundation.core.PropPanelAssociation.class;
       c = org.argouml.ui.StylePanelFig.class;
       c = org.argouml.uml.diagram.static_structure.ui.StylePanelFigClass.class;
       c = org.argouml.uml.diagram.ui.SPFigEdgeModelElement.class;

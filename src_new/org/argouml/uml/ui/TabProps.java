@@ -43,11 +43,16 @@ import org.tigris.gef.presentation.*;
 
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.uml.diagram.collaboration.ui.*;
-import org.argouml.uml.diagram.deployment.ui.*;
 import org.argouml.uml.diagram.state.ui.*;
-import org.argouml.uml.diagram.use_case.ui.*;
+
+import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.uml.ui.behavior.common_behavior.*;
+import org.argouml.uml.ui.behavior.collaborations.*;
+import org.argouml.uml.ui.behavior.activity_graphs.*;
+import org.argouml.uml.ui.behavior.state_machines.*;
+import org.argouml.uml.ui.behavior.use_cases.*;
+import org.argouml.uml.ui.model_management.*;
+
 
 public class TabProps extends TabSpawnable
 implements TabModelTarget {
