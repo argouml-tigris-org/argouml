@@ -22,16 +22,14 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.ui;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import org.argouml.application.api.Argo;
@@ -65,11 +63,9 @@ implements ArgoModuleEventListener {
 
     ////////////////////////////////////////////////////////////////
     // constructors
-    protected JButton buttonOk = null;
-    protected JButton buttonCancel = null;
     protected JButton buttonApply = null;
     protected JTabbedPane tabs = null;
-    protected JDialog dlg = null;
+    protected ArgoDialog dlg = null;
 
     protected ActionSettings() {
         super(Argo.localize(Argo.MENU_BUNDLE,"action.settings"), false);
@@ -85,88 +81,69 @@ implements ArgoModuleEventListener {
     // main methods
 
     public void actionPerformed(ActionEvent event) {
-	Object source = event.getSource();
-
-	if (source.equals(buttonOk) && tabs != null) {
-	   for (int i = 0; i < tabs.getComponentCount(); i++) {
-	       Object o = tabs.getComponent(i);
-	       if (o instanceof SettingsTabPanel) {
-		   ((SettingsTabPanel)o).handleSettingsTabSave();
-	       }
-	   }
-	   dlg.setVisible(false);
-	} else if (source.equals(buttonApply) && tabs != null) {
-	   // Same as ok but don't hide it.
-	   for (int i = 0; i < tabs.getComponentCount(); i++) {
-	       Object o = tabs.getComponent(i);
-	       if (o instanceof SettingsTabPanel) {
-		   ((SettingsTabPanel)o).handleSettingsTabSave();
-	       }
-	   }
-
-	} else if (source.equals(buttonCancel) && tabs != null) {
-	   for (int i = 0; i < tabs.getComponentCount(); i++) {
-	       Object o = tabs.getComponent(i);
-	       if (o instanceof SettingsTabPanel) {
-		   ((SettingsTabPanel)o).handleSettingsTabCancel();
-	       }
-	   }
-	   dlg.setVisible(false);
-	}
-	else if (source instanceof JMenuItem) {
+    	Object source = event.getSource();
+    
+        if (source instanceof JMenuItem) {
             ProjectBrowser pb = ProjectBrowser.getInstance();
-	    if (dlg == null) {
+            if (dlg == null) {
                 try {
-	            dlg = new JDialog(pb, localize("dialog.settings"), true);
+                    dlg = new ArgoDialog(pb, localize("dialog.settings"), 
+                        ArgoDialog.OK_CANCEL_OPTION, true) {
+                        public void actionPerformed(ActionEvent event) {
+                            super.actionPerformed(event);
+                            if (event.getSource() == getOkButton()) {
+                                handleSave();
+                            }
+                            else if (event.getSource() == getCancelButton()) {
+                                handleCancel();
+                            }
+                        }
+                    };
 
-	            dlg.getContentPane().setLayout(new BorderLayout());
                     tabs = new JTabbedPane();
-	            dlg.getContentPane().add(tabs, BorderLayout.CENTER);
-     
-	            JPanel buttons = new JPanel();
-	            buttons.setLayout(new FlowLayout());
-        
-	            buttonOk = new JButton(localize("button.ok"));
-	            buttonOk.addActionListener(this);
-	            buttons.add (buttonOk);
-        
-	            buttonCancel = new JButton(localize("button.cancel"));
-	            buttonCancel.addActionListener(this);
-	            buttons.add (buttonCancel);
-        
-	            buttonApply = new JButton(localize("button.apply"));
-	            buttonApply.addActionListener(this);
-	            buttons.add (buttonApply);
-        
-	            dlg.getContentPane().add(buttons, BorderLayout.SOUTH);
-        
-		    ArrayList list = Argo.getPlugins(PluggableSettingsTab.class);
-		    ListIterator iterator = list.listIterator();
-                    while (iterator.hasNext()) {
-	                Object o = iterator.next();
-			SettingsTabPanel stp = ((PluggableSettingsTab)o).getSettingsTabPanel();
 
-	                tabs.addTab(Argo.localize(stp.getTabResourceBundleKey(),
-			                          stp.getTabKey()),
-		                    stp.getTabPanel());
+                    buttonApply = new JButton(localize("button.apply"));
+                    buttonApply.addActionListener(new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            handleSave();
+                        }
+                    });
+                    dlg.addButton(buttonApply);
+
+                    ArrayList list =
+                        Argo.getPlugins(PluggableSettingsTab.class);
+                    ListIterator iterator = list.listIterator();
+                    while (iterator.hasNext()) {
+                        Object o = iterator.next();
+                        SettingsTabPanel stp =
+                            ((PluggableSettingsTab) o).getSettingsTabPanel();
+
+                        tabs.addTab(
+                            Argo.localize(
+                                stp.getTabResourceBundleKey(),
+                                stp.getTabKey()),
+                            stp.getTabPanel());
                     }
-                } catch (Exception exception) {
-                    Argo.log.error("got an Exception in ActionSettings");
-	            Argo.log.error(exception);
+
+                    // Increase width to accommodate all tabs on one row.
+                    // (temporary solution until tabs are replaced with tree)
+                    final int minimumWidth = 465;
+                    tabs.setPreferredSize(new Dimension(
+                        Math.max(tabs.getPreferredSize().width, minimumWidth),
+                        tabs.getPreferredSize().height));
+
+                    dlg.setContent(tabs);                    
                 }
+                catch (Exception exception) {
+                    Argo.log.error("got an Exception in ActionSettings");
+                    Argo.log.error(exception);
+                }
+            }
+            
+            handleRefresh();
+            dlg.toFront();
+            dlg.setVisible(true);
 	    }
-	    dlg.setSize(500, 300);
-	    dlg.setLocation(pb.getLocation().x + 100, pb.getLocation().y + 100);
-	    // Refresh all the tab data
-	    for (int i = 0; i < tabs.getComponentCount(); i++) {
-	        Object o = tabs.getComponent(i);
-	        if (o instanceof SettingsTabPanel) {
-		    ((SettingsTabPanel)o).handleSettingsTabRefresh();
-	        }
-	    } 
-	    dlg.toFront();
-	    dlg.setVisible(true);
-	}
     }
 
     public void moduleLoaded(ArgoModuleEvent event) {
@@ -181,6 +158,32 @@ implements ArgoModuleEventListener {
     public void moduleDisabled(ArgoModuleEvent event) {
     }
 
+    private void handleSave() {
+        for (int i = 0; i < tabs.getComponentCount(); i++) {
+            Object o = tabs.getComponent(i);
+            if (o instanceof SettingsTabPanel) {
+                ((SettingsTabPanel) o).handleSettingsTabSave();
+            }
+        }
+    }
+
+    private void handleCancel() {
+        for (int i = 0; i < tabs.getComponentCount(); i++) {
+            Object o = tabs.getComponent(i);
+            if (o instanceof SettingsTabPanel) {
+                ((SettingsTabPanel) o).handleSettingsTabCancel();
+            }
+        }
+    }
+
+    private void handleRefresh() {
+        for (int i = 0; i < tabs.getComponentCount(); i++) {
+            Object o = tabs.getComponent(i);
+            if (o instanceof SettingsTabPanel) {
+                ((SettingsTabPanel) o).handleSettingsTabRefresh();
+            }
+        }
+    }
 }
 /* end class ActionSettings */
 
