@@ -94,8 +94,9 @@ public abstract class UMLDiagram
      * Tool to add a comment node.
      */
     private static Action actionComment =
-	new RadioAction(new CmdCreateNode(ModelFacade.COMMENT, "Note"));
-
+//	new RadioAction(new CmdCreateNode(ModelFacade.COMMENT, "Note"));
+        new RadioAction(new ActionAddNote());
+        
     /**
      * Tool to create an relationship between a comment node and some other node
      * using a polyedge.<p>

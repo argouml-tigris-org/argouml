@@ -383,7 +383,7 @@ public class FigUseCase extends FigNodeModelElement {
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
 
         addMenu.add(ActionAddExtensionPoint.singleton());
-        addMenu.add(ActionAddNote.getSingleton());
+        addMenu.add(new ActionAddNote());
 
         popUpActions.insertElementAt(addMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
