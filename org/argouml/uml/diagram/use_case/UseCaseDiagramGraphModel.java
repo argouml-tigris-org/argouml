@@ -451,7 +451,7 @@ public class UseCaseDiagramGraphModel
         
         if (ModelFacade.isAModelElement(node)
                 && ModelFacade.getNamespace(node) == null) {
-            Model.getCoreHelper().addOwnedElement(model, /*(MModelElement)*/ node);
+            Model.getCoreHelper().addOwnedElement(model, node);
         }
 
         // Tell GEF its changed
