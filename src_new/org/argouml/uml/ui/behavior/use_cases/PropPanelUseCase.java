@@ -29,6 +29,11 @@
 // 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
 // labels "Generalizes:" for inheritance (needs Specializes some time).
 
+// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Specializes field
+// added. Factoring to use PropPanelModifiers and tidying up of layout.
+
+// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Tool tip changed to
+// "Add use case".
 
 package org.argouml.uml.ui.behavior.use_cases;
 
@@ -44,90 +49,240 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.model_management.*;
 
+
+/**
+ * <p>Builds the property panel for a use case.</p>
+ *
+ * <p>This is a type of Classifier, and like other Classifiers can have
+ *   attributes and operations (some processes use these to define
+ *   requirements). <em>Note</em>. ArgoUML does not currently support separate
+ *   compartments on the display for this.</p>
+ */
+
 public class PropPanelUseCase extends PropPanelClassifier {
 
 
-  public PropPanelUseCase() {
-    super("UseCase", _useCaseIcon,3);
+    /**
+     * <p>Constructor. Builds up the various fields required.</p>
+     */
 
-    Class mclass = MUseCase.class;
+    public PropPanelUseCase() {
 
-    addCaption("Name:",1,0,0);
-    addField(nameField,1,0,0);
+        // Invoke the Classifier constructor, but passing in our name and
+        // representation and requesting 3 columns
 
-    addCaption("Stereotype:",2,0,0);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
+        super("UseCase", _useCaseIcon, 3);
 
-    addCaption("Namespace:",3,0,0);
-    addField(namespaceScroll,3,0,0);
+        // The first column. All single line entries, so we just let the label
+        // at the bottom (modifiers) take the vertical weighting.
 
-    addCaption("Modifiers:",4,0,1);
-    JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
-    modifiersPanel.add(new UMLCheckBox(localize("Abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox(localize("Final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    addField(modifiersPanel,4,0,0);
+        // nameField, stereotypeBox and namespaceScroll are all set up by
+        // PropPanelModelElement
+
+        addCaption("Name:", 1, 0, 0);
+        addField(nameField, 1, 0, 0);
+
+        addCaption("Stereotype:", 2, 0, 0);
+        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),
+                 2, 0, 0);
+
+        addCaption("Namespace:", 3, 0, 0);
+        addField(namespaceScroll, 3, 0, 0);
+
+        // For modifiers we create a grid with two columns. We really ought to
+        // inherit this from GeneralizableElement, but since Java can't do
+        // multiple inheritance, it gets done here (it would at least be better
+        // in PropPanelClassifier).
+
+        PropPanelModifiers mPanel = new PropPanelModifiers(2);
+        Class              mclass = MUseCase.class;
+
+        mPanel.add("isAbstract", mclass, "isAbstract", "setAbstract",
+                   "Abstract", this);
+        mPanel.add("isLeaf", mclass, "isLeaf", "setLeaf",
+                   "Final", this);
+        mPanel.add("isRoot", mclass, "isRoot", "setRoot",
+                   "Root", this);
+
+        addCaption("Modifiers:", 4, 0, 1);
+        addField(mPanel, 4, 0, 0);
 
 
-    //
-    //  Generalization was labeled "Extends" in PropPanelClass and others
-    //     but since extension has a specific meaning in use cases a
-    //     different term had to be used
-    //
-    addCaption("Generalizes:",0,1,0);
-    addField(extendsScroll,0,1,0);
+        // The second column. These are all potentially multi-valued, so share
+        // the vertical weighting.
 
-    addCaption("Extends:",1,1,0);
-    JList extendList = new UMLList(new UMLExtendListModel(this,"extend",true),true);
-    extendList.setBackground(getBackground());
-    extendList.setForeground(Color.blue);
-    JScrollPane extendScroll = new JScrollPane(extendList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    addField(extendScroll,1,1,0);
+        // Generalization and specialization are inherited from
+        // PropPanelClassifier
 
-    addCaption("Includes:",2,1,0);
-    JList includeList = new UMLList(new UMLIncludeListModel(this,"include",true),true);
-    includeList.setBackground(getBackground());
-    includeList.setForeground(Color.blue);
-    JScrollPane includeScroll = new JScrollPane(includeList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    addField(includeScroll,2,1,0);
+        addCaption("Generalizations:", 0, 1, 1);
+        addField(extendsScroll, 0, 1, 1);
 
-    addCaption("Extension Points:",3,1,0.25);
-    JList extensionPoints = new UMLList(new UMLExtensionPointListModel(this,null,true),true);
-    extensionPoints.setForeground(Color.blue);
-    extensionPoints.setVisibleRowCount(1);
-    JScrollPane extensionPointsScroll = new JScrollPane(extensionPoints);
-    addField(extensionPointsScroll,3,1,0.25);
+        addCaption("Specializations:", 1, 1, 1);
+        addField(derivedScroll, 1, 1, 1);
 
-    addCaption("Associations:",0,2,0.25);
-    addField(connectScroll,0,2,0.25);
+        // Build up a panel for extend relationships
 
-    addCaption("Operations:",1,2,0.25);
-    addField(opsScroll,1,2,0.25);
+        JList extendList =
+            new UMLList(new UMLExtendListModel(this, "extend", true), true);
 
-    addCaption("Attributes:",2,2,0.25);
-    addField(attrScroll,2,2,0.25);
+        extendList.setBackground(getBackground());
+        extendList.setForeground(Color.blue);
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_useCaseIcon,localize("New use case"),"newUseCase",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
+        JScrollPane extendScroll =
+            new JScrollPane(extendList,
+                            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-  }
+        addCaption("Extends:", 2, 1, 1);
+        addField(extendScroll, 2, 1, 1);
 
+        // Build up a panel for include relationships
+
+        JList includeList =
+            new UMLList(new UMLIncludeListModel(this, "include", true), true);
+
+        includeList.setBackground(getBackground());
+        includeList.setForeground(Color.blue);
+
+        JScrollPane includeScroll =
+            new JScrollPane(includeList,
+                            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        addCaption("Includes:", 3, 1, 1);
+        addField(includeScroll, 3, 1, 1);
+
+        // Build up a panel for extension points.
+
+        JList extensionPoints =
+            new UMLList(new UMLExtensionPointListModel(this, "extensionPoint",
+                                                       true, false), true);
+
+        extensionPoints.setForeground(Color.blue);
+        extensionPoints.setVisibleRowCount(1);
+
+        JScrollPane extensionPointsScroll =
+            new JScrollPane(extensionPoints,
+                            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+
+        addCaption("Extension Points:",4,1,1);
+        addField(extensionPointsScroll,4,1,1);
+
+        // The third column
+
+        // The details of assocations, operations and attributes are all
+        // inherited from PropPanelClassifier. Note that these ARE allowed for
+        // use cases by the UML 1.3 standard.
+
+        addCaption("Associations:", 0, 2, 1);
+        addField(connectScroll, 0, 2, 1);
+
+        addCaption("Operations:", 1, 2, 1);
+        addField(opsScroll, 1, 2, 1);
+
+        addCaption("Attributes:", 2, 2, 1);
+        addField(attrScroll, 2, 2, 1);
+
+        // The toolbar buttons that go at the top.
+
+        new PropPanelButton(this, buttonPanel, _navUpIcon,
+                            localize("Go up"), "navigateNamespace",
+                            null);
+        new PropPanelButton(this, buttonPanel, _navBackIcon,
+                            localize("Go back"), "navigateBackAction",
+                            "isNavigateBackEnabled");
+        new PropPanelButton(this, buttonPanel, _navForwardIcon,
+                            localize("Go forward"), "navigateForwardAction",
+                            "isNavigateForwardEnabled");
+        new PropPanelButton(this, buttonPanel, _useCaseIcon,
+                            localize("Add use case"), "newUseCase",
+                            null);
+        new PropPanelButton(this, buttonPanel, _extensionPointIcon,
+                            localize("Add extension point"),
+                            "newExtensionPoint",
+                            null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon,
+                            localize("Delete"), "removeElement",
+                            null);
+
+    }
+
+
+    /**
+     * <p>Invoked by the "Add use case" toolbar button to create a new use case
+     *   property panel in the same namespace as the current use case.</p>
+     *
+     * <p>This code uses getFactory and adds the use case explicitly to the
+     *   namespace. Extended to actually navigate to the new use case.</p>
+     */
 
     public void newUseCase() {
         Object target = getTarget();
+
         if(target instanceof MUseCase) {
             MNamespace ns = ((MUseCase) target).getNamespace();
+
             if(ns != null) {
                 MUseCase useCase = ns.getFactory().createUseCase();
+
                 ns.addOwnedElement(useCase);
+                navigateTo(useCase);
             }
         }
     }
 
-   protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+
+    /**
+     * <p>Invoked by the "Add extension point" toolbar button to create a new
+     *   extension point for this use case in the same namespace as the current
+     *   use case.</p>
+     *
+     * <p>This code uses getFactory and adds the extension point explicitly to
+     *   the, making its associated use case the current use case.</p>
+     */
+
+    public void newExtensionPoint() {
+        Object target = getTarget();
+
+        if(target instanceof MUseCase) {
+            MUseCase   useCase = (MUseCase) target;
+            MNamespace ns      = useCase.getNamespace();
+
+            if(ns != null) {
+                MExtensionPoint extensionPoint =
+                    ns.getFactory().createExtensionPoint();
+
+                // Add to the current use case (NSUML will set the reverse
+                // link) and place in the namespace, before navigating to the
+                // extension point.
+
+                useCase.addExtensionPoint(extensionPoint);
+                ns.addOwnedElement(extensionPoint);
+
+                navigateTo(extensionPoint);
+            }
+        }
+    }
+
+
+    /**
+     * <p>A predicate to test if a given base class (below ModelElement) is
+     *   appropriate to us.</p>
+     *
+     * <p>For us this means UseCase, Classifier, Namespace or
+     *   GeneralizableElement.</p>
+     *
+     * @param baseClass  a string with the name of a UML MetaClass (no leading
+     *                   M)
+     *
+     * @return           <code>true</code> if this is a suitable base class for
+     *                   us. <code>false</code> otherwise.
+     */
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+
         return baseClass.equals("UseCase") ||
             baseClass.equals("Classifier") ||
             baseClass.equals("GeneralizableElement") ||

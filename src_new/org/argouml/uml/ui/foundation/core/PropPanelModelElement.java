@@ -21,6 +21,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Icons for extend and
+// include relationships added.
+
+
 package org.argouml.uml.ui.foundation.core;
 
 
@@ -63,6 +67,9 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _dataTypeIcon = ResourceLoader.lookupIconResource("DataType");
     protected static ImageIcon _actorIcon = ResourceLoader.lookupIconResource("Actor");
     protected static ImageIcon _useCaseIcon = ResourceLoader.lookupIconResource("UseCase");
+    protected static ImageIcon _extendIcon = ResourceLoader.lookupIconResource("Extend");
+    protected static ImageIcon _extensionPointIcon = ResourceLoader.lookupIconResource("ExtensionPoint");
+    protected static ImageIcon _includeIcon = ResourceLoader.lookupIconResource("Include");
     protected static ImageIcon _dependencyIcon = ResourceLoader.lookupIconResource("Dependency");
     protected static ImageIcon _parameterIcon = ResourceLoader.lookupIconResource("Parameter");
     protected static ImageIcon _operationIcon = ResourceLoader.lookupIconResource("Operation");

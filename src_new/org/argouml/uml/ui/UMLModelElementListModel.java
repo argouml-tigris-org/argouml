@@ -21,10 +21,30 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// 26 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed bug in
+// roleAdded, which seemed to be setting _upper to zero for any element that
+// didn't match. The effect was to disable all add functions for everything
+// else, once a promiscuous listener caused all events to be sent here.
+
+// 28 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Converted the return
+// type of addAtUtil to List, since it does return an ordered result, and some
+// NSUML uses require an ordered (subclass of List) result. The input value is
+// left as Collection for backwards compatibility.
+
+// 28 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Uncovered a deep bug
+// in addAtUtil, which forgets to increment the counter after adding the new
+// element. The reason that this does not usually cause problems "I think" is
+// that people have been adding NSUML elements at both ends of association (not
+// needed - if you set one end, NSUML will do the other), which compensates for
+// this.
+
+
 package org.argouml.uml.ui;
+
 import ru.novosoft.uml.*;
 import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 import java.util.*;
 import java.awt.*;
 
@@ -272,8 +292,13 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
             }
         }
         else{
-             if(_upper < 0) _upper = 0;
-             fireIntervalAdded(this,_upper,_upper);
+            // The following two lines appear to be an error. It has the effect
+            // of disabling add for other elements when any element has put on
+            // a promiscuous listener. Replaced by the following line
+
+            // if(_upper < 0) _upper = 0;
+            // fireIntervalAdded(this,_upper,_upper);
+            fireIntervalAdded(this, 0, 0);
         }
     }
 
@@ -372,27 +397,54 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
     }
 
     /**
-     *  This utility function may be called in the implemention of an Add action.
-     *  It creates a new collection by adding an element at a specific offset
-     *  in the sequence of an old collection.
+     * <p>This utility function may be called in the implemention of an Add
+     *   action.  It creates a new collection by adding an element at a
+     *   specific offset in the sequence of an old collection.</p>
      *
-     *  @param oldCollection old collection
-     *  @param newElement element to add to collection
-     *  @param index position of element in new collection
-     *  @return new collection
-     */
-    static protected Collection addAtUtil(Collection oldCollection,MModelElement newItem,int index) {
+     * <p>Historically this took as argument and returned result of type {@link
+     *   Collection}. However this is not specifically an ordered
+     *   interface. The current version returns a result of type {@link
+     *   java.util.List}, which is the ordered sub-interface of
+     *   Collection. This will keep some NSUML routines (which have ordered
+     *   arguments, and expect a List object) happy.</p>
+     *
+     * <p><em>Note</em>. There are two List types in Java (the other is part of
+     *   awt). This is java.util.List.</p>
+     *
+     * <p>For compatibility with existing code, the argument is left as type
+     *   {@link Collection}, although it would be wise to always use {@link
+     *   java.util.List} in new code.</p>
+     *
+     *  @param oldCollection  old collection
+     *
+     *  @param newElement     element to add to collection
+     *
+     *  @param index          position of element in new collection
+     *
+     *  @return               new list */
+
+    static protected java.util.List addAtUtil(Collection oldCollection,
+                                    MModelElement newItem,int index) {
+
         int oldSize = oldCollection.size();
+
         ArrayList newCollection = new ArrayList(oldSize + 1);
         Iterator iter = oldCollection.iterator();
+
         int i;
         for(i = 0; i < index; i ++) {
             newCollection.add(i,iter.next());
         }
+
         newCollection.add(i,newItem);
-        for(;i <= oldSize;i++) {
+
+        // Don't forget to step past the one we've just added (bug fix by
+        // Jeremy Bennett).
+
+        for(i++;i <= oldSize;i++) {
             newCollection.add(i,iter.next());
         }
+
         return newCollection;
     }
 

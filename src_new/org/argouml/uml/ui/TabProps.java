@@ -21,6 +21,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+
+// 27 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Added MExtendImpl to
+// the list of classes in run().
+
+// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Preloaded
+// PropPanelDiagram for each of the standard diagrams in initPanels to
+// eliminate messages when trying to find the panel.
+
+
 package org.argouml.uml.ui;
 
 import java.awt.*;
@@ -44,7 +53,13 @@ import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.uml.diagram.activity.ui.*;
+import org.argouml.uml.diagram.static_structure.ui.*;
+import org.argouml.uml.diagram.collaboration.ui.*;
+import org.argouml.uml.diagram.deployment.ui.*;
+import org.argouml.uml.diagram.sequence.ui.*;
 import org.argouml.uml.diagram.state.ui.*;
+import org.argouml.uml.diagram.use_case.ui.*;
 
 import org.argouml.uml.ui.foundation.core.*;
 import org.argouml.uml.ui.behavior.common_behavior.*;
@@ -102,6 +117,22 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
 
     _panels.put(MClassImpl.class, new PropPanelClass());
     _panels.put(ArgoDiagram.class, new PropPanelDiagram());
+
+    // Put all the diagram PropPanels here explicitly. They would eventually
+    // pick up their superclass ArgoDiagram, but in the meantime
+    // panelClassFor() would moan that they can't be found.
+
+    // Note that state digrams do actually have a diagram property panel!
+
+    _panels.put(UMLActivityDiagram.class, new PropPanelDiagram());
+    _panels.put(UMLClassDiagram.class, new PropPanelDiagram());
+    _panels.put(UMLCollaborationDiagram.class, new PropPanelDiagram());
+    _panels.put(UMLDeploymentDiagram.class, new PropPanelDiagram());
+    _panels.put(UMLSequenceDiagram.class, new PropPanelDiagram());
+    _panels.put(UMLStateDiagram.class, new PropPanelUMLStateDiagram());
+    _panels.put(UMLUseCaseDiagram.class, new PropPanelDiagram());
+    
+
     // FigText has no owner, so we do it directly
     _panels.put(FigText.class, new PropPanelString());
     // now a plugin
@@ -266,12 +297,17 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
       targetClassName = targetClassName.substring(1); //remove M
     if (targetClassName.endsWith("Impl"))
       targetClassName = targetClassName.substring(0,targetClassName.length()-4); //remove Impl
+
+    // This doesn't work for panel property tabs - they are being put in the
+    // wrong place. Really we should have defined these are preloaded them
+    // along with ArgoDiagram in initPanels above.
+
     try {
       panelClassName = pack + ".ui." + base + "PropPanel" + targetClassName;
       return Class.forName(panelClassName);
     }
     catch (ClassNotFoundException ignore) {
-      //System.out.println("Class "+panelClassName+" for Panel not found!");
+        System.out.println("Class "+panelClassName+" for Panel not found!");
     }
     return null;
   }
@@ -322,8 +358,11 @@ class InitPanelsLater implements Runnable {
         // _panels.put(MClassImpl.class, new PropPanelClass());
         _panels.put(MClassifierRoleImpl.class, new PropPanelClassifierRole());
         _panels.put(MDependencyImpl.class, new PropPanelDependency());
+        _panels.put(MExtendImpl.class, new PropPanelExtend());
+        _panels.put(MExtensionPointImpl.class, new PropPanelExtensionPoint());
         //_panels.put(ArgoDiagram.class, new PropPanelDiagram());
         _panels.put(MGeneralizationImpl.class, new PropPanelGeneralization());
+        _panels.put(MIncludeImpl.class, new PropPanelInclude());
         _panels.put(MInstanceImpl.class, new PropPanelInstance());
         _panels.put(MComponentInstanceImpl.class, new PropPanelComponentInstance());
         _panels.put(MComponentImpl.class, new PropPanelComponent());
