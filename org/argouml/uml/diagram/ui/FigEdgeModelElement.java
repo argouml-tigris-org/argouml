@@ -66,6 +66,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ActionAutoResize;
@@ -855,7 +856,7 @@ public abstract class FigEdgeModelElement
      */
     protected Object getSource() {
         if (getOwner() != null) {
-            return CoreHelper.getHelper().getSource(getOwner());
+            return UmlHelper.getHelper().getSource(getOwner());
         }
         return null;
     }
