@@ -50,6 +50,7 @@ import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -112,7 +113,17 @@ public class Main {
         // load i18n bundles
         Translator trans = new org.argouml.i18n.Translator();
         Translator.init();
-        org.argouml.cognitive.Translator.setTranslator(trans);
+        // create an anonymous class as a kind of adaptor for the cognitive
+        // System to provide proper translation/i18n.
+        org.argouml.cognitive.Translator.setTranslator(new AbstractCognitiveTranslator() {
+            public String i18nlocalize(String key) {
+                return Translator.localize(key);
+            }
+            
+            public String i18nmessageFormat(String key, Object[] args) {
+                return Translator.messageFormat(key, args);
+            }
+        });
 
         // then, print out some version info for debuggers...
         org.argouml.util.Tools.logVersionInfo();
@@ -657,28 +668,11 @@ class PreloadClasses implements Runnable {
     private static final Logger LOG = Logger.getLogger(PreloadClasses.class);
 
     public void run() {
+        
         Class c = null;
         LOG.info("preloading...");
 
 	// Alphabetic order
-        c = java.beans.BeanDescriptor.class;
-        c = java.beans.BeanInfo.class;
-        c = java.beans.EventSetDescriptor.class;
-        c = java.beans.FeatureDescriptor.class;
-        c = java.beans.IndexedPropertyDescriptor.class;
-        c = java.beans.Introspector.class;
-        c = java.beans.MethodDescriptor.class;
-        c = java.beans.PropertyDescriptor.class;
-        c = java.beans.PropertyVetoException.class;
-        c = java.beans.SimpleBeanInfo.class;
-        c = java.lang.ClassNotFoundException.class;
-        c = java.lang.CloneNotSupportedException.class;
-        c = java.lang.InterruptedException.class;
-        c = java.lang.NullPointerException.class;
-        c = java.lang.SecurityException.class;
-        c = java.lang.Void.class;
-        c = java.lang.reflect.Modifier.class;
-        c = java.util.TooManyListenersException.class;
         c = org.argouml.kernel.DelayedChangeNotify.class;
         c = org.argouml.cognitive.ui.Wizard.class;
         c = org.argouml.ui.Clarifier.class;
@@ -705,6 +699,7 @@ class PreloadClasses implements Runnable {
         c = org.argouml.uml.ui.foundation.core.PropPanelAssociation.class;
         c = org.argouml.uml.ui.foundation.core.PropPanelClass.class;
         c = org.argouml.uml.ui.foundation.core.PropPanelInterface.class;
+
         c = org.tigris.gef.base.CmdSetMode.class;
         c = org.tigris.gef.base.Geometry.class;
         c = org.tigris.gef.base.ModeModify.class;
