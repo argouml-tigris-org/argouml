@@ -88,7 +88,7 @@ public class PropPanelPseudostate extends PropPanel {
     addField(kindPanel,1,0,0);
     
 
-    addCaption(new JLabel("Namespace:"),2,0,0);
+    addCaption(new JLabel("Namespace:"),2,0,1);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);

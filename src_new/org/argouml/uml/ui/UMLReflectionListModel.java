@@ -190,7 +190,10 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
     public void add(int index) {
         try {
             Object[] indexArg = { new Integer(index) };
-            _addMethod.invoke(getContainer(),indexArg);
+            Object newTarget = _addMethod.invoke(getContainer(),indexArg);
+            if(newTarget != null) {
+                getContainer().navigateTo(newTarget);
+            }
         }
         catch(Exception e) {
             System.out.println(e.toString() + " in UMLReflectionListModel.add()");

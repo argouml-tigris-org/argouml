@@ -38,14 +38,14 @@ import java.util.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
-public class PropPanelState extends PropPanel {
+public class PropPanelGuard extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // contructors
-    public PropPanelState() {
+    public PropPanelGuard() {
         super("State Properties",2);
 
-        Class mclass = MState.class;
+        Class mclass = MGuard.class;
     
         addCaption(new JLabel("Name:"),0,0,0);
         addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
@@ -54,30 +54,30 @@ public class PropPanelState extends PropPanel {
         JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
         addField(stereotypeBox,1,0,0);
 
-        addCaption(new JLabel("State Machine:"),2,0,0);
-        JList stateList = new UMLList(new UMLReflectionListModel(this,"statemachine",false,"getStateMachine",null,null,null),true);
-        addLinkField(stateList,2,0,0);
-        
-        addCaption(new JLabel("Namespace:"),3,0,1);
-        JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-        addLinkField(namespaceList,3,0,0);
-    
+        addCaption(new JLabel("Transition:"),2,0,1);
+        JList transitionList = new UMLList(new UMLReflectionListModel(this,"transition",false,"getTransition",null,null,null),true);
+        addLinkField(transitionList,2,0,0);
 
-        addCaption(new JLabel("Incoming:"),0,1,0);
-        addCaption(new JLabel("Outgoing:"),1,1,1);
-    
+        UMLExpressionModel expressionModel = new UMLExpressionModel(this,MGuard.class,"expression", 
+            MBooleanExpression.class,"getExpression","setExpression");
+        
+        addCaption(new JLabel("Expression:"),0,1,1);
+        addField(new UMLExpressionBodyField(expressionModel,true),0,1,1);
+        
+        addCaption(new JLabel("Language:"),1,1,0);
+        addField(new UMLExpressionLanguageField(expressionModel,false),1,1,0);
     
   }
 
-    public MStateMachine getStateMachine() {
-        MStateMachine machine = null;
+    public MTransition getTransition() {
+        MTransition transition = null;
         Object target = getTarget();
-        if(target instanceof MState) {
-            machine = ((MState) target).getStateMachine();
+        if(target instanceof MGuard) {
+            transition = ((MGuard) target).getTransition();
         }
-        return machine;
+        return transition;
     }
-
+    
 
 } /* end class PropPanelState */
 
