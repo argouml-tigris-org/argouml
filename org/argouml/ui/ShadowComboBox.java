@@ -24,12 +24,24 @@
 
 package org.argouml.ui;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
 
 /**
  * A ComboBox that contains the set of possible Shadow Width values.
+ * 
+ * @author Jeremy Jones
 **/
 public class ShadowComboBox extends JComboBox {
 
@@ -47,5 +59,83 @@ public class ShadowComboBox extends JComboBox {
         addItem("6");
         addItem("7");
         addItem("8");
+
+        setRenderer(new ShadowRenderer());
+    }
+    
+    /**
+     * Renders each combo box entry as a shadowed diagram figure with the
+     * associated level of shadow.
+    **/
+    protected class ShadowRenderer extends JComponent implements ListCellRenderer {        
+        protected FigComment[]   _shadowFigs;
+        protected FigComment     _currentFig;
+        
+        public ShadowRenderer() {
+            _shadowFigs = null;
+            _currentFig = null;
+        }
+        
+        public Component getListCellRendererComponent(
+            JList list,
+            Object value,
+            int index,
+            boolean isSelected,
+            boolean cellHasFocus) {  
+                
+            if (isSelected) {
+                setBackground(list.getSelectionBackground());
+            }
+            else {
+                setBackground(list.getBackground());
+            }
+            
+            if (_shadowFigs == null) {
+                FontMetrics fm = getFontMetrics(FigComment.LABEL_FONT);
+                int textWidth = fm.stringWidth((String) ShadowComboBox.this.getItemAt(0));
+                int textHeight = fm.getHeight();
+
+                _shadowFigs = new FigComment[ShadowComboBox.this.getItemCount()];
+                for (int i = 0; i < _shadowFigs.length; ++i) {
+                    _shadowFigs[i] = new FigComment();
+                    _shadowFigs[i].setSize(textWidth + 10, textHeight + 2);
+                    _shadowFigs[i].setShadowSize(i);                    
+                    _shadowFigs[i].setOwner(
+                        UmlFactory.getFactory().getCore().createComment());
+                    _shadowFigs[i].storeNote(
+                        (String) ShadowComboBox.this.getItemAt(i));
+                }
+            }
+
+            int figIndex = index;
+            if (figIndex < 0) {
+                for (int i = 0; i < _shadowFigs.length; ++i) {
+                    if (value == ShadowComboBox.this.getItemAt(i)) {
+                        figIndex = i;
+                    }
+                }
+            }
+
+            if (figIndex >= 0) {
+                _currentFig = _shadowFigs[figIndex];
+                setPreferredSize(new Dimension(
+                    _currentFig.getWidth() + figIndex + 4,
+                    _currentFig.getHeight() + figIndex + 2));
+            }
+            else {
+                _currentFig = null;
+            }
+
+            return this;
+        }
+        
+        protected void paintComponent(Graphics g) {
+            g.setColor(getBackground());
+            g.fillRect(0, 0, getWidth(), getHeight());
+            if (_currentFig != null) {
+                _currentFig.setLocation(2, 1);
+                _currentFig.paint(g);
+            }
+        }
     }
 }
