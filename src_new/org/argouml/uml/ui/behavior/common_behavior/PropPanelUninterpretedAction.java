@@ -25,15 +25,19 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 /**
+ * The properties panel for a UninterpretedAction.
+ * 
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelUninterpretedAction extends PropPanelAction {
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelUninterpretedAction() {
-        super("UninterpretedAction", _callActionIcon);
+        super("UninterpretedAction", callActionIcon);
     }
 
 } 

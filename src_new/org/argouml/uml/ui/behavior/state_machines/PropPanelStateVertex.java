@@ -33,7 +33,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -47,60 +46,68 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
  */
 public abstract class PropPanelStateVertex extends PropPanelModelElement {
 
+    /*
+     * TODO: (MVW) What is the use of having these icons here? Since we are in 
+     * an abstract class, why should we prepare for all siblings? 
+     * Let e.g. a CompositeState take care of its own icon, by writing  
+     *      lookupIcon("CompositeState")
+     * instead of 
+     *      compositeStateIcon
+     * The former is not less convenient, and much simpeler.  
+     */
+    
+    protected static ImageIcon stateIcon = 
+        lookupIcon("State");
+
+    protected static ImageIcon actionStateIcon = 
+        lookupIcon("ActionState");
+
+    protected static ImageIcon compositeStateIcon = 
+        lookupIcon("CompositeState");
+
+    protected static ImageIcon submachineStateIcon = 
+        lookupIcon("SubmachineState");
+
+    protected static ImageIcon simpleStateIcon = 
+        lookupIcon("SimpleState");
+
+    protected static ImageIcon shallowHistoryIcon = 
+        lookupIcon("ShallowHistory");
+
+    protected static ImageIcon deepHistoryIcon = 
+        lookupIcon("DeepHistory");
+
+    protected static ImageIcon finalStateIcon = 
+        lookupIcon("FinalState");
+
+    protected static ImageIcon initialIcon = 
+        lookupIcon("Initial");
+
+    protected static ImageIcon forkIcon = 
+        lookupIcon("Fork");
+
+    protected static ImageIcon joinIcon = 
+        lookupIcon("Join");
+    
+    protected static ImageIcon callStateIcon = 
+        lookupIcon("CallState");
+    
+    protected static ImageIcon objectFlowStateIcon = 
+        lookupIcon("ObjectFlowState");
+    
+    protected static ImageIcon subactivityStateIcon = 
+        lookupIcon("SubactivityState");
+
+    protected static ImageIcon transitionIcon = 
+        lookupIcon("Transition");
+
     ////////////////////////////////////////////////////////////////
-    // constants
-    protected static ImageIcon _stateIcon = ResourceLoaderWrapper
-            .lookupIconResource("State");
 
-    protected static ImageIcon _actionStateIcon = ResourceLoaderWrapper
-            .lookupIconResource("ActionState");
+    private JScrollPane incomingScroll;
 
-    protected static ImageIcon _compositeStateIcon = ResourceLoaderWrapper
-            .lookupIconResource("CompositeState");
+    private JScrollPane outgoingScroll;
 
-    protected static ImageIcon _submachineStateIcon = ResourceLoaderWrapper
-        .lookupIconResource("SubmachineState");
-
-    protected static ImageIcon _simpleStateIcon = ResourceLoaderWrapper
-            .lookupIconResource("SimpleState");
-
-    protected static ImageIcon _shallowHistoryIcon = ResourceLoaderWrapper
-            .lookupIconResource("ShallowHistory");
-
-    protected static ImageIcon _deepHistoryIcon = ResourceLoaderWrapper
-            .lookupIconResource("DeepHistory");
-
-    protected static ImageIcon _finalStateIcon = ResourceLoaderWrapper
-            .lookupIconResource("FinalState");
-
-    protected static ImageIcon _initialIcon = ResourceLoaderWrapper
-            .lookupIconResource("Initial");
-
-    protected static ImageIcon _forkIcon = ResourceLoaderWrapper
-            .lookupIconResource("Fork");
-
-    protected static ImageIcon _joinIcon = ResourceLoaderWrapper
-            .lookupIconResource("Join");
-    
-    protected static ImageIcon _callStateIcon = ResourceLoaderWrapper
-            .lookupIconResource("CallState");
-    
-    protected static ImageIcon objectFlowStateIcon = ResourceLoaderWrapper
-            .lookupIconResource("ObjectFlowState");
-    
-    protected static ImageIcon _subactivityStateIcon = ResourceLoaderWrapper
-            .lookupIconResource("SubactivityState");
-
-    protected static ImageIcon _transitionIcon = ResourceLoaderWrapper
-            .lookupIconResource("Transition");
-
-    ////////////////////////////////////////////////////////////////
-
-    protected JScrollPane incomingScroll;
-
-    protected JScrollPane outgoingScroll;
-
-    protected JScrollPane containerScroll;
+    private JScrollPane containerScroll;
 
     /**
      * Constructor for PropPanelStateVertex.
@@ -128,6 +135,27 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
                 new ActionNavigateNamespace()));
         buttonPanel
                 .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+    }
+
+    /**
+     * @return Returns the incomingScroll.
+     */
+    protected JScrollPane getIncomingScroll() {
+        return incomingScroll;
+    }
+
+    /**
+     * @return Returns the outgoingScroll.
+     */
+    protected JScrollPane getOutgoingScroll() {
+        return outgoingScroll;
+    }
+
+    /**
+     * @return Returns the containerScroll.
+     */
+    protected JScrollPane getContainerScroll() {
+        return containerScroll;
     }
 
 } /* end class PropPanelStateVertex */

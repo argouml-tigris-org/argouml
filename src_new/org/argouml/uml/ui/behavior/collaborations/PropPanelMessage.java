@@ -53,27 +53,26 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelMessage extends PropPanelModelElement {
 
-    ////////////////////////////////////////////////////////////////
-    // constants
-
-
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelMessage() {
 	super("Message", ConfigLoader.getTabPropsOrientation());
 
-	Class mclass = (Class)ModelFacade.MESSAGE;
+	Class mclass = (Class) ModelFacade.MESSAGE;
 
 	Class[] namesToWatch = {
-	    (Class)ModelFacade.STEREOTYPE,
-	    (Class)ModelFacade.CLASSIFIER_ROLE,
+	    (Class) ModelFacade.STEREOTYPE,
+	    (Class) ModelFacade.CLASSIFIER_ROLE,
 	    (Class) ModelFacade.ACTION 
 	};
 	setNameEventListening(namesToWatch);
 
-	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+	addField(Translator.localize("UMLMenu", "label.name"), 
+            getNameTextField());
 	addField(Translator.localize("UMLMenu", "label.stereotype"),
-		 getStereotypeBox());
+            getStereotypeBox());
 	// a message does not have a namespace. removed therefore
 	// addField(Translator.localize("UMLMenu", "label.namespace"),
 	// getNamespaceScroll());
@@ -92,7 +91,8 @@ public class PropPanelMessage extends PropPanelModelElement {
 	    new UMLLinkedList(new UMLMessageReceiverListModel());
 	receiverList.setVisibleRowCount(1);
 	JScrollPane receiverScroll = new JScrollPane(receiverList);
-	addField(Translator.localize("UMLMenu", "label.receiver"), receiverScroll);
+	addField(Translator.localize("UMLMenu", "label.receiver"), 
+            receiverScroll);
 
 	addSeperator();
 
@@ -108,44 +108,57 @@ public class PropPanelMessage extends PropPanelModelElement {
 	JScrollPane actionScroll = new JScrollPane(actionList);
 	addField(Translator.localize("UMLMenu", "label.action"), actionScroll);
 
-	JScrollPane predecessorScroll =
-		 new JScrollPane(new UMLMutableLinkedList(new UMLMessagePredecessorListModel(),
-							  ActionAddMessagePredecessor.SINGLETON,
-							  null));
+	JScrollPane predecessorScroll = new JScrollPane(
+            new UMLMutableLinkedList(new UMLMessagePredecessorListModel(),
+		ActionAddMessagePredecessor.SINGLETON,
+		null));
 	addField(Translator.localize("UMLMenu", "label.predecessor"),
 		 predecessorScroll);
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateContainerElement()));
-        	new PropPanelButton(this, buttonPanel, _actionIcon,
-			    Translator.localize("UMLMenu", "button.new-action"),
-			    "addAction",
-			    "isAddActionEnabled");
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionNavigateContainerElement()));
+        new PropPanelButton(this, buttonPanel, actionIcon,
+	    Translator.localize("UMLMenu", "button.new-action"),
+	    "addAction",
+	    "isAddActionEnabled");
 	// ActionNewAction.SINGLETON.setTarget((MModelElement)getTarget());
 	// buttonPanel.add(new PropPanelButton2(this,
-	// ActionNewAction.SINGLETON));
-	buttonPanel
-        .add(new PropPanelButton2(this, new ActionRemoveFromModel()));    }
+	//     ActionNewAction.SINGLETON));
+	buttonPanel.add(new PropPanelButton2(this, 
+            new ActionRemoveFromModel()));    
+    }
 
 
 
+    /**
+     * @return the CallAction created
+     */
     public Object addAction() {
     	Object action = null;
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAMessage(target)) {
-            action =
-		/*(MCallAction)*/ CommonBehaviorFactory.getFactory().buildAction(/*(MMessage)*/ target);
+            action = /*(MCallAction)*/ CommonBehaviorFactory.getFactory()
+                .buildAction(/*(MMessage)*/ target);
         }
         return action;
     }
 
+    /**
+     * @return true if we can create a new action for this message
+     */
     public boolean isAddActionEnabled() {
-    	return (org.argouml.model.ModelFacade.isAMessage(getTarget())) && (ModelFacade.getAction(getTarget()) == null);
+    	return (org.argouml.model.ModelFacade.isAMessage(getTarget())) 
+    	    && (ModelFacade.getAction(getTarget()) == null);
     }
 
+    /**
+     * Set the target to the interaction of this message.
+     */
     public void navigateInteraction() {
     	Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAMessage(target)) {
-            TargetManager.getInstance().setTarget(ModelFacade.getInteraction(target));
+            TargetManager.getInstance()
+                .setTarget(ModelFacade.getInteraction(target));
         }
     }
 

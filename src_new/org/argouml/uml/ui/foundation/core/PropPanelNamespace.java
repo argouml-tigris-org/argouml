@@ -35,24 +35,43 @@ import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLLinkedList;
 
+/**
+ * The abstract properties panel for a Namespace.
+ *
+ */
 public abstract class PropPanelNamespace extends PropPanelModelElement {
 
-    private JScrollPane _ownedElementsScroll;
+    private JScrollPane ownedElementsScroll;
     
-    private static UMLNamespaceOwnedElementListModel ownedElementListModel = new UMLNamespaceOwnedElementListModel();
+    private static UMLNamespaceOwnedElementListModel ownedElementListModel = 
+        new UMLNamespaceOwnedElementListModel();
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
-
-    public PropPanelNamespace(String panelName, ImageIcon icon, Orientation orientation) {
+    /**
+     * The constructor.
+     * 
+     * @param panelName the name of the panel to be shown at the top
+     * @param icon the icon to be shown next to the name
+     * @param orientation the orientation of the panel
+     */
+    public PropPanelNamespace(String panelName, ImageIcon icon, 
+            Orientation orientation) {
         super(panelName, icon, orientation);
     }
     
+    /**
+     * The constructor.
+     * 
+     * @param title the name of the panel to be shown at the top
+     * @param orientation the orientation of the panel
+     */
     public PropPanelNamespace(String title, Orientation orientation) {
     	super(title, orientation);
     }
 
 
+    /**
+     * Create a class.
+     */
     public void addClass() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isANamespace(target)) {
@@ -63,6 +82,9 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         }
     }
 
+    /**
+     * Create a new interface.
+     */
     public void addInterface() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isANamespace(target)) {
@@ -73,11 +95,15 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         }
     }
 
+    /**
+     * Create a new package within the namespace.
+     */
     public void addPackage() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isANamespace(target)) {
             Object ns = /*(MNamespace)*/ target;
-            Object ownedElem = ModelManagementFactory.getFactory().createPackage();
+            Object ownedElem = ModelManagementFactory.getFactory()
+                .createPackage();
             ModelFacade.addOwnedElement(ns, ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
         }
@@ -90,11 +116,11 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      * @return JScrollPane
      */
     public JScrollPane getOwnedElementsScroll() {
-        if (_ownedElementsScroll == null) {
+        if (ownedElementsScroll == null) {
 	    JList ownedElementsList  = new UMLLinkedList(ownedElementListModel);
-            _ownedElementsScroll = new JScrollPane(ownedElementsList); 
+            ownedElementsScroll = new JScrollPane(ownedElementsList); 
         }
-        return _ownedElementsScroll;
+        return ownedElementsScroll;
         
     }
 

@@ -32,7 +32,9 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 /**
- * A basic property panel for link ends. TODO: uses the associationEnd icon
+ * A basic property panel for link ends. 
+ * 
+ * TODO: uses the associationEnd icon
  * 
  * @author mkl
  *  

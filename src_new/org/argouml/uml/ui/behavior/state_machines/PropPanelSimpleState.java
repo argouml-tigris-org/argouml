@@ -35,13 +35,17 @@ import org.argouml.i18n.Translator;
 import org.argouml.swingext.Orientation;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for a SimpleState.
+ *
+ */
 public class PropPanelSimpleState extends PropPanelState {
 
     /**
      * Constructor
      */
     public PropPanelSimpleState() {
-        this("Simple State", _stateIcon, ConfigLoader.getTabPropsOrientation());
+        this("Simple State", stateIcon, ConfigLoader.getTabPropsOrientation());
     }
 
     /**
@@ -49,30 +53,30 @@ public class PropPanelSimpleState extends PropPanelState {
      * 
      * @param name the name of the properties panel, shown at the top
      * @param icon the icon shown at the top
-     * @param orientation
+     * @param orientation the orientation of the panel
      */
     public PropPanelSimpleState(String name, ImageIcon icon,
             Orientation orientation) {
-        super(name, _stateIcon, ConfigLoader.getTabPropsOrientation());
+        super(name, stateIcon, ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());
         addField(Translator.localize("UMLMenu", "label.stereotype"),
                 getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.container"),
-                containerScroll);
-        addField(Translator.localize("UMLMenu", "label.entry"), entryScroll);
-        addField(Translator.localize("UMLMenu", "label.exit"), exitScroll);
-        addField(Translator.localize("UMLMenu", "label.do-activity"), doScroll);
+                getContainerScroll());
+        addField(Translator.localize("UMLMenu", "label.entry"), getEntryScroll());
+        addField(Translator.localize("UMLMenu", "label.exit"), getExitScroll());
+        addField(Translator.localize("UMLMenu", "label.do-activity"), getDoScroll());
 
         addSeperator();
 
         addField(Translator.localize("UMLMenu", "label.incoming"),
-                incomingScroll);
+                getIncomingScroll());
         addField(Translator.localize("UMLMenu", "label.outgoing"),
-                outgoingScroll);
+                getOutgoingScroll());
         addField(Translator.localize("UMLMenu", "label.internal-transitions"),
-                internalTransitionsScroll);
+                getInternalTransitionsScroll());
 
     }
 

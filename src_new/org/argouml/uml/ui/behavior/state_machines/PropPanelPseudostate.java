@@ -40,6 +40,10 @@ import org.tigris.gef.presentation.Fig;
  */
 public class PropPanelPseudostate extends PropPanelStateVertex {
 
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelPseudostate() {
         super("Pseudostate", null, ConfigLoader.getTabPropsOrientation());
 
@@ -50,16 +54,17 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
 //        addField(Translator.localize("UMLMenu", "label.stereotype"),
 //                new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
 //                        "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.container"),
-                containerScroll);
+                getContainerScroll());
 
         addSeperator();
 
         addField(Translator.localize("UMLMenu", "label.incoming"),
-                incomingScroll);
+                getIncomingScroll());
         addField(Translator.localize("UMLMenu", "label.outgoing"),
-                outgoingScroll);
+                getOutgoingScroll());
 
     }
 

@@ -29,6 +29,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.util.ConfigLoader;
 
 /**
+ * The properties panel for a Flow.
+ * 
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -43,11 +45,17 @@ public class PropPanelFlow extends PropPanelRelationship {
     }
 
     private void initialize() {
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
-        addField(Translator.localize("UMLMenu", "label.constraints"), getConstraintScroll());
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
+        //     "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"), 
+                getNamespaceScroll());
+        addField(Translator.localize("UMLMenu", "label.constraints"), 
+                getConstraintScroll());
 
         addSeperator();
     }

@@ -42,18 +42,26 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLInitialValueComboBox;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for an Attribute.
+ *
+ */
 public class PropPanelAttribute extends PropPanelStructuralFeature {
 
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelAttribute() {
         super("Attribute", ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());
         //	addField(
-        //	        Translator.localize("UMLMenu", "label.stereotype"),
-        //		 new UMLComboBoxNavigator(
-        //					  this,
-        //		         Translator.localize("UMLMenu", "tooltip.nav-stereo"),
+        //	    Translator.localize("UMLMenu", "label.stereotype"),
+        //		new UMLComboBoxNavigator(
+        //		 this,
+        //		 Translator.localize("UMLMenu", "tooltip.nav-stereo"),
         //					  getStereotypeBox()));
         addField(Translator.localize("UMLMenu", "label.stereotype"),
                 getStereotypeBox());
@@ -71,7 +79,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         // addField(Translator.localize("UMLMenu", "label.initial-value"), new
         // JScrollPane(new UMLLinkedList(new
         // UMLAttributeInitialValueListModel())));
-        // TODO The following line is my hack fix for the above line.
+        // TODO: The following line is my hack fix for the above line.
         // this fixes issue 1378 but re-introduces a deprecated class
         // IMO the initial value should not be a combo or a list
         // but a simple text field. Bob Tarling 12 Feb 2004.
@@ -89,6 +97,9 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
                 .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
+    /**
+     * Create a new attribute.
+     */
     public void newAttribute() {
         Object target = getTarget();
         if (ModelFacade.isAStructuralFeature(target)) {

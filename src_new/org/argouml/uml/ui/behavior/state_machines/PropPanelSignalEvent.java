@@ -41,7 +41,7 @@ public class PropPanelSignalEvent extends PropPanelEvent {
      * 
      */
     public PropPanelSignalEvent() {
-        super("Signal event", _eventIcon, 
+        super("Signal event", eventIcon, 
               ConfigLoader.getTabPropsOrientation());
     }
 } 

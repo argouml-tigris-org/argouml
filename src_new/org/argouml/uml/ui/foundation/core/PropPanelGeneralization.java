@@ -41,12 +41,14 @@ import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
 
 /**
+ * The properties panel for a Generalization.
+ * 
  * TODO: this property panel needs refactoring to remove dependency on old gui
  * components.
  */
 public class PropPanelGeneralization extends PropPanelModelElement {
 
-    private final static Logger LOG = Logger
+    private static final Logger LOG = Logger
             .getLogger(PropPanelGeneralization.class);
 
     private JTextField discriminatorTextField;
@@ -55,18 +57,25 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     private JScrollPane childScroll;
 
-    private static UMLDiscriminatorNameDocument discriminatorDocument = new UMLDiscriminatorNameDocument();
+    private static UMLDiscriminatorNameDocument discriminatorDocument = 
+        new UMLDiscriminatorNameDocument();
 
-    private static UMLGeneralizationChildListModel childListModel = new UMLGeneralizationChildListModel();
+    private static UMLGeneralizationChildListModel childListModel = 
+        new UMLGeneralizationChildListModel();
 
-    private static UMLGeneralizationParentListModel parentListModel = new UMLGeneralizationParentListModel();
+    private static UMLGeneralizationParentListModel parentListModel = 
+        new UMLGeneralizationParentListModel();
 
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelGeneralization() {
         super("Generalization", ConfigLoader.getTabPropsOrientation());
         Class mclass = (Class) ModelFacade.GENERALIZATION;
 
-        Class[] namesToWatch = { (Class) ModelFacade.STEREOTYPE,
-                (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER };
+        Class[] namesToWatch = {(Class) ModelFacade.STEREOTYPE,
+            (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER };
         setNameEventListening(namesToWatch);
 
         addField(Translator.localize("UMLMenu", "label.name"),
@@ -99,6 +108,9 @@ public class PropPanelGeneralization extends PropPanelModelElement {
                 .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
+    /**
+     * @see org.argouml.uml.ui.foundation.core.PropPanelModelElement#navigateUp()
+     */
     public void navigateUp() {
         Object target = getTarget();
         if (ModelFacade.isAModelElement(target)) {
@@ -109,6 +121,9 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         }
     }
 
+    /**
+     * @return the discriminator textfield
+     */
     protected JTextField getDiscriminatorTextField() {
         if (discriminatorTextField == null) {
             discriminatorTextField = new UMLTextField2(discriminatorDocument);
@@ -116,6 +131,9 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         return discriminatorTextField;
     }
 
+    /**
+     * @return the scrollpane for the parent
+     */
     protected JScrollPane getParentScroll() {
         if (parentScroll == null) {
             JList list = new UMLLinkedList(parentListModel);
@@ -127,6 +145,9 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         return parentScroll;
     }
 
+    /**
+     * @return the scrollpane for the child
+     */
     public JScrollPane getChildScroll() {
         if (childScroll == null) {
             JList list = new UMLLinkedList(childListModel);

@@ -48,6 +48,8 @@ import org.argouml.uml.ui.behavior.common_behavior.ActionNewReception;
 import org.argouml.util.ConfigLoader;
 
 /**
+ * The properties panel for a Class.
+ * 
  * TODO: this property panel needs refactoring to remove dependency on old gui
  * components.
  */
@@ -81,8 +83,8 @@ public class PropPanelClass extends PropPanelClassifier {
                 getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.namespace"),
                 getNamespaceComboBox());
-        _modifiersPanel.add(new UMLClassActiveCheckBox());
-        add(_modifiersPanel);
+        getModifiersPanel().add(new UMLClassActiveCheckBox());
+        add(getModifiersPanel());
         add(getNamespaceVisibilityPanel());
 
         addSeperator();

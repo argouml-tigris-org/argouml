@@ -30,8 +30,16 @@ import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for a Permission.
+ *
+ */
 public class PropPanelPermission extends PropPanelDependency {
 
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelPermission() {
         super("Permission", ConfigLoader.getTabPropsOrientation());
 
@@ -48,8 +56,9 @@ public class PropPanelPermission extends PropPanelDependency {
         addSeperator();
 
         addField(Translator.localize("UMLMenu", "label.suppliers"),
-                _supplierScroll);
-        addField(Translator.localize("UMLMenu", "label.clients"), _clientScroll);
+                getSupplierScroll());
+        addField(Translator.localize("UMLMenu", "label.clients"), 
+                getClientScroll());
 
         // TODO: add Mapping
         buttonPanel.add(new PropPanelButton2(this,

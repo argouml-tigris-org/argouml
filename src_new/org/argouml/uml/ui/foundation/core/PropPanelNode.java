@@ -78,7 +78,7 @@ public class PropPanelNode extends PropPanelClassifier {
         addField(Translator.localize("UMLMenu", "label.namespace"), 
                 getNamespaceComboBox());
 
-        add(_modifiersPanel);
+        add(getModifiersPanel());
         
         addSeperator();
         
@@ -94,7 +94,7 @@ public class PropPanelNode extends PropPanelClassifier {
 
         buttonPanel.add(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, buttonPanel, _receptionIcon, 
+        new PropPanelButton(this, buttonPanel, receptionIcon, 
                 Translator.localize("UMLMenu", "button.new-reception"), 
                 getActionNewReception());
         buttonPanel.add(new PropPanelButton2(this, 

@@ -34,6 +34,10 @@ import org.argouml.uml.ui.behavior.state_machines.*;
  */
 public class PropPanelActivityGraph extends PropPanelStateMachine {
 
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelActivityGraph() {
         super("ActivityGraph", ConfigLoader.getTabPropsOrientation());
     } 

@@ -39,18 +39,26 @@ public class PropPanelStubState extends PropPanelStateVertex {
      */
     public PropPanelStubState() {
         // TODO: give the stubstate it's own icon
-        super("Stub State", _stateIcon, ConfigLoader.getTabPropsOrientation());
+        super("Stub State", stateIcon, ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.container"), containerScroll);
-        // TODO: add the referenced state. This is a string which is IMHO not necessary.
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+        //     "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.container"), 
+                getContainerScroll());
+        // TODO: add the referenced state. 
+        //       This is a string which is IMHO not necessary.
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.incoming"), incomingScroll);
-        addField(Translator.localize("UMLMenu", "label.outgoing"), outgoingScroll);
+        addField(Translator.localize("UMLMenu", "label.incoming"), 
+                getIncomingScroll());
+        addField(Translator.localize("UMLMenu", "label.outgoing"), 
+                getOutgoingScroll());
     }
 
 }

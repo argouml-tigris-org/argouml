@@ -41,7 +41,7 @@ public class PropPanelTimeEvent extends PropPanelEvent {
      * 
      */
     public PropPanelTimeEvent() {
-        super("Time event", _eventIcon, 
+        super("Time event", eventIcon, 
               ConfigLoader.getTabPropsOrientation());
     }
 } 

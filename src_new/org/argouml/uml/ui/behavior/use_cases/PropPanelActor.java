@@ -82,7 +82,7 @@ public class PropPanelActor extends PropPanelClassifier {
     	addField(Translator.localize("UMLMenu", "label.stereotype"), 
                 getStereotypeBox());
 
-        add(_modifiersPanel);
+        add(getModifiersPanel());
 
     	addField(Translator.localize("UMLMenu", "label.namespace"), 
                 getNamespaceComboBox());
@@ -105,7 +105,7 @@ public class PropPanelActor extends PropPanelClassifier {
         new PropPanelButton(this, buttonPanel, actorIcon,
                 Translator.localize("UMLMenu", "button.new-actor"), "newActor",
                             null);
-        new PropPanelButton(this, buttonPanel, _receptionIcon, 
+        new PropPanelButton(this, buttonPanel, receptionIcon, 
                 Translator.localize("UMLMenu", "button.new-reception"), 
                 getActionNewReception());
         buttonPanel

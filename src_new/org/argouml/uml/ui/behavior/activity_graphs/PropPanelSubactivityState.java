@@ -28,6 +28,7 @@ import org.argouml.uml.ui.behavior.state_machines.PropPanelSubmachineState;
 import org.argouml.util.ConfigLoader;
 
 /**
+* The properties panel for the SubactivityState.
 * 
 * @author mvw
 *  
@@ -38,7 +39,7 @@ public class PropPanelSubactivityState extends PropPanelSubmachineState {
   * Constructor
   */
     public PropPanelSubactivityState() { 
-        super("SubactivityState", _subactivityStateIcon, ConfigLoader
+        super("SubactivityState", subactivityStateIcon, ConfigLoader
              .getTabPropsOrientation());    
     }
 }

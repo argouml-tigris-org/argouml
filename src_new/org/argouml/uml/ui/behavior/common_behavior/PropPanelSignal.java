@@ -50,6 +50,8 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 /**
+ * The properties panel of a Signal.
+ * 
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
