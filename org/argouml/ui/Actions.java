@@ -396,7 +396,7 @@ class ActionSaveProject extends UMLAction {
       ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(f));
       ZipEntry zipEntry = new ZipEntry(p.getBaseName()+".argo");
       zos.putNextEntry(zipEntry);
-      OutputStreamWriter fw = new OutputStreamWriter(zos);
+      OutputStreamWriter fw = new OutputStreamWriter(zos, "UTF-8");
       p.preSave();
       expander.expand(fw, p, "", "");
       fw.flush();
