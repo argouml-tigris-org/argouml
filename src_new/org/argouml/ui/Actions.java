@@ -414,7 +414,7 @@ class ActionSaveProject extends UMLAction {
       //needs-more-work: in future allow independent saving
       p.postSave();
       fw.close();
-      zos.close();
+      // zos.close();
       pb.showStatus("Wrote " + p.getURL());
       return true;
     }
