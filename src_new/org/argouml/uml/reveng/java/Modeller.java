@@ -562,35 +562,39 @@ public class Modeller {
                                  String name,
                                  short modifiers,
                                  String javadoc) {
-	Object mClassifier;
-	Object mNamespace;
-
-	if (parseState.getClassifier() != null) {
+        Object mClassifier;
+        Object mNamespace;
+        
+        if (parseState.getClassifier() != null) {
             // the new classifier is a java inner class
-	    mClassifier =
-		Model.getFacade().lookupIn(parseState.getClassifier(), name);
-	    mNamespace = parseState.getClassifier();
-	} else {
+            mClassifier =
+        	Model.getFacade().lookupIn(parseState.getClassifier(), name);
+            mNamespace = parseState.getClassifier();
+        } else {
             // the new classifier is a top level java class
-	    parseState.outerClassifier();
-	    mClassifier = Model.getFacade().lookupIn(currentPackage, name);
-	    mNamespace = currentPackage;
-	}
-    
-    
-	if (mClassifier == null) {
+            parseState.outerClassifier();
+            mClassifier = Model.getFacade().lookupIn(currentPackage, name);
+            mNamespace = currentPackage;
+        }
+        
+        
+        if (mClassifier == null) {
             // if the classifier could not be could in the model
-            LOG.info("Created new classifier for " + name);
-	    mClassifier = newClassifier;
-	    Model.getCoreHelper().setName(mClassifier, name);
-	    Model.getCoreHelper().setNamespace(mClassifier, mNamespace);
-	} else {
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Created new classifier for " + name);
+            }
+            mClassifier = newClassifier;
+            Model.getCoreHelper().setName(mClassifier, name);
+            Model.getCoreHelper().setNamespace(mClassifier, mNamespace);
+        } else {
             // it was found and we delete any existing tagged values.
-            LOG.info("Found existing classifier for " + name);
-	    cleanModelElement(mClassifier);
-	}
-    
-	parseState.innerClassifier(mClassifier);
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Found existing classifier for " + name);
+            }
+            cleanModelElement(mClassifier);
+        }
+        
+        parseState.innerClassifier(mClassifier);
 
         // set up the component residency (only for top level classes)
         if (parseState.getClassifier() == null) {
@@ -600,7 +604,7 @@ public class Modeller {
 
             // try find an existing residency
             Iterator dependenciesIt =
-		Model.getCoreHelper()
+                Model.getCoreHelper()
                     .getDependencies(mClassifier, parseState.getComponent())
 		        .iterator();
             while (dependenciesIt.hasNext()) {
@@ -622,16 +626,15 @@ public class Modeller {
                 // therefore temporarily use a non-standard hack:
                 //if (parseState.getComponent() == null) addComponent();
                 residentDep = Model.getCoreFactory()
-		    .buildDependency(parseState.getComponent(), mClassifier);
-                Model.getExtensionMechanismsFactory()
-		    .buildStereotype(
+                    .buildDependency(parseState.getComponent(), mClassifier);
+                Model.getExtensionMechanismsFactory().buildStereotype(
 				     residentDep,
 				     "resident",
 				     model);
-		String newName =
-		    Model.getFacade().getName(parseState.getComponent())
-		    + " -(location of)-> "
-		    + Model.getFacade().getName(mClassifier);
+                String newName =
+                    Model.getFacade().getName(parseState.getComponent())
+                    + " -(location of)-> "
+                    + Model.getFacade().getName(mClassifier);
                 Model.getCoreHelper().setName(residentDep, newName);
             }
         }
@@ -640,25 +643,24 @@ public class Modeller {
         parseStateStack.push(parseState);
         parseState = new ParseState(parseState, mClassifier, currentPackage);
 
+        setVisibility(mClassifier, modifiers);
+        
+        /*
+         * Changed 2001-10-05 STEFFEN ZSCHALER
+         *
+         * Was (space added below!):
+         *
+         if((javadoc == null) || "".equals(javadoc)) {
+         javadoc = "/** * /";
+         }
+         getTaggedValue(mClassifier, "documentation").setValue(javadoc);
+         *
+         */
 
-	setVisibility(mClassifier, modifiers);
-
-	/*
-	 * Changed 2001-10-05 STEFFEN ZSCHALER
-	 *
-	 * Was (space added below!):
-	 *
-	 if((javadoc == null) || "".equals(javadoc)) {
-	 javadoc = "/** * /";
-	 }
-	 getTaggedValue(mClassifier, "documentation").setValue(javadoc);
-	 *
-	 */
-
-	addDocumentationTag (mClassifier, javadoc);
-
-
-	return mClassifier;
+        addDocumentationTag (mClassifier, javadoc);
+        
+        
+        return mClassifier;
     }
 
     /**
