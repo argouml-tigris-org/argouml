@@ -39,6 +39,7 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLInitialValueComboBox;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
 
@@ -68,7 +69,14 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 		         Translator.localize("UMLMenu", "tooltip.nav-class"),
 					  getTypeComboBox()));
 
-	addField(Translator.localize("UMLMenu", "label.initial-value"), new JScrollPane(new UMLLinkedList(new UMLAttributeInitialValueListModel())));
+
+        // addField(Translator.localize("UMLMenu", "label.initial-value"), new JScrollPane(new UMLLinkedList(new UMLAttributeInitialValueListModel())));
+        // TODO The following line is my hack fix for the above line.
+        // this fixes issue 1378 but re-introduces a deprecated class
+        // IMO the initial value should not be a combo or a list
+        // but a simple text field. Bob Tarling 12 Feb 2004.
+	addField(Translator.localize("UMLMenu", "label.initial-value"), new UMLInitialValueComboBox(this));
+
         add(new UMLModelElementVisibilityRadioButtonPanel(Translator.localize("UMLMenu", "label.visibility"), true));
         add(getChangeabilityRadioButtonPanel());
         add(getOwnerScopeCheckbox());
