@@ -129,6 +129,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     public Object getOwner() {
         CollabDiagramGraphModel gm = (CollabDiagramGraphModel) getGraphModel();
         return gm.getCollaboration();
+        // TODO: MVW: Why not simply:   return collaboration;
     }
     
     /**
@@ -237,23 +238,17 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
         Collection messages;
         Iterator msgIterator;
-        if (getNamespace() == null) {
-            LOG.error("Collaboration Diagram does not belong to a namespace");
-            return;
-        }
         Collection ownedElements = 
-            Model.getFacade().getOwnedElements(getNamespace());
+            Model.getFacade().getOwnedElements(collaboration);
         Iterator oeIterator = ownedElements.iterator();
         Layer lay = getLayer();
         while (oeIterator.hasNext()) {
-            Object me = /*(MModelElement)*/
-		oeIterator.next();
+            Object me = /*(MModelElement)*/ oeIterator.next();
             if (Model.getFacade().isAAssociationRole(me)) {
                 messages = Model.getFacade().getMessages(me);
                 msgIterator = messages.iterator();
                 while (msgIterator.hasNext()) {
-                    Object message = /*(MMessage)*/
-			msgIterator.next();
+                    Object message = /*(MMessage)*/ msgIterator.next();
                     FigMessage figMessage =
                         (FigMessage) lay.presentationFor(message);
                     if (figMessage != null) {
