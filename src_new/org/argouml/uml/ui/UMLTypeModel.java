@@ -101,7 +101,11 @@ public class UMLTypeModel extends UMLComboBoxModel2 {
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValid(MModelElement)
      */
-    protected boolean isValid(MModelElement m) {
+    protected boolean isValid(MElementEvent e) {
+        MModelElement m = (MModelElement)e.getAddedValue();
+        if (m == null) {
+           m = (MModelElement)e.getRemovedValue();
+        };
         return m instanceof MClassifier;
     }
 

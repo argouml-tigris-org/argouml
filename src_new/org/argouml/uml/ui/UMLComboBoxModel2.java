@@ -105,20 +105,44 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#recovered(MElementEvent)
      */
     public void recovered(MElementEvent e) {
+         cat.debug("recovered");
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(MElementEvent)
      */
     public void removed(MElementEvent e) {
+        cat.debug("removed");
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        if (isValid((MModelElement)e.getAddedValue())) {
-            addElement(e.getAddedValue());
+        if (isValid(e)) {
+            if (e.getAddedValue() != null) {
+                if (e.getAddedValue() instanceof Collection) {
+                    addAll((Collection)e.getAddedValue());
+                } else {
+                    addElement(e.getAddedValue());
+                }
+            } else {
+                if (e.getOldValue() != null) {
+                    if (e.getOldValue() instanceof Collection) {
+                        removeAll((Collection)e.getOldValue());
+                    } else {
+                        removeElement(e.getOldValue());
+                    }
+                }
+                if (e.getNewValue() != null ) {
+                    if (e.getNewValue() instanceof Collection) {
+                        addAll((Collection)e.getNewValue());
+                    } else {
+                        addElement(e.getNewValue());
+                    }
+                }
+            }
+                    
         }
     }
 
@@ -126,8 +150,30 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#roleRemoved(MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        if (isValid((MModelElement)e.getRemovedValue())) {
-            removeElement(e.getAddedValue());
+        if (isValid(e)) {
+            if (e.getRemovedValue() != null) {
+                if (e.getRemovedValue() instanceof Collection) {
+                    addAll((Collection)e.getRemovedValue());
+                } else {
+                    addElement(e.getRemovedValue());
+                }
+            } else {
+                if (e.getOldValue() != null) {
+                    if (e.getOldValue() instanceof Collection) {
+                        removeAll((Collection)e.getOldValue());
+                    } else {
+                        removeElement(e.getOldValue());
+                    }
+                }
+                if (e.getNewValue() != null ) {
+                    if (e.getNewValue() instanceof Collection) {
+                        addAll((Collection)e.getNewValue());
+                    } else {
+                        addElement(e.getNewValue());
+                    }
+                }
+            }
+                    
         }
     }
 
@@ -171,7 +217,7 @@ public abstract class UMLComboBoxModel2
      * @param m
      * @return boolean
      */
-    protected abstract boolean isValid(MModelElement m);
+    protected abstract boolean isValid(MElementEvent e);
     
     /**
      * Builds the list of elements and sets the selectedIndex to the currently 
@@ -322,6 +368,42 @@ public abstract class UMLComboBoxModel2
      */
     public Object getTarget() {
         if (getContainer() != null) return getContainer().getTarget();
+        return null;
+    }
+    
+    /**
+     * Utility method to remove a collection of elements from the model
+     * @param col
+     */
+    protected void removeAll(Collection col) {
+        // we don't want to mark to many elements as changed. 
+        // therefore we don't directly call removeall on the list
+        Iterator it = col.iterator();
+        while (it.hasNext()) {
+            removeElement(it.next());
+        }
+    }
+    
+    /**
+     * Utility method to add a collection of elements to the model
+     * @param col
+     */
+    protected void addAll(Collection col) {
+        Iterator it = col.iterator();
+        while (it.hasNext()) {
+            addElement(it.next());
+        }
+    }
+    
+    /**
+     * Utility method to get the changed element from some event e
+     * @param e
+     * @return Object
+     */
+    protected Object getChangedElement(MElementEvent e) {
+        if (e.getAddedValue() != null) return e.getAddedValue();
+        if (e.getRemovedValue() != null) return e.getRemovedValue();
+        if (e.getNewValue() != null) return e.getNewValue();
         return null;
     }
 

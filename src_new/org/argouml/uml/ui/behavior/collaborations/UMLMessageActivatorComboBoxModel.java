@@ -74,7 +74,8 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValid(MModelElement)
      */
-    protected boolean isValid(MModelElement m) {
+    protected boolean isValid(MElementEvent e) {
+        MModelElement m = (MModelElement)getChangedElement(e);
         return ((m instanceof MMessage)  && 
             m != getContainer().getTarget() && 
             !((MMessage)(getContainer().getTarget())).getPredecessors().contains(m) &&

@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Category;
@@ -585,6 +586,26 @@ public class CoreHelper {
 		}
 		return null;
 	}
+    
+    /**
+     * Returns all flows from some source modelelement to a target modelelement.
+     * @param source
+     * @param target
+     * @return Collection
+     */
+    public Collection getFlows(MModelElement source, MModelElement target) {
+        if (source == null || target == null) return null;
+        List ret = new ArrayList();
+        Collection targetFlows = target.getTargetFlows();
+        Iterator it = source.getSourceFlows().iterator();
+        while (it.hasNext()) {
+            MFlow flow = (MFlow)it.next();
+            if (targetFlows.contains(flow)) {
+                ret.add(flow);
+            }
+        }
+        return ret;
+    }
 		
 	/**
 	 * Returns all elements that extend some class clazz.
@@ -739,27 +760,28 @@ public class CoreHelper {
 	}
 	
 	/**
-	 * Gets the association between the classifiers from and to. Returns null
+	 * Gets the associations between the classifiers from and to. Returns null
 	 * if from or to is null or if there is no association between them.
 	 * @param from
 	 * @param to
 	 * @return MAssociation
 	 */
-	public MAssociation getAssociation(MClassifier from, MClassifier to) {
-		if (from == null || to == null) return null;
-		Iterator it = from.getAssociationEnds().iterator();
-		while (it.hasNext()) {
-			MAssociationEnd end = (MAssociationEnd)it.next();
-			MAssociation assoc = end.getAssociation();
-			Iterator it2 = assoc.getConnections().iterator();
-			while (it2.hasNext()) {
-				MAssociationEnd end2 = (MAssociationEnd)it2.next();
-				if (end2.getType() == to) {
-					return assoc;
-				}
-			}
-		}
-		return null;
+	public Collection getAssociations(MClassifier from, MClassifier to) {
+	    Set ret = new HashSet();	
+            if (from == null || to == null) return ret;              
+            Iterator it = from.getAssociationEnds().iterator();
+            while (it.hasNext()) {
+            	MAssociationEnd end = (MAssociationEnd)it.next();
+            	MAssociation assoc = end.getAssociation();
+            	Iterator it2 = assoc.getConnections().iterator();
+            	while (it2.hasNext()) {
+            		MAssociationEnd end2 = (MAssociationEnd)it2.next();
+            		if (end2.getType() == to) {
+            			ret.add(assoc);
+            		}
+            	}
+            }
+            return ret;
 	}
 	
 	/**
@@ -956,7 +978,55 @@ public class CoreHelper {
             return include.getAddition();
         }
         return null;
-    }						
-	
+    }	
+    
+    /**
+     * Returns the dependencies between some supplier modelelement and some client
+     * modelelement. Does not return the vica versa relationship (dependency 'from
+     * client to supplier'.
+     * @param supplier
+     * @param client
+     * @return Collection
+     */
+    public Collection getDependencies(MModelElement supplier, MModelElement client) {
+        if (supplier == null || client == null) return null;
+        List ret = new ArrayList();
+        Collection clientDependencies = client.getClientDependencies();
+        Iterator it = supplier.getSupplierDependencies().iterator();
+        while (it.hasNext()) {
+            MDependency dep = (MDependency)it.next();
+            if (clientDependencies.contains(dep)) {
+                ret.add(dep);
+            }
+        }
+        return ret;
+    }
+        
+    
+    /**
+     * Returns all relationships between the source and dest modelelement and
+     * vica versa.
+     * @param source
+     * @param dest
+     * @return Collection
+     */
+    public Collection getRelationships(MModelElement source, MModelElement dest) {
+        Set ret = new HashSet();
+        if (source == null || dest == null) return ret;
+        ret.addAll(getFlows(source, dest));
+        ret.addAll(getFlows(dest, source));
+        ret.addAll(getDependencies(source, dest));
+        ret.addAll(getDependencies(dest, source));
+        if (source instanceof MGeneralizableElement && dest instanceof MGeneralizableElement) {
+            ret.add(getGeneralization((MGeneralizableElement)source, (MGeneralizableElement)dest));
+            ret.add(getGeneralization((MGeneralizableElement)dest, (MGeneralizableElement)source));				
+            if (source instanceof MClassifier && dest instanceof MClassifier) {
+                ret.addAll(getAssociations((MClassifier)source, (MClassifier)dest));
+            }
+        }
+        return ret;
+    }
+                
+                
 }
 

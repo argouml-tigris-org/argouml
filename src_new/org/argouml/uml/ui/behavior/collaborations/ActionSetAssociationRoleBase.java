@@ -61,7 +61,7 @@ public class ActionSetAssociationRoleBase extends UMLChangeAction {
             UMLComboBox2 source = (UMLComboBox2)e.getSource();
             selected = source.getSelectedItem();
             if (selected instanceof MAssociation && source.getTarget() instanceof MAssociationRole) {
-                CollaborationsHelper.getHelper().setBase((MAssociationRole)source.getTarget(), (MAssociation)selected);
+                ((MAssociationRole)source.getTarget()).setBase((MAssociation)selected);
             }
         }
     }

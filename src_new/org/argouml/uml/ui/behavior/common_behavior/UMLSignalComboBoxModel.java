@@ -28,6 +28,8 @@ import java.util.Iterator;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -48,7 +50,8 @@ public class UMLSignalComboBoxModel extends UMLComboBoxModel2 {
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValid(MModelElement)
      */
-    protected boolean isValid(MModelElement m) {
+    protected boolean isValid(MElementEvent e) {
+        MModelElement m = (MModelElement)getChangedElement(e);
         return m instanceof MSignal;
     }
 

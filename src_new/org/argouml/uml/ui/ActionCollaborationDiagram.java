@@ -59,7 +59,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
             c.setRepresentedOperation((MOperation)target);
         } else 
         if (target instanceof MClassifier) {
-            c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+            c = UmlFactory.getFactory().getCollaborations().buildCollaboration((MClassifier)target);
             c.setRepresentedClassifier((MClassifier)target);
         } else 
         if (target instanceof MModel) {

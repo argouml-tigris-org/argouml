@@ -27,13 +27,19 @@ package org.argouml.uml.ui.behavior.collaborations;
 import java.util.Iterator;
 
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
+import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * @since Oct 4, 2002
@@ -49,30 +55,24 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
     public UMLAssociationRoleBaseComboBoxModel(
         UMLUserInterfaceContainer container) {
         super(container, "base");
+        if (container instanceof PropPanel) {
+            Object [] eventsToWatch = { MClassifierRole.class, "base"};
+            ((PropPanel) container).addThirdPartyEventListening(eventsToWatch);
+        }
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
      */
-    protected boolean isValid(MModelElement m) {
-        if (m instanceof MAssociation) {  
-            MAssociationRole role = (MAssociationRole)getTarget();
-            if (role.getName() == null || role.getName().equals("")) {
-                MAssociation assoc = (MAssociation)m;  
-                if (!assoc.getAssociationRoles().isEmpty()) {
-                    MCollaboration coll = (MCollaboration)role.getNamespace();
-                    Iterator it2 = assoc.getAssociationRoles().iterator();
-                    while (it2.hasNext()) {
-                        MAssociationRole role2 = (MAssociationRole)it2.next();
-                        if (role2.getNamespace() == coll && role2 != role) {
-                            return false;
-                        }
-                    }
-                }
-            }
-            return true;
-        } 
-        return false;
+    protected boolean isValid(MElementEvent e) {
+        MAssociationRole role = (MAssociationRole)getTarget();
+        MModelElement m = (MModelElement)getChangedElement(e);
+        return 
+            ((e.getSource() instanceof MClassifierRole && e.getName().equals("base") &&
+                (CoreHelper.getHelper().getSource(role) == e.getSource() || CoreHelper.getHelper().getDestination(role) == e.getSource()))  ||
+             (e.getSource() instanceof MNamespace && e.getName().equals("ownedElement") &&
+                CollaborationsHelper.getHelper().getAllPossibleBases(role).contains(m)) ||
+             getIndexOf(m) >= 0);
     }
 
     /**
@@ -83,6 +83,24 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
         setElements(CollaborationsHelper.getHelper().getAllPossibleBases(role));
         if (role != null && role.getBase() != null) {
             setSelectedItem(role.getBase());
+        }
+    }
+
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
+    public void roleAdded(MElementEvent e) {
+        if (isValid(e)) {
+            buildModelList();
+        }
+    }
+
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
+    public void roleRemoved(MElementEvent e) {
+        if (isValid(e)) {
+            buildModelList();
         }
     }
 

@@ -137,15 +137,9 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     	modelelement.setNamespace(namespace);
     	modelelement.setName("newCollaboration");
     	modelelement.setAbstract(false);
-    	return modelelement;
-    }
-    
-    /** 
-     * Builds a default collaboration representing some classifier
-     */
-    public MCollaboration buildCollaboration(MClassifier classifier) {
-    	MCollaboration modelelement = buildCollaboration(classifier.getNamespace());
-    	modelelement.setRepresentedClassifier(classifier);
+        if (namespace instanceof MClassifier) {
+            modelelement.setRepresentedClassifier((MClassifier)namespace);
+        }
     	return modelelement;
     }
     

@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
@@ -414,29 +415,6 @@ public class CollaborationsHelper {
         return returnList;
     }
     
-   /**
-    * Sets the bases of the given associationrole to the given base. Takes into 
-    * account the wellformednessrules as defined in section 2.10.3 of the UML 
-    * spec 1.3.
-    * @param role
-    * @param base
-    */
-    public void setBase(MAssociationRole role, MAssociation base) {
-        if (role == null || base == null) throw new IllegalArgumentException("In addBase: either the role or the base is null");
-        // wellformednessrule: if the role does not have a name, the role shall
-        // be the only one with the particular base
-        if (role.getName() == null || role.getName().equals("")) {
-            MCollaboration collab = (MCollaboration)role.getNamespace();
-            Collection roles = ModelManagementHelper.getHelper().getAllModelElementsOfKind(collab, MAssociationRole.class);
-            Iterator it = roles.iterator();
-            while (it.hasNext()) {
-                if (((MAssociationRole)it.next()).getBase() == base) 
-                    throw new IllegalArgumentException("In addBase: base is allready part of another role and role does not have a name");
-            }
-        }
-        role.setBase(base);
-    }
-    
     /**
      * Returns all possible bases for some associationrole taking into account the 
      * wellformednessrules as defined in section 2.10.3 of the UML 1.3 spec.
@@ -444,14 +422,42 @@ public class CollaborationsHelper {
      * @return Collection
      */
     public Collection getAllPossibleBases(MAssociationRole role) {
-        if (role == null || role.getNamespace() == null) return new ArrayList();
-        MCollaboration coll = (MCollaboration)role.getNamespace();
-        MNamespace ns = coll.getNamespace();
-        Collection returnList = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MAssociation.class);
-        returnList.removeAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MAssociationRole.class));
+        Set ret = new HashSet();
+        if (role == null || role.getNamespace() == null) return ret;
+         MCollaboration coll = (MCollaboration)role.getNamespace();
+        
+        // find the bases of the connected classifierroles so that we can see
+        // what associations are between them. If there are bases then the
+        // assocations between those bases form the possible bases. Otherwise
+        // the bases are formed by all associations in the namespace of the 
+        // collaboration
+        Iterator it = role.getConnections().iterator();
+        Set bases = new HashSet();
+        while (it.hasNext()) {
+            MAssociationEndRole end = (MAssociationEndRole)it.next();
+            MClassifierRole type = (MClassifierRole)end.getType();
+            if (type != null) {
+                bases.addAll(type.getBases());
+            }
+        }
+        if (bases.isEmpty()) {
+            MNamespace ns = coll.getNamespace();
+            ret.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MAssociation.class));
+            ret.removeAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MAssociationRole.class));
+        } else {  
+            it = bases.iterator();
+            while (it.hasNext()) {
+                MClassifier base1 = (MClassifier)it.next();
+                if (it.hasNext()) {
+                    MClassifier base2 = (MClassifier)it.next();
+                    ret.addAll(CoreHelper.getHelper().getAssociations(base1, base2));
+                }
+            }
+        }        
+        // if there is no name, the base may not be base for another associationrole
         if (role.getName() == null || role.getName().equals("")) {
             List listToRemove = new ArrayList();
-            Iterator it = returnList.iterator();
+            it = ret.iterator();
             while (it.hasNext()) {
                 MAssociation assoc = (MAssociation)it.next();
                 if (!assoc.getAssociationRoles().isEmpty()) {
@@ -464,9 +470,9 @@ public class CollaborationsHelper {
                     }
                 }
             }
-            returnList.removeAll(listToRemove);
-        }                        
-        return returnList;   
+            ret.removeAll(listToRemove);
+        }                 
+        return ret;   
     } 
 		
 }
