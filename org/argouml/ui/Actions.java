@@ -60,8 +60,13 @@ import org.tigris.gef.base.Diagram;
 
 
 /**
- * Manages ArgoUML's global actions. 
+ * Manages ArgoUML's list of global actions.
+ * Takes care of the "enabled" status of all these actions. 
  *
+ * TODO: (MVW) If the responsibility of this class is 
+ * to manage the list of actions, 
+ * how come we know about some global actions like "print"? 
+ * Lets move these to the menu or project or something...
  */
 public class Actions implements TargetListener {
     
@@ -91,11 +96,11 @@ public class Actions implements TargetListener {
     /**
      * The action to print.
      */
-    public static UMLAction Print = new ActionPrint();
+    public static UMLAction print = new ActionPrint();
     /**
      * The action to start page setup.
      */
-    public static UMLAction PageSetup = new ActionPageSetup();
+    public static UMLAction pageSetup = new ActionPageSetup();
 
     /**
      * The action to undo.
@@ -115,12 +120,12 @@ public class Actions implements TargetListener {
     /**
      * The action to Find.
      */
-    public static UMLAction Find = new ActionFind();
+    public static UMLAction find = new ActionFind();
     
     /**
      * The action to Goto a Diagram.
      */
-    public static UMLAction GotoDiagram = new ActionGotoDiagram();
+    public static UMLAction gotoDiagram = new ActionGotoDiagram();
 
     //public static UMLAction NextEditTab = new ActionNextEditTab();
     //public static UMLAction NextDetailsTab = new ActionNextDetailsTab();
@@ -129,44 +134,44 @@ public class Actions implements TargetListener {
      * The action to show or hide the RapidButtons aka toolbelt buttons
      * aka buttons on selection aka ...
      */
-    public static UMLAction ShowRapidButtons = new ActionShowRapidButtons();
+    public static UMLAction showRapidButtons = new ActionShowRapidButtons();
 
     //public static UMLAction CreateMultiple = new ActionCreateMultiple();
 
     /**
      * The action to toggle AutoCritique.
      */
-    public static UMLAction AutoCritique = new ActionAutoCritique();
+    public static UMLAction autoCritique = new ActionAutoCritique();
     
     /**
      * The action to Open the Decisions dialog.
      */
-    public static UMLAction OpenDecisions = new ActionOpenDecisions();
+    public static UMLAction openDecisions = new ActionOpenDecisions();
     
     /**
      * The action to Open the Goals dialog.
      */
-    public static UMLAction OpenGoals = new ActionOpenGoals();
+    public static UMLAction openGoals = new ActionOpenGoals();
     
     /**
      * The action to browse the critics.
      */
-    public static UMLAction OpenCritics = new ActionOpenCritics();
+    public static UMLAction openCritics = new ActionOpenCritics();
 
     /**
      * The action to toggle the Flat setting for the Todo item tree.
      */
-    public static UMLAction FlatToDo = new ActionFlatToDo();
+    public static UMLAction flatToDo = new ActionFlatToDo();
 
     /**
      * The action to create a NewToDoItem.
      */
-    public static UMLAction NewToDoItem = new ActionNewToDoItem();
+    public static UMLAction newToDoItem = new ActionNewToDoItem();
     
     /**
      * The action to Resolve todo items.
      */
-    public static UMLAction Resolve = new ActionResolve();
+    public static UMLAction resolve = new ActionResolve();
     
     /**
      * The action to send Email to an Expert.
@@ -309,7 +314,7 @@ class ActionPageSetup extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	((ActionPrint) Actions.Print).getCmdPrint().doPageSetup();
+	((ActionPrint) Actions.print).getCmdPrint().doPageSetup();
     }
 } /* end class ActionPageSetup */
 

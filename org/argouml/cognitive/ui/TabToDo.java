@@ -51,8 +51,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     // static variables
     private static int numHushes = 0;
 
-    private static UMLAction actionNewToDoItem = Actions.NewToDoItem;
-    private static UMLAction actionResolve = Actions.Resolve;
+    private static UMLAction actionNewToDoItem = Actions.newToDoItem;
+    private static UMLAction actionResolve = Actions.resolve;
     private static UMLAction actionEmailExpert = Actions.emailExpert;
     //public static UMLAction _actionMoreInfo = Actions.MoreInfo;
     private static UMLAction actionSnooze = Actions.snooze;

@@ -157,7 +157,7 @@ public class ToDoPane extends JPanel
         
         perspectives = new Vector();
         
-        flatView = Actions.FlatToDo;
+        flatView = Actions.flatToDo;
         countLabel = new JLabel(formatCountLabel(999));
         
         toolbar.add(combo);
