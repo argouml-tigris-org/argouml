@@ -116,110 +116,29 @@ public class OperationCodePiece extends NamedCodePiece
        Write the code this piece represents to file. Remove this
        feature from the top vector in the stack newFeaturesStack.
     */
-    public void write (Writer writer,
-                       Stack parseStateStack,
-                       int column)
-  	    throws Exception {
-      ParseState parseState = (ParseState)parseStateStack.peek();
-      Vector features = parseState.getNewFeatures();
+    public void write (BufferedReader reader,
+                       BufferedWriter writer,
+                       Stack parseStateStack) throws Exception
+    {
+        ParseState parseState = (ParseState)parseStateStack.peek();
+        Vector features = parseState.getNewFeatures();
+        boolean found = false;
 
-      boolean found = false;
-
-	    for(Iterator j=features.iterator(); j.hasNext() && !found; ) {
-  	    MFeature feature = (MFeature)j.next();
-
-	      if(feature.getName().equals(name)) {
-		      found = true;
-		      parseState.newFeature(feature);
-		      MOperation mOperation = (MOperation)feature;
-
-          writer.write (
-              GeneratorJava.getInstance()
-                           .generateOperation (mOperation, true)
-            );
-
-          /*
-          if (GeneratorJava.generateConstraintEnrichedDocComment(mOperation, writer)) {
-            for(int k=0; k<column; k++) {
-              writer.write(" ");
+        for(Iterator j=features.iterator(); j.hasNext() && !found; ) {
+            MFeature feature = (MFeature)j.next();
+            if(feature.getName().equals(name)) {
+                found = true;
+                parseState.newFeature(feature);
+                MOperation mOperation = (MOperation)feature;
+                writer.write (GeneratorJava.getInstance().generateOperation(mOperation, true));
             }
-          }
-
-          if (mOperation.isAbstract()) {
-            writer.write("abstract ");
-            column += 9;
-          }
-          if (mOperation.isLeaf()) {
-            writer.write("final ");
-            column += 6;
-          }
-          if (mOperation.getOwnerScope() == MScopeKind.CLASSIFIER) {
-            writer.write("static ");
-            column += 7;
-          }
-          if (mOperation.getVisibility() == MVisibilityKind.PUBLIC) {
-            writer.write("public ");
-            column += 7;
-          }
-          else if (mOperation.getVisibility() == MVisibilityKind.PROTECTED) {
-            writer.write("protected ");
-            column += 10;
-          }
-          else if (mOperation.getVisibility() == MVisibilityKind.PRIVATE) {
-            writer.write("private ");
-            column += 8;
-          }
-
-          Collection parameters = mOperation.getParameters();
-          for(Iterator i = parameters.iterator(); i.hasNext(); ) {
-            MParameter mParameter = (MParameter)i.next();
-
-            if (mParameter.getKind() == MParameterDirectionKind.RETURN) {
-              if (fullyQualifiedTypeNames) {
-                writer.write (mParameter.getType().getNamespace().getName()
-                              + ".");
-              }
-
-              writer.write(mParameter.getType().getName() + " ");
-              column += mParameter.getType().getName().length() + 1;
-            }
-          }
-
-          writer.write(mOperation.getName() + "(");
-          column += mOperation.getName().length() + 1;
-
-          boolean first = true;
-          for (Iterator i = parameters.iterator(); i.hasNext(); ) {
-            MParameter mParameter = (MParameter)i.next();
-
-            if (mParameter.getKind() != MParameterDirectionKind.RETURN) {
-              if(first) {
-                first = false;
-              }
-              else {
-                writer.write(",\n");
-                for(int k=0; k<column; k++) {
-                  writer.write(" ");
-                }
-              }
-
-              if (fullyQualifiedTypeNames) {
-                writer.write (mParameter.getType().getNamespace().getName()
-                              + ".");
-              }
-
-              writer.write (mParameter.getType().getName() + " " +
-                            mParameter.getName());
-            }
-          }
-
-          writer.write(")");
-          */
         }
-      }
-
-      if(!found) {
-        writer.write("REMOVED");
-      }
+        if(found) {
+            // fast forward original code (overwriting)
+            ffCodePiece(reader,null);
+        } else {
+            // not in model, so write the original code
+            ffCodePiece(reader,writer);
+        }
     }
 }

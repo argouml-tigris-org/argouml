@@ -106,23 +106,22 @@ public class AnonymousClassCodePiece extends NamedCodePiece
        Write the code this piece represents to file. This will add a
        new level to the tree stacks.
     */
-    public void write(Writer writer,
-                      Stack parseStateStack,
-                      int column)
-	throws Exception
+    public void write(BufferedReader reader,
+                      BufferedWriter writer,
+                      Stack parseStateStack) throws Exception
     {
-	ParseState parseState = (ParseState)parseStateStack.peek();
-	MClass mClass = (MClass)
-	    parseState.newClassifier((new Integer(number)).toString());
+        ParseState parseState = (ParseState)parseStateStack.peek();
+        MClass mClass = (MClass)
+            parseState.newClassifier((new Integer(number)).toString());
 
-	if(mClass == null) {
-	    // Removed
-	    mClass = UmlFactory.getFactory().getCore().buildClass();
-	    writer.write("REMOVED ");
-	}
-
-	parseStateStack.push(new ParseState(mClass));
-
-	writer.write(classDef.getText().toString());
+        if(mClass != null) {
+            parseStateStack.push(new ParseState(mClass));
+            writer.write(classDef.getText().toString());
+            // dispose code piece in reader
+            ffCodePiece(reader,null);
+        } else {
+            // not in model, so write the original code
+            ffCodePiece(reader,writer);
+        }
     }
 }

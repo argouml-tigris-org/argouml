@@ -96,10 +96,10 @@ public class ClassifierEndCodePiece extends NamedCodePiece
        layer from the stack and adds new inner classes and features
        to the class or interface.
     */
-    public void write (Writer writer,
-                       Stack parseStateStack,
-                       int column)
-	    throws Exception {
+    public void write (BufferedReader reader,
+                       BufferedWriter writer,
+                       Stack parseStateStack) throws Exception
+    {
         ParseState parseState = (ParseState)parseStateStack.pop();
         MClassifier mClassifier = parseState.getClassifier();
         Vector newFeatures = parseState.getNewFeatures();
@@ -108,34 +108,29 @@ public class ClassifierEndCodePiece extends NamedCodePiece
         // Insert new features
         for(Iterator i=newFeatures.iterator(); i.hasNext(); ) {
             MFeature mFeature = (MFeature)i.next();
-            if(mFeature instanceof MOperation) {
-          CodeGenerator.generateOperation((MOperation)mFeature,
-                    mClassifier,
-                    writer);
+            if (mFeature instanceof MOperation) {
+                CodeGenerator.generateOperation((MOperation)mFeature,mClassifier,reader,writer);
             }
-            else if(mFeature instanceof MAttribute) {
-          CodeGenerator.generateAttribute((MAttribute)mFeature,
-                    mClassifier,
-                    writer);
+            else if (mFeature instanceof MAttribute) {
+                CodeGenerator.generateAttribute((MAttribute)mFeature,mClassifier,reader,writer);
             }
         }
 
         // Insert new inner classes
         for(Iterator i = newInnerClasses.iterator(); i.hasNext(); ) {
             MModelElement element = (MModelElement)i.next();
-            if(element instanceof MClass) {
-          CodeGenerator.generateClass((MClass)element,
-                      writer);
+            if (element instanceof MClass) {
+                CodeGenerator.generateClass((MClass)element,reader,writer);
             }
-            else if(element instanceof MInterface) {
-          CodeGenerator.generateInterface((MInterface)element,
-                    writer);
+            else if (element instanceof MInterface) {
+          CodeGenerator.generateInterface((MInterface)element,reader,writer);
             }
         }
 
       StringBuffer sb = GeneratorJava.getInstance()
           .appendClassifierEnd (new StringBuffer (2), mClassifier, true);
       writer.write (sb.toString());
-    	/*writer.write("}");*/
+      // fast forward original code (overwriting)
+      ffCodePiece(reader,null);
     }
 }

@@ -125,13 +125,14 @@ public class AttributeCodePiece extends NamedCodePiece
        Write the code this piece represents to file.
        (Does not check for uniqueness of names.)
     */
-    public void write(Writer writer,
-                      Stack parseStateStack,
-                      int column)
+    public void write(BufferedReader reader,
+                      BufferedWriter writer,
+                      Stack parseStateStack)
 	throws Exception
     {
     ParseState parseState = (ParseState)parseStateStack.peek();
     Vector features = parseState.getNewFeatures();
+    boolean found = false;
     // there might be multiple variable declarations in one line, so loop:
     for(Iterator i = attributeNames.iterator(); i.hasNext(); ) {
         boolean checkAssociations = true;
@@ -142,6 +143,7 @@ public class AttributeCodePiece extends NamedCodePiece
             MFeature mFeature = (MFeature)j.next();
             if(mFeature instanceof MAttribute && mFeature.getName().equals(name)) {
                 // feature found, so it's an attribute (and no association end)
+                found = true;
                 checkAssociations = false;
                 parseState.newFeature(mFeature); // deletes feature from current ParseState
                 writer.write(GeneratorJava.getInstance().generateCoreAttribute((MAttribute)mFeature));
@@ -164,6 +166,7 @@ public class AttributeCodePiece extends NamedCodePiece
                         if (ae2 != ae && ae2.isNavigable() && !ae2.getAssociation().isAbstract()
                             && GeneratorJava.getInstance().generateAscEndName(ae2).equals(name)) {
                             // association end found
+                            found = true;
                             writer.write(GeneratorJava.getInstance().generateCoreAssociationEnd(ae2));
                             break;
                         }
@@ -171,6 +174,13 @@ public class AttributeCodePiece extends NamedCodePiece
                 }
             }
         }
+    }
+    if(found) {
+        // fast forward original code (overwriting)
+        ffCodePiece(reader,null);
+    } else {
+        // not in model, so write the original code
+        ffCodePiece(reader,writer);
     }
     }
 }

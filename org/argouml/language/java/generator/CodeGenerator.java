@@ -51,13 +51,13 @@ class CodeGenerator
        @param mClass The class to generate code for.
        @param writer The writer to write to.
     */
-    static public void generateClass(MClass mClass, Writer writer)
+    static public void generateClass(MClass mClass, BufferedReader reader, BufferedWriter writer)
 	throws Exception
     {
 	ClassCodePiece ccp = new ClassCodePiece(null, mClass.getName());
 	Stack parseStateStack = new Stack();
 	parseStateStack.push(new ParseState(mClass.getNamespace()));
-	ccp.write(writer, parseStateStack, 0);
+	ccp.write(reader, writer, parseStateStack);
 
 	writer.write("{\n");
 
@@ -66,10 +66,10 @@ class CodeGenerator
 	for(Iterator i = features.iterator(); i.hasNext(); ) {
 	    MFeature feature = (MFeature)i.next();
 	    if(feature instanceof MOperation) {
-		generateOperation((MOperation)feature, mClass, writer);
+		generateOperation((MOperation)feature, mClass, reader, writer);
 	    }
 	    if(feature instanceof MAttribute) {
-		generateAttribute((MAttribute)feature, mClass, writer);
+		generateAttribute((MAttribute)feature, mClass, reader, writer);
 	    }
 	}
 
@@ -78,10 +78,10 @@ class CodeGenerator
 	for(Iterator i = elements.iterator(); i.hasNext(); ) {
 	    MModelElement element = (MModelElement)i.next();
 	    if(element instanceof MClass) {
-		generateClass((MClass)element, writer);
+		generateClass((MClass)element, reader, writer);
 	    }
 	    else if(element instanceof MInterface) {
-		generateInterface((MInterface)element, writer);
+		generateInterface((MInterface)element, reader, writer);
 	    }
 	}
 
@@ -94,14 +94,14 @@ class CodeGenerator
        @param mInterface The interface to generate code for.
        @param writer The writer to write to.
     */
-    static public void generateInterface(MInterface mInterface, Writer writer)
+    static public void generateInterface(MInterface mInterface, BufferedReader reader, BufferedWriter writer)
 	throws Exception
     {
 	InterfaceCodePiece icp =
 	    new InterfaceCodePiece(null, mInterface.getName());
 	Stack parseStateStack = new Stack();
 	parseStateStack.push(new ParseState(mInterface.getNamespace()));
-	icp.write(writer, parseStateStack, 0);
+	icp.write(reader, writer, parseStateStack);
 
 	writer.write("{\n");
 
@@ -110,10 +110,10 @@ class CodeGenerator
 	for(Iterator i = features.iterator(); i.hasNext(); ) {
 	    MFeature feature = (MFeature)i.next();
 	    if(feature instanceof MOperation) {
-		generateOperation((MOperation)feature, mInterface, writer);
+		generateOperation((MOperation)feature, mInterface, reader, writer);
 	    }
 	    if(feature instanceof MAttribute) {
-		generateAttribute((MAttribute)feature, mInterface, writer);
+		generateAttribute((MAttribute)feature, mInterface, reader, writer);
 	    }
 	}
 
@@ -122,10 +122,10 @@ class CodeGenerator
 	for(Iterator i = elements.iterator(); i.hasNext(); ) {
 	    MModelElement element = (MModelElement)i.next();
 	    if(element instanceof MClass) {
-		generateClass((MClass)element, writer);
+		generateClass((MClass)element, reader, writer);
 	    }
 	    else if(element instanceof MInterface) {
-		generateInterface((MInterface)element, writer);
+		generateInterface((MInterface)element, reader, writer);
 	    }
 	}
 
@@ -139,7 +139,7 @@ class CodeGenerator
        @param mClassifier The classifier the operation belongs to.
        @param writer The writer to write to.
     */
-    static public void generateOperation(MOperation mOperation, MClassifier mClassifier, Writer writer)
+    static public void generateOperation(MOperation mOperation, MClassifier mClassifier, BufferedReader reader, BufferedWriter writer)
 	throws Exception
     {
 	OperationCodePiece ocp =
@@ -148,7 +148,7 @@ class CodeGenerator
 				   mOperation.getName());
 	Stack parseStateStack = new Stack();
 	parseStateStack.push(new ParseState(mClassifier));
-	ocp.write(writer, parseStateStack, 0);
+	ocp.write(reader, writer, parseStateStack);
 
 	if(mOperation.isAbstract() || mClassifier instanceof MInterface) {
 	    writer.write(";\n");
@@ -165,7 +165,7 @@ class CodeGenerator
        @param mClassifier The classifier the attribute belongs to.
        @param writer The writer to write to.
     */
-    static public void generateAttribute(MAttribute mAttribute, MClassifier mClassifier, Writer writer)
+    static public void generateAttribute(MAttribute mAttribute, MClassifier mClassifier, BufferedReader reader, BufferedWriter writer)
 	throws Exception
     {
 	Vector names = new Vector();
@@ -176,7 +176,7 @@ class CodeGenerator
 				   names);
 	Stack parseStateStack = new Stack();
 	parseStateStack.push(new ParseState(mClassifier));
-	acp.write(writer, parseStateStack, 0);
+	acp.write(reader, writer, parseStateStack);
 	writer.write(";\n");
     }
 }
