@@ -35,13 +35,13 @@ public abstract class FigCompartment extends FigGroup {
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
-        return getLineWidth();
+        return super.getLineWidth();
     }
     
     /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
-        setLineWidth(w);
+        super.setLineWidth(w);
     }
 }
