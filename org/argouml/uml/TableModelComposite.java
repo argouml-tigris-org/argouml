@@ -73,6 +73,9 @@ implements TableModelTarget {
 
   public Vector getRowObjects() { return _rowObjects; }
 
+  /** this is  at
+   * @param p
+   */  
   public void setFilter(Predicate p) { _pred = p; }
 
   ////////////////

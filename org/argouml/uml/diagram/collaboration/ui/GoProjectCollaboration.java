@@ -27,6 +27,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
+import org.apache.log4j.*;
 
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -37,6 +38,10 @@ import org.argouml.ui.*;
 
 public class GoProjectCollaboration implements TreeModelPrereqs {
 
+  /** for logging */
+  private final static Category cat = 
+      Category.getInstance("org.argouml.uml.diagram.collaboration.ui.GoProjectCollaboration");
+  
   public String toString() { return "Project->MCollaboration"; }
 
   public Object getRoot() {
@@ -48,7 +53,7 @@ public class GoProjectCollaboration implements TreeModelPrereqs {
   public Object getChild(Object parent, int index) {
     Vector children = getChildren(parent);
     if (children != null) return children.elementAt(index);
-    System.out.println("getChild should never be get here GoProjectCollaboration");
+    System.out.println("getChild should never be called get here GoProjectCollaboration");
     return null;
   }
 
@@ -97,11 +102,13 @@ public class GoProjectCollaboration implements TreeModelPrereqs {
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
 
+   
   public Vector getPrereqs() {
     Vector pros = new Vector();
     pros.addElement(Project.class);
     return pros;
-  }
+  } 
+ 
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
     pros.addElement(MCollaboration.class);
