@@ -324,7 +324,7 @@ public class CheckUMLModelHelper {
                         if (!(base instanceof MClass)) {
                             TestCase.assertTrue("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo1));
                         } else {
-                            MInterface inter = CoreFactory.getFactory().createInterface();
+                            MInterface inter = (MInterface)ObjectFactoryManager.getUmlFactory().create(Uml.INTERFACE);
                             MStereotype stereo3 = ExtensionMechanismsFactory.getFactory().buildStereotype(inter, "test3", ns);
                             TestCase.assertTrue("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo3));
                         }

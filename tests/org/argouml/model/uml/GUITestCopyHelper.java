@@ -139,7 +139,7 @@ public class GUITestCopyHelper extends TestCase {
 	MDataType d;
 	MStereotype st;
 
-	d = CoreFactory.getFactory().createDataType();
+	d = (MDataType)ObjectFactoryManager.getUmlFactory().create(Uml.DATA_TYPE);
 	m1.addOwnedElement(d);
 
 	st = ExtensionMechanismsFactory.getFactory().createStereotype();
@@ -197,7 +197,7 @@ public class GUITestCopyHelper extends TestCase {
 	MInterface i;
 	MStereotype st;
 
-	i = CoreFactory.getFactory().createInterface();
+	i = (MInterface)ObjectFactoryManager.getUmlFactory().create(Uml.INTERFACE);
 	m1.addOwnedElement(i);
 
 	st = ExtensionMechanismsFactory.getFactory().createStereotype();
@@ -255,7 +255,7 @@ public class GUITestCopyHelper extends TestCase {
 	MPackage p;
 	MStereotype st;
 
-	p = ModelManagementFactory.getFactory().createPackage();
+	p = (MPackage)ObjectFactoryManager.getUmlFactory().create(Uml.PACKAGE);
 	m1.addOwnedElement(p);
 
 	st = ExtensionMechanismsFactory.getFactory().createStereotype();
