@@ -67,15 +67,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
 
   public UMLDeploymentDiagram() {
-  	String name = null;
-  	Object[] args = {name};
-  	do {
-        name = "deployment diagram " + _DeploymentDiagramSerial;
-        _DeploymentDiagramSerial++;
-        args[0] = name;
-    }
-    while (vetoCheck("name", args));
-    try { setName(name); 
+  
+    try { setName(getNewDiagramName()); 
     }
     catch (PropertyVetoException pve) { }
   }
@@ -152,5 +145,17 @@ public class UMLDeploymentDiagram extends UMLDiagram {
   }
 
   static final long serialVersionUID = -375918274062198744L;
+  
+  protected static String getNewDiagramName() {
+  	String name = null;
+  	Object[] args = {name};
+  	do {
+        name = "deployment diagram " + _DeploymentDiagramSerial;
+        _DeploymentDiagramSerial++;
+        args[0] = name;
+    }
+    while (TheInstance.vetoCheck("name", args));
+    return name;
+  }
 
 } /* end class UMLDeploymentDiagram */
