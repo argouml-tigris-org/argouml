@@ -61,7 +61,8 @@ public class ActionSetChangeability extends UMLChangeAction {
             JRadioButton source = (JRadioButton) e.getSource();
             String actionCommand = source.getActionCommand();
             Object target = ((UMLRadioButtonPanel) source.getParent()).getTarget();
-            if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
+            if (ModelFacade.isAAssociationEnd(target) ||
+		ModelFacade.isAAttribute(target)) {
                 Object m = /*(MAssociationEnd)*/ target;
                 Object/*MChangeableKind*/ kind = null;
                 if (actionCommand.equals(CHANGEABLE_COMMAND)) {
