@@ -47,6 +47,7 @@ public class SettingsResourceBundle extends ListResourceBundle {
         {"label_edem", "Report Usage Statistics" },  
         {"label_profile", "Report on Load Times" },  
         {"label_reload_recent", "Reload last saved project on startup" },  
+        {"label_startup_directory", "Startup Directory" },  
         {"tab_preferences", "Preferences" },  
         {"tab_environment", "Environment" },  
 

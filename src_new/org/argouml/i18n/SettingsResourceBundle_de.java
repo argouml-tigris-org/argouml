@@ -46,6 +46,7 @@ public class SettingsResourceBundle_de extends ListResourceBundle {
         {"label_preload", "Allgemeine Klassen im Voraus laden" },
         {"label_edem", "Benutzerstatistik anzeigen" },
         {"label_profile", "Ladezeiten anzeigen" },
+        {"label_reload_recent", "Reload last saved project on startup" }, 
         {"tab_preferences", "Voreinstellungen" },
         {"tab_environment", "I18N: Environment" },
         {"caption_settings", "Einstellungen" }
