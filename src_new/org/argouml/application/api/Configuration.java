@@ -34,6 +34,7 @@ import org.apache.log4j.*;
  *   logic.  All fancy handling and registry access occurs
  *   behind the scenes.
  *
+ *   @stereotype singleton
  *   @author Thierry Lach
  *   @since  0.9.4
  */

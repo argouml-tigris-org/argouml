@@ -55,6 +55,7 @@ import org.apache.log4j.*;
 
 /** Provides centralized methods dealing with notation.
  *
+ *  @stereotype singleton
  *  @author Thierry Lach
  *  @since 0.9.4
  */
