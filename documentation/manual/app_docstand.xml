@@ -63,15 +63,24 @@ Modifications
       <listitem><para>XML comments are used throughout to explain what various
         sections are trying to achieve.</para></listitem>
 
-      <listitem><para>Cross-referencing requires use of <literal>id</literal>
-        attributes. To avoid convention use a prefix of <literal>ch</literal>
-        for <sgmltag>chapter</sgmltag>, <literal>app</literal> for
-        <sgmltag>appendix</sgmltag>, <literal>s1</literal> through
-        <literal>s5</literal> for <sgmltag>sect1</sgmltag> through
-        <sgmltag>sect5</sgmltag>, <literal>fig</literal> for
-        <sgmltag>figure</sgmltag>, <literal>tab</literal> for
+      <listitem><para>Cross-referencing requires use of <literal>id.</literal>
+        attributes. To avoid confusion, use a prefix of <literal>ch.</literal>
+        for <sgmltag>chapter</sgmltag>, <literal>app.</literal> for
+        <sgmltag>appendix</sgmltag>, <literal>s1.</literal> through
+        <literal>s5.</literal> for <sgmltag>sect1</sgmltag> through
+        <sgmltag>sect5</sgmltag>, <literal>fig.</literal> for
+        <sgmltag>figure</sgmltag>, <literal>tab.</literal> for
         <sgmltag>table</sgmltag> and <literal>gl</literal> for
-        <sgmltag>glossentry</sgmltag>.</para></listitem>
+        <sgmltag>glossentry</sgmltag>.</para>
+
+        <para>A second prefix of <literal>tut.</literal> or
+          <literal>ref.</literal> is used to distinguish tutorial and reference
+          material. The remainder of the tag should be descriptive, but concise
+          with words separate by underscore. Where a graphic is involved this
+          remainder should correspond to the file name. For example
+          <literal>fig.ref.navigation_pane</literal> for a figure showing the
+          navigation pane, with the diagram in
+          <literal>navigation_pane.gif</literal></para></listitem>
 
       <listitem><para>Only use <sgmltag>glossterm</sgmltag> (for the term
         <emphasis>or</emphasis> its abbreviation/acronym),

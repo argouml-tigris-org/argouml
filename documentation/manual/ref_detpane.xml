@@ -3,7 +3,7 @@
 <!--
 
 This describes the Details Pane. We set a boundary here, to avoid describing
-all the entities. The description of properties for each entity is left to the
+all the artifacts. The description of properties for each artifact is left to the
 chapter on diagrams.
 
 Modifications
@@ -14,20 +14,20 @@ Modifications
 
 -->
 
-<chapter id="chrefdetpane">
+<chapter id="ch.ref.detpane">
   <title>The Details Pane</title>
 
   <sect1>
     <title>Introduction</title>
 
-    <para><xref linkend="figrefdetailsoverview"/> shows the Details
+    <para><xref linkend="fig.ref.detailsoverview"/> shows the Details
       Pane.</para>
 
     <!-- This should be a comprehensive picture. In fact its just the minimum
          at the moment. It would be good to put some bubbles on this one
          pointing things out as well. -->
 
-    <figure id="figrefdetailsoverview" float="1">
+    <figure id="fig.ref.detailsoverview" float="1">
       <title>Overview of the Details Pane</title>
 
       <screenshot><mediaobject>
@@ -50,7 +50,7 @@ Modifications
       </mediaobject></screenshot>
     </figure>
 
-    <para>For any entity within the system, this Pane is where all its
+    <para>For any artifact within the system, this Pane is where all its
       associated data is entered.</para>
 
     <para>The Pane has a series of tabs at the top. The body of a pane is a
@@ -58,7 +58,7 @@ Modifications
       particular tab selected.</para>
 
     <para>Of these, the <literal>Properties</literal> Tab is by far the most
-      complex, with a different presentation for each entity within the
+      complex, with a different presentation for each artifact within the
       system. Its description forms the bulk of this section.</para>
   </sect1>
 
@@ -80,14 +80,14 @@ Modifications
 
   <!-- The Properties tab -->
 
-  <sect1 id="s1refproptab">
+  <sect1 id="s1.ref.proptab">
     <title>Properties Tab</title>
 
     <remark>To be written&hellip;</remark>
 
     <!-- The property toolbars gathered together to avoid repetition -->
 
-    <sect2 id="s2refproptoolbar">
+    <sect2 id="s2.ref.proptoolbar">
       <title>Property Toolbars</title>
 
       <para>Whilst all property sheets differ, many have toolbars. To avoid
@@ -268,7 +268,7 @@ Modifications
     <!-- The entries that appear on property sheets. Gathered in one place
          to avoid repetition. -->
 
-    <sect2 id="s2refpropcommonfeat">
+    <sect2 id="s2.ref.propcommonfeat">
       <title>Common Property Sheet Features</title>
 
       <para>Whilst all property sheets differ, some components that make up
@@ -283,7 +283,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Name of the entity -->
+      <!-- Name of the artifact -->
 
       <sect3>
         <title>Name</title>
@@ -338,7 +338,7 @@ Modifications
       <sect3>
         <title>Context Sensitive Pop-Up Menu</title>
 
-        <para>Button 2 Click over the some named entities in the details tab
+        <para>Button 2 Click over the some named artifacts in the details tab
           Drawing Pane will cause a Pop-Up menu to appear.</para>
       </sect3>
     </sect2>

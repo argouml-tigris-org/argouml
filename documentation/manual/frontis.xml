@@ -11,6 +11,8 @@ Modifications
                original manual by Alejandro, Phillipe and Andreas. Added
                revision history.
 
+12 Dec 2001:  Jeremy Bennett. Added Kunle Odutola to list of authors (omitted
+              in error from earlier versions).
 -->
 
 <bookinfo>
@@ -36,6 +38,11 @@ Modifications
     </author>
 
     <author>
+      <firstname>Kunle</firstname>
+      <surname>Odutola</surname>
+    </author>
+
+    <author>
       <firstname>Jeremy</firstname>
       <surname>Bennett</surname>
     </author>
@@ -44,48 +51,61 @@ Modifications
   <copyright>
     <year>2001</year>
     <holder>Jeremy Bennett</holder>
+    <holder>Kunle Odutola</holder>
   </copyright>
 
   <copyright>
     <year>2000</year>
+    <holder>Alejandro Ramirez</holder>
     <holder>Philippe Vanpeperstraete</holder>
+    <holder>Andreas Rueckert</holder>
   </copyright>
 
   <legalnotice>
-    <para>Permission is granted to copy, distribute and/or modify this document
-      under the terms of the GNU Free Documentation License, Version 1.1 or any
-      later version published by the Free Software Foundation; with no
-      Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
-      Texts. A copy of the license is included in the section entitled <link
-        linkend="applegal">GNU Free Documentation License.</link></para>
+    <blockquote><para>This material may be distributed only subject to the
+      terms and conditions set forth in the Open Publication License, v1.0 or
+      later. A copy of this licence is included in the section <link
+      linkend="applegal">Open Publication License</link>. The latest version is
+      presently available at <ulink url="http://www.opencontent.org/openpub/">
+      http://www.opencontent.org/openpub/</ulink>.</para></blockquote>
   </legalnotice>
 
   <revhistory>
     <revision>
-      <revnumber>0.9.5, draft B</revnumber>
-      <date>11 Dec 2001</date>
-      <revremark>Tidied up Introduction chapter; completed UML tutorial chapter
-        apart from the case study description; added GNU Free Documentation
-        Licence as an appendix; added reference chapter on predefined
-        datatypes; classes, interfaces and stereotypes; reorganised diagrams
-        into images/tutorial and images/reference sections and substituted "To
-        Be Provided" diagram where no suitable one is available.</revremark>
+      <revnumber>0.9.5, draft C</revnumber> <date>18 Dec 2001</date>
+      <revdescription><para>Update by Jeremy Bennett. Added Kunle Odutola to 
+        the list of authors (omitted in error from earlier drafts of 0.9.5,
+        which also included his work); substituted the term
+        <quote>artifact</quote> for <quote>entity</quote> in references to UML
+        artifacts; added stereotypes to top level artifact reference; completed
+        reference sections for top level and use case artifacts; changed to
+        Open Publication Licence</para></revdescription>
     </revision>
 
     <revision>
-      <revnumber>0.9.5, draft A</revnumber>
-      <date>7 Dec 2001</date>
-      <revremark>Update by Jeremy Bennett preparing to support release of
-        &argouml;&nbsp;0.9.6. Incorporates material from previous manuals,
-        attempts to provide a skeleton structure for the whole
-        document.</revremark>
+      <revnumber>0.9.5, draft B</revnumber> <date>11 Dec 2001</date>
+      <revdescription><para>Update by Jeremy Bennett. Tidied up Introduction
+        chapter; completed UML tutorial chapter apart from the case study
+        description; added GNU Free Documentation Licence as an appendix; added
+        reference chapter on predefined datatypes; classes, interfaces and
+        stereotypes; reorganised diagrams into images/tutorial and
+        images/reference sections and substituted "To Be Provided" diagram
+        where no suitable one is available.</para></revdescription>
+    </revision>
+
+    <revision>
+      <revnumber>0.9.5, draft A</revnumber> <date>7 Dec 2001</date>
+      <revdescription><para>Update by Jeremy Bennett preparing to support
+        release of &argouml;&nbsp;0.9.6. Incorporates material from previous
+        manuals, attempts to provide a skeleton structure for the whole
+        document.</para></revdescription>
     </revision>
 
     <revision>
       <revnumber></revnumber>
       <date>22 Feb 2000</date>
-      <revremark>Version due to Philippe Vanpeperstraete. History of previous
-        versions unknown.</revremark>
+      <revdescription><para>Version due to Philippe Vanpeperstraete. History of
+        previous versions unknown.</para></revdescription>
     </revision>
   </revhistory>
 </bookinfo>

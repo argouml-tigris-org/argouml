@@ -2,7 +2,7 @@
 
 <!--
 
-Desription of all the entities associated with Use Case Diagrams within
+Desription of all the artifacts associated with use case diagrams within
 Argo/UML.
 
 
@@ -13,195 +13,2799 @@ Modifications
 
 -->
 
-<chapter id="chrefentusecase">
-  <title>&argouml; Use Case Diagram Entity Reference</title>
+<chapter id="ch.ref.entusecase">
+  <title>&argouml; Use Case Diagram Artifact Reference</title>
 
   <sect1>
     <title>Introduction</title>
 
-    <para>This chapter describes each entity that can be created within a Use
-      Case Diagram. Note that some subentities of entities on the diagram may
-      not actually themselves appear on the diagram.</para>
+    <para>This chapter describes each artifact that can be created within a use
+      case diagram. Note that some sub-artifacts of artifacts on the diagram
+      may not actually themselves appear on the diagram.</para>
 
     <para>There is a close relationship between this material and the
-      Properties Tab of the Details Pane (see
-      <xref linkend="s1refproptab"/>). That section covers Properties in
-      general, in this chapter they are linked to specific entities.</para>
+      properties tab of the details pane (see
+      <xref linkend="s1.ref.proptab"/>). That section covers properties in
+      general, in this chapter they are linked to specific artifacts.</para>
 
-    <para>Of particular importance are the sections on Property Toolbars (see
-      <xref linkend="s2refproptoolbar"/>) and Common Property Sheet Features
-      (see <xref linkend="s2refpropcommonfeat"/>). These document the toolbar
-      buttons and key features that are common to most Property Sheets.</para>
+    <para>Of particular importance are the sections on property toolbars (see
+      <xref linkend="s2.ref.proptoolbar"/>) and common property sheet features
+      (see <xref linkend="s2.ref.propcommonfeat"/>). These document the toolbar
+      buttons and key features that are common to most property sheets.</para>
 
     <!-- A diagram to show all things visible on the diagram -->
 
-    <para><xref linkend="figrefentusecase"/> shows a Use Case Diagram with all
-      possible entities displayed.</para>
+    <para><xref linkend="fig.ref.use_case_diagram"/> shows a use case diagram
+      with all possible artifacts displayed.</para>
 
     <!-- This should be a comprehensive picture. In fact its just the minimum
          at the moment. It would be good to put some bubbles on this one
          pointing things out as well. -->
 
-    <figure id="figrefentusecase" float="1">
-      <title>Possible entities on a Use Case Diagram.</title>
+    <figure id="fig.ref.use_case_diagram" float="1">
+      <title>Possible artifacts on a use case diagram.</title>
 
       <screenshot><mediaobject>
         <imageobject>
-          <imagedata format="PNG" align="center"
-                     fileref="images/tobeprovided.png"/>
+          <imagedata format="GIF" align="center"
+                     fileref="images/reference/use_case_diagram.gif"/>
         </imageobject>
 
         <textobject>
-          <para>A Use Case Diagram, showing (from left to right and top to
-            bottom) an Actor, Association, Use Case, Generalisation and
-            Dependency.</para>
+          <para>A use case diagram, showing actors, association, use cases,
+            generalization, includes and extends relationships.</para>
         </textobject>
       </mediaobject></screenshot>
     </figure>
+
+    <!-- Limitations in Argo/UML relating to includes/extends and extension
+         points. -->
+
+    <sect2>
+      <title>&argouml; Limitations Concerning Use Case Diagrams</title>
+
+      <para>During the standardization process of UML, there was considerable
+        change over the definition of <literal>Includes</literal> (originally
+        known as <literal>Uses</literal>) and
+        <literal>Extends</literal>. Initially they were specializations of
+        <literal>Generalization</literal> within the UML metamodel (itself a
+        specialization of <literal>Relationship</literal>.</para>
+
+      <para>In UML&nbsp;1.3, <literal>Includes</literal> and
+        <literal>Extends</literal> are defined as specializations directly from
+        <literal>Relationship</literal>.</para>
+
+      <warning><para>&argouml; further confuses matters by defining
+        <literal>Includes</literal> and <literal>Extends</literal> as
+        stereotyped specializations of <literal>Dependency</literal> (itself a
+        specialization of <literal>Relationship</literal>. This is an area
+        where &argouml; is out of line at present with the
+        standard.</para></warning>
+
+      <para>Further difficulties arise with <literal>Extension
+        Points</literal>, the points within a use case, where extending use
+        cases may be invoked. In the absence of a
+        <literal>LocationReference</literal> within &argouml; these are
+        restricted to purely documentation features.</para>
+    </sect2>
   </sect1>
 
-  <!-- Entities specific to Use Case Diagrams. Actor -->
+  <!-- Artifacts specific to use case diagrams. Actor -->
 
-  <sect1>
+  <sect1 id="s1.ref.actor">
     <title>Actor</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>An actor represents any external entity (human or machine) that
+      interacts with the system, providing input, receiving output, or
+      both.</para>
 
-    <!-- The properties of an Actor -->
+    <para>Within the UML metamodel, actor is a sub-class of
+     <literal>classifier</literal>.</para>
+
+    <para>The actor icon is a stick man (see <xref
+      linkend="fig.ref.use_case_diagram"/>).</para>
+
+    <!-- The details tabs -->
+
+    <sect2>
+      <title>Actor Details Tabs</title>
+
+      <para>The details tabs that are active for actors are described in <xref
+        linkend="tab.ref.actor_details_tabs"/>.</para>
+
+      <table id="tab.ref.actor_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for actor</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDo Item tab -->
+
+            <row>
+              <entry>ToDo Item</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref linkend="tab.ref.actor_property_toolbar"/>
+                and <xref linkend="tab.ref.actor_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab. Fill colour is used for the stick
+                man's head.</para></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab. It would not be usual to provide any
+                code for an actor, since it is external to the
+                system.</para>
+
+              <note><para>The source tab content can be changed, but this has
+                no effect.</para></note></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. However it would not be usual to
+                provide constraints for an actor, since it is external to the
+                system.</para></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. However the standard tagged values
+                that UML defines make little sense in the context of an
+                actor.</para></entry>
+            </row>
+
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Actor properties -->
 
     <sect2>
       <title>Actor Properties</title>
 
-      <remark>To be written&hellip;</remark>
+      <!-- The properties toolbar -->
 
-      <!-- The property toolbar -->
+      <para>The property tab toolbar for actors is described in <xref
+        linkend="tab.ref.actor_property_toolbar"/>.</para>
 
-      <sect3>
-        <title>Property Toolbar</title>
+      <table id="tab.ref.actor_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property toolbar for diagram</title>
 
-        <!-- Common toolbar buttons (navigation, delete) -->
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
 
-        <remark>To be written&hellip;</remark>
+          <tbody valign="top">
 
-        <sect4>
-          <title>Common Buttons</title>
+            <!-- Entry for Go up button -->
 
-          <remark>To be written&hellip;</remark>
-        </sect4>
+            <row>
+              <entry>Go up</entry>
 
-        <!-- New Actor (appears to be a mistake - does nothing) -->
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
 
-        <sect4>
-          <title>New Actor Button</title>
+              <entry><para>Navigate up through the package structure of the
+                model.</para></entry>
+            </row>
 
-          <remark>To be written&hellip;</remark>
-        </sect4>
-      </sect3>
+            <!-- Entry for Go back button -->
 
-      <!-- The common properties (Name, Stereotype, Namespace) -->
+            <row>
+              <entry>Go back</entry>
 
-      <sect3>
-        <title>Common (Name, Stereotype, Namespace)</title>
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
+              <entry><para>Navigate back to the previous
+                artifact.</para></entry>
+            </row>
 
-      <!-- Modifiers -->
+            <!-- Entry for Go forward button -->
 
-      <sect3>
-        <title>Modifiers</title>
+            <row>
+              <entry>Go forward</entry>
 
-        <remark>To be written&hellip;</remark>
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
 
-        <!-- Abstract option -->
+              <entry><para>Navigate forward to the next
+                artifact.</para></entry>
+            </row>
 
-        <sect4>
-          <title>Abstract</title>
+            <!-- Entry for New actor button -->
 
-          <remark>To be written&hellip;</remark>
-        </sect4>
+            <row>
+              <entry>New actor</entry>
 
-        <!-- Final option -->
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/actor.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
 
-        <sect4>
-          <title>Final</title>
+              <entry><para>This creates a new actor within the model, (but not
+                within the diagram), navigating immediately to the
+                properties tab for that actor.</para>
 
-          <remark>To be written&hellip;</remark>
-        </sect4>
+              <tip><para>This method of creating new actors can be
+                confusing. Much better to create them within diagrams where you
+                want them.</para></tip></entry>
+            </row>
 
-        <!-- Root option -->
+            <!-- Entry for Delete button -->
 
-        <sect4>
-          <title>Root</title>
+            <row>
+              <entry>Delete</entry>
 
-          <remark>To be written&hellip;</remark>
-        </sect4>
-      </sect3>
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
 
-      <!-- Derived entities -->
+              <entry><para>This deletes the selected actor from the
+                model.</para>
 
-      <sect3>
-        <title>Derived</title>
+              <warning><para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. To delete an actor
+                from the diagram, but keep it within the model, use the main
+                menu <literal>Edit/Remove From Diagram</literal>
+                (Ctrl-R).</para></warning></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
+      <para>The fields on the property tab for actors are described in
+        <xref linkend="tab.ref.actor_property_fields"/>.</para>
 
-      <!-- Associations -->
+      <table id="tab.ref.actor_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for actor</title>
 
-      <sect3>
-        <title>Associations</title>
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
+          <tbody valign="top">
 
-      <!-- Implements -->
+            <!-- Entry for Name -->
 
-      <sect3>
-        <title>Implements</title>
+            <row>
+              <entry>Name</entry>
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
+              <entry><para>Text box. The name of the actor. Since an actor is a
+                classifier, it would be conventional to Capitalise the first
+                letter (and initial letters of any component words),
+                e.g. <literal>RemoteSensor</literal>.</para>
+
+              <note><para>&argouml; does not enforce any naming convention for
+                actors</para></note></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Actor is provided by default
+                with the UML standard stereotypes
+                (<literal>metaclass</literal>, <literal>powertype</literal>,
+                <literal>process</literal>, <literal>thread</literal>,
+                <literal>utility</literal>) for classifiers. &argouml; also
+                provides the additional stereotypes,
+                <literal>machine</literal>, <literal>organization</literal> and
+                <literal>person</literal>. Stereotypes are of limited value
+                with actors, but these last three are probably of most
+                use.</para></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype"/>.</para></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the actor. This
+                is the package hierarchy. &Button1; click on this entry
+                will take you to that package.</para>
+
+              <note><para>You can sometimes find yourselves navigating to
+                deleted artifacts in the model. These will show a namespace of
+                <literal>Trash</literal>.</para></note></entry>
+            </row>
+
+            <!-- Entry for Modifiers -->
+
+            <row>
+              <entry>Modifiers</entry>
+
+              <entry><para>Check box, with entries <literal>Abstract</literal>,
+                <literal>Final</literal> and <literal>Root</literal>. These are
+                present, because an actor derives (via
+                <literal>Classifier</literal>) from
+                <literal>GeneralizableElement</literal> in the UML
+                metamodel. <literal>GeneralizableElement</literal> has
+                attributes <literal>isAbstract</literal>,
+                <literal>isLeaf</literal> and <literal>isRoot</literal>,
+                corresponding to these check boxes.</para>
+
+              <para>However from an &ooad; perspective, these attributes relate
+                to design of the solution, and are not particularly relevant to
+                actors.</para></entry>
+            </row>
+
+            <!-- Entry for Derived -->
+
+            <row>
+              <entry>Derived</entry>
+
+              <entry><para>Text box. Lists any derived actor (i.e. for which
+                this actor is a generalization. The derived actors can
+                communicate with the same use case instances as this
+                actor.</para>
+
+              <para>&button1; click navigates to the generalization and opens
+                its property tab.</para>
+
+              <para>&Button2; click yields a drop down menu, with a single
+                entry, <literal>Open</literal>which navigates to the
+                generalization and opens its property tab.</para>
+
+              <warning><para>An actor may generalize several other
+                actors. Although they will all appear in the
+                <literal>Derived</literal> text box, the absence of a
+                comprehensive drop down menu (<literal>Open</literal>,
+                <literal>Add</literal>, <literal>Delete</literal>,
+                <literal>Move&nbsp;Up</literal> and
+                <literal>Move&nbsp;Down</literal>) renders access to all but
+                the first impossible via this field. They can of course be
+                accessed through the navigation pane or
+                diagram.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Extends -->
+
+            <row>
+              <entry>Extends</entry>
+
+              <entry><para>Text area. Lists any use case that
+                <emphasis>generalizes</emphasis> this actor.</para>
+
+              <para>&Button1; click navigates to the generalization and opens
+                its property tab.</para>
+
+              <para>&Button2; click yields a drop down menu with five
+                entries</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected generalization.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new
+                  generalization. Note that the new generalization is added to
+                  the model, but not the diagram. You will need to find it in
+                  the navigation pane and add it from there.</para>
+
+                <tip><para>It is far easier to add generalizations by drawing
+                  them on the relevant diagram in the editing
+                  pane.</para></tip></listitem>
+
+                <listitem><para><literal>Delete</literal>. The link from the
+                  generalization to the actor (<emphasis>but not the
+                  generalization itself</emphasis>) is removed.</para>
+
+                <tip><para>This <emphasis>does not</emphasis> remove the
+                  generalization from the model or the diagram, leading to
+                  potentially very confusing diagrams. It is usually far easier
+                  to remove generalizations from the editing
+                  pane.</para></tip></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                 where there are two or more generalizations listed, and the
+                 generalization selected is not at the top. It is moved one up
+                 the list.</para></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                 where there are two or more generalizations listed, and the
+                 generalization selected is not at the bottom. It is moved one
+                 down the list.</para></listitem>
+              </itemizedlist>
+
+              <warning><para>The use of the term <literal>Extends</literal> by
+                &argouml; is misleading, since this field does not relate to
+                <literal>extends</literal> relationships, but to
+                <literal>generalization</literal>
+                relationships.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Associations -->
+
+            <row>
+              <entry>Associations</entry>
+
+              <entry><para>Text area. Lists any associations connected to the
+                actor. &Button1; click on an association will navigate to
+                that association. &Button2; click gives a pop up menu with
+                five options.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Where a navigation
+                  exists, navigate to it.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new
+                  association. Note that the new association is added to the
+                  model, but not the diagram. You will need to find it in the
+                  navigation pane and add it from there.</para>
+
+                <tip><para>It is far easier to add associations by drawing them
+                  on the relevant diagram in the editing
+                  pane.</para></tip></listitem>
+
+                <listitem><para><literal>Delete</literal>. Where an association
+                  is linked to this actor, this removes the link to the
+                  actor.</para>
+
+                <tip><para>This <emphasis>does not</emphasis> remove the
+                  association from the model or the diagram, leading to
+                  potentially very confusing diagrams. It is usually far easier
+                  to remove associations from the editing
+                  pane.</para></tip></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                 where there are two or more associations listed, and the
+                 association selected is not at the top. It is moved one up the
+                 list.</para></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                 where there are two or more associations listed, and the
+                 association selected is not at the bottom. It is moved one
+                 down the list.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Implements -->
+
+            <row>
+              <entry>Implements</entry>
+
+              <entry><para>Text area. Listing the classes that are implemented
+                by this actor. Although it is possible to create an abstraction
+                through a &button2; pop up menu, this makes no sense for an
+                actor.</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
     </sect2>
   </sect1>
 
-  <!-- Use Case -->
+  <!-- use case -->
 
-  <sect1>
+  <sect1 id="s1.ref.use_case">
     <title>Use Case</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>A use case represents a complete meaningful <quote>chunk</quote> of
+      activity by the system in relation to its external users (actors), human
+      or machine. It represents the primary route through which requirements
+      are captured for the system under construction</para>
+
+    <para>Within the UML metamodel, use case is a sub-class of
+     <literal>classifier</literal>.</para> 
+
+    <para>The use case icon is an oval (see <xref
+      linkend="fig.ref.use_case_diagram"/>).</para>
+
+    <!-- The details tabs -->
+
+    <sect2>
+      <title>Use Case Details Tabs</title>
+
+      <para>The details tabs that are active for use cases are described in
+        <xref linkend="tab.ref.use_case_details_tabs"/>.</para>
+
+      <table id="tab.ref.use_case_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for use case</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDo Item tab -->
+
+            <row>
+              <entry>ToDo Item</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.use_case_property_toolbar"/> and <xref
+                  linkend="tab.ref.use_case_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab. Fill colour is used for the use case
+                oval.</para></entry> 
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab. It would not be usual to provide any
+                code for a use case, since it is primarily a vehicle for
+                capturing requirements about the system under construction, not
+                creating the solution.</para></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. It can be useful to stereotype use
+                cases, in which case constraints may be needed. None of the
+                standard stereotypes (and hence constraints) are particularly
+                well suited however.</para></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. However the standard tagged values
+                that UML defines make little sense in the context of a use
+                case.</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Use case properties -->
+
+    <sect2>
+      <title>Use Case Properties</title>
+
+      <!-- The properties toolbar -->
+
+      <para>The property tab toolbar for use cases is described in <xref
+        linkend="tab.ref.use_case_property_toolbar"/>.</para>
+
+      <table id="tab.ref.use_case_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property toolbar for diagram</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package structure of the
+                model.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for New use case button -->
+
+            <row>
+              <entry>New use case</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/use_case.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This creates a new use case within the model, (but
+                not within the diagram), navigating immediately to the
+                properties tab for that use case.</para>
+
+              <tip><para>This method of creating new use cases can be
+                confusing. Much better to create them within diagrams where you
+                want them.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the selected use case from the
+                model.</para>
+
+              <warning><para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. To delete a use case
+                from the diagram, but keep it within the model, use the main
+                menu <literal>Edit/Remove From Diagram</literal>
+                (Ctrl-R).</para></warning></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for use cases are described in
+        <xref linkend="tab.ref.use_case_property_fields"/>.</para>
+
+      <table id="tab.ref.use_case_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for use case</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the use case. Since a use case
+                is a classifier, it would be conventional to Capitalise the
+                first letter (and initial letters of any component words),
+                e.g. <literal>RemoteSensor</literal>.</para>
+
+              <note><para>&argouml; does not enforce any naming convention for
+                use cases</para></note></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Use case is provided by default
+                with the UML standard stereotypes
+                (<literal>metaclass</literal>, <literal>powertype</literal>,
+                <literal>process</literal>, <literal>thread</literal>,
+                <literal>utility</literal>) for classifiers. &argouml; also
+                provides the additional stereotypes,
+                <literal>machine</literal>, <literal>organization</literal> and
+                <literal>person</literal>. Stereotyping can be useful when
+                creating use cases in the problem domain (requirements capture)
+                and solution domain (analysis), but none of the pre-defined
+                stereotypes are well suited to this.</para>
+
+              <warning><para>If a stereotype is selected in &argouml; it will
+                not be displayed in the diagram.</para></warning></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype"/>.</para></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the use
+                case. This is the package hierarchy. &Button1; click on
+                this entry will take you to that package.</para>
+
+              <note><para>You can sometimes find yourselves navigating to
+                deleted artifacts in the model. These will show a namespace of
+                <literal>Trash</literal>.</para></note></entry>
+            </row>
+
+            <!-- Entry for Modifiers -->
+
+            <row>
+              <entry>Modifiers</entry>
+
+              <entry><para>Check box, with entries <literal>Abstract</literal>,
+                <literal>Final</literal> and <literal>Root</literal>. These are
+                present, because a use case derives (via
+                <literal>Classifier</literal>) from
+                <literal>GeneralizableElement</literal> in the UML
+                metamodel. <literal>GeneralizableElement</literal> has
+                attributes <literal>isAbstract</literal>,
+                <literal>isLeaf</literal> and <literal>isRoot</literal>,
+                corresponding to these check boxes.</para>
+
+              <para>However from an &ooad; perspective, these attributes relate
+                to design of the solution, and are not particularly relevant to
+                use cases.</para></entry>
+            </row>
+
+            <!-- Entry for Generalizations -->
+
+            <row>
+              <entry><anchor id="ref.use_case_generalization"/>Generalizations
+              </entry>
+
+              <entry><para>Text area. Lists use cases which are generalizations
+                of this one. Will be set whenever a generalization is created
+                on the diagram. &Button1; click on a generalization will
+                navigate to that generalization. &Button2; click gives a pop
+                up menu with five options.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Where a generalization
+                  exists, navigate to it.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new
+                  generalization. Note that the new association is added to the
+                  model, but not the diagram. You will need to find it in the
+                  navigation pane and add it from there.</para>
+
+                <tip><para>It is far easier to add generalizations by drawing
+                  them on the relevant diagram in the editing
+                  pane.</para></tip>
+
+                <caution><para>It is possible to add multiple
+                  generalizations. However is is hard to see a sensible meaning
+                  for this. In addition the size of the text area makes this
+                  very inconvenient in &argouml;.</para></caution></listitem>
+
+                <listitem><para><literal>Delete</literal>. Where a
+                  generalization exists linking to this use case, this removes
+                  the link to this use case.</para>
+
+                <tip><para>This <emphasis>does not</emphasis> remove the
+                  generalization from the model or the diagram, leading to
+                  potentially very confusing diagrams. It is usually far easier
+                  to remove generalizations from the editing
+                  pane.</para></tip></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                  where there are two or more generalizations listed (see
+                  <emphasis>caution</emphasis> above, and the generalization
+                  selected is not at the top. It is moved one up the
+                  list.</para></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                  where there are two or more generalizations listed (see
+                  <emphasis>caution</emphasis> above, and the generalization
+                  selected is not at the bottom. It is moved one down the
+                  list.</para></listitem>
+                </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Extends -->
+
+            <row>
+              <entry>Extends</entry>
+
+              <entry><para>Text box. Lists any class that is extended by this
+                use case. In &argouml; at present extension on a use case
+                digram is through stereotyping a dependency relationship, which
+                will not show in this box.</para>
+
+              <para>Where an extends relationship has been created (see below),
+                &button1; click will navigate to that
+                relationship. &Button2; gives a pop up menu through which
+                an <emphasis>anonymous</emphasis> extends relationship can be
+                created.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Where an extends
+                  releationship has been created, navigate to
+                  it.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new anonymous
+                  extends relationship. This is just a documentation artifact,
+                  not a true relationship, where you can record details of the
+                  extension.</para>
+
+                <caution><para>It is possible to add multiple extends
+                  relationships. However is is hard to see a sensible meaning
+                  for this. In addition the size of the text area, and the lack
+                  of move up/move down options on the pop up menu, make all but
+                  the top entry inaccessible in
+                  &argouml;.</para></caution></listitem>
+
+                <listitem><para><literal>Delete</literal>. Where an extends
+                  relationship has been created through use of
+                  <literal>Add</literal> pop up memnu, this removes
+                  it.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Includes -->
+
+            <row>
+              <entry>Includes</entry>
+
+              <entry><para>Text box. Lists any class that this use case
+                includes. In &argouml; at present inclusion on a use case
+                digram is through stereotyping a dependency relationship, which
+                will not show in this box.</para>
+
+              <para>Where an includes relationship has been created (see
+                below), &button1; click will navigate to that
+                relationship. &Button2; gives a pop up menu through which
+                an <emphasis>anonymous</emphasis> includes relationship can be
+                created.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Where an includes
+                  releationship has been created, navigate to
+                  it.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new anonymous
+                  includes relationship. This is just a documentation artifact,
+                  not a true relationship, where you can record details of the
+                  extension.</para>
+
+                <caution><para>It is possible to add multiple includes
+                  relationships. However is is hard to see a sensible meaning
+                  for this. In addition the size of the text area, and the lack
+                  of move up/move down options on the pop up menu, make all but
+                  the top entry inaccessible in
+                  &argouml;.</para></caution></listitem>
+
+                <listitem><para><literal>Delete</literal>. Where an includes
+                  relationship has been created through use of
+                  <literal>Add</literal> pop up memnu, this removes
+                  it.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Extension Points -->
+
+            <row>
+              <entry>Includes</entry>
+
+              <entry><para>Text box. If this use case is, or can be extended,
+                this field is used to document the points at which such
+                extensions can occur.</para>
+
+              <para>Where an extension point has been created (see
+                below), &button1; click will navigate to that
+                relationship. &Button2; gives a pop up menu through which
+                an <emphasis>anonymous</emphasis> extension points can be
+                created.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Where an extension
+                  point has been created, navigate to it.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new anonymous
+                  extension point. This is a documentation artifact, where you
+                  can record details of the extension point.</para>
+
+                <note><para>At present there is no way to give a name to an
+                  extension point in &argouml;.</para></note></listitem>
+
+                <listitem><para><literal>Delete</literal>. Where an extension
+                  point has been created through use of <literal>Add</literal>
+                  pop up memnu, this removes it.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Associations -->
+
+            <row>
+              <entry>Associations</entry>
+
+              <entry><para>Text area. Lists any associations connected to the
+                use case. &Button1; click on an association will navigate
+                to that association. &Button2; click gives a pop up menu with
+                five options.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  association.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new
+                  association. Note that the new association is added to the
+                  model, but not the diagram. You will need to find it in the
+                  navigation pane and add it from there.</para>
+
+                <tip><para>It is far easier to add associations by drawing them
+                  on the relevant diagram in the editing
+                  pane.</para></tip></listitem>
+
+                <listitem><para><literal>Delete</literal>. Where an association
+                  is linked to a use case, this removes the link to the use
+                  case.</para>
+
+                <tip><para>This <emphasis>does not</emphasis> remove the
+                  association from the model or the diagram, leading to
+                  potentially very confusing diagrams. It is usually far easier
+                  to remove associations from the editing
+                  pane.</para></tip></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                 where there are two or more associations listed, and the
+                 association selected is not at the top. It is moved one up the
+                 list.</para></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                 where there are two or more associations listed, and the
+                 association selected is not at the bottom. It is moved one
+                 down the list.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Operations -->
+
+            <row>
+              <entry>Operations</entry>
+
+              <entry><para>Text area. Listing the operations that are available
+                on this use case. As a sub-class of the UML classifier
+                metaclass, a use case has many of the properties of a
+                class (see <xref linkend="s1.ref.class"/>.</para>
+
+              <para>In some &ooad; processes it might be useful to treat use
+                cases as classes as well, and give them operations and
+                attributes. This is of very limited in &argouml;, since it is
+                not possible to take a use case and add it to a class diagram,
+                so all class relationships must be shown with the notation of a
+                use case diagram.</para>
+
+              <para>Should you wish to add operations to a use case,
+                &button1; click allows you to navigate to them and
+                &button2; click gives a pop up menu with options to
+                <literal>Open</literal>, <literal>Add</literal>,
+                <literal>Delete</literal>, <literal>Move&nbsp;Up</literal> and
+                <literal>Move&nbsp;Down</literal> (see <link
+                  linkend="ref.use_case_generalization">Generalizations</link>
+                for examples of how these operations are used).</para></entry>
+            </row>
+
+            <!-- Entry for Attributes -->
+
+            <row>
+              <entry>Attributes</entry>
+
+              <entry><para>Text area. Listing the attributes that are available
+                on this use case. As a sub-class of the UML classifier
+                metaclass, a use case has many of the properties of a
+                class (see <xref linkend="s1.ref.class"/>.</para>
+
+              <para>In some &ooad; processes it might be useful to treat use
+                cases as classes as well, and give them operations and
+                attributes. This is of very limited in &argouml;, since it is
+                not possible to take a use case and add it to a class diagram,
+                so all class relationships must be shown with the notation of a
+                use case diagram.</para>
+
+              <para>Should you wish to add attributes to a use case,
+                &button1; click allows you to navigate to them and
+                &button2; click gives a pop up menu with options to
+                <literal>Open</literal>, <literal>Add</literal>,
+                <literal>Delete</literal>, <literal>Move&nbsp;Up</literal> and
+                <literal>Move&nbsp;Down</literal> (see <link
+                  linkend="ref.use_case_generalization">Generalizations</link>
+                for examples of how these operations are used).</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
   </sect1>
 
-  <!-- Association (has Association End as a sub-entity) -->
+  <!-- Association (has Association End as a sub-artifact) -->
 
-  <sect1>
+  <sect1 id="s1.ref.association">
     <title>Association</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>An association on a use case diagram represents is a relationship
+      between an actor and a use case showing that actor's involvement in the
+      use case. The invocation of the use case will involve some (significant)
+      change perceived by the actor.</para>
+
+    <para>Within the UML metamodel, <literal>Association</literal> is a
+      sub-class of <literal>Relationship</literal>.</para>
+
+    <para>The association is represented as a line connecting actor and use
+      case (see <xref linkend="fig.ref.use_case_diagram"/>). The name of the
+      association appears above the line and any stereotype above that.</para>
+
+    <note><para>&argouml; provides no specific way of showing the direction of
+      the association as described in the UML 1.3 standard. The naming should
+      attempt to make this clear.</para></note>
+
+    <para>The association contains two ends, which may be navigated to via the
+      association property sheet. See <xref linkend="s1.ref.association_end"/>
+      for more information.</para>
+
+    <!-- The details tabs -->
+
+    <sect2>
+      <title>Association Details Tabs</title>
+
+      <para>The details tabs that are active for associations are described in
+        <xref linkend="tab.ref.association_details_tabs"/>.</para>
+
+      <table id="tab.ref.association_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for association</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDo Item tab -->
+
+            <row>
+              <entry>ToDo Item</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.association_property_toolbar"/> and <xref
+                  linkend="tab.ref.association_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab. Fill colour is used for the use case
+                oval.</para>
+
+              <note><para>The values for the bounds of the Association appear
+                to have no meaning. Changing them has no effect on the
+                diagram. This is sensible behaviour, given the association is
+                tied to a particular actor and use case.</para></note></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab. You would not expect to generate any
+                code for an association, and any code entered here is ignored
+                (it will have disappeared when you come back to the
+                association.</para></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. It can be useful to stereotype
+                abstrations, in which case constraints may be needed.</para>
+
+              <para>In the UML metamodel, <literal>Association</literal>
+                includes the standard constraint, <literal>xor</literal>,
+                applied to a set of associations, indicating that over that
+                set, exactly one association is manifest for any particular
+                association instance.</para></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. It can be useful to stereotype
+                abstrations, in which case tagged values may be needed.</para>
+
+              <para>In the UML metamodel, <literal>Association</literal>
+                includes the standard tagged value,
+                <literal>persistence</literal>, to mark an association as
+                <literal>persistent</literal> or
+                <literal>transitory</literal>.</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Association properties -->
+
+    <sect2>
+      <title>Association Properties</title>
+
+      <!-- The properties toolbar -->
+
+      <para>The property tab toolbar for associations is described in <xref
+        linkend="tab.ref.association_property_toolbar"/>.</para>
+
+      <table id="tab.ref.association_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property toolbar for diagram</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package structure of the
+                model. For an association this will be the package containing
+                the association.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the selected association from the
+                model.</para>
+
+              <warning><para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. To delete an
+                association from the diagram, but keep it within the model, use
+                the main menu <literal>Edit/Remove From Diagram</literal>
+                (Ctrl-R).</para></warning></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for associations are described in
+        <xref linkend="tab.ref.association_property_fields"/>.</para>
+
+      <table id="tab.ref.association_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for association</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the association. By convention
+                association names start with a lower case letter, with
+                <quote>bumpy caps</quote> used to indicate words within the
+                name, thus: <literal>salesHandling</literal>.</para>
+
+              <note><para>&argouml; does not enforce any naming convention for
+                associations.</para></note>
+
+              <tip><para>Although the design critics will advise otherwise, it
+                is perfectly normal not to name associations on a use case,
+                since the relationship is obvious from the actor and use case
+                name.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Association is provided by
+                default with the UML standard stereotype for Association
+                ((<literal>implicit)</literal>) and the additonal Association
+                stereotypes for the Software Engineering Process and Business
+                Modelling in the UML standard (<literal>communicate</literal>
+                and <literal>subscribe</literal>). &argouml; also provides the
+                additional stereotypes, <literal>machine</literal>,
+                <literal>organization</literal> and <literal>person</literal>
+                and four additional stereotypes suggested by some writers using
+                patterns (<literal>offstage actor</literal>, <literal>primary
+                actor</literal>, <literal>stakeholder</literal> and
+                <literal>supporting actor</literal>).</para>
+
+              <para>Stereotyping can be useful when creating use cases in the
+                problem domain (requirements capture) and solution domain
+                (analysis), as well as for processes based on patterns.</para>
+
+              <para>The stereotype is shown between &laquo; and &raquo; above
+                the name of the association on the diagram.</para>
+
+              <warning><para>The provision of <literal>offstage
+                actor</literal>, <literal>primary actor</literal>,
+                <literal>stakeholder</literal> and <literal>supporting
+                actor</literal> by &argouml; as stereotypes of
+                <literal>Association</literal> appears to be errroneous. They
+                should be stereotypes of <literal>Actor</literal> (or arguably
+                <literal>Classifier</literal>).</para></warning></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype"/>.</para></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the use
+                case. This is the package hierarchy. &Button1; click on
+                this entry will take you to that package.</para>
+
+              <note><para>You can sometimes find yourselves navigating to
+                deleted artifacts in the model. These will show a namespace of
+                <literal>Trash</literal>.</para></note></entry>
+            </row>
+
+            <!-- Entry for Modifiers -->
+
+            <row>
+              <entry>Modifiers</entry>
+
+              <entry><para>Check box, with entries <literal>Abstract</literal>,
+                <literal>Final</literal> and <literal>Root</literal>. No known
+                use.</para>
+
+              <warning><para>The presence of these modifiers, which reflect the
+                attributes of a <literal>GeneralizableElement</literal> within
+                the UML metamodel, appears to be a mistake in &argouml;
+                <literal>Attribute</literal> is not derived from
+                <literal>GeneralizableElement</literal>, and so does not
+                inherit these attributes.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Association Ends -->
+
+            <row>
+              <entry>Association Ends</entry>
+
+              <entry><para>Text area. Lists the ends of this association. An
+                association can have any number of ends, but for use cases, two
+                is the only useful number (associative classes can led to a
+                third end on class diagrams). For more on association ends see
+                <xref linkend="s1.ref.association_end"/>.</para>
+
+              <para>The names are listed, unless the association end has no
+                name (the case when it is first created), in which case the
+                artifact at that end, and its multiplicity, is shown.</para>
+
+              <note><para>The only representation of association ends on a
+                diagram is that their name appears at the relevant end of the
+                corresponding association. There is no way to access them from
+                the diagram.</para></note>
+
+              <para>&Button1; click on an association end will navigate to that
+                end. &Button2; click gives a pop up menu with five
+                options.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Where an association
+                  end exists, navigate to it.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new association
+                  end and navigate to its property tab.</para>
+
+                <tip><para>Whilst adding new ends is possible, the value of
+                  this is limited for Use Case diagrams where the standard two
+                  ends is all that is every needed.</para></tip></listitem>
+
+                <listitem><para><literal>Delete</literal>. Where an association
+                  end this removes it completely from the
+                  model.</para></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                  where there are two or more association ends, and the
+                  association end selected is not at the top. It is moved one
+                  up the list.</para></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                  where there are two or more association ends listed, and the
+                  association end selected is not at the bottom. It is moved
+                  one down the list.</para></listitem> </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Extends -->
+
+            <row>
+              <entry>Extends</entry>
+
+              <entry><para>Text box. This has no function for an association on
+                a use case diagram, and the drop down menu is always greyed
+                out.</para></entry>
+            </row>
+
+            <!-- Entry for Derived -->
+
+            <row>
+              <entry>Derived</entry>
+
+              <entry><para>Text box. This has no function for an association on
+                a use case diagram, and the drop down menu is always greyed
+                out.</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
   </sect1>
 
-  <!-- Association End entities (sub-entity of Association) -->
+  <!-- Association End artifacts (sub-artifact of Association) -->
 
-  <sect1>
+  <sect1 id="s1.ref.association_end">
     <title>Association End</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>Two or more association ends are associated with each association
+      (see <xref linkend="s1.ref.association"/>), although for the purposes
+      of use case diagrams, the number of ends can only usefully be two.</para>
+
+    <para>Within the UML metamodel, <literal>AssociationEnd</literal> is a
+      sub-class of <literal>ModelElement</literal>.</para>
+
+    <para>The association end has no direct representation on any diagram,
+      although its name is shown at the relevant end of the parent
+      association (see <xref linkend="fig.ref.use_case_diagram"/>).</para>
+
+    <tip><para>Although you can change attributes of assocition ends when
+      creating a use case model, this is often not necessary. Many of the
+      properties of an association end relate to its use in class diagrams, and
+      are of limited relevance to use cases. The most useful attributes to
+      consider altering are the name (used as the role name) and the
+      multiplicity.</para></tip>
+
+    <!-- The details tabs -->
+
+    <sect2>
+      <title>Association End Details Tabs</title>
+
+      <para>The details tabs that are active for associations are described in
+        <xref linkend="tab.ref.association_end_details_tabs"/>.</para>
+
+      <table id="tab.ref.association_end_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for association end</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDo Item tab -->
+
+            <row>
+              <entry>ToDo Item</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.association_end_property_toolbar"/> and <xref
+                  linkend="tab.ref.association_end_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab, but with no meaning, since the only
+                representation is via the parent association.</para></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab. You would not expect to generate any
+                code for an association end, but this tab contains a
+                declaration for the association end as an instance of the
+                actor or use case artifact to which it is connected.</para>
+
+              <note><para>This is probably not the correct thing to do for good
+                code generation, and will need to be changed in future versions
+                of &argouml;.</para></note></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. In the context of use case diagrams,
+                sereotyping an association end is not particularly useful, and
+                associated constraints unlikely to be needed.</para></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. In the context of use case diagrams,
+                sereotyping an association end is not particularly useful, and
+                associated tagged values are unlikely to be
+                needed.</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Association end properties -->
+
+    <sect2>
+      <title>Association End Properties</title>
+
+      <!-- The properties toolbar -->
+
+      <para>The property tab toolbar for associations is described in <xref
+        linkend="tab.ref.association_end_property_toolbar"/>.</para>
+
+      <table id="tab.ref.association_end_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property toolbar for diagram</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up to the association to which this end
+                belongs.</para></entry> 
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Go to other end button -->
+
+            <row>
+              <entry>Go to other end</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/association_end.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This navigates to the other end of the
+                association.</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for association ends are described
+        in <xref linkend="tab.ref.association_end_property_fields"/>.</para>
+
+      <table id="tab.ref.association_end_property_fields" frame="all"
+             colsep="1" rowsep="1" pgwide="1">
+        <title>Property fields for association end</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the association end, which
+                provides a <emphasis>role name</emphasis> for this end of the
+                association. This role name can be used for navigation, and in
+                an implementation context (not really relevant to use case
+                diagrams), provides a name by which the source end of an
+                association can reference the target end.</para>
+
+              <note><para>&argouml; does not enforce any naming convention for
+                associations.</para></note></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Association end is provided by
+                default with the UML standard stereotypes for AssociationEnd
+                (<literal>association</literal>, <literal>global</literal>,
+                <literal>local</literal>, <literal>parameter</literal>,
+                <literal>self</literal>). &argouml; also provides the
+                additional stereotypes, <literal>machine</literal>,
+                <literal>organization</literal> and
+                <literal>person</literal>.</para>
+
+              <para>Stereotyping association ends can be very useful in class
+                diagrams. However it is of limited use in use case diagrams,
+                although the default stereotype of
+                <literal>association</literal> can be used to emphasis
+                this.</para>
+
+              <warning><para>There is no diagram representation of the
+                stereotype of an association end.</para></warning></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype"/>.</para></entry>
+            </row>
+
+            <!-- Entry for Type -->
+
+            <row>
+              <entry>Type</entry>
+
+              <entry><para>Drop down selector providing access to all standard
+                UML types provided by &argouml; and all new classes created
+                within the current model.</para>
+
+              <para>This is the type of the entity attached to this end of the
+                association.</para>
+
+              <tip><para>By default &argouml; will select the class of the
+                artifact to which the linkend is connected. There is little
+                point in altering this when working with use case
+                diagrams.</para></tip>
+
+              <caution><para>When you create new classes elsewhere in &argouml;
+                they will not appear in this drop down until after the model
+                has been saved and reloaded.</para></caution></entry>
+            </row>
+
+            <!-- Entry for NavClass (note the icon is identical to
+                 Navstereo) -->
+
+            <row>
+              <entry>Navigate Class</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                  </imageobject></inlinemediaobject></guiicon> icon. If a
+                  datatype, interface or class has been selected, this will
+                  navigate you to its property sheet, (see <xref
+                    linkend="s1.ref.datatype"/>, <xref
+                    linkend="s1.ref.interface"/> and <xref
+                   linkend="s1.ref.class"/>) .</para></entry>
+            </row>
+
+            <!-- Entry for Multiplicity -->
+
+            <row>
+              <entry>Multiplicity</entry>
+
+              <entry><para>Drop down menu. Records the multiplicity of this
+                association end (with respect to the other end), i.e. how many
+                instances of this end may be associated with an instance of the
+                other end.</para>
+
+              <tip><para>For use case diagrams you can often ignore this, at
+                least in the early stages.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Association -->
+
+            <row>
+              <entry>Association</entry>
+
+              <entry><para>Text box. Records the parent association for this
+                association end. &Button1; click on
+                this entry will take you to that association. &Button2; click
+                will invoke a pop-up menu, with a single entry,
+                <literal>Open</literal> that will also navigate you to that
+                association.</para></entry>
+            </row>
+
+            <!-- Entry for Navigable -->
+
+            <row>
+              <entry>Navigable</entry>
+
+              <entry><para>Check box, with a single entry,
+                <literal>navigable</literal>. Indicates that this end can be
+                navigated to from the other end.</para>
+
+              <tip><para>This means little to a use case diagram. It is useful
+                for associations on class diagrams.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Ordering -->
+
+            <row>
+              <entry>Ordering</entry>
+
+              <entry><para>Radio box, with three entries
+                <literal>unordered</literal>, <literal>ordered</literal> and
+                <literal>sorted</literal>. Where there are multiple instances
+                indicates the nature of any ordering.</para>
+
+              <note><para><literal>sorted</literal> represents an extension to
+                UML&nbsp;1.3.</para></note>
+
+              <tip><para>This means little to a use case diagram. It is useful
+                for associations on class diagrams.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Aggregation -->
+
+            <row>
+              <entry>Aggregation</entry>
+
+              <entry><para>Radio box, with three entries
+                <literal>none</literal>, <literal>aggregation</literal> and
+                <literal>composite</literal>. Indicates whether the
+                relationship with the far end represents some type of loose
+                grouping (<literal>aggregation</literal>) or tight grouping
+                (<literal>composite</literal>.</para> 
+
+              <note><para>You may not have aggregation at both ends of an
+                association.</para></note>
+
+              <tip><para>Whilst it does have some meaning, it is of limited use
+                to show aggregation on a use case diagram. It is useful
+                for associations on class diagrams.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Classifier -->
+
+            <row>
+              <entry>Classifier</entry>
+
+              <entry><para>Check box, with a single entry,
+                <literal>classifier</literal>. Indicates that this end relates
+                to a class rather than an instance of a class (the
+                default).</para>
+
+              <tip><para>Not relevant to a use case diagram. It is useful
+                for associations on class diagrams.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Changeability -->
+
+            <row>
+              <entry>Changeability</entry>
+
+              <entry><para>Radio box, with three entries
+                <literal>changeable</literal>, <literal>frozen</literal> and
+                <literal>add only</literal>. Indicates whether instances of
+                this end of the attributed may be: i) created and deleted by
+                the source after the target instance is created; ii) not
+                created or deleted by the source after the target instance is
+                created; or iii) created but not deleted after the target
+                instance is created.</para>
+
+              <tip><para>This is entirely related to associations as used in
+                the realization of a solution, and is not relevant to use case
+                diagrams.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Visibility -->
+
+            <row>
+              <entry>Visibility</entry>
+
+              <entry><para>Radio box, with three entries
+                <literal>public</literal>, <literal>protected</literal> and
+                <literal>private</literal>. Indicates whether navigation to
+                this end may be by: i) any classifier; ii) only the source
+                classifier and its children; or iii) only by the source
+                classifier.</para>
+
+              <tip><para>This is entirely related to associations as used in
+                the realization of a solution, and is not relevant to use case
+                diagrams.</para></tip></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
   </sect1>
 
   <!-- Generalization -->
 
-  <sect1>
+  <sect1 id="s1.ref.generalization">
     <title>Generalization</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>Generalization is a relationship between two use cases or two
+     actors. Where A is a generalization of B, it means A describes more
+     general behaviour and B a more specific version of that
+     behaviour.</para>
+
+   <para>Examples for a travel agent sales system might be the use case
+     for making a booking as a generalization of the use case for making a
+     flight booking and a salesman actor being a generalization of a supervisor
+     actor (since supervisors can also act as salesmen, but not vice
+     versa).</para>
+
+    <para>Generalization is analagous to class inheritance within OO
+      programming.</para>
+
+    <note><para>It is easy to confuse <emphasis>extends</emphasis>
+      relationships between use cases with generalization. However extends is
+      about augmenting a use case's behaviour at a specific
+      point. Generalization is about specializing the behaviour throughout the
+      use case.</para></note>
+
+    <para>Within the UML metamodel, <literal>Generalization</literal> is a
+      sub-class of <literal>Relationship</literal>.</para>
+
+    <para>Generalization is represented as an arrow with white filled head from
+      the specialized use case or actor to the generalized use case or actor
+      (see <xref linkend="fig.ref.use_case_diagram"/>).</para>
+
+    <!-- The details tabs -->
+
+    <sect2>
+      <title>Generalization Details Tabs</title>
+
+      <para>The details tabs that are active for associations are described in
+        <xref linkend="tab.ref.generalization_details_tabs"/>.</para>
+
+      <table id="tab.ref.generalization_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for generalization</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDo Item tab -->
+
+            <row>
+              <entry>ToDo Item</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.generalization_property_toolbar"/> and <xref
+                  linkend="tab.ref.generalization_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab</para>
+
+              <note><para>The values for the bounds of the generalization
+                appear to have no meaning. Changing them has no effect on the
+                diagram. This is sensible behaviour, given the generalization
+                is tied to a particular actor and use
+                case.</para></note></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab. You would not expect to generate any
+                code for an association end, but this tab contains the name of
+                the generalization.</para>
+
+              <note><para>This is probably not the correct thing to do for good
+                code generation, and will need to be changed in future versions
+                of &argouml;.</para></note></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. The one standard stereotype of a
+                generalization, is of little value in a use case diagram, and
+                associated constraints unlikely to be needed.</para></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. There are no standard tagged values
+                associated with generalization, and associated tagged values
+                are unlikely to be needed.</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Generalization properties -->
+
+    <sect2>
+      <title>Generalization Properties</title>
+
+      <!-- The properties toolbar -->
+
+      <para>The property tab toolbar for associations is described in <xref
+        linkend="tab.ref.generalization_property_toolbar"/>.</para>
+
+      <table id="tab.ref.generalization_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property toolbar for diagram</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package structure of the
+                model. For a generalization this will be the package containing
+                the generalization.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the selected generalization from the
+                model.</para>
+
+              <warning><para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. To delete a
+                generalization from the diagram, but keep it within the model,
+                use the main menu <literal>Edit/Remove From Diagram</literal>
+                (Ctrl-R).</para></warning></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for generalizations are described in
+        <xref linkend="tab.ref.generalization_property_fields"/>.</para>
+
+      <table id="tab.ref.generalization_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for generalization</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the generalization.</para>
+
+              <tip><para>It is quite common to leave generalizations
+                unnamed in use case analysis.</para></tip>
+
+              <note><para>&argouml; does not enforce any naming convention for
+                associations.</para></note>
+
+              <note><para>There is no representation of the stereotype of a
+                generalization on the diagram.</para></note></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Generalization is provided by
+                default with the UML standard stereotype,
+                (<literal>implementation</literal>. &argouml; also provides the
+                additional stereotypes, <literal>machine</literal>,
+                <literal>organization</literal> and
+                <literal>person</literal>. The stereotype is shown between
+                &laquo; and &raquo; above or across the generalization.</para>
+
+              <tip><para>Stereotyping generalization does not have great value
+                on a use case diagram. The standard stereotype is about
+                implementation, and suited to the use of generalization on
+                class diagrams.</para></tip></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype"/>.</para></entry>
+            </row>
+
+            <!-- Entry for Discriminator -->
+
+            <row>
+              <entry>Discriminator</entry>
+
+              <entry><para>Text box. The name of a discriminator for the
+                specialization. UML&nbsp;1.3 allows grouping of specializations
+                into a number of sets, on the basis of this value.</para>
+
+              <tip><para>The empty string <quote></quote> is a valid entry (and
+                the default) for this field. It is hard to see where any other
+                value would be useful on a use case
+                diagram.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the
+                generalization. This is the package hierarchy. &Button1; click
+                on this entry will take you to that package.</para>
+
+              <note><para>You can sometimes find yourselves navigating to
+                deleted artifacts in the model. These will show a namespace of
+                <literal>Trash</literal>.</para></note></entry>
+            </row>
+
+            <!-- Entry for Parent -->
+
+            <row>
+              <entry>Parent</entry>
+
+              <entry><para>Text box. Records the use case or actor that is the
+                <emphasis>parent</emphasis> in this relationship, i.e. the more
+                general end of the relationship. &Button1; click
+                on this entry will take you to that use case or
+                actor. &Button2; click will give a pop up menu, with a single
+                entry, <literal>Open</literal> which will also navigate to that
+                use case or actor.</para></entry>
+            </row>
+
+            <!-- Entry for child -->
+
+            <row>
+              <entry>Child</entry>
+
+              <entry><para>Text box. Records the use case or actor that is the
+                <emphasis>chld</emphasis> in this relationship, i.e. the more
+                specific end of the relationship. &Button1; click
+                on this entry will take you to that use case or
+                actor. &Button2; click will give a pop up menu, with a single
+                entry, <literal>Open</literal> which will also navigate to that
+                use case or actor.</para></entry>
+            </row>
+
+            <!-- Entry for Powertype -->
+
+            <row>
+              <entry>Powertype</entry>
+
+              <entry><para>Drop down selector providing access to all standard
+                UML types provided by &argouml; and all new classes created
+                within the current model.</para>
+
+              <para>This is the type of the child entity of the
+                generalization.</para>
+
+              <tip><para>This can be ignored for use case analysis. The only
+                sensible value to put in would be the child use case type (as a
+                classifier, this appears in the drop down
+                list.</para></tip></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
   </sect1>
 
-  <!-- Dependency -->
+  <!-- Dependency (includes extends and includes) -->
 
   <sect1>
     <title>Dependency</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>Dependency is a relationship between two artifacts showing that one
+      depends on the other.</para>
+
+    <note><para>UML&nbsp;1.3 does not include dependency as a relationship on a
+      use case diagram. For historic reasons, &argouml; has implemented
+      <literal>extends</literal> and <literal>includes</literal> as a
+      stereotype of the dependency relationship (they are types of relationship
+      in their own right under UML&nbsp;1.3).</para></note>
+
+    <para>Under &argouml; <literal>extends</literal> is represented as a
+      dependency with an <literal>extends</literal>stereotype. An extend
+      relationship from A to B indicates the behaviour of B may be augmented by
+      the the behaviour of A at a particular <emphasis>extension
+      point</emphasis> or points.</para>
+
+    <note><para>&argouml; has no formal representation of extension
+      points. They are held as anonymous documentation within a
+      dependency.</para></note>
+
+    <note><para>It is easy to confuse <emphasis>extends</emphasis>
+      relationships between use cases with generalization. However extends is
+      about augmenting a use case's behaviour at a specific
+      point. Generalization is about specializing the behaviour throughout the
+      use case.</para></note>
+
+    <para>Under &argouml; <literal>includes</literal> is represented as a
+      dependency with an <literal>includes</literal>stereotype. An include
+      relationship from A to B indicates the behaviour of A will include the
+      behaviour of B at a location defined by A.</para>
+
+    <para>Within the UML metamodel, <literal>Dependency</literal>,
+      <literal>Extend</literal> and <literal>Incldue</literal> are all
+      sub-classes of <literal>Relationship</literal>.</para>
+
+    <para>Dependency is represented as a dotted arrow from the dependent to the
+      depending use case (see <xref
+      linkend="fig.ref.use_case_diagram"/>).</para>
+
+    <!-- The details tabs -->
+
+    <sect2>
+      <title>Dependency Details Tabs</title>
+
+      <para>The details tabs that are active for dependencies are described in
+        <xref linkend="tab.ref.dependency_details_tabs"/>.</para>
+
+      <note><para>There is no source tab, since there is no source code that
+        could be generated for a dependency relationship.</para></note>
+
+      <table id="tab.ref.dependency_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for generalization</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDo Item tab -->
+
+            <row>
+              <entry>ToDo Item</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.dependency_property_toolbar"/> and <xref
+                  linkend="tab.ref.dependency_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Style</entry>
+
+              <entry><para>Standard tab</para>
+
+              <note><para>The values for the bounds of the dependency appear to
+                have no meaning. Changing them has no effect on the
+                diagram. This is sensible behaviour, given the dependency is
+                tied to a particular use case.</para></note></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. There are no standard stereotypes of
+                dependency, since it would be usual to adopt one its
+                sub-classes, so there are no standard constraints. The
+                &argouml; stereotypes of <literal>extend</literal> and
+                <literal>include</literal> have no predefined
+                constraints.</para></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. There are no standard stereotypes of
+              dependency, since it would be usual to adopt one its sub-classes,
+              so there are no standard tagged values. The &argouml; stereotypes
+              of <literal>extend</literal> and <literal>include</literal> have
+              no predefined tagged values.</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Dependency properties -->
+
+    <sect2>
+      <title>Dependency Properties</title>
+
+      <!-- The properties toolbar -->
+
+      <para>The property tab toolbar for associations is described in <xref
+        linkend="tab.ref.dependency_property_toolbar"/>.</para>
+
+      <table id="tab.ref.dependency_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property toolbar for diagram</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package structure of the
+                model. For a dependency this will be the package containing
+                the dependency.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the selected dependency from the
+                model.</para>
+
+              <warning><para>This is a deletion from the model
+                <emphasis>not</emphasis> just the diagram. To delete a
+                dependency from the diagram, but keep it within the model, use
+                the main menu <literal>Edit/Remove From Diagram</literal>
+                (Ctrl-R).</para></warning></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for dependencys are described in
+        <xref linkend="tab.ref.dependency_property_fields"/>.</para>
+
+      <table id="tab.ref.dependency_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for dependency</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the dependency.</para>
+
+              <tip><para>It is quite common to leave dependencys unnamed in use
+                case analysis, since they are only being used to carry the
+                extends, and are not represented on the diagram.</para></tip>
+
+              <note><para>&argouml; does not enforce any naming convention for
+                associations.</para></note>
+
+              <note><para>There is no representation of the name of a
+                dependency on the diagram.</para></note></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Dependency has no standard
+                stereotypes of its own under UML&nbsp;1.3. &argouml; provides
+                two stereotypes <literal>extend</literal> and
+                <literal>exclude</literal> to allow dependecy to be used to
+                draw these relationships. &argouml; also provides the
+                additional stereotypes, <literal>machine</literal>,
+                <literal>organization</literal> and
+                <literal>person</literal>. The stereotype is shown between
+                &laquo; and &raquo; above or across the generalization.</para>
+
+              <tip><para>Stereotyping of dependencies on use case diagrams is
+                used solely for the purpose of displaying
+                <literal>includes</literal> and <literal>extends</literal>
+                relationships.</para></tip></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype"/>.</para></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the
+                dependency. This is the package hierarchy. &Button1; click on
+                this entry will take you to that package.</para>
+
+              <note><para>You can sometimes find yourselves navigating to
+                deleted artifacts in the model. These will show a namespace of
+                <literal>Trash</literal>.</para></note></entry>
+            </row>
+
+            <!-- Entry for Suppliers -->
+
+            <row>
+              <entry>Suppliers</entry>
+
+              <entry><para>Text area. Lists the <quote>depending</quote> ends
+                of the relationship, i.e. the end supplying what is needed by
+                the other end.</para>
+
+              <para>In the case of <literal>extends</literal> this is the use
+                case being augmented. In the case of
+                <literal>includes</literal> it is the use case doing the
+                including.</para>
+
+              <para>&Button1; click on a supplier will navigate to that
+                use case. &Button2; click gives a pop up menu with three
+                options.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Where a supplier
+                  exists, navigate to it.</para></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                  where there are two or more suppliers, and the
+                  supplier selected is not at the top. It is moved one
+                  up the list.</para></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                  where there are two or more suppliers listed, and the
+                  supplier selected is not at the bottom. It is moved one down
+                  the list.</para></listitem> </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Clients -->
+
+            <row>
+              <entry>Clients</entry>
+
+              <entry><para>Text area. Lists the <quote>depending</quote> ends
+                of the relationship, i.e. the end supplying what is needed by
+                the other end.</para>
+
+              <para>In the case of <literal>extends</literal> this is the use
+                case providing the augmenting behaviour. In the case of
+                <literal>includes</literal> it is the use case being
+                included.</para>
+
+              <para>&Button1; click on a client will navigate to that
+                use case. &Button2; click gives a pop up menu with three
+                options.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Where a client
+                  exists, navigate to it.</para></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                  where there are two or more clients, and the client selected
+                  is not at the top. It is moved one up the
+                  list.</para></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                  where there are two or more clients listed, and the client
+                  selected is not at the bottom. It is moved one down the
+                  list.</para></listitem> </itemizedlist></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
   </sect1>
 
 </chapter>

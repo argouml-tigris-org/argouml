@@ -12,20 +12,20 @@ Modifications
 
 -->
 
-<chapter id="chrefnavpane">
+<chapter id="ch.ref.navpane">
   <title>The Navigator Pane</title>
 
   <sect1>
     <title>Introduction</title>
 
-    <para><xref linkend="figrefnavoverview"/> shows the Navigator
+    <para><xref linkend="fig.ref.navoverview"/> shows the Navigator
       Pane.</para>
 
     <!-- This should be a comprehensive picture. In fact its just the minimum
          at the moment. It would be good to put some bubbles on this one
          pointing things out as well. -->
 
-    <figure id="figrefnavoverview" float="1">
+    <figure id="fig.ref.navoverview" float="1">
       <title>Overview of the Navigator Pane</title>
 
       <screenshot><mediaobject>
@@ -104,18 +104,18 @@ Modifications
         details in the Details Pane.</para>
     </sect2>
 
-    <!-- Entity selection -->
+    <!-- Artifact selection -->
 
     <sect2>
-      <title>Entity Selection</title>
+      <title>Artifact Selection</title>
 
-      <para>Button 1 Click over the name of any entity other than a diagram in
+      <para>Button 1 Click over the name of any artifact other than a diagram in
         the main area of the Navigation Pane will cause it to be selected, and
-        its details shown in the Details Pane. If the entity is part of a
+        its details shown in the Details Pane. If the artifact is part of a
         digram currently displayed in the Editing Pane, it will be highlighted
         there.</para>
 
-      <note><para>If the entity is part of a diagram other than that currently
+      <note><para>If the artifact is part of a diagram other than that currently
         displayed in the Editing Pane, there will be <emphasis>no</emphasis>
         change of diagram in the Editing Pane.</para></note>
     </sect2>
@@ -125,7 +125,7 @@ Modifications
     <sect2>
       <title>Context Sensitive Menu</title>
 
-      <para>Button 2 Click over any selected entity in the main area of the
+      <para>Button 2 Click over any selected artifact in the main area of the
         Navigation Pane will cause a Pop-Up menu to appear.</para>
 
        <!-- Properties -->
@@ -134,16 +134,16 @@ Modifications
         <title>Properties Pop-Up</title>
 
         <para>This entry on the Pop-Up menu causes the Properties Tab of the
-          selected entity or diagram to be displayed in the Details
+          selected artifact or diagram to be displayed in the Details
           Pane.</para>
       </sect3>
 
-      <!-- Add entity to diagram -->
+      <!-- Add artifact to diagram -->
 
       <sect3>
         <title>Add to Diagram</title>
 
-        <para>This entry on the Pop-Up menu appears for any entity that could
+        <para>This entry on the Pop-Up menu appears for any artifact that could
           be added to the diagram currently displayed in the Editing
           Pane. The item can be placed in the diagram by moving the cursor to
           the Editing Pane (where it will appear as a cross and clicking
@@ -155,12 +155,12 @@ Modifications
       <sect3>
         <title>Delete From Model</title>
 
-        <para>This entry on the Pop-Up menu appears for any entity that could
+        <para>This entry on the Pop-Up menu appears for any artifact that could
           be deleted from the model.</para>
 
-        <warning><para>This deletes the entity from the model completely, not
+        <warning><para>This deletes the artifact from the model completely, not
           just from the diagram. To remove just from the diagram use the Edit
-          Menu (see <xref linkend="s2menueditremdiag"/>).</para></warning>
+          Menu (see <xref linkend="s2.menueditremdiag"/>).</para></warning>
       </sect3>
     </sect2>
   </sect1>

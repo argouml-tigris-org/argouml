@@ -12,7 +12,7 @@ Modifications
 
 -->
 
-<chapter id="chtutanalysis">
+<chapter id="ch.tut.analysis">
   <title>Analysis</title>
 
   <sect1>
@@ -24,13 +24,13 @@ Modifications
 
     <para>We are not actually trying the flesh out the detailed solution at
       this stage. That occurs in the <emphasis>Design Phase</emphasis> (see
-      <xref linkend="chtutdesign"/>).</para>
+      <xref linkend="ch.tut.design"/>).</para>
 
     <para>Unlike the boundary between Requirements and Analysis Phases, the
       boundary between Analysis and Design Phases is inherently blurred. The
       key is that analysis should define the solution no further than is
       necessary to specify the requirements in the language of the
-      solution. The entities in Analysis generally represent a high level of
+      solution. The artifacts in Analysis generally represent a high level of
       abstraction.</para>
 
     <para>Once again the <emphasis>recursive</emphasis>, and
@@ -102,7 +102,7 @@ Modifications
        Diagrams. Will be very limited for this edition. At this stage we only
        show the bits relevant to Concept level diagrams. -->
 
-  <sect1 id="s1umlclassdiags">
+  <sect1 id="s1.umlclassdiags">
     <title>Class Diagrams</title>
 
     <remark>To be written&hellip;</remark>
@@ -128,7 +128,7 @@ Modifications
 
   <!-- Now show how to do in in Argo/UML. -->
 
-  <sect1 id="s1argoclassdiags">
+  <sect1 id="s1.argoclassdiags">
     <title>Creating Class Diagrams in &argouml;</title>
 
     <sect2>
@@ -226,7 +226,7 @@ Modifications
        Sequence Diagrams. Will be very limited for this edition. At this stage
        we only show the bits relevant to System level diagrams. -->
 
-  <sect1 id="s1umlseqdiags">
+  <sect1 id="s1.umlseqdiags">
     <title>Sequence Diagrams</title>
 
     <remark>To be written&hellip;</remark>
@@ -252,7 +252,7 @@ Modifications
 
   <!-- Now show how to do in in Argo/UML. -->
 
-  <sect1 id="s1argoseqdiags">
+  <sect1 id="s1.argoseqdiags">
     <title>Creating Sequence Diagrams in &argouml;</title>
 
     <sect2>
@@ -306,7 +306,7 @@ Modifications
        State Diagrams. Will be very limited for this edition. At this stage
        we only show the bits relevant to System level diagrams. -->
 
-  <sect1 id="s1umlstatediags">
+  <sect1 id="s1.umlstatediags">
     <title>State Diagrams</title>
 
     <remark>To be written&hellip;</remark>
@@ -336,7 +336,7 @@ Modifications
 
   <!-- Now show how to do in in Argo/UML. -->
 
-  <sect1 id="s1argostatediags">
+  <sect1 id="s1.argostatediags">
     <title>Creating State Diagrams in &argouml;</title>
 
     <sect2>

@@ -59,6 +59,10 @@ Modifications
 
   <!ENTITY argouml          "ArgoUML">
   <!ENTITY ooad             "OOA&amp;D">
+  <!ENTITY button1          "button&nbsp;1">
+  <!ENTITY Button1          "Button&nbsp;1">
+  <!ENTITY button2          "button&nbsp;2">
+  <!ENTITY Button2          "Button&nbsp;2">
 
   <!-- Application name ENTITIES -->
 
@@ -94,7 +98,7 @@ Modifications
   &reftodopane;
   &refmenu;
 
-  <!-- The reference chapters on the diagrams and entities -->
+  <!-- The reference chapters on the diagrams and artifacts -->
 
   &refentities;
   &refentusecase;

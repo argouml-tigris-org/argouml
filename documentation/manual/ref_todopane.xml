@@ -13,19 +13,19 @@ Modifications
 
 -->
 
-<chapter id="chreftodopane">
+<chapter id="ch.ref.todopane">
   <title>The To-Do Pane</title>
 
   <sect1>
     <title>Introduction</title>
 
-    <para><xref linkend="figreftodooverview"/> shows the To-Do Pane.</para>
+    <para><xref linkend="fig.ref.todooverview"/> shows the To-Do Pane.</para>
 
     <!-- This should be a comprehensive picture. In fact its just the minimum
          at the moment. It would be good to put some bubbles on this one
          pointing things out as well. -->
 
-    <figure id="figreftodooverview" float="1">
+    <figure id="fig.ref.todooverview" float="1">
       <title>Overview of the To-Do Pane</title>
 
       <screenshot><mediaobject>

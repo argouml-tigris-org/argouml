@@ -14,7 +14,7 @@ Modifications
 
 -->
 
-<chapter id="chtutreqs">
+<chapter id="ch.tut.reqs">
   <title>Requirements Capture</title>
 
   <sect1>
@@ -30,7 +30,7 @@ Modifications
     <para>The biggest risk we have in requirements capture is to start thinking
       in terms of possible solutions. That must wait until the
       <emphasis>Analysis Phase</emphasis> (see
-      <xref linkend="chtutanalysis"/>). One of the steps of the Analysis Phase
+      <xref linkend="ch.tut.analysis"/>). One of the steps of the Analysis Phase
       will be to take the output of the Requirements Phase and recast it in the
       language of a putative solution.</para>
 
@@ -83,7 +83,7 @@ Modifications
   <!-- Introduce UML Use Cases and how they can be used. Will be very limited
        for this edition. -->
 
-  <sect1 id="s1umlusecases">
+  <sect1 id="s1.umlusecases">
     <title>Use Cases</title>
 
     <!-- Para due to Andreas -->
@@ -131,7 +131,7 @@ Modifications
 
   <!-- Now show how to do in in Argo/UML. -->
 
-  <sect1 id="s1argousecases">
+  <sect1 id="s1.argousecases">
     <title>Creating Use Cases in &argouml;</title>
 
     <sect2>

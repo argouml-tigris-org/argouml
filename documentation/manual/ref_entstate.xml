@@ -2,7 +2,7 @@
 
 <!--
 
-Desription of all the entities associated with State Diagrams within Argo/UML.
+Desription of all the artifacts associated with State Diagrams within Argo/UML.
 
 
 Modifications
@@ -12,37 +12,37 @@ Modifications
 
 -->
 
-<chapter id="chrefentstate">
-  <title>&argouml; State Diagram Entity Reference</title>
+<chapter id="ch.ref.entstate">
+  <title>&argouml; State Diagram Artifact Reference</title>
 
   <sect1>
     <title>Introduction</title>
 
-    <para>This chapter describes each entity that can be created within a State
-      Diagram. Note that some subentities of entities on the diagram may not
+    <para>This chapter describes each artifact that can be created within a State
+      Diagram. Note that some sub-artifacts of artifacts on the diagram may not
       actually themselves appear on the diagram.</para>
 
     <para>There is a close relationship between this material and the
       Properties Tab of the Details Pane (see
-      <xref linkend="s1refproptab"/>). That section covers Properties in
-      general, in this chapter they are linked to specific entities.</para>
+      <xref linkend="s1.ref.proptab"/>). That section covers Properties in
+      general, in this chapter they are linked to specific artifacts.</para>
 
     <para>Of particular importance are the sections on Property Toolbars (see
-      <xref linkend="s2refproptoolbar"/>) and Common Property Sheet Features
-      (see <xref linkend="s2refpropcommonfeat"/>). These document the toolbar
+      <xref linkend="s2.ref.proptoolbar"/>) and Common Property Sheet Features
+      (see <xref linkend="s2.ref.propcommonfeat"/>). These document the toolbar
       buttons and key features that are common to most Property Sheets.</para>
 
     <!-- A diagram to show all things visible on the diagram -->
 
-    <para><xref linkend="figrefentstate"/> shows a State Diagram with all
-      possible entities displayed.</para>
+    <para><xref linkend="fig.ref.entstate"/> shows a State Diagram with all
+      possible artifacts displayed.</para>
 
     <!-- This should be a comprehensive picture. In fact its just the minimum
          at the moment. It would be good to put some bubbles on this one
          pointing things out as well. -->
 
-    <figure id="figrefentstate" float="1">
-      <title>Possible entities on a State Diagram.</title>
+    <figure id="fig.ref.entstate" float="1">
+      <title>Possible artifacts on a State Diagram.</title>
 
       <screenshot><mediaobject>
         <imageobject>
@@ -59,8 +59,8 @@ Modifications
     </figure>
   </sect1>
 
-  <!-- Entities specific to State Diagrams. State entity. Has Action as
-       sub-entity -->
+  <!-- Artifacts specific to State Diagrams. State artifact. Has Action as
+       sub-artifact -->
 
   <sect1>
     <title>State</title>
@@ -68,7 +68,7 @@ Modifications
     <remark>To be written&hellip;</remark>
   </sect1>
 
-  <!-- Action entity (subsidiary of State) -->
+  <!-- Action artifact (subsidiary of State) -->
 
   <sect1>
     <title>Action</title>
@@ -76,7 +76,7 @@ Modifications
     <remark>To be written&hellip;</remark>
   </sect1>
 
-  <!-- Composite State entity -->
+  <!-- Composite State artifact -->
 
   <sect1>
     <title>Composite State</title>
@@ -84,7 +84,7 @@ Modifications
     <remark>To be written&hellip;</remark>
   </sect1>
 
-  <!-- Transition entity. Has Call Event and Guard as subentities. -->
+  <!-- Transition artifact. Has Call Event and Guard as sub-artifacts. -->
 
   <sect1>
     <title>Transition</title>
@@ -92,7 +92,7 @@ Modifications
     <remark>To be written&hellip;</remark>
   </sect1>
 
-  <!-- Call Event entity (subsidiary of Transition) -->
+  <!-- Call Event artifact (subsidiary of Transition) -->
 
   <sect1>
     <title>Call Event</title>
@@ -100,7 +100,7 @@ Modifications
     <remark>To be written&hellip;</remark>
   </sect1>
 
-  <!-- Guard entity (subsidiary of Transition) -->
+  <!-- Guard artifact (subsidiary of Transition) -->
 
   <sect1>
     <title>Guard</title>

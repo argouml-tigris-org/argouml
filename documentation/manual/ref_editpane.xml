@@ -13,19 +13,19 @@ Modifications
 
 -->
 
-<chapter id="chrefeditpane">
+<chapter id="ch.ref.editpane">
   <title>The Editing Pane</title>
 
   <sect1>
     <title>Introduction</title>
 
-    <para><xref linkend="figrefeditoverview"/> shows the Editor Pane.</para>
+    <para><xref linkend="fig.ref.editoverview"/> shows the Editor Pane.</para>
 
     <!-- This should be a comprehensive picture. In fact its just the minimum
          at the moment. It would be good to put some bubbles on this one
          pointing things out as well. -->
 
-    <figure id="figrefeditoverview" float="1">
+    <figure id="fig.ref.editoverview" float="1">
       <title>Overview of the Editing Pane</title>
 
       <screenshot><mediaobject>
@@ -108,7 +108,7 @@ Modifications
       </sect3>
     </sect2>
 
-    <!-- Tools for drawing non-UML entities on diagrams -->
+    <!-- Tools for drawing non-UML artifacts on diagrams -->
 
     <sect2>
       <title>Drawing Tools</title>
@@ -587,26 +587,26 @@ Modifications
       </sect3>
     </sect2>
 
-    <!-- Entity selection with button 1 or 2 (and pointer) -->
+    <!-- Artifact selection with button 1 or 2 (and pointer) -->
 
     <sect2>
-      <title>Entity Selection</title>
+      <title>Artifact Selection</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
-    <!-- Entity movement holding down button 1 -->
+    <!-- Artifact movement holding down button 1 -->
 
     <sect2>
-      <title>Entity Movement</title>
+      <title>Artifact Movement</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
-    <!-- Entity rezing holding down button 1 on corner handles -->
+    <!-- Artifact rezing holding down button 1 on corner handles -->
 
     <sect2>
-      <title>Entity Resizing</title>
+      <title>Artifact Resizing</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
@@ -619,10 +619,10 @@ Modifications
       <remark>To be written&hellip;</remark>
     </sect2>
 
-    <!-- Adding standalone UML entities -->
+    <!-- Adding standalone UML artifacts -->
 
     <sect2>
-      <title>Adding Standalone UML Entities</title>
+      <title>Adding Standalone UML Artifacts</title>
 
       <remark>To be written&hellip;</remark>
 
@@ -643,10 +643,10 @@ Modifications
       </sect3>
     </sect2>
 
-    <!-- Linking UML entities -->
+    <!-- Linking UML artifacts -->
 
     <sect2>
-      <title>Linking UML Entities</title>
+      <title>Linking UML Artifacts</title>
 
       <remark>To be written&hellip;</remark>
 
@@ -658,10 +658,10 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- From the entities on screen with Button 1 -->
+      <!-- From the artifacts on screen with Button 1 -->
 
       <sect3>
-        <title>From Entities on Screen</title>
+        <title>From Artifacts on Screen</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -686,7 +686,7 @@ Modifications
     <sect2>
       <title>Context Sensitive Pop-Up Menu</title>
 
-      <para>Button 2 Click over any selected entity in the main area of the
+      <para>Button 2 Click over any selected artifact in the main area of the
         Drawing Pane will cause a Pop-Up menu to appear.</para>
 
        <!-- Properties -->
@@ -713,7 +713,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Add (entity dependent) -->
+      <!-- Add (artifact dependent) -->
 
       <sect3>
         <title>Add</title>
@@ -737,7 +737,7 @@ Modifications
         </sect4>
       </sect3>
 
-      <!-- Show (entity dependent) -->
+      <!-- Show (artifact dependent) -->
 
       <sect3>
         <title>Show</title>

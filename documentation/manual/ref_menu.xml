@@ -12,7 +12,7 @@ Modifications
 
 -->
 
-<chapter id="chrefmenu">
+<chapter id="ch.ref.menu">
   <title>The Menu bar</title>
 
   <sect1>
@@ -188,7 +188,7 @@ Modifications
 
       <remark>To be written&hellip;</remark>
 
-      <!-- Select all entities -->
+      <!-- Select all artifacts -->
 
       <sect3>
         <title>Select All</title>
@@ -196,7 +196,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Select previous entity -->
+      <!-- Select previous artifact -->
 
       <sect3>
         <title>Select Previous</title>
@@ -204,7 +204,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Select next entity -->
+      <!-- Select next artifact -->
 
       <sect3>
         <title>Select Next</title>
@@ -262,15 +262,15 @@ Modifications
       <remark>To be written&hellip;</remark>
     </sect2>
 
-    <!-- Remove entity from the diagram -->
+    <!-- Remove artifact from the diagram -->
 
-    <sect2 id="s2menueditremdiag">
+    <sect2 id="s2.menueditremdiag">
       <title>Remove From Diagram</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
-    <!-- Remove entity from the model -->
+    <!-- Remove artifact from the model -->
 
     <sect2>
       <title>Delete From Model</title>
@@ -310,7 +310,7 @@ Modifications
       <remark>To be written&hellip;</remark>
     </sect2>
 
-    <!-- Find an entity -->
+    <!-- Find an artifact -->
 
     <sect2>
       <title>Find&hellip;</title>
@@ -564,7 +564,7 @@ Modifications
 
   <!-- The Create Diagram menu entries -->
 
-  <sect1>
+  <sect1 id="s1.ref.create.diagram.menu">
     <title>The Create Diagram Menu</title>
 
     <remark>To be written&hellip;</remark>
@@ -640,7 +640,7 @@ Modifications
 
       <remark>To be written&hellip;</remark>
 
-      <!-- Align selected entities by their tops -->
+      <!-- Align selected artifacts by their tops -->
 
       <sect3>
         <title>Align Tops</title>
@@ -648,7 +648,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Align selected entities by their bottoms -->
+      <!-- Align selected artifacts by their bottoms -->
 
       <sect3>
         <title>Align Bottoms</title>
@@ -656,7 +656,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Align selected entities by their left sides -->
+      <!-- Align selected artifacts by their left sides -->
 
       <sect3>
         <title>Align Lefts</title>
@@ -664,7 +664,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Align selected entities by their rights -->
+      <!-- Align selected artifacts by their rights -->
 
       <sect3>
         <title>Align Rights</title>
@@ -672,7 +672,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Align selected entities by their horizontal centres -->
+      <!-- Align selected artifacts by their horizontal centres -->
 
       <sect3>
         <title>Align Horizontal Centers</title>
@@ -680,7 +680,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Align selected entities by their vertical centres -->
+      <!-- Align selected artifacts by their vertical centres -->
 
       <sect3>
         <title>Align Vertical Centers</title>
@@ -688,7 +688,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Align selected entities to the grid -->
+      <!-- Align selected artifacts to the grid -->
 
       <sect3>
         <title>Align To Grid</title>
@@ -704,7 +704,7 @@ Modifications
 
       <remark>To be written&hellip;</remark>
 
-      <!-- Distribute selected entities to have even horizontal spacing. -->
+      <!-- Distribute selected artifacts to have even horizontal spacing. -->
 
       <sect3>
         <title>Distribute Horizontal Spacing</title>
@@ -712,7 +712,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Distribute selected entities to have even distance between
+      <!-- Distribute selected artifacts to have even distance between
            horizontal centres. -->
 
       <sect3>
@@ -721,7 +721,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Distribute selected entities to have even vertical spacing. -->
+      <!-- Distribute selected artifacts to have even vertical spacing. -->
 
       <sect3>
         <title>Distribute Vertical Spacing</title>
@@ -729,7 +729,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Distribute selected entities to have even distance between
+      <!-- Distribute selected artifacts to have even distance between
            vertical centres. -->
 
       <sect3>

@@ -13,7 +13,7 @@ Modifications
 
 -->
 
-<chapter id="chrefentbuiltin">
+<chapter id="ch.ref.entbuiltin">
   <title>&argouml; Built In DataTypes, Classes, Intefaces and
     Stereotypes</title>
 
@@ -38,19 +38,19 @@ Modifications
         packages, <literal>lang</literal>, <literal>math</literal>,
         <literal>net</literal> and <literal>util</literal>, themselves
         subpackages of <literal>java</literal>, which is a subpackage of the
-        model itself. <xref linkend="figrefentclasshier"/> shows this as a UML
+        model itself. <xref linkend="fig.ref.entclasshier"/> shows this as a UML
         package diagram.</para>
 
       <!-- This diagram shows the package hierarchy. -->
 
-      <figure id="figrefentclasshier" float="1">
+      <figure id="fig.ref.entclasshier" float="1">
         <title>Hierarchy of datatypes, classes and interfaces within
           &argouml;</title>
 
         <screenshot><mediaobject>
           <imageobject>
-            <imagedata format="PNG" align="center"
-                       fileref="images/reference/entclasshier.png"/>
+            <imagedata format="GIF" align="center"
+                       fileref="images/reference/entclasshier.gif"/>
           </imageobject>
 
           <textobject>
@@ -406,7 +406,7 @@ Modifications
     <para>&argouml; has a large number of stereotypes built in. Stereotypes are
       themselves objects, and derive from base classes used within the
       &argouml; system itself. The actual stereotypes available to use with any
-      particular entity will depend ultimately how that entity is derived from
+      particular artifact will depend ultimately how that artifact is derived from
       one of these base classes.</para>
 
     <para>In this section, the stereotypes are organised by their base
@@ -673,10 +673,10 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- entity -->
+      <!-- artifact -->
 
       <sect3>
-        <title><literal>entity</literal></title>
+        <title><literal>artifact</literal></title>
 
         <remark>To be written&hellip;</remark>
       </sect3>

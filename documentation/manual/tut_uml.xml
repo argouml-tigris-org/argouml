@@ -17,7 +17,7 @@ Modifications
               0.9.5, draft B.
 -->
 
-<chapter id="chtutuml">
+<chapter id="ch.tut.uml">
   <title>UML Based &ooad;</title>
 
   <sect1>
@@ -116,7 +116,7 @@ Modifications
 
     <!-- Waterfall v Iterative -->
 
-    <sect2 id="s2proctypes">
+    <sect2 id="s2.proctypes">
       <title>Types of Process</title>
 
       <para>In this section we look at the two main types of process in use for
@@ -129,11 +129,11 @@ Modifications
         <para>In this process, each stage of the process&mdash;requirements,
           analysis, design and build (code and test) is completed before the
           next one starts. This is illustrated in <xref
-            linkend="figwaterfallsteps"/>.</para>
+            linkend="fig.waterfallsteps"/>.</para>
 
         <!-- A diagram showing the waterfall steps leading to each other. -->
 
-        <figure id="figwaterfallsteps" float="1">
+        <figure id="fig.waterfallsteps" float="1">
           <title>The waterfall process</title>
 
           <screenshot><mediaobject>
@@ -168,11 +168,11 @@ Modifications
         <para>This is exacerbated, by each successive stage requiring more
           effort, than the previous, so that the costs of late problem
           discovery are hugely expensive. This is illustrated by the pyramid in
-          <xref linkend="figwaterfall"/>.</para>
+          <xref linkend="fig.waterfall"/>.</para>
 
         <!-- A diagram showing the waterfall process as a pyramid -->
 
-        <figure id="figwaterfall" float="1">
+        <figure id="fig.waterfall" float="1">
           <title>Effort involved in the steps of the waterfall process</title>
 
           <screenshot><mediaobject>
@@ -218,12 +218,12 @@ Modifications
         <para>The process is repeated more times, until eventually all
           requirements have been implemented and the product is complete. It is
           this <emphasis>iteration</emphasis> that gives these processes their
-          name. <xref linkend="figiterative"/> shows how this process compares
+          name. <xref linkend="fig.iterative"/> shows how this process compares
           to the pyramid structure of the Waterfall Process.</para>
 
         <!-- A diagram showing an iterative process as a pyramid -->
 
-        <figure id="figiterative" float="1">
+        <figure id="fig.iterative" float="1">
           <title>Effort involved in the steps of an iterative process</title>
 
           <screenshot><mediaobject>
@@ -331,7 +331,7 @@ Modifications
         <title>Recursive Development Processes</title>
 
         <para>Very few software systems are conceived as monolithic
-          entities. They are broken down into subsystems, modules etc.</para>
+          artifacts. They are broken down into subsystems, modules etc.</para>
 
         <para>Software processes are the same, with early parts of the process
           defining a top level structure, and the process reapplying to parts
@@ -590,7 +590,7 @@ Modifications
           says nothing about the graphical representation of the models, so
           diagram layout is lost. &argouml; gets round this by saving graphical
           information with the model (see <xref
-            linkend="s3tutloadsave"/>).</para>
+            linkend="s3.tut.loadsave"/>).</para>
       </sect3>
 
       <!-- SVG -->
@@ -811,7 +811,7 @@ Modifications
 
         <!-- Possible Problems -->
 
-        <sect4 id="s4probsolving">
+        <sect4 id="s4.probsolving">
           <title>Problems Downloading</title>
 
           <para>If you get completely stuck, the web site doesn't help you, and
@@ -871,7 +871,7 @@ Modifications
             Java Runtime Environment (it must be 1.2 or later).</para>
 
           <para>If you can' solve the problem. Try the users' mailing list (see
-            <xref linkend="s4probsolving"/></para>
+            <xref linkend="s4.probsolving"/></para>
         </sect4>
       </sect3>
     </sect2>
@@ -881,14 +881,14 @@ Modifications
     <sect2>
       <title>The &argouml; User Interface</title>
 
-      <para><xref linkend="figtutguioverview"/> shows the main &argouml;
+      <para><xref linkend="fig.tut.guioverview"/> shows the main &argouml;
         window.</para>
 
       <!-- A big diagram with all the bits pointed out. At the moment its
            just a plane screenshot, but it would be nice to float in some
            bubbles pointing out things. -->
 
-      <figure id="figtutguioverview" float="1">
+      <figure id="fig.tut.guioverview" float="1">
         <title>Overview of the &argouml; window</title>
 
         <screenshot><mediaobject>
@@ -922,10 +922,10 @@ Modifications
       <sect3>
         <title>The Navigator Pane</title>
 
-        <para><xref linkend="figtutnavoverview"/> shows the Navigator
+        <para><xref linkend="fig.tut.navoverview"/> shows the Navigator
           Pane.</para>
 
-        <figure id="figtutnavoverview" float="1">
+        <figure id="fig.tut.navoverview" float="1">
           <title>Overview of the Navigator Pane</title>
 
           <screenshot><mediaobject>
@@ -958,10 +958,10 @@ Modifications
       <sect3>
         <title>The Editing Pane</title>
 
-        <para><xref linkend="figtuteditoverview"/> shows the Editing
+        <para><xref linkend="fig.tut.editoverview"/> shows the Editing
           Pane.</para>
 
-        <figure id="figtuteditoverview" float="1">
+        <figure id="fig.tut.editoverview" float="1">
           <title>Overview of the Editing Pane</title>
 
           <screenshot><mediaobject>
@@ -991,10 +991,10 @@ Modifications
       <sect3>
         <title>The Details Pane</title>
 
-        <para><xref linkend="figtutdetailsoverview"/> shows the Details
+        <para><xref linkend="fig.tut.detailsoverview"/> shows the Details
           Pane.</para>
 
-        <figure id="figtutdetailsoverview" float="1">
+        <figure id="fig.tut.detailsoverview" float="1">
           <title>Overview of the Details Pane</title>
 
           <screenshot><mediaobject>
@@ -1028,10 +1028,10 @@ Modifications
       <sect3>
         <title>The To-Do Pane</title>
 
-        <para><xref linkend="figtuttodooverview"/> shows the To-Do
+        <para><xref linkend="fig.tut.todooverview"/> shows the To-Do
           Pane.</para>
 
-        <figure id="figtuttodooverview" float="1">
+        <figure id="fig.tut.todooverview" float="1">
           <title>Overview of the To-Do Pane</title>
 
           <screenshot><mediaobject>
@@ -1077,7 +1077,7 @@ Modifications
             change settings.</para></listitem>
 
           <listitem><para><emphasis>View</emphasis> menu. This allows you to
-            switch between diagrams, find entities in the model, zoom in a
+            switch between diagrams, find artifacts in the model, zoom in a
             diagram, select a particular diagram representation (although at
             present there is only one), select a particular tab in the details
             menu, adjust the grid, view buttons on a selection, and switch
@@ -1095,7 +1095,7 @@ Modifications
             circumstance).</para></warning></listitem>
 
           <listitem><para><emphasis>Arrange</emphasis> menu. This allows you to
-            align, distribute, reorder and nudge entities on a diagram and set
+            align, distribute, reorder and nudge artifacts on a diagram and set
             the layout strategy for the diagram.</para></listitem>
 
           <listitem><para><emphasis>Generation</emphasis> menu. This allows you
@@ -1116,9 +1116,10 @@ Modifications
         </itemizedlist>
       </sect3>
 
-      <!-- More about mice -->
+      <!-- More about mice. Note this is linked to the section "General Mouse
+           Behaviour in the reference chapter "Top Level Artifact Reference" -->
 
-      <sect3 id="s3tutmouse">
+      <sect3 id="s3.tut.mouse">
         <title>The Mouse</title>
 
         <para>The mouse and mouse buttons (or their equivalent with alternative
@@ -1126,47 +1127,58 @@ Modifications
           we look at the common modes of use. </para>
 
         <para>&argouml; assumes a two button mouse. We will refer to the
-        buttons as <quote>Button 1</quote> and <quote>Button 2</quote>. Button
-        1 is the leftmost button on a right-handed mouse, and sometime referred
-        to as the <quote>select</quote> button.</para>
+          buttons as <quote>&button1;</quote> and <quote>button
+          2</quote>. &Button1; is the leftmost button on a right-handed
+          mouse, and sometimes referred to as the <quote>select</quote>
+          button. &Button2; is sometimes referred to as the
+          <quote>adjust</quote> button.</para>
 
         <orderedlist>
-          <listitem><para><emphasis>Button 1 click</emphasis>. This action is
-            generally used to select an item for subsequent operations. If the
-            item is an entity in the navigation pane or the editing pane it
+          <listitem><para><emphasis>&Button1; click</emphasis>. This action
+            is generally used to select an item for subsequent operations. If
+            the item is an artifact in the navigation pane or the editing pane it
             will be highlighted.</para>
 
-          <para>In the case of the toolbar of the editing pane, that entity is
+          <para>In the case of the toolbar of the editing pane, that artifact is
             selected as the next to be added to the diagram (but only
-            once&mdash;see double clicking for adding multiple entities). The
+            once&mdash;see double clicking for adding multiple artifacts). The
             adding to the diagram is achieved by moving the mouse to the
             editing area and clicking again.</para></listitem>
 
-          <listitem><para><emphasis>Button 1 double click</emphasis>. This
+          <listitem><para><emphasis>&Button1; double click</emphasis>. This
             action is identical to a single click <emphasis>except</emphasis>,
             when it is used with the editing pane toolbar. Under these
-            circumstances the selected entity will be added multiple times to
+            circumstances the selected artifact will be added multiple times to
             the drawing area, once for each further button click, until the
             tool is again selected or another tool chosen.</para></listitem>
 
-          <listitem><para><emphasis>Button 2 click</emphasis>. When used over
-            text items in the the navigation or details panes, or graphical
-            entities in the editing pane, this will deplay a context dependent
-            drop-down menu.</para>
+          <listitem><para><emphasis>&Button2; click</emphasis>. When used
+            over text items in the the navigation or details panes, or
+            graphical artifacts in the editing pane, this will deplay a context
+            dependent drop-down menu.</para>
 
           <para>If the item has not yet been selected it will also be
             selected.</para></listitem>
 
-          <listitem><para><emphasis>Button 1 motion</emphasis>. This only has
-            an effect in the editing pane. Over graphical entitys it will move
-            the entity to a new position. Graphical entities that are selected
-            show handles, and these can be used for resizing.</para>
+          <listitem><para><emphasis>&Button1; motion</emphasis>. Where
+            &button1; click has been used to pull down a menu from the menu
+            bar, &button1; motion is used to select items on that
+            menu.</para>
 
-          <para>Where the entity is some form of connector between other items,
-            button 1 motion other than at a handle will cause a new handle to
-            be created, allowing the connector to be articulated at that
+          <para>&Button1; motion also has an effect in the editing
+            pane. Over graphical artifacts it will move the artifact to a new
+            position. Graphical artifacts that are selected show handles, and
+            these can be used for resizing.</para>
+
+          <para>Where the artifact is some form of connector between other items,
+            &button1; motion other than at a handle will cause a new handle
+            to be created, allowing the connector to be articulated at that
             point. Such new handles can be removed by moving them to the end of
             the connector.</para></listitem>
+
+          <listitem><para><emphasis>&Button2; motion</emphasis>. This is
+            used to select items in a context sensitive menu popped up by use
+            of &button2; click.</para></listitem>
         </orderedlist>
 
         <para>There are other more specific behaviours that will be encountered
@@ -1179,19 +1191,19 @@ Modifications
         <title>Drawing Diagrams</title>
 
         <para>In general diagrams are drawn by using the editing pane toolbar
-          to select the entity desired and clicking in the diagram at the
-          position required as described in <xref linkend="s3tutmouse"/>. That
+          to select the artifact desired and clicking in the diagram at the
+          position required as described in <xref linkend="s3.tut.mouse"/>. That
           section also explains the use of the mouse for resizing
-          entities.</para>
+          artifacts.</para>
 
-        <para>Entities that are already in the model, but not on a diagram, may
-          be added to a diagram by selecting the entity in the navigation pane,
+        <para>Artifacts that are already in the model, but not on a diagram, may
+          be added to a diagram by selecting the artifact in the navigation pane,
           using <literal>Add&nbsp;to&nbsp;Diagram</literal> from the drop down
-          menu (Button 2) over that entity, and then clicking Button 1 at the
-          desired location on the diagram.</para>
+          menu (&button2;) over that artifact, and then clicking
+          &button1; at the desired location on the diagram.</para>
 
-        <para>As well as UML entities, the toolbar provides for general drawing
-          entities (rectangles, circles, lines, polygons, curves, text) to
+        <para>As well as UML artifacts, the toolbar provides for general drawing
+          artifacts (rectangles, circles, lines, polygons, curves, text) to
           provide supplementary information on diagrams.</para>
 
         <!-- Moving diagram elements about -->
@@ -1245,12 +1257,12 @@ Modifications
         <sect4>
           <title>The Startup Window</title>
 
-          <para><xref linkend="figtutstartup"/> shows the &argouml; main window
+          <para><xref linkend="fig.tut.startup"/> shows the &argouml; main window
             as it appears as right after startup</para>
 
           <!-- A figure of the Argo/UML startup window -->
 
-          <figure id="figtutstartup" float="1">
+          <figure id="fig.tut.startup" float="1">
             <title>&argouml; window at startup</title>
 
             <screenshot><mediaobject>
@@ -1313,12 +1325,12 @@ Modifications
           <para>First, let's save the model in it's current (empty and unnamed)
             state. On the menu bar, click on <literal>File</literal>, then on
             <literal>Save&nbsp;Project&nbsp;As&hellip;</literal> as shown in
-            <xref linkend="figtutsaveas"/>.</para>
+            <xref linkend="fig.tut.saveas"/>.</para>
 
           <!-- A figure of the Argo/UML Save Project As drop down menu
                option. -->
 
-          <figure id="figtutsaveas" float="1">
+          <figure id="fig.tut.saveas" float="1">
             <title>Invoking
               <literal>Save&nbsp;Project&nbsp;As&hellip;</literal></title>
 
@@ -1376,11 +1388,11 @@ Modifications
           <para>But let's go back to saving our project. After clicking on the
             <literal>Save&nbsp;Project&nbsp;As&hellip;</literal> menu command,
             we get the file chooser dialog to enter the file name we wish to
-            use as shown in <xref linkend="figtutfilechoose"/>.</para>
+            use as shown in <xref linkend="fig.tut.filechoose"/>.</para>
 
           <!-- A figure of the Argo/UML file choice dialogue -->
 
-          <figure id="figtutfilechoose" float="1">
+          <figure id="fig.tut.filechoose" float="1">
             <title>File chooser dialog</title>
 
             <screenshot><mediaobject>
@@ -1532,7 +1544,7 @@ Modifications
       
       <!-- Loading and Saving Files -->
 
-      <sect3 id="s3tutloadsave">
+      <sect3 id="s3.tut.loadsave">
         <title>Loading and Saving</title>
 
         <!-- Saving XMI files -->
@@ -1544,7 +1556,7 @@ Modifications
             extension <literal>.pgml</literal>, the model information in an XMI
             file (with extension <literal>.xmi</literal> and information about
             the project in a file with extension <literal>.argo</literal>. See
-            <xref linkend="s4tutpgml"/> and <xref linkend="s3tutxmi"/> for more
+            <xref linkend="s4.tut.pgml"/> and <xref linkend="s3.tut.xmi"/> for more
             about PGML and XMI respectively.</para>
 
           <para>All of these are then zipped to a file with extension
@@ -1578,7 +1590,7 @@ Modifications
 
         <!-- PGML -->
 
-        <sect4 id="s4tutpgml">
+        <sect4 id="s4.tut.pgml">
           <title>Precision Graphics Markup Language (PGML)</title>
 
           <para>PGML is the saving format for diagram information used in
@@ -1600,7 +1612,7 @@ Modifications
           <title>Applications Which Open PGML</title>
 
           <para>PGML is a predecessor of SVG (see
-            <xref linkend="s4tutsvg"/>. It was dropped by the W3C
+            <xref linkend="s4.tut.svg"/>. It was dropped by the W3C
             Consortium.</para>  
 
           <para>Currently there are no other tools that we know of working on
@@ -1622,7 +1634,7 @@ Modifications
 
         <!-- What is SVG -->
 
-        <sect4 id="s4tutsvg">
+        <sect4 id="s4.tut.svg">
           <title>Standard Vector Graphics (SVG)</title>
 
           <para>A super cool vector graphics format (like MM Flash) that is
@@ -1649,7 +1661,7 @@ Modifications
               <literal>myumldiagram.svg</literal></para>
 
               <warning><para>&argouml; does not do this automatically. See the
-               to-do list in <xref linkend="chrefentities"/>.
+                to-do list in <xref linkend="ch.ref.entities"/>.
             </para></warning></listitem>
           </orderedlist>
 
@@ -1674,7 +1686,7 @@ Modifications
 
       <!-- XMI -->
 
-      <sect3 id="s3tutxmi">
+      <sect3 id="s3.tut.xmi">
         <title>XMI</title>
 
         <!-- Using Rational Rose XMI -->
@@ -1773,12 +1785,12 @@ Modifications
 
         <para>Where do we stand now? A new project has been created, and is
           connected to the file <literal>FirstProject.argo</literal>.
-          <xref linkend="figtutcritstart"/> shows how your &argouml; window
+          <xref linkend="fig.tut.critstart"/> shows how your &argouml; window
           should look at this stage.</para>
 
         <!-- A figure of the Argo/UML window having saved the project. -->
 
-        <figure id="figtutcritstart" float="1">
+        <figure id="fig.tut.critstart" float="1">
           <title>&argouml; window having save
             <literal>FirstProject.argo</literal></title>
 
@@ -1839,12 +1851,12 @@ Modifications
           <literal>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel</literal>
           item.</para>
 
-        <para><xref linkend="figtutcritrevname"/> shows how your screen should
+        <para><xref linkend="fig.tut.critrevname"/> shows how your screen should
           now look.</para>
 
         <!-- A figure of the Argo/UML showing a critic item. -->
 
-        <figure id="figtutcritrevname" float="1">
+        <figure id="fig.tut.critrevname" float="1">
           <title>&argouml; window showing the critic item
             <literal>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel</literal>
           </title>
@@ -1900,12 +1912,12 @@ Modifications
 
         <para>Replace the name <literal>untitledmodel</literal> with
           <literal>purchasingmodel</literal>, and click on the
-          <literal>Finish</literal> button. <xref linkend="figtutcritwiz"/>
+          <literal>Finish</literal> button. <xref linkend="fig.tut.critwiz"/>
           shows how the &argouml; window will now look.</para>
 
         <!-- A figure of the Argo/UML showing a critic wizard -->
 
-        <figure id="figtutcritwiz" float="1">
+        <figure id="fig.tut.critwiz" float="1">
           <title>&argouml; window showing the critic wizard to rename the
             package</title>
 

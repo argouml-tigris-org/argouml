@@ -12,7 +12,7 @@ Modifications
 
 -->
 
-<chapter id="chtutdesign">
+<chapter id="ch.tut.design">
   <title>Design</title>
 
   <sect1>
@@ -302,11 +302,11 @@ Modifications
           <para>Add a unnamed interface to the current classdiagram by
             single-clicking on the interface icon in the toolbar and then
             clicking at the diagram pane (see <xref
-            linkend="figtutiftool"/>).</para>
+            linkend="fig.tut.iftool"/>).</para>
 
           <!-- A shot of the Editing toolbar -->
 
-          <figure id="figtutiftool" float="1">
+          <figure id="fig.tut.iftool" float="1">
             <title>Selecting the Interface tool</title>
 
             <screenshot><mediaobject>
@@ -323,12 +323,12 @@ Modifications
           </figure>
 
           <para>Then double click on the interfaces name field to change it's
-            name as shown in <xref linkend="figtutif"/>.</para>
+            name as shown in <xref linkend="fig.tut.if"/>.</para>
 
-          <!-- A shot of an Interface entity -->
+          <!-- A shot of an Interface artifact -->
 
-          <figure id="figtutif" float="1">
-            <title>Interface entity on the Class Diagram</title>
+          <figure id="fig.tut.if" float="1">
+            <title>Interface artifact on the Class Diagram</title>
 
             <screenshot><mediaobject>
               <imageobject>
@@ -350,11 +350,11 @@ Modifications
 
           <para>Add another interface with a different by repeating the last
             2 steps.  Then single-click on the Generalization icon in the
-            toolbar as shown in <xref linkend="figtutgeneralize"/>.</para>
+            toolbar as shown in <xref linkend="fig.tut.generalize"/>.</para>
 
           <!-- A shot of a Generalization icon -->
 
-          <figure id="figtutgeneralize" float="1">
+          <figure id="fig.tut.generalize" float="1">
             <title>Generalization on the Class Diagram toolbar</title>
 
             <screenshot><mediaobject>
@@ -373,12 +373,12 @@ Modifications
           <para>move the mouse pointer to the subinterface, press the left
             mouse button and drag the generalization to the superinterface,
             where you release the mouse button. Figure <xref
-              linkend="figtutifgen"/> shows how your diagram should look
+              linkend="fig.tut.ifgen"/> shows how your diagram should look
             now.</para>
 
           <!-- A shot of two interfaces linked by a generalization -->
 
-          <figure id="figtutifgen" float="1">
+          <figure id="fig.tut.ifgen" float="1">
             <title>Generalization between two Interfaces.</title>
 
             <screenshot><mediaobject>

@@ -200,8 +200,8 @@ Modifications
 
       <orderedlist>
         <listitem><para>material on each of the
-          diagram types, each of the entities that can appear on the diagrams
-          and details of the features of each entity type.</para></listitem>
+          diagram types, each of the artifacts that can appear on the diagrams
+          and details of the features of each artifact type.</para></listitem>
 
         <listitem><para>An Index</para></listitem>
       </orderedlist>
@@ -241,7 +241,7 @@ Modifications
 
           <orderedlist>
             <listitem><para>User Manual sections relating to &argouml; diagrams
-              and entities (assume the reader knows UML already, and allows a
+              and artifacts (assume the reader knows UML already, and allows a
               quick advance by pulling together a lot of existing
               material).</para></listitem>
 

@@ -14,7 +14,7 @@ Modifications
 
 -->
 
-<chapter id="chrefui">
+<chapter id="ch.ref.ui">
   <title>User Interface Reference</title>
 
   <sect1>
@@ -28,14 +28,14 @@ Modifications
   <sect1>
     <title>Overview of the Window</title>
 
-    <para><xref linkend="figrefguioverview"/> shows the main &argouml;
+    <para><xref linkend="fig.ref.guioverview"/> shows the main &argouml;
       window.</para>
 
     <!-- A big diagram with all the bits pointed out. At the moment its just a
          plane screenshot, but it would be nice to float in some bubbles
          pointing out things. -->
 
-    <figure id="figrefguioverview" float="1">
+    <figure id="fig.ref.guioverview" float="1">
       <title>Overview of the &argouml; window</title>
 
       <screenshot><mediaobject>
@@ -56,32 +56,32 @@ Modifications
     </figure>
 
     <para>At the top of screen is a <emphasis>menu bar</emphasis> described in
-      <xref linkend="chrefmenu"/>. The bulk of the window comprises four
+      <xref linkend="ch.ref.menu"/>. The bulk of the window comprises four
       sub-windows or <emphasis>Panes</emphasis>. Clockwise from top left these
       are the <emphasis>Navigator Pane</emphasis> (see
-      <xref linkend="chrefnavpane"/>), <emphasis>Editing
-      Pane</emphasis> (see <xref linkend="chrefeditpane"/>), <emphasis>Details
-      Pane</emphasis> (see <xref linkend="chrefnavpane"/>) and <emphasis>To-Do
-      Pane</emphasis> (see <xref linkend="chrefnavpane"/>). At the top of the
+      <xref linkend="ch.ref.navpane"/>), <emphasis>Editing
+      Pane</emphasis> (see <xref linkend="ch.ref.editpane"/>), <emphasis>Details
+      Pane</emphasis> (see <xref linkend="ch.ref.navpane"/>) and <emphasis>To-Do
+      Pane</emphasis> (see <xref linkend="ch.ref.navpane"/>). At the top of the
       details Pane is a <emphasis>toolbar</emphasis>. An overview of the Panes
-      is given in <xref linkend="s1refpanes"/>. Finally at the bottom of the
+      is given in <xref linkend="s1.ref.panes"/>. Finally at the bottom of the
       window is a <emphasis>status bar</emphasis> described in 
-      <xref linkend="s1refstatus"/>.</para>
+      <xref linkend="s1.ref.status"/>.</para>
 
   </sect1>
 
   <!-- General information about Panes -->
 
-  <sect1 id="s1refpanes">
+  <sect1 id="s1.ref.panes">
     <title>General Information About Panes</title>
 
     <para>The four sub-windows of the main &argouml; window are called
       <emphasis>Panes</emphasis>. Clockwise from top left these
       are the <emphasis>Navigator Pane</emphasis> (see
-      <xref linkend="chrefnavpane"/>), <emphasis>Editing
-      Pane</emphasis> (see <xref linkend="chrefeditpane"/>), <emphasis>Details
-      Pane</emphasis> (see <xref linkend="chrefnavpane"/>) and <emphasis>To-Do
-      Pane</emphasis> (see <xref linkend="chrefnavpane"/>). At the top the
+      <xref linkend="ch.ref.navpane"/>), <emphasis>Editing
+      Pane</emphasis> (see <xref linkend="ch.ref.editpane"/>), <emphasis>Details
+      Pane</emphasis> (see <xref linkend="ch.ref.navpane"/>) and <emphasis>To-Do
+      Pane</emphasis> (see <xref linkend="ch.ref.navpane"/>). At the top the
       details Pane is a <emphasis>toolbar</emphasis>.</para>
 
     <sect2>
@@ -91,7 +91,7 @@ Modifications
         them.</para>
     </sect2>
 
-    <sect2 id="s3refspawn">
+    <sect2 id="s3.ref.spawn">
       <title>Looking at Different Diagrams Simultaneously</title>
 
       <para>You can <quote>spawn</quote> the Editing Pane by double-clicking on
@@ -109,14 +109,14 @@ Modifications
       <title>Reducing the Number of Panes Open</title>
 
       <para>This function is not implemented directly. However you can spawn
-        a pane (see <xref linkend="s3refspawn"/>) and maximise this to be the
+        a pane (see <xref linkend="s3.ref.spawn"/>) and maximise this to be the
         whole window, which achieves the same thing.</para>
     </sect2>
   </sect1>
 
   <!-- All about the status bar -->
 
-  <sect1 id="s1refstatus">
+  <sect1 id="s1.ref.status">
     <title>The status bar</title>
 
     <remark>To be written&hellip;</remark>

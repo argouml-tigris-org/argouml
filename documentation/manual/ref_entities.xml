@@ -2,7 +2,7 @@
 
 <!--
 
-Top level desription of all the entities within Argo/UML.
+Top level desription of all the artifacts within Argo/UML.
 
 
 Modifications
@@ -10,125 +10,1258 @@ Modifications
 
  5 Dec 2001:  Jeremy Bennett. Created as a new chapter.
 
+13 Dec 2001:  Jeremy Bennett. Contents written and moved to use of tables to
+              capture information.
+
 -->
 
-<chapter id="chrefentities">
-  <title>&argouml; Top Level Entity Reference</title>
+<chapter id="ch.ref.entities">
+  <title>&argouml; Top Level Artifact Reference</title>
 
   <sect1>
     <title>Introduction</title>
 
-    <para>This chapter describes each entity that can be created within
+    <para>This chapter describes each artifact that can be created within
       &argouml;. The chapter covers top-level <quote>general</quote>
-      entities. The following chapters (see <xref linkend="chrefentusecase"/>
-      through <xref linkend="chrefentdeploy"/>) cover each of the &argouml;
-      diagrams.</para>
+      artifacts. The following chapters (see <xref
+        linkend="ch.ref.entusecase"/> through <xref
+        linkend="ch.ref.entdeploy"/>) cover each of the &argouml;
+      diagrams.</para> 
 
     <para>There is a close relationship between this material and the
       Properties Tab of the Details Pane (see 
-      <xref linkend="s1refproptab"/>). That section covers Properties in
-      general, in this chapter they are linked to specific entities.</para>
+      <xref linkend="s1.ref.proptab"/>). That section covers Properties in
+      general, in this chapter they are linked to specific artifacts.</para>
 
     <para>Of particular importance are the sections on Property Toolbars (see
-      <xref linkend="s2refproptoolbar"/>) and Common Property Sheet Features
-      (see <xref linkend="s2refpropcommonfeat"/>). These document the toolbar
+      <xref linkend="s2.ref.proptoolbar"/>) and Common Property Sheet Features
+      (see <xref linkend="s2.ref.propcommonfeat"/>). These document the toolbar
       buttons and key features that are common to most Property Sheets.</para>
   </sect1>
 
-  <!-- General mouse behaviour -->
+  <!-- General mouse behaviour. Note ths is linked to the section "The Mouse"
+       in the tutorial chapter "UML Based OOA&D" -->
 
   <sect1>
     <title>General Mouse Behaviour</title>
 
-    <remark>Cover naming of buttons. Assume 2 button mouse. To be
-      written&hellip;</remark>
+    <para>&argouml; assumes a two button mouse. We will refer to the buttons as
+      <quote>&button1;</quote> and
+      <quote>&button2;</quote>. &Button1; is the leftmost button on a
+      right-handed mouse, and sometimes referred to as the
+      <quote>select</quote> button. &Button2; is sometimes referred to as
+      the <quote>adjust</quote> button.</para>
 
-    <!-- Button1 click -->
+    <!-- button1 click -->
 
     <sect2>
-      <title>Button 1 Click</title>
+      <title>&Button1; Click</title>
 
-      <remark>To be written&hellip;</remark>
+      <para>This action is generally used to select an item for subsequent
+        operations. If the item is an artifact in the navigation pane or the
+        editing pane it will be highlighted.</para>
+
+      <para>In the case of the toolbar of the editing pane, that artifact is
+        selected as the next to be added to the diagram (but only
+        once&mdash;see double clicking for adding multiple artifacts). The
+        adding to the diagram is achieved by moving the mouse to the editing
+        area and clicking again.</para>
     </sect2>
 
     <!-- Button1 doubleclick -->
 
     <sect2>
-      <title>Button 1 Double Click</title>
+      <title>&Button1; Double Click</title>
 
-      <remark>To be written&hellip;</remark>
+      <para>This action is identical to a single click
+        <emphasis>except</emphasis>, when it is used with the editing pane
+        toolbar. Under these circumstances the selected artifact will be added
+        multiple times to the drawing area, once for each further button click,
+        until the tool is again selected or another tool chosen.</para>
     </sect2>
 
-    <!-- Button1 Move -->
+    <!-- Button1 Motion -->
 
     <sect2>
-      <title>Button 1 Move</title>
+      <title>&Button1; Motion</title>
 
-      <remark>To be written&hellip;</remark>
+      <para>Where &button1; click has been used to pull down a menu from
+        the menu bar, &button1; motion is used to select items on that
+        menu.</para>
+
+      <para>&Button1; motion also has an effect in the editing pane. Over
+        graphical artifacts it will move the artifact to a new
+        position. Graphical artifacts that are selected show handles, and these
+        can be used for resizing.</para>
+
+      <para>Where the artifact is some form of connector between other items,
+        &button1; motion other than at a handle will cause a new handle to
+        be created, allowing the connector to be articulated at that
+        point. Such new handles can be removed by moving them to the end of the
+        connector.</para>
     </sect2>
 
     <!-- Button2 click -->
 
     <sect2>
-      <title>Button 2 Click</title>
+      <title>&Button2; Click</title>
 
-      <remark>To be written&hellip;</remark>
+      <para>When used over text items in the the navigation or details panes,
+        or graphical artifacts in the editing pane, this will deplay a context
+        dependent drop-down menu.</para>
+
+      <para>If the item has not yet been selected it will also be
+        selected.</para>
     </sect2>
 
     <!-- Button2 doubleclick -->
 
     <sect2>
-      <title>Button 2 Double Click</title>
+      <title>&Button2; Double Click</title>
 
-      <remark>To be written&hellip;</remark>
+      <para>This has no effect other than that of &button2; single
+        click.</para>
     </sect2>
 
-    <!-- Button2 Move -->
+    <!-- Button2 Motion -->
 
     <sect2>
-      <title>Button 2 Move</title>
+      <title>&Button2; Motion</title>
 
-      <remark>To be written&hellip;</remark>
+      <para>This is used to select items in a context sensitive menu popped up
+        by use of &button2; click.</para>
     </sect2>
   </sect1>
 
-  <!-- Top level entities -->
+  <!-- Top level artifacts. Model -->
 
-  <sect1>
-    <title>Top Level Entities</title>
+  <sect1 id="s1.ref.model">
+    <title>The Model</title>
 
-    <remark>To be written&hellip;</remark>
+    <para>The model is the top level artifact within &argouml;. In the UML
+      metamodel it is a sub-class of package. In many respects within &argouml;
+      it behaves similarly to a package (see <xref
+        linkend="s1.ref.package"/>).</para>
 
-    <!-- The Model -->
+    <note><para>&argouml; is restricted to one model within the
+      tool.</para></note>
+
+    <caution><para>In principle you can add a model to a class diagram using
+      the context sensitive (&button2;) pop up menu <literal>Add To
+      Diagram</literal>from the navigation pane. However this is very demanding
+      of memory and may cause a problem with &argouml; running out of
+      memory.</para></caution>
+
+    <para>Where standard datatypes, classes and packages are loaded (the
+      default, see <xref linkend="ch.ref.entbuiltin"/>), these are sub-packages
+      of the model.</para>
+
+    <note><para>In version 0.9.6 of &argouml; these sub-packages are not
+      initially visible from the model property pane as owned
+      packages. However if you use the datatype navigator from a suitable
+      pane, you can navigate up to the model, and thereafter that datatype's
+      subpackages will appear.</para></note>
+
+    <!-- Model details tabs -->
 
     <sect2>
-      <title>The Model</title>
+      <title>Model Details Tabs</title>
 
-      <remark>To be written&hellip;</remark>
+      <para>The details tabs that are active for the model are described in
+        <xref linkend="tab.ref.model_details_tabs"/>.</para>
 
-      <!-- Model properties (see package later) -->
+      <note><para>The <literal>Style</literal> tab is greyed out, since the
+        model typically has no representation on a diagram (see the caution
+        above).</para></note>
 
-      <sect3>
-        <title>Model Properties</title>
+      <table id="tab.ref.model_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for the model</title>
 
-        <remark>The same as package (qv). To be written&hellip;</remark>
-      </sect3>
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDo Item tab -->
+
+            <row>
+              <entry>ToDo Item</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.model_property_toolbar"/> and <xref
+                  linkend="tab.ref.model_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab. This contains a template package
+                declaration appropriate to the entire model. In the future this
+                would be part of the code generation activity.</para></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. You can stereotype a model, and
+                constraints may be useful under these
+                circumstances.</para></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. However there are no standard tagged
+                values defined by UML that relate to the standard stereotypes
+                offered for a model.</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
     </sect2>
 
-    <!-- Diagrams -->
+    <!-- Model properties -->
 
     <sect2>
-      <title>&argouml; Diagrams</title>
+      <title>Model Properties</title>
 
-      <remark>To be written&hellip;</remark>
+      <!-- The properties toolbar -->
 
-      <!-- Diagram properties -->
+      <para>The property tab toolbar for use cases is described in <xref
+        linkend="tab.ref.model_property_toolbar"/>.</para>
 
-      <sect3>
-        <title>Diagram Properties</title>
+      <table id="tab.ref.model_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property toolbar for the model</title>
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package structure of the
+                model.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Add class button -->
+
+            <row>
+              <entry>Add class</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/class.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This creates a new class (see <xref
+                  linkend="s1.ref.class"/>) within the model (which appears on
+                no diagram), navigating immediately to the properties tab for
+                that class.</para>
+
+              <tip><para>Whilst it can make sense to create classes this way,
+                it is usally a lot clearer to  create them within diagrams
+                where you want them.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Add interface button -->
+
+            <row>
+              <entry>Add interface</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/interface.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This creates a new interface (see <xref
+                  linkend="s1.ref.interface"/>) within the model (which appears
+                on no diagram), navigating immediately to the properties tab
+                for that interface.</para>
+
+              <tip><para>Whilst it can make sense to create interfaces this
+                way, it is usally a lot clearer to create them within diagrams
+                where you want them.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Add datatype button -->
+
+            <row>
+              <entry>Add datatype</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/datatype.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This creates a new interface (see <xref
+                  linkend="s1.ref.datatype"/>) within the model (which appears
+                on no diagram), navigating immediately to the properties tab
+                for that datatype.</para></entry>
+            </row>
+
+            <!-- Entry for Add stereotype button -->
+
+            <row>
+              <entry>Add stereotype</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/interface.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This creates a new stereotype (see <xref
+                  linkend="s1.ref.stereotype"/>) within the model (which
+                  appears on no diagram), navigating immediately to the
+                  properties tab for that stereotype.</para></entry>
+            </row>
+
+            <!-- Entry for Add actor button -->
+
+            <row>
+              <entry>Add actor</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/actor.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This creates a new actor (see <xref
+                  linkend="s1.ref.actor"/>) within the model (which appears
+                on no diagram), navigating immediately to the properties tab
+                for that actor.</para>
+
+              <tip><para>Whilst it can make sense to create actors this
+                way, it is usally a lot clearer to create them within diagrams
+                where you want them.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Add use case button -->
+
+            <row>
+              <entry>Add use case</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/use_case.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This creates a new use case (see <xref
+                  linkend="s1.ref.use_case"/>) within the model (which appears
+                on no diagram), navigating immediately to the properties tab
+                for that use case.</para>
+
+              <tip><para>Whilst it can make sense to create use cases this
+                way, it is usally a lot clearer to create them within diagrams
+                where you want them.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Add package button -->
+
+            <row>
+              <entry>Add subpackage</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/package.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This creates a new sub-package (see <xref
+                  linkend="s1.ref.package"/>) within the model (which appears
+                on no diagram), navigating immediately to the properties tab
+                for that package.</para>
+
+              <tip><para>Whilst it can make sense to create sub-packages this
+                way, it is usally a lot clearer to create them within diagrams
+                where you want them.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Add generalization button -->
+
+            <row>
+              <entry>Add generalization</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/generalization.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This creates a new generalization (see <xref
+                  linkend="s1.ref.generalization"/>) within the model (which
+                appears on no diagram), navigating immediately to the
+                properties tab for that generalization.</para>
+
+              <tip><para>Whilst it can make sense to create generalizations
+                this way, it is usally a lot clearer to create them within
+                diagrams where you want them.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Add realization button -->
+
+            <row>
+              <entry>Add realization</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/realization.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This creates a new realization (see <xref
+                  linkend="s1.ref.realization"/>) within the model (which
+                appears on no diagram), navigating immediately to the
+                properties tab for that realization.</para>
+
+              <tip><para>Whilst it can make sense to create realizations this
+                way, it is usally a lot clearer to create them within diagrams
+                where you want them.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This has no effect&mdash;it is meaningless to delete
+                the model!</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for models are described in
+        <xref linkend="tab.ref.model_property_fields"/>.</para>
+
+      <table id="tab.ref.model_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for the model</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the model. The name of a
+                model, like all packages, is by convention all lower
+                case.</para>
+
+              <note><para>The default name supplied to a new model by
+                &argouml;, <literal>untitledModel</literal>, is thus erroneous
+                and guarantees that &argouml; always starts up with at least
+                one problem being reported by the design
+                critics.</para></note></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Model is provided by default
+                with the UML standard stereotypes for model
+                (<literal>systemModel</literal> and
+                <literal>metamodel</literal>) and package
+                (<literal>facade</literal>, <literal>framework</literal>,
+                <literal>stub</literal>, <literal>topLevel</literal> ), as well
+                as the stereotypes for models and packages in the UML standard
+                profiles for <emphasis>software development process</emphasis>
+                (<literal>use-case&nbsp;model</literal>,
+                <literal>analysis&nbsp;model</literal>,
+                <literal>design&nbsp;model</literal>,
+                <literal>implementation&nbsp;model</literal>,
+                <literal>use&nbsp;case&nbsp;system</literal>,
+                <literal>analysis&nbsp;system</literal>,
+                <literal>analysis&nbsp;package</literal>,
+                <literal>use&nbsp;case&nbsp;package</literal> and
+                <literal>analysis&nbsp;service&nbsp;package</literal>) and
+                <emphasis>business modelling</emphasis>
+                (<literal>object&nbsp;system</literal> in addition to several
+                of the software development process stereotypes).&argouml; also
+                provides the additional stereotypes,
+                <literal>machine</literal>, <literal>organization</literal> and
+                <literal>person</literal>.</para>
+
+              <para>Stereotyping models is a useful thing, although it is of
+                limited value in &argouml; where you have only a single
+                model.</para></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype"/>.</para></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the model. This
+                is the package hierarchy. However since the model is at the top
+                of the hierarchy in &argouml;, this box is always
+                empty.</para></entry>
+            </row>
+
+            <!-- Entry for Modifiers -->
+
+            <row>
+              <entry>Modifiers</entry>
+
+              <entry><para>Check box, with entries <literal>Abstract</literal>,
+                <literal>Final</literal> and <literal>Root</literal>. These are
+                present, because a model derives (via
+                <literal>Package</literal>) from
+                <literal>GeneralizableElement</literal> in the UML
+                metamodel. <literal>GeneralizableElement</literal> has
+                attributes <literal>isAbstract</literal>,
+                <literal>isLeaf</literal> and <literal>isRoot</literal>,
+                corresponding to these check boxes.</para>
+
+              <para>However since &argouml; can only have one model, these are
+                not particularly relevant.</para></entry>
+            </row>
+
+            <!-- Entry for Derived -->
+
+            <row>
+              <entry>Derived</entry>
+
+              <entry><para>Text box. Lists any derived class. Meaningless for
+                a model.</para></entry>
+            </row>
+
+            <!-- Entry for Extends -->
+
+            <row>
+              <entry>Extends</entry>
+
+              <entry><para>Text box. Lists any use case that is extended by
+                this model. Meaningless for a model.</para></entry>
+            </row>
+
+            <!-- Entry for Derived -->
+
+            <row>
+              <entry>Derived</entry>
+
+              <entry><para>Text box. Lists any derived class. Meaningless for
+                a model.</para></entry>
+            </row>
+
+            <!-- Entry for Implements -->
+
+            <row>
+              <entry>Implements</entry>
+
+              <entry><para>Text area. Lists any models for which this model is
+                the realization. Of little value within &argouml;, since
+                multiple models are not permitted.</para>
+
+              <para>It is possible to add abstractions from this menu, although
+                since there is no way to add a model to the other end of the
+                abstraction, it is meaningless. &Button1; click allows you
+                to navigate to them and &button2; click gives a pop up menu
+                with options to <literal>Open</literal>,
+                <literal>Add</literal>, <literal>Delete</literal>,
+                <literal>Move&nbsp;Up</literal> and
+                <literal>Move&nbsp;Down</literal> (see <link
+                linkend="ref.use_case_generalization">Generalizations</link>
+                for examples of how these operations are used).</para></entry>
+            </row>
+
+            <!-- Entry for Owned Elements -->
+
+            <row>
+              <entry>Owned Elements
+              </entry>
+
+              <entry><para>Text area. A hierarchical listing of the packages,
+                classes, interfaces, datatypes, actors, use cases,
+                associations, generalizations and stereotypes within the
+                model. For each of these types of artifact, where there is at
+                least one example in the model, a folder icon is
+                shown.</para>
+
+              <para>&Button1; double click on the folder icon
+                (<guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/folder.gif"/> 
+                </imageobject></inlinemediaobject></guiicon>) opens the folder
+                to reveal the artifacts owned under that category.</para>
+
+              <para>&Button1; click on any of the revealed artifacts yields
+                navigates to that artifact.</para>
+
+              <para>&Button1; double click on an open folder (with
+                artifacts displayed) will close the folder and hide the
+                artifacts.</para>
+
+              <para>Alternatively, &Button2; double click on any item gives
+                a pop up menu.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Add</literal>. This option creates a
+                  new artifact of the specified type within the model, and
+                  navigates to that item.</para>
+
+                <note><para>The item is placed under its relevant folder,
+                  irrespective of where the pop up menu is revealed. So
+                  &button2; lick on <literal>Actor</literal> folder and
+                  selection of <literal>Add/Package</literal> will place the
+                  new package under the <literal>Package</literal> folder, not
+                  the <literal>Actor</literal> folder.</para></note>
+
+                <para>This is the only menu option actually available to the
+                  model (the others apply to packages within the model, see
+                  <xref linkend="s1.ref.package"/>).</para>
+
+                <tip><para>It is often far easier to add artifacts by drawing
+                  them on the relevant diagram in the editing
+                  pane.</para></tip></listitem>
+
+                <listitem><para><literal>Delete</literal>. This is always
+                  greyed out for a model.</para></listitem>
+
+                <listitem><para><literal>Go</literal>. This is always
+                  greyed out for a model.</para></listitem>
+
+                <listitem><para><literal>Open</literal>. This is always
+                  greyed out for a model.</para></listitem>
+              </itemizedlist></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+  </sect1>
+
+  <!-- Stereotypes -->
+
+  <sect1 id="s1.ref.stereotype">
+    <title>Stereotypes</title>
+
+    <para>Stereotypes are the main extension mechanism of UML, providing a way
+      to derive specializations of the standard
+      metaclasses. <literal>Stereotype</literal> is a sub-class of
+      <literal>GeneralizableElement</literal> in the UML metamodel. Stereotypes
+      are supplemented by <emphasis>constraints</emphasis> and <emphasis>tagged
+      values</emphasis>.</para>
+
+    <para>New stereotypes are added from the model property tab (see <xref
+        linkend="s1.ref.model"/>, the package property tab (see <xref
+        linkend="s1.ref.package"/>) or the stereotype property tab itself (see
+        below). Properties of existing stereotypes can be reached by selecting
+        the property tab for any artifact with that stereotype and using the
+        navstereo button (<guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center"
+          fileref="images/icons/navigate_stereotype.gif"/>
+        </imageobject></inlinemediaobject></guiicon>) within the property
+        tab.</para>
+
+    <note><para>Due to a bug in &argouml; newly created stereotypes do not
+      appear in stereotype drop down menus. The solution is to save and reload
+      the model.</para></note>
+
+    <!-- Stereotype details tabs -->
+
+    <sect2>
+      <title>Stereotype Details Tabs</title>
+
+      <para>The details tabs that are active for stereotypes are described in
+        <xref linkend="tab.ref.stereotype_details_tabs"/>.</para>
+
+      <note><para>The <literal>Style</literal> tab is greyed out, since a
+        stereotype has no representation on a diagram.</para></note>
+
+      <table id="tab.ref.stereotype_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for stereotype</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDo Item tab -->
+
+            <row>
+              <entry>ToDo Item</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.stereotype_property_toolbar"/> and <xref
+                  linkend="tab.ref.stereotype_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab. This contains the representation of
+                the stereotype on diagrams (its name between &laquo; and
+                &raquo;).</para>
+
+              <warning><para>You can edit this entry, but it has no effect and
+                when you return to the entry it will be restored to its
+                original value.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. It is not clear that constraints
+                applied to a stereotype have any meaning (as opposed to
+                constraints applied <emphasis>with</emphasis> a stereotype,
+                which make a lot of sense).</para></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. It is not clear that tagged values
+                applied to a stereotype have any meaning (as opposed to
+                tagged values applied <emphasis>with</emphasis> a stereotype,
+                which make a lot of sense).</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Stereotype properties -->
+
+    <sect2>
+      <title>Stereotype Properties</title>
+
+      <!-- The properties toolbar -->
+
+      <para>The property tab toolbar for use cases is described in <xref
+        linkend="tab.ref.stereotype_property_toolbar"/>.</para>
+
+      <table id="tab.ref.stereotype_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property toolbar for the model</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package structure of the
+                model.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Add stereotype button -->
+
+            <row>
+              <entry>Add stereotype</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/interface.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This creates a new stereotype (see <xref
+                  linkend="s1.ref.stereotype"/>) within the model (which
+                  appears on no diagram), navigating immediately to the
+                  properties tab for that stereotype.</para></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the stereotype from the
+                model.</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for use cases are described in
+        <xref linkend="tab.ref.stereotype_property_fields"/>.</para>
+
+      <table id="tab.ref.stereotype_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for use case</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the stereotype. There is no
+                convention for naming stereotypes, beyond starting them with a
+                lower case letter. Even the standard UML stereotypes vary
+                between all lower case (e.g. <literal>metamodel</literal>),
+                bumpy caps (e.g. <literal>systemModel</literal>) and space
+                separated (e.g. <literal>object model</literal>).</para>
+
+              <note><para>&argouml; does not enforce any naming convention for
+                stereotypes</para></note></entry>
+            </row>
+
+            <!-- Entry for Base Class -->
+
+            <row>
+              <entry>Base Class</entry>
+
+              <entry><para>Drop down selector. Any stereotype must be derived
+                from one of the metaclasses in the UML metamodel
+                <literal>Abstraction</literal>, <literal>Association</literal>,
+                <literal>AssociationEnd</literal>,
+                <literal>BehavioralFeature</literal>,
+                <literal>CallEvent</literal>, <literal>Class</literal>,
+                <literal>Classifier</literal>,
+                <literal>Collaboration</literal>, <literal>Comment</literal>,
+                <literal>Component</literal>, <literal>Constraint</literal>,
+                <literal>DataType</literal>, <literal>Dependency</literal>,
+                <literal>Flow</literal>, <literal>Generalization</literal>,
+                <literal>Model</literal>, <literal>ModelElement</literal>,
+                <literal>ObjectFlowState</literal>, <literal>Package</literal>,
+                <literal>Permission</literal>, <literal>Subsystem</literal> and
+                <literal>Usage</literal>) or the artifact classes
+                that derive from them. The stereotype will then
+                be available to artifacts that derive from that same metaclass
+                or that artifact.</para></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the stereotype.
+                This is the package hierarchy. Stereotypes may be created
+                within packages as well as at the top (model)
+                level. &Button1; click on this entry will take you to that
+                package.</para>
+
+              <note><para>You can sometimes find yourselves navigating to
+                deleted artifacts in the model. These will show a namespace of
+                <literal>Trash</literal>.</para></note></entry>
+            </row>
+
+            <!-- Entry for Extends -->
+
+            <row>
+              <entry>Extends</entry>
+
+              <entry><para>Text box. Lists any use case that is extended by
+                this stereotype.  Meaningless for a stereotype.</para></entry>
+            </row>
+
+            <!-- Entry for Modifiers -->
+
+            <row>
+              <entry>Modifiers</entry>
+
+              <entry><para>Check box, with entries <literal>Abstract</literal>,
+                <literal>Final</literal> and <literal>Root</literal>. These are
+                present, because a stereotype derives from
+                <literal>GeneralizableElement</literal> in the UML
+                metamodel. <literal>GeneralizableElement</literal> has
+                attributes <literal>isAbstract</literal>,
+                <literal>isLeaf</literal> and <literal>isRoot</literal>,
+                corresponding to these check boxes.</para>
+
+              <para>Because stereotypes can be derived from other stereotypes
+                it is meaningful to indicate whether a stereotype falls into
+                one or more of these categories.</para>
+
+              <note><para>It does not appear possible to actually create a
+                hierarchy of stereotypes within
+                &argouml;.</para></note></entry>
+            </row>
+
+            <!-- Entry for Derived -->
+
+            <row>
+              <entry>Derived</entry>
+
+              <entry><para>Text box. Lists any derived
+                stereotype. The drop down menu <literal>Open</literal> is
+                permanently greyed out, suggesting it may not be possible to
+                create derived stereotypes within &argouml;.</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+  </sect1>
+
+  <!-- Diagrams -->
+
+  <sect1>
+    <title>&argouml; Diagrams</title>
+
+    <para>&argouml; supports seven types of diagrams: i) use case; ii) class;
+      iii) sequence; iv) state; v) collaboration; vi) activity; and vii)
+      deployment. They are created using the <literal>Create
+      Diagram</literal> drop down menu (see <xref
+        linkend="s1.ref.create.diagram.menu"/>).</para>
+
+    <note><para>State and activity diagrams are associated with a particular
+      class, and can only be created when a class has been selected. In the
+      current version of &argouml; they are not greyed out even when a class
+      is not selected. However under these circumstances they will have no
+      effect.</para></note>
+
+    <!-- The details tabs -->
+
+    <sect2>
+      <title>Diagram Details Tabs</title>
+
+      <para>The details tabs that are active for diagrams are
+        described in <xref linkend="tab.ref.diagram_details_tabs"/>.</para>
+
+      <table id="tab.ref.diagram_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for diagram</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+          <!-- Entry for ToDo Item tab -->
+
+          <row>
+            <entry>ToDo Item</entry>
+
+            <entry><para>Standard tab.</para></entry>
+          </row>
+
+          <!-- Entry for Properties tab -->
+
+          <row>
+            <entry>Properties</entry>
+
+            <entry><para>See <xref
+                linkend="tab.ref.diagram_property_toolbar"/> and 
+              <xref linkend="tab.ref.diagram_property_fields"/>
+              below.</para></entry>
+          </row>
+
+          <!-- Entry for Source tab -->
+
+          <row>
+            <entry>Source</entry>
+
+            <entry><para>Holds a reference to the &argouml;
+              implementation class for that diagram.</para></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <note><para>The source tab content can be changed, but this has no
+      effect.</para></note>
+    </sect2>
+
+    <!-- Diagram properties -->
+
+    <sect2>
+      <title>Diagram Properties</title>
+
+      <!-- The properties toolbar -->
+
+      <para>The property tab toolbar for diagrams is described in <xref
+        linkend="tab.ref.diagram_property_toolbar"/>.</para>
+
+      <table id="tab.ref.diagram_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property toolbar for diagram</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous diagram. Always
+                greyed out, since there is no way to navigate to a diagram
+                (and hence no way to navigate back).</para></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next diagram. Always
+                greyed out, since there is no way to navigate to a diagram
+                (and hence no way to navigate forward).</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for diagrams are described in
+        <xref linkend="tab.ref.diagram_property_fields"/>.</para>
+
+      <table id="tab.ref.diagram_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for diagram</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>The name of the diagram. There are no
+                conventions for naming diagrams. By default, &argouml; uses
+                the (space separated) diagram name and a sequence number,
+                thus <literal>use&nbsp;case&nbsp;diagram&nbsp;1</literal>.
+              </para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+
     </sect2>
   </sect1>
 

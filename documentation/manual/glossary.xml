@@ -23,14 +23,14 @@ Modifications
 
     <!-- Activity Diagram -->
 
-    <glossentry id="glactivitydiag">
+    <glossentry id="gl.activitydiag">
       <glossterm>Activity Diagram</glossterm>
 
       <glossdef>
         <para>A UML diagram capturing the dynamic behaviour of a system or
           sub-system. See 
 
-          <!-- Fix when ready <xref linkend="s1umlactivitydiags"/> -->
+          <!-- Fix when ready <xref linkend="s1.umlactivitydiags"/> -->
 
           for more information.</para>
       </glossdef>
@@ -38,7 +38,7 @@ Modifications
 
     <!-- Action -->
 
-    <glossentry id="glaction">
+    <glossentry id="gl.action">
       <glossterm>Action</glossterm>
 
       <glossdef>
@@ -49,18 +49,18 @@ Modifications
           <emphasis>Sequence</emphasis> and <emphasis>Collaboration
           Diagrams</emphasis>.</para>
 
-        <glossseealso otherterm="glaction"/>
-        <glossseealso otherterm="glcollabdiag"/>
-        <glossseealso otherterm="glseqdiag"/>
-        <glossseealso otherterm="glstate"/>
-        <glossseealso otherterm="glstatediag"/>
-        <glossseealso otherterm="gltransition"/>
+        <glossseealso otherterm="gl.action"/>
+        <glossseealso otherterm="gl.collabdiag"/>
+        <glossseealso otherterm="gl.seqdiag"/>
+        <glossseealso otherterm="gl.state"/>
+        <glossseealso otherterm="gl.statediag"/>
+        <glossseealso otherterm="gl.transition"/>
       </glossdef>
     </glossentry>
 
     <!-- Actor -->
 
-    <glossentry id="glactor">
+    <glossentry id="gl.actor">
       <glossterm>Actor</glossterm>
 
       <glossdef>
@@ -68,14 +68,14 @@ Modifications
           <emphasis>Use Case Diagram</emphasis> external to the system being
           designed.</para>
 
-        <glossseealso otherterm="glusecase"/>
-        <glossseealso otherterm="glusecasediag"/>
+        <glossseealso otherterm="gl.usecase"/>
+        <glossseealso otherterm="gl.usecasediag"/>
       </glossdef>
     </glossentry>
 
     <!-- Analysis -->
 
-    <glossentry id="glanalysis">
+    <glossentry id="gl.analysis">
       <glossterm>Analysis</glossterm>
 
       <glossdef>
@@ -87,45 +87,45 @@ Modifications
 
     <!-- Association Class -->
 
-    <glossentry id="glassocclass">
+    <glossentry id="gl.assocclass">
       <glossterm>Association Class</glossterm>
 
       <glossdef>
         <para>A class that characterises the association between two other
           clases.</para>
 
-        <glossseealso otherterm="glclass"/>
+        <glossseealso otherterm="gl.class"/>
       </glossdef>
     </glossentry>
 
     <!-- Association -->
 
-    <glossentry id="glassociation">
+    <glossentry id="gl.association">
       <glossterm>Association</glossterm>
 
       <glossdef>
         <para>A relationship between two classes in a Class Diagram or between
           Use Cases or Use Cases and Actors in a Use Case Diagram.</para>
 
-        <glossseealso otherterm="glactor"/>
-        <glossseealso otherterm="glclassdiag"/>
-        <glossseealso otherterm="glusecase"/>
-        <glossseealso otherterm="glusecasediag"/>
+        <glossseealso otherterm="gl.actor"/>
+        <glossseealso otherterm="gl.classdiag"/>
+        <glossseealso otherterm="gl.usecase"/>
+        <glossseealso otherterm="gl.usecasediag"/>
       </glossdef>
     </glossentry>
 
     <!-- Attribute -->
 
-    <glossentry id="glattribute">
+    <glossentry id="gl.attribute">
       <glossterm>Attribute (of a Class or Object)</glossterm>
 
       <glossdef>
         <para>An attribute of a class or object is a specification of a data
           element encapsulated by that object.</para>
 
-        <glossseealso otherterm="glclass"/>
-        <glossseealso otherterm="glmethod"/>
-        <glossseealso otherterm="globject"/>
+        <glossseealso otherterm="gl.class"/>
+        <glossseealso otherterm="gl.method"/>
+        <glossseealso otherterm="gl.object"/>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -139,7 +139,7 @@ Modifications
 
     <!-- CASE -->
 
-    <glossentry id="glcase">
+    <glossentry id="gl.case">
       <glossterm>CASE</glossterm>
 
       <glossdef>
@@ -149,51 +149,51 @@ Modifications
 
     <!-- Class -->
 
-    <glossentry id="glclass">
+    <glossentry id="gl.class">
       <glossterm>Class</glossterm>
 
       <glossdef>
-        <para>The encapsulation of the data associated with an entity (its
+        <para>The encapsulation of the data associated with an artifact (its
           <emphasis>attributes</emphasis>) and the actions associated with the
-          entity (its <emphasis>methods</emphasis>).</para>
+          artifact (its <emphasis>methods</emphasis>).</para>
 
-        <para>A class specifies the characteristics of an entity. An
+        <para>A class specifies the characteristics of an artifact. An
           <emphasis>object</emphasis> represents an instance of the
-          entity.</para>
+          artifact.</para>
 
         <para>Classes and objects in UML are represented on <emphasis>Activity
           Diagrams</emphasis>, <emphasis>Class Diagrams</emphasis>,
           <emphasis>Collaboration Diagrams</emphasis> and <emphasis>Sequence
           Diagrams</emphasis>.</para>
 
-        <glossseealso otherterm="glactivitydiag"/>
-        <glossseealso otherterm="glattribute"/>
-        <glossseealso otherterm="glclassdiag"/>
-        <glossseealso otherterm="glcollabdiag"/>
-        <glossseealso otherterm="glmethod"/>
-        <glossseealso otherterm="globject"/>
-        <glossseealso otherterm="glseqdiag"/>
+        <glossseealso otherterm="gl.activitydiag"/>
+        <glossseealso otherterm="gl.attribute"/>
+        <glossseealso otherterm="gl.classdiag"/>
+        <glossseealso otherterm="gl.collabdiag"/>
+        <glossseealso otherterm="gl.method"/>
+        <glossseealso otherterm="gl.object"/>
+        <glossseealso otherterm="gl.seqdiag"/>
       </glossdef>
     </glossentry>
 
     <!-- Class Diagram -->
 
-    <glossentry id="glclassdiag">
+    <glossentry id="gl.classdiag">
       <glossterm>Class Diagram</glossterm>
 
       <glossdef>
         <para>A UML Diagram showing the structural relationship between
           classes. See
-          <xref linkend="s1umlclassdiags"/> for more information.</para>
+          <xref linkend="s1.umlclassdiags"/> for more information.</para>
 
-        <glossseealso otherterm="glclass"/>
-        <glossseealso otherterm="glclassdiag"/>
+        <glossseealso otherterm="gl.class"/>
+        <glossseealso otherterm="gl.classdiag"/>
       </glossdef>
     </glossentry>
 
     <!-- Collaboration Diagram -->
 
-    <glossentry id="glcollabdiag">
+    <glossentry id="gl.collabdiag">
       <glossterm>Collaboration Diagram</glossterm>
 
       <glossdef>
@@ -202,17 +202,17 @@ Modifications
           Diagram</emphasis>. Which representation is appropriate depends on
           the problem under consideration. See
 
-          <!-- Fix when ready <xref linkend="s1umlcollabdiags"/> -->
+          <!-- Fix when ready <xref linkend="s1.umlcollabdiags"/> -->
 
           for more information.</para>
 
-        <glossseealso otherterm="glseqdiag"/>
+        <glossseealso otherterm="gl.seqdiag"/>
       </glossdef>
     </glossentry>
 
     <!-- Comprehension and Problem Solving -->
 
-    <glossentry id="glcomprehension">
+    <glossentry id="gl.comprehension">
       <glossterm>Comprehension and Problem Solving</glossterm>
 
       <glossdef>
@@ -235,28 +235,28 @@ Modifications
             designers' abilities to formulate solutions.</para></listitem>
         </orderedlist>
 
-        <glossseealso otherterm="glcritic"/>
+        <glossseealso otherterm="gl.critic"/>
       </glossdef>
     </glossentry>
 
     <!-- Concept Class Diagram -->
 
-    <glossentry id="glconceptclassdiag">
+    <glossentry id="gl.conceptclassdiag">
       <glossterm>Concept Class Diagram</glossterm>
 
       <glossdef>
         <para>A Class Diagram constructed during the Analysis Phase to show the
           main structural components of the problem identified in the
           Requirements Phase. See 
-          <xref linkend="chtutanalysis"/> for more information.</para>
+          <xref linkend="ch.tut.analysis"/> for more information.</para>
 
-        <glossseealso otherterm="glclassdiag"/>
+        <glossseealso otherterm="gl.classdiag"/>
       </glossdef>
     </glossentry>
 
     <!-- Critic -->
 
-    <glossentry id="glcritic">
+    <glossentry id="gl.critic">
       <glossterm>Critic</glossterm>
 
       <glossdef>
@@ -267,9 +267,9 @@ Modifications
           design</emphasis> and <emphasis>comprehension and problem
           solving</emphasis>.</para>
 
-        <glossseealso otherterm="glreflection"/>
-        <glossseealso otherterm="gloppdesign"/>
-        <glossseealso otherterm="glcomprehension"/>
+        <glossseealso otherterm="gl.reflection"/>
+        <glossseealso otherterm="gl.oppdesign"/>
+        <glossseealso otherterm="gl.comprehension"/>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -283,7 +283,7 @@ Modifications
 
     <!-- Extends Relationship -->
 
-    <glossentry id="glextends">
+    <glossentry id="gl.extends">
       <glossterm>Extends Relationship</glossterm>
 
       <glossdef>
@@ -291,9 +291,9 @@ Modifications
           <emphasis>extended</emphasis> Use Case describes a special variant
           of the <emphasis>extending</emphasis> Use Case.</para> 
 
-        <glossseealso otherterm="glgeneralization"/>
-        <glossseealso otherterm="glincludes"/>
-        <glossseealso otherterm="glusecase"/>
+        <glossseealso otherterm="gl.generalization"/>
+        <glossseealso otherterm="gl.includes"/>
+        <glossseealso otherterm="gl.usecase"/>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -307,7 +307,7 @@ Modifications
 
     <!-- Generalization Relationship -->
 
-    <glossentry id="glgeneralization">
+    <glossentry id="gl.generalization">
       <glossterm>Generalization Relationship</glossterm>
 
       <glossdef>
@@ -317,15 +317,15 @@ Modifications
           particular examples of the <emphasis>generalising</emphasis> Use
           Case.</para>
 
-        <glossseealso otherterm="glextends"/>
-        <glossseealso otherterm="glincludes"/>
-        <glossseealso otherterm="glusecase"/>
+        <glossseealso otherterm="gl.extends"/>
+        <glossseealso otherterm="gl.includes"/>
+        <glossseealso otherterm="gl.usecase"/>
       </glossdef>
     </glossentry>
 
     <!-- GNU -->
 
-    <glossentry id="glgnu">
+    <glossentry id="gl.gnu">
       <glossterm>GNU</glossterm>
 
       <glossdef>
@@ -334,13 +334,13 @@ Modifications
           editor, it now has many other projects, usually closely allied to
           Linux.</para>
 
-        <glossseealso otherterm="gllinux"/>
+        <glossseealso otherterm="gl.linux"/>
       </glossdef>
     </glossentry>
 
     <!-- GUI -->
 
-    <glossentry id="glgui">
+    <glossentry id="gl.gui">
       <glossterm>GUI</glossterm>
 
       <glossdef>
@@ -357,15 +357,15 @@ Modifications
 
     <!-- Hierarchical State Diagram -->
 
-    <glossentry id="glhierstatediag">
+    <glossentry id="gl.hierstatediag">
       <glossterm>Hierarchical State Diagram</glossterm>
 
       <glossdef>
         <para>A <emphasis>State Diagram</emphasis> that contains subsidiary
           state diagrams within individual <emphasis>States</emphasis>.</para>
 
-        <glossseealso otherterm="glstate"/>
-        <glossseealso otherterm="glstatediag"/>
+        <glossseealso otherterm="gl.state"/>
+        <glossseealso otherterm="gl.statediag"/>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -377,7 +377,7 @@ Modifications
 
     <!-- Includes Relationship -->
 
-    <glossentry id="glincludes">
+    <glossentry id="gl.includes">
       <glossterm>Includes Relationship</glossterm>
 
       <glossdef>
@@ -386,24 +386,24 @@ Modifications
           functionality of the <emphasis>including</emphasis> Use
           Case.</para>
 
-        <glossseealso otherterm="glextends"/>
-        <glossseealso otherterm="glgeneralization"/>
-        <glossseealso otherterm="glusecase"/>
+        <glossseealso otherterm="gl.extends"/>
+        <glossseealso otherterm="gl.generalization"/>
+        <glossseealso otherterm="gl.usecase"/>
       </glossdef>
     </glossentry>
 
     <!-- Iterative Design Process -->
 
-    <glossentry id="gliterative">
+    <glossentry id="gl.iterative">
       <glossterm>Iterative Design Process</glossterm>
 
       <glossdef>
         <para>A design process where each all phases (requirements, analysis,
           design, build, test) are tackled partially in a series of
-          iterations. See <xref linkend="s2proctypes"/> for more
+          iterations. See <xref linkend="s2.proctypes"/> for more
           information.</para>
 
-        <glossseealso otherterm="glwaterfall"/>
+        <glossseealso otherterm="gl.waterfall"/>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -415,7 +415,7 @@ Modifications
 
     <!-- Java -->
 
-    <glossentry id="gljava">
+    <glossentry id="gl.java">
       <glossterm>Java</glossterm>
 
       <glossdef>
@@ -443,13 +443,13 @@ Modifications
 
     <!-- Linux -->
 
-    <glossentry id="gllinux">
+    <glossentry id="gl.linux">
       <glossterm>Linux</glossterm>
 
       <glossdef>
         <para>An open source version of the Unix operating system.</para>
 
-        <glossseealso otherterm="glgnu"/>
+        <glossseealso otherterm="gl.gnu"/>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -461,50 +461,50 @@ Modifications
 
     <!-- Mealy Machine -->
 
-    <glossentry id="glmealy">
+    <glossentry id="gl.mealy">
       <glossterm>Mealy Machine</glossterm>
 
       <glossdef>
         <para>A <emphasis>State Diagram</emphasis> where actions are associated
           with <emphasis>States</emphasis>.</para>
 
-        <glossseealso otherterm="glaction"/>
-        <glossseealso otherterm="glmoore"/>
-        <glossseealso otherterm="glstate"/>
-        <glossseealso otherterm="glstatediag"/>
-        <glossseealso otherterm="gltransition"/>
+        <glossseealso otherterm="gl.action"/>
+        <glossseealso otherterm="gl.moore"/>
+        <glossseealso otherterm="gl.state"/>
+        <glossseealso otherterm="gl.statediag"/>
+        <glossseealso otherterm="gl.transition"/>
       </glossdef>
     </glossentry>
 
     <!-- Method -->
 
-    <glossentry id="glmethod">
+    <glossentry id="gl.method">
       <glossterm>Method (of a Class or Object)</glossterm>
 
       <glossdef>
         <para>A method of a class or object is a specification of behaviour
           encapsulated by that object.</para>
 
-        <glossseealso otherterm="glattribute"/>
-        <glossseealso otherterm="glclass"/>
-        <glossseealso otherterm="globject"/>
+        <glossseealso otherterm="gl.attribute"/>
+        <glossseealso otherterm="gl.class"/>
+        <glossseealso otherterm="gl.object"/>
       </glossdef>
     </glossentry>
 
     <!-- Moore Machine -->
 
-    <glossentry id="glmoore">
+    <glossentry id="gl.moore">
       <glossterm>Moore Machine</glossterm>
 
       <glossdef>
         <para>A <emphasis>State Diagram</emphasis> where actions are associated
           with <emphasis>Transitions</emphasis>.</para>
 
-        <glossseealso otherterm="glaction"/>
-        <glossseealso otherterm="glmealy"/>
-        <glossseealso otherterm="glstate"/>
-        <glossseealso otherterm="glstatediag"/>
-        <glossseealso otherterm="gltransition"/>
+        <glossseealso otherterm="gl.action"/>
+        <glossseealso otherterm="gl.mealy"/>
+        <glossseealso otherterm="gl.state"/>
+        <glossseealso otherterm="gl.statediag"/>
+        <glossseealso otherterm="gl.transition"/>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -518,7 +518,7 @@ Modifications
 
     <!-- Object -->
 
-    <glossentry id="globject">
+    <glossentry id="gl.object">
       <glossterm>Object</glossterm>
 
       <glossdef>
@@ -529,61 +529,61 @@ Modifications
           <emphasis>Collaboration Diagrams</emphasis> and <emphasis>Sequence
           Diagrams</emphasis>.</para>
 
-        <glossseealso otherterm="glactivitydiag"/>
-        <glossseealso otherterm="glattribute"/>
-        <glossseealso otherterm="glclassdiag"/>
-        <glossseealso otherterm="glcollabdiag"/>
-        <glossseealso otherterm="glmethod"/>
-        <glossseealso otherterm="globject"/>
-        <glossseealso otherterm="glseqdiag"/>
+        <glossseealso otherterm="gl.activitydiag"/>
+        <glossseealso otherterm="gl.attribute"/>
+        <glossseealso otherterm="gl.classdiag"/>
+        <glossseealso otherterm="gl.collabdiag"/>
+        <glossseealso otherterm="gl.method"/>
+        <glossseealso otherterm="gl.object"/>
+        <glossseealso otherterm="gl.seqdiag"/>
       </glossdef>
     </glossentry>
 
     <!-- OCL -->
 
-    <glossentry id="glocl">
+    <glossentry id="gl.ocl">
       <glossterm>OCL</glossterm>
 
       <glossdef>
         <para>Object Constraint Language. A language for describing constraints
           within UML.</para>
-        <glossseealso otherterm="gluml"/>
+        <glossseealso otherterm="gl.uml"/>
       </glossdef>
     </glossentry>
 
     <!-- OMG -->
 
-    <glossentry id="glomg">
+    <glossentry id="gl.omg">
       <glossterm>OMG</glossterm>
 
       <glossdef>
         <para>The Object Management Group. An international industry
           standardisation body. Best known for CORBA and UML.</para>
 
-        <glossseealso otherterm="gluml"/>
+        <glossseealso otherterm="gl.uml"/>
       </glossdef>
     </glossentry>
 
     <!-- OOA&D -->
 
-    <glossentry id="glooad">
+    <glossentry id="gl.ooad">
       <glossterm>&ooad;</glossterm>
 
       <glossdef>
         <para>Object Oriented Analysis and Design. An approach to software
           problem analysis and design based on objects, which encapsulate both
-          data and code. See See <xref linkend="s2ooad"/> or any standard
+          data and code. See See <xref linkend="s2.ooad"/> or any standard
           textbook on Software Engineering.</para>
 
         <para>UML is a notation to support &ooad;.</para>
 
-        <glossseealso otherterm="gluml"/>
+        <glossseealso otherterm="gl.uml"/>
       </glossdef>
     </glossentry>
 
     <!-- Opportunistic Design -->
 
-    <glossentry id="gloppdesign">
+    <glossentry id="gl.oppdesign">
       <glossterm>Opportunistic Design</glossterm>
 
       <glossdef>
@@ -594,7 +594,7 @@ Modifications
           even their own plans in order, but choose steps that are mentally
           least expensive among alternatives.</para>
 
-        <glossseealso otherterm="glcritic"/>
+        <glossseealso otherterm="gl.critic"/>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -606,7 +606,7 @@ Modifications
 
     <!-- Pane -->
 
-    <glossentry id="glpane">
+    <glossentry id="gl.pane">
       <glossterm>Pane</glossterm>
 
       <glossdef>
@@ -625,7 +625,7 @@ Modifications
 
     <!-- Realisation Use Case -->
 
-    <glossentry id="glrelusecase">
+    <glossentry id="gl.relusecase">
       <glossterm>Realisation Use Case</glossterm>
 
       <glossdef>
@@ -634,13 +634,13 @@ Modifications
         in the language of the solution domain, rather than the problem
         domain.</para>
 
-        <glossseealso otherterm="glusecase"/>
+        <glossseealso otherterm="gl.usecase"/>
       </glossdef>
     </glossentry>
 
     <!-- Reflection-in-Action -->
 
-    <glossentry id="glreflection">
+    <glossentry id="gl.reflection">
       <glossterm>Reflection-in-Action</glossterm>
 
       <glossdef>
@@ -652,21 +652,21 @@ Modifications
           model of the problem situation improves, hence improving their
           design.</para>
 
-        <glossseealso otherterm="glcritic"/>
+        <glossseealso otherterm="gl.critic"/>
       </glossdef>
     </glossentry>
 
     <!-- Requirements Capture -->
 
-    <glossentry id="glrequirements">
+    <glossentry id="gl.requirements">
       <glossterm>Requirements Capture</glossterm>
 
       <glossdef>
         <para>Requirements capture is the process of identifying what the
           <quote>customer</quote> wants from the proposed system. See
-          <xref linkend="chtutreqs"/> for a fuller description.</para>
+          <xref linkend="ch.tut.reqs"/> for a fuller description.</para>
 
-        <glossseealso otherterm="glusecase"/>
+        <glossseealso otherterm="gl.usecase"/>
       </glossdef>
     </glossentry>
 
@@ -679,7 +679,7 @@ Modifications
 
     <!-- Sequence Diagram -->
 
-    <glossentry id="glseqdiag">
+    <glossentry id="gl.seqdiag">
       <glossterm>Sequence Diagram</glossterm>
 
       <glossdef>
@@ -687,28 +687,28 @@ Modifications
           passed between objects. Equivalent to a <emphasis>Collaboration
           Diagram</emphasis>. Which representation is appropriate depends on
           the problem under consideration. See 
-          <xref linkend="s1umlseqdiags"/> for more information.</para>
+          <xref linkend="s1.umlseqdiags"/> for more information.</para>
 
-        <glossseealso otherterm="glcollabdiag"/>
+        <glossseealso otherterm="gl.collabdiag"/>
       </glossdef>
     </glossentry>
 
     <!-- SGML -->
 
-    <glossentry id="glsgml">
+    <glossentry id="gl.sgml">
       <glossterm>SGML</glossterm>
 
       <glossdef>
         <para>Standard Graphical Markup Language. Defined by ISO
           8879:1986.</para>
 
-        <glossseealso otherterm="glxml"/>
+        <glossseealso otherterm="gl.xml"/>
       </glossdef>
     </glossentry>
 
     <!-- Simula 67 -->
 
-    <glossentry id="glsimula67">
+    <glossentry id="gl.simula67">
       <glossterm>Simula&nbsp;67</glossterm>
 
       <glossdef>
@@ -720,38 +720,38 @@ Modifications
 
     <!-- State -->
 
-    <glossentry id="glstate">
+    <glossentry id="gl.state">
       <glossterm>State</glossterm>
 
       <glossdef>
         <para>Within a <emphasis>State Diagram</emphasis> a one of the possible
           configurations of the machine.</para>
 
-        <glossseealso otherterm="glstatediag"/>
+        <glossseealso otherterm="gl.statediag"/>
       </glossdef>
     </glossentry>
 
     <!-- State Diagram -->
 
-    <glossentry id="glstatediag">
+    <glossentry id="gl.statediag">
       <glossterm>State Diagram</glossterm>
 
       <glossdef>
         <para>A UML Diagram showing the dyanamic behaviour of an active
-          <emphasis>Object</emphasis>. See <xref linkend="s1umlstatediags"/>
+          <emphasis>Object</emphasis>. See <xref linkend="s1.umlstatediags"/>
           for more information.</para>
 
-        <glossseealso otherterm="globject"/>
+        <glossseealso otherterm="gl.object"/>
       </glossdef>
     </glossentry>
 
     <!-- Stereotypes and Stereotyping -->
 
-    <glossentry id="glstereotype">
+    <glossentry id="gl.stereotype">
       <glossterm>Stereotypes and Stereotyping</glossterm>
 
       <glossdef>
-        <para>Any entity within UML can be given a
+        <para>Any artifact within UML can be given a
           <emphasis>stereotype</emphasis> to indicate its association with a
           particular role in the design. A stereotype <literal>spqr</literal>
           is generally indicated with the notation
@@ -764,26 +764,26 @@ Modifications
           terms of the problem domain, and Use Cases at the analysis phase
           defined in terms of the solution domain.</para>
 
-        <glossseealso otherterm="gluml"/>
+        <glossseealso otherterm="gl.uml"/>
       </glossdef>
     </glossentry>
 
     <!-- Supplementary Specification -->
 
-    <glossentry id="glsupspec">
+    <glossentry id="gl.supspec">
       <glossterm>Supplementary Specification</glossterm>
 
       <glossdef>
         <para>The document capturing non-functional requirements that cannot be
           associated with Use Cases.</para>
 
-        <glossseealso otherterm="glusecase"/>
+        <glossseealso otherterm="gl.usecase"/>
       </glossdef>
     </glossentry>
 
     <!-- SVG -->
 
-    <glossentry id="glsvg">
+    <glossentry id="gl.svg">
       <glossterm>SVG</glossterm>
 
       <glossdef>
@@ -795,31 +795,31 @@ Modifications
 
     <!-- System Sequence Diagram -->
 
-    <glossentry id="glsysseqdiag">
+    <glossentry id="gl.sysseqdiag">
       <glossterm>System Sequence Diagram</glossterm>
 
       <glossdef>
         <para>A <emphasis>Sequence Diagram</emphasis> used in the
           <emphasis>Analysis</emphasis> Phase showing the dyanamic behaviour of
           the overall system. See
-          <xref linkend="chtutanalysis"/> for more information.</para>
+          <xref linkend="ch.tut.analysis"/> for more information.</para>
 
-        <glossseealso otherterm="glseqdiag"/>
+        <glossseealso otherterm="gl.seqdiag"/>
       </glossdef>
     </glossentry>
 
     <!-- System State Diagram -->
 
-    <glossentry id="glsysstatediag">
+    <glossentry id="gl.sysstatediag">
       <glossterm>System State Diagram</glossterm>
 
       <glossdef>
         <para>A <emphasis>State Diagram</emphasis> used in the
           <emphasis>Analysis</emphasis> Phase showing the dyanamic behaviour of
           an active top level system objects. See
-          <xref linkend="chtutanalysis"/> for more information.</para>
+          <xref linkend="ch.tut.analysis"/> for more information.</para>
 
-        <glossseealso otherterm="glstatediag"/>
+        <glossseealso otherterm="gl.statediag"/>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -831,7 +831,7 @@ Modifications
 
     <!-- To-Do List -->
 
-    <glossentry id="gltodo">
+    <glossentry id="gl.todo">
       <glossterm>To-Do List</glossterm>
 
       <glossdef>
@@ -842,15 +842,15 @@ Modifications
 
     <!-- Transition -->
 
-    <glossentry id="gltransition">
+    <glossentry id="gl.transition">
       <glossterm>Transition</glossterm>
 
       <glossdef>
         <para>The change between <emphasis>States</emphasis> in a
           <emphasis>State Diagram</emphasis>..</para>
 
-        <glossseealso otherterm="glstate"/>
-        <glossseealso otherterm="glstatediag"/>
+        <glossseealso otherterm="gl.state"/>
+        <glossseealso otherterm="gl.statediag"/>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -862,7 +862,7 @@ Modifications
 
     <!-- UML -->
 
-    <glossentry id="gluml">
+    <glossentry id="gl.uml">
       <glossterm>UML</glossterm>
 
       <glossdef>
@@ -871,50 +871,50 @@ Modifications
           v1.3. Version 1.4 was released during 2001, with v2.0 planned for
           2002.</para>
 
-        <glossseealso otherterm="glomg"/>
+        <glossseealso otherterm="gl.omg"/>
       </glossdef>
     </glossentry>
 
     <!-- Use Case -->
 
-    <glossentry id="glusecase">
+    <glossentry id="gl.usecase">
       <glossterm>Use Case</glossterm>
 
       <glossdef>
         <para>A UML notation for capturing requirements of a system or
-          sub-system. See <xref linkend="s1umlusecases"/> for more
+          sub-system. See <xref linkend="s1.umlusecases"/> for more
           information.</para>
 
-        <glossseealso otherterm="gluml"/>
-        <glossseealso otherterm="glucspec"/>
+        <glossseealso otherterm="gl.uml"/>
+        <glossseealso otherterm="gl.ucspec"/>
       </glossdef>
     </glossentry>
 
     <!-- Use Case Diagram -->
 
-    <glossentry id="glusecasediag">
+    <glossentry id="gl.usecasediag">
       <glossterm>Use Case Diagram</glossterm>
 
       <glossdef>
         <para>A UML diagram showing the relationships between Actors and Use
-          Cases. See <xref linkend="s1umlusecases"/> for more
+          Cases. See <xref linkend="s1.umlusecases"/> for more
           information.</para>
 
-        <glossseealso otherterm="glactor"/>
-        <glossseealso otherterm="glusecase"/>
+        <glossseealso otherterm="gl.actor"/>
+        <glossseealso otherterm="gl.usecase"/>
       </glossdef>
     </glossentry>
 
     <!-- Use Case Specification -->
 
-    <glossentry id="glucspec">
+    <glossentry id="gl.ucspec">
       <glossterm>Use Case Specification</glossterm>
 
       <glossdef>
         <para>The document capturing the detailed requirements behind a Use
           Case.</para>
 
-        <glossseealso otherterm="glusecase"/>
+        <glossseealso otherterm="gl.usecase"/>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -926,7 +926,7 @@ Modifications
 
     <!-- Vision Document -->
 
-    <glossentry id="glvision">
+    <glossentry id="gl.vision">
       <glossterm>Vision Document</glossterm>
 
       <glossdef>
@@ -943,7 +943,7 @@ Modifications
 
     <!-- W3C -->
 
-    <glossentry id="glw3c">
+    <glossentry id="gl.w3c">
       <glossterm>W3C</glossterm>
 
       <glossdef>
@@ -956,15 +956,15 @@ Modifications
 
     <!-- Waterfall Design Process -->
 
-    <glossentry id="glwaterfall">
+    <glossentry id="gl.waterfall">
       <glossterm>Waterfall Design Process</glossterm>
 
       <glossdef>
         <para>A design process where each phase (requirements, analysis,
           design, build, test) is completed before the next starts. See
-          <xref linkend="s2proctypes"/> for more information.</para>
+          <xref linkend="s2.proctypes"/> for more information.</para>
 
-        <glossseealso otherterm="gliterative"/>
+        <glossseealso otherterm="gl.iterative"/>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -976,7 +976,7 @@ Modifications
 
     <!-- XMI -->
 
-    <glossentry id="glxmi">
+    <glossentry id="gl.xmi">
       <glossterm>XMI</glossterm>
 
       <glossdef>
@@ -985,22 +985,22 @@ Modifications
           layout information, so must be supplemented by files carrying that
           information.</para>
 
-        <glossseealso otherterm="gluml"/>
-        <glossseealso otherterm="glxml"/>
+        <glossseealso otherterm="gl.uml"/>
+        <glossseealso otherterm="gl.xml"/>
       </glossdef>
     </glossentry>
 
     <!-- XML -->
 
-    <glossentry id="glxml">
+    <glossentry id="gl.xml">
       <glossterm>XML</glossterm>
 
       <glossdef>
         <para>eXtensible Markup Language. A simplified derivative of SGML
           defined by W3C</para>
 
-        <glossseealso otherterm="glsgml"/>
-        <glossseealso otherterm="glw3c"/>
+        <glossseealso otherterm="gl.sgml"/>
+        <glossseealso otherterm="gl.w3c"/>
       </glossdef>
     </glossentry>
   </glossdiv>
