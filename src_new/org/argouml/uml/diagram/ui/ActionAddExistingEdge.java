@@ -67,7 +67,7 @@ public class ActionAddExistingEdge extends UMLAction {
         MutableGraphModel gm = (MutableGraphModel)ProjectManager.getManager().
             getCurrentProject().getActiveDiagram().getGraphModel();
         if (gm.canAddEdge(_edge)) { // situation 1
-            gm.addNodeRelatedEdges(gm.getSourcePort(_edge));
+            gm.addEdge(_edge);
         }
     }
 
