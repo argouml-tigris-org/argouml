@@ -38,6 +38,7 @@ import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadGreater;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
 
@@ -49,8 +50,10 @@ import ru.novosoft.uml.MElementEvent;
  *
  */
 public class FigTransition extends FigEdgeModelElement {
+    
     private ArrowHeadGreater endArrow = new ArrowHeadGreater();
-
+    private boolean dashed = false; 
+    
     ////////////////////////////////////////////////////////////////
     // constructors
     /**
@@ -64,7 +67,11 @@ public class FigTransition extends FigEdgeModelElement {
     }
 
     /**
-     * The constructor that hooks the Fig into an existing UML element
+     * The constructor that hooks the Fig into an existing UML element.
+     * 
+     * It also adapts the line to be dashed if the source or destination 
+     * is an ObjectFlowState.
+     * 
      * @param edge the UML element
      * @param lay the layer
      */
@@ -80,11 +87,22 @@ public class FigTransition extends FigEdgeModelElement {
             setSourceFigNode(sourceFN);
             setDestPortFig(destFN);
             setDestFigNode(destFN);
+            
+            dashed = ModelFacade.isAObjectFlowState(sourceSV)
+                    || ModelFacade.isAObjectFlowState(destSV);
         }
         setLayer(lay);
         setOwner(edge);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
+     */
+    public void setFig(Fig f) {
+        super.setFig(f);
+        _fig.setDashed(dashed);
+    }
+    
     /**
      * The constructor that hooks the Fig into an existing UML element
      * @param edge the UML element
