@@ -277,8 +277,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    end1 = ((MGeneralization) edge).getParent();
 	}
 	else if (org.argouml.model.ModelFacade.isADependency(edge)) {
-	    Collection clients = ((MDependency) edge).getClients();
-	    Collection suppliers = ((MDependency) edge).getSuppliers();
+	    Collection clients = ModelFacade.getClients(edge);
+	    Collection suppliers = ModelFacade.getSuppliers(edge);
 	    if (clients == null || suppliers == null) return false;
 	    end0 = ((Object[]) clients.toArray())[0];
 	    end1 = ((Object[]) suppliers.toArray())[0];

@@ -421,8 +421,8 @@ public class UseCaseDiagramGraphModel
             // consider the first of each (not clear that we should really
             // accept the case where there is more than one of either)
 
-            Collection clients   = ((MDependency) edge).getClients();
-            Collection suppliers = ((MDependency) edge).getSuppliers();
+            Collection clients   = ModelFacade.getClients(edge);
+            Collection suppliers = ModelFacade.getSuppliers(edge);
 
             // Give up if either clients or suppliers is undefined
 
