@@ -619,7 +619,7 @@ public class FigClass extends FigNodeModelElement {
 	return new Dimension(newW,newH);
   }
 
-  private class MyFigText extends FigText
+  public class MyFigText extends FigText
   {
 	private Fig refFig;
 	public MyFigText(int x, int y, int w, int h, Fig aFig) {super(x,y,w,h,true); refFig=aFig;}
