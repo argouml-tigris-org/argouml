@@ -31,8 +31,6 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.uml.ExtensionMechanismsFactory;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
@@ -46,7 +44,6 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationListModel;
 import org.argouml.util.ConfigLoader;
-
 import org.tigris.swidgets.FlexiGridLayout;
 
 /**
@@ -85,8 +82,8 @@ public class PropPanelStereotype extends PropPanelModelElement {
                  getNamespaceComboBox());
         
 
-        JPanel modifiersPanel =
-            new JPanel(new FlexiGridLayout(0, 2, FlexiGridLayout.ROWCOLPREFERRED));
+        JPanel modifiersPanel = new JPanel(new FlexiGridLayout(0, 2, 
+                FlexiGridLayout.ROWCOLPREFERRED));
         modifiersPanel.setBorder(new TitledBorder(
                 Translator.localize("label.modifiers")));
         modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
@@ -106,26 +103,9 @@ public class PropPanelStereotype extends PropPanelModelElement {
                 new ActionNavigateNamespace()));
         new PropPanelButton(this, lookupIcon("Stereotype"), 
                 Translator.localize("button.new-stereotype"), 
-                "newStereotype", null);
+                new ActionNewStereotype());
         addButton(new PropPanelButton2(this, 
             new ActionRemoveFromModel()));
-    }
-
-    /**
-     * Create a new stereotype.
-     */
-    public void newStereotype() {
-        // Object target = getTarget();
-        Object newStereo = ExtensionMechanismsFactory.getFactory()
-                .buildStereotype(/* (MModelElement) */(Object) null,
-                        (String) null);
-        TargetManager.getInstance().setTarget(newStereo);
-        /*
-         * if(target instanceof MStereotype) { MNamespace ns = ((MStereotype)
-         * target).getNamespace(); if(ns != null) { MStereotype newStereo =
-         * ExtensionMechanismsFactory.getFactory().createStereotype();
-         * ns.addOwnedElement(newStereo); navigateTo(newStereo); } }
-         */
     }
 
     /**
