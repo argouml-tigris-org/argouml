@@ -85,8 +85,7 @@ Description of all the artifacts associated with Statechart Diagrams within Argo
     </sect2>
   </sect1>
 
-  <!-- Artifacts specific to Statechart Diagrams. State artifact. Has Action as
-       sub-artifact -->
+  <!-- Artifacts specific to Statechart Diagrams. State artifact. -->
 
   <sect1 id="s1.ref.state">
     <title>State</title>
@@ -807,7 +806,7 @@ An action is represented on the diagram by the text of its expression.
 
   <!-- Composite State artifact -->
 
-  <sect1>
+  <sect1 id="s1.ref.composite_state">
     <title>Composite State</title>
 
     <para>A composite state is a state that contains other states (known as
@@ -832,12 +831,28 @@ Alternatively, an existing state can be dragged onto a composite state.
     <para>
 The description of a composite state is almost identical to that of a
 state (see <xref linkend="s1.ref.state"/> and so is not duplicated here. 
-The only differences is one additional field, 
-which is described as follows.</para>
+The only differences is one additional tool, and one additional field, 
+which are described as follows.</para>
 
     <variablelist>
+    
+      <!-- Entry for New Concurrent Region button -->
 
-      <!-- Subvertices -->
+      <varlistentry>
+        <term><guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center"
+          fileref="images/icons/concurrent_region.gif"/>
+        </imageobject></inlinemediaobject></guiicon> <literal>New
+          Concurrent Region  
+        </literal></term>
+
+        <listitem><para>
+		  Adds a new concurrent region to the selected composite state.
+        </para></listitem>
+      </varlistentry>
+        
+      <!-- Entry for Subvertices field -->
+      
       <varlistentry>
         <term><literal>Subvertices</literal></term>
 
@@ -876,6 +891,101 @@ Delete the selected state from the model.
               </para>
             </listitem>
           </itemizedlist>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+
+  </sect1>
+
+  <!-- Concurrent Region artifact -->
+
+  <sect1 id="s1.ref.concurrent_region">
+    <title>Concurrent Region</title>
+
+    <para>A Concurrent Region is an <quote>orthogonal conjunctive</quote>
+      component of a composite state, 
+      allowing concurrency to be constructed.</para>
+
+    <para>A concurrent region is represented on the diagram by 
+      a tile of a composite state, seperated from other regions
+      by a dashed line.
+    </para>
+
+    <para>
+	  ArgoUML currently only supports a horizontal division 
+	  of a concurrent composite state in regions.
+    </para>
+
+    <para>
+	  The description of the details panels of 
+	  a concurrent region is identical to that of a
+	  composite state (see <xref linkend="s1.ref.composite_state"/> 
+	  and so is not duplicated here. 
+	</para>
+
+  </sect1>
+
+  <!-- Submachine State artifact -->
+
+  <sect1 id="s1.ref.submachine_state">
+    <title>Submachine State</title>
+
+    <para>A submachine state is 
+      a syntactical convenience 
+      that facilitates reuse and modularity. 
+      It is a shorthand that implies a macro-like expansion 
+      by another state machine and is semantically
+      equivalent to a composite state. 
+      The state machine that is inserted 
+      is called the referenced state
+      machine while the state machine 
+      that contains the submachine state 
+      is called the containing state machine. 
+      The same state machine may be referenced 
+      more than once in the context of 
+      a single containing state machine. 
+      In effect, a submachine state 
+      represents a ?call? to a state machine ?subroutine? 
+      with one or more entry and exit points.
+      The entry and exit points 
+      are specified by stub states.
+      SubmachineState is a child of State.</para>
+
+    <para>The submachine state is depicted as 
+      a normal state with the additional ?include? declaration
+      above (and seperated by a line from) 
+      its internal transitions compartment. 
+      The expression following the <literal>include</literal>
+      reserved word is the name of the invoked submachine.
+    </para>
+
+    <para>
+	  ArgoUML currently only supports a horizontal division 
+	  of a concurrent composite state in regions.
+    </para>
+
+    <para>
+	  The description of the details panels of 
+	  a concurrent region is almost identical to that of a
+	  composite state (see <xref linkend="s1.ref.composite_state"/> 
+	  and so is not duplicated here. 
+	  The only difference is one additional field: 
+	</para>
+
+    <variablelist>
+    
+      <!-- Entry for Submachine field -->
+      
+      <varlistentry>
+        <term><literal>Submachine</literal></term>
+
+        <listitem>
+          <para>
+			Drop-down selector. Allows selecting 
+			the submachine included within
+			this composite state.
+          </para>
+
         </listitem>
       </varlistentry>
     </variablelist>
@@ -2945,7 +3055,7 @@ It does restore any substates no matter how deep in the hierarchy.
     <!-- Synch State properties -->
 
     <sect2 id="s2.ref.synch_state_property_toolbar">
-      <title>Final State Property Toolbar</title>
+      <title>Synch State Property Toolbar</title>
 
       <variablelist>
 
