@@ -44,7 +44,7 @@ public class DocumentationManager {
 		  Iterator iter = tValues.iterator();
 		  while(iter.hasNext()) {
 			  MTaggedValue tv = (MTaggedValue)iter.next();
-			  if (tv.getTag().equals("javadocs"))
+			  if ("javadocs".equals(tv.getTag()))
 				  return tv.getValue();
 		  }
       }

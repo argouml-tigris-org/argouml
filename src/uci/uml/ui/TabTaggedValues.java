@@ -224,6 +224,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
       if (columnIndex == 0) tv.setTag((String) aValue);
       if (columnIndex == 1) tv.setValue((String) aValue);
     }
+    _target.setTaggedValues(tvs);
   }
 
   ////////////////

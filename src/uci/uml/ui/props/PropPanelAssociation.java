@@ -53,9 +53,13 @@ implements DocumentListener, ItemListener, ChangeListener {
 //     MVisibilityKind.PUBLIC, MVisibilityKind.PRIVATE,
 //     MVisibilityKind.PROTECTED, MVisibilityKind.PACKAGE };
 
-  public static final MMultiplicity MULTS[] = {
-    MMultiplicity.M1_1, MMultiplicity.M0_1,
-    MMultiplicity.M1_N, MMultiplicity.M0_N };
+//   public static final MMultiplicity MULTS[] = {
+//     MMultiplicity.M1_1, MMultiplicity.M0_1,
+//     MMultiplicity.M1_N, MMultiplicity.M0_N };
+
+  public static final String MULTS[] = {
+    MMultiplicity.M1_1.toString(), MMultiplicity.M0_1.toString(),
+    MMultiplicity.M1_N.toString(), MMultiplicity.M0_N.toString() };
 
 //   public static final MAggregationKind AGGREGATES[] = {
 //     MAggregationKind.NONE, MAggregationKind.AGGREGATE,
@@ -229,8 +233,10 @@ implements DocumentListener, ItemListener, ChangeListener {
 
     _roleAField.setText(roleAStr);
     _roleBField.setText(roleBStr);
-    _multAField.setSelectedItem(mA);
-    _multBField.setSelectedItem(mB);
+    if (mA != null)
+	_multAField.setSelectedItem(mA.toString());
+    if (mB != null)
+	_multBField.setSelectedItem(mB.toString());
     if (akA != null)
 	_aggAField.setSelectedItem(akA.getName());
     if (akB != null)
@@ -278,38 +284,38 @@ implements DocumentListener, ItemListener, ChangeListener {
 //     attr.setVisibility(vk);
   }
 
-  public void setMult() {
-    if (_target == null) return;
-    MMultiplicity mA = null;
-    MMultiplicity mB = null;
-    Object mAs = _multAField.getSelectedItem();
-    Object mBs = _multBField.getSelectedItem();
+    public void setMult() {
+	if (_target == null) return;
+	MMultiplicity mA = null;
+	MMultiplicity mB = null;
+	Object mAs = _multAField.getSelectedItem();
+	Object mBs = _multBField.getSelectedItem();
 
-    MAssociation asc = (MAssociation) _target;
-    Vector conns = new Vector(asc.getConnections());
-    if (conns == null || conns.size() != 2) return;
+	MAssociation asc = (MAssociation) _target;
+	Vector conns = new Vector(asc.getConnections());
+	if (conns == null || conns.size() != 2) return;
 
-    if (mAs != null) {
-    // will be a String if I allow editing, needs-more-work: implement
-    // parsing of multiplicities
-	if (mAs instanceof String)
-	    mAs = ParserDisplay.SINGLETON.parseMultiplicity((String)mAs);
+	if (mAs != null) {
+	    // will be a String if I allow editing, needs-more-work: implement
+	    // parsing of multiplicities
+	    if (mAs instanceof String)
+		mAs = ParserDisplay.SINGLETON.parseMultiplicity((String)mAs);
 
-	if (mAs instanceof MMultiplicity) mA = (MMultiplicity) mAs;
-	else mA = MMultiplicity.M1_1; // needs-more-work: parse
-	MAssociationEnd endA = (MAssociationEnd) conns.elementAt(0);
-	endA.setMultiplicity(mA);
+	    if (mAs instanceof MMultiplicity) mA = (MMultiplicity) mAs;
+	    else mA = MMultiplicity.M1_1; // needs-more-work: parse
+	    MAssociationEnd endA = (MAssociationEnd) conns.elementAt(0);
+	    endA.setMultiplicity(mA);
+	}
+
+	if (mBs != null) {
+	    if (mBs instanceof String)
+		mBs = ParserDisplay.SINGLETON.parseMultiplicity((String)mBs);
+	    if (mBs instanceof MMultiplicity) mB = (MMultiplicity) mBs;
+	    else mB = MMultiplicity.M1_1; // needs-more-work: parse
+	    MAssociationEnd endB = (MAssociationEnd) conns.elementAt(1);
+	    endB.setMultiplicity(mB);
+	}
     }
-
-    if (mBs != null) {
-	if (mBs instanceof String)
-	    mBs = ParserDisplay.SINGLETON.parseMultiplicity((String)mBs);
-	if (mBs instanceof MMultiplicity) mB = (MMultiplicity) mBs;
-	else mB = MMultiplicity.M1_1; // needs-more-work: parse
-	MAssociationEnd endB = (MAssociationEnd) conns.elementAt(1);
-	endB.setMultiplicity(mB);
-    }
-  }
 
   public void setAgg() {
     if (_target == null) return;

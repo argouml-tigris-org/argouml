@@ -64,6 +64,14 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
 
   public ClassGenerationDialog(Vector nodes) {
     super("Generate Classes");
+
+    Vector dirs = getClasspathEntries();
+    if (dirs.size() == 0) { 
+	dispose();
+	return;
+    }
+    _dir = new JComboBox(Converter.convert(getClasspathEntries()));
+
     JLabel promptLabel = new JLabel("Generate Classes:");
     JLabel dirLabel = new JLabel("Output Directory:");
 
@@ -124,8 +132,6 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
     gb.setConstraints(dirLabel, c);
     top.add(dirLabel);
 
-    _dir = new JComboBox(Converter.convert(getClasspathEntries()));
-
     c.weightx = 1.0;
     c.gridx = 0;
     c.gridwidth = GridBagConstraints.REMAINDER;
@@ -169,6 +175,10 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
 	      entries.addElement(entry);
 	  }
       }
+      if (entries.size() == 0) {
+	  JOptionPane.showMessageDialog(null, "In order to generate Java files, you need to have\nat least one directory in your CLASSPATH environment variable,\nwhere ArgoUML can store and compile the files.", "Code generation", JOptionPane.ERROR_MESSAGE);
+	  return null;
+      }
       return entries;
   }
 
@@ -201,11 +211,14 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
 
       String compilerOutput=compile(compileCmd);
       if (compilerOutput==null) {
-	  System.out.println("Compilation done.");
+	  		System.out.println("Compilation done.");
+	  		JOptionPane.showMessageDialog(this, "Compilation done.","Code Generation", JOptionPane.INFORMATION_MESSAGE);
       } else {
 	  // todo: should display errors in a window!
-	  System.out.println("Compiler errors -> System.err");
-	  System.err.println(compilerOutput);
+		  System.out.println("Compiler errors -> System.err");
+		  System.err.println(compilerOutput);
+		  JOptionPane.showMessageDialog(this, "Compiler errors -> System.err\n"+compilerOutput, "Code Generation", JOptionPane.ERROR_MESSAGE);
+
       }
 
       setVisible(false);
