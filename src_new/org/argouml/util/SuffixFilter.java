@@ -33,19 +33,28 @@ public class SuffixFilter extends FileFilter {
     // instance varaibles
 
     public final String _suffix;
-    public final String _desc;
+    private final String desc;
 
     ////////////////////////////////////////////////////////////////
     // constructor
 
+    /**
+     * The constructor.
+     * 
+     * @param s the suffix string
+     * @param d the file type description
+     */
     public SuffixFilter(String s, String d) {
 	_suffix = s;
-	_desc = d;
+	desc = d;
     }
 
     ////////////////////////////////////////////////////////////////
     // FileFilter API
 
+    /**
+     * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
+     */
     public boolean accept(File f) {
 	if (f == null) return false;
 	if (f.isDirectory()) return true;
@@ -67,8 +76,11 @@ public class SuffixFilter extends FileFilter {
 	return null;
     }
 
+    /**
+     * @see javax.swing.filechooser.FileFilter#getDescription()
+     */
     public String getDescription() {
-	return _desc + " (*." + _suffix + ")";
+	return desc + " (*." + _suffix + ")";
     }
 
 } /* end class SuffixFilter */
