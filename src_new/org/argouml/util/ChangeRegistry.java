@@ -50,12 +50,13 @@ public class ChangeRegistry implements GraphListener
      */
     public void setChangeFlag( boolean newValue ) {
 		
-	if (changeFlag != newValue) {
+        boolean oldValue = changeFlag;
+        changeFlag = newValue;                
+        
+	if (oldValue != newValue) {
 	    // notify the gui to put a * on the title bar (swing gui):
 	    ProjectManager.getManager().notifySavePropertyChanged(newValue);
 	}
-                
-	changeFlag = newValue;
                 
     }
 
