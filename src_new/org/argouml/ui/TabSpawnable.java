@@ -35,8 +35,6 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.TabToDo;
-import org.argouml.cognitive.ui.TabToDoTarget;
-import org.argouml.cognitive.ui.WizStep;
 import org.argouml.i18n.Translator;
 import org.argouml.swingext.Orientable;
 import org.argouml.swingext.Orientation;
