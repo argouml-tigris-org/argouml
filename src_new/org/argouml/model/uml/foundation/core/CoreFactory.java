@@ -467,10 +467,13 @@ public class CoreFactory extends AbstractUmlModelFactory {
             return null;
             
         }
+        /*
         // wellformdnessrule
+        // removed since not all developers do not aggree with this
         if (name == null || name.equals("")) {
         	name = "newAssociationEnd";
         }   
+        
         String tempname = name;
         int counter = 0;
         while (!(new AssociationEndNameWellformednessRule().isWellformed(end, tempname))) {
@@ -478,6 +481,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         	counter++;
         }
         name = tempname;
+        */
         end.setName(name);
         if (multi != null) {
             end.setMultiplicity(multi);
