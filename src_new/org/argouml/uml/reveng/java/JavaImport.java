@@ -41,20 +41,23 @@ import java.io.*;
 public class JavaImport extends FileImportSupport {
 
     /** logger */
-    private static Logger cat = Logger.getLogger(JavaImport.class);
+    private static final Logger LOG = Logger.getLogger(JavaImport.class);
 
     /**
      * This method parses 1 Java file.
+     * Throws a Parser exception.
      *
-     * @exception Exception Parser exception.
+     * @see org.argouml.application.api.PluggableImport#parseFile(
+     * org.argouml.kernel.Project, java.lang.Object, 
+     * org.argouml.uml.reveng.DiagramInterface, org.argouml.uml.reveng.Import)
      */
     public void parseFile(Project p, Object o, DiagramInterface diagram,
-			  Import _import)
+			  Import theImport)
 	throws Exception {
 	if (o instanceof File ) {
 	    File f = (File) o;
 	    // Create a scanner that reads from the input stream passed to us
-	    String encoding = _import.getInputSourceEncoding();
+	    String encoding = theImport.getInputSourceEncoding();
 	    FileInputStream in = new FileInputStream(f);
 	    JavaLexer lexer =
 		new JavaLexer(
@@ -68,22 +71,22 @@ public class JavaImport extends FileImportSupport {
 
 	    // Create a modeller for the parser
 	    Modeller modeller = new Modeller(p.getModel(),
-					     diagram, _import,
+					     diagram, theImport,
 					     getAttribute().isSelected(),
 					     getDatatype().isSelected(),
 					     f.getName());
 
 	    // Print the name of the current file, so we can associate
 	    // exceptions to the file.
-	    cat.info("Parsing " + f.getAbsolutePath());
+	    LOG.info("Parsing " + f.getAbsolutePath());
 
-            modeller.setAttribute("level", _import.getAttribute("level"));
+            modeller.setAttribute("level", theImport.getAttribute("level"));
             
             try {
 		// start parsing at the compilationUnit rule
 		parser.compilationUnit(modeller, lexer);
             } catch (Exception e) {
-                cat.error(e.getClass().getName()
+                LOG.error(e.getClass().getName()
 			  + " Exception in file: "
 			  + f.getCanonicalPath() + " "
 			  + f.getName());
@@ -102,25 +105,29 @@ public class JavaImport extends FileImportSupport {
 	return result;
     }
 	
-    /** Display name of the module. */
+    /** 
+     * Display name of the module.
+     * 
+     * @see org.argouml.application.api.ArgoModule#getModuleName()
+     */
     public String getModuleName() {
 	return "Java";
     }
 
-    /** Textual description of the module. */
+    /** 
+     * Textual description of the module.
+     * 
+     * @see org.argouml.application.api.ArgoModule#getModuleDescription()
+     */
     public String getModuleDescription() {
 	return "Java import from files";
     }
 
+    /**
+     * @see org.argouml.application.api.ArgoModule#getModuleKey()
+     */
     public String getModuleKey() {
 	return "module.import.java-files";
     }
 
 }
-
-
-
-
-
-
-

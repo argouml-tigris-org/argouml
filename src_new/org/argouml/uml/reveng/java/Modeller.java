@@ -120,10 +120,18 @@ public class Modeller
         fileName = fName;
     }
 
+    /**
+     * @param key the key of the attribute to get
+     * @return the value of the attribute
+     */
     public Object getAttribute(String key) {
         return attributes.get(key);
     }
     
+    /**
+     * @param key the key of the attribute
+     * @param value the value for the attribute
+     */
     public void setAttribute(String key, Object value) {
         attributes.put(key, value);
     }
@@ -1489,19 +1497,13 @@ public class Modeller
      * @param sJavaDocs the documentation comment to add ("" or null
      * if no java docs)
      */
-    private void addDocumentationTag(Object modelElement,
-				     String sJavaDocs) {
+    private void addDocumentationTag(Object modelElement, String sJavaDocs) {
 	if ((sJavaDocs != null)
 	    && (sJavaDocs.trim().length() >= 5 )) {
-//	    LOG.debug ("Modeller.addDocumentationTag: sJavaDocs = \""
-//		       + sJavaDocs
-//		       + "\"");
 
 	    StringBuffer sbPureDocs = new StringBuffer(80);
-
 	    String sCurrentTagName = null;
 	    String sCurrentTagData = null;
-
 	    int nStartPos = 3; // skip the leading /**
 	    boolean fHadAsterisk = true;
 
@@ -1511,7 +1513,6 @@ public class Modeller
 		    fHadAsterisk = true;
 		    nStartPos++;
 		    break;
-
 		case ' ':   // all white space, hope I didn't miss any ;-)
 		case '\t':
 		    if (!fHadAsterisk) {
@@ -1519,19 +1520,16 @@ public class Modeller
 			nStartPos++;
 			break;
 		    }
-
 		default:
 		    // normal comment text or standard tag
 
 		    // check ahead for tag
 		    int j = nStartPos;
-
 		    while ((j < sJavaDocs.length())
 			   && ((sJavaDocs.charAt (j) == ' ')
 			       || (sJavaDocs.charAt (j) == '\t'))) {
 			j++;
 		    }
-
 		    if (j < sJavaDocs.length()) {
 			if (sJavaDocs.charAt (j) == '@') {
 			    // if the last javadoc is on the last line
@@ -1544,7 +1542,6 @@ public class Modeller
 			    else {
 				lineEndPos = sJavaDocs.indexOf('\n', j) + 1;
 			    }
-                
 			    sbPureDocs.append(sJavaDocs.substring(j,
 								  lineEndPos));
 			    // start standard tag potentially add
@@ -1556,7 +1553,6 @@ public class Modeller
 			    }
 
 			    // open new tag
-
 			    int nTemp = sJavaDocs.indexOf (' ', j + 1);
 			    if (nTemp == -1) {
 				nTemp = sJavaDocs.length() - 1;
@@ -1574,7 +1570,6 @@ public class Modeller
 
 			    sCurrentTagData =
 				sJavaDocs.substring (nTemp, nTemp1);
-
 			    nStartPos = nTemp1;
 			}
 			else {
@@ -1586,7 +1581,6 @@ public class Modeller
 			    else {
 				nTemp++;
 			    }
-
 			    if (sCurrentTagName != null) {
 				sbPureDocs.append(sJavaDocs.substring(nStartPos,
 								      nTemp));
@@ -1598,11 +1592,9 @@ public class Modeller
 				sbPureDocs.append(sJavaDocs.substring(nStartPos,
 								      nTemp));
 			    }
-
 			    nStartPos = nTemp;
 			}
 		    }
-
 		    fHadAsterisk = false;
 		}
 	    }
@@ -1619,30 +1611,24 @@ public class Modeller
 	     * This will be either at the end of the actual comment
 	     * text or at the end of the last tag.
 	     */
-
 	    if (sCurrentTagName != null) {
 		// handle last tag...
-		sCurrentTagData = 
-		    sCurrentTagData.substring(0,
-					      (sCurrentTagData.lastIndexOf('/')
-					       - 1));
+		sCurrentTagData = sCurrentTagData.substring(0,
+		    (sCurrentTagData.lastIndexOf('/') - 1));
 
 		if (sCurrentTagData.length() > 0
 		    && (sCurrentTagData.charAt(sCurrentTagData.length() - 1)
 			== '\n')) {
-		    sCurrentTagData = 
-			sCurrentTagData.substring(0,
-						  (sCurrentTagData.length()
-						   - 1));
+		    sCurrentTagData = sCurrentTagData.substring(0,
+		            (sCurrentTagData.length() - 1));
 		}
-
 		// store tag
 		addJavadocTagContents (modelElement, sCurrentTagName,
 				       sCurrentTagData);
 	    }
 	    else {
-		sJavaDocs =
-		    sJavaDocs.substring (0, sJavaDocs.lastIndexOf ('/') - 1);
+		sJavaDocs = sJavaDocs.substring (0, 
+		                    sJavaDocs.lastIndexOf ('/') - 1);
 
 		if (sJavaDocs.length() > 0) {
 		    if (sJavaDocs.charAt (sJavaDocs.length() - 1) == '\n') {
@@ -1657,9 +1643,8 @@ public class Modeller
 	    // Do special things:
 
 	    // Now store documentation text
-	    ModelFacade.setValueOfTag(getTaggedValue(modelElement,
-						     "documentation"),
-				      sJavaDocs);
+	    ModelFacade.setValueOfTag(getTaggedValue(
+                modelElement, "documentation"), sJavaDocs);
 
 	    // If there is a tagged value named stereotype, make it a real
 	    // stereotype

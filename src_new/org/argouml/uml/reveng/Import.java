@@ -59,10 +59,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -110,7 +107,7 @@ public class Import {
     private static final Logger LOG = Logger.getLogger(Import.class);
 
     /** Imported directory */
-    private String src_path;
+    private String srcPath;
 
     /** Create a interface to the current diagram */
     private DiagramInterface _diagram;
@@ -132,11 +129,11 @@ public class Import {
     /** The files that needs a second RE pass. */
     private Vector secondPassFiles;
 
-    private JCheckBox create_diagrams;
+    private JCheckBox createDiagrams;
 
-    private JCheckBox minimise_figs;
+    private JCheckBox minimiseFigs;
 
-    private JCheckBox layout_diagrams;
+    private JCheckBox layoutDiagrams;
 
     // level 0 import detail
     private JRadioButton classOnly;
@@ -168,8 +165,8 @@ public class Import {
         ArrayList arraylist = Argo.getPlugins(PluggableImport.class);
         ListIterator iterator = arraylist.listIterator();
         while (iterator.hasNext()) {
-            PluggableImport module = (PluggableImport) iterator.next();
-            modules.put(module.getModuleName(), module);
+            PluggableImport pIModule = (PluggableImport) iterator.next();
+            modules.put(pIModule.getModuleName(), pIModule);
         }
         if (modules.size() == 0)
             throw new RuntimeException("Internal error. "
@@ -205,14 +202,25 @@ public class Import {
         dialog.setVisible(true);
     }
 
+    /**
+     * @param key the key of the attribute
+     * @return the value of the attribute
+     */
     public Object getAttribute(String key) {
         return attributes.get(key);
     }
 
+    /**
+     * @param key the key of the attribute
+     * @param value the value of the attribute
+     */
     public void setAttribute(String key, Object value) {
         attributes.put(key, value);
     }
 
+    /**
+     * @return the text of this textfield
+     */
     public String getInputSourceEncoding() {
 	return inputSourceEncoding.getText();
     }
@@ -232,6 +240,9 @@ public class Import {
     /**
      * Get the panel that lets the user set reverse engineering
      * parameters.
+     *
+     * @param importInstance the instance of the import
+     * @return the panel
      */
     public JComponent getConfigPanel(final Import importInstance) {
 
@@ -279,26 +290,26 @@ public class Import {
             general.add(descend);
 
 
-            create_diagrams =
+            createDiagrams =
 		new JCheckBox("Create diagrams from imported code", true);
-            general.add(create_diagrams);
+            general.add(createDiagrams);
 
-            minimise_figs =
+            minimiseFigs =
 		new JCheckBox("Minimise Class icons in diagrams", true);
-            general.add(minimise_figs);
+            general.add(minimiseFigs);
 
-            layout_diagrams =
+            layoutDiagrams =
 		new JCheckBox("Perform Automatic Diagram Layout", true);
-            general.add(layout_diagrams);
+            general.add(layoutDiagrams);
 
             // de-selects the fig minimising & layout
             // if we are not creating diagrams
-            create_diagrams.addActionListener(new ActionListener()
+            createDiagrams.addActionListener(new ActionListener()
 	    {
 		public void actionPerformed(ActionEvent actionEvent) {
-		    if (!create_diagrams.isSelected()) {
-			minimise_figs.setSelected(false);
-			layout_diagrams.setSelected(false);
+		    if (!createDiagrams.isSelected()) {
+			minimiseFigs.setSelected(false);
+			layoutDiagrams.setSelected(false);
 		    }
 		}
 	    });
@@ -329,12 +340,13 @@ public class Import {
 
 	    general.add(new JLabel("Input source file encoding:"));
 	    if (Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null
-		|| Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING).trim().equals("")) {
+		|| Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING)
+		    .trim().equals("")) {
 		inputSourceEncoding =
 		    new JTextField(System.getProperty("file.encoding"));
 	    } else {
-		inputSourceEncoding =
-		    new JTextField(Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING));
+		inputSourceEncoding = new JTextField(Configuration
+		        .getString(Argo.KEY_INPUT_SOURCE_ENCODING));
 	    }
 	    general.add(inputSourceEncoding);
 
@@ -345,6 +357,9 @@ public class Import {
         return configPanel;
     }
 
+    /**
+     * Invoke the dialog to get the class path.
+     */
     public void getUserClasspath() {
         new ImportClasspathDialog(this);
     }
@@ -391,22 +406,24 @@ public class Import {
         iss = new ImportStatusScreen("Importing", "Splash");
         SwingUtilities.invokeLater(
 				   new ImportRun(files, b,
-						 layout_diagrams.isSelected()));
+						 layoutDiagrams.isSelected()));
         iss.show();
     }
 
     /**
      * Set path for processed directory.
+     *
+     * @param path the given path
      */
     public void setSrcPath(String path) {
-        src_path = path;
+        srcPath = path;
     }
 
     /**
      * @return path for processed directory.
      */
     public String getSrcPath() {
-        return src_path;
+        return srcPath;
     }
 
     /**
@@ -414,6 +431,7 @@ public class Import {
      *
      * @param f The file to parse.
      * @exception Exception ??? TODO: Couldn't we throw a narrower one?
+     * @param project the project
      */
     public void parseFile(Project project, Object f) throws Exception {
 
@@ -431,8 +449,8 @@ public class Import {
      * @return true, if "Create diagrams from imported code" is selected
      */
     public boolean isCreateDiagramsChecked() {
-        if (create_diagrams != null)
-            return create_diagrams.isSelected();
+        if (createDiagrams != null)
+            return createDiagrams.isSelected();
         else
             return true;
     }
@@ -455,8 +473,8 @@ public class Import {
      * @return true, if "Minimise Class icons in diagrams" is selected
      */
     public boolean isMinimiseFigsChecked() {
-        if (minimise_figs != null)
-            return minimise_figs.isSelected();
+        if (minimiseFigs != null)
+            return minimiseFigs.isSelected();
         else
             return false;
     }
@@ -464,10 +482,10 @@ public class Import {
     /**
      * If we have modified any diagrams, the project was modified and
      * should be saved. I don't consider a import, that only modifies
-     * the metamodel, at this point (Andreas Rueckert <a_rueckert@gmx.net> ).
+     * the metamodel, at this point (Andreas Rueckert <a_rueckert@gmx.net>).
      * Calling Project.setNeedsSave(true) doesn't work here, because
      * Project.postLoad() is called after the import and it sets the
-     * _needsSave flag to false.<p>
+     * needsSave flag to false.<p>
      *
      * @return true, if any diagrams where modified and the project
      * should be saved before exit.
@@ -501,22 +519,29 @@ public class Import {
      * ImportStatusScreen, in order to cancel long import runs.<p>
      */
     class ImportRun implements Runnable {
-        Vector _filesLeft;
+        private Vector filesLeft;
 
-        int _countFiles;
+        private int countFiles;
 
-        int _countFilesThisPass;
+        private int countFilesThisPass;
 
-        Vector _nextPassFiles;
+        private Vector nextPassFiles;
 
-        SimpleTimer _st;
+        private SimpleTimer st;
 
-        boolean cancelled;
+        private boolean cancelled;
 
-        boolean criticThreadWasOn;
+        private boolean criticThreadWasOn;
 
-        boolean doLayout;
+        private boolean doLayout;
 
+        /**
+         * The constructor.
+         * 
+         * @param f the files left to parse/import
+         * @param critic true if the critics thread was on
+         * @param doLayout do a autolayout afterwards
+         */
         public ImportRun(Vector f, boolean critic, boolean doLayout) {
 
             iss.addCancelButtonListener(new ActionListener()
@@ -526,12 +551,12 @@ public class Import {
 		}
 	    });
 
-            _filesLeft = f;
-            _countFiles = _filesLeft.size();
-            _countFilesThisPass = _countFiles;
-            _nextPassFiles = new Vector();
-            _st = new SimpleTimer("ImportRun");
-            _st.mark("start");
+            filesLeft = f;
+            countFiles = filesLeft.size();
+            countFilesThisPass = countFiles;
+            nextPassFiles = new Vector();
+            st = new SimpleTimer("ImportRun");
+            st.mark("start");
             cancelled = false;
             criticThreadWasOn = critic;
             this.doLayout = doLayout;
@@ -545,11 +570,11 @@ public class Import {
          */
         public void run() {
 
-            if (_filesLeft.size() > 0) {
+            if (filesLeft.size() > 0) {
 
                 // if there ae 2 passes:
                 if (importLevel > 0) {
-                    if (_filesLeft.size() <= _countFiles / 2) {
+                    if (filesLeft.size() <= countFiles / 2) {
 
                         if (importLevel == 1)
                             setAttribute("level", new Integer(1));
@@ -558,25 +583,25 @@ public class Import {
                     }
                 }
 
-                Object curFile = _filesLeft.elementAt(0);
-                _filesLeft.removeElementAt(0);
+                Object curFile = filesLeft.elementAt(0);
+                filesLeft.removeElementAt(0);
 
                 try {
-                    _st.mark(curFile.toString());
+                    st.mark(curFile.toString());
                     ProjectBrowser.getInstance()
                         .showStatus("Importing " + curFile.toString());
                     parseFile(ProjectManager.getManager().getCurrentProject(),
                         curFile); // Try to parse this file.
 
-                    int tot = _countFiles;
+                    int tot = countFiles;
                     if (_diagram != null) {
                         tot += _diagram.getModifiedDiagrams().size() / 10;
                     }
                     iss.setMaximum(tot);
                     int act =
-                        _countFiles
-                        - _filesLeft.size()
-                        - _nextPassFiles.size();
+                        countFiles
+                        - filesLeft.size()
+                        - nextPassFiles.size();
                     iss.setValue(act);
                     ProjectBrowser.getInstance()
                         .getStatusBar().showProgress(100 * act / tot);
@@ -591,13 +616,14 @@ public class Import {
                 }
                 catch (Exception e1) {
 
-                    _nextPassFiles.addElement(curFile);
+                    nextPassFiles.addElement(curFile);
                     StringBuffer sb = new StringBuffer(80);
                     // RuntimeExceptions should be reported here!
                     if (e1 instanceof RuntimeException) {
                         sb.append("Program bug encountered while parsing ");
                         sb.append(curFile.toString());
-                        sb.append(", so some elements are not created in the model\n");
+                        sb.append(", so some elements are not"
+                                + " created in the model\n");
                         StringWriter sw = new StringWriter();
                         PrintWriter pw = new java.io.PrintWriter( sw );
                         ((Exception) e1).printStackTrace( pw );
@@ -605,9 +631,11 @@ public class Import {
                         LOG.error(sb.toString(), e1);
                     }
                     else {
-                        sb.append("Uncaught exception encountered while parsing ");
+                        sb.append("Uncaught exception encountered"
+                                + " while parsing ");
                         sb.append(curFile.toString());
-                        sb.append(", so some elements are not created in the model\n");
+                        sb.append(", so some elements are not "
+                                + "created in the model\n");
                         StringWriter sw = new StringWriter();
                         PrintWriter pw = new java.io.PrintWriter( sw );
                         ((Exception) e1).printStackTrace( pw );
@@ -623,18 +651,18 @@ public class Import {
 		}
             }
 
-            if (_nextPassFiles.size() > 0
-		&& _nextPassFiles.size() < _countFilesThisPass) {
-                _filesLeft = _nextPassFiles;
-                _nextPassFiles = new Vector();
-                _countFilesThisPass = _filesLeft.size();
+            if (nextPassFiles.size() > 0
+		&& nextPassFiles.size() < countFilesThisPass) {
+                filesLeft = nextPassFiles;
+                nextPassFiles = new Vector();
+                countFilesThisPass = filesLeft.size();
 
                 SwingUtilities.invokeLater(this);
                 return;
             }
             
             // Do post load processings.
-            _st.mark("postprocessings");
+            st.mark("postprocessings");
 
             // Check if any diagrams where modified and the project
             // should be saved before exiting.
@@ -647,21 +675,21 @@ public class Import {
 
             // Layout the modified diagrams.
             if (doLayout) {
-                _st.mark("layout");
+                st.mark("layout");
                 if (_diagram != null) {
                     for (int i = 0;
                          i < _diagram.getModifiedDiagrams().size();
                          i++) {
                         UMLDiagram diagram =
                             (UMLDiagram) _diagram.getModifiedDiagrams()
-                            .elementAt(i);
+                                .elementAt(i);
                         ClassdiagramLayouter layouter = 
                             module.getLayout(diagram);
 
                         layouter.layout();
 
                         // Resize the diagram???
-                        iss.setValue(_countFiles + (i + 1) / 10);
+                        iss.setValue(countFiles + (i + 1) / 10);
                     }
                 }
             }
@@ -677,14 +705,14 @@ public class Import {
             }
             
             // turn criticing on again
-            if (criticThreadWasOn)  Designer.theDesigner().setAutoCritique(true);
+            if (criticThreadWasOn) Designer.theDesigner().setAutoCritique(true);
 
             UmlModelEventPump.getPump().startPumpingEvents();
 
             ExplorerEventAdaptor.getInstance().structureChanged();
             ProjectBrowser.getInstance().setEnabled(true);
 
-            LOG.info(_st);
+            LOG.info(st);
             ProjectBrowser.getInstance().getStatusBar().showProgress(0);
 
         }
@@ -707,7 +735,7 @@ public class Import {
 
         private int numberOfFiles;
 
-        private JProgressBar _progress;
+        private JProgressBar progress;
 
         public ImportStatusScreen(String title, String iconName) {
 
@@ -723,8 +751,8 @@ public class Import {
             getContentPane().add(topPanel, BorderLayout.NORTH);
 
             // progress bar
-            _progress = new JProgressBar();
-            getContentPane().add(_progress, BorderLayout.CENTER);
+            progress = new JProgressBar();
+            getContentPane().add(progress, BorderLayout.CENTER);
 
             // stop button
             cancelButton = new JButton("Stop");
@@ -742,12 +770,12 @@ public class Import {
         }
 
         public void setMaximum(int i) {
-	    _progress.setMaximum(i); numberOfFiles = i;
+	    progress.setMaximum(i); numberOfFiles = i;
 	}
 
         public void setValue(int i) {
 
-            _progress.setValue(i);
+            progress.setValue(i);
 
 	    String pass = "1-st pass";
             // if there are 2 passes:
@@ -792,7 +820,8 @@ public class Import {
             getContentPane().setLayout(new BorderLayout(0, 0));
 
             // the introducing label
-            northLabel = new JLabel(Translator.localize("label.import-problems"));
+            northLabel = new JLabel(Translator.localize(
+                    "label.import-problems"));
             getContentPane().add(northLabel, BorderLayout.NORTH);
 
             // the text box containing the problem messages
@@ -1003,7 +1032,7 @@ class ImportClasspathDialog extends JDialog {
 			}
 		    } else if (e.getActionCommand().equals(
 				   JFileChooser.CANCEL_SELECTION)) {
-			// TODO: What shall we do here?
+			;// TODO: What shall we do here?
 		    }
 		}
 	    });

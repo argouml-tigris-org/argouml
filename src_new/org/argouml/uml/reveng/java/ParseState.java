@@ -123,14 +123,14 @@ class ParseState
     }
 
     /**
-     *
+     * @param c the source file being parsed
      */
-    public void addComponent(Object component) {
-        this.component = component;
+    public void addComponent(Object c) {
+        this.component = c;
     }
     
     /**
-     *
+     * @return the source file being parsed
      */
     public Object getComponent() {
         return component;
