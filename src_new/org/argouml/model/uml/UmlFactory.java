@@ -420,6 +420,11 @@ public class UmlFactory extends AbstractUmlModelFactory {
                     MObjectFlowState.class,
                     factory,
                     "createObjectFlowState"));
+        elements.put(Uml.CLASSIFIER_IN_STATE,
+                new ObjectCreateInfo(
+                    MClassifierInState.class,
+                    factory,
+                    "createClassifierInState"));
         elements.put(Uml.SUBACTIVITY_STATE,
                 new ObjectCreateInfo(
                     MSubactivityState.class,
