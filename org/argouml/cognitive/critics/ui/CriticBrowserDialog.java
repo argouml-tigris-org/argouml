@@ -72,7 +72,9 @@ import org.argouml.ui.ProjectBrowser;
 
 /**
  * Dialog box to list all critics and allow editing of some of their
- * properties.  TODO: knowledge type, supported goals,
+ * properties. <p> 
+ * 
+ * TODO: knowledge type, supported goals,
  * supported decisions, critic network, localize labels.
  */
 public class CriticBrowserDialog extends ArgoDialog
@@ -93,29 +95,44 @@ public class CriticBrowserDialog extends ArgoDialog
   
     private static final int NUM_COLUMNS = 25;
 
-    private static final String HIGH = Translator.localize("misc.level.high");
+    private static final String HIGH = 
+        Translator.localize("misc.level.high");
     private static final String MEDIUM = 
         Translator.localize("misc.level.medium");
-    private static final String LOW = Translator.localize("misc.level.low");
-
+    private static final String LOW = 
+        Translator.localize("misc.level.low");
     private static final String PRIORITIES[] = {
 	HIGH, MEDIUM, LOW 
     };
+
+    private static final String ALWAYS = 
+        Translator.localize("dialog.browse.use-clarifier.always");
+    private static final String IF_ONLY_ONE = 
+        Translator.localize("dialog.browse.use-clarifier.if-only-one");
+    private static final String NEVER = 
+        Translator.localize("dialog.browse.use-clarifier.never");
     private static final String USE_CLAR[] = {
-	"Always", "If Only One", "Never" 
+	ALWAYS, IF_ONLY_ONE, NEVER 
     };
 
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private JLabel criticsLabel   = new JLabel("Critics");
-    private JLabel clsNameLabel   = new JLabel("Critic Class: ");
-    private JLabel headlineLabel  = new JLabel("Headline: ");
-    private JLabel priorityLabel  = new JLabel("Priority: ");
-    private JLabel moreInfoLabel  = new JLabel("More Info: ");
-    private JLabel descLabel      = new JLabel("Description: ");
-    private JLabel clarifierLabel = new JLabel("Use Clarifier: ");
+    private JLabel criticsLabel   = new JLabel(
+            Translator.localize("dialog.browse.label.critics"));
+    private JLabel clsNameLabel   = new JLabel(
+            Translator.localize("dialog.browse.label.critic-class"));
+    private JLabel headlineLabel  = new JLabel(
+            Translator.localize("dialog.browse.label.headline"));
+    private JLabel priorityLabel  = new JLabel(
+            Translator.localize("dialog.browse.label.priority"));
+    private JLabel moreInfoLabel  = new JLabel(
+            Translator.localize("dialog.browse.label.more-info"));
+    private JLabel descLabel      = new JLabel(
+            Translator.localize("dialog.browse.label.description"));
+    private JLabel clarifierLabel = new JLabel(
+            Translator.localize("dialog.browse.label.use-clarifier"));
 
     private TableModelCritics tableModel  = new TableModelCritics();
     private JTable table        = new JTable();
@@ -126,24 +143,26 @@ public class CriticBrowserDialog extends ArgoDialog
     private JTextArea desc      = new JTextArea("", 6, NUM_COLUMNS);
     private JComboBox useClar   = new JComboBox(USE_CLAR);
 
-    private JButton wakeButton    = new JButton("Wake");
-    private JButton configButton  = new JButton("Configure");
-    private JButton networkButton = new JButton("Edit Network");
-    private JButton goButton      = new JButton("Go");
+    private JButton wakeButton    = new JButton(
+            Translator.localize("dialog.browse.button.wake"));
+    private JButton configButton  = new JButton(
+            Translator.localize("dialog.browse.button.configure"));
+    private JButton networkButton = new JButton(
+            Translator.localize("dialog.browse.button.edit-network"));
+    private JButton goButton      = new JButton(
+            Translator.localize("dialog.browse.button.go"));
 
     private Critic target;
     
     private List   critics;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The constructor.
      * 
      */
     public CriticBrowserDialog() {
-	super(ProjectBrowser.getInstance(), "Critics", true);
+	super(ProjectBrowser.getInstance(), 
+            Translator.localize("dialog.browse.label.critics"), true);
 
 	JPanel mainContent = new JPanel();
 	mainContent.setLayout(new BorderLayout(10, 10));
@@ -158,14 +177,12 @@ public class CriticBrowserDialog extends ArgoDialog
 		                                            .getHeadline());
 	    }
 	});
-
 	tableModel.setTarget(critics);
 	table.setModel(tableModel);
 	table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	table.setShowVerticalLines(false);
 	table.getSelectionModel().addListSelectionListener(this);
 	table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-
 	TableColumn checkCol = table.getColumnModel().getColumn(0);
 	TableColumn descCol = table.getColumnModel().getColumn(1);
 	TableColumn actCol = table.getColumnModel().getColumn(2);
@@ -265,8 +282,8 @@ public class CriticBrowserDialog extends ArgoDialog
 
 	JPanel detailsContainer =
 	    new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-	detailsContainer.setBorder(BorderFactory
-				   .createTitledBorder("Critic Details"));
+	detailsContainer.setBorder(BorderFactory.createTitledBorder(
+            Translator.localize("dialog.browse.titled-border.critic-details")));
 	detailsContainer.add(detailsPanel);
 	mainContent.add(detailsContainer, BorderLayout.EAST);	
     
@@ -318,7 +335,7 @@ public class CriticBrowserDialog extends ArgoDialog
 	moreInfo.setText(target.getMoreInfoURL());
 	desc.setText(target.getDescriptionTemplate());
 	desc.setCaretPosition(0);
-	useClar.setSelectedItem("Always");
+	useClar.setSelectedItem(ALWAYS);
 	useClar.repaint();
     }
 
@@ -470,9 +487,12 @@ class TableModelCritics extends AbstractTableModel
     public int getColumnCount() { return 3; }
 
     public String  getColumnName(int c) {
-	if (c == 0) return "Active";
-	if (c == 1) return "Headline";
-	if (c == 2) return "Snoozed";
+	if (c == 0) 
+	    return Translator.localize("dialog.browse.column-name.active");
+	if (c == 1) 
+	    return Translator.localize("dialog.browse.column-name.headline");
+	if (c == 2) 
+	    return Translator.localize("dialog.browse.column-name.snoozed");
 	return "XXX";
     }
 
@@ -507,7 +527,7 @@ class TableModelCritics extends AbstractTableModel
 	Boolean enable = (Boolean) aValue;
 	Critic cr = (Critic) target.get(rowIndex);
 	cr.setEnabled(enable.booleanValue());
-	fireTableRowsUpdated(rowIndex, rowIndex); //TODO
+	fireTableRowsUpdated(rowIndex, rowIndex); //TODO:
     }
 
     ////////////////
