@@ -36,6 +36,8 @@ import ru.novosoft.uml.foundation.core.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import org.argouml.language.helpers.*;
+
 public class FigUsage extends FigDependency {
 
     ////////////////////////////////////////////////////////////////
@@ -60,7 +62,7 @@ public class FigUsage extends FigDependency {
 	String stereoTypeStr = _stereo.getText();
 
 	if (stereoTypeStr == null || "".equals(stereoTypeStr)) {
-	    _stereo.setText("<<usage>>");
+	    _stereo.setText(NotationHelper.getLeftGuillemot()+"use"+NotationHelper.getRightGuillemot());
 	}
     } 
 
