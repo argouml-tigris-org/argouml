@@ -24,21 +24,30 @@
 
 package org.argouml.uml.ui.model_management;
 
-import org.argouml.swingext.GridLayout2;
-import org.argouml.swingext.Orientation;
-import org.argouml.i18n.Translator;
-import org.argouml.model.uml.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.*;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.util.ConfigLoader;
-
+import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.swingext.GridLayout2;
+import org.argouml.swingext.Orientation;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.ActionNavigateNamespace;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.PropPanelButton2;
+import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.foundation.core.PropPanelNamespace;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementGeneralizationListModel;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationListModel;
+import org.argouml.util.ConfigLoader;
 
 
 /** PropPanelPackage defines the Property Panel for MPackage elements.
@@ -58,7 +67,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
     ////////////////////////////////////////////////////////////////
     // contructors
     public PropPanelPackage() {
-        this("Package", ConfigLoader.getTabPropsOrientation());
+        this("Package", _packageIcon, ConfigLoader.getTabPropsOrientation());
     }
 
     /**
@@ -66,8 +75,8 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * @param title
      * @param orientation
      */
-    public PropPanelPackage(String title, Orientation orientation) {
-        super(title, orientation);
+    public PropPanelPackage(String title, ImageIcon icon, Orientation orientation) {
+        super(title, icon, orientation);
         placeElements();
     }
 

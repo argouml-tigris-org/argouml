@@ -27,8 +27,6 @@ package org.argouml.uml.ui.model_management;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.ArgoVersion;
-import org.argouml.application.api.PluggablePropertyPanel;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
@@ -39,49 +37,23 @@ import org.argouml.uml.ui.foundation.core.UMLClassifierFeatureListModel;
 import org.argouml.util.ConfigLoader;
 
 /** A property panel for UML subsystems. */
-public class PropPanelSubsystem extends PropPanelPackage implements
-        PluggablePropertyPanel {
+public class PropPanelSubsystem extends PropPanelPackage {
 
     private JScrollPane _featureScroll;
 
     private static UMLClassifierFeatureListModel featureListModel = new UMLClassifierFeatureListModel();
 
     public PropPanelSubsystem() {
-        super("Subsystem", ConfigLoader.getTabPropsOrientation());
+        super("Subsystem", _subsystemIcon, ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("UMLMenu", "label.available-features"),
                 getFeatureScroll());
 
         new PropPanelButton(this, buttonPanel, _addOpIcon, Translator.localize(
                 "UMLMenu", "button.new-operation"), "addOperation", null);
-
     }
 
-    public Class getClassForPanel() {
-        // TODO Shouldn't refer to NSUML implementation class
-        return (Class) ModelFacade.SUBSYSTEM;
-    }
-
-    public String getModuleName() {
-        return "PropPanelSubsystem";
-    }
-
-    public String getModuleDescription() {
-        return "Property Panel for Subsystem";
-    }
-
-    public String getModuleAuthor() {
-        return "ArgoUML Core";
-    }
-
-    public String getModuleVersion() {
-        return ArgoVersion.getVersion();
-    }
-
-    public String getModuleKey() {
-        return "module.propertypanel.model";
-    }
-
+  
     public void addOperation() {
         Object target = getTarget();
         if (ModelFacade.isAClassifier(target)) {

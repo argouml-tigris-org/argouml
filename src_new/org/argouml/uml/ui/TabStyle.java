@@ -151,7 +151,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      * and <code>SP</code>, resulting in the lookup order described above.
      */
     public TabStyle() {
-        this("tab.style", new String[] { "StylePanel", "SP"});
+        this("tab.style", new String[] { "StylePanel", "SP" });
     }
 
     /**
@@ -325,33 +325,21 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
                         + getStylePanelNames()[i] + targetClassElement);
                 return cls;
             } catch (ClassNotFoundException ignore) {
-                _cat.debug(ignore);
+                _cat.debug("ClassNotFoundException. Could not find class:"
+                        + classNs.toString() + "." + getStylePanelNames()[i]
+                        + targetClassElement);
             }
             try {
                 cls = Class.forName(baseNs.toString() + "."
                         + getStylePanelNames()[i] + targetClassElement);
                 return cls;
             } catch (ClassNotFoundException ignore) {
-                _cat.debug(ignore);
+                _cat.debug("ClassNotFoundException. Could not find class:"
+                        + classNs.toString() + "." + getStylePanelNames()[i]
+                        + targetClassElement);
             }
         }
         return null;
-    }
-
-    /**
-     * @deprecated remove in 0.16.0
-     * @return 1st basename
-     */
-    protected String getClassBaseName() {
-        return _stylePanelNames[0];
-    }
-
-    /**
-     * @deprecated remove in 0.16.0
-     * @return 2nd basename
-     */
-    protected String getAlternativeClassBaseName() {
-        return _alternativeBase;
     }
 
     protected String[] getStylePanelNames() {
