@@ -191,427 +191,372 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         /**
      * Construct a new ConstraintModel.
      */
-        public ConstraintModel(MModelElement mmeiTarget) {
-            super();
+    public ConstraintModel(MModelElement mmeiTarget) {
+        super();
 
-            m_mmeiTarget = mmeiTarget;
+        m_mmeiTarget = mmeiTarget;
 
-            m_alConstraints = new ArrayList(m_mmeiTarget.getConstraints());
-        }
+        m_alConstraints = new ArrayList(m_mmeiTarget.getConstraints());
+    }
 
-        /**
+    /**
      * Return the number of constraints in this model.
      */
-        public int getConstraintCount() {
-            return m_alConstraints.size();
-        }
+    public int getConstraintCount() {
+        return m_alConstraints.size();
+    }
 
-        /**
+    /**
      * Return the constraint with the specified index.
      *
      * @param nIdx the index of the constraint to be returned.
      *             0 <= nIdx < {@link #getConstraintCount}
      */
-        public ConstraintRepresentation getConstraintAt(int nIdx) {
-            return representationFor(nIdx);
-        }
+    public ConstraintRepresentation getConstraintAt(int nIdx) {
+        return representationFor(nIdx);
+    }
 
-        /** 
+    /** 
      * Remove the specified constraint from the model.
      *
      * @param nIdx the index of the constraint to be removed.
      *             0 <= nIdx < {@link #getConstraintCount}
      */
-        public void removeConstraintAt(int nIdx) {
-            if ((nIdx < 0) || (nIdx > m_alConstraints.size())) {
-                return;
-            }
+    public void removeConstraintAt(int nIdx) {
+        if ((nIdx < 0) || (nIdx > m_alConstraints.size())) {
+            return;
+        }
 
-            MConstraint mc = (MConstraint) m_alConstraints.remove(nIdx);
+        MConstraint mc = (MConstraint) m_alConstraints.remove(nIdx);
 
-            if (mc != null) {
-                m_mmeiTarget.removeConstraint(mc);
-            }
+        if (mc != null) {
+            m_mmeiTarget.removeConstraint(mc);
+        }
 
-            fireConstraintRemoved(mc, nIdx);
+        fireConstraintRemoved(mc, nIdx);
+    }
+
+    /**
+     * Add a fresh constraint to the model.
+     * 
+     * <p>There are 2 restrictions on what can be parsed, given
+     * the current OCL grammar:
+     * <ol>
+     *   <li>Class names must have a capital first letter.</li>
+     *   <li>Feature name must have a lower case first letter.
+     *   </li>
+     * </ol>
+     */
+    public void addConstraint() {
+
+        // check ocl parsing constraints
+        // sz9: I think this should read mmeContext = OclUtil.getInnerMostEnclosingNamespace (m_mmeiTarget);
+        MModelElement mmeContext = m_mmeiTarget;
+
+        while (!(org.argouml.model.ModelFacade.isAClassifier(mmeContext)) && 
+               (mmeContext != null)) {
+            mmeContext = mmeContext.getModelElementContainer();
+        }
+
+        if (ModelFacade.getName(mmeContext) == null   ||
+            ModelFacade.getName(m_mmeiTarget) == null ||
+            !Character.isUpperCase(
+                ModelFacade.getName(mmeContext).charAt(0)
+              ) ||
+            (ModelFacade.isAClass (m_mmeiTarget) &&
+             !Character.isUpperCase(
+                 ModelFacade.getName(m_mmeiTarget).charAt(0)
+               )
+            ) ||
+            (ModelFacade.isAFeature(m_mmeiTarget) && 
+             !Character.isLowerCase(
+                 ModelFacade.getName(m_mmeiTarget).charAt(0)
+               )
+            )
+           ) 
+        {
+            // TODO I18n
+            JOptionPane.showMessageDialog(null,
+                      "The OCL Toolkit requires that:\n\n" +
+                      "Class names have a capital first letter and\n" +
+                      "Attribute or Operation names have a lower case first letter.",
+                      "Require Correct name convention:",
+                      JOptionPane.ERROR_MESSAGE);
+            // do not create a constraint:
+            return;
+        }
+
+        // null elements represent new constraints, which will be added to the
+        // target the first time any actual editing takes place.
+        // This is done to ensure syntactical correctness of constraints stored
+        // with the target.
+        m_alConstraints.add(null);
+
+        fireConstraintAdded();
+    }
+
+    private class CR implements ConstraintRepresentation {
+
+        /**
+     * The constraint being represented.
+     */
+        private MConstraint m_mcConstraint;
+
+        /**
+     * The constraint's index in the list of constraints. Necessary only for
+     * new constraints, where m_mcConstraint is still null.
+     */
+        private int m_nIdx = -1;
+
+        public CR(MConstraint mcConstraint, int nIdx) {
+            super();
+
+            m_mcConstraint = mcConstraint;
+            m_nIdx = nIdx;
+        }
+
+        public CR(int nIdx) {
+            this(null, nIdx);
         }
 
         /**
-         * Add a fresh constraint to the model.
-         * 
-         * <p>There are 2 restrictions on what can be parsed, given
-         * the current OCL grammar:
-         * <ol>
-         *   <li>Class names must have a capital first letter.</li>
-         *   <li>Feature name must have a lower case first letter.
-         *   </li>
-         * </ol>
-         */
-        public void addConstraint() {
-            
-            // check ocl parsing constraints
-            // sz9: I think this should read mmeContext = OclUtil.getInnerMostEnclosingNamespace (m_mmeiTarget);
-            MModelElement mmeContext = m_mmeiTarget;
-
-            while (!(org.argouml.model.ModelFacade.isAClassifier(mmeContext)) && 
-                   (mmeContext != null)) {
-                mmeContext = mmeContext.getModelElementContainer();
+     * Get the name of the constraint.
+     */
+        public String getName() {
+            if (m_mcConstraint == null) {
+                return "newConstraint";
+            } else {
+                return m_mcConstraint.getName();
             }
-            
-            if (ModelFacade.getName(mmeContext) == null   ||
-                ModelFacade.getName(m_mmeiTarget) == null ||
-                !Character.isUpperCase(
-                    ModelFacade.getName(mmeContext).charAt(0)
-                  ) ||
-                (ModelFacade.isAClass (m_mmeiTarget) &&
-                 !Character.isUpperCase(
-                     ModelFacade.getName(m_mmeiTarget).charAt(0)
-                   )
-                ) ||
-                (ModelFacade.isAFeature(m_mmeiTarget) && 
-                 !Character.isLowerCase(
-                     ModelFacade.getName(m_mmeiTarget).charAt(0)
-                   )
-                )
-               ) 
-            {
-                // TODO I18n
-                JOptionPane.showMessageDialog(null,
-                          "The OCL Toolkit requires that:\n\n" +
-                          "Class names have a capital first letter and\n" +
-                          "Attribute or Operation names have a lower case first letter.",
-                          "Require Correct name convention:",
-                          JOptionPane.ERROR_MESSAGE);
-                // do not create a constraint:
-                return;
-            }
-            
-            // null elements represent new constraints, which will be added to the
-            // target the first time any actual editing takes place.
-            // This is done to ensure syntactical correctness of constraints stored
-            // with the target.
-            m_alConstraints.add(null);
-
-            fireConstraintAdded();
         }
 
-        private class CR implements ConstraintRepresentation {
+        /**
+     * Get the constraint's body.
+     */
+        public String getData() {
+            if (m_mcConstraint == null) {
+                return OCLUtil.getContextString(m_mmeiTarget);
+            } else {
+                return m_mcConstraint.getBody().getBody();
+            }
+        }
 
-            /**
-         * The constraint being represented.
-         */
-            private MConstraint m_mcConstraint;
+    /**
+     * Set the constraint's body text. For the exceptions the detailed message must
+     * be human readable.
+     *
+     * @param sData the new body of the constraint
+     *
+     * @exception IllegalStateException if the constraint is not in a state to
+     *     accept body changes.
+     * @exception OclParserException if the specified constraint is not
+     *     syntactically correct.
+     * @exception OclTypeException if the specified constraint does not adhere by
+     *     OCL type rules.
+     */
+    public void setData(String sData, EditingUtilities euHelper)
+            throws OclParserException, OclTypeException {
+        // Parse and check specified constraint.
+        OclTree tree = null;
 
-            /**
-         * The constraint's index in the list of constraints. Necessary only for
-         * new constraints, where m_mcConstraint is still null.
-         */
-            private int m_nIdx = -1;
+        MModelElement mmeContext = m_mmeiTarget;
 
-            public CR(MConstraint mcConstraint, int nIdx) {
-                super();
-
-                m_mcConstraint = mcConstraint;
-                m_nIdx = nIdx;
+        try {
+            while (!(org.argouml.model.ModelFacade.isAClassifier(mmeContext))) {
+                mmeContext = mmeContext.getModelElementContainer();
             }
 
-            public CR(int nIdx) {
-                this(null, nIdx);
+            try {
+                tree = euHelper.parseAndCheckConstraint(sData, new ArgoFacade(mmeContext));
+            } catch (java.io.IOException ioe) {
+                // Ignored: Highly unlikely, and what would we do anyway?
+                // log it
+                _cat.error("problem parsing And Checking Constraints",ioe);
+                return;
             }
 
-            /**
-         * Get the name of the constraint.
-         */
-            public String getName() {
-                if (m_mcConstraint == null) {
-                    return "newConstraint";
-                } else {
-                    return m_mcConstraint.getName();
+            // Split constraint body, if user wants us to
+            if (euHelper.getDoAutoSplit()) {
+                List lConstraints = euHelper.splitConstraint(tree);
+
+                if (lConstraints.size() > 0) {
+                    removeConstraintAt(m_nIdx);
+
+                    for (Iterator i = lConstraints.iterator(); i.hasNext(); ) {
+                        OclTree ocltCurrent = (OclTree) i.next();
+
+                        MConstraint mc =
+                            UmlFactory.getFactory().getCore().createConstraint();
+                        mc.setName(ocltCurrent.getConstraintName());
+                        ModelFacade.setBody(mc, UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",ocltCurrent.getExpression()));
+                        m_mmeiTarget.addConstraint(mc);
+
+                        // the constraint _must_ be owned by a namespace
+                        if (m_mmeiTarget.getNamespace() != null) {
+                            m_mmeiTarget.getNamespace().addOwnedElement(mc);
+                        } else if (mmeContext.getNamespace() != null) {
+                            mmeContext.getNamespace().addOwnedElement(m_mcConstraint);
+                        }
+
+                        m_alConstraints.add(mc);
+                        fireConstraintAdded();
+                    }
+
+                    return;
                 }
             }
 
-            /**
-         * Get the constraint's body.
-         */
-            public String getData() {
-                if (m_mcConstraint == null) {
-                    return OCLUtil.getContextString(m_mmeiTarget);
-                } else {
-                    return m_mcConstraint.getBody().getBody();
+            // Store constraint body
+            MConstraint mcOld = null;
+
+            if (m_mcConstraint == null) {
+                // New constraint, first time setData is called
+                m_mcConstraint = UmlFactory.getFactory().getCore().createConstraint();
+
+                m_mcConstraint.setName("newConstraint");
+                ModelFacade.setBody(m_mcConstraint, UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",sData));
+
+                m_mmeiTarget.addConstraint(m_mcConstraint);
+
+                // the constraint _must_ be owned by a namespace
+                if (m_mmeiTarget.getNamespace() != null) {
+                    m_mmeiTarget.getNamespace().addOwnedElement(m_mcConstraint);
+                } else if (mmeContext.getNamespace() != null) {
+                    mmeContext.getNamespace().addOwnedElement(m_mcConstraint);
                 }
+
+                m_alConstraints.set(m_nIdx, m_mcConstraint);
+            } else {
+                mcOld = UmlFactory.getFactory().getCore().createConstraint();
+                mcOld.setName(m_mcConstraint.getName());
+                ModelFacade.setBody(mcOld, UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",m_mcConstraint.getBody().getBody()));
+                ModelFacade.setBody(m_mcConstraint,UmlFactory.getFactory().getDataTypes().createBooleanExpression("OCL",sData));
             }
 
-            /**
-         * Set the constraint's body text. For the exceptions the detailed message must
-         * be human readable.
-         *
-         * @param sData the new body of the constraint
-         *
-         * @exception IllegalStateException if the constraint is not in a state to
-         *     accept body changes.
-         * @exception OclParserException if the specified constraint is not
-         *     syntactically correct.
-         * @exception OclTypeException if the specified constraint does not adhere by
-         *     OCL type rules.
-         */
-            public void setData(String sData, EditingUtilities euHelper)
-                throws OclParserException, OclTypeException {
-                // Parse and check specified constraint.
-                OclTree tree = null;
+            fireConstraintDataChanged(m_nIdx, mcOld, m_mcConstraint);
 
-                MModelElement mmeContext = m_mmeiTarget;
+        } catch (OclTypeException pe) {
+            _cat.warn("There was some sort of OCL Type problem", pe);
+            throw pe;
+        } catch (OclParserException pe1) {
+            _cat.warn("Could not parse the constraint",pe1);
+            throw pe1;
+        } catch (OclException oclExc) {
+            // a runtime exception that occurs when some
+            // internal test fails
+            _cat.warn("There was some unidentified problem");
+            throw oclExc;
+        }
+    }
 
+    /**
+     * Set the constraint's name.
+     */
+        public void setName(
+            final String sName,
+            final EditingUtilities euHelper) {
+            if (m_mcConstraint != null) {
+                // Check name for consistency with spec
+                if (!euHelper.isValidConstraintName(sName)) {
+                    throw new IllegalArgumentException("Please specify a valid name.");
+                }
+
+                // Set name
+                MConstraint mcOld =
+                    UmlFactory.getFactory().getCore().createConstraint();
+                mcOld.setName(m_mcConstraint.getName());
+                ModelFacade.setBody(mcOld,
+                                      UmlFactory
+                                      .getFactory()
+                                      .getDataTypes()
+                                      .createBooleanExpression(
+                                                   "OCL",
+                                                   m_mcConstraint.getBody().getBody()));
+
+                m_mcConstraint.setName(sName);
+
+                fireConstraintNameChanged(m_nIdx, mcOld, m_mcConstraint);
+
+                // Also set name in constraint body -- Added 03/14/2001
                 try {
+                    OclTree tree = null;
+
+                    MModelElement mmeContext = m_mmeiTarget;
                     while (!(org.argouml.model.ModelFacade.isAClassifier(mmeContext))) {
                         mmeContext = mmeContext.getModelElementContainer();
                     }
 
-                    try {
-                        tree =
-                            euHelper.parseAndCheckConstraint(
-                                 sData,
-                                 new ArgoFacade(mmeContext));
-                    } catch (java.io.IOException ioe) {
-                        // Ignored: Highly unlikely, and what would we do anyway?
-                        // log it
-                        _cat.error(
-                   "problem parsing And Checking Constraints",
-                   ioe);
-                        return;
-                    }
+                    tree =
+                        euHelper.parseAndCheckConstraint(
+                             m_mcConstraint.getBody().getBody(),
+                             new ArgoFacade(mmeContext));
 
-                    // Split constraint body, if user wants us to
-                    if (euHelper.getDoAutoSplit()) {
-                        List lConstraints = euHelper.splitConstraint(tree);
-
-                        if (lConstraints.size() > 0) {
-                            removeConstraintAt(m_nIdx);
-
-                            for (Iterator i = lConstraints.iterator();
-                 i.hasNext(); )
-                {
-                                OclTree ocltCurrent = (OclTree) i.next();
-
-                                MConstraint mc =
-                                    UmlFactory.getFactory().getCore()
-                        .createConstraint();
-                                mc.setName(ocltCurrent.getConstraintName());
-                                mc.setBody(
-                       UmlFactory
-                       .getFactory()
-                       .getDataTypes()
-                       .createBooleanExpression(
-                                    "OCL",
-                                    ocltCurrent.getExpression()));
-
-                                m_mmeiTarget.addConstraint(mc);
-
-                                // the constraint _must_ be owned by a namespace
-                                if (m_mmeiTarget.getNamespace() != null) {
-                                    m_mmeiTarget
-                                        .getNamespace()
-                                        .addOwnedElement(
-                             mc);
-                                }
-                                else if (mmeContext.getNamespace() != null) {
-                                    
-                                    mmeContext.getNamespace().addOwnedElement(
-                                          m_mcConstraint);
-                                }
-
-                                m_alConstraints.add(mc);
-                                fireConstraintAdded();
-                            }
-
-                            return;
-                        }
-                    }
-
-                    // Store constraint body
-                    MConstraint mcOld = null;
-
-                    if (m_mcConstraint == null) {
-                        // New constraint, first time setData is called
-                        m_mcConstraint =
-                            UmlFactory
-                .getFactory()
-                .getCore()
-                .createConstraint();
-
-                        m_mcConstraint.setName("newConstraint");
-                        m_mcConstraint.setBody(
-                           UmlFactory
-                           .getFactory()
-                           .getDataTypes()
-                           .createBooleanExpression(
-                                    "OCL",
-                                    sData));
-
-                        m_mmeiTarget.addConstraint(m_mcConstraint);
-
-                        // the constraint _must_ be owned by a namespace
-                        if (m_mmeiTarget.getNamespace() != null) {
-                            m_mmeiTarget.getNamespace().addOwnedElement(
-                                    m_mcConstraint);
-                        }
-                        else if (mmeContext.getNamespace() != null) {
-                            
-                            mmeContext.getNamespace().addOwnedElement(
-                                      m_mcConstraint);
-                        }
-
-                        m_alConstraints.set(m_nIdx, m_mcConstraint);
-                    } else {
-                        mcOld =
-                            UmlFactory
-                .getFactory()
-                .getCore()
-                .createConstraint();
-                        mcOld.setName(m_mcConstraint.getName());
-                        mcOld.setBody(
-                      UmlFactory
-                      .getFactory()
-                      .getDataTypes()
-                      .createBooleanExpression(
-                                   "OCL",
-                                   m_mcConstraint.getBody().getBody()));
-
-                        m_mcConstraint.setBody(
-                           UmlFactory
-                           .getFactory()
-                           .getDataTypes()
-                           .createBooleanExpression(
-                                    "OCL",
-                                    sData));
-                    }
-
-                    fireConstraintDataChanged(m_nIdx, mcOld, m_mcConstraint);
-
-                } catch (OclTypeException pe) {
-                    _cat.warn("There was some sort of OCL Type problem", pe);
-                    throw pe;
-                } catch (OclParserException pe1) {
-                    _cat.warn(
-                  "Could not parse the constraint",
-                  pe1);
-                    throw pe1;
-                } catch (OclException oclExc) {
-                    // a runtime exception that occurs when some
-                    // internal test fails
-                    _cat.warn(
-                  "There was some unidentified problem");
-                    throw oclExc;
-                }
-            }
-
-            /**
-         * Set the constraint's name.
-         */
-            public void setName(
-                final String sName,
-                final EditingUtilities euHelper) {
-                if (m_mcConstraint != null) {
-                    // Check name for consistency with spec
-                    if (!euHelper.isValidConstraintName(sName)) {
-                        throw new IllegalArgumentException("Please specify a valid name.");
-                    }
-
-                    // Set name
-                    MConstraint mcOld =
-                        UmlFactory.getFactory().getCore().createConstraint();
-                    mcOld.setName(m_mcConstraint.getName());
-                    mcOld.setBody(
-                  UmlFactory
-                  .getFactory()
-                  .getDataTypes()
-                  .createBooleanExpression(
-                               "OCL",
-                               m_mcConstraint.getBody().getBody()));
-
-                    m_mcConstraint.setName(sName);
-
-                    fireConstraintNameChanged(m_nIdx, mcOld, m_mcConstraint);
-
-                    // Also set name in constraint body -- Added 03/14/2001
-                    try {
-                        OclTree tree = null;
-
-                        MModelElement mmeContext = m_mmeiTarget;
-                        while (!(org.argouml.model.ModelFacade.isAClassifier(mmeContext))) {
-                            mmeContext = mmeContext.getModelElementContainer();
-                        }
-
-                        tree =
-                            euHelper.parseAndCheckConstraint(
-                                 m_mcConstraint.getBody().getBody(),
-                                 new ArgoFacade(mmeContext));
-
-                        if (tree != null) {
-                            tree.apply(new tudresden.ocl.parser.analysis
-                           .DepthFirstAdapter() 
-                {
-                    int name_ID = 0;
-                    public void caseAConstraintBody(
-                                    tudresden
-                                    .ocl
-                                    .parser
-                                    .node
-                                    .AConstraintBody node) {
-                    // replace name
-                    if (name_ID == 0) {
-                        node.setName(
-                             new tudresden
-                             .ocl
-                             .parser
-                             .node
-                             .TName(
-                                sName));
-                    } else {
-                        node.setName(
-                             new tudresden
-                             .ocl
-                             .parser
-                             .node
-                             .TName(
-                                sName + "_" + name_ID));
-                    }
-                    name_ID++;
-                    }
-                });
-
-                            setData(tree.getExpression(), euHelper);
-                        }
-                    } catch (Throwable t) {
-                        // OK, so that didn't work out... Just ignore any problems and don't
-                        // set the name in the constraint body
-                        // better had log it.
-                        _cat.error("some unidentified problem", t);
-                    }
+                    if (tree != null) {
+                        tree.apply(new tudresden.ocl.parser.analysis
+                       .DepthFirstAdapter() 
+            {
+                int name_ID = 0;
+                public void caseAConstraintBody(
+                                tudresden
+                                .ocl
+                                .parser
+                                .node
+                                .AConstraintBody node) {
+                // replace name
+                if (name_ID == 0) {
+                    node.setName(
+                         new tudresden
+                         .ocl
+                         .parser
+                         .node
+                         .TName(
+                            sName));
                 } else {
-                    throw new IllegalStateException("Please define and submit a constraint body first.");
+                    node.setName(
+                         new tudresden
+                         .ocl
+                         .parser
+                         .node
+                         .TName(
+                            sName + "_" + name_ID));
                 }
-            }
-        }
+                name_ID++;
+                }
+            });
 
-        /**
-     * Create a representation adapter for the given constraint.
-         *
-     */
-        private CR representationFor(int nIdx) {
-            if ((nIdx < 0) || (nIdx >= m_alConstraints.size())) {
-                return null;
-            }
-
-            MConstraint mc = (MConstraint) m_alConstraints.get(nIdx);
-
-            if (mc != null) {
-                return new CR(mc, nIdx);
+                        setData(tree.getExpression(), euHelper);
+                    }
+                } catch (Throwable t) {
+                    // OK, so that didn't work out... Just ignore any problems and don't
+                    // set the name in the constraint body
+                    // better had log it.
+                    _cat.error("some unidentified problem", t);
+                }
             } else {
-                return new CR(nIdx);
+                throw new IllegalStateException("Please define and submit a constraint body first.");
             }
         }
+    }
 
-        /**
+    /**
+ * Create a representation adapter for the given constraint.
+     *
+ */
+    private CR representationFor(int nIdx) {
+        if ((nIdx < 0) || (nIdx >= m_alConstraints.size())) {
+            return null;
+        }
+
+        MConstraint mc = (MConstraint) m_alConstraints.get(nIdx);
+
+        if (mc != null) {
+            return new CR(mc, nIdx);
+        } else {
+            return new CR(nIdx);
+        }
+    }
+
+    /**
      * Add a listener to be informed of changes in the model.
      *
      * @param ccl the new listener

@@ -37,10 +37,6 @@ import java.text.ParseException;
 
 import org.argouml.model.uml.UmlFactory;
 
-import ru.novosoft.uml.behavior.state_machines.MEvent;
-import ru.novosoft.uml.behavior.state_machines.MGuard;
-import ru.novosoft.uml.foundation.core.MParameter;
-
 public abstract class Parser {
 
     public abstract Object parseExtensionPoint(String s);
@@ -48,7 +44,7 @@ public abstract class Parser {
 	throws ParseException;
     public abstract void parseAttribute(String s, Object attr)
 	throws ParseException;
-    public abstract MParameter parseParameter(String s);
+    public abstract Object parseParameter(String s);
     //   public abstract Package parsePackage(String s);
     //   public abstract MClassImpl parseClassifier(String s);
     public abstract Object parseStereotype(String s);
@@ -59,8 +55,8 @@ public abstract class Parser {
     public abstract Object parseState(String s);
     public abstract Object parseTransition(Object trans, String s);
     public abstract Object parseAction(String s);
-    public abstract MGuard parseGuard(String s);
-    public abstract MEvent parseEvent(String s);
+    public abstract Object parseGuard(String s);
+    public abstract Object parseEvent(String s);
 
 
     public Object parseExpression(String s) {

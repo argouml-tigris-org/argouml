@@ -434,23 +434,22 @@ public class CoreHelper {
      * @param operation
      * @param newReturnParameter
      */
-    public void setReturnParameter(
-				   MOperation operation,
-				   MParameter newReturnParameter) {
-        Iterator params = operation.getParameters().iterator();
+    public void setReturnParameter(Object/*MOperation*/ operation,
+				   Object/*MParameter*/ newReturnParameter) {
+        Iterator params = ModelFacade.getParameters(operation).iterator();
         String name = "return";
         while (params.hasNext()) {
             MParameter parameter = (MParameter) params.next();
             if ((parameter.getKind()).equals(MParameterDirectionKind.RETURN)) {
-                operation.removeParameter(parameter);
+                ModelFacade.removeParameter(operation, parameter);
                 if (parameter.getName() != null || parameter.getName() == "") {
                     name = parameter.getName();
                 }
             }
         }
-        newReturnParameter.setName(name);
-        newReturnParameter.setKind(MParameterDirectionKind.RETURN);
-        operation.addParameter(0, newReturnParameter);
+        ModelFacade.setName(newReturnParameter, name);
+        ModelFacade.setKind(newReturnParameter, MParameterDirectionKind.RETURN);
+        ModelFacade.addParameter(operation, 0, newReturnParameter);
         // we set the listeners to the figs here too
         // it would be better to do that in the figs themselves
         Project p = ProjectManager.getManager().getCurrentProject();
