@@ -7,25 +7,35 @@ DT {
 <title>Frequently asked questions for ArgoUML.</title>
 </head>
 <body>
-<H2>Frequently asked questions for ArgoUML. (2 October 2003)</H2>
+<H2>Frequently asked questions for ArgoUML. (4 October 2003)</H2>
 <div class="app">
 <H3>List of all questions</H3>
-<H4>Basics</H4>
+<H4>Introduction</H4>
 <ul>
 <li><a href="#link1">What is ArgoUML?</a>
 <li><a href="#helpdeveloping">How can I help?</a>
 <li><a href="#manual_link">Is there a manual?</a>
-<li><a href="#jws_link">What is Java Web Start (JWS)?</a>
 <li><a href="#source_link">Where do I get the source code for ArgoUML?</a>
 <li><a href="#commer_link">Is there commercial support for ArgoUML?</a>
 <li><a href="#help_link">When I click on help I get sent to a server... Where can I get the help files?</a>
 </ul>
+
 <H4>OS Specific</H4>
 <ul>
 <li><a href="#osx_link">In OS X: How can I access the context sensitive menus?</a>
 <li><a href="#osx_java">In OS X 10.2: How can I get ArgoUML to work?</a>
 <li><a href="#win_link">In Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
 </ul>
+
+<H4>Java Web Start</H4>
+<ul>
+<li><a href="#jwswhatisit">What is JavaWebStart?</a></li>
+<li><a href="#jwshowtoinstall">How do I install Java Web Start?</a></li>
+<li><a href="#jwsbadmime">It says Bad MIME type.</a></li>
+<li><a href="#jwsexpired">Your certificate has expired.</a></li>
+<li><a href="#jwsother">Other problems with Java Web Start.</a></li>
+</ul>
+
 <H4>Diagrams and Navigation</H4>
 <ul>
 <li><a href="#diag_link">How do I know what diagram I'm working on?</a>
@@ -38,6 +48,7 @@ DT {
 <li><a href="#easy_link">What is the easiest way to enter data into attributes and methods window for classes?</a>
 <li><a href="#model_link">Where can I find some sample ArgoUML models?</a>
 </ul>
+
 <H4>XMI and other Formats</H4>
 <ul>
 <li><a href="#xmia_link">Does ArgoUML save .xmi files?</a>
@@ -46,6 +57,7 @@ DT {
 <li><a href="#addtag_link">I have a project where I need to add tags to attributes. How do I do that?</a>
 <li><a href="#gentle_link">I have a Gentleware project. How do I convert it to ArgoUML?</a>
 </ul>
+
 <H4>Printing and Graphics</H4>
 <ul>
 <li><a href="#print_link">How can I print my diagrams?</a>
@@ -56,6 +68,7 @@ DT {
 <li><a href="#part_link">Can I control what part of a diagram that shall be saved so as to only save a fraction?</a>
 <li><a href="#xmic_link">Does ArgoUML generate an XMI document?</a>
 </ul>
+
 <H4>Bugs and Other Topics</H4>
 <ul>
 <li><a href="#bug_link">Where/how do I report bugs?</a>
@@ -83,10 +96,11 @@ have expressed on the mailing lists.
 The information is updated as the questions and answers are posted on the mailing list.
 A certain version of the FAQ is only loosely connected to a specific version of ArgoUML but 
 can show how a problem is solved differently in the different versions. The current "stable" version of
-ArgoUML is v 0.12 and can be found <a href="http://argouml.tigris.org/servlets/ProjectDocumentList">here</a>.
-The current developer release is v 0.13.5 and can be found <a href="http://argouml.tigris.org/servlets/ProjectDocumentList?folderID=1018">here</a>.
+ArgoUML can be found 
+<a href="http://argouml.tigris.org/servlets/ProjectDocumentList">here</a>.
+The current developer release can be found at the same place but further
+down under development releases.
 
-<H3>Basics</H3>
 <DL>
 <DT><a name="link1">What is ArgoUML?</a>
 <DD>
@@ -103,7 +117,7 @@ This means that the things you can't do will distract you, you will have problem
 have in commercial UML tools, and there is no one to blame for this. On the other hand, this also means that
 you have the opportunity to fix your problems yourself.
 
-<p>
+
 <DT><A NAME="helpdeveloping">How can I help?</A>
 <DD>
 Welcome, welcome, welcome, you are most welcome!
@@ -124,29 +138,18 @@ Level 2:
 <li>Make improvements!</li>
 <li>Discuss what you want to work on on the developers mailing list.</li>
 
-<p>
+
 <DT><a name="manual_link">Is there a manual?</a>
 <DD>Yes.
 Look
 <A HREF="http://argouml.tigris.org/documentation/defaulthtml/manual/">Here</A>.
-<p>
-<br>
-<DT><a name="jws_link">What is Java Web Start (JWS)?</a>
-<DD>It is a technology that allows you to start the application directly
-from the web.
-You don't need to bother about downloading, unpacking, installing, 
-or keeping track of updates.
-You just run the application.
-<P>
-You will need to download and install Java Web Start though
-(unless you are on Mac OS 10 where it is included).
-<p>
-<br>
+
+
 <DT><a name="source_link">Where do I get the source code for ArgoUML?</a>
 <DD>You can download the source from the same server that you download the
 application from.
-<p>
-<br>
+
+
 <DT><a name="commer_link">Is there commercial support for ArgoUML?</a>
 <DD>Sort of. Gentleware provides an enhanced version of ArgoUML 
 called <i>Poseidon</i> that is sold with support.
@@ -154,8 +157,8 @@ called <i>Poseidon</i> that is sold with support.
 <p>
 See <A HREF="http://www.gentleware.com">http://www.gentleware.com</A>
 
-<p>
-<br>
+
+
 <DT><a name="help_link">When I click on help I get sent to a server for example:
 http://ics.uci.edu/pub/arch/uml/critics/CrMultipleAgg.html but there
 isn't an ics.uci.edu server... Where can I get the help files?</a>
@@ -179,16 +182,16 @@ This is one of the things where we need to
 <DL>
 <DT><a name="osx_link">In OS X: How can I access the context sensitive menus?</a>
 <DD>Press the Apple Key together with the mouse button
-<p>
-<br>
+
+
 <DT><a name="osx_java">In OS X 10.2: How can I get ArgoUML to work?</a>
 <DD>ArgoUML will not work out-of-the-box on MacOSX 10.2 for people who have the Apple Developer Tools installed, because those tools install Java 1.4.1.
 <p>
 There is a workaround, though: Apple leaves the 1.3.1 java engine installed, but in an obscure place. You can run ArgoUML from the Terminal window by typing
 <p>
 % /System/Library/Frameworks/JavaVM.framework/Versions/1.3.1/Commands/java -jar argouml.jar
-<p>
-<br>
+
+
 <DT><a name="win_link">In Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
 <DD>The trick is to do things in two steps. First, open Windows Explorer and find a .zargo
 file, and then right-click on it. You should get the normal Windows menu, including an Open or Open With 
@@ -215,18 +218,100 @@ three different levels of the dialog).
 You can now double-click on your model and have ArgoUML instantly loaded.
 </DL>
 
+
+<A NAME="jws"><h4>Java Web Start (JWS)</h4></A>
+
+<DT><a name="jws_link">What is Java Web Start (JWS)?</a>
+<DD>It is a technology that allows you to start the application directly
+from the web.
+You don't need to bother about downloading, unpacking, installing, 
+or keeping track of updates.
+You just run the application.
+<P>
+You will need to download and install Java Web Start though
+(unless you are on Mac OS 10 where it is included).
+
+
+<DT><a name="jwswhatisit" />What is JavaWebStart?</a>
+<DD>
+It is a way to download and install and launch java applications via
+the web.  Once you have JWS installed, you can launch ArgoUML by
+clicking on a link.  
+You can also add an ArgoUML icon to your desktop.
+If you are using the JWS file for the "latest" stable or development
+release, you will automatically upgrade to new releases as they are
+made available.
+<P>
+You will need to download and install Java Web Start though
+(unless you are on Mac OS 10 where it is included).
+<P>
+For more infomation, see the <a
+href="http://java.sun.com/products/javawebstart/">JavaWebStart product
+page</a>.
+
+
+<DT><a name="jwshowtoinstall" />How do I install JavaWebStart?</a>
+<DD>
+See the installation instructions on the Sun web site: 
+<a href="http://java.sun.com/products/javawebstart/">JavaWebStart</a>.
+<P>
+In particular, note that Mozilla and Netscape 6.x 
+users must take an additional step
+to register the helper appliation in your browser preferences.
+
+
+<DT><a name="jwsbadmime" />Web Start returns a Bad MIME Type error. What's wrong?</a>
+<DD>
+This is from 
+<a href="http://www.vamphq.com/jwsfaq.html#badmimetype">the JWS FAQ at VampHQ</a>.
+
+<P>This is a very common problem and most likely caused by Web Start's
+failed attempt to automatically detect your proxy settings. The "Bad
+MIME Type" error displayed by Web Start is somewhat confusing as it
+should really be a "Resource Not Found" error.
+
+<P>Your proxy will send back an error page either in HTML or plain
+text instead of the requested JNLP descriptor if it fails to get the
+JNLP descriptor requested by Web Start.
+
+<P>You can change your proxy settings for Web Start manually by
+starting the Application Manager and using the Preference
+panel. (Select File|Preferences to get there.)
+
+<P>Proxy Settings:
+<img src="images/proxy.gif" alt="Proxy Settings">
+
+
+<DT><a name="jwsexpired" />It says that your certificate has expired.</a>
+<DD>
+Yeah, sorry about that.  We are looking into getting a new
+certificate.  For now, just click the "Start" button that proceeds
+with the expired certificate.
+
+
+<DT><a name="jwsother" />Other problems.</a>
+<DD>
+If you have any other problem with JWS, please:
+<ul>
+<li><a href="http://argouml.tigris.org/issues/buglist.cgi?subcomponent=Java+Web+Start&issue_status=NEW&issue_status=STARTED&issue_status=REOPENED">check for existing bug reports</a> and add a comment to one of them, or</li>
+<li><a
+href="http://argouml.tigris.org/issues/enter_bug.cgi?issue_type=DEFECT&component=website&subcomponent=Java%20Web%20Start&issue_file_loc=http%3A%2F%2Fargouml%2Etigris%2Eorg%2F&short_desc=Cannot%20start%20argouml%20from%20Java%20Web%20Start&comment=Java%20Web%20Start%20version:%20FILL%20IN%20INFORMATION%20FROM%20JAVA%20WEB%20START%20ABOUT%20BOX%0DJava%20version:%20%20%20%20%20%20%20%20%20%20%20FILL%20IN%20JAVA%20RUNTIME%20VERSIONS%20INFORMATION%20FROM%20JAVA%20WEB%20START%20SETTINGS%20JAVA%0D%0DFill%20in%20OS,%20Platform,%20and%20version%20of%20ArgoUML%20above!%20Put%20your%20observations%20below!%0D%0D">report
+it as a new bug</a>. Thanks.
+</ul>
+
+
 <H3>Diagrams and Navigation</H3>
 <DL>
 <DT><a name="diag_link">How do I know what diagram I'm working on?</a>
 <DD>If your screen is large enough, you will see the name
 of the diagram in the top right corner.
-<p>
-<br>
+
+
 <DT><a name="actor_link">How can I sort the artifacts in the Navigation Pane, for example
 sort all of my Actors?</a>
 <DD>That is not currently supported.
-<p>
-<br>
+
+
 <DT><a name="elem_link">How do I arrange my diagram elements?</a>
 <DD>There are several ways to easily and elegantly move diagram elements.
 
@@ -248,23 +333,23 @@ will align elements.
 <p>
 There also is the menu item <b>Arrange</b> where you can align, group or
 nudge (move a little bit) elements.
-<p>
-<br>
+
+
 <DT><a name="ord_link">I'm trying to change the ordering of the links in the sequence
 diagram. How do I do that?</a>
 <DD>That is not currently supported.
-<p>
-<br>
+
+
 <DT><a name="state_link">How do I create a state diagram?</a>
 <DD>Select a class, then you can create a state diagram.
 The same applies for activity diagrams.
-<p>
-<br>
+
+
 <DT><a name="act_link">How do I create an activity diagram?</a>
 <DD>Select a use case or class, then you can create an activity
 diagram. Same as for a state diagram.
-<p>
-<br>
+
+
 <DT><a name="note_link">I see there is a note icon in the tool bar. How do I use it?</a>
 <DD>Click on your target class.
 Then click on the note icon.
@@ -277,12 +362,12 @@ You can also right click to add a note as well!
 Be aware that your note will not appear in the source code
 documentation tab but it will appear in the diagram view of the
 navigation pane (the left pane tree view).
-<p>
-<br>
+
+
 <DT><a name="easy_link">What is the easiest way to enter data into attributes and methods window for classes?</a>
 <DD>Click direct class properties pane and start typing. 
-<p>
-<br>
+
+
 <DT><a name="model_link">Where can I find some sample ArgoUML models?</a>
 <DD>There are some models at:
 <li><a href="http://argouml.tigris.org/models/addisonwesley/UMLDistilled.zargo">http://argouml.tigris.org/models/addisonwesley/UMLDistilled.zargo</a>
@@ -314,8 +399,8 @@ He recommends that if you are comfortable with XSLT, you can typically
 transform one variant of UML + XMI to another, plus MetaIntegrations
 (<a href="http://www.metaintegration.net">http://www.metaintegrations.net</a>) makes a version of their Bridge
 product available to transform between XMI flavors.
-<p>
-<br>
+
+
 <DT><a name="rose_link">Can ArgoUML read an MDL file generated by Rational Rose?</a>
 <DD>No.
 MDL is a Rational Rose-specific format.
@@ -326,12 +411,12 @@ Rose has an add-on that can create XMI format from an MDL file that is available
 
 <p>
 You will then need a tool to convert that .XMI to a version that ArgoUML understands.
-<p>
-<br>
+
+
 <DT><a name="addtag_link">I have a project where I need to add tags to attributes. How do I do that?</a>
 <DD>Open the zargo file with any zip application and you'll find the XMI inside. If you want to convert it to XSD then go to <a href="http://xmlmodeling.com/">http://xmlmodeling.com/</a> (Dave Carlson's site) and convert the XMI there.
-<p>
-<br>
+
+
 <DT><a name="gentle_link">I have a Gentleware project. How do I convert it to ArgoUML?</a>
 <DD>If you don't have sequence diagrams in your project you can do the following to convert a Gentleware Project for use with ArgoUML:<p>
 0) Make sure to backup your project first.<p>
@@ -346,33 +431,33 @@ You will then need a tool to convert that .XMI to a version that ArgoUML underst
 <DT><a name="print_link">How can I print my diagrams?</a>
 <DD>Select a diagram, then go to File-&#62;Export Diagrams. You can
 generate gif, postscript, eps or .svg format.
-<p>
-<br>
+
+
 <DT><a name="svg_link">What does SVG stand for?</a>
 <DD>A super cool vector graphics format (like MM Flash) that is
 totally open and is gaining enormous ground in the graphics
 world. Find out more at the <a href="http://www.w3.org/Graphics/SVG/Overview.htm8">www.W3C.org</a>.
-<p>
-<br>
+
+
 <DT><a name="savsvg_link">How do I save my diagram as .SVG?</a>
 <DD>First: select .svg as the file type.
 Second: type the name of the file as you like with the .svg tag at the end.
 Example myumldiagram.svg
-<p>
-<br>
+
+
 <DT><a name="eps_link">Can I save my diagram as EPS <B>with</B> a preview image?</a>
 <DD>No.
-<p>
-<br>
+
+
 <DT><a name="output_link">Can I output my entire project as an HTML?</a>
 <DD>No.
-<p>
-<br>
+
+
 <DT><a name="part_link">Can I control what part of a diagram that shall be saved so as to only
 save a fraction?</a>
 <DD>No. You will have to edit the image afterwards.
-<p>
-<br>
+
+
 <DT><a name="xmic_link">Does ArgoUML generate an XMI document?</a>
 <DD>Yes!
 It is one of the files zipped into the save file (the .zargo file).
@@ -401,8 +486,8 @@ Click <a href="http://argouml.tigris.org/servlets/Join">here</a>
 to be taken to the Register New User page.
 <p>
 Note that you can also attach files to a defect report if you have a sample to show a problem, or need to do a screen capture to show something you are trying to explain.
-<p>
-<br>
+
+
 <DT><a name="repbug_link">What information is interesting when reporting a Bug?</a>
 <DD>Get a screen capture of it and a .txt copy of the stack output for analysis.
 
@@ -414,8 +499,8 @@ Also include what version of ArgoUML you are running and on what platform. Usefu
 <p>
 It is also helpful if you can upload the zargo project file for the project that is having problems.
 <p>
-<p>
-<br>
+
+
 <DT><a name="enhance_link">How do I suggest an enhancement?</a>
 <DD>
 You proceed exactly as when reporting the bug including a search to see
@@ -423,8 +508,8 @@ if someone else has already suggested that.
 <P>
 You can suggest an enhancement 
 <A HREF="http://argouml.tigris.org/issues/enter_bug.cgi?issue_type=ENHANCEMENT">here</A>.
-<p>
-<br>
+
+
 <DT><a name="attach_file">Something is happening when I run ArgoUML that's hard to describe. How should I send a picture or document describing it?</a>
 <DD>
 It is probably an error or bug.
@@ -437,8 +522,8 @@ Please DO NOT attach a file to a message that will go to one of the
 mailing lists. Not all of our readers and users have broadband
 connections, and even a 100K image can be a nightmare for folks on a
 slow dialup connection.
-<p>
-<br>
+
+
 <DT><a name="vote_link">How do I indicate that I think an enhancement or fix is important?</a>
 <DD>
 You vote for the issue.
@@ -466,24 +551,24 @@ most important to solve and what features are the most important to add.
 
 <DT><a name="vtcount_link">How do I see how many votes have been cast for an enhancement or fix?</a>
 <DD>You can query for all issues that have at least one vote by entering "1" in the At least ____ votes field and clicking on the Submit query button. You will receive a report of all issues that have at least one vote cast for them. Using the report, you can see how many votes were cast for each issue and, by clicking on the link to the issue, you can adjust your votes as you see fit.
-<p>
-<br>
+
+
 <DT><a name="bunch_link">I've got a bunch of people working on the same diagrams. 
 How do I track who is doing what on the diagram?
 How do I use ArgoUML with CVS?</a>
 <DD>You can't.
 ArgoUML works as if the .zargo files is a single binary file.
 If several users open it at once to do work some work will be lost.
-<p>
-<br>
+
+
 <DT><a name="sanity_link">Is there a mechanism to do a sanity check in ArgoUML and enforce that sanity check?</a> 
 <DD>Yes, by paying attention to the critics. They can be found in org.argouml.lang.java.cognitive.critics for example. But Argo follows the policy that the user in the end knows more than we do. So if the user wants to generate code which doesn't compile that is currently fine with ArgoUML.
-<p>
-<br>
+
+
 <DT><a name="empty_zargo">I saved a project from Argo, and then when I opened it later ArgoUML said it was empty. What can I do?</a> 
 <DD>Often the problem is a null character or an accent. ArgoUML still doesn't deal very well with problems related to these characters. There is also some discussion of addressing this problem in a future version of ArgoUML.
-<p>
-<br>
+
+
 <DT><a name="magic_link">Why isn't there any magic controling this FAQ where the questions and
 answers are automatically generated and my problem always appear on the top
 of the list?</a>
