@@ -28,6 +28,8 @@ import java.util.*;
 
 // NS-UML imports:
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.model_management.*;
 
@@ -38,6 +40,7 @@ import org.tigris.gef.base.*;
 
 // Diagram model imports:
 import org.argouml.model.uml.foundation.core.*;
+import org.argouml.uml.*;
 // import org.argouml.uml.diagram.ui.*;
 // import org.argouml.uml.diagram.deployment.ui.*;
 // import org.argouml.uml.diagram.static_structure.ui.*;
@@ -103,7 +106,7 @@ public class ModelFacade {
 	if (handle instanceof MGeneralizableElement)
 	    return ((MGeneralizableElement) handle).isAbstract();
 	// ...
-	return false;
+	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for Class
@@ -152,8 +155,57 @@ public class ModelFacade {
 	    return ((MGeneralizableElement)handle).isLeaf();
 	}
 	// ...
-	return false;
+	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
+
+    /** Recognizer for primary objects.
+     * A primary object is an object that is created by the parser or 
+     * by a user.
+     * Object that are created when importing some other object are not.
+     *
+     * @param handle candidate
+     * @returns true if primary object.
+     */
+    public static boolean isPrimaryObject(Object handle) {
+	if (handle instanceof MModelElement) {
+	    MModelElement element = (MModelElement) handle;
+	    for(Iterator i = element.getTaggedValues().iterator(); 
+		i.hasNext(); 
+		) {
+		MTaggedValue tv = (MTaggedValue)i.next();
+		if ((MMUtil.GENERATED_TAG).equals(tv.getTag())) {
+		    return false;
+		}
+	    }
+	    return true;
+	}
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Recognizer for singleton.
+     *
+     * @param handle candidate
+     * @returns true if handle is a singleton.
+     */
+    public static boolean isSingleton(Object handle) {
+	if (handle instanceof MModelElement) {
+	    MModelElement element = (MModelElement) handle;
+	    MStereotype meSt = element.getStereotype();
+
+	    if (meSt == null) return false;
+	    
+	    String name = meSt.getName();
+	    if (name == null) return false;
+
+	    return name.equals("singleton") || name.equals("Singleton");
+	}
+
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+
 
 
 
@@ -183,13 +235,16 @@ public class ModelFacade {
      * @return iterator with attributes.
      */
     public static Iterator getAttributes(Object handle) {
-	if (!(handle instanceof MClassifier)) return emptyIterator();
+	if (handle instanceof MClassifier) {
+	    MClassifier c = (MClassifier) handle;
 
-	MClassifier c = (MClassifier) handle;
+	    // TODO: We are converting back and forth between collections and
+	    // iterators. I (Linus) prefer iterators.
+	    return CoreHelper.getHelper().getAttributes(c).iterator();
+	}
 
-	// TODO: We are converting back and forth between collections and
-	// iterators. I (Linus) prefer iterators.
-	return CoreHelper.getHelper().getAttributes(c).iterator();
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** The list of Connections to an Association.
@@ -203,7 +258,7 @@ public class ModelFacade {
 	}
 
 	// ...
-	return emptyIterator();
+	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** The list of Operations of this classifier and all inherited.
@@ -212,13 +267,16 @@ public class ModelFacade {
      * @return Iterator with operations.
      */
     public static Iterator getOperationsInh(Object handle) {
-	if (!(handle instanceof MClassifier)) return emptyIterator();
+	if (handle instanceof MClassifier) {
+	    MClassifier c = (MClassifier) handle;
 
-	MClassifier c = (MClassifier) handle;
+	    // TODO: We are converting back and forth between collections and
+	    // iterators. I (Linus) prefer iterators.
+	    return CoreHelper.getHelper().getOperationsInh(c).iterator();
+	}
 
-	// TODO: We are converting back and forth between collections and
-	// iterators. I (Linus) prefer iterators.
-	return CoreHelper.getHelper().getOperationsInh(c).iterator();
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** The list of owned elements of the the package.
@@ -230,8 +288,9 @@ public class ModelFacade {
 	if (handle instanceof MNamespace) {
 	    return ((MNamespace)handle).getOwnedElements().iterator();
 	}
+
 	// ...
-	return emptyIterator();
+	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** The list of Specializations from a GeneralizableElement.
@@ -244,8 +303,9 @@ public class ModelFacade {
 	    MGeneralizableElement ge = (MGeneralizableElement)handle;
 	    return ge.getSpecializations().iterator();
 	}
+
 	// ...
-	return emptyIterator();
+	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
 
@@ -272,19 +332,6 @@ public class ModelFacade {
 	}
 
 	// ...
-
-	return "<Unknown Name>";
-    }
-
-
-    ////////////////////////////////////////////////////////////////
-    // Convenience methods
-
-    /** The empty set.
-     *
-     * @returns an empty iterator.
-     */
-    private static Iterator emptyIterator() {
-	return Collections.EMPTY_SET.iterator();
+	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -23,21 +24,13 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.model_management.*;
-
 import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.CriticUtils;
 
-/** A critic to suggest using the facade stereotype. 
- *  @todo at the moment only a dummy implementation
+/**
+ * A critic to suggest using the facade stereotype. 
+ * TODO: at the moment only a dummy implementation
 */
-
 public class CrConsiderFacade extends CrUML {
     protected static Category cat = Category.getInstance(CrConsiderFacade.class);
 
@@ -49,24 +42,8 @@ public class CrConsiderFacade extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
+      /* TODO: Add implementation. */
       return NO_PROBLEM;
-      /*
-    cat.debug("predicate2 on " + dm);
-    if (!(dm instanceof MPackage) && 
-	!(dm instanceof MModel || dm instanceof MSubsystem))
-	return NO_PROBLEM;
-    MPackage mod = (MPackage) dm;
-    MNamespace ns = mod.getNamespace();
-    Collection elms = mod.getOwnedElements();
-    if (elms == null || elms.size() == 0) return NO_PROBLEM;
-    if (CriticUtils.hasStereotype(mod, "facade")) return NO_PROBLEM;
-    Iterator iter = elms.iterator();
-    while (iter.hasNext()) {
-		MModelElement me = (MModelElement) iter.next();
-		if (!(CriticUtils.sameNamespace(me, mod))) return NO_PROBLEM;
-    }
-    return PROBLEM_FOUND;
-      */
   }
 
 } /* end class CrEmptyPackage */
