@@ -34,21 +34,33 @@ import ru.novosoft.uml.MElementEvent;
 public class UMLStimulusActionTextProperty  {
     
    
-    protected String _propertyName;
+    private String thePropertyName;
 
+    /**
+     * The constructor.
+     * 
+     * @param propertyName the name of the property
+     */
     public UMLStimulusActionTextProperty(String propertyName) {
-        _propertyName = propertyName;
+        thePropertyName = propertyName;
     }
     
     
-    public void setProperty(UMLUserInterfaceContainer container, String newValue) {
+    /**
+     * @param container the container of UML user interface components
+     * @param newValue the new value of the property
+     */
+    public void setProperty(UMLUserInterfaceContainer container, 
+            String newValue) {
 	Object/*MStimulus*/  stimulus = container.getTarget();
 	if (stimulus != null) {
 
 	    String oldValue = getProperty(container);
 	    //
 	    //  if one or the other is null or they are not equal
-	    if (newValue == null || oldValue == null || !newValue.equals(oldValue)) {
+	    if (newValue == null 
+                || oldValue == null 
+                || !newValue.equals(oldValue)) {
 		//
 		//  as long as they aren't both null 
 		//   (or a really rare identical string pointer)
@@ -57,7 +69,8 @@ public class UMLStimulusActionTextProperty  {
 		    Object action = ModelFacade.getDispatchAction(stimulus);
 		    ModelFacade.setName(action, newValue);
 		    // to rupdate the diagram set the stimulus name again
-		    String dummyStr =  new String(ModelFacade.getName(stimulus));
+		    String dummyStr =  
+		        new String(ModelFacade.getName(stimulus));
 		    ModelFacade.setName(stimulus, dummyStr);
 		    
 		 
@@ -67,6 +80,10 @@ public class UMLStimulusActionTextProperty  {
 	}       
     }
     
+    /**
+     * @param container the container of UML user interface components
+     * @return the property
+     */
     public String getProperty(UMLUserInterfaceContainer container) {
         String value = null;       
 	Object/*MStimulus*/ stimulus = container.getTarget();
@@ -79,7 +96,9 @@ public class UMLStimulusActionTextProperty  {
     
     boolean isAffected(MElementEvent event) {
 	String sourceName = event.getName();	
-        if (_propertyName == null || sourceName == null || sourceName.equals(_propertyName))
+        if (thePropertyName == null 
+                || sourceName == null 
+                || sourceName.equals(thePropertyName))
             return true;
         return false;
     }

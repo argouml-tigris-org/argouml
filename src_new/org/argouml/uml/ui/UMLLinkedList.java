@@ -41,24 +41,30 @@ import javax.swing.event.ListSelectionListener;
  */
 public class UMLLinkedList extends UMLList2 implements ListSelectionListener {
     
-    private UMLLinkMouseListener _mouseListener;
+    private UMLLinkMouseListener mouseListener;
 
     /**
      * Constructor for UMLLinkedList.
-     *
-     * @param dataModel
+     * 
+     * @param dataModel the data model
+     * @param showIcon true if an icon should be shown
      */
-    public UMLLinkedList(
-        UMLModelElementListModel2 dataModel, boolean showIcon) {
+    public UMLLinkedList(UMLModelElementListModel2 dataModel, 
+            boolean showIcon) {
         super(dataModel, new UMLLinkedListCellRenderer(showIcon));
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setForeground(Color.blue);
         setSelectionForeground(Color.blue.darker());
-        _mouseListener = new UMLLinkMouseListener(this);
-        addMouseListener(_mouseListener);
+        mouseListener = new UMLLinkMouseListener(this);
+        addMouseListener(mouseListener);
         addListSelectionListener(this);
     }
     
+    /**
+     * The constructor.
+     * 
+     * @param dataModel the data model
+     */
     public UMLLinkedList(UMLModelElementListModel2 dataModel) {
         this(dataModel, true);
     }
@@ -75,6 +81,6 @@ public class UMLLinkedList extends UMLList2 implements ListSelectionListener {
      */
     public void valueChanged(ListSelectionEvent e) {       
         super.valueChanged(e);
-        _mouseListener.setSelectedValue(getSelectedValue());
+        mouseListener.setSelectedValue(getSelectedValue());
     }
 }

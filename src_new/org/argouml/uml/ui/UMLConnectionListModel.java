@@ -34,18 +34,20 @@ import org.argouml.model.ModelFacade;
 import org.tigris.gef.graph.MutableGraphModel;
 
 /**
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by {@link org.argouml.uml.ui.foundation.core.PropPanelClassifier#getAssociationEndScroll()},
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003), replaced by 
+ *             {@link org.argouml.uml.ui.foundation.core.PropPanelClassifier#getAssociationEndScroll()},
+ *             this class is part of the 'old'(pre 0.13.*) 
+ *             implementation of proppanels
  *             that used reflection a lot.
  */
 public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
 
     /**
      * Constructor for UMLConnectionListModel.
-     * @param container
-     * @param property
-     * @param showNone
+     * @param container the container for UI elements
+     * @param property the property name
+     * @param showNone true if we have to show a "none" 
+     *                 for elements without name
      */
     public UMLConnectionListModel(UMLUserInterfaceContainer container,
 				  String property,
@@ -56,18 +58,20 @@ public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(Object,Object)
      */
-    protected void build(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
-	CoreFactory.getFactory().buildAssociation(from,to);
+    protected void build(Object/*MModelElement*/ from, 
+            Object/*MModelElement*/ to) {
+	CoreFactory.getFactory().buildAssociation(from, to);
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, Object, Object)
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(
+     * MutableGraphModel, Object, Object)
      */
     protected void connect(
 			   MutableGraphModel gm,
 			   Object/*MModelElement*/ from,
 			   Object/*MModelElement*/ to) {
-	gm.connect(from, to, (Class)ModelFacade.ASSOCIATION);
+	gm.connect(from, to, (Class) ModelFacade.ASSOCIATION);
     }
 
     /**
@@ -81,15 +85,18 @@ public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
      */
     protected Collection getChoices() {
-	return ModelManagementHelper.getHelper().getAllModelElementsOfKind((Class)ModelFacade.CLASSIFIER);
+	return ModelManagementHelper.getHelper()
+	    .getAllModelElementsOfKind((Class) ModelFacade.CLASSIFIER);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(Object,Object)
      */
     protected Object getRelation(Object from, Object to) {
-	// this could get awkward but we assume that there is only one association
-	return ((CoreHelper.getHelper().getAssociations(from, to)).toArray())[0];
+	// this could get awkward but we assume 
+        // that there is only one association
+	return ((CoreHelper.getHelper().getAssociations(from, to))
+            .toArray())[0];
     }
 
     /**

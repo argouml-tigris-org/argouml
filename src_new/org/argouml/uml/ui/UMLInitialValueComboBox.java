@@ -52,19 +52,23 @@ import ru.novosoft.uml.MElementEvent;
 public class UMLInitialValueComboBox extends JComboBox 
              implements ActionListener, UMLUserInterfaceComponent {
 
-    private UMLUserInterfaceContainer _container;
+    private UMLUserInterfaceContainer theContainer;
 
     /** Prevent event storms through not generating unnecessary events */
-    private boolean _isUpdating = false;
+    private boolean isUpdating = false;
     
 /** items in the initial value combobox that are available for selection.*/    
-    String[] listItems = {"", "0", "1", "2", "null"};
+    private String[] listItems = {"", "0", "1", "2", "null"};
 
-    /** Creates new BooleanChangeListener */
+    /** 
+     * Creates new BooleanChangeListener.
+     * 
+     * @param container the container of UML user interface components
+     */
     public UMLInitialValueComboBox(UMLUserInterfaceContainer container) {
         super();
         setBackground(Color.green.brighter());
-        _container = container;
+        theContainer = container;
         
         for (int i = 0; i < listItems.length; i++) {
             addItem(listItems[i]);
@@ -83,12 +87,12 @@ public class UMLInitialValueComboBox extends JComboBox
  */
         addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent event) {
-		if (_isUpdating) {
+		if (isUpdating) {
 		    return;
 		}
 
                 String item = (String) getSelectedItem();
-                Object target = _container.getTarget();
+                Object target = theContainer.getTarget();
                 if (org.argouml.model.ModelFacade.isAAttribute(target)) {
                     Object/*MExpression*/ itemExpr =
 			UmlFactory.getFactory().getDataTypes()
@@ -120,8 +124,8 @@ public class UMLInitialValueComboBox extends JComboBox
      * @author psager@tigris.org Aug. 31, 2001. Modified Sept. 05, 2001
      */ 
     public void targetChanged() {
-        Object target = _container.getTarget();
-	_isUpdating = true;
+        Object target = theContainer.getTarget();
+	isUpdating = true;
         if (org.argouml.model.ModelFacade.isAAttribute(target)) {
             Object/*MExpression*/ initExpr =
 		ModelFacade.getInitialValue(target);
@@ -148,21 +152,43 @@ public class UMLInitialValueComboBox extends JComboBox
 				       // from the combo box.
             }
         }
-	_isUpdating = false;
+	isUpdating = false;
     }
     
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
+     */
     public void targetReasserted() {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(final MElementEvent p1) {
     }
+    
+    /**
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(final MElementEvent p1) {
     }
+    
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(final MElementEvent p1) {
     }
+    
+    /**
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(final MElementEvent p1) {
     }
+    
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(final MElementEvent p1) {
     }
 
@@ -195,7 +221,7 @@ public class UMLInitialValueComboBox extends JComboBox
  *  @author psager@tigris.org   Aug. 30, 2001
  */    
     private void update() {
-        Object target = _container.getTarget();
+        Object target = theContainer.getTarget();
         if (ModelFacade.isAAttribute(target)) {
             Object classifier = ModelFacade.getOwner(target);
             if (classifier == null) {

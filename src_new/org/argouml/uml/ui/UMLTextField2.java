@@ -44,6 +44,8 @@ public class UMLTextField2
         
     /**
      * Constructor for UMLTextField2.
+     *
+     * @param doc the plain text document
      */
     public UMLTextField2(UMLPlainTextDocument doc) {
         super(doc, null, 0);

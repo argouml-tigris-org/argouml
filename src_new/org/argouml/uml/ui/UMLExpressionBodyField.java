@@ -46,66 +46,110 @@ public class UMLExpressionBodyField
      * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
      * class. This will be removed.
      */
-    protected static Logger cat = 
+    private static final Logger LOG = 
         Logger.getLogger(UMLExpressionBodyField.class);
 
-    private UMLExpressionModel2 _model;
-    private boolean _notifyModel;
+    private UMLExpressionModel2 model;
+    private boolean notifyModel;
     
-    public UMLExpressionBodyField(UMLExpressionModel2 model,
-				  boolean notifyModel) {
-        _model = model;
-        _notifyModel = notifyModel;
+    /**
+     * The constructor.
+     * 
+     * @param m Expression model, should be shared between
+     * Language and Body fields
+     * @param n Only one of Language and Body fields should
+     * forward events to model
+     */
+    public UMLExpressionBodyField(UMLExpressionModel2 m,
+				  boolean n) {
+        model = m;
+        notifyModel = n;
         getDocument().addDocumentListener(this);       
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
+     */
     public void targetChanged() {
-	cat.debug("UMLExpressionBodyField: targetChanged");
-	if (_notifyModel) _model.targetChanged();
+	LOG.debug("UMLExpressionBodyField: targetChanged");
+	if (notifyModel) model.targetChanged();
         update();
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
+     */
     public void targetReasserted() {
     }
     
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
     public void propertySet(final MElementEvent event) {
-       	cat.debug("UMLExpressionBodyField: propertySet" + event);
+       	LOG.debug("UMLExpressionBodyField: propertySet" + event);
     }
     
     private void update() {
         String oldText = getText();
-        Object newText = _model.getBody();
-	cat.debug("UMLExpressionBodyField: update: " + oldText + " " + newText);
+        Object newText = model.getBody();
+	LOG.debug("UMLExpressionBodyField: update: " + oldText + " " + newText);
 
 	if (oldText == null || newText == null || !oldText.equals(newText)) {
             if (oldText != newText) {
-		cat.debug("setNewText!!");
+		LOG.debug("setNewText!!");
                 setText((String) newText);
             }
         }
     }
+    
+    /**
+     * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+     */
     public void changedUpdate(final DocumentEvent p1) {
-        _model.setBody(getText());
+        model.setBody(getText());
     }
+    
+    /**
+     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+     */
     public void removeUpdate(final DocumentEvent p1) {
-        _model.setBody(getText());
+        model.setBody(getText());
     }
+    
+    /**
+     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     */
     public void insertUpdate(final DocumentEvent p1) {
-        _model.setBody(getText());
+        model.setBody(getText());
     }
 }

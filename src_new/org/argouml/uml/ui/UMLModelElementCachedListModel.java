@@ -42,16 +42,29 @@ public abstract class UMLModelElementCachedListModel
      * 
      * @param container the container
      * @param property the property
-     * @param showNone
+     * @param showNone true if we have to show "none" for elements without name
      */
     public UMLModelElementCachedListModel(UMLUserInterfaceContainer container, 
             String property, boolean showNone) {
         super(container, property, showNone);
     }
 
+    /**
+     * Reset the cache.
+     */
     protected abstract void resetCache();
+    
+    /**
+     * @return the cache
+     */
     protected abstract java.util.List getCache();
+    
+    /**
+     * @param obj the given class
+     * @return
+     */
     public abstract boolean isProperClass(Object obj);
+    
     abstract Collection getRawCollection();
 
     java.util.Collection createCollection(int initialSize) {

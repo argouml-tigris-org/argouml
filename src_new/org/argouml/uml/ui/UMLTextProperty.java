@@ -38,27 +38,40 @@ import ru.novosoft.uml.MElementEvent;
 public class UMLTextProperty  {
 
     /** logger */
-    private static Logger cat = Logger.getLogger(UMLTextProperty.class);
+    private static final Logger LOG = Logger.getLogger(UMLTextProperty.class);
            
-    private Method _getMethod;
-    private Method _setMethod;
-    protected String _propertyName;
-    private static Object[] _noArg = {};    
+    private Method theGetMethod;
+    private Method theSetMethod;
+    private String thePropertyName;
+    private static Object[] noArg = {};    
 
+    /**
+     * The constructor.
+     * 
+     * @param propertyName the name of the property
+     */
     public UMLTextProperty(String propertyName) {
-        _propertyName = propertyName;
+        thePropertyName = propertyName;
     }
     
+    /**
+     * The constructor.
+     * 
+     * @param elementClass the element
+     * @param propertyName the name of the property
+     * @param getMethod the get method
+     * @param setMethod the set method
+     */
     public UMLTextProperty(Class elementClass, String propertyName,
 			   String getMethod, String setMethod) {
         
-        _propertyName = propertyName;
+        thePropertyName = propertyName;
         Class[] noClass = {};
         try {
-            _getMethod = elementClass.getMethod(getMethod, noClass);
+            theGetMethod = elementClass.getMethod(getMethod, noClass);
         }
         catch (Exception e) {
-            cat.error(e.toString() + " in UMLTextProperty: " + getMethod, e);
+            LOG.error(e.toString() + " in UMLTextProperty: " + getMethod, e);
             // 2002-07-20
             // Jaap Branderhorst
             // If it is illegal we should throw an exception
@@ -72,10 +85,10 @@ public class UMLTextProperty  {
 	    String.class
 	};
         try {
-            _setMethod = elementClass.getMethod(setMethod, stringClass);
+            theSetMethod = elementClass.getMethod(setMethod, stringClass);
         }
         catch (Exception e) {
-            cat.error(e.toString() + " in UMLTextProperty: " + setMethod, e);
+            LOG.error(e.toString() + " in UMLTextProperty: " + setMethod, e);
             // 2002-07-20
             // Jaap Branderhorst
             // If it is illegal we should throw an exception
@@ -87,6 +100,11 @@ public class UMLTextProperty  {
         }
     }
     
+    /**
+     * @param container the container of UML user interface components
+     * @param newValue the new value 
+     * @throws Exception
+     */
     public void setProperty(UMLUserInterfaceContainer container,
 			    String newValue)
 	throws Exception {
@@ -95,11 +113,17 @@ public class UMLTextProperty  {
 
     }
 
+    /**
+     * @param container the container of UML user interface components
+     * @param newValue the new value
+     * @param vetoableCheck
+     * @throws Exception
+     */
     public void setProperty(UMLUserInterfaceContainer container,
 			    String newValue, boolean vetoableCheck)
 	throws Exception {
 	
-        if (_setMethod != null) {
+        if (theSetMethod != null) {
             Object element = container.getTarget();
             if (element != null) {					
 		String oldValue = getProperty(container);
@@ -119,7 +143,7 @@ public class UMLTextProperty  {
 			try {
                             	
                             		
-			    _setMethod.invoke(element, args);
+			    theSetMethod.invoke(element, args);
 			    // Mark the project as having been changed 
 			    Project p =
 				ProjectManager.getManager().getCurrentProject();
@@ -128,8 +152,8 @@ public class UMLTextProperty  {
 			catch (InvocationTargetException inv) {
 			    Throwable targetException =
 				inv.getTargetException();
-			    cat.error(inv);
-			    cat.error(targetException);
+			    LOG.error(inv);
+			    LOG.error(targetException);
 			    if (targetException instanceof Exception) {
 				throw (Exception) targetException;
 			    }
@@ -142,23 +166,27 @@ public class UMLTextProperty  {
     }
 
     
+    /**
+     * @param container the container of UML user interface components
+     * @return the property value
+     */
     public String getProperty(UMLUserInterfaceContainer container) {
         String value = null;
-        if (_getMethod != null) {
+        if (theGetMethod != null) {
             Object element = container.getTarget();
             if (element != null) {
                 try {
-                    Object obj =  _getMethod.invoke(element, _noArg);
+                    Object obj =  theGetMethod.invoke(element, noArg);
                     if (obj != null) value = obj.toString();
                 }
                 catch (InvocationTargetException e) {
-                    cat.error(e.getTargetException().toString()
+                    LOG.error(e.getTargetException().toString()
 			      + " is invocationtargetexception "
 			      + "in UMLTextProperty.getMethod()", 
 			      e.getTargetException());
                 }
                 catch (Exception e) {
-                    cat.error(e.toString() + " in UMLTextProperty.getMethod()",
+                    LOG.error(e.toString() + " in UMLTextProperty.getMethod()",
 			      e);
                 }
             }
@@ -168,9 +196,9 @@ public class UMLTextProperty  {
     
     boolean isAffected(MElementEvent event) {
         String sourceName = event.getName();
-        if (_propertyName == null
+        if (thePropertyName == null
 	    || sourceName == null
-	    || sourceName.equals(_propertyName)) {
+	    || sourceName.equals(thePropertyName)) {
 
             return true;
 

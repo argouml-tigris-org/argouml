@@ -79,11 +79,11 @@ public abstract class UMLPlainTextDocument
      * Constructor for UMLPlainTextDocument. This takes a panel to set the
      * thirdpartyeventlistener to the given list of events to listen to.
      *
-     * @param eventName the event
+     * @param name the event
      */
-    public UMLPlainTextDocument(String eventName) {
+    public UMLPlainTextDocument(String name) {
         super();
-        setEventName(eventName);
+        setEventName(name);
     }
 
     /**

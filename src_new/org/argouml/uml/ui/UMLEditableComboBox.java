@@ -76,11 +76,11 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
             /**
              * The label that shows the icon.
              */
-            private JLabel _imageIconLabel = new JLabel();
+            private JLabel imageIconLabel = new JLabel();
             /**
              * The textfield the user can edit.
              */
-            private JTextField _textField;
+            private JTextField theTextField;
             
             /**
              * Constructs a UMLImagePanel
@@ -90,23 +90,24 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
              */
             public UMLImagePanel(JTextField textField, boolean showIcon) {
                 setLayout(new BorderLayout());
-                _textField = textField;
+                theTextField = textField;
                 setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
                 if (showIcon) {
-                    // we don't want to show some nasty gray background color, now do we?
-                    _imageIconLabel.setOpaque(true);
-                    _imageIconLabel.setBackground(_textField.getBackground());
-                    add(_imageIconLabel, BorderLayout.WEST);
+                    // we don't want to show some nasty gray background 
+                    // color, now do we?
+                    imageIconLabel.setOpaque(true);
+                    imageIconLabel.setBackground(theTextField.getBackground());
+                    add(imageIconLabel, BorderLayout.WEST);
                 }
-                add(_textField, BorderLayout.CENTER);
+                add(theTextField, BorderLayout.CENTER);
             }
 
             public void setText(String text) {
-                _textField.setText(text);
+                theTextField.setText(text);
             }
 
             public String getText() {
-                return _textField.getText();
+                return theTextField.getText();
             }
 
             /**
@@ -115,47 +116,51 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
              */
             public void setIcon(Icon i) {
                 if (i != null) {
-                    _imageIconLabel.setIcon(i);
-                    // necessary to create distance between the textfield and the icon.
-                    _imageIconLabel.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
+                    imageIconLabel.setIcon(i);
+                    // necessary to create distance between 
+                    // the textfield and the icon.
+                    imageIconLabel.setBorder(BorderFactory
+                            .createEmptyBorder(0, 2, 0, 2));
 
                 } else {
-                    _imageIconLabel.setIcon(null);
-                    _imageIconLabel.setBorder(null);
+                    imageIconLabel.setIcon(null);
+                    imageIconLabel.setBorder(null);
                 }
-                _imageIconLabel.invalidate();
+                imageIconLabel.invalidate();
                 validate();
                 repaint();
             }
 
             public void selectAll() {
-                _textField.selectAll();
+                theTextField.selectAll();
             }
             
             public void addActionListener(ActionListener l) {
-                _textField.addActionListener(l);                
+                theTextField.addActionListener(l);                
             }
             
             public void removeActionListener(ActionListener l) {
-                _textField.removeActionListener(l);
+                theTextField.removeActionListener(l);
             }
 
         }
 
-        private UMLImagePanel _panel;
+        private UMLImagePanel panel;
 
         /**
          * True if an icon should be shown.
          */
-        private boolean _showIcon;
+        private boolean theShowIcon;
 
 
         /**
          * Constructor for UMLComboBoxEditor.
+         *
+         * @param showIcon true if an icon is to be shown
          */
         public UMLComboBoxEditor(boolean showIcon) {
             super();
-            _panel = new UMLImagePanel(editor, showIcon);
+            panel = new UMLImagePanel(editor, showIcon);
             setShowIcon(showIcon);
         }
 
@@ -164,9 +169,11 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
          */
         public void setItem(Object anObject) {
             if (((UMLComboBoxModel2) getModel()).contains(anObject)) {
-                editor.setText(((UMLListCellRenderer2) getRenderer()).makeText(anObject));
-                if (_showIcon)
-                    _panel.setIcon(ResourceLoaderWrapper.getInstance().lookupIcon(anObject));
+                editor.setText(((UMLListCellRenderer2) getRenderer())
+                        .makeText(anObject));
+                if (theShowIcon)
+                    panel.setIcon(ResourceLoaderWrapper.getInstance()
+                            .lookupIcon(anObject));
             } else
                 super.setItem(anObject);
 
@@ -177,7 +184,7 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
          * @return boolean
          */
         public boolean isShowIcon() {
-            return _showIcon;
+            return theShowIcon;
         }
 
         /**
@@ -185,21 +192,21 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
          * @param showIcon The showIcon to set
          */
         public void setShowIcon(boolean showIcon) {
-            _showIcon = showIcon;
+            theShowIcon = showIcon;
         }
 
         /**
          * @see javax.swing.ComboBoxEditor#getEditorComponent()
          */
         public Component getEditorComponent() {
-            return _panel;
+            return panel;
         }
 
         /**
          * @see javax.swing.ComboBoxEditor#addActionListener(java.awt.event.ActionListener)
          */
         public void addActionListener(ActionListener l) {
-            _panel.addActionListener(l);
+            panel.addActionListener(l);
         }
         
         
@@ -208,7 +215,7 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
          * @see javax.swing.ComboBoxEditor#removeActionListener(java.awt.event.ActionListener)
          */
         public void removeActionListener(ActionListener l) {
-            _panel.removeActionListener(l);
+            panel.removeActionListener(l);
         }
 
         /**
@@ -222,15 +229,17 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
          * @see javax.swing.ComboBoxEditor#getItem()
          */
         public Object getItem() {
-            return _panel.getText();
+            return panel.getText();
         }
 
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2(UMLComboBoxModel2, UMLAction, boolean)
+     * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2(
+     * UMLComboBoxModel2, UMLAction, boolean)
      */
-    public UMLEditableComboBox(UMLComboBoxModel2 model, UMLAction selectAction, boolean showIcon) {
+    public UMLEditableComboBox(UMLComboBoxModel2 model, UMLAction selectAction, 
+            boolean showIcon) {
         super(model, selectAction, showIcon);
         setEditable(true);
         setEditor(new UMLComboBoxEditor(showIcon));
@@ -238,7 +247,8 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2(UMLComboBoxModel2, UMLAction)
+     * @see org.argouml.uml.ui.UMLComboBox2#UMLComboBox2(
+     * UMLComboBoxModel2, UMLAction)
      */
     public UMLEditableComboBox(UMLComboBoxModel2 arg0, UMLAction selectAction) {
         this(arg0, selectAction, true);
@@ -254,7 +264,8 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
             ComboBoxEditor editor = getEditor();
             Object item = editor.getItem();
             doOnEdit(item);
-            // next statement is necessary to update the textfield if the selection is equal to what was allready
+            // next statement is necessary to update the textfield 
+            // if the selection is equal to what was allready
             // selected
             if (oldValue == getSelectedItem())
                 getEditor().setItem(getSelectedItem());
