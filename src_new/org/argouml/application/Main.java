@@ -156,6 +156,7 @@ public class Main {
                     System.err.println("  -Duser.region      [e.g. US]");
                     System.err.println("  -Dforce.nativelaf  [force ArgoUML to use the native look and feel. UNSUPPORTED]");
                     System.err.println("\n\n");
+                    ArgoSecurityManager.getInstance().setAllowExit(true);
                     System.exit(0);
                 } else if (args[i].equalsIgnoreCase("-nosplash")) {
                     doSplash = false;
@@ -560,7 +561,7 @@ class PreloadClasses implements Runnable {
         c = org.argouml.uml.diagram.ui.SPFigEdgeModelElement.class;
 
         c = java.lang.ClassNotFoundException.class;
-        // c = org.argouml.ui.UpdateTreeHack.class;
+
         c = org.argouml.kernel.DelayedChangeNotify.class;
         c = org.tigris.gef.graph.GraphEvent.class;
         c = org.tigris.gef.graph.presentation.NetEdge.class;

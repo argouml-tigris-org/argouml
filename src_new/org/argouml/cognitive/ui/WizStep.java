@@ -38,6 +38,7 @@ import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
+import org.argouml.util.osdep.*;
 
 /** Each Critic may provide a Wizard to help fix the problem it
  *  identifies.  The "Next>" button will advance through the steps of
@@ -132,10 +133,7 @@ implements TabToDoTarget, ActionListener, DocumentListener {
       _backButton.setEnabled(w != null ? w.canGoBack() : false);
       _nextButton.setEnabled(w != null ? w.canGoNext() : false);
       _finishButton.setEnabled(w != null ? w.canFinish() : false);
-      
-      // TODO: URLS are all wrong and TinyHTMLViewer from 
-      // GEF is currently not capable of rendering our documentation
-      _helpButton.setEnabled(false);
+      _helpButton.setEnabled(true);
     }
     else {
       //_description.setText("TODO");
@@ -182,9 +180,7 @@ implements TabToDoTarget, ActionListener, DocumentListener {
     if (!(_target instanceof ToDoItem)) return;
     ToDoItem item = (ToDoItem) _target;
     String urlString = item.getMoreInfoURL();
-    TinyHTMLViewer viewer = new TinyHTMLViewer("http://www.argouml.org/documentation/");
-    viewer.setVisible(true);
-    //TODO: display critic/wizard help;
+    StartBrowser.openUrl(urlString);
   }
 
   protected void updateTabToDo() {

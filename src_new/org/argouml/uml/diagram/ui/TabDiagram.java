@@ -55,9 +55,12 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // constructor
-
   public TabDiagram() {
-    super("Diagram");
+        this("Diagram");
+  }
+
+  public TabDiagram(String tag) {
+    super(tag);
     setLayout(new BorderLayout());
     _jgraph = new JGraph();
     _jgraph.setDrawingSize((612-30) * 2, (792-55-20)*2);
@@ -155,3 +158,10 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
   }
 
 }
+
+
+
+
+
+
+

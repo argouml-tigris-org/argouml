@@ -24,7 +24,7 @@
 package org.argouml.ui;
 
 import org.argouml.uml.ui.UMLAction;
-
+import org.argouml.application.api.*;
 import java.awt.event.*;
 
 /** A class to keep track of the users desire to have his diagram nodes
@@ -38,7 +38,8 @@ public class ActionAutoResize extends UMLAction {
     private static boolean _autoResize = true;
   
     public ActionAutoResize() {
-        super("Toggle Auto Resizing", NO_ICON);
+        super(Argo.localize(Argo.MENU_BUNDLE,"Toggle Auto Resizing"), 
+              NO_ICON);
     }
 
     public void actionPerformed(ActionEvent ae) {

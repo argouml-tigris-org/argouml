@@ -126,4 +126,10 @@ td
 	mso-number-format:"Short Date";}
 .xl30
 	{mso-style-parent:style0;
+	mso-number-format:"h\:mm";}
+.xl31
+	{mso-style-parent:style0;
 	mso-number-format:0;}
+.xl32
+	{mso-style-parent:style0;
+	mso-number-format:"Short Time";}

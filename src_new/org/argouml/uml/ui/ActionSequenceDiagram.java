@@ -44,15 +44,15 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
-    public static ActionSequenceDiagram SINGLETON = new ActionSequenceDiagram(); 
+
+    public static ActionSequenceDiagram SINGLETON = new ActionSequenceDiagram();
 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
     private ActionSequenceDiagram() {
-        super(Translator.localize("CoreMenu", "SequenceDiagram"));
+        super("SequenceDiagram");
     }
 
 
@@ -93,8 +93,8 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
         //if (target instanceof UMLDiagram) {
             c = UmlFactory.getFactory().getCollaborations().buildCollaboration(p.getModel());
         //} else {
-            
-        } } } } }  
+
+        } } } } }
         if (c != null) {
             // UmlFactory.getFactory().getCollaborations().buildInteraction(c);
             UMLSequenceDiagram d  = new UMLSequenceDiagram(c);
@@ -109,7 +109,7 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
 	super.actionPerformed(ae);
     }
 */
-    
+
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
      */
@@ -118,14 +118,14 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
         if (target instanceof MOperation) {
             c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
             c.setRepresentedOperation((MOperation)target);
-        } else 
+        } else
         if (target instanceof MClassifier) {
             c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
             c.setRepresentedClassifier((MClassifier)target);
-        } else 
+        } else
         if (target instanceof MModel) {
             c = UmlFactory.getFactory().getCollaborations().buildCollaboration((MModel)target);
-        } else 
+        } else
         if (target instanceof MInteraction) {
             c = ((MInteraction)target).getContext();
         } else
@@ -133,13 +133,13 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
             Object o = ((UMLSequenceDiagram)target).getOwner();
             if (o instanceof MCollaboration) { //preventing backward compat problems
                 c = (MCollaboration)o;
-            } 
-        } else 
+            }
+        } else
         if (target instanceof MCollaboration) {
             c = (MCollaboration)target;
         } else {
             c =  UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
-        }   
+        }
         UMLSequenceDiagram d  = new UMLSequenceDiagram(c);
         return d;
     }

@@ -36,18 +36,18 @@ import org.argouml.i18n.Translator;
  *  @stereotype singleton
  */
 public class ActionClassDiagram extends ActionAddDiagram {
-  
+
     ////////////////////////////////////////////////////////////////
     // static variables
-    
-    public static ActionClassDiagram SINGLETON = new ActionClassDiagram(); 
+
+    public static ActionClassDiagram SINGLETON = new ActionClassDiagram();
 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
     private ActionClassDiagram() {
-        super(Translator.localize("CoreMenu", "ClassDiagram"));
+        super("ClassDiagram");
     }
 
     /**

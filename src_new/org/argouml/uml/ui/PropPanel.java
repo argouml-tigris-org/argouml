@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-02 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without ga written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,7 @@
 // Original Author:
 // $Id$
 
+
 // 23 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Added the third party
 // event listener.
 
@@ -37,6 +38,7 @@
 package org.argouml.uml.ui;
 
 import org.argouml.application.api.*;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.*;
@@ -641,7 +643,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
     public void removeElement() {
         Object target = getTarget();
-        if(target instanceof MBase) {
+        if(target instanceof MBase) { 
             MBase base = (MBase) target;
             Object projectTarget = ProjectBrowser.TheInstance.getTarget();
             ProjectBrowser.TheInstance.setTarget(base);
@@ -653,5 +655,15 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 	   
         }
     }
+
+    /** check whether this element can be deleted. 
+     *  Currently it only checks whether we delete the main model.
+     *  ArgoUML does not like that.
+     *  @since 0.13.2
+     */
+   public boolean isRemovableElement() {
+       return ((getTarget() != null) && 
+               (getTarget()!= ProjectManager.getManager().getCurrentProject().getModel()));
+   } 
 
 } /* end class PropPanel */

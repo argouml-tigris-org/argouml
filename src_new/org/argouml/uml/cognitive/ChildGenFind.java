@@ -46,7 +46,9 @@ import org.argouml.kernel.*;
  *  Project, to Models, to ModelElements.  Argo's critic Agency uses
  *  this to apply critics where appropriate.
  *
- * @see org.argouml.cognitive.critics.Agency */
+ * @see org.argouml.cognitive.critics.Agency 
+ * @stereotype singleton
+ */
 
 public class ChildGenFind implements ChildGenerator {
   public static ChildGenFind SINGLETON = new ChildGenFind();

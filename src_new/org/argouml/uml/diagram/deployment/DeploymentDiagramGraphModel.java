@@ -19,14 +19,11 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import org.tigris.gef.graph.*;
 
 import org.argouml.uml.MMUtil;
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
-public class DeploymentDiagramGraphModel extends MutableGraphSupport
+public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 implements VetoableChangeListener  {
     protected static Category cat = Category.getInstance(DeploymentDiagramGraphModel.class);
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected Vector _nodes = new Vector();
-  protected Vector _edges = new Vector();
 
   /** The "home" UML model of this diagram, not all ModelElements in this
    *  graph are in the home model, but if they are added and don't
@@ -47,11 +44,6 @@ implements VetoableChangeListener  {
   ////////////////////////////////////////////////////////////////
   // GraphModel implementation
 
-  /** Return all nodes in the graph */
-  public Vector getNodes() { return _nodes; }
-
-  /** Return all nodes in the graph */
-  public Vector getEdges() { return _edges; }
 
   /** Return all ports on node or edge */
   public Vector getPorts(Object nodeOrEdge) {
@@ -204,13 +196,7 @@ if(_edges.contains(edge)) return false;
     return true;
  }
 
-  /** Remove the given node from the graph. */
-  public void removeNode(Object node) {
-    if (!_nodes.contains(node)) return;
-    _nodes.removeElement(node);
-    fireNodeRemoved(node);
-  }
-
+ 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
     cat.debug("adding class node!!");
@@ -289,13 +275,6 @@ if(_edges.contains(edge)) return false;
     }
  }
 
-
-  /** Remove the given edge from the graph. */
-  public void removeEdge(Object edge) {
-    if (!_edges.contains(edge)) return;
-    _edges.removeElement(edge);
-    fireEdgeRemoved(edge);
-  }
 
   /** Return true if the two given ports can be connected by a
    * kind of edge to be determined by the ports. */

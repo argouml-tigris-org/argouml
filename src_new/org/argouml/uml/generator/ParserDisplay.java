@@ -24,8 +24,8 @@
 // File: ParserDisplay.java
 // Classes: ParserDisplay
 // Original Author:
-
 // $Id$
+
 
 
 
@@ -167,7 +167,7 @@ public class ParserDisplay extends Parser {
   /**
    * The standard error etc. logger
    */
-  protected static final Category _cat = 
+  protected static final Category _cat =
     Category.getInstance(ParserDisplay.class);
 
   /** The array of special properties for attributes */
@@ -193,7 +193,7 @@ public class ParserDisplay extends Parser {
   /** The vector of CustomSeparators to use when tokenizing parameters */
   private Vector _parameterCustomSep;
 
-  /** The character with a meaning as a visibility at the start of an attribute */   
+  /** The character with a meaning as a visibility at the start of an attribute */
   private final static String visibilityChars = "+#-";
 
   /**
@@ -359,17 +359,76 @@ public class ParserDisplay extends Parser {
   public void parseOperationFig(MClassifier cls, MOperation op, String text)
 		throws ParseException {
     if (cls == null || op == null)
-	return;
-
-    parseOperation(text, op);
+      return;
+    //parseOperation(text, op);
+    ParseException pex = null;
+    StringTokenizer st = new StringTokenizer(text,";");
+    String s = st.hasMoreTokens() ? st.nextToken().trim() : null;
+    if (s != null && s.length() > 0) {
+      parseOperation(s,op);
+    }
+    // more operations entered:
+    int i = cls.getFeatures().indexOf(op);
+    while (st.hasMoreTokens()) {
+      s = st.nextToken().trim();
+      if (s != null && s.length() > 0) {
+        MOperation newOp = UmlFactory.getFactory().getCore().buildOperation(cls);
+        if (newOp != null) {
+          try {
+            parseOperation(s,newOp);
+            //newOp.setOwnerScope(op.getOwnerScope()); // not needed in case of operation
+            if (i != -1) {
+              cls.addFeature(++i,newOp);
+            } else {
+              cls.addFeature(newOp);
+            }
+          }
+          catch (ParseException ex) {
+            if (pex == null)
+              pex = ex;
+          }
+        }
+      }
+    }
+    if (pex != null)
+      throw pex;
   }
 
 
   public void parseAttributeFig(MClassifier cls, MAttribute at, String text) throws ParseException {
     if (cls == null || at == null)
-	return;
-
-    parseAttribute(text, at);
+      return;
+    ParseException pex = null;
+    StringTokenizer st = new StringTokenizer(text,";");
+    String s = st.hasMoreTokens() ? st.nextToken().trim() : null;
+    if (s != null && s.length() > 0) {
+      parseAttribute(s,at);
+    }
+    // more attributes entered:
+    int i = cls.getFeatures().indexOf(at);
+    while (st.hasMoreTokens()) {
+      s = st.nextToken().trim();
+      if (s != null && s.length() > 0) {
+        MAttribute newAt = UmlFactory.getFactory().getCore().buildAttribute();
+        if (newAt != null) {
+          try {
+            parseAttribute(s,newAt);
+            newAt.setOwnerScope(at.getOwnerScope());
+            if (i != -1) {
+              cls.addFeature(++i,newAt);
+            } else {
+              cls.addFeature(newAt);
+            }
+          }
+          catch (ParseException ex) {
+            if (pex == null)
+              pex = ex;
+          }
+        }
+      }
+    }
+    if (pex != null)
+      throw pex;
   }
 
     /**
@@ -846,7 +905,7 @@ public class ParserDisplay extends Parser {
   }
 
 /**
- * Parses a string for multiplicity and sets the multiplicity with the given 
+ * Parses a string for multiplicity and sets the multiplicity with the given
  * attribute.
  * @param f
  * @param s
@@ -866,15 +925,15 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
     }
 
     s = s.substring(multiString.length(), s.length());
-    
+
     multiString = multiString.trim();
     int multiStart = 0;
     int multiEnd = multiString.length();
-    
+
     if (multiEnd > 0 && multiString.charAt(0) == '[') multiStart = 1;
     if (multiEnd > 0 && multiString.charAt(multiEnd-1) == ']') --multiEnd;
     multiString = multiString.substring(multiStart, multiEnd).trim();
-    
+
     if (multiString.length() > 0) f.setMultiplicity(UmlFactory.getFactory().getDataTypes().createMultiplicity(multiString));
 
     return s;
@@ -1140,7 +1199,7 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
     // Should we be getting this from the GUI? BT 11 aug 2002
     type = p.findType(name);
     if (type == null) { // no type defined yet
-	type = UmlFactory.getFactory().getCore().buildClass(name);                
+	type = UmlFactory.getFactory().getCore().buildClass(name);
     }
     if (type.getModel() != p.getModel() && !ModelManagementHelper.getHelper().getAllNamespaces(p.getModel()).contains(type.getNamespace())) {
     	type.setNamespace(p.getModel());
@@ -1359,8 +1418,8 @@ nextProp:
   }
 
 /**
- * Parses the properties for some attribute a out of a string s. The properties 
- * are all keywords between the braces at the end of a string notation of an 
+ * Parses the properties for some attribute a out of a string s. The properties
+ * are all keywords between the braces at the end of a string notation of an
  * attribute.
  * @param a
  * @param s
@@ -1387,17 +1446,17 @@ nextProp:
                     valueStr = propertyStr.substring(propertyStr.indexOf("="+1, propertyStr.length()));
                 }
                 MTaggedValue tag = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
- 
+
                 tag.setTag(tagStr);
                 tag.setValue(valueStr);
                 a.addTaggedValue(tag);
             }
         }
         return s.substring(s.indexOf("}"), s.length());
-    }          
+    }
     return s;
   }
-  
+
   protected String parseOutProperties(MOperation op, String s) {
     s = s.trim();
     if (s.indexOf("{") >= 0) {
@@ -1411,7 +1470,7 @@ nextProp:
             if (properties.get(i).equals("query")) {
                 op.setQuery(true);
             } else {
-                if (properties.get(i).equals("sequential") || 
+                if (properties.get(i).equals("sequential") ||
                     properties.get(i).equals("concurrency=sequential")) {
                         op.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
                 } else {
@@ -1419,7 +1478,7 @@ nextProp:
                         properties.get(i).equals("concurrency=guarded")) {
                         op.setConcurrency(MCallConcurrencyKind.GUARDED);
                     } else {
-                        if (properties.get(i).equals("concurrent") || 
+                        if (properties.get(i).equals("concurrent") ||
                             properties.get(i).equals("concurrency=concurrent")) {
                                 op.setConcurrency(MCallConcurrencyKind.CONCURRENT);
                         } else {
@@ -1440,7 +1499,7 @@ nextProp:
             }
         }
         return s.substring(s.indexOf("}"), s.length());
-    }          
+    }
     return s;
   }
   /*
@@ -1475,16 +1534,16 @@ nextProp:
                     endMultiSb.append(c);
                 }
                 break;
-            case '.' :  
+            case '.' :
                 if (!inDots && inMultiString) {
                     inDots = true;
                     dotCounter = 0;
                 }
-                dotCounter++; 
+                dotCounter++;
                 break;
             case ',' :
                 if (inMultiString) { // we have an end sign of a mutiplicity
-                    
+
                 break;
             case ' ' :
                 break;
@@ -1497,11 +1556,11 @@ nextProp:
 */
 
 /**
- * Parses a string for visibilitykind. Visibilitykind can both be specified 
+ * Parses a string for visibilitykind. Visibilitykind can both be specified
  * using the standard #, +, - and the keywords public, private, protected.
  * @param f The feature the visibility is part of
  * @param s The string that possibly identifies some visibility
- * @return String The string s WITHOUT the visibility signs. 
+ * @return String The string s WITHOUT the visibility signs.
  */
   public String parseOutVisibility(MFeature f, String s) {
     s = s.trim();
@@ -1517,7 +1576,7 @@ nextProp:
     } else if (visStr.equals("+")) {
         f.setVisibility(MVisibilityKind.PUBLIC);
         return s.substring(1, s.length());
-    } 
+    }
     // public, private, protected as keyword
     int firstSpace = s.indexOf(' ');
     if (firstSpace > 0) {
@@ -1538,8 +1597,8 @@ nextProp:
 
 
     /**
-     * Parses the parameters with an operation. The string containing the 
-     * parameters must be the first string within the given string s. It must 
+     * Parses the parameters with an operation. The string containing the
+     * parameters must be the first string within the given string s. It must
      * start with ( and the end of the string containing the parameters is ).
      * @param op
      * @param s
@@ -1563,7 +1622,7 @@ nextProp:
                                     while (it.hasNext()) {
                                         MElementListener listener = (MElementListener)it.next();
                                         // UmlModelEventPump.getPump().removeModelEventListener(listener, p);
-                                        UmlModelEventPump.getPump().addModelEventListener(listener, p); 
+                                        UmlModelEventPump.getPump().addModelEventListener(listener, p);
                                     }
 			         }
 			leftOver = s.substring(end+1);
@@ -1574,7 +1633,7 @@ nextProp:
 
 /**
  * Parses the name of modelelement me from some input string s. The name must be
- * the first word of the string. 
+ * the first word of the string.
  * @param me
  * @param s
  * @return String
@@ -1585,11 +1644,11 @@ nextProp:
     if (s.equals("") || delim.indexOf(s.charAt(0)) >= 0) { //duh there is no name
         if (me.getName() == null || me.getName().equals("")) {
             me.setName("anno");
-        } 
+        }
         return s;
     }
     // next sign can be: ' ', '=', ':', '{', '}', '\n', '[', ']', '(', ')'
-    // any of these indicate that name is to an end.    
+    // any of these indicate that name is to an end.
     java.util.StringTokenizer st = new java.util.StringTokenizer(s, delim);
     if (!st.hasMoreTokens()) {
       _cat.debug("name not parsed");
@@ -1603,17 +1662,17 @@ nextProp:
     int namePos = s.indexOf(nameStr);
     return s.substring(namePos + nameStr.length());
   }
-    
+
     /**
-     * Parses the user given string s for the type of an attribute. The string 
-     * should start with :. The part between : and { (if there are properties) 
+     * Parses the user given string s for the type of an attribute. The string
+     * should start with :. The part between : and { (if there are properties)
      * or the end of the string if there are no properties.
      * @param attr
      * @param s
      * @return String
      */
 	public String parseOutType(MAttribute attr, String s) {
-        s = s.trim();       
+        s = s.trim();
         if (s.startsWith(":")) { // we got ourselves a type expression
             MClassifier type = null;
             s = s.substring(1, s.length()).trim();
@@ -1622,7 +1681,7 @@ nextProp:
 		Project p = ProjectManager.getManager().getCurrentProject();
 		type = p.findType(typeExpr); // Should we be getting this from the GUI? BT 11 aug 2002
 		if (type == null) { // no type defined yet
-		    type = UmlFactory.getFactory().getCore().buildClass(typeExpr);                
+		    type = UmlFactory.getFactory().getCore().buildClass(typeExpr);
 		}
 		if (attr.getNamespace() != null) {
 		    type.setNamespace(attr.getNamespace());
@@ -1633,8 +1692,8 @@ nextProp:
         }
         return s;
     }
-    
-    
+
+
     /**
      * Parses the return type for an operation.
      * @param op
@@ -1642,7 +1701,7 @@ nextProp:
      * @return String
      */
     protected String parseOutReturnType(MOperation op, String s) {
-        s = s.trim();       
+        s = s.trim();
         if (s.startsWith(":")) { // we got ourselves a type expression
             MClassifier type = null;
             s = s.substring(1, s.length()).trim();
@@ -1652,11 +1711,11 @@ nextProp:
 		Project p = ProjectManager.getManager().getCurrentProject();
 		type = p.findType(typeExpr);
 		if (type == null) { // no type defined yet
-		    type = UmlFactory.getFactory().getCore().buildClass(typeExpr); 
+		    type = UmlFactory.getFactory().getCore().buildClass(typeExpr);
 		    // the owner of this type should be the model in which
 		    // the class that contains the operation lives
 		    // since we don't know that class, the model is not set here
-		    // but in the method that calls parseOperation(String s)               
+		    // but in the method that calls parseOperation(String s)
 		}
 		MParameter param = UmlFactory.getFactory().getCore().buildParameter();
 		UmlHelper.getHelper().getCore().setReturnParameter(op,param);
@@ -1672,7 +1731,7 @@ nextProp:
         s = s.trim();
         int equalsIndex = s.indexOf("=");
         int braceIndex = s.indexOf("{");
-        if (equalsIndex >=0 && ((braceIndex >= 0 && braceIndex>equalsIndex) || 
+        if (equalsIndex >=0 && ((braceIndex >= 0 && braceIndex>equalsIndex) ||
             (braceIndex < 0 && equalsIndex >=0 ))) { // we have ourselves some init
                                                     // expression
             s = s.substring(equalsIndex, s.length());
@@ -1721,7 +1780,7 @@ nextProp:
    *  form "lower..upper", or "integer" */
   public MMultiplicity parseMultiplicity(String s) {
 	  return UmlFactory.getFactory().getDataTypes().createMultiplicity(s);
- 
+
   }
 
 
@@ -1739,7 +1798,7 @@ nextProp:
       st.setDoActivity(null);
 
       Collection trans = new ArrayList();
-      java.util.StringTokenizer lines = 
+      java.util.StringTokenizer lines =
           new java.util.StringTokenizer(s, "\n\r");
       while (lines.hasMoreTokens()) {
           String line = lines.nextToken().trim();
@@ -1747,10 +1806,10 @@ nextProp:
           else if (line.startsWith("exit")) parseStateExitAction(st, line);
           else if (line.startsWith("do")) parseStateDoAction(st,line);
           else {
-              MTransition t = 
+              MTransition t =
                   parseTransition(UmlFactory.getFactory().
                                   getStateMachines().createTransition(),line);
- 
+
 
               if (t == null) continue;
               _cat.debug("just parsed:" + GeneratorDisplay.Generate(t));
@@ -1760,7 +1819,7 @@ nextProp:
               trans.add(t);
           }
 	  }
-      
+
 
       Vector internals = new Vector(st.getInternalTransitions());
       Vector oldinternals = new Vector(st.getInternalTransitions());
@@ -1831,7 +1890,7 @@ nextProp:
     _cat.debug("trigger=|" + trigger +"|");
     _cat.debug("guard=|" + guard +"|");
     _cat.debug("actions=|" + actions +"|");
-    
+
     trans.setName(parseName(name));
 
     if (trigger.length()>0) {
@@ -2344,7 +2403,7 @@ addBases:
         buf.append(varname + " := " + fname + " ( " + paramExpr + " )" + "\n");
         _cat.debug(buf);
     }
-        
+
 
 
     if (mes.getAction() == null) {
@@ -2490,7 +2549,7 @@ addBases:
 		    swapRoles = true;
 		}
 	    }
-	} else if (!hasMsgWithActivator(mes.getSender(), null) && 
+	} else if (!hasMsgWithActivator(mes.getSender(), null) &&
 		   hasMsgWithActivator(mes.getReceiver(), null))
 	    swapRoles = true;
 
@@ -2930,7 +2989,7 @@ predfor:
         // operations to the figs that represent them
         MClassifier cls = (MClassifier)it.next();
 	MOperation op = UmlFactory.getFactory().getCore().buildOperation(cls);
-        
+
 	try {
 	    parseOperation(expr, op);
 	} catch (ParseException pe) {
@@ -3029,15 +3088,15 @@ predfor:
 
   public MAction parseAction(String s) {
 	  MCallAction a = UmlFactory.getFactory().getCommonBehavior().createCallAction();
- 
+
 	  a.setScript(UmlFactory.getFactory().getDataTypes().createActionExpression("Java",s));
- 
+
 	  return a;
   }
 
     /*  public MActionSequence parseActions(String s) {
     MActionSequence as = UmlFactory.getFactory().getCommonBehavior().createActionSequence(s);
- 
+
     as.setName(s);
     return as;
     }*/
@@ -3045,13 +3104,13 @@ predfor:
   public MGuard parseGuard(String s) {
 	MGuard g = UmlFactory.getFactory().getStateMachines().createGuard();
 	g.setExpression(UmlFactory.getFactory().getDataTypes().createBooleanExpression("Java",s));
- 
+
         return g;
   }
 
   public MEvent parseEvent(String s) {
 	MCallEvent ce = UmlFactory.getFactory().getStateMachines().createCallEvent();
- 
+
 	ce.setName(s);
 	ce.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
         return ce;

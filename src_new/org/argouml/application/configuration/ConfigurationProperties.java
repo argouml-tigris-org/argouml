@@ -171,7 +171,9 @@ public class ConfigurationProperties extends ConfigurationHandler {
       catch (Exception e) {
           result = defaultValue;
       }
-      Configuration.cat.debug("key '" + key + "' returns '" + result + "'");
+      if (Configuration.cat.isDebugEnabled())
+	  Configuration.cat.debug("key '" + key 
+				  + "' returns '" + result + "'");
       return result;
   }
 

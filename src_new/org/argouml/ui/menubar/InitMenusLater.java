@@ -37,7 +37,6 @@ import org.tigris.gef.util.*;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.ui.*;
-import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.uml.ui.*;
 
 
@@ -45,13 +44,12 @@ class InitMenusLater implements Runnable {
   JMenu align, distribute, reorder, nudge, setPreferredSize, layout;
   JMenu editTabs, detailsTabs;
 
-  public InitMenusLater(JMenu a, JMenu d, JMenu r, JMenu n, JMenu sPS, 
+  public InitMenusLater(JMenu a, JMenu d, JMenu r, JMenu n, 
                         JMenu l, JMenu et, JMenu dt) {
     align = a;
     distribute = d;
     reorder = r;
     nudge = n;
-    setPreferredSize = sPS;
     layout = l;
     editTabs = et;
     detailsTabs = dt;
@@ -118,12 +116,6 @@ class InitMenusLater implements Runnable {
     nudge.add(new CmdNudge(CmdNudge.RIGHT));
     nudge.add(new CmdNudge(CmdNudge.UP));
     nudge.add(new CmdNudge(CmdNudge.DOWN));
-
-
-    setPreferredSize.
-        add(new CmdSetPreferredSize(CmdSetPreferredSize.MINIMUM_SIZE));
-    setPreferredSize.
-        add(new CmdSetPreferredSize(CmdSetPreferredSize.PREFERRED_SIZE));
 
     JMenuItem autoLayout = layout.add(new ActionLayout("Automatic"));
     JMenuItem incrLayout = layout.add(new ActionLayout("Incremental"));

@@ -49,9 +49,12 @@ public abstract class AbstractGoRule implements TreeModel {
 	 * @see javax.swing.tree.TreeModel#getChildCount(Object)
 	 */
 	public int getChildCount(Object parent) {
-		Vector children = toVector(getChildren(parent));
-    	if (!children.isEmpty()) return children.size();
-    	return 0;
+	    Collection c = getChildren(parent);
+
+	    if (c == null)
+		return 0;
+
+	    return c.size();
 	}
 	
 	private Vector toVector(Collection col) {
