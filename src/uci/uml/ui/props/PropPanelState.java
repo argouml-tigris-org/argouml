@@ -192,20 +192,20 @@ implements DocumentListener, ItemListener {
     if (_inChange) return;
     MState s = (MState) _target;
     String newText = _entryField.getText();
-    System.out.println("setTargetEntry: " + newText);
-	MActionSequence as = new MActionSequenceImpl();
-	as.setName(newText);
-	s.setEntry(as);
+	MActionExpression expr = new MActionExpression("Java",newText);
+	MUninterpretedAction action = new MUninterpretedActionImpl();
+	action.setScript(expr);
+	s.setEntry(action);
   }
 
   public void setTargetExit() {
     if (_inChange) return;
     MState s = (MState) _target;
     String newText = _exitField.getText();
-    System.out.println("setTargetExit: " + newText);
-	MActionSequence as = new MActionSequenceImpl();
-	as.setName(newText);
-	s.setExit(as);
+	MActionExpression expr = new MActionExpression("Java",newText);
+	MUninterpretedAction action = new MUninterpretedActionImpl();
+	action.setScript(expr);
+	s.setExit(action);
   }
 
 

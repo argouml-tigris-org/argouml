@@ -8,6 +8,7 @@ SOURCES= \
 	Actions.java \
 	ActionGoToCritique.java \
 	AddToDoItemDialog.java \
+	ArgoConstraintEvaluation.java \
 	ArgoFileFilter.java \
 	ChildGenFind.java \
 	ChildGenRelated.java \

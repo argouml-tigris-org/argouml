@@ -1232,7 +1232,7 @@ class ActionActivityDiagram extends UMLChangeAction {
       am.setNamespace(ns);
       am.setTop(cs);
       ns.addBehavior(am);
-      UMLActivityDiagram d = new UMLActivityDiagram(ns);
+      UMLActivityDiagram d = new UMLActivityDiagram(ns, am);
       p.addMember(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
       pb.setTarget(d);

@@ -141,10 +141,10 @@ implements DocumentListener, ItemListener {
     if (_inChange) return;
     MActionState s = (MActionState) _target;
     String newText = _entryField.getText();
-    System.out.println("setTargetEntry: " + newText);
-	MActionSequence as = new MActionSequenceImpl();
-	as.setName(newText);
-	s.setEntry(as);
+	MActionExpression expr = new MActionExpression("Java", newText);
+	MUninterpretedAction action = new MUninterpretedActionImpl();
+	action.setScript(expr);
+	s.setEntry(action);
   }
 
 

@@ -23,62 +23,23 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.model_management.*;
 
-import tudresden.ocl.*;
+//import tudresden.ocl.*;
 
-public class DialogConstraint extends JDialog implements ActionListener{
-    
-    JTextArea _expressionField;
-    JButton _okButton;
-    JButton _cancelButton;
-    JLabel _message;
+public class DialogConstraint extends JDialog {
 
-    String resultingExpression = null;
+    ArgoConstraintEvaluation ace;
 
     public DialogConstraint(MModelElement me, JFrame parentFrame) {
-	super(parentFrame, true);
-	setTitle("Enter new OCL constraint");
-	_expressionField = new JTextArea(4,20);
-	_expressionField.setText("context " + me.getName());
-	_okButton = new JButton("OK");
-	_okButton.addActionListener(this);
-	_cancelButton = new JButton("Cancel");
-	_cancelButton.addActionListener(this);
-	_message = new JLabel(" ");
-	JPanel buttonPanel = new JPanel();
-	buttonPanel.add(_okButton);
-	buttonPanel.add(_cancelButton);
-	JPanel inputPanel = new JPanel(new BorderLayout());
-	inputPanel.add(_expressionField);
-	inputPanel.add(buttonPanel,BorderLayout.SOUTH);
-
-	JPanel content = new JPanel(new BorderLayout());
-	content.add(inputPanel);
-	content.add(_message, BorderLayout.SOUTH);
-	getContentPane().add(content);
-
-	pack();
-    }
-
-    public void actionPerformed(ActionEvent e) {
-	if (e.getSource() == _okButton) {
-	    try {
-		OclTree tree = OclTree.createTree(_expressionField.getText(), new ArgoFacade());
-		tree.assureTypes();
-		resultingExpression = _expressionField.getText();
-		dispose();
-	    }
-	    catch (Exception ex) {
-		_message.setText(ex.getMessage());
-	    }
-	}
-
-	if (e.getSource() == _cancelButton) {
-	    dispose();
-	}
+      super(parentFrame, true);
+      setTitle("Enter new OCL constraint");
+      ace=new ArgoConstraintEvaluation(this);
+      ace.setConstraint("context " + me.getName());
+      getContentPane().add(ace);
+      pack();
     }
 
     public String getResultingExpression() {
-	return resultingExpression;
+      return ace.getResultConstraint();
     }
 }
-    
+

@@ -103,14 +103,32 @@ public class UMLActivityDiagram extends UMLDiagram {
     }
   }
 
-  public void setNamespace(MNamespace m) {
+  public UMLActivityDiagram(MNamespace m, MActivityGraph agraph) {
+
+    this();
+	if (m != null && m.getName() != null) {
+		String name = m.getName() + " states "+ (m.getBehaviors().size());
+		try { setName(name); }
+		catch (PropertyVetoException pve) { }
+    }
+	if (m != null && m.getNamespace() != null) setup(m, agraph);
+  }
+
+	public void initialize(Object o) {
+		if (!(o instanceof MActivityGraph)) return;
+		MActivityGraph sm = (MActivityGraph)o;
+		MModelElement context = sm.getContext();
+		if (context != null && context instanceof MClass)
+			setup((MClass)context, sm);
+		else
+			System.out.println("ActivityGraph without context not yet possible :-(");
+	}
+
+  public void setup(MNamespace m, MActivityGraph agraph) {
     super.setNamespace(m);
     StateDiagramGraphModel gm = new StateDiagramGraphModel();
     gm.setNamespace(m);
-    MStateMachine sm = null;
-    Vector beh = new Vector(m.getBehaviors());
-    if (beh.size() == 1) sm = (MStateMachine) beh.elementAt(0);
-    gm.setMachine(sm);
+	if (agraph != null) gm.setMachine(agraph);
     setGraphModel(gm);
     LayerPerspective lay = new LayerPerspective(m.getName(), gm);
     setLayer(lay);
