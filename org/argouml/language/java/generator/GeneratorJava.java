@@ -59,7 +59,8 @@ import org.argouml.uml.generator.*;
 
 // needs-more-work: always check for null!!!
 
-public class GeneratorJava extends Generator implements PluggableNotation {
+public class GeneratorJava extends Generator 
+implements PluggableNotation, FileGenerator {
 
   private static final boolean VERBOSE_DOCS = false; // TODO: make it configurable
   private static final boolean LF_BEFORE_CURLY = false; // TODO: make it configurable
@@ -68,7 +69,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
 
   public static GeneratorJava getInstance() { return SINGLETON; }
 
-  public GeneratorJava() {
+  private GeneratorJava() {
     super (Notation.makeNotation ("Java",
                                   null,
                                   Argo.lookupIconResource ("JavaNotation")));
@@ -78,10 +79,13 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     return SINGLETON.generate (o);
   }
 
-  public static String GenerateFile (MClassifier cls,
-                                     String path) {
-    // GenerateFile now returns the full path name of the
-    // the generated file.
+    /** Generates a file for the classifier.
+     * This method could have been static if it where not for the need to
+     * call it through the Generatorinterface.
+     * @returns the full path name of the the generated file.
+     */
+  public String GenerateFile (MClassifier cls,
+			      String path) {
     String name = cls.getName();
     if (name == null || name.length() == 0) return null;
     String filename = name + ".java";
@@ -194,7 +198,8 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     String nameStr = generateName (op.getName());
     String clsName = generateName (op.getOwner().getName());
 
-    sb.append('\n');
+    if (documented)
+	sb.append('\n');
     String s = generateConstraintEnrichedDocComment(op,documented,INDENT);
     if (s != null && s.trim().length() > 0)
       sb.append(INDENT).append(s);

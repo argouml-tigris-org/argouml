@@ -68,8 +68,14 @@ implements NotationProvider {
 
   public final static String fileSep=System.getProperty("file.separator");
 
+    private static Map s_generators = new HashMap();
+    public static Generator getGenerator(NotationName n) {
+	return (Generator)s_generators.get(n);
+    }
+
   public Generator(NotationName notationName) {
       _notationName = notationName;
+      s_generators.put(_notationName, this);
   }
 
   public NotationName getNotation() {
@@ -177,6 +183,7 @@ implements NotationProvider {
 	   NotationHelper.getRightGuillemot();
   }
 
+    // Module stuff
   public boolean isModuleEnabled() { return true; }
   public Vector getModulePopUpActions(Vector v, Object o) { return null; }
   public boolean shutdownModule() { return true; }
