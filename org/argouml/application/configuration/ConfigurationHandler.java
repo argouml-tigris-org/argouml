@@ -126,11 +126,29 @@ public abstract class ConfigurationHandler {
   }
 
   /** Save the configuration to the location it was loaded from.
+   *  Do not force it if the configuration was not loaded already.
    *
    *  @return true if the save was successful, false if it was not
    *  attempted or encountered an error.
    */
   public final boolean saveDefault() {
+      return saveDefault(false);
+  }
+
+  /** Save the configuration to the location it was loaded from.
+   *
+   *  @return true if the save was successful, false if it was not
+   *  attempted or encountered an error.
+   */
+  public final boolean saveDefault(boolean force) {
+      if (force) {
+          File toFile = new File(getDefaultPath());
+          boolean saved = saveFile(toFile);
+	  if (saved) {
+	      _loadedFromFile = toFile;
+	  }
+	  return saved;
+      }
       if (! _loaded) return false;
 
       if (_loadedFromFile != null) {

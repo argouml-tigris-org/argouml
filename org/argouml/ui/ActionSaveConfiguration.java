@@ -53,7 +53,8 @@ public class ActionSaveConfiguration extends UMLAction {
     // main methods
 
     public void actionPerformed(ActionEvent event) {
-        Configuration.save();
+        if (! Configuration.save())
+	    Configuration.save(true);
     }
 }
 
