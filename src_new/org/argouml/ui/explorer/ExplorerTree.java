@@ -140,6 +140,9 @@ extends DisplayTextTree
         /** builds a pop-up menu for extra functionality for the Tree*/
         public void showPopupMenu(MouseEvent me) {
             
+            if(getLastSelectedPathComponent() == null)
+                return;
+            
             Object selectedItem = 
                 ((DefaultMutableTreeNode)getLastSelectedPathComponent())
                         .getUserObject();
