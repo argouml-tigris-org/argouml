@@ -38,10 +38,7 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsH
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-
 /**
  * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -63,7 +60,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      */
     protected boolean isValidElement(Object o) {
         return org.argouml.model.ModelFacade.isAStereotype(o) 
-            && ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement) getTarget(), (MStereotype) o);
+            && ExtensionMechanismsHelper.getHelper().isValidStereoType(/*(MModelElement)*/ getTarget(), /*(MStereotype)*/ o);
     }
 
     /**
@@ -92,7 +89,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        MModelElement elem = (MModelElement) getTarget();
+        Object elem = /*(MModelElement)*/ getTarget();
         Set paths = new HashSet();
         Set elements = new TreeSet(new Comparator() {
             public int compare(Object o1, Object o2) {

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -31,10 +30,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 
 /**
@@ -68,7 +67,7 @@ public class ActionSetAssociationEndChangeability extends UMLChangeAction {
             String actionCommand = source.getActionCommand();
             Object target = ((UMLRadioButtonPanel) source.getParent()).getTarget();
             if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
-                MAssociationEnd m = (MAssociationEnd) target;
+                Object m = /*(MAssociationEnd)*/ target;
                 MChangeableKind kind = null;
                 if (actionCommand.equals(CHANGEABLE_COMMAND)) {
                     kind = MChangeableKind.CHANGEABLE;
@@ -76,8 +75,7 @@ public class ActionSetAssociationEndChangeability extends UMLChangeAction {
                     kind = MChangeableKind.ADD_ONLY;
                 } else
                     kind = MChangeableKind.FROZEN;
-                m.setChangeability(kind);
-
+                ModelFacade.setChangeability(m, kind);
             }
         }
     }

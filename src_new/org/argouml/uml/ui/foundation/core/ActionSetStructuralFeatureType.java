@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -31,13 +28,10 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MClassifier;
-
-
 /**
  * @since Nov 3, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -61,30 +55,30 @@ public class ActionSetStructuralFeatureType extends UMLChangeAction {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();
-        MClassifier oldClassifier = null;
-        MClassifier newClassifier = null;
-        MAttribute attr = null;
+        Object oldClassifier = null;
+        Object newClassifier = null;
+        Object attr = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
             if (org.argouml.model.ModelFacade.isAStructuralFeature(o)) {
-                attr = (MAttribute) o;
-                oldClassifier = attr.getType();
+                attr = /*(MAttribute)*/ o;
+                oldClassifier = ModelFacade.getType(attr);
             }
             o = box.getSelectedItem();
             if (org.argouml.model.ModelFacade.isAClassifier(o)) {
-                newClassifier = (MClassifier) o;
+                newClassifier = /*(MClassifier)*/ o;
             }
         }
         if (newClassifier != oldClassifier && attr != null) {
             if (newClassifier != null) {
                 newClassifier =
-                    (MClassifier) ModelManagementHelper.getHelper().getCorrespondingElement(
+                    /*(MClassifier)*/ ModelManagementHelper.getHelper().getCorrespondingElement(
                                     newClassifier,
-                                    attr.getModel());
+                                    ModelFacade.getModel(attr));
             }
 
-            attr.setType(newClassifier);
+            ModelFacade.setType(attr, newClassifier);
         }
     }
 

@@ -29,9 +29,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 /**
@@ -66,8 +66,8 @@ public class UMLAssociationEndAggregationRadioButtonPanel extends UMLRadioButton
      */
     public void buildModel() {
         if (getTarget() != null) {
-            MAssociationEnd target = (MAssociationEnd) getTarget();
-            MAggregationKind kind = target.getAggregation();
+            Object target = /*(MAssociationEnd)*/ getTarget();
+            Object/*MAggregationKind*/ kind = ModelFacade.getAggregation(target);
             if (kind == null || kind.equals(MAggregationKind.NONE)) {
                 setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);
             } else

@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -34,6 +32,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -42,14 +41,9 @@ import org.argouml.uml.ui.UMLAttributesListModel;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.util.ConfigLoader;
-
-import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MDataType;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.MModel;
 
+import ru.novosoft.uml.foundation.core.MDataType;
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -94,24 +88,27 @@ public class PropPanelDataType extends PropPanelClassifier {
     public void addAttribute() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            MClassifier classifier = (MClassifier) target;
-            MStereotype stereo = classifier.getStereotype();
+            Object classifier = /*(MClassifier)*/ target;
+            Object stereo = null;
+            if (ModelFacade.getStereotypes(classifier).size() > 0) {
+                stereo = ModelFacade.getStereotypes(classifier).iterator().next();
+            }
             if (stereo == null) {
                 //
                 //  if there is not an enumeration stereotype as
                 //     an immediate child of the model, add one
-                MModel model = classifier.getModel();
+                Object model = ModelFacade.getModel(classifier);
                 Object ownedElement;
                 boolean match = false;
                 if (model != null) {
-                    Collection ownedElements = model.getOwnedElements();
+                    Collection ownedElements = ModelFacade.getOwnedElements(model);
                     if (ownedElements != null) {
                         Iterator iter = ownedElements.iterator();
                         while (iter.hasNext()) {
                             ownedElement = iter.next();
                             if (org.argouml.model.ModelFacade.isAStereotype(ownedElement)) {
-                                stereo = (MStereotype) ownedElement;
-                                String stereoName = stereo.getName();
+                                stereo = /*(MStereotype)*/ ownedElement;
+                                String stereoName = ModelFacade.getName(stereo);
                                 if (stereoName != null && stereoName.equals("enumeration")) {
                                     match = true;
                                     break;
@@ -119,16 +116,16 @@ public class PropPanelDataType extends PropPanelClassifier {
                             }
                         }
                         if (!match) {
-                            stereo = classifier.getFactory().createStereotype();
-                            stereo.setName("enumeration");
-                            model.addOwnedElement(stereo);
+                            stereo = ((MClassifier)classifier).getFactory().createStereotype();
+                            ModelFacade.setName(stereo, "enumeration");
+                            ModelFacade.addOwnedElement(model, stereo);
                         }
-                        classifier.setStereotype(stereo);
+                        ModelFacade.setStereotype(classifier, stereo);
                     }
                 }
             }
 
-            MAttribute attr = CoreFactory.getFactory().buildAttribute(classifier);
+            Object attr = CoreFactory.getFactory().buildAttribute(classifier);
             TargetManager.getInstance().setTarget(attr);
         }
 
@@ -136,11 +133,11 @@ public class PropPanelDataType extends PropPanelClassifier {
 
     public void newDataType() {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isADataType(target)) {
-            MDataType dt = (MDataType) target;
-            MNamespace ns = dt.getNamespace();
-            MDataType newDt = CoreFactory.getFactory().createDataType();
-            ns.addOwnedElement(newDt);
+        if (ModelFacade.isADataType(target)) {
+            Object dt = /*(MDataType)*/ target;
+            Object ns = ModelFacade.getNamespace(dt);
+            Object newDt = CoreFactory.getFactory().createDataType();
+            ModelFacade.addOwnedElement(ns, newDt);
             TargetManager.getInstance().setTarget(newDt);
         }
     }

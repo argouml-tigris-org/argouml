@@ -29,8 +29,6 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 /**
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -56,7 +54,7 @@ public class ActionNewModelElementConstraint
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        CoreFactory.getFactory().buildConstraint((MModelElement) getTarget());
+        CoreFactory.getFactory().buildConstraint(/*(MModelElement)*/ getTarget());
     }
 
 }

@@ -29,9 +29,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 
 /**
@@ -66,8 +66,8 @@ public class UMLModelElementVisibilityRadioButtonPanel extends UMLRadioButtonPan
      */
     public void buildModel() {
         if (getTarget() != null) {
-            MModelElement target = (MModelElement) getTarget();
-            MVisibilityKind kind = target.getVisibility();
+            Object target = /*(MModelElement)*/ getTarget();
+            Object kind = ModelFacade.getVisibility(target);
             if (kind == null || kind.equals(MVisibilityKind.PUBLIC)) {
                 setSelected(ActionSetModelElementVisibility.PUBLIC_COMMAND);
             } else

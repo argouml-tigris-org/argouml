@@ -51,11 +51,9 @@ import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.UMLVisibilityPanel;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
@@ -294,18 +292,18 @@ public class PropPanelOperation extends PropPanelModelElement {
 			    null);
     }
 
-    public MClassifier getReturnType() {
-        MClassifier type = null;
+    public Object getReturnType() {
+        Object type = null;
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAOperation(target)) {
             Collection params = org.argouml.model.ModelFacade.getParameters(target);
             if (params != null) {
                 Iterator iter = params.iterator();
-                MParameter param;
+                Object param;
                 while (iter.hasNext()) {
-                    param = (MParameter) iter.next();
-                    if (param.getKind() == MParameterDirectionKind.RETURN) {
-                        type = param.getType();
+                    param = /*(MParameter)*/ iter.next();
+                    if (ModelFacade.getKind(param) == MParameterDirectionKind.RETURN) {
+                        type = ModelFacade.getType(param);
                         break;
                     }
                 }
@@ -314,12 +312,12 @@ public class PropPanelOperation extends PropPanelModelElement {
         return type;
     }
 
-    public void setReturnType(MClassifier type) {
+    public void setReturnType(Object/*MClassifier*/ type) {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAOperation(target)) {
-            MOperation oper = (MOperation) target;
-            Collection params = oper.getParameters();
-            MParameter param;
+        if (ModelFacade.isAOperation(target)) {
+            Object oper = /*(MOperation)*/ target;
+            Collection params = ModelFacade.getParameters(oper);
+            Object param;
             //
             //   remove first (hopefully only) return parameters
             //
@@ -327,21 +325,21 @@ public class PropPanelOperation extends PropPanelModelElement {
                 if (params != null) {
                     Iterator iter = params.iterator();
                     while (iter.hasNext()) {
-                        param = (MParameter) iter.next();
-                        if (param.getKind()
+                        param = /*(MParameter)*/ iter.next();
+                        if (ModelFacade.getKind(param)
                             == MParameterDirectionKind.RETURN) {
-                            oper.removeParameter(param);
+                            ModelFacade.removeParameter(oper, param);
                             break;
                         }
                     }
                 }
             } else {
-                MParameter retParam = null;
+                Object retParam = null;
                 if (params != null) {
                     Iterator iter = params.iterator();
                     while (iter.hasNext()) {
-                        param = (MParameter) iter.next();
-                        if (param.getKind()
+                        param = /*(MParameter)*/ iter.next();
+                        if (ModelFacade.getKind(param)
                             == MParameterDirectionKind.RETURN) {
                             retParam = param;
                             break;
@@ -354,7 +352,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 									 oper,
 									 MParameterDirectionKind.RETURN);
                 }
-                retParam.setType(type);
+                ModelFacade.setType(retParam, type);
             }
         }
     }
@@ -407,10 +405,10 @@ public class PropPanelOperation extends PropPanelModelElement {
     public void addRaisedSignal(Integer index) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAOperation(target)) {
-            MOperation oper = (MOperation) target;
-            MSignal newSignal = oper.getFactory().createSignal();
-            oper.getOwner().getNamespace().addOwnedElement(newSignal);
-            oper.addRaisedSignal(newSignal);
+            Object oper = /*(MOperation)*/ target;
+            Object newSignal = ((MOperation)oper).getFactory().createSignal();
+            ModelFacade.addOwnedElement(ModelFacade.getNamespace(ModelFacade.getOwner(oper)), newSignal);
+            ModelFacade.addRaisedSignal(oper, newSignal);
             TargetManager.getInstance().setTarget(newSignal);
         }
     }
@@ -418,8 +416,8 @@ public class PropPanelOperation extends PropPanelModelElement {
     public void buttonAddParameter() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAOperation(target)) {
-            MParameter param =
-                CoreFactory.getFactory().buildParameter((MOperation) target);
+            Object param =
+                CoreFactory.getFactory().buildParameter(/*(MOperation)*/ target);
             TargetManager.getInstance().setTarget(param);
             /*
 	      MOperation oper = (MOperation) target;
@@ -434,10 +432,10 @@ public class PropPanelOperation extends PropPanelModelElement {
     public void buttonAddOperation() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAOperation(target)) {
-            MOperation oper = (MOperation) target;
-            MClassifier owner = oper.getOwner();
+            Object oper = /*(MOperation)*/ target;
+            Object owner = ModelFacade.getOwner(oper);
             if (owner != null) {
-                MOperation newOper =
+                Object newOper =
                     UmlFactory.getFactory().getCore().buildOperation(owner);
                 TargetManager.getInstance().setTarget(newOper);
 

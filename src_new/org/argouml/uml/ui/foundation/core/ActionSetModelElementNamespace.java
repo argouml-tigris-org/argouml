@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -29,11 +28,9 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * @since Oct 10, 2002
@@ -59,23 +56,23 @@ public class ActionSetModelElementNamespace extends UMLChangeAction {
      */
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        MNamespace oldNamespace = null;
-        MNamespace newNamespace = null;
-        MModelElement m = null;
+        Object oldNamespace = null;
+        Object newNamespace = null;
+        Object m = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
             if (org.argouml.model.ModelFacade.isAModelElement(o)) {
-                m = (MModelElement) o;
-                oldNamespace = m.getNamespace();
+                m = /*(MModelElement)*/ o;
+                oldNamespace = ModelFacade.getNamespace(m);
             }
             o = box.getSelectedItem();
             if (org.argouml.model.ModelFacade.isANamespace(o)) {
-                newNamespace = (MNamespace) o;
+                newNamespace = /*(MNamespace)*/ o;
             }
         }
         if (newNamespace != oldNamespace && m != null && newNamespace != null) {
-            m.setNamespace(newNamespace);
+            ModelFacade.setNamespace(m, newNamespace);
             super.actionPerformed(e);
         }
     }

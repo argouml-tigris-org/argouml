@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -41,6 +40,7 @@ import javax.swing.JTextField;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.ArgoModule;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 
 import org.argouml.swingext.Orientation;
@@ -55,9 +55,6 @@ import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 abstract public class PropPanelModelElement extends PropPanel {
 
@@ -192,8 +189,8 @@ abstract public class PropPanelModelElement extends PropPanel {
     public void navigateNamespace() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAModelElement(target)) {
-            MModelElement elem = (MModelElement) target;
-            MNamespace ns = elem.getNamespace();
+            Object elem = /*(MModelElement)*/ target;
+            Object ns = ModelFacade.getNamespace(elem);
             if (ns != null) {
                 TargetManager.getInstance().setTarget(ns);
             }

@@ -29,9 +29,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 
 /**
@@ -66,8 +66,8 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
      */
     public void buildModel() {
         if (getTarget() != null) {
-            MStructuralFeature target = (MStructuralFeature) getTarget();
-            MChangeableKind kind = target.getChangeability();
+            Object target = /*(MStructuralFeature)*/ getTarget();
+            Object/*MChangeableKind*/ kind = ModelFacade.getChangeability(target);
             if (kind == null || kind.equals(MChangeableKind.ADD_ONLY)) {
                 setSelected(ActionSetStructuralFeatureChangeability.ADDONLY_COMMAND);
             } else

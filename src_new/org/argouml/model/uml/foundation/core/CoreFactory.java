@@ -1402,12 +1402,12 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param directionKind The directionkind. If null it is not set.
      * @return      The newly created parameter.
      */
-    public MParameter buildParameter(
-				     MBehavioralFeature oper,
-				     MParameterDirectionKind directionKind) {
+    public Object buildParameter(Object feature, Object dk) {
+        MBehavioralFeature oper = (MBehavioralFeature) feature;
+        MParameterDirectionKind directionKind = (MParameterDirectionKind) dk;
 	MParameter res = buildParameter(oper);
 	if (directionKind != null) {
-	    res.setKind(directionKind);
+	    ModelFacade.setKind(res, directionKind);
 	}
 	return res;
     }

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -29,10 +28,10 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
-import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
 /**
@@ -61,8 +60,8 @@ public class ActionSetStructuralFeatureTargetScope extends UMLChangeAction {
 	    UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
 	    Object target = source.getTarget();
 	    if (org.argouml.model.ModelFacade.isAStructuralFeature(target)) {
-                MStructuralFeature m = (MStructuralFeature) target;
-		m.setTargetScope(source.isSelected() ? MScopeKind.CLASSIFIER : MScopeKind.INSTANCE);
+                Object m = /*(MStructuralFeature)*/ target;
+		ModelFacade.setTargetScope(m, source.isSelected() ? MScopeKind.CLASSIFIER : MScopeKind.INSTANCE);
 	    }
 	}
     }

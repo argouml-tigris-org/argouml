@@ -1325,7 +1325,8 @@ public class CoreHelper {
      * @param m
      * @return Collection
      */
-    public Collection getAllPossibleNamespaces(MModelElement m) {
+    public Collection getAllPossibleNamespaces(Object modelElement) {
+        MModelElement m = (MModelElement)modelElement;
         List ret = new ArrayList();
         if (m == null)
             return ret;

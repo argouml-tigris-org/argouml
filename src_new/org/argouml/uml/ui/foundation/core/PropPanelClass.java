@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -36,6 +35,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -47,9 +47,6 @@ import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -105,8 +102,8 @@ public class PropPanelClass extends PropPanelClassifier {
     public void addInnerClass() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            MClassifier classifier = (MClassifier) target;
-            MClass inner = CoreFactory.getFactory().buildClass(classifier);
+            Object classifier = /*(MClassifier)*/ target;
+            Object inner = CoreFactory.getFactory().buildClass(classifier);
             TargetManager.getInstance().setTarget(inner);
         }
     }
@@ -114,10 +111,10 @@ public class PropPanelClass extends PropPanelClassifier {
     public void newClass() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            MClassifier classifier = (MClassifier) target;
-            MNamespace ns = classifier.getNamespace();
+            Object classifier = /*(MClassifier)*/ target;
+            Object ns = ModelFacade.getNamespace(classifier);
             if (ns != null) {
-                MClassifier peer = CoreFactory.getFactory().buildClass(ns);
+                Object peer = CoreFactory.getFactory().buildClass(ns);
                 TargetManager.getInstance().setTarget(peer);
             }
         }

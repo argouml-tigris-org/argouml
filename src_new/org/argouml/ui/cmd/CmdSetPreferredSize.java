@@ -27,7 +27,6 @@ package org.argouml.ui.cmd;
 import java.awt.*;
 import java.util.Vector;
 import org.argouml.application.api.Argo;
-import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 
@@ -132,4 +131,3 @@ public class CmdSetPreferredSize extends Cmd {
     public void undoIt() { }
             
 }
-

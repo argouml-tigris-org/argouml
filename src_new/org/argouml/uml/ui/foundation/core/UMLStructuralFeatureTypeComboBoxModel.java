@@ -41,8 +41,6 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  * The combobox model for the type belonging to some attribute.
  * @since Nov 2, 2002
@@ -115,7 +113,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         Iterator it = p.getUserDefinedModels().iterator();
 
         while (it.hasNext()) {
-            MModel model = (MModel) it.next();
+            Object model = /*(MModel)*/ it.next();
 
 	    addAllUniqueModelElementsFrom(
 		elements,
