@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,6 +33,7 @@ import java.awt.Insets;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Configuration;
@@ -57,6 +58,7 @@ implements SettingsTabPanel {
     JCheckBox _showInitialValue = null;
     JCheckBox _showProperties = null;
     JCheckBox _showStereotypes = null;
+    JTextField _defaultShadowWidth = null;
 
     public SettingsTabNotation() {
     super();
@@ -149,6 +151,14 @@ implements SettingsTabPanel {
     top.add(_showStereotypes, checkConstraints);
     top.add(new JLabel(""), labelConstraints);
     top.add(new JLabel(""), fieldConstraints);
+
+    checkConstraints.gridy = 7;
+    labelConstraints.gridy = 7;
+    fieldConstraints.gridy = 7;
+    _defaultShadowWidth = createTextField();
+    top.add(_defaultShadowWidth, checkConstraints);
+    top.add(createLabel("label.default-shadow-width"), labelConstraints);
+    top.add(new JLabel(""), fieldConstraints);
 	
 	add(top, BorderLayout.NORTH);
     }
@@ -161,6 +171,7 @@ implements SettingsTabPanel {
         _showProperties.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES, false));
         _showMultiplicity.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_MULTIPLICITY, false));
         _showStereotypes.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false));
+        _defaultShadowWidth.setText(Configuration.getString(Notation.KEY_DEFAULT_SHADOW_WIDTH,"1"));
     }
 
     public void handleSettingsTabSave() {
@@ -171,6 +182,7 @@ implements SettingsTabPanel {
         Configuration.setBoolean(Notation.KEY_SHOW_PROPERTIES, _showProperties.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_INITIAL_VALUE, _showInitialValue.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES, _showStereotypes.isSelected());
+	Configuration.setString(Notation.KEY_DEFAULT_SHADOW_WIDTH, _defaultShadowWidth.getText());
     }
 
     public void handleSettingsTabCancel() {

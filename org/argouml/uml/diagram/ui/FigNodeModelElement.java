@@ -84,7 +84,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   protected boolean checkSize = true; // Needed for loading. Warning: if false, a too small size might look bad!
 
   static {
-    LABEL_FONT = MetalLookAndFeel.getSubTextFont();
+    LABEL_FONT = new javax.swing.plaf.metal.DefaultMetalTheme().getSubTextFont();
     ITALIC_LABEL_FONT = new Font(LABEL_FONT.getFamily(),
 				 Font.ITALIC, LABEL_FONT.getSize());
   }
@@ -103,7 +103,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   protected Fig _encloser = null;
   protected boolean _readyToEdit = true;
   protected boolean suppressCalcBounds = false;
-  public int _shadowSize = 1;
+  public int _shadowSize = Configuration.getInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH,1);
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -114,8 +114,10 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
       public void paint(Graphics g) {
         super.paint(g);
         g.setColor(Color.black);
-        g.fillRect(_x+_shadowSize,_y+_h,_w-_shadowSize,_shadowSize);
-        g.fillRect(_x+_w,_y+_shadowSize,_shadowSize,_h);
+	if ( _shadowSize > 0 ) {
+	    g.fillRect(_x+_shadowSize,_y+_h,_w-_shadowSize,_shadowSize);
+	    g.fillRect(_x+_w,_y+_shadowSize,_shadowSize,_h);
+	}
       }
     };
 
